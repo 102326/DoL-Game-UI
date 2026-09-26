@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{buildSync}=require('esbuild');
+const {fields}=require('../scripts/render-state-fields.cjs');
+const source=fs.readFileSync(path.join(__dirname,'../src/wardrobe/vendor/isolated-model.js'),'utf8');
+assert.ok(fields(source).includes('leftarm'));assert.ok(fields(source).includes('modeloptionsOverride'));
+for(const use of ['consume(V)','Object.keys(V)','V[key]','const alias=V','const {skin}=V'])assert.throws(()=>fields(use),/Unreviewed/);
+assert.throws(()=>fields('armPosition(side)'),/Unreviewed/);
+const code=buildSync({entryPoints:[path.join(__dirname,'../src/wardrobe/render-state.ts')],bundle:true,write:false,format:'cjs'}).outputFiles[0].text;
+const m={exports:{}};vm.runInNewContext(code,{module:m,exports:m.exports,structuredClone});
+const {copyRenderState}=m.exports,shared={nested:[1,2]},original={skin:shared,player:shared,wardrobe:{large:['unrelated']},modeloptionsOverride:{unknownModField:{a:1}}};
+shared.self=shared;
+const result=copyRenderState(original);
+assert.equal(result.skin,result.player);assert.equal(result.skin.self,result.skin);assert.equal('wardrobe' in result,false);
+result.skin.nested.push(3);result.modeloptionsOverride.unknownModField.a=2;
+assert.equal(original.skin.nested.length,2);assert.equal(original.modeloptionsOverride.unknownModField.a,1);
+assert.ok(copyRenderState(original,true).wardrobe);
+console.log('PASS renderer state boundary, aliases, cycles, nested mod fields, isolation and full-copy fallback');

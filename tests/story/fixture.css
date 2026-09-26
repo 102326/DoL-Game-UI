@@ -1,0 +1,66 @@
+#ui-bar{display:none}#story{margin:24px auto;max-width:1550px;padding:0 18px}body{background:#121218;color:#ddd}#passages{max-width:none}.fixture-story{border:1px solid #444;border-radius:16px;padding:18px}#listContainer{margin:20px 0}.radioControl{margin:20px 0}button{cursor:pointer}@media(max-width:700px){#story{padding:0 8px;margin:10px 0}}
+
+#next {
+	position: fixed;
+	bottom: -1px;
+	border: 1px solid var(--300);
+	background-color: var(--850);
+	z-index: 299; /* Just below the #ui-bar sidebar */
+}
+
+#next a,
+#skip a,
+#stop a {
+	color: var(--gold);
+	padding: 10px 20px 30px;
+	display: block;
+}
+
+#noStop {
+	color: var(--red);
+	padding: 10px 20px 30px;
+	display: block;
+}
+
+#cbtToggleMenu {
+	display: flex;
+	position: fixed;
+	z-index: 299; /* Just below the #ui-bar sidebar */
+	bottom: -1px;
+	flex-direction: column;
+	align-items: center;
+	margin-left: 7em;
+	border: 1px solid var(--300);
+	background-color: var(--850);
+}
+
+#cbtToggleMenu p {
+	display: inline;
+}
+
+#cbtToggleMenu .cbtToggle {
+	color: var(--gold);
+}
+
+#cbtToggleMenu:not(.visible) .cbtToggle {
+	padding: 0 10px;
+}
+
+#cbtToggleMenu > hr {
+	width: 90%;
+	margin: 1px;
+}
+
+#cbtToggleMenu .cbtOption {
+	align-self: flex-end;
+	padding: 0 10px;
+}
+
+#cbtToggleMenu:not(.visible) > hr,
+#cbtToggleMenu:not(.visible) .cbtOption {
+	display: none;
+}
+
+#cbtToggleMenu input {
+	margin: 10px;
+}

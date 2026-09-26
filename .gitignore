@@ -1,0 +1,12 @@
+node_modules/
+dist/
+tests/artifacts/
+
+tests/fixture.html
+__pycache__/
+*.pyc
+.env
+.env.*
+*.save
+*.keystore
+*.jks

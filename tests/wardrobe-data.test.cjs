@@ -1,0 +1,25 @@
+const assert=require('node:assert/strict'),path=require('node:path'),vm=require('node:vm'),{buildSync}=require('esbuild');
+const built=buildSync({entryPoints:[path.join(__dirname,'../src/wardrobe/data.ts')],bundle:true,write:false,format:'cjs',platform:'node'}),m={exports:{}};
+vm.runInNewContext(built.outputFiles[0].text,{module:m,exports:m.exports,structuredClone});const {snapshot,entries,project,validate}=m.exports;
+const garment=(name,extra={})=>({name,variable:name,colour:'blue',accessory:0,type:[],integrity:100,integrity_max:100,state_base:'waist',...extra});
+const naked=()=>garment('naked'),shirt=garment('shirt'),pants=garment('pants'),dress=garment('dress',{outfitPrimary:{lower:'dress skirt'}}),skirt=garment('dress skirt',{outfitSecondary:['upper','dress']});
+const V={worn:{upper:shirt,lower:pants,feet:garment('shoes')},wardrobe:{upper:[dress,garment('spare shirt')],lower:[skirt]},wardrobe_location:'wardrobe'};
+const root={V,setup:{clothes:{upper:[naked(),shirt,dress,V.wardrobe.upper[1]],lower:[naked(),pants,skirt],feet:[naked(),V.worn.feet]}}};
+const before=JSON.stringify(root),s=snapshot(root),e=entries(s,'upper')[0],out=project(s,e);
+assert.equal(out.worn.upper.name,'dress');assert.equal(out.worn.lower.name,'dress skirt');assert.equal(out.worn.feet.name,'shoes');assert.equal(out.worn.upper.state,'waist');assert.equal(JSON.stringify(root),before);
+assert.equal(entries(s,'lower').length,0,'intact secondary not independently listed');
+V.worn=out.worn;const s2=snapshot(root),e2=entries(s2,'upper')[1],out2=project(s2,e2);assert.equal(out2.worn.lower.name,'naked');assert.equal(out2.worn.upper.name,'spare shirt');
+V.worn.upper.cursed=1;assert.throws(()=>project(snapshot(root),entries(snapshot(root),'upper')[1]),/限制/);V.worn.upper.cursed=0;
+V.wardrobe.lower=[];assert.throws(()=>project(snapshot(root),entries(snapshot(root),'upper')[0]),/不完整/);
+V.wardrobe.upper.reverse();assert.equal(validate(snapshot(root),e),false);assert.throws(()=>project(snapshot(root),e),/变化/);
+V.wardrobe_location='other';V.wardrobes={other:{locationRequirement:['school'],upper:[]}};V.location='home';assert.equal(snapshot(root),null);assert.equal(V.wardrobe_location,'other','read must not repair/write location');
+console.log('PASS readonly inventory, outfit secondary match, removing old outfit, unchanged other pieces, state reset, curse guard, missing piece refusal, stale index, restricted location.');
+
+const {slotCapacity,itemView}=m.exports;
+V.wardrobe_location='wardrobe';V.wardrobe.space=10000;V.wardrobe.lower=[skirt];
+assert.equal(slotCapacity(snapshot(root)),10000);
+assert.equal(entries(snapshot(root),'lower').length,0);assert.equal(snapshot(root).inventory.lower.length,1,'hidden secondary consumes space');
+assert.equal(itemView(snapshot(root),'upper',dress,'worn:upper').splittable,true);
+assert.equal(itemView(snapshot(root),'upper',{...dress,outfitPrimary:{lower:'split'}},'worn:upper').splittable,false);
+V.wardrobe.space='bad';assert.equal(slotCapacity(snapshot(root)),null);
+console.log('PASS native capacity semantics and split eligibility');

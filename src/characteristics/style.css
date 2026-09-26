@@ -1,0 +1,14 @@
+#customOverlay.dgc-overlay{background:var(--dgu-surface);color:var(--dgu-text);border:1px solid var(--dgu-border);border-radius:var(--dgu-card-radius);max-width:1100px;box-sizing:border-box}
+#customOverlay.dgc-overlay:not(.hidden){display:flex;flex-direction:column;max-height:calc(100dvh - 24px)}
+.dgc-overlay #customOverlayTitle,.dgc-overlay .dgc-host{flex:0 0 auto}
+.dgc-overlay #customOverlayContent{flex:1 1 auto;min-height:0;height:auto;overflow:auto}
+.dgc-overlay .dgc-host{position:sticky;top:0;z-index:3;background:var(--dgu-surface);padding:12px 0;border-bottom:1px solid var(--dgu-border);margin-bottom:16px}
+.dgc-overlay .dgc-navigation{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.dgc-overlay .dgc-navigation button{border:1px solid var(--dgu-border);border-radius:var(--dgu-radius);background:var(--dgu-panel);color:var(--dgu-text);padding:10px 14px;min-height:44px;font:inherit;cursor:pointer;transition:background-color .15s,border-color .15s}
+.dgc-overlay .dgc-navigation button:hover,.dgc-overlay .dgc-navigation button:focus-visible{border-color:var(--dgu-accent);color:var(--dgu-accent)}
+.dgc-overlay .dgc-navigation .dgc-fallback{margin-left:auto;color:var(--dgu-secondary)}
+.dgc-overlay #customOverlayContent{line-height:1.7;overflow-wrap:anywhere}
+.dgc-overlay #base-characteristics,.dgc-overlay #base-skills,.dgc-overlay #sex-skills,.dgc-overlay #school-grades,.dgc-overlay #prof{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:12px;padding:12px 0;margin-bottom:22px}
+.dgc-overlay .characteristic-box{background:var(--dgu-panel);border:1px solid var(--dgu-border);border-radius:var(--dgu-card-radius);box-sizing:border-box;min-width:0}
+@media(max-width:600px){.dgc-overlay .dgc-navigation{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.dgc-overlay .dgc-navigation button{flex-shrink:0}.dgc-overlay .dgc-navigation .dgc-fallback{margin-left:0}}
+@media(prefers-reduced-motion:reduce){.dgc-overlay .dgc-navigation button{transition:none}}

@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict'),path=require('node:path'),vm=require('node:vm'),{buildSync}=require('esbuild');
+const result=buildSync({entryPoints:[path.join(__dirname,'../src/runtime/status.ts')],bundle:true,write:false,format:'cjs',platform:'node'});const m={exports:{}};vm.runInNewContext(result.outputFiles[0].text,{module:m,exports:m.exports});const {createStatusService}=m.exports;
+let current={pain:0,tiredness:2,stress:3,trauma:4,control:5},next=0,queue=new Map();
+const service=createStatusService({readVariables:()=>current,schedule:fn=>{queue.set(++next,fn);return next},cancel:id=>queue.delete(id)}),api=service.api;
+const flush=()=>{const q=[...queue.values()];queue.clear();q.forEach(fn=>fn())};
+let snap=api.getSnapshot();assert.equal(snap.status,'ready');assert.equal(snap.values.pain,0);assert.ok(Object.isFrozen(snap)&&Object.isFrozen(snap.values));assert.equal(Object.isFrozen(current),false);assert.notEqual(snap.values,current);
+const before=JSON.stringify(current);api.getSnapshot();assert.equal(JSON.stringify(current),before);
+current={pain:NaN,tiredness:Infinity,stress:'3',control:0};snap=api.getSnapshot();assert.equal(snap.status,'partial');assert.equal(snap.values.stress,null);assert.equal(snap.reasons.trauma,'missing');assert.equal(snap.reasons.pain,'invalid');assert.equal(snap.values.control,0);
+Object.defineProperty(current,'pain',{get(){throw Error('getter')}});assert.equal(api.getSnapshot().reasons.pain,'unreadable');
+let calls=0;const fn=()=>calls++;const off=api.subscribe(fn),off2=api.subscribe(fn);api.subscribe(()=>{throw Error('consumer')});let afterThrow=0;api.subscribe(()=>afterThrow++);api.refresh();api.refresh();assert.equal(queue.size,1);off();flush();assert.equal(calls,1);assert.equal(afterThrow,1);off2();
+current={pain:12,tiredness:1,stress:2,trauma:3,control:4};assert.equal(api.getSnapshot().values.pain,12);assert.equal(snap.values.control,0);service.beginLoad();assert.equal(api.getSnapshot().status,'loading');assert.equal(api.getSnapshot().values.pain,null);api.refresh();flush();assert.equal(api.getSnapshot().status,'loading');service.renderComplete();assert.equal(api.getSnapshot().values.pain,12);flush();
+current=undefined;assert.equal(api.getSnapshot().status,'unavailable');assert.equal(api.getSnapshot().values.pain,null);api.refresh();api.dispose();assert.equal(queue.size,0);api.dispose();api.subscribe(()=>assert.fail('disposed notification'));api.refresh();assert.equal(queue.size,0);assert.equal(api.getSnapshot().status,'disposed');
+console.log('PASS status boundary: no writes, zero/invalid/missing/getter failures, frozen copies, replacement, load invalidation, frame batching, unsubscribe, listener isolation, disposal.');

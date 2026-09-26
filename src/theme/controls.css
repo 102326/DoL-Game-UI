@@ -1,0 +1,30 @@
+/* Scoped settings styles: no global reset or ownership of native game controls. */
+#dol-midnight-sidebar-button{box-sizing:border-box;display:block;width:100%;min-height:44px;margin:8px 0;padding:8px 12px;border:1px solid var(--dgu-border,#363640);border-radius:12px;background:var(--dgu-panel,#222229);color:var(--dgu-accent,#c4c7f5);font:inherit;text-align:center;cursor:pointer}
+#dol-midnight-sidebar-button:hover{background:#303039}
+#dol-midnight-sidebar-button.dmt-fallback{position:fixed;right:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:10000;width:180px;max-width:calc(100vw - 20px);box-shadow:0 8px 28px #0008}
+#ui-bar.stowed #dol-midnight-sidebar-button{visibility:hidden!important;pointer-events:none}
+#dol-midnight-controls{box-sizing:border-box;width:min(840px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 24px);margin:auto;padding:0;overflow:auto;border:1px solid var(--dgu-border);border-radius:22px;background:var(--dgu-surface);color:var(--dgu-text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:left;box-shadow:0 24px 80px #000a;color-scheme:dark}
+#dol-midnight-controls *{box-sizing:border-box}
+#dol-midnight-controls::backdrop{background:#09090dbb}
+#dol-midnight-controls #dol-status-preview:empty{display:none}
+#dol-midnight-controls .dmt-settings-header{display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:2;padding:22px 24px;background:var(--dgu-surface);border-bottom:1px solid var(--dgu-border)}
+#dol-midnight-controls h2{margin:2px 0 0;font-size:25px;color:var(--dgu-text)}
+#dol-midnight-controls h3{margin:0 0 10px;font-size:16px;color:var(--dgu-text)}
+#dol-midnight-controls p{margin:6px 0;font-size:13px;color:var(--dgu-secondary);overflow-wrap:anywhere}
+#dol-midnight-controls .dmt-eyebrow{letter-spacing:.15em;font-size:11px;color:var(--dgu-accent)}
+#dol-midnight-controls .dmt-controls-content{padding:20px 24px}
+#dol-midnight-controls .dmt-setting-card{padding:16px;border:1px solid var(--dgu-border);border-radius:16px;background:var(--dgu-panel);min-width:0}
+#dol-midnight-controls .dgu-setting-row{display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:48px;padding:8px 0;color:var(--dgu-text);cursor:pointer}
+#dol-midnight-controls .dgu-setting-row strong{display:block;font-weight:500;font-size:14px}
+#dol-midnight-controls .dgu-setting-row small{display:block;color:var(--dgu-secondary);font-size:12px;margin-top:3px}
+#dol-midnight-controls input[type=checkbox]{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--dgu-accent)}
+#dol-midnight-controls button,#dol-midnight-controls select{min-height:44px;max-width:100%;padding:9px 12px;border:1px solid #4a4858;border-radius:12px;background:#2d2b36;color:var(--dgu-text);font:inherit;cursor:pointer;transition:background .15s,border-color .15s}
+#dol-midnight-controls button:hover{background:#393544;border-color:var(--dgu-accent)}
+#dol-midnight-controls select{min-width:0;font-size:13px}
+#dol-midnight-controls .dmt-recovery{margin-top:14px}
+#dol-midnight-controls .dmt-settings-footer{border-top:1px solid var(--dgu-border);padding:12px 24px}
+#dol-midnight-controls :focus-visible,#dol-midnight-sidebar-button:focus-visible{outline:2px solid var(--dgu-accent);outline-offset:3px}
+#dol-midnight-controls[open]{animation:dmt-settings-in 160ms ease-out}
+@keyframes dmt-settings-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){#dol-midnight-controls .dmt-settings-header{padding:16px}#dol-midnight-controls .dmt-controls-content{padding:12px}#dol-midnight-controls h2{font-size:22px}#dol-midnight-controls .dgu-setting-row:has(select){flex-wrap:wrap}#dol-midnight-controls select{width:100%}}
+@media(prefers-reduced-motion:reduce){#dol-midnight-controls[open]{animation:none}#dol-midnight-controls button{transition:none}}

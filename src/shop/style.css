@@ -1,0 +1,160 @@
+.dgshop-host{margin:0 0 2rem;padding:12px;border:1px solid var(--dgu-border,#363640);border-radius:16px;background:#222229;scroll-margin-top:16px}
+.dgshop-host .dgp-navigation{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.dgshop-host button,.dgshop-host select{min-height:44px;border:1px solid #454550;border-radius:12px;background:#2d2d36;color:#e4e4e9;padding:8px 14px;max-width:100%}
+.dgshop-host .dgp-fallback{margin-left:auto}
+.dgshop-content .clothing-item,.dgshop-content .clothing-item-spacer{box-sizing:border-box;border:1px solid #41414d;border-radius:14px;background:#222229;margin:4px;width:calc(50% - 8px);min-width:0;min-height:64px;transition:background-color .15s,border-color .15s}
+.dgshop-content .clothing-item:hover{background:#2d2d36;border-color:#9094bd}
+.dgshop-content .clothing-name{overflow-wrap:anywhere}
+.dgshop-content .optionsBar{gap:10px;padding:12px;border:1px solid #41414d;border-radius:14px;background:#222229;max-width:100%}
+.dgshop-content input[type=text],.dgshop-content select{box-sizing:border-box;min-height:40px;max-width:100%;border-radius:10px}
+.dgshop-content .category-group{gap:4px;margin:4px;flex-wrap:wrap}
+.dgshop-content .category-tab{transform:none;min-width:38px;min-height:38px;border:1px solid #41414d;border-radius:10px;background:#222229;display:flex;align-items:center;justify-content:center}
+.dgshop-content .category-tab>img,.dgshop-content .category-icon-alt{transform:none}
+.dgshop-content .category-tab.active{background:#42435a;border-color:#c4c7f5}
+.dgshop-content .colour-button{border-radius:8px;overflow:hidden}
+.dgshop-content .colour-button>div{min-height:34px}
+.dgshop-content .clothing-colours-div{gap:12px;align-items:flex-start}
+.dgshop-content .colours-container{min-width:0;width:auto;flex:1}
+.dgshop-content .translate-colours-container{transform:none}
+.dgshop-content .buy-button,.dgshop-content .try-button{border-radius:12px;overflow:hidden;border-color:#454550;background:#282830;min-height:44px;max-width:100%;box-sizing:border-box}
+.dgshop-content .buy-button-inner{min-height:44px;flex-wrap:wrap;gap:6px}
+.dgshop-content .buy-buttons,.dgshop-content .try-buttons{gap:8px}
+.dgshop-content .button-back-to-shop{border:1px solid #454550;border-radius:12px;background:#282830;min-height:40px;top:-1.5em}
+.dgshop-content .button-back-to-shop::before,.dgshop-content .button-back-to-shop::after{display:none}
+.dgshop-content .filters-button,.dgshop-content .clothingshop-options-button,.dgshop-content .shop-legend-button{border-radius:12px;background:#282830;border-color:#454550}
+.dgshop-content .btn-pagination{border-radius:10px;border:1px solid #454550;min-height:40px;align-content:center}
+.dgshop-content .filters-div,.dgshop-content .options-div,.dgshop-content .shop-legend{background:#222229;border:1px solid #454550;border-radius:16px;color:#e4e4e9}
+.dgshop-content .filter-block{border:1px solid #454550;border-radius:12px;max-width:100%;box-sizing:border-box}
+.dgshop-content #warmth-description{padding:12px;border:1px solid #41414d;border-radius:12px;background:#222229}
+@media(max-width:600px){.dgshop-content .clothing-item,.dgshop-content .clothing-item-spacer{width:100%;margin:4px 0}.dgshop-content .clothing-colours-div{flex-wrap:wrap}.dgshop-content .colours-container{flex-basis:100%}.dgshop-host .dgp-navigation select{order:3;width:100%}.dgshop-content .custom-colour-presets{flex-wrap:wrap;gap:8px}.dgshop-content .filters-div,.dgshop-content .options-div{inset:12px;padding:12px}}
+@media(prefers-reduced-motion:reduce){.dgshop-content *{transition:none!important}}
+.dgshop-content .searchGroup{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0;max-width:100%}.dgshop-content .searchGroup input{width:12em;min-width:0;max-width:100%}
+.dgshop-content .colours-container>.mannequin-placeholder{display:none}
+
+/* The original controls stay live inside reversible layout containers. */
+.dgshop-host{padding:16px 20px;margin-bottom:12px}
+.dgshop-toolbar h2{margin:2px 0 0;font-size:1.4rem;color:var(--dgu-text)}
+.dgshop-eyebrow{font-size:.7rem;letter-spacing:.16em;color:var(--dgu-secondary)}
+.dgshop-open-detail,.dgshop-close-detail{display:none}
+.dgshop-content .dgshop-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(320px,2fr);grid-template-rows:auto minmax(0,1fr);gap:16px;align-items:start}
+.dgshop-native-header{grid-column:1/-1;display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-height:44px;font-size:.85em}
+.dgshop-native-header>br{display:none}
+.dgshop-content .dgshop-native-header :is(.button-back-to-shop,.filters-button,.clothingshop-options-button,.shop-legend-button){position:static;transform:none;margin:0;flex-shrink:0;min-height:40px;line-height:40px}
+.dgshop-content .dgshop-native-header .filters-button{margin-left:auto;order:2}
+.dgshop-content .dgshop-native-header .clothingshop-options-button{order:3}
+.dgshop-content .dgshop-native-header .shop-legend-button{order:4}
+.dgshop-content .dgshop-native-header>.green{border:1px solid #545044;color:#d8c68b;padding:4px 8px;border-radius:8px}
+.dgshop-catalog{grid-column:1;grid-row:2;max-height:calc(100dvh - 180px);min-height:400px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:4px 6px 8px 0}
+.dgshop-content .dgshop-layout>.clothing-details{grid-column:2;grid-row:2;display:flex;flex-direction:column;height:calc(100dvh - 180px);min-height:400px;margin:0;min-width:0;border:1px solid var(--dgu-border);border-radius:18px;background:var(--dgu-panel);overflow:hidden}
+.dgshop-detail-body{overflow:auto;min-height:0;flex:1;padding:18px;overscroll-behavior:contain;overflow-wrap:anywhere}
+.dgshop-detail-body>br+br{display:none}
+.dgshop-purchase{flex:0 0 auto;padding:12px;border-top:1px solid var(--dgu-border);background:var(--dgu-surface);max-height:45%;overflow:auto}
+.dgshop-purchase[hidden]{display:none}
+.dgshop-content .dgshop-purchase .buy-buttons,.dgshop-content .dgshop-purchase .try-buttons{margin:0;gap:8px}
+.dgshop-content .dgshop-purchase .try-buttons{margin-top:8px;font-size:.85em}
+.dgshop-content .dgshop-purchase .buy-button{margin:0;width:100%}
+.dgshop-content .dgshop-purchase .buy-buttons>.buy-button{flex:1 1 130px}
+.dgshop-content .dgshop-purchase #buy-send-home{width:auto;min-width:0;flex:1 1 180px}
+.dgshop-content .dgshop-purchase .buy-button-inner{padding:8px;line-height:1.4}
+.dgshop-content .dgshop-purchase .buy-buttons>.buy-button{border-color:#78799b;background:#343448}
+.dgshop-content .dgshop-purchase .buy-multiple-slider{padding:0 8px 4px}
+.dgshop-content .dgshop-browse-tools #shopCategories{width:100%;justify-content:flex-start;margin:0 0 10px;gap:2px}
+.dgshop-content .dgshop-browse-tools .optionsBar{box-sizing:border-box;width:100%;margin-bottom:12px}
+.dgshop-content .dgshop-browse-tools .optionsBar button{min-width:0;min-height:40px;margin:0}
+.dgshop-content .dgshop-catalog .clothing-item{width:100%;margin:4px 0;padding:12px 8px;gap:10px;min-height:80px}
+.dgshop-content .dgshop-catalog .clothing-item-spacer{display:none}
+.dgshop-content .dgshop-catalog .clothing-icon{flex-shrink:0}
+.dgshop-content .dgshop-catalog .clothing-body{min-width:0;flex:1}
+.dgshop-content .dgshop-catalog .clothing-price{top:8px;right:8px;transform:none;background:transparent;filter:none;color:#dfca92;font-size:.9em;padding:0}
+.dgshop-content .dgshop-catalog .clothing-price::before{display:none}
+.dgshop-content .dgshop-selected{border-color:var(--dgu-accent);background:#30313e;box-shadow:inset 3px 0 var(--dgu-accent)}
+.dgshop-content .dgshop-catalog #shop-pagination{position:sticky;bottom:0;background:var(--dgu-surface);padding:12px 4px;border-radius:12px;flex-wrap:wrap;gap:8px}
+.dgshop-content .dgshop-detail-body .clothing-colours-div{flex-wrap:wrap;gap:12px}
+.dgshop-content .dgshop-detail-body .colours-container{flex-basis:100%}
+.dgshop-content .dgshop-detail-body #mannequin{margin:0 auto 16px;border-radius:12px;background:#19191f}
+.dgshop-content .dgshop-detail-body #warmth-description{font-size:.85em}
+.dgshop-content .dgshop-detail-body .custom-colour{flex-wrap:wrap}
+.dgshop-content .dgshop-detail-body .custom-colour-presets{margin:0;flex-wrap:wrap}
+.dgshop-content .dgshop-detail-body .colour-options-div:not(.pattern) .colour-button:not(:has(.bg-custom,.bg-random)):has(.colour-name-span):not(.active) .colour-name-span,
+.dgshop-content .dgshop-detail-body .colour-options-div:not(.pattern) .colour-button:not(:has(.bg-custom,.bg-random)):has(.colour-name-span-highcontrast):not(.active) .colour-name-span-highcontrast{font-size:0}
+.dgshop-content .dgshop-detail-body .colour-button>div{min-width:32px;box-sizing:border-box}
+@media(min-width:1600px){.dgshop-content .dgshop-catalog .clothing-item{width:calc(50% - 8px);margin:4px}}
+@media(max-width:900px){
+ .dgshop-content .dgshop-layout{grid-template-columns:minmax(0,1fr)}
+ .dgshop-catalog{max-height:none;min-height:0;overflow:visible;scrollbar-gutter:auto;padding:0}
+ .dgshop-content .dgshop-layout>.clothing-details{display:none;position:fixed;inset:auto 12px 12px;height:min(80dvh,820px);min-height:0;z-index:120;border:1px solid #67677c;box-shadow:0 -10px 50px #0009}
+ .dgshop-content .dgshop-layout>.clothing-details.dgshop-detail-open{display:flex;animation:dgshop-slide .16s ease-out}
+ .dgshop-open-detail,.dgshop-close-detail{display:block}
+ .dgshop-close-detail{border:0;border-bottom:1px solid var(--dgu-border);border-radius:0;background:var(--dgu-surface);color:var(--dgu-text);padding:12px;min-height:44px;flex-shrink:0;text-align:left}
+ .dgshop-detail-body{padding:14px}
+ .dgshop-content .dgshop-catalog #shop-pagination{position:static}
+ .dgshop-content .dgshop-layout .no-click-overlay{z-index:999}
+}
+@keyframes dgshop-slide{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){.dgshop-content .clothing-details{animation:none!important}}
+
+.dgshop-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dgshop-content .dgshop-purchase .buy-button-inner{display:block;height:auto;text-align:center;min-height:44px}
+.dgshop-content .dgshop-purchase .buy-button-inner>a{margin:0 4px 0 0}
+.dgshop-content .dgshop-purchase .buy-buttons{align-items:stretch}
+.dgshop-content .dgshop-purchase .buy-multiple-slider>div>input{height:24px}
+.dgshop-content .dgshop-layout>.clothing-details{height:calc(100dvh - 230px)}
+.dgshop-catalog{max-height:calc(100dvh - 230px)}
+.dgshop-content .dgshop-native-header .no-click-overlay{z-index:10000}
+@media(max-width:900px){.dgshop-content .dgshop-layout>.clothing-details{height:min(80dvh,820px);z-index:2000}.dgshop-catalog{max-height:none}}
+
+.dgshop-content .clothing-details:not(:has(.clothing-colours-div)) .dgshop-detail-body::before{content:"选择一件商品，查看配色与购买方式";display:block;padding:48px 12px;color:var(--dgu-secondary);text-align:center}
+@media(min-width:901px){
+ .dgshop-content .dgshop-layout{height:calc(100dvh - 210px);min-height:350px;grid-template-rows:auto minmax(0,1fr)}
+ .dgshop-content .dgshop-layout>.clothing-details{height:100%;min-height:0;box-sizing:border-box}
+ .dgshop-catalog{height:100%;max-height:none;min-height:0;box-sizing:border-box}
+}
+
+.dgshop-browse-tools{position:sticky;top:0;z-index:2;background:var(--dgu-surface);padding-top:4px;padding-bottom:2px}
+@media(max-width:900px){.dgshop-browse-tools{position:static}}
+
+/* Native list replacement must not apply browser anchoring on top of restored scroll. */
+.dgshop-catalog{overflow-anchor:none}
+
+
+/* Shared toolbar leaves the full catalog height for clothes. */
+.dgshop-host{padding:10px 16px}
+.dgshop-toolbar h2{font-size:1.15rem;margin:0}
+.dgshop-eyebrow{display:none}
+.dgshop-content .dgshop-layout{grid-template-rows:auto auto minmax(0,1fr);gap:10px}
+.dgshop-browse-tools{position:static;grid-column:1/-1;grid-row:2;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px;border:1px solid var(--dgu-border);border-radius:14px;box-sizing:border-box;min-width:0}
+.dgshop-content .dgshop-browse-tools #shopCategories{flex:1 1 560px;width:auto;margin:0;gap:2px;flex-wrap:wrap;justify-content:flex-start}
+.dgshop-content .dgshop-browse-tools .optionsBar{flex:1 1 420px;width:auto;margin:0;padding:0;border:0;background:transparent;gap:8px}
+.dgshop-content .dgshop-browse-tools .searchGroup{flex:1 1 230px;flex-wrap:nowrap;gap:6px}
+.dgshop-content .dgshop-browse-tools .searchBar{min-width:0}
+.dgshop-content .dgshop-browse-tools input[type=text]{width:100%;min-width:40px}
+.dgshop-content .dgshop-browse-tools select{width:auto;min-width:68px}
+.dgshop-content .dgshop-browse-tools .category-group{margin:0;gap:3px}
+.dgshop-catalog,.dgshop-content .dgshop-layout>.clothing-details{grid-row:3}
+.dgshop-content .dgshop-catalog .clothing-item{isolation:isolate;position:relative;z-index:0}
+.dgshop-content .dgshop-catalog #shop-pagination{z-index:3}
+.dgshop-content .dgshop-purchase .buy-buttons{display:grid;grid-template-columns:1fr 1fr;align-items:start;font-size:.9em}
+.dgshop-content .dgshop-purchase .buy-button{height:auto;min-height:0;align-self:start}
+.dgshop-content .dgshop-purchase .buy-button-inner{min-height:48px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:8px;gap:2px;line-height:1.35}
+.dgshop-content .dgshop-purchase .buy-multiple-slider{padding:4px 8px;line-height:1.2;border-top:1px solid var(--dgu-border);font-size:.9em}
+.dgshop-content .dgshop-purchase .buy-multiple-slider>div{display:flex;align-items:center;gap:8px}
+.dgshop-content .dgshop-purchase .buy-multiple-slider input{min-width:0;flex:1}
+.dgshop-content .dgshop-purchase .try-buttons{display:flex;font-size:.9em;gap:8px}
+.dgshop-content .dgshop-purchase .try-button{flex:1 1 110px;min-height:44px;margin:0;padding:6px 10px;align-items:center;justify-content:center;line-height:1.35}
+.dgshop-content .dgshop-native-header .button-back-to-shop{padding:0 14px;min-height:44px;box-sizing:border-box}
+@media(min-width:901px){.dgshop-content .dgshop-layout{height:calc(100dvh - 165px);grid-template-rows:auto auto minmax(0,1fr)}}
+@media(max-width:900px){.dgshop-content .dgshop-layout{grid-template-rows:auto auto auto}.dgshop-browse-tools{gap:10px}.dgshop-content .dgshop-browse-tools #shopCategories{flex-basis:100%}.dgshop-content .dgshop-browse-tools .optionsBar{flex-basis:100%}}
+
+.dgshop-toolbar{flex-wrap:wrap}
+.dgshop-default-filter{display:flex;align-items:center;gap:8px;margin-left:auto;font-size:.85em;color:var(--dgu-secondary)}
+.dgshop-host .dgshop-default-filter select{padding:6px 10px;min-height:40px}
+.dgshop-default-message{margin:6px 0 0;font-size:.8em;color:var(--dgu-secondary)}
+@media(max-width:600px){.dgshop-default-filter{margin-left:0}.dgshop-toolbar{gap:8px}.dgshop-toolbar h2{width:100%}}
+
+.dgshop-content .dgshop-browse-tools .searchBar{white-space:nowrap}.dgshop-content .dgshop-browse-tools .searchGroup{min-width:260px}.dgshop-content .dgshop-browse-tools #shopCategories{flex-basis:600px}.dgshop-content .dgshop-browse-tools .optionsBar{flex-basis:480px}
+
+
+/* Opt-in: unsupported WebViews ignore this rule and keep normal rendering. */
+@supports(content-visibility:auto){
+ html[data-dol-shop-deferred-paint] .dgshop-content .dgshop-catalog .clothing-item{content-visibility:auto;contain-intrinsic-block-size:auto 100px}
+}

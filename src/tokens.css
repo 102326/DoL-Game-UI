@@ -1,0 +1,25 @@
+/* Shared UI palette. Semantic gameplay colours remain owned by the game. */
+:root{--dgu-surface:#19191f;--dgu-panel:#222229;--dgu-border:#363640;--dgu-accent:#c4c7f5;--dgu-text:#e4e4e9;--dgu-secondary:#92929f;--dgu-radius:12px;--dgu-card-radius:16px}
+.dcu-root{--dcu-bg:var(--dgu-surface);--dcu-card:var(--dgu-panel);--dcu-line:var(--dgu-border);--dcu-accent:var(--dgu-accent);color:var(--dgu-text)}
+.dcu-root .dcu-shell,.dcu-root .dcu-group{border-color:var(--dgu-border)}
+.dcu-root .dcu-group::before{color:var(--dgu-text);border-color:var(--dgu-border)}
+.dcu-root .dcu-group label{background:var(--dgu-surface);border-color:var(--dgu-border)}
+.dcu-root .dcu-group label:has(input:checked){border-color:var(--dgu-accent);background:#363345;box-shadow:inset 3px 0 var(--dgu-accent)}
+.dcu-root input[type=radio]{accent-color:var(--dgu-accent)}
+.dcu-root .dcu-footer,.dcu-root .dcu-summary{background:var(--dgu-panel);border-color:var(--dgu-border)}
+.dcu-root .dcu-control-slot #next a{background:var(--dgu-accent);border-color:var(--dgu-accent)}
+.dcu-root button,#dol-midnight-controls button{border-radius:var(--dgu-radius)}
+
+/* Reading width stays compact for prose; action panels use the available wide surface. */
+html[data-dol-midnight][data-dmt-layout] #passages:has(.dcu-shell){max-width:90rem!important}
+
+#dol-status-preview{border-top:1px solid var(--dgu-border);padding-top:8px;margin-top:8px}#dol-status-preview[hidden]{display:none}
+
+/* Native fallback receives the same basic controls while the theme is enabled.
+   No nodes or handlers are replaced; unknown actions stay operable. */
+html[data-dol-midnight] #passages [id="listContainer"] label:has(input[type="radio"]){display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px;box-sizing:border-box;max-width:100%;min-height:44px;margin:4px 5px 4px 0;padding:7px 10px;border:1px solid var(--dgu-border);border-radius:10px;background:var(--dgu-surface);cursor:pointer;vertical-align:middle;white-space:normal;overflow-wrap:anywhere}
+html[data-dol-midnight] #passages [id="listContainer"] label:has(input[type="radio"]:checked){border-color:var(--dgu-accent);background:#363345;box-shadow:inset 3px 0 var(--dgu-accent)}
+html[data-dol-midnight] #passages [id="listContainer"] label:has(input:disabled){opacity:.5;cursor:not-allowed}
+html[data-dol-midnight] #passages [id="listContainer"] select{min-height:44px;max-width:100%;border-radius:10px}
+html[data-dol-midnight] #passages #next a{display:inline-block;box-sizing:border-box;min-height:44px;padding:9px 16px;border-radius:12px;background:var(--dgu-accent);color:#202020!important}
+html[data-dol-midnight] #passages #cbtToggleMenu{border-radius:12px}

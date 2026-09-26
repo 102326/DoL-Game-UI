@@ -1,0 +1,27 @@
+:: StoryTitle
+Combat UI isolated acceptance
+:: StoryData
+{"ifid":"14D925C9-3EA9-4B45-B992-8A6FCD13BA57","format":"SugarCube","format-version":"2.36.1","start":"Arena"}
+:: StoryInit
+<<set $turn=0, $options={combatControls:'radio'}, $leftaction='rest', $rightaction='rest', $feetaction='rest', $mouthaction='rest'>>
+:: Widgets [widget]
+<<widget "leftactionDifficulty">><span class="difficulty">普通</span><</widget>>
+<<widget "rightactionDifficulty">><span class="difficulty">普通</span><</widget>>
+<<widget "feetactionDifficulty">><span class="difficulty">普通</span><</widget>>
+<<widget "mouthactionDifficulty">><span class="difficulty">普通</span><</widget>>
+:: Arena
+<div class="fixture-story"><h1>训练场</h1><p>隔离战斗控件测试：第 <span id="turn">$turn</span> 回合。仅使用中性合成选项，不读取真实存档。</p></div>
+<div id="replaceAction"><<link "切换行动">><<replace '#leftaction'>><span>左手新选项</span><<generateCombatAction {"等待":"rest","观察":"inspect","新动作":"new"} "leftaction">><</replace>><</link>></div>
+<div id="listContainer">
+<div id="leftaction" class="radioControl"><span>左手可以行动。</span><<generateCombatAction {"等待":"rest","防御":"guard","使用道具":"item","训练选项4：观察周围并准备下一步行动":"choice4","训练选项5：观察周围并准备下一步行动":"choice5","训练选项6：观察周围并准备下一步行动":"choice6","训练选项7：观察周围并准备下一步行动":"choice7","训练选项8：观察周围并准备下一步行动":"choice8","训练选项9：观察周围并准备下一步行动":"choice9","训练选项10：观察周围并准备下一步行动":"choice10","训练选项11：观察周围并准备下一步行动":"choice11","训练选项12：观察周围并准备下一步行动":"choice12","训练选项13：观察周围并准备下一步行动":"choice13"} "leftaction">></div>
+<div id="rightaction" class="radioControl"><span>右手可以行动。</span><<generateCombatAction {"等待":"rest","格挡":"block","支援":"assist","训练选项4：观察周围并准备下一步行动":"choice4","训练选项5：观察周围并准备下一步行动":"choice5","训练选项6：观察周围并准备下一步行动":"choice6","训练选项7：观察周围并准备下一步行动":"choice7","训练选项8：观察周围并准备下一步行动":"choice8","训练选项9：观察周围并准备下一步行动":"choice9","训练选项10：观察周围并准备下一步行动":"choice10","训练选项11：观察周围并准备下一步行动":"choice11","训练选项12：观察周围并准备下一步行动":"choice12","训练选项13：观察周围并准备下一步行动":"choice13"} "rightaction">></div>
+<div id="feetaction" class="radioControl"><span>双脚可以行动。</span><<generateCombatAction {"等待":"rest","后退":"back","闪避":"dodge"} "feetaction">></div>
+<div id="mouthaction" class="radioControl"><span>可以交流。</span><<generateCombatAction {"等待":"rest","交流选项1：向同伴说明当前计划":"call1","交流选项2：向同伴说明当前计划":"call2","交流选项3：向同伴说明当前计划":"call3","交流选项4：向同伴说明当前计划":"call4","交流选项5：向同伴说明当前计划":"call5","交流选项6：向同伴说明当前计划":"call6","交流选项7：向同伴说明当前计划":"call7","交流选项8：向同伴说明当前计划":"call8","交流选项9：向同伴说明当前计划":"call9","交流选项10：向同伴说明当前计划":"call10","交流选项11：向同伴说明当前计划":"call11"} "mouthaction">></div>
+<div id="extensionaction"><label><<radiobutton "$custom" "special" autocheck>>模组附加动作</label><button id="custom-native" onclick="window.extraClicks=(window.extraClicks||0)+1">原生扩展按钮</button></div>
+<p id="unknown-extra">未识别的模组说明仍然保留。</p>
+</div>
+<div id="cbtToggleMenu"><label class="cbtToggle" onclick="this.parentElement.classList.toggle('visible')"><p>战斗菜单</p></label><hr><label class="cbtOption"><p>控制类型</p><select id="fixture-control"><option>单选</option><option>列表</option></select></label><label class="cbtOption"><p>锁定滚动</p><input type="checkbox" id="fixture-scroll"></label></div>
+<span id="next"><<link "继续原回合" "Arena">><<set $turn += 1>><</link>></span>
+<<link "离开战斗" "Outside">><</link>>
+:: Outside
+<p>非战斗页面。</p><<link "返回训练场" "Arena">><</link>>

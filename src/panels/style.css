@@ -1,0 +1,32 @@
+#customOverlay.dgp-overlay{background:var(--dgu-surface);color:var(--dgu-text);border:1px solid var(--dgu-border);border-radius:var(--dgu-card-radius);box-sizing:border-box}
+#customOverlay.dgp-overlay:not(.hidden){display:flex;flex-direction:column;max-height:calc(100dvh - 24px)}
+.dgp-overlay #customOverlayTitle,.dgp-overlay .dgp-host{flex:0 0 auto}
+.dgp-overlay #customOverlayContent{flex:1 1 auto;min-height:0;height:auto;overflow:auto;line-height:1.65;overflow-wrap:anywhere}
+.dgp-overlay .dgp-host{background:var(--dgu-surface);padding:12px 8px;border-bottom:1px solid var(--dgu-border)}
+.dgp-navigation{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.dgp-navigation button,.dgp-navigation select{min-height:44px;max-width:100%;box-sizing:border-box;border:1px solid var(--dgu-border);border-radius:var(--dgu-radius);background:var(--dgu-panel);color:var(--dgu-text);padding:8px 12px;font:inherit}
+.dgp-navigation select{flex:1;min-width:0;max-width:26rem}
+.dgp-navigation .dgp-fallback{margin-left:auto;color:var(--dgu-secondary)}
+.dgp-navigation button{cursor:pointer;transition:background-color .15s,border-color .15s}
+.dgp-navigation button:hover,.dgp-navigation :focus-visible{border-color:var(--dgu-accent)}
+.dgp-overlay #customOverlayContent :is(select,textarea,input[type=text],input[type=number],button){box-sizing:border-box;max-width:100%;border-radius:var(--dgu-radius)}
+.dgp-overlay #customOverlayContent :is(select,input[type=text],input[type=number],button){min-height:40px}
+.dgp-overlay #journalNotesTextarea textarea{width:100%;min-height:16rem;line-height:1.6;background:var(--dgu-panel);color:var(--dgu-text);padding:12px;border:1px solid var(--dgu-border)}
+.dgp-overlay ul.journal{padding-left:1.4em}
+.dgp-overlay ul.journal > li{background:var(--dgu-panel);border:1px solid var(--dgu-border);border-radius:var(--dgu-radius);padding:10px 12px;margin:8px 0}
+.dgp-overlay h1.header{font-size:1.15em;margin:22px 0 10px;border-bottom:1px solid var(--dgu-border);padding-bottom:8px}
+.dgp-overlay #world_map{max-width:100%;height:auto}
+.dgp-overlay details.journal{border:1px solid var(--dgu-border);border-radius:var(--dgu-radius);padding:10px;margin:10px 0}
+.dgp-overlay summary.journal{cursor:pointer;min-height:36px}
+.dgp-overlay .foldout{border:1px solid var(--dgu-border);border-radius:var(--dgu-radius);padding:10px 12px;margin:10px 0;background:var(--dgu-panel)}
+.dgp-overlay .foldoutHeader{display:block;min-height:36px;line-height:36px;cursor:pointer}
+.dgp-overlay :is(.traitList,.traitListReducedText){border:1px solid var(--dgu-border);border-radius:var(--dgu-card-radius);margin:14px 0;background:var(--dgu-panel)}
+.dgp-overlay .traitHeading{font-size:1.15em;border-color:var(--dgu-border);border-radius:var(--dgu-card-radius) var(--dgu-card-radius) 0 0;padding:10px}
+.dgp-overlay .traits .trait{border-color:var(--dgu-border);min-width:0;padding:10px}
+.dgp-overlay #featsList{grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px;margin-top:12px}
+.dgp-overlay #featsList .feat{border:1px solid var(--dgu-border);border-radius:var(--dgu-card-radius);background:var(--dgu-panel);padding:10px;gap:10px;min-width:0}
+.dgp-overlay #featsList .featText,.dgp-overlay #featsList .featImage{background:transparent;min-width:0}
+.dgp-overlay #featsList .featImage{flex-shrink:0}
+.dgp-overlay #featsList .dot{width:44px;height:44px}
+@media(max-width:600px){.dgp-navigation select{order:3;flex-basis:100%;max-width:none}.dgp-overlay .traits .trait{box-sizing:border-box;flex-basis:100%!important}}
+@media(prefers-reduced-motion:reduce){.dgp-navigation button{transition:none}}

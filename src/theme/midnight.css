@@ -1,0 +1,356 @@
+/* DoL Midnight Theme. Enable by adding data-dol-midnight to <html>. */
+
+html[data-dol-midnight] {
+    --000: #e5e5e5;
+    --100: #d8d8dc;
+    --150: #ceced3;
+    --200: #c2c2c8;
+    --300: #b8b8bd;
+    --400: #9b9ba2;
+    --500: #7b7b83;
+    --600: #626269;
+    --700: #4a4a50;
+    --750: #303033;
+    --800: #252526;
+    --850: #1f1f1f;
+    --900: #181818;
+    --link: #8ab4e8;
+    --link-hover: #b8d4f5;
+    --tooltip-background: #1f1f1f;
+    --tooltip-border: #4a4a50;
+    color: var(--000);
+    color-scheme: dark;
+    background-color: var(--900);
+}
+
+html[data-dol-midnight] body {
+    background: var(--900);
+    color: var(--000);
+}
+
+html[data-dol-midnight] #story {
+    color: var(--000);
+}
+
+html[data-dol-midnight] #passages,
+html[data-dol-midnight] .passage {
+    color: var(--000);
+}
+
+html[data-dol-midnight] .passage {
+    line-height: 1.65;
+}
+
+html[data-dol-midnight][data-dol-midnight-comfortable] .passage {
+    line-height: 1.8;
+}
+
+html[data-dol-midnight] #ui-bar {
+    background: var(--850);
+    border-right-color: var(--700);
+    color: var(--000);
+}
+
+html[data-dol-midnight] #ui-bar-body {
+    color: var(--000);
+}
+
+html[data-dol-midnight] #ui-bar hr,
+html[data-dol-midnight] #menu ul,
+html[data-dol-midnight] #menu li:not(:first-child) {
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] #ui-bar-history [id|="history"],
+html[data-dol-midnight] #ui-bar-toggle {
+    color: var(--000);
+    border-color: var(--600);
+    background-color: var(--850);
+}
+
+html[data-dol-midnight] #ui-bar-history [id|="history"]:hover,
+html[data-dol-midnight] #ui-bar-toggle:hover,
+html[data-dol-midnight] #menu li a:hover {
+    background-color: var(--750);
+    border-color: var(--link);
+}
+
+html[data-dol-midnight] #ui-bar-history [id|="history"]:disabled {
+    color: var(--600);
+    border-color: var(--700);
+    background-color: transparent;
+}
+
+html[data-dol-midnight] #menu li a {
+    color: inherit;
+    border-color: transparent;
+}
+
+html[data-dol-midnight] .settings-container,
+html[data-dol-midnight] .statsTable,
+html[data-dol-midnight] .saveBorder,
+html[data-dol-midnight] #wardrobewear,
+html[data-dol-midnight] #wardrobeItemDetails,
+html[data-dol-midnight] .main-shop-div,
+html[data-dol-midnight] #journalNotesTextarea {
+    color: var(--000);
+}
+
+html[data-dol-midnight] .settings-container,
+html[data-dol-midnight] .saveBorder,
+html[data-dol-midnight] .statsTable,
+html[data-dol-midnight] .clothing-shop-page,
+html[data-dol-midnight] .shop-category-tabs,
+html[data-dol-midnight] #wardrobeItems,
+html[data-dol-midnight] #wardrobeItemDetails {
+    background-color: var(--850);
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] .settings-container .numberslider-group,
+html[data-dol-midnight] .settings-container .numberslider-inline,
+html[data-dol-midnight] .optionsBar,
+html[data-dol-midnight] .searchBar,
+html[data-dol-midnight] .shop-pagination,
+html[data-dol-midnight] .shop-pages,
+html[data-dol-midnight] .wardrobe-options-container,
+html[data-dol-midnight] .wardrobe-options {
+    background: var(--800);
+    border-color: var(--700);
+    color: var(--000);
+}
+
+html[data-dol-midnight] .wardrobeItem,
+html[data-dol-midnight] .outfitContainer,
+html[data-dol-midnight] .clothing-item,
+html[data-dol-midnight] .category-group,
+html[data-dol-midnight] .saveGroup,
+html[data-dol-midnight] #saves-list-container .savesListRow,
+html[data-dol-midnight] .statsTable tr {
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] .outfitContainer,
+html[data-dol-midnight] .clothing-item,
+html[data-dol-midnight] .saveGroup,
+html[data-dol-midnight] .statsTable tbody {
+    background: var(--850);
+}
+
+html[data-dol-midnight] .clothing-item:hover,
+html[data-dol-midnight] .category-tab:hover,
+html[data-dol-midnight] .wardrobe-options-button:hover,
+html[data-dol-midnight] .outfitContainer button:hover {
+    background-color: var(--750);
+    border-color: var(--link);
+}
+
+html[data-dol-midnight] .category-tab,
+html[data-dol-midnight] .shop-pages-number,
+html[data-dol-midnight] .wardrobe-options-button,
+html[data-dol-midnight] .clothingshop-options-button,
+html[data-dol-midnight] .shop-legend-button {
+    color: inherit;
+    border-color: var(--700);
+    background-color: var(--800);
+}
+
+html[data-dol-midnight] .category-tab.active,
+html[data-dol-midnight] .tab button.tab-selected,
+html[data-dol-midnight] .macro-button-selected {
+    color: var(--link-hover);
+    border-color: var(--link);
+    background-color: #303033;
+}
+
+html[data-dol-midnight] .buy-button,
+html[data-dol-midnight] .try-button,
+html[data-dol-midnight] .filters-button,
+html[data-dol-midnight] .clothingshop-options-button,
+html[data-dol-midnight] .shop-legend-button,
+html[data-dol-midnight] .buy-buttons,
+html[data-dol-midnight] .try-buttons {
+    border-color: var(--700);
+    background-color: var(--800);
+    color: inherit;
+}
+
+html[data-dol-midnight] .buy-button:hover,
+html[data-dol-midnight] .try-button:hover,
+html[data-dol-midnight] .filters-button:hover,
+html[data-dol-midnight] .clothingshop-options-button:hover,
+html[data-dol-midnight] .shop-legend-button:hover {
+    border-color: var(--link);
+    background-color: var(--750);
+}
+
+html[data-dol-midnight] .shop-legend-button.active {
+    border-color: var(--link);
+    background-color: #303033;
+}
+
+html[data-dol-midnight] .statsTable caption,
+html[data-dol-midnight] .statsTable th,
+html[data-dol-midnight] .statsTable td,
+html[data-dol-midnight] .saveBorder,
+html[data-dol-midnight] .saveGroup {
+    color: inherit;
+}
+
+html[data-dol-midnight] #saves-list-container .savesListRow {
+    background-color: var(--850);
+    border-top-color: var(--700);
+}
+
+html[data-dol-midnight] .saveMenuButton {
+    border-color: var(--link);
+    background-color: #303033 !important;
+    color: var(--link-hover);
+}
+
+html[data-dol-midnight] .saveMenuConfirm {
+    background-color: var(--800);
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] .tab.inventory,
+html[data-dol-midnight] details.journal,
+html[data-dol-midnight] summary.journal,
+html[data-dol-midnight] ul.journal,
+html[data-dol-midnight] .hpi_gridHeader {
+    color: inherit;
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] .tab.inventory button,
+html[data-dol-midnight] summary.journal {
+    background-color: var(--800);
+}
+
+html[data-dol-midnight] input:not([type="checkbox"]):not([type="radio"]),
+html[data-dol-midnight] select,
+html[data-dol-midnight] textarea {
+    background-color: var(--800);
+    border-color: var(--700);
+    color: var(--000);
+}
+
+html[data-dol-midnight] input:not([type="checkbox"]):not([type="radio"]):focus,
+html[data-dol-midnight] select:focus,
+html[data-dol-midnight] textarea:focus {
+    border-color: var(--link);
+    background-color: var(--750);
+}
+
+html[data-dol-midnight] input[type="checkbox"],
+html[data-dol-midnight] input[type="radio"] {
+    accent-color: var(--link);
+}
+
+/* Size ordinary actions only. Specialized icon, colour and stepper controls retain dimensions. */
+html[data-dol-midnight] .passage button.macro-button:not(.imgButton):not(.customOverlayClose):not([style]),
+html[data-dol-midnight] #saveList .saveMenuButton,
+html[data-dol-midnight] .buy-button,
+html[data-dol-midnight] .try-button {
+    min-height:44px;
+    border-radius:9px;
+}
+
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) {
+    color: var(--000);
+    background: var(--900);
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayTitle,
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayContent,
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #overlayTabs {
+    background-color: var(--850);
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #overlayTabs button {
+    color: inherit;
+    border-color: var(--700);
+    background-color: var(--800);
+}
+
+html[data-dol-midnight] .passage :focus-visible,
+html[data-dol-midnight] #ui-bar :focus-visible,
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) :focus-visible {
+    outline: 3px solid var(--link-hover);
+    outline-offset: 2px;
+}
+
+html[data-dol-midnight] .passage,
+html[data-dol-midnight] #ui-bar-body,
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayContent {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+    html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]),
+    html[data-dol-midnight] .settings-container,
+    html[data-dol-midnight] .main-shop-div,
+    html[data-dol-midnight] .clothing-shop-page {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    html[data-dol-midnight] .shop-category-tabs,
+    html[data-dol-midnight] .shop-pagination,
+    html[data-dol-midnight] .tab {
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+    }
+
+    html[data-dol-midnight] #saves-list-container .savesListRow,
+    html[data-dol-midnight] .saveGroup {
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html[data-dol-midnight] #story,
+    html[data-dol-midnight] #ui-bar {
+        transition-duration: 0s !important;
+        animation-duration: 0s !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Surface treatment does not change dialog positioning, visibility or content layout. */
+html[data-dol-midnight] #passages > .passage {
+    background-color:#1f1f1f;
+    border:1px solid var(--700);
+    border-radius:14px;
+    padding:clamp(12px,2.5vw,24px);
+    box-sizing:border-box;
+}
+html[data-dol-midnight] #ui-dialog-titlebar,
+html[data-dol-midnight] #ui-dialog-body {
+    background-color:#1f1f1f;
+    color:var(--000);
+    border-color:var(--700);
+}
+html[data-dol-midnight] #ui-dialog-titlebar {border-radius:12px 12px 0 0;}
+html[data-dol-midnight] #ui-dialog-body {border-radius:0 0 12px 12px;}
+html[data-dol-midnight] #ui-dialog-close {color:var(--000);background-color:#303033;}
+html[data-dol-midnight] #ui-dialog-body :focus-visible {outline:2px solid var(--link-hover);outline-offset:2px;}
+html[data-dol-midnight] .settings-container,
+html[data-dol-midnight] .outfitContainer,
+html[data-dol-midnight] .clothing-item,
+html[data-dol-midnight] .saveGroup,
+html[data-dol-midnight] .itemInventory,
+html[data-dol-midnight] #wardrobeItemDetails {border-radius:12px;}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) {border-radius:12px;}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #overlayTabs button.tab-selected {background-color:#303033;color:var(--link-hover);border-bottom-color:var(--link);}
+
+html[data-dol-midnight] input[type="text"],
+html[data-dol-midnight] input[type="search"],
+html[data-dol-midnight] input[type="password"],
+html[data-dol-midnight] textarea,
+html[data-dol-midnight] select {border-radius:7px;}
+html[data-dol-midnight] .settings-container {padding:12px;border:1px solid var(--700);box-sizing:border-box;}
+html[data-dol-midnight] details.journal {background:var(--850);border:1px solid var(--700);border-radius:10px;padding:8px;}

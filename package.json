@@ -1,0 +1,33 @@
+{
+  "name": "dol-game-ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "vue-tsc --noEmit",
+    "build": "node scripts/render-state-fields.cjs --check && npm run typecheck && vite build",
+    "package": "npm run build && python scripts/package.py",
+    "test": "node scripts/test-unit.cjs"
+  },
+  "dependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "typescript": "^5.9.0",
+    "vue-tsc": "^3.0.0",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "playwright": "^1.62.1"
+  },
+  "description": "Responsive interface mod for Degrees of Lewdity",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/102326/DoL-Game-UI.git"
+  }
+}

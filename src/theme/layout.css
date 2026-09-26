@@ -1,0 +1,215 @@
+/* Optional layout pass. The data-dmt-layout gate allows the 0.3 geometry to be disabled separately. */
+html[data-dol-midnight][data-dmt-layout] {
+    --dmt-sidebar-width: 17.5em;
+    --dmt-sidebar-bg: var(--850);
+    --dmt-sidebar-border: var(--700);
+}
+
+/* Keep the native sidebar width and make it one scrolling region. */
+html[data-dol-midnight][data-dmt-layout] #ui-bar {
+    width: var(--dmt-sidebar-width);
+}
+
+/* Preserve native positioned portrait, caption and scroll geometry. */
+html[data-dol-midnight][data-dmt-layout] #overlayButtons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .4rem;
+}
+
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > button,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .sidebarButtonSplit,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .fullwidth,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .manager-button,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .managerButton {
+    min-width: 0;
+}
+
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .sidebarButtonSplit {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .4rem;
+}
+
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .fullwidth,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .manager-button,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .managerButton {
+    grid-column: 1 / -1;
+}
+
+html[data-dol-midnight][data-dmt-layout] #stats + #storyCaptionContent,
+html[data-dol-midnight][data-dmt-layout][data-dmt-compact-stats] #statmeters {
+    padding-top: .35rem;
+}
+
+html[data-dol-midnight][data-dmt-layout][data-dmt-compact-stats] #statmeters > * {
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+}
+
+html[data-dol-midnight][data-dmt-layout] #storyCaptionContent > [data-dmt-heading] {
+    margin-top: .75rem;
+    padding-top: .5rem;
+    border-top: 1px solid var(--dmt-sidebar-border);
+}
+
+html[data-dol-midnight][data-dmt-layout] #storyCaptionContent > [data-dmt-heading]::before {
+    display: block;
+    margin-bottom: .25rem;
+    color: var(--100);
+    content: attr(data-dmt-heading);
+    font-size: .85em;
+    font-weight: 700;
+}
+
+/* The drawer shade is supplied by the companion controller. */
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) #stats {
+    width:100%;box-sizing:border-box;grid-template-columns:minmax(0,1fr);font-size:.85em;height:26px;line-height:22px;padding-top:0;
+}
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) #stats .content {grid-column:1;min-width:0}
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) #stats .centered-elements {gap:4px;justify-content:space-evenly;min-width:0}
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) #stats .centered-elements>div {white-space:nowrap;min-width:0}
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) #stats .second-row {gap:4px}
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) .statsExtended>#stats {grid-template-columns:24px minmax(0,1fr);height:48px}
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) .statsExtended>#stats .content {grid-column:2}
+html[data-dol-midnight][data-dmt-layout] body.has-images #ui-bar:not(.stowed) #storyCaptionContent {top:31px;height:calc(100% - 196px)}
+html[data-dol-midnight][data-dmt-layout] body.has-images #ui-bar:not(.stowed) .statsExtended>#storyCaptionContent {top:53px;height:calc(100% - 218px)}
+
+html[data-dol-midnight][data-dmt-layout] #dmt-drawer-shade {
+    position: fixed;
+    inset: 0;
+    z-index: 299;
+    background: rgb(0 0 0 / .42);
+}
+
+html[data-dol-midnight][data-dmt-layout] #dmt-drawer-shade[hidden] {
+    display: none;
+}
+
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) {
+    z-index: 300;
+}
+
+/* Narrow screens use the drawer as an overlay while story positioning stays stable. */
+@media screen and (max-width: 899px) {
+    html[data-dol-midnight][data-dmt-layout] #ui-bar {
+        --dmt-sidebar-width: min(17.5em, calc(100vw - 48px));
+        width: var(--dmt-sidebar-width);
+    }
+
+    html[data-dol-midnight][data-dmt-layout] #ui-bar.stowed {
+        left: calc(2em - var(--dmt-sidebar-width));
+    }
+
+    html[data-dol-midnight][data-dmt-layout] #story,
+    html[data-dol-midnight][data-dmt-layout] #ui-bar.stowed ~ #story {
+        margin-left: calc(2em + 12px);
+    }
+}
+
+html[data-dol-midnight][data-dmt-layout][data-dmt-reading="standard"] #passages {
+    max-width: 68rem !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+html[data-dol-midnight][data-dmt-layout][data-dmt-reading="wide"] #passages {
+    max-width: 90rem !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 899px) {
+    html[data-dol-midnight][data-dmt-layout] #passages {
+        padding-left: .75rem;
+        padding-right: .75rem;
+    }
+}
+
+/* Full-viewport overlays retain their native visibility controls. */
+html[data-dol-midnight][data-dmt-layout] .customOverlayContainer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+}
+
+html[data-dol-midnight][data-dmt-layout] .customOverlay:not([data-overlay="modloader"]):not([hidden]):not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    inset: auto;
+    width: min(1000px, 100%);
+    max-width: min(1000px, 100vw);
+    height: min(800px, calc(100vh - 24px));
+    height: min(800px, calc(100dvh - 24px));
+    max-height: 100%;
+    margin: auto;
+}
+
+html[data-dol-midnight][data-dmt-layout] .customOverlay:not([data-overlay="modloader"]):not([hidden]):not(.hidden) #customOverlayTitle {
+    flex: 0 0 auto;
+    padding-right: 56px;
+    min-height: 44px;
+    box-sizing: border-box;
+}
+
+html[data-dol-midnight][data-dmt-layout] .customOverlay:not([data-overlay="modloader"]):not([hidden]):not(.hidden) #customOverlayContent {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    overflow: auto;
+}
+
+html[data-dol-midnight][data-dmt-layout] .customOverlayClose {
+    width: 44px;
+    height: 44px;
+    right: 8px;
+    top: 0;
+    display: grid;
+    place-items: center;
+}
+
+html[data-dol-midnight][data-dmt-layout] .customOverlayClose::before,
+html[data-dol-midnight][data-dmt-layout] .customOverlayClose::after {
+    top: 10px;
+    left: 21px;
+}
+
+html[data-dol-midnight][data-dmt-layout] #ui-dialog-titlebar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+html[data-dol-midnight][data-dmt-layout] #ui-dialog-body {
+    max-height: calc(100vh - 4.5em);
+    overflow: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html[data-dol-midnight][data-dmt-layout] #ui-bar,
+    html[data-dol-midnight][data-dmt-layout] #story {
+        transition-duration: 0s !important;
+    }
+}
+
+html[data-dol-midnight][data-dmt-layout] #storyCaptionContent {padding:12px;box-sizing:border-box}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons {margin-top:12px;border-top:1px solid var(--700);padding-top:12px}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons::before {content:"常用功能";grid-column:1/-1;text-align:left;color:var(--300);font-size:.85em}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .sidebarButtonSplit,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > #dol-midnight-sidebar-button,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > #dmc-sidebar-button {grid-column:1/-1}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons button {box-sizing:border-box;width:100%;min-width:0;min-height:44px;margin:0;white-space:normal}
+html[data-dol-midnight][data-dmt-layout] #dmt-status-toggle {min-height:44px;text-align:left;background:var(--800);border:1px solid var(--700);border-radius:6px;margin:8px 0;padding:8px}
+html[data-dol-midnight][data-dmt-layout] .customOverlayContainer:not(.hidden):not([hidden]) {display:grid;place-items:center;padding:12px;box-sizing:border-box}
+html[data-dol-midnight][data-dmt-layout] #dmt-drawer-shade {padding:0;border:0;border-radius:0;margin:0;width:100%;height:100%;cursor:pointer}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > br,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons > .sidebarButtonSplit:empty {display:none}
+
+html[data-dol-midnight] #overlayButtons button {border-radius:10px;transition:background-color 140ms ease,border-color 140ms ease,box-shadow 140ms ease}
+html[data-dol-midnight] #overlayButtons button:active {box-shadow:inset 0 0 0 2px var(--600)}
+html[data-dol-midnight][data-dmt-layout] .customOverlay:not(.hidden) {animation:dmt-window-in 160ms ease-out}
+@keyframes dmt-window-in {from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){html[data-dol-midnight] #overlayButtons button,html[data-dol-midnight][data-dmt-layout] .customOverlay:not(.hidden){animation:none!important;transition:none!important}}
+
+html[data-dol-midnight][data-dmt-layout] #story {transition:none}
