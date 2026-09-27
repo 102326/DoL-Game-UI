@@ -16,7 +16,7 @@ export function startShop(root:Runtime){
  const restoredScroll=new WeakMap<HTMLElement,number>();
  const moves=new Map<Node,Comment>();const owned=new Set<HTMLElement>();
  let scrollTop=0,selected='',focusReturn:HTMLElement|null=null;
- const state=reactive({hasDetails:false,open:false,defaultGender,message:''});const counts={mounts:0,scans:0};
+ const state=reactive({hasDetails:false,open:false,defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
  function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
  function restore(){for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){if(anchor.isConnected&&node.isConnected)anchor.replaceWith(node);else anchor.remove()}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
@@ -64,7 +64,12 @@ export function startShop(root:Runtime){
   // Catalog replacement after purchase/search must not jump back to the page top.
   // Native pages arrive incrementally: a temporary clamp must not erase the saved position.
   catalog!.scrollTop=scrollTop;restoredScroll.set(catalog!,catalog!.scrollTop);
-  for(const item of catalog!.querySelectorAll<HTMLElement>('.clothing-item'))item.classList.toggle('dgshop-selected',!!selected&&item.querySelector('a')?.textContent?.replace(/^\s*\([^)]*\)\s*/, '').trim()===selected);
+  if(selected){
+   for(const item of catalog!.querySelectorAll<HTMLElement>('.clothing-item'))item.classList.toggle('dgshop-selected',item.querySelector('a')?.textContent?.replace(/^\s*\([^)]*\)\s*/, '').trim()===selected);
+  }else{
+   // Most catalogue updates have no selection; only clear a stale highlight if present.
+   catalog!.querySelectorAll<HTMLElement>('.dgshop-selected').forEach(item=>item.classList.remove('dgshop-selected'));
+  }
   observe();
  }
  function applyDefaultGender(){
@@ -82,12 +87,35 @@ export function startShop(root:Runtime){
  }
  function observe(){if(shop)observer.observe(shop,{childList:true,subtree:true})}
  function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
+ function updateSelected(items:Iterable<HTMLElement>){for(const item of items)item.classList.toggle('dgshop-selected',!!selected&&item.querySelector('a')?.textContent?.replace(/^\s*\([^)]*\)\s*/, '').trim()===selected)}
+ function fastPath(records:MutationRecord[]){
+  const pages=catalog?.querySelector<HTMLElement>('#shop-list-pages');
+  if(!pages?.isConnected||!catalog?.isConnected||!list?.isConnected||!records.length)return false;
+  // Native hotkey numbering rewrites only text nodes on links after each page is appended.
+  // It does not alter the layout nodes or handlers that this adapter manages.
+  const isNumberingText=(record:MutationRecord)=>record.target instanceof Element
+   &&record.target.matches('a.link-internal.macro-link,button.link-internal.macro-button')
+   &&[...record.addedNodes,...record.removedNodes].every(node=>node.nodeType===Node.TEXT_NODE);
+  if(records.some(record=>record.type!=='childList'||!(pages.contains(record.target)||isNumberingText(record))))return false;
+  const items=new Set<HTMLElement>();
+  for(const record of records){
+   const target=record.target instanceof Element?record.target:null;
+   const parentItem=target?.closest<HTMLElement>('.clothing-item');
+   if(parentItem&&catalog.contains(parentItem))items.add(parentItem);
+   for(const node of record.addedNodes){
+    if(!(node instanceof Element))continue;
+    if(node.matches('.clothing-item'))items.add(node as HTMLElement);
+    node.querySelectorAll<HTMLElement>('.clothing-item').forEach(item=>items.add(item));
+   }
+  }
+  updateSelected(items);counts.fastPaths++;return true;
+ }
  function click(event:Event){if(!enabled||!shop?.contains(event.target as Node))return;const target=(event.target as Element).closest<HTMLElement>('.clothing-item,.category-tab,.btn-pagination');if(!target)return;
   if(target.matches('.clothing-item')){selected=target.querySelector('a')?.textContent?.replace(/^\s*\([^)]*\)\s*/, '').trim()??'';focusReturn=target.querySelector('a');state.open=true}else{scrollTop=0;selected='';state.open=false}
   schedule();
  }
  function escape(event:KeyboardEvent){if(event.key==='Escape'&&state.open&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false)}
- const observer=new MutationObserver(schedule);
+ const observer=new MutationObserver(records=>{if(!fastPath(records))schedule()});
  const discovery=new MutationObserver(()=>{if(document.querySelector('.passage #clothingShop-div')!==shop)schedule()});
  function setEnabled(value:boolean){if(destroyed)return;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* Session preference. */}refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}
  document.addEventListener('click',click,true);document.addEventListener('keydown',escape);discovery.observe(document.body,{childList:true,subtree:true});refresh();

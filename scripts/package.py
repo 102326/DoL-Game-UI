@@ -1,9 +1,12 @@
 from pathlib import Path
-import json,zipfile,hashlib,os
+import json,zipfile,hashlib,os,re
 root=Path(__file__).resolve().parent.parent
 version=json.loads((root/'package.json').read_text())['version']
-boot={'name':'DoLGameUI','version':version,'scriptFileList':['game-ui.js'],'styleFileList':['game-ui.css'],'tweeFileList':[],'imgFileList':[],'additionFile':['README.md','THIRD-PARTY-NOTICES.txt'],'dependenceInfo':[{'modName':'ModLoader','version':'>=2.100.0'}]}
+runtime_version=re.search(r"DoLGameUI=\{version:'([^']+)'",(root/'src/main.ts').read_text(encoding='utf-8'))
+assert runtime_version and runtime_version.group(1)==version,'Runtime and package versions differ'
+boot={'name':'DoLGameUI','version':version,'scriptFileList_inject_early':['startup-cache-experiment.js'],'scriptFileList':['game-ui.js'],'styleFileList':['game-ui.css'],'tweeFileList':[],'imgFileList':[],'additionFile':['README.md','THIRD-PARTY-NOTICES.txt'],'dependenceInfo':[{'modName':'ModLoader','version':'>=2.100.0'}]}
 assets={name:(root/'dist'/name).read_bytes() for name in boot['scriptFileList']+boot['styleFileList']}
+assets['startup-cache-experiment.js']=(root/'startup-cache-experiment.js').read_bytes()
 assets['LICENSE']=(root/'LICENSE').read_bytes()
 boot['additionFile'].append('LICENSE')
 for name in ['UPSTREAM-RENDERER-LICENSE','UPSTREAM-RENDERER-NOTICE.md']:

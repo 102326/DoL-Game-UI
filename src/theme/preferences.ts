@@ -1,5 +1,5 @@
 import type {PanelKind} from '../panels/main';
-export const defaults={enabled:true,comfortable:true,showCompact:false,layout:true,compactStats:false,wideReading:false,collapsedStats:false,statusPreview:false,wardrobePaged:false,shopDeferredPaint:false};
+export const defaults={enabled:true,comfortable:true,showCompact:false,layout:true,compactStats:false,wideReading:false,collapsedStats:false,statusPreview:false,wardrobePaged:true,wardrobeHiddenList:false,shopDeferredPaint:false,shopPageExperiment:false,startupCacheLazy:false};
 export type Preferences=typeof defaults;
 export type PreferenceKey=keyof Preferences;
-export interface SettingsState {preferences:Preferences;combat:boolean;wardrobe:boolean;characteristics:boolean;social:boolean;shop:boolean;panels:Record<PanelKind,boolean>;message:string}
+export interface SettingsState {preferences:Preferences;combat:boolean;wardrobe:boolean;characteristics:boolean;social:boolean;shop:boolean;shopPageExperimentAvailable:boolean;panels:Record<PanelKind,boolean>;message:string}

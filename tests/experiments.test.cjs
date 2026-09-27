@@ -23,6 +23,7 @@ const server=http.createServer((req,res)=>{
   SugarCube.Engine.play('Wardrobe');
  });
  await p.waitForSelector('.dgw-shell');await p.waitForFunction(()=>document.querySelector('.dgw-preview')?.getAttribute('aria-busy')==='false');
+ await p.evaluate(()=>DoLGameUI.setPreference('wardrobePaged',false));await p.waitForTimeout(100);
  const full=await p.locator('.dgw-item').count();assert.equal(full,300);
  const stateBefore=await p.evaluate(()=>JSON.stringify(V));
  await p.evaluate(()=>DoLGameUI.setPreference('wardrobePaged',true));await p.waitForTimeout(100);

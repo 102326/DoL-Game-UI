@@ -30,10 +30,16 @@ function wardrobeChange(event:Event){const input=event.target as HTMLSelectEleme
    <SettingsToggle label="启用新版战斗界面" :checked="state.combat" @change="onCombat"/>
    <label class="dgu-setting-row" for="dmt-wardrobe"><span><strong>衣柜界面</strong></span><select id="dmt-wardrobe" aria-label="衣柜界面" :value="state.wardrobe?'new':'original'" @change="wardrobeChange"><option value="new">新版穿搭衣柜</option><option value="original">原版衣柜（兼容回退）</option></select></label>
   </section>
-  <section class="dmt-setting-card"><h3>实验优化 · 衣柜与商店</h3>
-   <SettingsToggle label="衣柜按页渲染（实验）" description="每页只生成40件衣物的界面与图标；搜索、排序和全选仍覆盖整个分类" :checked="state.preferences.wardrobePaged" @change="onPreference('wardrobePaged',$event)"/>
+  <section class="dmt-setting-card"><h3>列表显示</h3>
+   <SettingsToggle label="衣柜按页渲染" description="默认只生成当前页的40件衣物；搜索、排序和全选仍覆盖整个分类。出现兼容问题时可关闭" :checked="state.preferences.wardrobePaged" @change="onPreference('wardrobePaged',$event)"/>
+   <p>这是新版衣柜的默认显示方式，不会改变衣物数据、穿戴规则或存档内容。</p>
+  </section>
+  <section class="dmt-setting-card"><h3>进阶实验</h3>
+   <SettingsToggle label="衣柜延迟原版隐藏列表（实验）" description="新版衣柜换装时暂不重建隐藏的原版列表；出现兼容问题时关闭此项" :checked="state.preferences.wardrobeHiddenList" @change="onPreference('wardrobeHiddenList',$event)"/>
    <SettingsToggle label="商店离屏绘制延后（实验）" description="让支持的浏览器跳过屏幕外商品的排版与绘制；滚动异常时关闭此项" :checked="state.preferences.shopDeferredPaint" @change="onPreference('shopDeferredPaint',$event)"/>
-   <p>默认关闭，可分别对比。两项只调整显示，购买、换装与存档规则保持原样。</p>
+   <SettingsToggle v-if="state.shopPageExperimentAvailable" label="商店按页生成（实验）" description="只生成当前页商品；下次进入商店列表时生效，异常时关闭此项" :checked="state.preferences.shopPageExperiment" @change="onPreference('shopPageExperiment',$event)"/>
+   <SettingsToggle label="启动缓存按需重建（实验）" description="减少模组加载时重复重建故事缓存；更改后需保存进度并重启游戏，兼容异常时关闭后再重启" :checked="state.preferences.startupCacheLazy" @change="onPreference('startupCacheLazy',$event)"/>
+   <p>这些功能默认关闭，可分别对比。它们只减少界面或缓存生成工作；购买、换装与存档规则保持原样。</p>
   </section>
   <section class="dmt-setting-card"><h3>兼容回退</h3><p>显示异常时可关闭新版主题、布局和专用界面。游戏进度与模组配置不受影响。</p><div class="dmt-recovery cu:flex cu:flex-wrap cu:gap-2"><GameButton @click="onRecovery(false)">回退原版界面</GameButton><GameButton @click="onRecovery(true)">启用新版界面</GameButton></div></section>
   <section class="dmt-setting-card cu:md:col-span-2"><h3>开发检查</h3><SettingsToggle label="状态接口预览（实验）" description="仅在需要排查状态接口时开启" :checked="state.preferences.statusPreview" @change="onPreference('statusPreview',$event)"/><div id="dol-status-preview" v-once></div></section>

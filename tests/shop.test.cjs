@@ -97,10 +97,23 @@ const server=http.createServer((req,res)=>{
  assert.equal(await p.locator('.buy-buttons a').count(),0,'insufficient money retains native lock');
  await p.evaluate(()=>DoLShopUI.setEnabled(false));assert.equal(await p.locator('.dgshop-host').count(),0);assert.equal(await p.locator('.dgshop-content').count(),0);
  await p.evaluate(()=>DoLShopUI.setEnabled(true));await p.waitForSelector('.dgshop-host');
- await p.waitForTimeout(1200); // Native shop progressively appends its remaining pages.
+ const beforeProgressive=await p.evaluate(()=>DoLShopUI.getLifecycleCounts());
+ await p.waitForTimeout(3500); // Native shop progressively appends its remaining pages; allow that queue to settle before the isolated mutation check.
  const counts=await p.evaluate(()=>DoLShopUI.getLifecycleCounts());
+ assert.ok(counts.fastPaths>=beforeProgressive.fastPaths,'native page appends may use the guarded fast path when observed');
+ await p.locator('.clothing-item').first().click();await p.waitForTimeout(1000);
+ const beforeInjectedPage=await p.evaluate(()=>DoLShopUI.getLifecycleCounts());
+ await p.evaluate(()=>{const pages=document.querySelector('#shop-list-pages'),source=document.querySelector('.dgshop-selected')||document.querySelector('.clothing-item');const page=document.createElement('div');page.id='test-fast-page';page.className='clothing-shop-page';const clone=source.cloneNode(true);clone.classList.remove('dgshop-selected');page.append(clone);pages.append(page);const link=document.querySelector('.dgshop-native-header a.link-internal.macro-link');if(!link)throw Error('native header link missing');const marker=document.createTextNode('(1) ');link.prepend(marker);window.testNumberingMarker=marker});
+ await p.waitForTimeout(0);
+ const afterFastPath=await p.evaluate(()=>DoLShopUI.getLifecycleCounts());
+ assert.equal(afterFastPath.scans,beforeInjectedPage.scans,'page and hotkey-number text mutations keep full refresh count stable '+JSON.stringify({before:beforeInjectedPage,after:afterFastPath}));
+ assert.ok(afterFastPath.fastPaths>beforeInjectedPage.fastPaths,'page and hotkey-number text mutations use the fast path');
+ await p.waitForFunction(()=>document.querySelector('#test-fast-page .clothing-item')?.classList.contains('dgshop-selected'));
+ await p.evaluate(()=>{document.querySelector('#test-fast-page')?.remove();window.testNumberingMarker?.remove();delete window.testNumberingMarker});
+ await p.waitForTimeout(300);
+ const beforeUnrelated=await p.evaluate(()=>DoLShopUI.getLifecycleCounts());
  await p.evaluate(()=>{const e=document.createElement('span');document.body.append(e);e.textContent='unrelated';e.remove()});await p.waitForTimeout(100);
- assert.deepEqual(await p.evaluate(()=>DoLShopUI.getLifecycleCounts()),counts);
+ assert.deepEqual(await p.evaluate(()=>DoLShopUI.getLifecycleCounts()),beforeUnrelated);
  await p.evaluate(()=>DoLGameUI.openSettings());await p.getByRole('button',{name:'回退原版界面',exact:true}).click();
  assert.equal(await p.evaluate(()=>DoLShopUI.getEnabled()),false);assert.equal(await p.locator('.dgshop-host').count(),0);
  await p.getByRole('button',{name:'启用新版界面',exact:true}).click();await p.locator('.dmt-close').click();await p.waitForSelector('.dgshop-host');

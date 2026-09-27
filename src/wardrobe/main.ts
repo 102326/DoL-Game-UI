@@ -10,7 +10,7 @@ import {repairMinutes,pieces,canRepair,destinations,targetInventory,transferProb
 import './style.css';
 export function startWardrobe(root:any){
  const timing=createWardrobePerformance(),native=createNativeWardrobe(root,timing),extras=createWardrobeExtras(root);
- const KEY='DoLGameUI.wardrobe.v1';let enabled=true,disposed=false,queued=false,generation=0;
+ const KEY='DoLGameUI.wardrobe.v1';let enabled=true,nativeHiddenList=false,disposed=false,queued=false,generation=0;
  try{enabled=localStorage.getItem(KEY)!=='false'}catch{}
  interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:any;state:WardrobeModel;snapshot:Snapshot;plan?:{mode:Operation;entries:Entry[];location:string;inventory:any;fingerprint:string;target?:string;targetFingerprint?:string};entries?:Entry[];paintKey?:string;refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
  let active:Session|undefined;
@@ -24,6 +24,12 @@ export function startWardrobe(root:any){
    if(error){console.error('[DoLGameUI] native list refresh failed',error);s.state.message='原版衣柜列表刷新失败，请在界面设置中切换原版衣柜检查。';return}
    s.nativeListDirty=false;
   }catch(error){console.error('[DoLGameUI] native list refresh failed',error);s.state.message='原版衣柜列表刷新失败，请在界面设置中切换原版衣柜检查。'}
+ }
+ function withNativeListHidden<T>(s:Session,operation:()=>T):T{
+  if(!nativeHiddenList||s.nativeOpen||!isCurrentPassage(s)||!s.original.isConnected||document.querySelectorAll('#wardrobeList').length!==1)return operation();
+  const list=s.original.querySelector<HTMLElement>('#wardrobeList');if(!list?.parentNode)return operation();
+  list.removeAttribute('id');s.nativeListDirty=true;
+  try{return operation()}finally{list.id='wardrobeList'}
  }
  function release(){const s=active;if(!s)return;flushNative(s,true);generation++;
   // Restore the actual nodes, including changes made by native widgets.
@@ -78,7 +84,7 @@ export function startWardrobe(root:any){
   // This is the only write path. Pass the same slot/index as native wearlink_norefresh.
   try{
    s.state.canWear=false;
-   const output=native.action('wear',e.slot,e.index);
+   const output=withNativeListHidden(s,()=>native.action('wear',e.slot,e.index));
    const error=output.querySelector('.error')||s.passage.querySelector('.error');
    s.state.message=error?'原版换装报告了错误，请在界面设置中切换原版衣柜检查。':(native.message(s.original)||'已由游戏处理换装。');queueRefresh(s);
   }catch{refresh(s);s.state.message='原版换装未完成，请在原版衣柜检查当前装备。'}
@@ -87,7 +93,7 @@ export function startWardrobe(root:any){
   if(s.state.busy)return;
   const slot=s.state.slot;if(!s.state.slots.some(t=>t.key===slot))return;
   if(!native.available())return;
-  try{native.action('wear',slot,'strip');
+  try{withNativeListHidden(s,()=>native.action('wear',slot,'strip'));
    s.state.message=native.message(s.original)||'已由游戏处理脱下操作';queueRefresh(s);
   }catch{s.state.message='脱下操作未完成，请在界面设置中切换原版衣柜检查';queueRefresh(s)}
  }
@@ -163,7 +169,7 @@ export function startWardrobe(root:any){
   const state=reactive<WardrobeModel>({pendingMode:'delete',canRepair:false,destinations:[],pendingMinutes:null,wornItem:null,owned:0,capacity:null,busy:false,pending:[],progress:'',slots:[],slot:LABELS[data.variables.lastWardrobeSlot]?data.variables.lastWardrobeSlot:'upper',items:[],selected:null,loading:false,message:'',previewStatus:'',canWear:false,wornName:'',currentWarmth:null});
   const s:Session={passage,host,original,anchor,toggle,state,snapshot:data,view:null,exit:enabled?exit:undefined,exitAnchor:enabled?exitAnchor:undefined};active=s;
   if(!enabled){host.className='';host.append(original);return}
-  s.app=createApp(WardrobePanel,{model:state,resolveIcon:async(src:string)=>{try{return await root.modUtils?.getImage?.(src)||src}catch{return src}},onSplit:(keys:string[])=>review(s,keys,'separateOutfits'),onRepair:(keys:string[])=>review(s,keys,'repair'),onTransfer:(keys:string[],target:string)=>review(s,keys,'transfer',target),onTowel:(kind:'towel'|'large_towel')=>{if(!state.busy){try{native.action('wear',state.slot,kind);state.message=native.message(s.original)||'已由游戏处理毛巾操作'}catch(error){state.message=error instanceof Error?error.message:'毛巾操作失败'}queueRefresh(s)}},onSlot:(key:string)=>{
+  s.app=createApp(WardrobePanel,{model:state,resolveIcon:async(src:string)=>{try{return await root.modUtils?.getImage?.(src)||src}catch{return src}},onSplit:(keys:string[])=>review(s,keys,'separateOutfits'),onRepair:(keys:string[])=>review(s,keys,'repair'),onTransfer:(keys:string[],target:string)=>review(s,keys,'transfer',target),onTowel:(kind:'towel'|'large_towel')=>{if(!state.busy){try{withNativeListHidden(s,()=>native.action('wear',state.slot,kind));state.message=native.message(s.original)||'已由游戏处理毛巾操作'}catch(error){state.message=error instanceof Error?error.message:'毛巾操作失败'}queueRefresh(s)}},onSlot:(key:string)=>{
    if(state.busy||!state.slots.some(t=>t.key===key))return;cancel(s);state.slot=key;
    s.nativeListDirty=true;
    if(native.available()){try{native.setSlot(key);if(s.nativeOpen)flushNative(s)}catch(error){console.error('[DoLGameUI] wardrobe category update failed',error);state.message='原版衣柜分类刷新失败，请在界面设置中切换原版衣柜检查。'} }
@@ -185,11 +191,12 @@ export function startWardrobe(root:any){
  }
  function schedule(){if(disposed||queued)return;queued=true;requestAnimationFrame(()=>{queued=false;scan()})}
  function setEnabled(value:boolean){if(active?.state.busy){document.dispatchEvent(new Event('dol-ui-wardrobe-change'));return}enabled=!!value;try{localStorage.setItem(KEY,String(enabled))}catch{}release();schedule();document.dispatchEvent(new Event('dol-ui-wardrobe-change'))}
+ function setNativeHiddenList(value:boolean){nativeHiddenList=!!value;if(!nativeHiddenList&&active?.nativeListDirty)flushNative(active,true);}
  const observer=new MutationObserver(records=>{
   if(active?.app&&records.some(r=>active?.original.contains(r.target)||active?.view.actions?.contains(r.target)))queueRefresh(active);
   if(records.some(r=>!(r.target instanceof Element?r.target:r.target.parentElement)?.closest('.dgw-root')))schedule();
  });
  function start(){if(disposed)return;observer.observe(document.getElementById('passages')||document.body,{childList:true,subtree:true});root.jQuery?.(document).on(':passageend.dgw :storyready.dgw',schedule);schedule()}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
- return {performance:timing,getEnabled:()=>enabled,setEnabled,refresh:()=>{if(active?.app)refresh(active,true);else schedule()},destroy(){timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
+ return {performance:timing,getEnabled:()=>enabled,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(active?.app)refresh(active,true);else schedule()},destroy(){timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
 }

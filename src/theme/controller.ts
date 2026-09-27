@@ -8,16 +8,26 @@ export function startTheme(root:Runtime=window as Runtime){
  if(root.DoLMidnightTheme)return;
  const KEY='DoLMidnightTheme.preferences.v1';
  let destroyed=false,frame=0,controls:HTMLDialogElement|undefined,app:App|undefined,expanded:HTMLButtonElement|undefined,lastFocus:HTMLElement|null=null,bar:HTMLElement|null=null,jqAttached=false,previewEnabled:boolean|undefined;
- let storageError=false;
+ let storageError=false,shopPageExperimentApi:Runtime['DoLShopPageExperiment']|undefined,shopPageExperimentApplied:boolean|undefined,shopPageExperimentError=false,wardrobeHiddenListApi:Runtime['DoLWardrobeUI']|undefined,wardrobeHiddenListApplied:boolean|undefined;
  const preferences:Preferences={...defaults};
  try{const raw=root.localStorage.getItem(KEY);if(raw&&raw.length<=512){const value=JSON.parse(raw);for(const key of Object.keys(defaults) as PreferenceKey[])if(typeof value?.[key]==='boolean')preferences[key]=value[key]}}catch{storageError=true}
- const state=reactive<SettingsState>({preferences,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,panels:{journal:false,traits:false,statistics:false,feats:false},message:storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
+ const state=reactive<SettingsState>({preferences,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false},message:storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
  const cleanups:Array<()=>void>=[],timers=new Set<ReturnType<typeof setTimeout>>();
  const counts={mounts:0,queued:0};
+ function syncShopPageExperiment(){
+  const api=root.DoLShopPageExperiment;
+  if(api!==shopPageExperimentApi){shopPageExperimentApi=api;shopPageExperimentApplied=undefined;shopPageExperimentError=false}
+  state.shopPageExperimentAvailable=!!api&&typeof api.setEnabled==='function'&&!shopPageExperimentError;
+  if(!state.shopPageExperimentAvailable){shopPageExperimentApplied=undefined;return}
+  const enabled=state.preferences.shopPageExperiment;
+  if(shopPageExperimentApplied!==enabled){try{api.setEnabled(enabled);shopPageExperimentApplied=enabled}catch{shopPageExperimentError=true;state.shopPageExperimentAvailable=false;shopPageExperimentApplied=undefined;if(!storageError)state.message='商店分页实验接口不可用；请禁用实验模组或重启后重试。'}}
+ }
  function sync(){
+  syncShopPageExperiment();
   state.shop=!!root.DoLShopUI?.getEnabled();
   for(const kind of Object.keys(state.panels) as PanelKind[])state.panels[kind]=!!root.DoLPanelsUI?.getEnabled(kind);
   state.social=!!root.DoLSocialUI?.getEnabled();state.characteristics=!!root.DoLCharacteristicsUI?.getEnabled();state.combat=!!root.DoLCombatUI?.getEnabled();state.wardrobe=!!root.DoLWardrobeUI?.getEnabled();
+  const wardrobeApi=root.DoLWardrobeUI;if(wardrobeApi!==wardrobeHiddenListApi){wardrobeHiddenListApi=wardrobeApi;wardrobeHiddenListApplied=undefined}if(wardrobeApi&&typeof wardrobeApi.setNativeHiddenList==='function'){const value=state.wardrobe&&state.preferences.wardrobeHiddenList;if(wardrobeHiddenListApplied!==value){try{wardrobeApi.setNativeHiddenList(value);wardrobeHiddenListApplied=value}catch{wardrobeHiddenListApplied=undefined}}}else{wardrobeHiddenListApi=undefined;wardrobeHiddenListApplied=undefined}
  }
  function apply(){
   experiments.wardrobePaged=state.preferences.wardrobePaged;experiments.shopDeferredPaint=state.preferences.shopDeferredPaint;
@@ -29,8 +39,8 @@ export function startTheme(root:Runtime=window as Runtime){
   if(previewEnabled!==state.preferences.statusPreview){previewEnabled=state.preferences.statusPreview;root.DoLStatusPreview?.setEnabled(previewEnabled)}
   sync();
  }
- function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify(state.preferences));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':'显示设置已保存。'}
- function setPreference(key:PreferenceKey,value:boolean){if(destroyed||!Object.hasOwn(defaults,key)||typeof value!=='boolean')return;state.preferences[key]=value;persist()}
+ function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify(state.preferences));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请禁用实验模组或重启后重试。':'显示设置已保存。'}
+ function setPreference(key:PreferenceKey,value:boolean){if(destroyed||!Object.hasOwn(defaults,key)||typeof value!=='boolean')return;state.preferences[key]=value;persist();if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。';if(key==='startupCacheLazy'&&!storageError)state.message='启动缓存实验设置已保存，请先保存游戏进度，再重启游戏生效。'}
  function setPanel(kind:PanelKind,value:boolean){root.DoLPanelsUI?.setEnabled(kind,value);sync()}
  function setShop(value:boolean){root.DoLShopUI?.setEnabled(value);sync()}
  function setSocial(value:boolean){root.DoLSocialUI?.setEnabled(value);sync()}
@@ -40,9 +50,9 @@ export function startTheme(root:Runtime=window as Runtime){
  function recover(value:boolean){
   // The wardrobe owns its busy guard. Do not partially reset other panels if it refuses.
   setWardrobe(value);if(state.wardrobe!==value)return;
-  if(!value){state.preferences.wardrobePaged=false;state.preferences.shopDeferredPaint=false}
+  if(!value){state.preferences.wardrobePaged=false;state.preferences.wardrobeHiddenList=false;state.preferences.shopDeferredPaint=false;state.preferences.shopPageExperiment=false;state.preferences.startupCacheLazy=false}
   setShop(value);setCombat(value);setCharacteristics(value);setSocial(value);for(const kind of Object.keys(state.panels) as PanelKind[])setPanel(kind,value);state.preferences.enabled=value;state.preferences.layout=value;state.preferences.statusPreview=false;persist();
-  if(!storageError)state.message=value?'新版界面已启用。':'已回退原版界面；仍可在这里重新启用。';
+  if(!storageError)state.message=value?'新版界面已启用。':'已回退原版界面；若曾启用启动缓存实验，请保存进度并重启。';
  }
  function closeSettings(){if(!controls)return;if(controls.open)controls.close();else controls.removeAttribute('open');if(lastFocus?.isConnected)lastFocus.focus({preventScroll:true});lastFocus=null}
  function openSettings(){if(destroyed)return;mount();if(!controls)return;sync();lastFocus=document.activeElement as HTMLElement;if(!controls.open)controls.showModal();controls.querySelector<HTMLButtonElement>('.dmt-close')?.focus();}
@@ -56,7 +66,7 @@ export function startTheme(root:Runtime=window as Runtime){
  }
  function target(){return document.getElementById('overlayButtons')||document.getElementById('startCaption')||document.getElementById('menu')||document.body}
  function needsMount(){return !controls?.isConnected||!expanded?.isConnected||expanded.parentElement!==target()||bar!==document.getElementById('ui-bar')}
- function schedule(){if(destroyed||frame)return;counts.queued++;frame=requestAnimationFrame(()=>{frame=0;if(needsMount())mount()})}
+ function schedule(){if(destroyed||frame)return;counts.queued++;frame=requestAnimationFrame(()=>{frame=0;if(needsMount())mount();else syncShopPageExperiment()})}
  const observer=new MutationObserver(()=>{if(needsMount())schedule()});
  function mount(){
   if(destroyed||!document.body)return;counts.mounts++;
