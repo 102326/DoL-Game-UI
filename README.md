@@ -9,6 +9,18 @@
 
 **[下载安装包](https://github.com/102326/DoL-Game-UI/releases/latest) · [更新记录](CHANGELOG.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)**
 
+## 界面预览
+
+以下截图取自隔离测试场景，展示平板和手机布局；实际内容会随游戏与模组组合变化。截图仅用于展示，不包含在模组安装包中。
+
+| 平板衣柜：列表与完整穿搭 | 平板服装店：商品与详情分栏 |
+| --- | --- |
+| [![平板衣柜界面，左侧为服装列表，右侧为完整角色穿搭](docs/screenshots/wardrobe-tablet.png)](docs/screenshots/wardrobe-tablet.png) | [![平板服装店界面，左侧为商品列表，右侧为服装详情与购买操作](docs/screenshots/shop-tablet.png)](docs/screenshots/shop-tablet.png) |
+
+手机上的服装店详情以抽屉显示：
+
+<a href="docs/screenshots/shop-phone.png"><img src="docs/screenshots/shop-phone.png" alt="手机服装店的商品详情抽屉" width="280"></a>
+
 ## 功能
 
 | 界面 | 内容 |
