@@ -1,0 +1,22 @@
+<<if _dolShopPageExperimentMode>>
+	<<run $(window).off('resize.DoLShopPageExperiment').on('resize.DoLShopPageExperiment', () => {
+		let pagination = $('#shop-pagination');
+		let pages = $(pagination).find('.shop-pages');
+		let buttons = $(pagination).find('.btn-pagination');
+		let isEnoughSpace = (pagination.width() - buttons.outerWidth() * 2 - 32) / pages.children().length >= 22;
+
+		pages.toggleClass('hidden', !isEnoughSpace);
+		pagination.find('.shop-pages-number').toggleClass('hidden', isEnoughSpace);
+	})>>
+<<else>>
+	<<run $(window).off('resize.DoLShopPageExperiment')>>
+	<<run $(window).on('resize', () => {
+		let pagination = $('#shop-pagination');
+		let pages = $(pagination).find('.shop-pages');
+		let buttons = $(pagination).find('.btn-pagination');
+		let isEnoughSpace = (pagination.width() - buttons.outerWidth() * 2 - 32) / pages.children().length >= 22;
+
+		pages.toggleClass('hidden', !isEnoughSpace);
+		pagination.find('.shop-pages-number').toggleClass('hidden', isEnoughSpace);
+	})>>
+<</if>>

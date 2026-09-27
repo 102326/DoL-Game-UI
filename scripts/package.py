@@ -4,9 +4,20 @@ root=Path(__file__).resolve().parent.parent
 version=json.loads((root/'package.json').read_text())['version']
 runtime_version=re.search(r"DoLGameUI=\{version:'([^']+)'",(root/'src/main.ts').read_text(encoding='utf-8'))
 assert runtime_version and runtime_version.group(1)==version,'Runtime and package versions differ'
-boot={'name':'DoLGameUI','version':version,'scriptFileList_inject_early':['startup-cache-experiment.js'],'scriptFileList':['game-ui.js'],'styleFileList':['game-ui.css'],'tweeFileList':[],'imgFileList':[],'additionFile':['README.md','THIRD-PARTY-NOTICES.txt'],'dependenceInfo':[{'modName':'ModLoader','version':'>=2.100.0'}]}
+experiment_version=re.search(r"api\.version = '([^']+)'",(root/'shop-page-experiment.js').read_text(encoding='utf-8'))
+assert experiment_version and experiment_version.group(1)==version,'Shop experiment and package versions differ'
+boot={'name':'DoLGameUI','version':version,'scriptFileList_inject_early':['startup-cache-experiment.js','shop-page-experiment.js'],'scriptFileList':['game-ui.js'],'styleFileList':['game-ui.css'],'tweeFileList':[],'imgFileList':[],'additionFile':['README.md','THIRD-PARTY-NOTICES.txt'],'dependenceInfo':[{'modName':'ModLoader','version':'>=2.100.0'},{'modName':'TweeReplacer','version':'>=1.0.0'}],'addonPlugin':[{'modName':'TweeReplacer','addonName':'TweeReplacerAddon','modVersion':'>=1.0.0','params':[]}]}
 assets={name:(root/'dist'/name).read_bytes() for name in boot['scriptFileList']+boot['styleFileList']}
 assets['startup-cache-experiment.js']=(root/'startup-cache-experiment.js').read_bytes()
+assets['shop-page-experiment.js']=(root/'shop-page-experiment.js').read_bytes()
+shop_patches=[
+ ('服装店按需分页：锁定本次列表渲染开关','\t<div id="shop-list-pages" class="shop-list-pages">','twee/patch-list-mode.twee'),
+ ('服装店按需分页：关闭时保留原版后台生成','\t\t<!-- Generate other pages in background after a delay, so that shop can be displayed sooner -->\n\t\t<!-- Having all pages loaded allows for very fast shop catalogue navigation -->\n\t\t<!-- Generate via <<repeat>> one by one to not cause a lag spike -->\n\t\t<<timed 0.2s>>\n\t\t\t<<set _ppre = _startingShopPage - 1>>\n\t\t\t<<repeat 0.1s>>\n\t\t\t\t<<if document.getElementById("shop-list-pages") eq null or _ppre lt 0>>\n\t\t\t\t\t<<stop>>\n\t\t\t\t<</if>>\n\t\t\t\t<!-- Prepend pages before the current page -->\n\t\t\t\t<<prepend \'#shop-list-pages\'>>\n\t\t\t\t\t<<generateshoppage _ppre>>\n\t\t\t\t<</prepend>>\n\t\t\t\t<<set _ppre-->>\n\t\t\t<</repeat>>\n\t\t\t<!-- Append pages after the current page -->\n\t\t\t<<set _papp = _startingShopPage + 1>>\n\t\t\t<<repeat 0.1s>>\n\t\t\t\t<<if document.getElementById("shop-list-pages") eq null or _papp gte _maxPage>>\n\t\t\t\t\t<<stop>>\n\t\t\t\t<</if>>\n\t\t\t\t<<append \'#shop-list-pages\'>>\n\t\t\t\t\t<<generateshoppage _papp>>\n\t\t\t\t<</append>>\n\t\t\t\t<<set _papp++>>\n\t\t\t<</repeat>>\n\t\t<</timed>>','twee/patch-background.twee'),
+ ('服装店按需分页：翻页时只生成目标页','\t<<run $(\'#shop-list-pages > div.clothing-shop-page\').addClass(\'hidden no-numberify\')>>\n\t<<run $(\'#shop-list-pages > div.clothing-shop-page:nth-of-type(\' + ($shopPage + 1) + \')\').removeClass(\'hidden no-numberify\')>>','twee/patch-page-change.twee'),
+ ('服装店按需分页：只复用实验模式的分页宽度监听器','\t<<run $(window).on(\'resize\', () => {\n\t\tlet pagination = $(\'#shop-pagination\');\n\t\tlet pages = $(pagination).find(\'.shop-pages\');\n\t\tlet buttons = $(pagination).find(\'.btn-pagination\');\n\t\tlet isEnoughSpace = (pagination.width() - buttons.outerWidth() * 2 - 32) / pages.children().length >= 22;\n\n\t\tpages.toggleClass(\'hidden\', !isEnoughSpace);\n\t\tpagination.find(\'.shop-pages-number\').toggleClass(\'hidden\', isEnoughSpace);\n\t})>>','twee/patch-resize.twee')]
+for tip,find_string,replace_file in shop_patches:
+ boot['addonPlugin'][0]['params'].append({'tip':tip,'passage':'Clothing Shop v2 Widgets','findString':find_string,'replaceFile':replace_file})
+ assets[replace_file]=(root/replace_file).read_bytes()
 assets['LICENSE']=(root/'LICENSE').read_bytes()
 boot['additionFile'].append('LICENSE')
 for name in ['UPSTREAM-RENDERER-LICENSE','UPSTREAM-RENDERER-NOTICE.md']:

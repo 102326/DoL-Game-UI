@@ -1,0 +1,11 @@
+<<if _dolShopPageExperimentMode and $('#shop-list-pages > div.clothing-shop-page.page-' + $shopPage).length is 0>>
+  <<run $('#shop-list-pages > div.clothing-shop-page').remove()>>
+  <<append '#shop-list-pages'>><<generateshoppage $shopPage>><</append>>
+<</if>>
+<<if _dolShopPageExperimentMode>>
+  <<run $('#shop-list-pages > div.clothing-shop-page').addClass('hidden no-numberify')>>
+  <<run $('#shop-list-pages > div.clothing-shop-page.page-' + $shopPage).removeClass('hidden no-numberify')>>
+<<else>>
+	<<run $('#shop-list-pages > div.clothing-shop-page').addClass('hidden no-numberify')>>
+	<<run $('#shop-list-pages > div.clothing-shop-page:nth-of-type(' + ($shopPage + 1) + ')').removeClass('hidden no-numberify')>>
+<</if>>

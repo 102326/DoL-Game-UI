@@ -20,7 +20,7 @@ export function startTheme(root:Runtime=window as Runtime){
   state.shopPageExperimentAvailable=!!api&&typeof api.setEnabled==='function'&&!shopPageExperimentError;
   if(!state.shopPageExperimentAvailable){shopPageExperimentApplied=undefined;return}
   const enabled=state.preferences.shopPageExperiment;
-  if(shopPageExperimentApplied!==enabled){try{api.setEnabled(enabled);shopPageExperimentApplied=enabled}catch{shopPageExperimentError=true;state.shopPageExperimentAvailable=false;shopPageExperimentApplied=undefined;if(!storageError)state.message='商店分页实验接口不可用；请禁用实验模组或重启后重试。'}}
+  if(shopPageExperimentApplied!==enabled){try{api.setEnabled(enabled);shopPageExperimentApplied=enabled}catch{shopPageExperimentError=true;state.shopPageExperimentAvailable=false;shopPageExperimentApplied=undefined;if(!storageError)state.message='商店分页实验接口不可用；请关闭此项或重启后重试。'}}
  }
  function sync(){
   syncShopPageExperiment();
@@ -39,7 +39,7 @@ export function startTheme(root:Runtime=window as Runtime){
   if(previewEnabled!==state.preferences.statusPreview){previewEnabled=state.preferences.statusPreview;root.DoLStatusPreview?.setEnabled(previewEnabled)}
   sync();
  }
- function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify(state.preferences));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请禁用实验模组或重启后重试。':'显示设置已保存。'}
+ function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify(state.preferences));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请关闭此项或重启后重试。':'显示设置已保存。'}
  function setPreference(key:PreferenceKey,value:boolean){if(destroyed||!Object.hasOwn(defaults,key)||typeof value!=='boolean')return;state.preferences[key]=value;persist();if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。';if(key==='startupCacheLazy'&&!storageError)state.message='启动缓存实验设置已保存，请先保存游戏进度，再重启游戏生效。'}
  function setPanel(kind:PanelKind,value:boolean){root.DoLPanelsUI?.setEnabled(kind,value);sync()}
  function setShop(value:boolean){root.DoLShopUI?.setEnabled(value);sync()}

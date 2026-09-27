@@ -1,0 +1,2 @@
+<<set _dolShopPageExperimentMode to !!(window.DoLShopPageExperiment && window.DoLShopPageExperiment.enabled)>>
+<div id="shop-list-pages" class="shop-list-pages">
