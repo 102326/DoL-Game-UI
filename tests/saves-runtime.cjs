@@ -17,15 +17,15 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(async()=>{window.testSaveArea=document.createElement('div');testSaveArea.id='saveList';testSaveArea.style='position:fixed;inset:0;background:#19191f;z-index:99999;overflow:auto;padding:20px';document.body.append(testSaveArea);await idb.saveList()});
  await p.waitForSelector('.dgs-host');
  await p.waitForSelector('.dgs-tools #pageNum');
- await p.locator('.dgs-tools #pageNum').fill('2');await p.locator('.dgs-tools #pageNum').dispatchEvent('change');await p.waitForFunction(()=>document.querySelector('.dgs-tools #pageNum')?.value==='2');
- await p.locator('.dgs-tools #pageNum').fill('1');await p.locator('.dgs-tools #pageNum').dispatchEvent('change');await p.waitForFunction(()=>document.querySelector('.dgs-tools #pageNum')?.value==='1');
+ await p.locator('.dgs-tools #pageNum').fill('2');await p.locator('.dgs-tools #pageNum').dispatchEvent('change');await p.waitForFunction(()=>[...document.querySelectorAll('.dgs-slot')].some(n=>n.textContent==='11'));
+ await p.locator('.dgs-tools #pageNum').fill('1');await p.locator('.dgs-tools #pageNum').dispatchEvent('change');await p.waitForFunction(()=>[...document.querySelectorAll('.dgs-slot')].some(n=>n.textContent==='1'));
  await p.locator('.dgs-save-settings summary').click();const checkbox=p.locator('.dgs-save-settings input[type=checkbox]').first();await checkbox.setChecked(true);assert.equal(await checkbox.isChecked(),true);
  assert.equal(await p.locator('#saves-import').count(),1);
  console.log('IDB list',await p.locator('.dgs-item').count());
- await p.getByRole('button',{name:'＋ 新建存档',exact:true}).click();
- assert.ok(await p.locator('.dgs-detail').innerText());
- const slot=await p.locator('.dgs-detail .dgs-muted').textContent();
- await p.locator('.dgs-actions button').filter({hasText:/^Save$|^保存$/}).click();
+ assert.equal(await p.locator('.dgs-entries details').count(),2);
+ assert.deepEqual(await p.locator('.dgs-entries details').last().locator('.dgs-slot').allTextContents(),Array.from({length:10},(_,i)=>String(i+1)));
+ const slot=await p.locator('.dgs-empty-slot .dgs-slot').first().textContent();
+ await p.locator('.dgs-empty-slot').first().click();
  await p.waitForTimeout(300);
  
  const confirm=p.locator('#saveList .saveMenuConfirm').filter({hasText:/save/i});if(await confirm.count())await confirm.first().click();
@@ -33,13 +33,31 @@ const server=http.createServer((req,res)=>{
  assert.ok(await p.locator('.dgs-item').filter({hasText:/./}).count(),'native save creates a populated row');
  await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();
  assert.ok(!(await p.locator('.dgs-detail dd').first().textContent()).includes('尚未'));
+ assert.equal(await p.locator('.dgs-item.dgs-recent .dgs-slot').textContent(),'1');
+ assert.equal(await p.locator('.dgs-item.dgs-recent .dgs-recent-badge').textContent(),'最近保存');
+ assert.equal(await p.locator('.dgs-empty-slot').count(),9);
+ for(const width of [390,1500]){
+  await p.setViewportSize({width,height:1000});
+  await p.keyboard.press('Escape');assert.equal(await p.locator('.dgs-detail').evaluate(e=>e.open),false);
+  const cards=await p.locator('.dgs-entries details').last().locator('.dgs-item').evaluateAll(es=>es.slice(0,2).map(e=>({x:e.getBoundingClientRect().x,y:e.getBoundingClientRect().y})));
+  assert.equal(Math.abs(cards[0].y-cards[1].y)<2,width>650,'wide screen uses two columns; phone uses one');
+  await p.screenshot({path:path.join(__dirname,`artifacts/saves-grid-${width}.png`)});
+  await p.locator('.dgs-recent').click();assert.equal(await p.locator('.dgs-detail').evaluate(e=>e.open),true);
+  assert.ok(await p.locator('.dgs-detail').evaluate(e=>e.getBoundingClientRect().right<=innerWidth));
+  await p.screenshot({path:path.join(__dirname,`artifacts/saves-drawer-${width}.png`)});
+  await p.locator('.dgs-detail h2').click();assert.equal(await p.locator('.dgs-detail').evaluate(e=>e.open),true,'inside click stays open');
+  await p.mouse.click(2,2);assert.equal(await p.locator('.dgs-detail').evaluate(e=>e.open),false,'backdrop click closes');
+  await p.locator('.dgs-recent').click();
+ }
  // Confirmation remains native; cancel must not mutate the slot.
  await p.evaluate(()=>{idb.updateSettings('warnSave',true);idb.updateSettings('warnLoad',true);idb.updateSettings('warnDelete',true);V.uiSaveProbe='after-save'});
  await p.locator('.dgs-actions button').filter({hasText:/^Save$/}).click();await p.waitForSelector('#saveList .saveMenuConfirm');assert.equal(await p.locator('.dgs-host').count(),0);
  await p.locator('#saveList button.saveMenuConfirm').click();await p.waitForSelector('.dgs-host');
+ await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();
  await p.locator('.dgs-actions button').filter({hasText:/^Load$/}).click();await p.waitForSelector('#saveList input.saveMenuConfirm');
  await p.locator('#saveList input.saveMenuConfirm').click();await p.waitForFunction(()=>V.uiSaveProbe===undefined);
  await p.evaluate(()=>idb.saveList());await p.waitForSelector('.dgs-host');
+ await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();
  await p.locator('.dgs-actions button').filter({hasText:/^Delete$/}).click();await p.waitForSelector('#saveList input.saveMenuConfirm');
  await p.locator('#saveList input.saveMenuConfirm').click();await p.waitForFunction(async()=>!(await idb.getSaveDetails()).some(d=>d.slot===1));await p.waitForSelector('.dgs-host');
  assert.equal(await p.locator('.dgs-item small').filter({hasText:/\d{4}/}).count(),0);
@@ -50,6 +68,25 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(()=>DoLSavesUI.setEnabled(true));await p.waitForSelector('.dgs-host');
  await p.evaluate(()=>{testSaveArea.replaceChildren();new SugarCube.Wikifier(testSaveArea,'<<saveList>>')});await p.waitForSelector('#savesListContainer');await p.waitForSelector('.dgs-host');
  assert.ok(await p.locator('.dgs-item').count(),'legacy rows adapted');
+
+ // Real overlay path: saving without warning hides overlay; no invisible modal may remain.
+ await p.evaluate(()=>{testSaveArea.remove();new SugarCube.Wikifier(null,'<<overlayReplace "saves">>');idb.updateSettings('warnSave',false)});
+ await p.waitForSelector('.dgs-host');await p.locator('.dgs-empty-slot').first().click();
+ await p.evaluate(()=>{if(!document.querySelector('#customOverlay').classList.contains('hidden'))closeOverlay();new SugarCube.Wikifier(null,'<<overlayReplace "saves">>')});await p.waitForSelector('.dgs-host');
+ await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();await p.locator('.dgs-actions button').filter({hasText:/^Save$/}).click();
+ assert.equal(await p.locator('.dgs-detail[open]').count(),0,'save releases modal even when original overlay is hidden');
+ await p.evaluate(()=>{if(!document.querySelector('#customOverlay').classList.contains('hidden'))closeOverlay();new SugarCube.Wikifier(null,'<<overlayReplace "saves">>')});await p.waitForSelector('.dgs-host');
+ await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();await p.evaluate(()=>closeOverlay());assert.equal(await p.locator('.dgs-detail[open]').count(),0,'native close releases modal');
+ // Export widget retains real controls and native callbacks; cloud is untouched.
+ await p.evaluate(()=>{testSaveArea.remove();DoLSavesUI.setEnabled(false);window.transferArea=document.createElement('div');transferArea.id='customOverlayContent';transferArea.style='position:fixed;inset:0;background:#19191f;z-index:99999;overflow:auto;padding:20px';document.body.append(transferArea);new SugarCube.Wikifier(transferArea,'<<optionsExportImport>>');window.transferInput=document.querySelector('#saveDataInput');window.transferFile=document.querySelector('#saveImport');DoLSavesUI.setEnabled(true)});
+ await p.waitForSelector('.dgs-transfer');
+ assert.ok(await p.evaluate(()=>document.querySelector('#saveDataInput')===transferInput&&document.querySelector('#saveImport')===transferFile));
+ await p.locator('#saveDataInput').fill('test-clear');await p.locator('.dgs-transfer input[onclick*="clearTextBox"]').click();assert.equal(await p.locator('#saveDataInput').inputValue(),'');
+ await p.locator('.dgs-transfer input[onclick="getSaveData()"]').click();assert.ok((await p.locator('#saveDataInput').inputValue()).length>100);
+ for(const width of [390,1024,1704]){await p.setViewportSize({width,height:1136});await p.waitForTimeout(60);assert.ok(await p.evaluate(()=>document.querySelector('.dgs-transfer').scrollWidth<=document.querySelector('.dgs-transfer').clientWidth+1));}
+ await p.screenshot({path:path.join(__dirname,'artifacts/save-transfer-desktop.png')});
+ await p.evaluate(()=>DoLSavesUI.setEnabled(false));assert.equal(await p.locator('.dgs-transfer').count(),0);assert.ok(await p.evaluate(()=>transferInput.parentElement===transferArea&&transferFile.parentElement===transferArea));
+ await p.evaluate(()=>{transferArea.innerHTML='<section id="cloud-test">Cloud controls</section>';DoLSavesUI.setEnabled(true)});await p.waitForTimeout(80);assert.equal(await p.locator('.dgs-transfer').count(),0);assert.equal(await p.locator('#cloud-test').textContent(),'Cloud controls');
  await p.evaluate(()=>DoLSavesUI.destroy());assert.equal(await p.locator('.dgs-native-row').count(),0);
  console.log('PASS IndexedDB save/load/delete, overwrite cancel, native confirmations, responsive widths, fallback and legacy rendering',slot);
  }finally{await browser.close();server.close()}})().catch(e=>{console.error(e);process.exitCode=1});

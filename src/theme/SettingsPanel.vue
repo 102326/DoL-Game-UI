@@ -25,6 +25,9 @@ function wardrobeChange(event:Event){const input=event.target as HTMLSelectEleme
    <SettingsToggle label="启用新版日志与笔记" :checked="state.panels.journal" @change="onPanel('journal',$event)"/>
    <SettingsToggle label="启用新版特质界面" :checked="state.panels.traits" @change="onPanel('traits',$event)"/>
    <SettingsToggle label="启用新版统计界面" :checked="state.panels.statistics" @change="onPanel('statistics',$event)"/>
+   <SettingsToggle label="启用态度界面美化" :checked="state.panels.attitudes" @change="onPanel('attitudes',$event)"/>
+   <SettingsToggle label="启用游戏设置美化" :checked="state.panels.settings" @change="onPanel('settings',$event)"/>
+   <SettingsToggle label="启用作弊界面美化" :checked="state.panels.cheats" @change="onPanel('cheats',$event)"/>
    <SettingsToggle label="启用新版成就界面" :checked="state.panels.feats" @change="onPanel('feats',$event)"/>
    <SettingsToggle label="启用新版社交界面" :checked="state.social" @change="onSocial"/>
    <SettingsToggle label="启用新版属性界面" :checked="state.characteristics" @change="onCharacteristics"/>

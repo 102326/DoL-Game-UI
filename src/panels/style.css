@@ -30,3 +30,14 @@
 .dgp-overlay #featsList .dot{width:44px;height:44px}
 @media(max-width:600px){.dgp-navigation select{order:3;flex-basis:100%;max-width:none}.dgp-overlay .traits .trait{box-sizing:border-box;flex-basis:100%!important}}
 @media(prefers-reduced-motion:reduce){.dgp-navigation button{transition:none}}
+
+.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .settingsGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:0;margin:6px 0}
+.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .settingsHeader{grid-column:1/-1;border-bottom:1px solid var(--dgu-border);padding:6px 4px;font-size:1.05em;color:var(--dgu-accent)}
+.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) :is(.settingsToggleItem,.settingsToggleItemWide){min-width:0;width:auto;box-sizing:border-box;border:1px solid var(--dgu-border);border-radius:8px;background:var(--dgu-panel);padding:8px;line-height:1.4;overflow-wrap:anywhere}
+.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .settingsToggleItemWide{grid-column:1/-1}
+.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) :is(input[type=button],button,select){min-height:40px;border:1px solid var(--dgu-border);border-radius:8px;background:var(--dgu-surface);color:var(--dgu-text);max-width:100%}
+.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) input[type=range]{max-width:100%}
+@media(max-width:700px){.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .settingsGrid{grid-template-columns:minmax(0,1fr)}}
+
+.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .numberStepperContainer{margin:4px 0}
+@media(pointer:coarse){.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) :is(input[type=button],button,select){min-height:44px}}

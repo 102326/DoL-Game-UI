@@ -11,7 +11,7 @@ export function startTheme(root:Runtime=window as Runtime){
  let storageError=false,shopPageExperimentApi:Runtime['DoLShopPageExperiment']|undefined,shopPageExperimentApplied:boolean|undefined,shopPageExperimentError=false,wardrobeHiddenListApi:Runtime['DoLWardrobeUI']|undefined,wardrobeHiddenListApplied:boolean|undefined;
  const preferences:Preferences={...defaults};
  try{const raw=root.localStorage.getItem(KEY);if(raw&&raw.length<=512){const value=JSON.parse(raw);for(const key of Object.keys(defaults) as PreferenceKey[])if(typeof value?.[key]==='boolean')preferences[key]=value[key]}}catch{storageError=true}
- const state=reactive<SettingsState>({preferences,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false},message:storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
+ const state=reactive<SettingsState>({preferences,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
  const cleanups:Array<()=>void>=[],timers=new Set<ReturnType<typeof setTimeout>>();
  const counts={mounts:0,queued:0};
  function syncShopPageExperiment(){

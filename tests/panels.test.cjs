@@ -19,7 +19,7 @@ const server=http.createServer((req,res)=>{
 
  await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});
  async function open(key){await p.evaluate(key=>{if(!document.querySelector('#customOverlay').classList.contains('hidden'))closeOverlay();new SugarCube.Wikifier(null,`<<overlayReplace "${key}">>`)},key)}
- for(const [key,kind] of [['journal','journal'],['traits','traits'],['statistics','statistics'],['gameFeats','feats']]){
+ for(const [key,kind] of [['options','settings'],['cheats','cheats'],['journal','journal'],['traits','traits'],['statistics','statistics'],['gameFeats','feats']]){
   await p.evaluate(kind=>DoLPanelsUI.setEnabled(kind,false),kind);await open(key);
   await p.evaluate(()=>{window.nativeBody=document.querySelector('#customOverlayContent');window.nativeHTML=nativeBody.innerHTML;window.nativeNodes=[...nativeBody.querySelectorAll('*')];window.nativeV=JSON.stringify(V)});
   await p.evaluate(kind=>DoLPanelsUI.setEnabled(kind,true),kind);await p.waitForSelector('.dgp-navigation');
@@ -35,11 +35,34 @@ const server=http.createServer((req,res)=>{
    assert.equal(await p.locator('.dgp-navigation').evaluate(e=>e.getBoundingClientRect().right<=innerWidth+1),true);
    assert.equal(await p.locator('#customOverlayContent').evaluate(e=>e.scrollWidth<=e.clientWidth+2),true,`${kind}: no horizontal overflow`);
   }
-  await p.evaluate(()=>{nativeHTML=nativeBody.innerHTML});
-  await p.evaluate(kind=>DoLPanelsUI.setEnabled(kind,false),kind);assert.equal(await p.locator('.dgp-host').count(),0);
-  assert.equal(await p.evaluate(()=>nativeBody.innerHTML===nativeHTML),true,`${kind}: fallback no content loss`);
+  assert.equal(await p.evaluate(kind=>{const before=nativeBody.innerHTML;DoLPanelsUI.setEnabled(kind,false);return nativeBody.innerHTML===before},kind),true,`${kind}: fallback no content loss`);
+  assert.equal(await p.locator('.dgp-host').count(),0);
   await p.evaluate(kind=>DoLPanelsUI.setEnabled(kind,true),kind);
  }
+ await open('cheats');await p.waitForSelector('.dgp-navigation');
+ const money=await p.evaluate(()=>V.money);
+ await p.locator('#cheatsShown .numberStepperContainer').first().locator('button').nth(3).click();
+ assert.equal(await p.evaluate(()=>V.money),money+1000,'native cheat callback changes money');
+ await open('gameFeats');await p.waitForSelector('.dgp-navigation');
+ await open('options');await p.waitForSelector('.dgp-navigation');
+ const setting=p.locator('#customOverlayContent input[type=checkbox]').first();const before=await setting.isChecked();await setting.setChecked(!before);
+ assert.equal(await p.evaluate(()=>V.options.neverNudeMenus),!before);
+ for(const tab of ['Theme','Performance','Advanced','Information']){
+  await p.locator('#overlayTabs button').filter({hasText:new RegExp('^'+tab+'$')}).click();await p.waitForTimeout(80);
+  assert.ok(await p.locator('#customOverlayContent').evaluate(e=>e.scrollWidth<=e.clientWidth+2),tab+' fits phone');
+ }
+ await p.evaluate(()=>closeOverlay());
+ await p.evaluate(()=>{SugarCube.UIBar.stow();V.attitudesExitPassage='Bedroom';SugarCube.Engine.play('Attitudes')});
+ await p.waitForSelector('.passage[data-dgp-panel=attitudes]');
+ await p.locator('.passage label').filter({hasText:'I like being in control'}).locator('input').check();assert.equal(await p.evaluate(()=>V.assertiveaction),'defiant');
+ for(const width of [390,1704]){await p.setViewportSize({width,height:1000});await p.screenshot({path:path.join(__dirname,`artifacts/attitudes-${width}.png`)});assert.ok(await p.locator('.passage').evaluate(e=>e.scrollWidth<=e.clientWidth+2))}
+ await p.getByRole('button',{name:'原版态度',exact:true}).click();assert.equal(await p.locator('.passage[data-dgp-panel]').count(),0);
+ assert.equal(await p.evaluate(()=>V.assertiveaction),'defiant');
+ await p.evaluate(()=>{DoLPanelsUI.setEnabled('attitudes',true);SugarCube.Engine.play('Bedroom')});
+ await p.waitForFunction(()=>!document.querySelector('.passage .dgp-host'));
+ await p.evaluate(()=>{V.settingsExitPassage='Bedroom';SugarCube.Engine.play('Settings')});await p.waitForSelector('.passage[data-dgp-panel=settings]');
+ await p.evaluate(()=>SugarCube.Engine.play('Bedroom'));await p.waitForFunction(()=>!document.querySelector('.passage .dgp-host'));
+ await open('gameFeats');await p.waitForSelector('.dgp-navigation');
  // Feat filtering uses the game's original onchange, preserving hidden feat policy.
  await p.locator('#featTypes').selectOption('All');assert.equal(await p.evaluate(()=>V.feats.filter),'All');
  await p.locator('#featSort').selectOption('Date');assert.equal(await p.evaluate(()=>V.feats.sort),'Date');
@@ -81,7 +104,7 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(()=>{const x=document.createElement('div');document.body.append(x);for(let i=0;i<20;i++)x.textContent=String(i);x.remove()});await p.waitForTimeout(100);
  assert.deepEqual(await p.evaluate(()=>DoLPanelsUI.getLifecycleCounts()),counts);
  await p.evaluate(()=>DoLGameUI.openSettings());await p.getByRole('button',{name:'回退原版界面',exact:true}).click();assert.equal(await p.locator('.dgp-host').count(),0);
- for(const k of ['journal','traits','statistics','feats'])assert.equal(await p.evaluate(k=>DoLPanelsUI.getEnabled(k),k),false);
+ for(const k of ['journal','traits','statistics','feats','cheats','attitudes','settings'])assert.equal(await p.evaluate(k=>DoLPanelsUI.getEnabled(k),k),false);
  await p.getByRole('button',{name:'启用新版界面',exact:true}).click();await p.locator('.dmt-close').click();await p.waitForSelector('.dgp-navigation');
  await p.evaluate(()=>DoLGameUI.destroy());assert.equal(await p.locator('.dgp-host').count(),0);assert.equal(await p.locator('.dgp-overlay').count(),0);
  assert.deepEqual(errors.filter(e=>!(process.env.DOL_WARDROBE_INTEGRATED&&e.includes('skybox')&&e.includes('bannerFallbackImage.onload'))),[]);

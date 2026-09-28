@@ -4,6 +4,7 @@ import {createApp,reactive,type App} from 'vue';
 import WardrobePanel from './WardrobePanel.vue';
 import {LABELS,snapshot,entries,itemName,itemView,slotCapacity,validate,type Snapshot,type Entry,descriptor} from './data';
 import {renderOutfit} from './render';
+import {mirrorSidebar} from './sidebar-preview';
 import {createWardrobeExtras} from './extras';
 import type {WardrobeModel,Operation} from './types';
 import {repairMinutes,pieces,canRepair,destinations,targetInventory,transferProblem} from './operations';
@@ -13,7 +14,7 @@ export function startWardrobe(root:any){
  const KEY='DoLGameUI.wardrobe.v1';let enabled=true,nativeHiddenList=false,disposed=false,queued=false,generation=0;
  try{enabled=localStorage.getItem(KEY)!=='false'}catch{}
  interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:any;state:WardrobeModel;snapshot:Snapshot;plan?:{mode:Operation;entries:Entry[];location:string;inventory:any;fingerprint:string;target?:string;targetFingerprint?:string};entries?:Entry[];paintKey?:string;refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
- let active:Session|undefined;
+ let active:Session|undefined,previewAbort:AbortController|undefined;
  function isCurrentPassage(s:Session){return s.passage.isConnected&&!s.passage.classList.contains('passage-out')&&s.passage.dataset.passage===(root.SugarCube?.State??root.State)?.passage&&document.querySelector('#passages .passage:not(.passage-out)')===s.passage}
  function flushNative(s:Session,force=false){
   if(!s.nativeListDirty||!isCurrentPassage(s)||(!force&&!s.nativeOpen))return;
@@ -31,19 +32,22 @@ export function startWardrobe(root:any){
   list.removeAttribute('id');s.nativeListDirty=true;
   try{return operation()}finally{list.id='wardrobeList'}
  }
- function release(){const s=active;if(!s)return;flushNative(s,true);generation++;
+ function release(){const s=active;if(!s)return;flushNative(s,true);generation++;previewAbort?.abort();
   // Restore the actual nodes, including changes made by native widgets.
   for(const {node,anchor} of s.moved??[]){if(node.isConnected&&anchor.parentNode)anchor.replaceWith(node);else anchor.remove()}
   if(s.exit&&s.exitAnchor?.parentNode)s.exitAnchor.replaceWith(s.exit);
   if(s.anchor.parentNode){while(s.original.firstChild)s.anchor.parentNode.insertBefore(s.original.firstChild,s.anchor);}
   s.app?.unmount();s.host.remove();s.toggle.remove();s.anchor.remove();active=undefined;
  }
- async function paint(s:Session){
+ async function paint(s:Session,isolated=false){
+  previewAbort?.abort();const controller=new AbortController();previewAbort=controller;
   const ticket=++generation;s.state.canWear=false;s.state.loading=true;s.state.previewStatus='正在生成完整穿搭…';
   s.view.preview?.replaceChildren();
   try{
    const proposal={worn:s.snapshot.worn,changed:[]};
-   const canvas=await renderOutfit(root,s.snapshot,proposal.worn,proposal.changed,timing);
+   const mirrored=!isolated&&s.view.preview?await mirrorSidebar(s.view.preview,controller.signal,()=>{if(active===s&&!controller.signal.aborted)void paint(s,true)}):null;
+   if(controller.signal.aborted)return;
+   const canvas=mirrored??await renderOutfit(root,s.snapshot,proposal.worn,proposal.changed,timing);
    if(ticket!==generation||active!==s)return;
    s.view.preview?.replaceChildren(canvas);s.state.previewStatus='当前角色的完整穿搭';
   }catch(error){if(ticket!==generation||active!==s)return;console.error('[DoLGameUI] wardrobe preview failed',error);s.state.previewStatus='本次预览不可用';s.state.message=error instanceof Error?error.message:'请使用原版衣柜';}

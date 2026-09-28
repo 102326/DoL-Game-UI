@@ -1,20 +1,22 @@
 import {createApp,reactive,type App} from 'vue';
 import Navigation from './Navigation.vue';
 import './style.css';
-export type PanelKind='journal'|'traits'|'statistics'|'feats';
+export type PanelKind='journal'|'traits'|'statistics'|'feats'|'cheats'|'attitudes'|'settings';
 export interface NavigationState{title:string;sections:string[]}
 type Runtime=Window & Record<string,any>;
-const titles:Record<PanelKind,string>={journal:'日志',traits:'特质',statistics:'统计',feats:'成就'};
-const panelKeys:Record<string,PanelKind>={journal:'journal',journalNotes:'journal',traits:'traits',statistics:'statistics',gameFeats:'feats',startFeats:'feats'};
+const titles:Record<PanelKind,string>={journal:'日志',traits:'特质',statistics:'统计',feats:'成就',cheats:'作弊',attitudes:'态度',settings:'游戏设置'};
+const panelKeys:Record<string,PanelKind>={options:'settings',cheats:'cheats',journal:'journal',journalNotes:'journal',traits:'traits',statistics:'statistics',gameFeats:'feats',startFeats:'feats'};
 const selectors:Record<PanelKind,string>={
  journal:'h1.header,details.journal > summary,#journalNotesTextarea',
  traits:'#traitListsSearch .foldoutHeader,#traitLists .traitHeading,#traitLists h4',
  statistics:'.foldout > .foldoutHeader,#moneyButton,#spoilerWarning,#spoilerWarningConfirmed > h3',
+ attitudes:'.settingsHeader',settings:'.settingsHeader',
+ cheats:'#cheatsShown .settingsHeader',
  feats:'#featTypes,#featsList'
 };
 const fixedLabels:Record<string,string>={journalNotesTextarea:'笔记编辑',moneyButton:'详细统计',spoilerWarning:'额外统计提示',featTypes:'筛选与排序',featsList:'成就列表'};
 export function startPanels(root:Runtime){
- const preferences:Record<PanelKind,boolean>={journal:true,traits:true,statistics:true,feats:true};
+ const preferences:Record<PanelKind,boolean>={journal:true,traits:true,statistics:true,feats:true,cheats:true,attitudes:true,settings:true};
  for(const kind of Object.keys(preferences) as PanelKind[])try{preferences[kind]=root.localStorage.getItem(`DoLGameUI.${kind}.enabled`)!=='false'}catch{/* Session fallback. */}
  let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined,frame=0,destroyed=false;
  let targets:HTMLElement[]=[];
@@ -27,8 +29,25 @@ export function startPanels(root:Runtime){
   if(index!==-1&&(!target||!content.contains(target)))return;
   content.scrollTo({top:index<0?0:content.scrollTop+target.getBoundingClientRect().top-content.getBoundingClientRect().top-12,behavior:'auto'});
  }
+ let seenPassage:Element|null=null;
+ let passage:HTMLElement|null=null,passageHost:HTMLElement|null=null,passageApp:App|undefined;
+ function releasePassage(){passageApp?.unmount();passageApp=undefined;passageHost?.remove();passageHost=null;passage?.classList.remove('dgp-overlay');passage?.removeAttribute('data-dgp-panel');passage=null}
+ function refreshPassage(){
+  const next=document.querySelector<HTMLElement>('#passages .passage:last-child');
+  seenPassage=next;
+  const name=next?.dataset.passage??'';
+  const kind:PanelKind|undefined=['Attitudes','Livestock Attitudes'].includes(name)?'attitudes':['Settings','Livestock Settings'].includes(name)?'settings':undefined;
+  if(!next||!kind||!preferences[kind]){if(passage)releasePassage();return}
+  if(passage===next&&passageHost?.isConnected)return;
+  releasePassage();passage=next;passage.classList.add('dgp-overlay');passage.dataset.dgpPanel=kind;
+  const headings=[...passage.querySelectorAll<HTMLElement>('.settingsHeader')];
+  passageHost=document.createElement('div');passageHost.className='dgp-host';passage.prepend(passageHost);
+  passageApp=createApp(Navigation,{state:{title:titles[kind],sections:headings.map(n=>n.textContent?.trim()||titles[kind])},go:(index:number)=>(index<0?next:headings[index])?.scrollIntoView({block:'start'}),fallback:()=>setEnabled(kind,false)});
+  passageApp.mount(passageHost);
+ }
  function refresh(){
   if(destroyed)return;
+  refreshPassage();
   const next=document.getElementById('customOverlay');
   if(next!==overlay){release();observer.disconnect();overlay=next;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['data-overlay','class'],childList:true,subtree:true})}
   const kind=panelKeys[overlay?.dataset.overlay??''];
@@ -49,8 +68,8 @@ export function startPanels(root:Runtime){
  }
  function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
  const observer=new MutationObserver(records=>{if(records.some(r=>!(host?.contains(r.target)||r.target===host)&&(r.type!=='attributes'||r.target===overlay)))schedule()});
- const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay)schedule()});
+ const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay||document.querySelector('#passages .passage:last-child')!==seenPassage)schedule()});
  function setEnabled(kind:PanelKind,value:boolean){if(destroyed||!Object.hasOwn(preferences,kind))return;preferences[kind]=!!value;try{root.localStorage.setItem(`DoLGameUI.${kind}.enabled`,String(!!value))}catch{/* Display changes still apply. */}refresh();document.dispatchEvent(new Event('dol-ui-panels-change'))}
  discovery.observe(document.body,{childList:true,subtree:true});refresh();
- return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,getLifecycleCounts:()=>({...counts}),destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);discovery.disconnect();observer.disconnect();release();overlay=null}};
+ return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,getLifecycleCounts:()=>({...counts}),destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);discovery.disconnect();observer.disconnect();release();releasePassage();overlay=null}};
 }
