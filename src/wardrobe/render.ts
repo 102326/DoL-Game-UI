@@ -14,6 +14,19 @@ function dataOnly(value:any):any {
  if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).filter(([,v])=>typeof v!=='function').map(([k,v])=>[k,dataOnly(v)]));
  return value;
 }
+// Per-render private arrays retain native indices, including tanning references.
+function copyClothesOnRead(clothes:any):any {
+ return Object.fromEntries(Object.entries(clothes).map(([slot,items]:[string,any])=>{
+  if(!Array.isArray(items))return [slot,dataOnly(items)];
+  const copied=new Set<string>();
+  return [slot,new Proxy(items.slice(),{get(target,key,receiver){
+   if(typeof key==='string'&&/^(0|[1-9]\d*)$/.test(key)&&Object.hasOwn(target,key)&&!copied.has(key)){
+    target[Number(key)]=dataOnly(target[Number(key)]);copied.add(key);
+   }
+   return Reflect.get(target,key,receiver);
+  }})];
+ }));
+}
 export function prepareOutfit(root:any,s:Snapshot,worn:any,changed:string[],timing:WardrobePerformance=createWardrobePerformance()){
  const live=root.Renderer;if(!live?.composeLayers||!root.Skin)throw Error('角色绘图接口尚不可用');
  const V=timing.measure('render.copyState',()=>copyRenderState(s.variables,timing.getFullStateCopy()));V.worn=copy(worn);V.options={...V.options,showSidebarEffects:false};
@@ -21,13 +34,13 @@ export function prepareOutfit(root:any,s:Snapshot,worn:any,changed:string[],timi
  const endSetup=timing.start('render.copyDefinitions');
  const setup:any={};
  for(const key of ['clothes','clothes_all_slots','colours','bodywriting','bodywriting_namebyindex','bodyliquid','foodstuff','hairstyles','breastsizes']){
-  if(s.setup[key]!==undefined)setup[key]=dataOnly(s.setup[key]);
+  if(s.setup[key]!==undefined)setup[key]=key==='clothes'?copyClothesOnRead(s.setup[key]):dataOnly(s.setup[key]);
  }
  setup.colours.getSkinFilter=(type:string,tan:number)=>{const o=setup.colours.skin_options[type];if(!o)throw Error('肤色定义不可用');return {blend:live.lintRgbStaged(Math.min(1,Math.max(0,tan/100)),o.gradient).toHexString(),blendMode:o.blendMode,desaturate:o.desaturate,...(o.alpha?{alpha:o.alpha}:{})}};
  // Wardrobe thumbnails are static outfit views, without transient scene effects.
  setup.bodyliquid={combined:()=>0};
  const skin=root.Skin;
- const context={V,T:{},setup,Skin:{color:dataOnly(skin.color),tanningLayers:dataOnly(skin.tanningLayers),cachedLayers:null},
+ const context={clothesIndex:(slot:string,item:any)=>s.setup.clothes[slot].findIndex((c:any)=>c.variable===item.variable&&c.modder===item.modder),V,T:{},setup,Skin:{color:dataOnly(skin.color),tanningLayers:dataOnly(skin.tanningLayers),cachedLayers:null},
   Weather:{precipitation:'none',overcast:0,temperature:20,name:'clear'},Time:{isBloodMoon:false},
   Transformations:{defaults:{demon:{colour:root.Transformations?.defaults?.demon?.colour}}},
   C:{tiredness:{max:root.C?.tiredness?.max??1000}},ZIndices:copy(root.ZIndices),ColourUtils:{toHslString:(h:any)=>h?`hsl(${h.h}, ${h.s}%, ${h.l}%)`:'hsl(0, 100%, 50%)'},

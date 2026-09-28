@@ -36,7 +36,7 @@ const between=(n,min,max)=>n>=min&&n<=max;
 const toTitleCase=s=>s.replace(/\\b\\w/g,c=>c.toUpperCase());
 const random=(min,max)=>max===undefined?0:min;
 const painToTearsLvl=pain=>Math.floor(Math.min(99,Math.max(0,pain||V.pain))/20);
-function clothesIndex(slot,item){const items=setup.clothes[slot];const index=items.findIndex(c=>c.variable===item.variable&&c.modder===item.modder);if(index<0)throw Error('Unknown clothing descriptor: '+slot);return index}
+function clothesIndex(slot,item){const items=setup.clothes[slot];const index=context.clothesIndex?context.clothesIndex(slot,item):items.findIndex(c=>c.variable===item.variable&&c.modder===item.modder);if(index<0)throw Error('Unknown clothing descriptor: '+slot);return index}
 function clothingData(slot,item,key){return setup.clothes[slot][clothesIndex(slot,item)][key]}
 const tinycolor=rgb=>({toHexString:()=>'#'+[rgb.r,rgb.g,rgb.b].map(n=>Math.round(Math.min(255,Math.max(0,n))).toString(16).padStart(2,'0')).join('')});
 `;

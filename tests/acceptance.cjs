@@ -8,7 +8,15 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
  const arena=async()=>{await p.evaluate(()=>SugarCube.Engine.play('Arena'));await p.waitForSelector('.dcu-dock-native #next a')};
  assert.ok(await p.evaluate(()=>document.querySelector('#listContainer')===saved.list&&document.querySelector('#leftaction input')===saved.radio&&document.querySelector('.dcu-dock-native #next')===saved.next&&document.querySelector('.dcu-dock-native #cbtToggleMenu')===saved.menu));
  assert.equal(await p.locator('#leftaction input').count(),13);assert.equal(await p.locator('.dcu-summary').count(),0);
+ // Navigation and summary locate native groups without hiding or selecting actions.
+ const beforeJump=await p.evaluate(()=>V.leftaction);
+ for(const title of ['右手','左手']){await p.locator('.dcu-nav button').filter({hasText:title}).click();assert.equal(await p.locator('.dcu-summary-rail button[aria-current=location] span').innerText(),title);assert.equal(await p.locator('.dcu-nav button[aria-current=location]').innerText(),title)}
+ await p.locator('.dcu-nav button').filter({hasText:'右手'}).click();
+ assert.ok(await p.locator('#leftaction').isVisible());assert.ok(await p.locator('#rightaction').isVisible());
+ await p.locator('.dcu-summary-rail button').filter({hasText:'左手'}).click();
+ assert.equal(await p.evaluate(()=>V.leftaction),beforeJump);assert.equal(await p.evaluate(()=>nativeChanges),0);
  await p.locator('#leftaction label').filter({hasText:'防御'}).click();await summary();await p.waitForFunction(()=>V.leftaction==='guard'&&document.querySelector('.dcu-summary').textContent.includes('防御'));assert.equal(await p.evaluate(()=>nativeChanges),1);
+ assert.ok((await p.locator('.dcu-summary-rail').innerText()).includes('防御'));
  await p.locator('.dcu-summary-toggle').click();await p.locator('#cbtToggleMenu .cbtToggle').click();await p.locator('#fixture-scroll').check();assert.ok(await p.locator('#fixture-scroll').isChecked());
  const options=await p.locator('#cbtToggleMenu .cbtOption').evaluateAll(es=>es.map(e=>{const r=e.getBoundingClientRect();return{top:r.top,bottom:r.bottom}}));assert.ok(options[0].bottom<=options[1].top+1,'menu options must not overlap');await p.locator('#cbtToggleMenu .cbtToggle').click();
  await p.locator('#custom-native').click();assert.equal(await p.evaluate(()=>extraClicks),1);

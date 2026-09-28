@@ -46,7 +46,7 @@ export function startWardrobe(root:any){
    const canvas=await renderOutfit(root,s.snapshot,proposal.worn,proposal.changed,timing);
    if(ticket!==generation||active!==s)return;
    s.view.preview?.replaceChildren(canvas);s.state.previewStatus='当前角色的完整穿搭';
-  }catch(error){if(ticket!==generation||active!==s)return;s.state.previewStatus='本次预览不可用';s.state.message=error instanceof Error?error.message:'请使用原版衣柜';}
+  }catch(error){if(ticket!==generation||active!==s)return;console.error('[DoLGameUI] wardrobe preview failed',error);s.state.previewStatus='本次预览不可用';s.state.message=error instanceof Error?error.message:'请使用原版衣柜';}
   finally{if(ticket===generation&&active===s)s.state.loading=false}
  }
  function refresh(s:Session,force=false,message=s.state.message){

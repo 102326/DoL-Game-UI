@@ -45,5 +45,10 @@ const server=http.createServer((req,res)=>{
  const stats=await p.locator('#stats').evaluate(e=>{const r=e.getBoundingClientRect();return [...e.querySelectorAll('.centered-elements>div')].map(n=>{const b=n.getBoundingClientRect();return {text:n.textContent.trim(),fits:b.left>=r.left-1&&b.right<=r.right+1,contentFits:n.scrollWidth<=n.clientWidth+1}})});
  assert.ok(stats.length>0&&stats.every(s=>s.fits&&s.contentFits),JSON.stringify(stats));assert.ok(await p.locator('#statmeters').isVisible());
  await p.screenshot({path:path.join(__dirname,'artifacts/wardrobe-layout-sidebar.png')});
+ await p.locator('.dgw-root').evaluate(e=>e.style.width='540px');
+ const narrow=await p.locator('.dgw-workspace').evaluate(e=>({columns:getComputedStyle(e).gridTemplateColumns.split(' ').length,overflow:e.scrollWidth>e.clientWidth+1}));
+ assert.equal(narrow.columns,1);assert.equal(narrow.overflow,false);
+ await p.locator('.dgw-root').evaluate(e=>e.style.removeProperty('width'));
+
  console.log('PASS sidebar full money/time/day, always visible character status, category warnings, header exit, side/mobile management dock across five viewports');
 }finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});

@@ -7,11 +7,13 @@ const server=http.createServer((req,res)=>{
  res.setHeader('Content-Type',file.endsWith('.png')?'image/png':'text/html; charset=utf-8');fs.createReadStream(file).pipe(res);
 });
 const bundle=buildSync({stdin:{contents:`export {prepareOutfit} from './src/wardrobe/render';export {createWardrobePerformance} from './src/wardrobe/performance';export {snapshot} from './src/wardrobe/data';`,resolveDir:path.resolve(__dirname,'..')},bundle:true,write:false,format:'iife',globalName:'RenderStateTest'}).outputFiles[0].text;
+const eagerSource=fs.readFileSync(path.join(__dirname,'../src/wardrobe/render.ts'),'utf8').replace("key==='clothes'?copyClothesOnRead(s.setup[key]):dataOnly(s.setup[key])","dataOnly(s.setup[key])");
+const eagerBundle=buildSync({stdin:{contents:eagerSource,resolveDir:path.resolve(__dirname,'../src/wardrobe'),loader:'ts'},bundle:true,write:false,format:'iife',globalName:'EagerDefinitionTest'}).outputFiles[0].text;
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true});try{
  const p=await browser.newPage({viewport:{width:1704,height:1136}});
  await p.addInitScript(()=>localStorage.setItem('verifiedAge','true'));
  await p.goto(`http://127.0.0.1:${server.address().port}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>window.SugarCube?.State?.variables?.options,{timeout:60000});await p.waitForLoadState('networkidle');
- await p.evaluate(()=>SugarCube.Engine.play('Start2'));await p.waitForLoadState('networkidle');await p.addScriptTag({content:bundle});
+ await p.evaluate(()=>SugarCube.Engine.play('Start2'));await p.waitForLoadState('networkidle');await p.addScriptTag({content:bundle});await p.addScriptTag({content:eagerBundle});
  const cdp=await p.context().newCDPSession(p);await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
  const result=await p.evaluate(()=>{
   const {snapshot,prepareOutfit,createWardrobePerformance}=RenderStateTest,s=snapshot(window),timing=createWardrobePerformance();timing.setEnabled(true);
@@ -23,7 +25,7 @@ const bundle=buildSync({stdin:{contents:`export {prepareOutfit} from './src/ward
    s.variables=structuredClone(base);
    if(i<outfits.length){s.variables.worn.upper=structuredClone(outfits[i]);s.variables.worn.upper.colour=outfits[i].colour_options?.[0]??0;s.variables.worn.upper.accessory_colour=outfits[i].accessory_colour_options?.[0]??0}
    if(i===outfits.length){s.variables.leftarm='bound';s.variables.rightarm='grappled';s.variables.modeloptionsOverride={...s.variables.modeloptionsOverride,breast_size:2};}
-   const before=JSON.stringify(s.variables),a=run(true),b=run(false);
+   const before=JSON.stringify(s.variables),a=run(true),b=run(false);const eager=EagerDefinitionTest.prepareOutfit(window,s,s.variables.worn,[],timing);const eagerLayers=eager.model.compile(eager.options);if(encode({options:eager.options,layers:eagerLayers})!==b.value)throw Error('Lazy definition output differs from eager baseline');
    cases.push({case:i,equal:a.value===b.value,unchanged:before===JSON.stringify(s.variables)});
   }
   const measurements=[];

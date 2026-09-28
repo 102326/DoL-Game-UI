@@ -46,3 +46,13 @@ html[data-dol-midnight][data-dmt-layout] #passages:has(.dgw-shell){max-width:90r
 .dgw-equipped{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:10px;border:1px solid var(--dgw-accent);border-radius:12px;background:#2b2938}.dgw-equipped>span{min-width:0;overflow-wrap:anywhere}.dgw-equipped strong,.dgw-equipped small{display:block}.dgw-equipped small{color:var(--dgw-secondary);font-size:12px}.dgw-equipped-badge{margin-left:auto;flex-shrink:0;font-size:12px;color:var(--dgw-accent)}
 .dgw-native[hidden]{display:none!important}
 .dgw-equipment{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0;font-size:13px}.dgw-equipment>p,.dgw-item-details{flex-basis:100%}.dgw-equipment a,.dgw-tailor a{display:inline-block;min-height:40px;padding:8px 10px;border-radius:10px;border:1px solid var(--dgw-line);background:var(--dgw-panel)}.dgw-services{padding:0 16px 12px}.dgw-services summary,.dgw-item-details summary{cursor:pointer;min-height:40px;padding:8px 0}.dgw-preferences label{display:block;padding:6px 0}.dgw-tailor{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0}.dgw-tailor h3{flex-basis:100%}.dgw-towels{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.dgw-equipment:empty,.dgw-towels:empty{display:none}.dgw-selection-bar select{max-width:100%;min-width:0}.dgw-item-details{padding:0 8px;border:1px solid var(--dgw-line);border-radius:10px}
+
+/* Use the available wardrobe width, including space taken by the game sidebar. */
+.dgw-root{container-type:inline-size;container-name:wardrobe}
+@container wardrobe (max-width:700px){
+ .dgw-workspace{grid-template-columns:1fr;padding:0 10px 12px;gap:12px}
+ .dgw-detail{position:static;grid-row:1}
+ .dgw-preview{height:260px}.dgw-preview.dgw-zoom{height:430px}
+ .dgw-tools{flex-wrap:wrap}.dgw-tools input{flex-basis:100%;width:100%}
+ .dgw-tools select{flex:1;max-width:none}
+}
