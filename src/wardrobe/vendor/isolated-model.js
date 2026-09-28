@@ -6792,6 +6792,260 @@ const getCustomClothesColourCanvasFilter = function (hue, saturation, brightness
 		setup.colours.clothes_default
 	);
 };
+const gradientDefaults = {
+	fringe: {
+		"high-ombre": {
+			all: {
+				gradient: "linear",
+				values: [300, 200, 300, 0],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.6, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatDoggy: {
+				gradient: "linear",
+				values: [250, 440, 250, 0],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.76, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatMissionary: {
+				gradient: "linear",
+				values: [180, 245, 0, 250],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.64, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+		},
+		"low-ombre": {
+			all: {
+				gradient: "linear",
+				values: [300, 200, 300, 0],
+				lengthFunctions: [(length, value) => value - length / 1000 / 2, (length, value) => value - length / 1000 / 2],
+				colors: [
+					[0.6, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatDoggy: {
+				gradient: "linear",
+				values: [340, 180, 300, 0],
+				lengthFunctions: [(length, value) => value - length / 1000 / 2, (length, value) => value - length / 1000 / 2],
+				colors: [
+					[0.6, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatMissionary: {
+				gradient: "linear",
+				values: [180, 350, 0, 350],
+				lengthFunctions: [(length, value) => value - length / 1000 / 2, (length, value) => value - length / 1000 / 2],
+				colors: [
+					[0.6, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+		},
+		split: {
+			parted: {
+				gradient: "linear",
+				values: [21, 255, 234, 0],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.63, "rgba(0, 0, 0, 1)"],
+					[0.65, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			mohawk: {
+				gradient: "radial",
+				values: [93, 60, 0, 93, 100, 202],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.155, "rgba(0, 0, 0, 1)"],
+					[0.16, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatMohawkDoggy: {
+				gradient: "radial",
+				values: [69, 84, 0, 130, 115, 187],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.155, "rgba(0, 0, 0, 1)"],
+					[0.16, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatMohawk: {
+				gradient: "radial",
+				values: [30, 142, 0, 130, 115, 184],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.155, "rgba(0, 0, 0, 1)"],
+					[0.16, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			overgrown: {
+				gradient: "radial",
+				values: [93, 60, 0, 93, 60, 200],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.155, "rgba(0, 0, 0, 1)"],
+					[0.16, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			all: {
+				gradient: "radial",
+				values: [-40, 100, 0, -40, 100, 1070],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.155, "rgba(0, 0, 0, 1)"],
+					[0.16, "rgba(0, 0, 0, 1)"],
+				],
+			},
+		},
+		"face-frame": {
+			all: {
+				gradient: "radial",
+				values: [125, 103, 0, 125, 103, 350],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.15, "rgba(0, 0, 0, 1)"],
+					[0.175, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatDoggy: {
+				gradient: "radial",
+				values: [15, 183, 50, 150, 103, 350],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.15, "rgba(0, 0, 0, 1)"],
+					[0.175, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatMissionary: {
+				gradient: "radial",
+				values: [125, 103, 50, 150, 103, 350],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.15, "rgba(0, 0, 0, 1)"],
+					[0.175, "rgba(0, 0, 0, 1)"],
+				],
+			},
+		},
+	},
+	sides: {
+		"high-ombre": {
+			all: {
+				gradient: "linear",
+				values: [300, 200, 300, 0],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.6, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatDoggy: {
+				gradient: "linear",
+				values: [250, 440, 250, 0],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.76, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatMissionary: {
+				gradient: "linear",
+				values: [180, 245, 0, 250],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.64, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+		},
+		"low-ombre": {
+			all: {
+				gradient: "linear",
+				values: [300, 200, 300, 0],
+				lengthFunctions: [(length, value) => value - length / 1000 / 2, (length, value) => value - length / 1000 / 2],
+				colors: [
+					[0.6, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatDoggy: {
+				gradient: "linear",
+				values: [340, 180, 300, 0],
+				lengthFunctions: [(length, value) => value - length / 1000 / 2, (length, value) => value - length / 1000 / 2],
+				colors: [
+					[0.6, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatMissionary: {
+				gradient: "linear",
+				values: [180, 350, 0, 350],
+				lengthFunctions: [(length, value) => value - length / 1000 / 2, (length, value) => value - length / 1000 / 2],
+				colors: [
+					[0.6, "rgba(0, 0, 0, 1)"],
+					[0.85, "rgba(0, 0, 0, 1)"],
+				],
+			},
+		},
+		split: {
+			all: {
+				gradient: "linear",
+				values: [0, 100, 600, 100],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.19, "rgba(0, 0, 0, 1)"],
+					[0.21, "rgba(0, 0, 0, 1)"],
+				],
+			},
+		},
+		"face-frame": {
+			all: {
+				gradient: "linear",
+				values: [0, 100, 600, 100],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.0, "rgba(0, 0, 0, 1)"],
+					[0.0, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatDoggy: {
+				gradient: "radial",
+				values: [15, 183, 50, 150, 103, 350],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.15, "rgba(0, 0, 0, 1)"],
+					[0.175, "rgba(0, 0, 0, 1)"],
+				],
+			},
+			combatMissionary: {
+				gradient: "radial",
+				values: [125, 103, 50, 150, 103, 350],
+				lengthFunctions: [(length, value) => value, (length, value) => value],
+				colors: [
+					[0.15, "rgba(0, 0, 0, 1)"],
+					[0.175, "rgba(0, 0, 0, 1)"],
+				],
+			},
+		},
+	},
+};
+// Restore trusted pure callbacks stripped from the private data copy. Keep live
+// numeric/colour definitions; do not execute callbacks supplied by other mods.
+for(const [part,styles] of Object.entries(gradientDefaults))for(const [style,types] of Object.entries(styles))for(const [type,definition] of Object.entries(types)){
+ const target=setup.colours.hairgradients_prototypes?.[part]?.[style]?.[type];
+ if(target)target.lengthFunctions=definition.lengthFunctions;
+}
+
 const model=Renderer.locateModel('main');
 T.modeloptions=model.defaultOptions();
 macros['modelprepare-player-body']();macros['modelprepare-player-clothes']();

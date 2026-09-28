@@ -40,6 +40,18 @@ function clothesIndex(slot,item){const items=setup.clothes[slot];const index=con
 function clothingData(slot,item,key){return setup.clothes[slot][clothesIndex(slot,item)][key]}
 const tinycolor=rgb=>({toHexString:()=>'#'+[rgb.r,rgb.g,rgb.b].map(n=>Math.round(Math.min(255,Math.max(0,n))).toString(16).padStart(2,'0')).join('')});
 `;
+const coloursSource=read('04-Variables/colours.js');
+const coloursAst=ts.createSourceFile('colours.js',coloursSource,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);
+const gradients=coloursAst.statements.find(n=>ts.isExpressionStatement(n)&&ts.isBinaryExpression(n.expression)&&n.expression.left.getText(coloursAst)==='setup.colours.hairgradients_prototypes');
+if(!gradients)throw Error('Missing pinned gradient definitions');
+parts.push('const gradientDefaults = '+gradients.expression.right.getText(coloursAst)+';'+`
+// Restore trusted pure callbacks stripped from the private data copy. Keep live
+// numeric/colour definitions; do not execute callbacks supplied by other mods.
+for(const [part,styles] of Object.entries(gradientDefaults))for(const [style,types] of Object.entries(styles))for(const [type,definition] of Object.entries(types)){
+ const target=setup.colours.hairgradients_prototypes?.[part]?.[style]?.[type];
+ if(target)target.lengthFunctions=definition.lengthFunctions;
+}
+`);
 const footer=`
 const model=Renderer.locateModel('main');
 T.modeloptions=model.defaultOptions();

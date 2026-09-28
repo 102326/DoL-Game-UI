@@ -41,12 +41,15 @@ export function prepareOutfit(root:any,s:Snapshot,worn:any,changed:string[],timi
  setup.bodyliquid={combined:()=>0};
  const skin=root.Skin;
  const context={clothesIndex:(slot:string,item:any)=>s.setup.clothes[slot].findIndex((c:any)=>c.variable===item.variable&&c.modder===item.modder),V,T:{},setup,Skin:{color:dataOnly(skin.color),tanningLayers:dataOnly(skin.tanningLayers),cachedLayers:null},
-  Weather:{precipitation:'none',overcast:0,temperature:20,name:'clear'},Time:{isBloodMoon:false},
+  Weather:{precipitation:'none',overcast:0,temperature:20,name:'clear'},Time:{isBloodMoon:()=>false},
   Transformations:{defaults:{demon:{colour:root.Transformations?.defaults?.demon?.colour}}},
   C:{tiredness:{max:root.C?.tiredness?.max??1000}},ZIndices:copy(root.ZIndices),ColourUtils:{toHslString:(h:any)=>h?`hsl(${h.h}, ${h.s}%, ${h.l}%)`:'hsl(0, 100%, 50%)'},
   clone:cloneDefinition,renderer:{mergeLayerData:live.mergeLayerData,emptyLayerFilter:live.emptyLayerFilter}};
  endSetup();
  const {model,options}=timing.measure('render.prepareModel',()=>createIsolatedModel(context));
+ // Native render/animate binds options before compilation. Tanning postprocess
+ // reads this.options as well as its argument; both must use the private snapshot.
+ model.options=options;
  // Reviewed Lyra asset adapter, no third-party callbacks run with live V/T.
  if(root.modUtils?.getMod?.('Lyra')?.version==='0.5.11.9-1.0.0a-0815-goose-ucb'){
   model.layers.mouth.srcfn=(o:any)=>o.facestyle==='default'&&/^(default|aloof|catty|foxy|gloomy|sweet|modded(?:[1-9]|1[0-9]|2[0-4]))$/.test(o.facevariant)&&/^(chew|cry|frown|neutral|smile)$/.test(o.mouth)?`img/face/${o.facestyle}/${o.facevariant}/mouth-${o.mouth}.png`:`img/face/${o.facestyle}/mouth-${o.mouth}.png`;

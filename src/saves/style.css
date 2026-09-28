@@ -1,0 +1,28 @@
+.dgs-native-row{display:none!important}
+.dgs-host{container-type:inline-size;color:#e7e6ef;margin:1rem 0}
+.dgs-toolbar,.dgs-search,.dgs-actions{display:flex;gap:.65rem;align-items:center;flex-wrap:wrap}
+.dgs-toolbar{justify-content:space-between;margin-bottom:1rem}.dgs-toolbar h2{margin:0}
+.dgs-layout{display:grid;grid-template-columns:minmax(250px, .85fr) minmax(0,1.15fr);gap:1rem}
+.dgs-host button,.dgs-host input{font:inherit;border:1px solid #454450;border-radius:10px;padding:.65rem .85rem;background:#26262f;color:inherit;min-height:44px;box-sizing:border-box}
+.dgs-host button:disabled{opacity:.45}.dgs-host button:focus-visible,.dgs-host input:focus-visible{outline:2px solid #bcb7ff;outline-offset:2px}
+.dgs-search input{min-width:0;flex:1;width:100%}.dgs-muted,.dgs-item small{font-size:.85em;color:#aaa9bb}
+.dgs-host summary{cursor:pointer;padding:.6rem 0}.dgs-item{display:flex!important;text-align:left;width:100%;gap:.8rem;margin-bottom:.5rem;align-items:center}
+.dgs-item[aria-pressed=true]{border-color:#bcb7ff;background:#343346}.dgs-slot{font-size:1.2em;min-width:1.8em}.dgs-item>span:last-child{min-width:0;flex:1}.dgs-item strong,.dgs-item small{display:block}.dgs-excerpt{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.9em;margin-top:.25rem}
+.dgs-detail{border:1px solid #3b3a46;border-radius:14px;padding:1.25rem;background:linear-gradient(145deg,#252531,#1b1b23);min-width:0;align-self:start;position:sticky;top:0}.dgs-detail h2{margin:.5rem 0 1rem}.dgs-detail dl{display:grid;grid-template-columns:auto 1fr;gap:.6rem 1rem}.dgs-detail dd{margin:0;overflow-wrap:anywhere}.dgs-description{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7}.dgs-actions{margin-top:1.5rem;border-top:1px solid #454450;padding-top:1rem}.dgs-actions .dgs-delete{margin-left:auto;color:#ffb0b0;border-color:#875258}.dgs-back{display:none}
+@container(max-width:650px){.dgs-layout{display:block}.dgs-detail{display:none;position:static}.dgs-detail-open .dgs-detail{display:block}.dgs-detail-open .dgs-list{display:none}.dgs-back{display:inline-block}.dgs-toolbar h2{font-size:1.3em}}
+
+.dgs-list{max-height:60vh;overflow:auto;padding-right:.3rem}
+@container(max-width:650px){.dgs-list{max-height:none}}
+
+/* Native toolbar nodes retain their handlers, ids and values. */
+.dgs-tools{container-type:inline-size;display:flex;flex-direction:column;gap:.75rem;margin:1rem 0;color:#e7e6ef}
+.dgs-tools>div,.dgs-save-settings{background:#23232c;border:1px solid #3b3a46;border-radius:12px;padding:.75rem}
+.dgs-tools ul.buttons{display:flex!important;align-items:center;flex-wrap:wrap;gap:.5rem;border:0!important;margin:0!important;padding:0!important;list-style:none}
+.dgs-tools ul.buttons li{display:inline-flex!important;align-items:center;float:none!important;margin:0!important;padding:0!important;max-width:100%}
+.dgs-tools button,.dgs-tools input[type=button],.dgs-tools input[type=number]{font:inherit!important;border:1px solid #454450!important;border-radius:9px!important;padding:.55rem .8rem!important;background:#2b2b36!important;color:#e7e6ef!important;min-height:44px;box-sizing:border-box;max-width:100%;white-space:normal}
+.dgs-tools button:disabled{opacity:.45}.dgs-tools button:focus-visible,.dgs-tools input:focus-visible,.dgs-tools summary:focus-visible{outline:2px solid #bcb7ff;outline-offset:2px}
+.dgs-tools input[type=number]{width:4.5em!important}.dgs-tools label{display:inline-flex;align-items:center;gap:.5rem;min-height:44px}.dgs-tools input[type=checkbox]{accent-color:#bcb7ff;width:1.1em;height:1.1em}
+.dgs-save-settings summary{cursor:pointer;padding:.3rem;font-weight:600;min-height:32px}.dgs-save-settings[open] summary{margin-bottom:.65rem}.dgs-save-settings ul+ul{margin-top:.6rem!important}
+.dgs-file-tools li:last-child{margin-left:auto!important}.dgs-file-tools li:last-child button{color:#ffb0b0!important;border-color:#875258!important}
+.dgs-pagination{order:-1}
+@container(max-width:650px){.dgs-tools ul.buttons{gap:.4rem}.dgs-file-tools li:last-child{margin-left:0!important}}

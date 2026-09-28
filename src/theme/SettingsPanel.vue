@@ -3,7 +3,7 @@ import type {PanelKind} from '../panels/main';
 import GameButton from '../ui/GameButton.vue';
 import SettingsToggle from '../ui/SettingsToggle.vue';
 import type {SettingsState,PreferenceKey} from './preferences';
-const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
+const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
 function wardrobeChange(event:Event){const input=event.target as HTMLSelectElement;props.onWardrobe(input.value==='new');input.value=props.state.wardrobe?'new':'original'}
 </script>
 <template>
@@ -20,6 +20,7 @@ function wardrobeChange(event:Event){const input=event.target as HTMLSelectEleme
    <p>角色状态保持展开。折叠侧栏沿用游戏原有操作。</p>
   </section>
   <section class="dmt-setting-card"><h3>专用界面</h3>
+   <SettingsToggle label="启用新版存档界面" :checked="state.saves" @change="onSaves"/>
    <SettingsToggle label="启用新版服装店" :checked="state.shop" @change="onShop"/>
    <SettingsToggle label="启用新版日志与笔记" :checked="state.panels.journal" @change="onPanel('journal',$event)"/>
    <SettingsToggle label="启用新版特质界面" :checked="state.panels.traits" @change="onPanel('traits',$event)"/>
