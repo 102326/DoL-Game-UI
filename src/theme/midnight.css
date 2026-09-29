@@ -86,6 +86,9 @@ html[data-dol-midnight] #menu li a {
     border-color: transparent;
 }
 
+/* Native meters use z-index:-10 and disappear behind our opaque page panels. */
+html[data-dol-midnight] .meter { z-index: 0; }
+
 html[data-dol-midnight] .settings-container,
 html[data-dol-midnight] .statsTable,
 html[data-dol-midnight] .saveBorder,

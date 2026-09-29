@@ -22,6 +22,22 @@ const server=http.createServer((req,res)=>{
  console.log('PREVIEW',await p.evaluate(()=>({status:document.querySelector('.dgw-render-status').textContent,message:document.querySelector('.dgw-message').textContent,canvas:!!document.querySelector('.dgw-preview canvas')})));
  assert.equal(await p.locator('.dgw-preview canvas').count(),1);
 
+ // Mod-owned floating controls in SugarCube's footer must not be hidden with the legacy list.
+ await p.evaluate(async()=>{
+  DoLWardrobeUI.setEnabled(false);await new Promise(requestAnimationFrame);
+  const passage=document.querySelector('#passages .passage:not(.passage-out)');
+  let header=passage.querySelector(':scope > #passage-header');if(!header){header=document.createElement('div');header.id='passage-header';passage.prepend(header)}
+  let footer=passage.querySelector(':scope > #passage-footer');if(!footer){footer=document.createElement('div');footer.id='passage-footer';passage.append(footer)}
+  const pet=document.createElement('button');pet.id='test-floating-pet';pet.textContent='pet';pet.onclick=()=>pet.dataset.clicked='true';footer.append(pet);
+  window.testWardrobeRegions={header,footer,pet};DoLWardrobeUI.setEnabled(true);
+ });
+ await p.waitForSelector('.dgw-shell');
+ await p.locator('#test-floating-pet').click();
+ assert.equal(await p.evaluate(()=>{const {header,footer,pet}=testWardrobeRegions;return header.parentElement===footer.parentElement&&footer.parentElement.classList.contains('passage')&&pet.dataset.clicked==='true'&&header.compareDocumentPosition(document.querySelector('.dgw-root'))===Node.DOCUMENT_POSITION_FOLLOWING}),true);
+ await p.evaluate(()=>DoLWardrobeUI.setEnabled(false));await p.waitForSelector('.dgw-shell',{state:'detached'});
+ assert.equal(await p.evaluate(()=>testWardrobeRegions.pet===document.querySelector('#test-floating-pet')&&testWardrobeRegions.footer.parentElement.classList.contains('passage')),true);
+ await p.evaluate(()=>DoLWardrobeUI.setEnabled(true));await p.waitForSelector('.dgw-shell');
+
  await p.waitForSelector('.dgw-preview canvas[data-preview-source="sidebar"]');
  const compare=()=>p.evaluate(()=>{const a=document.querySelector('#sidebar-img-container #img canvas.mainCanvas'),b=document.querySelector('.dgw-preview canvas');return {equal:a.toDataURL()===b.toDataURL(),source:b.dataset.previewSource}});
  await p.waitForFunction(()=>{const a=document.querySelector('#sidebar-img-container #img canvas.mainCanvas'),b=document.querySelector('.dgw-preview canvas');return a.toDataURL()===b.toDataURL()});

@@ -160,10 +160,13 @@ export function startWardrobe(root:any){
  }
  function mount(passage:HTMLElement){
   const data=snapshot(root);if(!data)return;
-  const anchor=document.createComment('DoL wardrobe original content');passage.prepend(anchor);
+  const anchor=document.createComment('DoL wardrobe original content');
+  const header=passage.querySelector(':scope > #passage-header');
+  if(header)header.after(anchor);else passage.prepend(anchor);
   const original=document.createElement('div');original.className='dgw-preserved';
   // Keep the native close/return controls visible and bound to their original events.
-  for(const node of [...passage.childNodes])if(node!==anchor)original.append(node);
+  // SugarCube header/footer remain owned by the game and mods (e.g. floating pets).
+  for(const node of [...passage.childNodes])if(node!==anchor&&!(node instanceof Element&&node.matches('#passage-header,#passage-footer')))original.append(node);
   const exit=original.querySelector<HTMLElement>('#wardrobeExits')??undefined;
   const exitAnchor=exit?document.createComment('DoL wardrobe exit position'):undefined;
   if(enabled&&exit&&exitAnchor){exit.before(exitAnchor);passage.insertBefore(exit,anchor)}
