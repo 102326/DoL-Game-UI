@@ -29,6 +29,9 @@
 @media(max-width:600px){#dol-midnight-controls .dmt-settings-header{padding:16px}#dol-midnight-controls .dmt-controls-content{padding:12px}#dol-midnight-controls h2{font-size:calc(22px * var(--dgu-font-scale,1))}#dol-midnight-controls .dgu-setting-row:has(select){flex-wrap:wrap}#dol-midnight-controls select{width:100%}}
 @media(prefers-reduced-motion:reduce){#dol-midnight-controls[open]{animation:none}#dol-midnight-controls button{transition:none}}
 
-html[data-dgu-font-scaled] body{font-size:calc(1rem * var(--dgu-font-scale,1))}
-html[data-dgu-buttons-scaled] :is(button,input[type=button],input[type=submit]){padding:calc(.5em * var(--dgu-button-scale,1)) calc(.75em * var(--dgu-button-scale,1))!important;min-height:max(36px,calc(44px * var(--dgu-button-scale,1)));box-sizing:border-box;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+html[data-dgu-font-scaled] :is(#passages,#customOverlay,#ui-dialog-body){font-size:calc(1rem * var(--dgu-font-scale,1))}
+html[data-dgu-buttons-scaled] :is(button,input[type=button],input[type=submit]):not(#ui-bar *){padding:calc(.5em * var(--dgu-button-scale,1)) calc(.75em * var(--dgu-button-scale,1))!important;min-height:max(36px,calc(44px * var(--dgu-button-scale,1)));box-sizing:border-box;max-width:100%;white-space:normal;overflow-wrap:anywhere}
 #dol-midnight-controls input[type=range]{width:50%;min-width:0;accent-color:var(--dgu-accent)}
+
+/* Sidebar retains its native sizing, including embedded UI controls. */
+#ui-bar{--dgu-font-scale:1;--dgu-button-scale:1}

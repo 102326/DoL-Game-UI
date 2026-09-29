@@ -1,11 +1,13 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path'),{pathToFileURL}=require('node:url');
 (async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{const p=await b.newPage({viewport:{width:390,height:844}});await p.goto(pathToFileURL(path.join(__dirname,'fixture.html')).href);await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});await p.evaluate(()=>DoLGameUI.openSettings());
+await p.evaluate(()=>{const bar=document.getElementById('ui-bar')||document.body.appendChild(Object.assign(document.createElement('aside'),{id:'ui-bar'}));const probe=document.createElement('div');probe.id='scale-sidebar-probe';probe.innerHTML='<span>Sidebar text</span><button style="font:inherit">Sidebar button</button>';bar.append(probe)});
+const sidebarSize=()=>p.locator('#scale-sidebar-probe').evaluate(e=>[...e.children].map(n=>{const s=getComputedStyle(n);return[s.fontSize,s.padding,s.minHeight]}));const sidebarBefore=await sidebarSize();
 const size=()=>p.locator('#dol-midnight-controls h3').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize));const before=await size();
-await p.evaluate(()=>{DoLGameUI.setPreference('fontScale',200);DoLGameUI.setPreference('buttonScale',200)});assert.equal(await size(),before*2);assert.ok(await p.locator('.dmt-close').evaluate(e=>e.getBoundingClientRect().right<=innerWidth));
+await p.evaluate(()=>{DoLGameUI.setPreference('fontScale',200);DoLGameUI.setPreference('buttonScale',200)});assert.equal(await size(),before*2);assert.deepEqual(await sidebarSize(),sidebarBefore);assert.ok(await p.locator('.dmt-close').evaluate(e=>e.getBoundingClientRect().right<=innerWidth));
 await p.evaluate(()=>DoLGameUI.setPreference('buttonScale',20));assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().buttonScale),50);await p.evaluate(()=>DoLGameUI.setPreference('buttonScale',250));assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().buttonScale),200);
 await p.evaluate(()=>DoLGameUI.setPreference('fontScale',NaN));assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),200);
 await p.evaluate(()=>DoLGameUI.setPreference('fontScale',-1));assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),50);
-assert.equal(await size(),before*.5);
+assert.equal(await size(),before*.5);assert.deepEqual(await sidebarSize(),sidebarBefore);
 await p.evaluate(()=>DoLGameUI.setPreference('fontScale',250));assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),200);
 assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('DoLMidnightTheme.preferences.v1')).buttonScale),200);
 await p.evaluate(()=>DoLGameUI.destroy());await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});await p.evaluate(()=>DoLGameUI.openSettings());assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),200);

@@ -14,7 +14,7 @@ function wardrobeChange(event:Event){const input=event.target as HTMLSelectEleme
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
    <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
   </section>
-  <section class="dmt-setting-card"><h3>字体与按钮大小</h3>
+  <section class="dmt-setting-card"><h3>字体与按钮大小</h3><p>调整主界面与弹窗；侧边栏保持原有大小。</p>
 <label v-for="item in ([{key:'fontScale',label:'字体'},{key:'buttonScale',label:'按钮'}] as const)" :key="item.key" class="dgu-setting-row"><span>{{item.label}} {{state.preferences[item.key]}}%</span><input type="range" min="50" max="200" step="5" :aria-label="item.label+'大小'" :value="state.preferences[item.key]" @input="onPreference(item.key,Number(($event.target as HTMLInputElement).value))"/></label>
 <GameButton @click="onPreference('fontScale',100);onPreference('buttonScale',100)">恢复 100%</GameButton><p>分别调整文字与按钮间距；图片保持原大小。</p></section>
 <section class="dmt-setting-card"><h3>侧栏与布局</h3>

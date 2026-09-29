@@ -52,3 +52,6 @@
 @media(prefers-reduced-motion:reduce){.passage:has(.dcu-shell) #replaceAction a{transition:none}}
 
 .dcu-root .dcu-nav button[aria-current="location"],.dcu-root .dcu-summary-rail button[aria-current="location"]{background:#393449;border-color:#c3b8ff}
+/* Native action output uses repeated line breaks; keep one line break per run. */
+.passage:has([data-dcu-action-list]) br+br{display:none}
+.passage:has([data-dcu-action-list]) .dcu-root{margin:6px 0}

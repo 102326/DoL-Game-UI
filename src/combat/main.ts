@@ -2,6 +2,7 @@ import {createApp,reactive,type App} from 'vue';
 import CombatPanel from './CombatPanel.vue';
 import type {CombatModel,Group} from './types';
 import './style.css';
+import {wrapActionLists} from './native-actions';
 
 export function startCombat(){
 const KEY='DoLCombatUI.enabled.v1';
@@ -11,6 +12,7 @@ interface Docked {node:HTMLElement;anchor:Comment;slot:HTMLElement}
 interface Region {list:HTMLElement;anchor:Comment;host?:HTMLElement}
 interface Session {regions:Region[];list:HTMLElement;anchor:Comment;host:HTMLElement;toggle:HTMLButtonElement;app?:App;model:CombatModel;groups:Map<string,HTMLElement>;decorated:Set<HTMLElement>;separators:Map<Text,string>;dock:HTMLElement;docked:Docked[];resize?:ResizeObserver;resizeFrame?:number;spacer?:HTMLElement}
 let active:Session|undefined,enabled=true,queued=false,disposed=false;
+let actionLists:ReturnType<typeof wrapActionLists>|undefined;
 try{enabled=localStorage.getItem(KEY)!=='false'}catch{/* optional preference */}
 const visible=(el:HTMLElement)=>el.isConnected&&!!el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden';
 function clearDecorations(s:Session){for(const el of s.decorated){el.classList.remove('dcu-group');el.removeAttribute('data-dcu-title')}s.decorated.clear();for(const [node,text]of s.separators)if(node.isConnected&&node.data==='')node.data=text;s.separators.clear()}
@@ -19,9 +21,9 @@ function restoreDock(s:Session){
  s.docked=[];
 }
 function release(s:Session){s.resize?.disconnect();if(s.resizeFrame!==undefined){cancelAnimationFrame(s.resizeFrame);s.resizeFrame=undefined}clearDecorations(s);restoreDock(s);for(const region of s.regions){if(region.list.isConnected&&(s.host.contains(region.list)||region.host?.contains(region.list))&&region.anchor.parentNode)region.anchor.parentNode.insertBefore(region.list,region.anchor.nextSibling);region.host?.remove();region.host=undefined}s.spacer?.remove();s.spacer=undefined;s.app?.unmount();s.app=undefined;s.host.remove();s.groups.clear()}
-function disposeSession(){const s=active;if(!s)return;release(s);s.toggle.remove();for(const region of s.regions)region.anchor.remove();active=undefined}
-function setEnabled(value:boolean){if(value===enabled)return;enabled=value;try{localStorage.setItem(KEY,String(value))}catch{}if(active){release(active);active.toggle.hidden=enabled;active.toggle.textContent='启用新版战斗面板';if(enabled)mount(active)}document.dispatchEvent(new Event("dol-ui-combat-change"));schedule()}
-function readGroups(s:Session){const result:Group[]=[];s.groups.clear();for(const el of s.decorated)if(!s.regions.some(r=>r.list.contains(el)))s.decorated.delete(el);for(const node of s.separators.keys())if(!s.regions.some(r=>r.list.contains(node)))s.separators.delete(node);s.regions.forEach((region,regionIndex)=>Array.from(region.list.children).forEach((child,index)=>{if(!(child instanceof HTMLElement)||!visible(child))return;const controls=[...child.querySelectorAll<HTMLInputElement|HTMLSelectElement>('input[type=radio],select')].filter(visible);if(!controls.length&&!Object.hasOwn(titles,child.id))return;const key=regionIndex+':'+(child.id||'group-'+index),title=titles[child.id]||'附加行动 '+(result.length+1);s.groups.set(key,child);if(enabled){child.classList.add('dcu-group');child.dataset.dcuTitle=title;s.decorated.add(child);for(const label of child.querySelectorAll('label')){const walk=document.createTreeWalker(label,NodeFilter.SHOW_TEXT);let n:Node|null;while((n=walk.nextNode())){const t=n as Text;if(/^[\s|\u00a0]*\|[\s|\u00a0]*$/.test(t.data)){if(!s.separators.has(t))s.separators.set(t,t.data);t.data=''}}}}const selections=controls.flatMap(control=>{if(control instanceof HTMLSelectElement)return control.selectedOptions.length?[control.selectedOptions[0].textContent?.trim()||'']:[];if(!control.checked)return[];return[(control.labels?.[0]?.textContent||control.getAttribute('aria-label')||control.value).replace(/\s+/g,' ').trim()]});const count=controls.reduce((n,c)=>n+(c instanceof HTMLSelectElement?c.options.length:1),0);result.push({key,title,selected:[...new Set(selections)].join(' · '),count})}));return result}
+function disposeSession(){const s=active;if(!s)return;release(s);s.toggle.remove();for(const region of s.regions)region.anchor.remove();active=undefined;actionLists?.restore();actionLists=undefined}
+function setEnabled(value:boolean){if(value===enabled)return;enabled=value;try{localStorage.setItem(KEY,String(value))}catch{}if(active&&actionLists&&!enabled)disposeSession();if(active){release(active);active.toggle.hidden=enabled;active.toggle.textContent='启用新版战斗面板';if(enabled)mount(active)}document.dispatchEvent(new Event("dol-ui-combat-change"));schedule()}
+function readGroups(s:Session){const result:Group[]=[];s.groups.clear();for(const el of s.decorated)if(!s.regions.some(r=>r.list.contains(el)))s.decorated.delete(el);for(const node of s.separators.keys())if(!s.regions.some(r=>r.list.contains(node)))s.separators.delete(node);s.regions.forEach((region,regionIndex)=>Array.from(region.list.children).forEach((child,index)=>{if(!(child instanceof HTMLElement)||!visible(child))return;const controls=[...child.querySelectorAll<HTMLInputElement|HTMLSelectElement>('input[type=radio],select')].filter(visible);if(!controls.length&&!Object.hasOwn(titles,child.id))return;const key=regionIndex+':'+(child.id||'group-'+index),title=titles[child.dataset.dcuActionKey||child.id]||'附加行动 '+(result.length+1);s.groups.set(key,child);if(enabled){child.classList.add('dcu-group');child.dataset.dcuTitle=title;s.decorated.add(child);for(const label of [child]){const walk=document.createTreeWalker(label,NodeFilter.SHOW_TEXT);let n:Node|null;while((n=walk.nextNode())){const t=n as Text;if(/^[\s|\u00a0]*\|[\s|\u00a0]*$/.test(t.data)){if(!s.separators.has(t))s.separators.set(t,t.data);t.data=''}}}}const selections=controls.flatMap(control=>{if(control instanceof HTMLSelectElement)return control.selectedOptions.length?[control.selectedOptions[0].textContent?.trim()||'']:[];if(!control.checked)return[];return[(control.labels?.[0]?.textContent||control.getAttribute('aria-label')||control.value).replace(/\s+/g,' ').trim()]});const count=controls.reduce((n,c)=>n+(c instanceof HTMLSelectElement?c.options.length:1),0);result.push({key,title,selected:[...new Set(selections)].join(' · '),count})}));return result}
 function dockCandidates(s:Session){
  const passage=s.list.closest('.passage');if(!passage)return [] as HTMLElement[];
  const unique=(id:string)=>{const matches=passage.querySelectorAll<HTMLElement>('#'+id);return matches.length===1?matches[0]:undefined};
@@ -56,7 +58,8 @@ function scan(){
  if(disposed)return;observeScope();
  // Original struggle scenes deliberately emit several listContainer IDs.
  // Keep each region in place rather than gathering narrative into one panel.
- const lists=[...document.querySelectorAll<HTMLElement>('#passages .passage [id="listContainer"]')].filter(visible);
+ let lists=[...document.querySelectorAll<HTMLElement>('#passages .passage [id="listContainer"],#passages .passage [data-dcu-action-list]')].filter(visible);
+ if(!lists.length&&enabled){disposeSession();const page=document.querySelector<HTMLElement>('#passages .passage:has(#masturbationButtons)');if(page){actionLists=wrapActionLists(page);lists=actionLists.lists.filter(visible)}}
  const passage=lists[0]?.closest('.passage');
  if(!lists.length||lists.some(list=>list.closest('.passage')!==passage||lists.some(other=>other!==list&&other.contains(list)))){disposeSession();return}
  if(active&&(active.regions.length!==lists.length||active.regions.some((r,i)=>r.list!==lists[i]))){

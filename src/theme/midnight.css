@@ -357,3 +357,46 @@ html[data-dol-midnight] textarea,
 html[data-dol-midnight] select {border-radius:7px;}
 html[data-dol-midnight] .settings-container {padding:12px;border:1px solid var(--700);box-sizing:border-box;}
 html[data-dol-midnight] details.journal {background:var(--850);border:1px solid var(--700);border-radius:10px;padding:8px;}
+
+/* Native radio-action pages: retain labels, inputs, handlers and keyboard bindings. */
+html[data-dol-midnight] #passages:has(#masturbationButtons):not(:has(.dcu-root)) label:has(> input[type="radio"]){display:inline-block;box-sizing:border-box;max-width:100%;margin:3px 2px;padding:calc(6px * var(--dgu-button-scale,1)) calc(10px * var(--dgu-button-scale,1));min-height:36px;border:1px solid var(--700);border-radius:10px;background:var(--850);vertical-align:middle;overflow-wrap:anywhere;cursor:pointer}
+html[data-dol-midnight] #passages:has(#masturbationButtons):not(:has(.dcu-root)) label:has(> input[type="radio"]:checked){border-color:var(--link);background:#343047;box-shadow:inset 3px 0 var(--link)}
+html[data-dol-midnight] #passages:has(#masturbationButtons):not(:has(.dcu-root)) label:has(> input[type="radio"]:focus-visible){outline:2px solid var(--link);outline-offset:2px}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons){position:sticky;bottom:0;display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));background:var(--900);max-width:100%;box-sizing:border-box}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons)>div{position:static;display:flex;align-items:center;min-width:0;max-width:100%;border:0;background:transparent;box-sizing:border-box}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons)>div>a{box-sizing:border-box;display:flex;align-items:center;justify-content:center;min-height:44px;max-width:100%;padding:calc(10px * var(--dgu-button-scale,1)) calc(16px * var(--dgu-button-scale,1));border:1px solid var(--700);border-radius:12px;background:var(--800);white-space:normal;overflow-wrap:anywhere}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons)>div>a:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons)>#next>a{background:var(--dgu-accent,#c4c7f5);color:#171722;border-color:var(--dgu-accent,#c4c7f5)}
+
+/* Kitchen layout only: original controls and replace targets retain ownership. */
+html[data-dol-midnight] #kitchenDisplay{height:auto;min-width:0;border:1px solid var(--700);border-radius:14px;background:var(--850);padding:12px}
+html[data-dol-midnight] #kitchenDisplay>#body{height:auto;overflow:visible;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.65fr);grid-template-rows:min-content 1fr;gap:12px;align-items:start}
+html[data-dol-midnight] #kitchenDisplay #mainSection{display:contents}
+html[data-dol-midnight] #kitchenDisplay #search{grid-column:1;grid-row:1;height:auto;min-width:0;white-space:nowrap;border:1px solid var(--700);border-radius:10px;padding:10px;gap:10px}
+html[data-dol-midnight] #kitchenDisplay #search input{width:0;flex:1;min-width:40px;box-sizing:border-box}
+html[data-dol-midnight] #kitchenDisplay #search>a{flex-shrink:0}
+html[data-dol-midnight] #kitchenDisplay #itemList{grid-column:1;grid-row:2;height:auto;overflow:visible;display:flex;flex-direction:column;flex-wrap:nowrap;gap:10px;padding:0;min-width:0}
+html[data-dol-midnight] #kitchenDisplay #itemList>div{flex:none;border-radius:10px;padding:10px;overflow-wrap:anywhere}
+html[data-dol-midnight] #kitchenDisplay #altSection{grid-column:2;grid-row:1 / span 2;height:auto;width:auto;min-width:0;border:1px solid var(--700);border-radius:10px;background:var(--800);overflow-wrap:anywhere}
+html[data-dol-midnight] #kitchenDisplay #basket{height:auto;padding:10px;border-color:var(--700)}
+html[data-dol-midnight] #kitchenDisplay #basketItems{height:auto;overflow:visible;padding:12px;min-width:0}
+html[data-dol-midnight] #kitchenDisplay :is(select,input[type=number]){max-width:100%;box-sizing:border-box}
+html[data-dol-midnight] #kitchenDisplay .item .details{min-width:0;align-content:start}
+/* The options state has no recipe details, so it needs no dedicated column. */
+html[data-dol-midnight] #kitchenDisplay>#body:has(#listbox-optionsingredientssearch){display:flex;flex-direction:column;align-items:stretch}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #search{order:0}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #altSection{order:1;display:block!important;position:static;max-height:none;min-height:0;width:auto}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #itemList{order:2}
+html[data-dol-midnight] #kitchenDisplay #basketItems:has(#listbox-optionsingredientssearch){display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px}
+html[data-dol-midnight] #kitchenDisplay #basketItems:has(#listbox-optionsingredientssearch)>br{display:none}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #basket{display:none}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #mobileCloser{display:none!important}
+@media(max-width:600px){
+ html[data-dol-midnight] #kitchenDisplay{padding:8px}
+ html[data-dol-midnight] #kitchenDisplay>#body{display:flex;flex-direction:column;align-items:stretch;height:auto}
+ html[data-dol-midnight] #kitchenDisplay #search{order:0}
+ html[data-dol-midnight] #kitchenDisplay #altSection{order:1;position:static;min-height:0;max-height:none;width:auto}
+ html[data-dol-midnight] #kitchenDisplay #itemList{order:2}
+ html[data-dol-midnight] #kitchenDisplay #mobileCloser{display:none!important}
+ html[data-dol-midnight] #kitchenDisplay #mainSection .item .details{width:100%}
+}
