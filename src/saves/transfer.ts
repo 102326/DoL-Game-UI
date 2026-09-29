@@ -2,7 +2,7 @@
 export function createSaveTransfer(){
  let host:HTMLElement|null=null;
  const moved:{node:Node;anchor:Comment}[]=[];
- function release(){for(const {node,anchor} of moved){if(anchor.isConnected)anchor.replaceWith(node)}moved.length=0;host?.remove();host=null}
+ function release(){for(const {node,anchor} of moved){if(anchor.isConnected&&node.isConnected)anchor.replaceWith(node);else anchor.remove()}moved.length=0;host?.remove();host=null}
  function refresh(enabled:boolean){
   const input=document.querySelector('#customOverlayContent #saveDataInput');
   if(enabled&&host?.isConnected&&host.contains(input))return;

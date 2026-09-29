@@ -16,7 +16,7 @@ export function startSaves(root:Window & Record<string,any>){
  function closeDetails(){host?.querySelector<HTMLDialogElement>('dialog[open]')?.close()}
  function release(){
   closeDetails();
-  for(const {node,anchor} of moved){if(anchor.isConnected)anchor.replaceWith(node);else anchor.remove()}moved.length=0;
+  for(const {node,anchor} of moved){if(anchor.isConnected&&node.isConnected)anchor.replaceWith(node);else anchor.remove()}moved.length=0;
   footer?.remove();footer=null;
   app?.unmount();app=undefined;host?.remove();host=null;container?.querySelectorAll('.dgs-native-row').forEach(n=>n.classList.remove('dgs-native-row'));container=null;rows=[];buttons=[]
  }

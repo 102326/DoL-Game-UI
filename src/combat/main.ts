@@ -59,6 +59,11 @@ function scan(){
  // Original struggle scenes deliberately emit several listContainer IDs.
  // Keep each region in place rather than gathering narrative into one panel.
  let lists=[...document.querySelectorAll<HTMLElement>('#passages .passage [id="listContainer"],#passages .passage [data-dcu-action-list]')].filter(visible);
+ if(actionLists&&enabled){
+  const page=lists[0]?.closest('.passage');
+  const added=page&&[...page.querySelectorAll<HTMLInputElement>('input[type=radio]')].some(input=>input.name&&input.parentElement?.tagName==='LABEL'&&!input.closest('[data-dcu-action-list],#listContainer'));
+  if(added){disposeSession();lists=[]}
+ }
  if(!lists.length&&enabled){disposeSession();const page=document.querySelector<HTMLElement>('#passages .passage:has(#masturbationButtons)');if(page){actionLists=wrapActionLists(page);lists=actionLists.lists.filter(visible)}}
  const passage=lists[0]?.closest('.passage');
  if(!lists.length||lists.some(list=>list.closest('.passage')!==passage||lists.some(other=>other!==list&&other.contains(list)))){disposeSession();return}

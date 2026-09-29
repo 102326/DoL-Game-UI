@@ -47,13 +47,15 @@ export function startLayout(root=window){
     }
     if(!active || (event.type==='keydown'&&event.key!=='Escape'))return;
     if(document.querySelector('dialog[open]'))return;
+    // SugarCube confirmations sit above the custom overlay that opened them.
+    const dialog=root.SugarCube?.Dialog??root.Dialog;
+    if(visible(document.getElementById('ui-dialog')) && typeof dialog?.close==='function'){
+      event.preventDefault();event.stopImmediatePropagation();dialog.close();return;
+    }
     const custom=document.getElementById('customOverlay');
     const close=custom?.querySelector('.customOverlayClose');
     if(visible(custom)&&(typeof root.closeOverlay==='function'||visible(close))){
       event.preventDefault();event.stopImmediatePropagation();if(typeof root.closeOverlay==='function')root.closeOverlay();else close.click();return;
-    }
-    if(visible(document.getElementById('ui-dialog')) && typeof root.Dialog?.close==='function'){
-      event.preventDefault();event.stopImmediatePropagation();root.Dialog.close();return;
     }
     if(shade&&!shade.hidden){event.preventDefault();event.stopImmediatePropagation();stow();}
   }
