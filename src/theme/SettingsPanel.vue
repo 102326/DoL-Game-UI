@@ -3,7 +3,7 @@ import type {PanelKind} from '../panels/main';
 import GameButton from '../ui/GameButton.vue';
 import SettingsToggle from '../ui/SettingsToggle.vue';
 import type {SettingsState,PreferenceKey} from './preferences';
-const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
+const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
 function wardrobeChange(event:Event){const input=event.target as HTMLSelectElement;props.onWardrobe(input.value==='new');input.value=props.state.wardrobe?'new':'original'}
 </script>
 <template>
@@ -14,14 +14,18 @@ function wardrobeChange(event:Event){const input=event.target as HTMLSelectEleme
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
    <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
   </section>
-  <section class="dmt-setting-card"><h3>侧栏与布局</h3>
+  <section class="dmt-setting-card"><h3>字体与按钮大小</h3>
+<label v-for="item in ([{key:'fontScale',label:'字体'},{key:'buttonScale',label:'按钮'}] as const)" :key="item.key" class="dgu-setting-row"><span>{{item.label}} {{state.preferences[item.key]}}%</span><input type="range" min="50" max="200" step="5" :aria-label="item.label+'大小'" :value="state.preferences[item.key]" @input="onPreference(item.key,Number(($event.target as HTMLInputElement).value))"/></label>
+<GameButton @click="onPreference('fontScale',100);onPreference('buttonScale',100)">恢复 100%</GameButton><p>分别调整文字与按钮间距；图片保持原大小。</p></section>
+<section class="dmt-setting-card"><h3>侧栏与布局</h3>
    <SettingsToggle label="启用响应式布局" description="适配手机抽屉与平板侧栏；关闭可恢复原版布局" :checked="state.preferences.layout" @change="onPreference('layout',$event)"/>
    <SettingsToggle label="紧凑状态间距" :checked="state.preferences.compactStats" @change="onPreference('compactStats',$event)"/>
    <p>角色状态保持展开。折叠侧栏沿用游戏原有操作。</p>
   </section>
   <section class="dmt-setting-card"><h3>专用界面</h3>
    <SettingsToggle label="启用新版存档界面" :checked="state.saves" @change="onSaves"/>
-   <SettingsToggle label="启用新版服装店" :checked="state.shop" @change="onShop"/>
+   <SettingsToggle label="存档 V2 双栏详情" description="宽屏并排显示列表与详情；窄屏自动使用弹出详情" :checked="state.preferences.savesV2" @change="onPreference('savesV2',$event)"/>
+<SettingsToggle label="启用新版服装店" :checked="state.shop" @change="onShop"/>
    <SettingsToggle label="启用新版日志与笔记" :checked="state.panels.journal" @change="onPanel('journal',$event)"/>
    <SettingsToggle label="启用新版特质界面" :checked="state.panels.traits" @change="onPanel('traits',$event)"/>
    <SettingsToggle label="启用新版统计界面" :checked="state.panels.statistics" @change="onPanel('statistics',$event)"/>

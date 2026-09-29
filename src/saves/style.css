@@ -61,3 +61,10 @@
 .dgs-detail:not([open]){display:none!important}.dgs-detail[open]{display:flex;position:fixed;inset:12px 12px 12px auto;margin:0;width:min(560px,calc(100vw - 24px));height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);max-width:calc(100vw - 24px);box-sizing:border-box;color:#e7e6ef;z-index:100001}
 .dgs-detail::backdrop{background:#0009}.dgs-close{align-self:flex-end}.dgs-detail-tools .dgs-tools{display:flex;flex-direction:row;align-items:start;flex-wrap:wrap}.dgs-file-tools{flex:1}.dgs-save-settings{min-width:140px}
 @container(max-width:650px){.dgs-slot-grid{grid-template-columns:minmax(0,1fr)}.dgs-list{display:flex!important;max-height:none}.dgs-detail[open]{inset:8px;width:calc(100vw - 16px);height:calc(100dvh - 16px);max-height:calc(100dvh - 16px);max-width:calc(100vw - 16px)}}
+
+.dgs-layout.dgs-v2{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:1rem;align-items:stretch}
+.dgs-v2 .dgs-slot-grid{grid-template-columns:minmax(0,1fr)}
+.dgs-v2 .dgs-detail.dgs-inline-detail{position:static;inset:auto;width:auto;height:auto;max-height:75vh;max-width:100%;margin:0;z-index:auto;display:flex!important}
+.dgs-v2 .dgs-list{min-width:0}
+
+.dgs-name-form{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}.dgs-name-form label{flex:1;min-width:0}.dgs-name-form input{display:block;width:100%}.dgs-name-form small,.dgs-name-form p{flex-basis:100%;margin:0;color:#aaa9bb}

@@ -39,19 +39,21 @@ export function startWardrobe(root:any){
   if(s.anchor.parentNode){while(s.original.firstChild)s.anchor.parentNode.insertBefore(s.original.firstChild,s.anchor);}
   s.app?.unmount();s.host.remove();s.toggle.remove();s.anchor.remove();active=undefined;
  }
- async function paint(s:Session,isolated=false){
+ async function paint(s:Session){
   previewAbort?.abort();const controller=new AbortController();previewAbort=controller;
-  const ticket=++generation;s.state.canWear=false;s.state.loading=true;s.state.previewStatus='正在生成完整穿搭…';
-  s.view.preview?.replaceChildren();
-  try{
-   const proposal={worn:s.snapshot.worn,changed:[]};
-   const mirrored=!isolated&&s.view.preview?await mirrorSidebar(s.view.preview,controller.signal,()=>{if(active===s&&!controller.signal.aborted)void paint(s,true)}):null;
-   if(controller.signal.aborted)return;
-   const canvas=mirrored??await renderOutfit(root,s.snapshot,proposal.worn,proposal.changed,timing);
-   if(ticket!==generation||active!==s)return;
-   s.view.preview?.replaceChildren(canvas);s.state.previewStatus='当前角色的完整穿搭';
-  }catch(error){if(ticket!==generation||active!==s)return;console.error('[DoLGameUI] wardrobe preview failed',error);s.state.previewStatus='本次预览不可用';s.state.message=error instanceof Error?error.message:'请使用原版衣柜';}
-  finally{if(ticket===generation&&active===s)s.state.loading=false}
+  const ticket=++generation;let revision=0;
+  const valid=()=>ticket===generation&&active===s&&!controller.signal.aborted;
+  const show=(canvas:HTMLCanvasElement)=>{if(!valid())return;revision++;s.view.preview?.replaceChildren(canvas);s.state.previewStatus='当前角色的完整穿搭';s.state.loading=false};
+  async function fallback(){
+   const attempt=++revision;
+   try{const canvas=await renderOutfit(root,s.snapshot,s.snapshot.worn,[],timing);if(valid()&&attempt===revision)show(canvas)}
+   catch(error){if(!valid()||attempt!==revision)return;console.error('[DoLGameUI] wardrobe preview failed',error);s.state.previewStatus='本次预览不可用';s.state.message=error instanceof Error?error.message:'请使用原版衣柜'}
+   finally{if(valid()&&attempt===revision)s.state.loading=false}
+  }
+  s.state.canWear=false;s.state.loading=true;s.state.previewStatus='正在生成完整穿搭…';s.view.preview?.replaceChildren();
+  const mirrored=s.view.preview?await mirrorSidebar(s.view.preview,controller.signal,()=>{void fallback()},show):null;
+  if(!valid())return;
+  if(mirrored)show(mirrored);else await fallback();
  }
  function refresh(s:Session,force=false,message=s.state.message){
   return timing.measure('ui.refresh',()=>refreshModel(s,force,message));

@@ -1,19 +1,18 @@
 /** Copy the native full-character canvas; never move it or rerun its renderer. */
-export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:()=>void):Promise<HTMLCanvasElement|null>{
- if(!document.querySelector('#sidebar-img-container #img canvas.mainCanvas'))return Promise.resolve(null);
+export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:()=>void,onRecovered:(canvas:HTMLCanvasElement)=>void):Promise<HTMLCanvasElement|null>{
  return new Promise(resolve=>{
   const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
   const probe=document.createElement('canvas');probe.width=probe.height=16;
   const sample=probe.getContext('2d',{willReadFrequently:true});
   canvas.setAttribute('role','img');canvas.setAttribute('aria-label','当前角色完整穿搭预览');
   canvas.dataset.previewSource='sidebar';
-  let timer:ReturnType<typeof setTimeout>|undefined,finished=false,stopped=false,visible=true;
+  let timer:ReturnType<typeof setTimeout>|undefined,finished=false,stopped=false,visible=true,mirrored=false;
   let source:HTMLCanvasElement|null=null,missingSince=performance.now();
   const observer=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??true});
   observer.observe(host);
   function stop(){stopped=true;clearTimeout(timer);observer.disconnect();signal.removeEventListener('abort',abort)}
   function abort(){stop();if(!finished){finished=true;resolve(null)}}
-  function unavailable(){stop();if(!finished){finished=true;resolve(null)}else onUnavailable()}
+  function unavailable(){if(!finished){finished=true;resolve(null)}else if(mirrored)onUnavailable();mirrored=false}
   function tick(){
    if(stopped)return;
    if(!finished||(!document.hidden&&visible)){
@@ -31,19 +30,19 @@ export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:
        if(canvas.width!==next.width||canvas.height!==next.height){canvas.width=next.width;canvas.height=next.height}
        ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(next,0,0);
        source=next;missingSince=performance.now();
-       if(!finished){finished=true;resolve(canvas)}
+       if(!finished){finished=true;resolve(canvas)}else if(!mirrored)onRecovered(canvas);mirrored=true;
       }
      }
-    }catch{unavailable();return}
+    }catch{unavailable()}
     if(!ready){
      // Do not keep showing the previous outfit while a replacement is loading.
      if(source&&source!==next){ctx?.clearRect(0,0,canvas.width,canvas.height);source=null}
-     if(performance.now()-missingSince>1500){unavailable();return}
+     if(performance.now()-missingSince>1500)unavailable()
     }
    }
    // Bounded sampling also observes in-place canvas animation, which a DOM
    // MutationObserver cannot see. Pause copies while the preview is offscreen.
-   timer=setTimeout(tick,125);
+   timer=setTimeout(tick,mirrored?125:500);
   }
   signal.addEventListener('abort',abort,{once:true});
   if(signal.aborted)abort();else tick();
