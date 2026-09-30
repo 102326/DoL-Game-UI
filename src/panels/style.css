@@ -37,6 +37,8 @@
 .dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .settingsToggleItemWide{grid-column:1/-1}
 .dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) :is(input[type=button],button,select){min-height:40px;border:1px solid var(--dgu-border);border-radius:8px;background:var(--dgu-surface);color:var(--dgu-text);max-width:100%}
 .dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) input[type=range]{max-width:100%}
+.dgp-overlay[data-dgp-panel=cheats] .input-row:has(>input[type=text])>button.macro-button{width:auto;flex:0 0 auto}
+.dgp-overlay[data-dgp-panel=cheats] .input-row>input[type=text]{min-width:0}
 @media(max-width:700px){.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .settingsGrid{grid-template-columns:minmax(0,1fr)}}
 
 .dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .numberStepperContainer{margin:4px 0}
