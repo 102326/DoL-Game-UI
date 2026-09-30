@@ -42,13 +42,13 @@ function wardrobeChange(event:Event){const input=event.target as HTMLSelectEleme
    <SettingsToggle label="衣柜按页渲染" description="默认只生成当前页的40件衣物；搜索、排序和全选仍覆盖整个分类。出现兼容问题时可关闭" :checked="state.preferences.wardrobePaged" @change="onPreference('wardrobePaged',$event)"/>
    <p>这是新版衣柜的默认显示方式，不会改变衣物数据、穿戴规则或存档内容。</p>
   </section>
-  <section class="dmt-setting-card"><h3>进阶实验</h3>
+  <details class="dmt-setting-card dmt-experiments"><summary><strong>进阶实验</strong><span>展开调整，现有设置保持不变</span></summary>
    <SettingsToggle label="衣柜延迟原版隐藏列表（实验）" description="新版衣柜换装时暂不重建隐藏的原版列表；出现兼容问题时关闭此项" :checked="state.preferences.wardrobeHiddenList" @change="onPreference('wardrobeHiddenList',$event)"/>
    <SettingsToggle label="商店离屏绘制延后（实验）" description="让支持的浏览器跳过屏幕外商品的排版与绘制；滚动异常时关闭此项" :checked="state.preferences.shopDeferredPaint" @change="onPreference('shopDeferredPaint',$event)"/>
    <SettingsToggle v-if="state.shopPageExperimentAvailable" label="商店按页生成（实验）" description="只生成当前页商品；下次进入商店列表时生效，异常时关闭此项" :checked="state.preferences.shopPageExperiment" @change="onPreference('shopPageExperiment',$event)"/>
    <SettingsToggle label="启动缓存按需重建（实验）" description="减少模组加载时重复重建故事缓存；更改后需保存进度并重启游戏，兼容异常时关闭后再重启" :checked="state.preferences.startupCacheLazy" @change="onPreference('startupCacheLazy',$event)"/>
    <p>这些功能默认关闭，可分别对比。它们只减少界面或缓存生成工作；购买、换装与存档规则保持原样。</p>
-  </section>
+  </details>
   <section class="dmt-setting-card"><h3>兼容回退</h3><p>显示异常时可关闭新版主题、布局和专用界面。游戏进度与模组配置不受影响。</p><div class="dmt-recovery cu:flex cu:flex-wrap cu:gap-2"><GameButton @click="onRecovery(false)">回退原版界面</GameButton><GameButton @click="onRecovery(true)">启用新版界面</GameButton></div></section>
   <section class="dmt-setting-card cu:md:col-span-2"><h3>开发检查</h3><SettingsToggle label="状态接口预览（实验）" description="仅在需要排查状态接口时开启" :checked="state.preferences.statusPreview" @change="onPreference('statusPreview',$event)"/><div id="dol-status-preview" v-once></div></section>
  </div>

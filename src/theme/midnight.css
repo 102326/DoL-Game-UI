@@ -405,3 +405,5 @@ html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssea
  html[data-dol-midnight] #kitchenDisplay #mobileCloser{display:none!important}
  html[data-dol-midnight] #kitchenDisplay #mainSection .item .details{width:100%}
 }
+
+.dmt-experiments>summary{cursor:pointer}.dmt-experiments>summary span{display:block;margin-top:.35em;font-size:.85em;opacity:.7}
