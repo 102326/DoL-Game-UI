@@ -291,6 +291,11 @@ html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOv
     overflow-wrap: anywhere;
 }
 
+/* The debugger is inside .passage; stop inherited wrapping collapsing its grids. */
+html[data-dol-midnight] #customOverlay[data-overlay="canvasModel"] #customOverlayContent {
+    overflow-wrap: normal;
+}
+
 @media (max-width: 640px) {
     html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]),
     html[data-dol-midnight] .settings-container,

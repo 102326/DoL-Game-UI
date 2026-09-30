@@ -45,6 +45,8 @@ const server=http.createServer((req,res)=>{
  if(!await p.locator('#buy-multiple-slider input').count())await p.locator('.clothing-item').first().click();
  await p.locator('#buy-multiple-slider input').evaluate(e=>{e.value='2';e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}))});
  assert.equal(await p.evaluate(()=>V.buyMultiple),2);
+ // Selecting the product again resets native colours; explicitly choose the batch colour.
+ await colour.click();
  const batch=await p.evaluate(()=>({money:V.money,count:V.wardrobe.upper.length}));await p.locator('#buy-send-home .buy-button-inner').click();
  assert.equal(await p.evaluate(()=>V.money),batch.money-price*2);assert.equal(await p.evaluate(()=>V.wardrobe.upper.length),batch.count+2);
 
@@ -143,6 +145,35 @@ const server=http.createServer((req,res)=>{
  await p.locator('[aria-label="进店默认服装类型"]').selectOption('game');
  await p.evaluate(()=>{V.shopClothingFilter.gender.female=false;new SugarCube.Wikifier(null,'<<updateclotheslist>>')});await p.waitForTimeout(200);
  assert.equal(await p.evaluate(()=>V.shopClothingFilter.gender.female),false,'game mode leaves native filter untouched');
+ // Complete the shop -> wardrobe -> save roundtrip in this isolated browser.
+ assert.equal(await p.evaluate(()=>V.wardrobe.upper.length),batch.count+2,'all delivered purchases survive shop navigation');
+ const delivered=await p.evaluate(()=>{const i=V.wardrobe.upper.at(-1);return {variable:i.variable,colour:i.colour}});
+ assert.equal(delivered.colour,'blue','delivered item retains chosen colour');
+ await p.evaluate(()=>{V.location='home';V.wardrobe_location='wardrobe';V.lastWardrobeSlot='upper';SugarCube.Engine.play('Wardrobe')});
+ await p.waitForSelector('.dgw-shell');
+ const deliveredKey=await p.evaluate(()=>`upper:${V.wardrobe.upper.length-1}`);
+ await p.locator(`.dgw-item[data-key="${deliveredKey}"]`).click();
+ assert.deepEqual(await p.evaluate(()=>({variable:V.worn.upper.variable,colour:V.worn.upper.colour})),delivered,'wardrobe equips the purchased item');
+ // A native passage transition commits live V changes to the history snapshot.
+ await p.evaluate(async()=>{SugarCube.Engine.play('Bedroom');await idb.saveState(1)});
+ const inventorySnapshot=()=>JSON.parse(JSON.stringify({money:V.money,wardrobe:V.wardrobe,worn:V.worn,timeStamp:V.timeStamp}));
+ const saved=await p.evaluate(inventorySnapshot);
+ const exported=await p.evaluate(()=>SugarCube.Save.serialize());
+ assert.equal(typeof exported,'string');
+ await p.reload({waitUntil:'load'});
+ await p.waitForFunction(()=>window.SugarCube?.State?.variables?.options);
+ assert.equal(await p.evaluate(()=>!!window.DoLGameUI),false,'fresh native runtime has no injected UI');
+ await p.evaluate(async()=>{await idb.getSaveDetails();await idb.loadState(1)});
+ assert.deepEqual(await p.evaluate(inventorySnapshot),saved,'native IDB load preserves money, full wardrobe, worn items and game time');
+ await p.evaluate(()=>{V.money=1;V.wardrobe.upper=[]});
+ assert.notEqual(await p.evaluate(data=>SugarCube.Save.deserialize(data),exported),false);
+ assert.deepEqual(await p.evaluate(inventorySnapshot),saved,'native serialized import restores purchases and worn state');
+ await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});
+ await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});
+ await p.evaluate(()=>SugarCube.Engine.play('Wardrobe'));await p.waitForSelector('.dgw-shell');
+ assert.deepEqual(await p.evaluate(()=>({variable:V.worn.upper.variable,colour:V.worn.upper.colour})),delivered,'UI can reopen the loaded wardrobe');
+ assert.equal(await p.locator('.error').count(),0);
+ console.log('PASS purchase -> wardrobe equip -> IDB/export -> no-UI load/import -> UI wardrobe',variant);
  const unexpected=errors.filter(e=>!e.includes('bannerFallbackImage.onload')||!e.includes('skybox'));assert.deepEqual(unexpected,[]);
  console.log('PASS shop',variant,'native purchase/colour/trial/return, insufficient money, responsive filters, fallback and lifecycle');
  }finally{await browser.close();server.close()}})().catch(e=>{console.error(e);process.exitCode=1;server.close()});

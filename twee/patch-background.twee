@@ -2,10 +2,12 @@
   <!-- Generate other pages in background after a delay, so that shop can be displayed sooner -->
   <!-- Having all pages loaded allows for very fast shop catalogue navigation -->
   <!-- Generate via <<repeat>> one by one to not cause a lag spike -->
+  <<capture _dolShopListGeneration>>
   <<timed 0.2s>>
+    <<if !_dolShopListGeneration or window.DoLShopPageExperiment.listGeneration eq _dolShopListGeneration>>
     <<set _ppre = _startingShopPage - 1>>
     <<repeat 0.1s>>
-      <<if document.getElementById("shop-list-pages") eq null or _ppre lt 0>>
+      <<if (_dolShopListGeneration and window.DoLShopPageExperiment.listGeneration neq _dolShopListGeneration) or document.getElementById("shop-list-pages") eq null or _ppre lt 0>>
         <<stop>>
       <</if>>
       <!-- Prepend pages before the current page -->
@@ -17,7 +19,7 @@
     <!-- Append pages after the current page -->
     <<set _papp = _startingShopPage + 1>>
     <<repeat 0.1s>>
-      <<if document.getElementById("shop-list-pages") eq null or _papp gte _maxPage>>
+      <<if (_dolShopListGeneration and window.DoLShopPageExperiment.listGeneration neq _dolShopListGeneration) or document.getElementById("shop-list-pages") eq null or _papp gte _maxPage>>
         <<stop>>
       <</if>>
       <<append '#shop-list-pages'>>
@@ -25,5 +27,7 @@
       <</append>>
       <<set _papp++>>
     <</repeat>>
+    <</if>>
   <</timed>>
+  <</capture>>
 <</if>>

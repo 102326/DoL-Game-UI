@@ -19,6 +19,24 @@ const assert = require('node:assert/strict');
   await page.locator('.customOverlay').evaluate(e=>e.setAttribute('data-overlay','saves'));
   const saves = await page.evaluate(read);
   assert.ok(saves.left>=0 && saves.right<=400,'Game overlay remains within viewport');
-  console.log('PASS manager native geometry and game overlay layout');
+  // Native renderer grids size their label column from unbroken option names.
+  await page.setViewportSize({width:1100,height:900});
+  await page.setContent(`<html data-dol-midnight><style>
+   #customOverlayContent{width:960px;font:16px/24px sans-serif}
+   .editormodelgroups{display:flex;align-items:flex-start}
+   .editormodelgroup{display:grid;grid-template:auto/auto auto;margin:8px}
+   .optionlabel{grid-column-start:1}.optioneditor{grid-column-start:2;display:flex}
+   .optioneditor input,.optioneditor select{flex-grow:1;min-width:190px}
+  </style><div class="passage"><div id="customOverlay" data-overlay="canvasModel"><div id="customOverlayContent"><div class="editormodelgroups">
+   ${['show_faces_and_clothes','angel_wings_type','worn.over_upper.integrity'].map((label,i)=>`<div class="editormodelgroup"><label class="optionlabel" for="debug-${i}">${label}</label><div class="optioneditor"><input id="debug-${i}" type="checkbox"></div></div>`).join('')}
+  </div></div></div></div></html>`);
+  const debugGeometry=()=>[...document.querySelectorAll('.optionlabel,input')].map(n=>({width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height}));
+  const nativeDebug=await page.evaluate(debugGeometry);
+  await page.addStyleTag({path:'src/theme/midnight.css'});
+  assert.deepEqual(await page.evaluate(debugGeometry),nativeDebug,'debugger grid keeps native label and checkbox geometry');
+  assert.equal(await page.locator('#customOverlayContent').evaluate(n=>getComputedStyle(n).overflowWrap),'normal');
+  await page.locator('#customOverlay').evaluate(n=>n.dataset.overlay='saves');
+  assert.equal(await page.locator('#customOverlayContent').evaluate(n=>getComputedStyle(n).overflowWrap),'anywhere','ordinary overlays retain long-text wrapping');
+  console.log('PASS manager native geometry, game overlay layout and native renderer grid');
  } finally { await browser.close(); }
 })().catch(e=>{console.error(e);process.exitCode=1});

@@ -203,3 +203,83 @@
 - 平板运行1.0.9-preview.3，临时加载与正式版相同的布局模块：Esc和网页backbutton只关子框，父框保留；真实KEYCODE_BACK仍关两层，属于此前定位的宿主处理器行为。变量序列化与Passage前后相同。
 - 首次设备脚本因侧栏按钮不可见而超时；改为触发原按钮click事件打开选项，验证弹窗关闭逻辑，不作为触摸入口可见性验收。没有修改用户存档，没有安装最终正式ZIP或重启做冷启动验收。
 - 仍未穷尽更多模组组合、云存档、未知控件及第三方动作结算；遇到异常可关闭对应功能或回退1.0.8。
+
+
+## 1.0.9 商店与衣柜业务补充验收（2026-09-30）
+
+- `node tests/shop.test.cjs` 在原版及 `DOL_WARDROBE_INTEGRATED=1` 下通过：新增购买配送后衣柜穿戴，原生IDB保存/读档、存档码导出/导入；刷新至无UI环境后深比较金钱、完整衣柜、穿搭和游戏时间，再启用UI打开衣柜正常。保存前原生Passage切换用于提交历史快照；不替代存档菜单操作验收。
+- `node tests/wardrobe-operations.test.cjs` 通过；`wardrobe-runtime.cjs`、`wardrobe-features.test.cjs` 在原版及Lyra均通过，包含穿脱、整理/取消/过期保护、套装丢弃/剪开、修理、转移、回退和五视口自动几何检查。
+- 修正两个测试前提：批量购买前明确重新选择颜色；整理后等待异步预览完成再判断画布。原失败分别为黑色与蓝色断言不符、画布不存在；后者诊断时aria-busy为true。没有为了过测修改产品源码。
+- Lyra测试首次缺少错误归属所需对照文件，未记通过。随后以 `DOL_WARDROBE_INTEGRATED=1 DOL_WARDROBE_CONTROL=1` 运行衣柜runtime，确认无UI也报 `bannerFallbackImage.onload` / `reading 'skybox'`，保存对照后完整回归通过；该上游错误未修复。
+- 全部为隔离浏览器新游戏，未写真实存档，未操作Android设备。未覆盖完整真实模组组合、直接购买穿上、非家中配送、云存档，也不是性能收益证据。当前只更新测试/文档，不发布新版本。
+
+
+## 当前衣柜性能基线（2026-09-30）
+
+- `node tests/wardrobe-current-baseline.cjs` 通过：1.0.9暖缓存、隔离原版合成库存、每轮恢复同一存档，一对预热+三对交错开关。业务状态哈希一致；记录原生列表调用/耗时、长任务与帧边界等待。无产品源码/默认值变更。
+- 最新桌面进入约99.8/95.5ms（实验关/开），换装92.7/41.8ms；原生列表换装重建47.7/0ms。仅三次正式样本，不代表真机或全部模组。初稿CDP求值任务未进入长任务统计，修正为页面定时任务后补测；旧数据保留并在工作区开发记录标注。
+- ADB平板当前1.0.9：只测分类/搜索/预览刷新，中位约32–46ms，五次正式样本，无长任务；完整游戏状态序列化一致。未换装或保存真实游戏，不提供真机换装收益结论。
+
+
+## 衣柜首次生成隔离实验结论（2026-09-30）
+
+- ignored `tests/artifacts/wardrobe-entry-restored-probe.cjs`：首次跳过完整原生列表，UI显示后显式补建原生列表再禁用UI；最终运行退出0。固定隔离夹具原生读档时产生的 `saveDetails.loadTime` 后，完整状态深比较四对均相同，八次回退原生条目数85→85。此前失败仅据逐字段诊断确认加载时刻不同，未排除业务字段放宽断言。
+- 三对正式暖缓存样本中位：正常完整就绪113.9ms；延迟首次UI57.8ms，补建后126.7ms。包括补建的完整窗口长任务3/3；不能把首段的0次长任务当总收益。测试含帧等待，不代表真机触摸到显示时延。
+- 产品合入仍为 `accepted:false`：这只是显式恢复原型，未建立生产生命周期协议或验证第三方时序，完整耗时无明确收益。证据 `wardrobe-entry-restored-probe-1790774821281.json`；原失败记录保留。没有产品源码、默认值、设备或发行版本改动。
+
+
+## 未发布：服装店后台任务生命周期（2026-09-30）
+
+- `tests/shop-current-baseline.cjs` 以原版夹具载入四个精确Twee替换，一次预热+三次交错开关，测试原链接触发的筛选/翻页及350ms间隔筛选。修复前最后199项出现247项；中途开启按页模式后仍追加至26页。修复以列表代次让旧timed/repeat停止，当前列表生成规则不变。
+- 修复后的原始结果 `tests/artifacts/shop-current-baseline-1790776166963.json`：全部八轮业务状态比较通过、离店后无生成、默认列表199项、开关切换后1页、17页名称与顺序核对一致、空搜索0项。首次运行末尾因一个 `bannerFallbackImage.onload` / skybox 异常退出1，原始失败保留。
+- `DOL_SHOP_BANNER_CONTROL=1 node tests/shop-current-baseline.cjs` 在同一原版夹具完全不加载UI/实验脚本/补丁，延迟背景图片后进入Start2，精确复现上述错误；对照记录 `shop-banner-control.json`。`DOL_SHOP_VERIFY_ARTIFACT=tests/artifacts/shop-current-baseline-1790776166963.json node tests/shop-current-baseline.cjs` 重验原始证据全部商店断言通过，同时明确报告1个独立复现上游异常。不是重新采样，更不是全程无异常。
+- 修复后实验关闭/开启：累计生成耗时中位932.0/18.7ms、页数47/1、目录节点22788/491；首段两帧等待42.8/46.9ms，翻页32.8/35.5ms。主要减少后台工作，不能作为首屏大幅加速或真机表现证据。三次桌面暖缓存样本，非全模组验收。
+- 包内四补丁逐字节检查通过；检查后按字节恢复原1.0.9 ZIP，没有发布或安装候选。只读确认ADB平板仍在衣柜、UI1.0.9、无.error，不代表服装店真机验收。实验仍默认关闭；更多模组组合、真实服装店验收及安装包启动待做。
+
+
+## 1.0.10-preview.1：Lyra隔离回归与集中ADB候选（2026-09-30）
+
+- `DOL_WARDROBE_INTEGRATED=1 node tests/shop-current-baseline.cjs` 完成1次预热+3次交错开关；553项、默认47页/按页1页，间隔筛选199项，无重复；17页筛选结果逐页一致，离店后无追加生成。原始结果1790776628116，运行时仍为1.0.9加当前Twee补丁。首次末尾缺少Lyra无UI异常对照文件而失败，未记全程通过。
+- `DOL_WARDROBE_INTEGRATED=1 DOL_SHOP_BANNER_CONTROL=1` 同脚本在同一Lyra夹具不注入UI/补丁，复现bannerFallbackImage.onload / skybox。对照按variant分文件保存，避免混用原版对照。随后以 `DOL_SHOP_VERIFY_ARTIFACT=tests/artifacts/shop-current-baseline-1790776628116.json` 复核原始全部断言通过，同时保留1个上游异常。
+- 候选UI实际运行版本1.0.10-preview.1。`DOL_SHOP_LIFECYCLE_ONLY=1` 在原版和Lyra（另设DOL_WARDROBE_INTEGRATED=1）均通过：开关连续切换保留1页、47页全部名称/顺序核对、空搜索0项；从第5页重建默认目录时前后页完整按0–46排列、显示页仍5；购买一件原生1500商品只扣1500、对应衣柜仅增加1件。原版证据1790776744408无pageerror；Lyra1790776704701业务断言通过并单列1个已复现上游异常。全部是隔离新游戏，不操作真实存档。
+- `npm run package` 的类型检查、渲染字段检查和构建通过；`node tests/shop-pagination-package.test.cjs` 对候选包四补丁逐字节检查通过，默认关闭保持不变；`git diff --check`通过。完整性能采样在构建候选前完成，候选生命周期专项在构建后运行，没有重复全套性能测量。
+- 构建会清空dist并产生新候选ZIP；正式包保存在工作区releases/mods/DoLGameUI-1.0.9.mod.zip，SHA256仍为2d404a7dd5fdf3e5145502ef79f9ce57f7c47ebd274f9eec4485d39518d099e5。没有发布、推送或安装新包。
+- 集中ADB待验：实际加载候选版本/四补丁 → 按页关闭时快速连续筛选无重复 → 后台生成期间切换按页模式 → 翻页与搜索清空 → 商品详情/选色/试穿及可恢复副本购买 → 离店/重入和回退。优先保护真实进度；未完成之前不称真机已验收或全模组兼容。
+
+
+## 1.0.10-preview.1：ADB商店非结算验证（2026-09-30）
+- 设备M367FC、1363×876；已运行候选，存储ZIP摘要与141487字节候选一致，加载后缓存包含capture代次和repeat检查。本轮没有安装、热注入或重启。
+- 连续筛选默认17页199项/按页1页12项，中途切换后5.5秒仍1页；中文名称顺序与原生筛选一致。完整V恢复后无字段变化，原偏好恢复，页面错误0。
+- 翻页0/1/37/0及详情往返通过，库存/金钱/穿搭不变。初始英文名称断言失败保留，确认汉化字段后修正测试，未更改产品。
+- 本地证据adb-shop-110-localized-result.json、adb-shop-110-page-nav.json、adb-shop-110-detail.json；真实进度未保存/购买/试穿。搜索、选色、试穿、可恢复副本购买、离店重入与UI回退仍待验；不是完整业务或全模组验收。
+- 本记录在构建后补充，未重新打包；包摘要仍为既有候选摘要。
+
+
+## 存档设置刷新修复（本地待交付）
+- 完整桌面发版批次在saves-runtime复选框不可见处失败，原报告workflow-release-1790782853463.json保留。确定性复现证明原生存档行变化触发重建，丢失details.open；不是用force点击绕过可见性。
+- src/saves/main.ts保留刷新前的设置展开状态，回归在原生按钮disabled变化后等两帧检查仍展开。修复前失败、修复后test:quick -- saves通过保存/读取/删除、取消覆盖、传输回退和旧档/无UI读取。终端资源404及skybox异常单列，退出0不代表全程零pageerror。
+- 余下六项布局/战斗检查分别运行通过，release-remainder-after-save-fix.json没有未执行项；结合此前通过项完成代表性桌面覆盖，不将原失败批次改写通过。
+- 代码修复未进入releases/candidates原preview.1交付包，未在ADB安装或发布。下一次交付递增preview。
+
+
+## 1.0.10-preview.2候选整理（2026-10-01）
+- 在preview.1商店修复基础上加入上述存档设置展开状态修复。代表性桌面覆盖沿用已完成记录；版本递增不重跑完整性能采样。正式版仍为1.0.9。
+- preview.1已交付文件保持原字节；preview.2构建、包内四Twee补丁检查及真实设备版本验证分别记录，尚未完成的真机业务不称通过。
+
+- 2026-10-01交付后补记（未重新打包）：preview.2 ZIP143853字节，SHA256 `d4fcf0417e29d512ff47420a7245cba822eddb68e4aa65925d8d3df29648e510`；四补丁逐字节/构建/类型/ZIP完整性通过。用户确认保存后备份、事务安装并重启，实际运行preview.2。ADB原生存档按钮disabled恢复触发刷新，设置仍展开、完整V未变、可见错误0；证据adb-preview2-saves-result.json。停在Start，未加载真实存档或结算。
+
+
+## 渲染器调试窗口兼容修复（2026-10-01，本地待交付）
+- 真机开启canvasModel窗口，脚本无可见报错但checkbox高度120px、标签列20.575px；移除主题属性原生对照为24px/182.431px。主题overflow-wrap:anywhere影响原生auto/auto网格，是我们的兼容问题。
+- 调试窗口实际嵌在.passage的footer内，单独从内容选择器排除仍会继承anywhere，真机验证失败。最终对canvasModel内容明确overflow-wrap:normal，其他弹窗/故事换行不变。
+- overlay-manager-layout追加原生形状网格及.passage祖先：修复前失败、修复后通过；类型检查/构建、display-scale和diff检查通过。没有新增依赖。
+- 真机只热应用同一CSS规则，模型/图层/颜色三页切换通过、完整V保持、捕获pageerror0；checkbox恢复24px。证据adb-render-debug-fixed.json/png。没有操作模型编辑选项。原生编辑器仍可横向滚动，这是保留的原布局。
+- 运行与存储仍preview.2，交付ZIP不含新规则；热CSS重启失效，下次交付须递增preview或纳入正式新版本，不覆盖同版本归档。
+
+
+## 1.0.10正式版收口（2026-10-01）
+
+- 合并preview.1/preview.2修复及渲染器调试窗口显式normal换行策略；不新增默认开启实验，不改变存档格式、模型编辑和游戏结算。
+- `node scripts/test-workflow.cjs quick saves layout`通过：构建/字段检查/类型检查、全部单元检查、存档运行/导入导出/无UI兼容、缩放、弹窗与渲染器网格、厨房布局。报告：`workflow-quick-1790787620913.json`。
+- 复用之前有效的商店/衣柜/战斗回归与preview.2真机业务证据；debug真机使用与源码相同的热CSS，未宣称正式ZIP在设备重启后的完整验收。
+- 正式版仍需观察更多第三方组合。已交付preview ZIP保持原字节，1.0.9作为回退基线。

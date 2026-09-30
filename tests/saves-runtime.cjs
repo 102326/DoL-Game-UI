@@ -20,7 +20,13 @@ const server=http.createServer((req,res)=>{
  await p.locator('.dgs-tools #pageNum').fill('2');await p.locator('.dgs-tools #pageNum').dispatchEvent('change');await p.waitForFunction(()=>[...document.querySelectorAll('.dgs-slot')].some(n=>n.textContent==='11'));
  await p.locator('.dgs-tools #pageNum').fill('1');await p.locator('.dgs-tools #pageNum').dispatchEvent('change');await p.waitForFunction(()=>[...document.querySelectorAll('.dgs-slot')].some(n=>n.textContent==='1'));
  await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
- await p.locator('.dgs-save-settings summary').click();const checkbox=p.locator('.dgs-save-settings input[type=checkbox]').first();await checkbox.setChecked(true);assert.equal(await checkbox.isChecked(),true);
+ await p.locator('.dgs-save-settings summary').click();
+ assert.equal(await p.locator('.dgs-save-settings').evaluate(e=>e.open),true);
+ // Native row updates can arrive after pagination while the user opens settings.
+ await p.evaluate(()=>{const b=document.querySelector('.savesListRow button');const old=b.disabled;b.disabled=!old;b.disabled=old});
+ await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ assert.equal(await p.locator('.dgs-save-settings').evaluate(e=>e.open),true,'native row refresh preserves expanded settings');
+ const checkbox=p.locator('.dgs-save-settings input[type=checkbox]').first();assert.ok(await checkbox.isVisible());await checkbox.setChecked(true);assert.equal(await checkbox.isChecked(),true);
  assert.equal(await p.locator('#saves-import').count(),1);
  console.log('IDB list',await p.locator('.dgs-item').count());
  assert.equal(await p.locator('.dgs-entries details').count(),2);

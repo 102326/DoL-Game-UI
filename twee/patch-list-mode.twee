@@ -1,2 +1,3 @@
 <<set _dolShopPageExperimentMode to !!(window.DoLShopPageExperiment && window.DoLShopPageExperiment.enabled)>>
+<<set _dolShopListGeneration to window.DoLShopPageExperiment ? (window.DoLShopPageExperiment.listGeneration = (window.DoLShopPageExperiment.listGeneration || 0) + 1) : 0>>
 <div id="shop-list-pages" class="shop-list-pages">

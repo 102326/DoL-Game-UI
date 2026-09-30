@@ -20,12 +20,12 @@ export function startSaves(root:Window & Record<string,any>){
   footer?.remove();footer=null;
   app?.unmount();app=undefined;host?.remove();host=null;container?.querySelectorAll('.dgs-native-row').forEach(n=>n.classList.remove('dgs-native-row'));container=null;rows=[];buttons=[]
  }
- function organizeTools(next:HTMLElement){
+ function organizeTools(next:HTMLElement,settingsOpen:boolean){
   const parent=next.parentElement;if(!parent)return;
   const groups=[...parent.querySelectorAll<HTMLElement>(':scope > ul.buttons')];
   if(!groups.length)return; // Legacy and unrecognised toolbars remain native.
   footer=document.createElement('section');footer.className='dgs-tools';
-  const settings=document.createElement('details');settings.className='dgs-save-settings';
+  const settings=document.createElement('details');settings.className='dgs-save-settings';settings.open=settingsOpen;
   const summary=document.createElement('summary');summary.textContent='存档设置';settings.append(summary);
   function move(node:HTMLElement,target:HTMLElement){const anchor=document.createComment('dol-save-tools');node.before(anchor);moved.push({node,anchor});target.append(node)}
   for(const group of groups){
@@ -46,6 +46,7 @@ export function startSaves(root:Window & Record<string,any>){
   if(!enabled||!next){release();return}
   if(next===container&&host?.isConnected&&!dirty)return;
   dirty=false;
+  const settingsOpen=footer?.querySelector<HTMLDetailsElement>('.dgs-save-settings')?.open??false;
   release();container=next;
   const entries:SaveEntry[]=[];
   for(const row of next.querySelectorAll<HTMLElement>(':scope > .savesListRow')){
@@ -67,7 +68,7 @@ export function startSaves(root:Window & Record<string,any>){
   }});app.mount(host);
   rows.forEach(row=>row.classList.add('dgs-native-row'));
   const header=next.firstElementChild;if(header?.querySelector('.saveId')?.textContent?.trim()==='#')header.classList.add('dgs-native-row');
-  organizeTools(next);
+  organizeTools(next,settingsOpen);
  }
  function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
  const observer=new MutationObserver(records=>{

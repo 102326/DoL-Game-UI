@@ -130,10 +130,13 @@ const server=http.createServer((req,res)=>{
  assert.equal(await p.evaluate(()=>V.timeStamp-beforeSplitTime),600,'native 10 minute time cost');assert.equal(await p.evaluate(()=>V.wardrobeOption),'wear');
  await p.getByRole('button',{name:'全选当前筛选',exact:true}).click();assert.equal(await p.getByRole('button',{name:'剪开套装',exact:true}).isDisabled(),true,'split outfit cannot split again');
  await p.getByRole('button',{name:'退出整理',exact:true}).click();await p.getByRole('searchbox').fill('');
+ // Management refresh starts an asynchronous preview; measure the finished layout.
+ console.log('PRE_LAYOUT',await p.locator('.dgw-preview').evaluate(e=>({busy:e.getAttribute('aria-busy'),canvas:!!e.querySelector('canvas')})));
+ await p.waitForFunction(()=>document.querySelector('.dgw-preview')?.getAttribute('aria-busy')==='false'&&!!document.querySelector('.dgw-preview canvas'));
  const layouts=[];
  for(const [name,width,height] of [['tablet',1704,1136],['tablet-portrait',1136,1704],['phone',390,844],['phone-landscape',844,390],['desktop',1440,900]]){
   await p.setViewportSize({width,height});await p.emulateMedia({reducedMotion:'reduce'});await p.evaluate(()=>{SugarCube.UIBar.stow();scrollTo(0,0)});
-  const geometry=await p.locator('.dgw-root').evaluate(e=>({overflow:e.scrollWidth>e.clientWidth+2,canvasVisible:!!e.querySelector('canvas')?.getClientRects().length}));assert.equal(geometry.overflow,false,name);assert.ok(geometry.canvasVisible);layouts.push({name,width,height,...geometry});
+  const geometry=await p.locator('.dgw-root').evaluate(e=>({overflow:e.scrollWidth>e.clientWidth+2,canvasVisible:!!e.querySelector('canvas')?.getClientRects().length}));assert.equal(geometry.overflow,false,name);assert.ok(geometry.canvasVisible,name);layouts.push({name,width,height,...geometry});
 
   await p.screenshot({path:path.join(__dirname,'artifacts/wardrobe-'+name+'.png'),fullPage:true});
  }
