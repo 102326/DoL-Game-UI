@@ -10,7 +10,7 @@
     if (!raw || raw.length > 512) return;
     saved = JSON.parse(raw);
   } catch { return; }
-  if (saved?.startupCacheLazy !== true) return;
+  if (saved?.enabled === false || saved?.startupCacheLazy !== true) return;
 
   const manager = root.modSC2DataManager;
   const preloader = root.jsPreloader;

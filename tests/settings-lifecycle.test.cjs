@@ -16,14 +16,14 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
    assert.equal(evidence[version].layoutSyncCalls,0);
    await p.evaluate(()=>{window.beforeUI=JSON.stringify(SugarCube.State.variables);DoLGameUI.openSettings()});
    await p.getByRole('button',{name:'回退原版界面',exact:true}).click();
-   assert.equal(await p.evaluate(()=>document.documentElement.hasAttribute('data-dol-midnight')),false);assert.equal(await p.locator('.dcu-shell').count(),0);assert.equal(await p.evaluate(()=>DoLWardrobeUI.getEnabled()),false);
+   assert.equal(await p.evaluate(()=>document.documentElement.hasAttribute('data-dol-midnight')),false);assert.equal(await p.locator('.dcu-shell').count(),0);assert.equal(await p.evaluate(()=>DoLWardrobeUI.getEnabled()),true);
    await p.getByRole('button',{name:'启用新版界面',exact:true}).click();await p.waitForSelector('.dcu-shell');
    assert.equal(await p.evaluate(()=>JSON.stringify(SugarCube.State.variables)===beforeUI),true);
    // A refused wardrobe switch must not partially disable the remaining UI.
-   await p.evaluate(()=>{window.realWardrobe=DoLWardrobeUI.setEnabled;DoLWardrobeUI.setEnabled=()=>{}});
+   await p.evaluate(()=>{window.realWardrobe=DoLWardrobeUI.setEnabled;window.realBusy=DoLWardrobeUI.isBusy;DoLWardrobeUI.setEnabled=()=>{};DoLWardrobeUI.isBusy=()=>true});
    await p.locator('#dmt-wardrobe').selectOption('original');assert.equal(await p.locator('#dmt-wardrobe').inputValue(),'new','refused native mode change restores the select');
    await p.getByRole('button',{name:'回退原版界面',exact:true}).click();assert.equal(await p.evaluate(()=>DoLMidnightTheme.getPreferences().enabled),true);assert.ok(await p.getByRole('status').filter({hasText:'衣柜正在处理'}).count());
-   await p.evaluate(()=>{DoLWardrobeUI.setEnabled=realWardrobe});await p.locator('.dmt-close').click();
+   await p.evaluate(()=>{DoLWardrobeUI.setEnabled=realWardrobe;DoLWardrobeUI.isBusy=realBusy});await p.locator('.dmt-close').click();
    await p.evaluate(()=>{const old=document.getElementById('overlayButtons')||document.getElementById('menu');const next=document.createElement('div');next.id=old.id;old.replaceWith(next)});
    await p.waitForFunction(()=>{const b=document.getElementById('dol-midnight-sidebar-button');return b?.isConnected&&b.parentElement.id==='overlayButtons'||b?.isConnected&&b.parentElement.id==='menu'});
    assert.equal(await p.locator('#dol-midnight-sidebar-button').count(),1);

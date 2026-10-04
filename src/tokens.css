@@ -17,9 +17,9 @@ html[data-dol-midnight][data-dmt-layout] #passages:has(.dcu-shell){max-width:90r
 
 /* Native fallback receives the same basic controls while the theme is enabled.
    No nodes or handlers are replaced; unknown actions stay operable. */
-html[data-dol-midnight] #passages [id="listContainer"] label:has(input[type="radio"]){display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px;box-sizing:border-box;max-width:100%;min-height:44px;margin:4px 5px 4px 0;padding:7px 10px;border:1px solid var(--dgu-border);border-radius:10px;background:var(--dgu-surface);cursor:pointer;vertical-align:middle;white-space:normal;overflow-wrap:anywhere}
-html[data-dol-midnight] #passages [id="listContainer"] label:has(input[type="radio"]:checked){border-color:var(--dgu-accent);background:#363345;box-shadow:inset 3px 0 var(--dgu-accent)}
-html[data-dol-midnight] #passages [id="listContainer"] label:has(input:disabled){opacity:.5;cursor:not-allowed}
+html[data-dol-midnight] #passages:not(:has(.dcu-root)) [id="listContainer"] label:has(input[type="radio"]){display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px;box-sizing:border-box;max-width:100%;min-height:44px;margin:4px 5px 4px 0;padding:7px 10px;border:1px solid var(--dgu-border);border-radius:10px;background:var(--dgu-surface);cursor:pointer;vertical-align:middle;white-space:normal;overflow-wrap:anywhere}
+html[data-dol-midnight] #passages:not(:has(.dcu-root)) [id="listContainer"] label:has(input[type="radio"]:checked){border-color:var(--dgu-accent);background:#363345;box-shadow:inset 3px 0 var(--dgu-accent)}
+html[data-dol-midnight] #passages:not(:has(.dcu-root)) [id="listContainer"] label:has(input:disabled){opacity:.5;cursor:not-allowed}
 html[data-dol-midnight] #passages [id="listContainer"] select{min-height:44px;max-width:100%;border-radius:10px}
 html[data-dol-midnight] #passages #next a{display:inline-block;box-sizing:border-box;min-height:44px;padding:9px 16px;border-radius:12px;background:var(--dgu-accent);color:#202020!important}
 html[data-dol-midnight] #passages #cbtToggleMenu{border-radius:12px}

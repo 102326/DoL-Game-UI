@@ -28,10 +28,25 @@ const server=http.createServer((req,res)=>{
  assert.equal(await p.locator('.dgw-wear').count(),0,'no confirm step');
  assert.ok(await p.locator('.dgw-actions #listoutfits').count());
  assert.ok(await p.locator('.dgw-actions .wardrobe-action').count());
+ const management=p.locator('.dgw-outfit-management');
+ assert.equal(await management.evaluate(e=>e.open),false);
+ const outfitsBefore=await p.evaluate(()=>JSON.stringify(V.outfit));
+ await management.locator('summary').click();
+ await p.locator('#radiobutton-delete-outfit-1').check();
+ assert.equal(await p.evaluate(()=>V.delete_outfit),1,'native mode event is retained');
+ await management.locator('summary').click();
+ await p.waitForFunction(()=>document.querySelector('.dgw-outfit-management').open);
+ assert.match(await management.locator('summary').textContent(),/删除模式/);
+ await p.locator('#radiobutton-delete-outfit-0').check();
+ await management.locator('summary').click();
+ assert.equal(await management.evaluate(e=>e.open),false);
+ assert.equal(await p.evaluate(()=>JSON.stringify(V.outfit)),outfitsBefore,'layout and mode navigation do not delete outfits');
  // Promoted nodes keep native handlers: saved outfit, create form and random filter.
  const saved=await p.locator('.dgw-actions .outfitContainer button').count();
  if(saved){await p.locator('.dgw-actions .outfitContainer button').first().click();await p.waitForTimeout(100)}
- const create=p.locator('.dgw-actions #listoutfits > label a').first();await create.click();assert.ok(await p.locator('#newClothingSetFromCurrent').isVisible());await create.click();
+ await management.locator('summary').click();
+ const create=management.locator('label.no-numberify a').first();await create.click();assert.ok(await p.locator('#newClothingSetFromCurrent').isVisible());await create.click();
+ await management.locator('summary').click();
  const configure=p.locator('.dgw-actions .wardrobe-action a').nth(2);await configure.click();assert.ok(await p.locator('#randomClothingConfigure').isVisible());await configure.click();
  await p.waitForFunction(()=>document.querySelector('.dgw-preview').getAttribute('aria-busy')==='false');
  await p.evaluate(()=>{renderCount=0;V.wardrobeOption='delete'});

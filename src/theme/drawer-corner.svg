@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+ <defs>
+  <radialGradient id="light" gradientUnits="userSpaceOnUse" cx="128" cy="0" r="110">
+   <stop stop-color="#e2f1ff" stop-opacity=".7"/>
+   <stop offset=".3" stop-color="#8dc7ff" stop-opacity=".4"/>
+   <stop offset=".6" stop-color="#b1a5e8" stop-opacity=".18"/>
+   <stop offset="1" stop-color="#b1a5e8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="shade" gradientUnits="userSpaceOnUse" cx="128" cy="0" r="110">
+   <stop stop-color="#08090b" stop-opacity=".55"/>
+   <stop offset="1" stop-color="#08090b" stop-opacity="0"/>
+  </radialGradient>
+ </defs>
+ <path d="M18 1H108Q127 1 127 20V110L121 101V23Q121 7 106 7H27Z" fill="url(#light)" opacity=".45"/>
+ <path d="M18 1H108Q127 1 127 20V110" fill="none" stroke="url(#light)" stroke-width="1.5"/>
+ <path d="M27 8H106Q120 8 120 23V101" fill="none" stroke="url(#shade)" stroke-width="2"/>
+ <path d="M38 5H106Q123 5 123 22V90" fill="none" stroke="url(#light)"/>
+</svg>

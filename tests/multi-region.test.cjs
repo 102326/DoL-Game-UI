@@ -79,9 +79,13 @@ async function main() {
     await page.locator('#extraaction label').filter({ hasText: '协助' }).click();
     await page.waitForFunction(() => document.querySelector('.dcu-summary')?.textContent.includes('协助'));
     assert.equal(await page.evaluate(() => window.multi.extraChanges), 1, 'secondary native change event fires once');
+    assert.equal(await page.locator('#extraaction').getAttribute('data-dcu-active'),'');
+    assert.equal(await page.locator('.dcu-group[data-dcu-active]').count(),1,'focus marks only the current native region');
     await page.locator('#leftaction label').filter({ hasText: '防御' }).click();
     await page.waitForFunction(() => document.querySelector('.dcu-summary')?.textContent.includes('防御'));
     assert.equal(await page.evaluate(() => window.multi.changes), 1, 'primary native change event fires once');
+    assert.equal(await page.locator('#leftaction').getAttribute('data-dcu-active'),'');
+    assert.equal(await page.locator('#extraaction').getAttribute('data-dcu-active'),null);
 
     await page.evaluate(() => {
       const old = window.multi.secondary;

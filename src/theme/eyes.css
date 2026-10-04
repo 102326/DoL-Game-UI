@@ -1,0 +1,537 @@
+/* Eyes palette: owned work surfaces and adapted floating shells only. */
+html[data-dol-midnight] :is(.dgs-host,.dgw-root,.dcu-root,.dgshop-host,.dgshop-content,#dol-midnight-controls,.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]),#customOverlay:is(.dgp-overlay:has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host)),#customOverlay[data-overlay="saves"]:has(#saveList>.dgs-host)) {
+ --dgu-surface:#1c1d20;
+ --dgu-panel:#25262a;
+ --dgu-card:#2d2e33;
+ --dgu-hover:#35363c;
+ --dgu-border:#4b4d55;
+ --dgu-accent:#8dc7ff;
+ --dgu-selected:#283b4c;
+ --dgu-text:#e6e7eb;
+ --dgu-secondary:#b6b8c2;
+ --dgu-on-accent:#17212b;
+ --dgu-danger:#ffb0b0;
+ --dgu-danger-border:#875258;
+ --dgu-success:#acf0d7;
+ --dgu-success-surface:#24463b;
+ --dgu-save-accent:var(--dgu-accent);
+ color:var(--dgu-text);
+}
+/* Shared overlay is styled only while our adapted save list is its current content. */
+html[data-dol-midnight] #customOverlay[data-overlay="saves"]:not(.hidden):has(#saveList>.dgs-host) {
+ background:var(--dgu-surface);border-color:var(--dgu-border);
+}
+html[data-dol-midnight] #customOverlay[data-overlay="saves"]:has(#saveList>.dgs-host) :is(#customOverlayContent,#customOverlayTitle) {
+ background:var(--dgu-surface);color:var(--dgu-text);
+}
+html[data-dol-midnight] #customOverlay[data-overlay="saves"]:has(#saveList>.dgs-host) #saves-export-reminder {
+ background:var(--dgu-surface);color:var(--dgu-text);border-radius:8px;
+}
+html[data-dol-midnight] .dgs-host :is(button,input,.dgs-detail[open],.dgs-list-tools) {
+ background:var(--dgu-panel);border-color:var(--dgu-border);color:var(--dgu-text);
+}
+html[data-dol-midnight] .dgs-host :is(.dgs-muted,.dgs-item small,.dgs-name-form small,.dgs-name-form p) {color:var(--dgu-secondary)}
+html[data-dol-midnight] .dgs-host .dgs-item[aria-pressed=true] {
+ background:#2b3036;border-color:transparent;box-shadow:inset 2px 0 var(--dgu-accent);outline:none;
+}
+html[data-dol-midnight] .dgs-host .dgs-item.dgs-recent:not([aria-pressed=true]) {
+ background:var(--dgu-panel);border-color:var(--dgu-border);box-shadow:none;
+}
+html[data-dol-midnight] .dgs-host .dgs-recent-badge {color:var(--dgu-success);background:var(--dgu-success-surface)}
+html[data-dol-midnight] .dgs-host .dgs-actions .dgs-delete {color:var(--dgu-danger);border-color:var(--dgu-danger-border)}
+html[data-dol-midnight] .dgs-host :is(button,input):focus-visible {outline-color:var(--dgu-accent)}
+/* V2 is ordinary inline content; only the native modal drawer uses the glass switch. */
+html[data-dol-midnight] .dgs-host .dgs-detail.dgs-inline-detail[open] {backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-dol-midnight][data-dgu-visualGlass] .dgs-host .dgs-detail[open]:not(.dgs-inline-detail) {background:rgba(37,38,42,.94)}
+html[data-dol-midnight][data-dgu-visualGlow] .dgs-host .dgs-detail[open]>h2 {
+ background:linear-gradient(120deg,var(--dgu-card),var(--dgu-panel));border-color:var(--dgu-border);
+}
+/* Wardrobe selection follows the quiet shop baseline; check marks retain semantics. */
+html[data-dol-midnight] .dgw-root button {border-radius:8px;border-color:rgba(255,255,255,.07)}
+html[data-dol-midnight] .dgw-root button[aria-pressed=true] {background:#292b30;border-color:rgba(255,255,255,.07);box-shadow:inset 0 -2px var(--dgu-accent)}
+html[data-dol-midnight] .dgw-root .dgw-item[aria-pressed=true] {border-color:transparent;box-shadow:inset 2px 0 var(--dgu-accent)}
+html[data-dol-midnight] .dgw-root .dgw-equipped {background:#292b30;border-color:transparent;box-shadow:inset 2px 0 var(--dgu-accent)}
+html[data-dol-midnight] .dgw-root button:not(:disabled):active {background:#202226}
+@media(hover:hover) {html[data-dol-midnight] .dgw-root button:not(:disabled):hover {background:#2b2d32;border-color:rgba(255,255,255,.07)}}
+html[data-dol-midnight] .dgw-root .dgw-wear {color:var(--dgu-on-accent)}
+html[data-dol-midnight] .dgw-root .dgw-check {color:var(--dgu-on-accent)}
+/* Wardrobe review is stable inline content, sharing the light-card hierarchy. */
+html[data-dol-midnight] .dgw-root .dgw-selection-bar {border:0;background:#24262b;box-shadow:inset 0 1px rgba(255,255,255,.035),0 4px 12px rgba(0,0,0,.16)}
+html[data-dol-midnight] .dgw-root .dgw-confirm {border:0;border-radius:12px;padding:12px;min-width:0;overflow-wrap:anywhere;background:linear-gradient(to bottom,rgba(255,255,255,.025),transparent 55%),var(--dgu-card);box-shadow:inset 0 1px rgba(255,255,255,.025)}
+html[data-dol-midnight] .dgw-root .dgw-confirm li small {color:var(--dgu-secondary)}
+html[data-dol-midnight] .dgw-root .dgw-confirm>div {display:flex;flex-wrap:wrap;gap:8px}
+html[data-dol-midnight] .dgw-root .dgw-confirm button {margin:0}
+html[data-dol-midnight] .dcu-root :is(button,.dcu-group label,.dcu-native select,.dcu-native select option) {
+ background:var(--dgu-panel);border-color:var(--dgu-border);
+}
+html[data-dol-midnight] .dcu-root :is(button,.dcu-native select,.dcu-native select option) {color:var(--dgu-text)}
+html[data-dol-midnight] .dcu-root .dcu-group {background:var(--dgu-card);border-color:var(--dgu-border)}
+html[data-dol-midnight] .dcu-root :is(.dcu-footer,.dcu-summary) {background:var(--dgu-surface);border-color:var(--dgu-border)}
+html[data-dol-midnight] .dcu-root :is(.dcu-hint,.dcu-nav>span,.dcu-summary dt,.dcu-summary-heading>span,.dcu-summary-toggle span,.dcu-summary-rail span,.dcu-summary-list span) {color:var(--dgu-secondary)}
+html[data-dol-midnight] .dcu-root :is(.dcu-summary h3,.dcu-summary dd,.dcu-summary-rail strong) {color:var(--dgu-text)}
+html[data-dol-midnight] .dcu-root :is(.dcu-nav button,.dcu-summary-rail button)[aria-current=location],
+html[data-dol-midnight] .dcu-root .dcu-group label:has(input:checked) {
+ background:var(--dgu-selected);border-color:var(--dgu-accent);
+}
+html[data-dol-midnight] .dcu-root :focus-visible {outline-color:var(--dgu-accent)}
+html[data-dol-midnight] .dcu-root .dcu-control-slot #next a {background:var(--dgu-accent);border-color:var(--dgu-accent);color:var(--dgu-on-accent)!important}
+/* Combat is a work surface: section headings, quiet actions, direct native controls. */
+html[data-dol-midnight] .dcu-root .dcu-shell {border:0;background:var(--dgu-surface)}
+html[data-dol-midnight] .dcu-root .dcu-native .dcu-group {border:0;border-bottom:1px solid var(--dgu-border);border-radius:0;background:var(--dgu-surface);padding:10px 12px;margin-bottom:6px!important}
+html[data-dol-midnight] .dcu-root .dcu-native .dcu-group::before {display:block;margin:0 0 4px;font-weight:700}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label:not(:has(input:checked)) {border-color:transparent;background:transparent;box-shadow:none}
+html[data-dol-midnight] .dcu-root .dcu-summary-rail button:not([aria-current=location]) {border-color:transparent;background:transparent}
+html[data-dol-midnight] .dcu-root .dcu-nav button:not([aria-current=location]) {border-color:transparent;background:var(--dgu-surface)}
+html[data-dol-midnight] .dcu-root .dcu-native .dcu-group[data-dcu-active] {background:var(--dgu-panel);box-shadow:inset 2px 0 var(--dgu-accent);border-radius:6px}
+html[data-dol-midnight] .dcu-root .dcu-nav button[aria-current=location] {border-color:transparent;box-shadow:inset 0 -2px var(--dgu-accent)}
+html[data-dol-midnight] .dcu-root .dcu-summary-rail button[aria-current=location] {border-color:transparent;box-shadow:inset 2px 0 var(--dgu-accent)}
+/* Native action-role classes supply semantics; never infer roles from action names. */
+html[data-dol-midnight] .dcu-root {--dgu-combat-special:#c2b5d6;--dgu-combat-attack:#d9a3a7;--dgu-combat-condition:#b7cab0;--dgu-combat-warning:#d8bd94}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label {border-radius:4px;color:var(--dgu-text)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label>span:is(.sub,.meek,.brat,.white) {color:var(--dgu-text)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label>span.def {color:var(--dgu-combat-attack)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label>span.purple {color:var(--dgu-combat-special)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label .green {color:var(--dgu-combat-condition)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label .orange {color:var(--dgu-combat-warning)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label .red {color:var(--dgu-combat-attack)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label:has(input:checked) {background:rgba(141,199,255,.035);color:var(--dgu-accent);border-color:transparent;box-shadow:none}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label:has(input:checked)>span:is(.sub,.meek,.brat,.white,.def,.purple) {color:var(--dgu-accent)}
+/* Adapted settings/cheats only; shared overlays lose these tokens on release. */
+html[data-dol-midnight] #dol-midnight-controls :is(button,select) {background:var(--dgu-panel);border-color:var(--dgu-border);color:var(--dgu-text)}
+html[data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) :is(input[type=text],input[type=number],textarea) {background:var(--dgu-panel);border-color:var(--dgu-border);color:var(--dgu-text)}
+html[data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) :is(input[type=checkbox],input[type=radio],input[type=range]) {accent-color:var(--dgu-accent)}
+html[data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) :focus-visible {outline-color:var(--dgu-accent)}
+/* Shop keeps native product controls, semantic labels and colour swatches. */
+html[data-dol-midnight] .dgshop-host {background:var(--dgu-panel);border-color:var(--dgu-border)}
+html[data-dol-midnight] .dgshop-host :is(button,select),
+html[data-dol-midnight] .dgshop-content :is(input[type=text],select,.category-tab,.btn-pagination,.button-back-to-shop,.filters-button,.clothingshop-options-button,.shop-legend-button,.try-button) {
+ background:var(--dgu-panel);border-color:var(--dgu-border);color:var(--dgu-text);
+}
+html[data-dol-midnight] .dgshop-content :is(.clothing-item,.filters-div,.options-div,.shop-legend) {background:var(--dgu-panel);border-color:var(--dgu-border)}
+html[data-dol-midnight] .dgshop-content :is(.filters-div,.options-div,.shop-legend) {color:var(--dgu-text)}
+html[data-dol-midnight] .dgshop-content #warmth-description {background:var(--dgu-panel);border-color:var(--dgu-border)}
+html[data-dol-midnight] .dgshop-content .filter-block {border-color:var(--dgu-border)}
+html[data-dol-midnight] .dgshop-content .dgshop-layout>.clothing-details {background:var(--dgu-panel);border-color:var(--dgu-border)}
+html[data-dol-midnight] .dgshop-content .dgshop-detail-body #mannequin {background:var(--dgu-surface)}
+/* Shop selection uses a local indicator, not a blue tile or a lit full edge. */
+html[data-dol-midnight] .dgshop-content .category-tab {min-width:44px;min-height:44px;border-radius:8px;border-color:rgba(255,255,255,.07)}
+html[data-dol-midnight] .dgshop-content .category-tab>img {filter:none}
+html[data-dol-midnight] .dgshop-content .category-tab.active {background:#292b30;border-color:rgba(255,255,255,.07);box-shadow:inset 0 -2px var(--dgu-accent)}
+html[data-dol-midnight] .dgshop-content .dgshop-selected {background:#292b30;border-color:transparent;box-shadow:inset 2px 0 var(--dgu-accent)}
+html[data-dol-midnight] .dgshop-content .dgshop-purchase :is(.buy-button,.try-button) {background:#24262b;border-color:rgba(255,255,255,.07);border-radius:8px;box-shadow:inset 0 1px rgba(255,255,255,.025)}
+html[data-dol-midnight] .dgshop-content .dgshop-purchase .buy-buttons>.buy-button:has(>.buy-button-inner:not(.disabled)) {box-shadow:inset 0 -2px rgba(141,199,255,.45)}
+html[data-dol-midnight] .dgshop-content :is(.buy-button-inner,.try-button):not(.disabled):active {background:#202226}
+@media(hover:hover) {
+ html[data-dol-midnight] .dgshop-content :is(.category-tab,.buy-button-inner,.try-button):not(.disabled):hover {background:#2b2d32}
+}
+html[data-dol-midnight] :is(.dgshop-host,.dgshop-content) :focus-visible {outline-color:var(--dgu-accent)}
+@media(hover:hover) {
+ html[data-dol-midnight] :is(.dgs-host,.dcu-root) button:not(:disabled):not([aria-pressed=true]):not([aria-current=location]):hover,
+ html[data-dol-midnight] .dcu-root .dcu-group label:not(:has(input:checked,input:disabled)):hover,
+ html[data-dol-midnight] #dol-midnight-controls button:not(:disabled):hover,
+ html[data-dol-midnight] .dgshop-content .clothing-item:not(.dgshop-selected):hover {background:var(--dgu-hover);border-color:var(--dgu-border)}
+}
+
+/* Static lines stay at the header edge, away from the body and action labels. */
+html[data-dol-midnight][data-dgu-visualPattern] :is(.dgs-host .dgs-toolbar,.dgw-root .dgw-header,.dcu-root .dcu-header,.dgshop-host .dgshop-toolbar,#dol-midnight-controls .dmt-settings-header,.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats])>.dgp-host) {
+ background-image:linear-gradient(90deg,transparent 78%,rgba(230,231,235,.035)),repeating-linear-gradient(0deg,rgba(182,184,194,.3) 0 1px,transparent 1px 7px);
+ background-size:100% 100%,3px 100%;background-position:right;background-repeat:no-repeat;
+ box-shadow:inset 0 -1px rgba(230,231,235,.08);
+}
+/* A finite two-pixel edge sweep; no text overlay, native control wrappers or JS loop. */
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualMotion][data-dgu-visualGlow] .dgs-host .dgs-item[aria-pressed=true] {
+ position:relative;
+}
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualMotion][data-dgu-visualGlow] .dgs-host .dgs-item[aria-pressed=true]::after {
+ content:"";position:absolute;left:8px;right:8px;bottom:1px;height:2px;border-radius:2px;pointer-events:none;
+ background:linear-gradient(90deg,transparent,var(--dgu-accent),transparent);background-size:35% 100%;background-repeat:no-repeat;
+ animation:dgu-eyes-edge 420ms ease-out both;
+}
+@keyframes dgu-eyes-edge {from{background-position:-60% 0;opacity:0}40%{opacity:.8}to{background-position:160% 0;opacity:0}}
+@media(prefers-reduced-motion:reduce) {
+ html[data-dol-midnight] :is(.dgs-host .dgs-item,.dgw-root .dgw-slots button,.dcu-root .dcu-nav button)::after {content:none!important;animation:none!important}
+}
+
+/* Lens corner paused while the neutral Acrylic foundation is validated. */
+/* One finite opening glint on the lit edge, without a bright full outline. */
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlass][data-dgu-visualMotion][data-dgu-visualGlow] .dgs-host .dgs-detail[open]:not(.dgs-inline-detail)::after {
+ content:"";position:absolute;right:24px;top:2px;width:min(180px,calc(100% - 48px));height:2px;
+ pointer-events:none;border-radius:2px;
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+ animation:dgu-drawer-glint 420ms ease-out both;
+}
+@keyframes dgu-drawer-glint {from{opacity:0;transform:translateX(-24px) scaleX(.6)}40%{opacity:.85}to{opacity:0;transform:translateX(0) scaleX(1)}}
+@media(prefers-reduced-motion:reduce) {html[data-dol-midnight] .dgs-host .dgs-detail::after {content:none!important;animation:none!important}}
+html[data-dol-midnight][data-dgu-visualGlass] .dgs-host :is(.dgs-toolbar,.dgs-actions) {
+ background-color:rgba(37,38,42,.96);border:1px solid var(--dgu-border);
+ border-radius:12px;padding:.65rem;
+ box-shadow:inset 0 1px rgba(230,231,235,.08),0 4px 12px rgba(0,0,0,.12);
+}
+
+/* Static tier distinction belongs to selected controls, not reading surfaces.
+   No geometry changes, continuous animation or extra blur in scrolling lists. */
+html[data-dol-midnight][data-dgu-visualGlow] :is(.dgs-host .dgs-item[aria-pressed=true]) {
+ background-image:linear-gradient(135deg,rgba(208,233,255,.07),transparent 65%);
+}
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlow] :is(.dgs-host .dgs-item[aria-pressed=true]) {
+ background-image:radial-gradient(ellipse 90px 28px at right top,rgba(177,165,232,.24),transparent),linear-gradient(135deg,rgba(208,233,255,.19),transparent 55%);
+ box-shadow:inset 0 2px rgba(208,233,255,.48),inset 2px 0 rgba(141,199,255,.32),inset 0 -3px rgba(8,9,11,.5),inset -1px 0 rgba(177,165,232,.25);
+}
+
+/* Local interaction light: no pointer tracking, overlay nodes or running animation. */
+/* Save read/save actions share a quiet edge; delete and disabled actions stay unchanged. */
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlow] .dgs-host .dgs-actions button:not(.dgs-delete):not(:disabled):not([aria-disabled=true])::before {
+ content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+ box-shadow:inset 0 1px rgba(208,233,255,.5),inset 1px 0 rgba(141,199,255,.25),inset 0 -2px rgba(8,9,11,.5),inset -1px 0 rgba(177,165,232,.2);
+}
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlow] .dgs-host .dgs-actions button:not(.dgs-delete):not(:disabled):not([aria-disabled=true]) {position:relative}
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlow] .dgs-host .dgs-actions button:not(.dgs-delete):not(:disabled):not([aria-disabled=true]):focus-visible::before {opacity:.65}
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlow] .dgs-host .dgs-actions button:not(.dgs-delete):not(:disabled):not([aria-disabled=true]):active::before {opacity:1}
+html[data-dgu-visualMotion] .dgs-host .dgs-actions button::before {transition:opacity 160ms ease-out,transform 100ms ease-out}
+html[data-dgu-visualMotion] .dgs-host .dgs-actions button:active::before {transition-duration:100ms}
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualMotion] .dgs-host .dgs-actions button:not(.dgs-delete):not(:disabled):not([aria-disabled=true]):active::before {transform:scale(.96)}
+@media(prefers-reduced-motion:reduce) {html[data-dol-midnight] .dgs-host .dgs-actions button::before {transition:none!important;transform:none!important}}
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlow] :is(.dgs-host .dgs-actions button:not(.dgs-delete),.dgw-root .dgw-slots button,.dcu-root .dcu-nav button,.dgshop-host button,#dol-midnight-controls button):not(:disabled):not([aria-disabled=true]):is(:focus-visible,:active) {background-image:linear-gradient(135deg,rgba(141,199,255,.12),transparent 65%)}
+@media(hover:hover) {
+ html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlow] :is(.dgs-host .dgs-actions button:not(.dgs-delete),.dgw-root .dgw-slots button,.dcu-root .dcu-nav button,.dgshop-host button,#dol-midnight-controls button):not(:disabled):not([aria-disabled=true]):hover {background-image:linear-gradient(135deg,rgba(141,199,255,.12),transparent 65%)}
+}
+
+/* One neutral Acrylic surface per floating shell. Forms and inline details stay solid.
+   Unsupported blur falls back to the existing opaque surface. */
+html[data-dol-midnight] #dol-midnight-controls {background:var(--dgu-surface);animation:none}
+html[data-dol-midnight] #dol-midnight-controls .dmt-controls-content {background:var(--dgu-surface)}
+html[data-dol-midnight] #dol-midnight-controls .dmt-settings-header {backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-dol-midnight] :is(#dol-midnight-controls,.dgs-host) {--dgu-acrylic-base:rgba(36,38,42,.78);--dgu-acrylic-light:rgba(255,255,255,.035);--dgu-acrylic-edge:rgba(255,255,255,.08);--dgu-acrylic-blur:24px}
+html[data-dol-midnight][data-dgu-visual="2"] :is(#dol-midnight-controls,.dgs-host) {--dgu-acrylic-base:rgba(36,38,42,.74);--dgu-acrylic-light:rgba(255,255,255,.045);--dgu-acrylic-blur:24px}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] :is(#dol-midnight-controls,.dgs-host .dgs-detail[open]:not(.dgs-inline-detail)) {
+  background-color:var(--dgu-acrylic-base);background-image:linear-gradient(to bottom,var(--dgu-acrylic-light),transparent 90%);
+  border-color:var(--dgu-acrylic-edge);backdrop-filter:blur(var(--dgu-acrylic-blur));-webkit-backdrop-filter:blur(var(--dgu-acrylic-blur));
+  box-shadow:inset 0 1px rgba(255,255,255,.09),inset 1px 0 rgba(255,255,255,.035),inset 0 -1px rgba(0,0,0,.16),0 20px 60px rgba(0,0,0,.3);
+ }
+ html[data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-settings-header {background:transparent;box-shadow:none}
+ html[data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-controls-content {background:linear-gradient(to bottom,rgba(255,255,255,.03),transparent 55%),rgba(31,33,37,.78)}
+ html[data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-settings-header {border-color:rgba(255,255,255,.07)}
+ html[data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls::backdrop {background:rgba(9,10,12,.35)}
+ html[data-dol-midnight][data-dgu-visualGlass] .dgs-host .dgs-detail:not(.dgs-inline-detail)::backdrop {background:rgba(9,10,12,.35)}
+ html[data-dol-midnight][data-dgu-visualGlass] .dgs-host .dgs-detail[open]:not(.dgs-inline-detail)>h2 {background:transparent;border-color:transparent}
+}
+/* Radio carries selection; no permanently filled action keycaps. */
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group input[type=radio] {accent-color:var(--dgu-accent)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label:not(:has(input:disabled)):active {background:rgba(230,231,235,.08)}
+html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label:has(:focus-visible) {outline:2px solid var(--dgu-accent);outline-offset:2px}
+@media(hover:hover) {html[data-dol-midnight] #passages .dcu-root .dcu-native .dcu-group label:not(:has(input:disabled)):hover {background:rgba(230,231,235,.045);border-color:transparent}}
+html[data-dol-midnight][data-dgu-visualMotion] #dol-midnight-controls[open] {animation:dmt-settings-in 160ms ease-out}
+html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlass][data-dgu-visualMotion] #dol-midnight-controls[open] .dmt-settings-header::after {
+ content:"";position:absolute;left:24px;top:2px;width:min(180px,calc(100% - 48px));height:2px;
+ pointer-events:none;background:linear-gradient(90deg,transparent,rgba(208,233,255,.75),rgba(177,165,232,.35),transparent);
+ animation:dgu-drawer-glint 420ms ease-out both;
+}
+@media(prefers-reduced-motion:reduce) {
+ html[data-dol-midnight] #dol-midnight-controls[open] {animation:none!important}
+ html[data-dol-midnight] #dol-midnight-controls .dmt-settings-header::after {content:none!important;animation:none!important}
+}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] .dgs-host .dgs-detail[open]:not(.dgs-inline-detail) {background:var(--dgu-panel)}
+}
+
+/* Known adapted secondary overlays only; inline pages and ModHub never match. */
+html[data-dol-midnight] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) {--dgu-acrylic-base:rgba(36,38,42,.78);--dgu-acrylic-blur:24px;--dgu-reading-base:rgba(31,33,37,.78);--dgu-reading-light:rgba(255,255,255,.03);--dgu-raised-content:#292b30}
+html[data-dol-midnight][data-dgu-visual="2"] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) {--dgu-acrylic-base:rgba(36,38,42,.74);--dgu-acrylic-blur:24px}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)):not(.hidden) {background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%),var(--dgu-acrylic-base);border-color:rgba(255,255,255,.08);backdrop-filter:blur(var(--dgu-acrylic-blur));-webkit-backdrop-filter:blur(var(--dgu-acrylic-blur));box-shadow:inset 0 1px rgba(255,255,255,.09),inset 1px 0 rgba(255,255,255,.035),inset 0 -1px rgba(0,0,0,.16),0 20px 60px rgba(0,0,0,.3)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) :is(#customOverlayTitle,.dgp-host,.dgs-host,.dgc-host) {background:transparent;border-color:rgba(255,255,255,.07)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) #customOverlayContent {background:linear-gradient(to bottom,var(--dgu-reading-light),transparent 55%),var(--dgu-reading-base);box-shadow:inset 0 1px rgba(255,255,255,.035),inset 0 -1px rgba(0,0,0,.1);backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+
+/* Combat navigation is Solid state navigation, not a glass showcase keycap. */
+html[data-dol-midnight] .dcu-root .dcu-nav button[aria-current=location] {background:var(--dgu-surface);background-image:none;border-color:transparent;box-shadow:inset 0 -2px var(--dgu-accent);color:var(--dgu-accent)}
+html[data-dol-midnight] .dcu-root .dcu-summary-rail button[aria-current=location] {background:var(--dgu-surface);background-image:none;border-color:transparent;box-shadow:inset 2px 0 var(--dgu-accent)}
+
+/* The native tab strip must not conceal the owned Acrylic shell. No nested blur. */
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) #overlayTabs {background:transparent;border-color:transparent;box-shadow:none}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) #overlayTabs button {background:transparent;border-color:transparent;box-shadow:none;color:var(--dgu-text)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) #overlayTabs button.tab-selected {background:rgba(255,255,255,.08);box-shadow:inset 0 -2px rgba(255,255,255,.28)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) :is(.dgs-navigation,.dgp-navigation,.dgc-navigation) button {background:rgba(255,255,255,.035);border-color:transparent;box-shadow:none}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=statistics],[data-dgp-panel=feats],[data-dgp-panel=journal],[data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host),[data-overlay=saves]:has(#saveList>.dgs-host)) :is(.dgs-navigation,.dgp-navigation,.dgc-navigation) button:hover {background:rgba(255,255,255,.08)}
+}
+
+/* Approved social card reference: docs/design-baselines/2026-10-04-social-content.
+   Card material is Solid regardless of shell glass support or tier. Keep native
+   layout, semantic colours, icons and meters; inner rows are not separate cards. */
+html[data-dol-midnight] :is(#customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) #customOverlayContent :is(.characteristic-box,.relation-box,.foldout:not(.foldout .foldout):not([data-dgp-panel=statistics] *):not([data-dgp-panel=journal] *),#featsList .feat),#dol-midnight-controls .dmt-setting-card) {background:linear-gradient(to bottom,rgba(255,255,255,.025),transparent 55%),#292b30;border-color:transparent;border-radius:16px;box-shadow:inset 0 1px rgba(255,255,255,.025);backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-dol-midnight] #customOverlay.dgp-overlay:has(>.dgp-host) #customOverlayContent :is(.traitHeading,.traits .trait) {background:transparent;border-color:transparent;box-shadow:inset 0 -1px rgba(255,255,255,.035)}
+html[data-dol-midnight] #customOverlay.dgp-overlay:has(>.dgp-host) #customOverlayContent .settingsHeader {background:transparent;border-color:transparent;box-shadow:inset 0 -1px rgba(255,255,255,.035)}
+/* Internal component baseline: Sections group information; only trait entries
+   carry a light Solid surface. Settings remain rows with native controls. */
+html[data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #customOverlayContent #traitLists .trait {background:linear-gradient(to bottom,rgba(255,255,255,.025),transparent 55%),#292b30;border-color:transparent;border-radius:12px;box-shadow:inset 0 1px rgba(255,255,255,.025)}
+html[data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #customOverlayContent #traitLists :is(.traitList,.traitListReducedText,.traitHeading) {background:none;border:0;border-radius:0;box-shadow:none}
+html[data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #customOverlayContent #traitListsSearch .foldout {background:rgba(255,255,255,.035);box-shadow:inset 0 1px rgba(255,255,255,.035);border-radius:10px}
+html[data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host) #customOverlayContent :is(.settingsToggleItem,.settingsToggleItemWide) {background:none;border-color:transparent;border-radius:0;box-shadow:inset 0 -1px rgba(255,255,255,.045)}
+html[data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]):has(>.dgp-host) #customOverlayContent .settingsHeader {background:none;border:0;box-shadow:none}
+html[data-dol-midnight] #customOverlay.dgp-overlay:has(>.dgp-host) #customOverlayContent .foldout .foldout {background:transparent;border-color:transparent;border-radius:0;box-shadow:inset 0 -1px rgba(255,255,255,.035)}
+html[data-dol-midnight] #customOverlay.dgp-overlay:has(>.dgp-host) #customOverlayContent :is(textarea,input[type=text],input[type=number],select) {background:#24262b;color:var(--dgu-text);border-color:rgba(255,255,255,.09);box-shadow:inset 0 1px rgba(255,255,255,.025)}
+html[data-dol-midnight] #customOverlay.dgp-overlay:has(>.dgp-host) #customOverlayContent :is(.foldoutHeader,summary.journal):active {background:rgba(255,255,255,.06)}
+@media(hover:hover) {
+ html[data-dol-midnight] #customOverlay.dgp-overlay:has(>.dgp-host) #customOverlayContent :is(.foldoutHeader,summary.journal):hover {background:rgba(255,255,255,.035)}
+}
+
+/* Secondary rollout follows the approved save shell. Keep native cards Solid;
+   navigation inherits its shell rather than adding blur to every control. */
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) #customOverlayTitle {background-image:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) :is(#overlayTabs button.tab-selected,.dgp-navigation button,.dgs-navigation button,.dgc-navigation button) {background:linear-gradient(to bottom,rgba(255,255,255,.045),rgba(255,255,255,.025));border-color:transparent;box-shadow:inset 0 1px rgba(255,255,255,.06)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) #overlayTabs button.tab-selected {box-shadow:inset 0 1px rgba(255,255,255,.12),inset 0 -2px rgba(141,199,255,.45)}
+ html[data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-settings-header {background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent)}
+ html[data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-settings-footer {background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.035);box-shadow:inset 0 1px rgba(255,255,255,.065)}
+}
+html[data-dol-midnight] #customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) :focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}
+@media(hover:hover) {
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) :is(.dgp-navigation,.dgs-navigation,.dgc-navigation) button:not(:disabled):hover {background:rgba(255,255,255,.08)}
+}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) :is(.dgp-navigation,.dgs-navigation,.dgc-navigation) button:not(:disabled):active {background:rgba(255,255,255,.1)}
+
+/* Native combat mode links keep their handlers and one-click reachability. */
+html[data-dol-midnight] #passages:has(.dcu-root) #replaceAction>a {display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;border:1px solid transparent;border-radius:6px;background:rgba(255,255,255,.035);color:var(--dgu-text);box-shadow:none}
+html[data-dol-midnight] #passages:has(.dcu-root) #replaceAction>a:hover {background:rgba(255,255,255,.075);color:var(--dgu-text)}
+html[data-dol-midnight] #passages:has(.dcu-root) #replaceAction>a:focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}
+html[data-dol-midnight] #passages:has(.dcu-root) #replaceAction>a:active {background:rgba(255,255,255,.11)}
+
+/* Approved save Acrylic baseline: docs/design-baselines/2026-10-03-save-acrylic.
+   Real surroundings pass through the Acrylic; no reference-background pattern is painted here.
+   One blur per floating shell, Solid entries and inline details. */
+html[data-dol-midnight][data-dgu-visual] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) {--dgu-acrylic-base:rgba(36,38,42,.68);--dgu-acrylic-blur:24px;--dgu-reading-base:rgba(31,33,37,.78)}
+html[data-dol-midnight][data-dgu-visual="2"] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) {--dgu-acrylic-base:rgba(36,38,42,.64)}
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host {--dgu-acrylic-base:rgba(40,42,46,.58);--dgu-acrylic-blur:24px;--dgu-acrylic-light:rgba(255,255,255,.04);--dgu-acrylic-edge:rgba(255,255,255,.09)}
+html[data-dol-midnight][data-dgu-visual="2"] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host {--dgu-acrylic-base:rgba(40,42,46,.54);--dgu-acrylic-light:rgba(255,255,255,.055)}
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-item[aria-pressed=true] {background:#2b3036;border-color:transparent;box-shadow:inset 2px 0 var(--dgu-accent);outline:none}
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-search input {flex:1 1 14em;width:auto}
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-detail[open] :is(h2) {background:none;border-color:transparent;box-shadow:none;padding:0}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-item {background:var(--dgu-raised-content);border-color:transparent;box-shadow:inset 0 1px rgba(255,255,255,.025)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-item[aria-pressed=true] {background:#2b3036;outline:none;box-shadow:inset 2px 0 var(--dgu-accent)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-inline-detail[open] {background:rgba(255,255,255,.035);border-color:transparent;box-shadow:inset 0 1px rgba(255,255,255,.025);backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-toolbar {background:transparent;border-color:transparent;box-shadow:none}
+ /* The small reference sits over a varied background. A large Drawer sits over
+    a nearly solid list: use a fogged shell and broad, static reflected light,
+    not the reference's opacity numbers or painted/repeating stripe texture. */
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves] .dgs-host .dgs-detail[open]:not(.dgs-inline-detail) {background-color:var(--dgu-acrylic-base);background-image:linear-gradient(to bottom,rgba(255,255,255,.065),transparent 55%);border-radius:18px;border-top-color:rgba(255,255,255,.19);box-shadow:inset 0 1px rgba(255,255,255,.09),inset 0 -1px rgba(0,0,0,.2),0 8px 24px rgba(0,0,0,.28),0 24px 64px rgba(0,0,0,.46)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves] .dgs-detail[open]:not(.dgs-inline-detail) .dgs-detail-header {background:linear-gradient(to bottom,rgba(255,255,255,.025),transparent)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves] .dgs-detail:not(.dgs-inline-detail)::backdrop {background:rgba(9,10,12,.12)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves] .dgs-host .dgs-detail[open] :is(dl,.dgs-name-form,.dgs-description) {background:rgba(26,28,32,.20);border-radius:10px;padding:14px;backdrop-filter:none;-webkit-backdrop-filter:none}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves] .dgs-detail-content {background:transparent}
+ html[data-dol-midnight][data-dgu-visualGlass] .dgs-host .dgs-detail[open]:not(.dgs-inline-detail) .dgs-actions {background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.035);box-shadow:inset 0 1px rgba(255,255,255,.065);border-radius:10px;padding:12px}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) :is(.dgs-search,.dgs-toolbar,.dgs-detail) button:not(.dgs-item) {background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border-color:rgba(255,255,255,.08);box-shadow:inset 0 1px rgba(255,255,255,.065)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) :is(.dgs-search,.dgs-toolbar,.dgs-detail) button:not(.dgs-item):active {background:rgba(255,255,255,.1)}
+}
+/* Save controls: one shell blur, stable inputs, finite interaction feedback. */
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) {--dgu-control-light:rgba(255,255,255,.045)}
+html[data-dol-midnight][data-dgu-visual="2"] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) {--dgu-control-light:rgba(255,255,255,.065)}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #overlayTabs {display:flex;flex-wrap:wrap;gap:4px;width:100%;max-width:100%;padding:5px;background:rgba(255,255,255,.015);border-radius:12px;box-shadow:inset 0 1px rgba(255,255,255,.025)}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #overlayTabs button {border-color:transparent;min-height:44px;background:transparent;border-radius:8px}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #overlayTabs button.tab-selected {background:linear-gradient(145deg,var(--dgu-control-light),rgba(255,255,255,.035));box-shadow:inset 0 1px rgba(255,255,255,.12),inset 0 -2px rgba(141,199,255,.45)}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host button:not(.dgs-item) {background:linear-gradient(145deg,var(--dgu-control-light),rgba(255,255,255,.025));border-color:rgba(255,255,255,.08);box-shadow:inset 0 1px rgba(255,255,255,.06);min-height:44px}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-search .dgs-create {background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));box-shadow:inset 0 1px rgba(255,255,255,.06),0 3px 10px rgba(0,0,0,.1)}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-search input {background:linear-gradient(145deg,rgba(255,255,255,.025),transparent),#24262b;border-color:rgba(255,255,255,.09);box-shadow:inset 0 1px rgba(255,255,255,.045)}
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-search input::placeholder {color:var(--dgu-secondary);opacity:1}
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) :is(button,input):focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-item.dgs-auto:not([aria-pressed=true]) {background:linear-gradient(145deg,rgba(168,209,205,.045),transparent 60%),var(--dgu-raised-content)}
+@media(hover:hover) {
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host button:not(:disabled):hover {background-color:rgba(255,255,255,.1);box-shadow:inset 0 1px rgba(255,255,255,.12),0 3px 10px rgba(0,0,0,.12)}
+ html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-item:not(:disabled):hover {transform:translateY(-1px)}
+}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host button:not(:disabled):active {background:rgba(255,255,255,.075)}
+html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) :is(button,input) {transition:background-color 140ms ease,box-shadow 140ms ease,transform 100ms ease}
+html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host):not(.hidden) {animation:dgu-save-shell-in 160ms ease-out}
+html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-detail[open]:not(.dgs-inline-detail) {animation:dgu-save-drawer-in 180ms ease-out}
+html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-inline-detail[open] {animation:none}
+html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-feedback-saved {animation:dgu-save-confirmed 300ms ease-out}
+html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-feedback-deleted {animation:dgu-delete-confirmed 180ms ease-out}
+@keyframes dgu-save-shell-in {from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes dgu-save-drawer-in {from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+@keyframes dgu-save-confirmed {from{box-shadow:inset 2px 0 rgba(172,240,215,.65)}to{box-shadow:inset 2px 0 transparent}}
+@keyframes dgu-delete-confirmed {from{opacity:.55;box-shadow:inset 2px 0 rgba(255,176,176,.4)}to{opacity:1;box-shadow:inset 2px 0 transparent}}
+@media(prefers-reduced-motion:reduce) {
+ html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host),html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) :is(button,input,.dgs-detail[open]) {animation:none!important;transition:none!important;transform:none!important}
+}
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-search input:focus-visible {outline:1px solid rgba(255,255,255,.2);box-shadow:inset 0 -2px var(--dgu-accent)}
+html[data-dol-midnight][data-dgu-visual="0"] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host),html[data-dol-midnight][data-dgu-visual="0"] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) :is(button,input,.dgs-detail[open]) {animation:none;transition:none;transform:none}
+
+/* Default stays a two-column slot overview; only V2 adds inline details. */
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #customOverlayTitle {display:flex;flex-direction:column;gap:14px;padding:20px 24px;position:relative}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar {width:100%;padding:0;margin:0;background:none;border:0;box-shadow:none;align-items:center;gap:16px}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar .dgs-muted {margin:.6em 0 0;font-size:.9em}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar>button {margin-right:24px}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar>button {font:inherit;color:var(--dgu-text);min-height:44px;padding:9px 14px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:rgba(255,255,255,.025)}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #customOverlayTitle {background-image:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%)}
+html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #overlayTabs {order:1;margin:0;flex:none}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] #overlayTabs button {flex:1;min-width:0}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] #saveList>.dgs-host {margin:0}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-entries>details>summary {padding:.4rem 0}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-slot-grid:has(>.dgs-auto) {grid-template-columns:minmax(0,1fr)}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-item {min-height:84px;padding:12px 14px;gap:12px;border-radius:9px;line-height:1.4}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-item small {font-size:.8em}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail[open] {padding:0;overflow:hidden}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail-header {padding:18px 20px}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail-content {padding:0 20px 20px}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail-content>h3 {font-size:.9em;font-weight:500;color:var(--dgu-secondary);margin:20px 0 8px}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail[open] .dgs-actions {margin:0;border-radius:0;padding:16px 20px;gap:8px}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-actions>button {flex:1;min-width:0;margin:0}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-actions>.dgs-load {color:var(--dgu-accent);box-shadow:inset 0 -2px rgba(141,199,255,.35)}
+/* Stable backing for semantic action text over bright surroundings. The shell
+   keeps its approved Acrylic; this adds no blur or reference texture. */
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host .dgs-actions>button:not(.dgs-item){background-color:rgba(26,28,32,.62)}
+html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host .dgs-actions>button:not(:disabled):is(:hover,:active){background-color:rgba(26,28,32,.62)}
+@media(min-width:1100px) {
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail:modal {inset:40px 24px auto auto;width:420px;height:auto;max-height:calc(100dvh - 80px)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves] .dgs-detail:modal::backdrop {background:rgba(9,10,12,.28)}
+}
+
+/* Approved native content baseline: owned controls, no component replacement.
+   Known game panels share it; unrelated Mod pages keep their own contract. */
+html[data-dol-midnight] :is(.dgp-overlay[data-dgp-panel],.dgc-overlay[data-overlay=characteristics],.dgs-overlay[data-overlay=social],.dgshop-content) input:is([type=checkbox],[type=radio],[type=range]){accent-color:var(--dgu-accent,#8dc7ff)}
+html[data-dol-midnight] :is(.dgp-overlay[data-dgp-panel],.dgc-overlay[data-overlay=characteristics],.dgs-overlay[data-overlay=social],.dgshop-content) :is(input,select,textarea,button,a):focus-visible{outline:2px solid var(--dgu-accent,#8dc7ff);outline-offset:2px}
+html[data-dol-midnight] .dgp-overlay[data-dgp-panel=statistics] .foldout{background:none;border:0;border-radius:0;box-shadow:inset 0 -1px rgba(255,255,255,.045)}
+html[data-dol-midnight] .dgp-overlay[data-dgp-panel=journal] :is(ul.journal>li,details.journal,.foldout){background:none;border:0;border-radius:0;box-shadow:inset 0 -1px rgba(255,255,255,.045)}
+html[data-dol-midnight] .dgp-overlay[data-dgp-panel=journal] #customOverlayContent button{min-height:44px;padding:8px 12px;background:#24262b;color:var(--dgu-text);border:1px solid rgba(255,255,255,.09);border-radius:8px}
+html[data-dol-midnight] .dgp-overlay[data-dgp-panel=journal] #customOverlayContent button:not(:disabled):hover{background:#2b2d32}
+html[data-dol-midnight] .dgp-overlay[data-dgp-panel=journal] #customOverlayContent button:not(:disabled):active{background:#202226}
+/* Shop floating menus use a single Acrylic shell. Native content stays live;
+   catalogue, colour swatches and purchase semantics are outside this rule. */
+html[data-dol-midnight] .dgshop-content :is(.filters-div,.options-div,.shop-legend){--dgu-acrylic-base:rgba(36,38,42,.78);color:var(--dgu-text);border-color:rgba(255,255,255,.08)}
+html[data-dol-midnight][data-dgu-visual="2"] .dgshop-content :is(.filters-div,.options-div,.shop-legend){--dgu-acrylic-base:rgba(36,38,42,.74)}
+html[data-dol-midnight] .dgshop-content .filter-block{background:transparent;border:0;border-radius:0;box-shadow:inset 0 -1px rgba(255,255,255,.045)}
+html[data-dol-midnight] .dgshop-content :is(.filters-div,.options-div,.shop-legend) :is(input[type=text],input[type=number],select){background:#24262b;border-color:rgba(255,255,255,.09);color:var(--dgu-text);max-width:100%;min-width:0}
+html[data-dol-midnight] .dgshop-content :is(.filters-div,.options-div) label{display:inline-flex;align-items:center;flex-wrap:wrap;box-sizing:border-box;max-width:100%;min-height:44px;gap:6px;vertical-align:middle;overflow-wrap:anywhere}
+html[data-dol-midnight] .dgshop-content :is(.filters-div,.options-div) select{min-height:44px}
+html[data-dol-midnight] .dgshop-content :is(.filters-div,.options-div) hr{border:0;height:1px;background:rgba(255,255,255,.07);margin:10px 0}
+html[data-dol-midnight] .dgshop-content :is(.filter-buttons-div,.options-buttons-div){display:flex;flex-wrap:wrap;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.07)}
+html[data-dol-midnight] .dgshop-content :is(.filter-button,.options-button){display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:44px;height:auto;max-width:100%;margin:0;padding:8px 12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:8px;color:var(--dgu-text)}
+html[data-dol-midnight] .dgshop-content :is(.filter-button,.options-button):hover{background:rgba(255,255,255,.07)}
+html[data-dol-midnight] .dgshop-content :is(.filter-button,.options-button):active{background:rgba(255,255,255,.1)}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ html[data-dol-midnight][data-dgu-visualGlass] .dgshop-content :is(.filters-div,.options-div,.shop-legend){background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%),var(--dgu-acrylic-base);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px rgba(255,255,255,.09),inset 0 -1px rgba(0,0,0,.16),0 20px 60px rgba(0,0,0,.3)}
+}
+/* SugarCube owns this dialog, its contents and close/keyboard handlers. Only
+   the outer surface changes; native text and form content remain stable. */
+html[data-dol-midnight] #ui-dialog{--dgu-acrylic-base:rgba(36,38,42,.78);color:#e6e7eb;border-radius:12px;background:#1c1d20}
+html[data-dol-midnight][data-dgu-visual="2"] #ui-dialog{--dgu-acrylic-base:rgba(36,38,42,.74)}
+html[data-dol-midnight] #ui-dialog-titlebar{background:transparent;border-color:rgba(255,255,255,.08);color:#e6e7eb}
+html[data-dol-midnight] #ui-dialog-body{background:linear-gradient(to bottom,rgba(255,255,255,.02),transparent 90%),rgba(31,33,37,.78);border-color:rgba(255,255,255,.06);color:#e6e7eb}
+html[data-dol-midnight] #ui-dialog-body :is(input,select,textarea){accent-color:#8dc7ff}
+html[data-dol-midnight] #ui-dialog-body :is(button,input[type=button],input[type=submit],input[type=text],input[type=password],input[type=file],select,textarea) {font:inherit;color:var(--dgu-text);background:#24262b;border:1px solid rgba(255,255,255,.07);border-radius:8px;min-height:44px;max-width:100%;box-sizing:border-box;box-shadow:inset 0 1px rgba(255,255,255,.025)}
+html[data-dol-midnight] #ui-dialog-body input::file-selector-button {background:#34363c;color:var(--dgu-text);border:1px solid rgba(255,255,255,.07);border-radius:6px;min-height:36px}
+html[data-dol-midnight] #ui-dialog-close {color:var(--dgu-text);background:transparent;border-color:transparent;border-radius:8px}
+html[data-dol-midnight] #ui-dialog :focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}
+@media(hover:hover) {
+ html[data-dol-midnight] #ui-dialog-body :is(button,input[type=button],input[type=submit]):not(:disabled):hover,html[data-dol-midnight] #ui-dialog-close:hover {background:#2b2d32;border-color:rgba(255,255,255,.07)}
+}
+html[data-dol-midnight] #ui-dialog-body :is(button,input[type=button],input[type=submit]):not(:disabled):active,html[data-dol-midnight] #ui-dialog-close:active {background:#202226}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ html[data-dol-midnight][data-dgu-visualGlass] #ui-dialog{background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%),var(--dgu-acrylic-base);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px rgba(255,255,255,.09),0 20px 60px rgba(0,0,0,.3)}
+}
+
+/* Native jQuery tooltip signature only. Its plugin keeps positioning, content,
+   pointer behaviour and lifetime; unknown popup classes are not adopted. */
+html[data-dol-midnight] body>.tooltip-popup[data-tooltip-id] {--dgu-acrylic-base:rgba(36,38,42,.78);color:var(--dgu-text);background:var(--dgu-surface);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;box-sizing:border-box;overflow-wrap:anywhere;box-shadow:inset 0 1px rgba(255,255,255,.06),0 12px 36px rgba(0,0,0,.28)}
+html[data-dol-midnight][data-dgu-visual="2"] body>.tooltip-popup[data-tooltip-id] {--dgu-acrylic-base:rgba(36,38,42,.74)}
+html[data-dol-midnight] body>.tooltip-popup[data-tooltip-id]>.tooltip-header {color:var(--dgu-text);font-weight:600;margin-bottom:4px}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] body>.tooltip-popup[data-tooltip-id] {background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%),var(--dgu-acrylic-base);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px rgba(255,255,255,.09),inset 0 -1px rgba(0,0,0,.16),0 12px 36px rgba(0,0,0,.3)}
+}
+
+/* Secondary navigation uses the approved quiet control edge in every tier.
+   Match an owned host; do not theme unknown overlays or native form rows. */
+html[data-dol-midnight] #customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) :is(#overlayTabs button,.dgp-navigation button,.dgp-navigation select,.dgs-navigation button,.dgc-navigation button) {min-height:44px;border-radius:8px;border-color:rgba(255,255,255,.07)}
+html[data-dol-midnight] #customOverlay:is(.dgp-overlay[data-dgp-panel],.dgs-overlay[data-overlay=social],.dgc-overlay[data-overlay=characteristics]):has(>.dgp-host,>.dgs-host,>.dgc-host) :is(.dgp-navigation button,.dgp-navigation select,.dgs-navigation button,.dgc-navigation button) {background:#24262b;box-shadow:none;color:var(--dgu-text)}
+
+/* Native save transfer and recognised MapleBirch cloud panel. The adapter only
+   marks the shell; no cloud controls, handlers or service state are replaced. */
+html[data-dol-midnight] #customOverlay.dgs-native-tools[data-overlay=saves] {--dgu-acrylic-base:rgba(36,38,42,.68);background:var(--dgu-surface);color:var(--dgu-text);border:1px solid rgba(255,255,255,.08);border-radius:12px;box-sizing:border-box}
+html[data-dol-midnight][data-dgu-visual="2"] #customOverlay.dgs-native-tools[data-overlay=saves] {--dgu-acrylic-base:rgba(36,38,42,.64)}
+html[data-dol-midnight] #customOverlay.dgs-native-tools[data-overlay=saves]:not(.hidden) {display:flex;flex-direction:column;max-height:calc(100dvh - 24px)}
+html[data-dol-midnight] #customOverlay.dgs-native-tools[data-overlay=saves] #customOverlayTitle {flex:none;padding:16px 56px 16px 16px;background:transparent;border-color:transparent}
+html[data-dol-midnight] #customOverlay.dgs-native-tools[data-overlay=saves] #overlayTabs {display:flex;flex-wrap:wrap;gap:4px;width:100%;border:0;background:transparent}
+html[data-dol-midnight] #customOverlay.dgs-native-tools[data-overlay=saves] #overlayTabs button {flex:1;min-width:0;min-height:44px;border-radius:8px;border-color:transparent;background:transparent}
+html[data-dol-midnight] #customOverlay.dgs-native-tools[data-overlay=saves] #overlayTabs button.tab-selected {background:rgba(255,255,255,.045);box-shadow:inset 0 1px rgba(255,255,255,.06),inset 0 -2px rgba(141,199,255,.45)}
+html[data-dol-midnight] #customOverlay.dgs-native-tools[data-overlay=saves] #customOverlayContent {flex:1;min-height:0;height:auto;overflow:auto;background:var(--dgu-surface);color:var(--dgu-text);backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-dol-midnight] #customOverlay.dgs-native-tools :is(.dgs-transfer,#maplebirch-cloud-save) {color:var(--dgu-text);min-width:0;max-width:100%}
+html[data-dol-midnight] #customOverlay.dgs-native-tools :is(.dgs-transfer-card,#maplebirch-cloud-save>.settingsToggleItemWide) {background:linear-gradient(to bottom,rgba(255,255,255,.025),transparent 55%),#292b30;border:0;border-radius:12px;box-shadow:inset 0 1px rgba(255,255,255,.025);padding:16px;min-width:0;box-sizing:border-box}
+html[data-dol-midnight] #customOverlay.dgs-native-tools :is(.dgs-transfer,#maplebirch-cloud-save) :is(button,input[type=button],input[type=file],input[type=text],input[type=password],textarea,select) {font:inherit;color:var(--dgu-text);background:#24262b;border:1px solid rgba(255,255,255,.07);border-radius:8px;min-height:44px;box-sizing:border-box;max-width:100%;box-shadow:inset 0 1px rgba(255,255,255,.025)}
+html[data-dol-midnight] #customOverlay.dgs-native-tools .dgs-transfer input::file-selector-button {background:#34363c;color:var(--dgu-text);border:1px solid rgba(255,255,255,.07);border-radius:6px;min-height:36px}
+html[data-dol-midnight] #customOverlay.dgs-native-tools .dgs-transfer-card:first-child>input[type=file] {margin-inline:0}
+html[data-dol-midnight] #customOverlay.dgs-native-tools :is(.dgs-transfer,#maplebirch-cloud-save) :is(input[type=checkbox],input[type=radio]) {accent-color:var(--dgu-accent)}
+html[data-dol-midnight] #customOverlay.dgs-native-tools :is(input,button,select,textarea,summary):focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}
+html[data-dol-midnight] #customOverlay.dgs-native-tools #maplebirch-cloud-save :is(label,.maplebirch-cloud-save-actions) {gap:8px;flex-wrap:wrap;min-width:0}
+html[data-dol-midnight] #customOverlay.dgs-native-tools #maplebirch-cloud-save :is(input[type=text],input[type=password],select) {min-width:0;width:min(100%,22rem)}
+html[data-dol-midnight] #customOverlay.dgs-native-tools #maplebirch-cloud-save textarea {width:100%;min-height:180px;resize:vertical}
+html[data-dol-midnight] #customOverlay.dgs-native-tools #maplebirch-cloud-save button.deleteButton {color:var(--dgu-danger)}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgs-native-tools[data-overlay=saves]:not(.hidden) {background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%),var(--dgu-acrylic-base);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px rgba(255,255,255,.09),inset 0 -1px rgba(0,0,0,.16),0 20px 60px rgba(0,0,0,.3)}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgs-native-tools[data-overlay=saves] #customOverlayContent {background:linear-gradient(to bottom,rgba(255,255,255,.025),transparent 55%),rgba(31,33,37,.78)}
+}
+@media(hover:hover) {
+ html[data-dol-midnight] #customOverlay.dgs-native-tools :is(.dgs-transfer,#maplebirch-cloud-save) :is(button,input[type=button]):not(:disabled):hover {background:#2b2d32}
+}
+html[data-dol-midnight] #customOverlay.dgs-native-tools :is(.dgs-transfer,#maplebirch-cloud-save) :is(button,input[type=button]):not(:disabled):active {background:#202226}
+
+/* Original save confirmation nodes/callbacks stay in place, without fixed offsets. */
+html[data-dol-midnight] #customOverlay.dgs-native-tools #saveList>.saveBorder:has(>.saveMenuConfirm) {max-width:44rem;width:100%;margin:0;padding:16px;box-sizing:border-box;border:0;border-radius:12px;background:linear-gradient(to bottom,rgba(255,255,255,.025),transparent 55%),#292b30;box-shadow:inset 0 1px rgba(255,255,255,.025);overflow-wrap:anywhere}
+html[data-dol-midnight] #customOverlay.dgs-native-tools #saveList>.saveBorder>.saveMenuConfirm {font:inherit;color:var(--dgu-text);background:#24262b!important;border:1px solid rgba(255,255,255,.07);border-radius:8px;min-height:44px;max-width:100%;white-space:normal;box-sizing:border-box;margin:12px 8px 0 0;padding:9px 14px}
+@media(hover:hover) {
+ html[data-dol-midnight] #customOverlay.dgs-native-tools #saveList>.saveBorder>.saveMenuConfirm:not(:disabled):hover {background:#2b2d32!important}
+}
+html[data-dol-midnight] #customOverlay.dgs-native-tools #saveList>.saveBorder>.saveMenuConfirm:not(:disabled):active {background:#202226!important}
+
+/* Combat tools keep native nodes and handlers. Only open floating shells blur;
+   the persistent dock and action commands stay Solid. */
+html[data-dol-midnight] .dcu-root button:is(.dcu-header>button,.dcu-summary-toggle,.dcu-summary-list button) {border-radius:8px;border-color:rgba(255,255,255,.07)}
+html[data-dol-midnight] .dcu-root .dcu-summary-toggle {background:#24262b!important}
+html[data-dol-midnight] .dcu-root .dcu-summary .dcu-summary-list button {background:transparent;border-color:transparent}
+html[data-dol-midnight] .dcu-root .dcu-summary .dcu-summary-list button[aria-current=location] {background:rgba(141,199,255,.035);box-shadow:inset 2px 0 var(--dgu-accent)}
+/* !important matches the native menu positioning stylesheet, not its events. */
+html[data-dol-midnight] .dcu-root .dcu-menu-slot>#cbtToggleMenu {background:#24262b!important;border-color:rgba(255,255,255,.07)!important;border-radius:8px!important;color:var(--dgu-text)}
+html[data-dol-midnight] .dcu-root :is(.dcu-summary,.dcu-menu-slot>#cbtToggleMenu.visible) {--dgu-acrylic-base:rgba(36,38,42,.68);border-color:rgba(255,255,255,.08);backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-dol-midnight][data-dgu-visual="2"] .dcu-root :is(.dcu-summary,.dcu-menu-slot>#cbtToggleMenu.visible) {--dgu-acrylic-base:rgba(36,38,42,.64)}
+html[data-dol-midnight] .dcu-root .dcu-menu-slot>#cbtToggleMenu :is(select,input) {accent-color:var(--dgu-accent)}
+html[data-dol-midnight] .dcu-root .dcu-menu-slot>#cbtToggleMenu select {background:#24262b;color:var(--dgu-text);border-color:rgba(255,255,255,.09);min-height:44px}
+html[data-dol-midnight] .dcu-root .dcu-menu-slot>#cbtToggleMenu hr {border:0;height:1px;background:rgba(255,255,255,.07)}
+html[data-dol-midnight] .dcu-root .dcu-menu-slot>#cbtToggleMenu.visible :is(.cbtToggle,.cbtOption) {display:flex;align-items:center;width:100%;box-sizing:border-box}
+html[data-dol-midnight] .dcu-root .dcu-menu-slot>#cbtToggleMenu.visible .cbtOption {justify-content:space-between;gap:8px}
+html[data-dol-midnight] .dcu-root .dcu-summary-toggle:not(:disabled):active {background:#202226!important}
+@media(hover:hover) {
+ html[data-dol-midnight] .dcu-root .dcu-summary-toggle:not(:disabled):hover {background:#2b2d32!important;border-color:rgba(255,255,255,.07)}
+ html[data-dol-midnight] .dcu-root .dcu-menu-slot>#cbtToggleMenu .cbtToggle:hover {background:rgba(255,255,255,.045)}
+}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] .dcu-root :is(.dcu-summary,.dcu-menu-slot>#cbtToggleMenu.visible) {background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%),var(--dgu-acrylic-base)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px rgba(255,255,255,.09),inset 0 -1px rgba(0,0,0,.16),0 20px 60px rgba(0,0,0,.3)}
+}
+
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html[data-dol-midnight][data-dgu-visualGlass] .dcu-root :is(.dcu-summary,.dcu-menu-slot>#cbtToggleMenu.visible) {border-top-color:rgba(255,255,255,.14);box-shadow:inset 0 1px rgba(255,255,255,.09),inset 1px 0 rgba(255,255,255,.025),inset 0 -1px rgba(0,0,0,.16),0 20px 60px rgba(0,0,0,.3)}
+ /* Match the save-menu shell; avoid an almost-opaque second reading layer. */
+ html[data-dol-midnight][data-dgu-visualGlass] .dcu-root .dcu-summary-header {background:rgba(31,33,37,.4);padding:10px;border-radius:8px}
+ html[data-dol-midnight][data-dgu-visualGlass] .dcu-root .dcu-summary-list {background:rgba(31,33,37,.4);padding:6px;border-radius:8px}
+ html[data-dol-midnight][data-dgu-visualGlass] .dcu-root .dcu-summary :is(.dcu-hint,.dcu-summary-heading>span,.dcu-summary-list span) {color:#d1d3d9}
+ html[data-dol-midnight][data-dgu-visualGlass] .dcu-root .dcu-menu-slot>#cbtToggleMenu.visible .cbtToggle {background:rgba(31,33,37,.4)}
+ html[data-dol-midnight][data-dgu-visualGlass] .dcu-root .dcu-menu-slot>#cbtToggleMenu.visible .cbtOption {background:rgba(31,33,37,.4)}
+}
+/* Opt-in phone density: original nodes and events stay untouched. The controller
+   disables this marker on larger displays; do not shrink text or touch targets. */
+html[data-dol-midnight][data-dgu-compact-controls] :is(.dcu-nav,.dcu-footer,.dcu-summary-list,.dgw-actions,.dgw-slots,.dgw-header-actions,.dgw-select-tools,.dgw-pagination,.dgshop-browse-tools,.dgshop-toolbar,.dgs-actions,.dgs-search,.dgp-navigation,.dgs-navigation,.dgc-navigation,#dol-midnight-controls .dmt-recovery){gap:4px}
+html[data-dol-midnight][data-dgu-compact-controls] :is(.dcu-root,.dgw-root,.dgshop-host,.dgs-host,.dgp-navigation,.dgc-navigation,#dol-midnight-controls) button:not(.dgs-item):not(.dgw-item){min-height:44px;padding:4px 8px!important}
+html[data-dol-midnight][data-dgu-compact-controls] #passages .dcu-root .dcu-native .dcu-group label{box-sizing:border-box;min-height:44px;padding:2px 6px;margin:1px 2px 1px 0;line-height:1.4}
+html[data-dol-midnight][data-dgu-compact-controls] #passages .passage:has(.dcu-shell) #replaceAction a{box-sizing:border-box;min-height:44px;margin:1px 2px;padding:4px 8px;line-height:1.4}
+html[data-dol-midnight][data-dgu-compact-controls] #passages .passage:has(.dcu-shell) #replaceAction{line-height:1.5;padding:2px 0}
+html[data-dol-midnight][data-dgu-compact-controls] .dgshop-content :is(.category-group,.buy-buttons,.try-buttons,.searchGroup){gap:4px}
+html[data-dol-midnight][data-dgu-compact-controls] .dgshop-content .dgshop-purchase .buy-button-inner{min-height:44px;padding:4px 6px}
+html[data-dol-midnight][data-dgu-compact-controls] #dol-midnight-controls .dgu-setting-row{min-height:44px;padding:4px 0;gap:8px}
+html[data-dol-midnight][data-dgu-compact-controls] #customOverlay[data-overlay=saves] .dgs-host :is(.dgs-actions,.dgs-search){gap:4px}
+/* A sticky header must obscure the settings text scrolling beneath it. Keep
+   the outer Acrylic rather than adding a second backdrop-filter. */
+html[data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-settings-header{background-color:rgba(36,38,42,.97)}

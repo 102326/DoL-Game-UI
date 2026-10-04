@@ -55,3 +55,10 @@
 /* Native action output uses repeated line breaks; keep one line break per run. */
 .passage:has([data-dcu-action-list]) br+br{display:none}
 .passage:has([data-dcu-action-list]) .dcu-root{margin:6px 0}
+
+/* Closed native menu participates in dock sizing; only its open popup is absolute. */
+.dcu-root .dcu-menu-slot {width:auto;min-width:96px}
+.dcu-root .dcu-menu-slot>#cbtToggleMenu:not(.visible) {position:static!important}
+/* Anchor the open menu to the whole dock, including wrapped mobile rows. */
+.dcu-root .dcu-menu-slot:has(>#cbtToggleMenu.visible) {position:static}
+.dcu-root .dcu-menu-slot>#cbtToggleMenu.visible {bottom:calc(100% + 10px)!important;right:12px!important}

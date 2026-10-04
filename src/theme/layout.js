@@ -1,5 +1,9 @@
+import {createSidebarLayout} from './sidebar-layout';
 export function startLayout(root=window){
   if(root.DMTLayout)return;
+  const sidebarLayout=createSidebarLayout();
+  let sidebarFrame=0;
+  function scheduleSidebar(){cancelAnimationFrame(sidebarFrame);sidebarFrame=requestAnimationFrame(()=>sidebarLayout.sync(active))}
   let active=false, shade, bar, observer, previousFocus, disposed=false;
   const narrow=root.matchMedia('(max-width: 899px)');
   const visible=node=>!!node && node.getClientRects().length>0 && getComputedStyle(node).visibility!=='hidden';
@@ -35,7 +39,8 @@ export function startLayout(root=window){
       document.body.append(shade);
     }
     const next=document.getElementById('ui-bar');
-    if(next!==bar){observer?.disconnect();bar=next;if(bar){observer=new MutationObserver(updateShade);observer.observe(bar,{attributes:true,attributeFilter:['class']});}}
+    if(next!==bar){observer?.disconnect();bar=next;if(bar){observer=new MutationObserver(records=>{if(records.some(r=>r.type==='attributes'&&r.target===bar))updateShade();if(records.some(r=>r.type==='childList'&&(r.target===bar||r.target instanceof Element&&r.target.closest('#storyCaptionContent'))))scheduleSidebar()});observer.observe(bar,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});}}
+    sidebarLayout.sync(active);
     updateShade();
   }
   function onBack(event){
@@ -63,7 +68,7 @@ export function startLayout(root=window){
   root.addEventListener('backbutton',onBack,true);
   narrow.addEventListener('change',updateShade);
   root.DMTLayout={sync,destroy(){
-    disposed=true;observer?.disconnect();shade?.remove();document.getElementById('dmt-status-toggle')?.remove();document.removeEventListener('keydown',onBack,true);
+    disposed=true;observer?.disconnect();cancelAnimationFrame(sidebarFrame);sidebarLayout.destroy();shade?.remove();document.getElementById('dmt-status-toggle')?.remove();document.removeEventListener('keydown',onBack,true);
     root.removeEventListener('backbutton',onBack,true);narrow.removeEventListener('change',updateShade);
     for(const name of ['data-dmt-layout','data-dmt-compact-stats','data-dmt-stats-collapsed','data-dmt-reading'])document.documentElement.removeAttribute(name);
     delete root.DMTLayout;

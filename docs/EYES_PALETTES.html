@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2.0-eyes 配色与纹样候选</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:32px;background:#111319;color:#e9edf4;font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}
+h1{font-size:30px;margin:0}header>p{color:#bac4d1;margin:8px 0 18px}.control{display:inline-flex;gap:10px;align-items:center;margin-bottom:24px;cursor:pointer}input{accent-color:#91c9ff;width:18px;height:18px}
+main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.palette{background:var(--surface);color:var(--text);padding:22px;border:1px solid var(--line);border-radius:22px}
+.ocean{--surface:#111a25;--panel:#1b2a3a;--text:#f0f4fb;--secondary:#acbace;--accent:#91c9ff;--line:#465d74;--rgb:145,201,255}
+.graphite{--surface:#211d1b;--panel:#302a26;--text:#f4eee6;--secondary:#c5b8aa;--accent:#e4b88b;--line:#6a584b;--rgb:228,184,139}
+.mist{--surface:#191724;--panel:#2a2538;--text:#f4f0fc;--secondary:#beb4ce;--accent:#bba7f2;--line:#625571;--rgb:187,167,242}
+.eyebrow{font-size:12px;letter-spacing:.15em;color:var(--accent);margin:0}.palette h2{font-size:25px;margin:3px 0 0}.subtitle{color:var(--secondary);margin:4px 0 18px}
+.banner{padding:18px;border:1px solid var(--line);border-radius:15px;background:var(--panel);position:relative;overflow:hidden}.banner::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at top right,rgba(var(--rgb),.13),transparent 65%)}
+body:has(#patterns:checked) .banner::after{content:"";position:absolute;right:0;top:0;width:42%;height:100%;pointer-events:none;background:repeating-linear-gradient(135deg,transparent 0 17px,rgba(var(--rgb),.075) 17px 18px)}
+.banner h3,.banner p{position:relative;z-index:1}.banner h3{margin:0;font-size:21px}.banner p{margin:4px 0 0;color:var(--secondary)}
+.slots{display:grid;gap:10px;margin-top:18px}.slot{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 15px}.selected{border-color:var(--accent);box-shadow:inset 3px 0 var(--accent)}.slot strong{display:block}.slot small{color:var(--secondary)}.badge{font-size:12px;color:#b6ead5;float:right}.empty{border-style:dashed;color:var(--secondary)}
+.description{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px;margin-top:18px}.description h3{margin:0 0 8px;font-size:16px}.description p{margin:0}.description small{display:block;margin-top:10px;color:var(--secondary)}
+.actions{display:flex;gap:10px;margin:18px 0}.action{padding:9px 16px;border:1px solid var(--line);border-radius:11px;background:var(--panel);font-weight:600}.primary{background:var(--accent);color:var(--surface);border-color:var(--accent)}.danger{color:#ffb9b9}
+.swatches{display:flex;gap:9px}.swatches span{width:27px;height:27px;border:1px solid var(--line);border-radius:50%}.palette footer{margin-top:13px;color:var(--secondary);font-size:13px}
+body>footer{margin-top:22px;color:#bac4d1;font-size:14px}@media(max-width:900px){main{grid-template-columns:1fr}body{padding:20px}}
+</style>
+<header><h1>2.0-eyes / 配色与纹样对照</h1><p>同一内容，三种材质底色。候选设计稿，不代表已安装效果。</p></header>
+<label class="control"><input type="checkbox" id="patterns" checked>显示标题边缘纹样（可关闭对照）</label>
+<main>
+ <article class="palette ocean"><p class="eyebrow">01 / OCEAN</p><h2>深海蓝灰</h2><p class="subtitle">冷色层次 · 清晰通透</p><section class="banner"><h3>存档管理</h3><p>场景氛围留在边缘，内容保持清楚。</p></section><div class="slots"><div class="slot selected"><span class="badge">最近保存</span><strong>卧室 · 夜晚</strong><small>游戏内时间：第182天 · 22:40</small></div><div class="slot"><strong>服装店 · 午后</strong><small>游戏内时间：第182天 · 14:10</small></div><div class="slot empty">＋ 新建存档</div></div><section class="description"><h3>存档摘要</h3><p>窗外的灯光渐渐亮起。你回到卧室，准备安排接下来的行程。</p><small>正文区不铺纹样，次要信息保留足够对比。</small></section><div class="actions"><span class="action primary">读取存档</span><span class="action danger">删除</span></div><div class="swatches"><span style="background:var(--surface)"></span><span style="background:var(--panel)"></span><span style="background:var(--secondary)"></span><span style="background:var(--accent)"></span></div><footer>冷蓝强调；薄线几何纹样。</footer></article>
+ <article class="palette graphite"><p class="eyebrow">02 / GRAPHITE</p><h2>暖石墨</h2><p class="subtitle">柔和暖底 · 安静阅读</p><section class="banner"><h3>存档管理</h3><p>场景氛围留在边缘，内容保持清楚。</p></section><div class="slots"><div class="slot selected"><span class="badge">最近保存</span><strong>卧室 · 夜晚</strong><small>游戏内时间：第182天 · 22:40</small></div><div class="slot"><strong>服装店 · 午后</strong><small>游戏内时间：第182天 · 14:10</small></div><div class="slot empty">＋ 新建存档</div></div><section class="description"><h3>存档摘要</h3><p>窗外的灯光渐渐亮起。你回到卧室，准备安排接下来的行程。</p><small>正文区不铺纹样，次要信息保留足够对比。</small></section><div class="actions"><span class="action primary">读取存档</span><span class="action danger">删除</span></div><div class="swatches"><span style="background:var(--surface)"></span><span style="background:var(--panel)"></span><span style="background:var(--secondary)"></span><span style="background:var(--accent)"></span></div><footer>暖金强调；纹样不靠近正文。</footer></article>
+ <article class="palette mist"><p class="eyebrow">03 / MIST</p><h2>雾紫</h2><p class="subtitle">柔雾层次 · 延续原有气质</p><section class="banner"><h3>存档管理</h3><p>场景氛围留在边缘，内容保持清楚。</p></section><div class="slots"><div class="slot selected"><span class="badge">最近保存</span><strong>卧室 · 夜晚</strong><small>游戏内时间：第182天 · 22:40</small></div><div class="slot"><strong>服装店 · 午后</strong><small>游戏内时间：第182天 · 14:10</small></div><div class="slot empty">＋ 新建存档</div></div><section class="description"><h3>存档摘要</h3><p>窗外的灯光渐渐亮起。你回到卧室，准备安排接下来的行程。</p><small>正文区不铺纹样，次要信息保留足够对比。</small></section><div class="actions"><span class="action primary">读取存档</span><span class="action danger">删除</span></div><div class="swatches"><span style="background:var(--surface)"></span><span style="background:var(--panel)"></span><span style="background:var(--secondary)"></span><span style="background:var(--accent)"></span></div><footer>雾紫强调；与现有风格对照。</footer></article>
+</main>
+<footer>只含合成文字与CSS纹样，无游戏资源或真实存档。透明玻璃的实际背景对比和设备性能仍需后续验证。</footer>
+</html>

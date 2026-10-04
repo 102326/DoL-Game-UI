@@ -10,5 +10,5 @@ for(const mode of ['quick','release','performance']){
 }
 assert.notEqual(run('quick','unknown','--plan').status,0);
 assert.notEqual(run('release','shop','--plan').status,0);
-assert.deepEqual(JSON.parse(run('quick','layout','layout','--plan').stdout).tests,['display-scale.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs']);
+assert.deepEqual(JSON.parse(run('quick','layout','layout','--plan').stdout).tests,['master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs']);
 console.log('PASS workflow selection, deduplication and invalid arguments');

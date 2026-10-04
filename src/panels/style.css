@@ -1,5 +1,8 @@
 #customOverlay.dgp-overlay{background:var(--dgu-surface);color:var(--dgu-text);border:1px solid var(--dgu-border);border-radius:var(--dgu-card-radius);box-sizing:border-box}
 #customOverlay.dgp-overlay:not(.hidden){display:flex;flex-direction:column;max-height:calc(100dvh - 24px)}
+/* Native/Mod hiding always wins over the adapted layout, including ancestors. */
+.dgp-overlay[hidden],.dgp-overlay [hidden],.dgp-overlay .hidden{display:none!important}
+.dgp-recovery{display:block;min-height:44px;margin:8px;padding:8px 12px;border:1px solid #666;border-radius:8px;background:#292b30;color:#e4e5e7;cursor:pointer}
 .dgp-overlay #customOverlayTitle,.dgp-overlay .dgp-host{flex:0 0 auto}
 .dgp-overlay #customOverlayContent{flex:1 1 auto;min-height:0;height:auto;overflow:auto;line-height:1.65;overflow-wrap:anywhere}
 .dgp-overlay .dgp-host{background:var(--dgu-surface);padding:12px 8px;border-bottom:1px solid var(--dgu-border)}
@@ -43,3 +46,53 @@
 
 .dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .numberStepperContainer{margin:4px 0}
 @media(pointer:coarse){.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) :is(input[type=button],button,select){min-height:44px}}
+
+/* Traits: rendered content determines height; large collections still scroll. */
+html[data-dol-midnight][data-dmt-layout] #customOverlay.dgp-overlay[data-dgp-panel=traits]{width:min(840px,100%);height:auto;max-height:calc(100dvh - 24px)}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #customOverlayContent{flex:0 1 auto;padding:16px 20px 24px;border:0}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch + br,
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists > br{display:none}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists :is(.traitList,.traitListReducedText){border:0;border-radius:0;background:none;margin:20px 0 0}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists :is(.traitHeading,h4){text-align:start;font-size:1.05em;font-weight:600;line-height:1.5;padding:0 0 10px;margin:20px 0 0;border:0;border-radius:0}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists [data-dgp-count]::after{content:' · ' attr(data-dgp-count);font-size:.85em;font-weight:400;color:var(--dgu-secondary)}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .traits{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:10px}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .trait{box-sizing:border-box;min-width:0;padding:14px 16px;border:0;line-height:1.6;margin:0 0 10px}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .trait > span:first-child{display:block;font-size:1em;font-weight:600;margin-bottom:4px}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .trait > :is(small,span:not(:first-child)){display:block;font-size:.92em}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .trait .meter{height:4px;border:0;margin-top:12px;border-radius:2px;overflow:hidden}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch .foldout{margin:0;padding:6px 12px;border:0;border-radius:10px}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch label{display:block;margin:8px 0 16px}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch .foldoutBody br{display:none}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch .foldoutBody a{display:inline-flex;align-items:center;min-height:44px;padding:0 8px}
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch :is(input[type=text],select){min-width:0;max-width:100%;width:100%;margin-top:8px}
+
+/* Forms: the approved settings skin also covers cheats and attitudes, including visible native inputs.
+   Keep input/text order and native group layout; no switch or segment shell. */
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) :is(.settingsGrid,.settingsGridSmall){gap:8px 20px;margin:8px 0 24px;padding:0}
+#customOverlay.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) #customOverlayContent{border:0;padding:16px 20px}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid > div:has(>button + button){display:flex;flex-wrap:wrap;gap:8px}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid > div:has(>button + button) > button{width:auto;padding:8px 14px;border-color:rgba(255,255,255,.07);background:rgba(255,255,255,.035)}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsHeader{text-align:start;font-size:1.15em;font-weight:600;line-height:1.5;margin:16px 0 4px;padding:8px 0;border:0;background:none}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) :is(.settingsToggleItem,.settingsToggleItemWide){height:auto;min-width:0;border:0;border-radius:0;background:none;padding:10px 0;line-height:1.5;box-shadow:inset 0 -1px rgba(255,255,255,.045)}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) :is(.settingsToggleItem,.settingsToggleItemWide) label{display:inline-flex;align-items:center;box-sizing:border-box;min-height:44px;padding:4px 0;gap:6px;vertical-align:middle;cursor:pointer}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) input:is([type=checkbox],[type=radio]){appearance:auto;-webkit-appearance:auto;position:static;opacity:1;width:18px;height:18px;min-height:0;flex:0 0 auto;margin:0 4px 0 0;vertical-align:middle;accent-color:var(--dgu-accent);cursor:pointer}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) input:is([type=checkbox],[type=radio]):focus-visible{outline:2px solid var(--dgu-accent);outline-offset:3px}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) label:has(>input:disabled){opacity:.45;cursor:default}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) input:is([type=checkbox],[type=radio]):disabled{cursor:default}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) :is(.settingsToggleItem,.settingsToggleItemWide) > select{min-height:44px;max-width:100%;margin:4px 0;padding:6px 10px;font:inherit}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) :is(input[type=text],input[type=number],select){min-width:0}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsHeader :is(.gold,.blue){color:var(--dgu-text)}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) :is(.settingsToggleItem,.settingsToggleItemWide) > .gold{color:var(--dgu-secondary);font-size:.9em}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .small-description{font-size:.9em;color:var(--dgu-secondary);margin-top:6px}
+.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) hr{border:0;height:1px;background:rgba(255,255,255,.04);margin:8px 0}
+
+/* Native information groups are sections; only entities need a raised card. */
+.dgp-overlay[data-dgp-panel=statistics] .foldout{border:0;border-radius:0;background:none;padding:8px 0;margin:12px 0;box-shadow:inset 0 -1px rgba(255,255,255,.045)}
+.dgp-overlay[data-dgp-panel=statistics] .foldoutHeader{font-weight:600;line-height:1.5;min-height:44px;padding:8px 0;box-sizing:border-box}
+.dgp-overlay[data-dgp-panel=journal] :is(ul.journal > li,details.journal,.foldout){border:0;border-radius:0;background:none;padding:10px 0;margin:8px 0;box-shadow:inset 0 -1px rgba(255,255,255,.045)}
+.dgp-overlay[data-dgp-panel=journal] :is(summary.journal,.foldoutHeader){min-height:44px;line-height:1.5;padding:8px 0;box-sizing:border-box;font-weight:600}
+.dgp-overlay[data-dgp-panel=journal] #journalNotesTextarea > label{display:inline-flex;align-items:center;min-height:44px;gap:6px;vertical-align:middle;cursor:pointer}
+.dgp-overlay[data-dgp-panel=journal] #journalNotesTextarea input[type=checkbox]{appearance:auto;width:18px;height:18px;vertical-align:middle;accent-color:var(--dgu-accent)}
+.dgp-overlay[data-dgp-panel=feats] #featTypes{line-height:1.6;margin-bottom:16px}
+.dgp-overlay[data-dgp-panel=feats] #featsList .feat{border:0;padding:14px;line-height:1.6}
+.dgp-overlay[data-dgp-panel=feats] #featsList .featText{padding:4px 6px;overflow-wrap:anywhere}

@@ -6,15 +6,18 @@ import {LABELS,snapshot,entries,itemName,itemView,slotCapacity,validate,type Sna
 import {renderOutfit} from './render';
 import {mirrorSidebar} from './sidebar-preview';
 import {createWardrobeExtras} from './extras';
+import {createOutfitLayout} from './outfit-layout';
 import type {WardrobeModel,Operation} from './types';
 import {repairMinutes,pieces,canRepair,destinations,targetInventory,transferProblem} from './operations';
 import './style.css';
+import {isMasterEnabled} from '../runtime/master';
 export function startWardrobe(root:any){
  const timing=createWardrobePerformance(),native=createNativeWardrobe(root,timing),extras=createWardrobeExtras(root);
  const KEY='DoLGameUI.wardrobe.v1';let enabled=true,nativeHiddenList=false,disposed=false,queued=false,generation=0;
  try{enabled=localStorage.getItem(KEY)!=='false'}catch{}
  interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:any;state:WardrobeModel;snapshot:Snapshot;plan?:{mode:Operation;entries:Entry[];location:string;inventory:any;fingerprint:string;target?:string;targetFingerprint?:string};entries?:Entry[];paintKey?:string;refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
  let active:Session|undefined,previewAbort:AbortController|undefined;
+ const outfits=createOutfitLayout();
  function isCurrentPassage(s:Session){return s.passage.isConnected&&!s.passage.classList.contains('passage-out')&&s.passage.dataset.passage===(root.SugarCube?.State??root.State)?.passage&&document.querySelector('#passages .passage:not(.passage-out)')===s.passage}
  function flushNative(s:Session,force=false){
   if(!s.nativeListDirty||!isCurrentPassage(s)||(!force&&!s.nativeOpen))return;
@@ -33,6 +36,7 @@ export function startWardrobe(root:any){
   try{return operation()}finally{list.id='wardrobeList'}
  }
  function release(){const s=active;if(!s)return;flushNative(s,true);generation++;previewAbort?.abort();
+  outfits.restore();
   // Restore the actual nodes, including changes made by native widgets.
   for(const {node,anchor} of s.moved??[]){if(node.isConnected&&anchor.parentNode)anchor.replaceWith(node);else anchor.remove()}
   if(s.exit&&s.exitAnchor?.parentNode)s.exitAnchor.replaceWith(s.exit);
@@ -59,6 +63,7 @@ export function startWardrobe(root:any){
   return timing.measure('ui.refresh',()=>refreshModel(s,force,message));
  }
  function refreshModel(s:Session,force=false,message=s.state.message){
+  if(s.view?.actions)outfits.sync(s.view.actions);
   const fresh=snapshot(root);if(!fresh){release();return}s.snapshot=fresh;
   const labels={...LABELS,...(fresh.variables.debug?{over_head:'外层头饰',over_upper:'外套',over_lower:'外层下装'}:{})};
   s.state.slots=Object.entries(labels).filter(([k])=>Array.isArray(fresh.inventory[k])).map(([key,label])=>({key,label,count:fresh.inventory[key].length,capacity:slotCapacity(fresh)}));
@@ -193,6 +198,7 @@ export function startWardrobe(root:any){
  }
  function scan(){
   if(disposed)return;
+  if(!isMasterEnabled()){release();return}
   const list=document.querySelector<HTMLElement>('#passages .passage #wardrobeList');
   const passage=list?.closest<HTMLElement>('.passage');
   if(!passage){release();return}
@@ -207,5 +213,5 @@ export function startWardrobe(root:any){
  });
  function start(){if(disposed)return;observer.observe(document.getElementById('passages')||document.body,{childList:true,subtree:true});root.jQuery?.(document).on(':passageend.dgw :storyready.dgw',schedule);schedule()}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
- return {performance:timing,getEnabled:()=>enabled,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(active?.app)refresh(active,true);else schedule()},destroy(){timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
+ return {performance:timing,getEnabled:()=>enabled,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
 }

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2.0-eyes · 主按钮厚边对照</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:24px;background:#1c1d20;color:#e6e7eb;font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif;--accent:#8dc7ff;--panel:#25262a;--border:#4b4d55}
+header{background:var(--panel);padding:16px;border-radius:16px}h1{font-size:1.6em;margin:0}p{margin:.5em 0 1em}.note,output{color:#b6b8c2}label{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-right:16px}input{accent-color:var(--accent)}
+main{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:1100px;margin:24px auto}article{min-width:0;padding:24px;border:1px solid var(--border);border-radius:16px;background:var(--panel)}h2{font-size:1.2em;margin:0 0 14px}.actions{display:flex;flex-wrap:wrap;gap:12px}
+button,select{font:inherit;min-height:44px;max-width:100%;padding:10px 18px;border:1px solid var(--border);border-radius:12px;background:var(--panel);color:#e6e7eb}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}button:disabled{opacity:.45;cursor:default}.primary{position:relative;isolation:isolate;background:#283b4c;border-color:var(--accent)}
+body[data-effects=on] .primary:not(:disabled):is(:focus-visible,:active){background-image:linear-gradient(135deg,#8dc7ff1f,transparent 65%)}
+/* The border changes, not the label or the hit box. No filter or pointer tracking. */
+body[data-effects=on] .depth:not(:disabled)::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;box-shadow:inset 0 1px #d0e9ff80,inset 1px 0 #8dc7ff40,inset 0 -2px #08090b80,inset -1px 0 #b1a5e833;transition:opacity 160ms ease-out}
+body[data-effects=on] .depth:not(:disabled):focus-visible::before{opacity:.65}
+body[data-effects=on] .depth:not(:disabled):active::before{opacity:1;transition-duration:100ms}
+body[data-motion=off] .depth::before{transition:none!important}
+body[data-background=light]{background:#eee}body[data-background=dark]{background:#090a0b}
+@media(prefers-reduced-motion:reduce){.depth::before{transition:none!important}}
+@media(max-width:760px){body{padding:16px}main{grid-template-columns:minmax(0,1fr)}article{padding:16px}}
+output{display:block;min-height:1.6em;background:var(--panel);border-radius:12px;padding:12px;max-width:1100px;margin:auto}
+</style>
+<body data-effects="on" data-motion="on" data-background="neutral">
+<header><h1>主按钮厚边 · 交互对照</h1><p class="note">A 为当前局部高光；B 只增强按钮边缘。聚焦与按下时出现，离开后消退；文字不形变，无真实折射。此页不接入游戏。</p>
+<label><input id="effects" type="checkbox" checked>高光</label><label><input id="motion" type="checkbox" checked>短过渡</label>
+<label>背景<select id="background"><option value="neutral">中性</option><option value="light">明亮</option><option value="dark">暗色</option></select></label>
+<label>文字比例<select id="scale"><option>50</option><option selected>100</option><option>200</option></select>%</label></header>
+<main>
+<article><h2>A · 当前高光</h2><p>仅主操作使用强调色，旁边的普通操作保持安静。</p><div class="actions"><button class="primary" type="button">查看详情</button><button type="button">返回列表</button><button class="primary" type="button" disabled>不可用操作</button></div></article>
+<article><h2>B · 交互厚边</h2><p>细亮边与内侧暗边形成厚度，焦点轮廓始终独立可见。</p><div class="actions"><button class="primary depth" type="button">查看详情</button><button type="button">返回列表</button><button class="primary depth" type="button" disabled>不可用操作</button></div></article>
+</main><output aria-live="polite">点击只记录响应，不执行保存、读取或游戏动作。</output>
+<script>
+for(const id of ['effects','motion'])document.getElementById(id).addEventListener('change',e=>document.body.dataset[id]=e.target.checked?'on':'off');
+document.getElementById('background').addEventListener('change',e=>document.body.dataset.background=e.target.value);
+document.getElementById('scale').addEventListener('change',e=>document.body.style.fontSize=`${16*Number(e.target.value)/100}px`);
+document.querySelectorAll('main button:not(:disabled)').forEach(button=>button.addEventListener('click',()=>document.querySelector('output').textContent=`${button.closest('article').querySelector('h2').textContent}：${button.textContent}已响应`));
+</script>
+</body></html>

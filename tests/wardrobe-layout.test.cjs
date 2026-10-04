@@ -33,6 +33,22 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(()=>{V.wardrobe.space=V.wardrobe.upper.length;DoLWardrobeUI.refresh()});await p.waitForSelector('.dgw-capacity-alert.full');
  await p.evaluate(()=>{V.wardrobe.space=capacityBefore;DoLWardrobeUI.refresh()});
  await p.getByRole('button',{name:'整理模式',exact:true}).click();
+ await p.locator('.dgw-item').first().click(); // Management selects; this does not wear the garment.
+ const visualBefore=await p.evaluate(()=>({V:JSON.stringify(V),prefs:DoLGameUI.getPreferences()}));
+ const visualNodes=await p.evaluateHandle(()=>[...document.querySelectorAll('.dgw-root button,.dgw-root input,.dgw-root select')].map(node=>({node,parent:node.parentNode})));
+ await p.mouse.move(0,0);
+ for(const tier of [0,1,2]){
+  await p.evaluate(tier=>{DoLGameUI.setPreference('visualTier',tier);DoLGameUI.setPreference('visualGlow',true)},tier);await p.waitForTimeout(200);
+  for(const selector of ['.dgw-slots button[aria-pressed=true]','.dgw-item[aria-pressed=true]','.dgw-equipped']){
+   const quiet=await p.locator(selector).first().evaluate(e=>{const s=getComputedStyle(e),rgb=s.backgroundColor.match(/[\d.]+/g).slice(0,3).map(Number);return{neutral:Math.max(...rgb)-Math.min(...rgb)<=8,image:s.backgroundImage,blur:s.backdropFilter,animation:getComputedStyle(e,'::after').animationName,shadow:s.boxShadow,border:s.borderTopColor}});
+   assert.ok(quiet.neutral&&quiet.image==='none'&&quiet.blur==='none'&&quiet.animation==='none'&&quiet.shadow.includes('inset'),'quiet wardrobe selection '+JSON.stringify({tier,selector,quiet}));
+   assert.ok(Number(quiet.border.match(/[\d.]+/g)[3]??1)<=.1,'weak wardrobe full edge');
+  }
+ }
+ assert.ok(await p.evaluate(nodes=>nodes.every(({node,parent})=>node.isConnected&&node.parentNode===parent),visualNodes),'style tier retains control identity and parent');await visualNodes.dispose();
+ assert.equal(await p.evaluate(()=>JSON.stringify(V)),visualBefore.V,'material changes do not write game state');
+ await p.evaluate(prefs=>{DoLGameUI.setPreference('visualTier',prefs.visualTier);DoLGameUI.setPreference('visualGlow',prefs.visualGlow)},visualBefore.prefs);
+
  for(const [width,height] of [[1704,1136],[1136,1704],[390,844],[844,390],[1440,900]]){
   await p.setViewportSize({width,height});
   await p.evaluate(()=>{SugarCube.UIBar.stow();document.querySelector('.dgw-items').scrollIntoView({block:'start'})});
@@ -48,7 +64,21 @@ const server=http.createServer((req,res)=>{
  await p.locator('.dgw-root').evaluate(e=>e.style.width='540px');
  const narrow=await p.locator('.dgw-workspace').evaluate(e=>({columns:getComputedStyle(e).gridTemplateColumns.split(' ').length,overflow:e.scrollWidth>e.clientWidth+1}));
  assert.equal(narrow.columns,1);assert.equal(narrow.overflow,false);
+ await p.waitForFunction(()=>!document.querySelector('.dgw-preview-disclosure').open);
+ const previewState=await p.evaluate(()=>JSON.stringify(V));
+ const canvas=await p.locator('.dgw-preview canvas').elementHandle();
+ const disclosure=p.locator('.dgw-preview-disclosure');
+ assert.equal(await p.locator('.dgw-preview').isVisible(),false,'narrow preview starts collapsed, leaving inventory available');
+ await disclosure.locator('summary').click();
+ assert.ok(await p.locator('.dgw-preview').isVisible());
+ await p.locator('.dgw-root').evaluate(e=>e.style.width='560px');
+ await p.waitForTimeout(100);
+ assert.ok(await disclosure.evaluate(e=>e.open),'ordinary resize retains the user choice');
+ assert.ok(await p.evaluate(canvas=>document.querySelector('.dgw-preview canvas')===canvas,canvas),'disclosure preserves the current canvas');
+ assert.equal(await p.evaluate(()=>JSON.stringify(V)),previewState,'preview disclosure does not change game state');
+ await disclosure.locator('summary').click();
  await p.locator('.dgw-root').evaluate(e=>e.style.removeProperty('width'));
+ await p.waitForFunction(()=>document.querySelector('.dgw-preview-disclosure').open);
 
  console.log('PASS sidebar full money/time/day, always visible character status, category warnings, header exit, side/mobile management dock across five viewports');
 }finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});

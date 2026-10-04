@@ -1,0 +1,98 @@
+{
+  "version": "2.0.2",
+  "publicRelease": true,
+  "scope": "Shared master UI gate; native fallback, no legacy 1.x mode",
+  "packageBytes": 193758,
+  "packageSha256": "b065be88d02cf80c1b73854e23c9c7516b20774dbc1cf6e03820ed12ddf9565d",
+  "desktopPassed": [
+    "build/typecheck",
+    "unit",
+    "master-toggle tablet and phone viewports",
+    "master-native vanilla",
+    "master-native Lyra",
+    "unified",
+    "settings-lifecycle",
+    "mobile-density"
+  ],
+  "nativeControlError": "Integrated bannerFallbackImage.onload skybox error reproduced with no UI; unexpected UI errors empty",
+  "tablet": {
+    "runtimeVersion": "2.0.2",
+    "installedAndReloaded": true,
+    "modOrderPreserved": true,
+    "nativeMasterCheckboxTrustedClicks": 2,
+    "offNativeMenus": [
+      "social",
+      "settings",
+      "saves"
+    ],
+    "offResidualHosts": 0,
+    "savedPreferencesPreserved": true,
+    "effectiveLayoutScaleExperimentsOff": true,
+    "reenableSaveDetailsPassed": true,
+    "detailViewports": [
+      [
+        1363,
+        876
+      ],
+      [
+        909,
+        1330
+      ]
+    ],
+    "detailScales": [
+      100,
+      200
+    ],
+    "minimumActionHeightPx": 46.4,
+    "portrait200ActualSwipePx": 85.6,
+    "statePreferencesSavesNativeParentsRestored": true,
+    "rotationRestored": [
+      1,
+      0
+    ],
+    "menusClosed": true,
+    "errors": 0,
+    "failures": 0
+  },
+  "phone": {
+    "runtimeVersion": "2.0.2",
+    "installedAndReloaded": true,
+    "modOrderPreserved": true,
+    "nativeMasterCheckboxTrustedClicks": 2,
+    "offNativeMenus": [
+      "social",
+      "settings",
+      "saves"
+    ],
+    "offResidualHosts": 0,
+    "savedPreferencesPreserved": true,
+    "effectiveLayoutScaleExperimentsOff": true,
+    "reenableSaveDetailsPassed": true,
+    "detailViewport": [
+      400,
+      821
+    ],
+    "detailScale": 100,
+    "minimumActionHeightPx": 44,
+    "statePreferencesSavesNativeParentsRestored": true,
+    "mobileCompactPreferenceRestored": true,
+    "menusClosed": true,
+    "errors": 0,
+    "failures": 0,
+    "priorEvidenceReused": "2.0.1 density, orientation and scrolling device checks"
+  },
+  "deferredByUser": [
+    "Earlier sciencechance reload difference; root cause unresolved"
+  ],
+  "limits": [
+    "No GPU/power/thermal/long-duration comfort proof",
+    "No guarantee for all unknown third-party DOM modifications"
+  ],
+  "rawEvidence": "Local ignored tests/artifacts/settings202-tablet-*, acceptance202-tablet-*, settings202-phone-* and acceptance202-phone-*; private snapshots excluded",
+  "publishedPackage": {
+    "bytes": 198222,
+    "sha256": "bc35dee11fb091d3f1abed2c7d24a033e3c2e9ffb19a44f0cb41486fded22fdb",
+    "gameVersionRange": ">=0.5.11.0 && <0.5.12.0",
+    "runtimeMatchesTestedCandidate": true
+  }
+}

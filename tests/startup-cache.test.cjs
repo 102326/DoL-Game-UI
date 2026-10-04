@@ -37,7 +37,7 @@ function boot(preferences) {
   return { window, manager, preloader, nativeFlush, nativeStart, calls, get builds() { return builds; } };
 }
 
-for (const preferences of [null, '{broken', JSON.stringify({ startupCacheLazy: false }), ' '.repeat(513)]) {
+for (const preferences of [null, '{broken', JSON.stringify({ startupCacheLazy: false }), JSON.stringify({ enabled: false, startupCacheLazy: true }), ' '.repeat(513)]) {
   const run = boot(preferences);
   assert.equal(run.manager.flushAfterPatchCache, run.nativeFlush);
   assert.equal(run.preloader.startLoad, run.nativeStart);

@@ -13,16 +13,19 @@ export function createSaveMetadata(root:Runtime){
  async function read(entries:SaveEntry[],idb:boolean){
   attach();let details:any;
   try{details=idb?await root.idb?.getSaveDetails():JSON.parse(root.localStorage.getItem('dolSaveDetails')||'null')}catch{return}
+  if(idb?!Array.isArray(details):!details||typeof details!=='object')return;
   let aliases:Record<string,unknown>={};try{aliases=JSON.parse(root.localStorage.getItem(KEY)||'{}')||{}}catch{}
+  const persisted=new Map<string,number>();
   for(const entry of entries){
-   if(entry.empty)continue;
    const d=idb?(Array.isArray(details)?details.find((d:any)=>d.slot===(entry.auto?0:Number(entry.slot)))?.data:null):entry.auto?details?.autosave:details?.slots?.[Number(entry.slot)-1];
-   if(!d||!Number.isFinite(d.date))continue;
+   persisted.set(`${idb?'idb':'legacy'}:${entry.slot}`,Number.isFinite(d?.date)?d.date:0);
+   if(entry.empty||!d||!Number.isFinite(d.date))continue;
    entry.identity=JSON.stringify([idb?'idb':'legacy',d.id||'',entry.slot,d.date,d.metadata?.saveId??'']);
    const name=d.metadata?.saveName;if(typeof name==='string'&&name)entry.name=name;
    const time=d.metadata?.dolGameUI?.gameTime;if(typeof time==='string'&&time.length<100)entry.gameTime=time;
    if(typeof aliases[entry.identity]==='string')entry.customName=(aliases[entry.identity] as string).slice(0,80);
   }
+  return persisted;
  }
  function rename(entry:SaveEntry|undefined,name:string){
   if(!entry?.identity||entry.empty)return '存档信息尚未就绪，请稍后重试。';

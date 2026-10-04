@@ -56,3 +56,33 @@ html[data-dol-midnight][data-dmt-layout] #passages:has(.dgw-shell){max-width:90r
  .dgw-tools{flex-wrap:wrap}.dgw-tools input{flex-basis:100%;width:100%}
  .dgw-tools select{flex:1;max-width:none}
 }
+
+/* Solid work sections; garment clicks and native outfit actions stay direct. */
+.dgw-root .dgw-shell{border:0;border-radius:10px}
+.dgw-root .dgw-header{padding:12px 16px}
+.dgw-root .dgw-quick{padding-bottom:10px}
+.dgw-root .dgw-workspace{gap:12px}
+.dgw-root .dgw-items{gap:4px}
+.dgw-root .dgw-item{border:0;border-radius:8px;padding:8px 10px;min-height:64px}
+.dgw-root .dgw-item-main>span:last-child{min-width:0}
+.dgw-root .dgw-metrics{flex:0 1 auto;min-width:0}
+.dgw-root .dgw-detail{border:0;border-radius:10px}
+.dgw-root .dgw-equipped{border:0;border-radius:8px;box-shadow:inset 3px 0 var(--dgw-accent);padding:8px 12px}
+.dgw-root .dgw-item-details{border:0;border-radius:0;padding:0;border-top:1px solid var(--dgw-line)}
+.dgw-root .dgw-strip{width:auto;min-width:44px;margin-top:6px}
+.dgw-root .dgw-count{padding:8px 0}
+.dgw-root .dgw-count strong{font-size:calc(16px * var(--dgu-font-scale,1))}
+.dgw-outfit-management{padding:4px 0;margin:4px 0 8px;border-bottom:1px solid var(--dgw-line)}
+.dgw-outfit-management>summary{cursor:pointer;min-height:44px;padding:10px 0;color:var(--dgw-secondary)}
+.dgw-outfit-management>label{display:inline-block;margin:4px 12px 4px 0;min-height:44px;line-height:44px}
+.dgw-outfit-management>label.no-numberify{line-height:1.5}
+.dgw-outfit-management>summary::before{content:'›';display:inline-block;width:1em;margin-right:4px}
+.dgw-outfit-management[open]>summary::before{transform:rotate(90deg)}
+.dgw-actions #listoutfits:has(>.dgw-outfit-management)>br{display:none}
+.dgw-actions #listoutfits:has(>.dgw-outfit-management)>label{display:inline-flex;align-items:center;min-height:44px;gap:4px}
+.dgw-preview-disclosure{min-height:0;overflow:auto;scrollbar-width:thin}
+.dgw-preview-disclosure>summary{display:none;min-height:44px;padding:10px 12px;cursor:pointer;color:var(--dgw-accent);background:var(--dgw-panel);border-radius:8px}
+.dgw-preview-disclosure>summary::before{content:'›';display:inline-block;margin-right:8px}
+.dgw-preview-disclosure[open]>summary::before{transform:rotate(90deg)}
+@media(max-width:700px){.dgw-preview-disclosure{grid-row:1;overflow:visible}.dgw-preview-disclosure>summary{display:block}}
+@container wardrobe (max-width:700px){.dgw-side{display:contents}.dgw-preview-disclosure{grid-row:1;overflow:visible}.dgw-preview-disclosure>summary{display:block}}

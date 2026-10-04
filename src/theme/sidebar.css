@@ -1,0 +1,69 @@
+/* SideBar 2.0: native HUD and controls stay live; layout/theme off restores them. */
+html[data-dol-midnight][data-dmt-layout] #ui-bar{
+ --dgu-sidebar-bg:#1c1d20;--dgu-sidebar-panel:#25262a;--dgu-sidebar-hover:#35363c;
+ --dgu-sidebar-text:#e6e7eb;--dgu-sidebar-muted:#b6b8c2;--dgu-sidebar-line:#393b42;--dgu-sidebar-track:#3d3f46;--dgu-sidebar-accent:#8dc7ff;
+ background:var(--dgu-sidebar-bg);color:var(--dgu-sidebar-text);border-right:1px solid var(--dgu-sidebar-line);
+}
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) #stats{
+ background:var(--dgu-sidebar-panel);border-color:var(--dgu-sidebar-line);color:var(--dgu-sidebar-text);
+}
+html[data-dol-midnight][data-dmt-layout] #sidebar-look-description{
+ color:var(--dgu-sidebar-muted);line-height:1.5;
+}
+html[data-dol-midnight][data-dmt-layout] #statmeters{
+ padding:6px 0;text-align:left;
+}
+html[data-dol-midnight][data-dmt-layout] #statmeters>div:has(>.meter){
+ margin:0;padding:6px 0;line-height:1.4;border:0;background:transparent;
+}
+html[data-dol-midnight][data-dmt-layout] #statmeters>div>.meter{
+ height:3px;margin:5px 0 0;border:0;border-radius:3px;background:var(--dgu-sidebar-track);overflow:hidden;
+}
+html[data-dol-midnight][data-dmt-layout] #statmeters>div>.meter>div{
+ border-radius:inherit;
+}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons{
+ gap:4px;border-top:1px solid var(--dgu-sidebar-line);padding-top:12px;
+}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons::before{
+ content:"快捷入口";color:var(--dgu-sidebar-muted);font-size:.8em;font-weight:600;margin-bottom:4px;
+}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons>.sidebarButtonSplit{gap:4px}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons>button.link-internal,
+html[data-dol-midnight][data-dmt-layout] #overlayButtons>.sidebarButtonSplit>button.link-internal{
+ border:1px solid transparent;border-radius:8px;background:transparent;color:var(--dgu-sidebar-text);
+ text-align:left;padding:8px 12px;min-height:44px;line-height:1.4;
+}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons button.link-internal:hover{
+ background:var(--dgu-sidebar-hover);
+}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons :is(button.link-internal,#dmc-sidebar-button,#dol-midnight-sidebar-button):focus-visible{
+ outline:2px solid var(--dgu-sidebar-accent);outline-offset:1px;
+}
+/* Known system tools are distinct; unknown Mod controls keep their native styling. */
+html[data-dol-midnight][data-dmt-layout] #overlayButtons :is(#dmc-sidebar-button,#dol-midnight-sidebar-button){
+ text-align:left;border:1px solid var(--dgu-sidebar-line);border-radius:8px;background:var(--dgu-sidebar-panel);
+ color:var(--dgu-sidebar-muted);min-height:44px;padding:8px 12px;
+}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons>#dmc-sidebar-button{margin-top:12px}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons :is(#dmc-sidebar-button,#dol-midnight-sidebar-button):hover{
+ background:var(--dgu-sidebar-hover);color:var(--dgu-sidebar-text);
+}
+/* Stable character art above a separate HUD strip; do not reposition renderer layers. */
+html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) #stats{border-top:1px solid var(--dgu-sidebar-line);border-bottom:0}
+html[data-dol-midnight][data-dmt-layout] #statmeters>div:has(>.meter)>div:not(.meter){display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:.9em}
+html[data-dol-midnight][data-dmt-layout] #statmeters>div:has(>.meter)>div:not(.meter)>span{text-align:right;min-width:0}
+html[data-dol-midnight][data-dmt-layout] .dmt-sidebar-tip{font-size:.85em;line-height:1.5;text-align:left;color:var(--dgu-sidebar-muted);margin:8px 0}
+html[data-dol-midnight][data-dmt-layout] .dmt-sidebar-tip>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px}
+html[data-dol-midnight][data-dmt-layout] .dmt-sidebar-tip>summary::before{content:'›'}
+html[data-dol-midnight][data-dmt-layout] .dmt-sidebar-tip[open]>summary::before{transform:rotate(90deg)}
+html[data-dol-midnight][data-dmt-layout] .dmt-sidebar-tip>summary>.gold{color:var(--dgu-sidebar-muted)}
+html[data-dol-midnight][data-dmt-layout] .dmt-sidebar-tip+br,html[data-dol-midnight][data-dmt-layout] .dmt-sidebar-tip+br+br{display:none}
+html[data-dol-midnight][data-dmt-layout] .dmt-sidebar-tip>summary:focus-visible{outline:2px solid var(--dgu-sidebar-accent);outline-offset:1px}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons>.dmt-system-tools{grid-column:1/-1;border-top:1px solid var(--dgu-sidebar-line);padding-top:12px;margin:8px 0 4px;font-size:.8em;text-align:left;color:var(--dgu-sidebar-muted);font-weight:600}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons>.dmt-system-tools+#dmc-sidebar-button{margin-top:0}
+html[data-dol-midnight][data-dmt-layout] #overlayButtons>.sidebarButtonSplit:not(:has(*)){display:none}
+
+/* Compact native status marks: no numeric interpretation or Mod button takeover. */
+html[data-dol-midnight][data-dmt-layout] #ui-bar.stowed #mobileStats>.stat:not(.time)>mouse {border-bottom:0}
+html[data-dol-midnight][data-dmt-layout] #ui-bar.stowed #mobileStats>.stat:not(.time)>mouse::after {content:'';display:block;width:12px;height:2px;border-radius:1px;background:currentColor;opacity:.4;margin:2px auto 0;pointer-events:none}

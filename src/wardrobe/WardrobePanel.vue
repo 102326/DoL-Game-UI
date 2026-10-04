@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed,ref,watch,nextTick} from 'vue';
+import {computed,ref,watch,nextTick,onMounted,onBeforeUnmount} from 'vue';
 import type {WardrobeModel} from './types';
 import ClothingIcon from './ClothingIcon.vue';
 import ClothingTraits from './ClothingTraits.vue';
@@ -9,6 +9,16 @@ const props=defineProps<{model:WardrobeModel;resolveIcon:(src:string)=>Promise<s
 const view=computed(()=>props.model);
 const preview=ref<HTMLElement>(),native=ref<HTMLElement>(),actions=ref<HTMLElement>(),warmth=ref<HTMLElement>(),equipment=ref<HTMLElement>(),services=ref<HTMLElement>(),confirmationTitle=ref<HTMLElement>();
 const exits=ref<HTMLElement>();
+const shell=ref<HTMLElement>(),previewOpen=ref(true);
+let previewResize:ResizeObserver|undefined,lastNarrow:boolean|undefined,previewFrame=0;
+function resizePreview(){
+ const root=shell.value?.closest<HTMLElement>('.dgw-root');if(!root)return;
+ const narrow=root.clientWidth<=700;
+ if(narrow!==lastNarrow){lastNarrow=narrow;previewOpen.value=!narrow}
+}
+function schedulePreviewResize(){cancelAnimationFrame(previewFrame);previewFrame=requestAnimationFrame(resizePreview)}
+onMounted(()=>{resizePreview();const root=shell.value?.closest<HTMLElement>('.dgw-root');if(root&&typeof ResizeObserver!=='undefined'){previewResize=new ResizeObserver(schedulePreviewResize);previewResize.observe(root)}else window.addEventListener('resize',schedulePreviewResize)});
+onBeforeUnmount(()=>{previewResize?.disconnect();cancelAnimationFrame(previewFrame);window.removeEventListener('resize',schedulePreviewResize)});
 function capacityWarning(count:number,capacity:number|null){return capacity!==null&&capacity>=0&&(capacity===0||count>=capacity)?'full':capacity!==null&&capacity>0&&count/capacity>=.9?'near':''}
 const destination=ref('');
 const query=ref(''),sort=ref('name'),descending=ref(false),zoom=ref(false);
@@ -46,7 +56,7 @@ function clearSelection(){props.onCancel();checked.value=[]}
 defineExpose({exits,preview,native,actions,warmth,equipment,services});
 </script>
 <template>
- <section class="dgw-shell" :class="{'dgw-managing':manageMode}" aria-label="穿搭衣柜">
+ <section ref="shell" class="dgw-shell" :class="{'dgw-managing':manageMode}" aria-label="穿搭衣柜">
   <header class="dgw-header"><div><h2>衣柜</h2><p>点选即换装，展示当前完整穿搭</p></div><div class="dgw-header-actions"><div ref="exits" class="dgw-exits"></div><GameButton :disabled="busy" @click="toggleManage">{{manageMode?'退出整理':'整理模式'}}</GameButton></div></header>
   <section class="dgw-quick"><h3>常用操作与套装</h3><div ref="actions" class="dgw-actions"></div></section>
   <div ref="services" class="dgw-services" :inert="busy"></div><div ref="native" class="dgw-native" hidden aria-hidden="true"></div>
@@ -62,7 +72,7 @@ defineExpose({exits,preview,native,actions,warmth,equipment,services});
     <nav v-if="paging&&items.length" class="dgw-pagination" aria-label="衣物分页"><GameButton :disabled="busy||page===0" aria-label="上一页" @click="goToPage(page-1)">上一页</GameButton><span aria-live="polite">第 {{page+1}} / {{pageCount}} 页</span><GameButton :disabled="busy||page>=pageCount-1" aria-label="下一页" @click="goToPage(page+1)">下一页</GameButton><small>分页仅影响显示；全选当前筛选会选择全部结果。</small></nav>
 
    </div>
-   <div class="dgw-side"><aside class="dgw-detail" aria-label="完整穿搭预览"><div class="dgw-preview-heading"><h3>当前穿搭</h3><GameButton :disabled="busy" :aria-pressed="zoom" @click="zoom=!zoom">{{zoom?'缩小':'放大'}}</GameButton></div><div ref="preview" class="dgw-preview" :class="{'dgw-zoom':zoom}" :aria-busy="model.loading" aria-label="角色全身穿搭"></div><p class="dgw-render-status" role="status">{{model.previewStatus}}</p><h3>{{model.wornName}}</h3><p class="dgw-muted">当前部位保暖：{{model.currentWarmth ?? "—"}}</p><p class="dgw-message" role="status">{{model.message}}</p><section class="dgw-warmth"><h3>整套保暖</h3><div ref="warmth" class="dgw-warmth-content"></div></section><p class="dgw-note">点击列表中的衣物直接穿上，穿脱限制由游戏判断。</p></aside>
+   <div class="dgw-side"><details class="dgw-preview-disclosure" :open="previewOpen" @toggle="previewOpen=($event.target as HTMLDetailsElement).open"><summary>当前穿搭与保暖 · 展开预览</summary><aside class="dgw-detail" aria-label="完整穿搭预览"><div class="dgw-preview-heading"><h3>当前穿搭</h3><GameButton :disabled="busy" :aria-pressed="zoom" @click="zoom=!zoom">{{zoom?'缩小':'放大'}}</GameButton></div><div ref="preview" class="dgw-preview" :class="{'dgw-zoom':zoom}" :aria-busy="model.loading" aria-label="角色全身穿搭"></div><p class="dgw-render-status" role="status">{{model.previewStatus}}</p><h3>{{model.wornName}}</h3><p class="dgw-muted">当前部位保暖：{{model.currentWarmth ?? "—"}}</p><p class="dgw-message" role="status">{{model.message}}</p><section class="dgw-warmth"><h3>整套保暖</h3><div ref="warmth" class="dgw-warmth-content"></div></section><p class="dgw-note">点击列表中的衣物直接穿上，穿脱限制由游戏判断。</p></aside></details>
     <div v-if="manageMode" class="dgw-selection-bar"><span>{{checked.length}} 件已选择</span><GameButton :disabled="busy||!checked.length" @click="review">审查丢弃</GameButton><GameButton :disabled="busy||!canSplit" @click="onSplit([...checked])">剪开套装</GameButton><GameButton v-if="model.canRepair" :disabled="busy||!checked.length" @click="onRepair([...checked])">修理衣物</GameButton><template v-if="model.destinations.length"><select v-model="destination" :disabled="busy" aria-label="转移到衣柜" @change="onCancel"><option v-for="target in model.destinations" :key="target.key" :value="target.key">{{target.label}}</option></select><GameButton :disabled="busy||!checked.length||!destination" @click="onTransfer([...checked],destination)">转移衣物</GameButton></template><span v-if="busy" class="dgw-progress" role="status">{{view.progress||'处理中…'}}</span><div v-if="pending.length" class="dgw-confirm" role="region" aria-labelledby="dgw-confirm-title"><h4 id="dgw-confirm-title" ref="confirmationTitle" tabindex="-1">确认{{operationLabel}}以下衣物</h4><ul><li v-for="item in pending" :key="item.key"><strong>{{item.name}}</strong><span>{{item.colour||'原色'}}</span><small v-if="item.linked">{{model.pendingMode==='separateOutfits'?'关联部件将分离，可独立穿戴':'套装关联部件将一并处理'}}</small></li></ul><p>{{model.pendingMinutes!==null?`预计消耗 ${model.pendingMinutes} 分钟。`:model.pendingMode==='transfer'?'转入所选衣柜，按各部位检查容量。':'此操作不可撤销。'}}</p><div><GameButton :disabled="busy" @click="onConfirm">确认{{operationLabel}}</GameButton><GameButton :disabled="busy" @click="onCancel">取消</GameButton></div></div></div>
    </div>
   </div>

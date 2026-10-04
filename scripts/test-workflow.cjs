@@ -5,7 +5,7 @@ const groups={
  wardrobe:['wardrobe-operations.test.cjs','wardrobe-layout.test.cjs','sidebar-preview-lifecycle.cjs'],
  shop:['shop.test.cjs'],
  saves:['saves-runtime.cjs','save-transfer-lifecycle.cjs','save-compatibility.cjs'],
- layout:['display-scale.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs'],
+ layout:['master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs'],
  combat:['acceptance.cjs','combat-resize.test.cjs','native-action-panel.cjs'],
 };
 const args=process.argv.slice(2),mode=args.shift(),planOnly=args.includes('--plan');
@@ -24,7 +24,7 @@ if(env.DOL_WARDROBE_CONTROL)throw Error('Unset DOL_WARDROBE_CONTROL: diagnostic 
 if(mode==='performance'&&['DOL_SHOP_LIFECYCLE_ONLY','DOL_SHOP_BANNER_CONTROL','DOL_SHOP_VERIFY_ARTIFACT'].some(k=>env[k]))throw Error('Unset shop diagnostic flags before performance sampling');
 const tests=mode==='performance'?(selected.length?selected:['shop','wardrobe']).map(x=>`${x}-current-baseline.cjs`)
  :[...new Set((mode==='release'?Object.keys(groups):selected).flatMap(x=>groups[x]))];
-const gameTests=['wardrobe-layout.test.cjs','shop.test.cjs','saves-runtime.cjs','save-compatibility.cjs','shop-current-baseline.cjs','wardrobe-current-baseline.cjs'];
+const gameTests=['master-native.cjs','wardrobe-layout.test.cjs','shop.test.cjs','saves-runtime.cjs','save-compatibility.cjs','shop-current-baseline.cjs','wardrobe-current-baseline.cjs'];
 const needsGame=tests.some(x=>gameTests.includes(x));
 const needsFixture=tests.some(x=>!['wardrobe-operations.test.cjs','sidebar-preview-lifecycle.cjs',...gameTests].includes(x));
 const workspace=path.resolve(env.DOL_TEST_WORKSPACE||path.join(root,'../..'));

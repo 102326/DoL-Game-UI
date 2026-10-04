@@ -3,18 +3,22 @@ import SavePanel from './SavePanel.vue';
 import {createSaveTransfer} from './transfer';
 import './style.css';
 import {createSaveMetadata} from './metadata';
-export interface SaveEntry {key:number;slot:string;identity:string;customName:string;gameTime:string;name:string;description:string;date:string;recent:boolean;saveAction:number;empty:boolean;auto:boolean;actions:{label:string;disabled:boolean}[]}
+import {isMasterEnabled} from '../runtime/master';
+export interface SaveEntry {key:number;feedback?:'saved'|'deleted';slot:string;identity:string;customName:string;gameTime:string;name:string;description:string;date:string;recent:boolean;saveAction:number;empty:boolean;auto:boolean;actions:{label:string;disabled:boolean}[]}
 export function startSaves(root:Window & Record<string,any>){
  const transfer=createSaveTransfer();
- const metadata=createSaveMetadata(root);
+ let metadata:ReturnType<typeof createSaveMetadata>|undefined;
  let enabled=true;try{enabled=root.localStorage.getItem('DoLGameUI.saves.enabled')!=='false'}catch{}
  let container:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,frame=0,destroyed=false;
  let rows:HTMLElement[]=[],buttons:HTMLElement[][]=[],dirty=false;
  const state=reactive({entries:[] as SaveEntry[],v2:false});
- let footer:HTMLElement|null=null;
+ let footer:HTMLElement|null=null,readGeneration=0;
+ const observedSaves=new Map<string,number>();
+ const recentFeedback=new Map<string,{kind:'saved'|'deleted';until:number}>();
  const moved:{node:HTMLElement;anchor:Comment}[]=[];
  function closeDetails(){host?.querySelector<HTMLDialogElement>('dialog[open]')?.close()}
  function release(){
+  readGeneration++;
   closeDetails();
   for(const {node,anchor} of moved){if(anchor.isConnected&&node.isConnected)anchor.replaceWith(node);else anchor.remove()}moved.length=0;
   footer?.remove();footer=null;
@@ -40,10 +44,13 @@ export function startSaves(root:Window & Record<string,any>){
  }
  function refresh(){
   if(destroyed)return;
-  metadata.attach();
-  transfer.refresh(enabled);
+  if(!isMasterEnabled()||!enabled){metadata?.destroy();metadata=undefined;transfer.refresh(false);release();return}
+  metadata??=createSaveMetadata(root);
+  const currentMetadata=metadata;
+  currentMetadata.attach();
+  transfer.refresh(isMasterEnabled()&&enabled);
   const next=document.querySelector<HTMLElement>('#saveList #saves-list-container,#saveList #savesListContainer');
-  if(!enabled||!next){release();return}
+  if(!isMasterEnabled()||!enabled||!next){release();return}
   if(next===container&&host?.isConnected&&!dirty)return;
   dirty=false;
   const settingsOpen=footer?.querySelector<HTMLDetailsElement>('.dgs-save-settings')?.open??false;
@@ -62,8 +69,17 @@ export function startSaves(root:Window & Record<string,any>){
    rows.push(row);buttons.push(controls);
   }
   if(!entries.length){container=null;return}
-  state.entries=entries;void metadata.read(state.entries,next.id==='saves-list-container');host=document.createElement('section');host.className='dgs-host';next.before(host);
-  app=createApp(SavePanel,{state,rename:(key:number,name:string)=>metadata.rename(state.entries.find(e=>e.key===key),name),fallback:()=>setEnabled(false),act:(key:number,index:number)=>{
+  state.entries=entries;host=document.createElement('section');host.className='dgs-host';next.before(host);
+  const generation=readGeneration,idb=next.id==='saves-list-container';
+  void currentMetadata.read(state.entries,idb).then(persisted=>{
+   if(!persisted||generation!==readGeneration||!host?.isConnected)return;
+   for(const entry of state.entries){const slot=`${idb?'idb':'legacy'}:${entry.slot}`,date=persisted.get(slot);if(date===undefined)continue;const before=observedSaves.get(slot);
+    if(before!==undefined&&date!==before)recentFeedback.set(slot,{kind:date>0?'saved':'deleted',until:Date.now()+400});
+    const feedback=recentFeedback.get(slot);if(feedback&&feedback.until>Date.now())entry.feedback=feedback.kind;else recentFeedback.delete(slot);observedSaves.set(slot,date);
+   }
+  });
+  const overlay=next.closest('#customOverlay[data-overlay="saves"]');
+  app=createApp(SavePanel,{state,headerTarget:overlay?.querySelector<HTMLElement>('#customOverlayTitle')??undefined,rename:(key:number,name:string)=>currentMetadata.rename(state.entries.find(e=>e.key===key),name),fallback:()=>setEnabled(false),act:(key:number,index:number)=>{
    const node=buttons[key]?.[index];if(node?.isConnected&&container?.contains(node)&&!node.matches(':disabled'))node.click();
   }});app.mount(host);
   rows.forEach(row=>row.classList.add('dgs-native-row'));
@@ -78,5 +94,5 @@ export function startSaves(root:Window & Record<string,any>){
  root.jQuery?.(document).on(':oncloseoverlay.dolSaves',closeDetails);
  observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['disabled']});refresh();
  function setEnabled(value:boolean){enabled=!!value;try{root.localStorage.setItem('DoLGameUI.saves.enabled',String(enabled))}catch{}refresh();document.dispatchEvent(new Event('dol-ui-saves-change'))}
- return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled,setEnabled,destroy(){metadata.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',closeDetails);observer.disconnect();if(frame)cancelAnimationFrame(frame);release();transfer.release()}};
+ return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled,setEnabled,refresh,destroy(){metadata?.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',closeDetails);observer.disconnect();if(frame)cancelAnimationFrame(frame);release();transfer.release()}};
 }

@@ -18,8 +18,8 @@
 #dol-midnight-controls .dgu-setting-row strong{display:block;font-weight:500;font-size:calc(14px * var(--dgu-font-scale,1))}
 #dol-midnight-controls .dgu-setting-row small{display:block;color:var(--dgu-secondary);font-size:calc(12px * var(--dgu-font-scale,1));margin-top:3px}
 #dol-midnight-controls input[type=checkbox]{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--dgu-accent)}
-#dol-midnight-controls button,#dol-midnight-controls select{min-height:44px;max-width:100%;padding:9px 12px;border:1px solid #4a4858;border-radius:12px;background:#2d2b36;color:var(--dgu-text);font:inherit;cursor:pointer;transition:background .15s,border-color .15s}
-#dol-midnight-controls button:hover{background:#393544;border-color:var(--dgu-accent)}
+#dol-midnight-controls button,#dol-midnight-controls select{min-height:44px;max-width:100%;padding:9px 12px;border:1px solid rgba(255,255,255,.09);border-radius:8px;background:#24262b;color:var(--dgu-text);font:inherit;cursor:pointer;transition:background .15s,border-color .15s}
+#dol-midnight-controls button:hover{background:#35363c;border-color:rgba(255,255,255,.14)}
 #dol-midnight-controls select{min-width:0;font-size:calc(13px * var(--dgu-font-scale,1))}
 #dol-midnight-controls .dmt-recovery{margin-top:14px}
 #dol-midnight-controls .dmt-settings-footer{border-top:1px solid var(--dgu-border);padding:12px 24px}
@@ -35,3 +35,9 @@ html[data-dgu-buttons-scaled] :is(button,input[type=button],input[type=submit]):
 
 /* Sidebar retains its native sizing, including embedded UI controls. */
 #ui-bar{--dgu-font-scale:1;--dgu-button-scale:1}
+
+/* These are our settings disclosures, not native game sections. */
+#dol-midnight-controls details.dmt-setting-card>summary{display:flex;flex-direction:column;justify-content:center;min-height:44px;gap:3px;cursor:pointer;list-style:none}
+#dol-midnight-controls details.dmt-setting-card>summary::after{content:'展开';font-size:12px;color:var(--dgu-secondary)}
+#dol-midnight-controls details.dmt-setting-card[open]>summary::after{content:'收起'}
+#dol-midnight-controls details.dmt-setting-card>summary span{font-size:12px;color:var(--dgu-secondary)}

@@ -1,0 +1,42 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path'),{pathToFileURL}=require('node:url');
+(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{
+ const p=await b.newPage({viewport:{width:390,height:844}});
+ await p.goto(pathToFileURL(path.join(__dirname,'fixture.html')).href);
+ await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});
+ const inject=()=>p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});await inject();
+ await p.waitForSelector('.dcu-group label');
+ const native=await p.locator('.dcu-group input[type=radio]').first().elementHandle();
+ await native.evaluate(e=>{window.densityNative=e;window.densityParent=e.parentNode;window.densityChanges=0;e.addEventListener('change',()=>window.densityChanges++)});
+ const metrics=()=>p.locator('.dcu-group label').first().evaluate(e=>{const s=getComputedStyle(e);return{height:e.getBoundingClientRect().height,margin:s.marginTop,padding:s.paddingLeft,font:s.fontSize}});
+ const baseline=await metrics();assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().mobileCompactControls),false);
+ await p.evaluate(()=>DoLGameUI.openSettings());
+ for(const selector of ['.dmt-page-switches','.dmt-experiments','.dmt-debug'])assert.equal(await p.locator(selector).evaluate(e=>e.open),false);
+ await p.getByLabel('手机紧凑按钮间距',{exact:true}).check();
+ assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('DoLMidnightTheme.preferences.v1')).mobileCompactControls),true);
+ await p.locator('.dmt-close').click();const compact=await metrics();
+ assert.ok(compact.height>=44);assert.ok(parseFloat(compact.margin)<parseFloat(baseline.margin));assert.ok(parseFloat(compact.padding)<parseFloat(baseline.padding));assert.equal(compact.font,baseline.font);
+ assert.ok(await native.evaluate(e=>e===window.densityNative&&e.parentNode===window.densityParent));
+ const unchecked=p.locator('.dcu-group input[type=radio]:not(:checked)').first();
+ await unchecked.evaluate(e=>{window.densityAction=e;window.densityActionEvents=0;e.addEventListener('change',()=>window.densityActionEvents++)});await unchecked.check();
+ assert.ok(await p.evaluate(()=>densityAction.checked&&densityActionEvents===1),'original radio receives exactly one change event');
+ await p.evaluate(()=>DoLGameUI.setPreference('mobileCompactControls',false));assert.deepEqual(await metrics(),baseline,'toggle off restores exact default spacing');
+ await p.evaluate(()=>DoLGameUI.setPreference('mobileCompactControls',true));
+ await p.setViewportSize({width:844,height:390});await p.waitForTimeout(100);assert.ok(await p.evaluate(()=>document.documentElement.hasAttribute('data-dgu-compact-controls')),'phone landscape');
+ await p.setViewportSize({width:1363,height:876});await p.waitForTimeout(100);assert.equal(await p.evaluate(()=>document.documentElement.hasAttribute('data-dgu-compact-controls')),false,'larger displays remain unchanged');
+ await p.setViewportSize({width:390,height:844});await p.waitForTimeout(100);assert.ok(await p.evaluate(()=>document.documentElement.hasAttribute('data-dgu-compact-controls')),'return to phone applies saved opt-in');
+ await p.evaluate(()=>{DoLGameUI.setPreference('buttonScale',150);DoLGameUI.setPreference('fontScale',150);DoLGameUI.openSettings()});
+ assert.ok(await p.locator('.dmt-close').evaluate(e=>e.getBoundingClientRect().height>=44));
+ assert.equal(await p.locator('#dol-midnight-controls').evaluate(e=>e.scrollWidth>e.clientWidth+1),false);
+ await p.evaluate(()=>DoLGameUI.setPreference('enabled',false));assert.equal(await p.evaluate(()=>document.documentElement.hasAttribute('data-dgu-compact-controls')),false);
+ await p.evaluate(()=>{DoLGameUI.setPreference('enabled',true);DoLGameUI.destroy()});assert.equal(await p.evaluate(()=>document.documentElement.hasAttribute('data-dgu-compact-controls')),false,'teardown');
+ await inject();assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().mobileCompactControls),true,'persisted opt-in survives remount');
+ const surfaces=await b.newPage({viewport:{width:390,height:844}});
+ await surfaces.setContent('<html data-dol-midnight data-dgu-visual="2" data-dgu-visualGlass data-dgu-compact-controls><body><div id="customOverlay" data-overlay="saves"><div id="saveList"><section class="dgs-host"><dialog open class="dgs-detail"><div class="dgs-actions"><button>Save</button><button class="dgs-load">Load</button></div></dialog></section></div></div><section class="dgw-root"><div class="dgw-slots"><button>A</button><button>B</button></div></section></body></html>');
+ await surfaces.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});
+ for(const selector of ['.dgs-actions','.dgw-slots']){
+  assert.equal(await surfaces.locator(selector).evaluate(e=>getComputedStyle(e).gap),'4px');
+  assert.ok(await surfaces.locator(selector+' button').evaluateAll(nodes=>nodes.every(e=>e.getBoundingClientRect().height>=44)));
+ }
+ await surfaces.close();
+ console.log('PASS mobile density: default/off restoration, native radio identity, portrait/landscape, desktop isolation, 44px targets, persistence and teardown');
+}finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});

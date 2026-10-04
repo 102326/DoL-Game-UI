@@ -1,3 +1,121 @@
+# 2.0.0-beta.53 原生小浮层（2026-10-04）
+
+仅CSS补原生Tooltip和SugarCube Dialog内控件，不改变定位、状态、节点或事件。build/typecheck、settings-acrylic、overlay-back-order与native-small-surfaces通过。后者使用原生jQuery Tooltip实现及真实SugarCube Dialog API，检查两视口/100%-200%字号、三档/玻璃关闭、单层blur、原语义色/动态Mod内容/未知签名/原版回退、原节点/父级、click/change/disabled/hidden、键盘Focus、关闭按钮/Escape/遮罩关闭和V保持。
+
+测试失败按实际原语义修正：原Tooltip observer会清理未关联的孤立.popup，未知签名的CSS检查改为同步取样；Focus-visible使用真实Tab而非鼠标后的programmatic focus；Hover检查等待原0.2s过渡；原遮罩为两倍视口且左上在负坐标，点击改取屏内坐标，不force或修改产品事件。没有降低业务断言。设备完整包已安装：原温度Tooltip经原handler打开并核对材质/边界；原Dialog只读样例与ADB原ui-close关闭通过，非真实破坏性操作确认。检查期间V/页面/偏好/原节点保持，测试浮层已清理。跨重载发现NPCNameList/NPCName/handskill/maplebirch/enemyarousal/skulduggerydifficulty差异，前后私有快照保留且原因待专项核对，不宣称全过程状态一致。[原图与范围](design-previews/2026-10-04-native-small-surfaces-beta53/README.md)。
+
+# 2.0.0-beta.52 分组定位与存档工具页（2026-10-04）
+
+build/typecheck、saves-native-tools、saves-header-lifecycle通过；social/characteristics原版与汉化整合通过包含390/1704、100%/200%原标题完整可见的真实导航检查。存档默认双列、V2单列/内联详情与回退保持。saves-runtime原版与汉化整合均通过实际隔离IDB保存/读入/删除/确认取消、原文件/存档码控件及事件；不操作用户真实存档。
+
+新增定向检查验证导出控件身份/事件/原顺序恢复、Neutral文件按钮、3视口/200%、Cloud仅CSS/原父级/回调/动态option/change/hidden未知内容/所有权释放及三档单层blur。云端认证和真实上传/下载/删除不在此检查范围。
+
+失败均单列处理：文件输入100%宽加旧左右margin在390/200%溢出，CSS移除该margin后通过；字号变化后原颜色分级Hover浮层挡导航，测试移开鼠标后正常点击，不force；旧存档测试只匹配英文Save/Load/Delete，在汉化整合失败，补中英选择器后通过。文件按钮字色验证对齐实际主题token而非旧硬编码。整合测试既有404资源/remote-loader响应及skybox错误仍输出，不宣称无console error。Android完整包检查见下段。
+
+完整52已安装并重载；Android导出/载入与云存档原控件身份/直接父级/onclick/值、单层blur、无横向溢出，社交/属性原标题完整显示及只读V/页面/偏好保持通过。错误/失败/临时样式0；菜单关闭、滚动恢复。跨重载NPC描述缓存差异仍单列。[实际图、SHA和兼容边界](design-previews/2026-10-04-save-tools-beta52/README.md)。用户实机未进行文件导入/导出、实际存档读写、账户连接或云端操作。
+
+# 2.0.0-beta.51 二级导航控件（2026-10-04）
+
+build/typecheck与settings-acrylic通过：18组响应组合、三档导航弱边缘/8px/44px、Hover保持安静边缘、键盘Focus、原节点/父级和所有权释放检查。原版与汉化整合social/characteristics各通过原DOM/状态/事件、导航、Mod追加、回退、生命周期及手机/平板回归。无新增业务代码、DOM搬移或控件代理。
+
+测试先发现既有Glass导航是透明边缘，按“保持安静边缘”同时验证透明/弱白两种现有表面；另一次存档背景断言受导航Hover遗留鼠标位置影响，重置鼠标后通过，未改产品或弱化存档断言。
+
+完整51已安装并重载生效，Android社交/属性实际触摸打开与分组跳转、8px/44px/弱边缘、正文无blur、原节点/直接父级、只读V/页面/偏好保持通过，错误/失败/临时样式0；结束关闭菜单恢复滚动。跨重载差异仅NPCName描述/descCache，单列原版初始化边界。分组标题贴上沿记录为后续定位候选。[截图与冻结包清单](design-previews/2026-10-04-secondary-controls-beta51/README.md)。
+
+# 2.0.0-beta.50 存档级透光（2026-10-04）
+
+仅战斗两浮层CSS与版本元数据调整，外壳复用存档主菜单rgba(36,38,42,.68/.64)、blur24；内部阅读遮罩从标题.60/正文.78降到.40，摘要辅助字色#d1d3d9。原生菜单/互斥业务JS未变。
+
+build/typecheck、combat-resize通过：互斥和真实click关闭路径、原节点/直接父级/业务状态保持、窄宽重复开关、三档/玻璃关闭/减少动态、200%/7视口、白环境文字对比度>=4.5、回退及销毁。首次试用更透外壳.58/.54与标题.36时，白环境小字仅4.03，未弱化断言；按用户明确的存档主菜单基线改回.68/.64，阅读遮罩.40后通过。完整包Android验收另补。
+
+# 2.0.0-beta.49 收口检查
+
+48完整包Android连续12次真实触摸交替开关通过，V/页面/偏好、原控件与父级保持、错误0。截图发现原inline标签的正文背景碎块，49以原label CSS Flex/full-width修正。49 build/typecheck和combat-resize复测通过（包含原行宽、互斥、窄宽3轮/原click计数/3档/白环境对比度/原控件与回退）。原行为JS与48相同，48通过的native-action-panel/eyes-palette复用，不重复业务动作。最终包安装证据随后补。
+
+# 2.0.0-beta.48 战斗浮层（2026-10-04）
+
+build/typecheck、combat-resize、native-action-panel、eyes-palette通过。先在47构建复现两浮层同时存在；48新增互斥后窄屏真实click复测又发现两行底栏遮挡，定位改为相对整个footer上方后通过。没有force点击或忽略遮挡。
+
+390/1363各3轮交替展开/关闭、每次原生toggle准确单次click；3档、玻璃关闭、减少动态、白环境合成文字>=4.5、节点身份/父级/业务状态、原版恢复/销毁、动态内容与7视口/200%布局检查通过。[截图/SHA清单](design-previews/2026-10-04-combat-popup-beta48/README.md)。Android完整包安装/只读验收另补。
+
+# 2.0.0-beta.47 战斗工具控件（2026-10-04）
+
+build/typecheck、eyes-palette、combat-resize、native-action-panel、native-action-style、sidebar-surface通过。隔离测试涵盖三档与玻璃关闭、原菜单开关/change事件、原控件身份/直接父级/游戏状态保持、390/1363浮层边界、7视口底栏预留、200%字号、不持续动画、原版恢复/销毁与ResizeObserver错误。原动作/原版回退及动态Mod追加回归有效。
+
+初次检查发现旧通用`:is(select option)`的最大类型权重压住工具按钮边缘，补精确按钮规则后修复；后一次差值来自原生150ms border过渡，按实际等待过渡稳定后断言。未降低预期、不通过重复重跑隐藏失败。
+
+[隔离截图及SHA](design-previews/2026-10-04-combat-tools-beta47/README.md)。设备安装记录另补；不强行修改用户V进入战斗，战斗Android触摸/滚动与长期性能尚待。
+
+# 2.0.0-beta.46 衣柜控件定稿同步（2026-10-04）
+
+- build/typecheck、eyes-palette通过。wardrobe-layout原版/汉化整合通过：三档下分类、已穿戴、整理选中项中性底、弱完整边缘、无常驻纹理/blur/扫光，控件身份/父级和V保持，5种视口无管理栏溢出。
+- 汉化整合wardrobe-runtime通过，隔离新游戏验证原直接穿戴、一次实际换装一次渲染、分类/搜索零渲染、原版回退、管理取消/过期/索引变化/套装及清理路径。未在用户设备执行这些业务。
+- 新材质测试初次误定位不存在的header aria-pressed（整理按钮原来没有此属性）；按实际三个状态组件定位，不改产品来满足测试，重跑原版/整合通过。
+- Android45上临时CSS预览已查看与清理；旧45选择器仍有较高优先级，临时覆盖仅为移除旧效果，不进入产品CSS。V/页面/偏好/原节点和父级恢复保持。完整46尚待安装验收。
+
+- 完整46已安装/重载，实际Android分类与已穿戴中性表面、原节点/父级/V/页面/偏好保持检查通过，错误/适配失败0，无临时CSS；已查看完整包原截图并绑定SHA，45实际导出回退保留。详见推广清单及native-wardrobe-buttons-beta46.json。
+
+# 2.0.0-beta.45 商店按钮定稿同步（2026-10-04）
+
+- build/typecheck通过。shop原版/汉化整合检查覆盖Smooth/Balanced/Fancy下分类/商品/购买表面：中性底色、弱边缘、局部指示、无列表blur或旧Fancy高光；原色样不变、节点身份保持，分类图标可读。
+- 复用商店原生购买/数量/试穿/归还、不足金额、分页/响应布局、回退及隔离IDB/无UI读档测试。仅隔离新游戏操作业务，不点击用户实际购买/试穿。
+- eyes-palette通过；共享其他页面的配色与对比度有效，选中/操作规则仅限定已有商店适配域。
+- Android临时样式预览已查看并清理：原节点/直接父级/游戏V/UI偏好保持。预览在44上覆盖旧CSS，不作为完整45已生效的证明；完整包安装验收另记。
+
+- 完整45已事务安装并重载生效；运行版本45、错误适配失败0、无临时样式。实际44回退包哈希一致。重载自动恢复分类入口，商品选择页完整包截图待用户进入；收据见推广清单。
+
+
+- beta.45收口补证（2026-10-04）：用户确认“看着没问题”。完整45商品列表三处实际计算样式与原节点/直接父级、V/页面/偏好保持检查通过，无横向溢出、可见错误/适配失败0、无临时CSS。两张Android原始截图已查看，含QQ通知，故不收入设计截图归档；公开清单保留脱敏计算收据，不以临时预览充当完整包截图。beta.45产品与冻结ZIP未重打。
+
+# 2.0.0-beta.44 商店小浮层与笔记细调（2026-10-04）
+
+- build/typecheck通过；panels原版/汉化整合通过：保留原笔记输入、保存/草稿/自动保存、成就筛选、动态分组及原版回退，并检查笔记工具不再作为实体卡片、保存按钮44px。
+- shop原版/汉化整合专项检查覆盖原生回调、响应布局、浮层44px操作区和选项无横向溢出；V1服装说明原标记保持，实际展开后可再次点击原按钮关闭。
+- 真机43代表页发现原说明盖住开关：仅CSS将原说明锚定在既有工具行下，不替换原说明、不新增关闭代理或移动节点。原版回归通过后执行完整候选包验收；预览和安装证据单列，不能混作同一运行版本。
+- 这轮不改原版业务状态、回调或保存结构；不执行用户实际购买、试穿、笔记编辑、设置修改或存档读写。长期blur/多背景舒适度仍未完成。
+
+- 完整44已安装/重载；Android日志/笔记/成就与商店三浮层必要只读检查通过，收据与原截图绑定EYES_UI_ROLLOUT.md文末。原生笔记tempDisable临时变化已定位，关闭后语义值/页面/偏好恢复；不把菜单自身原生暂态写入算作CSS状态改写。
+
+# 2.0.0-beta.43 原节点基线推广（2026-10-04）
+
+- build/typecheck、settings-acrylic与eyes-palette通过；新增复用表单、真实SugarCube Dialog生命周期/原控件及单层blur/开关断言。
+- 已通过汉化整合shop.test：原生筛选/选项开关、购买/试穿/分页/颜色、回退和生命周期；材质三档/玻璃关闭、节点不被替换、V不被材质写入通过。购买/存档组合仅在隔离新游戏测试。
+- panels原版通过，兼容专项原版53项通过；整合53项在本轮此前表单CSS状态已通过，后加的原生Dialog不修改这些范围。整合panels最终复核也通过。原版shop.test也通过。候选包校验通过；早先连接超时未产生写入；用户保存并回到Lyra后已事务安装、重新加载，完整43运行。代表页Android验收完成，不声明全部UI/长期性能已验收。
+- [实际原节点截图清单](design-previews/2026-10-04-native-rollout-beta43/README.md)已查看、按SHA绑定；新增完整包Android设置和统计两张。原节点事件/unknown/hidden/回退/故障注入检查复用现有兼容路径，不新增平行测试框架。
+- Android设置/统计/作弊只读核对原节点/父级/正文/控件值/原版往返、无横向溢出、单外壳blur24、稳定正文无blur，错误/适配失败0；安装顺序、UI偏好保持，自动恢复Clothing Shop。记录见docs/audits/native-rollout-beta43-*.json。
+- 严格raw V恢复断言初次失败：原生clothingicon宏打开作弊时更新显示路径；另外SugarCube的undefined复活标记与NPC对象字段顺序不同。已恢复唯一改变的显示临时路径，并使用原生SugarCube JSON.parse复活后、native JSON值+排序字段比较；语义状态值/设置/页面/偏好通过。没有恢复或重写整个V/NPC对象，也不声称属性插入顺序/缺失与undefined完全一致。
+- 上轮把字号/行距六项差异描述为“设置变化”是比较误报：实际前后均undefined，只是缺失与复活标记表示不同。该发现记入册子，不再以这类raw差异推断用户改了设置。
+- 已安装ZIP继续冻结167445字节，SHA256 f5f734cdf63ebe06d9141b79f2f333db5af06762d950a8c6ca2605dd4743860c；安装后文档补证未重打同名包。实际导出的42回退包保留。
+
+
+# 2.0.0-beta.42 设置页原控件轻美化（2026-10-04）
+
+- npm run build/typecheck、panels.test.cjs原版/汉化整合、internal-components-compatibility.cjs原版/整合各53项及settings-acrylic.cjs通过。390窄屏、1704平板与32px正文覆盖。
+- 设置正文原标记、输入身份/父级/属性、事件序列、原版往返、外部赋值、动态Mod/unknown/option、hidden/disabled、故障回退、模拟无:has与隔离原版序列化/恢复通过。形态验收改为可见原生方框/圆点、44px标签和原input Focus，不再要求Switch背景或Radio隐藏覆盖标签。
+- 完整beta.42已安装并重新加载生效，Android17/WebView156确认真实可见的18px Radio、44px标签、原input Focus、fixture触摸/键盘/外部赋值、动态unknown/hidden及原版往返共24项通过；恢复/清理3项通过。用户游戏设置值、页面及检查期间V/UI偏好保持；未代用户操作存档。
+- [实机截图清单](design-previews/2026-10-04-settings-native-beta42/README.md)与docs/audits/internal-components-beta42-*.json绑定。未重新测试所有旧Mod、长时间blur或真机保存/读取组合。已安装ZIP冻结166120字节，SHA256 98c4ef904bac1901c87cfc3821d9ea0b6492abc52a14ec644f4f82ac89a385b2；安装后本页更新未重打同名包。beta.41历史包及证据保持冻结。
+
+# 2.0.0-beta.41 兼容防护验证（2026-10-04）
+
+- [修正记录](INTERNAL_COMPONENT_COMPATIBILITY_GUARD.md)：构建/typecheck、原版/整合兼容专项各52项、panels原版/整合、settings-acrylic、eyes-palette、save-compatibility、saves-runtime、saves-header-lifecycle、save-transfer-lifecycle通过。
+- 特质可见计数、动态标题/隐藏/正文索引、hidden保护、原控件/事件、故障注入原版回退和模拟无:has路径已覆盖；存档测试只在隔离profile中操作，资源404 console提示保留。
+- Radio几何检查初始误要求边框内input也达到44px，实际input122×42、label124×44；改为验证label命中至少44px、input覆盖其内部，未将1px方案作为通过。
+- 当前已安装并重新加载生效：Android17 / WebView156.0.8072.0 实机确认完整beta.41、panel API可用、故障计数0、无临时主题覆盖。安装前导出原beta.38回退包；事务保持启用/禁用顺序，安装前后V/页面/UI偏好一致。用户先保存，重新加载后恢复服装店；未代用户执行存档读写。
+- Android必要兼容检查通过：真实触摸原fixture checkbox/label/radio及原生Select picker（trusted事件），动态option/disabled/selected/value、Focus、CDP键盘、动态索引/hidden/class/display与可见特质计数、原节点往返、闲置无自激和样板清理。测试结束V/页面/偏好与重载后基线一致。原生输入和游戏设置值未改变；故障注入仍为隔离桌面证据，未对用户运行时注入故障。
+- Fancy真实长列表各采样24个rAF间隔，正文无额外blur、无横向溢出和适配异常；设置样本最大30.5ms、特质17ms。不是持续FPS/合成器/长期闪烁或Balanced/Fancy对比验收。减少动态是在真机WebView中模拟media，非修改Android系统设置；旧WebView降级仍为模拟。
+- [Android记录与可重放脚本](INTERNAL_COMPONENT_COMPATIBILITY_GUARD.md#android-与安装状态)及[两张实机截图](design-previews/2026-10-04-compatibility-beta41/README.md)已绑定；重要旧Mod位置依赖、存档专项组合及长期动态性能继续单列。
+
+# 2.0.0-beta.40 候选验证（2026-10-04）
+
+- 独立兼容审计补充：[报告](INTERNAL_COMPONENT_COMPATIBILITY_AUDIT.md)。原版/汉化整合新专项各21项正向检查及原版无UI读档回归通过；同时复现 hidden 被样式覆盖、动态导航未更新、初始化异常缺少可用回退等缺口。专项 exit 0 表示审计完成，不能记为所有兼容门槛通过。运行源码/包未改，候选仍未安装。
+
+- 本轮范围为特质/游戏设置内部结构；构建与类型检查、原版/汉化panels、settings-acrylic、eyes-palette通过。原生输入节点、状态与回调保持，Keyboard/disabled/回退/动态内容及窄屏32px正文专项检查通过。
+- 特质搜索框固定最小宽度导致真实布局检查失败，修正后复测通过；本轮增加测试的英文日期文案、禁用点击与初始DOM比较假设按真实原版行为修正，未放宽业务或溢出阈值。
+- 六张隔离汉化游戏截图绑定design-previews/2026-10-04-internal-components-beta40。61条特质是仅DOM渲染压力fixture；32px仅正文字号。候选未安装，Android触摸、滚动/blur、动态性能和长期可读性仍待。
+- 存档及社交既有材料保持，未连接真实游戏进度或操作存档；不把两页检查视为全部界面完成。
+
+历史验证快照如下。
+
 # 1.1.0 LTS 验证与维护范围（2026-10-01）
 
 发行前已核对运行代码、样式和补丁与通过专项验收的资产一致；正式发行包未重复运行所有真机业务，不扩大已有验证范围。
@@ -299,3 +417,70 @@
 - `node scripts/test-workflow.cjs quick saves layout`通过：构建/字段检查/类型检查、全部单元检查、存档运行/导入导出/无UI兼容、缩放、弹窗与渲染器网格、厨房布局。报告：`workflow-quick-1790787620913.json`。
 - 复用之前有效的商店/衣柜/战斗回归与preview.2真机业务证据；debug真机使用与源码相同的热CSS，未宣称正式ZIP在设备重启后的完整验收。
 - 正式版仍需观察更多第三方组合。已交付preview ZIP保持原字节，1.0.9作为回退基线。
+
+
+### beta.47 完整包安装与收口
+
+已按用户已有授权直接事务安装/重载。冻结包171331字节，SHA256 `6a290fe274e0477b3161a3f52e059265c929528f9c950e77215490ca2ed10e93`，ZIP CRC/当前dist逐字节一致；实际导出46回退SHA与冻结46一致。安装期间V/偏好/启停顺序保持。原生Lyra prompt由应用处理，工具没有接受未知prompt；运行47、错误/适配失败0、无临时CSS。
+
+纠正前述设备在衣柜的历史判断：安装前实际私有收据已是战斗页，重载后同页。因此补完成了真实ADB展开/关闭选择摘要与原生战斗菜单，两张完整包Android原图已查看并按SHA绑定。Fancy实际浮层rgba(36,38,42,.74)、blur24、弱方向高光；常驻按钮Neutral/8px/.07弱边缘、无blur/常驻纹理/动画。截图检查前后V/偏好/页面、原控件身份/直接父级一致，底栏无溢出，两浮层已关闭。没有选动作/部位、Continue、菜单设置或存档读写。
+
+[完整包原图清单](design-previews/2026-10-04-combat-tools-beta47/README.md)、[脱敏收据](audits/native-combat-tools-beta47.json)。Android实际开关/静态检查完成；多背景、滚动闪烁、长期性能和任意Mod组合仍待。安装后仅补文档，ZIP保持冻结。
+
+
+### beta.49 完整包安装与最终验收
+
+完整49已事务安装并重载生效，冻结包172988字节，SHA256 `e9134daf23fb77bcf1557f0d834396cad145d0f501232ffe9c87f53227cf52bd`。实际48回退导出SHA与冻结48一致（`5746245db64e4841973c3a5bb4b1d232f9323c7c3aa1f4a8386dcec866aece5b`），原47回退也保留；安装期间状态与启停顺序保持。
+
+Android完整49连续12次真实ADB触摸交替展开/关闭通过：打开原菜单收起摘要，打开摘要通过原toggle关闭菜单，两个关闭路径可用；不是force点击，也不宣称物理同时多点触摸验收。截图确认原菜单完整行底色与对齐已修正，摘要/菜单均V2透光外壳、blur24、局部柔白受光与稳定正文，内部无独立blur/连续动画。
+
+检查前后V/页面/偏好、原控件身份/直接父级一致，无底栏溢出，错误/适配失败/临时节点均0，两浮层已关闭。没有选择动作、Continue、修改菜单设置或执行存档读写。原菜单控件与handler保留，未移动/替换原节点；Vue仅协调自有摘要的显示。
+
+[最终Android原图及SHA清单](design-previews/2026-10-04-combat-popup-beta48/README.md)、[脱敏验证收据](audits/native-combat-popup-beta49.json)。多背景、滚动闪烁、长期性能与任意Mod组合仍待；安装后仅补文档，没有重打同名ZIP。
+
+## beta.50：战斗浮层对齐存档级透光（2026-10-04）
+
+用户要求两浮层进一步透光，并明确以存档界面级别为准。仅CSS：外壳复用定稿存档主菜单rgba(36,38,42,.68/.64)、blur24；标题/正文遮罩降为.40，避免.60/.78二次叠实，摘要小字#d1d3d9保持清晰。49开关协调、原控件/父级/事件保持；Smooth和关闭玻璃实底。未推广到其它区域。
+
+build/typecheck与combat-resize通过（亮白环境>=4.5、三档/玻璃关闭/减少动态、窄宽重复互斥与原click次数、原节点/直接父级/状态、7视口/200%与回退）。首次较透外壳试值未过小字对比度，按用户明确的存档主菜单基线修正后通过，未降低断言。
+
+完整50已事务安装/重载，冻结174049字节，SHA256 `bf05b9a7b626a89d0b2d46660fb781c5815b49669bcf0ba8f736a5315327d00c`；实际49回退导出SHA与冻结49一致。Android连续12次真实触摸交替开关通过，四张原始截图已查看、备份并绑定SHA，动作区截图只滚动、不选动作，结束关闭两浮层并恢复滚动。重载后验收V/页面/偏好/原节点/父级保持，错误/失败/临时样式0。
+
+重载前后原始V严格比较首次失败：仅NPCName描述及descCache发生变化，其它变量/页面/偏好相同。已核对实际NamedNPC构造器初始化空descCache、重新调用bodyPartdescription并随机选择描述词；记录为重载初始化差异，不宣称安装重载全过程V逐字节不变。验收期间没有游戏动作/继续/设置修改/存档读写。
+
+[原图与清单](design-previews/2026-10-04-combat-transmission-beta50/README.md)、[脱敏收据](audits/native-combat-transmission-beta50.json)。长期性能/更多背景/物理同时多点触摸仍待。安装后只补文档、不覆写冻结ZIP。
+
+## beta.54：原生存档确认页补漏（2026-10-04）
+
+进入原生覆盖/读取/删除确认时，列表代理按原设计撤下；原版saveBorder以前因此丢失Acrylic外壳，并沿用按钮150px左边距。已识别确认节点只加可撤销dgs-native-tools标记；CSS复用工具页外壳、稳定轻内容底层、Neutral原按钮和正常换行间距。原确认内容/警示色/节点/父级/属性/回调保持，无新增代理、DOM移动或业务状态。关闭新版存档撤销标记，原版结构及样式恢复；未知布局不接管。
+
+build/typecheck、saves-native-tools、saves-header-lifecycle与原版/整合saves-runtime通过。真实原生确认覆盖覆盖/读取/删除取消、V与槽位内容不变、动态Mod文字/hidden、原节点/直接父级/属性/handler、390/1500px与100%-200%/三档/关玻璃、单层blur、Tab焦点与回退。原版强制important底色首次挡住Neutral，已局部覆盖；第二次断言采样撞上原CSS圆角过渡，改为等待实际动画完成，未降低样式断言。既有资源404、remote-loader与skybox日志保留，不能称全游戏零错误。
+
+完整包安装与Android验收待本轮后续补证；用户设备不执行存档确认业务，原生业务测试只在隔离IDB。默认双列与V2结构、存档详情、导入导出和云端业务不变。用户接受beta.53重载差异可能来自不同存档并要求继续，保留旧证据，不直接回写状态。
+
+### beta.54 完整包与只读验收
+
+已事务安装并重载54生效，冻结178804字节/SHA256 d46d7d7a2a02097f39ed8b64ffced4743e5eefc0fdfbecb9c6f4c81ab780a0b2；实际53回退导出SHA匹配冻结53。Android真实触摸打开原存档列表、只读确认样例返回原列表通过；样例确认禁用，不连接存档业务。单层blur24、内部无blur、原控件8px/44px/无固定左边距及屏内边界通过。只读检查V/页面/偏好/存档记录/游戏原节点父级保持，结束关闭菜单、清理样例并恢复焦点/滚动，错误/失败0。重载字段差异单列脱敏收据，用户接受此前差异并继续，不直接回写状态。
+
+[完整包原图及SHA清单](design-previews/2026-10-04-native-save-confirm-beta54/README.md)、[脱敏验证](audits/native-save-confirm-beta54.json)。设备不执行真实确认业务；实际保存/读取/删除与取消只在隔离IDB验收。未来Mod布局、更多旧版确认与长期性能待；不覆写冻结ZIP。
+
+## beta.55：衣柜局部确认区统一（2026-10-04）
+
+仅6行CSS：原整理工具条去完整边框，确认区从棕色警示框改为稳定Neutral轻内容层、弱顶部受光，关联说明使用次级文字，按钮用Flex gap自然换行。不加blur/代理/observer，不改Vue节点/业务逻辑；原不可撤销及时间提示仍保留。
+
+build/typecheck与原版/整合wardrobe-features通过（修理/转移/容量/关联衣物/原模式复位）。隔离真实Wardrobe查看原生流程中的修理审查，节点/直接父级/标题焦点保持，390/1363px与100%-200%不溢出；取消不改衣物耐久或时间。旧CSS54对比与新样式原图已查看。产品不新增测试框架或为低影响样式添加镜像断言。完整包安装与Android只读样例待本轮补证；设备不执行换装、整理、修理或转移。
+
+### beta.55 完整包与真实衣柜验收
+
+已事务安装并重载55，冻结179726字节/SHA256 6b885733d34f68d313b0cf96994bffc6dae8b15936df9c79d8e2afa89b006ecb；实际54回退导出SHA匹配冻结54。重载前后实际均在Wardrobe，改用真实UI而非样例：ADB触摸整理→勾选→审查丢弃→取消→退出整理通过。没有点击确认，也未丢弃/修理/转移/换装/脱衣/存档操作。V/页面/偏好/存档记录/原控件父级保持，审查标题焦点正确，内部blur0、无完整边框或横向溢出，按钮8px/44px。已恢复滚动与焦点、结束整理，错误/适配失败0。
+
+[Android原图及隔离CSS对比/SHA](design-previews/2026-10-04-wardrobe-review-beta55/README.md)、[脱敏收据](audits/native-wardrobe-review-beta55.json)。更多背景、Mod组合与长期性能待；冻结55ZIP不覆写。
+
+
+## 2.0.0 本地交付（2026-10-04）
+
+正式本地包183127字节，SHA256 `4ed47e305cf0e72dfa9eefe2bb61c236fcd689ecf21a218920572b0c8d385957`。四运行资产与beta.55仅版本串不同，boot仅版本与新增交付文档不同；已从beta.55事务更新，安装期间状态及启停/顺序保持，实际回退ZIP SHA与冻结55一致。重载API确认2.0.0/Wardrobe，Android衣柜和存档详情原图已查看绑定。
+
+本轮发版旧颜色断言失败原报告保留，按批准材质仅更新两处精确值；六个未执行缩放/布局/战斗检查另跑通过。其余通过项及材质/DOM兼容/整合专项复用，未重跑掩盖失败。正式完整包默认双列与三级详情单层blur/正文无blur/边界通过，检查后V/页面/偏好/存档记录/原控件父级一致，已关闭菜单恢复滚动与焦点。无实际存档或游戏写入。
+
+[交付说明](RELEASE_2.0.0.md)、[图片与SHA](design-previews/2026-10-04-soft-wet-2.0.0/README.md)、[脱敏收据](audits/soft-wet-release-2.0.0.json)。当前手机物理设备、未知组合、长期GPU/功耗仍有边界；公开发行未操作。冻结包不因文档补记重打。

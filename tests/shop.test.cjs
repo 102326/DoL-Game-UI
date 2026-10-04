@@ -22,13 +22,56 @@ const server=http.createServer((req,res)=>{
 
  const variant=process.env.DOL_WARDROBE_INTEGRATED?'lyra':'vanilla';
  await p.evaluate(()=>DoLGameUI.setPreference('shopDeferredPaint',true));
- await p.evaluate(()=>{V.money=1000000;SugarCube.Engine.play('Clothing Shop')});await p.waitForSelector('.dgshop-host');
+ await p.evaluate(()=>{DoLShopUI.setDefaultGender('female');V.money=1000000;SugarCube.Engine.play('Clothing Shop')});await p.waitForSelector('.dgshop-host');
+ await p.waitForSelector('.dgshop-entry-categories');
+ const entryBaseline=await p.evaluate(()=>{
+  const shop=document.querySelector('#clothingShop-div');
+  window.entryLinks=[...shop.querySelectorAll('.dgshop-entry-category a')];
+  const state=JSON.stringify(V);DoLShopUI.setEnabled(false);
+  const native=shop.innerHTML,links=entryLinks.every(n=>n.isConnected);
+  DoLShopUI.setEnabled(true);DoLShopUI.setEnabled(false);
+  const exact=shop.innerHTML===native;DoLShopUI.setEnabled(true);
+  return{count:entryLinks.length,links,exact,state:JSON.stringify(V)===state};
+ });
+ assert.ok(entryBaseline.count>=13);assert.ok(entryBaseline.links&&entryBaseline.exact&&entryBaseline.state,'entry restoration preserves original nodes, order and state');
+ for(const width of [390,1363]){
+  await p.setViewportSize({width,height:876});
+  for(const scale of [100,150,200]){
+   await p.evaluate(scale=>{DoLGameUI.setPreference('fontScale',scale);DoLGameUI.setPreference('buttonScale',scale)},scale);
+   assert.ok(await p.locator('.dgshop-entry-categories').evaluate(e=>e.scrollWidth<=e.clientWidth+2),'entry grid fits available width');
+  }
+ }
+ await p.evaluate(()=>{DoLGameUI.setPreference('fontScale',100);DoLGameUI.setPreference('buttonScale',100)});
+ await p.setViewportSize({width:1704,height:1136});
  await p.locator('#clothingShop-div a').filter({hasText:/View All|查看全部|查看所有|全部服/}).first().click();await p.waitForSelector('.clothing-item');
+ assert.equal(await p.locator('.dgshop-entry-categories').count(),0,'native one-click category transition removes entry layout');
  await p.locator('#textbox--shopnamefiltertextbox').fill('NoSuchClothing_IntegrationTest');
  await p.waitForFunction(()=>document.querySelectorAll('.clothing-item').length===0);
  await p.locator('#textbox--shopnamefiltertextbox').fill('');await p.waitForSelector('.clothing-item');
  await p.locator('.clothing-item').first().click();await p.waitForSelector('.buy-buttons');
  assert.equal(await p.locator('.clothing-item').first().evaluate(e=>getComputedStyle(e).contentVisibility),'auto');
+ // Eyes visuals stay local; native swatches and action labels keep their semantics.
+ const visualNodes=await p.evaluateHandle(()=>[...document.querySelectorAll('#clothingShop-div input,#clothingShop-div select,#clothingShop-div a')]);
+ const swatchBefore=await p.locator('.colour-options-div.primary .bg-blue').first().evaluate(e=>getComputedStyle(e).backgroundColor);
+ await p.evaluate(()=>{DoLGameUI.setPreference('visualPattern',true);DoLGameUI.setPreference('visualTier',2)});
+ await p.waitForTimeout(200); // Let the existing 150ms product background transition settle.
+ assert.equal(await p.locator('.dgshop-host').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(37, 38, 42)');
+ const selectionPrefs=await p.evaluate(()=>DoLGameUI.getPreferences());
+ for(const tier of [0,1,2]){
+  await p.evaluate(tier=>{DoLGameUI.setPreference('visualTier',tier);DoLGameUI.setPreference('visualGlow',true)},tier);
+  await p.waitForTimeout(200);
+  for(const selector of ['.category-tab.active','.dgshop-selected','.dgshop-purchase .buy-buttons>.buy-button']){
+   const quiet=await p.locator(selector).first().evaluate(e=>{const c=getComputedStyle(e),rgb=c.backgroundColor.match(/[\d.]+/g).slice(0,3).map(Number);return{neutral:Math.max(...rgb)-Math.min(...rgb)<=8,noTexture:c.backgroundImage==='none',noBlur:c.backdropFilter==='none',weakEdge:Number(c.borderTopColor.match(/[\d.]+/g)[3]??1)<=.1,indicator:c.boxShadow.includes('inset'),animation:getComputedStyle(e,'::after').animationName}});
+   assert.ok(quiet.neutral&&quiet.noTexture&&quiet.noBlur&&quiet.weakEdge&&quiet.indicator,'quiet shop selection '+JSON.stringify({tier,selector,quiet}));
+   assert.equal(quiet.animation,'none','shop selection has no legacy Fancy sweep');
+  }
+ }
+ await p.evaluate(prefs=>{DoLGameUI.setPreference('visualTier',prefs.visualTier);DoLGameUI.setPreference('visualGlow',prefs.visualGlow)},selectionPrefs);
+ assert.equal(await p.locator('.category-tab.active>img').first().evaluate(e=>getComputedStyle(e).filter),'none','native active category icon remains readable on dark surface');
+ assert.notEqual(await p.locator('.dgshop-toolbar').evaluate(e=>getComputedStyle(e).backgroundImage),'none');
+ assert.equal(await p.locator('.colour-options-div.primary .bg-blue').first().evaluate(e=>getComputedStyle(e).backgroundColor),swatchBefore);
+ assert.ok(await p.evaluate(nodes=>nodes.every(n=>n.isConnected),visualNodes));await visualNodes.dispose();
+ await p.evaluate(()=>{DoLGameUI.setPreference('visualPattern',false);DoLGameUI.setPreference('visualTier',0)});
  // Enabling and disabling the adapter preserves native controls and game state.
  await p.evaluate(()=>{window.shopNodes=[...document.querySelectorAll('#clothingShop-div input,#clothingShop-div select,#clothingShop-div a')];window.shopState=JSON.stringify(V);DoLShopUI.setEnabled(false);DoLShopUI.setEnabled(true)});
  assert.equal(await p.evaluate(()=>shopNodes.every(n=>n.isConnected)&&JSON.stringify(V)===shopState),true);
@@ -58,6 +101,33 @@ const server=http.createServer((req,res)=>{
  for(const [name,width,height] of [['tablet',1704,1136],['phone',390,844]]){
   await p.setViewportSize({width,height});await p.evaluate(()=>SugarCube.UIBar.stow());await p.locator('.dgshop-host').scrollIntoViewIfNeeded();
   if(width<=900&&!await p.locator('.dgshop-close-detail').isVisible())await p.getByRole('button',{name:'查看商品详情',exact:true}).click();
+  if(width<=900){
+   const prefs=await p.evaluate(()=>DoLGameUI.getPreferences()),detail=p.locator('.dgshop-open-detail');
+   await p.keyboard.press('Tab');await detail.focus();
+   for(const [tier,glow] of [[2,true],[2,false],[0,true]]){
+    await p.evaluate(([tier,glow])=>{DoLGameUI.setPreference('visualTier',tier);DoLGameUI.setPreference('visualGlow',glow)},[tier,glow]);
+    assert.equal(await detail.evaluate(e=>getComputedStyle(e).backgroundImage!=='none'),tier===2&&glow,'narrow shop toolbar focus light follows tier/glow');
+   }
+   await p.evaluate(prefs=>{DoLGameUI.setPreference('visualTier',prefs.visualTier);DoLGameUI.setPreference('visualGlow',prefs.visualGlow)},prefs);
+   await detail.evaluate(e=>e.blur());
+  }
+  // Long translated shortcut labels must fit, including independent font/button scaling.
+  const clear=p.locator('.dgshop-browse-tools .searchGroup button');const oldText=await clear.textContent();
+  await clear.evaluate(e=>e.textContent='(Shift + 0) 清零搜索条件');
+  for(const [font,button] of [[50,50],[100,100],[200,200],[200,50],[50,200]]){
+   await p.evaluate(([font,button])=>{DoLGameUI.setPreference('fontScale',font);DoLGameUI.setPreference('buttonScale',button)},[font,button]);
+   const tools=await p.evaluate(()=>{
+    const b=document.querySelector('.dgshop-browse-tools .searchGroup button'),label=document.querySelector('.itemsPerPageLabel'),bar=document.querySelector('.dgshop-browse-tools .optionsBar');
+    const r=b.getBoundingClientRect(),l=label.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(b);
+    return {page:document.documentElement.scrollWidth<=innerWidth+2,bar:bar.scrollWidth<=bar.clientWidth+2,text:[...range.getClientRects()].every(t=>t.left>=r.left-1&&t.right<=r.right+1&&t.top>=r.top-1&&t.bottom<=r.bottom+1),separate:Math.min(r.right,l.right)<=Math.max(r.left,l.left)+1||Math.min(r.bottom,l.bottom)<=Math.max(r.top,l.top)+1};
+   });
+   assert.ok(Object.values(tools).every(Boolean),'search controls fit '+JSON.stringify({width,font,button,tools}));
+   await p.waitForTimeout(250);
+   const pager=await p.locator('#shop-pagination').evaluate(e=>{const r=e.getBoundingClientRect(),buttons=[...e.querySelectorAll('.btn-pagination')];return {within:e.scrollWidth<=e.clientWidth+2,buttons:buttons.every(b=>{const q=b.getBoundingClientRect();return q.width>=44&&q.height>=44&&q.left>=r.left-1&&q.right<=r.right+1}),height:r.height};});
+   assert.ok(pager.within&&pager.buttons&&pager.height<220,'pagination fits '+JSON.stringify({width,font,button,pager}));
+  }
+  await clear.evaluate((e,text)=>e.textContent=text,oldText);
+  await p.evaluate(()=>{DoLGameUI.setPreference('fontScale',100);DoLGameUI.setPreference('buttonScale',100)});
   await p.screenshot({path:path.join(__dirname,`artifacts/shop-${variant}-${name}.png`)});
   assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),true,'no horizontal page overflow');
   if(width>900){const toolsRect=await p.locator('.dgshop-browse-tools').boundingBox(),catalogRect=await p.locator('.dgshop-catalog').boundingBox();assert.ok(toolsRect.y+toolsRect.height<=catalogRect.y+2,'tools above catalog');assert.ok(toolsRect.width>catalogRect.width,'tools span both columns');const geometry=await p.evaluate(()=>{const c=document.querySelector('.dgshop-catalog').getBoundingClientRect(),d=document.querySelector('.clothing-details').getBoundingClientRect();return {left:c.right,right:d.left,delta:Math.abs(c.top-d.top)}});assert.ok(geometry.left<=geometry.right&&geometry.delta<2,'catalog and details side by side')}
@@ -71,12 +141,49 @@ const server=http.createServer((req,res)=>{
   assert.equal(await p.locator('.clothing-item').first().evaluate(e=>getComputedStyle(e).isolation),'isolate','badge stays within card stacking context');
   await p.locator('.filters-button').click();await p.waitForSelector('#filters:not(.hidden)');
   assert.equal(await p.locator('.filters-div').evaluate(e=>e.getBoundingClientRect().right<=innerWidth+1),true);
+  assert.ok(await p.locator('#filters .filter-button').evaluateAll(es=>es.every(e=>e.getBoundingClientRect().height>=44)),'native filter actions retain touch areas');
+  const filterNodes=await p.locator('#filters').evaluateHandle(e=>[...e.querySelectorAll('*')]);
+  const popupState=await p.evaluate(()=>({V:JSON.stringify(V),prefs:DoLGameUI.getPreferences()}));
+  for(const tier of [0,1,2]){
+   await p.evaluate(t=>{DoLGameUI.setPreference('visualGlass',true);DoLGameUI.setPreference('visualTier',t)},tier);
+   assert.equal(await p.locator('.filters-div').evaluate(e=>getComputedStyle(e).backdropFilter),tier?'blur(24px)':'none','shop popup follows visual tier');
+   assert.equal(await p.locator('.filter-block').first().evaluate(e=>getComputedStyle(e).backgroundColor),'rgba(0, 0, 0, 0)','filter sections are not nested cards');
+  }
+  await p.evaluate(()=>DoLGameUI.setPreference('visualGlass',false));
+  assert.equal(await p.locator('.filters-div').evaluate(e=>getComputedStyle(e).backdropFilter),'none','glass switch releases shop blur');
+  assert.ok(await p.evaluate(nodes=>nodes.every(n=>n.isConnected),filterNodes));await filterNodes.dispose();
+  assert.equal(await p.evaluate(()=>JSON.stringify(V)),popupState.V,'popup material never writes game state');
+  await p.evaluate(prefs=>{DoLGameUI.setPreference('visualGlass',prefs.visualGlass);DoLGameUI.setPreference('visualTier',prefs.visualTier)},popupState.prefs);
   // Apply through the native filter control.
   await p.locator('#filters .button-apply').click();
-  await p.locator('.clothingshop-options-button').click();await p.waitForSelector('#shop-options:not(.hidden)');await p.locator('#shop-options .button-apply').click();
+  await p.locator('.clothingshop-options-button').click();await p.waitForSelector('#shop-options:not(.hidden)');
+  assert.ok(await p.locator('.options-div').evaluate(e=>e.scrollWidth<=e.clientWidth+2),'native options do not overflow');
+  assert.ok(await p.locator('.options-body label').evaluateAll(es=>es.every(e=>e.getBoundingClientRect().height>=44)),'native option labels retain touch areas');
+  await p.locator('#shop-options .button-apply').click();
+  const legend=p.locator('#shop-legend');const legendHTML=await legend.innerHTML();
+  await p.locator('.shop-legend-button').click();await p.waitForSelector('#shop-legend:not(.hidden)');
+  assert.ok(await p.locator('.shop-legend-button').evaluate(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),'native V1 explanation does not cover its toggle');
+  assert.equal(await legend.innerHTML(),legendHTML,'V1 explanation content stays intact');
+  await p.locator('.shop-legend-button').click();await p.waitForSelector('#shop-legend.hidden',{state:'attached'});
   if(width<=900){await p.getByRole('button',{name:'返回商品列表',exact:true}).click();assert.equal(await p.locator('.clothing-details').isVisible(),false);await p.getByRole('button',{name:'查看商品详情',exact:true}).click();assert.equal(await p.locator('.clothing-details').isVisible(),true)}
 
  }
+ await p.setViewportSize({width:1704,height:1136});
+ await p.waitForTimeout(250);
+ assert.equal(await p.evaluate(()=>($._data(document.querySelector('#shop-pagination .next'),'events')?.click||[]).length),1,'entry default filter must not double-bind native forwarding');
+ const firstPage=await p.evaluate(()=>V.shopPage);
+ const pageDots=await p.locator('#shop-pagination .shop-pages>.page').count();
+ assert.ok(pageDots>1);
+ assert.ok(await p.locator('#shop-pagination>.shop-pages-number').isVisible(),'native current/total counter is visible');
+ assert.equal(await p.locator('#shop-pagination .shop-pages').isVisible(),false,'long dot strip is suppressed only in the adapter');
+ const pageLabel=(await p.locator('#shop-pagination>.shop-pages-number').textContent()).trim();
+ await p.locator('#shop-pagination .next').click();
+ await p.waitForFunction(page=>V.shopPage===page+1,firstPage);
+ assert.notEqual((await p.locator('#shop-pagination>.shop-pages-number').textContent()).trim(),pageLabel,'native counter updates with native forwarding');
+ await p.locator('#shop-pagination .prev').click();
+ await p.waitForFunction(page=>V.shopPage===page,firstPage);
+ assert.equal((await p.locator('#shop-pagination>.shop-pages-number').textContent()).trim(),pageLabel);
+ assert.equal(await p.locator('#shop-pagination .shop-pages>.page').count(),pageDots,'original direct-page controls remain available to fallback');
  // More complex garment: secondary colours and pattern controls keep native updates.
  await p.setViewportSize({width:1704,height:1136});
  await p.locator('.clothing-item').filter({hasText:/Evening gown|晚礼服/}).first().click();

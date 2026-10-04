@@ -48,7 +48,7 @@ const server=http.createServer((req,res)=>{
  assert.ok(savedTime,'new save records in-game timestamp');
  assert.ok((await p.locator('.dgs-detail').textContent()).includes(savedTime));
  const beforeRename=await p.evaluate(async()=>JSON.stringify(await idb.getItem(1)));
- await p.getByLabel('自定义存档名',{exact:true}).fill('回家前 <测试>');await p.getByRole('button',{name:'保存名称',exact:true}).click();
+ await p.locator('.dgs-rename summary').click();await p.getByLabel('自定义存档名',{exact:true}).fill('回家前 <测试>');await p.getByRole('button',{name:'保存名称',exact:true}).click();
  assert.ok((await p.locator('.dgs-recent').textContent()).includes('回家前 <测试>'));
  assert.equal(await p.evaluate(async()=>JSON.stringify(await idb.getItem(1))),beforeRename,'rename never changes save payload');
  await p.keyboard.press('Escape');await p.evaluate(()=>idb.saveList());await p.waitForSelector('.dgs-recent');
@@ -88,15 +88,20 @@ const server=http.createServer((req,res)=>{
  await p.locator('.dgs-recent').click();
  // Confirmation remains native; cancel must not mutate the slot.
  await p.evaluate(()=>{idb.updateSettings('warnSave',true);idb.updateSettings('warnLoad',true);idb.updateSettings('warnDelete',true);V.uiSaveProbe='after-save'});
- await p.locator('.dgs-actions button').filter({hasText:/^Save$/}).click();await p.waitForSelector('#saveList .saveMenuConfirm');assert.equal(await p.locator('.dgs-host').count(),0);
+ await p.locator('.dgs-actions button').filter({hasText:/^(Save|保存)$/}).click();await p.waitForSelector('#saveList .saveMenuConfirm');assert.equal(await p.locator('.dgs-host').count(),0);
  await p.locator('#saveList button.saveMenuConfirm').click();await p.waitForSelector('.dgs-host');
+ assert.equal(await p.locator('.dgs-feedback-saved').count(),0,'native overwrite cancel must not claim success');
+ await p.locator('.dgs-recent').click();await p.locator('.dgs-actions button').filter({hasText:/^(Save|保存)$/}).click();await p.waitForSelector('#saveList input.saveMenuConfirm');
+ await p.locator('#saveList input.saveMenuConfirm').click();
+ await p.evaluate(()=>idb.saveList());await p.waitForSelector('.dgs-feedback-saved');
  await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();
- await p.locator('.dgs-actions button').filter({hasText:/^Load$/}).click();await p.waitForSelector('#saveList input.saveMenuConfirm');
+ await p.locator('.dgs-actions button').filter({hasText:/^(Load|读取)$/}).click();await p.waitForSelector('#saveList input.saveMenuConfirm');
  await p.locator('#saveList input.saveMenuConfirm').click();await p.waitForFunction(()=>V.uiSaveProbe===undefined);
  await p.evaluate(()=>idb.saveList());await p.waitForSelector('.dgs-host');
  await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();
- await p.locator('.dgs-actions button').filter({hasText:/^Delete$/}).click();await p.waitForSelector('#saveList input.saveMenuConfirm');
+ await p.locator('.dgs-actions button').filter({hasText:/^(Delete|删除)$/}).click();await p.waitForSelector('#saveList input.saveMenuConfirm');
  await p.locator('#saveList input.saveMenuConfirm').click();await p.waitForFunction(async()=>!(await idb.getSaveDetails()).some(d=>d.slot===1));await p.waitForSelector('.dgs-host');
+ await p.waitForSelector('.dgs-feedback-deleted');
  assert.equal(await p.locator('.dgs-item small').filter({hasText:/\d{4}/}).count(),0);
  await p.screenshot({path:path.join(__dirname,'artifacts/saves-preview-desktop.png')});
  const source=await p.evaluate(()=>[...document.querySelectorAll('.dgs-native-row')].length);assert.ok(source>1);
@@ -110,10 +115,38 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(()=>{testSaveArea.remove();new SugarCube.Wikifier(null,'<<overlayReplace "saves">>');idb.updateSettings('warnSave',false)});
  await p.waitForSelector('.dgs-host');await p.locator('.dgs-empty-slot').first().click();
  await p.evaluate(()=>{if(!document.querySelector('#customOverlay').classList.contains('hidden'))closeOverlay();new SugarCube.Wikifier(null,'<<overlayReplace "saves">>')});await p.waitForSelector('.dgs-host');
- await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();await p.locator('.dgs-actions button').filter({hasText:/^Save$/}).click();
+ await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();await p.locator('.dgs-actions button').filter({hasText:/^(Save|保存)$/}).click();
  assert.equal(await p.locator('.dgs-detail[open]').count(),0,'save releases modal even when original overlay is hidden');
  await p.evaluate(()=>{if(!document.querySelector('#customOverlay').classList.contains('hidden'))closeOverlay();new SugarCube.Wikifier(null,'<<overlayReplace "saves">>')});await p.waitForSelector('.dgs-host');
  await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();await p.evaluate(()=>closeOverlay());assert.equal(await p.locator('.dgs-detail[open]').count(),0,'native close releases modal');
+ // Real confirmation markup keeps native ownership while retaining the tools shell.
+ await p.evaluate(()=>{idb.updateSettings('warnSave',true);idb.updateSettings('warnLoad',true);idb.updateSettings('warnDelete',true);new SugarCube.Wikifier(null,'<<overlayReplace "saves">>')});await p.waitForSelector('.dgs-host');
+ const confirmState=await p.evaluate(async()=>({V:JSON.stringify(V),slot:JSON.stringify(await idb.getItem(1))}));
+ for(const action of [/^(Save|保存)$/, /^(Load|读取)$/, /^(Delete|删除)$/]){
+  await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();await p.locator('.dgs-actions button').filter({hasText:action}).click();
+  await p.waitForSelector('#customOverlay.dgs-native-tools #saveList>.saveBorder>.saveMenuConfirm');assert.equal(await p.locator('.dgs-host').count(),0);
+  await p.evaluate(()=>{window.confirmNodes=[...document.querySelectorAll('#saveList>.saveBorder *')];window.confirmParents=confirmNodes.map(n=>n.parentNode);window.confirmHandlers=confirmNodes.map(n=>n.onclick);window.confirmAttributes=confirmNodes.map(n=>[n.id,n.getAttribute('name'),n.getAttribute('type'),n.getAttribute('value')]);const hidden=document.createElement('p');hidden.id='confirm-mod-hidden';hidden.hidden=true;hidden.textContent='Hidden Mod content';const extra=document.createElement('p');extra.id='confirm-mod-extra';extra.textContent='DynamicModText'.repeat(30);document.querySelector('#saveList>.saveBorder').append(hidden,extra)});
+  for(const width of [390,1500])for(const scale of [100,200]){
+   await p.setViewportSize({width,height:1000});await p.evaluate(scale=>document.documentElement.style.fontSize=scale+'%',scale);
+   for(const [tier,glass,blur] of [[0,true,'none'],[1,true,'blur(24px)'],[2,true,'blur(24px)'],[2,false,'none']]){
+    await p.evaluate(({tier,glass})=>{DoLGameUI.setPreference('visualTier',tier);DoLGameUI.setPreference('visualGlass',glass)},{tier,glass});
+    await p.evaluate(()=>new Promise(requestAnimationFrame));await p.locator('#saveList .saveMenuConfirm').evaluateAll(es=>Promise.all(es.flatMap(e=>e.getAnimations()).map(a=>a.finished.catch(()=>{}))));
+    const m=await p.locator('#customOverlay').evaluate(e=>({blur:getComputedStyle(e).backdropFilter,bodyOverflow:e.querySelector('#customOverlayContent').scrollWidth>e.querySelector('#customOverlayContent').clientWidth+1,cardOverflow:e.querySelector('.saveBorder').scrollWidth>e.querySelector('.saveBorder').clientWidth+1,innerBlur:[...e.querySelectorAll('#customOverlayContent,#customOverlayContent *')].some(n=>getComputedStyle(n).backdropFilter!=='none'),buttons:[...e.querySelectorAll('.saveMenuConfirm')].map(n=>({radius:getComputedStyle(n).borderRadius,left:getComputedStyle(n).marginLeft,height:n.getBoundingClientRect().height,base:getComputedStyle(n).backgroundColor}))}));
+    assert.equal(m.blur,blur);assert.equal(m.innerBlur,false);assert.equal(m.bodyOverflow,false,'confirmation body fits '+width+'/'+scale);assert.equal(m.cardOverflow,false,'confirmation card fits '+width+'/'+scale);
+    for(const button of m.buttons){assert.equal(button.radius,'8px');assert.equal(button.left,'0px');assert.ok(button.height>=44);assert.equal(button.base,'rgb(36, 38, 43)')}
+   }
+  }
+  assert.equal(await p.locator('#confirm-mod-hidden').isVisible(),false);assert.ok(await p.locator('#confirm-mod-extra').isVisible());
+  assert.ok(await p.evaluate(()=>confirmNodes.every((n,i)=>n.isConnected&&n.parentNode===confirmParents[i]&&n.onclick===confirmHandlers[i]&&JSON.stringify([n.id,n.getAttribute('name'),n.getAttribute('type'),n.getAttribute('value')])===JSON.stringify(confirmAttributes[i]))),'confirmation nodes/parents/attributes/handlers unchanged');
+  await p.evaluate(()=>DoLSavesUI.setEnabled(false));assert.equal(await p.locator('#customOverlay.dgs-native-tools').count(),0,'native fallback releases shell marker');
+  assert.equal(await p.locator('#saveList .saveMenuConfirm').first().evaluate(e=>getComputedStyle(e).marginLeft),'150px');
+  await p.evaluate(()=>{DoLSavesUI.setEnabled(true);document.documentElement.style.fontSize='100%';DoLGameUI.setPreference('visualTier',1);DoLGameUI.setPreference('visualGlass',true)});await p.waitForSelector('#customOverlay.dgs-native-tools');
+  await p.locator('#saveList input.saveMenuConfirm').focus();await p.keyboard.press('Tab');assert.ok(await p.locator('#saveList button.saveMenuConfirm').evaluate(e=>e===document.activeElement));assert.equal(await p.locator('#saveList button.saveMenuConfirm').evaluate(e=>getComputedStyle(e).outlineStyle),'solid');
+  if(action.source.includes('Load'))await p.screenshot({path:path.join(__dirname,'artifacts/saves-native-confirm.png')});
+  await p.locator('#saveList button.saveMenuConfirm').click();await p.waitForSelector('.dgs-host');assert.equal(await p.locator('#customOverlay.dgs-native-tools').count(),0,'cancel removes confirmation marker');
+  assert.deepEqual(await p.evaluate(async()=>({V:JSON.stringify(V),slot:JSON.stringify(await idb.getItem(1))})),confirmState,'cancel does not save/load/delete');
+ }
+ await p.evaluate(()=>closeOverlay());
  // Export widget retains real controls and native callbacks; cloud is untouched.
  await p.evaluate(()=>{testSaveArea.remove();DoLSavesUI.setEnabled(false);window.transferArea=document.createElement('div');transferArea.id='customOverlayContent';transferArea.style='position:fixed;inset:0;background:#19191f;z-index:99999;overflow:auto;padding:20px';document.body.append(transferArea);new SugarCube.Wikifier(transferArea,'<<optionsExportImport>>');window.transferInput=document.querySelector('#saveDataInput');window.transferFile=document.querySelector('#saveImport');DoLSavesUI.setEnabled(true)});
  await p.waitForSelector('.dgs-transfer');

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2.0-eyes · Acrylic 浮层样板</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:24px;color:#e6e7eb;background:#1c1d20;font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif;--panel:#25262a;--border:#4b4d55;--accent:#8dc7ff;--secondary:#b6b8c2;--edge:#d0e9ff;--mist:#b1a5e8}
+header,article,output{background:var(--panel);padding:18px;border:1px solid var(--border);border-radius:14px;max-width:920px;margin:0 auto 18px}
+h1{font-size:1.4em;margin:0}h2{font-size:1.15em;margin:0 0 10px}p{margin:.6em 0}.note,small{color:var(--secondary)}
+label{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:6px 12px 6px 0;max-width:100%}
+button,select,input{font:inherit;color:inherit;background:var(--panel);border:1px solid var(--border);border-radius:10px;min-height:44px;max-width:100%;padding:8px 12px}
+input[type=checkbox]{min-height:0;accent-color:var(--accent)}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#open{background:#283b4c;border-color:var(--accent)}output{display:block;color:var(--secondary)}
+body[data-background=light]{background:#fff}body[data-background=dark]{background:#000}body[data-background=pattern]{background:repeating-linear-gradient(35deg,#111 0 40px,#fafafa 40px 80px)}
+dialog{color:#e6e7eb;background:var(--panel);width:min(360px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;padding:18px;border:1px solid var(--border);border-radius:18px;margin:auto 16px auto auto;font:inherit;box-shadow:0 14px 36px #0004}
+dialog::backdrop{background:transparent}
+dialog h2{padding-right:6px}dialog button{display:block;width:100%;text-align:left;margin-top:10px;background:transparent;position:relative;overflow-wrap:anywhere}dialog p{font-size:.9em;color:var(--secondary)}
+body[data-tier="1"] dialog{background:rgba(37,38,42,.96);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:inset 0 1px #d0e9ff14,0 14px 36px #0004}
+/* One Acrylic surface: an opaque-biased base, sparse static grain and local light.
+   No SVG filter, displacement, second blurred layer or text deformation. */
+body[data-tier="2"] dialog{background-color:rgba(37,38,42,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background-image:radial-gradient(ellipse 140px 40px at left top,#d0e9ff1a,transparent),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath d='M2 3h1M8 9h1' stroke='%23ffffff' stroke-opacity='.045'/%3E%3Cpath d='M9 2h1M3 10h1' stroke='%23000000' stroke-opacity='.12'/%3E%3C/svg%3E");box-shadow:inset 0 1px #d0e9ff24,inset 0 -2px #08090b66,0 20px 44px #0005}
+body[data-tier="2"] dialog button::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;box-shadow:inset 0 1px #d0e9ff88,inset 1px 0 #8dc7ff44,inset 0 -2px #08090b88,inset -1px 0 #b1a5e833}
+dialog button:is(:focus-visible,:active){background:#283b4c}
+body[data-tier="2"] dialog button:focus-visible::before{opacity:.65}
+body[data-tier="2"] dialog button:active::before{opacity:1}
+body[data-motion=on]:not([data-tier="0"]) dialog[open]{animation:acrylic-enter 160ms ease-out both}
+body[data-motion=on]:not([data-tier="0"]) dialog button{transition:background-color 160ms ease-out}
+body[data-motion=on][data-tier="2"] dialog button::before{transition:opacity 160ms ease-out,transform 100ms ease-out}
+body[data-motion=on][data-tier="2"] dialog button:active::before{transform:scale(.96);transition-duration:100ms}
+body[data-motion=on][data-tier="2"] dialog[open]::after{content:"";position:absolute;left:20px;top:1px;width:min(180px,calc(100% - 40px));height:2px;border-radius:2px;pointer-events:none;background:linear-gradient(90deg,transparent,var(--edge),var(--mist),transparent);animation:acrylic-glint 420ms ease-out both}
+body[data-glass=off] dialog{background:var(--panel)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+body[data-glass=off] dialog::after{content:none!important}
+@keyframes acrylic-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes acrylic-glint{from{opacity:0;transform:translateX(-18px) scaleX(.6)}40%{opacity:.8}to{opacity:0;transform:translateX(0) scaleX(1)}}
+@media(prefers-reduced-motion:reduce){dialog,dialog button,dialog button::before{animation:none!important;transition:none!important;transform:none!important}dialog::after{content:none!important;animation:none!important}}
+@media(max-width:600px){body{padding:16px}}
+</style>
+<body data-tier="1" data-motion="on" data-glass="on" data-background="neutral">
+<header><h1>Acrylic · 小型浮层对照</h1><p class="note">独立样板，不接入游戏操作。比较打开、键盘焦点与按压反馈；正文始终实底。</p>
+<label>档位<select id="tier"><option value="0">流畅</option><option value="1" selected>均衡</option><option value="2">华丽</option></select></label>
+<label>背景<select id="background"><option value="neutral">中性</option><option value="light">明亮</option><option value="dark">暗色</option><option value="pattern">明暗条纹</option></select></label>
+<label>文字<select id="scale"><option>50</option><option selected>100</option><option>200</option></select>%</label>
+<label><input id="glass" type="checkbox" checked>玻璃</label><label><input id="motion" type="checkbox" checked>动效</label></header>
+<article><h2>稳定的内容层</h2><p>正文、长列表与输入框不参与模糊或折射。浮层只用一种主要材质，不叠加第二套滤镜。</p><label>示例输入<input aria-label="示例输入" value="正文保持清楚" readonly></label><p><button id="open" aria-haspopup="dialog">打开阅读浮层</button></p></article>
+<output aria-live="polite">未执行任何游戏动作。</output>
+<dialog aria-labelledby="menu-title" id="sample"><h2 id="menu-title">阅读选项</h2><p>小面积 Acrylic 材质样板</p><button id="sample-action">阅读间距 · 示例</button><button id="sample-second">界面偏好 · 示例</button><button id="close">关闭浮层</button></dialog>
+<script>
+const panel=document.getElementById('sample');
+document.getElementById('open').onclick=()=>panel.showModal();
+document.getElementById('close').onclick=()=>panel.close();
+let outside=false;
+const isOutside=e=>{const r=panel.getBoundingClientRect();return e.target===panel&&(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)};
+panel.addEventListener('pointerdown',e=>outside=isOutside(e));panel.addEventListener('click',e=>{if(outside&&isOutside(e))panel.close();outside=false});
+for(const id of ['tier','background'])document.getElementById(id).onchange=e=>document.body.dataset[id]=e.target.value;
+for(const id of ['glass','motion'])document.getElementById(id).onchange=e=>document.body.dataset[id]=e.target.checked?'on':'off';
+document.getElementById('scale').onchange=e=>document.body.style.fontSize=`${16*Number(e.target.value)/100}px`;
+for(const id of ['sample-action','sample-second'])document.getElementById(id).onclick=e=>document.querySelector('output').textContent=e.target.textContent+'已响应（仅样板）';
+</script>
+</body></html>

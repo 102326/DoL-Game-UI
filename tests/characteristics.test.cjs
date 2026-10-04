@@ -34,6 +34,13 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(()=>DoLGameUI.setPreference('characteristicsEnabled',true));await p.waitForSelector('.dgc-navigation');
  for(const [name,width,height] of [['tablet',1704,1136],['phone',390,844]]){
   await p.setViewportSize({width,height});await p.evaluate(()=>document.querySelector('#customOverlayContent').scrollTop=0);
+  for(const size of ['100%','200%']){
+   await p.mouse.move(0,0);
+   await p.locator('html').evaluate((e,size)=>e.style.fontSize=size,size);
+   await p.getByRole('button',{name:'基础属性',exact:true}).click();
+   assert.ok(await p.evaluate(()=>{const c=document.querySelector('#customOverlayContent'),h=document.querySelector('#base-characteristics').previousElementSibling;const r=h.getBoundingClientRect(),v=c.getBoundingClientRect();return r.top>=v.top+8&&r.bottom<=v.bottom}),'native group label stays fully inside the content viewport at '+width+'/'+size);
+  }
+  await p.locator('html').evaluate(e=>e.style.fontSize='100%');await p.evaluate(()=>document.querySelector('#customOverlayContent').scrollTop=0);
   await p.screenshot({path:path.join(__dirname,`artifacts/characteristics-${process.env.DOL_WARDROBE_INTEGRATED?'lyra':'vanilla'}-${name}.png`)});
   assert.equal(await p.locator('.dgc-navigation').evaluate(e=>e.getBoundingClientRect().right<=innerWidth+1),true,'navigation within viewport');
  }
@@ -59,7 +66,7 @@ const server=http.createServer((req,res)=>{
  await p.waitForTimeout(100);const counts=await p.evaluate(()=>DoLCharacteristicsUI.getLifecycleCounts());
  await p.evaluate(()=>{const node=document.createElement('div');document.body.append(node);for(let i=0;i<20;i++)node.textContent=String(i);node.remove()});await p.waitForTimeout(100);
  assert.deepEqual(await p.evaluate(()=>DoLCharacteristicsUI.getLifecycleCounts()),counts);
- await p.evaluate(()=>DoLGameUI.openSettings());await p.getByLabel('启用新版属性界面',{exact:true}).uncheck();await p.locator('.dmt-close').click();assert.equal(await p.locator('.dgc-host').count(),0);
+ await p.evaluate(()=>DoLGameUI.openSettings());await p.locator('.dmt-page-switches>summary').click();await p.getByLabel('启用新版属性界面',{exact:true}).uncheck();await p.locator('.dmt-close').click();assert.equal(await p.locator('.dgc-host').count(),0);
  await p.evaluate(()=>DoLGameUI.setPreference('characteristicsEnabled',true));await p.waitForSelector('.dgc-navigation');
  await p.evaluate(()=>DoLGameUI.destroy());assert.equal(await p.locator('.dgc-host').count(),0);assert.equal(await p.locator('.dgc-overlay').count(),0);
  const newErrors=errors.filter(e=>!(process.env.DOL_WARDROBE_INTEGRATED&&e.includes('skybox')&&e.includes('bannerFallbackImage.onload')));assert.deepEqual(newErrors,[]);

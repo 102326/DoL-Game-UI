@@ -60,6 +60,9 @@
 .dgs-slot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.dgs-entries details:not([open]){display:block}.dgs-entries summary{grid-column:1/-1}.dgs-item{margin:0}.dgs-entries details+details{margin-top:.7rem}
 .dgs-detail:not([open]){display:none!important}.dgs-detail[open]{display:flex;position:fixed;inset:12px 12px 12px auto;margin:0;width:min(560px,calc(100vw - 24px));height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);max-width:calc(100vw - 24px);box-sizing:border-box;color:#e7e6ef;z-index:100001}
 .dgs-detail::backdrop{background:#0009}.dgs-close{align-self:flex-end}.dgs-detail-tools .dgs-tools{display:flex;flex-direction:row;align-items:start;flex-wrap:wrap}.dgs-file-tools{flex:1}.dgs-save-settings{min-width:140px}
+.dgs-titlebar{order:-1}.dgs-titlebar h2{margin:0}.dgs-eyebrow{font-size:.7em;letter-spacing:.18em;margin:0 0 .6em}.dgs-detail-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex:none}.dgs-detail-content{min-height:0;overflow:auto;flex:1}.dgs-detail-content h2{margin:.6em 0 1em}.dgs-detail .dgs-actions{flex:none}.dgs-rename{margin:1em 0}.dgs-rename summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.dgs-dates{display:flex;flex-wrap:wrap;gap:.4em}
+.dgs-rename summary::before{content:'›';margin-right:.5em}.dgs-rename[open] summary::before{content:'⌄'}
 @container(max-width:650px){.dgs-slot-grid{grid-template-columns:minmax(0,1fr)}.dgs-list{display:flex!important;max-height:none}.dgs-detail[open]{inset:8px;width:calc(100vw - 16px);height:calc(100dvh - 16px);max-height:calc(100dvh - 16px);max-width:calc(100vw - 16px)}}
 
 .dgs-layout.dgs-v2{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:1rem;align-items:stretch}
