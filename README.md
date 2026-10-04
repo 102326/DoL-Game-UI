@@ -1,9 +1,9 @@
-> **Soft & Wet 2.0.2**：外层柔雾 Acrylic，内部稳定内容层，原版控件优先就地美化。适配 **DoL 0.5.11.X**，主要验证环境为 **0.5.11.9**；**0.5.12.13 兼容性未知，未验证，不保证可用**。见 [本次更新与原版对比](docs/RELEASE_2.0.2_PUBLIC.md)、[验收记录](docs/RELEASE_2.0.2.md)。
+> **Soft & Wet 2.0.2**：外层柔雾 Acrylic，内部稳定内容层，原版控件优先就地美化。兼容 **DoL 0.5.11.9 / 0.5.12.13**；后者主要验证 Lyra Goose 整合版，不保证所有整合包和 Mod 组合。见 [本次更新与原版对比](docs/RELEASE_2.0.2_PUBLIC.md)、[验收记录](docs/RELEASE_2.0.2.md)。
 
 # DoL Game UI
 
 [![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases)
-![Game](https://img.shields.io/badge/DoL-0.5.11.X-blue)
+![Game](https://img.shields.io/badge/DoL-0.5.11.9%20%2F%200.5.12.13-blue)
 ![Vue](https://img.shields.io/badge/Vue-3-42b883)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6)
 
@@ -19,15 +19,7 @@
 | --- | --- |
 | ![原版存档](docs/screenshots/2.0.2/saves-native.png) | ![2.0.2 存档](docs/screenshots/2.0.2/saves-v2.png) |
 
-存档详情与社交对比见 [完整更新报告](docs/RELEASE_2.0.2_PUBLIC.md)。以下衣柜、商店截图保留既有布局说明，来自 1.x，**不代表 2.0.2 当前材质**。
-
-| 平板衣柜：列表与完整穿搭 | 平板服装店：商品与详情分栏 |
-| --- | --- |
-| [![平板衣柜界面，左侧为服装列表，右侧为完整角色穿搭](docs/screenshots/wardrobe-tablet.png)](docs/screenshots/wardrobe-tablet.png) | [![平板服装店界面，左侧为商品列表，右侧为服装详情与购买操作](docs/screenshots/shop-tablet.png)](docs/screenshots/shop-tablet.png) |
-
-手机上的服装店详情以抽屉显示：
-
-<a href="docs/screenshots/shop-phone.png"><img src="docs/screenshots/shop-phone.png" alt="手机服装店的商品详情抽屉" width="280"></a>
+存档详情与社交对比见 [完整更新报告](docs/RELEASE_2.0.2_PUBLIC.md)。2.0 的视觉参考以已确认的 Soft & Wet 截图为准；1.x 仅保留工程和兼容经验。
 
 ## 功能
 
@@ -53,7 +45,7 @@
 
 ## 安装
 
-1. 使用 **DoL 0.5.11.X**（主要验证版本 **0.5.11.9**）、**SugarCube 2 ModLoader 2.100.0 或以上**及其 **TweeReplacer 1.0.0 或以上**。**0.5.12.13 兼容性未知**，不在本包声明的版本范围内。
+1. 使用 **DoL 0.5.11.9 或 0.5.12.13**、**SugarCube 2 ModLoader 2.100.0 或以上**及其 **TweeReplacer 1.0.0 或以上**。
 2. 从 Releases 下载最新版模组 ZIP，在模组加载器中导入，不要解压。
 3. 建议放在内容模组之后加载，重启游戏，从侧栏 **界面设置** 调整功能。
 
@@ -85,7 +77,9 @@
 
 ## 兼容范围
 
-适配范围为 **0.5.11.X**；实际开发验证以原版 **0.5.11.9** 和 Lyra **0.5.11.9** 为主，没有逐一测试该分支的每个补丁版。**0.5.12.13 兼容性未知、未验证，不保证可用**。覆盖手机、3:2 平板和桌面代表性环境，Android 已完成本轮 UI 验收与短时采样，见 [2.0.2 验收记录](docs/RELEASE_2.0.2.md)。
+当前明确兼容 **0.5.11.9 和 0.5.12.13**。0.5.11.9 保留原版与 Lyra 的手机、平板和桌面验证结果；0.5.12.13 主要验证 Lyra `0.5.12.13-1.0.1a-1004.1-goose-ucb`、MapleBirch 5.2.3 和 ModHub 1.2.3 环境。详细范围见 [2.0.2 验收记录](docs/RELEASE_2.0.2.md)，不扩展声明其它游戏补丁版本或所有 Mod 组合。
+
+2026-10-05 更新同一 2.0.2 附件的兼容清单与说明，JS / Twee 保持原发布包，CSS 补充触屏高亮修正；已下载旧附件的 0.5.12.13 用户请重新下载并替换。Goose 嘴部修复和 ModHub 外观为独立可选包，不包含在 UI 内。
 
 第三方自定义商店、动作、角色图层或完全替换页面结构的模组可能需要专门适配。未声明兼容全部模组或全部 maplebirch 版本；遇到异常可先关闭对应专用界面，并提交复现信息。
 

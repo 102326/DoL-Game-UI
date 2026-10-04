@@ -535,3 +535,9 @@ html[data-dol-midnight][data-dgu-compact-controls] #customOverlay[data-overlay=s
 /* A sticky header must obscure the settings text scrolling beneath it. Keep
    the outer Acrylic rather than adding a second backdrop-filter. */
 html[data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-settings-header{background-color:rgba(36,38,42,.97)}
+
+/* Touch highlight is not selection. Keep focus-visible and native click semantics. */
+html[data-dol-midnight] { -webkit-tap-highlight-color: transparent; }
+@media (hover: none), (pointer: coarse) {
+ html[data-dol-midnight] summary:hover:not(:active) { background-color: transparent; }
+}
