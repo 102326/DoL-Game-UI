@@ -1,6 +1,6 @@
 # ModHub Soft & Wet
 
-适用于 ModHub **1.3.0**，本兼容包版本 **0.1.0**。需要 DoLGameUI 2.0.2 或 2.0.3，以及 DoL 0.5.12.13，在 ModHub 和 UI 后加载，不要解压。更新时替换旧 ModHubSoftWet，不要同时启用两个版本。
+适用于 ModHub **1.3.0**，本兼容包版本 **0.2.1**。需要本轮 DoLGameUI **2.1.0**（`ui.apiVersion === 1`）和 DoL 0.5.12.13，在 ModHub 和 UI 后加载，不要解压。替换旧 ModHubSoftWet，不同时启用两个版本。
 
 关闭 Soft & Wet 总开关或移除本包可恢复原样式。1.3.0 保留本包使用的 14 个主要选择器及原管理页面结构；已在 1.3.0 / Android 平板检查外观、原节点保留、总开关与触屏反馈。安装、删除、排序、恢复与市场功能继续由 ModHub 执行。
 
@@ -12,8 +12,14 @@
 
 触屏不再使用残留 Hover 表达普通按钮状态；鼠标悬停、按下反馈、选中 Tab 和键盘焦点继续保留。
 
-统一文件命名：`ModHubSoftWet-ModHub-1.3.0-v0.1.0.mod.zip`，尾部依次标明目标 Mod 版本和兼容包自身版本。其它外置兼容包后续沿用这一规则。
+统一文件命名：`ModHubSoftWet-ModHub-1.3.0-v0.2.1.mod.zip`，尾部依次标明目标 Mod 版本和兼容包自身版本。其它外置兼容包后续沿用这一规则。
 
 打包：在仓库根目录运行 `python scripts/package-adapter.py compat/modhub-soft-wet`。原 ModHub 1.2.3 的 preview.1 包单独保留。
 
 0.1.0 最后一轮仅做 CSS 降噪：外壳略透、统计摘要弱化、按钮边缘更轻、删除使用低饱和红。未改变原节点顺序、安全模式位置、业务控件或事件链。
+
+0.1.1 仅补充 UI 2.1.0 的版本声明（MapleBirch 包同时更新运行时版本门槛）；沿用 0.1.0 的外观与业务边界。
+
+0.2.0 使用 UI Core 的 Style Only Adapter：多条件指纹校验、候选 selector、角色样式、局部监听与撤销。只加可恢复的 data 属性，不搬节点、不改变值、事件或业务。完整匹配应用专属样式，部分匹配仅保留已验证的外壳角色，完全未知停止适配。缺少新 Runtime 时原界面保持；可调用 `window.ModHubSoftWet.getDiagnostics()` 查看原因。较早的 UI 2.1.0 包不含接口，需一并更新主包。
+
+0.2.1 增加公共 API 版本、方法及 Style Adapter 能力检查；不依赖新增 Surface API，也不替换目标原窗口。方法或能力缺失时不注册适配，保留原样，可通过 getDiagnostics() 查看退出原因。

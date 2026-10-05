@@ -1,3 +1,4 @@
+import {isolate,mountUI,unmountUI,supportsDialog} from '../runtime/presentation';
 import {experiments} from '../runtime/experiments';
 import type {PanelKind} from '../panels/main';
 import {createApp,reactive,type App} from 'vue';
@@ -36,18 +37,18 @@ export function startTheme(root:Runtime=window as Runtime){
  }
  function apply(){
   const html=document.documentElement;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?state.preferences.visualTier:0));
-  for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&state.preferences.visualTier>0&&state.preferences[key]);
+  for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&state.preferences.visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
- document.documentElement.toggleAttribute('data-dgu-font-scaled',isMasterEnabled()&&state.preferences.fontScale!==100);document.documentElement.style.setProperty('--dgu-font-scale',String((isMasterEnabled()?state.preferences.fontScale:100)/100));document.documentElement.style.setProperty('--dgu-button-scale',String((isMasterEnabled()?state.preferences.buttonScale:100)/100));document.documentElement.toggleAttribute('data-dgu-buttons-scaled',isMasterEnabled()&&state.preferences.buttonScale!==100);root.DoLSavesUI?.setV2?.(isMasterEnabled()&&state.preferences.savesV2);
+ document.documentElement.toggleAttribute('data-dgu-font-scaled',isMasterEnabled()&&state.preferences.fontScale!==100);document.documentElement.style.setProperty('--dgu-font-scale',String((isMasterEnabled()?state.preferences.fontScale:100)/100));document.documentElement.style.setProperty('--dgu-button-scale',String((isMasterEnabled()?state.preferences.buttonScale:100)/100));document.documentElement.toggleAttribute('data-dgu-buttons-scaled',isMasterEnabled()&&state.preferences.buttonScale!==100);isolate('saves layout',()=>root.DoLSavesUI?.setV2?.(isMasterEnabled()&&state.preferences.savesV2));
   experiments.wardrobePaged=isMasterEnabled()&&state.preferences.wardrobePaged;experiments.shopDeferredPaint=isMasterEnabled()&&state.preferences.shopDeferredPaint;
   document.documentElement.toggleAttribute('data-dol-shop-deferred-paint',experiments.shopDeferredPaint);
   state.preferences.showCompact=false;state.preferences.collapsedStats=false;
   document.documentElement.toggleAttribute('data-dol-midnight',state.preferences.enabled);
   document.documentElement.toggleAttribute('data-dol-midnight-comfortable',state.preferences.enabled&&state.preferences.comfortable);
   html.toggleAttribute('data-dgu-compact-controls',state.preferences.enabled&&state.preferences.mobileCompactControls&&state.scaleMax===150);
-  root.DMTLayout?.sync({...state.preferences,enabled:isMasterEnabled()});
+  isolate('layout',()=>root.DMTLayout?.sync({...state.preferences,enabled:isMasterEnabled()}));
   const wantsPreview=isMasterEnabled()&&state.preferences.statusPreview;
-  if(previewEnabled!==wantsPreview){previewEnabled=wantsPreview;root.DoLStatusPreview?.setEnabled(previewEnabled)}
+  if(previewEnabled!==wantsPreview){previewEnabled=wantsPreview;isolate('status preview',()=>root.DoLStatusPreview?.setEnabled(previewEnabled))}
   sync();
  }
  function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify(state.preferences));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请关闭此项或重启后重试。':'显示设置已保存。'}
@@ -64,23 +65,31 @@ export function startTheme(root:Runtime=window as Runtime){
   if(state.preferences.enabled===value)return;
   if(root.DoLWardrobeUI?.isBusy?.()){state.message='衣柜正在处理操作，请完成后再切换。';return}
   setMasterEnabled(value);state.preferences.enabled=value;
-  for(const name of ['DoLSavesUI','DoLShopUI','DoLPanelsUI','DoLSocialUI','DoLCharacteristicsUI','DoLWardrobeUI','DoLCombatUI'])root[name]?.refresh?.();
+  for(const name of ['DoLSavesUI','DoLShopUI','DoLPanelsUI','DoLSocialUI','DoLCharacteristicsUI','DoLWardrobeUI','DoLCombatUI'])isolate(name,()=>root[name]?.refresh?.());
   persist();
   if(!storageError)state.message=value?'Soft & Wet 2.0 界面已启用。':'已回到原版界面；启动缓存实验需重启后按此设置生效。';
  }
- function closeSettings(){if(!controls)return;if(controls.open)controls.close();else controls.removeAttribute('open');if(lastFocus?.isConnected)lastFocus.focus({preventScroll:true});lastFocus=null}
- function openSettings(){if(destroyed)return;mount();if(!controls)return;sync();lastFocus=document.activeElement as HTMLElement;if(!controls.open)controls.showModal();controls.querySelector<HTMLButtonElement>('.dmt-close')?.focus();}
+ function closeSettings(){if(!controls)return;if(controls.open&&typeof controls.close==='function')controls.close();else controls.removeAttribute('open');if(lastFocus?.isConnected)lastFocus.focus({preventScroll:true});lastFocus=null}
+ function openSettings(){if(destroyed)return;mount();if(!controls)return;sync();lastFocus=document.activeElement as HTMLElement;if(!controls.open){if(supportsDialog())controls.showModal();else {controls.classList.add('dmt-modeless');controls.setAttribute('open','')}}controls.querySelector<HTMLButtonElement>('.dmt-close')?.focus();}
+ function nativeSettings(){
+  unmountUI(app);app=undefined;if(!controls)return;
+  const text=document.createElement('p');text.textContent='界面设置暂不可用，可以关闭主题并继续使用原版。';
+  const fallback=document.createElement('button');fallback.type='button';fallback.textContent='恢复原版界面';fallback.onclick=()=>{setMaster(false);closeSettings()};
+  const close=document.createElement('button');close.type='button';close.textContent='关闭';close.onclick=closeSettings;
+  controls.replaceChildren(text,fallback,close);
+ }
  function buildControls(){
-  app?.unmount();controls?.remove();controls=document.createElement('dialog');controls.id='dol-midnight-controls';controls.setAttribute('aria-labelledby','dol-midnight-title');
+  unmountUI(app);controls?.remove();controls=document.createElement('dialog');controls.id='dol-midnight-controls';controls.setAttribute('aria-labelledby','dol-midnight-title');
   const host=document.createElement('div');controls.append(host);document.body.append(controls);
-  app=createApp(SettingsPanel,{state,onSaves:setSaves,onPreference:setPreference,onCombat:setCombat,onWardrobe:setWardrobe,onCharacteristics:setCharacteristics,onSocial:setSocial,onPanel:setPanel,onShop:setShop,onClose:closeSettings,onRecovery:setMaster});app.mount(host);
+  app=createApp(SettingsPanel,{state,onSaves:setSaves,onPreference:setPreference,onCombat:setCombat,onWardrobe:setWardrobe,onCharacteristics:setCharacteristics,onSocial:setSocial,onPanel:setPanel,onShop:setShop,onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
+  controls.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();closeSettings()}});
   controls.addEventListener('cancel',event=>{event.preventDefault();closeSettings()});
   controls.addEventListener('click',event=>{if(event.target!==controls)return;const r=controls!.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeSettings()});
   previewEnabled=undefined;
  }
  function target(){return document.getElementById('overlayButtons')||document.getElementById('startCaption')||document.getElementById('menu')||document.body}
  function needsMount(){return !controls?.isConnected||!expanded?.isConnected||expanded.parentElement!==target()||bar!==document.getElementById('ui-bar')}
- function schedule(){if(destroyed||frame)return;counts.queued++;frame=requestAnimationFrame(()=>{frame=0;if(needsMount())mount();else syncShopPageExperiment()})}
+ function schedule(){if(destroyed||frame)return;counts.queued++;frame=requestAnimationFrame(()=>{frame=0;isolate('theme update',()=>{if(needsMount())mount();else syncShopPageExperiment()},nativeSettings)})}
  const observer=new MutationObserver(()=>{if(needsMount())schedule()});
  function mount(){
   if(destroyed||!document.body)return;counts.mounts++;
@@ -93,8 +102,8 @@ export function startTheme(root:Runtime=window as Runtime){
  }
  function listen(target:EventTarget,type:string,fn:EventListener){target.addEventListener(type,fn);cleanups.push(()=>target.removeEventListener(type,fn))}
  listen(root,'resize',resizeScale);listen(document,'DOMContentLoaded',schedule);listen(root,'load',schedule);listen(document,'dol-ui-saves-change',sync);listen(document,'dol-ui-combat-change',sync);listen(document,'dol-ui-wardrobe-change',sync);listen(document,'dol-ui-characteristics-change',sync);listen(document,'dol-ui-social-change',sync);listen(document,'dol-ui-panels-change',sync);listen(document,'dol-ui-shop-change',sync);listen(root,'backbutton',()=>{if(controls?.open)closeSettings()});
- root.DoLMidnightTheme={setPreference,setEnabled:(value:boolean)=>setPreference('enabled',value),mount,openSettings,getPreferences:()=>({...state.preferences}),getLifecycleCounts:()=>({...counts}),destroy(){for(const attribute of ['data-dgu-visual','data-dgu-visualGlass','data-dgu-visualMotion','data-dgu-visualGlow','data-dgu-visualPattern','data-dgu-compact-controls'])document.documentElement.removeAttribute(attribute);document.documentElement.removeAttribute('data-dgu-font-scaled');document.documentElement.style.removeProperty('--dgu-font-scale');document.documentElement.style.removeProperty('--dgu-button-scale');document.documentElement.removeAttribute('data-dgu-buttons-scaled');experiments.wardrobePaged=false;experiments.shopDeferredPaint=false;document.documentElement.removeAttribute('data-dol-shop-deferred-paint');destroyed=true;if(frame)cancelAnimationFrame(frame);timers.forEach(clearTimeout);cleanups.forEach(off=>off());observer.disconnect();if(jqAttached)root.jQuery(document).off('.dolMidnight');app?.unmount();controls?.remove();expanded?.remove();root.DMTLayout?.destroy();document.documentElement.removeAttribute('data-dol-midnight');document.documentElement.removeAttribute('data-dol-midnight-comfortable');delete root.DoLMidnightTheme}};
+ root.DoLMidnightTheme={setPreference,setEnabled:(value:boolean)=>setPreference('enabled',value),mount,openSettings,getPreferences:()=>({...state.preferences}),getLifecycleCounts:()=>({...counts}),destroy(){for(const attribute of ['data-dgu-visual','data-dgu-visualGlass','data-dgu-visualMotion','data-dgu-visualGlow','data-dgu-visualPattern','data-dgu-compact-controls'])document.documentElement.removeAttribute(attribute);document.documentElement.removeAttribute('data-dgu-font-scaled');document.documentElement.style.removeProperty('--dgu-font-scale');document.documentElement.style.removeProperty('--dgu-button-scale');document.documentElement.removeAttribute('data-dgu-buttons-scaled');experiments.wardrobePaged=false;experiments.shopDeferredPaint=false;document.documentElement.removeAttribute('data-dol-shop-deferred-paint');destroyed=true;if(frame)cancelAnimationFrame(frame);timers.forEach(clearTimeout);cleanups.forEach(off=>off());observer.disconnect();if(jqAttached)root.jQuery(document).off('.dolMidnight');unmountUI(app);controls?.remove();expanded?.remove();root.DMTLayout?.destroy();document.documentElement.removeAttribute('data-dol-midnight');document.documentElement.removeAttribute('data-dol-midnight-comfortable');delete root.DoLMidnightTheme}};
  mount();
  // Early mod injection can precede SugarCube/jQuery. These bounded retries only mount when needed.
- if(!jqAttached)for(const delay of [250,1000,3000]){const timer=setTimeout(()=>{timers.delete(timer);if(!jqAttached||needsMount())mount()},delay);timers.add(timer)}
+ if(!jqAttached)for(const delay of [250,1000,3000]){const timer=setTimeout(()=>{timers.delete(timer);if(!jqAttached||needsMount())isolate('theme retry',mount,nativeSettings)},delay);timers.add(timer)}
 }

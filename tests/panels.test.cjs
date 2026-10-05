@@ -152,7 +152,8 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(()=>{const x=document.createElement('div');document.body.append(x);for(let i=0;i<20;i++)x.textContent=String(i);x.remove()});await p.waitForTimeout(100);
  assert.deepEqual(await p.evaluate(()=>DoLPanelsUI.getLifecycleCounts()),counts);
  await p.evaluate(()=>DoLGameUI.openSettings());await p.getByRole('button',{name:'回退原版界面',exact:true}).click();assert.equal(await p.locator('.dgp-host').count(),0);
- for(const k of ['journal','traits','statistics','feats','cheats','attitudes','settings'])assert.equal(await p.evaluate(k=>DoLPanelsUI.getEnabled(k),k),false);
+ assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().enabled),false);
+ for(const k of ['journal','traits','statistics','feats','cheats','attitudes','settings'])assert.equal(await p.evaluate(k=>DoLPanelsUI.getEnabled(k),k),true,'master off retains individual preferences');
  await p.getByRole('button',{name:'启用新版界面',exact:true}).click();await p.locator('.dmt-close').click();await p.waitForSelector('.dgp-navigation');
  await p.evaluate(()=>DoLGameUI.destroy());assert.equal(await p.locator('.dgp-host').count(),0);assert.equal(await p.locator('.dgp-overlay').count(),0);
  assert.deepEqual(errors.filter(e=>!(process.env.DOL_WARDROBE_INTEGRATED&&e.includes('skybox')&&e.includes('bannerFallbackImage.onload'))),[]);

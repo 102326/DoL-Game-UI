@@ -1,0 +1,157 @@
+{
+  "version": "2.1.0",
+  "checks": [
+    "native ModHub structure, Style Only full match, exact native identities/parents/siblings/values/handlers and master rollback",
+    "native MapleBirch cloud fingerprint, native controls and page gate rollback"
+  ],
+  "versions": {
+    "DoLGameUI": "2.1.0",
+    "ModHub": "1.3.0",
+    "maplebirch": "5.2.3",
+    "ModHubSoftWet": "0.2.0",
+    "MapleBirchSoftWet": "0.2.0"
+  },
+  "hub": {
+    "id": "ModHubSoftWet",
+    "adapterVersion": "0.2.0",
+    "target": "ModHub",
+    "fingerprint": "modhub-overlay-1.3.0",
+    "level": "Style Only",
+    "status": "active",
+    "reason": "matched",
+    "match": "full",
+    "targetVersion": "1.3.0",
+    "mapped": [
+      "page-shell",
+      "toolbar",
+      "title",
+      "compact-row",
+      "section",
+      "danger-action"
+    ],
+    "skipped": [
+      "card:missing-selector"
+    ],
+    "selectors": [
+      {
+        "selector": "#customOverlay[data-overlay=\"modloader\"]",
+        "fallback": false
+      },
+      {
+        "selector": ":scope>#customOverlayContent",
+        "fallback": false
+      },
+      {
+        "selector": "#overlayTabs.modhub-modloader-tabs",
+        "fallback": false
+      },
+      {
+        "selector": "#modHubModManageContainer.modhub-container",
+        "fallback": false
+      },
+      {
+        "selector": ":scope",
+        "fallback": false
+      },
+      {
+        "selector": "#overlayTabs.modhub-modloader-tabs",
+        "fallback": false
+      },
+      {
+        "selector": "#customOverlayTitle",
+        "fallback": false
+      },
+      {
+        "selector": ".modhub-sticky-toolbar",
+        "fallback": false
+      },
+      {
+        "selector": ".modhub-list .modhub-item",
+        "fallback": false
+      },
+      {
+        "selector": ".modhub-section",
+        "fallback": false
+      },
+      {
+        "selector": ".modhub-btn-group .btn-delete",
+        "fallback": false
+      }
+    ]
+  },
+  "capabilities": {
+    "enabled": true,
+    "visualTier": "Fancy",
+    "backdropFilter": true,
+    "reducedMotion": false,
+    "glass": true,
+    "motion": true,
+    "layout": "desktop",
+    "styleAdapters": true
+  },
+  "cloud": {
+    "id": "MapleBirchSoftWet",
+    "adapterVersion": "0.2.0",
+    "target": "maplebirch",
+    "fingerprint": "maplebirch-cloud-5.2.3",
+    "level": "Style Only",
+    "status": "active",
+    "reason": "matched",
+    "match": "full",
+    "targetVersion": "5.2.3",
+    "mapped": [
+      "page-shell",
+      "toolbar",
+      "title",
+      "section"
+    ],
+    "skipped": [
+      "danger-action:missing-selector"
+    ],
+    "selectors": [
+      {
+        "selector": "#customOverlay[data-overlay=\"saves\"]",
+        "fallback": false
+      },
+      {
+        "selector": ":scope>#customOverlayContent",
+        "fallback": false
+      },
+      {
+        "selector": "#maplebirch-cloud-save.maplebirch-cloud-save",
+        "fallback": false
+      },
+      {
+        "selector": "#maplebirch-cloud-save [data-cloud-save-field=\"endpoint\"]",
+        "fallback": false
+      },
+      {
+        "selector": "#maplebirch-cloud-save [data-cloud-save-field=\"token\"]",
+        "fallback": false
+      },
+      {
+        "selector": ":scope",
+        "fallback": false
+      },
+      {
+        "selector": "#overlayTabs",
+        "fallback": false
+      },
+      {
+        "selector": "#customOverlayTitle",
+        "fallback": false
+      },
+      {
+        "selector": "#maplebirch-cloud-save>.settingsToggleItemWide",
+        "fallback": false
+      },
+      {
+        "selector": "#maplebirch-cloud-save .maplebirch-cloud-save-actions",
+        "fallback": false
+      }
+    ]
+  },
+  "statePreferencesOrderAndHiddenPreserved": true,
+  "nativeBusinessActions": false,
+  "pageErrors": []
+}

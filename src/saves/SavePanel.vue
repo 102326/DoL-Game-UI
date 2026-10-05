@@ -6,8 +6,9 @@ const query=ref(''),selected=ref<number|null>(props.state.entries.find(e=>!e.emp
 const layout=ref<HTMLElement|null>(null),wide=ref(false);
 const inline=computed(()=>props.state.v2&&wide.value);
 let observer:ResizeObserver|undefined,resizeFrame=0;
-onMounted(()=>{observer=new ResizeObserver(([entry])=>{const next=entry.contentRect.width>=760;if(next===wide.value)return;cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;wide.value=next})});if(layout.value?.parentElement)observer.observe(layout.value.parentElement)});
-onBeforeUnmount(()=>{observer?.disconnect();cancelAnimationFrame(resizeFrame)});
+function resized(){const next=(layout.value?.parentElement?.getBoundingClientRect().width??0)>=760;if(next===wide.value)return;cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;wide.value=next})}
+onMounted(()=>{if(typeof ResizeObserver==='function'){observer=new ResizeObserver(resized);if(layout.value?.parentElement)observer.observe(layout.value.parentElement)}else window.addEventListener('resize',resized);resized()});
+onBeforeUnmount(()=>{observer?.disconnect();window.removeEventListener('resize',resized);cancelAnimationFrame(resizeFrame)});
 watch(inline,()=>{if(drawer.value?.matches(':modal'))drawer.value.close()});
 const draftName=ref(''),nameMessage=ref('');
 function saveName(){if(current.value)nameMessage.value=props.rename(current.value.key,draftName.value)}

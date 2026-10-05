@@ -1,3 +1,4 @@
+import {isolate,mountUI,unmountUI,supportsDialog,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
 import SavePanel from './SavePanel.vue';
 import {createSaveTransfer} from './transfer';
@@ -16,13 +17,13 @@ export function startSaves(root:Window & Record<string,any>){
  const observedSaves=new Map<string,number>();
  const recentFeedback=new Map<string,{kind:'saved'|'deleted';until:number}>();
  const moved:{node:HTMLElement;anchor:Comment}[]=[];
- function closeDetails(){host?.querySelector<HTMLDialogElement>('dialog[open]')?.close()}
+ function closeDetails(){host?.querySelector<HTMLDialogElement>('dialog[open]')?.close?.()}
  function release(){
   readGeneration++;
   closeDetails();
-  for(const {node,anchor} of moved){if(anchor.isConnected&&node.isConnected)anchor.replaceWith(node);else anchor.remove()}moved.length=0;
+  for(const {node,anchor} of moved){restoreNative(node,anchor,container?.parentNode??null)}moved.length=0;
   footer?.remove();footer=null;
-  app?.unmount();app=undefined;host?.remove();host=null;container?.querySelectorAll('.dgs-native-row').forEach(n=>n.classList.remove('dgs-native-row'));container=null;rows=[];buttons=[]
+  unmountUI(app);app=undefined;host?.remove();host=null;container?.querySelectorAll('.dgs-native-row').forEach(n=>n.classList.remove('dgs-native-row'));container=null;rows=[];buttons=[]
  }
  function organizeTools(next:HTMLElement,settingsOpen:boolean){
   const parent=next.parentElement;if(!parent)return;
@@ -42,15 +43,18 @@ export function startSaves(root:Window & Record<string,any>){
   if(settings.children.length>1)footer.append(settings);
   host?.querySelector('.dgs-detail-tools')?.append(footer);
  }
- function refresh(){
+ let failed=false;
+ function recover(){failed=true;release();transfer.release();metadata?.destroy();metadata=undefined;document.dispatchEvent(new Event('dol-ui-saves-change'))}
+ function refresh(){isolate('saves',update,recover)}
+ function update(){
   if(destroyed)return;
-  if(!isMasterEnabled()||!enabled){metadata?.destroy();metadata=undefined;transfer.refresh(false);release();return}
+  if(!isMasterEnabled()||!enabled||failed||!supportsDialog()){metadata?.destroy();metadata=undefined;transfer.refresh(false);release();return}
   metadata??=createSaveMetadata(root);
   const currentMetadata=metadata;
   currentMetadata.attach();
   transfer.refresh(isMasterEnabled()&&enabled);
   const next=document.querySelector<HTMLElement>('#saveList #saves-list-container,#saveList #savesListContainer');
-  if(!isMasterEnabled()||!enabled||!next){release();return}
+  if(!next||document.querySelectorAll('#saveList #saves-list-container,#saveList #savesListContainer').length!==1){release();return}
   if(next===container&&host?.isConnected&&!dirty)return;
   dirty=false;
   const settingsOpen=footer?.querySelector<HTMLDetailsElement>('.dgs-save-settings')?.open??false;
@@ -63,6 +67,10 @@ export function startSaves(root:Window & Record<string,any>){
    // Only known plain slot rows are adapted. Ironman and third-party controls stay native.
    if(!detail||!controls.length||row.querySelector('a,img[onclick],select,textarea,input:not([type="button"])')||controls.some(n=>!n.matches('button,input[type="button"]'))||(!/^\d+$|^A$/.test(slot)&&slot!==''))continue;
    if(!slot||!row.querySelector('.saveGroup .saveButton button,.saveGroup .saveButton input'))continue;
+   // A proxy may hide only content it fully understands. Preserve extended rows.
+   if([...row.querySelectorAll('*')].some(node=>!node.matches('.saveGroup,.saveId,.saveName,.saveDetails,.saveButton,.deleteButton,button,input[type=button],br')&&!(node.tagName==='SPAN'&&node.parentElement===detail))
+    ||detail.querySelectorAll('span:not(.datestamp)').length>1
+    ||[...row.childNodes,...row.querySelector('.saveGroup')!.childNodes].some(node=>node.nodeType===Node.TEXT_NODE&&node.textContent?.trim()))continue;
    const date=detail.querySelector('.datestamp')?.textContent?.trim()??'';
    const key=entries.length;
    entries.push({key,identity:'',customName:'',gameTime:'',slot:slot||'空槽',name:row.querySelector('.saveName')?.textContent?.trim()??'',description:detail.querySelector('span:not(.datestamp)')?.textContent?.trim()??'',date,recent:!!date&&!!detail.querySelector('.datestamp.green'),saveAction:controls.indexOf(row.querySelector<HTMLElement>('.saveGroup .saveButton button,.saveGroup .saveButton input')!),empty:!date,auto:slot==='A',actions:controls.map(n=>({label:n instanceof HTMLInputElement?n.value:n.textContent?.trim()??'',disabled:n.matches(':disabled')}))});
@@ -77,13 +85,13 @@ export function startSaves(root:Window & Record<string,any>){
     if(before!==undefined&&date!==before)recentFeedback.set(slot,{kind:date>0?'saved':'deleted',until:Date.now()+400});
     const feedback=recentFeedback.get(slot);if(feedback&&feedback.until>Date.now())entry.feedback=feedback.kind;else recentFeedback.delete(slot);observedSaves.set(slot,date);
    }
-  });
+  }).catch(error=>{if(generation===readGeneration)isolate('save metadata',()=>{throw error},recover)});
   const overlay=next.closest('#customOverlay[data-overlay="saves"]');
   app=createApp(SavePanel,{state,headerTarget:overlay?.querySelector<HTMLElement>('#customOverlayTitle')??undefined,rename:(key:number,name:string)=>currentMetadata.rename(state.entries.find(e=>e.key===key),name),fallback:()=>setEnabled(false),act:(key:number,index:number)=>{
    const node=buttons[key]?.[index];if(node?.isConnected&&container?.contains(node)&&!node.matches(':disabled'))node.click();
-  }});app.mount(host);
+  }});mountUI(app,host,recover);
   rows.forEach(row=>row.classList.add('dgs-native-row'));
-  const header=next.firstElementChild;if(header?.querySelector('.saveId')?.textContent?.trim()==='#')header.classList.add('dgs-native-row');
+  const header=[...next.querySelectorAll(':scope > .savesListRow')].find(row=>row.querySelector('.saveId')?.textContent?.trim()==='#');header?.classList.add('dgs-native-row');
   organizeTools(next,settingsOpen);
  }
  function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
@@ -93,6 +101,6 @@ export function startSaves(root:Window & Record<string,any>){
  });
  root.jQuery?.(document).on(':oncloseoverlay.dolSaves',closeDetails);
  observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['disabled']});refresh();
- function setEnabled(value:boolean){enabled=!!value;try{root.localStorage.setItem('DoLGameUI.saves.enabled',String(enabled))}catch{}refresh();document.dispatchEvent(new Event('dol-ui-saves-change'))}
- return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled,setEnabled,refresh,destroy(){metadata?.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',closeDetails);observer.disconnect();if(frame)cancelAnimationFrame(frame);release();transfer.release()}};
+ function setEnabled(value:boolean){failed=false;enabled=!!value;try{root.localStorage.setItem('DoLGameUI.saves.enabled',String(enabled))}catch{}refresh();document.dispatchEvent(new Event('dol-ui-saves-change'))}
+ return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled&&!failed,setEnabled,refresh,destroy(){metadata?.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',closeDetails);observer.disconnect();if(frame)cancelAnimationFrame(frame);release();transfer.release()}};
 }

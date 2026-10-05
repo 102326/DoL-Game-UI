@@ -1,5 +1,5 @@
 /* Eyes palette: owned work surfaces and adapted floating shells only. */
-html[data-dol-midnight] :is(.dgs-host,.dgw-root,.dcu-root,.dgshop-host,.dgshop-content,#dol-midnight-controls,.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]),#customOverlay:is(.dgp-overlay:has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host)),#customOverlay[data-overlay="saves"]:has(#saveList>.dgs-host)) {
+html[data-dol-midnight] :is(.dgu-surface,[data-dgu-adapter][data-dgu-role~="page-shell"],.dgs-host,.dgw-root,.dcu-root,.dgshop-host,.dgshop-content,#dol-midnight-controls,.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]),#customOverlay:is(.dgp-overlay:has(>.dgp-host),.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgc-overlay[data-overlay=characteristics]:has(>.dgc-host)),#customOverlay[data-overlay="saves"]:has(#saveList>.dgs-host)) {
  --dgu-surface:#1c1d20;
  --dgu-panel:#25262a;
  --dgu-card:#2d2e33;

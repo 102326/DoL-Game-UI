@@ -72,7 +72,7 @@ const server=http.createServer((req,res)=>{
  await p.waitForFunction(()=>![...document.querySelectorAll('.dgs-navigation button')].some(e=>e.textContent==='知名度'));
  await p.evaluate(()=>DoLGameUI.openSettings());
  await p.getByRole('button',{name:'回退原版界面',exact:true}).click();
- assert.equal(await p.evaluate(()=>DoLSocialUI.getEnabled()),false);
+ assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().enabled),false);assert.equal(await p.locator('.dgs-host').count(),0);assert.equal(await p.evaluate(()=>DoLSocialUI.getEnabled()),true,'master off retains individual preference');
  await p.getByRole('button',{name:'启用新版界面',exact:true}).click();
  assert.equal(await p.evaluate(()=>DoLSocialUI.getEnabled()),true);
  await p.locator('.dmt-close').click();

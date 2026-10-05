@@ -1,4 +1,4 @@
-> **Soft & Wet 2.0.3**：兼容 **DoL 0.5.11.9 / 0.5.12.13**。特定 Mod 的外观和嘴部路径适配改为独立可选包，主 UI 的布局与功能保持。见 [本次更新](docs/RELEASE_2.0.3.md) 和 [兼容包安装说明](docs/OPTIONAL_ADAPTERS.md)。
+> **Soft & Wet 2.1.0**：兼容 **DoL 0.5.11.9 / 0.5.12.13**。本版加强异常隔离、未知内容保留和能力降级，沿用现有界面与原版业务逻辑。见 [本次更新](docs/RELEASE_2.1.0.md) 和 [兼容包安装说明](docs/OPTIONAL_ADAPTERS.md)。
 
 # DoL Game UI
 
@@ -10,6 +10,8 @@
 为 **Degrees of Lewdity** 提供统一的深色界面，兼顾手机、平板和 PC。以圆角控件、清晰分组和更方便的操作布局，改善战斗、衣柜、服装店及常用面板的使用体验。
 
 **[下载安装包](https://github.com/102326/DoL-Game-UI/releases/latest) · [更新记录](CHANGELOG.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)**
+
+Mod 作者可查看 [UI Runtime API 文档](docs/UI_RUNTIME.md)、[接入示例](examples/ui-surfaces/README.md) 和 [设计与兼容边界](docs/UI_INFRASTRUCTURE.md)。这些能力均为可选；玩家可在“界面设置 → 开发检查”查看 Runtime Inspector。
 
 ## 界面预览
 
@@ -77,7 +79,7 @@
 
 ## 兼容范围
 
-当前明确兼容 **0.5.11.9 和 0.5.12.13**。本轮更新和验证范围见 [2.0.3 更新说明](docs/RELEASE_2.0.3.md)，此前完整界面验收见 [2.0.2 验收记录](docs/RELEASE_2.0.2.md)。
+当前明确兼容 **0.5.11.9 和 0.5.12.13**。本轮更新和验证范围见 [2.1.0 更新说明](docs/RELEASE_2.1.0.md)，此前完整界面验收见 [2.0.2 验收记录](docs/RELEASE_2.0.2.md)。
 
 2.0.3 起，MapleBirch 云存档外观和特定 Lyra Goose 嘴部路径通过 [独立兼容包](docs/OPTIONAL_ADAPTERS.md) 提供。不需要这些适配时只安装主 UI；兼容包与主 UI 分别升级。ModHub 1.3.0 外观包同时发布。
 

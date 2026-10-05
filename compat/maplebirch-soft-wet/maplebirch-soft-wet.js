@@ -1,33 +1,38 @@
 (function () {
  "use strict";
  if (window.MapleBirchSoftWet) return;
- let marked = null;
- function refresh() {
-  const enabled = window.modUtils?.getMod?.("maplebirch")?.version === "5.2.3"
-   && window.DoLGameUI?.version === "2.0.3"
-   && document.documentElement.hasAttribute("data-dol-midnight")
-   && window.DoLSavesUI?.getEnabled() === true;
-  const panel = enabled ? document.querySelector('#customOverlay[data-overlay="saves"]>#customOverlayContent>#maplebirch-cloud-save.maplebirch-cloud-save') : null;
-  const next = panel?.parentElement.parentElement ?? null;
-  if (marked === next) return;
-  marked?.classList.remove("mbsw-cloud-tools");
-  marked = next;
-  marked?.classList.add("mbsw-cloud-tools");
+ const spec = {
+  id: "MapleBirchSoftWet", version: "0.2.1", target: {name: "maplebirch", versions: ["5.2.3"]},
+  scope: ['#customOverlay[data-overlay="saves"]'],
+  attributes: ['data-cloud-save-field'],
+  fingerprint: {
+   id: "maplebirch-cloud-5.2.3",
+   safe: [[':scope>#customOverlayContent'], ['#maplebirch-cloud-save.maplebirch-cloud-save']],
+   required: [['#maplebirch-cloud-save [data-cloud-save-field="endpoint"]'], ['#maplebirch-cloud-save [data-cloud-save-field="token"]']]
+  },
+  roles: [
+   {role: "page-shell", selectors: [":scope"], safe: true},
+   {role: "toolbar", selectors: ['#overlayTabs'], safe: true},
+   {role: "title", selectors: ['#customOverlayTitle'], safe: true},
+   {role: "section", selectors: ['#maplebirch-cloud-save>.settingsToggleItemWide'], all: true},
+   {role: "toolbar", selectors: ['#maplebirch-cloud-save .maplebirch-cloud-save-actions'], all: true},
+   {role: "danger-action", selectors: ['#maplebirch-cloud-save button.deleteButton'], all: true}
+  ],
+  when: () => window.DoLSavesUI?.getEnabled() === true
+ };
+ let owner = null, handle = null, reason = "runtime-unavailable";
+ function attach() {
+  const ui = window.DoLGameUI?.ui;
+  if (owner === ui) return;
+  handle?.destroy(); owner = ui; handle = null; reason = ui ? "runtime-api-unsupported" : "runtime-unavailable";
+  if (ui?.apiVersion !== 1 || typeof ui.getCapabilities !== "function" || typeof ui.registerStyleAdapter !== "function") return;
+  try {if (!ui.getCapabilities().styleAdapters) {reason = "style-adapter-unavailable"; return}} catch {reason = "runtime-capability-failed"; return}
+  try {handle = ui.registerStyleAdapter(spec)} catch {reason = "registration-failed"; /* Leave the original UI untouched. */ }
  }
- const observer = new MutationObserver(refresh);
- function start() {
-  observer.observe(document.body, {childList: true, subtree: true, attributes: true, attributeFilter: ["data-overlay"]});
-  observer.observe(document.documentElement, {attributes: true, attributeFilter: ["data-dol-midnight"]});
-  refresh();
- }
- document.addEventListener("dol-ui-saves-change", refresh);
- if (document.body) start(); else document.addEventListener("DOMContentLoaded", start, {once: true});
- window.MapleBirchSoftWet = {destroy() {
-  observer.disconnect();
-  document.removeEventListener("DOMContentLoaded", start);
-  document.removeEventListener("dol-ui-saves-change", refresh);
-  marked?.classList.remove("mbsw-cloud-tools");
-  marked = null;
-  delete window.MapleBirchSoftWet;
- }};
+ document.addEventListener("dol-ui-runtime-ready", attach);
+ window.MapleBirchSoftWet = Object.freeze({
+  getDiagnostics: () => handle?.getDiagnostics() ?? Object.freeze({status: "inactive", reason}),
+  destroy() {document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); handle = null; owner = null; delete window.MapleBirchSoftWet}
+ });
+ attach();
 })();

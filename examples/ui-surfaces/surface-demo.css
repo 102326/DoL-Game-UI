@@ -1,0 +1,5 @@
+.dgu-surface-demo p {margin:0 0 16px;color:var(--dgu-secondary)}
+.dgu-surface-demo .dgu-demo-row {display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px;border-radius:12px;background:var(--dgu-card);color:var(--dgu-text)}
+.dgu-surface-demo input {accent-color:var(--dgu-accent)}
+.dgu-surface-demo button {min-height:44px;padding:8px 14px;border:1px solid rgba(255,255,255,.07);border-radius:8px;background:rgba(255,255,255,.035);color:var(--dgu-text);font:inherit}
+.dgu-surface-demo :is(button,input):focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}

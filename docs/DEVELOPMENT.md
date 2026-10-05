@@ -1,5 +1,7 @@
 # 开发与测试
 
+后续 UI 基础设施和对外接入须遵循 [UI Runtime 与兼容层边界](UI_INFRASTRUCTURE.md)。主动适配使用独立 Adapter，公共 API 接入保持自愿；2.1.0 已实现第一阶段只读查询和 Style Only Adapter；实际接入契约见 [UI Runtime](UI_RUNTIME.md)，不提前实现第三方组件 SDK。
+
 ## 独立构建
 
 Node.js 22.12+、Python 3.10+。运行 `npm ci`，然后 `npm run build`、`npm test`、`npm run package`。输出在本仓库的 `dist/` 中，无需父工程。`private: true` 仅禁止误发 npm，不限制 GitHub 源码和 ZIP 发布。

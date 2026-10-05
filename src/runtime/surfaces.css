@@ -1,0 +1,43 @@
+/* Native dialog supplies top-layer stacking, focus containment and background inertness. */
+html[data-dol-midnight] dialog.dgu-surface {
+ box-sizing:border-box;width:min(760px,calc(100vw - 24px));max-width:none;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);
+ margin:auto;padding:0;overflow:auto;border:1px solid rgba(255,255,255,.08);border-radius:18px;
+ background:var(--dgu-surface);color:var(--dgu-text);color-scheme:dark;font:calc(15px * var(--dgu-font-scale,1))/1.5 system-ui,sans-serif;
+ box-shadow:inset 0 1px rgba(255,255,255,.08),0 24px 64px rgba(0,0,0,.46);text-align:left;
+}
+html[data-dol-midnight] dialog.dgu-surface::backdrop {background:rgba(9,10,12,.25)}
+html[data-dol-midnight] dialog.dgu-surface[data-dgu-surface=drawer] {width:min(480px,calc(100vw - 24px));margin:12px 12px 12px auto;min-height:calc(100vh - 24px);min-height:calc(100dvh - 24px)}
+html[data-dol-midnight] .dgu-surface-header {display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px}
+html[data-dol-midnight] .dgu-surface-header h2 {margin:0;min-width:0;font-size:1.35em;overflow-wrap:anywhere;color:inherit}
+html[data-dol-midnight] .dgu-surface-header button {flex-shrink:0;min-height:44px;margin:0;padding:8px 14px;border:1px solid rgba(255,255,255,.07);border-radius:8px;background:rgba(255,255,255,.035);color:inherit;font:inherit;cursor:pointer}
+html[data-dol-midnight] .dgu-surface-header button:active {background:rgba(255,255,255,.075)}
+html[data-dol-midnight] .dgu-surface-header button:focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}
+html[data-dol-midnight] .dgu-surface-content {padding:20px 24px;overflow-wrap:anywhere;background:linear-gradient(to bottom,rgba(255,255,255,.025),transparent 55%),rgba(31,33,37,.78)}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ /* Android WebView blurs the native top-layer backdrop reliably, not the dialog itself. */
+ html[data-dol-midnight][data-dgu-visualGlass] dialog.dgu-surface::backdrop {backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+ html[data-dol-midnight][data-dgu-visualGlass] dialog.dgu-surface {background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 70%),rgba(36,38,42,.68)}
+ html[data-dol-midnight][data-dgu-visualGlass] dialog.dgu-surface[data-dgu-surface=drawer] {background-color:rgba(40,42,46,.58);border-top-color:rgba(255,255,255,.16)}
+ html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlass] dialog.dgu-surface {background-color:rgba(36,38,42,.64);box-shadow:inset 0 1px rgba(255,255,255,.12),inset 1px 0 rgba(255,255,255,.035),0 24px 64px rgba(0,0,0,.46)}
+ html[data-dol-midnight][data-dgu-visual="2"][data-dgu-visualGlass] dialog.dgu-surface[data-dgu-surface=drawer] {background-color:rgba(40,42,46,.54)}
+}
+html[data-dol-midnight][data-dgu-visualMotion] dialog.dgu-surface[open] {animation:dgu-surface-in 160ms ease-out}
+@keyframes dgu-surface-in {from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(hover:hover) {html[data-dol-midnight] .dgu-surface-header button:hover {background:rgba(255,255,255,.065)}}
+@media(prefers-reduced-motion:reduce) {html[data-dol-midnight] dialog.dgu-surface[open] {animation:none}}
+@media(max-width:600px) {html[data-dol-midnight] :is(.dgu-surface-header,.dgu-surface-content) {padding:16px}}
+/* Inspector is a compact, stable reading surface; no nested Acrylic. */
+.dgu-inspector {font-size:14px;line-height:1.5}
+.dgu-inspector-tools {display:flex;flex-wrap:wrap;gap:8px}
+.dgu-inspector-tools button {min-height:44px;padding:8px 12px;border:1px solid rgba(255,255,255,.07);border-radius:8px;background:rgba(255,255,255,.04);color:inherit;font:inherit;cursor:pointer}
+.dgu-inspector-tools button:focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}
+.dgu-inspector section {margin-top:20px}
+.dgu-inspector :is(h3,h4) {margin:12px 0 8px;color:inherit;font-size:1.05em}
+.dgu-inspector dl {display:grid;grid-template-columns:minmax(100px,1fr) minmax(0,2fr);gap:4px 16px;margin:8px 0}
+.dgu-inspector dd {margin:0;overflow-wrap:anywhere}
+.dgu-inspector dt {color:var(--dgu-secondary)}
+.dgu-inspector details {padding:10px 0;border-bottom:1px solid rgba(255,255,255,.045)}
+.dgu-inspector summary {cursor:pointer;min-height:32px}
+.dgu-inspector-mapping {display:grid;gap:3px;margin:10px 0;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.025)}
+.dgu-inspector code {white-space:pre-wrap;overflow-wrap:anywhere;color:inherit}
+.dgu-inspector p {margin:8px 0}

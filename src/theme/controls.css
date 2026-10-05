@@ -41,3 +41,8 @@ html[data-dgu-buttons-scaled] :is(button,input[type=button],input[type=submit]):
 #dol-midnight-controls details.dmt-setting-card>summary::after{content:'展开';font-size:12px;color:var(--dgu-secondary)}
 #dol-midnight-controls details.dmt-setting-card[open]>summary::after{content:'收起'}
 #dol-midnight-controls details.dmt-setting-card>summary span{font-size:12px;color:var(--dgu-secondary)}
+
+/* Older WebViews use an ordinary, closable settings panel instead of top-layer dialog. */
+#dol-midnight-controls.dmt-modeless{position:fixed;inset:12px;z-index:10001;height:max-content}
+#dol-midnight-controls.dmt-modeless:not([open]){display:none}
+#dol-ui-recovery{position:fixed;right:12px;bottom:12px;z-index:10002;min-height:44px}

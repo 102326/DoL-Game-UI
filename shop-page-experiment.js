@@ -3,7 +3,7 @@
 
   const api = global.DoLShopPageExperiment || {};
   if (typeof api.enabled !== 'boolean') api.enabled = false;
-  api.version = '2.0.3';
+  api.version = '2.1.0';
   api.setEnabled = function setEnabled(value) {
     api.enabled = value === true;
     return api.enabled;

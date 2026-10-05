@@ -1,8 +1,9 @@
+import {restoreNative} from '../runtime/presentation';
 /** Rehouse native transfer controls without replacing their events or values. */
 export function createSaveTransfer(){
  let host:HTMLElement|null=null,overlay:HTMLElement|null=null;
  const moved:{node:Node;anchor:Comment}[]=[];
- function release(){for(const {node,anchor} of moved){if(anchor.isConnected&&node.isConnected)anchor.replaceWith(node);else anchor.remove()}moved.length=0;host?.remove();host=null;overlay?.classList.remove('dgs-native-tools');overlay=null}
+ function release(){for(const {node,anchor} of moved){restoreNative(node,anchor,host?.parentNode??null)}moved.length=0;host?.remove();host=null;overlay?.classList.remove('dgs-native-tools');overlay=null}
  function refresh(enabled:boolean){
   const input=document.querySelector('#customOverlayContent #saveDataInput');
   if(enabled&&host?.isConnected&&host.contains(input))return;
@@ -10,7 +11,7 @@ export function createSaveTransfer(){
   const nextOverlay=document.querySelector<HTMLElement>('#customOverlay[data-overlay=saves]');
   // Native confirmations release the list proxy; keep their shell styled in place.
   if(nextOverlay?.querySelector('#customOverlayContent #saveList>.saveBorder>:is(input[type=button],button).saveMenuConfirm')){overlay=nextOverlay;overlay.classList.add('dgs-native-tools');return}
-  if(!(input instanceof HTMLTextAreaElement))return;
+  if(!nextOverlay||!(input instanceof HTMLTextAreaElement)||!nextOverlay.contains(input)||nextOverlay.querySelectorAll('#saveDataInput').length!==1)return;
   const parent=input.parentElement,file=parent?.querySelector('#saveImport'),heading=parent?.querySelector(':scope > .gold');
   // Unknown/cloud layouts stay native. Only adapt the known export widget.
   if(!parent||file?.parentElement!==parent||!heading||heading.parentElement!==parent)return;

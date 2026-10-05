@@ -5,7 +5,7 @@ const groups={
  wardrobe:['wardrobe-operations.test.cjs','wardrobe-layout.test.cjs','sidebar-preview-lifecycle.cjs'],
  shop:['shop.test.cjs'],
  saves:['saves-runtime.cjs','save-transfer-lifecycle.cjs','save-compatibility.cjs'],
- layout:['master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs'],
+ layout:['ui-runtime.cjs','resilience.cjs','master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs'],
  combat:['acceptance.cjs','combat-resize.test.cjs','native-action-panel.cjs'],
 };
 const args=process.argv.slice(2),mode=args.shift(),planOnly=args.includes('--plan');

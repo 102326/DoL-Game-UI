@@ -1,0 +1,8 @@
+{
+ "name": "SoftWetSurfaceDemo",
+ "version": "0.1.0",
+ "scriptFileList": ["surface-demo.js"],
+ "styleFileList": ["surface-demo.css"],
+ "additionFile": ["README.md"],
+ "dependenceInfo": [{"modName":"DoLGameUI","version":"=2.1.0"}]
+}

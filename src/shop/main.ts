@@ -1,3 +1,4 @@
+import {isolate,mountUI,unmountUI,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
 import Toolbar from './Toolbar.vue';
 import './style.css';
@@ -22,9 +23,9 @@ export function startShop(root:Runtime){
  const state=reactive({hasDetails:false,isEntry:false,open:false,defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
  function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
- function restore(){for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){if(anchor.isConnected&&node.isConnected)anchor.replaceWith(node);else anchor.remove()}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
+ function restore(){for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
- function release(){clearEntry();restore();app?.unmount();app=undefined;host?.remove();host=null;shop?.classList.remove('dgshop-content');state.hasDetails=false;state.open=false;selected='';scrollTop=0}
+ function release(){clearEntry();restore();unmountUI(app);app=undefined;host?.remove();host=null;shop?.classList.remove('dgshop-content');state.hasDetails=false;state.open=false;selected='';scrollTop=0}
  function arrangeEntry(){
   if(entry?.isConnected)return;
   if(!shop)return;
@@ -52,15 +53,19 @@ export function startShop(root:Runtime){
   }
  }
  function toggle(open=!state.open){state.open=open;details?.classList.toggle('dgshop-detail-open',open);if(!open){const target=focusReturn?.isConnected?focusReturn:catalog?.querySelector<HTMLElement>('.dgshop-selected a')??host?.querySelector<HTMLElement>('button');target?.focus({preventScroll:true})}else if(open&&root.matchMedia('(max-width: 900px)').matches)close?.focus({preventScroll:true})}
- function refresh(){
+ let failed=false;
+ function recover(){failed=true;release();observe();document.dispatchEvent(new Event('dol-ui-shop-change'))}
+ function refresh(){isolate('shop',update,recover)}
+ function update(){
   if(destroyed)return;observer.disconnect();
   const next=document.querySelector<HTMLElement>('.passage #clothingShop-div');
   if(next!==shop){release();shop=next}
-  if(!isMasterEnabled()||!enabled||!shop){if(shop&&!isMasterEnabled())entered.add(shop);if(host)release();observe();return}
-  if(!host?.isConnected){host=document.createElement('div');host.className='dgshop-host';shop.before(host);shop.classList.add('dgshop-content');app=createApp(Toolbar,{state,toggle:()=>toggle(),setDefaultGender});app.mount(host);counts.mounts++}
+  if(!isMasterEnabled()||!enabled||failed||!shop){if(shop&&!isMasterEnabled())entered.add(shop);if(host)release();observe();return}
+  if(shop.querySelectorAll('#clothes-list').length>1||shop.querySelectorAll('.clothing-details').length>1){release();observe();return}
+  if(!host?.isConnected){host=document.createElement('div');host.className='dgshop-host';shop.before(host);shop.classList.add('dgshop-content');app=createApp(Toolbar,{state,toggle:()=>toggle(),setDefaultGender});mountUI(app,host,recover);counts.mounts++}
   counts.scans++;
   // Native replacements may have discarded the old catalog or detail body.
-  for(const [node,anchor] of moves)if(!anchor.isConnected||!node.isConnected)moves.delete(node);
+  for(const [node,anchor] of moves)if(!node.isConnected)moves.delete(node);
   for(const el of owned)if(!el.isConnected)owned.delete(el);
   const nextList=shop.querySelector<HTMLElement>('#clothes-list');
   const nextDetails=nextList?.querySelector<HTMLElement>('.clothing-details')??null;
@@ -154,9 +159,9 @@ export function startShop(root:Runtime){
   schedule();
  }
  function escape(event:KeyboardEvent){if(event.key==='Escape'&&state.open&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false)}
- const observer=new MutationObserver(records=>{if(!fastPath(records))schedule()});
+ const observer=new MutationObserver(records=>{if(!isolate('shop mutation',()=>fastPath(records),recover))schedule()});
  const discovery=new MutationObserver(()=>{if(document.querySelector('.passage #clothingShop-div')!==shop)schedule()});
- function setEnabled(value:boolean){if(destroyed)return;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* Session preference. */}refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}
+ function setEnabled(value:boolean){if(destroyed)return;failed=false;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* Session preference. */}refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}
  document.addEventListener('click',click,true);document.addEventListener('keydown',escape);discovery.observe(document.body,{childList:true,subtree:true});refresh();
- return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);observer.disconnect();discovery.disconnect();document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};
+ return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);observer.disconnect();discovery.disconnect();document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};
 }

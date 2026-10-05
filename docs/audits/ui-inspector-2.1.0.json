@@ -1,0 +1,1058 @@
+{
+  "version": "2.1.0",
+  "apiVersion": 1,
+  "schemaVersion": 1,
+  "date": "2026-10-05",
+  "candidateInstall": {
+    "version": "2.1.0",
+    "installed": [
+      {
+        "name": "DoLGameUI",
+        "version": "2.1.0",
+        "sha256": "982bf94144850e9c3cba21d00c80eed3d6eca1d2afd0d66246236a7c35ab3734"
+      },
+      {
+        "name": "MapleBirchSoftWet",
+        "version": "0.2.1",
+        "sha256": "af5ff4ea29ef49385164f92f5188beb52a127c54bfa6ae70f8c1fdc9d8027765"
+      },
+      {
+        "name": "ModHubSoftWet",
+        "version": "0.2.1",
+        "sha256": "6f17dc1b59c6c21e7674027a7feefff5b26b729d91c6c661bce53f2ef038bec0"
+      }
+    ],
+    "priorVersions": {
+      "DoLGameUI": "2.1.0",
+      "ModHub": "1.3.0",
+      "maplebirch": "5.2.3",
+      "ModHubSoftWet": "0.2.1",
+      "MapleBirchSoftWet": "0.2.1"
+    },
+    "orderHiddenAndStatePreserved": true,
+    "reloaded": false
+  },
+  "deviceAdapters": {
+    "version": "2.1.0",
+    "checks": [
+      "native ModHub structure, Style Only full match, exact native identities/parents/siblings/values/handlers and master rollback",
+      "native MapleBirch cloud fingerprint, native controls and page gate rollback"
+    ],
+    "versions": {
+      "DoLGameUI": "2.1.0",
+      "ModHub": "1.3.0",
+      "maplebirch": "5.2.3",
+      "ModHubSoftWet": "0.2.1",
+      "MapleBirchSoftWet": "0.2.1"
+    },
+    "hub": {
+      "id": "ModHubSoftWet",
+      "adapterVersion": "0.2.1",
+      "target": "ModHub",
+      "fingerprint": "modhub-overlay-1.3.0",
+      "level": "Style Only",
+      "status": "active",
+      "reason": "matched",
+      "match": "full",
+      "targetVersion": "1.3.0",
+      "targetDetected": true,
+      "mapped": [
+        "page-shell",
+        "toolbar",
+        "title",
+        "compact-row",
+        "section",
+        "danger-action"
+      ],
+      "skipped": [
+        "card:missing-selector"
+      ],
+      "selectors": [
+        {
+          "selector": "#customOverlay[data-overlay=\"modloader\"]",
+          "fallback": false
+        },
+        {
+          "selector": ":scope>#customOverlayContent",
+          "fallback": false
+        },
+        {
+          "selector": "#overlayTabs.modhub-modloader-tabs",
+          "fallback": false
+        },
+        {
+          "selector": "#modHubModManageContainer.modhub-container",
+          "fallback": false
+        },
+        {
+          "selector": ":scope",
+          "fallback": false
+        },
+        {
+          "selector": "#overlayTabs.modhub-modloader-tabs",
+          "fallback": false
+        },
+        {
+          "selector": "#customOverlayTitle",
+          "fallback": false
+        },
+        {
+          "selector": ".modhub-sticky-toolbar",
+          "fallback": false
+        },
+        {
+          "selector": ".modhub-list .modhub-item",
+          "fallback": false
+        },
+        {
+          "selector": ".modhub-section",
+          "fallback": false
+        },
+        {
+          "selector": ".modhub-btn-group .btn-delete",
+          "fallback": false
+        }
+      ],
+      "mappings": [
+        {
+          "role": "scope",
+          "primary": "#customOverlay[data-overlay=\"modloader\"]",
+          "matched": "#customOverlay[data-overlay=\"modloader\"]",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:safe",
+          "primary": ":scope>#customOverlayContent",
+          "matched": ":scope>#customOverlayContent",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:safe",
+          "primary": "#overlayTabs.modhub-modloader-tabs",
+          "matched": "#overlayTabs.modhub-modloader-tabs",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:required",
+          "primary": "#modHubModManageContainer.modhub-container",
+          "matched": "#modHubModManageContainer.modhub-container",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "page-shell",
+          "primary": ":scope",
+          "matched": ":scope",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "toolbar",
+          "primary": "#overlayTabs.modhub-modloader-tabs",
+          "matched": "#overlayTabs.modhub-modloader-tabs",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "title",
+          "primary": "#customOverlayTitle",
+          "matched": "#customOverlayTitle",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "toolbar",
+          "primary": ".modhub-sticky-toolbar",
+          "matched": ".modhub-sticky-toolbar",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "compact-row",
+          "primary": ".modhub-list .modhub-item",
+          "matched": ".modhub-list .modhub-item",
+          "fallback": false,
+          "count": 38,
+          "reason": "",
+          "tags": [
+            "li"
+          ]
+        },
+        {
+          "role": "card",
+          "primary": ".modhub-market-card",
+          "matched": "",
+          "fallback": false,
+          "count": 0,
+          "reason": "missing-selector",
+          "tags": []
+        },
+        {
+          "role": "section",
+          "primary": ".modhub-section",
+          "matched": ".modhub-section",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "danger-action",
+          "primary": ".modhub-btn-group .btn-delete",
+          "matched": ".modhub-btn-group .btn-delete",
+          "fallback": false,
+          "count": 13,
+          "reason": "",
+          "tags": [
+            "button"
+          ]
+        }
+      ],
+      "supportedVersions": [
+        "1.3.0"
+      ],
+      "degraded": false
+    },
+    "capabilities": {
+      "enabled": true,
+      "visualTier": "Fancy",
+      "backdropFilter": true,
+      "reducedMotion": false,
+      "glass": true,
+      "motion": true,
+      "layout": "desktop",
+      "hasSelector": true,
+      "styleAdapters": true,
+      "surfaces": true,
+      "surfaceApiVersion": 1,
+      "inspector": true
+    },
+    "cloud": {
+      "id": "MapleBirchSoftWet",
+      "adapterVersion": "0.2.1",
+      "target": "maplebirch",
+      "fingerprint": "maplebirch-cloud-5.2.3",
+      "level": "Style Only",
+      "status": "active",
+      "reason": "matched",
+      "match": "full",
+      "targetVersion": "5.2.3",
+      "targetDetected": true,
+      "mapped": [
+        "page-shell",
+        "toolbar",
+        "title",
+        "section"
+      ],
+      "skipped": [
+        "danger-action:missing-selector"
+      ],
+      "selectors": [
+        {
+          "selector": "#customOverlay[data-overlay=\"saves\"]",
+          "fallback": false
+        },
+        {
+          "selector": ":scope>#customOverlayContent",
+          "fallback": false
+        },
+        {
+          "selector": "#maplebirch-cloud-save.maplebirch-cloud-save",
+          "fallback": false
+        },
+        {
+          "selector": "#maplebirch-cloud-save [data-cloud-save-field=\"endpoint\"]",
+          "fallback": false
+        },
+        {
+          "selector": "#maplebirch-cloud-save [data-cloud-save-field=\"token\"]",
+          "fallback": false
+        },
+        {
+          "selector": ":scope",
+          "fallback": false
+        },
+        {
+          "selector": "#overlayTabs",
+          "fallback": false
+        },
+        {
+          "selector": "#customOverlayTitle",
+          "fallback": false
+        },
+        {
+          "selector": "#maplebirch-cloud-save>.settingsToggleItemWide",
+          "fallback": false
+        },
+        {
+          "selector": "#maplebirch-cloud-save .maplebirch-cloud-save-actions",
+          "fallback": false
+        }
+      ],
+      "mappings": [
+        {
+          "role": "scope",
+          "primary": "#customOverlay[data-overlay=\"saves\"]",
+          "matched": "#customOverlay[data-overlay=\"saves\"]",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:safe",
+          "primary": ":scope>#customOverlayContent",
+          "matched": ":scope>#customOverlayContent",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:safe",
+          "primary": "#maplebirch-cloud-save.maplebirch-cloud-save",
+          "matched": "#maplebirch-cloud-save.maplebirch-cloud-save",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:required",
+          "primary": "#maplebirch-cloud-save [data-cloud-save-field=\"endpoint\"]",
+          "matched": "#maplebirch-cloud-save [data-cloud-save-field=\"endpoint\"]",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "input"
+          ]
+        },
+        {
+          "role": "fingerprint:required",
+          "primary": "#maplebirch-cloud-save [data-cloud-save-field=\"token\"]",
+          "matched": "#maplebirch-cloud-save [data-cloud-save-field=\"token\"]",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "input"
+          ]
+        },
+        {
+          "role": "page-shell",
+          "primary": ":scope",
+          "matched": ":scope",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "toolbar",
+          "primary": "#overlayTabs",
+          "matched": "#overlayTabs",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "title",
+          "primary": "#customOverlayTitle",
+          "matched": "#customOverlayTitle",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "section",
+          "primary": "#maplebirch-cloud-save>.settingsToggleItemWide",
+          "matched": "#maplebirch-cloud-save>.settingsToggleItemWide",
+          "fallback": false,
+          "count": 4,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "toolbar",
+          "primary": "#maplebirch-cloud-save .maplebirch-cloud-save-actions",
+          "matched": "#maplebirch-cloud-save .maplebirch-cloud-save-actions",
+          "fallback": false,
+          "count": 3,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "danger-action",
+          "primary": "#maplebirch-cloud-save button.deleteButton",
+          "matched": "",
+          "fallback": false,
+          "count": 0,
+          "reason": "missing-selector",
+          "tags": []
+        }
+      ],
+      "supportedVersions": [
+        "5.2.3"
+      ],
+      "degraded": false
+    },
+    "statePreferencesOrderAndHiddenPreserved": true,
+    "nativeBusinessActions": false,
+    "pageErrors": []
+  },
+  "deviceSurfaces": {
+    "version": "2.1.0",
+    "surfaceApiVersion": 1,
+    "method": "Android WebView CDP, native dialog and rendered screenshots",
+    "checks": [
+      "API example native checkbox/click and same-id content retention",
+      "Modal/Drawer native dismissal, viewport and one effective native backdrop blur",
+      "master disable closes surfaces and requests return null"
+    ],
+    "modal": {
+      "background": "rgba(36, 38, 42, 0.64)",
+      "blur": "none",
+      "backdropBlur": "blur(24px)",
+      "bodyBlur": "none"
+    },
+    "drawer": {
+      "background": "rgba(40, 42, 46, 0.54)",
+      "blur": "none",
+      "backdropBlur": "blur(24px)",
+      "inViewport": true,
+      "bodyBlur": "none"
+    },
+    "gameActionsAndSaveWrites": false,
+    "statePreferencesOrderAndHiddenPreserved": true,
+    "pageErrors": []
+  },
+  "deviceInspector": {
+    "version": "2.1.0",
+    "checks": [
+      "advanced settings entry, real Game/Loader versions and capability snapshot",
+      "manual registered-adapter rescan, bounded events, native dialog close",
+      "ModHub full fingerprint / role mapping, original native identities/parents/siblings/values/handlers"
+    ],
+    "method": "Android WebView CDP and rendered native UI",
+    "diagnostics": {
+      "schemaVersion": 1,
+      "uiVersion": "2.1.0",
+      "runtimeVersion": "1",
+      "gameVersion": "0.5.12.13",
+      "loaderVersion": "2.101.1",
+      "capabilities": {
+        "enabled": true,
+        "visualTier": "Fancy",
+        "backdropFilter": true,
+        "reducedMotion": false,
+        "glass": true,
+        "motion": true,
+        "layout": "desktop",
+        "hasSelector": true,
+        "styleAdapters": true,
+        "surfaces": true,
+        "surfaceApiVersion": 1,
+        "inspector": true
+      },
+      "viewport": {
+        "width": 1363,
+        "height": 876
+      },
+      "platform": "Android",
+      "page": {
+        "name": "Clothing Shop",
+        "root": "#passages",
+        "source": "Native",
+        "adapter": null
+      },
+      "surfaces": [
+        {
+          "kind": "modal",
+          "source": "Soft & Wet",
+          "owner": "caller content / Runtime shell"
+        }
+      ],
+      "adapters": [
+        {
+          "id": "ModHubSoftWet",
+          "adapterVersion": "0.2.1",
+          "target": "ModHub",
+          "fingerprint": "modhub-overlay-1.3.0",
+          "level": "Disabled",
+          "status": "idle",
+          "reason": "missing-selector",
+          "match": "none",
+          "targetVersion": "1.3.0",
+          "targetDetected": true,
+          "mapped": [],
+          "skipped": [],
+          "selectors": [],
+          "mappings": [
+            {
+              "role": "scope",
+              "primary": "#customOverlay[data-overlay]",
+              "matched": "",
+              "fallback": false,
+              "count": 0,
+              "reason": "missing-selector",
+              "tags": []
+            }
+          ],
+          "supportedVersions": [
+            "1.3.0"
+          ],
+          "degraded": false
+        },
+        {
+          "id": "MapleBirchSoftWet",
+          "adapterVersion": "0.2.1",
+          "target": "maplebirch",
+          "fingerprint": "maplebirch-cloud-5.2.3",
+          "level": "Disabled",
+          "status": "inactive",
+          "reason": "ui-or-page-disabled",
+          "match": "none",
+          "targetVersion": "5.2.3",
+          "targetDetected": true,
+          "mapped": [],
+          "skipped": [],
+          "selectors": [
+            {
+              "selector": "#customOverlay[data-overlay]",
+              "fallback": false
+            }
+          ],
+          "mappings": [
+            {
+              "role": "scope",
+              "primary": "#customOverlay[data-overlay]",
+              "matched": "#customOverlay[data-overlay]",
+              "fallback": false,
+              "count": 1,
+              "reason": "",
+              "tags": [
+                "div"
+              ]
+            }
+          ],
+          "supportedVersions": [
+            "5.2.3"
+          ],
+          "degraded": false
+        }
+      ],
+      "events": [
+        {
+          "time": "2026-10-05T09:27:04.396Z",
+          "level": "info",
+          "source": "ModHubSoftWet",
+          "message": "idle: missing-selector"
+        },
+        {
+          "time": "2026-10-05T09:27:04.396Z",
+          "level": "info",
+          "source": "MapleBirchSoftWet",
+          "message": "idle: missing-selector"
+        },
+        {
+          "time": "2026-10-05T09:27:04.945Z",
+          "level": "warn",
+          "source": "ModHubSoftWet",
+          "message": "active: matched"
+        },
+        {
+          "time": "2026-10-05T09:27:05.307Z",
+          "level": "info",
+          "source": "ModHubSoftWet",
+          "message": "inactive: ui-or-page-disabled"
+        },
+        {
+          "time": "2026-10-05T09:27:05.541Z",
+          "level": "warn",
+          "source": "ModHubSoftWet",
+          "message": "active: matched"
+        },
+        {
+          "time": "2026-10-05T09:27:05.659Z",
+          "level": "warn",
+          "source": "ModHubSoftWet",
+          "message": "active: matched"
+        },
+        {
+          "time": "2026-10-05T09:27:05.754Z",
+          "level": "warn",
+          "source": "ModHubSoftWet",
+          "message": "active: matched"
+        },
+        {
+          "time": "2026-10-05T09:27:05.792Z",
+          "level": "info",
+          "source": "ModHubSoftWet",
+          "message": "inactive: ui-or-page-disabled"
+        },
+        {
+          "time": "2026-10-05T09:27:05.926Z",
+          "level": "warn",
+          "source": "ModHubSoftWet",
+          "message": "active: matched"
+        },
+        {
+          "time": "2026-10-05T09:27:07.206Z",
+          "level": "info",
+          "source": "ModHubSoftWet",
+          "message": "inactive: ui-or-page-disabled"
+        },
+        {
+          "time": "2026-10-05T09:27:07.334Z",
+          "level": "info",
+          "source": "ModHubSoftWet",
+          "message": "idle: missing-selector"
+        },
+        {
+          "time": "2026-10-05T09:27:07.334Z",
+          "level": "warn",
+          "source": "MapleBirchSoftWet",
+          "message": "unknown: safe-fingerprint-mismatch"
+        },
+        {
+          "time": "2026-10-05T09:27:07.698Z",
+          "level": "warn",
+          "source": "MapleBirchSoftWet",
+          "message": "active: matched"
+        },
+        {
+          "time": "2026-10-05T09:27:07.835Z",
+          "level": "info",
+          "source": "MapleBirchSoftWet",
+          "message": "inactive: ui-or-page-disabled"
+        },
+        {
+          "time": "2026-10-05T09:27:07.878Z",
+          "level": "warn",
+          "source": "MapleBirchSoftWet",
+          "message": "active: matched"
+        },
+        {
+          "time": "2026-10-05T09:27:09.231Z",
+          "level": "info",
+          "source": "MapleBirchSoftWet",
+          "message": "inactive: ui-or-page-disabled"
+        },
+        {
+          "time": "2026-10-05T09:27:30.223Z",
+          "level": "info",
+          "source": "Surface",
+          "message": "modal:opened"
+        },
+        {
+          "time": "2026-10-05T09:27:31.835Z",
+          "level": "info",
+          "source": "Surface",
+          "message": "modal:closed:button"
+        },
+        {
+          "time": "2026-10-05T09:27:31.936Z",
+          "level": "info",
+          "source": "Surface",
+          "message": "drawer:opened"
+        },
+        {
+          "time": "2026-10-05T09:27:32.660Z",
+          "level": "info",
+          "source": "Surface",
+          "message": "drawer:closed:escape"
+        },
+        {
+          "time": "2026-10-05T09:27:32.775Z",
+          "level": "info",
+          "source": "Surface",
+          "message": "modal:opened"
+        },
+        {
+          "time": "2026-10-05T09:27:32.795Z",
+          "level": "info",
+          "source": "Surface",
+          "message": "modal:closed:disabled"
+        },
+        {
+          "time": "2026-10-05T09:27:33.948Z",
+          "level": "info",
+          "source": "Surface",
+          "message": "modal:opened"
+        }
+      ]
+    },
+    "viewport": {
+      "inViewport": true,
+      "bodyBlur": "none",
+      "backdropBlur": "blur(24px)"
+    },
+    "activeAdapter": {
+      "id": "ModHubSoftWet",
+      "adapterVersion": "0.2.1",
+      "target": "ModHub",
+      "fingerprint": "modhub-overlay-1.3.0",
+      "level": "Style Only",
+      "status": "active",
+      "reason": "matched",
+      "match": "full",
+      "targetVersion": "1.3.0",
+      "targetDetected": true,
+      "mapped": [
+        "page-shell",
+        "toolbar",
+        "title",
+        "compact-row",
+        "section",
+        "danger-action"
+      ],
+      "skipped": [
+        "card:missing-selector"
+      ],
+      "selectors": [
+        {
+          "selector": "#customOverlay[data-overlay]",
+          "fallback": false
+        },
+        {
+          "selector": ":scope>#customOverlayContent",
+          "fallback": false
+        },
+        {
+          "selector": "#overlayTabs.modhub-modloader-tabs",
+          "fallback": false
+        },
+        {
+          "selector": "#modHubModManageContainer.modhub-container",
+          "fallback": false
+        },
+        {
+          "selector": ":scope",
+          "fallback": false
+        },
+        {
+          "selector": "#overlayTabs.modhub-modloader-tabs",
+          "fallback": false
+        },
+        {
+          "selector": "#customOverlayTitle",
+          "fallback": false
+        },
+        {
+          "selector": ".modhub-sticky-toolbar",
+          "fallback": false
+        },
+        {
+          "selector": ".modhub-list .modhub-item",
+          "fallback": false
+        },
+        {
+          "selector": ".modhub-section",
+          "fallback": false
+        },
+        {
+          "selector": ".modhub-btn-group .btn-delete",
+          "fallback": false
+        }
+      ],
+      "mappings": [
+        {
+          "role": "scope",
+          "primary": "#customOverlay[data-overlay]",
+          "matched": "#customOverlay[data-overlay]",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:safe",
+          "primary": ":scope>#customOverlayContent",
+          "matched": ":scope>#customOverlayContent",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:safe",
+          "primary": "#overlayTabs.modhub-modloader-tabs",
+          "matched": "#overlayTabs.modhub-modloader-tabs",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "fingerprint:required",
+          "primary": "#modHubModManageContainer.modhub-container",
+          "matched": "#modHubModManageContainer.modhub-container",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "page-shell",
+          "primary": ":scope",
+          "matched": ":scope",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "toolbar",
+          "primary": "#overlayTabs.modhub-modloader-tabs",
+          "matched": "#overlayTabs.modhub-modloader-tabs",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "title",
+          "primary": "#customOverlayTitle",
+          "matched": "#customOverlayTitle",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "toolbar",
+          "primary": ".modhub-sticky-toolbar",
+          "matched": ".modhub-sticky-toolbar",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "compact-row",
+          "primary": ".modhub-list .modhub-item",
+          "matched": ".modhub-list .modhub-item",
+          "fallback": false,
+          "count": 38,
+          "reason": "",
+          "tags": [
+            "li"
+          ]
+        },
+        {
+          "role": "card",
+          "primary": ".modhub-market-card",
+          "matched": "",
+          "fallback": false,
+          "count": 0,
+          "reason": "missing-selector",
+          "tags": []
+        },
+        {
+          "role": "section",
+          "primary": ".modhub-section",
+          "matched": ".modhub-section",
+          "fallback": false,
+          "count": 1,
+          "reason": "",
+          "tags": [
+            "div"
+          ]
+        },
+        {
+          "role": "danger-action",
+          "primary": ".modhub-btn-group .btn-delete",
+          "matched": ".modhub-btn-group .btn-delete",
+          "fallback": false,
+          "count": 13,
+          "reason": "",
+          "tags": [
+            "button"
+          ]
+        }
+      ],
+      "supportedVersions": [
+        "1.3.0"
+      ],
+      "degraded": false
+    },
+    "statePreferencesOrderAndHiddenPreserved": true,
+    "gameActionsAndSaveWrites": false,
+    "pageErrors": []
+  },
+  "runtimeAssets": {
+    "game-ui.js": "9a1543e0b0f564a66a452fb78378c8a1d4217d12193ad09b061919e7564aac7d",
+    "game-ui.css": "19441abe5690e2e4253544d2091ca5415d6ce42b0f7934c51e17efa8325f83dd"
+  },
+  "releaseValidation": {
+    "initial": "workflow-release-1791191859176.json",
+    "initialFailure": "synthetic transfer overlay lacked original stacking position; sidebar intercepted click",
+    "productLogicChangedForFixture": false,
+    "repairTest": "node tests/saves-runtime.cjs passed",
+    "continuation": {
+      "version": "2.1.0",
+      "priorReport": "workflow-release-1791191859176.json",
+      "reusedPassed": [
+        "ui-runtime.cjs",
+        "resilience.cjs",
+        "master-toggle.cjs"
+      ],
+      "fixtureRepair": "synthetic transfer overlay missing native stacking position; no product behavior change",
+      "results": [
+        {
+          "name": "saves-runtime.cjs",
+          "status": "passed",
+          "evidence": "targeted rerun after fixture repair"
+        },
+        {
+          "name": "save-transfer-lifecycle.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "save-compatibility.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "master-native.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "mobile-density.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "display-scale.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "overlay-manager-layout.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "kitchen-layout.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "acceptance.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "combat-resize.test.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        },
+        {
+          "name": "native-action-panel.cjs",
+          "status": "passed",
+          "exit": 0,
+          "error": null
+        }
+      ]
+    },
+    "extraPassed": [
+      "node tests/social.test.cjs",
+      "node tests/panels.test.cjs"
+    ],
+    "runtimePassed": [
+      "npm run build",
+      "node tests/ui-runtime.cjs",
+      "node tests/resilience.cjs",
+      "node tests/master-toggle.cjs"
+    ]
+  },
+  "limits": [
+    "New API / Inspector copy and JSON export verified on desktop; Android browser download / Clipboard permissions not guaranteed",
+    "No user save writes, game actions, real cloud requests or third-party management operation acceptance",
+    "No Debug Overlay / per-adapter temporary controls / registerUiExtension / Deep Adapter executor",
+    "Existing unrelated loader CssReplacer error not a UI fix; screenshots do not imply entire game zero errors"
+  ]
+}

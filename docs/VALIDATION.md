@@ -1,3 +1,13 @@
+# 2.1.0 兼容性与韧性（2026-10-05）
+
+构建/typecheck、集中隔离回归通过，报告 `tests/artifacts/workflow-release-1791184688894.json`。另通过 social、characteristics、panels、saves-native-tools 和 lyra-preview-adapter 专项。
+
+新增 resilience 检查覆盖模块启动/页面更新/Vue 交互异常、原控件事件和只读状态、动态未知存档行、存档/商店/战斗恢复锚点缺失，以及 ResizeObserver/dialog/blur 能力缺失。主题启动失败仍可关闭整套 UI。异常只停用当前会话的对应接管，不写入业务状态或清空显示偏好。
+
+修复验证中发现的衣柜挂载顺序错误；两个旧测试原先把总关闭当成清空单页偏好，调整为验证总主题关闭、原版呈现恢复及单页偏好保持。导出测试原先把已知控件放在独立伪容器中，新所有权门槛要求实际 saves overlay；测试改用正确的 overlay 包装，原控件和业务断言保持。首次失败报告保留，不以重复运行掩盖问题。
+
+集中回归使用 DoL 0.5.11.9 原版隔离资源，真实隔离存档读写不涉及用户存档。现有资源 404 单列为测试资源限制。集中回归后，战斗异常路径再收敛为仅会话停用，主题重试加边界；最终构建及 resilience/combat-resize/master-toggle 补测通过，其余未触及路径复用已通过结果。0.5.12.13 完整包已在独立测试版平板安装并重载：存档列表/只读详情、导入导出原控件与直接父级恢复、云存档 Adapter、ModHub 1.3.0、设置打开关闭和总回退通过；操作期间 V、显示偏好、Mod 顺序与隐藏列表保持，新页面错误 0。未执行用户存档读写、购买、换装或云端业务。设备证据在开发工作区 `experiments/resilience-210-20261005/device-210`，私有状态和加载日志不发布。未知 Mod 组合与长期设备性能不在本轮范围。
+
 # 2.0.0-beta.53 原生小浮层（2026-10-04）
 
 仅CSS补原生Tooltip和SugarCube Dialog内控件，不改变定位、状态、节点或事件。build/typecheck、settings-acrylic、overlay-back-order与native-small-surfaces通过。后者使用原生jQuery Tooltip实现及真实SugarCube Dialog API，检查两视口/100%-200%字号、三档/玻璃关闭、单层blur、原语义色/动态Mod内容/未知签名/原版回退、原节点/父级、click/change/disabled/hidden、键盘Focus、关闭按钮/Escape/遮罩关闭和V保持。
@@ -487,3 +497,38 @@ build/typecheck与原版/整合wardrobe-features通过（修理/转移/容量/�
 ## 2.0.2 / 0.5.12.13 兼容补验（2026-10-05）
 
 按最小充分验证补测新增版本和触屏修正，复用 0.5.11.9 有效证据。源码构建、0.5.12.13 隔离商店 / 战斗原事件专项、触屏高亮专项及平板菜单 / 存档 / 设置 / 衣柜 / 战斗浮层检查通过。平板商店已预览列表与详情，工具栏关闭脚本遇到原生遮罩后停止，未完成项不记为通过。范围、失败归类和未覆盖项见 [2.0.2 兼容记录](RELEASE_2.0.2.md)。发行包的 7 个 JS / Twee 与旧发行包逐字节一致，CSS 只追加触屏修正；运行逻辑、存档格式和原控件不变。
+
+
+## 2.1.0 UI Runtime 第一阶段（2026-10-05）
+
+保持主版本 2.1.0，新增只读主题、视觉档位和能力查询，以及明确目标的 Style Only Adapter。两份可选适配包升级为 0.2.0。只写可撤销的 data 标记，不移动、替换或复制第三方原节点；Core 不内置 ModHub / MapleBirch 结构，也不拥有其业务状态。接口与范围见 [UI Runtime](UI_RUNTIME.md)。
+
+按共享兼容逻辑的风险进行专项验证：`npm run build`（含类型检查）、`node tests/ui-runtime.cjs`、`node tests/resilience.cjs`、`node tests/master-toggle.cjs`、`node tests/test-workflow.test.cjs` 通过。没有重复全项目发布回归。Runtime 专项覆盖输入校验、只读快照、有序 selector fallback、重复目标拒绝、未知版本和结构漂移降级、safe 指纹失效退出、单 Adapter 故障隔离、动态未知 / hidden 内容、原控件值和事件、注销与 Core 重建。稳定 refresh 的属性变动为 0，避免重复标记触发其它观察器。
+
+独立安装的 Android 0.5.12.13 测试版已安装并重载完整主包及两份适配包，实际加载 ModHub 1.3.0 / MapleBirch 5.2.3 / UI 2.1.0 / 两 Adapter 0.2.0。原 ModHub 管理页与 MapleBirch 云存档均命中 full 指纹；总开关 / 存档页开关撤销、恢复样式后，原节点身份、父级、兄弟关系、控件值及原 handler 保持。截图已查看，结束关闭菜单。只读验收期间 V / 页面 / 显示偏好 / 加载顺序 / 隐藏列表保持，未出现 pageerror；重载变量不与重载前做逐字节不变承诺。
+
+没有执行购买、换装、战斗动作、存档读写、云端请求或 ModHub 安装 / 排序 / 删除业务验收。安装候选包本身通过已有 ModHub 安装函数进行，原包已导出用于回退。截图原生日志定位提示不能视为全游戏零错误证据：加载记录仍含 ImageLoaderHook CssReplacer 的 countError[1]，本轮未改图片加载器或把该项列为修复结果。陌生组合、其它目标版本、长期性能和真实云端业务仍未验证。
+
+[脱敏设备收据](audits/ui-runtime-2.1.0.json)。本轮未操作 GitHub 发布；最终包只补充验收文档，运行资产与已完成实机检查的包逐字节一致。
+
+
+## 2.1.0 Surface 请求 API 增量（2026-10-05）
+
+在 apiVersion 1 下增量开放 openModal / openDrawer，主版本仍为 2.1.0。原生 dialog 提供 top layer、背景 inert 和导航；只接收调用方新建的脱离内容，不替换第三方窗口，不公开内部 store 或 DOM。关闭主题 / 原生能力不足时返回 null，已打开浮层撤销；正文稳定、外壳复用已确认存档 Acrylic。两 Adapter 0.2.1 仅补 API / 方法 / 能力检查，继续 Style Only，不依赖 Surface API。
+
+`npm run build`、`node tests/ui-runtime.cjs`、`node tests/master-toggle.cjs` 通过。复用同一 Runtime 专项检查：重复 id 复用、不同类型冲突拒绝、connected 原节点拒绝、内容值和原 click / submit 保留、父级不变、Esc 上层关闭、按钮与遮罩关闭、拖出不误关、焦点恢复、总开关即时降级、showModal 失败清理、回调失败隔离、销毁幂等、独立示例及两包 API 缺失 fallback。390 / 1280px 示例 Drawer 边界和内部横向溢出检查通过。初始键盘断言把原生 Tab 暂时转到浏览器当作失败；独立裸 dialog 复现确认是 Edge 行为，调整为验证背景控件始终 inert，不通过额外 Tab 拦截改变浏览器行为。测试数组最初误用了 Window.closed 只读属性，已更名；没有产品异常被当作通过。
+
+本轮不重复无关发布级回归，不宣称其它 Surface、registerUiExtension、Proxy 或 Deep Adapter 已实现。完整包 Android 安装和只读示例验收另补下文；实际存档、云端请求及 ModHub 管理业务不属于新增 Surface 验证范围。
+
+
+## 2.1.0 发布候选：Surface / Inspector 收口（2026-10-05）
+
+新增 Inspector 的手动快照、指纹 / Mapping、原因、最多 32 条状态变化事件、复制和 JSON 下载。界面设置中的开发检查入口默认收起。不读取 State.variables、控件值或 DOM 正文，导出移除 selector 属性值，不导出 Surface 标题 / 内容。原生 API dialog 的 blur 改在 ::backdrop：Android WebView 原先仅 computed dialog blur 存在、图像未生效，临时对照定位后改为单层原生背景模糊；正文 blur 为 none。
+
+build / ui-runtime / resilience / master-toggle 通过。专项覆盖快照不可变、禁止业务变量读取、输入和游戏秘密不进入导出、复制与 JSON 下载内容、Clipboard 拒绝处理、有上限事件、稳定重扫不重复记录、设置入口和主题关闭撤销。可选角色缺失单列 Mapping，不把完整指纹误报为降级。
+
+发布集中回归先完成 build / unit / wardrobe / sidebar / shop，在 saves-runtime 的临时导入导出样例被侧栏截获点击时停止，原失败报告保留（workflow-release-1791191859176.json）。样例外层漏写原生遮罩定位，blur 建立堆叠层后内层 z-index 无法跨出；只修测试挂载，未改产品业务，也未使用 force click。目标 saves-runtime 补测通过，续跑此前未执行的 save transfer / save compatibility / master native / density / scale / overlay / kitchen / combat 通过；三项 Runtime 已通过结果复用，另补社交和普通面板专项。续跑记录 release-2.1.0-continuation.json 保留。没有通过重复全跑掩盖初次失败。
+
+Android 0.5.12.13 独立测试版已安装并重载候选及两个 0.2.1 Adapter。原 ModHub / MapleBirch 窗口 full 匹配，身份 / 父级 / 兄弟 / 控件值 / handler 与开关回退通过。API 示例原 checkbox / click、重复打开复用、Modal / Drawer 关闭、屏内边界及主题关闭通过。Inspector 设置入口、真实 Game 0.5.12.13 / Loader 2.101.1、手动重新扫描和 Adapter 指纹 / Mapping 检查通过；图像已查看。检查期间游戏变量、页面、偏好、顺序和隐藏列表保持，pageerror 为 0。最终关闭所有测试菜单、清理示例。设备未执行购买、换装、战斗、用户存档读写或云端请求。Android 下载和 Clipboard 权限不作普遍保证；不把本轮无 pageerror 等同于整个游戏无历史加载器错误。
+
+[脱敏收据](audits/ui-inspector-2.1.0.json)、[Inspector 原图](screenshots/2.1.0/inspector.png)、[Adapter 展开原图](screenshots/2.1.0/inspector-adapter.png)。最终 ZIP 补充本次验收文档，运行 JS / CSS 与实机候选哈希一致。没有将增强开发工具包编入 UI Core。

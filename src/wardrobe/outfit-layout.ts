@@ -1,3 +1,4 @@
+import {restoreNative} from '../runtime/presentation';
 // Reorganize only the known native widget; unknown variants keep their own layout.
 export function createOutfitLayout(){
  let cleanup:(()=>void)|undefined,container:HTMLElement|undefined;
@@ -30,7 +31,7 @@ export function createOutfitLayout(){
    if(mode&&!details.open)details.open=true;
   }
   list.addEventListener('change',update);details.addEventListener('toggle',update);update();
-  cleanup=()=>{list.removeEventListener('change',update);details.removeEventListener('toggle',update);for(const {node,anchor} of moved){if(node.isConnected&&anchor.parentNode)anchor.replaceWith(node);else anchor.remove()}details.remove()};
+  cleanup=()=>{list.removeEventListener('change',update);details.removeEventListener('toggle',update);for(const {node,anchor} of moved){restoreNative(node,anchor,list)}details.remove()};
  }
  return{sync,restore};
 }

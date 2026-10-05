@@ -1,0 +1,12 @@
+/* Opt-in role contract: paint only, never change native layout or hidden semantics. */
+html[data-dol-midnight] [data-dgu-adapter][data-dgu-role~="page-shell"] {
+ color:var(--dgu-text);background-color:var(--dgu-surface);
+ border-color:rgba(255,255,255,.08);border-radius:var(--dgu-card-radius);
+ box-shadow:inset 0 1px rgba(255,255,255,.06),0 18px 48px rgba(0,0,0,.35);
+}
+html[data-dol-midnight] [data-dgu-adapter] [data-dgu-role~="toolbar"] {background-color:rgba(255,255,255,.025);border-color:rgba(255,255,255,.05)}
+html[data-dol-midnight] [data-dgu-adapter] :is([data-dgu-role~="card"],[data-dgu-role~="section"],[data-dgu-role~="compact-row"]) {
+ background-color:var(--dgu-panel);border-color:rgba(255,255,255,.04);box-shadow:none;
+}
+html[data-dol-midnight] [data-dgu-adapter] [data-dgu-role~="danger-action"] {color:var(--dgu-danger)}
+html[data-dol-midnight] [data-dgu-adapter] [data-dgu-role]:is(button,input,select,textarea):focus-visible {outline:2px solid var(--dgu-accent);outline-offset:2px}
