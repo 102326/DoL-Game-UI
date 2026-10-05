@@ -2,6 +2,25 @@
 
 2.1.0 主要加强界面的兼容性和异常恢复，保留现有 Soft & Wet 材质、布局和原版操作。目标是遇到陌生结构时少接管，出错时仍能继续使用原版。
 
+## 下载哪个文件？
+
+**普通玩家先下载 `DoLGameUI-2.1.0.mod.zip` 主包即可。下面的兼容包按需选装，文档和示例不用导入游戏。**
+
+| 下载文件 | 是什么 / 谁需要 |
+| --- | --- |
+| `DoLGameUI-2.1.0.mod.zip` | **UI 主包**。安装 Soft & Wet 2.1.0，替换旧版同名 UI Mod。适配 DoL 0.5.11.9 / 0.5.12.13。 |
+| `ModHubSoftWet-ModHub-1.3.0-v0.2.1.mod.zip` | **ModHub 外观兼容包**。已安装 ModHub 1.3.0、希望管理器使用 Soft & Wet 外观时选装。不包含 ModHub 本体。 |
+| `MapleBirchSoftWet-maplebirch-5.2.3-v0.2.1.mod.zip` | **MapleBirch 外观兼容包**。已安装 MapleBirch 5.2.3、希望其已适配窗口使用 Soft & Wet 外观时选装。不包含 MapleBirch 本体。 |
+| `LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v0.1.0.mod.zip` | **新版 Goose 嘴部修复**。仅用于文件名对应的 DoL 0.5.12.13 / Lyra 1.0.1a / 1004.1 Goose UCB 整合版本。 |
+| `LyraWardrobeMouthSoftWet-Lyra-0.5.11.9-1.0.0a-0815-goose-ucb-v0.1.1.mod.zip` | **旧版 Lyra 衣柜嘴部适配**。仅用于文件名对应的 DoL 0.5.11.9 / Lyra 1.0.0a / 0815 Goose UCB 整合版本。不要装到 0.5.12.13。 |
+| `SoftWetSurfaceDemo-DoLGameUI-2.1.0-v0.1.0.mod.zip` | **开发示例包**。演示如何调用新弹窗和侧边详情 API；默认不弹出，普通玩家不用安装。 |
+| `UI_RUNTIME.md` | **API 使用文档**。给希望接入 Soft & Wet 的 Mod 作者阅读，不是 Mod 包。 |
+| `UI_INFRASTRUCTURE.md` | **Runtime 职责与设计边界**。说明提供什么能力、不接管什么业务，不是 Mod 包。 |
+| `OPTIONAL_ADAPTERS.md` | **兼容包选装说明**。查看各包的适用版本、依赖和注意事项，不是 Mod 包。 |
+| `SHA256SUMS.txt` | **下载校验文件**。用于确认附件完整，普通安装不需要导入。 |
+
+外观兼容包需要 UI 主包和对应的原 Mod。嘴部包按游戏整合版本选择，不要把新旧两个版本都装上。GitHub 自动提供的 `Source code` 是项目源码，不能代替 UI 主包导入游戏。
+
 ## 主要变化
 
 - 增加一层轻量 UI 适配护栏：兼容包先检查目标页面和结构，再应用外观；识别不完整时减少适配，未知内容继续显示。只读主题、档位和能力查询见 [UI Runtime 接入说明](UI_RUNTIME.md)。
