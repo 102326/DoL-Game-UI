@@ -22,6 +22,8 @@ with zipfile.ZipFile(package_path) as archive:
     boot = json.loads(archive.read('boot.json'))
     assert boot['name'] == 'DoLGameUI', 'stable loader identity must not change'
     assert boot['nickName'] == 'DoL Soft & Wet Game UI', 'display name missing'
+    assert not any(name.startswith('docs/audits/') for name in archive.namelist()), 'acceptance receipts belong in the repository'
+    assert not {'docs/VALIDATION.md', 'docs/DEVELOPMENT.md', 'docs/TYPESCRIPT_2.2.md', 'docs/UI_INFRASTRUCTURE.md', 'docs/UI_RUNTIME.md'}.intersection(archive.namelist()), 'developer documents must not be bundled with the player package'
     integrated = next(item for item in boot['addonPlugin'] if item['modName'] == 'TweeReplacer')['params']
     assert boot['scriptFileList_inject_early'] == ['startup-cache-experiment.js', 'shop-page-experiment.js'], 'early script order/names changed'
     assert 'game-ui.js' in boot['scriptFileList'], 'game UI runtime missing'
