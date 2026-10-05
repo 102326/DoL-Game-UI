@@ -81,7 +81,7 @@ Mod 作者可查看 [UI Runtime API 文档](docs/UI_RUNTIME.md)、[接入示例]
 
 ## 兼容范围
 
-当前明确兼容 **0.5.11.9 和 0.5.12.13**。本轮更新范围见 [2.2.1 更新说明](docs/RELEASE_2.2.1.md)，此前完整界面验收见 [2.0.2 验收记录](docs/RELEASE_2.0.2.md)。
+当前明确兼容 **0.5.11.9 和 0.5.12.13**。主要变化和安装注意事项见 [2.2.1 更新说明](docs/RELEASE_2.2.1.md)。
 
 2.0.3 起，MapleBirch 云存档外观和特定 Lyra Goose 嘴部路径通过 [独立兼容包](docs/OPTIONAL_ADAPTERS.md) 提供。不需要这些适配时只安装主 UI；兼容包与主 UI 分别升级。ModHub 1.3.0 外观包同时发布。
 

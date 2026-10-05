@@ -1,10 +1,12 @@
-# UI Runtime：2.2.0 接入契约（API v1）
+# UI Runtime：2.2.1 接入说明（API v1）
 
-本轮 UI 版本为 **2.2.0 / Crazy Diamond**，公共 API 与诊断仍使用版本 1。使用本轮更新的主包，先检查 `window.DoLGameUI?.ui?.apiVersion === 1`；较早的 2.1.0 包没有此接口。缺接口时保留原 UI，不尝试调用内部 Vue 或页面对象。
+当前 UI 版本为 **2.2.1 / Crazy Diamond**，公共 API 与诊断仍使用版本 1。接入前先确认 `window.DoLGameUI?.ui?.apiVersion === 1`，并检查需要的方法是否存在；较早的 2.1.0 包没有此接口。如果不支持，就继续使用 Mod 自己的界面。
 
 ## 已实现的最小契约
 
-2.2（Crazy Diamond）提供共享 TS 契约，来源为 `src/public/ui.ts`。运行 `npm run types` 生成 `dist/types/ui.d.ts`；打包会重新生成并作为 `types/ui.d.ts` 附带，供作者作类型检查。将声明复制到项目后使用 `import type {UiApi, StyleAdapter} from './ui'`，不要将类型文件当成可执行 SDK。实际接口仍来自 `window.DoLGameUI.ui`，保留原有版本/能力检测和运行时输入校验。API 1、诊断 Schema 1 和已发布 2.1.0 行为保持。
+2.2（Crazy Diamond）的 TypeScript 类型定义位于 `src/public/ui.ts`。运行 `npm run types` 可生成 `dist/types/ui.d.ts`，主包也附带 `types/ui.d.ts`。复制到项目后，可用 `import type {UiApi, StyleAdapter} from './ui'` 辅助编写代码。
+
+类型文件帮助编辑器检查代码，不会安装或启动 UI 功能。实际调用时，仍要确认当前 Soft & Wet 支持所需接口。API v1、诊断格式 v1 与已有调用方式保持兼容。
 
 | 接口 | 返回 / 范围 |
 | --- | --- |

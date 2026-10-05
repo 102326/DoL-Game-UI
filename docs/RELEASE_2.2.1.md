@@ -40,9 +40,9 @@ ReOverfits 兼容包在 UI 主包和 ReOverfits 之后加载。它不能搭配 U
 <details>
 <summary>开发者资料</summary>
 
-衣柜槽位扩展 API v1 只注册目标版本与槽位名称。原库存、服装定义和穿戴对象存在时才显示新增分类；撤销注册后刷新界面。它不接收业务状态或自定义操作回调。
+Mod 作者可使用衣柜槽位扩展 API，为游戏中已有的服装槽位添加分类名称。库存和穿脱操作仍由原游戏及对应 Mod 处理。
 
-接入前请检查 API 版本与所需方法。当前支持复用原衣柜数据和操作链的槽位，不承诺任意服装 Mod 自动兼容。
+调用前确认当前版本支持需要的接口；具体用法见下方文档。普通玩家无需配置 API。
 
 - [API 使用文档](https://github.com/102326/DoL-Game-UI/blob/main/docs/UI_RUNTIME.md)
 - [衣柜 API 类型](https://github.com/102326/DoL-Game-UI/blob/main/src/public/wardrobe.ts)
