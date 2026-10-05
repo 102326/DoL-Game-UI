@@ -36,6 +36,8 @@ with zipfile.ZipFile(package_path) as archive:
     assert all(name.endswith('.js') for name in boot['scriptFileList'] + boot['scriptFileList_inject_early']), 'loader must execute only JS'
     assert 'types/ui.d.ts' in boot['additionFile'], 'public type declaration missing'
     assert archive.read('types/ui.d.ts') == (root / 'dist/types/ui.d.ts').read_bytes(), 'public declaration differs from generated contract'
+    assert 'types/wardrobe.d.ts' in boot['additionFile'], 'wardrobe extension declaration missing'
+    assert archive.read('types/wardrobe.d.ts') == (root / 'dist/types/wardrobe.d.ts').read_bytes(), 'wardrobe declaration differs from generated contract'
     runtime = archive.read('shop-page-experiment.js').decode('utf-8')
     assert 'api.enabled = false' in runtime, 'runtime default-off switch missing'
     for parameter in integrated:

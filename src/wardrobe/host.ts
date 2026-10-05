@@ -41,7 +41,7 @@ export type WardrobeDataHost=NativeWidgetHost & NativeEventsHost & {
  getCustomColourName?:(colour:unknown)=>unknown;getTrueWarmth?:(item:Clothing)=>number;
  normaliseFileName?:(name:string)=>string;isConnectedToHood?:(slot:string)=>boolean;
  clothingData?:(slot:string,item:Clothing,field:string)=>unknown;
- modUtils?:{getImage?:(src:string)=>string|undefined|Promise<string|undefined>};
+ modUtils?:{getImage?:(src:string)=>string|undefined|Promise<string|undefined>;getMod?:(name:string)=>{version?:unknown}|null|undefined};
  Renderer?:PreviewRenderer;Skin?:{color:unknown;tanningLayers:unknown};
  Transformations?:{defaults?:{demon?:{colour?:unknown}}};
  C?:{tiredness?:{max?:number}};ZIndices?:unknown;

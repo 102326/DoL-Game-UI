@@ -9,7 +9,7 @@ declare const window: Window & {
  "use strict";
  if (window.ModHubSoftWet) return;
  const spec: StyleAdapter = {
-  id: "ModHubSoftWet", version: "0.2.2", target: {name: "ModHub", versions: ["1.3.0"]},
+  id: "ModHubSoftWet", version: "0.2.3", target: {name: "ModHub", versions: ["1.3.0"]},
   scope: ['#customOverlay[data-overlay="modloader"]'],
   fingerprint: {
    id: "modhub-overlay-1.3.0",

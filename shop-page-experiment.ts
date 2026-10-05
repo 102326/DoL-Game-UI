@@ -4,7 +4,7 @@ interface ShopPageExperiment {enabled?:boolean;version?:string;setEnabled?:(valu
 
   const api = global.DoLShopPageExperiment || {};
   if (typeof api.enabled !== 'boolean') api.enabled = false;
-  api.version = '2.2.0';
+  api.version = '2.2.1';
   api.setEnabled = function setEnabled(value:unknown) {
     api.enabled = value === true;
     return api.enabled;

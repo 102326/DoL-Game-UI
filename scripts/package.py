@@ -12,8 +12,10 @@ subprocess.run(['node',str(root/'scripts/build-early.cjs')],check=True,cwd=root)
 subprocess.run(['node',str(root/'node_modules/typescript/bin/tsc'),'-p',str(root/'tsconfig.public.json')],check=True,cwd=root)
 assets['startup-cache-experiment.js']=(root/'dist/startup-cache-experiment.js').read_bytes()
 assets['shop-page-experiment.js']=(root/'dist/shop-page-experiment.js').read_bytes()
-assets['types/ui.d.ts']=(root/'dist/types/ui.d.ts').read_bytes()
-boot['additionFile'].append('types/ui.d.ts')
+for filename in ['ui.d.ts','wardrobe.d.ts']:
+ declaration=root/'dist/types'/filename
+ name='types/'+declaration.name
+ assets[name]=declaration.read_bytes();boot['additionFile'].append(name)
 shop_patches=[
  ('服装店按需分页：锁定本次列表渲染开关','\t<div id="shop-list-pages" class="shop-list-pages">','twee/patch-list-mode.twee'),
  ('服装店按需分页：关闭时保留原版后台生成','\t\t<!-- Generate other pages in background after a delay, so that shop can be displayed sooner -->\n\t\t<!-- Having all pages loaded allows for very fast shop catalogue navigation -->\n\t\t<!-- Generate via <<repeat>> one by one to not cause a lag spike -->\n\t\t<<timed 0.2s>>\n\t\t\t<<set _ppre = _startingShopPage - 1>>\n\t\t\t<<repeat 0.1s>>\n\t\t\t\t<<if document.getElementById("shop-list-pages") eq null or _ppre lt 0>>\n\t\t\t\t\t<<stop>>\n\t\t\t\t<</if>>\n\t\t\t\t<!-- Prepend pages before the current page -->\n\t\t\t\t<<prepend \'#shop-list-pages\'>>\n\t\t\t\t\t<<generateshoppage _ppre>>\n\t\t\t\t<</prepend>>\n\t\t\t\t<<set _ppre-->>\n\t\t\t<</repeat>>\n\t\t\t<!-- Append pages after the current page -->\n\t\t\t<<set _papp = _startingShopPage + 1>>\n\t\t\t<<repeat 0.1s>>\n\t\t\t\t<<if document.getElementById("shop-list-pages") eq null or _papp gte _maxPage>>\n\t\t\t\t\t<<stop>>\n\t\t\t\t<</if>>\n\t\t\t\t<<append \'#shop-list-pages\'>>\n\t\t\t\t\t<<generateshoppage _papp>>\n\t\t\t\t<</append>>\n\t\t\t\t<<set _papp++>>\n\t\t\t<</repeat>>\n\t\t<</timed>>','twee/patch-background.twee'),
@@ -26,7 +28,7 @@ assets['LICENSE']=(root/'LICENSE').read_bytes()
 boot['additionFile'].append('LICENSE')
 for name in ['UPSTREAM-RENDERER-LICENSE','UPSTREAM-RENDERER-NOTICE.md']:
  assets[name]=(root/name).read_bytes();boot['additionFile'].append(name)
-for name in ['CHANGELOG.md','docs/UI_SETTINGS.md','docs/RELEASE_2.2.0.md']:
+for name in ['CHANGELOG.md','docs/UI_SETTINGS.md',f'docs/RELEASE_{version}.md']:
  assets[name]=(root/name).read_bytes();boot['additionFile'].append(name)
 boot['dependenceInfo'].append({'modName':'GameVersion','version':'=0.5.11.9 || =0.5.12.13'})
 assets['boot.json']=json.dumps(boot,ensure_ascii=False,indent=2).encode();assets['README.md']=(root/'README.md').read_bytes()

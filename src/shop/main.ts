@@ -36,7 +36,7 @@ export function startShop(root:Runtime){
   // Match native category icons, not translated labels or unrelated Mod links.
   const pairs:[HTMLImageElement,HTMLAnchorElement][]=[];
   for(const icon of shop.querySelectorAll<HTMLImageElement>(':scope > img.icon')){
-   if(!/\/ui\/clothes\/categories\/[^/]+\.png(?:\?.*)?$/.test(icon.getAttribute('src')??''))continue;
+   if(!/\/ui\/clothes\/categories\/[^/]+\.png(?:\?.*)?$/.test(icon.getAttribute('ml-src')??icon.getAttribute('src')??''))continue;
    let next:ChildNode|null=icon.nextSibling;
    while(next?.nodeType===Node.TEXT_NODE&&!next.textContent?.trim())next=next.nextSibling;
    if(next instanceof HTMLAnchorElement&&next.matches('.link-internal'))pairs.push([icon,next]);

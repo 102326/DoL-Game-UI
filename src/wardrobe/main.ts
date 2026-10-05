@@ -3,7 +3,7 @@ import {createNativeWardrobe} from './native';
 import {createWardrobePerformance} from './performance';
 import {createApp,reactive,type App} from 'vue';
 import WardrobePanel from './WardrobePanel.vue';
-import {LABELS,snapshot,entries,itemName,itemView,slotCapacity,validate,type Snapshot,type Entry,descriptor} from './data';
+import {snapshot,entries,itemName,itemView,slotCapacity,validate,type Snapshot,type Entry,descriptor} from './data';
 import {renderOutfit} from './render';
 import {mirrorSidebar} from './sidebar-preview';
 import {createWardrobeExtras} from './extras';
@@ -13,7 +13,10 @@ import type {WardrobeModel,Operation} from './types';
 import {repairMinutes,pieces,canRepair,destinations,targetInventory,transferProblem} from './operations';
 import './style.css';
 import {isMasterEnabled} from '../runtime/master';
+import {createSlotMappings} from './slot-mappings';
+import type {WardrobeSlotMapping} from '../public/wardrobe';
 export function startWardrobe(root:WardrobeDataHost){
+ const slotMappings=createSlotMappings(name=>root.modUtils?.getMod?.(name)?.version);
  const timing=createWardrobePerformance(),native=createNativeWardrobe(root,timing),extras=createWardrobeExtras(root);
  const KEY='DoLGameUI.wardrobe.v1';let enabled=true,nativeHiddenList=false,disposed=false,queued=false,generation=0;
  try{enabled=localStorage.getItem(KEY)!=='false'}catch{}
@@ -68,7 +71,7 @@ export function startWardrobe(root:WardrobeDataHost){
  function refreshModel(s:Session,force=false,message=s.state.message){
   if(s.view?.actions)outfits.sync(s.view!.actions);
   const fresh=snapshot(root);if(!fresh){release();return}s.snapshot=fresh;
-  const labels={...LABELS,...(fresh.variables.debug?{over_head:'外层头饰',over_upper:'外套',over_lower:'外层下装'}:{})};
+  const labels=slotMappings.labels(fresh);
   s.state.slots=Object.entries(labels).filter(([k])=>Array.isArray((fresh.inventory as ClothingSlots)[k])).map(([key,label])=>({key,label,count:(fresh.inventory as ClothingSlots)[key].length,capacity:slotCapacity(fresh)}));
   if(!s.state.slots.some(t=>t.key===s.state.slot))s.state.slot=s.state.slots[0]?.key||'upper';
   s.state.owned=(fresh.inventory as ClothingSlots)[s.state.slot]?.length??0;s.state.capacity=slotCapacity(fresh);
@@ -176,7 +179,7 @@ export function startWardrobe(root:WardrobeDataHost){
   const original=document.createElement('div');original.className='dgw-preserved';
   const host=document.createElement('div');host.className='dgw-root';
   const toggle=document.createElement('button');toggle.type='button';toggle.className='dgw-fallback';toggle.textContent='启用穿搭衣柜';toggle.hidden=true;toggle.onclick=()=>setEnabled(true);
-  const state=reactive<WardrobeModel>({pendingMode:'delete',canRepair:false,destinations:[],pendingMinutes:null,wornItem:null,owned:0,capacity:null,busy:false,pending:[],progress:'',slots:[],slot:LABELS[data.variables.lastWardrobeSlot!]?data.variables.lastWardrobeSlot!:'upper',items:[],selected:null,loading:false,message:'',previewStatus:'',canWear:false,wornName:'',currentWarmth:null});
+  const state=reactive<WardrobeModel>({pendingMode:'delete',canRepair:false,destinations:[],pendingMinutes:null,wornItem:null,owned:0,capacity:null,busy:false,pending:[],progress:'',slots:[],slot:Object.hasOwn(slotMappings.labels(data),data.variables.lastWardrobeSlot!)?data.variables.lastWardrobeSlot!:'upper',items:[],selected:null,loading:false,message:'',previewStatus:'',canWear:false,wornName:'',currentWarmth:null});
   const s:Session={passage,host,original,anchor,toggle,state,snapshot:data,view:null};active=s;
   // Keep the native close/return controls visible and bound to their original events.
   // SugarCube header/footer remain owned by the game and mods (e.g. floating pets).
@@ -220,5 +223,10 @@ export function startWardrobe(root:WardrobeDataHost){
  });
  function start(){if(disposed)return;observer.observe(document.getElementById('passages')||document.body,{childList:true,subtree:true});root.jQuery?.(document).on(':passageend.dgw :storyready.dgw',schedule);schedule()}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
- return {performance:timing,getEnabled:()=>enabled&&!failed,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()||failed){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
+ function registerSlotMapping(spec:WardrobeSlotMapping){
+  const handle=slotMappings.register(spec);
+  const changed=()=>{if(disposed)return;if(active?.app&&!active.state.busy){cancel(active);refresh(active)}else schedule()};
+  changed();return Object.freeze({destroy(){handle.destroy();changed()}});
+ }
+ return {registerSlotMapping,performance:timing,getEnabled:()=>enabled&&!failed,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()||failed){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){slotMappings.destroy();timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
 }

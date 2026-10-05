@@ -1,0 +1,6 @@
+html[data-dol-midnight] #clothingShop-div [data-reoverfits-category] {width:auto;min-width:70px}
+html[data-dol-midnight] #clothingShop-div [data-reoverfits-category] img,
+html[data-dol-midnight] #clothingShop-div img[data-reoverfits-entry-icon] {display:none}
+html[data-dol-midnight] #clothingShop-div [data-reoverfits-category] a {display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px;font-size:14px}
+html[data-dol-midnight] #clothingShop-div [data-reoverfits-category] a::after {content:attr(aria-label)}
+html[data-dol-midnight] #clothingShop-div a[data-reoverfits-entry] {display:inline-block;min-height:44px;padding:8px 12px;border:1px solid var(--dgu-border);border-radius:10px}

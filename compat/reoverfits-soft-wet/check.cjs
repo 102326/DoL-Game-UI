@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict'),path=require('node:path'),{chromium}=require('playwright');
+(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});try{
+ const p=await browser.newPage();await p.setContent('<html data-dol-midnight><body><div id="passages"><div class="passage"><div class="dgw-native" hidden><button id="wear">Wear</button></div><div class="dgw-list">Vue cards</div><div id="clothingShop-div"><div class="category-tab"><img ml-src="img/ui/clothes/categories/overupper.png"><a class="link-internal"></a></div></div></div></div></body></html>');
+ await p.evaluate(()=>{window.registration=null;window.revokes=0;window.clicks=0;window.nativeNode=document.querySelector('#wear');nativeNode.onclick=()=>clicks++;window.modUtils={getMod:()=>({version:'4.1.1'})};window.DoLGameUI={ui:{getCapabilities:()=>({enabled:document.documentElement.hasAttribute('data-dol-midnight')})},wardrobe:{apiVersion:1,registerSlotMapping(spec){registration=spec;return{destroy(){revokes++}}}}}});
+ await p.addScriptTag({path:path.join(__dirname,'dist/scripts/reoverfits-soft-wet.js')});
+ assert.deepEqual(await p.evaluate(()=>registration.slots),{over_head:'外层头饰',over_upper:'外套上装',over_lower:'外套下装'});
+ assert.equal(await p.locator('.dgw-native').getAttribute('hidden'),'');assert.equal(await p.locator('.dgw-list').isVisible(),true);
+ assert.equal(await p.locator('.category-tab a').getAttribute('aria-label'),'外套上装');assert.equal(await p.evaluate(()=>document.querySelector('#wear')===nativeNode),true);
+ await p.evaluate(()=>document.documentElement.removeAttribute('data-dol-midnight'));await p.waitForFunction(()=>!document.querySelector('.category-tab a').hasAttribute('aria-label'));assert.equal(await p.evaluate(()=>revokes),0);
+ await p.evaluate(()=>{document.documentElement.setAttribute('data-dol-midnight','');modUtils.getMod=()=>({version:'4.2.0'});document.querySelector('.dgw-list').append(document.createElement('span'))});await p.waitForFunction(()=>ReOverfitsSoftWet.getDiagnostics().reason==='target-version-mismatch');assert.equal(await p.evaluate(()=>revokes),1);
+ await p.evaluate(()=>{modUtils.getMod=()=>({version:'4.1.1'});document.querySelector('.dgw-list').append(document.createElement('span'))});await p.waitForFunction(()=>ReOverfitsSoftWet.getDiagnostics().reason==='model-registered');
+ await p.evaluate(()=>{window.adapter=ReOverfitsSoftWet;adapter.destroy();adapter.destroy();nativeNode.click()});assert.equal(await p.evaluate(()=>revokes),2);assert.equal(await p.evaluate(()=>clicks),1);assert.equal(await p.locator('.category-tab a').getAttribute('aria-label'),null);assert.equal(await p.locator('.dgw-native').getAttribute('hidden'),'');
+ console.log('PASS model registration/revoke, Vue retained, native identity/event, theme/version gates and cleanup');
+}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

@@ -10,7 +10,7 @@ declare const window: Window & {
  "use strict";
  if (window.MapleBirchSoftWet) return;
  const spec: StyleAdapter = {
-  id: "MapleBirchSoftWet", version: "0.2.2", target: {name: "maplebirch", versions: ["5.2.3"]},
+  id: "MapleBirchSoftWet", version: "0.2.3", target: {name: "maplebirch", versions: ["5.2.3"]},
   scope: ['#customOverlay[data-overlay="saves"]'],
   attributes: ['data-cloud-save-field'],
   fingerprint: {

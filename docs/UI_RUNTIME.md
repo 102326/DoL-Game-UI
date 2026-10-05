@@ -120,6 +120,30 @@ Page 使用原生 passage 名称与 `#passages` 根；Surface 只列 Runtime 自
 
 导出只含上述结构信息，不读取 `State.variables`、角色数据、存档、用户输入、DOM 正文、凭据、URL 或本机路径。Surface 不导出标题和调用方内容；异常只使用固定原因码。Adapter 描述也不得把业务值或秘密放进名称、版本、指纹或 selector。没有任意 JS Console、任意 selector 执行器、删除 DOM 或修改业务的操作；临时 Adapter 开关和 Debug Overlay 未在首版实现。
 
-MapleBirchSoftWet **0.2.2** 与 ModHubSoftWet **0.2.2** 使用此契约，目标仍分别为 MapleBirch **5.2.3** 与 ModHub **1.3.0**。它们检查版本、查询 / 注册方法和 Style Adapter 能力；缺失时保留原 UI，不要求 Surface 能力。可查询各包的 `getDiagnostics()`。它们只改样式，不改云端请求、安装、排序、删除、安全模式或市场操作；Core 不内置这两个 Mod 的指纹，也不会用 openModal / openDrawer 替换目标原窗口。
+MapleBirchSoftWet **0.2.3** 与 ModHubSoftWet **0.2.3** 使用此契约，目标仍分别为 MapleBirch **5.2.3** 与 ModHub **1.3.0**。它们检查版本、查询 / 注册方法和 Style Adapter 能力；缺失时保留原 UI，不要求 Surface 能力。可查询各包的 `getDiagnostics()`。它们只改样式，不改云端请求、安装、排序、删除、安全模式或市场操作；Core 不内置这两个 Mod 的指纹，也不会用 openModal / openDrawer 替换目标原窗口。
 
-扩展入口注册、Proxy 和 Deep Adapter 执行器仍未实现。继续按真实复用需求逐步增加，不为长期规范提前建完整 SDK。
+通用扩展入口、Proxy 和 Deep Adapter 执行器仍未实现。
+
+## 衣柜槽位扩展 API v1（UI 2.2.1 起）
+
+`DoLGameUI.wardrobe` 提供 `apiVersion: 1` 与 `registerSlotMapping({id, target: {name, versions}, slots: {over_upper: '外套上装'}})`，返回可重复调用 `destroy()` 的句柄。类型见 `types/wardrobe.d.ts`。目标版本精确匹配且原库存、定义与穿戴对象存在时才加入现有 Vue 分类。不覆盖原生分类，不接受状态对象、事件执行器或任意回调，不存储游戏数据。它只扩展语义模型；所有操作继续使用原衣柜的业务链。注销会刷新当前分类，Core 销毁会撤销全部映射。
+
+
+```ts
+const wardrobe = window.DoLGameUI?.wardrobe;
+if (wardrobe?.apiVersion === 1 && typeof wardrobe.registerSlotMapping === 'function') {
+  const handle = wardrobe.registerSlotMapping({
+    id: 'ReOverfitsSoftWet',
+    target: {name: 'ReOverfits', versions: ['4.1.1']},
+    slots: {over_head: '外层头饰', over_upper: '外套上装', over_lower: '外套下装'},
+  });
+  // Adapter 退出时撤销自己注册的映射。
+  handle.destroy();
+}
+```
+
+入口独立于 `DoLGameUI.ui`，不改变 UI API v1 或诊断 Schema v1。公开类型源为 `src/public/wardrobe.ts`，主包附带 `types/wardrobe.d.ts`。重复 id、重叠槽位、原核心分类覆盖及非法字段会抛出错误；调用方应捕获注册失败并保留原界面。
+
+注册/撤销只改变 UI 分类并取消尚未执行的整理确认计划，进行中的原业务操作按已有流程结束。Core 销毁后旧句柄失效，Adapter 应向新的 API 实例重新注册。
+
+只支持可复用原衣柜数据与操作链的原生已有槽位；其它服装 Mod 可选择接入，不自动接管任意新业务结构，也不提供自定义业务回调、状态镜像或通用 Proxy / Deep Adapter 执行器。

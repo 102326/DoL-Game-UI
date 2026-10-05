@@ -9,7 +9,7 @@ declare const window: Window & {
  "use strict";
  if (window.DolOptimizationSoftWet) return;
  const spec: StyleAdapter = {
-  id: "DolOptimizationSoftWet", version: "0.1.3",
+  id: "DolOptimizationSoftWet", version: "0.1.4",
   target: {name: "原版优化", versions: ["1.1.1.2"]},
   scope: ['#customOverlay'],
   fingerprint: {
