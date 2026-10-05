@@ -8,7 +8,7 @@ const packageResult = spawnSync('python', ['scripts/package.py'], { cwd: root, e
 if (packageResult.error) throw packageResult.error;
 if (packageResult.status !== 0) throw new Error(packageResult.stderr || 'integrated package generation failed');
 
-const packagePath = path.join(root, 'dist', `DoLGameUI-${JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version}.mod.zip`);
+const packagePath = path.join(root, 'dist', `DoL-SoftWet-GameUI-${JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version}.mod.zip`);
 const inspector = String.raw`import json, pathlib, sys, zipfile
 root = pathlib.Path(sys.argv[1])
 package_path = pathlib.Path(sys.argv[2])
@@ -20,6 +20,8 @@ expected_files = [
 ]
 with zipfile.ZipFile(package_path) as archive:
     boot = json.loads(archive.read('boot.json'))
+    assert boot['name'] == 'DoLGameUI', 'stable loader identity must not change'
+    assert boot['nickName'] == 'DoL Soft & Wet Game UI', 'display name missing'
     integrated = next(item for item in boot['addonPlugin'] if item['modName'] == 'TweeReplacer')['params']
     assert boot['scriptFileList_inject_early'] == ['startup-cache-experiment.js', 'shop-page-experiment.js'], 'early script order/names changed'
     assert 'game-ui.js' in boot['scriptFileList'], 'game UI runtime missing'

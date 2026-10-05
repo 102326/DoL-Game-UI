@@ -1,13 +1,13 @@
 > **Soft & Wet 2.2.0 · Crazy Diamond**：兼容 **DoL 0.5.11.9 / 0.5.12.13**。本版将自有运行时与官方兼容包统一到 TypeScript，附带公开 API 类型声明；沿用现有界面和原版业务。见 [本次更新](docs/RELEASE_2.2.0.md) 和 [兼容包安装说明](docs/OPTIONAL_ADAPTERS.md)。
 
-# DoL Game UI
+# DoL Soft & Wet Game UI
 
 [![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases)
 ![Game](https://img.shields.io/badge/DoL-0.5.11.9%20%2F%200.5.12.13-blue)
 ![Vue](https://img.shields.io/badge/Vue-3-42b883)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6)
 
-为 **Degrees of Lewdity** 提供统一的深色界面，兼顾手机、平板和 PC。以圆角控件、清晰分组和更方便的操作布局，改善战斗、衣柜、服装店及常用面板的使用体验。
+**Soft & Wet UI** 为 **Degrees of Lewdity** 提供统一的深色界面，兼顾手机、平板和 PC。以圆角控件、清晰分组和更方便的操作布局，改善战斗、衣柜、服装店及常用面板的使用体验。
 
 **[下载安装包](https://github.com/102326/DoL-Game-UI/releases/latest) · [更新记录](CHANGELOG.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)**
 
@@ -50,6 +50,8 @@ Mod 作者可查看 [UI Runtime API 文档](docs/UI_RUNTIME.md)、[接入示例]
 1. 使用 **DoL 0.5.11.9 或 0.5.12.13**、**SugarCube 2 ModLoader 2.100.0 或以上**及其 **TweeReplacer 1.0.0 或以上**。
 2. 从 Releases 下载最新版模组 ZIP，在模组加载器中导入，不要解压。
 3. 建议放在内容模组之后加载，重启游戏，从侧栏 **界面设置** 调整功能。
+
+对外展示名为 **DoL Soft & Wet Game UI**，短称 **Soft & Wet UI**（或 **Soft & Wet**）。内部加载器标识与 API 保留 `DoLGameUI`，用于旧包升级及兼容包依赖；这是同一个 Mod。
 
 升级时替换已有 `DoLGameUI` 包，避免同时启用多个版本。曾安装独立 `DoLShopPageExperiment` 的用户须先禁用该包，再启用新版 UI 并重启；两者会修改同一段服装店原文，不能同时加载。曾安装独立 `DoLMidnightTheme` 或 `DoLCombatUI` 的用户应先禁用这两个旧包，避免重复主题与控件。其他全局界面模组也可能覆盖相同样式。
 
@@ -96,7 +98,7 @@ npm test
 npm run package
 ```
 
-打包结果位于 `dist/DoLGameUI-<版本>.mod.zip`。普通构建和打包不需要游戏本体；可通过环境变量 `DOL_RELEASE_DIR` 额外指定发布包输出目录。
+打包结果位于 `dist/DoL-SoftWet-GameUI-<版本>.mod.zip`。普通构建和打包不需要游戏本体；可通过环境变量 `DOL_RELEASE_DIR` 额外指定发布包输出目录。
 
 技术栈：Vue 3、TypeScript、Vite、Tailwind CSS。游戏集成测试需自行准备对应游戏文件，不随仓库分发。具体准备与命令见 [开发与测试](docs/DEVELOPMENT.md)。
 

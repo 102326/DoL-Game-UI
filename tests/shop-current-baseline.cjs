@@ -26,7 +26,7 @@ function validate({rounds,errors,transitions,environment}){
 // Read the released patch contract without rebuilding or overwriting the release ZIP.
 const extracted=spawnSync('python',['-X','utf8','-c',
  'import json,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); b=json.loads(z.read("boot.json")); print(json.dumps(b["addonPlugin"][0]["params"]))',
- path.join(root,'dist',`DoLGameUI-${JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version}.mod.zip`)],{encoding:'utf8'});
+ path.join(root,'dist',`DoL-SoftWet-GameUI-${JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version}.mod.zip`)],{encoding:'utf8'});
 assert.equal(extracted.status,0,extracted.stderr);
 const patches=JSON.parse(extracted.stdout).map(p=>({...p,replacement:fs.readFileSync(path.join(root,p.replaceFile),'utf8')}));
 const passage=spawnSync('python',['-X','utf8','-c',

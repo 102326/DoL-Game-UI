@@ -1,6 +1,8 @@
-# Soft & Wet 2.2.0 · Crazy Diamond
+# DoL Soft & Wet Game UI 2.2.0 · Crazy Diamond
 
-这一版主要整理 Soft & Wet 自有代码、官方兼容包和公开 API 类型。界面沿用 2.1 的布局与材质，不改变游戏规则、存档格式或第三方 Mod 的业务。
+这一版主要整理 Soft & Wet UI 自有代码、官方兼容包和公开 API 类型。界面沿用 2.1 的布局与材质，不改变游戏规则、存档格式或第三方 Mod 的业务。
+
+正式展示名统一为 **DoL Soft & Wet Game UI**，短称 **Soft & Wet UI** 或 **Soft & Wet**。主包文件改用新名称，内部标识仍为 `DoLGameUI`，旧包升级和兼容包依赖不变；不是另一款 Mod。
 
 ## 主要变化
 
@@ -16,7 +18,7 @@
 
 | 文件 | 用途 |
 | --- | --- |
-| `DoLGameUI-2.2.0.mod.zip` | UI 主包，替换旧版同名 UI。 |
+| `DoL-SoftWet-GameUI-2.2.0.mod.zip` | UI 主包，替换旧版同名 UI。 |
 | `ModHubSoftWet-ModHub-1.3.0-v0.2.2.mod.zip` | ModHub 1.3.0 外观兼容。 |
 | `MapleBirchSoftWet-maplebirch-5.2.3-v0.2.2.mod.zip` | MapleBirch 5.2.3 云存档外观兼容。 |
 | `DolOptimizationSoftWet-OriginalOptimization-1.1.1.2-v0.1.3.mod.zip` | 原版优化 1.1.1.2 的存档界面兼容，保留原节点及扩展描述。 |

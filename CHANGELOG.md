@@ -1,5 +1,7 @@
 # 2.2.0 · Crazy Diamond
 
+- 正式展示名统一为 DoL Soft & Wet Game UI，短称 Soft & Wet UI；主包文件名称同步，内部 DoLGameUI 标识保留以兼容旧包升级与依赖。
+
 - 自有运行时、主题、页面 bridge、官方兼容包、示例和提前注入入口统一使用 TypeScript。
 - 公共契约来源集中到 `src/public/ui.ts`；主包附带 `types/ui.d.ts`，API v1 / 诊断 Schema v1 保持。
 - 保留原布局、DOM 所有权、事件、游戏状态源、存档格式和第三方业务；加载器仍执行 JS。
