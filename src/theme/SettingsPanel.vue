@@ -3,9 +3,10 @@ import type {PanelKind} from '../panels/main';
 import GameButton from '../ui/GameButton.vue';
 import SettingsToggle from '../ui/SettingsToggle.vue';
 import type {SettingsState,PreferenceKey} from './preferences';
+import type {UiApi} from '../public/ui';
 const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
 function wardrobeChange(event:Event){const input=event.target as HTMLSelectElement;props.onWardrobe(input.value==='new');input.value=props.state.wardrobe?'new':'original'}
-function inspectRuntime(){try{(window as Window & Record<string,any>).DoLGameUI?.ui?.openInspector?.()}catch{/* UI diagnostics must not affect settings. */}}
+function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'openInspector'>}}).DoLGameUI?.ui?.openInspector?.()}catch{/* UI diagnostics must not affect settings. */}}
 </script>
 <template>
  <header class="dmt-settings-header cu:flex cu:items-center cu:justify-between cu:gap-4"><div><p class="dmt-eyebrow">SOFT &amp; WET</p><h2 id="dol-midnight-title">界面设置</h2></div><GameButton class="dmt-close" @click="onClose">关闭</GameButton></header>

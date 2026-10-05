@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-const source = fs.readFileSync(path.join(__dirname, '..', 'startup-cache-experiment.js'), 'utf8');
+const source = require('esbuild').buildSync({entryPoints:[path.join(__dirname,'../startup-cache-experiment.ts')],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text;
 
 function boot(preferences) {
   const calls = [];

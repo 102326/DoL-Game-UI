@@ -1,8 +1,10 @@
-# UI Runtime：2.1.0 接入契约
+# UI Runtime：2.2.0 接入契约（API v1）
 
-本轮保持 UI 版本 **2.1.0**。使用本轮更新的主包，先检查 `window.DoLGameUI?.ui?.apiVersion === 1`；较早的 2.1.0 包没有此接口。缺接口时保留原 UI，不尝试调用内部 Vue 或页面对象。
+本轮 UI 版本为 **2.2.0 / Crazy Diamond**，公共 API 与诊断仍使用版本 1。使用本轮更新的主包，先检查 `window.DoLGameUI?.ui?.apiVersion === 1`；较早的 2.1.0 包没有此接口。缺接口时保留原 UI，不尝试调用内部 Vue 或页面对象。
 
 ## 已实现的最小契约
+
+2.2（Crazy Diamond）提供共享 TS 契约，来源为 `src/public/ui.ts`。运行 `npm run types` 生成 `dist/types/ui.d.ts`；打包会重新生成并作为 `types/ui.d.ts` 附带，供作者作类型检查。将声明复制到项目后使用 `import type {UiApi, StyleAdapter} from './ui'`，不要将类型文件当成可执行 SDK。实际接口仍来自 `window.DoLGameUI.ui`，保留原有版本/能力检测和运行时输入校验。API 1、诊断 Schema 1 和已发布 2.1.0 行为保持。
 
 | 接口 | 返回 / 范围 |
 | --- | --- |
@@ -118,6 +120,6 @@ Page 使用原生 passage 名称与 `#passages` 根；Surface 只列 Runtime 自
 
 导出只含上述结构信息，不读取 `State.variables`、角色数据、存档、用户输入、DOM 正文、凭据、URL 或本机路径。Surface 不导出标题和调用方内容；异常只使用固定原因码。Adapter 描述也不得把业务值或秘密放进名称、版本、指纹或 selector。没有任意 JS Console、任意 selector 执行器、删除 DOM 或修改业务的操作；临时 Adapter 开关和 Debug Overlay 未在首版实现。
 
-MapleBirchSoftWet **0.2.1** 与 ModHubSoftWet **0.2.1** 使用此契约，目标仍分别为 MapleBirch **5.2.3** 与 ModHub **1.3.0**。它们检查版本、查询 / 注册方法和 Style Adapter 能力；缺失时保留原 UI，不要求 Surface 能力。可查询各包的 `getDiagnostics()`。它们只改样式，不改云端请求、安装、排序、删除、安全模式或市场操作；Core 不内置这两个 Mod 的指纹，也不会用 openModal / openDrawer 替换目标原窗口。
+MapleBirchSoftWet **0.2.2** 与 ModHubSoftWet **0.2.2** 使用此契约，目标仍分别为 MapleBirch **5.2.3** 与 ModHub **1.3.0**。它们检查版本、查询 / 注册方法和 Style Adapter 能力；缺失时保留原 UI，不要求 Surface 能力。可查询各包的 `getDiagnostics()`。它们只改样式，不改云端请求、安装、排序、删除、安全模式或市场操作；Core 不内置这两个 Mod 的指纹，也不会用 openModal / openDrawer 替换目标原窗口。
 
 扩展入口注册、Proxy 和 Deep Adapter 执行器仍未实现。继续按真实复用需求逐步增加，不为长期规范提前建完整 SDK。

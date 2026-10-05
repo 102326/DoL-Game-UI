@@ -3,6 +3,8 @@ const {chromium}=require('playwright'),{buildSync}=require('esbuild');
 const root=path.resolve(__dirname,'..');
 const engine=buildSync({entryPoints:[path.join(root,'src/runtime/ui.ts')],bundle:true,write:false,format:'iife',globalName:'UiRuntimeModule'}).outputFiles[0].text;
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
+const compile=name=>buildSync({entryPoints:[path.join(root,name)],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text;
+const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
 (async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});try{
  const errors=[];
  async function page(html){const p=await browser.newPage({viewport:{width:1280,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.route('http://ui-runtime.test/',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://ui-runtime.test/');return p}
@@ -113,15 +115,15 @@ const read=name=>fs.readFileSync(path.join(root,name),'utf8');
  const hub='<div id="customOverlay" data-overlay="modloader"><div id="customOverlayTitle"><div id="overlayTabs" class="modhub-modloader-tabs"><button>管理</button></div></div><div id="customOverlayContent"><div id="modHubModManageContainer" class="modhub-container"><div class="modhub-sticky-toolbar"><input id="setting" type="checkbox"></div><ul class="modhub-list"><li class="modhub-item"><button id="native-button">操作</button><span hidden>unknown</span></li></ul></div></div></div>';
  p=await page('<html><body><div id="passages"></div>'+hub+'</body></html>');
  await p.evaluate(()=>{window.versions={ModHub:'1.3.0',maplebirch:'5.2.3'};window.modUtils={getMod:name=>versions[name]?{version:versions[name]}:null};window.V={unchanged:'game'};window.beforeV=JSON.stringify(V);window.calls=0;window.nativeButton=document.querySelector('#native-button');nativeButton.onclick=()=>calls++;window.nativeSetting=document.querySelector('#setting');window.nativeParent=nativeButton.parentNode;window.nativeNext=nativeButton.nextSibling;window.changeCalls=0;nativeSetting.onchange=()=>changeCalls++});
- for(const mod of ['modhub','maplebirch']){await p.addStyleTag({content:read(`compat/${mod}-soft-wet/${mod}-soft-wet.css`)});await p.addScriptTag({content:read(`compat/${mod}-soft-wet/${mod}-soft-wet.js`)})}
+ for(const mod of ['modhub','maplebirch']){await p.addStyleTag({content:read(`compat/${mod}-soft-wet/${mod}-soft-wet.css`)});await p.addScriptTag({content:adapter(mod)})}
  assert.equal(await p.locator('[data-dgu-adapter]').count(),0,'without Core, optional packages do nothing');
  await p.evaluate(()=>{window.DoLGameUI={ui:{apiVersion:1}};document.dispatchEvent(new Event('dol-ui-runtime-ready'))});assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().reason),'runtime-api-unsupported');
  await p.evaluate(()=>{window.DoLGameUI={ui:{apiVersion:1,getCapabilities:()=>({styleAdapters:false}),registerStyleAdapter:()=>{throw Error('must not register')}}};document.dispatchEvent(new Event('dol-ui-runtime-ready'))});assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().reason),'style-adapter-unavailable');
  await p.evaluate(()=>delete window.DoLGameUI);
  const inject=async()=>{await p.addStyleTag({content:read('dist/game-ui.css')});await p.addScriptTag({content:read('dist/game-ui.js')});await settle(p)};
- await inject();assert.equal(await p.evaluate(()=>DoLGameUI.version),'2.1.0');assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
+ await inject();assert.equal(await p.evaluate(()=>DoLGameUI.version),JSON.parse(read('package.json')).version);assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
  assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().degraded),false,'absent optional marketplace role is not a downgrade of a full management-page match');
- await p.addStyleTag({content:read('examples/ui-surfaces/surface-demo.css')});await p.addScriptTag({content:read('examples/ui-surfaces/surface-demo.js')});
+ await p.addStyleTag({content:read('examples/ui-surfaces/surface-demo.css')});await p.addScriptTag({content:compile('examples/ui-surfaces/surface-demo.ts')});
  await p.evaluate(()=>window.demo=SoftWetSurfaceDemo.openModal());await p.locator('[data-demo-control]').check();await p.keyboard.press('Escape');assert.equal(await p.evaluate(()=>SoftWetSurfaceDemo.getLastClose()),'escape');
  await p.evaluate(()=>window.demo=SoftWetSurfaceDemo.openDrawer());
  for(const width of [390,1280]){await p.setViewportSize({width,height:900});await settle(p);assert.equal(await p.locator('.dgu-surface').evaluate(d=>{const b=d.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth+1&&b.bottom<=innerHeight+1&&d.scrollWidth<=d.clientWidth+1}),true,'drawer stays readable within narrow/wide viewport')}

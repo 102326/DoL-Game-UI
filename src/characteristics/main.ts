@@ -3,9 +3,8 @@ import {createApp,reactive,type App} from 'vue';
 import {isMasterEnabled} from '../runtime/master';
 import Navigation from './Navigation.vue';
 import './style.css';
-type Runtime=Window & Record<string,any>;
 const groups=[['base-characteristics','基础属性'],['base-skills','生活技能'],['sex-skills','身体技能'],['sex-diagram','身体技能'],['school-grades','学业'],['prof','武器技能']];
-export function startCharacteristics(root:Runtime){
+export function startCharacteristics(root:Window){
  const key='DoLGameUI.characteristics.enabled';
  let enabled=true,destroyed=false,frame=0,overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined;
  try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference remains available. */}

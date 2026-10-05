@@ -3,10 +3,10 @@ import {createApp,reactive,type App} from 'vue';
 import SavePanel from './SavePanel.vue';
 import {createSaveTransfer} from './transfer';
 import './style.css';
-import {createSaveMetadata} from './metadata';
+import {createSaveMetadata,type SaveMetadataHost} from './metadata';
 import {isMasterEnabled} from '../runtime/master';
 export interface SaveEntry {key:number;feedback?:'saved'|'deleted';slot:string;identity:string;customName:string;gameTime:string;name:string;description:string;date:string;recent:boolean;saveAction:number;empty:boolean;auto:boolean;actions:{label:string;disabled:boolean}[]}
-export function startSaves(root:Window & Record<string,any>){
+export function startSaves(root:SaveMetadataHost){
  const transfer=createSaveTransfer();
  let metadata:ReturnType<typeof createSaveMetadata>|undefined;
  let enabled=true;try{enabled=root.localStorage.getItem('DoLGameUI.saves.enabled')!=='false'}catch{}

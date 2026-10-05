@@ -14,7 +14,7 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(()=>SugarCube.Engine.play('Start2'));await p.waitForLoadState('networkidle');await p.addScriptTag({content:bundle});
  await p.evaluate(()=>{window.previewCalls=0;window.addEventListener('dol-ui-outfit-prepared',event=>{previewCalls++;window.lastPreview=event.detail});const s=PreviewTest.snapshot(window),out=PreviewTest.prepareOutfit(window,s,s.worn,[]);out.model.compile(out.options);if(lastPreview.model!==out.model||lastPreview.options!==out.options||out.model.options!==out.options)throw Error('Private preview event contract mismatch');if(out.model.layers.mouth.srcfn({facestyle:'default',facevariant:'sweet',mouth:'smile'})!=='img/face/default/mouth-smile.png')throw Error('Core includes non-native path')});
  await p.evaluate(()=>{window.originalModUtils=window.modUtils;window.modUtils={getMod:()=>({version:'0.5.11.9-1.0.0a-0815-goose-ucb'})}});
- await p.addScriptTag({path:path.resolve(__dirname,'../compat/lyra-wardrobe-mouth-soft-wet/lyra-wardrobe-mouth.js')});
+ await p.addScriptTag({content:buildSync({entryPoints:[path.resolve(__dirname,'../compat/lyra-wardrobe-mouth-soft-wet/lyra-wardrobe-mouth.ts')],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text});
  const result=await p.evaluate(()=>{try{
   const s=PreviewTest.snapshot(window),state=JSON.stringify(SugarCube.State.variables),snapshotBefore=JSON.stringify(s.variables),live=Renderer.locateModel('main'),liveMouth=live.layers.mouth.srcfn;
   const out=PreviewTest.prepareOutfit(window,s,s.worn,[]);out.model.compile(out.options);

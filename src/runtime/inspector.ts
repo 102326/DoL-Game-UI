@@ -1,7 +1,7 @@
-import type {SurfaceRequest} from './surfaces';
+import type {OpenSurface, RuntimeDiagnostics} from '../public/ui';
 
 // A manual snapshot, not a live console or another observation/lifecycle layer.
-export function openInspector(root: Window, open: (request: SurfaceRequest) => unknown, snapshot: () => Record<string, any>, rescan: () => unknown) {
+export function openInspector(root: Window, open: OpenSurface, snapshot: () => RuntimeDiagnostics, rescan: () => unknown) {
  const doc = root.document, content = doc.createElement('div'); content.className = 'dgu-inspector';
  const tools = doc.createElement('div'); tools.className = 'dgu-inspector-tools';
  const status = doc.createElement('p'); status.setAttribute('role', 'status');
@@ -25,7 +25,7 @@ export function openInspector(root: Window, open: (request: SurfaceRequest) => u
     element('summary', `${adapter.id} · ${adapter.status} · ${adapter.level}`, details);
     rows(details, {目标: adapter.target, 检测到: adapter.targetDetected, 识别版本: adapter.targetVersion || 'unknown', 支持版本: adapter.supportedVersions.join(', '),
      'Adapter version': adapter.adapterVersion, Fingerprint: adapter.fingerprint, Match: adapter.match, 降级: adapter.degraded,
-     命中查询: adapter.mappings.filter((hit: any) => hit.count > 0).length, Fallback: adapter.mappings.filter((hit: any) => hit.fallback).length});
+     命中查询: adapter.mappings.filter(hit => hit.count > 0).length, Fallback: adapter.mappings.filter(hit => hit.fallback).length});
     element('h4', '为什么这样适配？', details);
     element('p', `${adapter.reason}。Style Only 仅标记样式，控件、事件和业务仍由原页面拥有。`, details);
     const mappings = doc.createElement('details'); details.append(mappings); element('summary', '指纹与 Selector Mapping', mappings);

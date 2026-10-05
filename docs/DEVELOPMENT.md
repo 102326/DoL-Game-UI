@@ -8,6 +8,8 @@ Node.js 22.12+、Python 3.10+。运行 `npm ci`，然后 `npm run build`、`npm 
 
 `npm test` 运行不需要游戏资源的状态接口、衣柜数据、性能采样器和绘图状态复制检查。CI 验证这些检查及构建打包，不等于完整游戏回归。
 
+2.2 的 `npm run typecheck` 同时检查主包、独立 Adapter / 示例及两个 inject-early TS 入口。`npm run build` 在 Vite 之后将提前注入入口独立编译到 `dist/`，保留原 JS 文件名与加载顺序；打包时复核生成入口与公共 `types/ui.d.ts`，不向 ModLoader 提交可执行 TS。迁移边界和阶段证据见 [TypeScript 2.2](TYPESCRIPT_2.2.md)。
+
 ## 游戏集成测试
 
 ### 三个日常入口

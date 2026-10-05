@@ -1,34 +1,35 @@
 import {createSurfaces} from './surfaces';
 import {openInspector} from './inspector';
-type Runtime = Window & Record<string, any>;
-const roles = ['page-shell', 'title', 'toolbar', 'section', 'card', 'compact-row', 'list', 'primary-action', 'secondary-action', 'danger-action', 'status', 'badge', 'modal', 'drawer'] as const;
-type Role = typeof roles[number];
-type Candidates = string[];
-interface StyleAdapter {
- id: string;
- version: string;
- target: {name: string; versions: string[]};
- scope: Candidates;
- attributes?: string[];
- fingerprint: {id: string; required: Candidates[]; safe: Candidates[]};
- roles: {role: Role; selectors: Candidates; all?: boolean; safe?: boolean}[];
- when?: () => boolean;
+import {UI_ROLES as roles} from '../public/ui';
+import type {UiRole as Role, SelectorCandidates as Candidates, StyleAdapter, UiApi, UiCapabilities, VisualTier,
+ AdapterStatus, AdapterMatch, AdapterDiagnostics, SelectorMapping, CompatibilityEvent, RuntimeDiagnostics} from '../public/ui';
+
+// Only the external fields this module reads; game variables and Mod business state stay private.
+type Runtime = Window & Pick<typeof globalThis, 'CSS' | 'MutationObserver'> & {
+ modUtils?: {getMod?: (name: string) => {version?: unknown} | null | undefined; version?: unknown};
+ DoLGameUI?: {version?: unknown};
+ StartConfig?: {version?: unknown};
+ SugarCube?: {State?: {passage?: unknown}};
+};
+interface DiagnosticState {
+ status: AdapterStatus; reason: string; match: AdapterMatch; targetVersion: string; targetDetected: boolean;
+ mapped: string[]; skipped: string[]; selectors: {selector: string; fallback: boolean}[]; mappings: SelectorMapping[];
 }
 const tokenNames = Object.freeze({neutral: '--dgu-surface', card: '--dgu-card', ocean: '--dgu-accent', mist: '--dgu-secondary', text: '--dgu-text', danger: '--dgu-danger', radius: '--dgu-radius', cardRadius: '--dgu-card-radius'});
 
 // Style-only contracts. No native values, events, parents or business state are owned here.
-export function createUiRuntime(root: Runtime, preferences: () => Record<string, any>) {
+export function createUiRuntime(root: Runtime, preferences: () => {visualTier?: number}) {
  const doc = root.document;
  let destroyed = false, frame = 0;
  const entries = new Map<string, ReturnType<typeof createEntry>>();
- const events: Readonly<{time: string; level: string; source: string; message: string}>[] = [];
+ const events: CompatibilityEvent[] = [];
  function record(source: string, message: string, level = 'info') {events.push(Object.freeze({time: new Date().toISOString(), level, source, message})); if (events.length > 32) events.shift()}
  const surfaces = createSurfaces(root, () => !destroyed && doc.documentElement.hasAttribute('data-dol-midnight'), event => record('Surface', event));
  const supports = (property: string, value?: string) => {try {return value === undefined ? !!root.CSS?.supports?.(property) : !!root.CSS?.supports?.(property, value)} catch {return false}};
  const media = (query: string) => {try {return !!root.matchMedia?.(query).matches} catch {return false}};
  const prefs = () => {try {return preferences()} catch {return {}}};
- const getVisualTier = () => {const tier = prefs().visualTier; return (['Smooth', 'Balanced', 'Fancy'] as const)[[0, 1, 2].includes(tier) ? tier : 0]};
- function getCapabilities() {
+ const getVisualTier = (): VisualTier => {const tier = prefs().visualTier; return (['Smooth', 'Balanced', 'Fancy'] as const)[[0, 1, 2].includes(tier!) ? tier! : 0]};
+ function getCapabilities(): UiCapabilities {
   const html = doc.documentElement;
   const enabled = !destroyed && html.hasAttribute('data-dol-midnight');
   const backdropFilter = supports('backdrop-filter', 'blur(1px)') || supports('-webkit-backdrop-filter', 'blur(1px)');
@@ -74,9 +75,8 @@ export function createUiRuntime(root: Runtime, preferences: () => Record<string,
  function createEntry(spec: StyleAdapter) {
   let scope: Element | null = null, body: HTMLElement | null = null, parent: Element | null = null, disposed = false;
   const owned = new Map<Element, Map<string, {before: string | null; value: string}>>();
-  type Mapping = {role: string; primary: string; matched: string; fallback: boolean; count: number; reason: string; tags: string[]};
   let signature = '';
-  let diagnostic = {status: 'idle', reason: 'page-not-present', match: 'none', targetVersion: '', targetDetected: false, mapped: [] as string[], skipped: [] as string[], selectors: [] as {selector: string; fallback: boolean}[], mappings: [] as Mapping[]};
+  let diagnostic: DiagnosticState = {status: 'idle', reason: 'page-not-present', match: 'none', targetVersion: '', targetDetected: false, mapped: [] as string[], skipped: [] as string[], selectors: [] as {selector: string; fallback: boolean}[], mappings: [] as SelectorMapping[]};
   const observer = new root.MutationObserver(schedule);
   const discovery = new root.MutationObserver(schedule);
   function releaseMarks(keep = new Map<Element, Map<string, string>>()) {
@@ -162,7 +162,7 @@ export function createUiRuntime(root: Runtime, preferences: () => Record<string,
     if (nextSignature !== signature) {signature = nextSignature; record(spec.id, `${diagnostic.status}: ${diagnostic.reason}`, ['unknown','partial','failed'].includes(diagnostic.status) || diagnostic.skipped.length || diagnostic.mappings.some(hit => hit.fallback) ? 'warn' : 'info')}
    }
   }
-  const snapshot = () => Object.freeze({id: spec.id, adapterVersion: spec.version, target: spec.target.name, fingerprint: spec.fingerprint.id, level: diagnostic.mapped.length ? 'Style Only' : 'Disabled', ...diagnostic,
+  const snapshot = (): AdapterDiagnostics => Object.freeze({id: spec.id, adapterVersion: spec.version, target: spec.target.name, fingerprint: spec.fingerprint.id, level: diagnostic.mapped.length ? 'Style Only' : 'Disabled', ...diagnostic,
    supportedVersions: Object.freeze([...spec.target.versions]), degraded: ['unknown','partial','failed'].includes(diagnostic.status),
    mapped: Object.freeze([...diagnostic.mapped]), skipped: Object.freeze([...diagnostic.skipped]), selectors: Object.freeze(diagnostic.selectors.map(hit => Object.freeze({...hit}))),
    mappings: Object.freeze(diagnostic.mappings.map(hit => Object.freeze({...hit, tags: Object.freeze([...hit.tags])})))});
@@ -186,13 +186,13 @@ export function createUiRuntime(root: Runtime, preferences: () => Record<string,
  preferencesObserver?.observe(doc.documentElement, {attributes: true, attributeFilter: ['data-dol-midnight', 'data-dgu-visual', 'data-dgu-visualGlass', 'data-dgu-visualMotion']});
  doc.addEventListener('DOMContentLoaded', schedule);
  doc.addEventListener('dol-ui-saves-change', schedule);
- const api = Object.freeze({apiVersion: 1, getTheme: () => Object.freeze({id: 'soft-wet', enabled: getCapabilities().enabled, tokens: tokenNames}), getVisualTier, getCapabilities, registerStyleAdapter,
+ const api: Readonly<UiApi> = Object.freeze({apiVersion: 1, getTheme: () => Object.freeze({id: 'soft-wet', enabled: getCapabilities().enabled, tokens: tokenNames}), getVisualTier, getCapabilities, registerStyleAdapter,
   openModal: surfaces.openModal, openDrawer: surfaces.openDrawer,
   getDiagnostics, rescan,
   openInspector: () => openInspector(root, surfaces.openModal, getDiagnostics, rescan),
   getAdapterDiagnostics: () => Object.freeze([...entries.values()].map(entry => entry.getDiagnostics()))});
  function rescan() {if (!destroyed) {surfaces.refresh(); for (const entry of entries.values()) entry.refresh()} return getDiagnostics()}
- function getDiagnostics() {
+ function getDiagnostics(): RuntimeDiagnostics {
   // Only structural metadata enters this export. Never traverse State.variables, inputs or node text.
   const readVersion = (read: () => unknown) => {try {const value = read(); return typeof value === 'string' && /^[0-9A-Za-z._()+-]{1,64}$/.test(value) ? value : 'unknown'} catch {return 'unknown'}};
   const selector = (value: string) => value.replace(/\[([^\]=~|^$*\s]+)[^\]]*\]/g, '[$1]'); // attribute values may contain private input

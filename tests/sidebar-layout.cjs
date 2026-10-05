@@ -6,7 +6,7 @@ const {chromium}=require('playwright'),assert=require('assert/strict'),{buildSyn
  const html=await p.locator('#ui-bar').innerHTML();
  await p.evaluate(()=>{window.nodes=[...document.querySelectorAll('#ui-bar *')];window.clicks=0;document.getElementById('dmc-sidebar-button').onclick=()=>clicks++});
  await p.evaluate(()=>{window.entryMoves=0;window.entryOwner=new MutationObserver(()=>{const parent=document.getElementById('overlayButtons');for(const id of ['dmc-sidebar-button','dol-midnight-sidebar-button']){const button=document.getElementById(id);if(button.parentElement!==parent){entryMoves++;parent.append(button)}}});entryOwner.observe(document.getElementById('overlayButtons'),{childList:true,subtree:true})});
- await p.addScriptTag({content:buildSync({entryPoints:['src/theme/layout.js'],bundle:true,write:false,format:'iife',globalName:'LayoutTest'}).outputFiles[0].text});
+ await p.addScriptTag({content:buildSync({entryPoints:['src/theme/layout.ts'],bundle:true,write:false,format:'iife',globalName:'LayoutTest'}).outputFiles[0].text});
  await p.evaluate(()=>{LayoutTest.startLayout();DMTLayout.sync({enabled:true,layout:true})});
  await p.waitForTimeout(200);assert.equal(await p.evaluate(()=>entryMoves),0,'entry maintenance must not compete with sidebar layout');assert.equal(await p.locator('.dmt-system-tools').count(),1);
  assert.equal(await p.locator('#overlayButtons>#dmc-sidebar-button').count(),1,'entry owner direct-parent contract');assert.equal(await p.locator('#overlayButtons>#dol-midnight-sidebar-button').count(),1);

@@ -1,7 +1,8 @@
+import type {WardrobeDataHost,Inventory} from './host';
 import type {Snapshot} from './data';
 import {descriptor} from './data';
 /** Small native widgets keep their rule handlers; the inventory remains Vue-owned. */
-export function createWardrobeExtras(root:any){
+export function createWardrobeExtras(root:WardrobeDataHost){
  const signatures=new WeakMap<HTMLElement,string>();
  function write(container:HTMLElement,source:string){
   const W=root.SugarCube?.Wikifier??root.Wikifier;
@@ -37,10 +38,10 @@ export function createWardrobeExtras(root:any){
    equipment.onclick=()=>requestAnimationFrame(refresh);
    signatures.set(equipment,key);
   }
-  const serviceKey=JSON.stringify([v.location,v.tailorMonthlyService,v.debug,v.settings?.multipleWardrobes,v.wardrobeDefaults,Object.entries(v.wardrobes??{}).map(([key,x]:[string,any])=>[key,x.unlocked,x.name]),s.location]);
+  const serviceKey=JSON.stringify([v.location,v.tailorMonthlyService,v.debug,v.settings?.multipleWardrobes,v.wardrobeDefaults,Object.entries(v.wardrobes??{}).map(([key,x]:[string,Inventory])=>[key,x.unlocked,x.name]),s.location]);
   if(signatures.get(services)!==serviceKey){
    const source=['<details class="dgw-preferences"><summary>衣柜显示设置</summary><label><<checkbox "$wardrobeDefaults.showTraits" false true autocheck>> 显示衣物特质</label><label><<checkbox "$wardrobeDefaults.extraInfo" false true autocheck>> 默认展开已穿戴衣物详情</label></details>'];
-   if(['home','town'].includes(v.location)&&['repair','discard'].includes(v.tailorMonthlyService)){
+   if(['home','town'].includes(v.location)&&['repair','discard'].includes(v.tailorMonthlyService as string)){
     const repair=v.tailorMonthlyService==='repair',passage=repair?'Wardrobe Repair Crate':'Wardrobe Sale Crate';
     source.push(`<section class="dgw-tailor"><h3>${repair?'裁缝修理箱':'裁缝出售箱'}</h3>`);
     const options=repair?[['damaged','寄送受损衣物'],['outfits','寄送套装'],['all','寄送所有衣物']]:[['outfits','寄售套装'],['all','寄售所有衣物']];
@@ -50,7 +51,7 @@ export function createWardrobeExtras(root:any){
    // The original debug wardrobe chooser is intentionally restricted to debug games.
    if(v.debug&&v.settings?.multipleWardrobes){
     source.push('<details><summary>调试：选择衣柜</summary>');
-    for(const [target,meta]of Object.entries(v.wardrobes??{}) as [string,any][]){if(meta.unlocked===undefined)continue;source.push(`<<link ${JSON.stringify(String(meta.name??target))} $passage>><<set $forceWardrobeLocation=${JSON.stringify(target)}>><</link>>`)}
+    for(const [target,meta]of Object.entries(v.wardrobes??{}) as [string,Inventory][]){if(meta.unlocked===undefined)continue;source.push(`<<link ${JSON.stringify(String(meta.name??target))} $passage>><<set $forceWardrobeLocation=${JSON.stringify(target)}>><</link>>`)}
     source.push('</details>');
    }
    write(services,source.join(' '));services.onchange=()=>requestAnimationFrame(refresh);signatures.set(services,serviceKey);

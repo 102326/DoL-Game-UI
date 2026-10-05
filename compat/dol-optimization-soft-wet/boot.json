@@ -1,16 +1,32 @@
 {
   "name": "DolOptimizationSoftWet",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "原版优化 1.1.1.2 的存档兼容外观：保留描述编辑、游戏内日期及原槽位控件。",
-  "styleFileList": ["dol-optimization-soft-wet.css"],
-  "scriptFileList": ["dol-optimization-soft-wet.js"],
+  "styleFileList": [
+    "dol-optimization-soft-wet.css"
+  ],
+  "scriptFileList": [
+    "dol-optimization-soft-wet.js"
+  ],
   "scriptFileList_inject_early": [],
   "tweeFileList": [],
   "imgFileList": [],
-  "additionFile": ["README.md", "LICENSE"],
+  "additionFile": [
+    "README.md",
+    "LICENSE"
+  ],
   "dependenceInfo": [
-    {"modName": "原版优化", "version": "=1.1.1.2"},
-    {"modName": "DoLGameUI", "version": "=2.1.0"},
-    {"modName": "GameVersion", "version": "=0.5.12.13"}
+    {
+      "modName": "原版优化",
+      "version": "=1.1.1.2"
+    },
+    {
+      "modName": "DoLGameUI",
+      "version": "=2.1.0 || =2.2.0"
+    },
+    {
+      "modName": "GameVersion",
+      "version": "=0.5.12.13"
+    }
   ]
 }

@@ -1,12 +1,6 @@
 import {isolate, supportsDialog} from './presentation';
-
-export type SurfaceCloseReason = 'api' | 'button' | 'escape' | 'backdrop' | 'disabled' | 'destroyed' | 'failed' | 'native';
-export interface SurfaceRequest {
- id: string;
- title: string;
- content: HTMLElement;
- onClose?: (reason: SurfaceCloseReason) => void;
-}
+import type {SurfaceCloseReason, SurfaceRequest} from '../public/ui';
+export type {SurfaceCloseReason, SurfaceRequest} from '../public/ui';
 
 // Only newly supplied content belongs in these shells. Existing Mod pages stay native.
 export function createSurfaces(root: Window, enabled: () => boolean, report: (event: string) => void = () => {}) {

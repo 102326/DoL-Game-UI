@@ -1,0 +1,77 @@
+{
+  "version": "2.2.0",
+  "codename": "Crazy Diamond",
+  "date": "2026-10-06",
+  "status": "Completed",
+  "scope": "Behavior-preserving TS consolidation, official optional packages, public declarations and representative candidate acceptance",
+  "apiVersion": 1,
+  "diagnosticSchemaVersion": 1,
+  "desktop": {
+    "target": "DoL 0.5.11.9 vanilla / Microsoft Edge",
+    "command": "node scripts/test-workflow.cjs release",
+    "result": "passed",
+    "coreTestCount": 18
+  },
+  "android": {
+    "target": "Independent DoL 0.5.12.13 test App / Android 17 tablet",
+    "webview": "154.0.8037.58",
+    "loader": "2.101.1",
+    "loadedUiVersion": "2.2.0",
+    "packages": {
+      "ModHubSoftWet": "0.2.2",
+      "MapleBirchSoftWet": "0.2.2",
+      "DolOptimizationSoftWet": "0.1.3",
+      "LyraMouthCompat051213": "0.1.1"
+    },
+    "checks": [
+      "persistent package install and reload",
+      "ModHub native identity/parent/sibling/value/handler and master rollback",
+      "Inspector rescan and Escape",
+      "170 native save row/control identities, attributes, values and handlers; master rollback",
+      "MapleBirch cloud native identity and page rollback; no cloud operations",
+      "compiled Surface example native events, repeated identity, close lifecycle and viewport",
+      "mouth layer visible",
+      "game state, preferences, load order and hidden list preserved; temporary UI/forward resources cleaned"
+    ],
+    "newPageErrorsDuringTargetChecks": 0,
+    "gameActionsSaveWritesCloudOperations": false
+  },
+  "tools": {
+    "version": "1.5.1",
+    "used": [
+      "doctor",
+      "capture",
+      "CDP scoped DOM / CSS snapshots",
+      "dom-diff",
+      "soft-and-wet integration evidence"
+    ],
+    "saveListStructuralDiffChanges": 0,
+    "domIdentityVerifiedSeparately": true,
+    "evidenceCollectionStatus": "complete",
+    "domCaptureCoverage": "truncated at max-depth",
+    "consoleContent": "omitted; reception window may include cached events",
+    "gameVersionProbe": "unknown; wrapper App version separate"
+  },
+  "retainedFailure": {
+    "case": "Initial save master-toggle DOM assertion",
+    "cause": "assertion included rebuilt UI-owned nodes and pre-existing tool-group wrapping",
+    "resolution": "native ownership scope verified; no product behavior changed to satisfy assertion"
+  },
+  "reusedEvidence": [
+    "per-module erased-code parity",
+    "adapter target/fallback/cleanup tests",
+    "old mouth isolated host and Lyra preview lifecycle"
+  ],
+  "notValidated": [
+    "new phones and older WebViews",
+    "all Mod combinations",
+    "real cloud transactions",
+    "old Lyra mouth Android deployment in this release"
+  ],
+  "knownLimitations": [
+    "existing save native tool groups are wrapped and restored; no all-subtree parent invariant claimed",
+    "public declarations do not replace runtime validation",
+    "generated upstream renderer and build/test tools remain JS/Python"
+  ],
+  "privacy": "No game content, input values, credentials, device identifiers, private paths, raw logs or screenshots included"
+}

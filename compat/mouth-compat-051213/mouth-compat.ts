@@ -1,3 +1,11 @@
+// This package uses only the target layer API; it has no UI Runtime dependency.
+export {};
+type MouthOptions = {facestyle: string; facevariant: string; mouth: string};
+declare const window: Window & {
+ modUtils?: {getMod?: (name: string) => {version?: string} | null | undefined};
+ maplebirch?: {char?: {use?: (layers: {mouth: {srcfn(options: MouthOptions): string}}, model: 'main') => unknown}};
+};
+
 (function () {
  "use strict";
  const lyra = window.modUtils?.getMod?.("Lyra");

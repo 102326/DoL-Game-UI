@@ -1,24 +1,24 @@
-# 2.1.0 独立兼容包
+# 2.2.0 独立兼容包
 
 UI 主包负责通用界面；以下包按需要安装，不能代替目标 Mod。没有安装外观包时，目标 Mod 使用自己的界面与功能。
 
 | 包 / 适配包版本 | 目标版本 | 用途 |
 | --- | --- | --- |
-| MapleBirchSoftWet 0.2.1 | MapleBirch 5.2.3 / 本轮 UI 2.1.0 / DoL 0.5.12.13 | 云存档外观 |
-| ModHubSoftWet 0.2.1 | ModHub 1.3.0 / 本轮 UI 2.1.0 / DoL 0.5.12.13 | 管理器 Acrylic 外壳、轻内容区和按钮样式 |
-| DolOptimizationSoftWet 0.1.2 | 原版优化 1.1.1.2 / UI 2.1.0 / DoL 0.5.12.13 | 统一原节点存档卡片，保留可编辑描述与游戏内日期 |
-| LyraMouthCompat051213 0.1.0 | Lyra 0.5.12.13-1.0.1a-1004.1-goose-ucb / MapleBirch 5.2.3 | Goose 主角色嘴部路径修复，不依赖 UI |
-| LyraWardrobeMouthSoftWet 0.1.1 | Lyra 0.5.11.9-1.0.0a-0815-goose-ucb / UI 2.0.3 或 2.1.0 | 旧版本衣柜私有预览嘴部路径，**不用于 0.5.12.13** |
+| MapleBirchSoftWet 0.2.2 | MapleBirch 5.2.3 / 本轮 UI 2.2.0 / DoL 0.5.12.13 | 云存档外观 |
+| ModHubSoftWet 0.2.2 | ModHub 1.3.0 / 本轮 UI 2.2.0 / DoL 0.5.12.13 | 管理器 Acrylic 外壳、轻内容区和按钮样式 |
+| DolOptimizationSoftWet 0.1.3 | 原版优化 1.1.1.2 / UI 2.2.0 / DoL 0.5.12.13 | 统一原节点存档卡片，保留可编辑描述与游戏内日期 |
+| LyraMouthCompat051213 0.1.1 | Lyra 0.5.12.13-1.0.1a-1004.1-goose-ucb / MapleBirch 5.2.3 | Goose 主角色嘴部路径修复，不依赖 UI |
+| LyraWardrobeMouthSoftWet 0.1.2 | Lyra 0.5.11.9-1.0.0a-0815-goose-ucb / UI 2.0.3 / 2.1.0 / 2.2.0 | 旧版本衣柜私有预览嘴部路径，**不用于 0.5.12.13** |
 
 ## 安装与升级
 
-1. 替换旧 DoLGameUI，导入 `DoLGameUI-2.1.0.mod.zip`，不要解压。
+1. 替换旧 DoLGameUI，导入 `DoLGameUI-2.2.0.mod.zip`，不要解压。
 2. 根据目标 Mod 的版本选择兼容包；原版游戏不需要 Goose 或第三方外观包。
 3. 每个兼容包只启用一个版本。已安装 preview 包时，导入对应正式包替换同名 Mod。
 4. 普通兼容包在 UI 和目标 Mod 之后加载。旧 Lyra 衣柜包使用提前注入监听器，以覆盖第一次预览。
 5. 重启游戏。关闭 Soft & Wet 总开关后，外观包回到原版样式；禁用兼容包并重启可完整撤销。
 
-0.5.12.13 不安装旧 Lyra 衣柜包。已有 `LyraMouthCompat051213` 可替换为同名 0.1.0；路径修复代码保持一致。MapleBirch 外观包只影响云存档外观，不影响连接、上传、下载等业务。
+0.5.12.13 不安装旧 Lyra 衣柜包。已有 `LyraMouthCompat051213` 可替换为同名 0.1.1；路径修复代码保持一致。MapleBirch 外观包只影响云存档外观，不影响连接、上传、下载等业务。
 
 统一文件命名：`包名-目标Mod-目标版本-v适配包版本.mod.zip`。目标版本同时写入依赖清单和运行时检查。
 
@@ -51,3 +51,7 @@ UI 主包负责通用界面；以下包按需要安装，不能代替目标 Mod�
 构建和隔离专项覆盖动态 option、未知版本回退、撤销、单层 blur，以及旧 Lyra 私有预览 prepare/compile 调用。旧 Lyra 衣柜适配未在本轮 0.5.11.9 真机重验。未执行用户存档读写或云端业务，不将外观检查视为云端功能验收。
 
 本轮 2.1.0 使用 MapleBirchSoftWet / ModHubSoftWet 0.2.1，需要主包提供 `DoLGameUI.ui.apiVersion === 1`；较早的 2.1.0 包不含此接口，请一并更新。缺少接口时兼容包不应用样式，原界面仍可用。旧 UI 用户可继续使用 0.1.1。LyraWardrobeMouthSoftWet 仍为 0.1.1；LyraMouthCompat051213 不依赖 UI，继续使用 0.1.0。
+
+## 2.2 TS 构建与升级
+
+上表是当前版本。各包自有入口从 TS 编译为原命名 JS，不捆绑第二套 Runtime；样式、原事件与业务保持。三个样式包及旧嘴部包保留此前 UI 依赖，并增加 2.2.0。新版嘴部包仍不依赖 UI。上文标明 2.1.0 的验证记录为历史证据，2.2 候选包的实际加载范围见 [迁移清单](TYPESCRIPT_2.2.md)。

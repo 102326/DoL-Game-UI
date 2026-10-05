@@ -1,6 +1,7 @@
+import type {NativeWidgetHost,WardrobeVariables} from './host';
 import type {WardrobePerformance} from './performance';
 /** Game rules and side effects remain owned by the native wardrobe. */
-export function createNativeWardrobe(root:any,timing:WardrobePerformance){
+export function createNativeWardrobe(root:NativeWidgetHost,timing:WardrobePerformance){
  const wikifier=()=>root.SugarCube?.Wikifier??root.Wikifier;
  function execute(source:string,phase:string){
   const W=wikifier();if(!W)throw Error('衣柜处理接口尚不可用');
@@ -19,6 +20,6 @@ export function createNativeWardrobe(root:any,timing:WardrobePerformance){
   setSlot(slot:string){return execute(`<<set $lastWardrobeSlot=${JSON.stringify(slot)}>>`,'native.category')},
   refreshList(){return execute('<<replace "#wardrobeList">><<wardrobeContents>><</replace>>','native.list')},
   message(container:HTMLElement){return container.querySelector('#wardrobewear')?.textContent?.trim()||''},
-  resetMode(variables:any){variables.wardrobeOption='wear'}
+  resetMode(variables:WardrobeVariables){variables.wardrobeOption='wear'}
  };
 }

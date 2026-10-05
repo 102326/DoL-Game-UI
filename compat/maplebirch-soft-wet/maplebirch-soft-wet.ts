@@ -1,8 +1,16 @@
+import type {UiApi, StyleAdapter, AdapterHandle, AdapterDiagnostics} from '../../src/public/ui';
+
+declare const window: Window & {
+ DoLGameUI?: {ui?: Partial<UiApi>};
+ DoLSavesUI?: {getEnabled: () => boolean};
+ MapleBirchSoftWet?: Readonly<{getDiagnostics(): AdapterDiagnostics | Readonly<{status: 'inactive'; reason: string}>; destroy(): void}>;
+};
+
 (function () {
  "use strict";
  if (window.MapleBirchSoftWet) return;
- const spec = {
-  id: "MapleBirchSoftWet", version: "0.2.1", target: {name: "maplebirch", versions: ["5.2.3"]},
+ const spec: StyleAdapter = {
+  id: "MapleBirchSoftWet", version: "0.2.2", target: {name: "maplebirch", versions: ["5.2.3"]},
   scope: ['#customOverlay[data-overlay="saves"]'],
   attributes: ['data-cloud-save-field'],
   fingerprint: {
@@ -20,7 +28,8 @@
   ],
   when: () => window.DoLSavesUI?.getEnabled() === true
  };
- let owner = null, handle = null, reason = "runtime-unavailable";
+ let owner: Partial<UiApi> | null | undefined = null;
+ let handle: Readonly<AdapterHandle> | null = null, reason = "runtime-unavailable";
  function attach() {
   const ui = window.DoLGameUI?.ui;
   if (owner === ui) return;

@@ -5,10 +5,12 @@ import type {CombatModel,Group} from './types';
 import './style.css';
 import {wrapActionLists} from './native-actions';
 import {isMasterEnabled} from '../runtime/master';
+import type {NativeEventsHost} from '../runtime/sugarcube';
+export interface CombatControls {version:string;getEnabled:()=>boolean;refresh:()=>void;setEnabled:(value:boolean)=>void;destroy:()=>void}
 
 export function startCombat(){
 const KEY='DoLCombatUI.enabled.v1';
-const runtime=window as typeof window & Record<string,any>;
+const runtime=window as NativeEventsHost & {DoLCombatUI?:CombatControls};
 const titles:Record<string,string>={leftaction:'左手',rightaction:'右手',feetaction:'双脚',mouthaction:'口部',penisaction:'其他行动 · 1',vaginaaction:'私处',anusaction:'臀部',chestaction:'上身',thighaction:'腿部'};
 interface Docked {node:HTMLElement;anchor:Comment;slot:HTMLElement}
 interface Region {list:HTMLElement;anchor:Comment;host?:HTMLElement}

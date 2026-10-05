@@ -3,9 +3,8 @@ import {createApp,reactive,type App} from 'vue';
 import {isMasterEnabled} from '../runtime/master';
 import Navigation from './Navigation.vue';
 import './style.css';
-type Runtime=Window & Record<string,any>;
 const groups=[['npc-relations','主要关系'],['secondary-npcs','其他人物'],['faction-reputations','势力声望'],['farm-status','农场状况'],['global-recognition','知名度']];
-export function startSocial(root:Runtime){
+export function startSocial(root:Window){
  const key='DoLGameUI.social.enabled';
  let enabled=true,destroyed=false,frame=0,overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined;
  try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference remains available. */}

@@ -1,0 +1,5 @@
+{
+ "extends": "./tsconfig.json",
+ "compilerOptions": {"allowJs": false},
+ "include": ["compat/**/*.ts", "examples/**/*.ts", "tests/public-types.test.ts"]
+}

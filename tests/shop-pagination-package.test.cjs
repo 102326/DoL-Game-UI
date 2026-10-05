@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
+const assert=require('node:assert/strict'),vm=require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const packageResult = spawnSync('python', ['scripts/package.py'], { cwd: root, encoding: 'utf8' });
@@ -20,12 +21,17 @@ expected_files = [
 with zipfile.ZipFile(package_path) as archive:
     boot = json.loads(archive.read('boot.json'))
     integrated = next(item for item in boot['addonPlugin'] if item['modName'] == 'TweeReplacer')['params']
-    assert 'shop-page-experiment.js' in boot['scriptFileList_inject_early'], 'experiment runtime must load early'
+    assert boot['scriptFileList_inject_early'] == ['startup-cache-experiment.js', 'shop-page-experiment.js'], 'early script order/names changed'
     assert 'game-ui.js' in boot['scriptFileList'], 'game UI runtime missing'
     assert any(item['modName'] == 'TweeReplacer' and item['version'] == '>=1.0.0' for item in boot['dependenceInfo']), 'TweeReplacer dependency missing'
     assert len(integrated) == 4, f'expected four integrated shop patches, got {len(integrated)}'
     assert [item['replaceFile'] for item in integrated] == expected_files, 'patch order or file list changed'
-    assert archive.read('shop-page-experiment.js') == (root / 'shop-page-experiment.js').read_bytes(), 'runtime differs from integrated source'
+    for name in boot['scriptFileList_inject_early']:
+        assert archive.read(name) == (root / 'dist' / name).read_bytes(), 'runtime differs from compiled source'
+    assert not any(name.endswith('.ts') and not name.endswith('.d.ts') for name in archive.namelist()), 'runtime TypeScript source must not be packaged'
+    assert all(name.endswith('.js') for name in boot['scriptFileList'] + boot['scriptFileList_inject_early']), 'loader must execute only JS'
+    assert 'types/ui.d.ts' in boot['additionFile'], 'public type declaration missing'
+    assert archive.read('types/ui.d.ts') == (root / 'dist/types/ui.d.ts').read_bytes(), 'public declaration differs from generated contract'
     runtime = archive.read('shop-page-experiment.js').decode('utf-8')
     assert 'api.enabled = false' in runtime, 'runtime default-off switch missing'
     for parameter in integrated:
@@ -48,3 +54,12 @@ const result = spawnSync('python', ['-c', inspector, root, packagePath], { encod
 if (result.error) throw result.error;
 if (result.status !== 0) throw new Error(result.stderr || 'integrated package inspection failed');
 console.log(result.stdout.trim());
+// Exercise the compiled early global, including repeat loading and foreign fields.
+const source=fs.readFileSync(path.join(root,'dist/shop-page-experiment.js'),'utf8');
+const window={};vm.runInNewContext(source,{window});
+const api=window.DoLShopPageExperiment;
+assert.equal(api.enabled,false);assert.equal(api.setEnabled(true),true);
+assert.equal(api.setEnabled('true'),false);api.setEnabled(true);api.foreign='kept';
+vm.runInNewContext(source,{window});assert.equal(window.DoLShopPageExperiment,api);
+assert.equal(api.enabled,true);assert.equal(api.foreign,'kept');assert.equal(api.reset(),false);
+console.log('PASS compiled early shop API: default-off, strict boolean, repeat identity, foreign fields and reset');

@@ -3,7 +3,11 @@ import {createApp,reactive,type App} from 'vue';
 import Toolbar from './Toolbar.vue';
 import './style.css';
 import {isMasterEnabled} from '../runtime/master';
-type Runtime=Window & Record<string,any>;
+import type {NativeEventsHost} from '../runtime/sugarcube';
+type Runtime=NativeEventsHost & {SugarCube?:{
+ State?:{variables?:{shopClothingFilter?:{gender?:{female:boolean;male:boolean;neutral:boolean};active?:boolean}}};
+ Wikifier?:new(output:HTMLElement|null,source:string)=>unknown;
+}};
 export function startShop(root:Runtime){
  const key='DoLGameUI.shop.enabled';let enabled=true;
  try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference. */}
@@ -77,7 +81,7 @@ export function startShop(root:Runtime){
    if(state.defaultGender!=='game'){
     const enteredShop=shop;
     // Native linkifyDivs queues ready callbacks. Refresh after them to avoid double binding.
-    root.jQuery(()=>{if(destroyed||!isMasterEnabled()||!enabled||shop!==enteredShop||!enteredShop.isConnected)return;observer.disconnect();applyDefaultGender();schedule()});
+    root.jQuery!(()=>{if(destroyed||!isMasterEnabled()||!enabled||shop!==enteredShop||!enteredShop.isConnected)return;observer.disconnect();applyDefaultGender();schedule()});
    }
   }
   if(nextList!==list||!catalog?.isConnected){

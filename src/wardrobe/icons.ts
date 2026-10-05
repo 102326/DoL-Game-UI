@@ -1,3 +1,4 @@
+import type {Clothing} from './host';
 export type ClothingIconLayer={src:string;className:string;style:string};
 
 const text=(value:unknown)=>typeof value==='string'?value:'';
@@ -9,9 +10,9 @@ const customStyle=(value:unknown)=>{const raw=text(value).trim();const filter=ra
 const path=(name:string,normalise:(s:string)=>string,suffix='')=>{const file=safeName(name,normalise);return file?`img/misc/icon/clothes/${file}${suffix}`:'';};
 const patternPath=(base:unknown,pattern:unknown,normalise:(s:string)=>string)=>{const a=safeName(text(base),normalise),b=safeName(text(pattern),normalise);return a&&b?`img/misc/icon/clothes/${a}-${b}.png`:'';};
 
-export function clothingIconLayers(raw:any,descriptor:any,normalise:(s:string)=>string):ClothingIconLayer[]{
+export function clothingIconLayers(raw:Clothing|undefined,descriptor:Clothing|undefined,normalise:(s:string)=>string):ClothingIconLayer[]{
  if(!descriptor)return [];
- const item=descriptor;const worn=raw||{};const layers:ClothingIconLayer[]=[];
+ const item=descriptor;const worn:Partial<Clothing>=raw||{};const layers:ClothingIconLayer[]=[];
  const add=(src:string,className:string,style='')=>{if(src)layers.push({src,className:`icon ${className}`.trim(),style});};
  const pattern=text(worn.pattern)||text(item.pattern_options?.[0]);
  const iconName=text(item.iconFile)||text(item.name);

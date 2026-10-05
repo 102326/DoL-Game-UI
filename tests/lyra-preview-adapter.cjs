@@ -1,5 +1,5 @@
-const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
-const source=fs.readFileSync(path.resolve(__dirname,'../compat/lyra-wardrobe-mouth-soft-wet/lyra-wardrobe-mouth.js'),'utf8');
+const path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),{buildSync}=require('esbuild');
+const source=buildSync({entryPoints:[path.resolve(__dirname,'../compat/lyra-wardrobe-mouth-soft-wet/lyra-wardrobe-mouth.ts')],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text;
 const target=new EventTarget();let version='0.5.11.9-1.0.0a-0815-goose-ucb',registrations=0;
 const liveModel={layers:{mouth:{srcfn:()=> 'live-mouth'}}},V={facevariant:'sweet'},T={};
 const root={modUtils:{getMod:()=>({version})},Renderer:{model:liveModel},V,T,

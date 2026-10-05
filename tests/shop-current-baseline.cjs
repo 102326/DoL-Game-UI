@@ -61,7 +61,7 @@ const server=http.createServer((req,res)=>{
   await p.waitForFunction(()=>window.SugarCube?.State?.variables?.options);
   await p.waitForLoadState('networkidle');
   await p.evaluate(()=>SugarCube.Engine.play('Start2'));await p.waitForLoadState('networkidle');
-  await p.addScriptTag({path:path.join(root,'shop-page-experiment.js')});
+  await p.addScriptTag({path:path.join(root,'dist/shop-page-experiment.js')});
   await p.evaluate(({patches,source})=>{
    let text=source;
    for(const patch of patches){

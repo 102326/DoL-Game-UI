@@ -1,8 +1,15 @@
+import type {UiApi, StyleAdapter, AdapterHandle, AdapterDiagnostics} from '../../src/public/ui';
+
+declare const window: Window & {
+ DoLGameUI?: {ui?: Partial<UiApi>};
+ ModHubSoftWet?: Readonly<{getDiagnostics(): AdapterDiagnostics | Readonly<{status: 'inactive'; reason: string}>; destroy(): void}>;
+};
+
 (function () {
  "use strict";
  if (window.ModHubSoftWet) return;
- const spec = {
-  id: "ModHubSoftWet", version: "0.2.1", target: {name: "ModHub", versions: ["1.3.0"]},
+ const spec: StyleAdapter = {
+  id: "ModHubSoftWet", version: "0.2.2", target: {name: "ModHub", versions: ["1.3.0"]},
   scope: ['#customOverlay[data-overlay="modloader"]'],
   fingerprint: {
    id: "modhub-overlay-1.3.0",
@@ -20,7 +27,8 @@
    {role: "danger-action", selectors: ['.modhub-btn-group .btn-delete'], all: true}
   ]
  };
- let owner = null, handle = null, reason = "runtime-unavailable";
+ let owner: Partial<UiApi> | null | undefined = null;
+ let handle: Readonly<AdapterHandle> | null = null, reason = "runtime-unavailable";
  function attach() {
   const ui = window.DoLGameUI?.ui;
   if (owner === ui) return;

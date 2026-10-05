@@ -8,15 +8,17 @@ import {renderOutfit} from './render';
 import {mirrorSidebar} from './sidebar-preview';
 import {createWardrobeExtras} from './extras';
 import {createOutfitLayout} from './outfit-layout';
+import type {ClothingSlots,Inventory,WardrobeDataHost} from './host';
 import type {WardrobeModel,Operation} from './types';
 import {repairMinutes,pieces,canRepair,destinations,targetInventory,transferProblem} from './operations';
 import './style.css';
 import {isMasterEnabled} from '../runtime/master';
-export function startWardrobe(root:any){
+export function startWardrobe(root:WardrobeDataHost){
  const timing=createWardrobePerformance(),native=createNativeWardrobe(root,timing),extras=createWardrobeExtras(root);
  const KEY='DoLGameUI.wardrobe.v1';let enabled=true,nativeHiddenList=false,disposed=false,queued=false,generation=0;
  try{enabled=localStorage.getItem(KEY)!=='false'}catch{}
- interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:any;state:WardrobeModel;snapshot:Snapshot;plan?:{mode:Operation;entries:Entry[];location:string;inventory:any;fingerprint:string;target?:string;targetFingerprint?:string};entries?:Entry[];paintKey?:string;refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
+ interface WardrobeView {preview?:HTMLElement;exits:HTMLElement;native:HTMLElement;actions:HTMLElement;warmth:HTMLElement;equipment:HTMLElement;services:HTMLElement}
+ interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:WardrobeView|null;state:WardrobeModel;snapshot:Snapshot;plan?:{mode:Operation;entries:Entry[];location:string;inventory:Inventory;fingerprint:string;target?:string;targetFingerprint?:string};entries?:Entry[];paintKey?:string;refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
  let active:Session|undefined,previewAbort:AbortController|undefined;
  const outfits=createOutfitLayout();
  function isCurrentPassage(s:Session){return s.passage.isConnected&&!s.passage.classList.contains('passage-out')&&s.passage.dataset.passage===(root.SugarCube?.State??root.State)?.passage&&document.querySelector('#passages .passage:not(.passage-out)')===s.passage}
@@ -48,15 +50,15 @@ export function startWardrobe(root:any){
   previewAbort?.abort();const controller=new AbortController();previewAbort=controller;
   const ticket=++generation;let revision=0;
   const valid=()=>ticket===generation&&active===s&&!controller.signal.aborted;
-  const show=(canvas:HTMLCanvasElement)=>{if(!valid())return;revision++;s.view.preview?.replaceChildren(canvas);s.state.previewStatus='当前角色的完整穿搭';s.state.loading=false};
+  const show=(canvas:HTMLCanvasElement)=>{if(!valid())return;revision++;s.view!.preview?.replaceChildren(canvas);s.state.previewStatus='当前角色的完整穿搭';s.state.loading=false};
   async function fallback(){
    const attempt=++revision;
    try{const canvas=await renderOutfit(root,s.snapshot,s.snapshot.worn,[],timing);if(valid()&&attempt===revision)show(canvas)}
    catch(error){if(!valid()||attempt!==revision)return;console.error('[DoLGameUI] wardrobe preview failed',error);s.state.previewStatus='本次预览不可用';s.state.message=error instanceof Error?error.message:'请使用原版衣柜'}
    finally{if(valid()&&attempt===revision)s.state.loading=false}
   }
-  s.state.canWear=false;s.state.loading=true;s.state.previewStatus='正在生成完整穿搭…';s.view.preview?.replaceChildren();
-  const mirrored=s.view.preview?await mirrorSidebar(s.view.preview,controller.signal,()=>{void fallback()},show):null;
+  s.state.canWear=false;s.state.loading=true;s.state.previewStatus='正在生成完整穿搭…';s.view!.preview?.replaceChildren();
+  const mirrored=s.view!.preview?await mirrorSidebar(s.view!.preview,controller.signal,()=>{void fallback()},show):null;
   if(!valid())return;
   if(mirrored)show(mirrored);else await fallback();
  }
@@ -64,24 +66,24 @@ export function startWardrobe(root:any){
   return isolate('wardrobe update',()=>timing.measure('ui.refresh',()=>refreshModel(s,force,message)),recover);
  }
  function refreshModel(s:Session,force=false,message=s.state.message){
-  if(s.view?.actions)outfits.sync(s.view.actions);
+  if(s.view?.actions)outfits.sync(s.view!.actions);
   const fresh=snapshot(root);if(!fresh){release();return}s.snapshot=fresh;
   const labels={...LABELS,...(fresh.variables.debug?{over_head:'外层头饰',over_upper:'外套',over_lower:'外层下装'}:{})};
-  s.state.slots=Object.entries(labels).filter(([k])=>Array.isArray(fresh.inventory[k])).map(([key,label])=>({key,label,count:fresh.inventory[key].length,capacity:slotCapacity(fresh)}));
+  s.state.slots=Object.entries(labels).filter(([k])=>Array.isArray((fresh.inventory as ClothingSlots)[k])).map(([key,label])=>({key,label,count:(fresh.inventory as ClothingSlots)[key].length,capacity:slotCapacity(fresh)}));
   if(!s.state.slots.some(t=>t.key===s.state.slot))s.state.slot=s.state.slots[0]?.key||'upper';
-  s.state.owned=fresh.inventory[s.state.slot]?.length??0;s.state.capacity=slotCapacity(fresh);
+  s.state.owned=(fresh.inventory as ClothingSlots)[s.state.slot]?.length??0;s.state.capacity=slotCapacity(fresh);
   s.state.canRepair=canRepair(fresh);
   s.state.destinations=destinations(fresh);
   const next=entries(fresh,s.state.slot),previous=s.entries;
   const same=previous?.length===next.length&&next.every((e,i)=>{const old=previous[i];return old.raw===e.raw&&old.key===e.key&&old.name===e.name&&old.colour===e.colour&&old.warmth===e.warmth&&old.durability===e.durability&&old.detail===e.detail&&old.splittable===e.splittable&&old.lewd===e.lewd&&old.outfit===e.outfit&&JSON.stringify(old.traits)===JSON.stringify(e.traits)&&JSON.stringify(old.icons)===JSON.stringify(e.icons)});
   s.entries=next;if(!same)s.state.items=next;
   const worn=fresh.worn[s.state.slot];s.state.wornItem=worn&&worn.name!=='naked'?itemView(fresh,s.state.slot,worn,'worn:'+s.state.slot):null;s.state.wornName=worn?itemName(fresh,s.state.slot,worn):'';
-  const def=fresh.setup.clothes[s.state.slot]?.find((d:any)=>d.variable===worn?.variable&&d.modder===worn?.modder);s.state.currentWarmth=Number.isFinite(def?.warmth)?def.warmth:null;
+  const def=fresh.setup.clothes[s.state.slot]?.find(d=>d.variable===worn?.variable&&d.modder===worn?.modder);s.state.currentWarmth=Number.isFinite(def?.warmth)?def!.warmth!:null;
   s.state.selected=null;
   const key=JSON.stringify([fresh.worn,fresh.variables.upperTucked,fresh.variables.lowerTucked,fresh.variables.bellyTucked,fresh.variables.facelayer,fresh.variables.dontHide,fresh.variables.upperwet,fresh.variables.lowerwet,fresh.variables.underupperwet,fresh.variables.underlowerwet]);
   if(force||key!==s.paintKey){s.paintKey=key;void paint(s)}
   s.state.message=message;
-  try{if(s.view?.equipment&&s.view?.services)extras.render(fresh,s.state.slot,s.view.equipment,s.view.services,()=>queueRefresh(s))}catch(error){s.state.message=error instanceof Error?error.message:'附加衣柜功能不可用，请在界面设置中打开原版衣柜。'}
+  try{if(s.view?.equipment&&s.view?.services)extras.render(fresh,s.state.slot,s.view!.equipment,s.view!.services,()=>queueRefresh(s))}catch(error){s.state.message=error instanceof Error?error.message:'附加衣柜功能不可用，请在界面设置中打开原版衣柜。'}
 
  }
  function queueRefresh(s:Session){
@@ -130,14 +132,14 @@ export function startWardrobe(root:any){
   if(!native.available()){s.state.message='原版处理接口不可用';return}
   const fresh=snapshot(root);
   if(!fresh||fresh.inventory!==plan.inventory||fresh.location!==plan.location||JSON.stringify(fresh.inventory)!==plan.fingerprint){cancel(s);refresh(s);s.state.message='确认期间衣柜发生变化，本次未操作，请重新选择';return}
-  s.state.busy=true;s.original.inert=true;s.view.actions.inert=true;s.view.equipment.inert=true;s.view.services.inert=true;
+  s.state.busy=true;s.original.inert=true;s.view!.actions.inert=true;s.view!.equipment.inert=true;s.view!.services.inert=true;
   let done=0,removed=0,skipped=0,reason='',expected=plan.fingerprint;const skippedReasons:string[]=[];
-  const count=(inventory:any)=>Object.values(inventory).reduce((n:number,a:any)=>n+(Array.isArray(a)?a.length:0),0);
+  const count=(inventory:Inventory)=>Object.values(inventory).reduce<number>((n:number,a:unknown)=>n+(Array.isArray(a)?a.length:0),0);
   try{
    for(const e of plan.entries){
     const current=snapshot(root);
     if(active!==s||!isCurrentPassage(s)||!current||current.inventory!==plan.inventory||current.location!==plan.location||JSON.stringify(current.inventory)!==expected){reason='衣柜或页面发生变化，剩余操作已停止';break}
-    const index=current.inventory[e.slot]?.indexOf(e.raw)??-1;
+    const index=(current.inventory as ClothingSlots)[e.slot]?.indexOf(e.raw)??-1;
     if(index<0){skipped++;skippedReasons.push(`${e.name}：已随关联操作移除`);continue}
     if(plan.mode==='repair'&&!canRepair(current)){reason='修理条件已变化，剩余操作已停止';break}
     const targetData=plan.mode==='transfer'?targetInventory(current,plan.target):undefined;
@@ -150,7 +152,7 @@ export function startWardrobe(root:any){
     const success=plan.mode==='repair'?affected.every(p=>{
       const max=typeof root.clothingData==='function'?root.clothingData(p.slot,p.raw,'integrity_max'):descriptor(current,p.slot,p.raw)?.integrity_max;
       return Number.isFinite(max)&&p.raw.integrity===max;
-     }):plan.mode==='transfer'?affected.every(p=>!current.inventory[p.slot].includes(p.raw)&&targetData?.[p.slot]?.includes(p.raw)):plan.mode==='separateOutfits'?e.raw.one_piece==='split'&&JSON.stringify(e.raw)!==beforeItem:!current.inventory[e.slot].includes(e.raw);
+     }):plan.mode==='transfer'?affected.every(p=>!(current.inventory as ClothingSlots)[p.slot].includes(p.raw)&&(targetData as ClothingSlots|undefined)?.[p.slot]?.includes(p.raw)):plan.mode==='separateOutfits'?e.raw.one_piece==='split'&&JSON.stringify(e.raw)!==beforeItem:!(current.inventory as ClothingSlots)[e.slot].includes(e.raw);
     if(success)done++;else {skipped++;skippedReasons.push(`${e.name}：${native.message(s.original)||'游戏未允许本次操作'}`)}
     if(output.querySelector('.error')||s.passage.querySelector('.error')){reason='原版处理报错，剩余操作已停止';break}
     expected=JSON.stringify(current.inventory);
@@ -162,7 +164,7 @@ export function startWardrobe(root:any){
   finally{
    // Never leave the original wardrobe in destructive mode.
    native.resetMode(fresh.variables);
-   s.state.busy=false;s.original.inert=false;if(s.view.equipment)s.view.equipment.inert=false;if(s.view.services)s.view.services.inert=false;if(s.view.actions)s.view.actions.inert=false;s.plan=undefined;s.state.pending=[];s.state.pendingMinutes=null;s.state.progress='';
+   s.state.busy=false;s.original.inert=false;if(s.view!.equipment)s.view!.equipment.inert=false;if(s.view!.services)s.view!.services.inert=false;if(s.view!.actions)s.view!.actions.inert=false;s.plan=undefined;s.state.pending=[];s.state.pendingMinutes=null;s.state.progress='';
    if(active===s){try{native.refreshList()}catch{reason+=' 原版列表刷新失败'}refresh(s);s.state.message=plan.mode==='separateOutfits'?`已剪开 ${done} 套，跳过 ${skipped} 项。${reason}${skippedReasons.join('；')}`:plan.mode==='repair'?`已修理 ${done} 件，跳过 ${skipped} 项。${reason}${skippedReasons.join('；')}`:plan.mode==='transfer'?`已转移 ${done} 件，跳过 ${skipped} 项。${reason}${skippedReasons.join('；')}`:`已丢弃 ${done} 个选中项（含关联部件共 ${removed} 件），跳过 ${skipped} 项。${reason}${skippedReasons.join("；")}`;}
   }
  }
@@ -174,7 +176,7 @@ export function startWardrobe(root:any){
   const original=document.createElement('div');original.className='dgw-preserved';
   const host=document.createElement('div');host.className='dgw-root';
   const toggle=document.createElement('button');toggle.type='button';toggle.className='dgw-fallback';toggle.textContent='启用穿搭衣柜';toggle.hidden=true;toggle.onclick=()=>setEnabled(true);
-  const state=reactive<WardrobeModel>({pendingMode:'delete',canRepair:false,destinations:[],pendingMinutes:null,wornItem:null,owned:0,capacity:null,busy:false,pending:[],progress:'',slots:[],slot:LABELS[data.variables.lastWardrobeSlot]?data.variables.lastWardrobeSlot:'upper',items:[],selected:null,loading:false,message:'',previewStatus:'',canWear:false,wornName:'',currentWarmth:null});
+  const state=reactive<WardrobeModel>({pendingMode:'delete',canRepair:false,destinations:[],pendingMinutes:null,wornItem:null,owned:0,capacity:null,busy:false,pending:[],progress:'',slots:[],slot:LABELS[data.variables.lastWardrobeSlot!]?data.variables.lastWardrobeSlot!:'upper',items:[],selected:null,loading:false,message:'',previewStatus:'',canWear:false,wornName:'',currentWarmth:null});
   const s:Session={passage,host,original,anchor,toggle,state,snapshot:data,view:null};active=s;
   // Keep the native close/return controls visible and bound to their original events.
   // SugarCube header/footer remain owned by the game and mods (e.g. floating pets).
@@ -191,11 +193,11 @@ export function startWardrobe(root:any){
    if(native.available()){try{native.setSlot(key);if(s.nativeOpen)flushNative(s)}catch(error){console.error('[DoLGameUI] wardrobe category update failed',error);state.message='原版衣柜分类刷新失败，请在界面设置中切换原版衣柜检查。'} }
    refresh(s);
   },onSelect:(key:string)=>{const e=s.entries?.find(i=>i.key===key);if(e)wear(s,e)},onReview:(keys:string[])=>review(s,keys),onConfirm:()=>void discard(s),onCancel:()=>cancel(s),onStrip:()=>strip(s)});
-  s.view=mountUI(s.app,host,recover);if(s.exit)s.view.exits.append(s.exit);s.view.native.append(original);s.nativeOpen=false;s.nativeListDirty=false;
+  s.view=mountUI(s.app,host,recover) as unknown as WardrobeView;if(s.exit)s.view!.exits.append(s.exit);s.view!.native.append(original);s.nativeOpen=false;s.nativeListDirty=false;
   s.moved=[];
   const controls=[...original.querySelectorAll<HTMLElement>('.wardrobe-dry,.wardrobe-action,#randomClothingConfigure,#listoutfits')].filter(n=>!n.closest('#wardrobeList,#wardrobeLinks')&&!n.parentElement?.closest('#listoutfits,.wardrobe-action,.wardrobe-dry'));
-  for(const node of controls){const a=document.createComment('DoL wardrobe control position');node.before(a);s.moved.push({node,anchor:a});s.view.actions.append(node)}
-  for(const node of [...original.querySelectorAll<HTMLElement>('.warmth-scale-container,#warmth-description')]){const a=document.createComment('DoL wardrobe warmth position');node.before(a);s.moved.push({node,anchor:a});s.view.warmth.append(node)}
+  for(const node of controls){const a=document.createComment('DoL wardrobe control position');node.before(a);s.moved.push({node,anchor:a});s.view!.actions.append(node)}
+  for(const node of [...original.querySelectorAll<HTMLElement>('.warmth-scale-container,#warmth-description')]){const a=document.createComment('DoL wardrobe warmth position');node.before(a);s.moved.push({node,anchor:a});s.view!.warmth.append(node)}
   refresh(s);
  }
  let failed=false;
@@ -213,7 +215,7 @@ export function startWardrobe(root:any){
  function setEnabled(value:boolean){if(active?.state.busy){document.dispatchEvent(new Event('dol-ui-wardrobe-change'));return}failed=false;enabled=!!value;try{localStorage.setItem(KEY,String(enabled))}catch{}release();schedule();document.dispatchEvent(new Event('dol-ui-wardrobe-change'))}
  function setNativeHiddenList(value:boolean){nativeHiddenList=!!value;if(!nativeHiddenList&&active?.nativeListDirty)flushNative(active,true);}
  const observer=new MutationObserver(records=>{
-  if(active?.app&&records.some(r=>active?.original.contains(r.target)||active?.view.actions?.contains(r.target)))queueRefresh(active);
+  if(active?.app&&records.some(r=>active?.original.contains(r.target)||active?.view!.actions?.contains(r.target)))queueRefresh(active);
   if(records.some(r=>!(r.target instanceof Element?r.target:r.target.parentElement)?.closest('.dgw-root')))schedule();
  });
  function start(){if(disposed)return;observer.observe(document.getElementById('passages')||document.body,{childList:true,subtree:true});root.jQuery?.(document).on(':passageend.dgw :storyready.dgw',schedule);schedule()}

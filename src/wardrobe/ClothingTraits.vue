@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type {NativeWidgetHost} from './host';
 import {onMounted,onBeforeUnmount,ref,watch} from 'vue';
 const props=defineProps<{traits:string[]}>();
 const host=ref<HTMLElement>();let visible=false,observer:IntersectionObserver|undefined;
 function render(){
  if(!visible||!host.value)return;host.value.replaceChildren();
- const root=window as any,W=root.SugarCube?.Wikifier??root.Wikifier;
+ const root=window as NativeWidgetHost,W=root.SugarCube?.Wikifier??root.Wikifier;
  if(!W){host.value.textContent=(props.traits??[]).join(' · ');return}
  for(const trait of props.traits??[]){
   const item=document.createElement('span');

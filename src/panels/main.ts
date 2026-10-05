@@ -3,10 +3,10 @@ import Navigation from './Navigation.vue';
 import {panelPresentation} from './presentation';
 import {visible} from './visibility';
 import {isMasterEnabled} from '../runtime/master';
+import type {NativeEventsHost} from '../runtime/sugarcube';
 import './style.css';
 export type PanelKind='journal'|'traits'|'statistics'|'feats'|'cheats'|'attitudes'|'settings';
 export interface NavigationState{title:string;sections:string[]}
-type Runtime=Window & Record<string,any>;
 const titles:Record<PanelKind,string>={journal:'日志',traits:'特质',statistics:'统计',feats:'成就',cheats:'作弊',attitudes:'态度',settings:'游戏设置'};
 const panelKeys:Record<string,PanelKind>={options:'settings',cheats:'cheats',journal:'journal',journalNotes:'journal',traits:'traits',statistics:'statistics',gameFeats:'feats',startFeats:'feats'};
 const selectors:Record<PanelKind,string>={
@@ -18,7 +18,7 @@ const selectors:Record<PanelKind,string>={
  feats:'#featTypes,#featsList'
 };
 const fixedLabels:Record<string,string>={journalNotesTextarea:'笔记编辑',moneyButton:'详细统计',spoilerWarning:'额外统计提示',featTypes:'筛选与排序',featsList:'成就列表'};
-export function startPanels(root:Runtime){
+export function startPanels(root:NativeEventsHost){
  const preferences:Record<PanelKind,boolean>={journal:true,traits:true,statistics:true,feats:true,cheats:true,attitudes:true,settings:true};
  for(const kind of Object.keys(preferences) as PanelKind[])try{preferences[kind]=root.localStorage.getItem(`DoLGameUI.${kind}.enabled`)!=='false'}catch{/* Session fallback. */}
  let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined,frame=0,destroyed=false;

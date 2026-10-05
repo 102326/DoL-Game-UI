@@ -1,3 +1,11 @@
+# 2.2.0 · Crazy Diamond
+
+- 自有运行时、主题、页面 bridge、官方兼容包、示例和提前注入入口统一使用 TypeScript。
+- 公共契约来源集中到 `src/public/ui.ts`；主包附带 `types/ui.d.ts`，API v1 / 诊断 Schema v1 保持。
+- 保留原布局、DOM 所有权、事件、游戏状态源、存档格式和第三方业务；加载器仍执行 JS。
+- 官方兼容包更新 TS 构建及 UI 2.2.0 依赖声明，目标版本不变。
+- 迁移范围、JS 例外及实际验证见 [2.2 清单](docs/TYPESCRIPT_2.2.md)，下载说明见 [更新说明](docs/RELEASE_2.2.0.md)。
+
 # 2.1.0
 
 - 增加只读 Runtime Inspector、手动重新扫描、脱敏诊断复制 / JSON 导出与最多 32 条 UI 事件；入口在界面设置的开发检查。

@@ -1,9 +1,18 @@
+export {};
+type MouthOptions = {facestyle: string; facevariant: string; mouth: string};
+// The event exposes only the newly prepared private preview, not live game state.
+type PreviewDetail = {model?: {layers?: {mouth?: {srcfn?: (options: MouthOptions) => unknown}}}};
+declare const window: Window & {
+ modUtils?: {getMod?: (name: string) => {version?: string} | null | undefined};
+ LyraWardrobeMouthSoftWet?: {destroy(): void};
+};
+
 (function () {
  "use strict";
  if (window.LyraWardrobeMouthSoftWet) return;
- function prepare(event) {
+ function prepare(event: Event) {
   if (window.modUtils?.getMod?.("Lyra")?.version !== "0.5.11.9-1.0.0a-0815-goose-ucb") return;
-  const mouth = event.detail?.model?.layers?.mouth;
+  const mouth = (event as CustomEvent<PreviewDetail>).detail?.model?.layers?.mouth;
   if (typeof mouth?.srcfn !== "function") return;
   mouth.srcfn = options => options.facestyle === "default"
    && /^(default|aloof|catty|foxy|gloomy|sweet|modded(?:[1-9]|1[0-9]|2[0-4]))$/.test(options.facevariant)

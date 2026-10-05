@@ -1,4 +1,4 @@
-> **Soft & Wet 2.1.0**：兼容 **DoL 0.5.11.9 / 0.5.12.13**。本版加强异常隔离、未知内容保留和能力降级，沿用现有界面与原版业务逻辑。见 [本次更新](docs/RELEASE_2.1.0.md) 和 [兼容包安装说明](docs/OPTIONAL_ADAPTERS.md)。
+> **Soft & Wet 2.2.0 · Crazy Diamond**：兼容 **DoL 0.5.11.9 / 0.5.12.13**。本版将自有运行时与官方兼容包统一到 TypeScript，附带公开 API 类型声明；沿用现有界面和原版业务。见 [本次更新](docs/RELEASE_2.2.0.md) 和 [兼容包安装说明](docs/OPTIONAL_ADAPTERS.md)。
 
 # DoL Game UI
 
@@ -79,7 +79,7 @@ Mod 作者可查看 [UI Runtime API 文档](docs/UI_RUNTIME.md)、[接入示例]
 
 ## 兼容范围
 
-当前明确兼容 **0.5.11.9 和 0.5.12.13**。本轮更新和验证范围见 [2.1.0 更新说明](docs/RELEASE_2.1.0.md)，此前完整界面验收见 [2.0.2 验收记录](docs/RELEASE_2.0.2.md)。
+当前明确兼容 **0.5.11.9 和 0.5.12.13**。本轮更新和验证范围见 [2.2.0 更新说明](docs/RELEASE_2.2.0.md)，此前完整界面验收见 [2.0.2 验收记录](docs/RELEASE_2.0.2.md)。
 
 2.0.3 起，MapleBirch 云存档外观和特定 Lyra Goose 嘴部路径通过 [独立兼容包](docs/OPTIONAL_ADAPTERS.md) 提供。不需要这些适配时只安装主 UI；兼容包与主 UI 分别升级。ModHub 1.3.0 外观包同时发布。
 

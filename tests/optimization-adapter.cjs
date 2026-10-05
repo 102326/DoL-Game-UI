@@ -30,7 +30,7 @@ const row=(id,extra='',hidden='')=>`<div class="savesListRow ${id===2?'dgs-nativ
  await page.addScriptTag({content:engine});
  await page.evaluate(()=>{window.runtime=UiRuntimeModule.createUiRuntime(window,()=>({}));window.DoLGameUI={ui:runtime.api,getPreferences:()=>({savesEnabled})}});
  await page.addStyleTag({content:fs.readFileSync(path.join(folder,'dol-optimization-soft-wet.css'),'utf8')});
- const script=fs.readFileSync(path.join(folder,'dol-optimization-soft-wet.js'),'utf8');await page.addScriptTag({content:script});
+ const script=buildSync({entryPoints:[path.join(folder,'dol-optimization-soft-wet.ts')],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text;await page.addScriptTag({content:script});
  assert.equal(await page.evaluate(()=>DolOptimizationSoftWet.getDiagnostics().match),'full');
  // The game reuses this overlay root; an attribute-only menu transition must be rediscovered.
  await page.evaluate(()=>document.getElementById('customOverlay').dataset.overlay='options');

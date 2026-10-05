@@ -1,12 +1,19 @@
 import {createStatusService,type StatusAPI} from './status';
+export type NativeEventsHost=Window & {
+ jQuery?:(target:Document|(()=>void))=>{on(events:string,callback:()=>void):unknown;off(events:string,callback?:()=>void):unknown};
+};
+export type SugarCubeHost=NativeEventsHost & {
+ SugarCube?:{State?:{variables?:unknown}};
+ State?:{variables?:unknown};
+};
 /** No Save hooks, history mutation or cached State.variables references. */
-export function connectSugarCube(root:Window & Record<string,any>):StatusAPI {
+export function connectSugarCube(root:SugarCubeHost):StatusAPI {
  const controller=createStatusService({
   readVariables:()=>root.SugarCube?.State?.variables ?? root.State?.variables,
   schedule:callback=>root.requestAnimationFrame(callback),cancel:id=>root.cancelAnimationFrame(id)
  });
  const document=root.document;
- let disposed=false,bound:any;
+ let disposed=false,bound:ReturnType<NonNullable<SugarCubeHost['jQuery']>>|undefined;
  function bind(){
   if(disposed||bound||typeof root.jQuery!=='function')return;
   bound=root.jQuery(document);

@@ -1,8 +1,15 @@
+import type {UiApi, StyleAdapter, AdapterHandle, AdapterDiagnostics} from '../../src/public/ui';
+
+declare const window: Window & {
+ DoLGameUI?: {ui?: Partial<UiApi>; getPreferences?: () => {savesEnabled?: unknown}};
+ DolOptimizationSoftWet?: Readonly<{getDiagnostics(): AdapterDiagnostics | Readonly<{status: 'inactive'; reason: string}>; destroy(): void}>;
+};
+
 (function () {
  "use strict";
  if (window.DolOptimizationSoftWet) return;
- const spec = {
-  id: "DolOptimizationSoftWet", version: "0.1.2",
+ const spec: StyleAdapter = {
+  id: "DolOptimizationSoftWet", version: "0.1.3",
   target: {name: "原版优化", versions: ["1.1.1.2"]},
   scope: ['#customOverlay'],
   fingerprint: {
@@ -18,7 +25,8 @@
    {role: "danger-action", selectors: ['#saves-list-container .deleteButton', '#saveList .saves-clear'], all: true}
   ]
  };
- let owner = null, handle = null, reason = "runtime-unavailable";
+ let owner: Partial<UiApi> | null | undefined = null;
+ let handle: Readonly<AdapterHandle> | null = null, reason = "runtime-unavailable";
  function attach() {
   const ui = window.DoLGameUI?.ui;
   if (owner === ui) return;

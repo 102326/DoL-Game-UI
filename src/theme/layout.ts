@@ -1,12 +1,22 @@
 import {createSidebarLayout} from './sidebar-layout';
-export function startLayout(root=window){
+import type {Preferences} from './preferences';
+type LayoutPreferences = Partial<Pick<Preferences, 'enabled' | 'layout' | 'compactStats' | 'wideReading'>>;
+type LayoutRuntime = Window & {
+ DMTLayout?: {sync(preferences: LayoutPreferences): void; destroy(): void};
+ UIBar?: {stow?: () => unknown};
+ SugarCube?: {Dialog?: {close?: () => unknown}};
+ Dialog?: {close?: () => unknown};
+ closeOverlay?: () => unknown;
+};
+export function startLayout(root: LayoutRuntime=window as LayoutRuntime){
   if(root.DMTLayout)return;
   const sidebarLayout=createSidebarLayout();
   let sidebarFrame=0;
   function scheduleSidebar(){cancelAnimationFrame(sidebarFrame);sidebarFrame=requestAnimationFrame(()=>sidebarLayout.sync(active))}
-  let active=false, shade, bar, observer, previousFocus, disposed=false;
+  let active=false, shade: HTMLButtonElement | undefined, bar: HTMLElement | null | undefined,
+    observer: MutationObserver | undefined, previousFocus: Element | null | undefined, disposed=false;
   const narrow=root.matchMedia('(max-width: 899px)');
-  const visible=node=>!!node && node.getClientRects().length>0 && getComputedStyle(node).visibility!=='hidden';
+  const visible=(node: Element | null | undefined): node is Element=>!!node && node.getClientRects().length>0 && getComputedStyle(node).visibility!=='hidden';
   function stow(){
     if(!bar || bar.classList.contains('stowed'))return;
     if(typeof root.UIBar?.stow==='function')root.UIBar.stow();
@@ -22,7 +32,7 @@ export function startLayout(root=window){
     if(open&&!previousFocus)previousFocus=document.activeElement;
     if(!open)previousFocus=null;
   }
-  function sync(preferences){
+  function sync(preferences: LayoutPreferences){
     if(disposed)return;
     active=!!(preferences.enabled&&preferences.layout);
     const html=document.documentElement;
@@ -43,11 +53,11 @@ export function startLayout(root=window){
     sidebarLayout.sync(active);
     updateShade();
   }
-  function onBack(event){
+  function onBack(event: Event & Partial<Pick<KeyboardEvent, 'key' | 'shiftKey'>>){
     if(active&&event.type==='keydown'&&event.key==='Tab'&&shade&&!shade.hidden&&!document.querySelector('dialog[open]')&&!visible(document.getElementById('customOverlay'))&&!visible(document.getElementById('ui-dialog'))){
-      const targets=[...bar.querySelectorAll('button,a[href],input,select,textarea,[tabindex]')].filter(node=>visible(node)&&!node.disabled&&node.tabIndex>=0);
+      const targets=[...bar!.querySelectorAll<HTMLElement & {disabled?: boolean}>('button,a[href],input,select,textarea,[tabindex]')].filter(node=>visible(node)&&!node.disabled&&node.tabIndex>=0);
       const first=targets[0],last=targets[targets.length-1];
-      if(first&&(!bar.contains(document.activeElement)||(event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last))){event.preventDefault();(event.shiftKey?last:first).focus();}
+      if(first&&(!bar!.contains(document.activeElement)||(event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last))){event.preventDefault();(event.shiftKey?last!:first).focus();}
       return;
     }
     if(!active || (event.type==='keydown'&&event.key!=='Escape'))return;
@@ -58,9 +68,9 @@ export function startLayout(root=window){
       event.preventDefault();event.stopImmediatePropagation();dialog.close();return;
     }
     const custom=document.getElementById('customOverlay');
-    const close=custom?.querySelector('.customOverlayClose');
+    const close=custom?.querySelector<HTMLElement>('.customOverlayClose');
     if(visible(custom)&&(typeof root.closeOverlay==='function'||visible(close))){
-      event.preventDefault();event.stopImmediatePropagation();if(typeof root.closeOverlay==='function')root.closeOverlay();else close.click();return;
+      event.preventDefault();event.stopImmediatePropagation();if(typeof root.closeOverlay==='function')root.closeOverlay();else close!.click();return;
     }
     if(shade&&!shade.hidden){event.preventDefault();event.stopImmediatePropagation();stow();}
   }

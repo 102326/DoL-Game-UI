@@ -1,10 +1,10 @@
-import {connectSugarCube} from './sugarcube';
+import {connectSugarCube,type SugarCubeHost} from './sugarcube';
 import {STATUS_KEYS,type StatusAPI,type StatusSnapshot} from './status';
 const labels={pain:'疼痛',tiredness:'疲劳',stress:'压力',trauma:'创伤',control:'自控'};
 /** Opt-in consumer demonstrating the service boundary, not a second game HUD. */
-export function startStatusPreview(root:Window & Record<string,any>){
+export function startStatusPreview(root:SugarCubeHost & {DoLRuntime?:unknown}){
  let enabled=false,disposed=false,api:StatusAPI|undefined,unsubscribe:(()=>void)|undefined;
- let namespace:any,ownsNamespace=false,ownsStatus=false;
+ let namespace:{status?:{v1?:unknown}}|undefined,ownsNamespace=false,ownsStatus=false;
  function paint(snapshot?:StatusSnapshot,message?:string){
   const box=document.getElementById('dol-status-preview');if(!box)return;
   box.replaceChildren();box.hidden=!enabled;if(!enabled)return;
@@ -17,7 +17,7 @@ export function startStatusPreview(root:Window & Record<string,any>){
   unsubscribe?.();unsubscribe=undefined;api?.dispose();
   if(api&&namespace?.status?.v1===api)delete namespace.status.v1;
   if(ownsStatus&&namespace?.status&&Object.keys(namespace.status).length===0)delete namespace.status;
-  if(ownsNamespace&&root.DoLRuntime===namespace&&Object.keys(namespace).length===0)delete root.DoLRuntime;
+  if(ownsNamespace&&root.DoLRuntime===namespace&&Object.keys(namespace!).length===0)delete root.DoLRuntime;
   api=undefined;namespace=undefined;ownsNamespace=false;ownsStatus=false;
  }
  const controls={setEnabled(value:boolean){
@@ -25,7 +25,7 @@ export function startStatusPreview(root:Window & Record<string,any>){
   value=!!value;if(enabled===value&&(!value||api)){if(value)paint(api?.getSnapshot());return}
   enabled=value;if(!value){release();paint();return}
   if(root.DoLRuntime!==undefined&&(!root.DoLRuntime||typeof root.DoLRuntime!=='object')){paint(undefined,'状态接口名称已被其他脚本使用，本次未启用。');return}
-  namespace=root.DoLRuntime;
+  namespace=root.DoLRuntime as typeof namespace;
   if(namespace?.status!==undefined&&(!namespace.status||typeof namespace.status!=='object'||namespace.status.v1!==undefined)){paint(undefined,'已有状态接口，本次未覆盖。');return}
   try{
    if(!namespace){namespace={};root.DoLRuntime=namespace;ownsNamespace=true}
