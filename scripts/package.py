@@ -22,7 +22,7 @@ assets['LICENSE']=(root/'LICENSE').read_bytes()
 boot['additionFile'].append('LICENSE')
 for name in ['UPSTREAM-RENDERER-LICENSE','UPSTREAM-RENDERER-NOTICE.md']:
  assets[name]=(root/name).read_bytes();boot['additionFile'].append(name)
-for name in ['CHANGELOG.md','docs/VALIDATION.md','docs/DEVELOPMENT.md','docs/RELEASE_2.0.0.md','docs/RELEASE_2.0.1.md','docs/RELEASE_2.0.2.md','docs/RELEASE_2.0.2_PUBLIC.md','docs/UI_SETTINGS.md']:
+for name in ['CHANGELOG.md','docs/VALIDATION.md','docs/DEVELOPMENT.md','docs/RELEASE_2.0.0.md','docs/RELEASE_2.0.1.md','docs/RELEASE_2.0.2.md','docs/RELEASE_2.0.2_PUBLIC.md','docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md','docs/RELEASE_2.0.3.md']:
  assets[name]=(root/name).read_bytes();boot['additionFile'].append(name)
 boot['dependenceInfo'].append({'modName':'GameVersion','version':'=0.5.11.9 || =0.5.12.13'})
 assets['boot.json']=json.dumps(boot,ensure_ascii=False,indent=2).encode();assets['README.md']=(root/'README.md').read_bytes()

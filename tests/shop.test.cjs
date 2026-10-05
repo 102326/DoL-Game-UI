@@ -223,8 +223,10 @@ const server=http.createServer((req,res)=>{
  const beforeUnrelated=await p.evaluate(()=>DoLShopUI.getLifecycleCounts());
  await p.evaluate(()=>{const e=document.createElement('span');document.body.append(e);e.textContent='unrelated';e.remove()});await p.waitForTimeout(100);
  assert.deepEqual(await p.evaluate(()=>DoLShopUI.getLifecycleCounts()),beforeUnrelated);
+ const savedShopChoice=await p.evaluate(()=>DoLShopUI.getEnabled());
  await p.evaluate(()=>DoLGameUI.openSettings());await p.getByRole('button',{name:'回退原版界面',exact:true}).click();
- assert.equal(await p.evaluate(()=>DoLShopUI.getEnabled()),false);assert.equal(await p.locator('.dgshop-host').count(),0);
+ assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().enabled),false);
+ assert.equal(await p.evaluate(()=>DoLShopUI.getEnabled()),savedShopChoice,'master fallback preserves the per-page choice');assert.equal(await p.locator('.dgshop-host').count(),0);
  await p.getByRole('button',{name:'启用新版界面',exact:true}).click();await p.locator('.dmt-close').click();await p.waitForSelector('.dgshop-host');
  await p.evaluate(()=>SugarCube.Engine.play('Bedroom'));await p.waitForTimeout(1200);assert.equal(await p.locator('.dgshop-host').count(),0);
  // Saved defaults apply on entry, not on each native list replacement.

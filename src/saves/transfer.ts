@@ -10,8 +10,6 @@ export function createSaveTransfer(){
   const nextOverlay=document.querySelector<HTMLElement>('#customOverlay[data-overlay=saves]');
   // Native confirmations release the list proxy; keep their shell styled in place.
   if(nextOverlay?.querySelector('#customOverlayContent #saveList>.saveBorder>:is(input[type=button],button).saveMenuConfirm')){overlay=nextOverlay;overlay.classList.add('dgs-native-tools');return}
-  // Known MapleBirch panel: CSS only, with native DOM and service ownership.
-  if(nextOverlay?.querySelector('#customOverlayContent>#maplebirch-cloud-save.maplebirch-cloud-save')){overlay=nextOverlay;overlay.classList.add('dgs-native-tools');return}
   if(!(input instanceof HTMLTextAreaElement))return;
   const parent=input.parentElement,file=parent?.querySelector('#saveImport'),heading=parent?.querySelector(':scope > .gold');
   // Unknown/cloud layouts stay native. Only adapt the known export widget.

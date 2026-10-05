@@ -1,0 +1,28 @@
+{
+  "name": "LyraMouthCompat051213",
+  "version": "0.1.0",
+  "scriptFileList": [
+    "mouth-compat.js"
+  ],
+  "styleFileList": [],
+  "tweeFileList": [],
+  "imgFileList": [],
+  "additionFile": [
+    "README.md",
+    "LICENSE"
+  ],
+  "dependenceInfo": [
+    {
+      "modName": "Lyra",
+      "version": "=0.5.12.13-1.0.1a-1004.1-goose-ucb"
+    },
+    {
+      "modName": "GameVersion",
+      "version": "=0.5.12.13"
+    },
+    {
+      "modName": "maplebirch",
+      "version": "=5.2.3"
+    }
+  ]
+}

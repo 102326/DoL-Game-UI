@@ -50,10 +50,9 @@ export function prepareOutfit(root:any,s:Snapshot,worn:any,changed:string[],timi
  // Native render/animate binds options before compilation. Tanning postprocess
  // reads this.options as well as its argument; both must use the private snapshot.
  model.options=options;
- // Reviewed Lyra asset adapter, no third-party callbacks run with live V/T.
- if(root.modUtils?.getMod?.('Lyra')?.version==='0.5.11.9-1.0.0a-0815-goose-ucb'){
-  model.layers.mouth.srcfn=(o:any)=>o.facestyle==='default'&&/^(default|aloof|catty|foxy|gloomy|sweet|modded(?:[1-9]|1[0-9]|2[0-4]))$/.test(o.facevariant)&&/^(chew|cry|frown|neutral|smile)$/.test(o.mouth)?`img/face/${o.facestyle}/${o.facevariant}/mouth-${o.mouth}.png`:`img/face/${o.facestyle}/mouth-${o.mouth}.png`;
- }
+ // Optional adapters receive only this private preview model, never live V/T.
+ if(typeof window!=='undefined')
+  window.dispatchEvent(new CustomEvent('dol-ui-outfit-prepared',{detail:{model,options}}));
  return {model,options};
 }
 export async function renderOutfit(root:any,s:Snapshot,worn:any,changed:string[],timing:WardrobePerformance=createWardrobePerformance()):Promise<HTMLCanvasElement>{
