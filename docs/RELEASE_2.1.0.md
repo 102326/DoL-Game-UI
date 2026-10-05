@@ -11,7 +11,7 @@
 | `DoLGameUI-2.1.0.mod.zip` | **UI 主包**。安装 Soft & Wet 2.1.0，替换旧版同名 UI Mod。适配 DoL 0.5.11.9 / 0.5.12.13。 |
 | `ModHubSoftWet-ModHub-1.3.0-v0.2.1.mod.zip` | **ModHub 外观兼容包**。已安装 ModHub 1.3.0、希望管理器使用 Soft & Wet 外观时选装。不包含 ModHub 本体。 |
 | `MapleBirchSoftWet-maplebirch-5.2.3-v0.2.1.mod.zip` | **MapleBirch 外观兼容包**。已安装 MapleBirch 5.2.3、希望其已适配窗口使用 Soft & Wet 外观时选装。不包含 MapleBirch 本体。 |
-| `DolOptimizationSoftWet-原版优化-1.1.1.2-v0.1.2.mod.zip` | **原版优化存档兼容包**。仅用于原版优化 1.1.1.2 + UI 2.1.0 + DoL 0.5.12.13，统一存档卡片并保留扩展描述/日期。不包含原 Mod；兼容视图暂不使用搜索和详情 Drawer。 |
+| `DolOptimizationSoftWet-OriginalOptimization-1.1.1.2-v0.1.2.mod.zip` | **原版优化存档兼容包**。仅用于原版优化 1.1.1.2 + UI 2.1.0 + DoL 0.5.12.13，统一存档卡片并保留扩展描述/日期。不包含原 Mod；兼容视图暂不使用搜索和详情 Drawer。 |
 | `LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v0.1.0.mod.zip` | **新版 Goose 嘴部修复**。仅用于文件名对应的 DoL 0.5.12.13 / Lyra 1.0.1a / 1004.1 Goose UCB 整合版本。 |
 | `LyraWardrobeMouthSoftWet-Lyra-0.5.11.9-1.0.0a-0815-goose-ucb-v0.1.1.mod.zip` | **旧版 Lyra 衣柜嘴部适配**。仅用于文件名对应的 DoL 0.5.11.9 / Lyra 1.0.0a / 0815 Goose UCB 整合版本。不要装到 0.5.12.13。 |
 | `SoftWetSurfaceDemo-DoLGameUI-2.1.0-v0.1.0.mod.zip` | **开发示例包**。演示如何调用新弹窗和侧边详情 API；默认不弹出，普通玩家不用安装。 |
