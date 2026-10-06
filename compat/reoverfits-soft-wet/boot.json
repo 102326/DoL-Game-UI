@@ -1,6 +1,6 @@
 {
   "name": "ReOverfitsSoftWet",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "ReOverfits 4.1.1 及以上槽位语义扩展：复用 Soft & Wet Vue 衣柜与原业务接口。",
   "styleFileList": [
     "reoverfits-soft-wet.css"

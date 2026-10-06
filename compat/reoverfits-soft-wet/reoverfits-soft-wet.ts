@@ -75,7 +75,7 @@ import type {VersionToolsHost} from '../../src/runtime/target-version';
  themeObserver.observe(document.documentElement, {attributes:true, attributeFilter:['data-dol-midnight']});
  document.addEventListener('dol-ui-runtime-ready', schedule);
  Object.assign(host, {ReOverfitsSoftWet:Object.freeze({
-  getDiagnostics:() => Object.freeze({adapterVersion:'0.2.1', target:'ReOverfits', targetVersion:host.modUtils?.getMod('ReOverfits')?.version ?? '', supportedVersions:['>=4.1.1'], level:'UI Model Extension', reason}),
+  getDiagnostics:() => Object.freeze({adapterVersion:'0.2.2', target:'ReOverfits', targetVersion:host.modUtils?.getMod('ReOverfits')?.version ?? '', supportedVersions:['>=4.1.1'], level:'UI Model Extension', reason}),
   destroy() {destroyed = true; cancelAnimationFrame(frame); observer.disconnect(); themeObserver.disconnect(); document.removeEventListener('dol-ui-runtime-ready', schedule); mapping?.destroy(); mapping = undefined; owner = undefined; restore(); delete host.ReOverfitsSoftWet}
  })});
  refresh();

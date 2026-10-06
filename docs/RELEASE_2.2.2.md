@@ -12,6 +12,10 @@
 
 最低版本限制不代表后续所有版本都已验证。若未来更新改变了页面结构或接口，适配会减少或退出；确认新的兼容范围后，再更新最低版本号。
 
+### 兼容包补充更新
+
+ReOverfits 兼容包更新为 **0.2.2**：修正服装店首页“头套 / 外套上衣 / 外套下衣”的重复按钮边框，并恢复原分类图标。仅调整样式，原链接和购买行为不变。UI 主包继续使用 2.2.2，无需重复更新已安装的主包。
+
 ## 下载与安装
 
 普通玩家只需 UI 主包。已使用以下兼容包时，请一并升级；新的四个兼容包需要 **UI 2.2.2 及以上**。
@@ -22,7 +26,7 @@
 | `ModHubSoftWet-ModHub-1.3.0-plus-v0.2.4.mod.zip` | ModHub 1.3.0 及以上的外观适配。 |
 | `MapleBirchSoftWet-maplebirch-5.2.3-plus-v0.2.4.mod.zip` | MapleBirch 5.2.3 及以上的云存档外观适配。 |
 | `DolOptimizationSoftWet-OriginalOptimization-1.1.1.2-plus-v0.1.5.mod.zip` | 原版优化 1.1.1.2 及以上的存档界面适配。 |
-| `ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v0.2.1.mod.zip` | ReOverfits 4.1.1 及以上的衣柜与商店适配。 |
+| `ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v0.2.2.mod.zip` | ReOverfits 4.1.1 及以上的衣柜与商店适配，修正首页分类样式。 |
 | `LyraWardrobeMouthSoftWet-Lyra-0.5.11.9-1.0.0a-0815-goose-ucb-v0.1.4.mod.zip` | 指定旧 Lyra 版本的衣柜嘴部适配，仅补充 UI 2.2.2 依赖。 |
 | `LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v0.1.1.mod.zip` | 指定新 Lyra Goose 版本的嘴部修复，本轮未改动。 |
 | `SHA256SUMS.txt` | 下载校验文件，无需导入游戏。 |

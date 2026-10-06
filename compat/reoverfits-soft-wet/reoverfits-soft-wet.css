@@ -4,3 +4,5 @@ html[data-dol-midnight] #clothingShop-div img[data-reoverfits-entry-icon] {displ
 html[data-dol-midnight] #clothingShop-div [data-reoverfits-category] a {display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px;font-size:14px}
 html[data-dol-midnight] #clothingShop-div [data-reoverfits-category] a::after {content:attr(aria-label)}
 html[data-dol-midnight] #clothingShop-div a[data-reoverfits-entry] {display:inline-block;min-height:44px;padding:8px 12px;border:1px solid var(--dgu-border);border-radius:10px}
+html[data-dol-midnight] #clothingShop-div .dgshop-entry-category>a[data-reoverfits-entry] {min-height:auto;padding:8px .1em;border:0;border-radius:0}
+html[data-dol-midnight] #clothingShop-div .dgshop-entry-category>img[data-reoverfits-entry-icon] {display:block}

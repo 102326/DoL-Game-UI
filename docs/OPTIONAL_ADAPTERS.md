@@ -7,7 +7,7 @@ UI 主包负责通用界面；以下包按需要安装，不能代替目标 Mod�
 | MapleBirchSoftWet 0.2.4 | MapleBirch >=5.2.3 / UI >=2.2.2 / DoL 0.5.12.13 | 云存档外观 |
 | ModHubSoftWet 0.2.4 | ModHub >=1.3.0 / UI >=2.2.2 / DoL 0.5.12.13 | 管理器 Acrylic 外壳、轻内容区和按钮样式 |
 | DolOptimizationSoftWet 0.1.5 | 原版优化 >=1.1.1.2 / UI >=2.2.2 / DoL 0.5.12.13 | 统一原节点存档卡片，保留可编辑描述与游戏内日期 |
-| ReOverfitsSoftWet 0.2.1 | ReOverfits >=4.1.1 / UI >=2.2.2 / DoL 0.5.12.13 | 外层服装槽位接入新版衣柜与商店 |
+| ReOverfitsSoftWet 0.2.2 | ReOverfits >=4.1.1 / UI >=2.2.2 / DoL 0.5.12.13 | 外层服装槽位接入新版衣柜与商店；修正首页分类的重复边框及图标隐藏 |
 | LyraMouthCompat051213 0.1.1 | Lyra 0.5.12.13-1.0.1a-1004.1-goose-ucb / MapleBirch 5.2.3 | Goose 主角色嘴部路径修复，不依赖 UI |
 | LyraWardrobeMouthSoftWet 0.1.4 | Lyra 0.5.11.9-1.0.0a-0815-goose-ucb / UI 2.0.3 / 2.1.0 / 2.2.0 / 2.2.1 / 2.2.2 | 旧版本衣柜私有预览嘴部路径，**不用于 0.5.12.13** |
 
