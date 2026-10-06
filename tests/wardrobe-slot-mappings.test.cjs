@@ -18,4 +18,9 @@ assert.throws(()=>registry.register({...spec,id:'Reserved',slots:JSON.parse('{"_
 handle.destroy();handle.destroy();assert.equal(registry.labels(snapshot).over_upper,undefined);
 registry.register({...spec,target:{name:'ReOverfits',versions:['4.1.1']}});registry.destroy();assert.equal(registry.labels(snapshot).over_upper,undefined);
 assert.throws(()=>registry.register(spec),/disposed/);
+const ranges=moduleObject.exports.createSlotMappings(()=>version,{getSemVerTools:()=>({parseVersion:v=>({version:v}),parseRange:r=>r,satisfies:(v,r)=>r==='>=4.1.1'&&['4.1.1','4.2.0'].includes(v)})});
+const ranged=ranges.register({...spec,target:{name:'ReOverfits',versions:['>=4.1.1']}});
+for(const v of ['4.1.1','4.2.0']) {version=v;assert.equal(ranges.labels(snapshot).over_upper,'mutated')}
+assert.equal(ranges.labels({...snapshot,inventory:{}}).over_upper,undefined);
+version='4.1.0';assert.equal(ranges.labels(snapshot).over_upper,undefined);ranged.destroy();version='4.2.0';assert.equal(ranges.labels(snapshot).over_upper,undefined);
 console.log('PASS semantic mapping: target/data gates, no state mutation, input copy, collision guards, revoke/dispose');

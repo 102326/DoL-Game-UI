@@ -1,4 +1,5 @@
 import type {NativeEventsHost} from '../runtime/sugarcube';
+import type {VersionToolsHost} from '../runtime/target-version';
 /** Native contracts read by the wardrobe UI; unknown Mod fields are preserved. */
 export interface Clothing extends Record<string,unknown> {
  name:string;variable?:string;modder?:string;
@@ -41,7 +42,7 @@ export type WardrobeDataHost=NativeWidgetHost & NativeEventsHost & {
  getCustomColourName?:(colour:unknown)=>unknown;getTrueWarmth?:(item:Clothing)=>number;
  normaliseFileName?:(name:string)=>string;isConnectedToHood?:(slot:string)=>boolean;
  clothingData?:(slot:string,item:Clothing,field:string)=>unknown;
- modUtils?:{getImage?:(src:string)=>string|undefined|Promise<string|undefined>;getMod?:(name:string)=>{version?:unknown}|null|undefined};
+ modUtils?:VersionToolsHost & {getImage?:(src:string)=>string|undefined|Promise<string|undefined>;getMod?:(name:string)=>{version?:unknown}|null|undefined};
  Renderer?:PreviewRenderer;Skin?:{color:unknown;tanningLayers:unknown};
  Transformations?:{defaults?:{demon?:{colour?:unknown}}};
  C?:{tiredness?:{max?:number}};ZIndices?:unknown;

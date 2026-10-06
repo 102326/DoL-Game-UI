@@ -1,3 +1,10 @@
+# 2.2.2 · Crazy Diamond
+
+- ModHub、MapleBirch、原版优化和 ReOverfits 兼容包改为目标最低版本要求。
+- 运行时复用 ModLoader 版本比较 API，保留结构、能力、数据检查及撤销。
+- 旧 Lyra 衣柜嘴部包补充 UI 2.2.2 依赖，Lyra 资源和游戏版本限制保持。
+- 下载与升级见 [更新说明](docs/RELEASE_2.2.2.md)。
+
 # 2.2.1 · Crazy Diamond
 
 - 增加衣柜槽位扩展 API v1，支持可撤销的目标版本与原生槽位标签注册。

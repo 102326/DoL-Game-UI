@@ -3,6 +3,7 @@ import hashlib
 import json
 import sys
 import subprocess
+import re
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 
@@ -11,8 +12,10 @@ if len(sys.argv) != 2:
 root = Path(sys.argv[1]).resolve()
 boot = json.loads((root / 'boot.json').read_text(encoding='utf-8'))
 dependency = boot['dependenceInfo'][0]
-assert dependency['version'].startswith('='), 'Adapter target must be an exact version'
-target_version = dependency['version'].removeprefix('=')
+assert re.fullmatch(r'(?:=|>=)\d[\w.+-]*', dependency['version']), 'Adapter target must be exact or a minimum version'
+target_version = dependency['version'].removeprefix('>=').removeprefix('=')
+if dependency['version'].startswith('>='):
+    target_version += '-plus'
 dist = root / 'dist'
 dist.mkdir(exist_ok=True)
 if any(name.endswith('.js') and (root / name).with_suffix('.ts').exists() for field in ['scriptFileList', 'scriptFileList_inject_early'] for name in boot.get(field, [])):

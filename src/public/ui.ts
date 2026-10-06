@@ -6,6 +6,7 @@ export type SelectorCandidates = string[];
 export interface StyleAdapter {
  id: string;
  version: string;
+ /** Exact strings, or >=numeric minimums with UI 2.2.2+. */
  target: {name: string; versions: string[]};
  scope: SelectorCandidates;
  attributes?: string[];

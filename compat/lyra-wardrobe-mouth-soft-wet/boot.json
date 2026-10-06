@@ -1,6 +1,6 @@
 {
   "name": "LyraWardrobeMouthSoftWet",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "旧 Lyra Goose 衣柜私有预览的嘴部路径适配。",
   "scriptFileList_inject_early": [
     "lyra-wardrobe-mouth.js"
@@ -20,7 +20,7 @@
     },
     {
       "modName": "DoLGameUI",
-      "version": "=2.0.3 || =2.1.0 || =2.2.0 || =2.2.1"
+      "version": "=2.0.3 || =2.1.0 || =2.2.0 || =2.2.1 || =2.2.2"
     },
     {
       "modName": "GameVersion",

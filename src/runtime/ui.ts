@@ -1,12 +1,13 @@
 import {createSurfaces} from './surfaces';
 import {openInspector} from './inspector';
 import {UI_ROLES as roles} from '../public/ui';
+import {matchesTargetVersion, type VersionToolsHost} from './target-version';
 import type {UiRole as Role, SelectorCandidates as Candidates, StyleAdapter, UiApi, UiCapabilities, VisualTier,
  AdapterStatus, AdapterMatch, AdapterDiagnostics, SelectorMapping, CompatibilityEvent, RuntimeDiagnostics} from '../public/ui';
 
 // Only the external fields this module reads; game variables and Mod business state stay private.
 type Runtime = Window & Pick<typeof globalThis, 'CSS' | 'MutationObserver'> & {
- modUtils?: {getMod?: (name: string) => {version?: unknown} | null | undefined; version?: unknown};
+ modUtils?: VersionToolsHost & {getMod?: (name: string) => {version?: unknown} | null | undefined; version?: unknown};
  DoLGameUI?: {version?: unknown};
  StartConfig?: {version?: unknown};
  SugarCube?: {State?: {passage?: unknown}};
@@ -127,10 +128,11 @@ export function createUiRuntime(root: Runtime, preferences: () => {visualTier?: 
     const safe = spec.fingerprint.safe.map(group => trace('fingerprint:safe', group));
     if (safe.some(hit => !hit.nodes.length)) {diagnostic.status = 'unknown'; diagnostic.reason = 'safe-fingerprint-mismatch'; releaseMarks(); return}
     const required = spec.fingerprint.required.map(group => trace('fingerprint:required', group));
-    const full = spec.target.versions.includes(diagnostic.targetVersion) && required.every(hit => hit.nodes.length);
+    const supported = matchesTargetVersion(diagnostic.targetVersion, spec.target.versions, root.modUtils);
+    const full = supported && required.every(hit => hit.nodes.length);
     diagnostic.match = full ? 'full' : 'partial';
     diagnostic.status = full ? 'active' : 'partial';
-    diagnostic.reason = full ? 'matched' : spec.target.versions.includes(diagnostic.targetVersion) ? 'structure-drift' : 'version-unverified';
+    diagnostic.reason = full ? 'matched' : supported ? 'structure-drift' : 'version-unverified';
     diagnostic.selectors.push(...[...safe, ...required].filter(hit => hit.nodes.length).map(hit => ({selector: hit.selector, fallback: hit.fallback})));
     const mapped = new Map<Element, Set<Role>>();
     for (const rule of spec.roles) {

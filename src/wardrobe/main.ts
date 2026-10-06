@@ -16,7 +16,7 @@ import {isMasterEnabled} from '../runtime/master';
 import {createSlotMappings} from './slot-mappings';
 import type {WardrobeSlotMapping} from '../public/wardrobe';
 export function startWardrobe(root:WardrobeDataHost){
- const slotMappings=createSlotMappings(name=>root.modUtils?.getMod?.(name)?.version);
+ const slotMappings=createSlotMappings(name=>root.modUtils?.getMod?.(name)?.version, root.modUtils);
  const timing=createWardrobePerformance(),native=createNativeWardrobe(root,timing),extras=createWardrobeExtras(root);
  const KEY='DoLGameUI.wardrobe.v1';let enabled=true,nativeHiddenList=false,disposed=false,queued=false,generation=0;
  try{enabled=localStorage.getItem(KEY)!=='false'}catch{}

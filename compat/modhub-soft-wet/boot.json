@@ -1,7 +1,7 @@
 {
   "name": "ModHubSoftWet",
-  "version": "0.2.3",
-  "description": "ModHub 1.3.0 的独立柔和亚克力外观样式。",
+  "version": "0.2.4",
+  "description": "ModHub 1.3.0 及以上的独立柔和亚克力外观样式。",
   "styleFileList": [
     "modhub-soft-wet.css"
   ],
@@ -18,11 +18,11 @@
   "dependenceInfo": [
     {
       "modName": "ModHub",
-      "version": "=1.3.0"
+      "version": ">=1.3.0"
     },
     {
       "modName": "DoLGameUI",
-      "version": "=2.1.0 || =2.2.0 || =2.2.1"
+      "version": ">=2.2.2"
     },
     {
       "modName": "GameVersion",

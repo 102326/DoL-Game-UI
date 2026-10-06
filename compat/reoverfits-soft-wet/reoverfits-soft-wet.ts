@@ -1,10 +1,11 @@
 import type {UiApi} from '../../src/public/ui';
 import type {WardrobeApi, WardrobeSlotMappingHandle} from '../../src/public/wardrobe';
+import type {VersionToolsHost} from '../../src/runtime/target-version';
 
 (() => {
  const host = window as Window & {
   DoLGameUI?: {ui?: Partial<UiApi>; wardrobe?: Readonly<WardrobeApi>};
-  modUtils?: {getMod(name: string): {version?: string} | undefined};
+  modUtils?: VersionToolsHost & {getMod(name: string): {version?: string} | undefined};
   ReOverfitsSoftWet?: {destroy(): void};
  };
  if (host.ReOverfitsSoftWet) return;
@@ -12,6 +13,14 @@ import type {WardrobeApi, WardrobeSlotMappingHandle} from '../../src/public/ward
  const undo = new Map<Element, Map<string, {before: string | null; applied: string | null}>>();
  let owner: Readonly<WardrobeApi> | undefined, mapping: Readonly<WardrobeSlotMappingHandle> | undefined;
  let frame = 0, destroyed = false, reason = 'runtime-unavailable';
+ function supported() {
+  const version = host.modUtils?.getMod('ReOverfits')?.version;
+  if (typeof version !== 'string' || !/^\d+(?:\.\d+){1,3}(?:-[\w.-]+)?(?:\+[\w.-]+)?$/.test(version)) return false;
+  try {
+   const tools = host.modUtils?.getSemVerTools?.();
+   return !!tools && tools.satisfies(tools.parseVersion(version).version, tools.parseRange('>=4.1.1'));
+  } catch {return false}
+ }
  function attribute(el: Element, name: string, value: string) {
   if (el.getAttribute(name) === value) return;
   let changes = undo.get(el); if (!changes) {changes = new Map(); undo.set(el, changes)}
@@ -28,14 +37,14 @@ import type {WardrobeApi, WardrobeSlotMappingHandle} from '../../src/public/ward
  }
  function attach() {
   const api = host.DoLGameUI?.wardrobe;
-  const supported = host.modUtils?.getMod('ReOverfits')?.version === '4.1.1';
-  if (supported && owner === api && mapping) return;
+  const compatible = supported();
+  if (compatible && owner === api && mapping) return;
   mapping?.destroy(); mapping = undefined; owner = api;
   reason = 'wardrobe-api-unavailable';
-  if (!supported) {reason = 'target-version-mismatch'; return}
+  if (!compatible) {reason = 'target-version-mismatch'; return}
   if (api?.apiVersion !== 1 || typeof api.registerSlotMapping !== 'function') return;
   try {
-   mapping = api.registerSlotMapping({id:'ReOverfitsSoftWet', target:{name:'ReOverfits', versions:['4.1.1']}, slots:{over_head:'外层头饰', over_upper:'外套上装', over_lower:'外套下装'}});
+   mapping = api.registerSlotMapping({id:'ReOverfitsSoftWet', target:{name:'ReOverfits', versions:['>=4.1.1']}, slots:{over_head:'外层头饰', over_upper:'外套上装', over_lower:'外套下装'}});
    reason = 'model-registered';
   } catch {reason = 'registration-failed'}
  }
@@ -43,7 +52,7 @@ import type {WardrobeApi, WardrobeSlotMappingHandle} from '../../src/public/ward
   observer.disconnect(); attach();
   for (const el of undo.keys()) if (!el.isConnected) undo.delete(el);
   const ui = host.DoLGameUI?.ui;
-  if (!mapping || host.modUtils?.getMod('ReOverfits')?.version !== '4.1.1' || !ui?.getCapabilities?.().enabled) restore();
+  if (!mapping || !supported() || !ui?.getCapabilities?.().enabled) restore();
   else for (const img of document.querySelectorAll<HTMLImageElement>('.passage:not(.passage-out) #clothingShop-div img')) {
    const match = /^img\/ui\/clothes\/categories\/(overhead|overupper|overlower)\.png$/.exec(img.getAttribute('ml-src') ?? img.getAttribute('src') ?? '');
    if (!match) continue;
@@ -66,7 +75,7 @@ import type {WardrobeApi, WardrobeSlotMappingHandle} from '../../src/public/ward
  themeObserver.observe(document.documentElement, {attributes:true, attributeFilter:['data-dol-midnight']});
  document.addEventListener('dol-ui-runtime-ready', schedule);
  Object.assign(host, {ReOverfitsSoftWet:Object.freeze({
-  getDiagnostics:() => Object.freeze({adapterVersion:'0.2.0', target:'ReOverfits', targetVersion:'4.1.1', level:'UI Model Extension', reason}),
+  getDiagnostics:() => Object.freeze({adapterVersion:'0.2.1', target:'ReOverfits', targetVersion:host.modUtils?.getMod('ReOverfits')?.version ?? '', supportedVersions:['>=4.1.1'], level:'UI Model Extension', reason}),
   destroy() {destroyed = true; cancelAnimationFrame(frame); observer.disconnect(); themeObserver.disconnect(); document.removeEventListener('dol-ui-runtime-ready', schedule); mapping?.destroy(); mapping = undefined; owner = undefined; restore(); delete host.ReOverfitsSoftWet}
  })});
  refresh();

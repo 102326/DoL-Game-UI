@@ -1,7 +1,7 @@
 {
   "name": "MapleBirchSoftWet",
-  "version": "0.2.3",
-  "description": "MapleBirch 5.2.3 云存档页面的独立 Soft & Wet 外观适配。",
+  "version": "0.2.4",
+  "description": "MapleBirch 5.2.3 及以上云存档页面的独立 Soft & Wet 外观适配。",
   "styleFileList": [
     "maplebirch-soft-wet.css"
   ],
@@ -17,11 +17,11 @@
   "dependenceInfo": [
     {
       "modName": "maplebirch",
-      "version": "=5.2.3"
+      "version": ">=5.2.3"
     },
     {
       "modName": "DoLGameUI",
-      "version": "=2.1.0 || =2.2.0 || =2.2.1"
+      "version": ">=2.2.2"
     },
     {
       "modName": "GameVersion",

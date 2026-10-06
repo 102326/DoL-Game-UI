@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict'),vm=require('node:vm'),path=require('node:path'),{buildSync}=require('esbuild');
+const code=buildSync({entryPoints:[path.join(__dirname,'../src/runtime/target-version.ts')],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text;
+const m={exports:{}};vm.runInNewContext(code,{module:m,exports:m.exports});
+const {matchesTargetVersion:matches,isMinimumVersion}=m.exports;
+const calls=[],host={getSemVerTools:()=>({parseVersion:v=>({version:{value:v}}),parseRange:r=>({range:r}),satisfies(v,r){calls.push([v.value,r.range]);return ['1.3.0','1.3.1','1.10.0','2.0.0','1.1.1.2','1.1.1.3'].includes(v.value)}})};
+assert.equal(matches('1.3.0',['1.3.0']),true);assert.equal(matches('1.3.1',['1.3.0']),false);
+for(const v of ['1.3.0','1.3.1','1.10.0','2.0.0']) assert.equal(matches(v,['>=1.3.0'],host),true);
+assert.equal(matches('1.2.9',['>=1.3.0'],host),false);
+assert.equal(matches('1.1.1.3',['>=1.1.1.2'],host),true);assert.deepEqual(calls.at(-1),['1.1.1.3','>=1.1.1.2']);
+for(const v of ['',undefined,'unknown','1.3.invalid']) assert.equal(matches(v,['>=1.3.0'],host),false);
+for(const r of ['>=','>=unknown','>1.3.0','>=1.3.0 || anything']) assert.equal(matches('1.3.1',[r],host),false);
+assert.equal(matches('1.3.1',['>=1.3.0']),false);assert.equal(matches('1.3.1',['>=1.3.0'],{getSemVerTools(){throw Error('unavailable')}}),false);
+assert.equal(isMinimumVersion('>=1.1.1.2'),true);
+console.log('PASS target versions: exact compatibility, >= delegation/unwrapping, four-part versions, invalid input and missing/failed loader API');

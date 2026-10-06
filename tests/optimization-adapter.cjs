@@ -16,7 +16,7 @@ const row=(id,extra='',hidden='')=>`<div class="savesListRow ${id===2?'dgs-nativ
  await page.addStyleTag({content:'.dgs-native-row{display:none!important}.hidden,[hidden]{display:none}.savesListRow{max-height:2.4em!important}.saveDetails>span{white-space:nowrap!important}'});
  await page.evaluate(()=>{
   window.calls={save:0,load:0,delete:0,settings:0};window.savesEnabled=true;window.version='1.1.1.2';
-  window.modUtils={getMod:n=>n==='原版优化'?{version}:null};
+  window.modUtils={getMod:n=>n==='原版优化'?{version}:null,getSemVerTools:()=>({parseVersion:v=>({version:v}),parseRange:r=>r,satisfies:(v,r)=>r==='>=1.1.1.2'&&['1.1.1.2','1.1.1.3','1.2.0'].includes(v)})};
   window.idb={getItem:async id=>id===1?{data:{delta:[{variables:{saveName:'fixture',startDate:0,timeStamp:1}}]}}:null};
   window.DateTime=class{constructor(){Object.assign(this,{year:2022,month:1,day:1,hour:8,minute:0,weekDayName:'fixture'})}};
   window.getTimeString=()=> '08:00';
@@ -32,6 +32,9 @@ const row=(id,extra='',hidden='')=>`<div class="savesListRow ${id===2?'dgs-nativ
  await page.addStyleTag({content:fs.readFileSync(path.join(folder,'dol-optimization-soft-wet.css'),'utf8')});
  const script=buildSync({entryPoints:[path.join(folder,'dol-optimization-soft-wet.ts')],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text;await page.addScriptTag({content:script});
  assert.equal(await page.evaluate(()=>DolOptimizationSoftWet.getDiagnostics().match),'full');
+ await page.evaluate(()=>{version='1.1.1.3';DoLGameUI.ui.rescan()});assert.equal(await page.evaluate(()=>DolOptimizationSoftWet.getDiagnostics().match),'full','newer four-part version accepted');
+ await page.evaluate(()=>{version='1.1.1.1';DoLGameUI.ui.rescan()});assert.equal(await page.locator('.dgs-entries').isVisible(),true,'below-minimum target leaves original display');
+ await page.evaluate(()=>{version='1.1.1.3';DoLGameUI.ui.rescan()});
  // The game reuses this overlay root; an attribute-only menu transition must be rediscovered.
  await page.evaluate(()=>document.getElementById('customOverlay').dataset.overlay='options');
  await page.waitForFunction(()=>!document.querySelector('[data-dgu-adapter="DolOptimizationSoftWet"]'));

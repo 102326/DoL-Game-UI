@@ -1,6 +1,8 @@
-# UI Runtime：2.2.1 接入说明（API v1）
+# UI Runtime：2.2.2 接入说明（API v1）
 
-当前 UI 版本为 **2.2.1 / Crazy Diamond**，公共 API 与诊断仍使用版本 1。接入前先确认 `window.DoLGameUI?.ui?.apiVersion === 1`，并检查需要的方法是否存在；较早的 2.1.0 包没有此接口。如果不支持，就继续使用 Mod 自己的界面。
+当前 UI 版本为 **2.2.2 / Crazy Diamond**，公共 API 与诊断仍使用版本 1。接入前先确认 `window.DoLGameUI?.ui?.apiVersion === 1`，并检查需要的方法是否存在；较早的 2.1.0 包没有此接口。如果不支持，就继续使用 Mod 自己的界面。
+
+从 UI 2.2.2 起，Style Adapter 与衣柜槽位扩展的 `target.versions` 支持精确版本（例如 `1.3.0`）或最低数字版本（例如 `>=1.3.0`、`>=1.1.1.2`）。精确匹配仍按原字符串检查；最低版本通过 `modUtils.getSemVerTools()` 比较。缺少该 API 或比较失败时不匹配，不使用自制比较规则。页面结构与槽位数据检查仍需通过。使用最低版本写法的兼容包应声明 UI `>=2.2.2`；旧 Core 不支持此写法。
 
 ## 已实现的最小契约
 
@@ -78,8 +80,8 @@ handle.destroy();
 
 - `target` 只读取加载器已加载 Mod 的版本信息，不加载 Mod、不解析依赖或管理其生命周期。
 - `scope` 为有序候选；找到唯一根节点后，指纹和角色都只在此根节点内查询。`:scope` 指根节点本身。
-- `safe / required` 中每组候选依次查找，所有分组须满足；重复目标视为歧义，不跳到其它候选猜测。版本与所有指纹均匹配才启用 full。
-- 部分匹配须先通过全部 safe 指纹，且只标记 `safe: true` 的角色。未知版本为 `version-unverified`，不会因结构相似自动声明兼容。关键 safe 指纹不匹配时不加任何标记。
+- `safe / required` 中每组候选依次查找，所有分组须满足；重复目标视为歧义，不跳到其它候选猜测。版本满足精确或最低要求，且所有指纹匹配时才启用 full。
+- 部分匹配须先通过全部 safe 指纹，且只标记 `safe: true` 的角色。不满足版本要求时为 `version-unverified`，不会因结构相似自动声明兼容。关键 safe 指纹不匹配时不加任何标记。
 - 角色候选默认要求唯一，列表可明确 `all: true`。未命中的角色跳过，未知节点保留；不改原 id / name / class / value / hidden 或事件。
 - `attributes` 只声明目标结构需要额外观察的属性；默认观察 id / class / hidden / data-overlay。禁止监听本 Runtime 的 `data-dgu-*` 属性以避免反馈循环。
 - 可选 `when()` 仅查询自己的 UI 启用条件。不要在识别函数中执行业务、写游戏状态或触发原控件。
@@ -128,7 +130,7 @@ MapleBirchSoftWet **0.2.3** 与 ModHubSoftWet **0.2.3** 使用此契约，目标
 
 ## 衣柜槽位扩展 API v1（UI 2.2.1 起）
 
-`DoLGameUI.wardrobe` 提供 `apiVersion: 1` 与 `registerSlotMapping({id, target: {name, versions}, slots: {over_upper: '外套上装'}})`，返回可重复调用 `destroy()` 的句柄。类型见 `types/wardrobe.d.ts`。目标版本精确匹配且原库存、定义与穿戴对象存在时才加入现有 Vue 分类。不覆盖原生分类，不接受状态对象、事件执行器或任意回调，不存储游戏数据。它只扩展语义模型；所有操作继续使用原衣柜的业务链。注销会刷新当前分类，Core 销毁会撤销全部映射。
+`DoLGameUI.wardrobe` 提供 `apiVersion: 1` 与 `registerSlotMapping({id, target: {name, versions}, slots: {over_upper: '外套上装'}})`，返回可重复调用 `destroy()` 的句柄。类型见 `types/wardrobe.d.ts`。目标版本满足声明要求且原库存、定义与穿戴对象存在时才加入现有 Vue 分类。不覆盖原生分类，不接受状态对象、事件执行器或任意回调，不存储游戏数据。它只扩展语义模型；所有操作继续使用原衣柜的业务链。注销会刷新当前分类，Core 销毁会撤销全部映射。
 
 
 ```ts

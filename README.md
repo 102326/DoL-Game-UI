@@ -1,4 +1,4 @@
-> **Soft & Wet UI 2.2.1 · Crazy Diamond**：兼容 **DoL 0.5.11.9 / 0.5.12.13**。本版补充 ReOverfits 4.1.1 的衣柜与商店兼容，并提供衣柜槽位扩展 API。见 [本次更新](docs/RELEASE_2.2.1.md) 和 [兼容包安装说明](docs/OPTIONAL_ADAPTERS.md)。
+> **Soft & Wet UI 2.2.2 · Crazy Diamond**：兼容 **DoL 0.5.11.9 / 0.5.12.13**。本版放宽官方兼容包的目标 Mod 版本限制，继续保留结构检查和原版回退。见 [本次更新](docs/RELEASE_2.2.2.md) 和 [兼容包安装说明](docs/OPTIONAL_ADAPTERS.md)。
 
 # DoL Soft & Wet Game UI
 
@@ -81,7 +81,7 @@ Mod 作者可查看 [UI Runtime API 文档](docs/UI_RUNTIME.md)、[接入示例]
 
 ## 兼容范围
 
-当前明确兼容 **0.5.11.9 和 0.5.12.13**。主要变化和安装注意事项见 [2.2.1 更新说明](docs/RELEASE_2.2.1.md)。
+当前明确兼容 **0.5.11.9 和 0.5.12.13**。主要变化和安装注意事项见 [2.2.2 更新说明](docs/RELEASE_2.2.2.md)。
 
 2.0.3 起，MapleBirch 云存档外观和特定 Lyra Goose 嘴部路径通过 [独立兼容包](docs/OPTIONAL_ADAPTERS.md) 提供。不需要这些适配时只安装主 UI；兼容包与主 UI 分别升级。ModHub 1.3.0 外观包同时发布。
 

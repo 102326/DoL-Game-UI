@@ -1,19 +1,21 @@
-# 2.2.1 独立兼容包
+# 2.2.2 独立兼容包
 
 UI 主包负责通用界面；以下包按需要安装，不能代替目标 Mod。没有安装外观包时，目标 Mod 使用自己的界面与功能。
 
 | 包 / 适配包版本 | 目标版本 | 用途 |
 | --- | --- | --- |
-| MapleBirchSoftWet 0.2.3 | MapleBirch 5.2.3 / 本轮 UI 2.2.1 / DoL 0.5.12.13 | 云存档外观 |
-| ModHubSoftWet 0.2.3 | ModHub 1.3.0 / 本轮 UI 2.2.1 / DoL 0.5.12.13 | 管理器 Acrylic 外壳、轻内容区和按钮样式 |
-| DolOptimizationSoftWet 0.1.4 | 原版优化 1.1.1.2 / UI 2.2.1 / DoL 0.5.12.13 | 统一原节点存档卡片，保留可编辑描述与游戏内日期 |
-| ReOverfitsSoftWet 0.2.0 | ReOverfits 4.1.1 / UI 2.2.1 / DoL 0.5.12.13 | 外层服装槽位接入新版衣柜与商店 |
+| MapleBirchSoftWet 0.2.4 | MapleBirch >=5.2.3 / UI >=2.2.2 / DoL 0.5.12.13 | 云存档外观 |
+| ModHubSoftWet 0.2.4 | ModHub >=1.3.0 / UI >=2.2.2 / DoL 0.5.12.13 | 管理器 Acrylic 外壳、轻内容区和按钮样式 |
+| DolOptimizationSoftWet 0.1.5 | 原版优化 >=1.1.1.2 / UI >=2.2.2 / DoL 0.5.12.13 | 统一原节点存档卡片，保留可编辑描述与游戏内日期 |
+| ReOverfitsSoftWet 0.2.1 | ReOverfits >=4.1.1 / UI >=2.2.2 / DoL 0.5.12.13 | 外层服装槽位接入新版衣柜与商店 |
 | LyraMouthCompat051213 0.1.1 | Lyra 0.5.12.13-1.0.1a-1004.1-goose-ucb / MapleBirch 5.2.3 | Goose 主角色嘴部路径修复，不依赖 UI |
-| LyraWardrobeMouthSoftWet 0.1.3 | Lyra 0.5.11.9-1.0.0a-0815-goose-ucb / UI 2.0.3 / 2.1.0 / 2.2.0 / 2.2.1 | 旧版本衣柜私有预览嘴部路径，**不用于 0.5.12.13** |
+| LyraWardrobeMouthSoftWet 0.1.4 | Lyra 0.5.11.9-1.0.0a-0815-goose-ucb / UI 2.0.3 / 2.1.0 / 2.2.0 / 2.2.1 / 2.2.2 | 旧版本衣柜私有预览嘴部路径，**不用于 0.5.12.13** |
+
+`>=` 表示最低版本及以上；不表示每个后续版本都已验证。结构、接口或槽位不匹配时减少或退出适配。文件名中的 `plus` 对应这个最低版本要求。Lyra 嘴部包继续限定指定资源版本。
 
 ## 安装与升级
 
-1. 替换旧 UI，导入 `DoL-SoftWet-GameUI-2.2.1.mod.zip`，不要解压。
+1. 替换旧 UI，导入 `DoL-SoftWet-GameUI-2.2.2.mod.zip`，不要解压。
 2. 根据目标 Mod 的版本选择兼容包；原版游戏不需要 Goose 或第三方外观包。
 3. 每个兼容包只启用一个版本。已安装 preview 包时，导入对应正式包替换同名 Mod。
 4. 普通兼容包在 UI 和目标 Mod 之后加载。旧 Lyra 衣柜包使用提前注入监听器，以覆盖第一次预览。
