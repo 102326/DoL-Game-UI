@@ -23,7 +23,8 @@ export function createWardrobeSource(root:WardrobeDataHost,labels:(s:Snapshot)=>
    items=bound.map(({raw:_raw,descriptor:_descriptor,slot:_slot,index:_index,...item})=>Object.freeze({...item,traits:[...item.traits],icons:item.icons.map(icon=>({...icon}))}));
   }
   inventory=s.inventory;location=s.location;slot=nextSlot;fingerprint=nextFingerprint;
-  const unknownSlots=Object.entries(s.inventory).filter(([key,value])=>!Object.hasOwn(names,key)&&Array.isArray(value)&&value.length>0&&(Array.isArray(s.setup.clothes[key])||Object.hasOwn(s.worn,key))).map(([key])=>key);
+  // Empty optional vanilla slots need no warning; genuinely new slots remain discoverable.
+  const unknownSlots=Object.entries(s.inventory).filter(([key,value])=>!Object.hasOwn(names,key)&&Array.isArray(value)&&(value.length>0||!['over_upper','over_lower','over_head','genitals'].includes(key))&&(Array.isArray(s.setup.clothes[key])||Object.hasOwn(s.worn,key))).map(([key])=>key);
   const hiddenCount=(s.inventory as ClothingSlots)[slot].length-items.length;
   return {snapshot:s,slot,slots,items,unknownSlots,categoryNote:hiddenCount>0?`${hiddenCount} 件关联套装部件由主件操作；可在原版信息中查看。`:'',revision};
  }

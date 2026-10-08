@@ -1,5 +1,6 @@
 const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{buildSync}=require('esbuild');
 const project=path.resolve(process.env.DOL_TEST_WORKSPACE||path.resolve(__dirname,'../../..'));
+const out=process.env.DOL_TEST_OUT||path.join(__dirname,'artifacts');fs.mkdirSync(out,{recursive:true});
 const server=http.createServer((req,res)=>{
  const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
  const file=pathname==='/game'?path.join(project,process.env.DOL_WARDROBE_INTEGRATED?'upstream/game-0.5.11.9/Degrees of Lewdity.html':'releases/source-baseline-0.5.11.9/vanilla.html'):path.join(project,'upstream/game-0.5.11.9',pathname);
@@ -62,10 +63,10 @@ const server=http.createServer((req,res)=>{
   const cards=await p.locator('.dgs-entries details').last().locator('.dgs-item').evaluateAll(es=>es.slice(0,2).map(e=>({x:e.getBoundingClientRect().x,y:e.getBoundingClientRect().y})));
   if(cards.length<2)console.log('GRID DEBUG',await p.locator('.dgs-entries').evaluateAll(es=>es.map(e=>({html:e.innerHTML.slice(0,1000),groups:e.querySelectorAll('details').length,slots:e.querySelectorAll('.dgs-item').length}))));
   assert.equal(Math.abs(cards[0].y-cards[1].y)<2,width>650,'wide screen uses two columns; phone uses one');
-  await p.screenshot({path:path.join(__dirname,`artifacts/saves-grid-${width}.png`)});
+  await p.screenshot({path:path.join(out,`saves-grid-${width}.png`)});
   await p.locator('.dgs-recent').click();assert.equal(await p.locator('.dgs-detail').evaluate(e=>e.open),true);
   assert.ok(await p.locator('.dgs-detail').evaluate(e=>e.getBoundingClientRect().right<=innerWidth));
-  await p.screenshot({path:path.join(__dirname,`artifacts/saves-drawer-${width}.png`)});
+  await p.screenshot({path:path.join(out,`saves-drawer-${width}.png`)});
   await p.locator('.dgs-detail h2').click();assert.equal(await p.locator('.dgs-detail').evaluate(e=>e.open),true,'inside click stays open');
   await p.mouse.click(2,2);assert.equal(await p.locator('.dgs-detail').evaluate(e=>e.open),false,'backdrop click closes');
   await p.locator('.dgs-recent').click();
@@ -103,7 +104,7 @@ const server=http.createServer((req,res)=>{
  await p.locator('#saveList input.saveMenuConfirm').click();await p.waitForFunction(async()=>!(await idb.getSaveDetails()).some(d=>d.slot===1));await p.waitForSelector('.dgs-host');
  await p.waitForSelector('.dgs-feedback-deleted');
  assert.equal(await p.locator('.dgs-item small').filter({hasText:/\d{4}/}).count(),0);
- await p.screenshot({path:path.join(__dirname,'artifacts/saves-preview-desktop.png')});
+ await p.screenshot({path:path.join(out,'saves-preview-desktop.png')});
  const source=await p.evaluate(()=>[...document.querySelectorAll('.dgs-native-row')].length);assert.ok(source>1);
  for(const width of [390,1024,1500]){await p.setViewportSize({width,height:1000});await p.waitForTimeout(60);assert.ok(await p.evaluate(()=>document.querySelector('.dgs-host').scrollWidth<=document.querySelector('.dgs-host').clientWidth+1));}
  await p.getByRole('button',{name:'原版界面',exact:true}).click();assert.equal(await p.locator('.dgs-host').count(),0);assert.equal(await p.locator('.dgs-native-row').count(),0);assert.equal(await p.locator('.dgs-tools').count(),0);assert.equal(await p.locator('#saveList > ul #pageNum').count(),1);
@@ -142,7 +143,7 @@ const server=http.createServer((req,res)=>{
   assert.equal(await p.locator('#saveList .saveMenuConfirm').first().evaluate(e=>getComputedStyle(e).marginLeft),'150px');
   await p.evaluate(()=>{DoLSavesUI.setEnabled(true);document.documentElement.style.fontSize='100%';DoLGameUI.setPreference('visualTier',1);DoLGameUI.setPreference('visualGlass',true)});await p.waitForSelector('#customOverlay.dgs-native-tools');
   await p.locator('#saveList input.saveMenuConfirm').focus();await p.keyboard.press('Tab');assert.ok(await p.locator('#saveList button.saveMenuConfirm').evaluate(e=>e===document.activeElement));assert.equal(await p.locator('#saveList button.saveMenuConfirm').evaluate(e=>getComputedStyle(e).outlineStyle),'solid');
-  if(action.source.includes('Load'))await p.screenshot({path:path.join(__dirname,'artifacts/saves-native-confirm.png')});
+  if(action.source.includes('Load'))await p.screenshot({path:path.join(out,'saves-native-confirm.png')});
   await p.locator('#saveList button.saveMenuConfirm').click();await p.waitForSelector('.dgs-host');assert.equal(await p.locator('#customOverlay.dgs-native-tools').count(),0,'cancel removes confirmation marker');
   assert.deepEqual(await p.evaluate(async()=>({V:JSON.stringify(V),slot:JSON.stringify(await idb.getItem(1))})),confirmState,'cancel does not save/load/delete');
  }
@@ -154,7 +155,7 @@ const server=http.createServer((req,res)=>{
  await p.locator('#saveDataInput').fill('test-clear');await p.locator('.dgs-transfer input[onclick*="clearTextBox"]').click();assert.equal(await p.locator('#saveDataInput').inputValue(),'');
  await p.locator('.dgs-transfer input[onclick="getSaveData()"]').click();assert.ok((await p.locator('#saveDataInput').inputValue()).length>100);
  for(const width of [390,1024,1704]){await p.setViewportSize({width,height:1136});await p.waitForTimeout(60);assert.ok(await p.evaluate(()=>document.querySelector('.dgs-transfer').scrollWidth<=document.querySelector('.dgs-transfer').clientWidth+1));}
- await p.screenshot({path:path.join(__dirname,'artifacts/save-transfer-desktop.png')});
+ await p.screenshot({path:path.join(out,'save-transfer-desktop.png')});
  await p.evaluate(()=>DoLSavesUI.setEnabled(false));assert.equal(await p.locator('.dgs-transfer').count(),0);assert.ok(await p.evaluate(()=>transferInput.parentElement===transferArea&&transferFile.parentElement===transferArea));
  await p.evaluate(()=>{transferArea.innerHTML='<section id="cloud-test">Cloud controls</section>';DoLSavesUI.setEnabled(true)});await p.waitForTimeout(80);assert.equal(await p.locator('.dgs-transfer').count(),0);assert.equal(await p.locator('#cloud-test').textContent(),'Cloud controls');
  await p.evaluate(()=>DoLSavesUI.destroy());assert.equal(await p.locator('.dgs-native-row').count(),0);

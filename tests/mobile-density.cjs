@@ -34,7 +34,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
  await surfaces.setContent('<html data-dol-midnight data-dgu-visual="2" data-dgu-visualGlass data-dgu-compact-controls><body><div id="customOverlay" data-overlay="saves"><div id="saveList"><section class="dgs-host"><dialog open class="dgs-detail"><div class="dgs-actions"><button>Save</button><button class="dgs-load">Load</button></div></dialog></section></div></div><section class="dgw-root"><div class="dgw-slots"><button>A</button><button>B</button></div></section></body></html>');
  await surfaces.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});
  for(const selector of ['.dgs-actions','.dgw-slots']){
-  assert.equal(await surfaces.locator(selector).evaluate(e=>getComputedStyle(e).gap),'4px');
+  assert.equal(await surfaces.locator(selector).evaluate(e=>getComputedStyle(e).gap),selector==='.dgs-actions'?'8px':'4px');
   assert.ok(await surfaces.locator(selector+' button').evaluateAll(nodes=>nodes.every(e=>e.getBoundingClientRect().height>=44)));
  }
  await surfaces.close();

@@ -1,5 +1,5 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
-const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'artifacts/m4a-20261008');
+const root=path.resolve(__dirname,'..'),out=process.env.DOL_TEST_OUT||path.join(__dirname,'artifacts/m4a-20261008');fs.mkdirSync(out,{recursive:true});
 (async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{
  const p=await b.newPage({viewport:{width:1440,height:900}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
  await p.goto(pathToFileURL(path.join(__dirname,'fixture.html')).href);

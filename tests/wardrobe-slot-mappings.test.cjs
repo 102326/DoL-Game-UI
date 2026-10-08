@@ -24,3 +24,19 @@ for(const v of ['4.1.1','4.2.0']) {version=v;assert.equal(ranges.labels(snapshot
 assert.equal(ranges.labels({...snapshot,inventory:{}}).over_upper,undefined);
 version='4.1.0';assert.equal(ranges.labels(snapshot).over_upper,undefined);ranged.destroy();version='4.2.0';assert.equal(ranges.labels(snapshot).over_upper,undefined);
 console.log('PASS semantic mapping: target/data gates, no state mutation, input copy, collision guards, revoke/dispose');
+// Fresh slot names exercise discovery independently of the three ReOverfits mappings.
+let detected='1.0.0';const fresh=moduleObject.exports.createSlotMappings(()=>detected);
+const extra={inventory:{cape:[item],charm:[]},worn:{cape:{name:'naked'},charm:{name:'naked'}},setup:{clothes:{cape:[item],charm:[item]}},variables:{debug:false}};
+const original=JSON.stringify(extra);
+assert.deepEqual(Array.from(fresh.support(extra),s=>s.reason),['registration-required','registration-required']);
+assert.ok(fresh.support(extra).every(s=>!s.canDisplay&&s.operationContract==='unreviewed'));
+const optIn=fresh.register({id:'FreshSlots',target:{name:'FreshSlots',versions:['1.0.0']},slots:{cape:'披肩'}});
+const supported=fresh.support(extra),cape=supported.find(s=>s.slot==='cape');
+assert.equal(cape.reason,'mapped');assert.equal(cape.operationContract,'author-declared-native');assert.ok(cape.canDisplay);
+assert.ok(Object.isFrozen(supported)&&supported.every(Object.isFrozen));assert.equal(JSON.stringify(extra),original);
+detected='2.0.0';assert.equal(fresh.support(extra).find(s=>s.slot==='cape').reason,'unsupported-version');
+detected=undefined;assert.equal(fresh.support(extra).find(s=>s.slot==='cape').reason,'target-not-detected');
+detected='1.0.0';assert.equal(fresh.support({...extra,worn:{}}).find(s=>s.slot==='cape').reason,'missing-native-data');
+assert.equal(fresh.support(null)[0].reason,'wardrobe-unavailable');
+optIn.destroy();assert.equal(fresh.support(extra).find(s=>s.slot==='cape').reason,'registration-required');fresh.destroy();assert.equal(fresh.support(extra).length,0);
+console.log('PASS fresh-slot discovery: empty slot, opt-in contract, immutable diagnostics, missing/version/revoke boundaries');

@@ -150,4 +150,14 @@ if (wardrobe?.apiVersion === 1 && typeof wardrobe.registerSlotMapping === 'funct
 
 注册/撤销只改变 UI 分类并取消尚未执行的整理确认计划，进行中的原业务操作按已有流程结束。Core 销毁后旧句柄失效，Adapter 应向新的 API 实例重新注册。
 
+### 2.3 候选：查询槽位支持边界
+
+API 仍为 v1。调用前检查 `typeof window.DoLGameUI?.wardrobe?.getSlotSupport === 'function'`。返回值为冻结的字符串、布尔值记录，不包含库存、游戏变量或原节点。
+
+`getSlotSupport()` 检查原衣柜数据结构与已注册映射，给出 `native-slot`、`mapped`、`registration-required`、`target-not-detected`、`unsupported-version`、`missing-native-data` 或 `wardrobe-unavailable`。空的新槽位也可以被发现。
+
+`canDisplay` 只表示分类满足展示条件，不证明当前页面可以执行操作。原操作仍要通过当前页面、原对象和索引的新鲜度校验。
+
+新槽位只有库存、定义和穿戴对象还不够。原版衣柜宏有固定的部位列表；注册映射的作者还须保证自己的槽位支持原 `wear_<slot>` / `updatewardrobe` 链及相关整理操作。`author-declared-native` 表示作者作出了这一声明，不表示 Core 验证过任意第三方业务。使用私有库存或专属操作的槽位应保留原入口，不应注册成原生业务槽位。未注册的未知衣槽保留原版信息入口，Core 不猜测操作、不读取私有库存。
+
 只支持可复用原衣柜数据与操作链的原生已有槽位；其它服装 Mod 可选择接入，不自动接管任意新业务结构，也不提供自定义业务回调、状态镜像或通用 Proxy / Deep Adapter 执行器。

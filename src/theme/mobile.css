@@ -1,0 +1,46 @@
+/* Phone content density: remove repeated chrome, keep actions and text legible. */
+@media(max-width:600px){
+ html[data-dol-midnight][data-dmt-layout] #passages{padding-inline:6px}
+ html[data-dol-midnight][data-dmt-layout] :is(#story,#ui-bar.stowed ~ #story){margin-left:calc(2em + 6px)}
+ html[data-dol-midnight][data-dmt-layout] #overlayButtons{gap:4px}
+ html[data-dol-midnight][data-dmt-layout] .customOverlay:not([data-overlay=modloader]):not([hidden]):not(.hidden){height:calc(100dvh - 8px);max-width:100%;border-radius:12px}
+ html[data-dol-midnight] :is(.dgp-navigation,.dgs-navigation,.dgc-navigation){flex-wrap:wrap;gap:4px;padding:4px}
+ html[data-dol-midnight] :is(.dgp-navigation,.dgs-navigation,.dgc-navigation) button{min-height:44px;padding:4px 8px}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-item{min-height:68px;padding:8px 10px;gap:8px;margin-bottom:4px}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-host{margin:4px 0}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar{padding:8px;gap:6px}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar :is(p,h2){margin-block:4px}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail-header{padding:8px 12px}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail-content{padding:0 12px 8px}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail-content>h3{margin:12px 0 6px}
+ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves] .dgs-host .dgs-detail[open] :is(dl,.dgs-name-form,.dgs-description){padding:8px}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-detail[open] .dgs-actions{padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));gap:8px;flex-wrap:wrap}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-actions>button{min-height:44px;flex:1 1 72px}
+ html[data-dol-midnight] .dgs-detail[open]:not(.dgs-inline-detail){inset:calc(4px + env(safe-area-inset-top,0px)) 4px calc(4px + env(safe-area-inset-bottom,0px));height:calc(100dvh - 8px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));max-height:100%}
+ html[data-dol-midnight] #dol-midnight-controls :is(.dmt-settings-header,.dmt-controls-content){padding:8px 12px}
+ html[data-dol-midnight] .dgu-surface :is(.dgu-surface-header,.dgu-surface-content){padding:10px 12px}
+ html[data-dol-midnight] .dgu-surface{max-height:calc(100dvh - 8px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+}
+@container clothing-shop (max-width:480px){
+ .dgshop-content .dgshop-toolbar{padding:8px;gap:4px}
+ .dgshop-content .dgshop-browse-tools{padding:4px 0;gap:4px}
+ .dgshop-content .dgshop-browse-tools :is(.optionsBar,.searchGroup){gap:4px}
+ .dgshop-content .dgshop-browse-tools #shopCategories{gap:4px;flex-wrap:wrap}
+ .dgshop-content .dgshop-catalog .clothing-item{padding:6px 8px;min-height:60px;margin-bottom:4px}
+ .dgshop-content .dgshop-detail-body{padding:8px;min-height:0}
+ .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details{left:4px;right:4px;bottom:calc(4px + env(safe-area-inset-bottom,0px));height:min(88dvh,820px);max-height:calc(100dvh - 8px - env(safe-area-inset-bottom,0px))}
+ .dgshop-content .dgshop-purchase{padding:8px;gap:8px;flex-shrink:0}
+ .dgshop-content .dgshop-purchase .buy-button-inner{min-height:48px;padding:6px 8px}
+ .dgshop-content .colour-button{min-width:44px;min-height:44px}
+ .dgshop-content .clothing-colours-div{gap:6px}
+}
+@container combat (max-width:480px){
+ html[data-dol-midnight] .dcu-root.dcu-candidate .dcu-workspace{padding:4px}
+ html[data-dol-midnight] .dcu-root.dcu-candidate .dcu-native .dcu-group{padding:6px 8px}
+ html[data-dol-midnight] #passages .dcu-root.dcu-candidate .dcu-native .dcu-group label{padding:2px 6px;margin:1px 2px 1px 0;min-height:44px;line-height:1.4}
+ html[data-dol-midnight][data-dgu-compact-controls] #passages .dcu-root.dcu-candidate .dcu-native .dcu-group label{padding-inline:4px;margin-block:0}
+ .dcu-candidate .dcu-header{padding:4px 8px;gap:4px}
+ .dcu-candidate .dcu-nav{padding:4px;gap:4px;flex-wrap:wrap}
+ .dcu-candidate .dcu-summary-rail{display:none}
+ .dcu-candidate .dcu-footer{gap:6px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+}

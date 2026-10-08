@@ -37,6 +37,13 @@ const {chromium}=require('playwright'),{buildSync}=require('esbuild');
   projection=setup(row(1,'',true));const info=await metadata.read(projection.entries,true);check(!info.revisions.has(projection.entries[0].key),'native empty/storage occupied mismatch never sealed');
   const guarded=SaveSource.createSaveSource(c=>c===container,metadata.revision),gp=guarded.read(container);guarded.seal(gp.entries,info.revisions);check(!!await guarded.dispatch(gp.entries[0].key,0)&&calls===3,'mismatch refuses overwrite');passed.push('empty occupancy mismatch');
   const payload={metadata:{saveName:'native'}};onSave(payload);check(payload.metadata.dolGameUI.gameTime==='2022/9/7 08:03'&&payload.metadata.saveName==='native','existing metadata write unchanged');passed.push('metadata preserved');
+  const shared={metadata:{saveName:'native',dolGameUI:{gameTime:'old',extension:{kept:true},format:2}}};onSave(shared);
+  check(shared.metadata.dolGameUI.gameTime==='2022/9/7 08:03'&&shared.metadata.dolGameUI.extension.kept&&shared.metadata.dolGameUI.format===2,'other namespace fields preserved');
+  const plain=JSON.parse(JSON.stringify(shared));check(plain.metadata.dolGameUI.extension.kept&&plain.metadata.saveName==='native','ordinary JSON round trip needs no UI runtime');
+  for(const previous of [[],42,'unknown',new Date()]){const unsupported={metadata:{dolGameUI:previous}};onSave(unsupported);check(unsupported.metadata.dolGameUI===previous,'unsupported namespace left untouched')}
+  const frozen={metadata:Object.freeze({dolGameUI:Object.freeze({gameTime:'historical',other:true})})};onSave(frozen);check(frozen.metadata.dolGameUI.gameTime==='historical','frozen metadata does not interrupt save');
+  const nullRecord=Object.assign(Object.create(null),{other:true});const nullPayload={metadata:{dolGameUI:nullRecord}};onSave(nullPayload);check(nullPayload.metadata.dolGameUI.other,'null-prototype fields preserved');
+  details[0].data.metadata.dolGameUI={gameTime:'2020/1/2 03:04',other:true};projection=setup();await metadata.read(projection.entries,true);check(projection.entries[0].gameTime==='2020/1/2 03:04','historical gameTime remains readable');
   const missing=SaveMetadata.createSaveMetadata({localStorage:{getItem:()=>null}});let rejected=false;try{await missing.revision(projection.entries[0],false)}catch{rejected=true}check(rejected,'no native details fails closed');passed.push('missing native details');metadata.destroy();missing.destroy();
   return {passed,calls};
  });assert.equal(result.passed.length,20);console.log('PASS save source M4-B:',result);

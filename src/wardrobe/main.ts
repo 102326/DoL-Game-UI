@@ -236,5 +236,5 @@ export function startWardrobe(root:WardrobeDataHost){
   const changed=()=>{if(disposed)return;if(active?.app&&!active.state.busy){cancel(active);refresh(active)}else schedule()};
   changed();return Object.freeze({destroy(){handle.destroy();changed()}});
  }
- return {registerSlotMapping,performance:timing,getEnabled:()=>enabled&&!failed,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()||failed){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){slotMappings.destroy();timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
+ return {registerSlotMapping,getSlotSupport:()=>slotMappings.support(disposed?null:snapshot(root)),performance:timing,getEnabled:()=>enabled&&!failed,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()||failed){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){slotMappings.destroy();timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
 }

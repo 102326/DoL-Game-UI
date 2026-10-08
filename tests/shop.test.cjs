@@ -1,5 +1,6 @@
 const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{buildSync}=require('esbuild');
 const project=path.resolve(process.env.DOL_TEST_WORKSPACE||path.resolve(__dirname,'../../..'));
+const out=process.env.DOL_TEST_OUT||path.join(__dirname,'artifacts');fs.mkdirSync(out,{recursive:true});
 const server=http.createServer((req,res)=>{
  const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
  const file=pathname==='/game'?path.join(project,process.env.DOL_WARDROBE_INTEGRATED?'upstream/game-0.5.11.9/Degrees of Lewdity.html':'releases/source-baseline-0.5.11.9/vanilla.html'):path.join(project,'upstream/game-0.5.11.9',pathname);
@@ -104,7 +105,7 @@ const server=http.createServer((req,res)=>{
  const containerCheck=await p.locator('#clothingShop-div').evaluate(n=>({width:n.clientWidth,overflow:n.scrollWidth>n.clientWidth+2,narrow:n.classList.contains('dgshop-narrow'),columns:getComputedStyle(n.querySelector('.dgshop-layout')).gridTemplateColumns}));
  assert.equal(containerCheck.width,550);assert.equal(containerCheck.narrow,true);assert.equal(containerCheck.overflow,false);assert.equal(containerCheck.columns.split(' ').length,1);
  await p.locator('.dgshop-close-detail').click();assert.equal(await p.locator('.clothing-details').isVisible(),false);await p.getByRole('button',{name:'查看商品详情',exact:true}).click();assert.ok(await p.locator('.buy-buttons').isVisible());
- await p.screenshot({path:path.join(__dirname,`artifacts/shop-container550-${variant}.png`)});
+ await p.screenshot({path:path.join(out,`shop-container550-${variant}.png`)});
  await p.locator('#clothingShop-div').evaluate(n=>n.style.removeProperty('width'));await p.waitForTimeout(100);
  for(const [name,width,height] of [['tablet',1704,1136],['phone',390,844]]){
   await p.setViewportSize({width,height});await p.evaluate(()=>SugarCube.UIBar.stow());await p.locator('.dgshop-host').scrollIntoViewIfNeeded();
@@ -136,7 +137,7 @@ const server=http.createServer((req,res)=>{
   }
   await clear.evaluate((e,text)=>e.textContent=text,oldText);
   await p.evaluate(()=>{DoLGameUI.setPreference('fontScale',100);DoLGameUI.setPreference('buttonScale',100)});
-  await p.screenshot({path:path.join(__dirname,`artifacts/shop-${variant}-${name}.png`)});
+  await p.screenshot({path:path.join(out,`shop-${variant}-${name}.png`)});
   assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),true,'no horizontal page overflow');
   if(width>900){const toolsRect=await p.locator('.dgshop-browse-tools').boundingBox(),catalogRect=await p.locator('.dgshop-catalog').boundingBox();assert.ok(toolsRect.y+toolsRect.height<=catalogRect.y+2,'tools above catalog');assert.ok(toolsRect.width>catalogRect.width,'tools span both columns');const geometry=await p.evaluate(()=>{const c=document.querySelector('.dgshop-catalog').getBoundingClientRect(),d=document.querySelector('.clothing-details').getBoundingClientRect();return {left:c.right,right:d.left,delta:Math.abs(c.top-d.top)}});assert.ok(geometry.left<=geometry.right&&geometry.delta<2,'catalog and details side by side')}
   await p.locator('.dgshop-detail-body').evaluate(e=>e.scrollTop=e.scrollHeight);const footerRect=await p.locator('.dgshop-purchase').boundingBox();assert.ok(footerRect.y+footerRect.height<=height+2,'purchase stays in view '+JSON.stringify({name,height,footerRect}));
@@ -144,7 +145,7 @@ const server=http.createServer((req,res)=>{
   const geometry=await p.locator('.clothing-colours-div').evaluate(e=>{const m=e.querySelector('#mannequin').getBoundingClientRect(),c=e.querySelector('.colours-container').getBoundingClientRect();return {overlap:Math.min(m.right,c.right)>Math.max(m.left,c.left)&&Math.min(m.bottom,c.bottom)>Math.max(m.top,c.top),width:c.width}});
   assert.equal(geometry.overlap,false,'new flex layout must not overlap mannequin and colours');assert.ok(geometry.width>120);
   assert.equal(await p.locator('.colour-options-div.primary .bg-blue').first().isVisible(),true);
-  await p.screenshot({path:path.join(__dirname,`artifacts/shop-colours-${variant}-${name}.png`)});
+  await p.screenshot({path:path.join(out,`shop-colours-${variant}-${name}.png`)});
   const buttons=await p.locator('.dgshop-purchase .buy-buttons>.buy-button').boundingBox(),trial=await p.locator('.dgshop-purchase .try-button').first().boundingBox();assert.ok(buttons.height<110,'purchase button stays compact');assert.ok(trial.height>=44,'trial touch target');
   assert.equal(await p.locator('.clothing-item').first().evaluate(e=>getComputedStyle(e).isolation),'isolate','badge stays within card stacking context');
   await p.locator('.filters-button').click();await p.waitForSelector('#filters:not(.hidden)');
@@ -198,7 +199,7 @@ const server=http.createServer((req,res)=>{
  await p.locator('.colour-options-div.secondary .colour-button:has(.bg-red)').click();assert.equal(await p.evaluate(()=>V.accessorycolouraction),'red');
  await p.locator('.colour-options-div.pattern .colour-button').first().click();assert.ok(await p.evaluate(()=>!!V.patternaction));
  await p.locator('.dgshop-detail-body').evaluate(e=>e.scrollTop=0);
- await p.screenshot({path:path.join(__dirname,`artifacts/shop-complex-${variant}-tablet.png`)});
+ await p.screenshot({path:path.join(out,`shop-complex-${variant}-tablet.png`)});
  await p.locator('.colour-options-div.primary .bg-custom').click();await p.waitForSelector('.custom-colour-sliders.primary input');
  assert.equal(await p.locator('.dgshop-purchase #buy-send-home').count(),1);
  await p.locator('.colour-options-div.primary .colour-button:has(.bg-blue)').click();

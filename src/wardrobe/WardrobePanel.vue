@@ -9,13 +9,13 @@ const props=defineProps<{model:WardrobeModel;resolveIcon:(src:string)=>Promise<s
 const view=computed(()=>props.model);
 const preview=ref<HTMLElement>(),native=ref<HTMLElement>(),actions=ref<HTMLElement>(),warmth=ref<HTMLElement>(),equipment=ref<HTMLElement>(),services=ref<HTMLElement>(),confirmationTitle=ref<HTMLElement>();
 const exits=ref<HTMLElement>();
-const shell=ref<HTMLElement>(),previewOpen=ref(true);
+const shell=ref<HTMLElement>(),previewOpen=ref(true),quickOpen=ref(true);
 const complexContent=computed(()=>props.model.slots.length>11||props.model.items.length>8);
 let previewResize:ResizeObserver|undefined,lastNarrow:boolean|undefined,previewFrame=0;
 function resizePreview(){
  const root=shell.value?.closest<HTMLElement>('.dgw-root');if(!root)return;
  const nextNarrow=root.clientWidth<=700;
- if(nextNarrow!==lastNarrow){lastNarrow=nextNarrow;previewOpen.value=!nextNarrow}
+ if(nextNarrow!==lastNarrow){lastNarrow=nextNarrow;previewOpen.value=!nextNarrow;quickOpen.value=!nextNarrow}
 }
 function schedulePreviewResize(){cancelAnimationFrame(previewFrame);previewFrame=requestAnimationFrame(resizePreview)}
 onMounted(()=>{resizePreview();const root=shell.value?.closest<HTMLElement>('.dgw-root');if(root&&typeof ResizeObserver!=='undefined'){previewResize=new ResizeObserver(schedulePreviewResize);previewResize.observe(root)}else window.addEventListener('resize',schedulePreviewResize)});
@@ -59,10 +59,11 @@ defineExpose({exits,preview,native,actions,warmth,equipment,services});
 <template>
  <section ref="shell" class="dgw-shell dgw-candidate" :class="{'dgw-managing':manageMode,'dgw-complex':complexContent}" aria-label="穿搭衣柜">
   <header class="dgw-header"><div><h2>衣柜</h2><p>快速穿戴：点选即换装，预览为当前实际穿搭</p></div><div class="dgw-header-actions"><div ref="exits" class="dgw-exits"></div><GameButton :disabled="busy" @click="toggleManage">{{manageMode?'退出整理':'整理模式'}}</GameButton></div></header>
-  <section class="dgw-quick"><h3>常用操作与套装</h3><div ref="actions" class="dgw-actions"></div></section>
+  <details class="dgw-quick" :open="quickOpen" @toggle="quickOpen=($event.target as HTMLDetailsElement).open"><summary>常用操作与套装</summary><div ref="actions" class="dgw-actions"></div></details>
   <div ref="services" class="dgw-services" :inert="busy"></div>
   <section class="dgw-original-access"><GameButton class="dgw-open-original" :disabled="busy" :aria-expanded="model.nativeVisible" @click="onNative(!model.nativeVisible)">{{model.nativeVisible?'收起原版及扩展信息':'查看原版及扩展信息'}}</GameButton><p v-if="model.unknownSlots.length">未接管分类：{{model.unknownSlots.join('、')}}。请打开原版信息查看与操作。</p><div ref="native" class="dgw-native" :hidden="!model.nativeVisible" :aria-hidden="!model.nativeVisible"></div></section>
   <nav class="dgw-slots" aria-label="服装分类"><GameButton v-for="s in model.slots" :key="s.key" :disabled="busy" :aria-pressed="s.key===model.slot" @click="slot(s.key)">{{s.label}} <span v-if="capacityWarning(s.count,s.capacity)" class="dgw-capacity-alert" :class="capacityWarning(s.count,s.capacity)" :aria-label="capacityWarning(s.count,s.capacity)==='full'?'容量已满':'容量即将用尽'" :title="`${s.count} / ${s.capacity}`">!</span></GameButton></nav>
+  <div class="dgw-mobile-category"><select class="dgw-slot-select" aria-label="服装分类" :value="model.slot" :disabled="busy" @change="slot(($event.target as HTMLSelectElement).value)"><option v-for="s in model.slots" :key="s.key" :value="s.key">{{s.label}}{{capacityWarning(s.count,s.capacity)?' · 容量提醒':''}}</option></select></div>
   <p v-if="model.categoryNote" class="dgw-category-note">{{model.categoryNote}}</p>
   <div class="dgw-workspace">
    <div class="dgw-inventory">

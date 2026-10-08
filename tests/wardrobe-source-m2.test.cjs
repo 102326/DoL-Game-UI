@@ -17,6 +17,10 @@ const fresh=source.read('upper').items[0].key;root.V.wardrobe.upper[0]={...item}
 const replacement=source.read('upper').items[0].key;current=false;assert.equal(source.resolve(replacement),null,'page ownership lost');assert.equal(source.read('upper'),null);current=true;
 root.V.wardrobe.over_upper=[item];root.V.worn.over_upper={name:'naked'};root.setup.clothes.over_upper=[definition];
 const extension=moduleObject.exports.createWardrobeSource(root,()=>({over_upper:'外套上装'}),()=>current);
+root.V.wardrobe.charm=[];root.V.worn.charm={name:'naked'};root.setup.clothes.charm=[definition];
+assert.ok(source.read('upper').unknownSlots.includes('charm'),'empty new slot remains discoverable');
+root.V.wardrobe.over_head=[];root.V.worn.over_head={name:'naked'};root.setup.clothes.over_head=[definition];
+assert.ok(!source.read('upper').unknownSlots.includes('over_head'),'empty optional vanilla slots do not flood unknown-content notices');
 assert.equal(extension.read('over_upper').items[0].detail,'native description');assert.equal(extension.read('over_upper').categoryNote,'','no experimental category copy');extension.destroy();
 source.destroy();assert.equal(source.resolve(replacement),null);assert.equal(source.read('upper'),null);assert.equal(source.resolveMany([replacement]),null);
 assert.equal(source.resolveMany([replacement]),null);

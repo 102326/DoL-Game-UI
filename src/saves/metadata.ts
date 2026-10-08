@@ -17,7 +17,11 @@ export function createSaveMetadata(root:SaveMetadataHost){
  function onSave(save:SavePayload){
   // Only a display snapshot; never touch state/history or native save names.
   try{const t=root.Time;if(!t)return;const fields=[t.year,t.month,t.monthDay,t.hour,t.minute];if(!fields.every(Number.isFinite))return;
-   save.metadata??={};save.metadata.dolGameUI={gameTime:`${fields[0]}/${fields[1]}/${fields[2]} ${String(fields[3]).padStart(2,'0')}:${String(fields[4]).padStart(2,'0')}`};
+   save.metadata??={};
+   const previous=save.metadata.dolGameUI;
+   // Preserve other own metadata fields; arrays and exotic objects are not merge contracts.
+   if(previous!=null&&(typeof previous!=='object'||Array.isArray(previous)||![Object.prototype,null].includes(Object.getPrototypeOf(previous))))return;
+   save.metadata.dolGameUI={...previous,gameTime:`${fields[0]}/${fields[1]}/${fields[2]} ${String(fields[3]).padStart(2,'0')}:${String(fields[4]).padStart(2,'0')}`};
   }catch{/* Missing time or frozen third-party metadata must not interrupt saving. */}
  }
  function attach(){const api=(root.SugarCube?.Save||root.Save)?.onSave;if(api===saveApi||typeof api?.add!=='function')return;saveApi?.delete?.(onSave);saveApi=api;api.add(onSave)}
