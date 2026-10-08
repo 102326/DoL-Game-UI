@@ -98,6 +98,14 @@ const server=http.createServer((req,res)=>{
  await p.locator('.try-button').first().click();assert.equal(await p.evaluate(()=>V.money),preTry.money,'trial does not charge');
  await p.locator('.try-button').nth(1).click();
  assert.equal(await p.evaluate(()=>JSON.stringify(V.worn)),preTry.worn,'return restores clothing');
+ // A wide viewport with a narrow native shop must not retain two cramped columns.
+ await p.setViewportSize({width:1363,height:900});
+ await p.locator('#clothingShop-div').evaluate(n=>n.style.width='550px');await p.waitForTimeout(100);
+ const containerCheck=await p.locator('#clothingShop-div').evaluate(n=>({width:n.clientWidth,overflow:n.scrollWidth>n.clientWidth+2,narrow:n.classList.contains('dgshop-narrow'),columns:getComputedStyle(n.querySelector('.dgshop-layout')).gridTemplateColumns}));
+ assert.equal(containerCheck.width,550);assert.equal(containerCheck.narrow,true);assert.equal(containerCheck.overflow,false);assert.equal(containerCheck.columns.split(' ').length,1);
+ await p.locator('.dgshop-close-detail').click();assert.equal(await p.locator('.clothing-details').isVisible(),false);await p.getByRole('button',{name:'查看商品详情',exact:true}).click();assert.ok(await p.locator('.buy-buttons').isVisible());
+ await p.screenshot({path:path.join(__dirname,`artifacts/shop-container550-${variant}.png`)});
+ await p.locator('#clothingShop-div').evaluate(n=>n.style.removeProperty('width'));await p.waitForTimeout(100);
  for(const [name,width,height] of [['tablet',1704,1136],['phone',390,844]]){
   await p.setViewportSize({width,height});await p.evaluate(()=>SugarCube.UIBar.stow());await p.locator('.dgshop-host').scrollIntoViewIfNeeded();
   if(width<=900&&!await p.locator('.dgshop-close-detail').isVisible())await p.getByRole('button',{name:'查看商品详情',exact:true}).click();
@@ -217,7 +225,7 @@ const server=http.createServer((req,res)=>{
  const afterFastPath=await p.evaluate(()=>DoLShopUI.getLifecycleCounts());
  assert.equal(afterFastPath.scans,beforeInjectedPage.scans,'page and hotkey-number text mutations keep full refresh count stable '+JSON.stringify({before:beforeInjectedPage,after:afterFastPath}));
  assert.ok(afterFastPath.fastPaths>beforeInjectedPage.fastPaths,'page and hotkey-number text mutations use the fast path');
- await p.waitForFunction(()=>document.querySelector('#test-fast-page .clothing-item')?.classList.contains('dgshop-selected'));
+ assert.equal(await p.locator('#test-fast-page .clothing-item').evaluate(n=>n.classList.contains('dgshop-selected')),false,'same-name clone is not the selected native control');
  await p.evaluate(()=>{document.querySelector('#test-fast-page')?.remove();window.testNumberingMarker?.remove();delete window.testNumberingMarker});
  await p.waitForTimeout(300);
  const beforeUnrelated=await p.evaluate(()=>DoLShopUI.getLifecycleCounts());
@@ -260,7 +268,7 @@ const server=http.createServer((req,res)=>{
  assert.equal(delivered.colour,'blue','delivered item retains chosen colour');
  await p.evaluate(()=>{V.location='home';V.wardrobe_location='wardrobe';V.lastWardrobeSlot='upper';SugarCube.Engine.play('Wardrobe')});
  await p.waitForSelector('.dgw-shell');
- const deliveredKey=await p.evaluate(()=>`upper:${V.wardrobe.upper.length-1}`);
+ const deliveredKey=await p.evaluate(()=>[...document.querySelectorAll('.dgw-item')].find(n=>Number(n.dataset.key.split(':')[1])===V.wardrobe.upper.length-1).dataset.key);
  await p.locator(`.dgw-item[data-key="${deliveredKey}"]`).click();
  assert.deepEqual(await p.evaluate(()=>({variable:V.worn.upper.variable,colour:V.worn.upper.colour})),delivered,'wardrobe equips the purchased item');
  // A native passage transition commits live V changes to the history snapshot.

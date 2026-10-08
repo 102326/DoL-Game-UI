@@ -81,7 +81,6 @@ export function startWardrobe(root:WardrobeDataHost){
   s.state.items=projection.items;
   const worn=fresh.worn[s.state.slot];s.state.wornItem=worn&&worn.name!=='naked'?itemView(fresh,s.state.slot,worn,'worn:'+s.state.slot):null;s.state.wornName=worn?itemName(fresh,s.state.slot,worn):'';
   const def=fresh.setup.clothes[s.state.slot]?.find(d=>d.variable===worn?.variable&&d.modder===worn?.modder);s.state.currentWarmth=Number.isFinite(def?.warmth)?def!.warmth!:null;
-  if(s.state.selected&&!projection.items.some(item=>item.key===s.state.selected))s.state.selected=null;
   const key=JSON.stringify([fresh.worn,fresh.variables.upperTucked,fresh.variables.lowerTucked,fresh.variables.bellyTucked,fresh.variables.facelayer,fresh.variables.dontHide,fresh.variables.upperwet,fresh.variables.lowerwet,fresh.variables.underupperwet,fresh.variables.underlowerwet]);
   if(force||key!==s.paintKey){s.paintKey=key;void paint(s)}
   s.state.message=message;
@@ -187,7 +186,7 @@ export function startWardrobe(root:WardrobeDataHost){
   const original=document.createElement('div');original.className='dgw-preserved';
   const host=document.createElement('div');host.className='dgw-root';
   const toggle=document.createElement('button');toggle.type='button';toggle.className='dgw-fallback';toggle.textContent='启用穿搭衣柜';toggle.hidden=true;toggle.onclick=()=>setEnabled(true);
-  const state=reactive<WardrobeModel>({pendingMode:'delete',canRepair:false,destinations:[],pendingMinutes:null,wornItem:null,owned:0,capacity:null,busy:false,pending:[],progress:'',slots:[],slot:Object.hasOwn(slotMappings.labels(data),data.variables.lastWardrobeSlot!)?data.variables.lastWardrobeSlot!:'upper',items:[],selected:null,loading:false,message:'',previewStatus:'',canWear:false,wornName:'',currentWarmth:null,unknownSlots:[],categoryNote:'',nativeVisible:false});
+  const state=reactive<WardrobeModel>({pendingMode:'delete',canRepair:false,destinations:[],pendingMinutes:null,wornItem:null,owned:0,capacity:null,busy:false,pending:[],progress:'',slots:[],slot:Object.hasOwn(slotMappings.labels(data),data.variables.lastWardrobeSlot!)?data.variables.lastWardrobeSlot!:'upper',items:[],loading:false,message:'',previewStatus:'',canWear:false,wornName:'',currentWarmth:null,unknownSlots:[],categoryNote:'',nativeVisible:false});
   const s:Session={passage,host,original,anchor,toggle,state,snapshot:data,view:null};active=s;
   source=createWardrobeSource(root,slotMappings.labels,()=>active===s&&!disposed&&enabled&&!failed&&isMasterEnabled()&&isCurrentPassage(s));
   // Keep the native close/return controls visible and bound to their original events.
@@ -204,7 +203,7 @@ export function startWardrobe(root:WardrobeDataHost){
    s.nativeListDirty=true;
    if(native.available()){try{native.setSlot(key);if(s.nativeOpen)flushNative(s)}catch(error){console.error('[DoLGameUI] wardrobe category update failed',error);state.message='原版衣柜分类刷新失败，请在界面设置中切换原版衣柜检查。'} }
    refresh(s);
-  },onSelect:(key:string)=>{if(resolveBindings(s,[key]))state.selected=key;else {refresh(s);state.message='衣柜内容已变化，请重新选择'}},onWear:(key:string)=>wear(s,key),onNative:(open:boolean)=>{if(state.busy)return;s.nativeOpen=open;state.nativeVisible=open;if(open){s.nativeListDirty=true;flushNative(s,true)}},onReview:(keys:string[])=>review(s,keys),onConfirm:()=>void discard(s).catch(error=>{console.warn('[DoLGameUI] wardrobe confirmation failed',error);recover()}),onCancel:()=>cancel(s),onStrip:()=>strip(s)});
+  },onWear:(key:string)=>wear(s,key),onNative:(open:boolean)=>{if(state.busy)return;s.nativeOpen=open;state.nativeVisible=open;if(open){s.nativeListDirty=true;flushNative(s,true)}},onReview:(keys:string[])=>review(s,keys),onConfirm:()=>void discard(s).catch(error=>{console.warn('[DoLGameUI] wardrobe confirmation failed',error);recover()}),onCancel:()=>cancel(s),onStrip:()=>strip(s)});
   s.view=mountUI(s.app,host,recover) as unknown as WardrobeView;if(s.exit)s.view!.exits.append(s.exit);s.view!.native.append(original);s.nativeOpen=false;s.nativeListDirty=false;
   s.moved=[];
   const controls=[...original.querySelectorAll<HTMLElement>('.wardrobe-dry,.wardrobe-action,#randomClothingConfigure,#listoutfits')].filter(n=>!n.closest('#wardrobeList,#wardrobeLinks')&&!n.parentElement?.closest('#listoutfits,.wardrobe-action,.wardrobe-dry'));

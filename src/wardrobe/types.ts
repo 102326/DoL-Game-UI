@@ -3,7 +3,7 @@ export interface Item {key:string;name:string;colour:string;warmth:number|null;d
 export interface Slot {key:string;label:string;count:number;capacity:number|null}
 export interface WardrobeModel {
  pendingMode:Operation;canRepair:boolean;destinations:{key:string;label:string}[];pendingMinutes:number|null;wornItem:Item|null;owned:number;capacity:number|null;busy:boolean;pending:{key:string;name:string;colour:string;linked:boolean}[];progress:string;
- slots:Slot[];slot:string;items:Item[];selected:string|null;loading:boolean;
+ slots:Slot[];slot:string;items:Item[];loading:boolean;
  unknownSlots:string[];categoryNote:string;nativeVisible:boolean;
  message:string;previewStatus:string;canWear:boolean;wornName:string;currentWarmth:number|null;
 }
