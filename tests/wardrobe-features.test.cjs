@@ -38,13 +38,21 @@ const server=http.createServer((req,res)=>{
  await p.getByRole('button',{name:'整理模式',exact:true}).click();
  assert.ok(await p.getByRole('button',{name:'修理衣物',exact:true}).isVisible(),'repair action is exposed when sewing kit and home conditions match');
  assert.ok(await p.getByRole('combobox',{name:'转移到衣柜'}).isVisible(),'transfer target selector is exposed when multiple wardrobes allow it');
- const repairKeys=await p.evaluate(()=>repairItems.map(item=>'upper:'+V.wardrobe.upper.indexOf(item)));
+ const repairKeys=await p.evaluate(()=>repairItems.map(item=>[...document.querySelectorAll('.dgw-item')].find(n=>Number(n.dataset.key.split(':')[1])===V.wardrobe.upper.indexOf(item)).dataset.key));
  for(const key of repairKeys)await p.locator(`.dgw-item[data-key="${key}"]`).click();
  const beforeRepair=await p.evaluate(()=>repairItems.map(item=>item.integrity));
  const beforeRepairTime=await p.evaluate(()=>V.timeStamp);
  await p.getByRole('button',{name:'修理衣物',exact:true}).click();
  assert.match(await p.locator('.dgw-confirm').textContent(),/确认修理/);assert.match(await p.locator('.dgw-confirm').textContent(),/10 分钟/);
  assert.deepEqual(await p.evaluate(()=>repairItems.map(item=>item.integrity)),beforeRepair,'repair review performs no write');
+ // Definitions can change without replacing inventory. A reviewed operation must refuse stale semantics.
+ await p.evaluate(()=>{window.changedDefinition=setup.clothes.upper.find(d=>d.variable===repairItems[0].variable&&d.modder===repairItems[0].modder);window.originalDescription=changedDefinition.description;changedDefinition.description='M2 external descriptor change'});
+ await p.getByRole('button',{name:'确认修理',exact:true}).click();
+ assert.deepEqual(await p.evaluate(()=>repairItems.map(item=>item.integrity)),beforeRepair,'stale definition prevents every native repair');assert.equal(await p.evaluate(()=>V.timeStamp),beforeRepairTime);
+ await p.evaluate(()=>{changedDefinition.description=originalDescription;DoLWardrobeUI.refresh()});
+ for(const key of await p.evaluate(()=>repairItems.map(item=>[...document.querySelectorAll('.dgw-item')].find(n=>Number(n.dataset.key.split(':')[1])===V.wardrobe.upper.indexOf(item)).dataset.key)))await p.locator(`.dgw-item[data-key="${key}"]`).click();
+ await p.getByRole('button',{name:'修理衣物',exact:true}).click();
+
  await p.getByRole('button',{name:'确认修理',exact:true}).click();
  await p.waitForFunction(()=>repairItems.every(item=>item.integrity>=item.integrity_max));
  assert.ok((await p.locator('.dgw-message').textContent()).includes('已修理 2'),'batch repair reports both selected items');
@@ -53,7 +61,7 @@ const server=http.createServer((req,res)=>{
 
  await p.getByRole('button',{name:'退出整理',exact:true}).click();await p.getByRole('button',{name:'整理模式',exact:true}).click();
  const targetBefore=await p.evaluate(()=>({source:V.wardrobe.upper.length,target:V.wardrobes.dgwTest.upper.length,item:repairItems[0]}));
- const transferKey=await p.evaluate(()=>'upper:'+V.wardrobe.upper.indexOf(repairItems[0]));await p.locator(`.dgw-item[data-key="${transferKey}"]`).click();
+ const transferKey=await p.evaluate(()=>[...document.querySelectorAll('.dgw-item')].find(n=>Number(n.dataset.key.split(':')[1])===V.wardrobe.upper.indexOf(repairItems[0])).dataset.key);await p.locator(`.dgw-item[data-key="${transferKey}"]`).click();
  await p.getByRole('combobox',{name:'转移到衣柜'}).selectOption('dgwTest');await p.getByRole('button',{name:'转移衣物',exact:true}).click();
  assert.match(await p.locator('.dgw-confirm').textContent(),/确认转移/);assert.match(await p.locator('.dgw-confirm').textContent(),/转入所选衣柜/);
  await p.getByRole('button',{name:'确认转移',exact:true}).click();await p.waitForFunction(()=>!V.wardrobe.upper.includes(repairItems[0]));
@@ -65,7 +73,7 @@ const server=http.createServer((req,res)=>{
    const target=V.wardrobes.dgwTest;target.upper.length=0;for(let i=0;i<target.space;i++)target.upper.push(structuredClone(repairItems[1]));
    V.wardrobe.upper.push(repairItems[0]);DoLWardrobeUI.refresh();
  });
- const fullTargetKey=await p.evaluate(()=>'upper:'+V.wardrobe.upper.indexOf(repairItems[0]));await p.locator(`.dgw-item[data-key="${fullTargetKey}"]`).click();
+ const fullTargetKey=await p.evaluate(()=>[...document.querySelectorAll('.dgw-item')].find(n=>Number(n.dataset.key.split(':')[1])===V.wardrobe.upper.indexOf(repairItems[0])).dataset.key);await p.locator(`.dgw-item[data-key="${fullTargetKey}"]`).click();
  await p.getByRole('button',{name:'转移衣物',exact:true}).click();
  await p.waitForTimeout(250);
  assert.equal(await p.evaluate(()=>V.wardrobe.upper.includes(repairItems[0])),true,'full target refuses transfer');

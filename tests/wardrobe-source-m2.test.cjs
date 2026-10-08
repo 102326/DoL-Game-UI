@@ -5,14 +5,19 @@ const definition={name:'coat',variable:'coat',description:'native description',w
 const root={V:{location:'home',wardrobe_location:'wardrobe',wardrobe:{upper:[item],mystery:[item],space:20},worn:{upper:{name:'naked'},mystery:{name:'naked'}},options:{images:0},wardrobeDefaults:{showTraits:true}},setup:{clothes:{upper:[definition],mystery:[definition]},colourName:()=> 'blue'}};
 let current=true;const source=moduleObject.exports.createWardrobeSource(root,()=>({upper:'上装'}),()=>current);
 const before=JSON.stringify(root.V),first=source.read('upper'),key=first.items[0].key;
+assert.equal(source.resolveMany([key,key]).length,1,'batch resolves unique keys in one validation');assert.equal(source.resolveMany([key,'unknown']),null,'unknown action aborts entire review');
+
 assert.equal(first.items[0].detail,'native description');assert.ok(!('raw' in first.items[0]));assert.ok(!('descriptor' in first.items[0]));assert.equal(source.resolve(key).raw,item);assert.equal(first.unknownSlots[0],'mystery');
 first.items[0].traits.push('UI only');assert.equal(item.type.length,1);assert.equal(JSON.stringify(root.V),before);
+root.setup.clothes.upper[0]={...definition};assert.equal(source.resolve(key),null,'same-value definition replacement invalidates binding');source.read('upper');const descriptorKey=source.read('upper').items[0].key;assert.equal(source.resolveMany([descriptorKey]).length,1);
 item.integrity=60;assert.equal(source.resolve(key),null,'in-place native update invalidates old operation');const second=source.read('upper');assert.notEqual(second.items[0].key,key);assert.equal(second.items[0].durability,60);
 root.setup.colourName=()=> 'translated';assert.equal(source.resolve(second.items[0].key),null,'derived display changes invalidate projection');assert.equal(source.read('upper').items[0].colour,'translated');
+const contextualKey=source.read('upper').items[0].key;root.setup.colourName=()=>{current=false;return 'translated'};assert.equal(source.resolve(contextualKey),null,'page changes during native display helper invalidate dispatch');current=true;root.setup.colourName=()=> 'translated';
 const fresh=source.read('upper').items[0].key;root.V.wardrobe.upper[0]={...item};assert.equal(source.resolve(fresh),null,'same-value replacement is not same native identity');
 const replacement=source.read('upper').items[0].key;current=false;assert.equal(source.resolve(replacement),null,'page ownership lost');assert.equal(source.read('upper'),null);current=true;
 root.V.wardrobe.over_upper=[item];root.V.worn.over_upper={name:'naked'};root.setup.clothes.over_upper=[definition];
 const extension=moduleObject.exports.createWardrobeSource(root,()=>({over_upper:'外套上装'}),()=>current);
-assert.equal(extension.read('over_upper').items[0].detail,'native description');moduleObject.exports.prototypeSlotNotes.over_upper='Revised controlled metadata';assert.equal(extension.read('over_upper').categoryNote,'Revised controlled metadata','category metadata changes without Vue changes');extension.destroy();
-source.destroy();assert.equal(source.resolve(replacement),null);assert.equal(source.read('upper'),null);assert.equal(source.bindings().length,0);
-console.log('PASS M1 projection: no native refs/writes; content/identity/page invalidation; unknown slots; disposal');
+assert.equal(extension.read('over_upper').items[0].detail,'native description');assert.equal(extension.read('over_upper').categoryNote,'','no experimental category copy');extension.destroy();
+source.destroy();assert.equal(source.resolve(replacement),null);assert.equal(source.read('upper'),null);assert.equal(source.resolveMany([replacement]),null);
+assert.equal(source.resolveMany([replacement]),null);
+console.log('PASS M2 projection: no native refs/writes; content/identity/page invalidation; unknown slots; disposal');

@@ -2,13 +2,6 @@ import {snapshot,entries,validate,slotCapacity,type Snapshot,type Entry} from '.
 import type {WardrobeDataHost,ClothingSlots} from './host';
 import type {Item,Slot} from './types';
 
-// M1 controlled metadata, not an author-provided ReOverfits protocol or public API.
-export const prototypeSlotNotes:Record<string,string>={
- over_head:'扩展头套 · M1 受控类别说明，穿戴仍由原游戏处理',
- over_upper:'扩展外套上装 · M1 受控类别说明，穿戴仍由原游戏处理',
- over_lower:'扩展外套下装 · M1 受控类别说明，穿戴仍由原游戏处理'
-};
-
 /** A page-local projection and binding table. Native objects never enter Vue items. */
 export function createWardrobeSource(root:WardrobeDataHost,labels:(s:Snapshot)=>Record<string,string>,current:()=>boolean){
  let disposed=false,revision=0,fingerprint='',location='',inventory:Snapshot['inventory']|undefined;
@@ -31,13 +24,14 @@ export function createWardrobeSource(root:WardrobeDataHost,labels:(s:Snapshot)=>
   }
   inventory=s.inventory;location=s.location;slot=nextSlot;fingerprint=nextFingerprint;
   const unknownSlots=Object.entries(s.inventory).filter(([key,value])=>!Object.hasOwn(names,key)&&Array.isArray(value)&&value.length>0&&(Array.isArray(s.setup.clothes[key])||Object.hasOwn(s.worn,key))).map(([key])=>key);
-  return {snapshot:s,slot,slots,items,unknownSlots,categoryNote:prototypeSlotNotes[slot]??'',revision};
+  const hiddenCount=(s.inventory as ClothingSlots)[slot].length-items.length;
+  return {snapshot:s,slot,slots,items,unknownSlots,categoryNote:hiddenCount>0?`${hiddenCount} 件关联套装部件由主件操作；可在原版信息中查看。`:'',revision};
  }
- function resolve(key:string):Entry|null{
+ function resolveMany(keys:string[]):Entry[]|null{
   if(disposed||!current())return null;
-  const e=bound.find(entry=>entry.key===key),s=snapshot(root);
-  if(!e||!s||s.inventory!==inventory||s.location!==location||signature(s,slot)+JSON.stringify(entries(s,slot).map(({raw,descriptor,slot,index,...view})=>view))!==fingerprint||!validate(s,e))return null;
-  return e;
+  const chosen=[...new Set(keys)].map(key=>bound.find(entry=>entry.key===key)),s=snapshot(root);
+  if(!chosen.length||chosen.some(e=>!e)||!s||s.inventory!==inventory||s.location!==location||signature(s,slot)+JSON.stringify(entries(s,slot).map(({raw,descriptor,slot,index,...view})=>view))!==fingerprint||chosen.some(e=>!validate(s,e!)))return null;
+  return current()?chosen as Entry[]:null;
  }
- return {read,resolve,bindings:()=>bound,destroy(){disposed=true;bound=[];items=[];inventory=undefined}};
+ return {read,resolve:(key:string)=>resolveMany([key])?.[0]??null,resolveMany,destroy(){disposed=true;bound=[];items=[];inventory=undefined}};
 }

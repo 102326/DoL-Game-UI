@@ -87,24 +87,30 @@ html[data-dol-midnight][data-dmt-layout] #passages:has(.dgw-shell){max-width:90r
 @media(max-width:700px){.dgw-preview-disclosure{grid-row:1;overflow:visible}.dgw-preview-disclosure>summary{display:block}}
 @container wardrobe (max-width:700px){.dgw-side{display:contents}.dgw-preview-disclosure{grid-row:1;overflow:visible}.dgw-preview-disclosure>summary{display:block}}
 
-/* M1: content/selection changes presentation; native controls remain in their island. */
-.dgw-m1 .dgw-header h2 small{font-size:.55em;color:var(--dgu-secondary)}
-.dgw-m1 .dgw-browse-mode{display:flex;align-items:center;gap:8px;min-height:44px;font-size:.85em}
-.dgw-m1 .dgw-original-access{padding:0 16px 12px}
-.dgw-m1 .dgw-original-access>p,.dgw-m1 .dgw-category-note{color:var(--dgu-secondary);font-size:.85em}
-.dgw-m1 .dgw-category-note{padding:0 16px 8px;margin:0}
-.dgw-m1 .dgw-native:not([hidden]){padding:12px 0;overflow:auto;max-height:60dvh}
-.dgw-m1 .dgw-selected-detail{padding:12px;margin-bottom:12px;border-radius:10px;background:var(--dgu-card);overflow-wrap:anywhere}
-.dgw-m1 .dgw-selected-detail dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:12px 0}
-.dgw-m1 .dgw-selected-detail dd{margin:0;text-align:right}
-.dgw-m1 .dgw-selected-detail button{min-height:44px;margin:4px 6px 0 0}
-.dgw-m1 .dgw-item[aria-pressed=true]{box-shadow:inset 3px 0 var(--dgw-accent)}
+/* Candidate details stay next to their selected row in narrow containers. */
+.dgw-candidate .dgw-browse-mode{display:flex;align-items:center;gap:8px;min-height:44px;font-size:.85em}
+.dgw-candidate .dgw-original-access{padding:0 16px 12px}
+.dgw-candidate .dgw-original-access>p,.dgw-candidate .dgw-category-note{color:var(--dgu-secondary);font-size:.85em}
+.dgw-candidate .dgw-category-note{padding:0 16px 8px;margin:0}
+.dgw-candidate .dgw-native:not([hidden]){padding:12px 0;overflow:auto;max-height:60dvh}
+.dgw-candidate .dgw-selected-detail{padding:12px;margin-bottom:12px;border-radius:10px;background:var(--dgu-card);overflow-wrap:anywhere}
+.dgw-candidate .dgw-selected-detail dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:12px 0}
+.dgw-candidate .dgw-selected-detail dd{margin:0;text-align:right}
+.dgw-candidate .dgw-selected-detail button{min-height:44px;margin:4px 6px 0 0}
+.dgw-candidate .dgw-item[aria-pressed=true]{box-shadow:inset 3px 0 var(--dgw-accent)}
 @container wardrobe (max-width:700px){
- .dgw-m1 .dgw-inventory{grid-row:2}
- .dgw-m1 .dgw-selected-detail{grid-row:1;margin:0}
- .dgw-m1 .dgw-preview-disclosure{grid-row:auto}
- .dgw-m1.dgw-has-selection .dgw-items{max-height:35dvh}
- .dgw-m1 .dgw-metrics{display:none}
- .dgw-m1.dgw-complex .dgw-slots{flex-wrap:wrap;overflow:visible}
- .dgw-m1 .dgw-tools select{max-width:100%;flex:1}
+ .dgw-candidate .dgw-inventory{grid-row:1}
+ .dgw-candidate .dgw-selected-detail{margin:0}
+ .dgw-candidate .dgw-preview-disclosure{grid-row:auto}
+ .dgw-candidate .dgw-metrics{display:none}
+ .dgw-candidate.dgw-complex .dgw-slots{flex-wrap:wrap;overflow:visible}
+ .dgw-candidate .dgw-tools select{max-width:100%;flex:1}
+}
+
+.dgw-operation-status{color:var(--dgw-secondary);font-size:.85em;overflow-wrap:anywhere}
+.dgw-operation-status:empty{display:none}
+@container wardrobe (max-width:700px){
+ .dgw-candidate .dgw-side .dgw-selection-bar{position:static;max-height:none;overflow:visible}
+ .dgw-candidate.dgw-managing{padding-bottom:0}
+ .dgw-candidate .dgw-items{max-height:60dvh}
 }
