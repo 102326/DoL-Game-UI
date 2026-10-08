@@ -1,0 +1,266 @@
+{
+  "perf-formal": {
+    "samplesMsPerRefresh": [
+      1.4025000005960464,
+      0.85,
+      0.9125,
+      0.7675000011920929,
+      0.7549999982118607
+    ],
+    "nodes": 240,
+    "passage": "Beach Party Sex",
+    "radios": 35,
+    "unknown": 0
+  },
+  "perf-candidate": {
+    "samplesMsPerRefresh": [
+      1.3200000017881393,
+      1.0525000005960465,
+      1.2625,
+      0.9400000005960465,
+      1.0200000017881394
+    ],
+    "nodes": 243,
+    "passage": "Beach Party Sex",
+    "radios": 35,
+    "unknown": 0
+  },
+  "final-wide": {
+    "page": "Beach Party Sex",
+    "root": {
+      "left": 344.8000183105469,
+      "top": 0.07500000298023224,
+      "width": 961.6000366210938,
+      "height": 934.6375122070312,
+      "right": 1306.4000549316406,
+      "bottom": 934.7125122100115
+    },
+    "overflow": false,
+    "columns": "466.8px 466.8px",
+    "groups": [
+      {
+        "title": "左手",
+        "dense": true,
+        "bounds": {
+          "left": 354.8000183105469,
+          "top": 107.9124984741211,
+          "width": 941.6000366210938,
+          "height": 202.8000030517578,
+          "right": 1296.4000549316406,
+          "bottom": 310.7125015258789
+        }
+      },
+      {
+        "title": "右手",
+        "dense": true,
+        "bounds": {
+          "left": 354.8000183105469,
+          "top": 324.7124938964844,
+          "width": 941.6000366210938,
+          "height": 202.8000030517578,
+          "right": 1296.4000549316406,
+          "bottom": 527.5124969482422
+        }
+      },
+      {
+        "title": "双脚",
+        "dense": false,
+        "bounds": {
+          "left": 354.8000183105469,
+          "top": 541.5125122070312,
+          "width": 941.6000366210938,
+          "height": 97.20000457763672,
+          "right": 1296.4000549316406,
+          "bottom": 638.712516784668
+        }
+      },
+      {
+        "title": "口部",
+        "dense": true,
+        "bounds": {
+          "left": 354.8000183105469,
+          "top": 652.7125244140625,
+          "width": 941.6000366210938,
+          "height": 154.8000030517578,
+          "right": 1296.4000549316406,
+          "bottom": 807.5125274658203
+        }
+      },
+      {
+        "title": "私处",
+        "dense": false,
+        "bounds": {
+          "left": 354.8000183105469,
+          "top": 821.5125122070312,
+          "width": 466.8000183105469,
+          "height": 97.20000457763672,
+          "right": 821.6000366210938,
+          "bottom": 918.712516784668
+        }
+      },
+      {
+        "title": "臀部",
+        "dense": false,
+        "bounds": {
+          "left": 829.6000366210938,
+          "top": 821.5125122070312,
+          "width": 466.8000183105469,
+          "height": 97.20000457763672,
+          "right": 1296.4000549316406,
+          "bottom": 918.712516784668
+        }
+      }
+    ],
+    "selected": [
+      {
+        "name": "radiobutton-leftaction",
+        "value": "on",
+        "id": "radiobutton-leftaction-0"
+      },
+      {
+        "name": "radiobutton-rightaction",
+        "value": "on",
+        "id": "radiobutton-rightaction-4"
+      },
+      {
+        "name": "radiobutton-feetaction",
+        "value": "on",
+        "id": "radiobutton-feetaction-0"
+      },
+      {
+        "name": "radiobutton-mouthaction",
+        "value": "on",
+        "id": "radiobutton-mouthaction-0"
+      },
+      {
+        "name": "radiobutton-vaginaaction",
+        "value": "on",
+        "id": "radiobutton-vaginaaction-0"
+      },
+      {
+        "name": "radiobutton-anusaction",
+        "value": "on",
+        "id": "radiobutton-anusaction-0"
+      }
+    ],
+    "summary": "左手\n休息 · 不做什么\n右手\n爱抚 · 不做什么\n双脚\n休息\n口部\n休息\n私处\n休息\n臀部\n休息",
+    "dock": {
+      "left": 344.8000183105469,
+      "top": 799.6500244140625,
+      "width": 961.6000366210938,
+      "height": 76.3499984741211,
+      "right": 1306.4000549316406,
+      "bottom": 876.0000228881836
+    },
+    "nativeNext": 1,
+    "stateUnchanged": true
+  },
+  "narrow-proof": {
+    "width": 550,
+    "narrow": true,
+    "overflow": false,
+    "footer": {
+      "left": 344.8000183105469,
+      "right": 894.8000183105469,
+      "top": 748.0499877929688,
+      "bottom": 875.9999923706055,
+      "width": 550,
+      "height": 127.95000457763672
+    },
+    "targets": [
+      {
+        "selector": ".dcu-summary-toggle",
+        "bounds": {
+          "left": 352.8000183105469,
+          "right": 436.4687728881836,
+          "top": 823.2000122070312,
+          "bottom": 867.2000122070312,
+          "width": 83.66875457763672,
+          "height": 44
+        },
+        "centerHits": true
+      },
+      {
+        "selector": "#cbtToggleMenu .cbtToggle",
+        "bounds": {
+          "left": 705.2312622070312,
+          "right": 789.2312622070312,
+          "top": 823.2000122070312,
+          "bottom": 867.2000122070312,
+          "width": 84,
+          "height": 44
+        },
+        "centerHits": true
+      },
+      {
+        "selector": "#next a",
+        "bounds": {
+          "left": 798.03125,
+          "right": 886.8000030517578,
+          "top": 823.6500244140625,
+          "bottom": 868.0000267028809,
+          "width": 88.76875305175781,
+          "height": 44.35000228881836
+        },
+        "centerHits": true
+      }
+    ],
+    "selected": [
+      "radiobutton-leftaction-0",
+      "radiobutton-rightaction-4",
+      "radiobutton-feetaction-0",
+      "radiobutton-mouthaction-0",
+      "radiobutton-vaginaaction-0",
+      "radiobutton-anusaction-0"
+    ],
+    "summary": "左手\n休息 · 不做什么\n右手\n爱抚 · 不做什么\n双脚\n休息\n口部\n休息\n私处\n休息\n臀部\n休息",
+    "stateUnchanged": true,
+    "api": 1
+  },
+  "final-restore": {
+    "formalRestored": true,
+    "api": 1,
+    "stateUnchanged": true,
+    "passageUnchanged": true,
+    "preferencesUnchanged": true,
+    "contracts": [
+      {
+        "id": "listContainer",
+        "identity": true,
+        "parent": true,
+        "previous": true,
+        "next": true
+      },
+      {
+        "id": "next",
+        "identity": true,
+        "parent": true,
+        "previous": true,
+        "next": true
+      },
+      {
+        "id": "cbtToggleMenu",
+        "identity": true,
+        "parent": true,
+        "previous": true,
+        "next": true
+      }
+    ]
+  },
+  "browser-targeted": {
+    "passed": true,
+    "scope": "Original action-generation fixture and native SugarCube selection/fixture turn handlers; not real combat settlement",
+    "checks": [
+      "repeat selection",
+      "semantic binding expiry",
+      "hidden/disabled",
+      "unknown native controls",
+      "container550",
+      "sparse grid",
+      "two native fixture turns",
+      "next-page recovery",
+      "cleanup",
+      "synchronous reentry"
+    ]
+  }
+}

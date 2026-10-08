@@ -25,9 +25,10 @@ defineExpose({native,dock});
  <section class="dcu-shell" aria-label="新版战斗面板" data-dcu-vue>
   <header class="dcu-header">
   <nav class="dcu-nav" aria-label="定位行动部位"><span>全部行动</span><button v-for="g in model.groups" :key="g.key" type="button" :aria-current="currentGroup===g.key?'location':undefined" @click="jump(g.key)">{{g.title}}</button></nav><button type="button" @click="onClassic">原版界面 ↗</button></header>
+  <div class="dcu-context" :data-phase="model.phase" aria-live="polite"><span>{{model.phase==='unavailable'?'当前无可用选项':`已选 ${model.selectedGroups} / ${model.groups.length} 组`}}</span><span>{{model.availableActions}} 个原生选项</span><span v-if="model.unknown">保留原版扩展内容</span><p v-if="model.message" role="status">{{model.message}}</p></div>
   <div class="dcu-workspace"><div ref="native" class="dcu-native"></div></div>
   <footer ref="dock" class="dcu-footer" aria-label="战斗操作栏" @click.capture="nativeMenuClick">
-   <div class="dcu-summary-rail" aria-label="本回合摘要"><button v-for="g in model.groups" :key="g.key" type="button" :title="g.title+'：'+(g.selected||'暂无已选动作')" :aria-current="currentGroup===g.key?'location':undefined" @click="jump(g.key)"><span>{{g.title}}</span><strong>{{g.selected||'暂无已选动作'}}</strong></button></div>
+   <div class="dcu-summary-rail" aria-label="本回合摘要"><button v-for="g in model.groups" :key="g.key" type="button" :title="g.title+'：'+(g.selected||'暂无已选动作')" :aria-current="currentGroup===g.key?'location':undefined" @click="jump(g.key)"><span>{{g.title}}<small v-if="!g.available"> · 暂不可用</small></span><strong>{{g.selected||'暂无已选动作'}}</strong></button></div>
    <aside v-if="summaryOpen" class="dcu-summary" aria-label="本回合选择"><div class="dcu-summary-header"><div class="dcu-summary-heading"><h3>本回合选择</h3><span>{{model.groups.length}} 组</span></div><p class="dcu-hint">点击部位定位，继续后执行。</p></div><div class="dcu-summary-list"><button v-for="g in model.groups" :key="g.key" type="button" :aria-current="currentGroup===g.key?'location':undefined" @click="jump(g.key);summaryOpen=false"><span>{{g.title}}</span><strong>{{g.selected||'暂无已选动作'}}</strong></button></div></aside>
    <button type="button" class="dcu-summary-toggle" :aria-expanded="summaryOpen" @click="toggleSummary">{{summaryOpen?'收起摘要':'选择摘要'}}<span>{{model.groups.length}}</span></button><div class="dcu-dock-native" aria-label="原生战斗操作"></div>
   </footer>
