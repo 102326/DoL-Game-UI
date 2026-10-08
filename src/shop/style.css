@@ -199,6 +199,8 @@
 .dgshop-content{container-type:inline-size;container-name:clothing-shop}
 .dgshop-content:not(.dgshop-has-details) .dgshop-layout{grid-template-columns:minmax(0,1fr)}
 .dgshop-content:not(.dgshop-has-details) .dgshop-layout>.clothing-details{display:none}
+.dgshop-detail-backdrop{position:fixed;inset:0;z-index:1999;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:default}
+.dgshop-detail-backdrop[hidden]{display:none!important}
 .dgshop-content.dgshop-narrow .dgshop-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;height:auto;min-height:0}
 .dgshop-content.dgshop-narrow .dgshop-catalog{height:auto;max-height:none;min-height:0;overflow:visible;scrollbar-gutter:auto;padding:0}
 .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details{display:none;position:fixed;inset:auto 12px 12px;height:min(80dvh,820px);min-height:0;z-index:2000;box-shadow:0 16px 48px #0008}

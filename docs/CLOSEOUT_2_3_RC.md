@@ -43,7 +43,7 @@
 
 ## 包与升级
 
-主包：`dist/DoL-SoftWet-GameUI-2.3.0-rc.1.mod.zip`，177873 字节，SHA256 `92f56cfa5b0df053728b6dee4779ce7a437e03915e1b18ea20e87f8389acab87`。
+主包：`dist/DoL-SoftWet-GameUI-2.3.0-rc.1.mod.zip`，178045 字节，SHA256 `68b4227f6599f2d6b775160679d52b27c74613f2847253503fb0cf52d250a3cf`。
 
 可选：`compat/dol-optimization-soft-wet/dist/DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v0.1.6-rc.1.mod.zip`，SHA256 `ec61c5c23005717bf232611462e9d792f39799bc90e1d8c0b2f7d6973f7610d0`。
 

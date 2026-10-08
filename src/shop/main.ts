@@ -14,6 +14,7 @@ export function startShop(root:Runtime){
  try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference. */}
  let shop:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,frame=0,destroyed=false;
  let browseTools:HTMLElement|null=null;
+ let backdrop:HTMLButtonElement|null=null;
  let entry:HTMLElement|null=null;
  const entryBreaks=new Set<HTMLElement>();
  const defaultKey='DoLGameUI.shop.defaultGender';const defaultValues=['game','female','male','female-only','male-only','all'];
@@ -29,7 +30,8 @@ export function startShop(root:Runtime){
  const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'',defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
  function current(){const passage=shop?.closest<HTMLElement>('.passage');return !destroyed&&!!shop?.isConnected&&!!passage&&!passage.classList.contains('passage-out')&&document.querySelector('#passages .passage:not(.passage-out)')===passage&&(!root.SugarCube?.State?.passage||root.SugarCube.State.passage===passage.dataset.passage)}
  function facts():ShopFacts{const variables=root.SugarCube?.State?.variables;const clothes=(root as unknown as {setup?:{clothes?:Record<string,unknown[]>}}).setup?.clothes;return {variables,definition:clothes?.[String(variables?.clothingShopSlot)]?.[Number(variables?.clothes_choice)]}}
- function resizeLayout(){if(!shop)return;state.narrow=shop.clientWidth<800;state.compact=shop.clientWidth<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact)}
+ function syncBackdrop(){if(backdrop)backdrop.hidden=!(state.narrow&&state.open&&state.hasDetails)}
+ function resizeLayout(){if(!shop)return;state.narrow=shop.clientWidth<800;state.compact=shop.clientWidth<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop()}
  function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;shop?.classList.toggle('dgshop-categories-open',state.categoriesOpen)}
  function scheduleResize(){if(!destroyed&&!resizeFrame)resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;resizeLayout()})}
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
@@ -63,7 +65,7 @@ export function startShop(root:Runtime){
    const row=box('dgshop-entry-category',entry);move(icon,row);move(link,row);
   }
  }
- function toggle(open=!state.open){state.open=open;details?.classList.toggle('dgshop-detail-open',open);if(!open){const target=focusReturn?.isConnected?focusReturn:catalog?.querySelector<HTMLElement>('.dgshop-selected a')??host?.querySelector<HTMLElement>('button');target?.focus({preventScroll:true})}else if(open&&state.narrow)close?.focus({preventScroll:true})}
+ function toggle(open=!state.open){state.open=open;details?.classList.toggle('dgshop-detail-open',open);syncBackdrop();if(!open){const target=focusReturn?.isConnected?focusReturn:catalog?.querySelector<HTMLElement>('.dgshop-selected a')??host?.querySelector<HTMLElement>('button');target?.focus({preventScroll:true})}else if(open&&state.narrow)close?.focus({preventScroll:true})}
  let failed=false;
  function recover(){failed=true;release();observe();document.dispatchEvent(new Event('dol-ui-shop-change'))}
  function refresh(){isolate('shop',update,recover)}
@@ -102,6 +104,7 @@ export function startShop(root:Runtime){
    else move(node,header!);
   }
   details=nextDetails;
+  if(!backdrop?.isConnected){backdrop=document.createElement('button');backdrop.type='button';backdrop.className='dgshop-detail-backdrop';backdrop.setAttribute('aria-label','关闭商品详情');backdrop.tabIndex=-1;backdrop.hidden=true;backdrop.addEventListener('click',()=>toggle(false));document.body.append(backdrop);owned.add(backdrop)}
   if(!detailBody?.isConnected||detailBody.parentElement!==details){
    detailBody=box('dgshop-detail-body',details);footer=box('dgshop-purchase',details);
    close=document.createElement('button');close.type='button';close.className='dgshop-close-detail';close.textContent='返回商品列表';close.addEventListener('click',()=>toggle(false));details.prepend(close);owned.add(close);
@@ -115,6 +118,7 @@ export function startShop(root:Runtime){
   const projection=source!.read();state.hasDetails=projection?.hasDetails??false;state.selectedTitle=projection?.selected?.title??'';shop.classList.toggle('dgshop-has-details',state.hasDetails);
   footer!.hidden=!footer!.querySelector('.buy-buttons,.try-buttons');
   details.classList.toggle('dgshop-detail-open',state.open&&state.hasDetails);
+  syncBackdrop();
   // Catalog replacement after purchase/search must not jump back to the page top.
   // Native pages arrive incrementally: a temporary clamp must not erase the saved position.
   catalog!.scrollTop=scrollTop;restoredScroll.set(catalog!,catalog!.scrollTop);

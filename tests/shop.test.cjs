@@ -128,6 +128,13 @@ const server=http.createServer((req,res)=>{
   }
   if(width<=900&&!await p.locator('.dgshop-close-detail').isVisible())await p.getByRole('button',{name:'查看商品详情',exact:true}).click();
   if(width<=900){
+   const beforeDismiss=await p.evaluate(()=>JSON.stringify(V));
+   await p.locator('.dgshop-detail-body').click({position:{x:8,y:8}});assert.ok(await p.locator('.clothing-details').isVisible(),'inside detail stays open');
+   const drawer=await p.locator('.clothing-details').boundingBox();assert.ok(drawer.y>0);
+   assert.equal(await p.evaluate(y=>document.elementFromPoint(innerWidth/2,y)?.classList.contains('dgshop-detail-backdrop'),drawer.y/2),true,'blank area hits backdrop, not native controls');
+   await p.mouse.click(width/2,drawer.y/2);assert.equal(await p.locator('.clothing-details').isVisible(),false);
+   assert.equal(await p.evaluate(()=>JSON.stringify(V)),beforeDismiss,'dismiss never activates a native operation');
+   await p.getByRole('button',{name:'查看商品详情',exact:true}).click();
    const prefs=await p.evaluate(()=>DoLGameUI.getPreferences()),detail=p.locator('.dgshop-open-detail');
    await p.keyboard.press('Tab');await detail.focus();
    for(const [tier,glow] of [[2,true],[2,false],[0,true]]){
@@ -165,6 +172,7 @@ const server=http.createServer((req,res)=>{
   await p.screenshot({path:path.join(out,`shop-colours-${variant}-${name}.png`)});
   const buttons=await p.locator('.dgshop-purchase .buy-buttons>.buy-button').boundingBox(),trial=await p.locator('.dgshop-purchase .try-button').first().boundingBox();assert.ok(buttons.height<110,'purchase button stays compact');assert.ok(trial.height>=44,'trial touch target');
   assert.equal(await p.locator('.clothing-item').first().evaluate(e=>getComputedStyle(e).isolation),'isolate','badge stays within card stacking context');
+  if(width<=900)await p.locator('.dgshop-close-detail').click();
   await p.locator('.filters-button').click();await p.waitForSelector('#filters:not(.hidden)');
   assert.equal(await p.locator('.filters-div').evaluate(e=>e.getBoundingClientRect().right<=innerWidth+1),true);
   assert.ok(await p.locator('#filters .filter-button').evaluateAll(es=>es.every(e=>e.getBoundingClientRect().height>=44)),'native filter actions retain touch areas');
@@ -191,7 +199,7 @@ const server=http.createServer((req,res)=>{
   assert.ok(await p.locator('.shop-legend-button').evaluate(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),'native V1 explanation does not cover its toggle');
   assert.equal(await legend.innerHTML(),legendHTML,'V1 explanation content stays intact');
   await p.locator('.shop-legend-button').click();await p.waitForSelector('#shop-legend.hidden',{state:'attached'});
-  if(width<=900){await p.getByRole('button',{name:'返回商品列表',exact:true}).click();assert.equal(await p.locator('.clothing-details').isVisible(),false);await p.getByRole('button',{name:'查看商品详情',exact:true}).click();assert.equal(await p.locator('.clothing-details').isVisible(),true)}
+  if(width<=900){assert.equal(await p.locator('.clothing-details').isVisible(),false);await p.getByRole('button',{name:'查看商品详情',exact:true}).click();assert.equal(await p.locator('.clothing-details').isVisible(),true)}
 
  }
  await p.setViewportSize({width:1704,height:1136});
