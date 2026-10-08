@@ -1,5 +1,7 @@
 # DoL Soft & Wet Game UI
 
+> 当前分支为 **2.3.0-rc.1 候选**。新增窄屏密度、候选界面整合及槽位支持查询，见 [2.3 候选说明](docs/RELEASE_2.3.0-rc.1.md)。下方下载入口仍指向已发布的 2.2.2。
+
 **2.2.2 — Crazy Diamond** · 支持 **DoL 0.5.11.9 / 0.5.12.13**
 
 [![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)

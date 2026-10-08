@@ -101,6 +101,10 @@ const server=http.createServer((req,res)=>{
  assert.equal(await p.evaluate(()=>JSON.stringify(V.worn)),preTry.worn,'return restores clothing');
  // A wide viewport with a narrow native shop must not retain two cramped columns.
  await p.setViewportSize({width:1363,height:900});
+ await p.locator('#clothingShop-div').evaluate(n=>{n.style.width='460px';n.style.padding='12px';n.style.boxSizing='content-box'});await p.waitForTimeout(100);
+ assert.ok(await p.locator('#shopCategories').isVisible(),'padding cannot hide categories without a compact disclosure');
+ assert.equal(await p.locator('.dgshop-categories-toggle').count(),0);
+ await p.locator('#clothingShop-div').evaluate(n=>{n.style.removeProperty('padding');n.style.removeProperty('box-sizing')});
  await p.locator('#clothingShop-div').evaluate(n=>n.style.width='550px');await p.waitForTimeout(100);
  const containerCheck=await p.locator('#clothingShop-div').evaluate(n=>({width:n.clientWidth,overflow:n.scrollWidth>n.clientWidth+2,narrow:n.classList.contains('dgshop-narrow'),columns:getComputedStyle(n.querySelector('.dgshop-layout')).gridTemplateColumns}));
  assert.equal(containerCheck.width,550);assert.equal(containerCheck.narrow,true);assert.equal(containerCheck.overflow,false);assert.equal(containerCheck.columns.split(' ').length,1);
@@ -109,6 +113,19 @@ const server=http.createServer((req,res)=>{
  await p.locator('#clothingShop-div').evaluate(n=>n.style.removeProperty('width'));await p.waitForTimeout(100);
  for(const [name,width,height] of [['tablet',1704,1136],['phone',390,844]]){
   await p.setViewportSize({width,height});await p.evaluate(()=>SugarCube.UIBar.stow());await p.locator('.dgshop-host').scrollIntoViewIfNeeded();
+  if(width===390){
+   if(await p.locator('.dgshop-close-detail').isVisible())await p.locator('.dgshop-close-detail').click();
+   await p.waitForSelector('.dgshop-categories-toggle');
+   await p.evaluate(()=>{window.phoneCategories=[...document.querySelectorAll('#shopCategories a')].map(n=>({node:n,parent:n.parentNode,next:n.nextSibling}))});
+   assert.equal(await p.locator('#shopCategories').isVisible(),false);
+   await p.locator('.dgshop-categories-toggle').click();assert.ok(await p.locator('#shopCategories').isVisible());
+   assert.ok(await p.locator('#shopCategories .category-tab').evaluateAll(ns=>ns.length>0&&ns.every(n=>n.getBoundingClientRect().height>=44)));
+   assert.ok(await p.evaluate(()=>phoneCategories.every(x=>x.node.isConnected&&x.node.parentNode===x.parent&&x.node.nextSibling===x.next)),'category disclosure preserves native nodes and order');
+   await p.locator('.dgshop-categories-toggle').click();
+   assert.ok(await p.locator('.dgshop-catalog').evaluate(n=>n.scrollWidth<=n.clientWidth+2),'native trait boxes fit phone catalog');
+   assert.equal(await p.locator('.dgshop-entry-settings').evaluate(n=>n.open),false);
+   await p.locator('.dgshop-entry-settings summary').click();assert.ok(await p.getByLabel('进店默认服装类型').isVisible());await p.locator('.dgshop-entry-settings summary').click();
+  }
   if(width<=900&&!await p.locator('.dgshop-close-detail').isVisible())await p.getByRole('button',{name:'查看商品详情',exact:true}).click();
   if(width<=900){
    const prefs=await p.evaluate(()=>DoLGameUI.getPreferences()),detail=p.locator('.dgshop-open-detail');

@@ -26,16 +26,17 @@ export function startShop(root:Runtime){
  const moves=new Map<Node,Comment>();const owned=new Set<HTMLElement>();
  let scrollTop=0,focusReturn:HTMLElement|null=null,source:ReturnType<typeof createShopSource>|undefined;
  let resize:ResizeObserver|undefined,resizeFrame=0;
- const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,selectedTitle:'',defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
+ const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'',defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
  function current(){const passage=shop?.closest<HTMLElement>('.passage');return !destroyed&&!!shop?.isConnected&&!!passage&&!passage.classList.contains('passage-out')&&document.querySelector('#passages .passage:not(.passage-out)')===passage&&(!root.SugarCube?.State?.passage||root.SugarCube.State.passage===passage.dataset.passage)}
  function facts():ShopFacts{const variables=root.SugarCube?.State?.variables;const clothes=(root as unknown as {setup?:{clothes?:Record<string,unknown[]>}}).setup?.clothes;return {variables,definition:clothes?.[String(variables?.clothingShopSlot)]?.[Number(variables?.clothes_choice)]}}
- function resizeLayout(){if(!shop)return;state.narrow=shop.clientWidth<800;shop.classList.toggle('dgshop-narrow',state.narrow)}
+ function resizeLayout(){if(!shop)return;state.narrow=shop.clientWidth<800;state.compact=shop.clientWidth<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact)}
+ function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;shop?.classList.toggle('dgshop-categories-open',state.categoriesOpen)}
  function scheduleResize(){if(!destroyed&&!resizeFrame)resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;resizeLayout()})}
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
  function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
  function restore(){for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
- function release(){resize?.disconnect();resize=undefined;if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;source?.destroy();source=undefined;clearEntry();restore();unmountUI(app);app=undefined;host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details');state.hasDetails=false;state.open=false;state.selectedTitle='';scrollTop=0;focusReturn=null}
+ function release(){resize?.disconnect();resize=undefined;if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;source?.destroy();source=undefined;clearEntry();restore();unmountUI(app);app=undefined;host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';scrollTop=0;focusReturn=null}
  function arrangeEntry(){
   if(entry?.isConnected)return;
   if(!shop)return;
@@ -72,7 +73,7 @@ export function startShop(root:Runtime){
   if(next!==shop){release();shop=next}
   if(!isMasterEnabled()||!enabled||failed||!shop){if(shop&&!isMasterEnabled())entered.add(shop);if(host)release();observe();return}
   if(shop.querySelectorAll('#clothes-list').length>1||shop.querySelectorAll('.clothing-details').length>1){release();observe();return}
-  if(!host?.isConnected){host=document.createElement('div');host.className='dgshop-host';shop.before(host);shop.classList.add('dgshop-content');source=createShopSource(shop,current,facts);resizeLayout();if(typeof ResizeObserver!=='undefined'){resize=new ResizeObserver(scheduleResize);resize.observe(shop)}app=createApp(Toolbar,{state,toggle:()=>toggle(),setDefaultGender});mountUI(app,host,recover);counts.mounts++}
+  if(!host?.isConnected){host=document.createElement('div');host.className='dgshop-host';shop.before(host);shop.classList.add('dgshop-content');source=createShopSource(shop,current,facts);resizeLayout();if(typeof ResizeObserver!=='undefined'){resize=new ResizeObserver(scheduleResize);resize.observe(shop)}app=createApp(Toolbar,{state,toggle:()=>toggle(),toggleCategories,setDefaultGender});mountUI(app,host,recover);counts.mounts++}
   counts.scans++;
   // Native replacements may have discarded the old catalog or detail body.
   for(const [node,anchor] of moves)if(!node.isConnected)moves.delete(node);

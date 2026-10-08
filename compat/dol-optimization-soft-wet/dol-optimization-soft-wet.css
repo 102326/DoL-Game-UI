@@ -65,3 +65,11 @@ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-ada
 @container(max-width:650px){
  html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container{grid-template-columns:minmax(0,1fr)}
 }
+@media(max-width:600px){
+ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container>.savesListRow{padding:8px;gap:6px}
+ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container .saveGroup> :is(.saveId,.saveName,.saveButton,.saveDetails){margin:0!important}
+ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container .saveGroup:has(>.saveName:empty){grid-template-columns:1.25em minmax(0,1fr) auto}
+ /* Native empty-slot placeholders must not each occupy a full-width line. */
+ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container .saveGroup>.saveDetails{flex-flow:row wrap}
+ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container .saveGroup>.saveDetails>span{width:auto!important;min-width:0;max-width:100%}
+}

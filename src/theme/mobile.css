@@ -20,12 +20,20 @@
  html[data-dol-midnight] #dol-midnight-controls :is(.dmt-settings-header,.dmt-controls-content){padding:8px 12px}
  html[data-dol-midnight] .dgu-surface :is(.dgu-surface-header,.dgu-surface-content){padding:10px 12px}
  html[data-dol-midnight] .dgu-surface{max-height:calc(100dvh - 8px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+ .dgshop-host .dgshop-toolbar{padding:8px;gap:4px}
+ .dgshop-host{padding:8px;margin-bottom:8px}
+ .dgshop-host .dgshop-toolbar h2{width:auto;font-size:1rem}
 }
 @container clothing-shop (max-width:480px){
  .dgshop-content .dgshop-toolbar{padding:8px;gap:4px}
  .dgshop-content .dgshop-browse-tools{padding:4px 0;gap:4px}
  .dgshop-content .dgshop-browse-tools :is(.optionsBar,.searchGroup){gap:4px}
  .dgshop-content .dgshop-browse-tools #shopCategories{gap:4px;flex-wrap:wrap}
+ .dgshop-content.dgshop-compact:not(.dgshop-categories-open) .dgshop-browse-tools #shopCategories{display:none}
+ .dgshop-content .dgshop-browse-tools .category-tab{min-width:44px;min-height:44px;height:44px;padding:4px;font-size:.8em;line-height:1.25;box-sizing:border-box;align-self:flex-start}
+ .dgshop-content .dgshop-browse-tools .category-tab>a{padding:0;box-sizing:border-box;min-height:0;height:100%}
+ .dgshop-content .dgshop-browse-tools .category-tab>img{width:24px;height:24px}
+ .dgshop-content .dgshop-catalog .clothing-traits{width:auto;right:8px}
  .dgshop-content .dgshop-catalog .clothing-item{padding:6px 8px;min-height:60px;margin-bottom:4px}
  .dgshop-content .dgshop-detail-body{padding:8px;min-height:0}
  .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details{left:4px;right:4px;bottom:calc(4px + env(safe-area-inset-bottom,0px));height:min(88dvh,820px);max-height:calc(100dvh - 8px - env(safe-area-inset-bottom,0px))}

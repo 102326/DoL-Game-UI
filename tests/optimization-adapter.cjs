@@ -72,6 +72,14 @@ const row=(id,extra='',hidden='')=>`<div class="savesListRow ${id===2?'dgs-nativ
  assert.equal(await page.locator('#saves-list-container').evaluate(n=>getComputedStyle(n).gridTemplateColumns.split(' ').length),1,'wide viewport / narrow native content uses one column');
  await page.locator('#saveList').evaluate(n=>n.style.removeProperty('width'));
  await page.setViewportSize({width:560,height:900});assert.equal(await page.locator('#saves-list-container').evaluate(n=>getComputedStyle(n).gridTemplateColumns.split(' ').length),1);
+ await page.setViewportSize({width:400,height:821});
+ await page.locator('#saves-list-container').evaluate((n,html)=>n.insertAdjacentHTML('beforeend',html),row('phone-empty').replace('<div class="saveName">fixture</div>','<div class="saveName"> </div>').replace('<span>original description</span><span class="datestamp">date</span>','<span>&nbsp;</span><span class="datestamp">&nbsp;</span>'));
+ await page.addStyleTag({content:'#saves-list-container .saveGroup>div{margin:0 10px!important}'});await refresh();
+ const phoneRow=page.locator('.savesListRow').filter({has:page.locator('.saveId').filter({hasText:'phone-empty'})});
+ assert.equal(await phoneRow.locator('.saveButton').evaluate(n=>getComputedStyle(n).margin),'0px','phone styling beats original per-field margins');
+ assert.ok(await phoneRow.evaluate(n=>n.scrollWidth<=n.clientWidth+2),'phone native row has no horizontal overflow');
+ assert.ok(await phoneRow.locator('button').evaluateAll(nodes=>nodes.every(n=>n.getBoundingClientRect().height>=44)),'native touch targets retained');
+ assert.equal(await page.locator('.future-extension').isVisible(),true,'unknown content remains visible after phone styling');
  await page.evaluate(()=>DolOptimizationSoftWet.destroy());assert.equal(await page.locator('[data-dgu-adapter]').count(),0);
  await page.evaluate(()=>{delete window.DoLGameUI});await page.addScriptTag({content:script});assert.equal(await page.evaluate(()=>DolOptimizationSoftWet.getDiagnostics().reason),'runtime-unavailable');
  assert.deepEqual(errors,[]);console.log('PASS: native structure/events, actual target description cancel/confirm on fake saves, dates, hidden/unknown content, gate/fallback, narrow layout and cleanup');
