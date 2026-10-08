@@ -1,7 +1,8 @@
 /* Known IDB structure only. Original nodes, handlers and order remain intact. */
 html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saveList {
- display:flex;flex-direction:column;gap:.8rem;min-width:0;
+ display:flex;flex-direction:column;gap:.8rem;min-width:0;container-type:inline-size;
 }
+
 html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saveList::before {
  content:"点击存档描述可编辑；保存、读取和删除沿用原按钮。";
  color:var(--dgu-secondary,#aeb4bf);font-size:.85em;order:0;
@@ -59,4 +60,8 @@ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-ada
 html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saveList #saves-list-container :is([hidden],.hidden) {display:none!important}
 @media(max-width:900px) {
  html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container {grid-template-columns:minmax(0,1fr)}
+}
+/* The game sidebar or a narrow shell can constrain a wide WebView. */
+@container(max-width:650px){
+ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container{grid-template-columns:minmax(0,1fr)}
 }

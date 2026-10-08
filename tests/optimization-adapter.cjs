@@ -68,6 +68,9 @@ const row=(id,extra='',hidden='')=>`<div class="savesListRow ${id===2?'dgs-nativ
  await page.evaluate(()=>{version='1.1.1.2';document.getElementById('pageLen').remove()});await refresh();assert.equal(await page.locator('.dgs-entries').isVisible(),true,'Missing critical structure unchanged');
  await page.evaluate(()=>{document.querySelector('.dgs-list-tools').insertAdjacentHTML('beforeend','<input id="pageLen" value="10">');document.documentElement.removeAttribute('data-dol-midnight')});await refresh();assert.equal(await page.locator('[data-dgu-adapter]').count(),0);
  await page.evaluate(()=>document.documentElement.setAttribute('data-dol-midnight',''));await refresh();
+ await page.setViewportSize({width:1363,height:900});await page.locator('#saveList').evaluate(n=>n.style.width='500px');
+ assert.equal(await page.locator('#saves-list-container').evaluate(n=>getComputedStyle(n).gridTemplateColumns.split(' ').length),1,'wide viewport / narrow native content uses one column');
+ await page.locator('#saveList').evaluate(n=>n.style.removeProperty('width'));
  await page.setViewportSize({width:560,height:900});assert.equal(await page.locator('#saves-list-container').evaluate(n=>getComputedStyle(n).gridTemplateColumns.split(' ').length),1);
  await page.evaluate(()=>DolOptimizationSoftWet.destroy());assert.equal(await page.locator('[data-dgu-adapter]').count(),0);
  await page.evaluate(()=>{delete window.DoLGameUI});await page.addScriptTag({content:script});assert.equal(await page.evaluate(()=>DolOptimizationSoftWet.getDiagnostics().reason),'runtime-unavailable');

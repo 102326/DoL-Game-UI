@@ -33,9 +33,22 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
  assert.equal(await p.locator('.dgs-inline-detail').isVisible(),true);assert.equal(await p.locator('.dgs-detail:modal').count(),0);
  await p.evaluate(()=>saves.setV2(false));await p.waitForSelector('.dgs-layout:not(.dgs-v2)');
  assert.equal(await p.locator('.dgs-slot-grid').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),2);
+ await p.locator('input[type=search]').fill('Example');
+ await p.evaluate(()=>{nativeActions[0].disabled=true});await p.waitForFunction(()=>document.querySelector('.dgs-host input[type=search]')?.value==='Example'&&document.querySelector('.dgs-item'));
+ assert.equal(await p.locator('input[type=search]').inputValue(),'Example','native refresh preserves search');
+ await p.evaluate(()=>document.querySelector('#customOverlay').style.width='450px');await p.evaluate(()=>saves.setV2(true));
+ await p.waitForFunction(()=>!document.querySelector('.dgs-v2'));
+ assert.equal(await p.locator('.dgs-slot-grid').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),1,'wide viewport/narrow actual container stays single column');
+ await p.locator('.dgs-item').click();assert.equal(await p.locator('.dgs-detail:modal').count(),1,'narrow actual container uses Drawer even with V2');await p.locator('.dgs-close').click();
  await p.evaluate(()=>saves.setEnabled(false));
  assert.equal(await p.locator('.dgs-titlebar').count(),0,'fallback removes teleported header');
  assert.ok(await p.evaluate(()=>document.querySelector('#native-tab')===nativeTab&&nativeActions.every(e=>e.isConnected)&&nativeRow.isConnected&&!nativeRow.classList.contains('dgs-native-row')),'fallback restores original controls');
+ await p.evaluate(()=>{
+  window.createElementOriginal=document.createElement;document.createElement=function(tag,...args){if(tag==='section'){document.createElement=createElementOriginal;throw Error('M4-B mount fixture failure')}return createElementOriginal.call(this,tag,...args)};
+  saves.setEnabled(true);document.createElement=createElementOriginal;
+ });assert.equal(await p.locator('.dgs-host').count(),0,'mount failure restores native view');
+ await p.evaluate(()=>{const old=document.getElementById('savesListContainer'),next=old.cloneNode(true);old.replaceWith(next)});await p.waitForSelector('.dgs-host');
+ assert.equal(await p.locator('.dgs-host').count(),1,'new native page recovers locally without duplicate hosts');
  await p.evaluate(()=>saves.destroy());
  console.log('PASS save header lifecycle: native Tab/actions retained, default double column and modal, V2 inline detail, 390/1024/1363 at 200%, visible dock, close and exact fallback');
  }finally{await b.close()}

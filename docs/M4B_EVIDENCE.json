@@ -1,0 +1,198 @@
+{
+  "scope": "M4-B isolated native save business + read-only Android candidate; not complete save ecosystem acceptance",
+  "baseCommit": "848494a",
+  "branch": "prototype/soft-wet-3-m4b",
+  "device": {
+    "model": "M367FC",
+    "android": "17",
+    "appPackage": "com.vrelnir.dol.lyra.uicompat051213",
+    "gameVersion": "0.5.12.13",
+    "formalUi": "2.2.2",
+    "candidateMarker": ".dgs-candidate",
+    "apiVersion": 1,
+    "toolsVersion": "3.0.2"
+  },
+  "artifacts": {
+    "dist/game-ui.js": "26041206a5770acf4d0cca6ca23fe8886ffcfd93f4f756c54dbb7136d73b3cff",
+    "dist/game-ui.css": "8de06cb5b271c21086edeb23311cd660b56bff97a7838df9343ae5f1393a4e79",
+    "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.css": "f63fec3097d65170e8bbab7c8c0f01097cb48af377f25ce4c35ffcd292efb7fe"
+  },
+  "realDevice": {
+    "inject": {
+      "staged": true,
+      "version": "2.2.2",
+      "api": 1,
+      "stateUnchanged": true,
+      "detailsUnchanged": true,
+      "contracts": 48,
+      "proxy": 8,
+      "nativeRows": 12,
+      "adapter": "full",
+      "container": 972
+    },
+    "narrowBefore": {
+      "viewport": 1363,
+      "container": 522,
+      "adapter": "full",
+      "columns": "249.2px 249.2px",
+      "overflow": false,
+      "stateUnchanged": true
+    },
+    "narrowAfter": {
+      "columns": "506.4px",
+      "contentWidth": 522,
+      "overflow": false,
+      "unchanged": true
+    },
+    "payloadClock": {
+      "available": true,
+      "dataKeys": [
+        "index",
+        "expired",
+        "seed",
+        "loadedVersion",
+        "delta"
+      ],
+      "nativeMetadataKeys": [
+        "saveId",
+        "saveName",
+        "dolGameUI"
+      ],
+      "hasPayloadClock": true,
+      "dateTimeAvailable": true,
+      "onlyDetailsClock": true,
+      "readOnly": true
+    },
+    "restore": {
+      "formalRestored": true,
+      "api": 1,
+      "stateUnchanged": true,
+      "passageUnchanged": true,
+      "detailsUnchanged": true,
+      "preferencesUnchanged": true,
+      "adapter": "full"
+    },
+    "nativeContracts": {
+      "count": 48,
+      "allPassed": true
+    },
+    "inspectedBundleSha256": "c73a1dc610d9736fd14674479b29afb8005c1d45c1f04a279999d0346c8ba78d"
+  },
+  "performance": {
+    "androidIdleRefresh": {
+      "formal": {
+        "samplesMsPerRefresh": [
+          1.1474999994039536,
+          0.9099999994039536,
+          0.8900000005960464,
+          0.9025000005960464,
+          0.9074999988079071
+        ],
+        "proxyNodes": 157,
+        "rows": 12,
+        "originalControls": 32,
+        "page": "Beach Party Sex"
+      },
+      "candidate": {
+        "samplesMsPerRefresh": [
+          1.3625,
+          0.9325000017881393,
+          0.8950000017881393,
+          0.8950000017881393,
+          0.9
+        ],
+        "proxyNodes": 158,
+        "rows": 12,
+        "originalControls": 32,
+        "page": "Beach Party Sex"
+      },
+      "formalMeanMs": 0.9514999997615814,
+      "candidateMeanMs": 0.9970000010728836,
+      "scope": "same scene, 5 x 40 ordinary refresh; fast path, not full mount or FPS"
+    },
+    "isolatedProjection": {
+      "source": "isolated Chromium original parser vs candidate source; not Android rendering/FPS",
+      "results": [
+        {
+          "count": 10,
+          "summaryCharacters": 600,
+          "samplesMsPerProjection": {
+            "baseline": [
+              0.059999999962747096,
+              0.05,
+              0.0949999999254942,
+              0.05,
+              0.04500000011175871
+            ],
+            "candidate": [
+              0.11999999992549419,
+              0.09500000011175871,
+              0.1,
+              0.08999999985098839,
+              0.09500000011175871
+            ]
+          }
+        },
+        {
+          "count": 100,
+          "summaryCharacters": 600,
+          "samplesMsPerProjection": {
+            "baseline": [
+              0.5150000000372529,
+              0.5199999999254942,
+              0.525,
+              0.5150000000372529,
+              0.5449999999254942
+            ],
+            "candidate": [
+              0.9599999999627471,
+              0.9450000001117587,
+              0.9599999999627471,
+              0.9550000000745058,
+              0.909999999962747
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "failuresRetained": [
+    {
+      "name": "first save menu Journey",
+      "status": "failed",
+      "finding": "selector matched 3 elements; no save page opened on subsequent observation",
+      "resolution": "observed exact native menu, corrected scoped selector; no unknown business replay"
+    },
+    {
+      "name": "legacy cloud test fixture",
+      "status": "failed",
+      "finding": "fixture expected removed .mbsw marker and omitted API/loader version contracts",
+      "resolution": "updated fixture to real API v1 registration, semver tool and rescan contract; no cloud business/network writes"
+    },
+    {
+      "name": "container CSS first check",
+      "status": "failed",
+      "finding": "early container override was superseded by later grid declaration",
+      "resolution": "placed rule after existing defaults; 522px native area now one column"
+    }
+  ],
+  "tests": [
+    "npm run build",
+    "node tests/saves-source-m4b.cjs (20 assertions)",
+    "node tests/saves-runtime.cjs (native 0.5.11.9 isolated save/load/delete/overwrite/cancel/legacy)",
+    "node tests/save-compatibility.cjs (fresh no-UI native load/serialized import)",
+    "node tests/saves-header-lifecycle.cjs",
+    "node tests/saves-native-tools.cjs",
+    "node tests/optimization-adapter.cjs with original 1.1.1.2 opt-main.js",
+    "node tests/resilience.cjs",
+    "node tests/master-toggle.cjs"
+  ],
+  "notValidated": [
+    "real-device save/load/delete/overwrite/import/export dispatch",
+    "remote cloud authentication/sync/write",
+    "all Mod versions/WebView providers",
+    "full game payload equivalence for a future gameTime replacement"
+  ],
+  "noGameplayLedgerChanges": true,
+  "finalFollowUp": "After device restore, changed only missing-summary wording for occupied slots; build and targeted header lifecycle passed. Device inspected bundle retained separately; final wording not re-deployed."
+}

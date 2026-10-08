@@ -1,4 +1,4 @@
-import type {SaveEntry} from './main';
+import type {SaveEntry} from './source';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 interface SaveMetadata extends Record<string,unknown> {saveId?:unknown;saveName?:unknown;dolGameUI?:{gameTime?:unknown}}
 interface SaveDetails {date?:number;id?:unknown;metadata?:SaveMetadata}
@@ -21,14 +21,27 @@ export function createSaveMetadata(root:SaveMetadataHost){
   }catch{/* Missing time or frozen third-party metadata must not interrupt saving. */}
  }
  function attach(){const api=(root.SugarCube?.Save||root.Save)?.onSave;if(api===saveApi||typeof api?.add!=='function')return;saveApi?.delete?.(onSave);saveApi=api;api.add(onSave)}
+ async function detailsFor(idb:boolean){
+  const value=idb?await root.idb?.getSaveDetails():JSON.parse(root.localStorage.getItem('dolSaveDetails')||'null');
+  if(value==null){if(idb&&root.idb)throw new Error('Save details unavailable');return undefined}
+  if(idb?!Array.isArray(value):typeof value!=='object')throw new Error('Unknown save details');
+  return value;
+ }
+ function detailFor(details:unknown,entry:SaveEntry,idb:boolean){
+  return idb?(details as IndexedDetails[]).find(d=>d.slot===(entry.auto?0:Number(entry.slot)))?.data:entry.auto?(details as LegacyDetails).autosave:(details as LegacyDetails).slots?.[Number(entry.slot)-1];
+ }
+ function stamp(details:unknown,entry:SaveEntry,idb:boolean){return JSON.stringify([idb?'idb':'legacy',entry.slot,detailFor(details,entry,idb)??null])}
+ async function revision(entry:SaveEntry,idb:boolean){const details=await detailsFor(idb);if(details===undefined)throw new Error('Save details unavailable');return stamp(details,entry,idb)}
  async function read(entries:SaveEntry[],idb:boolean){
   attach();let details:unknown;
-  try{details=idb?await root.idb?.getSaveDetails():JSON.parse(root.localStorage.getItem('dolSaveDetails')||'null')}catch{return}
-  if(idb?!Array.isArray(details):!details||typeof details!=='object')return;
+  try{details=await detailsFor(idb)}catch{return}
+  if(details===undefined)return;
   let aliases:Record<string,unknown>={};try{aliases=JSON.parse(root.localStorage.getItem(KEY)||'{}')||{}}catch{}
-  const persisted=new Map<string,number>();
+  const persisted=new Map<string,number>(),revisions=new Map<number,string>();
   for(const entry of entries){
-   const d=idb?(Array.isArray(details)?(details as IndexedDetails[]).find(d=>d.slot===(entry.auto?0:Number(entry.slot)))?.data:null):entry.auto?(details as LegacyDetails)?.autosave:(details as LegacyDetails)?.slots?.[Number(entry.slot)-1];
+   const d=detailFor(details,entry,idb);
+   // A stale native empty row must not overwrite an occupied slot without its confirmation.
+   if(entry.empty===!d)revisions.set(entry.key,stamp(details,entry,idb));
    persisted.set(`${idb?'idb':'legacy'}:${entry.slot}`,Number.isFinite(d?.date)?d!.date!:0);
    if(entry.empty||!d||!Number.isFinite(d.date))continue;
    entry.identity=JSON.stringify([idb?'idb':'legacy',d.id||'',entry.slot,d.date,d.metadata?.saveId??'']);
@@ -36,7 +49,7 @@ export function createSaveMetadata(root:SaveMetadataHost){
    const time=d.metadata?.dolGameUI?.gameTime;if(typeof time==='string'&&time.length<100)entry.gameTime=time;
    if(typeof aliases[entry.identity]==='string')entry.customName=(aliases[entry.identity] as string).slice(0,80);
   }
-  return persisted;
+  return {dates:persisted,revisions};
  }
  function rename(entry:SaveEntry|undefined,name:string){
   if(!entry?.identity||entry.empty)return '存档信息尚未就绪，请稍后重试。';
@@ -46,5 +59,5 @@ export function createSaveMetadata(root:SaveMetadataHost){
    const bounded=Object.fromEntries(Object.entries(aliases).slice(-500));root.localStorage.setItem(KEY,JSON.stringify(bounded));entry.customName=value;return value?'名称已保存。':'已恢复原名称。';
   }catch{return '名称保存失败，原存档未改变。'}
  }
- attach();return {attach,read,rename,destroy(){saveApi?.delete?.(onSave)}};
+ attach();return {attach,read,revision,rename,destroy(){saveApi?.delete?.(onSave)}};
 }
