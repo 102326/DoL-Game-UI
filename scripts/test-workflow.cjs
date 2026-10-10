@@ -2,11 +2,11 @@ const fs=require('node:fs'),path=require('node:path');
 const {spawnSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 const groups={
- wardrobe:['wardrobe-operations.test.cjs','wardrobe-layout.test.cjs','sidebar-preview-lifecycle.cjs'],
- shop:['shop.test.cjs'],
- saves:['saves-runtime.cjs','save-transfer-lifecycle.cjs','save-compatibility.cjs'],
+ wardrobe:['wardrobe-operations.test.cjs','wardrobe-search.test.cjs','wardrobe-layout.test.cjs','sidebar-preview-lifecycle.cjs'],
+ shop:['shop-source.test.cjs','shop.test.cjs'],
+ saves:['saves-source-m4b.cjs','saves-runtime.cjs','save-transfer-lifecycle.cjs','save-compatibility.cjs'],
  layout:['ui-runtime.cjs','resilience.cjs','master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs'],
- combat:['acceptance.cjs','combat-resize.test.cjs','native-action-panel.cjs'],
+ combat:['combat-m4a.cjs','acceptance.cjs','combat-resize.test.cjs','native-action-panel.cjs'],
 };
 const args=process.argv.slice(2),mode=args.shift(),planOnly=args.includes('--plan');
 const selected=args.filter(a=>a!=='--plan');
@@ -23,8 +23,8 @@ delete env.DOL_RELEASE_DIR;
 if(env.DOL_WARDROBE_CONTROL)throw Error('Unset DOL_WARDROBE_CONTROL: diagnostic control is not UI regression');
 if(mode==='performance'&&['DOL_SHOP_LIFECYCLE_ONLY','DOL_SHOP_BANNER_CONTROL','DOL_SHOP_VERIFY_ARTIFACT'].some(k=>env[k]))throw Error('Unset shop diagnostic flags before performance sampling');
 const tests=mode==='performance'?(selected.length?selected:['shop','wardrobe']).map(x=>`${x}-current-baseline.cjs`)
- :[...new Set((mode==='release'?Object.keys(groups):selected).flatMap(x=>groups[x]))];
-const gameTests=['master-native.cjs','wardrobe-layout.test.cjs','shop.test.cjs','saves-runtime.cjs','save-compatibility.cjs','shop-current-baseline.cjs','wardrobe-current-baseline.cjs'];
+ :[...new Set([...((mode==='release'?Object.keys(groups):selected).flatMap(x=>groups[x])),...(mode==='release'?['wardrobe-m2.cjs']:[])])];
+const gameTests=['master-native.cjs','wardrobe-search.test.cjs','wardrobe-layout.test.cjs','wardrobe-m2.cjs','shop.test.cjs','saves-runtime.cjs','save-compatibility.cjs','shop-current-baseline.cjs','wardrobe-current-baseline.cjs'];
 const needsGame=tests.some(x=>gameTests.includes(x));
 const needsFixture=tests.some(x=>!['wardrobe-operations.test.cjs','sidebar-preview-lifecycle.cjs',...gameTests].includes(x));
 const workspace=path.resolve(env.DOL_TEST_WORKSPACE||path.join(root,'../..'));

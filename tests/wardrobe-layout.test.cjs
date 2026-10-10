@@ -1,5 +1,6 @@
 const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{buildSync}=require('esbuild');
 const project=path.resolve(process.env.DOL_TEST_WORKSPACE||path.resolve(__dirname,'../../..'));
+const out=process.env.DOL_TEST_OUT||path.join(__dirname,'artifacts');fs.mkdirSync(out,{recursive:true});
 const server=http.createServer((req,res)=>{
  const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
  const file=pathname==='/game'?path.join(project,process.env.DOL_WARDROBE_INTEGRATED?'upstream/game-0.5.11.9/Degrees of Lewdity.html':'releases/source-baseline-0.5.11.9/vanilla.html'):path.join(project,'upstream/game-0.5.11.9',pathname);
@@ -55,12 +56,14 @@ const server=http.createServer((req,res)=>{
   await p.waitForTimeout(100);
   const geometry=await p.locator('.dgw-selection-bar').evaluate(e=>{const r=e.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,overflow:e.scrollWidth>e.clientWidth+1}});
   assert.ok(geometry.left>=0&&geometry.right<=width+1&&geometry.top>=0&&geometry.bottom<=height+1,JSON.stringify({width,height,geometry}));assert.equal(geometry.overflow,false);
-  await p.screenshot({path:path.join(__dirname,`artifacts/wardrobe-layout-${width}x${height}.png`)});
+  await p.screenshot({path:path.join(out,`wardrobe-layout-${width}x${height}.png`)});
  }
  await p.setViewportSize({width:1704,height:1136});await p.evaluate(()=>SugarCube.UIBar.unstow());await p.waitForTimeout(300);
  const stats=await p.locator('#stats').evaluate(e=>{const r=e.getBoundingClientRect();return [...e.querySelectorAll('.centered-elements>div')].map(n=>{const b=n.getBoundingClientRect();return {text:n.textContent.trim(),fits:b.left>=r.left-1&&b.right<=r.right+1,contentFits:n.scrollWidth<=n.clientWidth+1}})});
  assert.ok(stats.length>0&&stats.every(s=>s.fits&&s.contentFits),JSON.stringify(stats));assert.ok(await p.locator('#statmeters').isVisible());
- await p.screenshot({path:path.join(__dirname,'artifacts/wardrobe-layout-sidebar.png')});
+ await p.screenshot({path:path.join(out,'wardrobe-layout-sidebar.png')});
+ assert.equal(await p.locator('.dgw-preview-disclosure').isVisible(),false,'management intentionally hides character preview');
+ await p.getByRole('button',{name:'退出整理',exact:true}).click();
  await p.locator('.dgw-root').evaluate(e=>e.style.width='540px');
  const narrow=await p.locator('.dgw-workspace').evaluate(e=>({columns:getComputedStyle(e).gridTemplateColumns.split(' ').length,overflow:e.scrollWidth>e.clientWidth+1}));
  assert.equal(narrow.columns,1);assert.equal(narrow.overflow,false);

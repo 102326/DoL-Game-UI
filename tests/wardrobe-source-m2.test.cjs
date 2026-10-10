@@ -22,6 +22,19 @@ assert.ok(source.read('upper').unknownSlots.includes('charm'),'empty new slot re
 root.V.wardrobe.over_head=[];root.V.worn.over_head={name:'naked'};root.setup.clothes.over_head=[definition];
 assert.ok(!source.read('upper').unknownSlots.includes('over_head'),'empty optional vanilla slots do not flood unknown-content notices');
 assert.equal(extension.read('over_upper').items[0].detail,'native description');assert.equal(extension.read('over_upper').categoryNote,'','no experimental category copy');extension.destroy();
+// Search bindings span only known categories and retain original slot/object identity.
+root.V.wardrobe.lower=[{...item}];root.V.worn.lower={name:'naked'};root.setup.clothes.lower=[{...definition}];
+const cross=moduleObject.exports.createWardrobeSource(root,()=>({upper:'上装',lower:'下装'}),()=>current);
+const all=cross.read('upper',true);assert.equal(all.items.length,2);assert.equal(all.items[0].name,all.items[1].name);
+assert.deepEqual(Array.from(all.items,i=>i.slotLabel),['上装','下装']);assert.notEqual(all.items[0].key,all.items[1].key);
+assert.equal(cross.resolve(all.items[1].key).slot,'lower');assert.equal(cross.resolve(all.items[1].key).raw,root.V.wardrobe.lower[0]);
+assert.ok(all.unknownSlots.includes('mystery'));assert.ok(!all.items.some(i=>i.key.startsWith('mystery:')));
+root.V.wardrobe.lower[0]={...root.V.wardrobe.lower[0]};assert.equal(cross.resolve(all.items[1].key),null,'same-valued cross-category replacement refuses stale wear');
+let searched=cross.read('upper',true);root.V.wardrobe.lower.unshift({...item});assert.equal(cross.resolve(searched.items[1].key),null,'index changes refuse stale wear');
+searched=cross.read('upper',true);root.setup.clothes.lower[0]={...definition};assert.equal(cross.resolve(searched.items[1].key),null,'definition replacement refuses stale wear');
+const normal=cross.read('upper');assert.ok(normal.items.every(i=>i.slotLabel===undefined));assert.equal(cross.resolve(searched.items[0].key),null,'changing search scope expires old keys');
+const labelsOnly=moduleObject.exports.createWardrobeSource(root,()=>({upper:'上装'}),()=>current);labelsOnly.read('upper');assert.equal(labelsOnly.read('upper',true).items[0].slotLabel,'上装','single-category search still labels results');labelsOnly.destroy();
+const final=cross.read('upper',true);root.V.location='school';assert.equal(cross.resolve(final.items[0].key),null,'scene change refuses search result');root.V.location='home';cross.destroy();
 source.destroy();assert.equal(source.resolve(replacement),null);assert.equal(source.read('upper'),null);assert.equal(source.resolveMany([replacement]),null);
 assert.equal(source.resolveMany([replacement]),null);
 console.log('PASS M2 projection: no native refs/writes; content/identity/page invalidation; unknown slots; disposal');

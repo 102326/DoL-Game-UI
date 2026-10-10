@@ -76,12 +76,12 @@ const server=http.createServer((req,res)=>{
  assert.equal(await p.evaluate(()=>document.querySelector('#wardrobeList').innerHTML),await p.evaluate(()=>nativeBeforeCategory),'new UI defers native list generation while original controls are hidden');
 
  await p.locator('.dgw-slots button').filter({hasText:'上装'}).first().click();
- await p.getByRole('searchbox',{name:'搜索当前分类'}).fill('test');await p.getByRole('searchbox').fill('');
+ await p.getByRole('searchbox',{name:'搜索所有分类'}).fill('test');await p.getByRole('searchbox').fill('');
  await p.waitForTimeout(200);assert.equal(await p.evaluate(()=>renderCount),0,'category/search do not redraw');
  // Live descriptor translation wins over an old English instance name.
  await p.evaluate(()=>{const raw=V.wardrobe.upper[0];const d=setup.clothes.upper.find(d=>d.variable===raw.variable&&d.modder===raw.modder);d.cn_name_cap='测试中文衣物';raw.cn_name_cap='测试中文衣物';setup.colourName=()=> '测试颜色';DoLWardrobeUI.refresh()});
  await p.waitForFunction(()=>document.querySelector('.dgw-preview').getAttribute('aria-busy')==='false');
- await p.getByRole('searchbox').fill('测试中文衣物');assert.ok(await p.locator('.dgw-item').count()>0);assert.equal(await p.locator('.dgw-item small').first().textContent(),'测试颜色');await p.getByRole('searchbox').fill('');
+ await p.getByRole('searchbox').fill('测试中文衣物');assert.ok(await p.locator('.dgw-item').count()>0);assert.equal(await p.locator('.dgw-item small').first().textContent(),'测试颜色 · 上装');await p.getByRole('searchbox').fill('');
  await p.getByRole('combobox',{name:'衣物排序'}).selectOption('warmth');
  await p.locator('.dgw-item').nth(0).click();await p.locator('.dgw-item').nth(1).click();
  await p.waitForFunction(()=>document.querySelector('.dgw-preview').getAttribute('aria-busy')==='false');
@@ -122,6 +122,7 @@ const server=http.createServer((req,res)=>{
  await p.getByRole('button',{name:'全选当前筛选',exact:true}).click();await p.getByRole('button',{name:'审查丢弃',exact:true}).click();
  assert.ok((await p.locator('.dgw-confirm').textContent()).includes('关联部件'));
  await p.getByRole('button',{name:'退出整理',exact:true}).click();await p.getByRole('button',{name:'整理模式',exact:true}).click();assert.equal(await p.locator('.dgw-confirm').count(),0,'exit clears pending destructive plan');
+ await p.getByRole('searchbox').fill('套装删除测试');
  await p.getByRole('button',{name:'全选当前筛选',exact:true}).click();await p.getByRole('button',{name:'审查丢弃',exact:true}).click();await p.getByRole('button',{name:'确认丢弃',exact:true}).click();
  await p.waitForFunction(()=>!V.wardrobe.upper.includes(linkedPrimary)&&!V.wardrobe.lower.includes(linkedSecondary));
  await p.waitForFunction(()=>!document.querySelector('.dgw-confirm'));
