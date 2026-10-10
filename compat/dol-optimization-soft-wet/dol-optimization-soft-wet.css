@@ -44,6 +44,10 @@ html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-ada
 html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] .saveGroup:has(>.saveName:empty)>.saveButton {grid-column:3;grid-row:1}
 html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] .saveGroup:has(>.saveName:empty)>.saveDetails {grid-column:2 / span 2;flex-direction:row;flex-wrap:wrap}
 html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] .datestamp {display:block;white-space:normal!important;max-height:none!important;font-size:.85em;overflow-wrap:anywhere;overflow:visible!important;background:none!important}
+/* The target fills occupied manual-slot dates asynchronously; reserve their second line. */
+html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] .saveGroup:has(>.saveName:not(:empty)):has(>.saveButton>button+button) .datestamp {min-height:3.1em}
+html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] .saveGroup:has(>.saveName:not(:empty)):has(>.saveButton>button+button) .datestamp>.pink {display:block}
+html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] .saveGroup:has(>.saveName:not(:empty)):has(>.saveButton>button+button) .datestamp:not(:empty):not(:has(>.pink))::after {content:"游戏内时间读取中…";display:block;color:var(--dgu-secondary,#aeb4bf)}
 html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] .saveTitleInput {width:100%;max-width:100%;box-sizing:border-box;min-height:44px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);border-radius:9px;color:inherit;padding:.5rem}
 html[data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container button {
  font:inherit;font-size:.85em;min-height:44px;padding:.45rem .7rem;margin:0;float:none;width:auto;

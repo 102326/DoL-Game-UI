@@ -1,6 +1,6 @@
 {
   "name": "DolOptimizationSoftWet",
-  "version": "0.1.6-rc.1",
+  "version": "0.1.6-rc.2",
   "description": "原版优化 1.1.1.2 及以上的存档兼容外观：保留描述编辑、游戏内日期及原槽位控件。",
   "styleFileList": [
     "dol-optimization-soft-wet.css"

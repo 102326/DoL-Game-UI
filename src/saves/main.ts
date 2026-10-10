@@ -69,10 +69,13 @@ export function startSaves(root:SaveMetadataHost){
   if(next===container&&host?.isConnected&&!dirty)return;
   dirty=false;
   const settingsOpen=footer?.querySelector<HTMLDetailsElement>('.dgs-save-settings')?.open??false;
-  release();container=next;
+  const reuse=next===container&&!!host?.isConnected;
+  if(reuse){readGeneration++;source.clear();state.pending=false;rows.forEach(row=>row.classList.remove('dgs-native-row'))}
+  else release();container=next;
   const projection=source.read(next),entries=projection.entries;rows=projection.rows;state.unknown=projection.unknown;
-  if(!entries.length){container=null;return}
-  state.entries=entries;host=document.createElement('section');host.className='dgs-host dgs-candidate';next.before(host);
+  if(!entries.length){release();return}
+  state.entries=entries;
+  if(!reuse){host=document.createElement('section');host.className='dgs-host dgs-candidate';next.before(host)}
   const generation=readGeneration,idb=next.id==='saves-list-container';
   const projected=state.entries;
   void currentMetadata.read(projected,idb).then(result=>{
@@ -84,14 +87,13 @@ export function startSaves(root:SaveMetadataHost){
    }
   }).catch(error=>{if(generation===readGeneration)isolate('save metadata',()=>{throw error},recover)});
   const overlay=next.closest('#customOverlay[data-overlay="saves"]');
-  app=createApp(SavePanel,{state,headerTarget:overlay?.querySelector<HTMLElement>('#customOverlayTitle')??undefined,rename:(key:number,name:string)=>currentMetadata.rename(state.entries.find(e=>e.key===key),name),fallback:()=>setEnabled(false),act:async(key:number,index:number)=>{
+  if(!reuse){app=createApp(SavePanel,{state,headerTarget:overlay?.querySelector<HTMLElement>('#customOverlayTitle')??undefined,rename:(key:number,name:string)=>currentMetadata.rename(state.entries.find(e=>e.key===key),name),fallback:()=>setEnabled(false),act:async(key:number,index:number)=>{
    if(state.pending)return;state.pending=true;state.message='';const operationGeneration=readGeneration;
    const message=await source.dispatch(key,index);
    if(operationGeneration===readGeneration){state.pending=false;state.message=message}
-  }});mountUI(app,host,recover);
+  }});mountUI(app,host!,recover);organizeTools(next,settingsOpen)}
   rows.forEach(row=>row.classList.add('dgs-native-row'));
   const header=[...next.querySelectorAll(':scope > .savesListRow')].find(row=>row.querySelector('.saveId')?.textContent?.trim()==='#');header?.classList.add('dgs-native-row');
-  organizeTools(next,settingsOpen);
  }
  function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
  const observer=new MutationObserver(records=>{

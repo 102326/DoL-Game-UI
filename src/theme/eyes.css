@@ -347,7 +347,8 @@ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]
 }
 html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host button:not(:disabled):active {background:rgba(255,255,255,.075)}
 html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) :is(button,input) {transition:background-color 140ms ease,box-shadow 140ms ease,transform 100ms ease}
-html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host):not(.hidden) {animation:dgu-save-shell-in 160ms ease-out}
+/* Native list refreshes replace the projection; they must not replay the shell fade. */
+html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:not(.hidden) {animation:dgu-save-shell-in 160ms ease-out}
 html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-detail[open]:not(.dgs-inline-detail) {animation:dgu-save-drawer-in 180ms ease-out}
 html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-inline-detail[open] {animation:none}
 html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-feedback-saved {animation:dgu-save-confirmed 300ms ease-out}
@@ -366,7 +367,7 @@ html[data-dol-midnight][data-dgu-visual="0"] #customOverlay[data-overlay=saves]:
 html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #customOverlayTitle {display:flex;flex-direction:column;gap:14px;padding:20px 24px;position:relative}
 html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar {width:100%;padding:0;margin:0;background:none;border:0;box-shadow:none;align-items:center;gap:16px}
 html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar .dgs-muted {margin:.6em 0 0;font-size:.9em}
-html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar>button {margin-right:24px}
+html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar>button {margin-right:44px}
 html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar>button {font:inherit;color:var(--dgu-text);min-height:44px;padding:9px 14px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:rgba(255,255,255,.025)}
 html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #customOverlayTitle {background-image:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%)}
 html[data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) #overlayTabs {order:1;margin:0;flex:none}

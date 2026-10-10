@@ -33,6 +33,9 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
  const surfaces=await b.newPage({viewport:{width:390,height:844}});
  await surfaces.setContent('<html data-dol-midnight data-dgu-visual="2" data-dgu-visualGlass data-dgu-compact-controls><body><div id="customOverlay" data-overlay="saves"><div id="saveList"><section class="dgs-host"><dialog open class="dgs-detail"><div class="dgs-actions"><button>Save</button><button class="dgs-load">Load</button></div></dialog></section></div></div><section class="dgw-root"><div class="dgw-slots"><button>A</button><button>B</button></div></section></body></html>');
  await surfaces.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});
+ await surfaces.locator('#customOverlay').evaluate(e=>{const header=document.createElement('header');header.className='dgs-toolbar dgs-titlebar';header.innerHTML='<div><p class="dgs-eyebrow">YOUR STORY</p><h2>存档管理</h2><p class="dgs-muted">选择一个存档，查看详情与可用操作。</p></div><button>原版界面</button>';e.prepend(header)});
+ assert.ok(await surfaces.locator('.dgs-titlebar').evaluate(e=>e.getBoundingClientRect().height<=100),'phone save shell leaves room for slots');
+ assert.ok(await surfaces.locator('.dgs-titlebar>button').evaluate(e=>e.getBoundingClientRect().height>=44),'fallback retains touch target');
  for(const selector of ['.dgs-actions','.dgw-slots']){
   assert.equal(await surfaces.locator(selector).evaluate(e=>getComputedStyle(e).gap),selector==='.dgs-actions'?'8px':'4px');
   assert.ok(await surfaces.locator(selector+' button').evaluateAll(nodes=>nodes.every(e=>e.getBoundingClientRect().height>=44)));

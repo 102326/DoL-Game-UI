@@ -52,3 +52,20 @@
  .dcu-candidate .dcu-summary-rail{display:none}
  .dcu-candidate .dcu-footer{gap:6px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
 }
+
+/* Keep native search/reset/page-size nodes in place; only reflow their boxes. */
+@container clothing-shop (max-width:480px){
+ .dgshop-content .dgshop-browse-tools .optionsBar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px}
+ .dgshop-content .dgshop-browse-tools .searchGroup{display:contents}
+ .dgshop-content .dgshop-browse-tools .searchBar{grid-column:1 / -1;display:flex;align-items:center;gap:4px}
+ .dgshop-content .dgshop-browse-tools .searchGroup>button{grid-column:1;min-height:44px;font-size:.8em;padding-inline:6px}
+ .dgshop-content .dgshop-browse-tools .itemsPerPageLabel{grid-column:2;flex-wrap:nowrap;font-size:.8em;gap:4px}
+ .dgshop-content .dgshop-browse-tools .itemsPerPageLabel select{min-width:52px;min-height:44px;padding-inline:4px}
+}
+@media(max-width:600px){
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar{align-items:center;flex-wrap:nowrap}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar>div{min-width:0}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar :is(.dgs-eyebrow,.dgs-muted){display:none}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar h2{font-size:1.2em}
+ html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar>button{flex-shrink:0;min-height:44px;white-space:nowrap}
+}

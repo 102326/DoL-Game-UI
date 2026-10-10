@@ -13,6 +13,7 @@ watch(inline,()=>{if(drawer.value?.matches(':modal'))drawer.value.close()});
 const draftName=ref(''),nameMessage=ref('');
 function saveName(){if(current.value)nameMessage.value=props.rename(current.value.key,draftName.value)}
 const current=computed(()=>props.state.entries.find(e=>e.key===selected.value));
+watch(()=>props.state.entries,()=>{selected.value=(props.state.entries.find(e=>e.slot===props.state.selectedSlot)||props.state.entries.find(e=>!e.empty))?.key??null},{flush:'sync'});
 watch(()=>[current.value?.key,current.value?.customName],()=>{draftName.value=current.value?.customName||''},{immediate:true});
 watch(selected,()=>{nameMessage.value=''});
 const matches=computed(()=>props.state.entries.filter(e=>`${e.slot} ${e.customName} ${e.name} ${e.description} ${e.date}`.toLocaleLowerCase().includes(query.value.trim().toLocaleLowerCase())));
@@ -37,7 +38,7 @@ function newSave(){const entry=props.state.entries.find(e=>!e.auto&&e.empty&&e.s
    <p v-if="state.unknown" class="dgs-muted">{{state.unknown}} 项原版附加内容保留在列表下方；也可切回原版界面。</p>
    <div class="dgs-entries"><template v-for="group in groups" :key="group.title">
     <details v-if="group.items.length" open><summary>{{group.title}} · {{group.items.length}}</summary>
-     <div class="dgs-slot-grid"><button v-for="entry in group.items" :key="entry.key" type="button" class="dgs-item" :class="{'dgs-recent':entry.recent,'dgs-empty-slot':entry.empty&&!entry.auto,'dgs-auto':entry.auto,'dgs-feedback-saved':entry.feedback==='saved','dgs-feedback-deleted':entry.feedback==='deleted'}" :aria-pressed="selected===entry.key" @click="select(entry)">
+     <div class="dgs-slot-grid"><button v-for="entry in group.items" :key="entry.slot" type="button" class="dgs-item" :class="{'dgs-recent':entry.recent,'dgs-empty-slot':entry.empty&&!entry.auto,'dgs-auto':entry.auto,'dgs-feedback-saved':entry.feedback==='saved','dgs-feedback-deleted':entry.feedback==='deleted'}" :aria-pressed="selected===entry.key" @click="select(entry)">
       <span class="dgs-slot">{{entry.slot}}</span><span><strong>{{entry.customName||(entry.auto?'自动存档':entry.empty?'＋ 新建存档':entry.name||`存档 ${entry.slot}`)}}</strong><span v-if="entry.recent" class="dgs-recent-badge">最近保存</span><span class="dgs-dates"><small>{{entry.date}}</small><small v-if="!entry.empty&&entry.gameTime">· {{entry.gameTime}}</small></span><span class="dgs-excerpt">{{entry.description||'尚未保存'}}</span></span>
      </button></div>
     </details>

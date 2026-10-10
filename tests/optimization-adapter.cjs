@@ -80,6 +80,9 @@ const row=(id,extra='',hidden='')=>`<div class="savesListRow ${id===2?'dgs-nativ
  assert.ok(await phoneRow.evaluate(n=>n.scrollWidth<=n.clientWidth+2),'phone native row has no horizontal overflow');
  assert.ok(await phoneRow.locator('button').evaluateAll(nodes=>nodes.every(n=>n.getBoundingClientRect().height>=44)),'native touch targets retained');
  assert.equal(await page.locator('.future-extension').isVisible(),true,'unknown content remains visible after phone styling');
+ const dateLayout=await page.evaluate(()=>{const stamp=document.querySelector('.datestamp:has(.pink)'),pink=stamp.querySelector('.pink');stamp.querySelectorAll('.pink').forEach(n=>n.remove());const stampBefore=stamp.getBoundingClientRect().height,loading=getComputedStyle(stamp,'::after').content;stamp.append(pink);return {stampBefore,stampAfter:stamp.getBoundingClientRect().height,loading,done:getComputedStyle(stamp,'::after').content}});
+ assert.ok(dateLayout.loading.includes('读取中')&&dateLayout.done==='none','pending native date has an explicit loading placeholder');
+ assert.ok(Math.abs(dateLayout.stampBefore-dateLayout.stampAfter)<1,'reserved native date area keeps its height when the time arrives');
  await page.evaluate(()=>DolOptimizationSoftWet.destroy());assert.equal(await page.locator('[data-dgu-adapter]').count(),0);
  await page.evaluate(()=>{delete window.DoLGameUI});await page.addScriptTag({content:script});assert.equal(await page.evaluate(()=>DolOptimizationSoftWet.getDiagnostics().reason),'runtime-unavailable');
  assert.deepEqual(errors,[]);console.log('PASS: native structure/events, actual target description cancel/confirm on fake saves, dates, hidden/unknown content, gate/fallback, narrow layout and cleanup');

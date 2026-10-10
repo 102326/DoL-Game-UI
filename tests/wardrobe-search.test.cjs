@@ -5,7 +5,9 @@ const out=process.env.DOL_TEST_OUT||path.join(__dirname,'artifacts/25-wardrobe-s
 const server=http.createServer((req,res)=>{const route=decodeURIComponent(new URL(req.url,'http://localhost').pathname),file=route==='/game'?path.join(project,'releases/source-baseline-0.5.11.9/vanilla.html'):path.join(project,'upstream/game-0.5.11.9',route);if(!file.startsWith(project)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);res.end();return}fs.createReadStream(file).pipe(res)});
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true});const errors=[];try{
  const p=await browser.newPage({viewport:{width:1363,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.addInitScript(()=>localStorage.setItem('verifiedAge','true'));
- await p.goto(`http://127.0.0.1:${server.address().port}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>window.SugarCube?.State?.variables?.options,{timeout:60000});await p.evaluate(()=>SugarCube.Engine.play('Start2'));
+ await p.goto(`http://127.0.0.1:${server.address().port}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>window.SugarCube?.State?.variables?.options,{timeout:60000});
+ // Finish the original Start banner request before leaving Start deletes Weather.banner.
+ await p.waitForLoadState('networkidle');await p.evaluate(()=>SugarCube.Engine.play('Start2'));
  await p.evaluate(()=>{
   V.location='home';V.wardrobe_location='wardrobe';V.lastWardrobeSlot='upper';V.options.images=0;
   // Start2 wears a linked dress; native lower wear correctly removes its upper part.

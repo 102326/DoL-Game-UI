@@ -33,6 +33,17 @@ const server=http.createServer((req,res)=>{
  await p.waitForSelector('.dgw-capacity-alert.near');
  await p.evaluate(()=>{V.wardrobe.space=V.wardrobe.upper.length;DoLWardrobeUI.refresh()});await p.waitForSelector('.dgw-capacity-alert.full');
  await p.evaluate(()=>{V.wardrobe.space=capacityBefore;DoLWardrobeUI.refresh()});
+ await p.setViewportSize({width:390,height:844});
+ await p.evaluate(()=>{SugarCube.UIBar.stow();window.scrollTo(0,0)});await p.waitForTimeout(120);
+ const firstScreen=await p.locator('.dgw-items').evaluate(e=>({top:e.getBoundingClientRect().top,visible:[...e.querySelectorAll('button')].filter(n=>{const r=n.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight}).length}));
+ assert.ok(firstScreen.top<=450&&firstScreen.visible>=2,'portrait inventory precedes secondary actions '+JSON.stringify(firstScreen));
+ const secondary=await p.locator('.dgw-strip').boundingBox(),inventory=await p.locator('.dgw-items').boundingBox();
+ assert.ok(secondary.y>=inventory.y+inventory.height,'strip remains available after inventory');
+ await p.setViewportSize({width:909,height:1330});await p.evaluate(()=>window.scrollTo(0,0));await p.waitForTimeout(120);
+ const tabletInventory=await p.locator('.dgw-items').boundingBox();
+ const tabletPreview=await p.locator('.dgw-preview-disclosure').boundingBox();
+ assert.ok(tabletInventory.y<=650&&tabletPreview.x>=tabletInventory.x+tabletInventory.width,'tablet prioritizes inventory while retaining side preview');
+ await p.setViewportSize({width:1704,height:1136});await p.waitForTimeout(100);
  await p.getByRole('button',{name:'整理模式',exact:true}).click();
  await p.locator('.dgw-item').first().click(); // Management selects; this does not wear the garment.
  const visualBefore=await p.evaluate(()=>({V:JSON.stringify(V),prefs:DoLGameUI.getPreferences()}));

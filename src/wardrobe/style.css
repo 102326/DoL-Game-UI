@@ -131,3 +131,23 @@ html[data-dol-midnight][data-dmt-layout] #passages:has(.dgw-shell){max-width:90r
  .dgw-candidate.dgw-managing{padding-bottom:0}
  .dgw-candidate .dgw-items{max-height:60dvh}
 }
+
+/* Narrow wardrobes put the live inventory ahead of secondary native actions. */
+@container wardrobe (max-width:1000px){
+ .dgw-candidate{display:flex;flex-direction:column}
+ .dgw-candidate>.dgw-header{order:0}
+ .dgw-candidate>:is(.dgw-slots,.dgw-mobile-category){order:1}
+ .dgw-candidate>.dgw-category-note{order:2}
+ .dgw-candidate>.dgw-workspace{order:3}
+ .dgw-candidate>:is(.dgw-quick,.dgw-services,.dgw-original-access){order:4}
+ .dgw-candidate .dgw-inventory{display:flex;flex-direction:column}
+ .dgw-candidate .dgw-inventory>:is(.dgw-strip,.dgw-equipment,.dgw-towels){order:1}
+ .dgw-candidate.dgw-managing .dgw-inventory>:is(.dgw-strip,.dgw-equipment,.dgw-towels){display:none}
+ .dgw-candidate .dgw-header-actions{align-items:center}
+ .dgw-candidate .dgw-header-actions>button{white-space:nowrap}
+}
+@container wardrobe (max-width:480px){
+ .dgw-candidate .dgw-tools input{height:44px;padding-block:6px}
+ .dgw-candidate .dgw-header{flex-wrap:wrap}
+ .dgw-candidate .dgw-header-actions{margin-left:auto}
+}

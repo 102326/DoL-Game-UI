@@ -125,6 +125,8 @@ const server=http.createServer((req,res)=>{
    assert.ok(await p.locator('.dgshop-catalog').evaluate(n=>n.scrollWidth<=n.clientWidth+2),'native trait boxes fit phone catalog');
    assert.equal(await p.locator('.dgshop-entry-settings').evaluate(n=>n.open),false);
    await p.locator('.dgshop-entry-settings summary').click();assert.ok(await p.getByLabel('进店默认服装类型').isVisible());await p.locator('.dgshop-entry-settings summary').click();
+   const searchRows=await p.evaluate(()=>{const reset=document.querySelector('.searchGroup>button').getBoundingClientRect(),size=document.querySelector('.itemsPerPageLabel').getBoundingClientRect(),search=document.querySelector('.searchBar').getBoundingClientRect();return {sameRow:Math.abs(reset.top-size.top)<=2,searchAbove:search.bottom<=reset.top+2}});
+   assert.ok(searchRows.sameRow&&searchRows.searchAbove,'native reset/page size share the second row '+JSON.stringify(searchRows));
   }
   if(width<=900&&!await p.locator('.dgshop-close-detail').isVisible())await p.getByRole('button',{name:'查看商品详情',exact:true}).click();
   if(width<=900){
