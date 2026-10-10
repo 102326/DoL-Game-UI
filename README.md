@@ -1,15 +1,15 @@
 # DoL Soft & Wet Game UI
 
-> 当前分支为 **2.5.0-rc.2 · Crazy Diamond 竖屏专项候选**，继承衣柜、商店、战斗与存档自适应候选，增加衣柜跨分类搜索。见 [候选说明](docs/RELEASE_2.5.0-rc.2.md) 与 [开发记录](docs/WORK_2_5.md)。尚未发布；下方下载入口仍指向已发布的 2.2.2。已在 DoL 0.5.12.13 / ModLoader 2.101.1 的 Android 平板测试实例验证主要交互与真实分屏，不代表所有设备或 Mod 组合已验证。
+> **2.5.0 · Crazy Diamond** 正式版源码已收口，公开发布状态以 GitHub Release 为准。主要更新竖屏体验、衣柜跨分类搜索与存档刷新稳定性，见 [更新说明](docs/RELEASE_2.5.0.md)。保留 API v1、原游戏业务和原版回退。
 
-**2.2.2 — Crazy Diamond** · 支持 **DoL 0.5.11.9 / 0.5.12.13**
+**2.5.0 — Crazy Diamond** · 支持 **DoL 0.5.11.9 / 0.5.12.13**
 
 [![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)
 ![Game](https://img.shields.io/badge/DoL-0.5.11.9%20%2F%200.5.12.13-blue)
 
 **Soft & Wet UI** 为 Degrees of Lewdity 提供统一的现代深色界面，重新组织衣柜、服装店、战斗及常用菜单。手机使用紧凑布局与详情抽屉，平板和桌面利用宽屏展示列表与详情；外层柔雾 Acrylic、内层轻卡片，让信息与操作保持清楚。
 
-**[下载 UI 主包](https://github.com/102326/DoL-Game-UI/releases/download/v2.2.2/DoL-SoftWet-GameUI-2.2.2.mod.zip) · [发布与可选兼容包](https://github.com/102326/DoL-Game-UI/releases/tag/v2.2.2) · [安装步骤](#安装与升级) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)**
+**[下载 UI 主包](https://github.com/102326/DoL-Game-UI/releases/download/v2.5.0/DoL-SoftWet-GameUI-2.5.0.mod.zip) · [发布与可选兼容包](https://github.com/102326/DoL-Game-UI/releases/tag/v2.5.0) · [安装步骤](#安装与升级) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)**
 
 普通玩家只需主包；使用对应第三方 Mod 时再选装兼容包。需要 ModLoader **2.100.0+**、TweeReplacer **1.0.0+**。导入 ZIP，**不要解压**，然后重启游戏。模组不包含游戏本体、图片素材或 APK。
 
@@ -18,7 +18,7 @@
 ### 衣柜
 
 - 查看完整穿搭、已穿戴标记、服装信息、状态与保暖情况。
-- 按分类搜索和排序，点选衣物换装。
+- 按分类或跨已支持分类搜索，结果标明分类；点选衣物直接换装。
 - 在整理模式中审查多选丢弃、剪开套装，以及满足条件时的修理和衣柜转移。
 
 ### 服装店
