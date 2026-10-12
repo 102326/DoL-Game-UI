@@ -72,3 +72,9 @@ node tests/wardrobe-operations.test.cjs
 普通构建使用已提交的 `src/wardrobe/vendor/isolated-model.js`，不需要源码下载。只有重新生成派生绘图模块时才运行 `node scripts/vendor-wardrobe.cjs`；它读取 `DOL_UPSTREAM_SOURCE` 并检查提交。更新后重新生成并审查 `scripts/render-state-fields.cjs` 的字段清单，执行对应回归。不得把替换复制方式视为零风险。
 
 来源与许可必须随派生代码保留，见根目录的 `UPSTREAM-RENDERER-*` 文件。
+
+## Paisley Park 5.0 同源组件先行原型
+
+独立实验入口见 [Component Lab](../component-lab/README.md)，基于 UI 2.5 的真实 Toolbar，不接管 2.6。`npm run lab` 仅开启本机回环 Vite；`npm run lab:check`、`lab:build` 与 `lab:test` 分别验证类型、隔离预览构建和现有 Chrome 的联合场景。输出为 ignored `tests/artifacts/`，不改变正式 IIFE 入口或递归打包。
+
+Mac 不需新增 python 别名：`npm run package` 经 `scripts/package.cjs` 使用已有 Python；可设 `DOL_PYTHON` 的明确路径。原单元测试的打包调用使用同一选择。这里只修实际遇到的入口差异，不改变游戏/设备验收范围。
