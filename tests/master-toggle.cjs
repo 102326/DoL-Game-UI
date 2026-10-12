@@ -35,7 +35,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
  await page.reload();await page.waitForSelector('#listContainer');await inject();await noCapture();assert.deepEqual(await page.evaluate(()=>DoLGameUI.getPreferences()),prefs);
  await page.evaluate(()=>DoLGameUI.openSettings());await page.getByRole('button',{name:'启用新版界面',exact:true}).click();await page.waitForSelector('.dcu-shell');
  await page.getByRole('button',{name:'回退原版界面',exact:true}).click();await noCapture();assert.deepEqual(await page.evaluate(()=>DoLGameUI.getPreferences()),prefs);
- await page.getByLabel('启用 Soft & Wet 2.0 界面',{exact:true}).check();await page.waitForSelector('.dcu-shell');assert.equal(await page.evaluate(()=>DoLGameUI.getPreferences().buttonScale),150);
+ await page.getByLabel('启用 Soft & Wet 界面',{exact:true}).check();await page.waitForSelector('.dcu-shell');assert.equal(await page.evaluate(()=>DoLGameUI.getPreferences().buttonScale),150);
  await page.setViewportSize({width:390,height:844});
  await page.evaluate(()=>DoLGameUI.setPreference('enabled',false));await noCapture();
  await page.reload();await page.waitForSelector('#listContainer');await inject();await noCapture();

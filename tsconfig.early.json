@@ -1,5 +1,5 @@
 {
  "extends":"./tsconfig.json",
  "compilerOptions":{"allowJs":false},
- "include":["startup-cache-experiment.ts","shop-page-experiment.ts"]
+ "include":["shop-page-experiment.ts"]
 }

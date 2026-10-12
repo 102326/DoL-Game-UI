@@ -26,3 +26,7 @@ Lab类型检查、正式typecheck/build/package、Source Index三项、悬浮偏
 关闭了测试自己的浏览器／Vite。未修改Tools源码、全局配置、GER Store或历史Unknown，无Full Evidence或平台重构。
 
 接续和NO.1工具／材质范围Completed；不是完整3.0完成。下一项是NO.2自有设置收敛。Widget与剧情动作分区尚未实现，不扩成强制首发大系统。
+
+## 后续进度
+
+以上为 Windows A/B 接续阶段的历史记录。2026-10-13 已补做真实手机 trusted touch 与 IME，并完成设置首轮收敛；当前阶段状态、证据边界及后续计划见 [STONE_FREE_V1.md](STONE_FREE_V1.md)。手机独立测试版已更新 3.0 原型，正式 App 不变。

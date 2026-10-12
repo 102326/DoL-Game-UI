@@ -14,7 +14,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
  <div class="dmt-controls-content cu:grid cu:gap-4 cu:md:grid-cols-2">
   <FloatingSettings/>
   <section class="dmt-setting-card"><h3>主题与阅读</h3>
-   <SettingsToggle label="启用 Soft & Wet 2.0 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
+   <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
    <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
   </section>
@@ -55,16 +55,15 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    <SettingsToggle v-if="state.wardrobe" label="衣柜按页渲染" description="每页显示 40 件；搜索、排序和全选仍覆盖整个分类" :checked="state.preferences.wardrobePaged" @change="onPreference('wardrobePaged',$event)"/>
    <p>这些选项只调整显示，不改变存档或衣物数据。</p>
   </section>
-  <details class="dmt-setting-card dmt-experiments"><summary><strong>进阶实验与外观细节</strong><span>默认收起，按需启用</span></summary>
+  <details class="dmt-setting-card dmt-experiments"><summary><strong>性能与兼容选项</strong><span>默认收起，按需启用</span></summary>
    <SettingsToggle label="标题边缘纹样" description="可选静态装饰" :checked="state.preferences.visualPattern" @change="onPreference('visualPattern',$event)"/>
    <SettingsToggle label="衣柜延迟原版隐藏列表（实验）" description="新版衣柜换装时暂不重建隐藏的原版列表；出现兼容问题时关闭此项" :checked="state.preferences.wardrobeHiddenList" @change="onPreference('wardrobeHiddenList',$event)"/>
    <SettingsToggle label="商店离屏绘制延后（实验）" description="让支持的浏览器跳过屏幕外商品的排版与绘制；滚动异常时关闭此项" :checked="state.preferences.shopDeferredPaint" @change="onPreference('shopDeferredPaint',$event)"/>
    <SettingsToggle v-if="state.shopPageExperimentAvailable" label="商店按页生成（实验）" description="只生成当前页商品；下次进入商店列表时生效，异常时关闭此项" :checked="state.preferences.shopPageExperiment" @change="onPreference('shopPageExperiment',$event)"/>
-   <SettingsToggle label="启动缓存按需重建（实验）" description="减少模组加载时重复重建故事缓存；更改后需保存进度并重启游戏，兼容异常时关闭后再重启" :checked="state.preferences.startupCacheLazy" @change="onPreference('startupCacheLazy',$event)"/>
-   <p>这些功能默认关闭，可分别对比。它们只减少界面或缓存生成工作；购买、换装与存档规则保持原样。</p>
+   <p>这些选项默认关闭；仅在需要时开启，出现异常可单独关闭。不会改变购买、换装与存档规则。</p>
   </details>
-  <section class="dmt-setting-card"><h3>兼容回退</h3><p>关闭 Soft & Wet 2.0 后返回原版界面；重新启用会恢复保留的页面与显示选择。游戏进度与模组配置不受影响。</p><div class="dmt-recovery cu:flex cu:flex-wrap cu:gap-2"><GameButton @click="onRecovery(false)">回退原版界面</GameButton><GameButton @click="onRecovery(true)">启用新版界面</GameButton></div></section>
-  <details class="dmt-setting-card dmt-debug cu:md:col-span-2"><summary><strong>开发检查</strong><span>仅排查问题时使用</span></summary><GameButton :disabled="!state.preferences.enabled" @click="inspectRuntime">Runtime Inspector</GameButton><p>只读查看能力、Adapter 和降级原因；可复制诊断。需要启用 Soft &amp; Wet。</p><SettingsToggle label="状态接口预览（实验）" description="仅在需要排查状态接口时开启" :checked="state.preferences.statusPreview" @change="onPreference('statusPreview',$event)"/><div id="dol-status-preview" v-once></div></details>
+  <section class="dmt-setting-card"><h3>兼容回退</h3><p>关闭 Soft & Wet 后返回原版界面；重新启用会恢复保留的页面与显示选择。游戏进度与模组配置不受影响。</p><div class="dmt-recovery cu:flex cu:flex-wrap cu:gap-2"><GameButton @click="onRecovery(false)">回退原版界面</GameButton><GameButton @click="onRecovery(true)">启用新版界面</GameButton></div></section>
+  <details class="dmt-setting-card dmt-debug cu:md:col-span-2"><summary><strong>问题诊断</strong><span>仅排查问题时使用</span></summary><GameButton :disabled="!state.preferences.enabled" @click="inspectRuntime">Runtime Inspector</GameButton><p>只读查看能力、Adapter 和降级原因；可复制诊断。需要启用 Soft &amp; Wet。</p></details>
  </div>
  <footer class="dmt-settings-footer"><p role="status">{{state.message}}</p></footer>
 </template>

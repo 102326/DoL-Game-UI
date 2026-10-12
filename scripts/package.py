@@ -6,11 +6,10 @@ runtime_version=re.search(r"DoLGameUI=\{version:'([^']+)'",(root/'src/main.ts').
 assert runtime_version and runtime_version.group(1)==version,'Runtime and package versions differ'
 experiment_version=re.search(r"api\.version = '([^']+)'",(root/'shop-page-experiment.ts').read_text(encoding='utf-8'))
 assert experiment_version and experiment_version.group(1)==version,'Shop experiment and package versions differ'
-boot={'name':'DoLGameUI','nickName':'DoL Soft & Wet Game UI','description':'Soft & Wet UI for Degrees of Lewdity','version':version,'scriptFileList_inject_early':['startup-cache-experiment.js','shop-page-experiment.js'],'scriptFileList':['game-ui.js'],'styleFileList':['game-ui.css'],'tweeFileList':[],'imgFileList':[],'additionFile':['README.md','THIRD-PARTY-NOTICES.txt'],'dependenceInfo':[{'modName':'ModLoader','version':'>=2.100.0'},{'modName':'TweeReplacer','version':'>=1.0.0'}],'addonPlugin':[{'modName':'TweeReplacer','addonName':'TweeReplacerAddon','modVersion':'>=1.0.0','params':[]}]}
+boot={'name':'DoLGameUI','nickName':'DoL Soft & Wet Game UI','description':'Soft & Wet UI for Degrees of Lewdity','version':version,'scriptFileList_inject_early':['shop-page-experiment.js'],'scriptFileList':['game-ui.js'],'styleFileList':['game-ui.css'],'tweeFileList':[],'imgFileList':[],'additionFile':['README.md','THIRD-PARTY-NOTICES.txt'],'dependenceInfo':[{'modName':'ModLoader','version':'>=2.100.0'},{'modName':'TweeReplacer','version':'>=1.0.0'}],'addonPlugin':[{'modName':'TweeReplacer','addonName':'TweeReplacerAddon','modVersion':'>=1.0.0','params':[]}]}
 assets={name:(root/'dist'/name).read_bytes() for name in boot['scriptFileList']+boot['styleFileList']}
 subprocess.run(['node',str(root/'scripts/build-early.cjs')],check=True,cwd=root)
 subprocess.run(['node',str(root/'node_modules/typescript/bin/tsc'),'-p',str(root/'tsconfig.public.json')],check=True,cwd=root)
-assets['startup-cache-experiment.js']=(root/'dist/startup-cache-experiment.js').read_bytes()
 assets['shop-page-experiment.js']=(root/'dist/shop-page-experiment.js').read_bytes()
 for filename in ['ui.d.ts','wardrobe.d.ts']:
  declaration=root/'dist/types'/filename
