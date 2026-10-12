@@ -1,5 +1,10 @@
 /* Phone content density: remove repeated chrome, keep actions and text legible. */
 @media(max-width:600px){
+ /* Native combat illustrations retain five fixed slots, including empty ones. */
+ html[data-dol-midnight] #passages .combat-grid{grid-template-columns:minmax(0,1fr)}
+ html[data-dol-midnight] #passages .combat-centre{min-width:0;max-width:100%}
+ html[data-dol-midnight] #passages .combat-close{flex-wrap:wrap}
+ html[data-dol-midnight] #passages .combat-main>canvas{max-width:100%;height:auto}
  html[data-dol-midnight][data-dmt-layout] #passages{padding-inline:6px}
  html[data-dol-midnight][data-dmt-layout] :is(#story,#ui-bar.stowed ~ #story){margin-left:calc(2em + 6px)}
  html[data-dol-midnight][data-dmt-layout] #overlayButtons{gap:4px}
