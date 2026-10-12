@@ -8,4 +8,4 @@ export function initMaster(root:Window){
  }catch{/* Use the theme default when storage is unavailable. */}
 }
 export function isMasterEnabled(){return enabled}
-export function setMasterEnabled(value:boolean){enabled=value}
+export function setMasterEnabled(value:boolean){enabled=value;if(typeof document!=='undefined')document.dispatchEvent(new Event('dol-ui-master-change'))}

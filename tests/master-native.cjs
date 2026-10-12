@@ -30,8 +30,11 @@ const server=http.createServer((req,res)=>{
  }
  phase='shop';await page.evaluate(()=>{closeOverlay();SugarCube.Engine.play('Clothing Shop')});await page.waitForLoadState('networkidle');await absent();
  await page.locator('#clothingShop-div a').filter({hasText:/View All|查看全部|查看所有|全部服/}).first().click();await page.waitForSelector('.clothing-item');
+ // The original shop generates other pages with timed/repeat macros.
+ // Their clothingicon scratch writes must finish before the unchanged-state snapshot.
+ await page.waitForFunction(()=>{const expected=document.querySelectorAll('#shop-pagination .shop-pages > .page').length;return expected>0&&document.querySelectorAll('#shop-list-pages > .clothing-shop-page').length===expected});
  await page.evaluate(()=>{window.shopState=JSON.stringify(V);window.nativeShop=document.querySelector('#clothingShop-div');window.shopNodes=[...nativeShop.querySelectorAll('*')];window.shopParents=shopNodes.map(n=>n.parentNode)});
- await page.evaluate(()=>DoLGameUI.setPreference('enabled',true));await page.waitForSelector('.dgshop-host');await settle();assert.equal(await page.evaluate(()=>JSON.stringify(V)===shopState),true,'reenabling does not apply default gender');
+ await page.evaluate(()=>DoLGameUI.setPreference('enabled',true));await page.waitForSelector('.dgshop-host');await settle();const shopCheck=await page.evaluate(()=>{const after=JSON.stringify(V);let i=0;while(i<Math.min(shopState.length,after.length)&&shopState[i]===after[i])i++;return{equal:after===shopState,offset:i,before:shopState.slice(Math.max(0,i-50),i+200),after:after.slice(Math.max(0,i-50),i+200)}});assert.equal(shopCheck.equal,true,'reenabling does not apply default gender: '+JSON.stringify(shopCheck));
  await page.evaluate(()=>DoLGameUI.setPreference('enabled',false));await absent();assert.ok(await page.evaluate(()=>shopNodes.every((n,i)=>n.isConnected&&n.parentNode===shopParents[i])));
  phase='wardrobe';await page.evaluate(()=>SugarCube.Engine.play('Wardrobe'));await page.waitForSelector('#wardrobeList');await absent();
  await page.evaluate(()=>{window.wardrobeState=JSON.stringify(V);window.nativeWardrobe=document.querySelector('#wardrobeList');window.wardrobeParent=nativeWardrobe.parentNode;window.wardrobeNext=nativeWardrobe.nextSibling});

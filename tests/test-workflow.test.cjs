@@ -15,5 +15,5 @@ for(const [group,test] of [['wardrobe','wardrobe-search.test.cjs'],['shop','shop
  assert.equal(plan.tests.filter(name=>name===test).length,1);
  assert.ok(!plan.tests.includes('wardrobe-m2.cjs'),'slow wardrobe integration is release-only');
 }
-assert.deepEqual(JSON.parse(run('quick','layout','layout','--plan').stdout).tests,['ui-runtime.cjs','resilience.cjs','master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','preferences-preservation.cjs','sidebar-layout.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs']);
+assert.deepEqual(JSON.parse(run('quick','layout','layout','--plan').stdout).tests,['ui-runtime.cjs','resilience.cjs','master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','preferences-preservation.cjs','sidebar-layout.cjs','floating-tools.test.cjs','floating-boundaries.test.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs']);
 console.log('PASS workflow selection, deduplication and invalid arguments');

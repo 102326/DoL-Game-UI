@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {PanelKind} from '../panels/main';
+import FloatingSettings from '../floating/Settings.vue';
 import GameButton from '../ui/GameButton.vue';
 import SettingsToggle from '../ui/SettingsToggle.vue';
 import type {SettingsState,PreferenceKey} from './preferences';
@@ -11,6 +12,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
 <template>
  <header class="dmt-settings-header cu:flex cu:items-center cu:justify-between cu:gap-4"><div><p class="dmt-eyebrow">SOFT &amp; WET</p><h2 id="dol-midnight-title">界面设置</h2></div><GameButton class="dmt-close" @click="onClose">关闭</GameButton></header>
  <div class="dmt-controls-content cu:grid cu:gap-4 cu:md:grid-cols-2">
+  <FloatingSettings/>
   <section class="dmt-setting-card"><h3>主题与阅读</h3>
    <SettingsToggle label="启用 Soft & Wet 2.0 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
