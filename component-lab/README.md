@@ -30,14 +30,21 @@ node --test tests/component-lab-source-index.test.cjs
 
 测试只创建自己的 loopback Vite、带 Chromium sandbox 的 Playwright Chrome 上下文；临时编辑原组件/样式后恢复原字节，并关闭自身 browser/server。输出、截图、index/clue/result 在 `tests/artifacts/lab-*/`，不发布。启动失败与未执行项保留，不无限重试。
 
-Windows PowerShell 7 接续配方（本轮未在 Windows 验收）：
+Windows PowerShell 7 接续配方（2026-10-12 已在独立含中文/空格路径验收）：
 
 ```powershell
 $env:DOL_LAB_CHROME = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 Test-Path -LiteralPath $env:DOL_LAB_CHROME
 $env:DOL_LAB_TOOLS = 'C:\YOUR_WORKSPACE\DoL-Dev-Tools-Paisley-Park-5.0-mac'
 npm run lab
-# 另一个终端（相同环境）运行 npm run lab:test
+# 联合测试自行启动/关闭独立 server 和 browser，无需预先运行 npm run lab
+npm run lab:test
 ```
 
 每台平台按锁安装自身依赖，不复制 node_modules。`npm run package` 使用项目内 Node 入口，在 Mac 默认 python3、Windows 默认 python；缺别名/版本不符时设置 `DOL_PYTHON` 为实际 Python 3.10+ 的可执行文件，不改系统 PATH。普通 ZIP 仍按原显式清单，不含 Lab、源码索引或 map。
+
+## Windows 接续范围
+
+Windows Source Index 2 项、Source Link 6 项与真实 Chrome/Vite 联合 13 检查通过，lab:check、lab:build、正式构建与打包通过。修正仅在测试：Windows 用 junction 验证 canonical 边界；raw-fs 403 用同盘有效文件和读取正例，避免跨盘 HTML fallback 伪装成正确拒绝。测试保留原断言与首次失败，不需要管理员权限或修改全局配置。
+
+此原型仍基于 UI 2.5 的真实 Toolbar。UI 3.0 必须在其自己的分支对当前组件、props 和列明样式做薄接入，不能将这个分支整份覆盖 3.0。正式 Mod ZIP 不包含 Lab/index/maps；内存交互和 matched 不代表真实游戏业务或加载证明。完整 Windows 记录在 Tools 工作树 `docs/PAISLEY_PARK_5_0_WINDOWS_AB.md`。
