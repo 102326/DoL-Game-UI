@@ -58,6 +58,7 @@ const server=http.createServer((req,res)=>{
 
  for(const width of [390,1500]){
   await p.setViewportSize({width,height:1000});
+  await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await p.keyboard.press('Escape');assert.equal(await p.locator('.dgs-detail').evaluate(e=>e.open),false);
   await p.waitForFunction(()=>document.querySelectorAll('.dgs-entries details:last-of-type .dgs-item').length>=2);
   const cards=await p.locator('.dgs-entries details').last().locator('.dgs-item').evaluateAll(es=>es.slice(0,2).map(e=>({x:e.getBoundingClientRect().x,y:e.getBoundingClientRect().y})));
@@ -106,7 +107,8 @@ const server=http.createServer((req,res)=>{
  assert.equal(await p.locator('.dgs-item small').filter({hasText:/\d{4}/}).count(),0);
  await p.screenshot({path:path.join(out,'saves-preview-desktop.png')});
  const source=await p.evaluate(()=>[...document.querySelectorAll('.dgs-native-row')].length);assert.ok(source>1);
- for(const width of [390,1024,1500]){await p.setViewportSize({width,height:1000});await p.waitForTimeout(60);assert.ok(await p.evaluate(()=>document.querySelector('.dgs-host').scrollWidth<=document.querySelector('.dgs-host').clientWidth+1));}
+ for(const width of [390,1024,1500]){await p.setViewportSize({width,height:1000});
+  await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await p.waitForTimeout(60);assert.ok(await p.evaluate(()=>document.querySelector('.dgs-host').scrollWidth<=document.querySelector('.dgs-host').clientWidth+1));}
  await p.getByRole('button',{name:'原版界面',exact:true}).click();assert.equal(await p.locator('.dgs-host').count(),0);assert.equal(await p.locator('.dgs-native-row').count(),0);assert.equal(await p.locator('.dgs-tools').count(),0);assert.equal(await p.locator('#saveList > ul #pageNum').count(),1);
  await p.evaluate(()=>DoLSavesUI.setEnabled(true));await p.waitForSelector('.dgs-host');
  await p.evaluate(()=>{testSaveArea.replaceChildren();new SugarCube.Wikifier(testSaveArea,'<<saveList>>')});await p.waitForSelector('#savesListContainer');await p.waitForSelector('.dgs-host');
@@ -115,6 +117,8 @@ const server=http.createServer((req,res)=>{
  // Real overlay path: saving without warning hides overlay; no invisible modal may remain.
  await p.evaluate(()=>{testSaveArea.remove();new SugarCube.Wikifier(null,'<<overlayReplace "saves">>');idb.updateSettings('warnSave',false)});
  await p.waitForSelector('.dgs-host');await p.locator('.dgs-empty-slot').first().click();
+
+ await p.waitForFunction(async()=> (await idb.getSaveDetails()).some(d=>d.slot>0));
  await p.evaluate(()=>{if(!document.querySelector('#customOverlay').classList.contains('hidden'))closeOverlay();new SugarCube.Wikifier(null,'<<overlayReplace "saves">>')});await p.waitForSelector('.dgs-host');
  await p.locator('.dgs-item').filter({hasText:/\d{4}/}).first().click();await p.locator('.dgs-actions button').filter({hasText:/^(Save|保存)$/}).click();
  assert.equal(await p.locator('.dgs-detail[open]').count(),0,'save releases modal even when original overlay is hidden');
@@ -128,7 +132,8 @@ const server=http.createServer((req,res)=>{
   await p.waitForSelector('#customOverlay.dgs-native-tools #saveList>.saveBorder>.saveMenuConfirm');assert.equal(await p.locator('.dgs-host').count(),0);
   await p.evaluate(()=>{window.confirmNodes=[...document.querySelectorAll('#saveList>.saveBorder *')];window.confirmParents=confirmNodes.map(n=>n.parentNode);window.confirmHandlers=confirmNodes.map(n=>n.onclick);window.confirmAttributes=confirmNodes.map(n=>[n.id,n.getAttribute('name'),n.getAttribute('type'),n.getAttribute('value')]);const hidden=document.createElement('p');hidden.id='confirm-mod-hidden';hidden.hidden=true;hidden.textContent='Hidden Mod content';const extra=document.createElement('p');extra.id='confirm-mod-extra';extra.textContent='DynamicModText'.repeat(30);document.querySelector('#saveList>.saveBorder').append(hidden,extra)});
   for(const width of [390,1500])for(const scale of [100,200]){
-   await p.setViewportSize({width,height:1000});await p.evaluate(scale=>document.documentElement.style.fontSize=scale+'%',scale);
+   await p.setViewportSize({width,height:1000});
+  await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await p.evaluate(scale=>document.documentElement.style.fontSize=scale+'%',scale);
    for(const [tier,glass,blur] of [[0,true,'none'],[1,true,'blur(24px)'],[2,true,'blur(24px)'],[2,false,'none']]){
     await p.evaluate(({tier,glass})=>{DoLGameUI.setPreference('visualTier',tier);DoLGameUI.setPreference('visualGlass',glass)},{tier,glass});
     await p.evaluate(()=>new Promise(requestAnimationFrame));await p.locator('#saveList .saveMenuConfirm').evaluateAll(es=>Promise.all(es.flatMap(e=>e.getAnimations()).map(a=>a.finished.catch(()=>{}))));
