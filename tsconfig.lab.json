@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "component-lab/**/*.ts",
+    "component-lab/**/*.vue",
+    "src/shop/Toolbar.vue",
+    "src/ui/GameButton.vue",
+    "src/floating/FloatingTools.vue"
+  ]
+}
