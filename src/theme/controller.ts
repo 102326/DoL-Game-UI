@@ -30,12 +30,27 @@ type Runtime=Window & {
 export function startTheme(root:Runtime=window as Runtime){
  if(root.DoLMidnightTheme)return;
  const KEY='DoLMidnightTheme.preferences.v1';
- const maxScale=():150|200=>root.innerWidth<=600||Math.min(root.screen.width,root.screen.height)<=600?150:200;
- const scaleMax=maxScale();
+ const compactViewport=()=>root.innerWidth<=600||Math.min(root.screen.width,root.screen.height)<=600;
+ const scaleMax=150;
  let destroyed=false,frame=0,controls:HTMLDialogElement|undefined,app:App|undefined,expanded:HTMLButtonElement|undefined,lastFocus:HTMLElement|null=null,bar:HTMLElement|null=null,jqAttached=false,previewEnabled:boolean|undefined;
  let storageError=false,shopPageExperimentApi:Runtime['DoLShopPageExperiment']|undefined,shopPageExperimentApplied:boolean|undefined,shopPageExperimentError=false,wardrobeHiddenListApi:Runtime['DoLWardrobeUI']|undefined,wardrobeHiddenListApplied:boolean|undefined;
  const preferences:Preferences={...defaults};
- try{const raw=root.localStorage.getItem(KEY);if(raw&&raw.length<=2048){const value=JSON.parse(raw) as Partial<Record<PreferenceKey,unknown>> | null;for(const key of Object.keys(defaults) as PreferenceKey[]){const v=value?.[key];if(key==='visualTier'){if(typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=2)preferences[key]=v}else if(key==='fontScale'||key==='buttonScale'){if(typeof v==='number'&&Number.isFinite(v))preferences[key]=Math.max(50,Math.min(200,Math.round(v)))}else if(typeof v==='boolean')preferences[key]=v}}}catch{storageError=true}
+ // Store the migration marker with its values so a partial write cannot reset later choices.
+ try{
+  const raw=root.localStorage.getItem(KEY);
+  if(raw&&raw.length>2048)throw Error('Invalid preference length');
+  const value=raw?JSON.parse(raw) as (Partial<Record<PreferenceKey,unknown>> & {_scaleBaseline26?:unknown}) | null:null;
+  for(const key of Object.keys(defaults) as PreferenceKey[]){
+   const v=value?.[key];
+   if(key==='visualTier'){if(typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=2)preferences[key]=v}
+   else if(key==='fontScale'||key==='buttonScale'){if(typeof v==='number'&&Number.isFinite(v))preferences[key]=Math.max(50,Math.min(150,Math.round(v)))}
+   else if(typeof v==='boolean')preferences[key]=v;
+  }
+  if(value?._scaleBaseline26!==true){
+   preferences.fontScale=100;preferences.buttonScale=100;
+   root.localStorage.setItem(KEY,JSON.stringify({...preferences,_scaleBaseline26:true}));
+  }
+ }catch{storageError=true}
  setMasterEnabled(preferences.enabled);
  const state=reactive<SettingsState>({preferences,scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
  const cleanups:Array<()=>void>=[],timers=new Set<ReturnType<typeof setTimeout>>();
@@ -67,15 +82,15 @@ export function startTheme(root:Runtime=window as Runtime){
   state.preferences.showCompact=false;state.preferences.collapsedStats=false;
   document.documentElement.toggleAttribute('data-dol-midnight',state.preferences.enabled);
   document.documentElement.toggleAttribute('data-dol-midnight-comfortable',state.preferences.enabled&&state.preferences.comfortable);
-  html.toggleAttribute('data-dgu-compact-controls',state.preferences.enabled&&state.preferences.mobileCompactControls&&state.scaleMax===150);
+  html.toggleAttribute('data-dgu-compact-controls',state.preferences.enabled&&state.preferences.mobileCompactControls&&compactViewport());
   isolate('layout',()=>root.DMTLayout?.sync({...state.preferences,enabled:isMasterEnabled()}));
   const wantsPreview=isMasterEnabled()&&state.preferences.statusPreview;
   if(previewEnabled!==wantsPreview){previewEnabled=wantsPreview;isolate('status preview',()=>root.DoLStatusPreview?.setEnabled(previewEnabled!))}
   sync();
  }
- function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify(state.preferences));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请关闭此项或重启后重试。':'显示设置已保存。'}
- function setPreference(key:PreferenceKey,value:boolean|number){if(destroyed||!Object.hasOwn(defaults,key))return;if(key==='enabled'){if(typeof value==='boolean')setMaster(value);return}if(key==='visualTier'){if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;state.preferences[key]=value}else if(key==='fontScale'||key==='buttonScale'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(50,Math.min(200,Math.round(value)))}else{if(typeof value!=='boolean')return;state.preferences[key]=value}persist();if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。';if(key==='startupCacheLazy'&&!storageError)state.message='启动缓存实验设置已保存，请先保存游戏进度，再重启游戏生效。'}
- function resizeScale(){const limit=maxScale();if(limit===state.scaleMax)return;state.scaleMax=limit;apply()}
+ function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify({...state.preferences,_scaleBaseline26:true}));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请关闭此项或重启后重试。':'显示设置已保存。'}
+ function setPreference(key:PreferenceKey,value:boolean|number){if(destroyed||!Object.hasOwn(defaults,key))return;if(key==='enabled'){if(typeof value==='boolean')setMaster(value);return}if(key==='visualTier'){if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;state.preferences[key]=value}else if(key==='fontScale'||key==='buttonScale'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(50,Math.min(150,Math.round(value)))}else{if(typeof value!=='boolean')return;state.preferences[key]=value}persist();if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。';if(key==='startupCacheLazy'&&!storageError)state.message='启动缓存实验设置已保存，请先保存游戏进度，再重启游戏生效。'}
+ function resizeScale(){apply()}
  function setPanel(kind:PanelKind,value:boolean){root.DoLPanelsUI?.setEnabled(kind,value);sync()}
  function setSaves(value:boolean){root.DoLSavesUI?.setEnabled(value);sync()}
  function setShop(value:boolean){root.DoLShopUI?.setEnabled(value);sync()}

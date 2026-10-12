@@ -7,7 +7,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
  const noCapture=async()=>{await settle();assert.equal(await page.locator('.dcu-root,.dcu-toggle,.dgw-root,.dgshop-host,.dgp-host,.dgs-host').count(),0);assert.equal(await page.evaluate(()=>document.documentElement.hasAttribute('data-dol-midnight')||document.documentElement.hasAttribute('data-dmt-layout')||document.documentElement.hasAttribute('data-dgu-font-scaled')||document.documentElement.hasAttribute('data-dgu-buttons-scaled')),false)};
  await page.goto(pathToFileURL(path.join(__dirname,'fixture.html')).href);await page.waitForSelector('#listContainer');
  await page.evaluate(()=>{
-  localStorage.setItem('DoLMidnightTheme.preferences.v1',JSON.stringify({enabled:false,fontScale:125,buttonScale:150,layout:true,savesV2:true,wardrobePaged:true,shopDeferredPaint:true,shopPageExperiment:true,startupCacheLazy:true}));
+  localStorage.setItem('DoLMidnightTheme.preferences.v1',JSON.stringify({_scaleBaseline26:true,enabled:false,fontScale:125,buttonScale:150,layout:true,savesV2:true,wardrobePaged:true,shopDeferredPaint:true,shopPageExperiment:true,startupCacheLazy:true}));
   localStorage.setItem('DoLGameUI.social.enabled','false');
   window.nativeControls=[...document.querySelectorAll('#listContainer input,#listContainer select')];
   window.nativeParents=nativeControls.map(n=>n.parentNode);window.nativeBefore=JSON.stringify(SugarCube.State.variables);
