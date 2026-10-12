@@ -2,7 +2,7 @@
 
 > **2.6.0-rc.2 本地候选，仅供隔离实机验货，不是正式发布。** 统一 50%–150% 缩放及一次性升级迁移，保留侧栏第三方节点恢复，见 [候选说明](docs/RELEASE_2.6.0-rc.2.md) 与 [调查记录](docs/AUDIT_2.6.md)。2.5.0 已撤回；其手机事故根因仍未确认。
 
-**2.6.0-rc.2 — Soft & Wet** · 沿用支持声明 **DoL 0.5.11.9 / 0.5.12.13**；本轮游戏集成只执行 0.5.11.9。
+**2.6.0-rc.2 — Soft & Wet** · 沿用支持声明 **DoL 0.5.11.9 / 0.5.12.13**；本轮包含桌面 0.5.11.9 与平板独立 0.5.12.13 代表性检查；物理手机尚未验收，见 [接续记录](docs/RESUME_2.6_20261012.md)。
 
 [![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)
 ![Game](https://img.shields.io/badge/DoL-0.5.11.9%20%2F%200.5.12.13-blue)
