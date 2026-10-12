@@ -1,3 +1,7 @@
+# 2.6.0-rc.1 本地候选（2026-10-12）
+
+本轮macOS/Chrome完成构建、类型、单元、已有release分组的分段回归及最终受影响路径；初始失败、补测和复用边界见 [2.6调查](AUDIT_2.6.md)。历史Android记录不等于本候选实机通过。2.5手机事故根因尚未确认，2.6未达到正式发布条件；3.0可开始独立原型。
+
 # 2.1.0 兼容性与韧性（2026-10-05）
 
 构建/typecheck、集中隔离回归通过，报告 `tests/artifacts/workflow-release-1791184688894.json`。另通过 social、characteristics、panels、saves-native-tools 和 lyra-preview-adapter 专项。
