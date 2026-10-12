@@ -1,15 +1,15 @@
 # DoL Soft & Wet Game UI
 
-> **2.6.0-rc.2 本地候选，仅供隔离实机验货，不是正式发布。** 统一 50%–150% 缩放及一次性升级迁移，保留侧栏第三方节点恢复，见 [候选说明](docs/RELEASE_2.6.0-rc.2.md) 与 [调查记录](docs/AUDIT_2.6.md)。2.5.0 已撤回；其手机事故根因仍未确认。
+> **2.6.0 · Crazy Diamond** — 修复窄屏存档浮层与战斗图组宽度，统一 50%–150% 缩放。2.5.0 已撤回，建议升级到本版本。
 
-**2.6.0-rc.2 — Soft & Wet** · 沿用支持声明 **DoL 0.5.11.9 / 0.5.12.13**；本轮包含桌面 0.5.11.9 与平板独立 0.5.12.13 代表性检查；物理手机尚未验收，见 [接续记录](docs/RESUME_2.6_20261012.md)。
+适配 **DoL 0.5.11.9 / 0.5.12.13**，本轮完成桌面隔离发布测试及 Android 手机／平板代表性检查。详见 [更新说明](docs/RELEASE_2.6.0.md)。
 
 [![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)
 ![Game](https://img.shields.io/badge/DoL-0.5.11.9%20%2F%200.5.12.13-blue)
 
 **Soft & Wet UI** 为 Degrees of Lewdity 提供统一的现代深色界面，重新组织衣柜、服装店、战斗及常用菜单。手机使用紧凑布局与详情抽屉，平板和桌面利用宽屏展示列表与详情；外层柔雾 Acrylic、内层轻卡片，让信息与操作保持清楚。
 
-本候选 ZIP 由独立开发分支本地构建，未上传 GitHub。[已有稳定版 2.2.2](https://github.com/102326/DoL-Game-UI/releases/tag/v2.2.2) · [安装步骤](#安装与升级) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+[下载 2.6.0](https://github.com/102326/DoL-Game-UI/releases/tag/v2.6.0) · [安装步骤](#安装与升级) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 普通玩家只需主包；使用对应第三方 Mod 时再选装兼容包。需要 ModLoader **2.100.0+**、TweeReplacer **1.0.0+**。导入 ZIP，**不要解压**，然后重启游戏。模组不包含游戏本体、图片素材或 APK。
 
