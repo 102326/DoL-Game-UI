@@ -1,15 +1,27 @@
 /* Move only confirmed native regions; unknown Mod output stays in place. */
 export function createSidebarLayout(){
  const titles=new Set<HTMLElement>();
- const regions=new Map<HTMLElement,{nodes:Node[];anchors:Comment[]}>();
- function restore(){for(const title of titles)title.remove();titles.clear();for(const [host,{nodes,anchors}] of regions){nodes.forEach((node,i)=>{if(anchors[i].isConnected&&host.contains(node))anchors[i].replaceWith(node);else anchors[i].remove()});host.remove()}regions.clear()}
+ const regions=new Map<HTMLElement,{nodes:Node[];anchors:Comment[];wrappers:Element[]}>();
+ function restore(){
+  for(const title of titles)title.remove();titles.clear();
+  for(const [host,{nodes,anchors,wrappers}] of regions){
+   nodes.forEach((node,i)=>{
+    if(host.isConnected&&host.contains(node)){if(anchors[i].isConnected)anchors[i].replaceWith(node);else host.before(node)}
+    anchors[i].remove();
+   });
+   // Unwrap only our shells; preserve late Mod children, identity and handlers.
+   if(host.isConnected){for(const wrapper of wrappers)if(host.contains(wrapper))wrapper.replaceWith(...wrapper.childNodes);host.replaceWith(...host.childNodes)}
+   else host.remove();
+  }
+  regions.clear();
+ }
  function move(host:HTMLElement,nodes:Node[],target:HTMLElement){
   const anchors=nodes.map(node=>{const a=document.createComment('DoL UI sidebar original position');node.parentNode!.insertBefore(a,node);return a});
-  anchors[0].before(host);nodes.forEach(node=>target.append(node));regions.set(host,{nodes,anchors});
+  anchors[0].before(host);nodes.forEach(node=>target.append(node));regions.set(host,{nodes,anchors,wrappers:[...host.children]});
  }
  function sync(active:boolean){
   if(!active){restore();return}
-  for(const [host] of regions)if(!host.isConnected)regions.delete(host);
+  for(const [host,{anchors}] of regions)if(!host.isConnected){for(const anchor of anchors)anchor.remove();regions.delete(host)}
   for(const title of titles)if(!title.isConnected)titles.delete(title);
   const meters=document.querySelector('#storyCaptionContent>#statmeters'),gap=meters?.nextElementSibling,label=gap?.nextElementSibling;
   if(gap?.tagName==='BR'&&label instanceof HTMLElement&&label.matches('span.gold')&&['小贴士：','Tip:','Tips:'].includes(label.textContent?.trim()||'')){

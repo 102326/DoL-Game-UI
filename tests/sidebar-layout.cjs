@@ -23,6 +23,17 @@ const {chromium}=require('playwright'),assert=require('assert/strict'),{buildSyn
  await p.evaluate(()=>DMTLayout.destroy());assert.equal(await p.locator('#ui-bar').innerHTML(),html);
  await p.locator('#storyCaptionContent').evaluate(e=>e.innerHTML='<div id="statmeters"></div><br><span class="gold">Mod warning</span>Do not fold<br>');
  await p.evaluate(()=>{LayoutTest.startLayout();DMTLayout.sync({enabled:true,layout:true})});assert.equal(await p.locator('.dmt-sidebar-tip').count(),0,'unknown caption remains native');
+ // A third-party node inserted after acquisition must survive fallback and destroy.
+ await p.locator('#storyCaptionContent').evaluate((e,caption)=>e.innerHTML=caption,caption);
+ await p.evaluate(()=>DMTLayout.sync({enabled:true,layout:true}));
+ await p.evaluate(()=>{window.foreign=document.createElement('button');foreign.id='late-foreign';foreign.textContent='Late Mod';foreign.onclick=()=>clicks++;document.querySelector('.dmt-sidebar-tip>div').append(foreign)});
+ await p.evaluate(()=>DMTLayout.sync({enabled:true,layout:false}));
+ assert.equal(await p.evaluate(()=>foreign.isConnected),true,'late third-party content survives host cleanup');
+ assert.equal(await p.evaluate(()=>document.getElementById('late-foreign')===foreign),true);await p.locator('#late-foreign').click();
+ await p.evaluate(()=>{foreign.remove();DMTLayout.sync({enabled:true,layout:true});window.tipLabel=document.querySelector('.dmt-sidebar-tip>summary>span');document.querySelector('.dmt-sidebar-tip').append(foreign);for(const n of [...document.getElementById('storyCaptionContent').childNodes])if(n.nodeType===Node.COMMENT_NODE)n.remove()});
+ await p.evaluate(()=>DMTLayout.destroy());
+ assert.equal(await p.evaluate(()=>foreign.isConnected&&tipLabel.isConnected),true,'missing anchors retain live content');
+ assert.equal(await p.locator('.dmt-sidebar-tip').count(),0);
  await p.evaluate(()=>entryOwner.disconnect());
  console.log('PASS sidebar disclosure, direct native tools, dynamic redraw, exact fallback/destroy, unknown warning boundary');
  }finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});
