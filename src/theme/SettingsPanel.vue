@@ -24,8 +24,9 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    <p>流畅档不使用模糊。均衡与华丽共享布局，主要区别是材质强度；系统减少动态效果设置优先。</p>
   </section>
   <section class="dmt-setting-card"><h3>字体与按钮大小</h3><p>调整主界面与弹窗；侧边栏与模组管理弹窗保持原有大小。</p>
-<label v-for="item in ([{key:'fontScale',label:'字体'},{key:'buttonScale',label:'按钮'}] as const)" :key="item.key" class="dgu-setting-row"><span>{{item.label}} {{state.preferences[item.key]}}%</span><input type="range" min="50" :max="state.scaleMax" step="5" :aria-label="item.label+'大小'" :value="state.preferences[item.key]" @input="onPreference(item.key,Number(($event.target as HTMLInputElement).value))"/></label>
-<GameButton @click="onPreference('fontScale',100);onPreference('buttonScale',100)">恢复 100%</GameButton><p>当前范围 50%–{{state.scaleMax}}%。图片保持原大小。</p>
+<label v-for="item in ([{key:'fontScale',label:'字体'},{key:'buttonScale',label:'按钮'}] as const)" :key="item.key" class="dgu-setting-row"><span>{{item.label}} {{state.preferences[item.key]}}%</span><input type="range" min="50" max="200" step="5" :aria-label="item.label+'大小'" :value="state.preferences[item.key]" @input="onPreference(item.key,Number(($event.target as HTMLInputElement).value))"/></label>
+<GameButton @click="onPreference('fontScale',100);onPreference('buttonScale',100)">恢复 100%</GameButton><p>保存范围 50%–200%。图片保持原大小。</p>
+   <p v-if="state.preferences.fontScale>state.scaleMax || state.preferences.buttonScale>state.scaleMax">当前实际显示：字体 {{Math.min(state.scaleMax,state.preferences.fontScale)}}%，按钮 {{Math.min(state.scaleMax,state.preferences.buttonScale)}}%。窄屏限制仅临时生效，保存值不变。</p>
    <SettingsToggle label="手机紧凑按钮间距" description="缩小操作控件的留白，保留至少 44px 点击区域；仅在手机尺寸生效" :checked="state.preferences.mobileCompactControls" @change="onPreference('mobileCompactControls',$event)"/>
   </section>
 <section class="dmt-setting-card"><h3>侧栏与布局</h3>
