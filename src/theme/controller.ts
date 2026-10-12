@@ -14,6 +14,7 @@ type Runtime=Window & {
  DMTLayout?: NonNullable<Parameters<typeof startLayout>[0]>['DMTLayout'];
  DoLSavesUI?: PageControls & {setV2?:(value:boolean)=>void};
  DoLShopUI?: PageControls;
+ DoLStoryActionsUI?: {setEnabled(value:boolean):void};
  DoLSocialUI?: PageControls;
  DoLCharacteristicsUI?: PageControls;
  DoLCombatUI?: PageControls;
@@ -73,6 +74,7 @@ export function startTheme(root:Runtime=window as Runtime){
   const wardrobeApi=root.DoLWardrobeUI;if(wardrobeApi!==wardrobeHiddenListApi){wardrobeHiddenListApi=wardrobeApi;wardrobeHiddenListApplied=undefined}if(wardrobeApi&&typeof wardrobeApi.setNativeHiddenList==='function'){const value=isMasterEnabled()&&state.wardrobe&&state.preferences.wardrobeHiddenList;if(wardrobeHiddenListApplied!==value){try{wardrobeApi.setNativeHiddenList(value);wardrobeHiddenListApplied=value}catch{wardrobeHiddenListApplied=undefined}}}else{wardrobeHiddenListApi=undefined;wardrobeHiddenListApplied=undefined}
  }
  function apply(){
+  isolate('story actions',()=>root.DoLStoryActionsUI?.setEnabled(isMasterEnabled()&&state.preferences.storyActions));
   const html=document.documentElement;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?state.preferences.visualTier:0));
   for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&state.preferences.visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);

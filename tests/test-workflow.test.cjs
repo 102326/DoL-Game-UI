@@ -10,7 +10,7 @@ for(const mode of ['quick','release','performance']){
 }
 assert.notEqual(run('quick','unknown','--plan').status,0);
 assert.notEqual(run('release','shop','--plan').status,0);
-for(const [group,test] of [['wardrobe','wardrobe-search.test.cjs'],['shop','shop-source.test.cjs'],['saves','saves-source-m4b.cjs'],['combat','combat-m4a.cjs']]){
+for(const [group,test] of [['wardrobe','wardrobe-search.test.cjs'],['shop','shop-source.test.cjs'],['saves','saves-source-m4b.cjs'],['combat','combat-m4a.cjs'],['story','story-actions.test.cjs']]){
  const plan=JSON.parse(run('quick',group,group,'--plan').stdout);
  assert.equal(plan.tests.filter(name=>name===test).length,1);
  assert.ok(!plan.tests.includes('wardrobe-m2.cjs'),'slow wardrobe integration is release-only');

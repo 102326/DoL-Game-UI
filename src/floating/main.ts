@@ -40,7 +40,7 @@ export function startFloatingTools(root:Root=window){
   state.menuX=x-state.x;state.menuY=y-state.y;
   state.fan=[{x:0,y:above?70:20},{x:(state.menuWidth-92)/2,y:above?0:75},{x:state.menuWidth-92,y:above?70:20}];
   // Give known game controls priority without changing the player's stored position.
-  if(!state.open){const ball={left:state.x,right:state.x+ballSize,top:state.y,bottom:state.y+ballSize};const dock=document.querySelector('.dcu-footer')?.getBoundingClientRect();if(dock&&ball.left<dock.right&&ball.right>dock.left&&ball.top<dock.bottom&&ball.bottom>dock.top)state.y=Math.max(v.top+edge,dock.top-ballSize-edge)}
+  if(!state.open){const ball={left:state.x,right:state.x+ballSize,top:state.y,bottom:state.y+ballSize};const dock=document.querySelector('.dcu-footer,#dol-story-actions')?.getBoundingClientRect();if(dock&&ball.left<dock.right&&ball.right>dock.left&&ball.top<dock.bottom&&ball.bottom>dock.top)state.y=Math.max(v.top+edge,dock.top-ballSize-edge)}
  }
  function outside(event:PointerEvent){if(!host?.contains(event.target as Node))close(false)}
  function close(focus=true){unlock();const hadFocus=host?.contains(document.activeElement);state.open=false;state.config=false;state.message='';locked=false;if(outsideAttached){document.removeEventListener('pointerdown',outside);outsideAttached=false}if(focus&&hadFocus)host?.querySelector<HTMLButtonElement>('.dsf-ball')?.focus({preventScroll:true});position()}

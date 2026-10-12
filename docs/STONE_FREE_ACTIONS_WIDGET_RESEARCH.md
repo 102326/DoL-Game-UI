@@ -4,6 +4,8 @@
 
 ## 剧情动作区：不使用全局吸底
 
+以下为原版动作底栏获得后续授权前的研究判断。用户之后明确授权小范围原版动作投影，已实现首批卧室衣柜／镜子；当前状态见 [STONE_FREE_NATIVE_ACTION_PROTOTYPE.md](STONE_FREE_NATIVE_ACTION_PROTOTYPE.md)，不恢复全局 Footer 吸底。
+
 实际读取两台独立 0.5.12.13 App 的当前 DOM：它们都在 Start，存在 `passage-header`、`passage-content`、`passage-footer`。主内容包含原控件，Footer 中有第三方 ModHub 内容；不能将 Footer 解释成纯动作区。隐藏的第三方按钮即使查询到，也不能算当前可用动作。
 
 读取手机实际已加载的 Bedroom / PassageFooter 模板，而不是假定本地旧版与目标一致：Bedroom 有 35 个 `<<link`，主要在 `passage-content` 中混排；两个 div 是 `passage-content` 与 `append`，没有独立动作组。PassageFooter 包含版本信息、导出提醒、原版浮层、debug 区域及 `next`。这是模板观察，尚未进入卧室逐项证明其运行 DOM。

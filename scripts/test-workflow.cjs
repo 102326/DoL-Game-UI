@@ -2,6 +2,7 @@ const fs=require('node:fs'),path=require('node:path');
 const {spawnSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 const groups={
+ story:['story-actions.test.cjs'],
  wardrobe:['wardrobe-operations.test.cjs','wardrobe-search.test.cjs','wardrobe-layout.test.cjs','sidebar-preview-lifecycle.cjs'],
  shop:['shop-source.test.cjs','shop.test.cjs'],
  saves:['saves-source-m4b.cjs','saves-runtime.cjs','save-transfer-lifecycle.cjs','save-compatibility.cjs'],
@@ -10,7 +11,7 @@ const groups={
 };
 const args=process.argv.slice(2),mode=args.shift(),planOnly=args.includes('--plan');
 const selected=args.filter(a=>a!=='--plan');
-if(!['quick','release','performance'].includes(mode))throw Error('Use quick [wardrobe|shop|saves|layout|combat], release, or performance [shop|wardrobe]; add --plan to inspect without running');
+if(!['quick','release','performance'].includes(mode))throw Error('Use quick [wardrobe|shop|saves|layout|combat|story], release, or performance [shop|wardrobe]; add --plan to inspect without running');
 if(mode==='release'&&selected.length)throw Error('release takes no test group');
 if(mode==='performance'&&selected.some(x=>!['shop','wardrobe'].includes(x)))throw Error('Unknown performance group');
 if(mode==='quick'&&selected.some(x=>!Object.hasOwn(groups,x)))throw Error('Unknown quick group');
