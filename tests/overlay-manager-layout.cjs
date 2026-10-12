@@ -19,6 +19,13 @@ const assert = require('node:assert/strict');
   await page.locator('.customOverlay').evaluate(e=>e.setAttribute('data-overlay','saves'));
   const saves = await page.evaluate(read);
   assert.ok(saves.left>=0 && saves.right<=400,'Game overlay remains within viewport');
+  await page.addStyleTag({path:'src/theme/midnight.css'});await page.addStyleTag({path:'src/theme/mobile.css'});
+  await page.evaluate(()=>document.documentElement.removeAttribute('data-dmt-layout'));
+  const fallback=await page.evaluate(read);
+  assert.equal(fallback.width,native.width,'theme-only native overlay must not shrink to its sidebar-offset parent');
+  assert.equal(fallback.left,native.left);assert.equal(fallback.right,native.right);
+  await page.evaluate(()=>document.documentElement.setAttribute('data-dmt-layout',''));
+  const restored=await page.evaluate(read);assert.ok(restored.width>300&&restored.left>=0&&restored.right<=400,'responsive overlay retains full usable width');
   // Native renderer grids size their label column from unbroken option names.
   await page.setViewportSize({width:1100,height:900});
   await page.setContent(`<html data-dol-midnight><style>

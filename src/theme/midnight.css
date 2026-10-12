@@ -297,7 +297,7 @@ html[data-dol-midnight] #customOverlay[data-overlay="canvasModel"] #customOverla
 }
 
 @media (max-width: 640px) {
-    html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]),
+    html[data-dol-midnight][data-dmt-layout] #customOverlay:not([data-overlay="modloader"]),
     html[data-dol-midnight] .settings-container,
     html[data-dol-midnight] .main-shop-div,
     html[data-dol-midnight] .clothing-shop-page {
