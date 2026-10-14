@@ -1,6 +1,7 @@
 @import "tailwindcss/theme.css" layer(theme) prefix(cu);
 @import "tailwindcss/utilities.css" layer(utilities) prefix(cu);
 @source "./*.vue";
+.dcu-footer[popover]{inset:auto;left:var(--dcu-left,0px);bottom:var(--dcu-bottom,0px);margin:0;height:auto;max-width:none;max-height:none;overflow:visible}
 .dcu-root{margin:10px 0;color:#e7e7ee;--dcu-bg:#1b1b22;--dcu-card:#25252e;--dcu-line:#444450;--dcu-accent:#cbc6ff;font:calc(15px * var(--dgu-font-scale,1))/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:left;color-scheme:dark;clear:both;min-width:0}
 .dcu-root *{box-sizing:border-box}.dcu-shell{border:1px solid var(--dcu-line);border-radius:12px;background:var(--dcu-bg);isolation:isolate;animation:dcu-enter .2s ease-out;min-width:0}.dcu-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 12px;border-bottom:1px solid var(--dcu-line);font-size:calc(13px * var(--dgu-font-scale,1))}.dcu-root .dcu-header button{padding:6px 12px;font-size:calc(12px * var(--dgu-font-scale,1));background:transparent}
 

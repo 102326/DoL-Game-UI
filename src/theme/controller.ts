@@ -14,7 +14,6 @@ type Runtime=Window & {
  DMTLayout?: NonNullable<Parameters<typeof startLayout>[0]>['DMTLayout'];
  DoLSavesUI?: PageControls & {setV2?:(value:boolean)=>void};
  DoLShopUI?: PageControls;
- DoLStoryActionsUI?: {setEnabled(value:boolean):void};
  DoLSocialUI?: PageControls;
  DoLCharacteristicsUI?: PageControls;
  DoLCombatUI?: PageControls;
@@ -46,8 +45,8 @@ export function startTheme(root:Runtime=window as Runtime){
    else if(key==='fontScale'||key==='buttonScale'){if(typeof v==='number'&&Number.isFinite(v))preferences[key]=Math.max(50,Math.min(150,Math.round(v)))}
    else if(typeof v==='boolean')preferences[key]=v;
   }
-  const retiredEnabled=preferences.statusPreview||preferences.startupCacheLazy;
-  preferences.statusPreview=false;preferences.startupCacheLazy=false;
+  const retiredEnabled=preferences.statusPreview||preferences.startupCacheLazy||preferences.storyActions;
+  preferences.statusPreview=false;preferences.startupCacheLazy=false;preferences.storyActions=false;
   if(value?._scaleBaseline26!==true){
    preferences.fontScale=100;preferences.buttonScale=100;
   }
@@ -74,7 +73,6 @@ export function startTheme(root:Runtime=window as Runtime){
   const wardrobeApi=root.DoLWardrobeUI;if(wardrobeApi!==wardrobeHiddenListApi){wardrobeHiddenListApi=wardrobeApi;wardrobeHiddenListApplied=undefined}if(wardrobeApi&&typeof wardrobeApi.setNativeHiddenList==='function'){const value=isMasterEnabled()&&state.wardrobe&&state.preferences.wardrobeHiddenList;if(wardrobeHiddenListApplied!==value){try{wardrobeApi.setNativeHiddenList(value);wardrobeHiddenListApplied=value}catch{wardrobeHiddenListApplied=undefined}}}else{wardrobeHiddenListApi=undefined;wardrobeHiddenListApplied=undefined}
  }
  function apply(){
-  isolate('story actions',()=>root.DoLStoryActionsUI?.setEnabled(isMasterEnabled()&&state.preferences.storyActions));
   const html=document.documentElement;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?state.preferences.visualTier:0));
   for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&state.preferences.visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
@@ -90,7 +88,7 @@ export function startTheme(root:Runtime=window as Runtime){
   sync();
  }
  function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify({...state.preferences,_scaleBaseline26:true}));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请关闭此项或重启后重试。':'显示设置已保存。'}
- function setPreference(key:PreferenceKey,value:boolean|number){if(destroyed||!Object.hasOwn(defaults,key)||key==='statusPreview'||key==='startupCacheLazy')return;if(key==='enabled'){if(typeof value==='boolean')setMaster(value);return}if(key==='visualTier'){if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;state.preferences[key]=value}else if(key==='fontScale'||key==='buttonScale'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(50,Math.min(150,Math.round(value)))}else{if(typeof value!=='boolean')return;state.preferences[key]=value}persist();if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。'}
+ function setPreference(key:PreferenceKey,value:boolean|number){if(destroyed||!Object.hasOwn(defaults,key)||key==='statusPreview'||key==='startupCacheLazy'||key==='storyActions')return;if(key==='enabled'){if(typeof value==='boolean')setMaster(value);return}if(key==='visualTier'){if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;state.preferences[key]=value}else if(key==='fontScale'||key==='buttonScale'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(50,Math.min(150,Math.round(value)))}else{if(typeof value!=='boolean')return;state.preferences[key]=value}persist();if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。'}
  function resizeScale(){apply()}
  function setPanel(kind:PanelKind,value:boolean){root.DoLPanelsUI?.setEnabled(kind,value);sync()}
  function setSaves(value:boolean){root.DoLSavesUI?.setEnabled(value);sync()}

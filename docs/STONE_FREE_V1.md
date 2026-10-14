@@ -1,3 +1,5 @@
+> 历史计划：2026-10-15 起当前候选改为 [2.7 Crazy Diamond](CRAZY_DIAMOND_2.7.md)。动作底栏与 Widget 不是 2.7 交付目标，以下保留阶段记录。
+
 # Soft & Wet UI 3.0 — Stone Free
 
 ## 产品基线与边界

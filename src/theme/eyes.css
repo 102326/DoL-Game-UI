@@ -440,6 +440,8 @@ html[data-dol-midnight] #ui-dialog-body :is(button,input[type=button],input[type
 /* Native jQuery tooltip signature only. Its plugin keeps positioning, content,
    pointer behaviour and lifetime; unknown popup classes are not adopted. */
 html[data-dol-midnight] body>.tooltip-popup[data-tooltip-id] {--dgu-acrylic-base:rgba(36,38,42,.78);color:var(--dgu-text);background:var(--dgu-surface);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;box-sizing:border-box;overflow-wrap:anywhere;box-shadow:inset 0 1px rgba(255,255,255,.06),0 12px 36px rgba(0,0,0,.28)}
+/* Native body tooltips must clear the shop's 10000 interaction shield. */
+html[data-dol-midnight]:has(.dgshop-content) body>.tooltip-popup[data-tooltip-id] {z-index:10001}
 html[data-dol-midnight][data-dgu-visual="2"] body>.tooltip-popup[data-tooltip-id] {--dgu-acrylic-base:rgba(36,38,42,.74)}
 html[data-dol-midnight] body>.tooltip-popup[data-tooltip-id]>.tooltip-header {color:var(--dgu-text);font-weight:600;margin-bottom:4px}
 @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {

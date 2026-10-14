@@ -4,10 +4,10 @@ const root=path.resolve(__dirname,'..');
 const groups={
  story:['story-actions.test.cjs'],
  wardrobe:['wardrobe-operations.test.cjs','wardrobe-search.test.cjs','wardrobe-layout.test.cjs','sidebar-preview-lifecycle.cjs'],
- shop:['shop-source.test.cjs','shop.test.cjs'],
+ shop:['shop-source.test.cjs','shop.test.cjs','layering-regression.cjs'],
  saves:['saves-source-m4b.cjs','saves-runtime.cjs','save-transfer-lifecycle.cjs','save-compatibility.cjs'],
- layout:['ui-runtime.cjs','resilience.cjs','master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','preferences-preservation.cjs','sidebar-layout.cjs','floating-tools.test.cjs','floating-boundaries.test.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs'],
- combat:['combat-m4a.cjs','acceptance.cjs','combat-resize.test.cjs','native-action-panel.cjs'],
+ layout:['ui-runtime.cjs','resilience.cjs','master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','preferences-preservation.cjs','sidebar-layout.cjs','floating-tools.test.cjs','floating-boundaries.test.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs','release-27-settings.cjs'],
+ combat:['combat-m4a.cjs','acceptance.cjs','combat-resize.test.cjs','native-action-panel.cjs','layering-regression.cjs'],
 };
 const args=process.argv.slice(2),mode=args.shift(),planOnly=args.includes('--plan');
 const selected=args.filter(a=>a!=='--plan');

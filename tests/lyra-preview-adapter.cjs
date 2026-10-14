@@ -1,8 +1,12 @@
-const path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),{buildSync}=require('esbuild');
+const path=require('node:path'),fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),{buildSync}=require('esbuild');
+const boot=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../compat/lyra-wardrobe-mouth-soft-wet/boot.json'),'utf8'));
+assert.equal(boot.dependenceInfo.find(d=>d.modName==='DoLGameUI').version,'>=2.2.2');
+assert.equal(boot.dependenceInfo.find(d=>d.modName==='Lyra').version,'=0.5.11.9-1.0.0a-0815-goose-ucb');
+assert.equal(boot.dependenceInfo.find(d=>d.modName==='GameVersion').version,'=0.5.11.9');
 const source=buildSync({entryPoints:[path.resolve(__dirname,'../compat/lyra-wardrobe-mouth-soft-wet/lyra-wardrobe-mouth.ts')],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text;
 const target=new EventTarget();let version='0.5.11.9-1.0.0a-0815-goose-ucb',registrations=0;
 const liveModel={layers:{mouth:{srcfn:()=> 'live-mouth'}}},V={facevariant:'sweet'},T={};
-const root={modUtils:{getMod:()=>({version})},Renderer:{model:liveModel},V,T,
+const root={DoLGameUI:{version:'2.7.0'},modUtils:{getMod:()=>({version})},Renderer:{model:liveModel},V,T,
  addEventListener(...args){registrations++;target.addEventListener(...args)},removeEventListener(...args){target.removeEventListener(...args)}};
 const context=vm.createContext({window:root});vm.runInContext(source,context);vm.runInContext(source,context);assert.equal(registrations,1);
 function prepare(){const original=()=> 'native-mouth';const model={layers:{mouth:{srcfn:original}}};const options={};target.dispatchEvent(new CustomEvent('dol-ui-outfit-prepared',{detail:{model,options}}));return {model,original,options}}

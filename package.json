@@ -1,6 +1,6 @@
 {
   "name": "dol-game-ui",
-  "version": "3.0.0-stone-free.1",
+  "version": "2.7.0",
   "private": true,
   "type": "module",
   "scripts": {

@@ -47,6 +47,13 @@ function dockCandidates(s:Session){
 }
 function syncDock(s:Session){
  if(!s.app||!s.dock.isConnected)return;
+ // A non-modal top layer keeps native DOM ancestry while escaping filtered ancestors.
+ if(typeof s.dock.showPopover==='function'){
+  s.dock.setAttribute('popover','manual');
+  const obscured=[...document.querySelectorAll<HTMLElement>('dialog[open],#customOverlay,#ui-dialog')].some(visible);
+  if(obscured){if(s.dock.matches(':popover-open'))s.dock.hidePopover()}
+  else if(!s.dock.matches(':popover-open'))s.dock.showPopover();
+ }
  const candidates=dockCandidates(s);
  for(const d of [...s.docked]){
   if(candidates.includes(d.node))continue;
@@ -64,6 +71,8 @@ function syncDock(s:Session){
  const r=s.host.getBoundingClientRect();
  const set=(key:string,value:string)=>{if(s.dock.style.getPropertyValue(key)!==value)s.dock.style.setProperty(key,value)};
  set('--dcu-left',`${r.left}px`);set('--dcu-width',`${r.width}px`);
+ const viewport=window.visualViewport;
+ set('--dcu-bottom',`${viewport?Math.max(0,innerHeight-viewport.offsetTop-viewport.height):0}px`);
  const passage=s.list.closest('.passage');
  if(passage){if(!s.spacer){s.spacer=document.createElement('div');s.spacer.className='dcu-bottom-reserve';s.spacer.setAttribute('aria-hidden','true')}if(passage.lastElementChild!==s.spacer)passage.append(s.spacer);const reserve=`${s.dock.offsetHeight+16}px`;if(s.spacer.style.height!==reserve)s.spacer.style.height=reserve}
 }
@@ -110,8 +119,8 @@ function nativeClick(event:Event){
 function focusAction(e:Event){if(!active||!enabled||!(e.target instanceof Element))return;const group=e.target.closest('.dcu-group');if(group)for(const [key,el] of active.groups)if(el===group){focusGroup(active,key);break}}
 function change(e:Event){if(active?.regions.some(r=>r.list.contains(e.target as Node)))schedule()}
 let observedRoot:HTMLElement|undefined;function observeScope(){const target=document.getElementById('passages')||document.body;if(target===observedRoot)return;observer.disconnect();observedRoot=target;observer.observe(target,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['disabled','hidden','style','aria-disabled','aria-hidden','class','checked']})}
-function start(){if(disposed)return;observeScope();if(failed&&document.querySelector('#passages .passage:not(.passage-out)')!==failedPassage){failed=false;failedPassage=null}document.addEventListener('click',nativeClick,true);document.addEventListener('focusin',focusAction);document.addEventListener('pointerdown',focusAction);document.addEventListener('change',change);document.addEventListener('input',change);window.addEventListener('resize',schedule);window.addEventListener('scroll',schedule,true);if(runtime.jQuery)runtime.jQuery(document).on(':passageend.dcu :storyready.dcu',schedule);schedule()}
+function start(){if(disposed)return;observeScope();if(failed&&document.querySelector('#passages .passage:not(.passage-out)')!==failedPassage){failed=false;failedPassage=null}document.addEventListener('toggle',schedule,true);document.addEventListener('click',nativeClick,true);document.addEventListener('focusin',focusAction);document.addEventListener('pointerdown',focusAction);document.addEventListener('change',change);document.addEventListener('input',change);window.addEventListener('resize',schedule);window.addEventListener('scroll',schedule,true);window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);if(runtime.jQuery)runtime.jQuery(document).on(':passageend.dcu :storyready.dcu',schedule);schedule()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-runtime.DoLCombatUI={version:'0.2.0',getEnabled:()=>enabled&&!failed,refresh:scan,setEnabled,destroy(){disposed=true;observer.disconnect();document.removeEventListener('click',nativeClick,true);document.removeEventListener('focusin',focusAction);document.removeEventListener('pointerdown',focusAction);document.removeEventListener('change',change);document.removeEventListener('input',change);window.removeEventListener('resize',schedule);window.removeEventListener('scroll',schedule,true);document.removeEventListener('DOMContentLoaded',start);runtime.jQuery?.(document).off('.dcu');disposeSession();delete runtime.DoLCombatUI}};
+runtime.DoLCombatUI={version:'0.2.0',getEnabled:()=>enabled&&!failed,refresh:scan,setEnabled,destroy(){disposed=true;observer.disconnect();document.removeEventListener('toggle',schedule,true);document.removeEventListener('click',nativeClick,true);document.removeEventListener('focusin',focusAction);document.removeEventListener('pointerdown',focusAction);document.removeEventListener('change',change);document.removeEventListener('input',change);window.removeEventListener('resize',schedule);window.removeEventListener('scroll',schedule,true);window.visualViewport?.removeEventListener('resize',schedule);window.visualViewport?.removeEventListener('scroll',schedule);document.removeEventListener('DOMContentLoaded',start);runtime.jQuery?.(document).off('.dcu');disposeSession();delete runtime.DoLCombatUI}};
 
 }

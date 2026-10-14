@@ -16,7 +16,6 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
   <section class="dmt-setting-card"><h3>主题与阅读</h3>
    <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
-   <SettingsToggle label="原版常用动作底栏（实验）" description="目前只支持卧室的衣柜与普通镜子；保留原链接，不接管 Mod 动作" :checked="state.preferences.storyActions" @change="onPreference('storyActions',$event)"/>
    <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
   </section>
   <section class="dmt-setting-card"><h3>材质与动效</h3>

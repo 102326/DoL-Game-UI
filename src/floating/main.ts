@@ -31,16 +31,18 @@ export function startFloatingTools(root:Root=window){
  function position(){
   if(!host||locked||gesture)return;
   const v=viewport(),actual=displayPosition(p,v);state.x=actual.x;state.y=actual.y;state.intentX=p.x;state.intentY=p.y;
-  state.menuWidth=Math.min(state.config?300:280,v.width-edge*2);state.menuMaxHeight=v.height-edge*2;
+  // Keep optional tools above the native action dock without remapping the stored position.
+  const dock=document.querySelector('.dcu-footer,#dol-story-actions')?.getBoundingClientRect();
+  const heightAvailable=dock&&dock.height>0&&dock.bottom>=v.top+v.height-2&&dock.top>v.top?dock.top-v.top-edge:v.height;
+  if(dock&&state.x<dock.right&&state.x+ballSize>dock.left&&state.y<dock.bottom&&state.y+ballSize>dock.top)state.y=Math.max(v.top+edge,dock.top-ballSize-edge);
+  state.menuWidth=Math.min(state.config?300:280,v.width-edge*2);state.menuMaxHeight=Math.max(44,heightAvailable-edge*2);
   const desiredHeight=state.mode==='fan'&&!state.config?210:host.querySelector('.dsf-menu')?.getBoundingClientRect().height||180;
-  const height=Math.min(desiredHeight,state.menuMaxHeight),above=state.y-v.top>=height+edge,below=state.y+ballSize+height+edge<=v.top+v.height;
+  const height=Math.min(desiredHeight,state.menuMaxHeight),above=state.y-v.top>=height+edge,below=state.y+ballSize+height+edge<=v.top+heightAvailable;
   if(state.open&&state.mode==='fan'&&!above&&!below){state.mode='grid';state.tools=tools();state.message='当前窗口空间较小，临时使用网格。';void nextTick(position);return}
   const x=Math.max(v.left+edge,Math.min(v.left+v.width-state.menuWidth-edge,state.x+ballSize/2-state.menuWidth/2));
-  const y=Math.max(v.top+edge,Math.min(v.top+v.height-height-edge,above?state.y-height-edge:state.y+ballSize+edge));
+  const y=Math.max(v.top+edge,Math.min(v.top+heightAvailable-height-edge,above?state.y-height-edge:state.y+ballSize+edge));
   state.menuX=x-state.x;state.menuY=y-state.y;
   state.fan=[{x:0,y:above?70:20},{x:(state.menuWidth-92)/2,y:above?0:75},{x:state.menuWidth-92,y:above?70:20}];
-  // Give known game controls priority without changing the player's stored position.
-  if(!state.open){const ball={left:state.x,right:state.x+ballSize,top:state.y,bottom:state.y+ballSize};const dock=document.querySelector('.dcu-footer,#dol-story-actions')?.getBoundingClientRect();if(dock&&ball.left<dock.right&&ball.right>dock.left&&ball.top<dock.bottom&&ball.bottom>dock.top)state.y=Math.max(v.top+edge,dock.top-ballSize-edge)}
  }
  function outside(event:PointerEvent){if(!host?.contains(event.target as Node))close(false)}
  function close(focus=true){unlock();const hadFocus=host?.contains(document.activeElement);state.open=false;state.config=false;state.message='';locked=false;if(outsideAttached){document.removeEventListener('pointerdown',outside);outsideAttached=false}if(focus&&hadFocus)host?.querySelector<HTMLButtonElement>('.dsf-ball')?.focus({preventScroll:true});position()}
