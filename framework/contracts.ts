@@ -31,6 +31,21 @@ export interface Contribution {
  schema: string;
  read(binding: Binding): Json | Promise<Json>;
 }
+export interface CommandContribution {
+ id: string;
+ schema: string;
+ title: string;
+ run(binding: Binding): Json | Promise<Json>;
+}
+export type CommandResult = Readonly<{status: 'returned'; value: Json; generation: number}>
+ | Readonly<{status: 'missing' | 'stale' | 'busy' | 'unknown'}>;
+export interface Command {
+ readonly owner: string;
+ readonly id: string;
+ readonly schema: string;
+ readonly title: string;
+ invoke(binding: Binding): Promise<CommandResult>;
+}
 export interface ViewContribution {
  id: string;
  title: string;
@@ -55,6 +70,7 @@ export interface Participant {
  mount(request: MountRequest): Readonly<MountHandle>;
  claim(kind: ResourceKind, key: string): Readonly<Claim> | null;
  provide(contribution: Contribution): Cleanup;
+ provideCommand(command: CommandContribution): Cleanup;
  provideView(view: ViewContribution): Cleanup;
  dispose(): void;
 }
@@ -63,7 +79,9 @@ export interface Host {
  register(id: string): Readonly<Participant>;
  binding(): Binding;
  sources(schema: string): readonly Source[];
- getCapabilities(): Readonly<{views: boolean}>;
+ getCapabilities(): Readonly<{views: boolean; commands: boolean}>;
+ commands(schema: string): readonly Command[];
+ onCommands(callback: Cleanup): Cleanup;
  views(): readonly View[];
  onViews(callback: Cleanup): Cleanup;
  onContributions(callback: () => void): Cleanup;
@@ -77,6 +95,7 @@ export interface Host {
   mounts: readonly Readonly<{owner: string; id: string; lifetime: Lifetime}>[];
   claims: readonly Readonly<{owner: string; kind: ResourceKind; key: string}>[];
   sources: readonly Readonly<{owner: string; id: string; schema: string}>[];
+  commands: readonly Readonly<{owner: string; id: string; schema: string}>[];
   views: readonly Readonly<{owner: string; id: string}>[];
   errors: readonly Readonly<{owner: string; stage: string}>[];
  }>;

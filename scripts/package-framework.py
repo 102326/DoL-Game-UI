@@ -5,7 +5,7 @@ import json, zipfile, hashlib
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
 version = '0.1.0-experimental'
-packages = [('host', 'StoneFreeHost'), ('native-status', 'StoneFreeNativeStatus'), ('comparison', 'StoneFreeStatusComparison'), ('soft-wet-surface', 'StoneFreeSoftWetSurface'), ('workspace', 'StoneFreeWorkspace'), ('alternate-workspace', 'StoneFreeAlternateWorkspace')]
+packages = [('host', 'StoneFreeHost'), ('native-status', 'StoneFreeNativeStatus'), ('comparison', 'StoneFreeStatusComparison'), ('soft-wet-surface', 'StoneFreeSoftWetSurface'), ('workspace', 'StoneFreeWorkspace'), ('alternate-workspace', 'StoneFreeAlternateWorkspace'), ('native-reading', 'StoneFreeNativeReading'), ('reading-controls', 'StoneFreeReadingControls')]
 for directory, name in packages:
     base = out / directory
     dependencies = [{'modName': 'ModLoader', 'version': '>=2.100.0'}]
@@ -20,7 +20,7 @@ for directory, name in packages:
     files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
     files['README.md'] = (root/'framework/README.md').read_bytes()
     files['LICENSE'] = (root/'LICENSE').read_bytes()
-    if directory in ('native-status', 'comparison', 'workspace', 'alternate-workspace'):
+    if directory in ('native-status', 'comparison', 'workspace', 'alternate-workspace', 'reading-controls'):
         licenses = []
         for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom']:
             licenses.append(module + '\n' + next((root/'node_modules'/module).glob('LICENSE*')).read_text(encoding='utf-8'))

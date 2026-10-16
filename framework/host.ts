@@ -1,5 +1,5 @@
 import {PROTOCOL, type Host, type Binding, type Cleanup, type Contribution, type MountContext,
- type MountRequest, type MountHandle, type Participant, type ResourceKind, type Source, type Json, type View, type ViewContribution} from './contracts';
+ type MountRequest, type MountHandle, type Participant, type ResourceKind, type Source, type Json, type View, type ViewContribution, type CommandContribution, type Command} from './contracts';
 
 const validId = (value: unknown): value is string => typeof value === 'string' && /^[A-Za-z][A-Za-z0-9_.-]{0,79}$/.test(value);
 function requireId(value: unknown) {if (!validId(value)) throw new TypeError('Invalid participant/resource id')}
@@ -33,8 +33,9 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
  const mounts = new Set<{owner: string; id: string; lifetime: MountRequest['lifetime']; element: HTMLElement; dispose: Cleanup}>();
  const claims = new Map<string, {owner: string; kind: ResourceKind; key: string}>();
  const providers = new Map<string, {owner: string; contribution: Contribution}>();
+ const commands = new Map<string, {owner: string; spec: CommandContribution; busy: boolean}>();
  const views = new Map<string, {owner: string; spec: ViewContribution; mount: View['mount']}>();
- const changes = new Set<Cleanup>(), viewChanges = new Set<Cleanup>(), sceneListeners = new Set<Cleanup>();
+ const changes = new Set<Cleanup>(), commandChanges = new Set<Cleanup>(), viewChanges = new Set<Cleanup>(), sceneListeners = new Set<Cleanup>();
  const bindings = new WeakSet<Binding>();
  const errors: {owner: string; stage: string}[] = [];
  function report(owner: string, stage: string) {errors.push(Object.freeze({owner, stage})); if (errors.length > 24) errors.shift()}
@@ -139,6 +140,15 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
     const release = () => {if (providers.get(key) !== entry) return; providers.delete(key); owned.delete(release); notify(changes)};
     owned.add(release); notify(changes); return release;
    },
+   provideCommand(spec: CommandContribution) {
+    check(); requireId(spec?.id); requireId(spec?.schema);
+    if (typeof spec.title !== 'string' || !spec.title.trim() || spec.title.length > 100 || typeof spec.run !== 'function') throw new TypeError('Command requires a title and handler');
+    const key = `${id}:${spec.id}`;
+    if (commands.has(key)) throw new Error('Command already registered');
+    const entry = {owner: id, spec: Object.freeze({...spec}), busy: false}; commands.set(key, entry);
+    const release = () => {if (commands.get(key) !== entry) return; commands.delete(key); owned.delete(release); notify(commandChanges)};
+    owned.add(release); notify(commandChanges); return release;
+   },
    provideView(spec: ViewContribution) {
     check(); requireId(spec?.id);
     if (typeof spec.title !== 'string' || !spec.title.trim() || spec.title.length > 100 || typeof spec.setup !== 'function') throw new TypeError('View requires a title and setup');
@@ -171,7 +181,27 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
  }
  const api: Host = {
   protocolVersion: PROTOCOL, register, binding,
-  getCapabilities: () => Object.freeze({views: !disposed}),
+  getCapabilities: () => Object.freeze({views: !disposed, commands: !disposed}),
+  commands(schema: string) {
+   requireId(schema);
+   return Object.freeze([...commands.entries()].filter(([, entry]) => entry.spec.schema === schema).map(([key, entry]): Command => Object.freeze({
+    owner: entry.owner, id: entry.spec.id, schema, title: entry.spec.title,
+    async invoke(current: Binding) {
+     if (commands.get(key) !== entry || disposed) return Object.freeze({status: 'missing'});
+     if (!bindings.has(current) || !current.isCurrent() || current.signal.aborted) return Object.freeze({status: 'stale'});
+     if (entry.busy) return Object.freeze({status: 'busy'});
+     entry.busy = true;
+     try {
+      const value = await entry.spec.run(current);
+      // After dispatch, expiry is uncertainty, not proof that nothing happened.
+      if (commands.get(key) !== entry || disposed || !current.isCurrent() || current.signal.aborted) return Object.freeze({status: 'unknown'});
+      return Object.freeze({status: 'returned', value: snapshot(value), generation: current.generation});
+     } catch {report(entry.owner, 'command-result'); return Object.freeze({status: 'unknown'})}
+     finally {entry.busy = false}
+    }
+   })));
+  },
+  onCommands(callback: Cleanup) {assertLive(); if (typeof callback !== 'function') throw new TypeError('Callback required'); commandChanges.add(callback); return () => {commandChanges.delete(callback)}},
   views: () => Object.freeze([...views.values()].map(entry => Object.freeze({owner: entry.owner, id: entry.spec.id, title: entry.spec.title, mount: entry.mount}))),
   onViews(callback: Cleanup) {assertLive(); if (typeof callback !== 'function') throw new TypeError('Callback required'); viewChanges.add(callback); return () => {viewChanges.delete(callback)}},
   sources(schema: string) {
@@ -207,13 +237,14 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
    mounts: Object.freeze([...mounts].map(({owner, id, lifetime}) => Object.freeze({owner, id, lifetime}))),
    claims: Object.freeze([...claims.values()]),
    sources: Object.freeze([...providers.values()].map(({owner, contribution}) => Object.freeze({owner, id: contribution.id, schema: contribution.schema}))),
+   commands: Object.freeze([...commands.values()].map(({owner, spec}) => Object.freeze({owner, id: spec.id, schema: spec.schema}))),
    views: Object.freeze([...views.values()].map(({owner, spec}) => Object.freeze({owner, id: spec.id}))),
    errors: Object.freeze([...errors])}),
   dispose() {
    if (disposed) return;
    disposed = true; scene.abort();
    for (const owner of [...participants.values()].reverse()) owner.dispose();
-   observer.disconnect(); changes.clear(); viewChanges.clear(); sceneListeners.clear();
+   observer.disconnect(); changes.clear(); commandChanges.clear(); viewChanges.clear(); sceneListeners.clear();
   }
  };
  return Object.freeze(api);

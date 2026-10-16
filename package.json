@@ -9,6 +9,7 @@
     "framework:test": "node tests/framework.cjs",
     "framework:factory:test": "node tests/framework-factory.cjs",
     "framework:workspace:test": "node tests/framework-workspace.cjs",
+    "framework:commands:test": "node tests/framework-commands.cjs",
     "typecheck": "vue-tsc --noEmit && tsc -p tsconfig.adapters.json && tsc -p tsconfig.early.json",
     "build": "node scripts/render-state-fields.cjs --check && npm run typecheck && vite build && node scripts/build-early.cjs",
     "pretest": "npm run build",
