@@ -15,7 +15,7 @@ def write_archive(name, target, files):
         assert all(z.read(k) == v for k, v in files.items())
     print(json.dumps({'name': name, 'bytes': target.stat().st_size, 'sha256': hashlib.sha256(target.read_bytes()).hexdigest()}))
 
-packages = [('host', 'StoneFreeHost'), ('native-status', 'StoneFreeNativeStatus'), ('comparison', 'StoneFreeStatusComparison'), ('soft-wet-surface', 'StoneFreeSoftWetSurface'), ('workspace', 'StoneFreeWorkspace'), ('alternate-workspace', 'StoneFreeAlternateWorkspace'), ('native-reading', 'StoneFreeNativeReading'), ('reading-controls', 'StoneFreeReadingControls')]
+packages = [('host', 'StoneFreeHost'), ('native-status', 'StoneFreeNativeStatus'), ('comparison', 'StoneFreeStatusComparison'), ('soft-wet-surface', 'StoneFreeSoftWetSurface'), ('workspace', 'StoneFreeWorkspace'), ('alternate-workspace', 'StoneFreeAlternateWorkspace'), ('native-reading', 'StoneFreeNativeReading'), ('reading-controls', 'StoneFreeReadingControls'), ('motion-hub', 'StoneFreeMotionHub')]
 for directory, name in packages:
     base = out / directory
     dependencies = [{'modName': 'ModLoader', 'version': '>=2.100.0'}]
@@ -28,9 +28,9 @@ for directory, name in packages:
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
     files = {p: (base/p).read_bytes() for p in boot['scriptFileList'] + boot['styleFileList']}
     files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
-    files['README.md'] = (root/'framework/README.md').read_bytes()
+    files['README.md'] = (root/('framework/motion-hub/README.md' if directory == 'motion-hub' else 'framework/README.md')).read_bytes()
     files['LICENSE'] = (root/'LICENSE').read_bytes()
-    if directory in ('native-status', 'comparison', 'soft-wet-surface', 'workspace', 'alternate-workspace', 'reading-controls'):
+    if directory in ('native-status', 'comparison', 'soft-wet-surface', 'workspace', 'alternate-workspace', 'reading-controls', 'motion-hub'):
         licenses = []
         for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom']:
             licenses.append(module + '\n' + next((root/'node_modules'/module).glob('LICENSE*')).read_text(encoding='utf-8'))

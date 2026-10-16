@@ -18,6 +18,8 @@
 
 ## 从源码构建
 
+第八轮另提供可选 `StoneFreeMotionHub`，用于扇形展开、空间转场、拖动吸附、停靠和恢复。它消费公开视图及原版侧栏命令，不修改 Host、SDK 或正式 UI；只试用该原型时安装 Host 与 MotionHub 两个研究包即可。见[操作说明](motion-hub/README.md)与[本轮证据和限制](../docs/STONE_FREE_3.0_MOTION_HUB.md)。
+
 共享 Vue 另作为独立分发实验，见 [说明](experiments/README.md) 和 [对照结论](../docs/STONE_FREE_3.0_VUE_DISTRIBUTION.md)。默认研究包仍由消费者自带 Vue；实验输出不替换默认 ZIP，也不改变 Host 合同。
 
 使用仓库已有锁文件与依赖：`npm run framework:build`。产物位于 `dist/framework/`，与正式 UI 打包路径分开。`npm run framework:test` 检查生命周期、失效、资源争用、Vue 消费者和非参与者反例。无需重装依赖来使用现有环境。
