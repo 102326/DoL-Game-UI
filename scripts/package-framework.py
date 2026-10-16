@@ -15,7 +15,7 @@ def write_archive(name, target, files):
         assert all(z.read(k) == v for k, v in files.items())
     print(json.dumps({'name': name, 'bytes': target.stat().st_size, 'sha256': hashlib.sha256(target.read_bytes()).hexdigest()}))
 
-packages = [('host', 'StoneFreeHost'), ('native-status', 'StoneFreeNativeStatus'), ('comparison', 'StoneFreeStatusComparison'), ('soft-wet-surface', 'StoneFreeSoftWetSurface'), ('workspace', 'StoneFreeWorkspace'), ('alternate-workspace', 'StoneFreeAlternateWorkspace'), ('native-reading', 'StoneFreeNativeReading'), ('reading-controls', 'StoneFreeReadingControls'), ('motion-hub', 'StoneFreeMotionHub'), ('wardrobe-reference', 'StoneFreeWardrobeReference')]
+packages = [('host', 'StoneFreeHost'), ('native-status', 'StoneFreeNativeStatus'), ('comparison', 'StoneFreeStatusComparison'), ('soft-wet-surface', 'StoneFreeSoftWetSurface'), ('workspace', 'StoneFreeWorkspace'), ('alternate-workspace', 'StoneFreeAlternateWorkspace'), ('native-reading', 'StoneFreeNativeReading'), ('reading-controls', 'StoneFreeReadingControls'), ('motion-hub', 'StoneFreeMotionHub'), ('wardrobe-reference', 'StoneFreeWardrobeReference'), ('official-ui', 'DoLGameUI')]
 for directory, name in packages:
     base = out / directory
     dependencies = [{'modName': 'ModLoader', 'version': '>=2.100.0'}]
@@ -23,22 +23,27 @@ for directory, name in packages:
         dependencies.append({'modName': 'StoneFreeHost', 'version': '=' + version})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
-    boot = dict(name=name, version=version, nickName=name + ' (Research)', scriptFileList=['index.js'],
+    package_version = '3.0.0-lab.10' if directory == 'official-ui' else version
+    boot = dict(name=name, version=package_version, nickName=name + ' (Research)', scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
     files = {p: (base/p).read_bytes() for p in boot['scriptFileList'] + boot['styleFileList']}
     files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
-    readme = f'framework/{directory}/README.md' if directory in ('motion-hub', 'wardrobe-reference') else 'framework/README.md'
+    readme = f'framework/{directory}/README.md' if directory in ('motion-hub', 'wardrobe-reference', 'official-ui') else 'framework/README.md'
     files['README.md'] = (root/readme).read_bytes()
     files['LICENSE'] = (root/'LICENSE').read_bytes()
-    if directory in ('native-status', 'comparison', 'soft-wet-surface', 'workspace', 'alternate-workspace', 'reading-controls', 'motion-hub', 'wardrobe-reference'):
+    if directory in ('native-status', 'comparison', 'soft-wet-surface', 'workspace', 'alternate-workspace', 'reading-controls', 'motion-hub', 'wardrobe-reference', 'official-ui'):
         licenses = []
-        for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom']:
+        for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom'] + (['tailwindcss'] if directory == 'official-ui' else []):
             licenses.append(module + '\n' + next((root/'node_modules'/module).glob('LICENSE*')).read_text(encoding='utf-8'))
         files['THIRD-PARTY-NOTICES.txt'] = '\n\n'.join(licenses).encode()
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
-    target = out/f'{name}-{version}.mod.zip'
+    if directory == 'official-ui':
+        for notice in ['UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
+            files[notice] = (root/notice).read_bytes(); boot['additionFile'].append(notice)
+        files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
+    target = out/f'{name}-{package_version}.mod.zip'
     write_archive(name, target, files)
 
 # Development sources only: no runtime boot.json, UI sources, dependencies or test evidence.

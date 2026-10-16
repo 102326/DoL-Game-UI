@@ -1,0 +1,82 @@
+// Target-owned assertions around real Loader installation; no fake Passage events or game-state writes.
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
+const root=path.resolve(__dirname,'..'),android=process.argv.includes('--android'),tools='E:/daima/local-tools/DoL-Dev-Tools-Paisley-Park/6.1.0';
+const out=path.join(root,'tests/artifacts/stone-free-r10',(android?'android-':'desktop-')+Date.now());fs.mkdirSync(out,{recursive:true});
+const hash=b=>createHash('sha256').update(b).digest('hex'),report={status:'running',platform:android?'Android WebView':'Windows Edge',steps:[],artifacts:{},screenshots:[]};
+const H='StoneFreeHost',T='StoneFreeNativeStatus',U='StoneFreeOfficialUICandidate';
+const archives={[H]:'StoneFreeHost-0.1.1-experimental.mod.zip',[T]:'StoneFreeNativeStatus-0.1.1-experimental.mod.zip',[U]:'DoLGameUI-3.0.0-lab.10.mod.zip'};
+const files=Object.fromEntries(Object.entries(archives).map(([key,name])=>{const bytes=fs.readFileSync(path.join(root,'dist/framework',name));report.artifacts[key]={name,bytes:bytes.length,sha256:hash(bytes)};return [key,bytes]}));
+let page,browser,server,ctx,client,backup,installed=false,stage='startup';
+async function bind(){const {create}=require(tools+'/scripts/lib/execution-context.cjs');ctx=create({serial:'0509B830099C3540',package:'com.vrelnir.dol.lyra.uicompat051213'},{},{timeoutMs:240000});client=await ctx.ensureWebview()}
+const evaluate=source=>android?client.evaluate(source):page.evaluate(source);
+async function wait(source,ms=30000){const end=Date.now()+ms;while(Date.now()<end){if(await evaluate(source))return;await new Promise(r=>setTimeout(r,150))}throw Error('Not ready: '+source)}
+async function restart(){if(android){const {execute}=require(tools+'/scripts/lib/action.cjs');await execute(ctx,{type:'restart'});await ctx.finish();await new Promise(r=>setTimeout(r,4500));await bind()}else await page.reload({waitUntil:'domcontentloaded',timeout:60000});await wait('!!window.SugarCube?.State?.passage')}
+async function click(selector){
+ if(android){const {execute}=require(tools+'/scripts/lib/action.cjs');await execute(ctx,{type:'web-click',selector})}else await page.locator(selector).click();
+ report.steps.push({stage,type:'click',selector});await new Promise(r=>setTimeout(r,150));
+}
+async function input(selector,value){if(android){const {execute}=require(tools+'/scripts/lib/action.cjs');await execute(ctx,{type:'web-input',selector,value})}else await page.locator(selector).fill(value);await new Promise(r=>setTimeout(r,180))}
+async function shot(name){if(android){const result=await client.send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(out,name+'.png'),Buffer.from(result.data,'base64'))}else await page.screenshot({path:path.join(out,name+'.png')});report.screenshots.push(name+'.png')}
+async function install(){for(const [key,bytes]of Object.entries(files)){await evaluate(`(async()=>{const c=modSC2DataManager.getModLoadController(),b=${JSON.stringify(bytes.toString('base64'))};if(typeof await c.checkModZipFileIndexDB(b)==='string')throw Error('ZIP rejected');await c.addModIndexDB(${JSON.stringify(key)},b)})()`);installed=true}await evaluate(`modSC2DataManager.getModLoadController().overwriteModIndexDBModList(${JSON.stringify([H,T,U])})`);await restart()}
+async function wardrobeHash(){return hash(await evaluate(`JSON.stringify({wardrobe:SugarCube.State.variables.wardrobe,worn:SugarCube.State.variables.worn})`))}
+async function nav(destination){const selector='#passages .passage:not(.passage-out) a[data-passage='+JSON.stringify(destination)+']';assert.equal(await evaluate(`document.querySelectorAll(${JSON.stringify(selector)}).length`),1);await evaluate(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'nearest'})`);await click(selector);await wait(`SugarCube.State.passage===${JSON.stringify(destination)}`)}
+async function context(){return evaluate(`(()=>({query:document.querySelector('.dgw-tools input').value,sort:document.querySelector('.dgw-tools select').value,slot:document.querySelector('.dgw-slot-select').value,scroll:document.querySelector('.dgw-items').scrollTop,firstKey:document.querySelector('.dgw-item')?.dataset.key}))()`)}
+async function run(){
+ if(android){await bind();backup=await evaluate(`(async()=>{const c=modSC2DataManager.getModLoadController();return {list:await c.listModIndexDB(),hidden:await c.loadHiddenModList(),preferences:Object.fromEntries(Object.keys(localStorage).filter(k=>['DoLGameUI.','DoLMidnightTheme.','DMTLayout.'].some(prefix=>k.startsWith(prefix))).map(k=>[k,localStorage.getItem(k)])),scene:SugarCube.State.passage,game:StartConfig.version,ui:window.DoLGameUI?.version}})()`);assert.equal(backup.game,'0.5.12.13');assert.ok(Object.keys(files).every(key=>![...backup.list,...backup.hidden].includes(key)));fs.writeFileSync(path.join(out,'restore.json'),JSON.stringify(backup,null,2));report.initial={scene:backup.scene,game:backup.game,ui:backup.ui}}else{
+  const bytes=fs.readFileSync(path.join(root,'tests/artifacts/stone-free-distribution/input/game.html'));report.inputSha256=hash(bytes);let replacements=0;const html=bytes.toString('utf8').replace(/<script\b[^>]*>\s*window\.modDataValueZipList\s*=\s*(\[[\s\S]*?\])\s*;?\s*<\/script>/g,()=>{replacements++;return '<script>window.modDataValueZipList=[];</script>'});assert.equal(replacements,1);
+  server=http.createServer((req,res)=>{if(req.url!=='/'){res.writeHead(404);return res.end()}res.setHeader('Content-Type','text/html;charset=utf-8');res.end(html)});await new Promise(r=>server.listen(0,'127.0.0.1',r));
+  browser=await require('playwright').chromium.launch({channel:'msedge',headless:true});page=await browser.newPage({viewport:{width:1280,height:900}});page.setDefaultTimeout(10000);page.on('pageerror',e=>(report.errors??=[]).push({stage,text:e.message}));page.on('console',m=>{if(/warn|error/.test(m.type())&&/DoLGameUI|Stone Free/.test(m.text()))(report.console??=[]).push(m.text().slice(0,500))});await page.goto(`http://127.0.0.1:${server.address().port}/`,{waitUntil:'domcontentloaded',timeout:60000});await wait('!!window.SugarCube?.State?.passage');
+  if(/Welcome to Degrees of Lewdity/.test(await page.locator('#ui-dialog-title').textContent()||'')){await page.locator('#ui-dialog-body input[type=checkbox]').check();await page.locator('#ui-dialog-body').getByRole('button',{name:'Enter',exact:true}).click()}
+ }
+ if(!android){
+  stage='missing-host entry';await evaluate(`(async()=>{const c=modSC2DataManager.getModLoadController();await c.addModIndexDB(${JSON.stringify(U)},${JSON.stringify(files[U].toString('base64'))});await c.overwriteModIndexDBModList([${JSON.stringify(U)}])})()`);await restart();
+  await wait(`modUtils.getModListNameNoAlias().includes('DoLGameUI')`);assert.equal(await evaluate('!!window.DoLGameUI'),false);report.missingHost={uiNotStarted:true,reported:report.console?.some(s=>s.includes('Host missing'))??false};assert.equal(report.missingHost.reported,true);stage='normal install';
+ }
+ await install();await wait(`window.DoLGameUI?.version==='3.0.0-lab.10'`);
+ report.loaded=await evaluate(`({game:StartConfig.version,loader:modUtils.version,ui:DoLGameUI.version,host:DoLUiHost.protocolVersion,viewport:{width:innerWidth,height:innerHeight},agent:navigator.userAgent,mods:modUtils.getModListNameNoAlias().filter(n=>/StoneFree|DoLGameUI/.test(n)).map(name=>({name,version:modUtils.getMod(name).version}))})`);
+ assert.equal(await evaluate('SugarCube.State.passage'),'Start');await evaluate(`document.querySelector('#settingsExit button').scrollIntoView({block:'center'})`);await click('#settingsExit button');await wait(`SugarCube.State.passage==='Start2'`);
+ for(const destination of ['Orphanage Intro','Bedroom','Wardrobe'])await nav(destination);
+ await wait(`!!document.querySelector('.dgw-shell')`);await click('.dgw-slots [data-slot="upper"]');await wait(`document.querySelectorAll('.dgw-reference-action').length>=2`);
+ const baselineErrors=report.errors?.length??0;stage='reference';
+ assert.equal(await evaluate(`DoLUiHost.getDiagnostics().mounts.filter(m=>m.owner==='SoftWetOfficialUI'&&m.lifetime==='passage').length`),1);
+ await evaluate(`window.StoneFreeR10NativeList=document.querySelector('#wardrobeList')`);
+ await shot('integrated-wardrobe');const before=await wardrobeHash();
+ const first=await evaluate(`[...document.querySelectorAll('[data-reference-key]')].slice(0,2).map(n=>({key:n.dataset.referenceKey,name:n.closest('.dgw-item-row').querySelector('strong').textContent}))`);assert.equal(first.length,2);
+ const row=key=>'[data-reference-key='+JSON.stringify(key)+']';await click(row(first[0].key));await wait(`!!document.querySelector('.dgw-reference-chip')`);
+ await input('.dgw-tools input',first[1].name);await wait(`document.querySelector('.dgw-reference-action')?.textContent==='对照'`);
+ const bKey=await evaluate(`document.querySelector('.dgw-reference-action').dataset.referenceKey`),b=row(bKey);const beforeContext=await context();
+ await shot('pinned-during-browse');await click('.dgw-reference-chip input');await click(b);await wait(`!!document.querySelector('.dgw-reference-compare')`);
+ const plain=await evaluate(`document.querySelector('.dgw-reference-fields').textContent`);await shot('plain-comparison');await click('[data-reference-back]');
+ assert.deepEqual(await context(),beforeContext);assert.equal(await evaluate(`document.activeElement?.dataset.referenceKey`),bKey);assert.equal(await evaluate(`!!document.querySelector('.dgw-reference-chip')`),true);
+ await click('.dgw-reference-chip input');await click(b);await wait(`!!document.querySelector('.dgw-reference-compare')`);assert.equal(await evaluate(`document.querySelector('.dgw-reference-fields').textContent`),plain);await shot('spatial-comparison');
+ await click('[data-reference-back]');await click(b);await evaluate(`document.querySelector('[data-reference-back]').click()`);await new Promise(r=>setTimeout(r,550));assert.equal(await evaluate(`!!document.querySelector('.dgw-reference-compare')`),false);assert.deepEqual(await context(),beforeContext);
+ if(!android){
+  await page.setViewportSize({width:390,height:844});if(!await evaluate('SugarCube.UIBar.isStowed()'))await click('#ui-bar-toggle');await click(b);await wait(`!!document.querySelector('.dgw-reference-compare')`);await page.waitForTimeout(450);
+  const box=await page.locator('.dgw-reference-compare').boundingBox();assert.ok(box.x>=0&&box.y>=0&&box.x+box.width<=390&&box.y+box.height<=844,JSON.stringify(box));await shot('narrow-comparison');
+  await click('[data-reference-back]');await page.emulateMedia({reducedMotion:'reduce'});await click(b);assert.equal(await evaluate(`document.getAnimations().filter(a=>a.effect?.target?.classList?.contains('dgw-reference-compare')).length`),0);await click('[data-reference-back]');await page.setViewportSize({width:1280,height:900});
+ }
+ assert.equal(await wardrobeHash(),before);report.readonly={before,after:await wardrobeHash(),contextRestored:true,plainEqualsSpatial:true};
+ await click(b);await nav('Bedroom');await wait(`!document.querySelector('.dgw-reference-chip,.dgw-reference-compare,.dgw-reference-flight')`);assert.equal(await evaluate(`DoLUiHost.getDiagnostics().mounts.filter(m=>m.owner==='SoftWetOfficialUI').length`),0);
+ await nav('Wardrobe');await wait(`!!document.querySelector('.dgw-shell')`);await click('.dgw-slots [data-slot="upper"]');await wait(`!!document.querySelector('.dgw-reference-action')`);assert.equal(await evaluate(`!!document.querySelector('.dgw-reference-chip')`),false);report.navigation='Natural native exit clears scene state; reentry has one owned wardrobe and no old A';
+ if(!android){
+  // One already-supported native wear path in a fresh game; not a new reference action.
+  const expected=await evaluate(`(()=>{const button=document.querySelector('.dgw-item'),[slot,index]=button.dataset.key.split(':');return {slot,variable:SugarCube.State.variables.wardrobe[slot][Number(index)].variable}})()`);await click('.dgw-item-row:first-child .dgw-item');await wait(`SugarCube.State.variables.worn[${JSON.stringify(expected.slot)}].variable===${JSON.stringify(expected.variable)}`);report.quickWear={nativeWornVerified:true,slot:expected.slot};
+  await evaluate(`DoLGameUI.setPreference('enabled',false)`);await wait(`!document.querySelector('.dgw-shell')`);assert.equal(await evaluate(`document.querySelector('#wardrobeList')===StoneFreeR10NativeList`),false,'Natural reentry created a new native page; old page must not be resurrected');
+  await evaluate(`DoLGameUI.setPreference('enabled',true)`);await wait(`!!document.querySelector('.dgw-shell')`);
+ }
+ await evaluate(`DoLGameUI.destroy()`);await wait(`!window.DoLGameUI&&!document.querySelector('.dgw-shell,.dgw-reference-chip,.dgw-reference-compare,.dgw-reference-flight')`);
+ const peer=await evaluate(`(async()=>({diagnostics:DoLUiHost.getDiagnostics(),read:await DoLUiHost.sources('dol.status.experimental')[0].read(DoLUiHost.binding()),native:!!document.querySelector('#wardrobeList')}))()`);assert.ok(peer.diagnostics.participants.includes('NativeStatus'));assert.ok(!peer.diagnostics.participants.includes('SoftWetOfficialUI'));assert.equal(peer.read.ok,true);assert.equal(peer.native,true);report.release={peerLive:true,nativeRestored:true,diagnostics:peer.diagnostics};
+ if(!android){
+  assert.equal(report.errors?.length??0,baselineErrors,'No new page exceptions during reference/consumer exit');
+  stage='classic default entry';await page.addStyleTag({path:path.join(root,'tests/artifacts/stone-free-r10/stable-build/game-ui.css')});await page.addScriptTag({path:path.join(root,'tests/artifacts/stone-free-r10/stable-build/game-ui.js')});await wait(`window.DoLGameUI?.version==='2.7.0'&&!!document.querySelector('.dgw-shell')`);
+  report.classicBranch=await evaluate(`({version:DoLGameUI.version,api:DoLGameUI.ui?.apiVersion,reference:!!document.querySelector('.dgw-reference-action'),frameworkOwners:DoLUiHost.getDiagnostics().participants})`);assert.equal(report.classicBranch.reference,false);assert.equal(report.classicBranch.api,1);assert.ok(!report.classicBranch.frameworkOwners.includes('SoftWetOfficialUI'));await evaluate(`DoLGameUI.destroy()`);
+ }
+ report.status='passed';
+}
+(async()=>{try{await run()}catch(e){report.status='failed';report.error=e.message;report.failedStage=stage;try{report.failureContext=await evaluate(`(()=>({scene:SugarCube.State.passage,preferences:window.DoLGameUI?.getPreferences(),wardrobe:!!document.querySelector('.dgw-shell'),reference:!!document.querySelector('.dgw-reference-action'),native:!!document.querySelector('#wardrobeList'),diagnostics:window.DoLUiHost?.getDiagnostics(),text:document.querySelector('.dgw-root')?.innerText.slice(0,700)}))()`);await shot('failure')}catch{}throw e}
+ finally{
+  if(android&&client&&installed)try{await evaluate(`(async()=>{const c=modSC2DataManager.getModLoadController();for(const key of ${JSON.stringify(Object.keys(files))})await c.removeModIndexDB(key);await c.overwriteModIndexDBModList(${JSON.stringify(backup.list)});await c.overwriteModIndexDBHiddenModList(${JSON.stringify(backup.hidden)});for(const key of Object.keys(localStorage).filter(k=>['DoLGameUI.','DoLMidnightTheme.','DMTLayout.'].some(prefix=>k.startsWith(prefix))))if(!Object.hasOwn(${JSON.stringify(backup.preferences)},key))localStorage.removeItem(key);for(const [key,value]of Object.entries(${JSON.stringify(backup.preferences)}))localStorage.setItem(key,value)})()`);await restart();assert.deepEqual(await evaluate(`modSC2DataManager.getModLoadController().listModIndexDB()`),backup.list);report.cleanup='original Mod lists and UI preferences restored'}catch(e){report.cleanup='failed';report.cleanupError=e.message;report.status='cleanup-failed'}
+  if(ctx)await ctx.finish();if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(report,null,2));console.log(out)
+ }
+ assert.equal(report.status,'passed');
+})().catch(e=>{console.error(e);process.exitCode=1});

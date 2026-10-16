@@ -6,7 +6,7 @@ import {startShop} from './shop/main';
 import {startPanels,type PanelKind} from './panels/main';
 import {startSocial} from './social/main';
 import {startCharacteristics} from './characteristics/main';
-import {startWardrobe} from './wardrobe/main';
+import {startWardrobe,type WardrobeFramework} from './wardrobe/main';
 import type {WardrobeApi} from './public/wardrobe';
 import {startCombat,type CombatControls} from './combat/main';
 import type {Preferences,PreferenceKey} from './theme/preferences';
@@ -36,11 +36,13 @@ type Runtime=Parameters<typeof startWardrobe>[0] & Parameters<typeof startShop>[
  & NonNullable<Parameters<typeof startTheme>[0]> & NonNullable<Parameters<typeof startLayout>[0]>
  & Parameters<typeof createUiRuntime>[0] & StartedApis & {DoLGameUI?:GameUiControls};
 const runtime=window as Runtime;
+declare const __STONE_FREE_CONSUMER__:boolean;
+export function startGameUI(wardrobeFramework?:WardrobeFramework){
 if(!runtime.DoLGameUI){
  initMaster(runtime);
  const start=<K extends keyof StartedApis>(name:K,factory:()=>StartedApis[K]|void)=>{const api=isolate(name,factory,()=>{try{runtime[name]?.destroy?.()}finally{delete runtime[name]}});if(api)runtime[name]=api as Runtime[K]};
  for(const name of ['DoLCombatUI','DoLMidnightTheme','DMTLayout'] as const)isolate(name,()=>runtime[name]?.destroy?.());
- start('DoLWardrobeUI',()=>startWardrobe(runtime));
+ start('DoLWardrobeUI',()=>startWardrobe(runtime,wardrobeFramework));
  start('DoLCharacteristicsUI',()=>startCharacteristics(runtime));
  start('DoLSocialUI',()=>startSocial(runtime));
  start('DoLPanelsUI',()=>startPanels(runtime));
@@ -60,3 +62,6 @@ if(!runtime.DoLGameUI){
  floating=isolate('floating tools',()=>startFloatingTools());
  if(!runtime.DoLMidnightTheme){const button=document.createElement('button');button.id='dol-ui-recovery';button.type='button';button.textContent='关闭 Soft & Wet，恢复原版';button.onclick=()=>{runtime.DoLGameUI!.setPreference('enabled',false);if(!isMasterEnabled())button.remove()};document.body?.append(button)}
 }
+return runtime.DoLGameUI;
+}
+if(typeof __STONE_FREE_CONSUMER__==='undefined'||!__STONE_FREE_CONSUMER__)startGameUI();

@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),vm=require('node:vm'),path=require('node:path'),{buildSync}=require('esbuild');
+const moduleObject={exports:{}};
+vm.runInNewContext(buildSync({entryPoints:[path.join(__dirname,'../src/wardrobe/reference.ts')],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text,{module:moduleObject,exports:moduleObject.exports});
+const {referenceItem,compareReferences}=moduleObject.exports;
+const raw={key:'upper:0:r4',name:'shirt',colour:'blue',warmth:6,durability:100,lewd:200,outfit:'单件',detail:'native description',raw:{private:true},icons:[]};
+const a=referenceItem(raw,'上装'),same=compareReferences(a,a);
+assert.ok(Object.isFrozen(a));assert.ok(!('raw' in a)&&!('key' in a)&&!('icons' in a));assert.ok(same.every(row=>row.status==='same'));
+raw.name='changed';assert.equal(a.name,'shirt');
+const diff=compareReferences(a,{...a,warmth:8,durability:null,colour:''});
+assert.equal(diff.find(r=>r.field==='warmth').status,'different');assert.equal(diff.find(r=>r.field==='durability').status,'unknown');assert.equal(diff.find(r=>r.field==='colour').status,'unknown');
+assert.equal(diff.find(r=>r.field==='lewd').status,'same');
+console.log('PASS readonly copied fields; same/different/unknown field semantics; no action or native object retained');

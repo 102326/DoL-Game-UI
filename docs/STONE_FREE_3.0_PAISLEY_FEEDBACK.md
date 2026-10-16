@@ -91,3 +91,15 @@
 首次 capture 返回泛化失败，当时输出父目录尚不存在；创建目录后的独立采集成功，但未获得精确原始错误，根因仍为 Unknown，不据此提交工具实现缺陷。桌面游戏启动阶段还出现 `Event` pageerror；参考操作阶段没有新增错误，来源 Unknown，不能写成“全游戏无错误”。
 
 没有新增通用 Runtime、Provider 或 Journey：现有绑定与动作足够，精确包体、库存和生命周期断言由项目脚本承担。未调用 Full Evidence、Perfetto、bugreport 或泄漏调查；本轮没有相应问题证据。暂无需要向工具项目自动派发的实现修复。物理触控、IME 和更多宿主版本仍为 Coverage。
+
+## 第十轮增补：来源身份与实际命中
+
+本轮继续使用已安装的 6.1.0、标准 restart/web-click/web-input 和精确 Android 文档绑定；浏览器真实 Loader 用项目现有 Playwright。原衣柜分类和查询用于准备场景，不写入库存，不使用 GER 的替代路径。有限动作与精确包体、原状态摘要由项目脚本关联，未新增通用 Runner。
+
+三次检查帮助纠正了项目假设：默认分类实际为空，先通过原分类按钮选择有衣物的上装；40 条目按名称排序后，第 13 个节点的 key 并不是 index 12，改为保存实际点击身份；窄屏侧栏展开时遮罩的中心点位于侧栏下方，改用已观察的原收起按钮。前两项是项目测试错误；最后一项复用 F001 已有 hitbox/overlay 经验，不请求新工具。没有 force-click 或通过改为更宽屏跳过窄屏验收。
+
+另外发现了两个真实项目缺陷：比较窗挡住原返回入口，以及来源失效后只检查 DOM connected 仍会播放误导性的归位。分别修在自有面板位置与当前来源复核，不改 Tools 或 Host。Source/DOM/输入命中与业务身份是不同证据；具体字段、生命周期和语义仍留 UI 项目。
+
+桌面资源服务器只有编译 HTML，未提供完整图片资源；角色预览出现图片超时。只报告这一资源覆盖限制，不把它推定为 Android 预览缺陷。泛化启动 Event 的原因仍 Unknown。实际字段比较、原状态和清理通过不代表全游戏 Console 无错。
+
+现有工具足够完成当前 UI 任务，未发现明确 Tools 实现缺陷。不新增 Full Evidence、Perfetto、bugreport、Gameplay Provider 或复杂 Journey，也没有触碰历史 Unknown。具体结果见 `STONE_FREE_3.0_OFFICIAL_INTEGRATION.md`，通用经验与第九轮/F001 去重后收件即可，不授权工具重构。
