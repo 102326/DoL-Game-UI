@@ -3,11 +3,14 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {randomUUID,createHash}=require('node:crypto');
 const [toolsRoot,serial,pkg,mode]=process.argv.slice(2),root=path.resolve(__dirname,'..'),workspace=mode==='--workspace';
+const surfaceOnly=mode==='--surface';
 assert.ok(toolsRoot&&serial&&pkg,'Tools root, serial and test package are required');
 const {create}=require(path.join(toolsRoot,'scripts/lib/execution-context.cjs'));
+const {execute}=require(path.join(toolsRoot,'scripts/lib/action.cjs'));
+const {screenshot}=require(path.join(toolsRoot,'scripts/lib/collectors.cjs'));
 const dir=path.join(root,'tests/artifacts',workspace?'stone-free-workspace':'stone-free-foundation','android-'+Date.now());fs.mkdirSync(dir,{recursive:true});
 const ctx=create({serial,package:pkg},{},{timeoutMs:60000}),key='stoneFreeAcceptance'+randomUUID().replaceAll('-','');
-const report={status:'failed',scope:'Temporary runtime resources in existing authorized test WebView; no persisted Mod install, game action or save writes',checks:[],resources:[]};
+const report={status:'failed',surfaceOnly,scope:'Temporary runtime resources in existing authorized test WebView; no persisted Mod install, game action or save writes',checks:[],resources:[]};
 const save=()=>fs.writeFileSync(path.join(dir,'result.json'),JSON.stringify(report,null,2));
 const sha=data=>createHash('sha256').update(data).digest('hex');
 let client,allocated=false;
@@ -28,6 +31,7 @@ let client,allocated=false;
   report.live=await client.evaluate(`(async()=>{const h=window[${JSON.stringify(key)}].host;if(window.DoLUiHost!==h)throw Error('Host ownership changed');return {diagnostics:h.getDiagnostics(),projection:await h.sources('dol.status.experimental')[0].read(h.binding()),mounts:document.querySelectorAll('[data-sf-owner]').length}})()`);
   assert.equal(report.live.mounts,workspace?5:3);assert.equal(report.live.projection.ok,true);assert.deepEqual(report.live.projection.value,report.before.nativeValues);assert.equal(report.live.diagnostics.errors.length,0);
   report.checks.push('Two independent bundled Vue Apps coexist with the current UI; projection equals original native state');
+  if(!surfaceOnly){
   await client.evaluate(`(()=>{document.querySelector('[data-sf-owner="StatusComparison"] button').click();return true})()`);await ctx.pause(100);
   const open=await client.evaluate(`(()=>{const d=document.querySelector('[data-sf-owner="StatusComparison"] dialog'),r=d.getBoundingClientRect();return {open:d.open,overflow:d.scrollWidth>d.clientWidth,rect:{x:r.x,y:r.y,width:r.width,height:r.height},width:innerWidth,height:innerHeight}})()`);
   assert.equal(open.open,true);assert.equal(open.overflow,false);assert.ok(open.rect.x>=0&&open.rect.x+open.rect.width<=open.width);report.dialog=open;
@@ -36,10 +40,18 @@ let client,allocated=false;
   assert.equal(await client.evaluate(`document.querySelectorAll('[data-sf-owner] dialog[open]').length`),1);report.checks.push('Participating modal conflict does not stack a second dialog');
   await client.evaluate(`(()=>{document.querySelector('[data-sf-owner="StatusComparison"] dialog header button').click();return true})()`);
   assert.equal(await client.evaluate(`document.querySelectorAll('[data-sf-owner] dialog[open]').length`),0);report.checks.push('CDP DOM click opens/closes the own surface; not trusted-touch proof');
-  await client.evaluate(`(()=>{document.querySelector('[data-sf-owner="SoftWetSurface"] button').click();return true})()`);await ctx.pause(100);
-  const official=await client.evaluate(`(()=>{const d=[...document.querySelectorAll('.dgu-surface[open]')].find(n=>n.querySelector('h2')?.textContent==='公开状态来源');return d?{open:true,text:d.querySelector('.dgu-surface-content')?.textContent}:null})()`);
+  }
+  report.stage='official-drawer-open';await execute(ctx,{type:'web-click',selector:'[data-sf-owner="SoftWetSurface"] button'});await ctx.pause(100);
+  const official=await client.evaluate(`(()=>{const d=[...document.querySelectorAll('.dgu-surface[open]')].find(n=>n.querySelector('h2')?.textContent==='公开贡献视图');return d?{open:true,text:d.querySelector('.dgu-surface-content')?.textContent}:null})()`);
   assert.equal(official?.open,true);assert.match(official.text,/疲劳/);
-  await client.evaluate(`(()=>{const d=[...document.querySelectorAll('.dgu-surface[open]')].find(n=>n.querySelector('h2')?.textContent==='公开状态来源');d.querySelector('header button').click();return true})()`);report.checks.push('Same public projection displayed through actual Soft & Wet API v1 Drawer');
+  report.stage='official-drawer-observe';report.official=await client.evaluate(`(()=>{const d=document.querySelector('.dgu-surface[open]'),r=d.getBoundingClientRect();return {views:[...d.querySelectorAll('[data-view]')].map(n=>n.dataset.view),values:[...d.querySelectorAll('[data-view="NativeStatus:status"] dd')].map(n=>n.textContent),overflow:d.scrollWidth>d.clientWidth,rect:{x:r.x,y:r.y,width:r.width,height:r.height},viewport:{width:innerWidth,height:innerHeight}}})()`);
+  assert.deepEqual(report.official.views,['NativeStatus:status','StatusComparison:comparison']);assert.equal(report.official.overflow,false);
+  assert.deepEqual(report.official.values,Object.values(report.before.nativeValues).map(x=>x===null?'未知':String(x)));
+  report.stage='official-native-screenshot';const image=await screenshot(ctx);fs.writeFileSync(path.join(dir,'official-drawer.png'),image.binary);report.screenshotSource=image.metadata;
+  report.stage='official-drawer-close';await execute(ctx,{type:'web-click',selector:'.dgu-surface[open] .dgu-surface-header button'});await ctx.pause(100);
+  assert.equal(await client.evaluate(`document.querySelectorAll('.dgu-surface[open]').length`),0);
+  assert.equal(await client.evaluate(`DoLUiHost.getDiagnostics().mounts.filter(x=>x.id.startsWith('official-view-')).length`),0);
+  report.checks.push('Public views displayed through actual Soft & Wet API v1 Drawer; native values match, no horizontal overflow, standard Tools close releases contributed mounts');
   if(workspace){
    const alpha='[data-sf-owner="StoneFreeWorkspace"]',beta='[data-sf-owner="AlternateWorkspace"]';
    const click=async(selector,text)=>{await client.evaluate(`(()=>{const root=document.querySelector(${JSON.stringify(selector)}),button=[...root.querySelectorAll('button,summary')].find(n=>n.textContent===${JSON.stringify(text)});if(!button)throw Error('Reviewed own button unavailable');button.click();return true})()`);await ctx.pause(60)};

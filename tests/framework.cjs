@@ -4,6 +4,8 @@ const path = require('node:path');
 const {chromium} = require('playwright');
 const {buildSync} = require('esbuild');
 const root = path.resolve(__dirname, '..');
+const output = path.join(root, 'tests/artifacts/stone-free-foundation', 'browser-' + Date.now());
+fs.mkdirSync(output, {recursive:true});
 const read = name => fs.readFileSync(path.join(root, name), 'utf8');
 const bundle = entry => buildSync({entryPoints:[path.join(root, entry)],bundle:true,write:false,format:'iife',globalName:'TestModule'}).outputFiles[0].text;
 const host = bundle('framework/host.ts'), sdk = bundle('framework/vue.ts');
@@ -176,16 +178,68 @@ async function check(name, callback) {await callback();tests.push(name);console.
    await p.evaluate(()=>{const owner=document.querySelector('[data-sf-owner="StatusComparison"]');owner.querySelector('button').click();owner.querySelector('dialog header button').click();owner.querySelector('button').click()});
    await p.waitForTimeout(30);assert.equal(await p.locator('dialog[open]').count(),1);await p.keyboard.press('Escape');
   });
-  await check('same source also works with the existing official public Drawer API, without changing the provider',async()=>{
+  await check('public views also work with the existing official Drawer API, without changing providers',async()=>{
+   await p.addStyleTag({content:read('dist/framework/soft-wet-surface/style.css')});
    await p.addScriptTag({content:read('dist/framework/soft-wet-surface/index.js')});
-   await p.getByRole('button',{name:'Soft & Wet 状态',exact:true}).click();
+   await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();
    assert.match(await p.locator('[data-sf-owner="SoftWetSurface"] [role=status]').innerText(),/未启用/);
    await p.addStyleTag({content:read('src/runtime/surfaces.css')});await p.addScriptTag({content:bundle('src/runtime/ui.ts')});
    await p.evaluate(()=>{document.documentElement.setAttribute('data-dol-midnight','');window.officialRuntime=TestModule.createUiRuntime(window,()=>({visualTier:1}));window.DoLGameUI={version:'2.7.0',ui:officialRuntime.api}});
-   await p.getByRole('button',{name:'Soft & Wet 状态',exact:true}).click();
-   assert.equal(await p.locator('.dgu-surface[open]').count(),1);assert.match(await p.locator('.dgu-surface-content').innerText(),/疼痛：7/);
+   await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();
+   assert.equal(await p.locator('.dgu-surface[open]').count(),1);await p.waitForFunction(()=>document.querySelector('.dgu-surface [data-view="NativeStatus:status"] dd')?.textContent==='7');
+   assert.equal(await p.locator('.dgu-surface [data-view]').count(),2);
+   assert.equal(await p.locator('.dgu-surface[open]').evaluate(n=>n.scrollWidth<=n.clientWidth),true);
+   await p.locator('.dgu-surface[open]').screenshot({path:path.join(output,'official-390.png')});
    await p.keyboard.press('Escape');assert.equal(await p.locator('.dgu-surface[open]').count(),0);
    assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.some(c=>c.kind==='modal')),false);
+  });
+  await check('official shell composes unknown opt-in content and isolates withdrawal, errors and replacement',async()=>{
+   await p.evaluate(()=>{window.author=DoLUiHost.register('IndependentAuthor');window.authorCleaned=0;
+    window.withdraw=author.provideView({id:'note',title:'作者便笺',setup(c){const input=document.createElement('input');input.setAttribute('aria-label','作者输入');c.element.append(input);c.onCleanup(()=>authorCleaned++)}});
+    window.withdrawBad=author.provideView({id:'broken',title:'局部失败',setup(){throw Error('Local author failure')}})});
+   await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();
+   const drawer=p.locator('.dgu-surface[open]');await drawer.getByRole('textbox',{name:'作者输入',exact:true}).fill('作者自己的界面');
+   await drawer.getByText('该视图暂不可用。',{exact:false}).waitFor();assert.equal(await drawer.locator('[data-view]').count(),4);
+   await p.evaluate(()=>{withdraw();withdrawBad()});await p.waitForFunction(()=>window.authorCleaned===1);assert.equal(await drawer.locator('[data-view]').count(),2);
+   await p.evaluate(()=>{window.withdraw=author.provideView({id:'note',title:'重新声明',setup(c){c.element.textContent='新声明内容';c.onCleanup(()=>authorCleaned++)}})});
+   await drawer.getByText('新声明内容',{exact:true}).waitFor();await p.keyboard.press('Escape');await p.waitForFunction(()=>window.authorCleaned===2);
+   assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().mounts.filter(x=>x.id.startsWith('official-view-')).length),0);
+   await p.evaluate(()=>author.dispose());
+  });
+  await check('scene invalidation and theme disabling close official contributed views and release modal ownership',async()=>{
+   await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();
+   await p.evaluate(()=>DoLUiHost.invalidateScene());await p.waitForFunction(()=>document.querySelectorAll('.dgu-surface[open]').length===0);
+   assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.some(c=>c.kind==='modal')),false);
+   await p.evaluate(()=>DoLUiHost.sceneReady());await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();
+   await p.evaluate(()=>{document.documentElement.removeAttribute('data-dol-midnight');officialRuntime.api.rescan()});
+   await p.waitForFunction(()=>document.querySelectorAll('.dgu-surface[open]').length===0);
+   assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.some(c=>c.kind==='modal')),false);
+   await p.evaluate(()=>document.documentElement.setAttribute('data-dol-midnight',''));
+  });
+  await check('official Drawer and nonmodal layout mount independent instances; late setup cannot revive closed content',async()=>{
+   await p.setViewportSize({width:1280,height:1000});
+   await p.addStyleTag({content:read('dist/framework/alternate-workspace/style.css')});await p.addScriptTag({content:read('dist/framework/alternate-workspace/index.js')});
+   await p.getByRole('button',{name:'侧边工作台',exact:true}).click();
+   const side=p.locator('[data-sf-owner="AlternateWorkspace"] dialog');
+   await side.getByRole('button',{name:'设为对照',exact:true}).click();
+   await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();
+   const drawer=p.locator('.dgu-surface[open]');assert.equal(await drawer.locator('[data-view="StatusComparison:comparison"] tbody tr td').nth(1).textContent(),'—');
+   assert.equal(await side.locator('[data-view="StatusComparison:comparison"] tbody tr td').nth(1).textContent(),'7');
+   await p.keyboard.press('Escape');assert.equal(await side.evaluate(n=>n.open),true);
+   await side.getByRole('button',{name:'关闭',exact:true}).click();await p.evaluate(()=>StoneFree_alternate_workspace.dispose());
+   await p.evaluate(()=>{window.lateAuthor=DoLUiHost.register('LateAuthor');window.lateCleanup=0;lateAuthor.provideView({id:'late',title:'异步作者',setup:()=>new Promise(resolve=>window.resolveAuthor=()=>resolve(()=>lateCleanup++))})});
+   await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();await p.waitForFunction(()=>typeof resolveAuthor==='function');await p.keyboard.press('Escape');
+   await p.evaluate(()=>resolveAuthor());await p.waitForFunction(()=>lateCleanup===1);assert.equal(await p.locator('.dgu-surface').count(),0);await p.evaluate(()=>lateAuthor.dispose());await p.setViewportSize({width:390,height:844});
+  });
+  await check('official shell handles empty views and Surface failures without leaking claims',async()=>{
+   await p.evaluate(()=>{StoneFree_native_status.dispose();StoneFree_comparison.dispose()});
+   await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();await p.getByText('暂无公开视图，独立入口仍可使用。',{exact:true}).waitFor();await p.keyboard.press('Escape');
+   await p.evaluate(()=>{window.actualUi=DoLGameUI.ui;DoLGameUI.ui={...actualUi,openDrawer(){throw Error('UI unavailable')}}});
+   await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();await p.locator('[data-sf-owner="SoftWetSurface"]').getByText('当前 Surface 不可用。',{exact:true}).waitFor();
+   assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.some(c=>c.kind==='modal')),false);
+   await p.evaluate(()=>{DoLGameUI.ui={...actualUi,openDrawer(){return null}}});await p.getByRole('button',{name:'Soft & Wet 工作台',exact:true}).click();
+   assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.some(c=>c.kind==='modal')),false);await p.evaluate(()=>{DoLGameUI.ui=actualUi});
+   for(const name of ['native-status','comparison'])await p.addScriptTag({content:read(`dist/framework/${name}/index.js`)});
   });
   await check('provider absence and an invalid data shape degrade the independent view',async()=>{
    const q=await browser.newPage();q.setDefaultTimeout(5000);await q.setContent('<main></main>');
@@ -205,7 +259,6 @@ async function check(name, callback) {await callback();tests.push(name);console.
    await p.evaluate(()=>{DoLUiHost.dispose();officialRuntime.destroy()});
   });
   assert.deepEqual(sampleErrors,[]);await p.close();
-  fs.mkdirSync(path.join(root,'tests/artifacts/stone-free-foundation'),{recursive:true});
-  fs.writeFileSync(path.join(root,'tests/artifacts/stone-free-foundation/browser-tests.json'),JSON.stringify({status:'passed',environment:'Headless Edge / browser fixture, not Android',tests},null,2));
+  fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'passed',environment:'Headless Edge / browser fixture, not Android',tests},null,2));console.log('OUTPUT',output);
  } finally {await browser.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({status:'failed',tests,error:e.message},null,2));console.error(e);process.exitCode=1});
