@@ -12,6 +12,8 @@
     "framework:workspace:test": "node tests/framework-workspace.cjs",
     "framework:commands:test": "node tests/framework-commands.cjs",
     "framework:motion:test": "node tests/framework-motion.cjs",
+    "framework:connect:test": "node tests/framework-connect.cjs",
+    "framework:reference:test": "node tests/framework-reference.cjs",
     "framework:vue:build": "npm run framework:build && node scripts/build-framework-vue-comparison.mjs && python scripts/package-framework-vue-comparison.py",
     "framework:vue:test": "node tests/framework-vue-comparison.cjs",
     "typecheck": "vue-tsc --noEmit && tsc -p tsconfig.adapters.json && tsc -p tsconfig.early.json",

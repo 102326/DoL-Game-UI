@@ -2,7 +2,7 @@
 
 这份指南面向试用当前研究源码的 Mod 作者。协议是 `0.1-experimental`，尚不是稳定 SDK，也没有 npm 安装入口。独立 Mod 不需要官方 Soft & Wet UI 或共享 Vue 包；可选布局只在作者主动贡献视图时使用。
 
-配方、SDK 和模板也可从本地构建输出 `StoneFreeAuthorKit-0.1.0-experimental.source.zip` 取得。在新的开发目录解压后，按包内 README 创建项目，不需要复制整个 UI 仓库。这是开发用源码包，不能导入 ModLoader；它不含 Node、Python 或 npm 依赖。
+配方、SDK 和模板也可从本地构建输出 `StoneFreeAuthorKit-0.1.1-experimental.source.zip` 取得。在新的开发目录解压后，按包内 README 创建项目，不需要复制整个 UI 仓库。这是开发用源码包，不能导入 ModLoader；它不含 Node、Python 或 npm 依赖。
 
 ## 创建、预览和打包
 

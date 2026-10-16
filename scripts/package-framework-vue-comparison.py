@@ -5,7 +5,7 @@ import json, zipfile, hashlib
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework-vue-comparison'
 inputs = json.loads((out / 'inputs.json').read_text(encoding='utf-8'))
-version = '0.1.0-experimental'
+version = '0.1.1-experimental'
 packages = [('runtime', 'StoneFreeVueResearch')] + [(c['name'], c['modName']) for c in inputs['consumers']]
 rows = []
 for directory, name in packages:

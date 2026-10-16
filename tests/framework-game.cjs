@@ -12,7 +12,7 @@ const sha=x=>createHash('sha256').update(x).digest('hex');
  const workspace=process.argv.includes('--workspace'),shared=process.argv.includes('--shared-vue');
  assert.ok(!(workspace&&shared),'Choose one research variant');
  const names=shared?['StoneFreeHost','StoneFreeVueResearch','StoneFreeNativeStatus','StoneFreeStatusComparison','StoneFreeWorkspace']:['StoneFreeHost','StoneFreeNativeStatus','StoneFreeStatusComparison',...(workspace?['StoneFreeWorkspace','StoneFreeAlternateWorkspace']:[])];
- const archives=names.map(name=>fs.readFileSync(path.join(root,`dist/${shared&&name!=='StoneFreeHost'?'framework-vue-comparison':'framework'}/${name}-0.1.0-experimental.mod.zip`)));
+ const archives=names.map(name=>fs.readFileSync(path.join(root,`dist/${shared&&name!=='StoneFreeHost'?'framework-vue-comparison':'framework'}/${name}-0.1.1-experimental.mod.zip`)));
  const authorIndex=process.argv.indexOf('--author-zip');let authorName=null;
  if(authorIndex!==-1){const author=process.argv[authorIndex+1];assert.ok(author&&fs.statSync(author).isFile(),'Pass an existing owned author ZIP');
   const boot=JSON.parse(execFileSync('python',['-c',"import zipfile,sys; print(zipfile.ZipFile(sys.argv[1]).read('boot.json').decode('utf-8'))",author],{encoding:'utf8',windowsHide:true}));

@@ -79,3 +79,15 @@
 浏览器可选录像缺少 Playwright 的 FFmpeg，没有安装第二套依赖，改用已存在的 Android 录屏。最终 30 秒录制文件实际为 30.098867 秒，超过 `animation-frames` 文档的 30 秒输入边界，未强行调用或改阈值；通过已安装 FFmpeg 按 4/12/22 秒取三个审阅帧。下次若需标准抽帧，预先选短于 30 秒的录制预算即可。这是采样计划/可选工具边界，不据此请求重构录制器。
 
 没有明确 Tools 实现缺陷，不提出新 Provider、Runtime 或工具框架。没有新 Gameplay、Journey、Full Evidence、Perfetto、bugreport；短 UI 任务已有项目脚本及直接结果断言，未引入这些能力仍有足够证据。更多物理设备、IME、自然导航与持久安装属于本轮未覆盖范围，不阻塞已约定的动态原型。
+
+## 第九轮增补：真实安装与临时加载不是同一环境
+
+继续使用 resolver 已确认的 Paisley Park 6.1.0、精确 WebView 文档绑定、标准 `restart / web-click`，完成隔离测试 App 的真实 Loader 安装和自然导航。每次重启重新建立 PID/文档绑定，读取原 Loader 公共存储合同导入自己的研究包，结束后恢复原 active/hidden 清单并删除自己的 ZIP。没有操作 GER Store 或历史 Unknown。
+
+真实 Loader 首次检查暴露了项目测试假设：临时全局加载时可见的 IIFE 导出对象，在正常 Loader 包装执行后不一定成为 `window` 属性。首次因此断言失败，Host 的 participant 和 DOM 当时实际已存在。修正为检查公开诊断和真实挂载，并用消费者自己的退出按钮释放；依赖负例另用明确标记的脚本派发夹具。原失败收据保留。这属于项目验证脚本问题，不是 Tools 缺陷。适合进入 Skill 的经验是保留加载方式差异，不能把临时注入的全局对象假定为真实安装合同。
+
+自然导航使用经过源码和现场唯一性核对的原版按钮/链接，验证旧绑定失效及新场景读取；不再广播伪造 Passage 事件。选择器、Host 方法及 Loader 版本细节只留 UI 项目。Android 比较前后由原库存/穿戴字段摘要证明未变化，Action 完成不替代该断言。
+
+首次 capture 返回泛化失败，当时输出父目录尚不存在；创建目录后的独立采集成功，但未获得精确原始错误，根因仍为 Unknown，不据此提交工具实现缺陷。桌面游戏启动阶段还出现 `Event` pageerror；参考操作阶段没有新增错误，来源 Unknown，不能写成“全游戏无错误”。
+
+没有新增通用 Runtime、Provider 或 Journey：现有绑定与动作足够，精确包体、库存和生命周期断言由项目脚本承担。未调用 Full Evidence、Perfetto、bugreport 或泄漏调查；本轮没有相应问题证据。暂无需要向工具项目自动派发的实现修复。物理触控、IME 和更多宿主版本仍为 Coverage。

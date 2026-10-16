@@ -6,12 +6,12 @@
 
 使用研究构建输出的两个包：
 
-1. `StoneFreeHost-0.1.0-experimental.mod.zip`
-2. `StoneFreeMotionHub-0.1.0-experimental.mod.zip`
+1. `StoneFreeHost-0.1.1-experimental.mod.zip`
+2. `StoneFreeMotionHub-0.1.1-experimental.mod.zip`
 
 保留 ZIP，作为两个独立 Mod 导入测试环境，Host 在前。不需要安装其它研究工作台，不替换正式 `DoLGameUI`。Host 协议仍为 `0.1-experimental`；旧实验 Host 请先停用，不能同时加载多个实现。
 
-本轮实际使用 Android 测试版的临时脚本加载验证，未完成这两个 ZIP 的真实 ModLoader 安装更新验收。ZIP 结构与资源已在本地构建核对。请先在测试安装中试用，不据此推断所有整合包兼容。
+这些是明确配对的实验包，包版本与公共协议版本分别管理。请先在独立测试安装中试用，不据此推断所有整合包或任意 Host 升级兼容。源码仓库的 `docs/STONE_FREE_3.0_DISTRIBUTION.md` 记录实际安装、更新、退出与导航证据；第八轮的临时加载记录保留其原有范围。
 
 ## 操作
 
@@ -29,4 +29,4 @@
 
 原型也显示其它参与者主动贡献的公开视图。超过三个视图或可用高度不足时，改用可滚动的紧凑工具列表。没有扫描或重新渲染未参与的第三方页面。
 
-不包含穿戴、购买、战斗推进或存档操作。暂未验证物理手机触控、真实 IME、自然 Passage 导航及持久 ModLoader 安装更新；受控触摸注入与 Host 失效检查不替代这些证据。
+不包含穿戴、购买、战斗推进或存档操作。物理触控、真实 IME 和长期使用需要单独记录；浏览器点击、Android 受控输入及局部失效测试不能代替这些证据。

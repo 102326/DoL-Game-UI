@@ -2,6 +2,10 @@
 
 这组离线 Mod 用来检验 3.0 的公共接缝，不是 Soft & Wet 3.0 正式版。现有 UI 2.7.0、偏好、存档和 API v1 没有改动。协议 `0.1-experimental` 可能在研究后调整，请勿作为稳定第三方依赖发布。
 
+正式目标已确定为独立 Framework Host 与独立官方 UI 消费者。当前研究包版本为 `0.1.1-experimental`，消费者要求同版本 Host；协议版本仍为 `0.1-experimental`。首版按明确配对安装和更新，不承诺任意版本独立升级。SDK 和 Author Kit 只用于开发，不是玩家 Runtime。
+
+Loader 的依赖报告不能替代消费者接入检查。缺少或不支持的 Host 会使消费者退让；不要同时启用多份 Host。停用 Mod 后需要重启，消费者主动退出只释放自己的资源，不等于整包热卸载。
+
 ## 运行
 
 依次启用 `StoneFreeHost`、`StoneFreeNativeStatus`、`StoneFreeStatusComparison`。不需要安装 `DoLGameUI`、MapleBirch 或官方主题。两个视图分别自带 Vue，Host 本身不包含 Vue；这次先验证分离可行性，不宣称它是最终最优分发方式。
@@ -19,6 +23,8 @@
 ## 从源码构建
 
 第八轮另提供可选 `StoneFreeMotionHub`，用于扇形展开、空间转场、拖动吸附、停靠和恢复。它消费公开视图及原版侧栏命令，不修改 Host、SDK 或正式 UI；只试用该原型时安装 Host 与 MotionHub 两个研究包即可。见[操作说明](motion-hub/README.md)与[本轮证据和限制](../docs/STONE_FREE_3.0_MOTION_HUB.md)。
+
+可选 `StoneFreeWardrobeReference` 提供固定 A、选择 B、普通/空间比较及返回目录位置的只读衣柜实验。原版穿戴入口保留，不增加先查看再穿戴模式。见[说明](wardrobe-reference/README.md)。独立发行就绪工程及当前验证范围见[发行记录](../docs/STONE_FREE_3.0_DISTRIBUTION.md)。
 
 共享 Vue 另作为独立分发实验，见 [说明](experiments/README.md) 和 [对照结论](../docs/STONE_FREE_3.0_VUE_DISTRIBUTION.md)。默认研究包仍由消费者自带 Vue；实验输出不替换默认 ZIP，也不改变 Host 合同。
 
@@ -79,7 +85,7 @@ Host 退出时，仍然安装的消费者可以等待新 Host，这是预期行�
 
 ## 最小作者配方
 
-源码仓库的[作者指南](../docs/STONE_FREE_3.0_AUTHOR_GUIDE.md)说明完整流程。`framework:build` 还生成 `StoneFreeAuthorKit-0.1.0-experimental.source.zip`：只含配方、SDK、模板及许可证，解压后可在完整 UI 仓库之外创建作者项目。它不是 Mod，不要导入 ModLoader；运行中的 Host 由单独的 `.mod.zip` 提供。
+源码仓库的[作者指南](../docs/STONE_FREE_3.0_AUTHOR_GUIDE.md)说明完整流程。`framework:build` 还生成 `StoneFreeAuthorKit-0.1.1-experimental.source.zip`：只含配方、SDK、模板及许可证，解压后可在完整 UI 仓库之外创建作者项目。它不是 Mod，不要导入 ModLoader；运行中的 Host 由单独的 `.mod.zip` 提供。
 
 运行 `node scripts/framework-factory.mjs create NEW_DIRECTORY ModId`，生成由作者拥有的 Vue/TS 项目、独立 ZIP 打包脚本和实验 SDK 快照。已有目录会拒绝，不覆盖作者文件。自行安装声明的依赖并保存自己的锁文件后，使用生成项目的 `npm run package`。
 

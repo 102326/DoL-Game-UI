@@ -2,8 +2,9 @@ import type {Host, Json} from '../contracts';
 
 type NativeWindow = Window & {SugarCube?: {UIBar?: {isStowed(): boolean}}};
 /** Only the known original sidebar button executes. No State or gameplay writes. */
-export function provideNativeReading(host: Host, root: NativeWindow) {
- const owner = host.register('NativeReading'), doc = root.document;
+export function provideNativeReading(host: Host, root: NativeWindow, ownerId = 'NativeReading') {
+ const owner = host.register(ownerId), doc = root.document;
+ try {
  const bar = doc.getElementById('ui-bar'), button = doc.getElementById('ui-bar-toggle'), api = root.SugarCube?.UIBar;
  function read(): {available: boolean; stowed: boolean | null; reason: string} {
   if (!bar || !button || button.tagName !== 'BUTTON' || !bar.contains(button) || !bar.isConnected || !button.isConnected
@@ -30,4 +31,5 @@ export function provideNativeReading(host: Host, root: NativeWindow) {
   return {applied: after.stowed === !before.stowed, before: before.stowed, after: after.stowed, reason: after.reason};
  }});
  return owner;
+ } catch (error) {owner.dispose(); throw error}
 }
