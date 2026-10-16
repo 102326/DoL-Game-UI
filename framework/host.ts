@@ -1,0 +1,187 @@
+import {PROTOCOL, type Host, type Binding, type Cleanup, type Contribution, type MountContext,
+ type MountRequest, type Participant, type ResourceKind, type Source, type Json} from './contracts';
+
+const validId = (value: unknown): value is string => typeof value === 'string' && /^[A-Za-z][A-Za-z0-9_.-]{0,79}$/.test(value);
+function requireId(value: unknown) {if (!validId(value)) throw new TypeError('Invalid participant/resource id')}
+
+/** Copies only bounded JSON projections; never publishes mutable native objects. */
+function snapshot(value: Json): Json {
+ let remaining = 2000, characters = 32000;
+ function copy(item: Json, depth: number): Json {
+  if (--remaining < 0 || depth > 12) throw new TypeError('Projection too large');
+  if (item === null || typeof item === 'boolean') return item;
+  if (typeof item === 'string' && item.length <= 16000 && (characters -= item.length) >= 0) return item;
+  if (typeof item === 'number' && Number.isFinite(item)) return item;
+  if (Array.isArray(item)) return Object.freeze(item.map(x => copy(x, depth + 1))) as Json;
+  if (typeof item !== 'object' || Object.getPrototypeOf(item) !== Object.prototype) throw new TypeError('Invalid projection');
+  const out: {[key: string]: Json} = {};
+  for (const [key, child] of Object.entries(item)) {
+   if (key.length > 128 || (characters -= key.length) < 0 || ['__proto__', 'constructor', 'prototype'].includes(key)) throw new TypeError('Unsafe projection key');
+   out[key] = copy(child, depth + 1);
+  }
+  return Object.freeze(out);
+ }
+ return copy(value, 0);
+}
+
+/** No Vue, theme, State, storage, global input handlers or third-party DOM rewrites. */
+export function createHost(root: Window & Pick<typeof globalThis, 'MutationObserver' | 'HTMLElement'>): Readonly<Host> {
+ if (typeof AbortSignal.any !== 'function') throw new Error('AbortSignal.any is required by this experimental Host');
+ const doc = root.document;
+ let disposed = false, scenePending = false, generation = 0, scene = new AbortController();
+ const participants = new Map<string, {dispose: Cleanup}>();
+ const mounts = new Set<{owner: string; id: string; lifetime: MountRequest['lifetime']; element: HTMLElement; dispose: Cleanup}>();
+ const claims = new Map<string, {owner: string; kind: ResourceKind; key: string}>();
+ const providers = new Map<string, {owner: string; contribution: Contribution}>();
+ const changes = new Set<Cleanup>(), sceneListeners = new Set<Cleanup>();
+ const bindings = new WeakSet<Binding>();
+ const errors: {owner: string; stage: string}[] = [];
+ function report(owner: string, stage: string) {errors.push(Object.freeze({owner, stage})); if (errors.length > 24) errors.shift()}
+ function safely(owner: string, stage: string, fn: Cleanup) {
+  try {
+   const result = fn() as unknown;
+   if (result && typeof (result as Promise<unknown>).then === 'function') void Promise.resolve(result).catch(() => report(owner, stage));
+  } catch {report(owner, stage)}
+ }
+ function notify(listeners: Set<Cleanup>) {for (const fn of [...listeners]) if (listeners.has(fn)) safely('Host', 'notification', fn)}
+ function binding(): Binding {
+  const current = scene, epoch = generation, readyAtCapture = !scenePending;
+  const value = Object.freeze({signal: current.signal, generation: epoch, isCurrent: () => readyAtCapture && !disposed && !scenePending && current === scene && !current.signal.aborted});
+  bindings.add(value); return value;
+ }
+ // Watch only ancestor child lists for owned mounts. No whole-document subtree scan.
+ const observer = new root.MutationObserver(() => {
+  for (const entry of [...mounts]) if (!entry.element.isConnected) entry.dispose();
+  watch();
+ });
+ function watch() {
+  observer.disconnect();
+  const parents = new Set<Node>();
+  for (const entry of mounts) for (let parent = entry.element.parentNode; parent; parent = parent.parentNode) parents.add(parent);
+  for (const parent of parents) observer.observe(parent, {childList: true});
+ }
+ function assertLive() {if (disposed) throw new Error('Host disposed')}
+ function register(id: string): Readonly<Participant> {
+  assertLive(); requireId(id);
+  if (participants.has(id)) throw new Error('Participant already registered');
+  let released = false;
+  const owned = new Set<Cleanup>(), ids = new Set<string>();
+  const alive = () => !released && !disposed;
+  const check = () => {if (!alive()) throw new Error('Participant disposed')};
+  function dispose() {
+   if (released) return;
+   released = true;
+   for (const release of [...owned].reverse()) safely(id, 'participant-cleanup', release);
+   owned.clear(); participants.delete(id);
+  }
+  participants.set(id, {dispose});
+  return Object.freeze({id, dispose,
+   mount(request: MountRequest) {
+    check(); requireId(request?.id);
+    if (ids.has(request.id)) throw new Error('Mount already registered');
+    if (!(request.parent instanceof root.HTMLElement) || request.parent.ownerDocument !== doc || !request.parent.isConnected
+     || !['passage', 'persistent'].includes(request.lifetime) || typeof request.setup !== 'function') throw new TypeError('Invalid mount');
+    const element = doc.createElement('div'); element.dataset.sfOwner = id; element.dataset.sfMount = request.id;
+    const controller = new AbortController(), cleanup: Cleanup[] = [];
+    let closed = false;
+    const isCurrent = () => alive() && !closed && element.isConnected;
+    function onCleanup(fn: Cleanup) {
+     if (typeof fn !== 'function') throw new TypeError('Cleanup must be a function');
+     if (closed) safely(id, 'late-cleanup', fn); else cleanup.push(fn);
+    }
+    function release() {
+     if (closed) return;
+     closed = true; controller.abort();
+     for (const fn of cleanup.splice(0).reverse()) safely(id, 'mount-cleanup', fn);
+     element.remove(); mounts.delete(entry); owned.delete(release); ids.delete(request.id); watch();
+    }
+    function mountBinding(): Binding {
+     const current = binding();
+     const value = Object.freeze({...current, signal: AbortSignal.any([controller.signal, current.signal]), isCurrent: () => isCurrent() && current.isCurrent()});
+     bindings.add(value); return value;
+    }
+    const context: MountContext = Object.freeze({element, signal: controller.signal, isCurrent, binding: mountBinding,
+     fail() {report(id, 'consumer'); release()},
+     onCleanup,
+     onScene(callback: Cleanup) {
+      if (typeof callback !== 'function') throw new TypeError('Scene callback must be a function');
+      if (closed) return () => {};
+      const listener = () => {if (isCurrent()) safely(id, 'scene', callback)};
+      sceneListeners.add(listener);
+      const stop = () => sceneListeners.delete(listener);
+      onCleanup(stop); return stop;
+     }});
+    const entry = {owner: id, id: request.id, lifetime: request.lifetime, element, dispose: release};
+    ids.add(request.id); owned.add(release); mounts.add(entry); request.parent.append(element); watch();
+    // Set up synchronously so cleanup is installed before returning to the caller.
+    let result: ReturnType<MountRequest['setup']> = undefined;
+    try {result = request.setup(context)} catch {report(id, 'setup'); release()}
+    const ready = Promise.resolve(result).then(fn => {if (typeof fn === 'function') onCleanup(fn)}, () => {report(id, 'async-setup'); release()});
+    return Object.freeze({dispose: release, isCurrent, ready});
+   },
+   claim(kind: ResourceKind, key: string) {
+    check(); requireId(key);
+    if (!['region', 'shortcut', 'modal'].includes(kind)) throw new TypeError('Invalid resource kind');
+    const identity = `${kind}:${key}`;
+    if (claims.has(identity)) return null;
+    const entry = Object.freeze({owner: id, kind, key}); claims.set(identity, entry);
+    const release = () => {if (claims.get(identity) === entry) claims.delete(identity); owned.delete(release)};
+    owned.add(release);
+    return Object.freeze({release, isCurrent: () => alive() && claims.get(identity) === entry});
+   },
+   provide(spec: Contribution) {
+    check(); requireId(spec?.id); requireId(spec?.schema);
+    if (typeof spec.read !== 'function') throw new TypeError('Contribution needs a reader');
+    const key = `${id}:${spec.id}`;
+    if (providers.has(key)) throw new Error('Contribution already registered');
+    const entry = {owner: id, contribution: Object.freeze({...spec})}; providers.set(key, entry);
+    const release = () => {if (providers.get(key) !== entry) return; providers.delete(key); owned.delete(release); notify(changes)};
+    owned.add(release); notify(changes); return release;
+   }
+  });
+ }
+ const api: Host = {
+  protocolVersion: PROTOCOL, register, binding,
+  sources(schema: string) {
+   requireId(schema);
+   return Object.freeze([...providers.entries()].filter(([, entry]) => entry.contribution.schema === schema).map(([key, entry]): Source => Object.freeze({
+    owner: entry.owner, id: entry.contribution.id, schema,
+    async read(current: Binding) {
+     if (providers.get(key) !== entry || disposed) return Object.freeze({ok: false, reason: 'missing'});
+     if (!bindings.has(current) || !current.isCurrent() || current.signal.aborted) return Object.freeze({ok: false, reason: 'stale'});
+     let value: Json;
+     try {value = await entry.contribution.read(current)} catch {report(entry.owner, 'projection-read'); return Object.freeze({ok: false, reason: 'failed'})}
+     if (!current.isCurrent() || current.signal.aborted) return Object.freeze({ok: false, reason: 'stale'});
+     if (providers.get(key) !== entry || disposed) return Object.freeze({ok: false, reason: 'missing'});
+     try {return Object.freeze({ok: true, value: snapshot(value), sampledAt: Date.now(), generation: current.generation})}
+     catch {report(entry.owner, 'projection-value'); return Object.freeze({ok: false, reason: 'invalid-value'})}
+    }
+   })));
+  },
+  onContributions(callback: Cleanup) {assertLive(); if (typeof callback !== 'function') throw new TypeError('Callback required'); changes.add(callback); return () => {changes.delete(callback)}},
+  invalidateScene() {
+   if (disposed) return;
+   scene.abort(); scenePending = true; generation++; scene = new AbortController();
+   for (const entry of [...mounts]) if (entry.lifetime === 'passage') entry.dispose();
+  },
+  sceneReady() {
+   if (disposed) return;
+   scenePending = false;
+   for (const entry of [...mounts]) if (!entry.element.isConnected) entry.dispose();
+   notify(sceneListeners);
+  },
+  getDiagnostics: () => Object.freeze({generation, disposed,
+   participants: Object.freeze([...participants.keys()]),
+   mounts: Object.freeze([...mounts].map(({owner, id, lifetime}) => Object.freeze({owner, id, lifetime}))),
+   claims: Object.freeze([...claims.values()]),
+   sources: Object.freeze([...providers.values()].map(({owner, contribution}) => Object.freeze({owner, id: contribution.id, schema: contribution.schema}))),
+   errors: Object.freeze([...errors])}),
+  dispose() {
+   if (disposed) return;
+   disposed = true; scene.abort();
+   for (const owner of [...participants.values()].reverse()) owner.dispose();
+   observer.disconnect(); changes.clear(); sceneListeners.clear();
+  }
+ };
+ return Object.freeze(api);
+}
