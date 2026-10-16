@@ -1,4 +1,4 @@
-# Stone Free Host：第一轮研发原型
+# Stone Free Host：研发原型
 
 这组离线 Mod 用来检验 3.0 的公共接缝，不是 Soft & Wet 3.0 正式版。现有 UI 2.7.0、偏好、存档和 API v1 没有改动。协议 `0.1-experimental` 可能在研究后调整，请勿作为稳定第三方依赖发布。
 
@@ -15,6 +15,8 @@
 可选安装 `StoneFreeNativeReading` 和 `StoneFreeReadingControls`，验证原版侧栏操作。前者提供按需状态和受审回调；后者通过公共合同显示非模态工具条，也可把同一视图放进工作台。侧栏仍由 SugarCube 的原按钮切换。工作台浮层打开时，视图拒绝调用外部原控件；关闭后可在非模态工具条刷新并操作。不包含购买、换装、战斗或存档操作。
 
 ## 从源码构建
+
+共享 Vue 另作为独立分发实验，见 [说明](experiments/README.md) 和 [对照结论](../docs/STONE_FREE_3.0_VUE_DISTRIBUTION.md)。默认研究包仍由消费者自带 Vue；实验输出不替换默认 ZIP，也不改变 Host 合同。
 
 使用仓库已有锁文件与依赖：`npm run framework:build`。产物位于 `dist/framework/`，与正式 UI 打包路径分开。`npm run framework:test` 检查生命周期、失效、资源争用、Vue 消费者和非参与者反例。无需重装依赖来使用现有环境。
 
