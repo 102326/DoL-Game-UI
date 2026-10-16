@@ -4,7 +4,7 @@ import './panel.css';
 
 type OptionalUi = Window & {DoLGameUI?: {ui?: UiApi}};
 /** Layout policy example: same source, existing official public Surface API v1. */
-connectConsumer(host => {
+export const dispose = connectConsumer(host => {
  const owner = host.register('SoftWetSurface');
  owner.mount({id: 'surface-entry', parent: document.body, lifetime: 'persistent', setup(context) {
   const entry = document.createElement('section'); entry.className = 'sf-example sf-official';

@@ -28,4 +28,5 @@ export function installHost(root: NativeWindow = window) {
  return Object.freeze({host, dispose});
 }
 
-installHost();
+const installation = installHost();
+export const dispose = () => installation?.dispose();

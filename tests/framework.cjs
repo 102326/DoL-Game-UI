@@ -99,6 +99,20 @@ async function check(name, callback) {await callback();tests.push(name);console.
    await page.evaluate(()=>{window.cyclic={};cyclic.self=cyclic;a.provide({id:'bad',schema:'bad.v1',read:()=>cyclic})});
    assert.equal((await page.evaluate(()=>host.sources('bad.v1')[0].read(host.binding()))).reason,'invalid-value');
   });
+  await check('published views create owned instances and withdrawal closes all of them without exiting the provider',async()=>{
+   const result=await page.evaluate(()=>{
+    const release=a.provideView({id:'shared',title:'Public view',setup(c){c.element.textContent='owned view'}}),view=host.views()[0];
+    const first=view.mount({id:'first-view',parent:document.body,lifetime:'persistent'}),second=view.mount({id:'second-view',parent:document.body,lifetime:'persistent'});
+    const before=first.isCurrent()&&second.isCurrent();release();release();
+    return {before,after:first.isCurrent()||second.isCurrent(),retired:view.mount({id:'old',parent:document.body,lifetime:'persistent'}),provider:host.getDiagnostics().participants.includes('AuthorA'),frozen:Object.isFrozen(view),privateSetup:'setup' in view};
+   });assert.deepEqual(result,{before:true,after:false,retired:null,provider:true,frozen:true,privateSetup:false});
+  });
+  await check('a view withdrawn synchronously during its setup cannot survive the withdrawal',async()=>{
+   const result=await page.evaluate(()=>{
+    let withdraw;withdraw=a.provideView({id:'reentrant',title:'Reentrant',setup(){withdraw()}});
+    return host.views().find(v=>v.id==='reentrant').mount({id:'reentrant-instance',parent:document.body,lifetime:'persistent'});
+   });assert.equal(result,null);assert.equal(await page.locator('[data-sf-mount="reentrant-instance"]').count(),0);
+  });
   await check('no native DOM/order/listener or input changes',async()=>{
    await page.locator('#third-party').click();await page.locator('#native').fill('native-updated');await page.keyboard.press('k');
    assert.deepEqual(await page.evaluate(()=>({same:native===document.querySelector('#native')&&native.parentElement===nativeParent&&native.nextSibling===nativeNext,value:native.value,clicks:nativeClicks,keys:nativeKeys})),{same:true,value:'native-updatedk',clicks:1,keys:1});

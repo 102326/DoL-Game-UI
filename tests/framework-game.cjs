@@ -8,7 +8,8 @@ const sha=x=>createHash('sha256').update(x).digest('hex');
  const original=fs.readFileSync(file),text=original.toString('utf8');
  const pattern=/<script\b[^>]*>\s*window\.modDataValueZipList\s*=\s*(\[[\s\S]*?\])\s*;?\s*<\/script>/g;
  assert.equal([...text.matchAll(pattern)].length,1,'One standard embedded Mod block required');
- const names=['StoneFreeHost','StoneFreeNativeStatus','StoneFreeStatusComparison'];
+ const workspace=process.argv.includes('--workspace');
+ const names=['StoneFreeHost','StoneFreeNativeStatus','StoneFreeStatusComparison',...(workspace?['StoneFreeWorkspace','StoneFreeAlternateWorkspace']:[])];
  const archives=names.map(name=>fs.readFileSync(path.join(root,`dist/framework/${name}-0.1.0-experimental.mod.zip`)));
  const html=text.replace(pattern,`<script>window.modDataValueZipList=${JSON.stringify(archives.map(b=>b.toString('base64')))};</script>`);
  const server=http.createServer((req,res)=>{
@@ -24,9 +25,11 @@ const sha=x=>createHash('sha256').update(x).digest('hex');
   const page=await browser.newPage({viewport:{width:1280,height:900}});page.setDefaultTimeout(10000);
   await page.goto(`http://127.0.0.1:${server.address().port}/`,{timeout:60000});
   await page.waitForFunction(()=>window.DoLUiHost&&document.querySelector('[data-sf-owner="StatusComparison"] button'),{},{timeout:60000});
+  if(workspace)await page.waitForFunction(()=>DoLUiHost.getDiagnostics().participants.includes('AlternateWorkspace'));
   report.runtime=await page.evaluate(()=>({game:StartConfig?.version,loader:modUtils.version,sugarCube:String(SugarCube.version),officialUi:!!window.DoLGameUI,loaded:modUtils.getModListNameNoAlias().map(name=>({name,version:modUtils.getMod(name)?.version})),host:DoLUiHost.getDiagnostics()}));
   assert.equal(report.runtime.officialUi,false);for(const name of names)assert.ok(report.runtime.loaded.some(x=>x.name===name));
-  assert.equal(report.runtime.host.errors.length,0);report.checks.push('Actual ModLoader loaded all three ZIPs without official UI or MapleBirch');
+  assert.equal(report.runtime.host.errors.length,0);report.checks.push('Actual ModLoader loaded the selected research ZIPs without official UI or MapleBirch');
+  if(workspace){assert.equal(report.runtime.host.views.length,2);assert.equal(report.runtime.host.claims.filter(c=>c.key==='information-workspace').length,1);report.checks.push('Two public views and exclusive layout-region acquisition exist under the real Loader')}
   const projected=await page.evaluate(async()=>{
    const r=await DoLUiHost.sources('dol.status.experimental')[0].read(DoLUiHost.binding());
    const v=SugarCube.State.variables;const original={};for(const field of ['pain','stress','tiredness'])original[field]=typeof v[field]==='number'&&Number.isFinite(v[field])?v[field]:null;

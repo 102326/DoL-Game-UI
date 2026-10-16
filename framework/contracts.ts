@@ -31,6 +31,17 @@ export interface Contribution {
  schema: string;
  read(binding: Binding): Json | Promise<Json>;
 }
+export interface ViewContribution {
+ id: string;
+ title: string;
+ setup: MountRequest['setup'];
+}
+export interface View {
+ readonly owner: string;
+ readonly id: string;
+ readonly title: string;
+ mount(request: Omit<MountRequest, 'setup'>): Readonly<MountHandle> | null;
+}
 export type ReadResult = Readonly<{ok: true; value: Json; sampledAt: number; generation: number}>
  | Readonly<{ok: false; reason: 'missing' | 'stale' | 'failed' | 'invalid-value'}>;
 export interface Source {
@@ -44,6 +55,7 @@ export interface Participant {
  mount(request: MountRequest): Readonly<MountHandle>;
  claim(kind: ResourceKind, key: string): Readonly<Claim> | null;
  provide(contribution: Contribution): Cleanup;
+ provideView(view: ViewContribution): Cleanup;
  dispose(): void;
 }
 export interface Host {
@@ -51,6 +63,9 @@ export interface Host {
  register(id: string): Readonly<Participant>;
  binding(): Binding;
  sources(schema: string): readonly Source[];
+ getCapabilities(): Readonly<{views: boolean}>;
+ views(): readonly View[];
+ onViews(callback: Cleanup): Cleanup;
  onContributions(callback: () => void): Cleanup;
  /** Called by the SugarCube bridge on :passageinit / :onloadsave. */
  invalidateScene(): void;
@@ -62,6 +77,7 @@ export interface Host {
   mounts: readonly Readonly<{owner: string; id: string; lifetime: Lifetime}>[];
   claims: readonly Readonly<{owner: string; kind: ResourceKind; key: string}>[];
   sources: readonly Readonly<{owner: string; id: string; schema: string}>[];
+  views: readonly Readonly<{owner: string; id: string}>[];
   errors: readonly Readonly<{owner: string; stage: string}>[];
  }>;
  dispose(): void;

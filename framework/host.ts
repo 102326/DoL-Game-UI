@@ -1,5 +1,5 @@
 import {PROTOCOL, type Host, type Binding, type Cleanup, type Contribution, type MountContext,
- type MountRequest, type Participant, type ResourceKind, type Source, type Json} from './contracts';
+ type MountRequest, type MountHandle, type Participant, type ResourceKind, type Source, type Json, type View, type ViewContribution} from './contracts';
 
 const validId = (value: unknown): value is string => typeof value === 'string' && /^[A-Za-z][A-Za-z0-9_.-]{0,79}$/.test(value);
 function requireId(value: unknown) {if (!validId(value)) throw new TypeError('Invalid participant/resource id')}
@@ -33,7 +33,8 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
  const mounts = new Set<{owner: string; id: string; lifetime: MountRequest['lifetime']; element: HTMLElement; dispose: Cleanup}>();
  const claims = new Map<string, {owner: string; kind: ResourceKind; key: string}>();
  const providers = new Map<string, {owner: string; contribution: Contribution}>();
- const changes = new Set<Cleanup>(), sceneListeners = new Set<Cleanup>();
+ const views = new Map<string, {owner: string; spec: ViewContribution; mount: View['mount']}>();
+ const changes = new Set<Cleanup>(), viewChanges = new Set<Cleanup>(), sceneListeners = new Set<Cleanup>();
  const bindings = new WeakSet<Binding>();
  const errors: {owner: string; stage: string}[] = [];
  function report(owner: string, stage: string) {errors.push(Object.freeze({owner, stage})); if (errors.length > 24) errors.shift()}
@@ -75,7 +76,7 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
    owned.clear(); participants.delete(id);
   }
   participants.set(id, {dispose});
-  return Object.freeze({id, dispose,
+  const participant: Participant = {id, dispose,
    mount(request: MountRequest) {
     check(); requireId(request?.id);
     if (ids.has(request.id)) throw new Error('Mount already registered');
@@ -137,11 +138,42 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
     const entry = {owner: id, contribution: Object.freeze({...spec})}; providers.set(key, entry);
     const release = () => {if (providers.get(key) !== entry) return; providers.delete(key); owned.delete(release); notify(changes)};
     owned.add(release); notify(changes); return release;
+   },
+   provideView(spec: ViewContribution) {
+    check(); requireId(spec?.id);
+    if (typeof spec.title !== 'string' || !spec.title.trim() || spec.title.length > 100 || typeof spec.setup !== 'function') throw new TypeError('View requires a title and setup');
+    const key = `${id}:${spec.id}`;
+    if (views.has(key)) throw new Error('View already registered');
+    const instances = new Set<Readonly<MountHandle>>();
+    const definition = Object.freeze({id: spec.id, title: spec.title, setup: spec.setup});
+    const entry = {owner: id, spec: definition, mount(request: Omit<MountRequest, 'setup'>) {
+     if (views.get(key) !== entry || !alive()) return null;
+     let handle: Readonly<MountHandle> | undefined;
+     handle = participant.mount({...request, setup(context) {
+      context.onCleanup(() => {if (handle) instances.delete(handle)});
+      return definition.setup(context);
+     }});
+     // Setup is caller code and can withdraw this view synchronously.
+     if (views.get(key) !== entry || !handle.isCurrent()) {handle.dispose(); return null}
+     instances.add(handle); return handle;
+    }};
+    views.set(key, entry);
+    const release = () => {
+     if (views.get(key) !== entry) return;
+     views.delete(key); owned.delete(release);
+     for (const instance of [...instances]) instance.dispose();
+     instances.clear(); notify(viewChanges);
+    };
+    owned.add(release); notify(viewChanges); return release;
    }
-  });
+  };
+  return Object.freeze(participant);
  }
  const api: Host = {
   protocolVersion: PROTOCOL, register, binding,
+  getCapabilities: () => Object.freeze({views: !disposed}),
+  views: () => Object.freeze([...views.values()].map(entry => Object.freeze({owner: entry.owner, id: entry.spec.id, title: entry.spec.title, mount: entry.mount}))),
+  onViews(callback: Cleanup) {assertLive(); if (typeof callback !== 'function') throw new TypeError('Callback required'); viewChanges.add(callback); return () => {viewChanges.delete(callback)}},
   sources(schema: string) {
    requireId(schema);
    return Object.freeze([...providers.entries()].filter(([, entry]) => entry.contribution.schema === schema).map(([key, entry]): Source => Object.freeze({
@@ -175,12 +207,13 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
    mounts: Object.freeze([...mounts].map(({owner, id, lifetime}) => Object.freeze({owner, id, lifetime}))),
    claims: Object.freeze([...claims.values()]),
    sources: Object.freeze([...providers.values()].map(({owner, contribution}) => Object.freeze({owner, id: contribution.id, schema: contribution.schema}))),
+   views: Object.freeze([...views.values()].map(({owner, spec}) => Object.freeze({owner, id: spec.id}))),
    errors: Object.freeze([...errors])}),
   dispose() {
    if (disposed) return;
    disposed = true; scene.abort();
    for (const owner of [...participants.values()].reverse()) owner.dispose();
-   observer.disconnect(); changes.clear(); sceneListeners.clear();
+   observer.disconnect(); changes.clear(); viewChanges.clear(); sceneListeners.clear();
   }
  };
  return Object.freeze(api);
