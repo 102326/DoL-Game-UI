@@ -17,6 +17,7 @@
 .sf-workspace table {width:100%;border-collapse:collapse;font-size:13px}.sf-workspace th,.sf-workspace td {border:0;border-bottom:1px solid #ffffff0c;padding:7px 3px;text-align:left}.sf-workspace th {font-weight:500}
 .sf-workspace .sf-inline-actions {display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.sf-workspace .sf-inline-note {color:#aab6c3;font-size:11px;overflow-wrap:anywhere}
 .sf-layout-options {display:grid;gap:6px;margin-top:14px}.sf-layout-options>div {display:flex;align-items:center;gap:6px}.sf-layout-options label {flex:1;display:flex;align-items:center;gap:8px}.sf-layout-options input {accent-color:#83b9df}
+.sf-layout-options>button {justify-self:start}.sf-layout-options>p {margin:0 0 8px;font-size:12px;color:#b4bec9}
 .sf-workspace footer {display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;margin-top:16px}.sf-workspace summary {cursor:pointer}.sf-workspace details button {margin-top:8px}
 .sf-workspace-compact {padding:16px}.sf-workspace-compact .sf-workspace-grid {gap:8px}.sf-workspace-compact article {padding:12px}.sf-workspace-compact dl>div {padding:4px 0}
 @media(max-width:600px) {.sf-workspace {padding:16px}.sf-workspace-grid {grid-template-columns:minmax(0,1fr);gap:10px}.sf-workspace header h2 {font-size:20px}}

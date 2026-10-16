@@ -12,6 +12,8 @@
 
 安装 `StoneFreeWorkspace` 可使用模态信息工作台：默认显示自愿贡献的状态速览与对照，支持隐藏、排序、舒适/紧凑密度。显示偏好只写入自己的 `StoneFreeWorkspace.*.v1`，不修改游戏设置或存档。`StoneFreeAlternateWorkspace` 提供非模态侧边工作台，可保持原页面可交互。两者申请同一区域，先释放当前工作区再切换，不会自动抢占。普通试用只需选一个布局。
 
+编辑布局时可用“恢复本布局”恢复该布局的默认顺序、可见内容和舒适密度，不清除其它布局或作者视图状态。存储不可用时，当前界面仍能恢复，但会提示本次无法保存。
+
 可选安装 `StoneFreeNativeReading` 和 `StoneFreeReadingControls`，验证原版侧栏操作。前者提供按需状态和受审回调；后者通过公共合同显示非模态工具条，也可把同一视图放进工作台。侧栏仍由 SugarCube 的原按钮切换。模态打开时，视图拒绝调用外部原控件；非模态侧边工作台允许操作未被遮挡的原按钮。窄屏覆盖原按钮时仍退让，不强制穿透。不包含购买、换装、战斗或存档操作。
 
 ## 从源码构建
@@ -74,6 +76,8 @@ Host 退出时，仍然安装的消费者可以等待新 Host，这是预期行�
 当前有 Host/Vue SDK、信息/视图贡献、自愿资源协商、受审 UI 命令实验、工作台的有限布局偏好和下面的源码配方。尚未提供业务动作调度、Widget 编辑器或可视化 Factory。原有 UI Surface/API v1 未迁移。独立开发价值 A、跨 Mod 组合价值 B、玩家体验和 Factory 收益需要分别记录证据，不因样例能运行就宣称 3.0 完成。
 
 ## 最小作者配方
+
+源码仓库的[作者指南](../docs/STONE_FREE_3.0_AUTHOR_GUIDE.md)说明完整流程。`framework:build` 还生成 `StoneFreeAuthorKit-0.1.0-experimental.source.zip`：只含配方、SDK、模板及许可证，解压后可在完整 UI 仓库之外创建作者项目。它不是 Mod，不要导入 ModLoader；运行中的 Host 由单独的 `.mod.zip` 提供。
 
 运行 `node scripts/framework-factory.mjs create NEW_DIRECTORY ModId`，生成由作者拥有的 Vue/TS 项目、独立 ZIP 打包脚本和实验 SDK 快照。已有目录会拒绝，不覆盖作者文件。自行安装声明的依赖并保存自己的锁文件后，使用生成项目的 `npm run package`。
 

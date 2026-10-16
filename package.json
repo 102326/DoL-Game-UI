@@ -8,6 +8,7 @@
     "framework:build": "npm run framework:check && node scripts/build-framework.mjs && python scripts/package-framework.py",
     "framework:test": "node tests/framework.cjs",
     "framework:factory:test": "node tests/framework-factory.cjs",
+    "framework:author-kit:test": "node tests/framework-author-kit.cjs",
     "framework:workspace:test": "node tests/framework-workspace.cjs",
     "framework:commands:test": "node tests/framework-commands.cjs",
     "framework:vue:build": "npm run framework:build && node scripts/build-framework-vue-comparison.mjs && python scripts/package-framework-vue-comparison.py",

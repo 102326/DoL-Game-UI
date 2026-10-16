@@ -89,6 +89,28 @@ const check=async(name,fn)=>{await fn();tests.push(name);console.log('PASS',name
    await dialog.locator('[data-view="AsyncAuthor:late"]').waitFor();await p.evaluate(()=>{withdraw();returnCleanup()});
    await p.waitForFunction(()=>cleaned===1);assert.equal(await dialog.locator('[data-view="AsyncAuthor:late"]').count(),0);await p.keyboard.press('Escape');
   });
+  await check('local layout reset restores defaults without clearing peer preferences, provider state or game values',async()=>{
+   await p.evaluate(()=>{localStorage.setItem('StoneFreeWorkspace.AlternateWorkspace.v1','{"order":[],"hidden":["FutureMod:future"],"density":"compact"}')});
+   await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.getByRole('button',{name:'设为对照',exact:true}).click();
+   await dialog.getByRole('button',{name:'编辑布局',exact:true}).click();await dialog.getByRole('checkbox',{name:'状态速览',exact:true}).uncheck();
+   await dialog.getByRole('button',{name:'恢复本布局',exact:true}).click();await dialog.locator('[data-view="NativeStatus:status"] dd').first().waitFor();
+   assert.deepEqual(await dialog.locator('article').evaluateAll(nodes=>nodes.map(n=>n.dataset.view)),['NativeStatus:status','StatusComparison:comparison']);
+   assert.equal(await dialog.getByRole('combobox',{name:'密度',exact:true}).inputValue(),'comfortable');
+   assert.equal(await dialog.locator('[data-view="StatusComparison:comparison"] tbody tr td').nth(1).textContent(),'7');
+   const r=await p.evaluate(()=>({own:JSON.parse(localStorage.getItem('StoneFreeWorkspace.StoneFreeWorkspace.v1')),peer:JSON.parse(localStorage.getItem('StoneFreeWorkspace.AlternateWorkspace.v1')),foreign:localStorage.getItem(foreignKey),pain:State.variables.pain}));
+   assert.deepEqual(r,{own:{order:[],hidden:[],density:'comfortable'},peer:{order:[],hidden:['FutureMod:future'],density:'compact'},foreign:'untouched',pain:7});
+   await dialog.getByRole('button',{name:'完成编辑',exact:true}).click();await p.keyboard.press('Escape');
+   await p.evaluate(()=>DoLUiHost.dispose());await p.addScriptTag({content:read('dist/framework/host/index.js')});await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
+   assert.equal(await dialog.getByRole('combobox',{name:'密度',exact:true}).inputValue(),'comfortable');assert.equal(await dialog.locator('article').count(),2);await p.keyboard.press('Escape');
+  });
+  await check('reset remains usable with denied storage and reports its persistence limit',async()=>{
+   await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.getByRole('button',{name:'编辑布局',exact:true}).click();
+   await dialog.getByRole('combobox',{name:'密度',exact:true}).selectOption('compact');
+   await p.evaluate(()=>{window.originalSetItem=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='StoneFreeWorkspace.StoneFreeWorkspace.v1')throw Error('storage denied');return originalSetItem.call(this,key,value)}});
+   try {await dialog.getByRole('button',{name:'恢复本布局',exact:true}).click();assert.equal(await dialog.getByRole('combobox',{name:'密度',exact:true}).inputValue(),'comfortable');await dialog.getByText('本次布局无法保存；当前显示仍已调整。',{exact:true}).waitFor()}
+   finally {await p.evaluate(()=>Storage.prototype.setItem=originalSetItem)}
+   await dialog.getByRole('button',{name:'恢复本布局',exact:true}).click();await dialog.getByRole('button',{name:'完成编辑',exact:true}).click();await p.keyboard.press('Escape');
+  });
   await check('scene invalidation closes the workspace immediately and old view bindings stay dead',async()=>{
    await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
    await p.evaluate(()=>{window.old=DoLUiHost.binding();DoLUiHost.invalidateScene()});assert.equal(await p.locator('.sf-workspace[open]').count(),0);assert.equal(await p.evaluate(()=>old.isCurrent()),false);

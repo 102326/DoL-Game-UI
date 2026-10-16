@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {ref, shallowRef, computed, onMounted, onUnmounted, nextTick} from 'vue';
 import type {Binding, Claim, Host, MountContext, Participant, View} from '../contracts';
-import {readLayout, saveLayout} from './preferences';
+import {defaultLayout, readLayout, saveLayout} from './preferences';
 import ViewOutlet from './ViewOutlet.vue';
 const props = defineProps<{host: Host; owner: Participant; hostContext: MountContext; alternate?: boolean}>();
 const title = props.alternate ? '侧边工作台' : '信息工作台';
 const storageKey = `StoneFreeWorkspace.${props.owner.id}.v1`;
 let storage: Storage | undefined;
 try {storage = window.localStorage} catch {/* Storage is optional; the current layout still works. */}
-const preferences = ref(storage ? readLayout(storage, storageKey) : {order: [], hidden: [], density: 'comfortable' as const});
+const preferences = ref(storage ? readLayout(storage, storageKey) : defaultLayout());
 const views = shallowRef<readonly View[]>([]), region = shallowRef<Readonly<Claim> | null>(null);
 const dialog = ref<HTMLDialogElement>(), opener = ref<HTMLButtonElement>();
 const opened = ref(false), editing = ref(false), message = ref(''), releasing = ref(false);
@@ -27,6 +27,7 @@ const ordered = computed(() => {
 });
 const visible = computed(() => ordered.value.filter(view => !preferences.value.hidden.includes(key(view))));
 function persist() {message.value = storage && saveLayout(storage, storageKey, preferences.value) ? '布局已保存。' : '本次布局无法保存；当前显示仍已调整。'}
+function reset() {preferences.value = defaultLayout(); persist()}
 function move(view: View, direction: number) {
  const order = ordered.value.map(key), index = order.indexOf(key(view)), next = index + direction;
  if (next < 0 || next >= order.length) return;
@@ -98,6 +99,7 @@ onUnmounted(() => {close(); stop(); shortcut?.release(); region.value?.release()
    <nav aria-label="工作台工具"><button type="button" :aria-pressed="editing" @click="editing = !editing">{{editing ? '完成编辑' : '编辑布局'}}</button><label>密度<select v-model="preferences.density" @change="persist"><option value="comfortable">舒适</option><option value="compact">紧凑</option></select></label></nav>
    <p class="sf-workspace-note">内容由自愿接入的 Mod 提供，原游戏保持原状。</p>
    <div v-if="editing" class="sf-layout-options">
+    <button type="button" @click="reset">恢复本布局</button><p>仅恢复此布局的顺序、可见内容和密度。</p>
     <div v-for="(view, index) in ordered" :key="key(view)"><label><input type="checkbox" :checked="!preferences.hidden.includes(key(view))" @change="setVisible(view, $event)">{{view.title}}</label><button type="button" :disabled="index === 0" :aria-label="`${view.title}向上`" @click="move(view, -1)">↑</button><button type="button" :disabled="index === ordered.length - 1" :aria-label="`${view.title}向下`" @click="move(view, 1)">↓</button></div>
    </div>
    <main v-if="opened && region" class="sf-workspace-grid">
