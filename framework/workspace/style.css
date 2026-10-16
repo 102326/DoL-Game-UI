@@ -1,5 +1,5 @@
 .sf-workspace-entry {position:fixed;left:calc(12px + env(safe-area-inset-left));bottom:calc(16px + env(safe-area-inset-bottom));z-index:850;color:#e7edf3;font:14px/1.5 system-ui;max-width:calc(100vw - 24px)}
-.sf-workspace-entry.sf-alternate {bottom:calc(74px + env(safe-area-inset-bottom))}
+.sf-workspace-entry.sf-alternate {bottom:calc(74px + env(safe-area-inset-bottom));z-index:950}
 .sf-workspace-entry button,.sf-workspace-entry select,.sf-workspace-entry input {font:inherit;color:inherit;box-sizing:border-box}
 .sf-workspace-entry button,.sf-workspace-entry select {min-height:38px;border:1px solid #ffffff18;border-radius:9px;padding:6px 12px;background:#30373fbc;cursor:pointer}
 .sf-workspace-entry button:disabled {opacity:.4;cursor:default}.sf-workspace-entry button:hover:not(:disabled) {background:#ffffff12}
@@ -11,6 +11,7 @@
 .sf-workspace nav {display:flex;justify-content:space-between;align-items:center;gap:8px;margin:18px 0 8px}.sf-workspace nav label {display:flex;align-items:center;gap:8px;color:#bec8d2}
 .sf-workspace-note,.sf-workspace footer {font-size:12px;color:#b4bec9}.sf-workspace-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0;align-items:start}
 .sf-workspace-stack .sf-workspace-grid {grid-template-columns:minmax(0,1fr)}
+.sf-workspace-stack {position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));left:auto;margin:0;width:min(360px,calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)))}
 .sf-workspace article {min-width:0;background:#ffffff05;border:1px solid #ffffff08;border-radius:13px;padding:16px}
 .sf-workspace h3 {font-size:16px;margin:0 0 14px}.sf-workspace dl {margin:0}.sf-workspace dl>div {display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #ffffff0a}.sf-workspace dd {margin:0}
 .sf-workspace table {width:100%;border-collapse:collapse;font-size:13px}.sf-workspace th,.sf-workspace td {border:0;border-bottom:1px solid #ffffff0c;padding:7px 3px;text-align:left}.sf-workspace th {font-weight:500}

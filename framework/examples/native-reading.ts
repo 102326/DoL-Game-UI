@@ -13,7 +13,8 @@ export function provideNativeReading(host: Host, root: NativeWindow) {
   let stowed: boolean;
   try {stowed = api.isStowed()} catch {return {available: false, stowed: null, reason: 'native-unavailable'}}
   if (typeof stowed !== 'boolean' || stowed !== bar.classList.contains('stowed')) return {available: false, stowed: null, reason: 'inconsistent-native-state'};
-  if (doc.querySelector('dialog[open],body.ui-open,#ui-overlay.open') || button.closest('[hidden],[inert],[aria-hidden="true"]')
+  const modal = [...doc.querySelectorAll('dialog[open]')].some(node => {try {return node.matches(':modal')} catch {return true}});
+  if (modal || doc.querySelector('body.ui-open,#ui-overlay.open') || button.closest('[hidden],[inert],[aria-hidden="true"]')
    || button.hasAttribute('disabled') || button.getAttribute('aria-disabled') === 'true'
    || root.getComputedStyle(button).visibility !== 'visible' || button.getClientRects().length === 0) return {available: false, stowed, reason: 'native-control-unavailable'};
   const rect = button.getBoundingClientRect(), hit = doc.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);

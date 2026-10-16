@@ -1,6 +1,7 @@
 // Real, caller-owned compiled DoL; new browser context/origin; no user storage.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {createHash}=require('node:crypto'),{chromium}=require('playwright');
+const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..'),file=process.argv[2];
 const sha=x=>createHash('sha256').update(x).digest('hex');
 (async()=>{
@@ -12,6 +13,11 @@ const sha=x=>createHash('sha256').update(x).digest('hex');
  assert.ok(!(workspace&&shared),'Choose one research variant');
  const names=shared?['StoneFreeHost','StoneFreeVueResearch','StoneFreeNativeStatus','StoneFreeStatusComparison','StoneFreeWorkspace']:['StoneFreeHost','StoneFreeNativeStatus','StoneFreeStatusComparison',...(workspace?['StoneFreeWorkspace','StoneFreeAlternateWorkspace']:[])];
  const archives=names.map(name=>fs.readFileSync(path.join(root,`dist/${shared&&name!=='StoneFreeHost'?'framework-vue-comparison':'framework'}/${name}-0.1.0-experimental.mod.zip`)));
+ const authorIndex=process.argv.indexOf('--author-zip');let authorName=null;
+ if(authorIndex!==-1){const author=process.argv[authorIndex+1];assert.ok(author&&fs.statSync(author).isFile(),'Pass an existing owned author ZIP');
+  const boot=JSON.parse(execFileSync('python',['-c',"import zipfile,sys; print(zipfile.ZipFile(sys.argv[1]).read('boot.json').decode('utf-8'))",author],{encoding:'utf8',windowsHide:true}));
+  assert.match(boot.name,/^[A-Za-z][A-Za-z0-9]{0,63}$/);assert.ok(!names.includes(boot.name),'No duplicate author package');authorName=boot.name;names.push(authorName);archives.push(fs.readFileSync(author));
+ }
  const html=text.replace(pattern,`<script>window.modDataValueZipList=${JSON.stringify(archives.map(b=>b.toString('base64')))};</script>`);
  const server=http.createServer((req,res)=>{
   if(req.url!=='/'){res.writeHead(404);return res.end()}
@@ -31,7 +37,8 @@ const sha=x=>createHash('sha256').update(x).digest('hex');
   assert.equal(report.runtime.officialUi,false);for(const name of names)assert.ok(report.runtime.loaded.some(x=>x.name===name));
   assert.equal(report.runtime.host.errors.length,0);report.checks.push('Actual ModLoader loaded the selected research ZIPs without official UI or MapleBirch');
   if(shared){report.sharedVue=await page.evaluate(()=>({version:window.StoneFreeVueExperimental?.version,protocol:window.StoneFreeVueExperimental?.protocol}));assert.equal(report.sharedVue.version,JSON.parse(fs.readFileSync(path.join(root,'dist/framework-vue-comparison/inputs.json'),'utf8')).vueVersion);assert.equal(report.runtime.host.views.length,2);report.checks.push('Shared Vue dependency and two source-identical consumers load under the real ModLoader')}
-  if(workspace){assert.equal(report.runtime.host.views.length,2);assert.equal(report.runtime.host.claims.filter(c=>c.key==='information-workspace').length,1);report.checks.push('Two public views and exclusive layout-region acquisition exist under the real Loader')}
+  if(workspace){assert.equal(report.runtime.host.views.length,authorName?3:2);assert.equal(report.runtime.host.claims.filter(c=>c.key==='information-workspace').length,1);report.checks.push('Public views and exclusive layout-region acquisition exist under the real Loader')}
+  if(authorName){assert.ok(report.runtime.host.participants.includes(authorName));assert.ok(report.runtime.host.views.some(v=>v.owner===authorName&&v.id==='note'));report.checks.push('Source-owned author ZIP registers its participant and public note view without official UI')}
   const projected=await page.evaluate(async()=>{
    const r=await DoLUiHost.sources('dol.status.experimental')[0].read(DoLUiHost.binding());
    const v=SugarCube.State.variables;const original={};for(const field of ['pain','stress','tiredness'])original[field]=typeof v[field]==='number'&&Number.isFinite(v[field])?v[field]:null;

@@ -35,7 +35,7 @@ const checks=[],check=async(name,fn)=>{await fn();checks.push(name);console.log(
    assert.equal(r.result.status,'unknown');assert.equal(r.commands,0);assert.equal(r.capability,false);
   });
   await p.evaluate(()=>{window.SugarCube={UIBar:{isStowed:()=>document.querySelector('#ui-bar').classList.contains('stowed')}};window.State={variables:{money:1234}};window.nativeClicks=0;window.original=document.querySelector('#ui-bar-toggle');window.originalParent=original.parentNode;original.addEventListener('click',()=>{nativeClicks++;document.querySelector('#ui-bar').classList.toggle('stowed')})});
-  for(const name of ['host','native-reading','reading-controls','workspace']){
+  for(const name of ['host','native-reading','reading-controls','workspace','alternate-workspace']){
    const base=path.join(root,'dist/framework',name);if(fs.existsSync(path.join(base,'style.css')))await p.addStyleTag({path:path.join(base,'style.css')});await p.addScriptTag({path:path.join(base,'index.js')});
   }
   const controls=p.locator('[data-sf-owner="ReadingControls"][data-sf-mount="toolbar"]');
@@ -50,21 +50,45 @@ const checks=[],check=async(name,fn)=>{await fn();checks.push(name);console.log(
    const reply=await p.evaluate(()=>DoLUiHost.commands('dol.reading.experimental')[0].invoke(DoLUiHost.binding()));assert.equal(reply.status,'returned');assert.equal(reply.value.applied,false);assert.equal(await p.evaluate(()=>nativeClicks),2);
    await p.locator('[data-sf-owner="StoneFreeWorkspace"] dialog').getByRole('button',{name:'关闭',exact:true}).click();
   });
+  await check('side workspace preserves native input and reviewed actions without claiming a modal',async()=>{
+   const primary=p.locator('[data-sf-owner="StoneFreeWorkspace"]'),side=p.locator('[data-sf-owner="AlternateWorkspace"]'),panel=side.locator('dialog');
+   await primary.getByRole('button',{name:'信息工作台',exact:true}).click();await primary.locator('summary').click();await primary.getByRole('button',{name:'释放工作区',exact:true}).click();
+   await side.getByRole('button',{name:'侧边工作台',exact:true}).click();
+   assert.equal(await panel.evaluate(n=>n.open&&!n.matches(':modal')&&n.getAttribute('aria-modal')==='false'),true);
+   assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.filter(x=>x.kind==='modal').length),0);
+   await p.locator('#foreign').fill('native input remains usable');
+   const view=side.locator('[data-view="ReadingControls:reading"]');
+   for(let i=3;i<=4;i++){await view.getByRole('button',{name:'切换侧栏',exact:true}).click();assert.equal(await p.evaluate(()=>nativeClicks),i)}
+   assert.equal(await p.evaluate(()=>SugarCube.UIBar.isStowed()),false);
+   await p.evaluate(()=>{window.foreignModal=document.createElement('dialog');foreignModal.textContent='Native modal';document.body.append(foreignModal);foreignModal.showModal()});
+   const blocked=await p.evaluate(()=>DoLUiHost.commands('dol.reading.experimental')[0].invoke(DoLUiHost.binding()));assert.equal(blocked.value.applied,false);assert.equal(await p.evaluate(()=>nativeClicks),4);
+   await p.evaluate(()=>{foreignModal.close();foreignModal.remove()});
+   for(const size of [{width:390,height:844},{width:844,height:390},{width:760,height:800},{width:1280,height:900}]){
+    await p.setViewportSize(size);const bounds=await panel.evaluate(n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,overflow:n.scrollWidth>n.clientWidth}});
+    assert.ok(bounds.x>=0&&bounds.y>=0&&bounds.right<=size.width&&bounds.bottom<=size.height&&!bounds.overflow,JSON.stringify({size,bounds}));
+    await panel.getByRole('button',{name:'关闭',exact:true}).click();await side.getByRole('button',{name:'侧边工作台',exact:true}).click();
+   }
+   await p.setViewportSize({width:1100,height:850});await panel.screenshot({path:path.join(dir,'side-workspace.png')});
+   await panel.getByRole('button',{name:'关闭',exact:true}).focus();await p.keyboard.press('Escape');assert.equal(await panel.evaluate(n=>n.open),false);
+   await side.getByRole('button',{name:'侧边工作台',exact:true}).click();await p.locator('#foreign').focus();await p.keyboard.press('Escape');assert.equal(await panel.evaluate(n=>n.open),true);
+   await p.evaluate(()=>DoLUiHost.invalidateScene());await p.waitForFunction(()=>!document.querySelector('[data-sf-owner="AlternateWorkspace"] dialog').open);await p.evaluate(()=>DoLUiHost.sceneReady());
+   assert.equal(await p.locator('#foreign').inputValue(),'native input remains usable');
+  });
   await check('disabled or covered native targets decline without bypassing foreign UI',async()=>{
    const r=await p.evaluate(async()=>{const cmd=DoLUiHost.commands('dol.reading.experimental')[0];original.disabled=true;const disabled=await cmd.invoke(DoLUiHost.binding());original.disabled=false;const cover=document.createElement('div'),rect=original.getBoundingClientRect();Object.assign(cover.style,{position:'fixed',left:rect.x+'px',top:rect.y+'px',width:rect.width+'px',height:rect.height+'px',zIndex:'999999'});document.body.append(cover);try{return {disabled,covered:await cmd.invoke(DoLUiHost.binding()),clicks:nativeClicks}}finally{cover.remove()}});
-   assert.equal(r.disabled.value.applied,false);assert.equal(r.covered.value.applied,false);assert.equal(r.covered.value.reason,'native-control-obscured');assert.equal(r.clicks,2);
+   assert.equal(r.disabled.value.applied,false);assert.equal(r.covered.value.applied,false);assert.equal(r.covered.value.reason,'native-control-obscured');assert.equal(r.clicks,4);
   });
   await check('replaced native identity declines without clicking a lookalike or mutating foreign state',async()=>{
    const r=await p.evaluate(async()=>{window.replacement=original.cloneNode(true);replacement.addEventListener('click',()=>nativeClicks+=100);original.replaceWith(replacement);return DoLUiHost.commands('dol.reading.experimental')[0].invoke(DoLUiHost.binding())});
-   assert.equal(r.value.applied,false);assert.equal(r.value.reason,'unsupported-structure');assert.equal(await p.evaluate(()=>nativeClicks),2);await p.evaluate(()=>replacement.replaceWith(original));
+   assert.equal(r.value.applied,false);assert.equal(r.value.reason,'unsupported-structure');assert.equal(await p.evaluate(()=>nativeClicks),4);await p.evaluate(()=>replacement.replaceWith(original));
   });
   await check('uncertain consumer result disables its own repeat path; no automatic retry',async()=>{
    await p.evaluate(()=>{StoneFree_native_reading.dispose();window.uncertain=DoLUiHost.register('Uncertain');uncertain.provide({id:'sidebar',schema:'dol.reading.experimental',read:()=>({available:true,stowed:false,reason:''})});uncertain.provideCommand({id:'toggle-sidebar',schema:'dol.reading.experimental',title:'test failure',run(){nativeClicks++;throw Error('uncertain')}})});
-   await controls.getByRole('button',{name:'切换侧栏',exact:true}).click();await controls.getByText('结果未确认，请用原版入口查看；这里不再重复执行。',{exact:true}).waitFor();assert.equal(await controls.getByRole('button',{name:'切换侧栏',exact:true}).isDisabled(),true);assert.equal(await p.evaluate(()=>nativeClicks),3);
+   await controls.getByRole('button',{name:'切换侧栏',exact:true}).click();await controls.getByText('结果未确认，请用原版入口查看；这里不再重复执行。',{exact:true}).waitFor();assert.equal(await controls.getByRole('button',{name:'切换侧栏',exact:true}).isDisabled(),true);assert.equal(await p.evaluate(()=>nativeClicks),5);
   });
   await check('narrow reading controls fit; explicit package disposal preserves native input and removes own resources',async()=>{
    await p.setViewportSize({width:390,height:844});const surface=controls.locator('.sf-reading');await surface.screenshot({path:path.join(dir,'reading-narrow.png')});assert.equal(await surface.evaluate(n=>n.scrollWidth<=n.clientWidth),true);
-   const result=await p.evaluate(()=>{uncertain.dispose();StoneFree_workspace.dispose();StoneFree_reading_controls.dispose();StoneFree_host.dispose();const empty=StoneFree_host.installHost();const participants=empty.host.getDiagnostics().participants.length;empty.dispose();return {participants,owned:document.querySelectorAll('[data-sf-owner]').length,native:original.isConnected,money:State.variables.money}});
+   const result=await p.evaluate(()=>{uncertain.dispose();StoneFree_alternate_workspace.dispose();StoneFree_workspace.dispose();StoneFree_reading_controls.dispose();StoneFree_host.dispose();const empty=StoneFree_host.installHost();const participants=empty.host.getDiagnostics().participants.length;empty.dispose();return {participants,owned:document.querySelectorAll('[data-sf-owner]').length,native:original.isConnected,money:State.variables.money}});
    assert.deepEqual(result,{participants:0,owned:0,native:true,money:1234});assert.deepEqual(errors,[]);
   });
   fs.writeFileSync(path.join(dir,'result.json'),JSON.stringify({status:'passed',checks,limits:['Browser fixture, not physical touch or native gameplay','Command returned means provider witness available, not universal business success']},null,2));console.log(dir);

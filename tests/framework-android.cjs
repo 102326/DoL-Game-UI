@@ -43,7 +43,7 @@ let client,allocated=false;
   if(workspace){
    const alpha='[data-sf-owner="StoneFreeWorkspace"]',beta='[data-sf-owner="AlternateWorkspace"]';
    const click=async(selector,text)=>{await client.evaluate(`(()=>{const root=document.querySelector(${JSON.stringify(selector)}),button=[...root.querySelectorAll('button,summary')].find(n=>n.textContent===${JSON.stringify(text)});if(!button)throw Error('Reviewed own button unavailable');button.click();return true})()`);await ctx.pause(60)};
-   await click(beta,'替代工作台');assert.equal(await client.evaluate(`!!document.querySelector('${beta} dialog').open`),false);
+   await click(beta,'侧边工作台');assert.equal(await client.evaluate(`!!document.querySelector('${beta} dialog').open`),false);
    await click(alpha,'信息工作台');
    report.workspace=await client.evaluate(`(()=>{const d=document.querySelector('${alpha} dialog'),r=d.getBoundingClientRect();return {open:d.open,viewKeys:[...d.querySelectorAll('article')].map(n=>n.dataset.view),overflow:d.scrollWidth>d.clientWidth,rect:{x:r.x,y:r.y,width:r.width,height:r.height},width:innerWidth,claims:DoLUiHost.getDiagnostics().claims.filter(c=>c.key==='information-workspace'||c.key==='workspace-k')}})()`);
    assert.equal(report.workspace.open,true);assert.equal(report.workspace.overflow,false);assert.equal(report.workspace.viewKeys.length,2);assert.ok(report.workspace.claims.every(c=>c.owner==='StoneFreeWorkspace'));
@@ -51,7 +51,7 @@ let client,allocated=false;
    await click(alpha,'编辑布局');
    await client.evaluate(`(()=>{const d=document.querySelector('${alpha} dialog'),select=d.querySelector('select');select.value='compact';select.dispatchEvent(new Event('change',{bubbles:true}));const run=window[${JSON.stringify(key)}];for(const key of Object.keys(run.preferences))run.preferences[key].expected=localStorage.getItem(key);return true})()`);
    await ctx.pause(60);await click(alpha,'布局提供者');await click(alpha,'释放工作区');
-   await click(beta,'替代工作台');
+   await click(beta,'侧边工作台');
    assert.equal(await client.evaluate(`document.querySelectorAll('.sf-workspace[open]').length`),1);
    assert.equal(await client.evaluate(`DoLUiHost.getDiagnostics().claims.find(c=>c.key==='information-workspace')?.owner`),'AlternateWorkspace');
    await click(beta,'布局提供者');await click(beta,'释放工作区');await click(alpha,'信息工作台');

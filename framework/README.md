@@ -10,9 +10,9 @@
 
 另一个可选研究包 `StoneFreeSoftWetSurface` 使用同一来源及既有 UI API v1 打开官方 Drawer，需要官方 UI 2.7.0。它只验证官方布局作为可选消费者；不安装它时，前面三个包仍独立工作。
 
-安装 `StoneFreeWorkspace` 可使用信息工作台：默认显示自愿贡献的状态速览与对照，支持隐藏、排序、舒适/紧凑密度。显示偏好只写入自己的 `StoneFreeWorkspace.*.v1`，不修改游戏设置或存档。`StoneFreeAlternateWorkspace` 是争用同一区域的对照研究包，普通试用无需同时启用它。
+安装 `StoneFreeWorkspace` 可使用模态信息工作台：默认显示自愿贡献的状态速览与对照，支持隐藏、排序、舒适/紧凑密度。显示偏好只写入自己的 `StoneFreeWorkspace.*.v1`，不修改游戏设置或存档。`StoneFreeAlternateWorkspace` 提供非模态侧边工作台，可保持原页面可交互。两者申请同一区域，先释放当前工作区再切换，不会自动抢占。普通试用只需选一个布局。
 
-可选安装 `StoneFreeNativeReading` 和 `StoneFreeReadingControls`，验证原版侧栏操作。前者提供按需状态和受审回调；后者通过公共合同显示非模态工具条，也可把同一视图放进工作台。侧栏仍由 SugarCube 的原按钮切换。工作台浮层打开时，视图拒绝调用外部原控件；关闭后可在非模态工具条刷新并操作。不包含购买、换装、战斗或存档操作。
+可选安装 `StoneFreeNativeReading` 和 `StoneFreeReadingControls`，验证原版侧栏操作。前者提供按需状态和受审回调；后者通过公共合同显示非模态工具条，也可把同一视图放进工作台。侧栏仍由 SugarCube 的原按钮切换。模态打开时，视图拒绝调用外部原控件；非模态侧边工作台允许操作未被遮挡的原按钮。窄屏覆盖原按钮时仍退让，不强制穿透。不包含购买、换装、战斗或存档操作。
 
 ## 从源码构建
 
@@ -37,7 +37,7 @@
 
 `claim(kind, key)` 仅协调主动提交的 `region / shortcut / modal` 资源。同一资源先到先得，失败返回 `null`，不自动排队、抢占或禁用其它 Mod。布局提供者自行决定请求、释放和呈现策略。租约本身不会移动 DOM、捕获按键或调用业务。
 
-示例使用原生 `dialog` 执行模态及焦点语义，快捷键只绑定在自己组件内，跳过输入框和 IME。非参与者没有被注册、重排或附加全局按键监听器。参与者协商不等于保证所有未知 Mod 零冲突。
+示例使用原生 `dialog.showModal()` 或侧边布局的 `dialog.show()`。非模态不申请模态租约，原生模态仍进入浏览器 top layer。快捷键只绑定在自己组件内，跳过输入框、IME 和贡献者子树；侧边布局的 Escape 也只处理自己的控件。非参与者没有被注册、重排或附加全局按键监听器。参与者协商不等于保证所有未知 Mod 零冲突。
 
 ## 自愿贡献视图
 
@@ -77,4 +77,10 @@ Host 退出时，仍然安装的消费者可以等待新 Host，这是预期行�
 
 运行 `node scripts/framework-factory.mjs create NEW_DIRECTORY ModId`，生成由作者拥有的 Vue/TS 项目、独立 ZIP 打包脚本和实验 SDK 快照。已有目录会拒绝，不覆盖作者文件。自行安装声明的依赖并保存自己的锁文件后，使用生成项目的 `npm run package`。
 
-作者可直接修改 `src/Panel.vue`。`node scripts/framework-factory.mjs upgrade-sdk EXISTING_DIRECTORY` 只更新记录过且未被作者修改的三个 SDK 文件。作者改过 vendored SDK 时整次拒绝，需手动合并。配方模板不会重新覆盖 SFC、设置、样式或依赖。这是源码优先的有限配方，不承诺任意 SFC 到画布的往返，也尚未证明相对 Vite 模板 + Agent 的普遍效率收益。
+作者可直接修改 `src/Panel.vue` 和 `src/main.ts`。同一 SFC 用于独立浮动入口、可选工作台视图和本地 `npm run dev` 预览，实例之间不共享便笺。预览使用普通 Vite，不连接游戏或模拟 Host；预览正常不能代替游戏检查。旧 Host 缺少 `views` 时保留独立入口。
+
+升级前可运行 `node scripts/framework-factory.mjs check-sdk EXISTING_DIRECTORY`，只读检查三个 SDK 文件。`aligned` 表示与当前来源一致，`source-different` 表示来源不同但作者未修改，不能据此判断版本新旧。`author-modified / missing / alias / not-file` 需要人工处理。成功完成诊断时退出码为 0，调用者应读取 `canReplace`；它只表示可以机械替换，不证明 API 或业务兼容。
+
+`node scripts/framework-factory.mjs upgrade-sdk EXISTING_DIRECTORY` 只更新记录过且未被作者修改的三个 SDK 文件。上述阻塞状态会在写入前整次拒绝，并指出文件名。作者 SFC、入口、预览、构建配置和依赖不被更新覆盖；旧项目也不会自动获得新配方文件。无 CSS 的作者组件可以打包，预览文件和内部 SDK manifest 不进入 Mod ZIP。自定义资源仍需作者按实际输出调整打包脚本。
+
+这是源码优先的有限配方，不承诺任意 SFC 到画布的往返。真实历史 SDK 升级与二次修改记录见[作者工作流与侧边工作台](../docs/STONE_FREE_3.0_AUTHOR_WORKFLOW.md)；尚未证明相对 Vite 模板 + Agent 的普遍效率收益。

@@ -21,7 +21,7 @@ const check=async(name,fn)=>{await fn();tests.push(name);console.log('PASS',name
    assert.equal(await beta.locator('section').first().getAttribute('data-region-state'),'busy');
    const claims=await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.filter(c=>c.key==='information-workspace'||c.key==='workspace-k'));
    assert.equal(claims.length,2);assert.ok(claims.every(c=>c.owner==='StoneFreeWorkspace'));
-   await beta.getByRole('button',{name:'替代工作台',exact:true}).click();assert.equal(await beta.locator('dialog').getAttribute('open'),null);
+   await beta.getByRole('button',{name:'侧边工作台',exact:true}).click();assert.equal(await beta.locator('dialog').getAttribute('open'),null);
   });
   await check('public views from two independent providers render without official UI',async()=>{
    await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
@@ -71,8 +71,8 @@ const check=async(name,fn)=>{await fn();tests.push(name);console.log('PASS',name
   await check('region/shortcut handoff never leaves two active layouts or duplicate modal ownership',async()=>{
    await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.getByText('布局提供者',{exact:true}).click();await dialog.getByRole('button',{name:'释放工作区',exact:true}).click();
    await p.waitForFunction(()=>!DoLUiHost.getDiagnostics().claims.some(c=>c.owner==='StoneFreeWorkspace'));
-   await beta.getByRole('button',{name:'替代工作台',exact:true}).click();await beta.locator('dialog article').first().waitFor();
-   assert.equal(await p.locator('.sf-workspace[open]').count(),1);assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.filter(c=>c.kind==='modal').length),1);
+   await beta.getByRole('button',{name:'侧边工作台',exact:true}).click();await beta.locator('dialog article').first().waitFor();
+   assert.equal(await p.locator('.sf-workspace[open]').count(),1);assert.equal(await p.evaluate(()=>DoLUiHost.getDiagnostics().claims.filter(c=>c.kind==='modal').length),0);assert.equal(await beta.locator('dialog').evaluate(n=>n.matches(':modal')),false);
    const blocked=await p.evaluate(()=>{document.querySelector('[data-sf-owner="StoneFreeWorkspace"] button').click();return document.querySelectorAll('.sf-workspace[open]').length});assert.equal(blocked,1);
    await beta.getByText('布局提供者',{exact:true}).click();await beta.getByRole('button',{name:'释放工作区',exact:true}).click();
    await p.waitForFunction(()=>!DoLUiHost.getDiagnostics().claims.some(c=>c.key==='information-workspace'));
@@ -119,4 +119,4 @@ const check=async(name,fn)=>{await fn();tests.push(name);console.log('PASS',name
   tests.push('bounded preferences ignore unknown/malformed fields and survive storage denial');
   fs.writeFileSync(path.join(dir,'result.json'),JSON.stringify({status:'passed',scope:'Browser fixtures; no physical phone or real Gameplay claim',tests},null,2));console.log('OUTPUT',dir);
  }finally{await browser.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{fs.writeFileSync(path.join(dir,'failure.json'),JSON.stringify({status:'failed',tests,error:e.message},null,2));console.error(e);process.exitCode=1});
