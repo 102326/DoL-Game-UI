@@ -7,6 +7,7 @@ const chip=ref<HTMLElement>(),panel=ref<HTMLElement>();
 const panelTop=ref('128px');
 const space=ref<HTMLElement>(),narrow=ref(innerWidth<=800);
 let resize:ResizeObserver|undefined,withdraw:(()=>void)|undefined;
+let layoutWidth=0,viewportWidth=innerWidth,viewportHeight=innerHeight;
 let returnTo:HTMLElement|undefined,selectedKey='',epoch=0;
 const motions=new Set<Animation>(),ghosts=new Set<HTMLElement>();
 const rows=computed(()=>pinned.value&&selected.value?compareReferences(pinned.value,selected.value):[]);
@@ -31,7 +32,13 @@ function flight(from:DOMRect,to:DOMRect,name:string){
 function clear(){interrupt();opened.value=false;pinned.value=undefined;selected.value=undefined;returnTo=undefined;selectedKey='';message.value='';withdraw?.();withdraw=undefined}
 function valid(){if(props.context.binding.isCurrent())return true;clear();return false}
 function position(){if(!opened.value||!returnTo?.isConnected)return;const header=returnTo.closest('.dgw-shell')?.querySelector('.dgw-header');panelTop.value=Math.max(12,Math.min((header?.getBoundingClientRect().bottom??120)+8,innerHeight-170))+'px'}
-function layout(){narrow.value=(space.value?.closest('.dgw-root')?.getBoundingClientRect().width??innerWidth)<=800;if(opened.value){interrupt();position()}}
+function layout(event?:Event){
+ const width=space.value?.closest('.dgw-root')?.getBoundingClientRect().width??innerWidth;
+ const shifted=event?.type==='scroll'||width!==layoutWidth||innerWidth!==viewportWidth||innerHeight!==viewportHeight;
+ layoutWidth=width;viewportWidth=innerWidth;viewportHeight=innerHeight;narrow.value=width<=800;
+ // Opening our own content changes height; it must not cancel the transition it just started.
+ if(opened.value){if(shifted)interrupt();position()}
+}
 function publish(){
  withdraw?.();withdraw=props.context.publish?.({id:'wardrobe-reference',title:'衣柜临时参照',setup(context){
   const title=document.createElement('p'),button=document.createElement('button');
@@ -66,26 +73,26 @@ watch(()=>props.items,()=>{if(opened.value&&(!props.items.some(i=>i.key===select
 props.context.binding.signal.addEventListener('abort',clear,{once:true});
 watch(spatial,interrupt);motionMedia?.addEventListener('change',interrupt);
 const themeObserver=new MutationObserver(()=>{if(reduced())interrupt()});
-themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-dol-midnight','data-dgu-visualMotion']});
-onMounted(()=>{layout();const root=space.value?.closest('.dgw-root');if(root&&typeof ResizeObserver==='function'){resize=new ResizeObserver(layout);resize.observe(root)}});
+themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-dol-midnight','data-dgu-visualmotion']});
+onMounted(()=>{layout();const root=space.value?.closest('.dgw-root');if(root&&typeof ResizeObserver==='function'){resize=new ResizeObserver(()=>layout());resize.observe(root)}});
 window.addEventListener('resize',layout);window.addEventListener('scroll',layout,true);
 onBeforeUnmount(()=>{clear();resize?.disconnect();themeObserver.disconnect();props.context.binding.signal.removeEventListener('abort',clear);motionMedia?.removeEventListener('change',interrupt);window.removeEventListener('resize',layout);window.removeEventListener('scroll',layout,true)});
-defineExpose({choose,hasReference:computed(()=>!!pinned.value)});
+defineExpose({choose,hasReference:computed(()=>!!pinned.value),currentKey:computed(()=>opened.value?selectedKey:'')});
 </script>
 <template>
  <div ref="space" class="dgw-reference-space" :data-compact="narrow||undefined" :data-compare-open="opened||undefined">
  <Teleport to="body" :disabled="!narrow">
   <aside v-if="pinned" ref="chip" class="dgw-reference-chip" aria-label="临时衣物参照" @keydown="key">
-   <div><small>A · 只读快照</small><strong>{{pinned.name}}</strong><span>{{pinned.slot}} · {{pinned.colour||'颜色未知'}}</span></div>
+   <span class="dgw-reference-marker" aria-hidden="true">A</span><div><small>固定参照 · 只读快照</small><strong>{{pinned.name}}</strong><span>{{pinned.slot}} · {{pinned.colour||'颜色未知'}}</span></div>
    <label title="关闭后使用普通按钮对照路径"><input v-model="spatial" type="checkbox">空间转场</label>
    <button type="button" aria-label="清除参照" @click="clear">×</button>
   </aside>
   <dialog v-if="opened&&pinned&&selected" open ref="panel" :style="{'--dgw-reference-top':panelTop}" class="dgw-reference-compare" aria-modal="false" aria-labelledby="dgw-reference-title" tabindex="-1" @keydown="key">
    <header><div><small>衣柜 · 临时参考</small><h3 id="dgw-reference-title">{{differences?`${differences} 项展示差异`:comparable?'可比较字段没有差异':'暂无可比较字段'}}</h3></div><button data-reference-back type="button" @click="back">返回衣柜</button></header>
    <div class="dgw-reference-pair"><div><small>A · 固定快照</small><strong>{{pinned.name}}</strong><span>{{pinned.slot}}</span></div><div><small>B · 本次目录读取</small><strong>{{selected.name}}</strong><span>{{selected.slot}}</span></div></div>
-   <div class="dgw-reference-fields"><div v-for="row in rows" :key="row.field" :class="'is-'+row.status" :data-reference-field="row.field"><span>{{row.label}}<small>{{row.status==='different'?'不同':row.status==='unknown'?'不可比较':'相同'}}</small></span><b>{{row.left===null||row.left===''?'—':row.left}}</b><b>{{row.right===null||row.right===''?'—':row.right}}</b></div></div>
+   <div class="dgw-reference-fields"><div v-for="row in rows" :key="row.field" :class="'is-'+row.status" :data-reference-field="row.field"><span>{{row.label}}<small>{{row.status==='different'?'不同':row.status==='unknown'?'不可比较':'相同'}}</small></span><b><small>A</small>{{row.left===null||row.left===''?'—':row.left}}</b><b><small>B</small>{{row.right===null||row.right===''?'—':row.right}}</b></div></div>
    <details class="dgw-reference-description"><summary>衣物说明</summary><p>A：{{pinned.detail||'没有说明'}}</p><p>B：{{selected.detail||'没有说明'}}</p></details>
-   <footer><p>仅对照已展示字段，不代表隐藏属性或穿戴效果完全相同。A 是固定快照，可能已过时。{{pinned.slot!==selected.slot?'两件衣物部位不同，不代表能相互替换。':''}}</p><span>参照会保留；返回不改变分类、搜索或穿搭。</span></footer>
+   <footer><p>仅比较展示字段，不代表隐藏属性或穿戴效果相同。A 为固定快照，可能已过时。{{pinned.slot!==selected.slot?'部位不同，不代表可相互替换。':''}}</p><span>返回后继续浏览，A 仍保留。</span></footer>
   </dialog>
   <p v-if="message" class="dgw-reference-status" role="status">{{message}}</p>
  </Teleport>

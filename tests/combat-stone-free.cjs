@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs'),{chromium}=require('playwright');
 const {build}=require('vite'),vue=require('@vitejs/plugin-vue').default,tailwind=require('@tailwindcss/vite').default;
-const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'artifacts/stone-free-r11','combat-'+Date.now());fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'artifacts/stone-free-r12','combat-'+Date.now());fs.mkdirSync(out,{recursive:true});
 (async()=>{
  await build({root,configFile:false,plugins:[vue(),tailwind()],define:{'process.env.NODE_ENV':JSON.stringify('production'),__VUE_OPTIONS_API__:false,__VUE_PROD_DEVTOOLS__:false,__VUE_PROD_HYDRATION_MISMATCH_DETAILS__:false},build:{target:'es2022',cssCodeSplit:false,lib:{entry:path.join(root,'src/combat/main.ts'),name:'CombatTest',formats:['iife'],fileName:()=> 'combat.js'},outDir:out,emptyOutDir:true}});
  const hostBundle=require('esbuild').buildSync({stdin:{contents:"import {createHost} from './framework/host';window.createTestHost=createHost",resolveDir:root,loader:'ts'},bundle:true,write:false,format:'iife'}).outputFiles[0].text;
@@ -8,14 +8,14 @@ const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'artifacts/stone
  try{
   const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setContent('<html><body><div id="story"><div id="passages"><div class="passage"><div id="listContainer"><div id="leftaction"><label><input type="radio" name="radiobutton-leftaction" value="a" checked>A</label><label><input type="radio" name="radiobutton-leftaction" value="b">B</label></div><div id="rightaction"><label><input type="radio" name="radiobutton-rightaction" value="c" checked>C</label></div></div><div id="masturbationButtons"><div id="next"><a href="#">Continue</a></div><div id="stop"><a href="#">Stop</a></div></div></div></div></div></body></html>');
-  await page.addStyleTag({path:path.join(out,'dol-game-ui.css')});await page.addScriptTag({content:hostBundle});await page.addScriptTag({path:path.join(out,'combat.js')});
+  await page.addStyleTag({path:path.join(out,'dol-game-ui.css')});await page.addStyleTag({path:path.join(root,'src/tokens.css')});await page.addStyleTag({path:path.join(root,'src/theme/eyes.css')});await page.addStyleTag({path:path.join(root,'src/theme/stone-free.css')});await page.evaluate(()=>{document.documentElement.setAttribute('data-dol-midnight','');document.documentElement.setAttribute('data-stone-free','fixture-r12')});await page.addScriptTag({content:hostBundle});await page.addScriptTag({path:path.join(out,'combat.js')});
   await page.evaluate(()=>{const host=createTestHost(window),owner=host.register('combat-ui');window.testFramework={host,owner};window.original={input:document.querySelector('#leftaction input[value=b]'),list:document.querySelector('#listContainer'),next:document.querySelector('#next'),events:0,continues:0};original.input.addEventListener('change',()=>original.events++);document.querySelector('#next a').addEventListener('click',()=>original.continues++);CombatTest.startCombat(testFramework)});
   await page.waitForSelector('.dcu-footer');
   assert.deepEqual(await page.evaluate(()=>testFramework.host.getDiagnostics().mounts.map(m=>m.id)),['combat']);
   assert.deepEqual(await page.evaluate(()=>testFramework.host.getDiagnostics().claims.map(c=>`${c.kind}:${c.key}`)),['region:combat']);
   assert.equal(await page.locator('.dcu-footer').evaluate(e=>e.matches(':popover-open')),true,'native controls remain inside the top-layer dock');
-  assert.equal(await page.locator('.dcu-group').count(),2,'including the second action group');
-  await page.locator('#leftaction input[value=b]').check();assert.equal(await page.evaluate(()=>original.events),1);
+  assert.equal(await page.locator('.dcu-group').count(),2,'including the second action group');await page.screenshot({path:path.join(out,'combat-theme.png')});const before=await page.locator('#leftaction input[value=b]').boundingBox();
+  await page.locator('#leftaction input[value=b]').check();assert.equal(await page.evaluate(()=>original.events),1);assert.deepEqual(await page.locator('#leftaction input[value=b]').boundingBox(),before,'selection feedback must not move the target');
   assert.equal(await page.locator('#leftaction').evaluate(e=>e.hasAttribute('data-dcu-selected')),true);
   assert.equal(await page.evaluate(()=>original.input===document.querySelector('#leftaction input[value=b]')),true);
   await page.locator('#next a').click();assert.equal(await page.evaluate(()=>original.continues),1,'relocated continuation keeps its original click event');

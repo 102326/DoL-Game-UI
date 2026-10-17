@@ -9,7 +9,7 @@ function floatingRun(id:string){record('floating.run',id);if(id==='move')floatin
 function updateGlass(){document.documentElement.toggleAttribute('data-dgu-visualGlass',glass.value);document.documentElement.setAttribute('data-dgu-visual',tier.value)}
 function noGesture(){record('pointer','Lab 不接入生产拖动算法')}
 const scenario=ref('ordinary'),width=ref(960),index=ref<any>(null),events=ref<{name:string;value:unknown}[]>([]);
-const state=reactive({hasDetails:true,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'虚构样品',referenceEnabled:false,referenceA:null,comparisonB:null,defaultGender:'game',message:''});
+const state=reactive({hasDetails:true,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'虚构样品',referenceEnabled:false,referenceA:null,comparisonB:null,comparisonTarget:null,comparisonOrigin:null,defaultGender:'game',message:''});
 const record=(name:string,value:unknown)=>{events.value=[...events.value.slice(-15),{name,value}]};
 function setDefaultGender(value:string){state.defaultGender=value;state.message='Lab 内存分类：'+value;record('setDefaultGender',value)}
 function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;record('toggleCategories',state.categoriesOpen)}

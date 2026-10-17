@@ -113,3 +113,12 @@
 - 一次功能流程通过而清理失败：恢复 Mod 清单后，强制重启读回发现 UI 位置偏好有漂移。已保留 cleanup-failed；用原备份停止消费者、恢复精确键值、等待提交并重启读回，另存修复收据。原因 Unknown，没有证据认定是 Tools 缺陷。通用 Skill 可提示：恢复的执行 ACK 不等于重启后的持久恢复，跨设备交接应保留实际 readback。
 - 重型采集未使用：未发现持续卡顿、泄漏或崩溃问题，没有启动 Perfetto、bugreport、Full Evidence 或 GER。旧 Unknown 未派发、清理或绕过。战斗只有组件接缝证明，真实行动入口不可用仍明确标记覆盖不足。
 - 结论：没有确认的 Tools 实现缺陷。建议仅去重补充恢复读回和来源存在性提示，不自动重构工具；本轮临时命中标签、具体 widget 名称和 UI 偏好键留在项目文档。
+
+
+## 第十二轮增补：视觉采样与已展开面板
+
+实际使用现有 resolver/Doctor、execution-context、标准 web-click/web-input/restart，CDP 读取当前 2.7 的 computed style、原状态并保存截图。真实安装后核对最终包摘要，恢复后读回原清单与偏好。没有新工具环境或 GER 调用。
+
+视觉审查发现比较区虽已挂载，但位于长预览下方；源码与真实截图足够定位，直接调整官方详情中的自有挂载点，无需 Full Evidence 或通用布局平台。窄屏脚本另曾点击已经展开的 Drawer 遮罩后方按钮，标准工具正确拒绝；先观察展开状态，再点实际关闭入口。此项复用已有 hitbox/overlay 经验，不新增通用 Skill 需求。
+
+本轮的混合大小写属性观察过滤器和衣柜自身高度变化中断，均由目标 UI 源码与定向测试定位并修正，不归为 Tools 问题。尚无确认的 Tools 实现缺陷或本轮必须修改的 Skill 指引。颜色、比较挂载点、伪元素材质和偏好档位属于 UI 项目知识；物理手机/IME 属于额外覆盖。没有为产生反馈去跑 Perfetto、bugreport、Full Evidence、旧 GER Unknown 或全部 Provider。
