@@ -6,17 +6,19 @@ import './style.css';
 import {createSaveMetadata,type SaveMetadataHost} from './metadata';
 import {isMasterEnabled} from '../runtime/master';
 import {createSaveSource,type SaveEntry} from './source';
+import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 export type {SaveEntry} from './source';
-export function startSaves(root:SaveMetadataHost){
+export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Participant}){
  const transfer=createSaveTransfer();
  let metadata:ReturnType<typeof createSaveMetadata>|undefined;
  let enabled=true;try{enabled=root.localStorage.getItem('DoLGameUI.saves.enabled')!=='false'}catch{}
  let container:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,frame=0,destroyed=false;
+ let frameworkMount:Readonly<MountHandle>|undefined,ownerLease:Readonly<Claim>|undefined,ownerExited=false,disposingMount=false;
  let rows:HTMLElement[]=[],dirty=false;
  const state=reactive({entries:[] as SaveEntry[],v2:false,query:'',selectedSlot:'',pending:false,message:'',unknown:0});
  function isCurrent(next:HTMLElement){
   const selector='#saveList #saves-list-container,#saveList #savesListContainer',overlay=next.closest<HTMLElement>('#customOverlay');
-  return !destroyed&&isMasterEnabled()&&enabled&&!failed&&next===container&&next.isConnected
+  return !destroyed&&!ownerExited&&(!ownerLease||ownerLease.isCurrent())&&isMasterEnabled()&&enabled&&!failed&&next===container&&next.isConnected
    &&document.querySelector(selector)===next&&document.querySelectorAll(selector).length===1
    &&!next.closest('[hidden],[aria-hidden=true],.hidden')&&(!overlay||overlay.dataset.overlay==='saves')
    &&getComputedStyle(next.closest('#saveList')!).display!=='none';
@@ -29,11 +31,12 @@ export function startSaves(root:SaveMetadataHost){
  const moved:{node:HTMLElement;anchor:Comment}[]=[];
  function closeDetails(){host?.querySelector<HTMLDialogElement>('dialog[open]')?.close?.()}
  function release(){
+  const mounted=frameworkMount;frameworkMount=undefined;
   readGeneration++;source.clear();state.pending=false;
   closeDetails();
   for(const {node,anchor} of moved){restoreNative(node,anchor,container?.parentNode??null)}moved.length=0;
   footer?.remove();footer=null;
-  unmountUI(app);app=undefined;host?.remove();host=null;container?.querySelectorAll('.dgs-native-row').forEach(n=>n.classList.remove('dgs-native-row'));container=null;rows=[]
+  unmountUI(app);app=undefined;if(mounted){disposingMount=true;mounted.dispose();disposingMount=false}host?.remove();host=null;container?.querySelectorAll('.dgs-native-row').forEach(n=>n.classList.remove('dgs-native-row'));container=null;rows=[]
  }
  function organizeTools(next:HTMLElement,settingsOpen:boolean){
   const parent=next.parentElement;if(!parent)return;
@@ -58,14 +61,20 @@ export function startSaves(root:SaveMetadataHost){
  function refresh(){isolate('saves',update,recover)}
  function update(){
   if(destroyed)return;
+  visibility.disconnect();const overlayRoot=document.getElementById('customOverlay');
+  const visibilityNodes=new Set<Element>([overlayRoot,overlayRoot?.parentElement,document.querySelector('#saveList'),document.querySelector('#saveList #saves-list-container,#saveList #savesListContainer')].filter((n):n is Element=>!!n));
+  for(const n of visibilityNodes)visibility.observe(n,{attributes:true,attributeFilter:['class','style','hidden','data-overlay']});
   if(failed&&failedContainer&&!failedContainer.isConnected){failed=false;failedContainer=null}
-  if(!isMasterEnabled()||!enabled||failed||!supportsDialog()){metadata?.destroy();metadata=undefined;transfer.refresh(false);release();return}
+  if(ownerLease&&!ownerLease.isCurrent())ownerExited=true;
+  if(ownerExited||!isMasterEnabled()||!enabled||failed||!supportsDialog()){metadata?.destroy();metadata=undefined;transfer.refresh(false);release();return}
   metadata??=createSaveMetadata(root);
   const currentMetadata=metadata;
   currentMetadata.attach();
   transfer.refresh(isMasterEnabled()&&enabled);
   const next=document.querySelector<HTMLElement>('#saveList #saves-list-container,#saveList #savesListContainer');
   if(!next||document.querySelectorAll('#saveList #saves-list-container,#saveList #savesListContainer').length!==1){release();return}
+  const nativeOverlay=next.closest<HTMLElement>('#customOverlay');
+  if(!next.getClientRects().length||next.closest('[hidden],.hidden')||(nativeOverlay&&nativeOverlay.dataset.overlay!=='saves')||getComputedStyle(next.closest('#saveList')!).display==='none'){release();return}
   if(next===container&&host?.isConnected&&!dirty)return;
   dirty=false;
   const settingsOpen=footer?.querySelector<HTMLDetailsElement>('.dgs-save-settings')?.open??false;
@@ -91,7 +100,13 @@ export function startSaves(root:SaveMetadataHost){
    if(state.pending)return;state.pending=true;state.message='';const operationGeneration=readGeneration;
    const message=await source.dispatch(key,index);
    if(operationGeneration===readGeneration){state.pending=false;state.message=message}
-  }});mountUI(app,host!,recover);organizeTools(next,settingsOpen)}
+  }});
+   if(framework){
+    frameworkMount=framework.owner.mount({id:'saves',parent:host!,lifetime:'persistent',setup(context){context.onCleanup(()=>{if(disposingMount)return;if(!ownerLease?.isCurrent()){ownerExited=true;metadata?.destroy();metadata=undefined;transfer.release()}frameworkMount=undefined;release()});mountUI(app!,context.element,recover)}});
+    if(!frameworkMount.isCurrent()){frameworkMount=undefined;ownerExited=true;release();return}
+    if(!ownerLease){ownerLease=framework.owner.claim('region','saves-lifecycle')??undefined;if(!ownerLease){ownerExited=true;release();return}}
+   }else mountUI(app,host!,recover);
+   organizeTools(next,settingsOpen)}
   rows.forEach(row=>row.classList.add('dgs-native-row'));
   const header=[...next.querySelectorAll(':scope > .savesListRow')].find(row=>row.querySelector('.saveId')?.textContent?.trim()==='#');header?.classList.add('dgs-native-row');
  }
@@ -100,8 +115,10 @@ export function startSaves(root:SaveMetadataHost){
   if(records.some(r=>container?.contains(r.target)))dirty=true;
   if(dirty||!container?.isConnected||!host?.isConnected)schedule();
  });
- root.jQuery?.(document).on(':oncloseoverlay.dolSaves',closeDetails);
+ function overlayClosed(){closeDetails();schedule()}
+ const visibility=new MutationObserver(schedule);
+ root.jQuery?.(document).on(':oncloseoverlay.dolSaves',overlayClosed);
  observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['disabled']});refresh();
  function setEnabled(value:boolean){failed=false;failedContainer=null;enabled=!!value;try{root.localStorage.setItem('DoLGameUI.saves.enabled',String(enabled))}catch{}refresh();document.dispatchEvent(new Event('dol-ui-saves-change'))}
- return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled&&!failed,setEnabled,refresh,destroy(){metadata?.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',closeDetails);observer.disconnect();if(frame)cancelAnimationFrame(frame);release();transfer.release()}};
+ return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled&&!failed,setEnabled,refresh,destroy(){metadata?.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',overlayClosed);observer.disconnect();visibility.disconnect();if(frame)cancelAnimationFrame(frame);release();transfer.release();ownerLease?.release();ownerLease=undefined}};
 }

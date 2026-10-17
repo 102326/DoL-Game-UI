@@ -7,7 +7,7 @@ import {purchaseWitness,purchaseResult} from './transaction';
 import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,Binding,MountHandle} from '../../framework/contracts';
-export interface ShopFramework {host:Host;owner:Participant}
+export interface ShopFramework {host:Host;owner:Participant;rememberProduct?:(item:Readonly<{title:string;price:string;owned:string}>)=>void}
 type Runtime=NativeEventsHost & {SugarCube?:{
  State?:{passage?:string;variables?:Record<string,unknown> & {shopClothingFilter?:{gender?:{female:boolean;male:boolean;neutral:boolean};active?:boolean}}};
  Wikifier?:new(output:HTMLElement|null,source:string)=>unknown;
@@ -29,7 +29,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
  const restoredScroll=new WeakMap<HTMLElement,number>();
  const moves=new Map<Node,Comment>();const owned=new Set<HTMLElement>();
  let scrollTop=0,focusReturn:HTMLElement|null=null,source:ReturnType<typeof createShopSource>|undefined,referenceMount:HTMLElement|null=null,referenceSequence=0;
- let resize:ResizeObserver|undefined,resizeFrame=0,transactionCheck=0;
+ let resize:ResizeObserver|undefined,resizeFrame=0,transactionCheck=0,quantityCheck=0;
  const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'',referenceEnabled:!!framework,referenceA:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonB:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonTarget:null as string|null,comparisonOrigin:null as {left:number;top:number;width:number;height:number}|null,transactionStatus:'' as ''|'pending'|'confirmed'|'unknown',transactionMessage:'',defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
  function current(){const passage=shop?.closest<HTMLElement>('.passage');return !destroyed&&(!frameworkBinding||frameworkBinding.isCurrent())&&!!shop?.isConnected&&!!passage&&!passage.classList.contains('passage-out')&&document.querySelector('#passages .passage:not(.passage-out)')===passage&&(!root.SugarCube?.State?.passage||root.SugarCube.State.passage===passage.dataset.passage)}
  function facts():ShopFacts{const variables=root.SugarCube?.State?.variables;const clothes=(root as unknown as {setup?:{clothes?:Record<string,unknown[]>}}).setup?.clothes;return {variables,definition:clothes?.[String(variables?.clothingShopSlot)]?.[Number(variables?.clothes_choice)]}}
@@ -41,7 +41,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
  function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
  function restore(){for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();referenceMount=null;state.comparisonTarget=null;state.comparisonOrigin=null;state.comparisonB=null;details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
- function release(){clearTimeout(transactionCheck);transactionCheck=0;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;resize?.disconnect();resize=undefined;if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null}
+ function release(){clearTimeout(transactionCheck);transactionCheck=0;clearTimeout(quantityCheck);quantityCheck=0;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;resize?.disconnect();resize=undefined;if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null}
  function arrangeEntry(){
   if(entry?.isConnected)return;
   if(!shop)return;
@@ -69,7 +69,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   }
  }
  function toggle(open=!state.open){state.open=open;details?.classList.toggle('dgshop-detail-open',open);syncBackdrop();if(!open){const target=focusReturn?.isConnected?focusReturn:catalog?.querySelector<HTMLElement>('.dgshop-selected a')??host?.querySelector<HTMLElement>('button');target?.focus({preventScroll:true})}else if(open&&state.narrow)close?.focus({preventScroll:true})}
- function pinReference(){const item=source?.read()?.selected;if(!item||!current())return;const rect=catalog?.querySelector('.dgshop-selected')?.getBoundingClientRect();state.comparisonOrigin=rect?{left:rect.left,top:rect.top,width:rect.width,height:rect.height}:null;state.referenceA=copyShopItem(item);state.comparisonB=null}
+ function pinReference(){const item=source?.read()?.selected;if(!item||!current())return;const rect=catalog?.querySelector('.dgshop-selected')?.getBoundingClientRect();state.comparisonOrigin=rect?{left:rect.left,top:rect.top,width:rect.width,height:rect.height}:null;state.referenceA=copyShopItem(item);framework?.rememberProduct?.(state.referenceA);state.comparisonB=null}
  function compareReference(origin:HTMLElement){const item=source?.read()?.selected;if(!state.referenceA||!item||!current())return;const bounds=origin.isConnected?origin.getBoundingClientRect():null;state.comparisonOrigin=bounds?{left:bounds.left,top:bounds.top,width:bounds.width,height:bounds.height}:null;state.comparisonB=copyShopItem(item);if(detailBody)detailBody.scrollTop=0;if(state.narrow)toggle(true)}
  function clearReference(){state.referenceA=null;state.comparisonB=null}
  function closeComparison(){const target=focusReturn?.isConnected&&current()?focusReturn:host?.querySelector<HTMLElement>('[data-shop-compare]');state.comparisonB=null;if(state.narrow)toggle(false);requestAnimationFrame(()=>{if(target?.isConnected)target.focus({preventScroll:true})})}
@@ -190,18 +190,19 @@ export function startShop(root:Runtime,framework?:ShopFramework){
    else{state.transactionStatus='pending';state.transactionMessage='已交给原版购买，正在核对金钱和衣柜。';
     const scene=shop;
     // A browser may checkpoint microtasks between capture and native bubbling handlers.
-    transactionCheck=window.setTimeout(()=>{transactionCheck=0;if(destroyed||shop!==scene||!current())return;state.transactionStatus=purchaseResult(witness,facts(),current());state.transactionMessage=state.transactionStatus==='confirmed'?'已核对：原版已扣款，衣柜新增 1 件。':'原操作结果未能确认，请先核对原版界面，不要重复购买。';schedule()},0);
+    transactionCheck=window.setTimeout(()=>{transactionCheck=0;if(destroyed||shop!==scene||!current())return;state.transactionStatus=purchaseResult(witness,facts(),current());state.transactionMessage=state.transactionStatus==='confirmed'?`已核对：原版已扣款，衣柜新增 ${witness.amount} 件。`:'原操作结果未能确认，请先核对原版界面，不要重复购买。';schedule()},0);
    }
   }
   const target=event.target.closest<HTMLElement>('.clothing-item,.category-tab,.btn-pagination');if(!target)return;
-  state.message='';
+  state.message='';if(state.transactionStatus==='confirmed'){state.transactionStatus='';state.transactionMessage=''}
   if(target.matches('.clothing-item')){source?.select(target);focusReturn=target.querySelector('a');state.open=true;if(state.comparisonB){const item=source?.read()?.selected,rect=target.getBoundingClientRect();if(item){state.comparisonOrigin={left:rect.left,top:rect.top,width:rect.width,height:rect.height};state.comparisonB=copyShopItem(item)}}}else{scrollTop=0;source?.clearSelection();state.open=false}
   schedule();
  }
+ function quantity(event:Event){const input=event.target;if(!(input instanceof HTMLInputElement)||!input.matches('#buy-multiple-slider input[type=range]')||!shop?.contains(input)||!current())return;clearTimeout(quantityCheck);quantityCheck=window.setTimeout(()=>{quantityCheck=0;isolate('shop quantity quote',()=>source?.quantityChanged(input),recover)},0)}
  function escape(event:KeyboardEvent){if(event.key==='Escape'&&state.open&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false)}
  const observer=new MutationObserver(records=>{if(!isolate('shop mutation',()=>fastPath(records),recover))schedule()});
  const discovery=new MutationObserver(()=>{if(document.querySelector('.passage #clothingShop-div')!==shop)schedule()});
  function setEnabled(value:boolean){if(destroyed)return;failed=false;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* Session preference. */}refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}
- document.addEventListener('click',click,true);document.addEventListener('keydown',escape);discovery.observe(document.body,{childList:true,subtree:true});refresh();
- return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);observer.disconnect();discovery.disconnect();document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};
+ document.addEventListener('input',quantity,true);document.addEventListener('change',quantity,true);document.addEventListener('click',click,true);document.addEventListener('keydown',escape);discovery.observe(document.body,{childList:true,subtree:true});refresh();
+ return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);observer.disconnect();discovery.disconnect();document.removeEventListener('input',quantity,true);document.removeEventListener('change',quantity,true);document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};
 }

@@ -24,7 +24,7 @@ for directory, name in packages:
         dependencies.append({'modName': 'StoneFreeHost', 'version': '=' + version})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
-    package_version = '3.0.0-lab.13' if directory == 'official-ui' else '0.1.2-experimental' if directory == 'motion-hub' else version
+    package_version = '3.0.0-lab.14' if directory == 'official-ui' else '0.1.2-experimental' if directory == 'motion-hub' else version
     boot = dict(name=name, version=package_version, nickName=name + ' (Research)', scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
@@ -41,6 +41,8 @@ for directory, name in packages:
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
     if directory == 'official-ui':
+        for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md']:
+            files[doc] = (root/doc).read_bytes(); boot['additionFile'].append(doc)
         for declaration in ['ui.d.ts','wardrobe.d.ts']:
             asset_name = 'types/'+declaration
             files[asset_name] = (root/'dist/types'/declaration).read_bytes(); boot['additionFile'].append(asset_name)

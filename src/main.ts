@@ -2,7 +2,7 @@ import {startFloatingTools} from './floating/main';
 import {isolate} from './runtime/presentation';
 import {createUiRuntime} from './runtime/ui';
 import {startSaves} from './saves/main';
-import {startShop} from './shop/main';
+import {startShop,type ShopFramework} from './shop/main';
 import {startPanels,type PanelKind} from './panels/main';
 import {startSocial} from './social/main';
 import {startCharacteristics} from './characteristics/main';
@@ -37,17 +37,17 @@ type Runtime=Parameters<typeof startWardrobe>[0] & Parameters<typeof startShop>[
  & Parameters<typeof createUiRuntime>[0] & StartedApis & {DoLGameUI?:GameUiControls};
 const runtime=window as Runtime;
 declare const __STONE_FREE_CONSUMER__:boolean;
-export function startGameUI(wardrobeFramework?:WardrobeFramework){
+export function startGameUI(wardrobeFramework?:WardrobeFramework & ShopFramework){
 if(!runtime.DoLGameUI){
  initMaster(runtime);
  const start=<K extends keyof StartedApis>(name:K,factory:()=>StartedApis[K]|void)=>{const api=isolate(name,factory,()=>{try{runtime[name]?.destroy?.()}finally{delete runtime[name]}});if(api)runtime[name]=api as Runtime[K]};
  for(const name of ['DoLCombatUI','DoLMidnightTheme','DMTLayout'] as const)isolate(name,()=>runtime[name]?.destroy?.());
  start('DoLWardrobeUI',()=>startWardrobe(runtime,wardrobeFramework));
- start('DoLCharacteristicsUI',()=>startCharacteristics(runtime));
+ start('DoLCharacteristicsUI',()=>startCharacteristics(runtime,wardrobeFramework));
  start('DoLSocialUI',()=>startSocial(runtime,wardrobeFramework));
- start('DoLPanelsUI',()=>startPanels(runtime));
+ start('DoLPanelsUI',()=>startPanels(runtime,wardrobeFramework));
  start('DoLShopUI',()=>startShop(runtime,wardrobeFramework));
- start('DoLSavesUI',()=>startSaves(runtime));
+ start('DoLSavesUI',()=>startSaves(runtime,wardrobeFramework));
  start('DoLCombatUI',()=>startCombat(wardrobeFramework));start('DMTLayout',()=>startLayout());start('DoLMidnightTheme',()=>startTheme());
  let floating:ReturnType<typeof startFloatingTools>|undefined;
  let uiRuntime:ReturnType<typeof createUiRuntime>|undefined;

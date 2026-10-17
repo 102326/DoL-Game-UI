@@ -6,9 +6,10 @@ export function createSaveTransfer(){
  function release(){for(const {node,anchor} of moved){restoreNative(node,anchor,host?.parentNode??null)}moved.length=0;host?.remove();host=null;overlay?.classList.remove('dgs-native-tools');overlay=null}
  function refresh(enabled:boolean){
   const input=document.querySelector('#customOverlayContent #saveDataInput');
-  if(enabled&&host?.isConnected&&host.contains(input))return;
+  if(enabled&&host?.isConnected&&host.contains(input)&&!input?.closest('[hidden],.hidden')&&overlay?.matches('[data-overlay=saves],[data-overlay=export]'))return;
   release();if(!enabled)return;
-  const nextOverlay=document.querySelector<HTMLElement>('#customOverlay[data-overlay=saves]');
+  const nextOverlay=document.querySelector<HTMLElement>('#customOverlay:is([data-overlay=saves],[data-overlay=export])');
+  if(nextOverlay?.closest('[hidden],.hidden'))return;
   // Native confirmations release the list proxy; keep their shell styled in place.
   if(nextOverlay?.querySelector('#customOverlayContent #saveList>.saveBorder>:is(input[type=button],button).saveMenuConfirm')){overlay=nextOverlay;overlay.classList.add('dgs-native-tools');return}
   if(!nextOverlay||!(input instanceof HTMLTextAreaElement)||!nextOverlay.contains(input)||nextOverlay.querySelectorAll('#saveDataInput').length!==1)return;

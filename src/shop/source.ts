@@ -17,7 +17,7 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
  const keys=new WeakMap<Element,string>();
  let selected:Element|null=null,bound:Element[]=[];
  let selectedDisplay='';
- const bindings=new WeakMap<Element,{quote:string;variables:ShopFacts['variables'];definition:unknown}>();
+ const bindings=new WeakMap<Element,{quote:string;base:string;variables:ShopFacts['variables'];definition:unknown}>();
  const consumed=new WeakSet<Element>();
  function key(node:Element){let id=keys.get(node);if(!id){id=`shop:${++sequence}`;keys.set(node,id)}return id}
  function displayIdentity(item:Element){return JSON.stringify([text(item.querySelector('.clothing-name a')), [...item.querySelectorAll('.clothing-icon img.icon')].map(n=>n.getAttribute('ml-src')??n.getAttribute('src'))])}
@@ -38,12 +38,13 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
    inputs:details&&[...details.querySelectorAll<HTMLInputElement>('input,select')].map(n=>[n.id,n.value,n.disabled])
   });
  }
+ function quantityBase(){const f=facts(),v=f.variables;return JSON.stringify({selection:v&&['location','clothingShopSlot','clothes_choice','colouraction','accessorycolouraction','patternaction','money'].map(k=>v[k]),returnTo:(v?.wardrobes as {shopReturn?:unknown}|undefined)?.shopReturn,definition:f.definition})}
  function read(){
   if(disposed||!current())return null;
   const native=context();
   bound=native.details?[...native.details.querySelectorAll(purchaseSelector)]:[];
   const f=facts(),quote=fingerprint();
-  for(const control of bound)if(!bindings.has(control))bindings.set(control,{quote,variables:f.variables,definition:f.definition});
+  for(const control of bound)if(!bindings.has(control))bindings.set(control,{quote,base:quantityBase(),variables:f.variables,definition:f.definition});
   if(selected&&!selected.isConnected){
    // Native selection can rebuild the catalog. Reassociate only an unambiguous display;
    // this highlight is never used to identify a purchase or dispatch business.
@@ -72,5 +73,12 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
   for(const node of bound)consumed.add(node);
   return 'valid';
  }
- return {context,read,select,selectedItem,guard,clearSelection(){selected=null},destroy(){disposed=true;selected=null;bound=[]}};
+ function quantityChanged(input:HTMLInputElement){
+  if(disposed||!current()||!shop.contains(input)||!input.matches('#buy-multiple-slider input[type=range]')||shop.querySelectorAll('#buy-multiple-slider input[type=range]').length!==1)return false;
+  const f=facts(),amount=f.variables?.buyMultiple;if(typeof amount!=='number'||!Number.isInteger(amount)||amount<1||amount>10||Number(input.value)!==amount)return false;
+  const base=quantityBase(),quote=fingerprint();let updated=false;
+  for(const control of bound){const b=bindings.get(control);if(control.isConnected&&!consumed.has(control)&&b&&b.base===base&&b.variables===f.variables&&b.definition===f.definition){bindings.set(control,{...b,quote});updated=true}}
+  return updated;
+ }
+ return {context,read,select,selectedItem,guard,quantityChanged,clearSelection(){selected=null},destroy(){disposed=true;selected=null;bound=[]}};
 }

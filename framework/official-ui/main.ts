@@ -11,11 +11,11 @@ const disconnect=connectConsumer(host=>{
  let ui:ReturnType<typeof startGameUI>|undefined;
  let destroyUi:(()=>void)|undefined;
  let stopHub:(()=>void)|undefined;
- const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion='3.0.0-lab.13';
+ const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion='3.0.0-lab.14';
  const release=()=>{try{stopHub?.();shelf.dispose();destroyUi?.()}finally{ui=undefined;destroyUi=undefined;stopHub=undefined;owner.dispose();if(html.getAttribute('data-stone-free')===visualVersion){if(previous===null)html.removeAttribute('data-stone-free');else html.setAttribute('data-stone-free',previous)}}};
  try{
   if(!owner.claim('region','soft-wet-official-ui')){release();return release}
-  ui=startGameUI({host,owner,rememberReference:shelf.remember});if(!ui)throw Error('Official UI unavailable');
+  ui=startGameUI({host,owner,rememberReference:shelf.remember,rememberProduct:shelf.rememberProduct});if(!ui)throw Error('Official UI unavailable');
   destroyUi=ui.destroy;ui.destroy=()=>disconnect();ui.version=visualVersion;html.setAttribute('data-stone-free',visualVersion);stopHub=startOfficialHub(host,owner);return release;
  }catch(error){release();throw error}
 });

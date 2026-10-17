@@ -4,6 +4,7 @@ import {panelPresentation} from './presentation';
 import {visible} from './visibility';
 import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
+import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 import './style.css';
 export type PanelKind='journal'|'traits'|'statistics'|'feats'|'cheats'|'attitudes'|'settings';
 export interface NavigationState{title:string;sections:string[]}
@@ -18,17 +19,17 @@ const selectors:Record<PanelKind,string>={
  feats:'#featTypes,#featsList'
 };
 const fixedLabels:Record<string,string>={journalNotesTextarea:'笔记编辑',moneyButton:'详细统计',spoilerWarning:'额外统计提示',featTypes:'筛选与排序',featsList:'成就列表'};
-export function startPanels(root:NativeEventsHost){
+export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Participant}){
  const preferences:Record<PanelKind,boolean>={journal:true,traits:true,statistics:true,feats:true,cheats:true,attitudes:true,settings:true};
  for(const kind of Object.keys(preferences) as PanelKind[])try{preferences[kind]=root.localStorage.getItem(`DoLGameUI.${kind}.enabled`)!=='false'}catch{/* Session fallback. */}
- let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined,frame=0,destroyed=false;
+ let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined,frame=0,destroyed=false,overlayOwnerExited=false,overlayClaimUnavailable=false,disposingOverlayMount=false,overlayMount:Readonly<MountHandle>|undefined,overlayLease:Readonly<Claim>|undefined;
  let targets:HTMLElement[]=[];
  const state=reactive<NavigationState>({title:'',sections:[]});
  const counts={mounts:0,scans:0,failures:0};
  let lastFailure='';
  const presentation=panelPresentation(),passagePresentation=panelPresentation();
  function unmount(value:App|undefined){try{value?.unmount()}catch(error){console.warn('DoLGameUI panel cleanup',error)}}
- function release(){presentation.release();unmount(app);app=undefined;host?.remove();host=null;overlay?.classList.remove('dgp-overlay');overlay?.removeAttribute('data-dgp-panel');content=null;active=undefined;targets=[]}
+ function release(){const mount=overlayMount;overlayMount=undefined;presentation.release();unmount(app);app=undefined;if(mount){disposingOverlayMount=true;mount.dispose();disposingOverlayMount=false}host?.remove();host=null;overlay?.classList.remove('dgp-overlay');overlay?.removeAttribute('data-dgp-panel');content=null;active=undefined;targets=[]}
  function go(index:number){
   if(!content)return;
   const target=targets[index];
@@ -36,10 +37,10 @@ export function startPanels(root:NativeEventsHost){
   content.scrollTo({top:index<0?0:content.scrollTop+target.getBoundingClientRect().top-content.getBoundingClientRect().top-12,behavior:'auto'});
  }
  let seenPassage:Element|null=null;
- let passage:HTMLElement|null=null,passageHost:HTMLElement|null=null,passageApp:App|undefined;
+ let passage:HTMLElement|null=null,passageHost:HTMLElement|null=null,passageApp:App|undefined,passageOwnerExited=false,passageClaimUnavailable=false,disposingPassageMount=false,passageMount:Readonly<MountHandle>|undefined,passageLease:Readonly<Claim>|undefined;
  let passageTargets:HTMLElement[]=[];
  const passageState=reactive<NavigationState>({title:'',sections:[]});
- function releasePassage(){passageObserver.disconnect();passagePresentation.release();unmount(passageApp);passageApp=undefined;passageHost?.remove();passageHost=null;passage?.classList.remove('dgp-overlay');passage?.removeAttribute('data-dgp-panel');passage=null;passageTargets=[]}
+ function releasePassage(){const mount=passageMount;passageMount=undefined;passageObserver.disconnect();passagePresentation.release();unmount(passageApp);passageApp=undefined;if(mount){disposingPassageMount=true;mount.dispose();disposingPassageMount=false}passageHost?.remove();passageHost=null;passage?.classList.remove('dgp-overlay');passage?.removeAttribute('data-dgp-panel');passage=null;passageTargets=[]}
  function recover(kind:PanelKind,error:unknown,inline=false){
   if(!isMasterEnabled()){if(inline)releasePassage();else release();return}
   const parent=inline?passage:overlay;
@@ -70,12 +71,19 @@ export function startPanels(root:NativeEventsHost){
   seenPassage=next;
   const name=next?.dataset.passage??'';
   const kind:PanelKind|undefined=['Attitudes','Livestock Attitudes'].includes(name)?'attitudes':['Settings','Livestock Settings'].includes(name)?'settings':undefined;
-  if(!isMasterEnabled()||!next||!kind||!preferences[kind]){if(passage)releasePassage();return}
-  if(passage!==next||!passageHost?.isConnected){
+  if(framework&&passageLease&&!passageLease.isCurrent())passageOwnerExited=true;
+  if(!isMasterEnabled()||!next||!kind||!preferences[kind]||passageOwnerExited||passageClaimUnavailable){if(passage)releasePassage();return}
+  if(passage!==next||!passageHost?.isConnected||!!framework&&!passageMount?.isCurrent()){
    releasePassage();passage=next;passage.classList.add('dgp-overlay');passage.dataset.dgpPanel=kind;passageState.title=titles[kind];passageState.sections=[];
    passageHost=document.createElement('div');passageHost.className='dgp-host';passage.prepend(passageHost);
-   passageApp=createApp(Navigation,{state:passageState,go:(index:number)=>{const target=index<0?passage:passageTargets[index];if(target&&passage?.contains(target)&&visible(target))target.scrollIntoView({block:'start'})},fallback:()=>setEnabled(kind,false)});
-   mount(passageApp,passageHost,kind,true);
+   const createNavigation=()=>createApp(Navigation,{state:passageState,go:(index:number)=>{const target=index<0?passage:passageTargets[index];if(target&&passage?.contains(target)&&visible(target))target.scrollIntoView({block:'start'})},fallback:()=>setEnabled(kind,false)});
+   if(framework){
+    passageLease?.release();passageLease=undefined;passageApp=createNavigation();
+    try{passageMount=framework.owner.mount({id:'panels-passage',parent:passageHost,lifetime:'passage',setup(context){context.onCleanup(()=>{if(disposingPassageMount)return;if(!passageLease?.isCurrent())passageOwnerExited=true;passageMount=undefined;releasePassage()});mount(passageApp!,context.element,kind,true)}})}catch(error){passageOwnerExited=true;throw error}
+    if(!passageMount.isCurrent()){passageMount=undefined;passageOwnerExited=true;releasePassage();return}
+    passageLease=framework.owner.claim('region','panels-passage-life')??undefined;
+    if(!passageLease){passageClaimUnavailable=true;releasePassage();return}
+   }else{passageApp=createNavigation();mount(passageApp,passageHost,kind,true)}
    passageObserver.observe(passage,watch);
   }
   passagePresentation.refresh(passage,kind);
@@ -92,11 +100,19 @@ export function startPanels(root:NativeEventsHost){
   if(next!==overlay){release();observer.disconnect();overlay=next;if(overlay)observer.observe(overlay,watch)}
   const kind=panelKeys[overlay?.dataset.overlay??''];
   const body=overlay?.querySelector<HTMLElement>('#customOverlayContent')??null;
-  if(!isMasterEnabled()||!kind||!preferences[kind]||!body||overlay?.classList.contains('hidden')){if(host)release();return}
-  if(active!==kind||content!==body||!host?.isConnected){
+  if(framework&&overlayLease&&!overlayLease.isCurrent())overlayOwnerExited=true;
+  if(!isMasterEnabled()||!kind||!preferences[kind]||!body||overlay?.classList.contains('hidden')||overlayOwnerExited||overlayClaimUnavailable){if(host)release();return}
+  if(active!==kind||content!==body||!host?.isConnected||!!framework&&!overlayMount?.isCurrent()){
    release();active=kind;content=body;host=document.createElement('div');host.className='dgp-host';body.before(host);
    state.title=titles[kind];state.sections=[];
-   app=createApp(Navigation,{state,go,fallback:()=>setEnabled(kind,false)});mount(app,host,kind);
+   const createNavigation=()=>createApp(Navigation,{state,go,fallback:()=>setEnabled(kind,false)});
+   if(framework){
+    overlayLease?.release();overlayLease=undefined;app=createNavigation();
+    try{overlayMount=framework.owner.mount({id:'panels-overlay',parent:host,lifetime:'persistent',setup(context){context.onCleanup(()=>{if(disposingOverlayMount)return;if(!overlayLease?.isCurrent())overlayOwnerExited=true;overlayMount=undefined;release()});mount(app!,context.element,kind)}})}catch(error){overlayOwnerExited=true;throw error}
+    if(!overlayMount.isCurrent()){overlayMount=undefined;overlayOwnerExited=true;release();return}
+    overlayLease=framework.owner.claim('region','panels-overlay-life')??undefined;
+    if(!overlayLease){overlayClaimUnavailable=true;release();return}
+   }else{app=createNavigation();mount(app,host,kind)}
    overlay!.classList.add('dgp-overlay');overlay!.dataset.dgpPanel=kind;counts.mounts++;
   }
   counts.scans++;
@@ -126,5 +142,5 @@ export function startPanels(root:NativeEventsHost){
  if(overlayParent)discovery.observe(overlayParent,{childList:true});
  if(passages)discovery.observe(passages,{childList:true});
  root.jQuery?.(document).on(':passageend.dolPanels',schedule);refresh();
- return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts}),getLastFailure:()=>lastFailure,destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);root.jQuery?.(document).off(':passageend.dolPanels',schedule);discovery.disconnect();observer.disconnect();release();releasePassage();document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
+ return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts}),getLastFailure:()=>lastFailure,destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);root.jQuery?.(document).off(':passageend.dolPanels',schedule);discovery.disconnect();observer.disconnect();release();releasePassage();overlayLease?.release();overlayLease=undefined;passageLease?.release();passageLease=undefined;document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
 }

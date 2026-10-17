@@ -193,8 +193,8 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   const s:Session={passage,host,original,anchor,toggle,state,snapshot:data,view:null};active=s;
   source=createWardrobeSource(root,slotMappings.labels,()=>active===s&&!disposed&&enabled&&!failed&&isMasterEnabled()&&isCurrentPassage(s)&&(!s.binding||s.binding.isCurrent()));
   // Keep the native close/return controls visible and bound to their original events.
-  // SugarCube header/footer remain owned by the game and mods (e.g. floating pets).
-  for(const node of [...passage.childNodes])if(node!==anchor&&!(node instanceof Element&&node.matches('#passage-header,#passage-footer')))original.append(node);
+  // Keep global overlays and SugarCube header/footer outside the collapsible native wardrobe.
+  for(const node of [...passage.childNodes])if(node!==anchor&&!(node instanceof Element&&node.matches('#passage-header,#passage-footer,#customOverlayContainer')))original.append(node);
   const exit=original.querySelector<HTMLElement>('#wardrobeExits')??undefined;
   const exitAnchor=exit?document.createComment('DoL wardrobe exit position'):undefined;
   if(enabled&&exit&&exitAnchor){exit.before(exitAnchor);passage.insertBefore(exit,anchor)}

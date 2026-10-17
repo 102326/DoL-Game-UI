@@ -129,3 +129,7 @@ html[data-stone-free][data-dol-midnight] .dgshop-transaction[data-transaction-st
 html[data-stone-free][data-dgu-visualMotion] .dgshop-transaction[data-transaction-status=confirmed]{animation:sf-confirm .38s ease-out}
 @keyframes sf-confirm{from{opacity:.3;clip-path:inset(0 60% 0 0)}to{opacity:1;clip-path:inset(0)}}
 @media(prefers-reduced-motion:reduce){.dgshop-transaction{animation:none!important}}
+
+html[data-stone-free] .sf-reference-copy{padding:14px;border-radius:14px;background:var(--dgu-card,#2d2e33);border:1px solid #ffffff08}
+html[data-stone-free] .sf-reference-copy h3{margin:0 0 8px;color:var(--dgu-text)}
+html[data-stone-free] .sf-reference-copy p,html[data-stone-free] .sf-reference-origin{color:var(--dgu-secondary);line-height:1.6}

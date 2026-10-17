@@ -136,3 +136,17 @@
 当前标准能力与直接 CDP/Playwright 出口够用。未使用 Journey（已有可重复的项目脚本）、Full Evidence、Perfetto、bugreport、泄漏调查或新 Provider：本轮风险已有同场景结果、截图、原状态和恢复读回。没有确认的 Tools 实现缺陷，不提出 Runtime 重构。更多设备、IME、自然遭遇和其它交易类型属于 Coverage，不能自动变成 Skill 或工具开发任务。
 
 购买后的 CDP 网页截图出现工具栏压缩，等待800ms后仍存在，但 DOM 尺寸/transform正常。只补采同一现场 Android 原生 screencap 后，实际设备图正常；标准 Action 重新选择商品也成功。原生截图与网页截图覆盖的合成层不应默认相同，具体原因 Unknown。适合 Skill 的 P1 提示：像素与 bounds 明显矛盾时，先用设备截图交叉核对；不要直接修 CSS，也不要只等待更久并反复截图。此次直接 ADB 出口用于比较平台合成画面，未新建控制工具。原始双图和控件尺寸见 R13 `android-1792228599690`，不归为已确认的 Tools 实现缺陷。
+
+## 第十四轮增补：整合现场与控件合同
+
+本轮使用已安装Paisley Park6.1.0的resolver、Doctor、execution-context精确WebView绑定，标准restart/web-click/web-input/web-focus；原range使用CDP键盘，Android画面使用同设备ADB screencap，Windows用项目Playwright。选择直接截图沿用R13已确认的两种合成图差异，没有重采双图或新建截图系统。状态、制品与恢复断言留在UI项目脚本；没有重装工具、修改Tools仓库或运行新GER。
+
+一个实际能力边界：原Combat Demo目标为select。项目误用`web-input`，收到泛化`Web target unavailable`，当时并非业务回合已派发。读取`action.cjs`的`webExpression`后确认该动作只接受HTMLInputElement/HTMLTextAreaElement，并不支持select。最终用绑定后的CDP，核对唯一可见且启用的原select与合法option，通过原HTMLSelectElement setter和input/change事件设置，再读回原目标；这是与Playwright selectOption对应的合成DOM事件，不是物理触控或物理键盘。原失败`android-1792231037952`和恢复收据保留。**P2指引候选**：明确web-input的控件类型限制，避免把泛化错误直接解释成WebView失联；不为此要求新增Provider或Runtime。若改进工具错误分类有实际收益，可由Tools项目评估，不在UI任务修改。
+
+现场观察还找到真实UI缺陷：衣柜把全局overlay一起收进隐藏原版区。此前测试只断言导航已mount，因而菜单DOM存在时没有识别到祖先hidden。直接读取祖先链/rects定位；修正后检查可见性，并在原衣柜场景完成相同流程，没有切去卧室绕开。适合Skill的**P1通用经验**是“节点挂载、可见、可命中、业务Outcome为不同证据”。与先前hitbox经验合并即可；`dgw-native`、具体overlay id、Host字段和补丁只留本项目。存档关闭释放和数量报价问题也属于UI项目，均不是Tools缺陷。
+
+重复traits开关时，测试最初误把仍有效的底层wardrobe挂载当作残留。改比较同一基线身份、claim数量和自有运动ghost；这只回答当前序列的资源累积，不升格为长期内存或泄漏证明。Doctor在未建输出父目录时返回COMMAND_FAILED，建目录后成功；底层原因未独立确认，保留Unknown，不新增一条已确认工具Bug。`doctor --help`也不是已支持入口，使用总help即可。
+
+Journey未使用：已有可重复的真实Loader项目脚本，需要精确原金额/库存/目标和包体断言，继续复用成本更低。没有因此缺少本轮前后结果，但脚本不等于通用Journey制品。没有持续卡顿或泄漏证据，不调用Full Evidence、Perfetto、bugreport、内存平台或更多设备矩阵。未碰历史GER Pending/Unknown；新游戏隔离有原入口和安装范围依据，非换Store绕过。
+
+结论：本轮没有确认的Paisley Park实现缺陷。优先去重保留可见性/Outcome证据边界，其次补web-input类型提示；不自动开工具改造。手机/IME、其它WebView、自然遭遇、其它交易和长时间运行为Coverage。最终两端收据、实际工具出口和恢复结果见`STONE_FREE_3.0_R14.md`。
