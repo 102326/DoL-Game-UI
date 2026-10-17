@@ -189,3 +189,7 @@ html[data-stone-free][data-dol-midnight] .dgshop-entry-category{min-height:44px;
 html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-entry>a[data-passage]{position:relative;display:inline-flex;align-items:center;min-height:40px;padding:5px 10px;margin:2px 0;border-radius:9px;background:rgba(255,255,255,.025);text-decoration:none}
 /* Our shop tooltip layer is 10001; keep the Hub reachable without raising it over native panels. */
 html[data-stone-free][data-dol-midnight]:has(.dgshop-content):not(:has(#customOverlay:not(.hidden))) .sf-motion-hub{z-index:10002}
+/* The isolated glass shell must lift the drawer above its body-owned backdrop (1999). */
+html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-narrow:has(.clothing-details.dgshop-detail-open){z-index:2000;pointer-events:none}
+html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-narrow .clothing-details.dgshop-detail-open{pointer-events:auto}
+html[data-stone-free][data-dol-midnight]:has(.dgshop-content.dgshop-narrow .clothing-details.dgshop-detail-open) .sf-motion-hub{display:none}

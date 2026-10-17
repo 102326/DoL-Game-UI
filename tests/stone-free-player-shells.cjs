@@ -23,5 +23,10 @@ const {chromium}=require('playwright'),{buildSync}=require('esbuild'),fs=require
  assert.equal(await page.evaluate(()=>document.elementFromPoint(40,40)?.closest('.sf-motion-ball')!==null),true,'shop tooltip must not cover the Hub hitbox');
  await page.evaluate(()=>document.querySelector('#customOverlay').classList.remove('hidden'));
  assert.equal(await page.locator('.sf-motion-hub').evaluate(n=>getComputedStyle(n).zIndex),'970','native panels keep their previous layer priority');
+ await page.addStyleTag({path:'src/shop/style.css'});
+ await page.evaluate(()=>{document.querySelector('.sf-motion-hub').remove();document.querySelector('.tooltip-popup').remove();document.querySelector('#customOverlay').classList.add('hidden');const shop=document.querySelector('.dgshop-content');shop.classList.add('dgshop-narrow');shop.insertAdjacentHTML('beforeend','<div class="dgshop-layout"><div class="clothing-details dgshop-detail-open"><button class="dgshop-close-detail">Back</button></div></div>');document.body.insertAdjacentHTML('beforeend','<button class="dgshop-detail-backdrop" aria-label="Close details"></button>');document.querySelector('.dgshop-close-detail').onclick=()=>{document.querySelector('.clothing-details').classList.remove('dgshop-detail-open');document.querySelector('.dgshop-detail-backdrop').hidden=true}});
+ assert.equal(await page.locator('.dgshop-close-detail').evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),true,'drawer controls must be above their backdrop');
+ assert.equal(await page.evaluate(()=>document.elementFromPoint(195,5)?.classList.contains('dgshop-detail-backdrop')),true,'blank area must still close through the backdrop');
+ await page.locator('.dgshop-close-detail').click();assert.equal(await page.locator('.clothing-details').evaluate(n=>n.classList.contains('dgshop-detail-open')),false);
  console.log('PASS native paint layer, Start navigation identity/fallback, unknown Mod boundary and settings sections/native switch');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
