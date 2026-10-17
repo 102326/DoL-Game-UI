@@ -182,3 +182,16 @@ ModHub已有兼容检查直接给出声明重叠和coverage，不另写全套扫
 没有为标准化形式重写Journey：已有可复用项目脚本包含精确库存、叠加状态、原槽位归属和恢复读回，证据足够回答本轮问题。没有持续卡顿、泄漏或崩溃证据，未调用Full Evidence、Perfetto、bugreport或新Provider。短序列mount数量相等不证明长期内存稳定。
 
 结论：没有确认的Paisley Park实现缺陷。P1建议合并“业务入口边界”和“Unknown不推原因”；P2仅补JSON5/重封装身份的资料提示，不自动修改工具或Skill。实际调查、修复与条件经验记录已完成；没有新独立盲测或学习收益率实验，不能把第二次跑同题称作跨版本学习证明。
+
+## 第十七轮增补：升级实验的现场事实与工具解释
+
+继续使用已安装White Snake6.1.0 resolver、Environment、execution-context、Action(web-click/restart)、CDP原Loader/偏好/存档details/运行成员，以及项目Playwright。未重装Skill、未改Tools、未碰GER Store。项目脚本保留精确原状态和恢复断言，比为形式另录Journey更直接。
+
+本轮真实摩擦及归属：
+
+- Android刚setItem就force-stop，2.7自身的UI键和独立哨兵键均回到旧值；等待1.5秒后原版/候选多次重启保留。环境持久化时序与本轮UI迁移应分开；具体底层原因仍不能仅凭现象确认。通用Skill可提醒在持久化验收中区分正常重载、写后立即强停、已落盘证明，不增加全局flush框架。
+- 新游戏头饰分类无库存，随后上装有两个参照按钮，脚本的不存在/非唯一selector导致Action报“Web target unavailable”。CDP、前台和界面仍可读，Windows精确错误给出missing/strict ambiguity；不是断连或产品缺参照功能。脚本改用真实库存和当次唯一节点标记。工具已有能力够用；可选P2建议为安全的固定错误类别区分missing/ambiguous，不能直接转发页面任意错误字符串。未据此改工具。
+- 存档测试直接改V后未推进原moment，标记未进入原保存状态。用原Engine推进到Wardrobe后再保存成功。该事实属于项目的SugarCube测试准备，不塞进通用Skill；失败收据与空槽/时间归属清理记录保留，不能删除任意无标记槽。
+- ModHub配置差异不能直接等于“没重启”。实际银商addonPlugin在运行期被ModdedClothesAddon加入解析后的data，移除该附加字段后等于ZIP声明；实际运行与保存顺序也不同。通用经验是运行元数据可能已被来源插件扩充；具体字段、版本和比较方法留在项目Integration文档。这是第三方诊断口径边界，不是Paisley Park采集实现缺陷。
+
+本轮没有确认的Dev Tools实现缺陷。Skill建议只补上述P1观察/原因分离和P2错误分类候选，与R16关于Unknown/共享目标的反馈去重。没有卡顿/崩溃/持续增长证据，因此未采Full Evidence、Perfetto、bugreport或泄漏调查；短循环mount相等不证明长期稳定。新WebView、物理手机和其它版本只记Coverage，不自动开工。
