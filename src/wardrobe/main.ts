@@ -103,7 +103,7 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   const e=resolveBindings(s,[key])?.[0];
   if(!e){if(active===s)refresh(s);s.state.message='衣柜内容或页面已变化，本次未操作，请重新选择';return}
   if(!native.available()){s.state.message='换装接口尚不可用';return}
-  // This is the only write path. Pass the same slot/index as native wearlink_norefresh.
+  // Resolve the current source first; the original wear-link widget owns the operation.
   try{
    s.state.busy=true;s.state.canWear=false;
    const output=withNativeListHidden(s,()=>native.action('wear',e.slot,e.index));

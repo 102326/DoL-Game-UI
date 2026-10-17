@@ -165,3 +165,20 @@ Journey未使用：已有可重复的真实Loader项目脚本，需要精确原�
 Journey未使用：原有项目脚本已经处理真实Loader、精确包体、空槽身份和恢复读回；复用更便宜，留下了截图、动作记录和原状态结果。未产出通用Journey制品，但不缺本轮结果证据。没有持续性能/崩溃问题，未运行Full Evidence、Perfetto、bugreport或泄漏调查。独立作者Kit只因版本配对变化做了定向验证，没有重跑既有相同输入的真实Loader矩阵。
 
 结论：没有确认的Paisley Park实现缺陷。P1去重提示原生状态与绑定错误归属；P2可澄清web-input长度边界。项目特有的State/IDB、Host bridge和`:onloadsave`提供方留在UI文档；更多设备、组合和Provider只是Coverage，不自动开工工具架构。
+
+
+## 第十六轮增补：操作入口语义与负对照
+
+沿用已安装6.1.0 resolver、条件知识入口、execution-context、Action web-click/restart/web-input，CDP读真实原状态/原Loader成员；Windows用现有Playwright，Android同设备ADB截图及安装APK只读摘要。没有更新Tools、安装另一个环境、触碰GER Store或历史未决Effect。项目自己的原ZIP/State断言不要求改造成通用Runner。
+
+本轮最有价值的问题是：C中点击原衣柜链接把商品加入叠加装备，D旧UI却替换主装备。原版优化实际Twee补丁位于wearlink_norefresh的选择段；官方仅调用后续updatewardrobe，绕过了来源语义。白蛇现有知识提示“共享目标不等于冲突”，帮助先用C/D原动作和后态区分。修复在UI消费者内改用原链接Widget，不修改来源Mod；普通无叠加B与复杂D、Android复验。该案例适合通用Skill的P1提示：低层函数执行成功不能证明保留上层原入口/Mod语义；调查应比较完整操作边界和原状态。具体Widget、字段、补丁和版本保留在UI项目，不塞进Generic Skill。
+
+ModHub已有兼容检查直接给出声明重叠和coverage，不另写全套扫描。它报告StoryCaption/overlayReplace共享目标，实际菜单和存档相关行为仍工作，是负对照；日志中的资源/Patch告警没有因此被清除。配置/运行不同及部分版本范围不能核对保持Unknown，不能把检查器解释当成加载失败、UI原因或所有业务已验证。
+
+实际摩擦：1）导出JSON5含尾逗号，项目最初用严格JSON解析失败；改用Loader已解析元数据，同时保持ZIP原字节。2）首次框架说明、ModHub日志/重载提示会拦截点击，按当前可见控件处理，没有force-click。3）外观包刻意隐藏新版卡片、显示原槽位，旧测试选了不可见卡片；改选实际可见原按钮。后两项复用已有hitbox/可见性提示，不要求新工具。4）ModI18N的reader没有可生成ZIP的对象，初次推断另一容器证据不足，已更正为Unknown；不要把“没有对象/能力”直接解释成加密或工具缺陷。
+
+同版本导出ZIP与作者附件可能不同；本轮只承认已加载测试环境导出、完整摘要及运行成员，不伪造作者Release身份。Windows缺原图片与受限网络、Android保留ModI18N是平台条件，不混成字节相同宿主。Android没有完整Console缓存采集，不能以空数组宣称无错误。
+
+没有为标准化形式重写Journey：已有可复用项目脚本包含精确库存、叠加状态、原槽位归属和恢复读回，证据足够回答本轮问题。没有持续卡顿、泄漏或崩溃证据，未调用Full Evidence、Perfetto、bugreport或新Provider。短序列mount数量相等不证明长期内存稳定。
+
+结论：没有确认的Paisley Park实现缺陷。P1建议合并“业务入口边界”和“Unknown不推原因”；P2仅补JSON5/重封装身份的资料提示，不自动修改工具或Skill。实际调查、修复与条件经验记录已完成；没有新独立盲测或学习收益率实验，不能把第二次跑同题称作跨版本学习证明。
