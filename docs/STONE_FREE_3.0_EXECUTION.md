@@ -105,3 +105,5 @@ Windows推荐/最低Host两组、Android推荐组使用同一最终RC UI字节�
 继续使用 R14 功能矩阵与 R15–RC01 有效业务证据；本轮不改游戏业务、样式、metadata 或 Host 生命周期。仅更新 UI 版本身份、玩家说明及定向测试参数，最终固定源码构建后检查运行成员差异，执行 Windows/Android 实际安装、2.7 升级、存档和偏好读回、回退及恢复。平板入场实际为 RC-01/Host0.1.4 的商店，测试只用自有临时键准备 2.7 基线，原 RC 包不覆盖，结束恢复入场清单与偏好。
 
 正式 Stable 发布、main 合并、Stable Tag 和远端推送未获本轮授权。Gate 的实际结果及覆盖边界将单独记录；未执行的验收不提前写 Pass。
+
+Stable Gate 已完成：固定产品源码19b116e952743f0c1e0483bec5198572cdb4c65a导出重建，Host0.1.4与公开字节相同，UI3.0.0运行仅版本标识变化。Windows/Android最终双包升级、原生读档、回退及自有测试数据清理通过；Android恢复入场RC-01清单/偏好/运行身份。当前结论Gate Passed / Ready for Owner Approval，支持与未覆盖范围见STONE_FREE_3.0_STABLE_GATE.md。本地报告提交与产品源码分开，不改变已验收ZIP；未推送、合并、Stable Tag或正式发布。

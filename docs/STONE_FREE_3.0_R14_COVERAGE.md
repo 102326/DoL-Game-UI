@@ -1,5 +1,7 @@
 # Stone Free R14：正式功能覆盖与发布差距
 
+当前续接：[Stable Gate](STONE_FREE_3.0_STABLE_GATE.md)。下文每轮保留当时的验证范围和发布状态；RC-01现已公开，本地3.0.0候选尚未正式发布。
+
 2026-10-17。正式2.7源码基准为本地标签 `v2.7.0` 指向的 `965afcf119260886319f5beb6616362acb306a09`。R14从R13提交 `1d77b4d8a57df66e4961e3c3294488624bd05bf8` 继续。工作树 `experiments/stone-free-framework-30` / `research/stone-free-3.0-framework`；入场干净。
 
 `experiments/stone-free-30`仍停在上述2.7提交；`publish/DoL-Game-UI`的main仍为`937dad7`（2.2.2历史主线）。本轮未切换、合并或修改这些工作树，不把其main误当作2.7源。其它实验工作树保留原归属。
@@ -111,3 +113,9 @@ R16最终提交957122d、正式2.7源965afcf保留；最终H/U源码固定于3c9
 沿用本矩阵，不新增功能清单。UI rc.1最终附件与R17相比仅运行版本标识、boot/依赖及玩家说明变化；Host0.1.4与0.1.2/0.1.3运行成员相同。最终固定源码0df554a，推荐/最低Host的Windows真实安装和推荐组Android均完成2.7升级/回退、存档和偏好核对、衣柜参照及Hub短循环。无研究同伴前置；原版API1、成熟低频能力和经典构建合同不变，复用有效历史证据。
 
 最低依赖为 `>=0.1.2-experimental && <0.2.0`，公共协议仍0.1-experimental，实际允许与支持组合分开；0.5.11.9不进入本RC GameVersion声明，Host本身不设游戏白名单。其它未覆盖边界仍记Not validated。新Hub位置实际落盘/回退未补测，不冒充已验证。详见[RC-01](STONE_FREE_3.0_RC01.md)与[当前政策](STONE_FREE_3.0_RC01_POLICY.md)；状态为Ready for Owner Approval，尚未公开。
+
+## Stable Gate 增补（2026-10-17）
+
+正式功能状态继续沿用本矩阵。相对RC-01，最终UI运行代码仅版本身份变为3.0.0；Host、src、样式、早期/四项补丁和API声明不变，R15/R16核心业务及RC最低Host证据继续适用。最终包在Windows与Android实际完成2.7升级、原生读档及回退、偏好保全、参照/关闭动态/总开关/Hub短循环；运行资源摘要与包一致。没有新增正式功能丢失或业务阻断证据，不把低频覆盖不足等同于实现缺失。
+
+物理手机/IME、其它Provider和全部Mod/交易/结算、云端/文件、新Hub位置持久化及长期性能未扩展；源代码未变的历史结果与本轮新装配结果分开。Gate Passed，仍为本地候选等待正式发布批准。详见[Stable Gate](STONE_FREE_3.0_STABLE_GATE.md)。
