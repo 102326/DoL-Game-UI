@@ -166,6 +166,11 @@ html[data-stone-free] #dol-midnight-controls input[type=checkbox]::before{conten
 html[data-stone-free] #dol-midnight-controls input[type=checkbox]:checked{background:rgba(141,199,255,.3);border-color:rgba(141,199,255,.45)}
 html[data-stone-free] #dol-midnight-controls input[type=checkbox]:checked::before{background:#badeff;transform:translateX(16px)}
 html[data-stone-free] #dol-midnight-controls input[type=checkbox]:disabled{opacity:.45;cursor:default}
+html[data-stone-free] #dol-midnight-controls input[type=range]{appearance:none;-webkit-appearance:none;box-sizing:border-box;height:40px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:pointer}
+html[data-stone-free] #dol-midnight-controls input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:#ffffff25}
+html[data-stone-free] #dol-midnight-controls input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:18px;height:18px;margin-top:-7px;border:1px solid #ffffff30;border-radius:50%;background:var(--dgu-accent,#8dc7ff);box-shadow:0 2px 5px #0004}
+html[data-stone-free] #dol-midnight-controls input[type=range]::-moz-range-track{height:4px;border-radius:4px;background:#ffffff25}
+html[data-stone-free] #dol-midnight-controls input[type=range]::-moz-range-thumb{width:18px;height:18px;border:1px solid #ffffff30;border-radius:50%;background:var(--dgu-accent,#8dc7ff)}
 html[data-stone-free] #dol-midnight-controls details.dmt-setting-card>summary{display:grid;grid-template-columns:1fr auto;gap:3px 12px;min-height:44px;padding:0;align-content:center}
 html[data-stone-free] #dol-midnight-controls details.dmt-setting-card>summary>span{grid-column:1;color:var(--dgu-secondary,#b6b8c2)}
 html[data-stone-free] #dol-midnight-controls details.dmt-setting-card>summary::after{grid-column:2;grid-row:1/3;align-self:center;color:var(--dgu-accent,#8dc7ff)}
@@ -182,3 +187,5 @@ html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-entry #warmth-de
 html[data-stone-free][data-dol-midnight] .dgshop-entry-categories{gap:6px;margin:12px 0 16px}
 html[data-stone-free][data-dol-midnight] .dgshop-entry-category{min-height:44px;padding:7px 10px;background:rgba(255,255,255,.025);box-shadow:none}
 html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-entry>a[data-passage]{position:relative;display:inline-flex;align-items:center;min-height:40px;padding:5px 10px;margin:2px 0;border-radius:9px;background:rgba(255,255,255,.025);text-decoration:none}
+/* Our shop tooltip layer is 10001; keep the Hub reachable without raising it over native panels. */
+html[data-stone-free][data-dol-midnight]:has(.dgshop-content):not(:has(#customOverlay:not(.hidden))) .sf-motion-hub{z-index:10002}

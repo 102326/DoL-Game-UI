@@ -18,5 +18,10 @@ const {chromium}=require('playwright'),{buildSync}=require('esbuild'),fs=require
  const input=page.locator('.dgu-setting-row input');await page.locator('.dgu-setting-row').click();assert.equal(await input.isChecked(),true);assert.equal(await input.evaluate(n=>n.type),'checkbox');
  await page.setViewportSize({width:390,height:844});assert.equal(await page.locator('dialog').evaluate(n=>n.scrollWidth<=n.clientWidth),true);
  await page.evaluate(()=>{document.querySelector('dialog').close();layout.destroy()});assert.equal(await page.locator('#startCaption').innerHTML(),native);assert.equal(await page.evaluate(()=>nodes.every(n=>n.isConnected)),true);
+ await page.addStyleTag({path:'framework/motion-hub/style.css'});
+ await page.evaluate(()=>{document.body.insertAdjacentHTML('beforeend','<div id="customOverlay" class="hidden"></div><div class="tooltip-popup" data-tooltip-id="test" style="position:fixed;top:0;left:0;width:100px;height:100px;pointer-events:auto">Native tooltip</div><div class="sf-motion-hub"><button class="sf-motion-ball" style="transform:translate(12px,12px)">Hub</button></div>')});
+ assert.equal(await page.evaluate(()=>document.elementFromPoint(40,40)?.closest('.sf-motion-ball')!==null),true,'shop tooltip must not cover the Hub hitbox');
+ await page.evaluate(()=>document.querySelector('#customOverlay').classList.remove('hidden'));
+ assert.equal(await page.locator('.sf-motion-hub').evaluate(n=>getComputedStyle(n).zIndex),'970','native panels keep their previous layer priority');
  console.log('PASS native paint layer, Start navigation identity/fallback, unknown Mod boundary and settings sections/native switch');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
