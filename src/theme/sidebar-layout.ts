@@ -23,6 +23,10 @@ export function createSidebarLayout(){
   if(!active){restore();return}
   for(const [host,{anchors}] of regions)if(!host.isConnected){for(const anchor of anchors)anchor.remove();regions.delete(host)}
   for(const title of titles)if(!title.isConnected)titles.delete(title);
+  const start=document.querySelector('#startCaption>button.link-internal');
+  if(start&&!start.previousElementSibling?.classList.contains('dmt-start-tools')){
+   const title=document.createElement('h3');title.className='dmt-start-tools';title.textContent='游戏与工具';start.before(title);titles.add(title);
+  }
   const meters=document.querySelector('#storyCaptionContent>#statmeters'),gap=meters?.nextElementSibling,label=gap?.nextElementSibling;
   if(gap?.tagName==='BR'&&label instanceof HTMLElement&&label.matches('span.gold')&&['小贴士：','Tip:','Tips:'].includes(label.textContent?.trim()||'')){
    const text:Node[]=[];let next=label.nextSibling;

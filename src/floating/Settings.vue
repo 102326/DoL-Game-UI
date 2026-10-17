@@ -4,7 +4,9 @@ import GameButton from '../ui/GameButton.vue';
 import type {FloatingApi} from './main';
 import {floatingDefaults,toolIds,type FloatingPreferences} from './preferences';
 const p=ref<FloatingPreferences>({...floatingDefaults,tools:[...toolIds]});
-const officialHub=!!(window as Window & {DoLGameUI?:{version:string}}).DoLGameUI?.version.startsWith('3.');
+declare const __STONE_FREE_CONSUMER__:boolean;
+// Settings can mount before the official wrapper publishes its product version.
+const officialHub=typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__;
 const names={settings:'界面设置',inspector:'开发检查',move:'移动悬浮球'};
 const api=()=> (window as Window & {DoLFloatingTools?:FloatingApi}).DoLFloatingTools;
 function sync(){const value=api()?.getPreferences();if(value)p.value=value}

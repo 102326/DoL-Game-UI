@@ -12,7 +12,6 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
 <template>
  <header class="dmt-settings-header cu:flex cu:items-center cu:justify-between cu:gap-4"><div><p class="dmt-eyebrow">SOFT &amp; WET</p><h2 id="dol-midnight-title">界面设置</h2></div><GameButton class="dmt-close" @click="onClose">关闭</GameButton></header>
  <div class="dmt-controls-content cu:grid cu:gap-4 cu:md:grid-cols-2">
-  <FloatingSettings/>
   <section class="dmt-setting-card"><h3>主题与阅读</h3>
    <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
@@ -62,6 +61,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    <SettingsToggle v-if="state.shopPageExperimentAvailable" label="商店按页生成（实验）" description="只生成当前页商品；下次进入商店列表时生效，异常时关闭此项" :checked="state.preferences.shopPageExperiment" @change="onPreference('shopPageExperiment',$event)"/>
    <p>这些选项默认关闭；仅在需要时开启，出现异常可单独关闭。不会改变购买、换装与存档规则。</p>
   </details>
+  <FloatingSettings/>
   <section class="dmt-setting-card"><h3>兼容回退</h3><p>关闭 Soft & Wet 后返回原版界面；重新启用会恢复保留的页面与显示选择。游戏进度与模组配置不受影响。</p><div class="dmt-recovery cu:flex cu:flex-wrap cu:gap-2"><GameButton @click="onRecovery(false)">回退原版界面</GameButton><GameButton @click="onRecovery(true)">启用新版界面</GameButton></div></section>
   <details class="dmt-setting-card dmt-debug cu:md:col-span-2"><summary><strong>问题诊断</strong><span>仅排查问题时使用</span></summary><GameButton :disabled="!state.preferences.enabled" @click="inspectRuntime">Runtime Inspector</GameButton><p>只读查看能力、Adapter 和降级原因；可复制诊断。需要启用 Soft &amp; Wet。</p></details>
  </div>

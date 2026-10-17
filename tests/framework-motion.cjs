@@ -4,10 +4,21 @@ const root=path.resolve(__dirname,'..'),dir=path.join(root,'tests/artifacts/ston
 const checks=[],check=async(name,fn)=>{await fn();checks.push(name);console.log('PASS',name)};
 const geometry=buildSync({entryPoints:[path.join(root,'framework/motion-hub/geometry.ts')],bundle:true,write:false,format:'cjs'}).outputFiles[0].text;
 const moduleGeometry={exports:{}};new Function('module','exports',geometry)(moduleGeometry,moduleGeometry.exports);
-const {readPosition,locate}=moduleGeometry.exports;
+const {readPosition,locate,menuLayout}=moduleGeometry.exports;
 assert.deepEqual(readPosition('{"side":"left","y":2,"docked":true}'),{side:'left',y:1,docked:true});
 for(const input of ['null','{}','{"side":"left","y":"1","docked":true}','x'.repeat(1025)])assert.deepEqual(readPosition(input),{side:'right',y:.58,docked:false});
 assert.deepEqual(locate({side:'right',y:1,docked:true},{left:5,top:10,width:390,height:400}),{x:357,y:326});
+for(const size of [{width:390,height:844},{width:844,height:390},{width:390,height:260},{width:280,height:260}])for(const side of ['left','right'])for(const y of [0,1])for(const count of [3,6]){
+ const area={left:0,top:0,...size},point=locate({side,y,docked:false},area),menu=menuLayout(point,area,count);
+ const hub={x:point.x,y:point.y,right:point.x+56,bottom:point.y+56};
+ assert.ok(menu.x>=12&&menu.y>=12&&menu.x+menu.width<=size.width-12&&menu.y+menu.height<=size.height-12,JSON.stringify({size,side,y,menu}));
+ if(menu.grid)assert.ok(menu.x+menu.width<=hub.x||menu.x>=hub.right||menu.y+menu.height<=hub.y||menu.y>=hub.bottom,JSON.stringify({size,side,y,count,menu,hub}));
+ if(!menu.grid){
+  const cards=[0,1,2].map(i=>({x:menu.x+menu.petalX,y:menu.y+i*66,right:menu.x+menu.petalX+136,bottom:menu.y+i*66+58}));
+  for(const card of cards)assert.ok(card.x>=12&&card.y>=12&&card.right<=size.width-12&&card.bottom<=size.height-12&&(card.right<=hub.x||card.x>=hub.right||card.bottom<=hub.y||card.y>=hub.bottom),JSON.stringify({size,side,y,card,hub}));
+  for(let i=1;i<cards.length;i++)assert.ok(cards[i-1].bottom<cards[i].y);
+ }
+}
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true});
  try {
@@ -15,7 +26,9 @@ assert.deepEqual(locate({side:'right',y:1,docked:true},{left:5,top:10,width:390,
   await p.route('http://motion.test/',r=>r.fulfill({contentType:'text/html',body:'<style>body{margin:0;background:radial-gradient(ellipse at 80% 40%,#60728070,transparent 50%),linear-gradient(120deg,#18242e,#323736);color:#e4e9ed;font:16px/1.7 system-ui;height:1600px}main{max-width:660px;margin:100px auto}#ui-bar{position:fixed;top:12px;left:12px}#foreign{display:block}</style><div id="ui-bar"><button id="ui-bar-toggle">Native sidebar</button></div><main id="passages"><h1>DoL fixture · reading space</h1><p>Original content remains interactive beneath the modeless hub.</p><input id="foreign" aria-label="Native input"><button id="next">Next passage</button></main>'}));await p.goto('http://motion.test/');
   await p.evaluate(()=>{window.State={variables:{pain:4,stress:12,tiredness:8,money:1234}};window.SugarCube={State,UIBar:{isStowed:()=>document.querySelector('#ui-bar').classList.contains('stowed')}};window.native=document.querySelector('#ui-bar-toggle');window.nativeParent=native.parentNode;window.nativeClicks=0;native.addEventListener('click',()=>{nativeClicks++;native.parentNode.classList.toggle('stowed')});localStorage.setItem('ForeignMod.settings','untouched')});
   async function load(name){const base=path.join(root,'dist/framework',name);if(fs.existsSync(path.join(base,'style.css')))await p.addStyleTag({path:path.join(base,'style.css')});await p.addScriptTag({path:path.join(base,'index.js')})}
-  await load('host');await load('motion-hub');
+  await load('host');
+  // This component fixture has no SugarCube/jQuery bridge; scene readiness is explicit.
+  await p.evaluate(()=>DoLUiHost.sceneReady());await load('motion-hub');
   const hub=p.locator('.sf-motion-hub'),ball=hub.locator('.sf-motion-ball'),orbit=hub.locator('.sf-motion-orbit'),sheet=hub.locator('.sf-motion-sheet');
   const choose=async id=>{await ball.click();await hub.locator(`[data-motion-view="StoneFreeMotionHub:${id}"]`).click();await sheet.locator('[data-sf-mount]').waitFor()};
   const bounds=async locator=>locator.evaluate(n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,overflow:n.scrollWidth>n.clientWidth}});
@@ -42,10 +55,21 @@ assert.deepEqual(locate({side:'right',y:1,docked:true},{left:5,top:10,width:390,
    const saved=await p.evaluate(()=>localStorage.getItem('StoneFreeMotionHub.position.v1'));box=await ball.boundingBox();await p.mouse.move(box.x+28,box.y+28);await p.mouse.down();await p.mouse.move(260,450,{steps:5});await p.evaluate(()=>window.dispatchEvent(new Event('blur')));await p.mouse.up();assert.equal(await p.evaluate(()=>localStorage.getItem('StoneFreeMotionHub.position.v1')),saved);
    box=await ball.boundingBox();await p.mouse.move(box.x+20,box.y+20);await p.mouse.down();await p.mouse.move(300,500,{steps:5});await p.setViewportSize({width:390,height:844});await p.mouse.up();await p.waitForTimeout(550);assert.equal(await p.evaluate(()=>localStorage.getItem('StoneFreeMotionHub.position.v1')),saved);
   });
+  await check('dock feedback expires and opening clears its timer',async()=>{
+   await ball.click();await orbit.getByRole('button',{name:'恢复位置',exact:true}).click();
+   assert.equal(await hub.locator('.sf-motion-feedback').innerText(),'已恢复默认位置');
+   await ball.click();assert.equal(await hub.locator('.sf-motion-feedback').innerText(),'');
+   await orbit.getByRole('button',{name:'恢复位置',exact:true}).click();
+   await p.waitForTimeout(2300);assert.equal(await hub.locator('.sf-motion-feedback').innerText(),'');
+  });
   await check('narrow, landscape and short/IME-sized viewports retain reachable controls without horizontal overflow',async()=>{
    for(const size of [{width:390,height:844},{width:844,height:390},{width:760,height:800},{width:390,height:260}]){
-    await p.setViewportSize(size);await p.waitForTimeout(550);await ball.click();await p.waitForTimeout(550);
+    await p.setViewportSize(size);await p.waitForTimeout(550);await ball.click();await p.waitForTimeout(650);
     for(const node of [ball,orbit]){const b=await bounds(node);assert.ok(b.x>=0&&b.y>=0&&b.right<=size.width&&b.bottom<=size.height&&(node===ball||!b.overflow),JSON.stringify({size,b}))}
+    if(!await orbit.evaluate(n=>n.classList.contains('is-grid'))){
+     const rects=await orbit.locator('.sf-motion-petal').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom}})),hubRect=await bounds(ball);
+     for(const [i,r] of rects.entries()){assert.ok(r.x>=0&&r.y>=0&&r.right<=size.width&&r.bottom<=size.height&&(r.right<=hubRect.x||r.x>=hubRect.right||r.bottom<=hubRect.y||r.y>=hubRect.bottom),JSON.stringify({size,i,r,hubRect}));for(const other of rects.slice(0,i))assert.ok(r.right<=other.x||r.x>=other.right||r.bottom<=other.y||r.y>=other.bottom,JSON.stringify({size,r,other}))}
+    }
     await orbit.locator('[data-motion-view="StoneFreeMotionHub:reading"]').click();await p.waitForTimeout(550);const b=await bounds(sheet);assert.ok(b.x>=0&&b.y>=0&&b.right<=size.width&&b.bottom<=size.height&&!b.overflow,JSON.stringify({size,b}));
     await sheet.getByRole('button',{name:'关闭详情',exact:true}).click();
    }
@@ -68,7 +92,7 @@ assert.deepEqual(locate({side:'right',y:1,docked:true},{left:5,top:10,width:390,
   });
   await check('exit releases owned adapters, public views, capture and listeners; persisted UI location reopens cleanly',async()=>{
    const events=await p.evaluate(()=>{let touches=0;const handler=()=>touches++;document.addEventListener('touchend',handler);try{document.querySelector('.sf-motion-ball').dispatchEvent(new TouchEvent('touchend',{bubbles:true}));const own=touches;document.querySelector('#foreign').dispatchEvent(new TouchEvent('touchend',{bubbles:true}));return {own,native:touches}}finally{document.removeEventListener('touchend',handler)}});assert.deepEqual(events,{own:0,native:1});
-   await ball.click();await orbit.getByRole('button',{name:'退出原型',exact:true}).click();assert.equal(await hub.count(),0);
+   await ball.click();await orbit.getByRole('button',{name:'隐藏工具',exact:true}).click();assert.equal(await hub.count(),0);
    const after=await p.evaluate(()=>({d:DoLUiHost.getDiagnostics(),foreign:localStorage.getItem('ForeignMod.settings'),input:document.querySelector('#foreign').value,native:native.isConnected}));
    assert.equal(after.d.participants.length,0);assert.equal(after.d.mounts.length,0);assert.equal(after.d.sources.length,0);assert.equal(after.d.commands.length,0);assert.equal(after.d.views.length,0);assert.equal(after.foreign,'untouched');assert.equal(after.input,'native input');assert.equal(after.native,true);
    await load('motion-hub');await ball.waitFor();assert.equal(await ball.getAttribute('aria-expanded'),'false');await p.evaluate(()=>StoneFree_motion_hub.dispose());await p.waitForTimeout(550);assert.equal(await hub.count(),0);assert.deepEqual(errors,[]);

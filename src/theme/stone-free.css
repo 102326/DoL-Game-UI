@@ -9,8 +9,9 @@ html[data-stone-free][data-dol-midnight] :is(.dgw-shell,.dgshop-host,.dgshop-con
 @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
  html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] .dgshop-host{background:linear-gradient(to bottom,var(--dgu-acrylic-light),transparent 90%),var(--dgu-acrylic-base);backdrop-filter:blur(var(--dgu-acrylic-blur));-webkit-backdrop-filter:blur(var(--dgu-acrylic-blur))}
  /* A decorative sibling blurs the backdrop without making a containing block for fixed controls. */
- html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] :is(.dgw-shell,.dgshop-content){position:relative;background:transparent}
- html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] :is(.dgw-shell,.dgshop-content)::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(to bottom,var(--dgu-acrylic-light),transparent 90%),var(--dgu-acrylic-base);backdrop-filter:blur(var(--dgu-acrylic-blur));-webkit-backdrop-filter:blur(var(--dgu-acrylic-blur))}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] :is(.dgw-shell,.dgshop-content){position:relative;isolation:isolate;background:transparent}
+ /* Keep glass behind native inline text and links as well as positioned cards. */
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] :is(.dgw-shell,.dgshop-content)::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(to bottom,var(--dgu-acrylic-light),transparent 90%),var(--dgu-acrylic-base);backdrop-filter:blur(var(--dgu-acrylic-blur));-webkit-backdrop-filter:blur(var(--dgu-acrylic-blur))}
  html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] .dgw-shell>*,html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] .dgshop-content>.dgshop-layout{position:relative}
 }
 html[data-stone-free][data-dol-midnight] .sf-eyebrow{display:block;margin:0 0 6px;font-size:calc(10px * var(--dgu-font-scale,1));letter-spacing:.18em;font-weight:500;color:var(--dgu-secondary)}
@@ -133,3 +134,51 @@ html[data-stone-free][data-dgu-visualMotion] .dgshop-transaction[data-transactio
 html[data-stone-free] .sf-reference-copy{padding:14px;border-radius:14px;background:var(--dgu-card,#2d2e33);border:1px solid #ffffff08}
 html[data-stone-free] .sf-reference-copy h3{margin:0 0 8px;color:var(--dgu-text)}
 html[data-stone-free] .sf-reference-copy p,html[data-stone-free] .sf-reference-origin{color:var(--dgu-secondary);line-height:1.6}
+
+/* The Start caption and in-game rail expose different native navigation roots.
+   Paint these known entries without replacing nodes or moving their handlers. */
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #startCaption{text-align:left}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #startCaption :is(h3,h4,.my-4){text-align:center}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] .dmt-start-tools{margin:18px 0 8px;padding-top:14px;border-top:1px solid var(--dgu-sidebar-line);font:600 12px/1.5 system-ui;color:var(--dgu-sidebar-muted);letter-spacing:.05em}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #startCaption>.sidebarButtonSplit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin:4px 0;border:0;background:none}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #startCaption>br{display:none}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar :is(#startCaption>button.link-internal,#startCaption>.sidebarButtonSplit>button.link-internal,#overlayButtons>button.link-internal,#overlayButtons>.sidebarButtonSplit>button.link-internal,#dol-midnight-sidebar-button){display:flex;align-items:center;justify-content:flex-start;box-sizing:border-box;width:100%;min-width:0;min-height:44px;padding:9px 12px;margin:3px 0;border:1px solid transparent;border-radius:10px;background:rgba(255,255,255,.025);box-shadow:none;color:var(--dgu-sidebar-text,#e6e7eb);font:500 14px/1.5 system-ui;text-align:left}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button{margin-top:8px;color:var(--dgu-sidebar-accent,#8dc7ff);background:rgba(141,199,255,.055)}
+/* ModHub's identified public rail entry gets paint only; its panel and actions remain ModHub-owned. */
+html[data-stone-free][data-dol-midnight][data-dmt-layout] :is(#startCaption,#overlayButtons)>.modhub-sidebar-entry{display:block;margin:8px 0 0;padding:0;border:0;background:none}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar :is(#startCaption,#overlayButtons)>.modhub-sidebar-entry>button.link-internal{display:flex;align-items:center;justify-content:flex-start;box-sizing:border-box;width:100%;min-height:44px;padding:9px 12px;border:1px solid transparent;border-radius:10px;background:rgba(255,255,255,.025);box-shadow:none;font:500 14px/1.5 system-ui;color:var(--dgu-sidebar-text,#e6e7eb);text-align:left}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar :is(#startCaption>button.link-internal,#startCaption>.sidebarButtonSplit>button.link-internal,#overlayButtons>button.link-internal,#overlayButtons>.sidebarButtonSplit>button.link-internal,#dol-midnight-sidebar-button,.modhub-sidebar-entry>button.link-internal):focus-visible{outline:2px solid var(--dgu-sidebar-accent,#8dc7ff);outline-offset:2px}
+@media(hover:hover){html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar :is(#startCaption>button.link-internal,#startCaption>.sidebarButtonSplit>button.link-internal,#overlayButtons>button.link-internal,#overlayButtons>.sidebarButtonSplit>button.link-internal,#dol-midnight-sidebar-button,.modhub-sidebar-entry>button.link-internal):not(:disabled):hover{background:rgba(255,255,255,.065)}}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar :is(#startCaption>button.link-internal,#startCaption>.sidebarButtonSplit>button.link-internal,#overlayButtons>button.link-internal,#overlayButtons>.sidebarButtonSplit>button.link-internal,#dol-midnight-sidebar-button,.modhub-sidebar-entry>button.link-internal):active{background:rgba(141,199,255,.09)}
+
+/* Settings use sections; the old shared Eyes :is() rule carries multiple native IDs. */
+html[data-stone-free] #dol-midnight-controls{width:min(800px,calc(100vw - 24px));border-radius:20px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+html[data-stone-free] #dol-midnight-controls .dmt-controls-content{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:0 24px 12px}
+html[data-stone-free] #dol-midnight-controls .dmt-setting-card{padding:20px 0;margin:0;border:0;border-bottom:1px solid rgba(255,255,255,.065);border-radius:0!important;background:transparent!important;box-shadow:none!important;min-width:0;grid-column:1/-1}
+html[data-stone-free] #dol-midnight-controls .dmt-setting-card h3{margin:0 0 10px;font-size:16px;font-weight:600;color:var(--dgu-text,#e6e7eb)}
+html[data-stone-free] #dol-midnight-controls .dgu-setting-row{min-height:48px;gap:24px;padding:8px 0;border:0;background:none}
+html[data-stone-free] #dol-midnight-controls .dgu-setting-row>span{min-width:0;max-width:70%;font-size:14px}
+html[data-stone-free] #dol-midnight-controls .dgu-setting-row strong{font-size:14px;font-weight:500}
+html[data-stone-free] #dol-midnight-controls :is(.dgu-setting-row small,.dmt-setting-card p){font-size:12px;line-height:1.65;color:var(--dgu-secondary,#b6b8c2)}
+html[data-stone-free] #dol-midnight-controls :is(button,select){min-height:40px;padding:7px 11px;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:rgba(255,255,255,.035);box-shadow:none;color:var(--dgu-text,#e6e7eb);font-size:13px}
+html[data-stone-free] #dol-midnight-controls input[type=checkbox]{appearance:none;-webkit-appearance:none;display:block;position:relative;box-sizing:border-box;flex:none;width:38px;height:22px;border:1px solid rgba(255,255,255,.12);border-radius:99px;background:#3b3e45;cursor:pointer}
+html[data-stone-free] #dol-midnight-controls input[type=checkbox]::before{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#c4c7ce;transition:transform 140ms ease}
+html[data-stone-free] #dol-midnight-controls input[type=checkbox]:checked{background:rgba(141,199,255,.3);border-color:rgba(141,199,255,.45)}
+html[data-stone-free] #dol-midnight-controls input[type=checkbox]:checked::before{background:#badeff;transform:translateX(16px)}
+html[data-stone-free] #dol-midnight-controls input[type=checkbox]:disabled{opacity:.45;cursor:default}
+html[data-stone-free] #dol-midnight-controls details.dmt-setting-card>summary{display:grid;grid-template-columns:1fr auto;gap:3px 12px;min-height:44px;padding:0;align-content:center}
+html[data-stone-free] #dol-midnight-controls details.dmt-setting-card>summary>span{grid-column:1;color:var(--dgu-secondary,#b6b8c2)}
+html[data-stone-free] #dol-midnight-controls details.dmt-setting-card>summary::after{grid-column:2;grid-row:1/3;align-self:center;color:var(--dgu-accent,#8dc7ff)}
+html[data-stone-free] #dol-midnight-controls .dmt-settings-footer:has(p:empty){display:none}
+html[data-stone-free] #dol-midnight-controls .dmt-recovery{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:600px){html[data-stone-free] #dol-midnight-controls .dmt-controls-content{padding-inline:16px}html[data-stone-free] #dol-midnight-controls .dmt-setting-card{padding-block:16px}html[data-stone-free] #dol-midnight-controls .dgu-setting-row{gap:12px}html[data-stone-free] #dol-midnight-controls .dgu-setting-row>span{max-width:68%}html[data-stone-free] #dol-midnight-controls .dgu-setting-row:has(select)>span{max-width:none}html[data-stone-free] #dol-midnight-controls select{width:100%;margin:4px 0}}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] #dol-midnight-controls input[type=checkbox]::before{transition:none}}
+
+/* Entry warmth is supporting information, not a full-width decorative banner. */
+html[data-stone-free][data-dol-midnight] .dgshop-host{padding:12px 16px}
+html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-entry .warmth-scale-container{width:min(100%,30rem);max-width:100%;margin:8px 0 4px}
+html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-entry #warmth-description{background:transparent;border:0;box-shadow:none;padding:4px 0 8px;max-width:44rem;line-height:1.6}
+html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-entry #warmth-description hr{display:none}
+html[data-stone-free][data-dol-midnight] .dgshop-entry-categories{gap:6px;margin:12px 0 16px}
+html[data-stone-free][data-dol-midnight] .dgshop-entry-category{min-height:44px;padding:7px 10px;background:rgba(255,255,255,.025);box-shadow:none}
+html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-entry>a[data-passage]{position:relative;display:inline-flex;align-items:center;min-height:40px;padding:5px 10px;margin:2px 0;border-radius:9px;background:rgba(255,255,255,.025);text-decoration:none}

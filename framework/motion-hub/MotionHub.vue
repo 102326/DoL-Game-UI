@@ -2,9 +2,9 @@
 import {computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, shallowRef} from 'vue';
 import type {Binding, Host, MountContext, View} from '../contracts';
 import ViewOutlet from '../workspace/ViewOutlet.vue';
-import {clamp, initialPosition, locate, positionKey, readPosition} from './geometry';
+import {clamp, initialPosition, locate, menuLayout, positionKey, readPosition} from './geometry';
 
-const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';officialPreferences?:boolean}>();
+const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>}>();
 const layer = ref<HTMLElement>(), ball = ref<HTMLButtonElement>(), heading = ref<HTMLElement>();
 let saved = initialPosition();
 try {saved = readPosition(localStorage.getItem(positionKey))} catch { /* Storage is optional. */ }
@@ -12,11 +12,12 @@ const area = reactive({left: 0, top: 0, width: innerWidth, height: innerHeight})
 const point = reactive(locate(saved, area)), docked = ref(saved.docked), expanded = ref(false), dragging = ref(false);
 const selected = shallowRef<View>(), views = shallowRef(props.host.views()), message = ref('');
 let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string} | undefined;
-let suppressClick = false, frame = 0, sequence = 0, instance = ref('motion-view-0'), binding: Binding;
+let suppressClick = false, frame = 0, sequence = 0, hintTimer = 0, instance = ref('motion-view-0'), binding: Binding;
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
-const grid = computed(() => props.preferredMode==='grid'||views.value.length > 3 || area.height < 360);
-const menu = computed(() => ({x: clamp(side.value === 'right' ? point.x - 180 : point.x - 10, area.left + 12, area.left + area.width - 222),
- y: clamp(point.y - 90, area.top + 12, area.top + area.height - (grid.value ? Math.min(280, area.height - 24) : 278))}));
+const menu = computed(() => menuLayout(point, area, views.value.length, props.preferredMode==='grid'||views.value.length>3, docked.value?38:56));
+const grid = computed(() => menu.value.grid);
+function clearHint(){clearTimeout(hintTimer);hintTimer=0;message.value=''}
+function hint(text:string){clearHint();message.value=text;hintTimer=window.setTimeout(clearHint,2200)}
 const panel = computed(() => {
  const width = Math.min(360, area.width - 24), height = Math.min(540, area.height - 24);
  return {width, height, x: clamp(side.value === 'right' ? point.x - width - 16 : point.x + 72, area.left + 12, area.left + area.width - width - 12),
@@ -27,9 +28,10 @@ const rail = computed(() => ({left: `${side.value === 'left' ? area.left : area.
 function save() {
  const height = docked.value ? 72 : 56;
  saved = {side: side.value, y: clamp((point.y - area.top - 12) / Math.max(1, area.height - height - 24), 0, 1), docked: docked.value};
- try {localStorage.setItem(positionKey, JSON.stringify(saved))} catch {message.value = '此环境无法保存位置'}
+ try {localStorage.setItem(positionKey, JSON.stringify(saved))} catch {hint('此环境无法保存位置')}
 }
 function close(restoreFocus = true) {
+ clearHint();
  const ownsFocus = layer.value?.contains(document.activeElement);
  expanded.value = false; selected.value = undefined;
  if (restoreFocus && ownsFocus) ball.value?.focus({preventScroll: true});
@@ -55,11 +57,15 @@ function toggle(event: MouseEvent) {
  if (suppressClick && event.detail > 0) {suppressClick = false; return}
  suppressClick = false;
  if (!props.hostContext.binding().isCurrent()) return;
- if (docked.value) {docked.value = false; save(); Object.assign(point, locate(saved, area)); return}
+ if (docked.value) {clearHint();docked.value = false; save(); Object.assign(point, locate(saved, area)); return}
+ clearHint();
  if (selected.value || expanded.value) close(); else expanded.value = true;
 }
 async function choose(view: View) {
  if (!props.hostContext.binding().isCurrent()) return;
+ const direct=props.directActions?.[`${view.owner}:${view.id}`];
+ if(direct){close(false);const unavailable=direct();if(unavailable)hint(unavailable);return}
+ clearHint();
  expanded.value = false; selected.value = view; instance.value = `motion-view-${++sequence}`;
  await nextTick(); if (props.hostContext.isCurrent() && selected.value === view) heading.value?.focus({preventScroll: true});
 }
@@ -81,11 +87,11 @@ function up(event: PointerEvent) {
  // Resize delivery can lag pointerup; never commit coordinates from the old viewport.
  if (gesture.viewport !== viewportStamp()) {cancel(); schedule(); return}
  const moved = dragging.value, dock = magnet.value; gesture = undefined; dragging.value = false;
- if (moved) {suppressClick = true; docked.value = dock; save(); Object.assign(point, locate(saved, area)); message.value = dock ? '已停靠，点击恢复' : '已吸附到侧边'}
+ if (moved) {suppressClick = true; docked.value = dock; save(); Object.assign(point, locate(saved, area)); hint(dock ? '已停靠，点击恢复' : '已吸附到侧边')}
  if (ball.value?.hasPointerCapture(event.pointerId)) ball.value.releasePointerCapture(event.pointerId);
 }
-function dock() {close(); docked.value = true; save(); Object.assign(point, locate(saved, area)); message.value = '已停靠，点击恢复'}
-function reset() {cancel(); close(); saved = initialPosition(); docked.value = false; Object.assign(point, locate(saved, area)); save(); message.value = '已恢复默认位置'}
+function dock() {close(); docked.value = true; save(); Object.assign(point, locate(saved, area)); hint('已停靠，点击恢复')}
+function reset() {cancel(); close(); saved = initialPosition(); docked.value = false; Object.assign(point, locate(saved, area)); save(); hint('已恢复默认位置')}
 function key(event: KeyboardEvent) {
  if (event.isComposing || (event.target as HTMLElement).matches('input,textarea,select,[contenteditable="true"]')) return;
  if (event.key === 'Escape') {event.preventDefault(); event.stopPropagation(); cancel(); close(); return}
@@ -111,16 +117,16 @@ onBeforeUnmount(() => {interrupt();document.removeEventListener('dol-floating-re
  <div ref="layer" class="sf-motion-hub" @keydown="key">
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
-   :style="{left: `${menu.x}px`, top: `${menu.y}px`, '--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`, '--available-height': `${area.height - 24}px`}">
+  :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
    <button v-for="(view, index) in views" :key="`${view.owner}:${view.id}`" type="button" class="sf-motion-petal" :data-motion-view="`${view.owner}:${view.id}`"
-    :style="{'--i': index, '--x': `${index === 1 ? 8 : 74}px`, '--y': `${index * 74}px`}" @click="choose(view)">
+    :style="{'--i': index, '--x': `${menu.petalX}px`, '--y': `${index * 66}px`}" @click="choose(view)">
     <span aria-hidden="true">{{ ['◉', '◈', '⇄'][index % 3] }}</span>{{ view.title }}
    </button>
-   <div class="sf-motion-utilities"><button type="button" @click="dock">停靠侧边</button><button type="button" @click="reset">恢复位置</button><button type="button" @click="dismiss">退出原型</button></div>
+   <div class="sf-motion-utilities"><button type="button" @click="dock">停靠侧边</button><button type="button" @click="reset">恢复位置</button><button type="button" @click="dismiss">隐藏工具</button></div>
   </nav>
   <section class="sf-motion-sheet" aria-label="自由工具详情" :aria-hidden="!selected" :inert="!selected" :class="{'is-open': !!selected}"
    :style="{left: `${panel.x}px`, top: `${panel.y}px`, width: `${panel.width}px`, height: `${panel.height}px`, '--origin-x': `${point.x + 28 - panel.x}px`, '--origin-y': `${point.y + 28 - panel.y}px`}">
-   <header><div><small>STONE FREE · MOTION LAB</small><h2 ref="heading" tabindex="-1">{{ selected?.title || '自由工具' }}</h2></div><button type="button" aria-label="关闭详情" @click="close()">×</button></header>
+   <header><div><small>STONE FREE · 快捷工具</small><h2 ref="heading" tabindex="-1">{{ selected?.title || '自由工具' }}</h2></div><button type="button" aria-label="关闭详情" @click="close()">×</button></header>
    <main><ViewOutlet v-if="selected" :view="selected" :instance="instance" /></main>
    <footer><button type="button" @click="selected = undefined; expanded = true; ball?.focus({preventScroll: true})">返回工具</button><span>公开视图 · 原版状态</span></footer>
   </section>
