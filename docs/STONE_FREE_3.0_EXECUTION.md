@@ -1,5 +1,7 @@
 # Stone Free 3.0：研发接续
 
+**当前（2026-10-17 玩家复审）：Stable Gate Blocked。** 首轮工程验收之后新增 SG-01～06 与界面设置整改，视觉 Gate 和 Owner Acceptance 必须由负责人确认，不能引用下文历史 Gate Passed 宣布可发布。整改运行源码固定为 `c23b3728da9ca7677fc8acea158ba3db8cdca0b9`；完整归属地图、结果与 Android 审阅材料见 [玩家与全局视觉专项](STONE_FREE_3.0_PLAYER_FINDINGS.md)。本轮只有本地提交、构建和隔离测试版部署，没有远端推送、合并、Tag 或 Stable Release。
+
 当前接续：R16 从 R15 本地提交 `a95a3ba88e4571b16bc7717f559074595d164e08` 完成固定社区输入与 A/B/C/D 代表性对照，修正衣柜绕过来源Mod叠加语义的接缝。当前配对为 Host `0.1.2-experimental` + 官方 UI `3.0.0-lab.16`，Host协议及API v1不变。见 [R16](STONE_FREE_3.0_R16.md)、[输入清单](STONE_FREE_3.0_R16_INPUTS.md)和既有[覆盖矩阵](STONE_FREE_3.0_R14_COVERAGE.md)。未授权正式RC或远端发布；下方保留历史。
 
 当前接续（2026-10-17）：第九轮 Accept with Limitations，源码已固定为本地提交 `1990a125df886ffb2a6aee82b2e41db226ddf9a9`，发行基础阶段性收口。方案 A 不变。第十轮将参考融入正式衣柜，并新增独立官方 UI 候选入口；结果见[官方衣柜融合](STONE_FREE_3.0_OFFICIAL_INTEGRATION.md)。以下保留各轮历史，不用早期“分发待定”覆盖当前决议。商店、战斗等全部页面的消费者化与正式 3.0 发布仍属后续范围。

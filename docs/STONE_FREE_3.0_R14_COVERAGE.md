@@ -118,4 +118,10 @@ R16最终提交957122d、正式2.7源965afcf保留；最终H/U源码固定于3c9
 
 正式功能状态继续沿用本矩阵。相对RC-01，最终UI运行代码仅版本身份变为3.0.0；Host、src、样式、早期/四项补丁和API声明不变，R15/R16核心业务及RC最低Host证据继续适用。最终包在Windows与Android实际完成2.7升级、原生读档及回退、偏好保全、参照/关闭动态/总开关/Hub短循环；运行资源摘要与包一致。没有新增正式功能丢失或业务阻断证据，不把低频覆盖不足等同于实现缺失。
 
-物理手机/IME、其它Provider和全部Mod/交易/结算、云端/文件、新Hub位置持久化及长期性能未扩展；源代码未变的历史结果与本轮新装配结果分开。Gate Passed，仍为本地候选等待正式发布批准。详见[Stable Gate](STONE_FREE_3.0_STABLE_GATE.md)。
+物理手机/IME、其它Provider和全部Mod/交易/结算、云端/文件、新Hub位置持久化及长期性能未扩展；源代码未变的历史结果与本轮新装配结果分开。首轮工程结论曾为 Gate Passed，后续玩家实测已将当前 Gate 改为 Blocked。详见[Stable Gate](STONE_FREE_3.0_STABLE_GATE.md)。
+
+## 玩家与全局视觉专项（2026-10-17，当前）
+
+运行源码 `c23b372` 修正商店原生正文/退出的绘制遮挡、Start 轻导航、官方设置构图及控件、Hub 提示/方向/原面板快捷入口。公共 Host 不变。真实 Android 连续原出口退出/重入及释放、侧栏八类面板、ModHub 共存、Hub 左右/角落命中与停靠/恢复、主要工具和受控 390px 宽度已有本轮记录；受控输入不等于物理触控，390px 不等于手机验收。
+
+当前 `Functional / Interaction` 按实际通过项目记录，**Visual Gate、Owner Acceptance 尚未通过，Stable Gate Blocked**。先前 R15/R16/RC 存档、购买、穿戴证据只复用于未改业务；不声称新候选重新完成全部矩阵。当前归属地图、失败记录、截图及具体覆盖见 [玩家与视觉专项](STONE_FREE_3.0_PLAYER_FINDINGS.md)。

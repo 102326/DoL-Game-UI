@@ -2,6 +2,8 @@
 
 > 后续玩家实测与负责人视觉决议已将当前 Gate 改为 **Blocked**。下文保留首轮工程验收的历史范围，不能作为当前发布批准。当前整改见 [玩家与视觉专项](STONE_FREE_3.0_PLAYER_FINDINGS.md)。
 
+当前整改候选：`c23b372`，原生退出、Hub/输入与窄详情定向工程合同通过；Visual Gate 和 Owner Acceptance 仍待负责人明确确认。没有推送、合并、创建 Stable Tag 或发布。
+
 2026-10-17。**Gate Passed，Ready for Owner Approval。** 本轮承诺的本地产品收口与代表性验收已完成，无已知范围内 Blocker / Must Fix。官方 UI 3.0.0 仍是本地候选，未获准公开发布 Stable；没有推送、合并、创建 Stable Tag 或 Release。
 
 ## 1. GitHub / RC Status
