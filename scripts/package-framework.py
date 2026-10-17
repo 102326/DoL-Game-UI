@@ -5,7 +5,8 @@ from shop_package import add_shop_patches
 
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
-version = '0.1.3-experimental'
+version = '0.1.2-experimental'
+host_version = '0.1.3-experimental'
 parser = argparse.ArgumentParser()
 parser.add_argument('--players-only', action='store_true', help='Package only the paired Host and official UI')
 args = parser.parse_args()
@@ -26,10 +27,10 @@ for directory, name in packages:
     base = out / directory
     dependencies = [{'modName': 'ModLoader', 'version': '>=2.100.0'}]
     if directory != 'host':
-        dependencies.append({'modName': 'StoneFreeHost', 'version': '=' + version})
+        dependencies.append({'modName': 'StoneFreeHost', 'version': '=' + (host_version if directory == 'official-ui' else version)})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
-    package_version = '3.0.0-lab.17' if directory == 'official-ui' else '0.1.3-experimental' if directory == 'motion-hub' else version
+    package_version = '3.0.0-lab.17' if directory == 'official-ui' else host_version if directory == 'host' else '0.1.3-experimental' if directory == 'motion-hub' else version
     boot = dict(name=name, version=package_version, nickName=name + ' (Research)', scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
