@@ -102,6 +102,8 @@ html[data-dol-midnight] .dcu-root.dcu-candidate .dcu-native .dcu-group[data-dcu-
 /* Selection feedback follows original checked controls and never repositions them. */
 .dcu-candidate .dcu-native .dcu-group[data-dcu-selected]{border-color:var(--dgu-accent,#aaa0ef);box-shadow:inset 3px 0 var(--dgu-accent,#aaa0ef)}
 .dcu-candidate .dcu-native .dcu-group[data-dcu-selected]::before{color:var(--dgu-accent,#d5cffa)}
+#passages .dcu-root.dcu-candidate .dcu-native .dcu-group label:has(input:checked){border-color:var(--dgu-accent,#8dc7ff);background:color-mix(in srgb,var(--dgu-accent,#8dc7ff) 20%,var(--dgu-surface,#1c1c24));box-shadow:inset 4px 0 var(--dgu-accent,#8dc7ff),0 0 0 1px color-mix(in srgb,var(--dgu-accent,#8dc7ff) 38%,transparent)}
+html[data-dgu-visualGlow] #passages .dcu-root.dcu-candidate .dcu-native .dcu-group label:has(input:checked){box-shadow:inset 4px 0 var(--dgu-accent,#8dc7ff),0 0 14px color-mix(in srgb,var(--dgu-accent,#8dc7ff) 28%,transparent)}
 html[data-dol-midnight] .dcu-root.dcu-candidate .dcu-native .dcu-group[data-dcu-selected]{box-shadow:inset 3px 0 var(--dgu-accent,#aaa0ef)}
 html[data-dgu-visualMotion] .dcu-candidate .dcu-native .dcu-group[data-dcu-selected]{animation:dcu-selected .22s ease-out}
 @keyframes dcu-selected{from{box-shadow:inset 0 0 var(--dgu-accent,#aaa0ef)}to{box-shadow:inset 3px 0 var(--dgu-accent,#aaa0ef)}}

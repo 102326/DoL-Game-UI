@@ -1,8 +1,9 @@
 import {isolate,mountUI,unmountUI,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
 import Toolbar from './Toolbar.vue';
-import {createShopSource,copyShopItem,type ShopFacts} from './source';
+import {createShopSource,copyShopItem,purchaseControl,type ShopFacts} from './source';
 import './style.css';
+import {purchaseWitness,purchaseResult} from './transaction';
 import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,Binding,MountHandle} from '../../framework/contracts';
@@ -28,8 +29,8 @@ export function startShop(root:Runtime,framework?:ShopFramework){
  const restoredScroll=new WeakMap<HTMLElement,number>();
  const moves=new Map<Node,Comment>();const owned=new Set<HTMLElement>();
  let scrollTop=0,focusReturn:HTMLElement|null=null,source:ReturnType<typeof createShopSource>|undefined,referenceMount:HTMLElement|null=null,referenceSequence=0;
- let resize:ResizeObserver|undefined,resizeFrame=0;
- const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'',referenceEnabled:!!framework,referenceA:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonB:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonTarget:null as string|null,comparisonOrigin:null as {left:number;top:number;width:number;height:number}|null,defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
+ let resize:ResizeObserver|undefined,resizeFrame=0,transactionCheck=0;
+ const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'',referenceEnabled:!!framework,referenceA:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonB:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonTarget:null as string|null,comparisonOrigin:null as {left:number;top:number;width:number;height:number}|null,transactionStatus:'' as ''|'pending'|'confirmed'|'unknown',transactionMessage:'',defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
  function current(){const passage=shop?.closest<HTMLElement>('.passage');return !destroyed&&(!frameworkBinding||frameworkBinding.isCurrent())&&!!shop?.isConnected&&!!passage&&!passage.classList.contains('passage-out')&&document.querySelector('#passages .passage:not(.passage-out)')===passage&&(!root.SugarCube?.State?.passage||root.SugarCube.State.passage===passage.dataset.passage)}
  function facts():ShopFacts{const variables=root.SugarCube?.State?.variables;const clothes=(root as unknown as {setup?:{clothes?:Record<string,unknown[]>}}).setup?.clothes;return {variables,definition:clothes?.[String(variables?.clothingShopSlot)]?.[Number(variables?.clothes_choice)]}}
  function syncBackdrop(){if(backdrop)backdrop.hidden=!(state.narrow&&state.open&&state.hasDetails)}
@@ -40,7 +41,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
  function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
  function restore(){for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();referenceMount=null;state.comparisonTarget=null;state.comparisonOrigin=null;state.comparisonB=null;details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
- function release(){const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;resize?.disconnect();resize=undefined;if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;scrollTop=0;focusReturn=null}
+ function release(){clearTimeout(transactionCheck);transactionCheck=0;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;resize?.disconnect();resize=undefined;if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null}
  function arrangeEntry(){
   if(entry?.isConnected)return;
   if(!shop)return;
@@ -129,6 +130,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   for(const el of details.querySelectorAll<HTMLElement>('.colour-button'))if(!labels.has(el)){labels.set(el,el.getAttribute('title'));el.title=el.textContent?.trim()??''}
   for(const el of labels.keys())if(!el.isConnected)labels.delete(el);
   const projection=source!.read();state.hasDetails=projection?.hasDetails??false;state.selectedTitle=projection?.selected?.title??'';shop.classList.toggle('dgshop-has-details',state.hasDetails);
+  if(!projection?.selected)state.comparisonB=null;
   footer!.hidden=!footer!.querySelector('.buy-buttons,.try-buttons');
   details.classList.toggle('dgshop-detail-open',state.open&&state.hasDetails);
   syncBackdrop();
@@ -177,11 +179,23 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   updateSelected(items);counts.fastPaths++;return true;
  }
  function click(event:Event){if(!isMasterEnabled()||!enabled||failed||!shop?.contains(event.target as Node)||!(event.target instanceof Element))return;
+  const original=purchaseControl(event.target as Element),purchase=original?.matches('#buy-send-home .buy-button-inner.buy-multiple a.link-internal')?original:null;
+  if(framework&&purchase&&(state.transactionStatus==='pending'||state.transactionStatus==='unknown')){event.preventDefault();event.stopImmediatePropagation();state.transactionMessage='上一笔结果仍未确认。请先核对原版界面，不要重复购买。';return}
   const validity=isolate('shop binding',()=>source?.guard(event.target as Element),recover);
   if(validity===undefined||validity==='stale'||!current()){event.preventDefault();event.stopImmediatePropagation();state.message='商品、配色或报价已变化，本次未操作。请重新选择商品；结果未知时不要重复购买。';schedule();return}
+  if(framework&&purchase&&validity==='valid'){
+   const costOf=(root as unknown as {getClothingCost?:(item:unknown,slot:string)=>number}).getClothingCost;
+   const witness=purchaseWitness(purchase,facts(),costOf);
+   if(!witness){state.transactionStatus='';state.transactionMessage='此购买沿用原版结果显示，本界面不额外确认。'}
+   else{state.transactionStatus='pending';state.transactionMessage='已交给原版购买，正在核对金钱和衣柜。';
+    const scene=shop;
+    // A browser may checkpoint microtasks between capture and native bubbling handlers.
+    transactionCheck=window.setTimeout(()=>{transactionCheck=0;if(destroyed||shop!==scene||!current())return;state.transactionStatus=purchaseResult(witness,facts(),current());state.transactionMessage=state.transactionStatus==='confirmed'?'已核对：原版已扣款，衣柜新增 1 件。':'原操作结果未能确认，请先核对原版界面，不要重复购买。';schedule()},0);
+   }
+  }
   const target=event.target.closest<HTMLElement>('.clothing-item,.category-tab,.btn-pagination');if(!target)return;
   state.message='';
-  if(target.matches('.clothing-item')){source?.select(target);focusReturn=target.querySelector('a');state.open=true}else{scrollTop=0;source?.clearSelection();state.open=false}
+  if(target.matches('.clothing-item')){source?.select(target);focusReturn=target.querySelector('a');state.open=true;if(state.comparisonB){const item=source?.read()?.selected,rect=target.getBoundingClientRect();if(item){state.comparisonOrigin={left:rect.left,top:rect.top,width:rect.width,height:rect.height};state.comparisonB=copyShopItem(item)}}}else{scrollTop=0;source?.clearSelection();state.open=false}
   schedule();
  }
  function escape(event:KeyboardEvent){if(event.key==='Escape'&&state.open&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false)}

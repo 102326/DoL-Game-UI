@@ -15,7 +15,8 @@ const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'artifacts/stone
   assert.deepEqual(await page.evaluate(()=>testFramework.host.getDiagnostics().claims.map(c=>`${c.kind}:${c.key}`)),['region:combat']);
   assert.equal(await page.locator('.dcu-footer').evaluate(e=>e.matches(':popover-open')),true,'native controls remain inside the top-layer dock');
   assert.equal(await page.locator('.dcu-group').count(),2,'including the second action group');await page.screenshot({path:path.join(out,'combat-theme.png')});const before=await page.locator('#leftaction input[value=b]').boundingBox();
-  await page.locator('#leftaction input[value=b]').check();assert.equal(await page.evaluate(()=>original.events),1);assert.deepEqual(await page.locator('#leftaction input[value=b]').boundingBox(),before,'selection feedback must not move the target');
+  await page.evaluate(()=>document.documentElement.setAttribute('data-dgu-visualGlow',''));await page.locator('#leftaction input[value=b]').check();assert.equal(await page.evaluate(()=>original.events),1);assert.deepEqual(await page.locator('#leftaction input[value=b]').boundingBox(),before,'selection feedback must not move the target');
+  await page.waitForFunction(()=>getComputedStyle(document.querySelector('#leftaction label:has(input:checked)')).boxShadow.includes('14px'),'visualGlow enhances the selected native action');
   assert.equal(await page.locator('#leftaction').evaluate(e=>e.hasAttribute('data-dcu-selected')),true);
   assert.equal(await page.evaluate(()=>original.input===document.querySelector('#leftaction input[value=b]')),true);
   await page.locator('#next a').click();assert.equal(await page.evaluate(()=>original.continues),1,'relocated continuation keeps its original click event');

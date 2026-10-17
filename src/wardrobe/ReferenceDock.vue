@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {computed,nextTick,onMounted,onBeforeUnmount,ref,shallowRef,watch} from 'vue';
 import {compareReferences,type ReferenceContext,type ReferenceItem} from './reference';
+import {sourceMotion} from '../ui/source-motion';
 const props=defineProps<{context:ReferenceContext;items:readonly {key:string}[]}>();
 const pinned=shallowRef<ReferenceItem>(),selected=shallowRef<ReferenceItem>(),opened=ref(false),spatial=ref(true),message=ref('');
 const chip=ref<HTMLElement>(),panel=ref<HTMLElement>();
@@ -9,26 +10,13 @@ const space=ref<HTMLElement>(),narrow=ref(innerWidth<=800);
 let resize:ResizeObserver|undefined,withdraw:(()=>void)|undefined;
 let layoutWidth=0,viewportWidth=innerWidth,viewportHeight=innerHeight;
 let returnTo:HTMLElement|undefined,selectedKey='',epoch=0;
-const motions=new Set<Animation>(),ghosts=new Set<HTMLElement>();
+const motion=sourceMotion();
 const rows=computed(()=>pinned.value&&selected.value?compareReferences(pinned.value,selected.value):[]);
 const differences=computed(()=>rows.value.filter(row=>row.status==='different').length);
 const comparable=computed(()=>rows.value.filter(row=>row.status!=='unknown').length);
-const motionMedia=window.matchMedia?.('(prefers-reduced-motion: reduce)');
-const reduced=()=>!motionMedia||motionMedia.matches||(document.documentElement.hasAttribute('data-dol-midnight')&&!document.documentElement.hasAttribute('data-dgu-visualMotion'));
-function interrupt(){epoch++;for(const animation of motions)animation.cancel();motions.clear();for(const ghost of ghosts)ghost.remove();ghosts.clear()}
+function interrupt(){epoch++;motion.cancel()}
 function visible(node:HTMLElement|undefined){if(!node?.isConnected)return false;const r=node.getBoundingClientRect();return r.width>0&&r.height>0&&r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth}
-function animate(node:HTMLElement,frames:Keyframe[],duration=420){
- if(reduced()||typeof node.animate!=='function')return;
- const animation=node.animate(frames,{duration,easing:'cubic-bezier(.16,1,.3,1)'});motions.add(animation);
- void animation.finished.catch(()=>{}).finally(()=>{motions.delete(animation);if(ghosts.delete(node))node.remove()});
-}
-function flight(from:DOMRect,to:DOMRect,name:string){
- if(reduced())return;
- const ghost=document.createElement('div');ghost.className='dgw-reference-flight';ghost.setAttribute('aria-hidden','true');ghost.textContent=name;
- Object.assign(ghost.style,{left:from.left+'px',top:from.top+'px',width:Math.min(from.width,240)+'px'});document.body.append(ghost);ghosts.add(ghost);
- animate(ghost,[{transform:'translate(0,0) scale(1)',opacity:.9},{transform:`translate(${to.left-from.left}px,${to.top-from.top}px) scale(.65)`,opacity:0}],480);
- if(!motions.size){ghost.remove();ghosts.delete(ghost)}
-}
+const animate=motion.animate,flight=motion.flight;
 function clear(){interrupt();opened.value=false;pinned.value=undefined;selected.value=undefined;returnTo=undefined;selectedKey='';message.value='';withdraw?.();withdraw=undefined}
 function valid(){if(props.context.binding.isCurrent())return true;clear();return false}
 function position(){if(!opened.value||!returnTo?.isConnected)return;const header=returnTo.closest('.dgw-shell')?.querySelector('.dgw-header');panelTop.value=Math.max(12,Math.min((header?.getBoundingClientRect().bottom??120)+8,innerHeight-170))+'px'}
@@ -51,7 +39,7 @@ async function choose(key:string,node:HTMLElement){
  if(!valid())return;const fresh=props.context.read(key);if(!fresh){message.value='目录已变化，请重新选择。';return}
  interrupt();const ticket=epoch,source=node.closest<HTMLElement>('.dgw-item-row')??node;
  if(!pinned.value){
-  pinned.value=fresh;publish();message.value='已固定 A，继续浏览衣柜，点另一件衣物旁的“对照”。';const from=source.getBoundingClientRect();
+  pinned.value=fresh;props.context.remember?.(fresh);publish();message.value='已固定 A，继续浏览衣柜，点另一件衣物旁的“对照”。';const from=source.getBoundingClientRect();
   await nextTick();if(ticket===epoch&&valid()&&chip.value&&visible(source))flight(from,chip.value.getBoundingClientRect(),fresh.name);return;
  }
  selected.value=fresh;selectedKey=key;returnTo=node;opened.value=true;message.value='';
@@ -71,12 +59,10 @@ function back(){
 function key(event:KeyboardEvent){if(event.key==='Escape'&&!event.isComposing){event.preventDefault();back()}}
 watch(()=>props.items,()=>{if(opened.value&&(!props.items.some(i=>i.key===selectedKey)||!props.context.read(selectedKey)))back()});
 props.context.binding.signal.addEventListener('abort',clear,{once:true});
-watch(spatial,interrupt);motionMedia?.addEventListener('change',interrupt);
-const themeObserver=new MutationObserver(()=>{if(reduced())interrupt()});
-themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-dol-midnight','data-dgu-visualmotion']});
+watch(spatial,interrupt);
 onMounted(()=>{layout();const root=space.value?.closest('.dgw-root');if(root&&typeof ResizeObserver==='function'){resize=new ResizeObserver(()=>layout());resize.observe(root)}});
 window.addEventListener('resize',layout);window.addEventListener('scroll',layout,true);
-onBeforeUnmount(()=>{clear();resize?.disconnect();themeObserver.disconnect();props.context.binding.signal.removeEventListener('abort',clear);motionMedia?.removeEventListener('change',interrupt);window.removeEventListener('resize',layout);window.removeEventListener('scroll',layout,true)});
+onBeforeUnmount(()=>{clear();resize?.disconnect();motion.dispose();props.context.binding.signal.removeEventListener('abort',clear);window.removeEventListener('resize',layout);window.removeEventListener('scroll',layout,true)});
 defineExpose({choose,hasReference:computed(()=>!!pinned.value),currentKey:computed(()=>opened.value?selectedKey:'')});
 </script>
 <template>

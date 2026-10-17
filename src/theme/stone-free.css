@@ -115,3 +115,17 @@ html[data-stone-free][data-dol-midnight] .dgshop-reference-comparison{font-famil
 html[data-stone-free][data-dol-midnight] .dgshop-reference-comparison :is(h3,p,small,strong,span,button){font-family:inherit}
 html[data-stone-free][data-dol-midnight] .dgshop-reference-price{color:#dbc982}
 html[data-stone-free][data-dol-midnight] .dgshop-content :is(.clothingshop-options-button,.shop-legend-button){border:1px solid #ffffff10;border-radius:11px;background:#ffffff05;box-shadow:none}
+
+.sf-source-trace{position:fixed;z-index:2147482101;pointer-events:none;max-width:240px;padding:9px 12px;border-radius:14px;background:#30353df2;color:#e6e7eb;border:1px solid #8dc7ff50;backdrop-filter:blur(12px);box-shadow:0 8px 25px #0004;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:13px/1.5 system-ui}
+html[data-stone-free][data-dol-midnight] .dgshop-motion-choice{display:flex;align-items:center;min-height:40px;gap:5px;color:var(--dgu-secondary);font-size:12px}
+html[data-stone-free][data-dol-midnight] .dgshop-motion-choice input{accent-color:var(--dgu-accent)}
+html[data-stone-free][data-dol-midnight] .dgshop-reference-relations [data-different=true]{box-shadow:inset 2px 0 #8dc7ff80;padding-left:8px;color:var(--dgu-accent)}
+@media(prefers-reduced-motion:reduce){.sf-source-trace{display:none}}
+
+html[data-stone-free][data-dol-midnight] .dgshop-transaction{font:13px/1.6 system-ui;margin:8px 0 0;padding:8px 12px;border-radius:10px;background:#ffffff06;color:var(--dgu-secondary)}
+html[data-stone-free][data-dol-midnight] .dgshop-transaction[data-transaction-status=confirmed]{color:var(--dgu-success,#9ac7aa);box-shadow:inset 2px 0 currentColor}
+html[data-stone-free][data-dol-midnight] .dgshop-transaction[data-transaction-status=unknown]{color:var(--dgu-warning,#e0bc83)}
+
+html[data-stone-free][data-dgu-visualMotion] .dgshop-transaction[data-transaction-status=confirmed]{animation:sf-confirm .38s ease-out}
+@keyframes sf-confirm{from{opacity:.3;clip-path:inset(0 60% 0 0)}to{opacity:1;clip-path:inset(0)}}
+@media(prefers-reduced-motion:reduce){.dgshop-transaction{animation:none!important}}

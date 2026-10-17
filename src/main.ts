@@ -44,7 +44,7 @@ if(!runtime.DoLGameUI){
  for(const name of ['DoLCombatUI','DoLMidnightTheme','DMTLayout'] as const)isolate(name,()=>runtime[name]?.destroy?.());
  start('DoLWardrobeUI',()=>startWardrobe(runtime,wardrobeFramework));
  start('DoLCharacteristicsUI',()=>startCharacteristics(runtime));
- start('DoLSocialUI',()=>startSocial(runtime));
+ start('DoLSocialUI',()=>startSocial(runtime,wardrobeFramework));
  start('DoLPanelsUI',()=>startPanels(runtime));
  start('DoLShopUI',()=>startShop(runtime,wardrobeFramework));
  start('DoLSavesUI',()=>startSaves(runtime));

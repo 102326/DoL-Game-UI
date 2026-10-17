@@ -122,3 +122,17 @@
 视觉审查发现比较区虽已挂载，但位于长预览下方；源码与真实截图足够定位，直接调整官方详情中的自有挂载点，无需 Full Evidence 或通用布局平台。窄屏脚本另曾点击已经展开的 Drawer 遮罩后方按钮，标准工具正确拒绝；先观察展开状态，再点实际关闭入口。此项复用已有 hitbox/overlay 经验，不新增通用 Skill 需求。
 
 本轮的混合大小写属性观察过滤器和衣柜自身高度变化中断，均由目标 UI 源码与定向测试定位并修正，不归为 Tools 问题。尚无确认的 Tools 实现缺陷或本轮必须修改的 Skill 指引。颜色、比较挂载点、伪元素材质和偏好档位属于 UI 项目知识；物理手机/IME 属于额外覆盖。没有为产生反馈去跑 Perfetto、bugreport、Full Evidence、旧 GER Unknown 或全部 Provider。
+
+## 第十三轮增补：事件完成与业务结果
+
+继续使用已安装的6.1.0 resolver、Doctor、execution-context、标准 web-click/web-input/restart 和精确 CDP 原状态断言；Windows 为项目 Playwright。沿用先前实际安装/恢复的测试配方，仅增加本轮需要的交易与原回合结果，没有新建 GER Store、清理历史 Unknown 或绕过 pending effect。新游戏隔离由实际 Loader 安装、全新游戏入口和独立浏览器实例/测试包范围确定，不由新 Store 名称推断。
+
+原商店外壳通过 jQuery 执行内部链接。源码与实际点击表明，只看 anchor DOM capture 不够；补入原外壳识别，保留原 handler。随后真实购买已扣钱和入库，而 UI 微任务过早核对仍报 unknown。改到原事件结束后的任务并定向验证；失败来自 UI 项目事件时机，不是 Action 失败或 Tools 缺陷。只用 evaluate 内的 `.click()` 模拟不能覆盖相同的浏览器事件检查点，因此新增 locator 输入回归。`isTrusted` 代表浏览器输入路径，不证明物理手指触控。适合 Skill 的通用提示是：ACK、事件完成、业务 Outcome 分开判断；不要把合成点击覆盖当成实际事件时序证明。具体 jQuery selector、金额和库存合同留项目文档。
+
+战斗演示的原回合实际推进，但测试以 State.length 增长等待而超时。源码确认历史上限为5；使用原 Passage 计数与动作状态联合核对。通用经验是先确认观测指标的合同与上限，不把未增长直接归因为业务或工具失败。`Combat Demo` 及这些具体字段是项目知识，演示不等于自然遭遇或完整结算。
+
+一次诊断脚本把整个 State 赋值表达式作为返回值，Playwright 序列化失败；改为 void 保存引用、只返回必要的原始类型摘要。另有嵌套正则转义错误，均为调用方脚本问题。Doctor 最初遗漏 `--out` 时只有泛化 COMMAND_FAILED/cause unknown，读取 help 后正常；这是可候选改善的参数提示，不足以认定实现缺陷。P2 建议在有余力时让错误提示具体缺失参数，不为本轮修改工具。
+
+当前标准能力与直接 CDP/Playwright 出口够用。未使用 Journey（已有可重复的项目脚本）、Full Evidence、Perfetto、bugreport、泄漏调查或新 Provider：本轮风险已有同场景结果、截图、原状态和恢复读回。没有确认的 Tools 实现缺陷，不提出 Runtime 重构。更多设备、IME、自然遭遇和其它交易类型属于 Coverage，不能自动变成 Skill 或工具开发任务。
+
+购买后的 CDP 网页截图出现工具栏压缩，等待800ms后仍存在，但 DOM 尺寸/transform正常。只补采同一现场 Android 原生 screencap 后，实际设备图正常；标准 Action 重新选择商品也成功。原生截图与网页截图覆盖的合成层不应默认相同，具体原因 Unknown。适合 Skill 的 P1 提示：像素与 bounds 明显矛盾时，先用设备截图交叉核对；不要直接修 CSS，也不要只等待更久并反复截图。此次直接 ADB 出口用于比较平台合成画面，未新建控制工具。原始双图和控件尺寸见 R13 `android-1792228599690`，不归为已确认的 Tools 实现缺陷。

@@ -1,5 +1,39 @@
 const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{buildSync}=require('esbuild');
 const project=path.resolve(process.env.DOL_TEST_WORKSPACE||path.resolve(__dirname,'../../..'));
+async function frameworkMountLifecycle(){
+ const [{createServer},{default:vue}]=await Promise.all([import('vite'),import('@vitejs/plugin-vue')]);
+ const vite=await createServer({configFile:false,root:process.cwd(),plugins:[vue(),{name:'social-test-page',configureServer(server){server.middlewares.use('/__social_framework_test__',(_req,res)=>{res.setHeader('Content-Type','text/html');res.end('<!doctype html><html><body></body></html>')})}}],optimizeDeps:{noDiscovery:true,include:['vue']},server:{host:'127.0.0.1',port:0},logLevel:'error'});
+ const browser=await chromium.launch({channel:'msedge',headless:true});
+ try{await vite.listen();const page=await browser.newPage(),address=vite.httpServer.address();await page.goto(`http://127.0.0.1:${address.port}/__social_framework_test__`);
+  const result=await page.evaluate(async()=>{
+   const [{startSocial},{createHost}]=await Promise.all([import('/src/social/main.ts'),import('/framework/host.ts')]);
+   document.body.innerHTML='<div id="customOverlay" data-overlay="social"><div id="customOverlayContent"><section id="relation-display"><h2 id="npc-relations">Relations</h2><button id="native-action">Native action</button></section></div></div><div id="peer"></div>';
+   let nativeCalls=0;const content=document.querySelector('#customOverlayContent'),nativeNodes=[...content.querySelectorAll('*')];document.querySelector('#native-action').addEventListener('click',()=>nativeCalls++);
+   const host=createHost(window),owner=host.register('social'),peer=host.register('peer');
+   peer.mount({id:'keep',parent:document.querySelector('#peer'),lifetime:'persistent',setup(){}});
+   const ui=startSocial(window,{host,owner}),frame=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));await frame();
+   const initial=!!document.querySelector('.dgs-navigation')&&host.getDiagnostics().mounts.some(m=>m.owner==='social'&&m.id==='social-navigation'&&m.lifetime==='persistent');
+   const identityBefore= nativeNodes.every(node=>node.isConnected&&content.contains(node));document.querySelector('#native-action').click();
+   ui.setEnabled(false);await frame();const disabled=!document.querySelector('.dgs-host')&&nativeNodes.every(node=>node.isConnected&&content.contains(node));
+   ui.setEnabled(true);await frame();const enabledAgain=!!document.querySelector('.dgs-navigation');
+   content.remove();await frame();const closed=!document.querySelector('.dgs-host');document.querySelector('#customOverlay').append(content);await frame();const reopened=!!document.querySelector('.dgs-navigation');
+   const oldOverlay=document.querySelector('#customOverlay'),replacement=document.createElement('div');replacement.id='customOverlay';replacement.dataset.overlay='social';replacement.append(content);oldOverlay.replaceWith(replacement);await frame();
+   const overlayReplacement=!!document.querySelector('.dgs-navigation')&&document.querySelector('.dgs-host')?.parentElement===replacement&&nativeNodes.every(node=>node.isConnected&&content.contains(node));
+   owner.dispose();await frame();ui.refresh();await frame();
+   const ownerDisposed=!document.querySelector('.dgs-host')&&!host.getDiagnostics().mounts.some(m=>m.owner==='social')&&host.getDiagnostics().mounts.some(m=>m.owner==='peer'&&m.id==='keep');
+   const noRemount=!!document.querySelector('#customOverlayContent')&&!document.querySelector('.dgs-host');
+   const nativeAfterDispose=nativeNodes.every(node=>node.isConnected&&content.contains(node));document.querySelector('#native-action').click();
+   const classic=startSocial(window);await frame();const classicPath=!!document.querySelector('.dgs-navigation');classic.destroy();
+   ui.destroy();peer.dispose();host.dispose();
+   return {initial,identityBefore,disabled,enabledAgain,closed,reopened,overlayReplacement,ownerDisposed,noRemount,nativeAfterDispose,nativeCalls,classicPath};
+  });
+  for(const key of ['initial','identityBefore','disabled','enabledAgain','closed','reopened','overlayReplacement','ownerDisposed','noRemount','nativeAfterDispose','classicPath'])assert.equal(result[key],true,key);
+  assert.equal(result.nativeCalls,2,'native event handler survives release/remount');
+  console.log('PASS social persistent Framework mount, disable/enable, overlay reentry, owner cleanup, peer and classic path');
+ }finally{await browser.close();await vite.close()}
+}
+if(process.argv.includes('--framework-mount-only'))frameworkMountLifecycle().catch(error=>{console.error(error);process.exitCode=1});
+else{
 const server=http.createServer((req,res)=>{
  const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
  const file=pathname==='/game'?path.join(project,process.env.DOL_WARDROBE_INTEGRATED?'upstream/game-0.5.11.9/Degrees of Lewdity.html':'releases/source-baseline-0.5.11.9/vanilla.html'):path.join(project,'upstream/game-0.5.11.9',pathname);
@@ -86,3 +120,4 @@ const server=http.createServer((req,res)=>{
  const newErrors=errors.filter(e=>!(process.env.DOL_WARDROBE_INTEGRATED&&e.includes('skybox')&&e.includes('bannerFallbackImage.onload')));assert.deepEqual(newErrors,[]);
  console.log('PASS social: native DOM/state preservation, navigation, mod handler, fallback, lifecycle, phone/tablet, no unrelated rescans.');
 }finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});
+}

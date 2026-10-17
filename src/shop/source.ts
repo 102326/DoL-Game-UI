@@ -3,6 +3,12 @@ export interface ShopFacts {variables:Record<string,unknown>|undefined;definitio
 export function copyShopItem(item:ShopProjection):Readonly<Omit<ShopProjection,'key'>>{return Object.freeze({title:item.title,price:item.price,owned:item.owned})}
 
 const purchaseSelector='.buy-buttons a.link-internal,.buy-buttons button.link-internal,.try-buttons a.link-internal,.try-buttons button.link-internal';
+/** Vanilla linkifyDivs invokes jQuery handlers from this wrapper, before an anchor DOM event. */
+export function purchaseControl(target:Element):Element|null{
+ const direct=target.closest(purchaseSelector);if(direct)return direct;
+ const carrier=target.closest('.buy-button-inner.div-link');if(!carrier||!carrier.closest('.buy-buttons,.try-buttons'))return null;
+ const links=carrier.querySelectorAll('a.link-internal');return links.length===1&&links[0].matches(purchaseSelector)?links[0]:null;
+}
 const text=(node:Element|null)=>node?.textContent?.replace(/^\s*\([^)]*\)\s*/,'').trim()??'';
 
 /** Native controls remain the executors; only display values leave this page source. */
@@ -58,7 +64,7 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
  function select(item:HTMLElement){const links=item.querySelectorAll('a.link-internal');selected=links.length===1?links[0]:null;selectedDisplay=displayIdentity(item)}
  function selectedItem(item:HTMLElement){return selected!==null&&item.contains(selected)}
  function guard(target:Element):'native'|'valid'|'stale'{
-  const control=target.closest(purchaseSelector);
+  const control=purchaseControl(target);
   if(!control||!shop.contains(control))return 'native';
   const f=facts(),binding=bindings.get(control);
   if(disposed||!current()||consumed.has(control)||!bound.includes(control)||!binding||f.variables!==binding.variables||f.definition!==binding.definition||fingerprint()!==binding.quote)return 'stale';

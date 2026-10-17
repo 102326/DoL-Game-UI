@@ -11,11 +11,13 @@ const code=buildSync({entryPoints:['src/shop/source.ts'],bundle:true,format:'iif
   link.replaceWith(link.cloneNode(true));source.read();const fresh=document.querySelector('.buy-buttons a');definition.cost=30;const changedDefinition=source.guard(fresh);definition.cost=15;
   current=false;const stalePage=source.guard(fresh);current=true;
   const unknown=source.guard(document.querySelector('#unknown'));source.destroy();const disposed=source.guard(fresh);
+  const wrapper=document.createElement('div');wrapper.className='buy-button-inner div-link';const wrapped=document.createElement('a');wrapped.className='link-internal';wrapped.textContent='Native wrapper';wrapper.append(wrapped);document.querySelector('.buy-buttons').replaceChildren(wrapper);
+  const wrapperSource=ShopSourceTest.createShopSource(shop,()=>true,()=>({variables,definition}));wrapperSource.read();const wrapperValid=wrapperSource.guard(wrapper),wrapperReplay=wrapperSource.guard(wrapped);wrapperSource.destroy();
   const panel=document.querySelector('.clothing-details');panel.innerHTML='<div class="dgshop-detail-body"></div><div class="dgshop-purchase"><button>Unknown Mod operation</button></div>';
   const fallback=ShopSourceTest.createShopSource(shop,()=>true,()=>({variables,definition}));const footerOnly=fallback.read().hasDetails;fallback.destroy();
-  return {projection:first.items,selected:projection.selected,staleMoney,stillStale,valid,replay,changedDefinition,stalePage,unknown,disposed,footerOnly};
+  return {projection:first.items,selected:projection.selected,staleMoney,stillStale,valid,replay,changedDefinition,stalePage,unknown,disposed,footerOnly,wrapperValid,wrapperReplay};
  });
  assert.deepEqual(result.projection,[{key:'shop:1',title:'Coat',price:'£15',owned:'Coat'}]);assert.equal(result.selected.key,'shop:1');
  for(const k of ['staleMoney','stillStale','replay','changedDefinition','stalePage','disposed'])assert.equal(result[k],'stale',k);
- assert.equal(result.valid,'valid');assert.equal(result.unknown,'native');assert.equal(result.footerOnly,true);console.log('PASS source display projection, stale quote/definition/page, no rebind/replay, unknown native control and footer');
+ assert.equal(result.wrapperValid,'valid');assert.equal(result.wrapperReplay,'stale');assert.equal(result.valid,'valid');assert.equal(result.unknown,'native');assert.equal(result.footerOnly,true);console.log('PASS source display projection, stale quote/definition/page, no rebind/replay, unknown native control and footer');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,6 +1,6 @@
 // Controlled 40-item UI fixture supplements the real game's small inventory.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const root=path.resolve(__dirname,'..'),out=path.join(root,'tests/artifacts/stone-free-r12','panel-'+Date.now());fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(__dirname,'..'),out=path.join(root,'tests/artifacts/stone-free-r13','panel-'+Date.now());fs.mkdirSync(out,{recursive:true});
 const entry=path.join(out,'entry.ts'),importPath=file=>JSON.stringify(path.join(root,file).replaceAll('\\','/'));
 fs.writeFileSync(entry,`import {createApp,reactive} from 'vue';import Panel from ${importPath('src/wardrobe/WardrobePanel.vue')};import ${importPath('src/wardrobe/style.css')};import {createHost} from ${importPath('framework/host.ts')};import {referenceItem} from ${importPath('src/wardrobe/reference.ts')};
 const host=createHost(window),binding=host.binding(),items=Array.from({length:40},(_,i)=>({key:'upper:'+i,name:'Fixture shirt '+i,colour:'blue',warmth:6,durability:100,lewd:200,outfit:'单件',detail:'read only fixture',icons:[],traits:[],splittable:false}));let available=true,wearCalls=0;
@@ -13,17 +13,17 @@ const noop=()=>{},app=createApp(Panel,{model,reference:{binding,read(key){const 
  try{
   const p=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
   await p.setContent('<!doctype html><div class="dgw-root" id="fixture"></div><button id="outside">Original fixture control</button>');await p.addStyleTag({path:path.join(out,'bundle/style.css')});await p.addStyleTag({content:'.dgw-items{max-height:260px!important}'});await p.addScriptTag({path:path.join(out,'bundle/index.js')});
-  const refs=p.locator('.dgw-reference-action'),list=p.locator('.dgw-items');await refs.first().click();await p.locator('.dgw-reference-chip').waitFor();await p.locator('.dgw-reference-chip input').uncheck();
+  await p.evaluate(()=>document.documentElement.setAttribute('data-dgu-visualMotion',''));const refs=p.locator('.dgw-reference-action'),list=p.locator('.dgw-items');await refs.first().click();await p.locator('.dgw-reference-chip').waitFor();await p.locator('.dgw-reference-chip input').uncheck();
   const selectedKey=await refs.nth(12).getAttribute('data-reference-key');await refs.nth(12).click();await p.locator('.dgw-reference-compare').waitFor();const top=await list.evaluate(n=>n.scrollTop);assert.ok(top>0);
   assert.match(await p.locator('#dgw-reference-title').innerText(),/没有差异/);assert.match(await p.locator('.dgw-reference-compare footer').innerText(),/隐藏属性/);assert.equal(await p.evaluate(()=>fixture.wearCalls()),0);
   await p.locator('[data-reference-back]').click();assert.equal(await list.evaluate(n=>n.scrollTop),top);assert.equal(await p.evaluate(()=>document.activeElement?.dataset.referenceKey),selectedKey);assert.equal(await p.locator('.dgw-reference-chip').count(),1);
-  await p.locator('.dgw-reference-chip input').check();await refs.nth(12).click();await p.locator('[data-reference-back]').evaluate(n=>n.click());await p.waitForTimeout(550);assert.equal(await p.locator('.dgw-reference-compare,.dgw-reference-flight').count(),0);assert.equal(await list.evaluate(n=>n.scrollTop),top);
+  await p.locator('.dgw-reference-chip input').check();await refs.nth(12).click();await p.locator('[data-reference-back]').evaluate(n=>n.click());await p.waitForTimeout(550);assert.equal(await p.locator('.dgw-reference-compare,.sf-source-trace').count(),0);assert.equal(await list.evaluate(n=>n.scrollTop),top);
   await p.evaluate(()=>{document.documentElement.setAttribute('data-dol-midnight','');document.documentElement.setAttribute('data-dgu-visualMotion','')});
   await refs.nth(12).click();assert.ok(await p.evaluate(()=>document.getAnimations().some(a=>a.effect?.target?.classList?.contains('dgw-reference-compare'))));
   await p.evaluate(()=>document.documentElement.removeAttribute('data-dgu-visualMotion'));await p.waitForFunction(()=>!document.getAnimations().some(a=>a.effect?.target?.classList?.contains('dgw-reference-compare')));await p.locator('[data-reference-back]').click();
   await refs.nth(12).click();assert.equal(await p.evaluate(()=>document.getAnimations().filter(a=>a.effect?.target?.classList?.contains('dgw-reference-compare')).length),0);
-  await p.evaluate(()=>fixture.expire());await p.waitForFunction(()=>!document.querySelector('.dgw-reference-compare'));assert.equal(await p.locator('.dgw-reference-flight').count(),0);
-  await p.evaluate(()=>fixture.host.invalidateScene());await p.waitForFunction(()=>!document.querySelector('.dgw-reference-chip'));await p.evaluate(()=>fixture.app.unmount());assert.equal(await p.locator('.dgw-reference-chip,.dgw-reference-compare,.dgw-reference-flight,.dgw-reference-status').count(),0);
+  await p.evaluate(()=>fixture.expire());await p.waitForFunction(()=>!document.querySelector('.dgw-reference-compare'));assert.equal(await p.locator('.sf-source-trace').count(),0);
+  await p.evaluate(()=>fixture.host.invalidateScene());await p.waitForFunction(()=>!document.querySelector('.dgw-reference-chip'));await p.evaluate(()=>fixture.app.unmount());assert.equal(await p.locator('.dgw-reference-chip,.dgw-reference-compare,.sf-source-trace,.dgw-reference-status').count(),0);
   assert.deepEqual(errors,[]);report.status='passed';report.scrollRestored=top;report.wearCalls=await p.evaluate(()=>fixture.wearCalls());console.log(out);
  }catch(e){report.status='failed';report.error=e.message;throw e}finally{await browser.close();fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(report,null,2))}
 })().catch(e=>{console.error(e);process.exitCode=1});
