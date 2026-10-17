@@ -89,3 +89,9 @@ Windows 另完成购买并穿戴和触手测试回合，严格区分原结果、
 从R16最终957122d继续。Host0.1.3-experimental / UI lab17精确配对，公共协议0.1-experimental和UI API1不变；玩家交付仅H/U。固定源码3c97825导出重建，最终字节与Windows、Android真实Loader运行成员一致。两平台由实际2.7安装升级、读取新建测试存档、检查偏好并回退2.7；Android原清单/隐藏/偏好及其它存档details恢复核对通过。
 
 衣柜等原动作接缝作有限来源审查，复用R15/16业务证据，没有制造统一Action层。共同配置告警进一步确认运行期衣物插件参数追加data会影响boot比较；其它共同日志仍保持边界。参照/动态关闭/总开关/Hub短循环通过，不称物理触控或长期性能。正式配对及稳定协议承诺仍需负责人决定，没有推送、合并、Tag或发布。详见R17报告和政策。
+
+## RC-01：最低Host依赖与最终附件（2026-10-17）
+
+本轮当前依据为STONE_FREE_3.0_RC01_POLICY.md与STONE_FREE_3.0_RC01.md，取代R17精确配对建议。最终产品源码0df554ab1802d4ee37ea7ed89ec632d1dd6db101，UI真正生成为3.0.0-rc.1；Host因包内说明改变生成唯一0.1.4，不覆盖0.1.3，运行代码不变。最低Host取有R15场景桥保障的0.1.2，范围采用Loader已验证的 `>=0.1.2-experimental && <0.2.0`，明确prerelease比较与运行时非包版本门禁的限制。
+
+Windows推荐/最低Host两组、Android推荐组使用同一最终RC UI字节完成实际Loader升级、原生存档与偏好保全、衣柜/Hub/开关及回退。Android恢复原清单/偏好，原槽details保持。公开UI声明仅DoL0.5.12.13，Host不继承白名单；SDK不机械跟随最新Host提高下限。当前为Ready for Owner Approval，未推送、合并、Tag或发布。

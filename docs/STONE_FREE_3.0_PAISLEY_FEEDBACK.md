@@ -195,3 +195,11 @@ ModHub已有兼容检查直接给出声明重叠和coverage，不另写全套扫
 - ModHub配置差异不能直接等于“没重启”。实际银商addonPlugin在运行期被ModdedClothesAddon加入解析后的data，移除该附加字段后等于ZIP声明；实际运行与保存顺序也不同。通用经验是运行元数据可能已被来源插件扩充；具体字段、版本和比较方法留在项目Integration文档。这是第三方诊断口径边界，不是Paisley Park采集实现缺陷。
 
 本轮没有确认的Dev Tools实现缺陷。Skill建议只补上述P1观察/原因分离和P2错误分类候选，与R16关于Unknown/共享目标的反馈去重。没有卡顿/崩溃/持续增长证据，因此未采Full Evidence、Perfetto、bugreport或泄漏调查；短循环mount相等不证明长期稳定。新WebView、物理手机和其它版本只记Coverage，不自动开工。
+
+## RC-01 增补：版本范围必须询问真实Loader
+
+本轮用已安装6.1.0 resolver、Environment、execution-context、Action重启/点击和CDP原状态/Loader成员，项目Playwright继续负责精确浏览器断言。没有新建工具环境、GER Goal、版本仲裁器或修改工具仓库。
+
+实际getSemVerTools显示空格组合范围未按预期产生上界；显式&&正常产生上下界，但prerelease解析/比较不能当成npm semver。真实0.1.1与0.1.2顶层方法名称相同，晚到jQuery和pending scene行为不同；因此最低依赖需要语义证据，而非当前最大版本或方法存在检查。相同RC UI字节在实际Loader搭配最低0.1.2和推荐0.1.4，完成升级/存档/回退是更有价值的正例。
+
+通用Skill可强化P1提示：查目标系统自己的版本解析和实际历史合同；依赖声明、安装/实际执行、Runtime协议/能力检查三者不能混同。具体&&语法、Host版本、桥接与GameVersion值留在本项目知识，不要求所有Mod照搬。候选语法的失败不是Paisley Park实现缺陷，仍保留原结果；没有为了当前任务修Loader或添加新的通用版本框架。其它能力与证据边界沿用R17，未增加Full Evidence、Perfetto或bugreport。

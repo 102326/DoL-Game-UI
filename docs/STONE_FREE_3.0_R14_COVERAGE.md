@@ -105,3 +105,9 @@ R16最终提交957122d、正式2.7源965afcf保留；最终H/U源码固定于3c9
 | 共同告警 | 配置差异的一项确认为运行期addonPlugin附加解析data；Windows顺序也不同，2.7同样可见 | 不再笼统称UI升级失败；其它TypeError/Patch等原因保持Unknown |
 
 正式2.7成熟功能没有因R17删除。原通用服务的主消费者清理、低频页、原版回退及经典无Host启动继续沿用，相关运行成员未改变；不为矩阵填满而重写。当前本地结论为RC Ready with Limitations，精确配对/正式支持承诺待负责人决定。详见[R17评审](STONE_FREE_3.0_R17.md)和[政策](STONE_FREE_3.0_R17_POLICY.md)。
+
+## RC-01 增补（2026-10-17）
+
+沿用本矩阵，不新增功能清单。UI rc.1最终附件与R17相比仅运行版本标识、boot/依赖及玩家说明变化；Host0.1.4与0.1.2/0.1.3运行成员相同。最终固定源码0df554a，推荐/最低Host的Windows真实安装和推荐组Android均完成2.7升级/回退、存档和偏好核对、衣柜参照及Hub短循环。无研究同伴前置；原版API1、成熟低频能力和经典构建合同不变，复用有效历史证据。
+
+最低依赖为 `>=0.1.2-experimental && <0.2.0`，公共协议仍0.1-experimental，实际允许与支持组合分开；0.5.11.9不进入本RC GameVersion声明，Host本身不设游戏白名单。其它未覆盖边界仍记Not validated。新Hub位置实际落盘/回退未补测，不冒充已验证。详见[RC-01](STONE_FREE_3.0_RC01.md)与[当前政策](STONE_FREE_3.0_RC01_POLICY.md)；状态为Ready for Owner Approval，尚未公开。
