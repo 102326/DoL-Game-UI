@@ -9,7 +9,8 @@ export function referenceShelf(host:Host,owner:Participant){
    const card=document.createElement('article');card.className='sf-reference-copy';
    copy.forEach((line,i)=>{const n=document.createElement(i?'p':'h3');n.textContent=line;card.append(n)});
    const note=document.createElement('p');note.className='sf-reference-origin';
-   note.textContent=host.binding().generation===generation?'来自本场景的只读快照。仍需核对当前目录，不提供业务操作。':'已离开来源场景。这份只读快照可能已过时，不提供穿戴、购买或恢复旧场景操作。';
+   const origin=()=>{note.textContent=host.binding().generation===generation?'来自本场景的只读快照。仍需核对当前目录，不提供业务操作。':'已离开来源场景。这份只读快照可能已过时，不提供穿戴、购买或恢复旧场景操作。'};
+   origin();context.onScene(origin);note.setAttribute('role','status');
    const button=document.createElement('button');button.type='button';button.textContent='清除快照';button.onclick=()=>{if(context.isCurrent()){views.get(id)?.();views.delete(id)}};
    context.element.append(card,note,button);return()=>{button.onclick=null};
   }}));

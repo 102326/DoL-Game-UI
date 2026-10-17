@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {execFileSync}=require('node:child_process'),{createHash}=require('node:crypto'),{chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'tests/artifacts/stone-free-foundation','author-kit-'+Date.now());fs.mkdirSync(out,{recursive:true});
 const kit=path.join(out,'kit'),project=path.join(out,'KitAuthor'),checks=[];
-const archive=path.join(root,'dist/framework/StoneFreeAuthorKit-0.1.1-experimental.source.zip');
+const archive=path.join(root,'dist/framework/StoneFreeAuthorKit-0.1.2-experimental.source.zip');
 function run(command,args,cwd=root){try {const stdout=execFileSync(command,args,{cwd,encoding:'utf8',windowsHide:true});fs.appendFileSync(path.join(out,'commands.log'),JSON.stringify({command,args,cwd,status:0,stdout})+'\n');return stdout}
  catch(e){fs.appendFileSync(path.join(out,'commands.log'),JSON.stringify({command,args,cwd,status:e.status,stdout:e.stdout,stderr:e.stderr})+'\n');throw e}}
 (async()=>{
@@ -12,7 +12,7 @@ from pathlib import Path
 z=zipfile.ZipFile(sys.argv[1]); names=z.namelist()
 expected={'LICENSE','README.md','stone-free-author-kit.json','scripts/framework-factory.mjs','framework/contracts.ts','framework/vue.ts','framework/connect.ts','framework/factory/Panel.vue','framework/factory/index.html','framework/factory/preview.ts','framework/factory/vite.config.mjs','framework/factory/package.py'}
 assert len(names)==len(expected) and set(names)==expected and z.testzip() is None
-m=json.loads(z.read('stone-free-author-kit.json')); assert m['kind']=='source-kit' and m['sdkProtocol']=='0.1-experimental' and m['version']=='0.1.1-experimental'
+m=json.loads(z.read('stone-free-author-kit.json')); assert m['kind']=='source-kit' and m['sdkProtocol']=='0.1-experimental' and m['version']=='0.1.2-experimental'
 assert set(m['files'])==expected-{'stone-free-author-kit.json'}
 assert all(hashlib.sha256(z.read(n)).hexdigest()==h for n,h in m['files'].items())
 p=Path(sys.argv[2]); p.mkdir(); z.extractall(p)

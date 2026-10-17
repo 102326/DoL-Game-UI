@@ -142,12 +142,13 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   let done=0,removed=0,skipped=0,reason='',expected=plan.fingerprint;const skippedReasons:string[]=[];
   const definitions=JSON.stringify(fresh.setup.clothes),gameLocation=fresh.variables.location;
   let expectedWorn=JSON.stringify(fresh.worn);
+  const currentVariables=()=>root.SugarCube?.State?.variables??root.State?.variables??root.V;
   s.state.busy=true;s.original.inert=true;s.view!.actions.inert=true;s.view!.equipment.inert=true;s.view!.services.inert=true;
   const count=(inventory:Inventory)=>Object.values(inventory).reduce<number>((n:number,a:unknown)=>n+(Array.isArray(a)?a.length:0),0);
   try{
    for(const e of plan.entries){
     const current=snapshot(root);
-    if(active!==s||!isCurrentPassage(s)||!current||current.inventory!==plan.inventory||current.location!==plan.location||current.variables.location!==gameLocation||JSON.stringify(current.inventory)!==expected||JSON.stringify(current.setup.clothes)!==definitions||JSON.stringify(current.worn)!==expectedWorn){reason='衣柜、服装定义或页面发生变化，剩余操作已停止';break}
+    if(active!==s||!isCurrentPassage(s)||!current||current.variables!==fresh.variables||current.inventory!==plan.inventory||current.location!==plan.location||current.variables.location!==gameLocation||JSON.stringify(current.inventory)!==expected||JSON.stringify(current.setup.clothes)!==definitions||JSON.stringify(current.worn)!==expectedWorn){reason='衣柜、服装定义或页面发生变化，剩余操作已停止';break}
     const index=(current.inventory as ClothingSlots)[e.slot]?.indexOf(e.raw)??-1;
     if(index<0){skipped++;skippedReasons.push(`${e.name}：已随关联操作移除`);continue}
     if(descriptor(current,e.slot,e.raw)!==e.descriptor){reason='服装定义对象已变化，剩余操作已停止';break}
@@ -175,8 +176,8 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
    }
   }catch{reason='处理异常，剩余操作已停止'}
   finally{
-   // Never leave the original wardrobe in destructive mode.
-   native.resetMode(fresh.variables);
+   // Restore only the State and mode still owned by this operation.
+   native.resetMode(fresh.variables,plan.mode,currentVariables());
    s.state.busy=false;s.original.inert=false;if(s.view!.equipment)s.view!.equipment.inert=false;if(s.view!.services)s.view!.services.inert=false;if(s.view!.actions)s.view!.actions.inert=false;s.plan=undefined;s.state.pending=[];s.state.pendingMinutes=null;s.state.progress='';
    if(active===s){try{native.refreshList()}catch{reason+=' 原版列表刷新失败'}refresh(s);s.state.message=plan.mode==='separateOutfits'?`已剪开 ${done} 套，跳过 ${skipped} 项。${reason}${skippedReasons.join('；')}`:plan.mode==='repair'?`已修理 ${done} 件，跳过 ${skipped} 项。${reason}${skippedReasons.join('；')}`:plan.mode==='transfer'?`已转移 ${done} 件，跳过 ${skipped} 项。${reason}${skippedReasons.join('；')}`:`已丢弃 ${done} 个选中项（含关联部件共 ${removed} 件），跳过 ${skipped} 项。${reason}${skippedReasons.join("；")}`;}
   }

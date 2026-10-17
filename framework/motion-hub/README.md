@@ -6,8 +6,8 @@
 
 使用研究构建输出的两个包：
 
-1. `StoneFreeHost-0.1.1-experimental.mod.zip`
-2. `StoneFreeMotionHub-0.1.2-experimental.mod.zip`
+1. `StoneFreeHost-0.1.2-experimental.mod.zip`
+2. `StoneFreeMotionHub-0.1.3-experimental.mod.zip`
 
 保留 ZIP，作为两个独立 Mod 导入测试环境，Host 在前。不需要安装其它研究工作台，不替换正式 `DoLGameUI`。Host 协议仍为 `0.1-experimental`；旧实验 Host 请先停用，不能同时加载多个实现。
 

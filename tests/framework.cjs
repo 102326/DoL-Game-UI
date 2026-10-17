@@ -150,6 +150,8 @@ async function check(name, callback) {await callback();tests.push(name);console.
   for(const name of ['native-status','comparison']){await p.addStyleTag({content:read(`dist/framework/${name}/style.css`)});await p.addScriptTag({content:read(`dist/framework/${name}/index.js`)})}
   await check('consumers loaded before Host wait without altering the page',async()=>assert.equal(await p.locator('[data-sf-owner]').count(),0));
   await p.addScriptTag({content:read('dist/framework/host/index.js')});await p.getByRole('button',{name:'状态速览',exact:true}).waitFor();
+  // This static component fixture has no game bridge; explicitly complete its synthetic scene.
+  await p.evaluate(()=>{if(DoLUiHost.binding().isCurrent())throw Error('Unbridged bootstrap must stay pending');DoLUiHost.sceneReady()});
   await check('packaged consumers operate independently with copied public data',async()=>{
    assert.equal(await p.evaluate(()=>!!window.DoLGameUI),false);
    await p.getByRole('button',{name:'状态速览',exact:true}).click();assert.equal(await p.locator('dialog[open] dd').first().innerText(),'4');
@@ -245,6 +247,7 @@ async function check(name, callback) {await callback();tests.push(name);console.
    const q=await browser.newPage();q.setDefaultTimeout(5000);await q.setContent('<main></main>');
    await q.addStyleTag({content:read('dist/framework/comparison/style.css')});
    for(const name of ['host','comparison'])await q.addScriptTag({content:read(`dist/framework/${name}/index.js`)});
+   await q.evaluate(()=>DoLUiHost.sceneReady());
    await q.getByRole('button',{name:'状态对照',exact:true}).click();
    assert.match(await q.locator('dialog[open] .sf-subtle').first().innerText(),/不可用/);
    await q.evaluate(()=>{window.probe=DoLUiHost.register('AuthorC');probe.provide({id:'bad',schema:'dol.status.experimental',read:()=>null})});

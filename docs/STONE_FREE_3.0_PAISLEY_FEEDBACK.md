@@ -150,3 +150,18 @@
 Journey未使用：已有可重复的真实Loader项目脚本，需要精确原金额/库存/目标和包体断言，继续复用成本更低。没有因此缺少本轮前后结果，但脚本不等于通用Journey制品。没有持续卡顿或泄漏证据，不调用Full Evidence、Perfetto、bugreport、内存平台或更多设备矩阵。未碰历史GER Pending/Unknown；新游戏隔离有原入口和安装范围依据，非换Store绕过。
 
 结论：本轮没有确认的Paisley Park实现缺陷。优先去重保留可见性/Outcome证据边界，其次补web-input类型提示；不自动开工具改造。手机/IME、其它WebView、自然遭遇、其它交易和长时间运行为Coverage。最终两端收据、实际工具出口和恢复结果见`STONE_FREE_3.0_R14.md`。
+
+
+## 第十五轮增补：锁屏、历史快照与有限工具出口
+
+本轮复用已安装6.1.0 resolver/Doctor、execution-context、标准restart/web-click、精确CDP断言；Windows用项目Playwright，Android用同设备ADB screencap。源码修改、typecheck和打包仍归UI项目。没有调用新GER、换Store、清除历史Effect或为未决操作找替代路径。
+
+两次WebView绑定在启动阶段超时，之后先查原生前台/keyguard/power，确认设备睡眠且锁屏。标准unlock安全拒绝并要求人工认证，用户解锁后重新绑定完成；失败发生在安装和存档写入前。这个环境事实比从CDP超时猜测应用死锁更充分。适合Skill的P1提示是：绑定超时且没有Document时，先核对原生前台/锁屏/睡眠，再决定重试；不绕过认证、不把超时直接归为工具或UI缺陷。与已有目标身份原则合并，不创建新恢复系统。
+
+原生IDB保存实际取历史时点。测试先改V却未提交原游戏历史，导致保存metadata无测试名称；保护拒绝删除无法确认归属的槽，保留cleanup-failed。后续在新独立浏览器中通过原Engine提交时点后完成，不重派旧槽。具体IDB/历史合同是Soft & Wet Integration知识；通用Skill可只保留“操作前确认原真值来源和准备动作的提交边界；清理也需身份复核”，不能写成所有游戏都必须用Engine。
+
+直接CDP出口用于原状态、Slot身份、metadata和生命周期断言；文本导入超过web-input1024限制，且原控件/handler已观察，使用原textarea setter + input/change，再通过标准web-click点原导入按钮。不是物理输入。有限长度的限制没有阻塞本轮，也不要求新增Provider；可在控件类型提示（R14已有P2）旁补长度说明。异步eval须显式async包装，初次语法失败来自调用方，不是Tools实现缺陷。
+
+Journey未使用：原有项目脚本已经处理真实Loader、精确包体、空槽身份和恢复读回；复用更便宜，留下了截图、动作记录和原状态结果。未产出通用Journey制品，但不缺本轮结果证据。没有持续性能/崩溃问题，未运行Full Evidence、Perfetto、bugreport或泄漏调查。独立作者Kit只因版本配对变化做了定向验证，没有重跑既有相同输入的真实Loader矩阵。
+
+结论：没有确认的Paisley Park实现缺陷。P1去重提示原生状态与绑定错误归属；P2可澄清web-input长度边界。项目特有的State/IDB、Host bridge和`:onloadsave`提供方留在UI文档；更多设备、组合和Provider只是Coverage，不自动开工工具架构。

@@ -1,8 +1,8 @@
 # Stone Free Host：研发原型
 
-这组离线 Mod 用来检验 3.0 的公共接缝，不是 Soft & Wet 3.0 正式版。现有 UI 2.7.0、偏好、存档和 API v1 没有改动。协议 `0.1-experimental` 可能在研究后调整，请勿作为稳定第三方依赖发布。
+这组离线 Mod 用来检验 3.0 的公共接缝，不是 Soft & Wet 3.0 正式版。正式 2.7 制品不改；本研究分支保留 API v1 和存档格式，R15 对共享衣柜异步清理作了定向加固。协议 `0.1-experimental` 可能在研究后调整，请勿作为稳定第三方依赖发布。
 
-正式目标已确定为独立 Framework Host 与独立官方 UI 消费者。当前研究包版本为 `0.1.1-experimental`，消费者要求同版本 Host；协议版本仍为 `0.1-experimental`。首版按明确配对安装和更新，不承诺任意版本独立升级。SDK 和 Author Kit 只用于开发，不是玩家 Runtime。
+正式目标已确定为独立 Framework Host 与独立官方 UI 消费者。当前研究包版本为 `0.1.2-experimental`，消费者要求同版本 Host；协议版本仍为 `0.1-experimental`。首版按明确配对安装和更新，不承诺任意版本独立升级。SDK 和 Author Kit 只用于开发，不是玩家 Runtime。
 
 Loader 的依赖报告不能替代消费者接入检查。缺少或不支持的 Host 会使消费者退让；不要同时启用多份 Host。停用 Mod 后需要重启，消费者主动退出只释放自己的资源，不等于整包热卸载。
 
@@ -30,7 +30,7 @@ Loader 的依赖报告不能替代消费者接入检查。缺少或不支持的 
 
 使用仓库已有锁文件与依赖：`npm run framework:build`。产物位于 `dist/framework/`，与正式 UI 打包路径分开。`npm run framework:test` 检查生命周期、失效、资源争用、Vue 消费者和非参与者反例。无需重装依赖来使用现有环境。
 
-`framework/contracts.ts` 是本轮研究接口。`createHost()` 不读取游戏业务状态，只管理参与者、独占资源和有归属的挂载。`boot.ts` 接入 SugarCube 生命周期。公共对象不包含 Vue 实例、官方 Store 或内部节点索引。
+`framework/contracts.ts` 是本轮研究接口。`createHost()` 不读取游戏业务状态，只管理参与者、独占资源和有归属的挂载。`boot.ts` 接入游戏的 jQuery 场景事件。API ready 仅表示公共对象可用，场景绑定需另行就绪；jQuery 晚到时最多等待 30 秒，未就绪期间场景操作退让。`:onloadsave` 来自所测 DoL 的存档配置，不是 SugarCube 的稳定公共事件。详见 [R15](../docs/STONE_FREE_3.0_R15.md)。公共对象不包含 Vue 实例、官方 Store 或内部节点索引。
 
 ## 挂载和失效
 
@@ -85,7 +85,7 @@ Host 退出时，仍然安装的消费者可以等待新 Host，这是预期行�
 
 ## 最小作者配方
 
-源码仓库的[作者指南](../docs/STONE_FREE_3.0_AUTHOR_GUIDE.md)说明完整流程。`framework:build` 还生成 `StoneFreeAuthorKit-0.1.1-experimental.source.zip`：只含配方、SDK、模板及许可证，解压后可在完整 UI 仓库之外创建作者项目。它不是 Mod，不要导入 ModLoader；运行中的 Host 由单独的 `.mod.zip` 提供。
+源码仓库的[作者指南](../docs/STONE_FREE_3.0_AUTHOR_GUIDE.md)说明完整流程。`framework:build` 还生成 `StoneFreeAuthorKit-0.1.2-experimental.source.zip`：只含配方、SDK、模板及许可证，解压后可在完整 UI 仓库之外创建作者项目。它不是 Mod，不要导入 ModLoader；运行中的 Host 由单独的 `.mod.zip` 提供。
 
 运行 `node scripts/framework-factory.mjs create NEW_DIRECTORY ModId`，生成由作者拥有的 Vue/TS 项目、独立 ZIP 打包脚本和实验 SDK 快照。已有目录会拒绝，不覆盖作者文件。自行安装声明的依赖并保存自己的锁文件后，使用生成项目的 `npm run package`。
 

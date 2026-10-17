@@ -5,7 +5,7 @@ from shop_package import add_shop_patches
 
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
-version = '0.1.1-experimental'
+version = '0.1.2-experimental'
 def write_archive(name, target, files):
     with zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED) as z:
         for filename, payload in sorted(files.items()):
@@ -24,7 +24,7 @@ for directory, name in packages:
         dependencies.append({'modName': 'StoneFreeHost', 'version': '=' + version})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
-    package_version = '3.0.0-lab.14' if directory == 'official-ui' else '0.1.2-experimental' if directory == 'motion-hub' else version
+    package_version = '3.0.0-lab.15' if directory == 'official-ui' else '0.1.3-experimental' if directory == 'motion-hub' else version
     boot = dict(name=name, version=package_version, nickName=name + ' (Research)', scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)

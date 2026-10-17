@@ -20,6 +20,8 @@ export function createNativeWardrobe(root:NativeWidgetHost,timing:WardrobePerfor
   setSlot(slot:string){return execute(`<<set $lastWardrobeSlot=${JSON.stringify(slot)}>>`,'native.category')},
   refreshList(){return execute('<<replace "#wardrobeList">><<wardrobeContents>><</replace>>','native.list')},
   message(container:HTMLElement){return container.querySelector('#wardrobewear')?.textContent?.trim()||''},
-  resetMode(variables:WardrobeVariables){variables.wardrobeOption='wear'}
+  resetMode(variables:WardrobeVariables,expectedMode:string,currentVariables:WardrobeVariables|undefined){
+   if(variables===currentVariables&&variables.wardrobeOption===expectedMode)variables.wardrobeOption='wear';
+  }
  };
 }
