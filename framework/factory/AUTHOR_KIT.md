@@ -1,6 +1,6 @@
 # Stone Free 作者源码包
 
-`0.1.3-experimental`，协议 `0.1-experimental`。供作者创建和维护独立 Vue Mod。源码和实验协议可能继续调整，尚不是稳定 SDK。
+`0.1.4-experimental`，协议 `0.1-experimental`。供作者创建和维护独立 Vue Mod。源码和实验协议可能继续调整，尚不是稳定 SDK。
 
 这是开发用 `.source.zip`，不是游戏 Mod，不要导入 ModLoader。解压到新的开发目录后，在该目录运行：
 
@@ -12,7 +12,7 @@ node scripts/framework-factory.mjs create E:/my-mods/ReadingNotes ReadingNotes
 
 `npm run dev` 启动普通 Vite 组件预览。结束预览后，用 `npm run check` 检查类型，`npm run package` 构建 `dist/ReadingNotes-0.1.0.mod.zip`。预览不含游戏或模拟 Host，不能代替实际游戏检查。
 
-生成的游戏 Mod 依赖 `StoneFreeHost 0.1.3-experimental`，由单独的 Host `.mod.zip` 提供运行能力，不依赖完整官方 UI 或共享 Vue 包。安装到测试游戏时不要解压 `.mod.zip`。源码包本身不提供或下载游戏、ModLoader、APK 和存档。
+生成的游戏 Mod 依赖 `StoneFreeHost >=0.1.2-experimental && <0.2.0`，由单独的 Host `.mod.zip` 提供运行能力，不依赖完整官方 UI 或共享 Vue 包。安装到测试游戏时不要解压 `.mod.zip`。源码包本身不提供或下载游戏、ModLoader、APK 和存档。
 
 ## 修改与可选组合
 
@@ -42,3 +42,5 @@ node scripts/framework-factory.mjs upgrade-sdk E:/my-mods/ReadingNotes
 视图和命令需先检查 `host.getCapabilities?.()`。命令 `returned` 只表示提供者返回见证，须按领域合同判断结果；`unknown` 不可自动重试。资源租约只协调主动参与者，不是权限、ModLoader 或全局输入管理器。
 
 `stone-free-author-kit.json` 记录本包文件摘要，供核对本地来源，不能证明发布者身份、代码安全或游戏兼容性。请先检查来源再运行脚本。当前源码包按白名单导出，不包含官方 UI 实现、内部测试、证据、截图和设备数据。
+
+SDK源码包版本与最低Host版本分开。此配方以0.1.2起的场景桥保证为基线，不因最新Host或官方UI版本更新自动抬高下限；新增能力才需要重新核对最低版本。协议仍是0.1-experimental；范围允许安装不等于所有未来版本已经验证。

@@ -1,12 +1,12 @@
 # DoL Soft & Wet Game UI — Stone Free
 
-本地评审候选 `3.0.0-lab.17`，配对 `StoneFreeHost-0.1.3-experimental.mod.zip`。这不是正式 RC 或稳定版。技术名仍为 DoLGameUI，原有 UI API v1 保留。
+本地 RC-01 候选 `3.0.0-rc.1`，推荐 `StoneFreeHost-0.1.4-experimental.mod.zip`，最低 Host 为 `0.1.2-experimental`。等待负责人批准，尚未公开发布；不是稳定版。技术名仍为 DoLGameUI，原有 UI API v1 保留。
 
 ## 安装与升级
 
 1. 备份游戏存档，保留可回退的 Soft & Wet 2.7 安装包。
-2. 在 ModLoader 中停用旧 DoLGameUI，安装并启用配对 Host 和本 UI。Host 排在 UI 前面。
-3. 同时只启用一份 DoLGameUI 和一份 Host。需要 ModLoader >=2.100.0、TweeReplacer >=1.0.0；游戏声明限于 0.5.11.9 / 0.5.12.13。
+2. 在 ModLoader 中停用旧 DoLGameUI，安装并启用受支持的 Host 和本 UI。Host 排在 UI 前面。
+3. 同时只启用一份 DoLGameUI 和一份 Host。需要 ModLoader >=2.100.0、TweeReplacer >=1.0.0；本次官方 UI 的 GameVersion 声明仅为 0.5.12.13。
 4. 按加载器提示重启，再载入进度。安装成功、依赖报告和游戏实际加载是不同的检查。
 
 玩家只需要 Host 与本 UI 两包。NativeStatus、独立 Motion Hub、Wardrobe Reference、Factory 和 Author Kit 都不是运行前置。
@@ -21,7 +21,7 @@
 
 ## 偏好与回退
 
-主题、字号、密度、侧栏、各页开关与存档显示偏好继续使用原键。旧悬浮位置不转换为新 Hub 位置，也不删除。实验工作台布局仍是独立研究数据，不是本包必需配置。
+主题、字号、密度、侧栏、各页开关与存档显示偏好继续使用原键。旧悬浮位置不转换为新 Hub 位置，也不删除。新 Hub 位置数据回退后不主动删除；本轮未新增实际拖动落盘/回退读回验证，不承诺其已完成同等验收。实验工作台布局仍是独立研究数据，不是本包必需配置。
 
 关闭界面设置总开关可以使用原版界面。回到 2.7 时，停用本 UI、恢复旧包并重启；没有其它消费者时可一并停用 Host。不承诺整包热卸载。不要清除偏好或存档来回退。
 
@@ -31,6 +31,10 @@
 
 这是供独立评审的候选，版本声明不是所有整合包组合的保证。已有代表性 Windows 与 Android 证据；物理手机触控、IME、所有第三方衣槽、长期运行、文件选择与云端写入没有完整覆盖。缺少或不支持 Host 时不启动本 UI；API ready 不代表当前游戏场景已就绪。
 
-公共 Host 协议仍为 `0.1-experimental`，按上述精确版本配对，不承诺任意独立升级。原版优化的叠加管理等扩展操作继续从原版入口使用。第三方委托父节点的事件、未知业务和所有 Mod 组合不在自动兼容承诺内。
+公共 Host 协议仍为 `0.1-experimental`。本包声明 `StoneFreeHost >=0.1.2-experimental && <0.2.0`，UI内部修复不自动抬高Host下限。Loader2.101.1需要显式`&&`组合；0.2.0预发布可能满足该范围，但不在本轮已验证支持内。未来不兼容协议必须换代，消费者会检查协议和所需能力；不保证按包版本拒绝所有错误Host。原版优化的叠加管理等扩展操作继续从原版入口使用。第三方委托父节点的事件、未知业务和所有 Mod 组合不在自动兼容承诺内。
 
 设置说明见 docs/UI_SETTINGS.md，可选兼容包见 docs/OPTIONAL_ADAPTERS.md。许可证见 LICENSE、THIRD-PARTY-NOTICES.txt 及 UPSTREAM-RENDERER 文件。包内不含内部验收记录、截图、游戏、APK 或存档。
+
+最低版本来自0.1.2的场景桥接与读档失效修正，0.1.1即使方法同名也不满足该保障。本轮代表性验证组合和最终摘要见随候选提供的说明。Host不继承本UI的GameVersion白名单。
+
+反馈入口：https://github.com/102326/DoL-Game-UI/issues 。请附UI、Host、游戏和相关Mod版本、设备及复现步骤，不要公开存档、账号或私有日志。更新说明见docs/RELEASE_3.0.0-rc.1.md。

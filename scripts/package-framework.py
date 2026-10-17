@@ -5,8 +5,10 @@ from shop_package import add_shop_patches
 
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
-version = '0.1.3-experimental'
-host_version = '0.1.3-experimental'
+version = '0.1.4-experimental'
+host_version = '0.1.4-experimental'
+# Minimum includes the R15 scene bridge guarantees; SDK/package edits do not raise it.
+host_requirement = '>=0.1.2-experimental && <0.2.0'
 parser = argparse.ArgumentParser()
 parser.add_argument('--players-only', action='store_true', help='Package only the paired Host and official UI')
 args = parser.parse_args()
@@ -27,11 +29,12 @@ for directory, name in packages:
     base = out / directory
     dependencies = [{'modName': 'ModLoader', 'version': '>=2.100.0'}]
     if directory != 'host':
-        dependencies.append({'modName': 'StoneFreeHost', 'version': '=' + (host_version if directory == 'official-ui' else version)})
+        dependencies.append({'modName': 'StoneFreeHost', 'version': host_requirement})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
-    package_version = '3.0.0-lab.17' if directory == 'official-ui' else host_version if directory == 'host' else '0.1.4-experimental' if directory == 'motion-hub' else version
-    boot = dict(name=name, version=package_version, nickName=name + ' (Research)', scriptFileList=['index.js'],
+    package_version = '3.0.0-rc.1' if directory == 'official-ui' else host_version if directory == 'host' else '0.1.5-experimental' if directory == 'motion-hub' else version
+    nickname = 'DoL Soft & Wet Game UI' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
+    boot = dict(name=name, version=package_version, nickName=nickname, scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
     files = {p: (base/p).read_bytes() for p in boot['scriptFileList'] + boot['styleFileList']}
@@ -47,14 +50,14 @@ for directory, name in packages:
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
     if directory == 'official-ui':
-        for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md']:
+        for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md','docs/RELEASE_3.0.0-rc.1.md']:
             files[doc] = (root/doc).read_bytes(); boot['additionFile'].append(doc)
         for declaration in ['ui.d.ts','wardrobe.d.ts']:
             asset_name = 'types/'+declaration
             files[asset_name] = (root/'dist/types'/declaration).read_bytes(); boot['additionFile'].append(asset_name)
         boot['scriptFileList_inject_early'] = ['shop-page-experiment.js']
         files['shop-page-experiment.js'] = (root/'dist/shop-page-experiment.js').read_bytes()
-        boot['dependenceInfo'] += [{'modName':'TweeReplacer','version':'>=1.0.0'}, {'modName':'GameVersion','version':'=0.5.11.9 || =0.5.12.13'}]
+        boot['dependenceInfo'] += [{'modName':'TweeReplacer','version':'>=1.0.0'}, {'modName':'GameVersion','version':'=0.5.12.13'}]
         boot['addonPlugin'] = [{'modName':'TweeReplacer','addonName':'TweeReplacerAddon','modVersion':'>=1.0.0','params':[]}]
         add_shop_patches(root,boot,files)
         for notice in ['UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:

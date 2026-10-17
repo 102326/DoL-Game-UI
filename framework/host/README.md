@@ -1,13 +1,17 @@
 # Stone Free Framework Host
 
-本地评审候选 `0.1.3-experimental`，与 Soft & Wet 官方 UI `3.0.0-lab.17` 配对。尚未正式发布。
+本地 RC-01 候选 `0.1.4-experimental`。提供独立的公共 UI 能力，不包含 Soft & Wet 官方界面。尚未公开发布。
 
-普通玩家安装本包和官方 UI 两个 Mod 即可。先启用 Host，再启用官方 UI，按加载器提示重启。不需要 NativeStatus、Motion Hub、Wardrobe Reference、Factory 或 Author Kit。
+普通玩家使用 Soft & Wet `3.0.0-rc.1` 时，安装本包和官方 UI 两个 Mod 即可。先启用 Host，再启用 UI，按加载器提示重启。不需要 NativeStatus、独立 Motion Hub、Wardrobe Reference、Factory 或 Author Kit。
 
-Host 提供有归属的 UI 挂载、场景失效、资源租约、Source、Command 和 View。它不接管游戏变量、Mod 加载顺序、存档事务或第三方业务。官方 UI 使用相同的公开接口，没有专用权限。
+公共协议仍为 `0.1-experimental`。本版运行代码与0.1.2/0.1.3相同；因安装说明及包身份改变使用新版本，旧0.1.3制品保留。官方UI的最低Host为0.1.2-experimental，不因本包更新而强制其他消费者提高下限。
 
-公共协议仍为 `0.1-experimental`，不同于本包版本，也不同于官方 UI API v1。当前只支持明确配对；不承诺任意新旧消费者混装或热升级。作者应检查协议、所需方法和能力，遇到不支持的环境退让。Source 失败或 Command 的 unknown 不代表业务未执行，不能据此自动重试。
+当前官方UI和标准作者配方使用 `>=0.1.2-experimental && <0.2.0`。这是Loader范围表达式；已验证组合和未来兼容预期分开。Loader2.101.1将0.2.0预发布排序在0.2.0之前，范围可能允许这些版本；它们不在RC-01已验证支持内。破坏性协议演进必须使用新协议标识，消费者仍检查协议与所需能力。Loader依赖报告不保证阻止脚本执行，不能依赖它自动拦截所有错误版本。
 
-从 2.7 升级前备份存档。停用旧 DoLGameUI，启用本 Host 和配对官方 UI 后重启，不要同时启用两份同名官方 UI。回退时停用新 UI，恢复 2.7 后重启；没有其它消费者需要 Host 时也可停用 Host。不要删除旧 UI 偏好。主动释放消费者只清理自身资源，不等于加载器整包热卸载。
+同一协议代际内，维护者尽量保留既有方法、场景失效、所有权和结果语义。仅修改UI样式或Host说明，不提高无关消费者的最低版本。新能力由真正调用它的消费者核对最低版本；不承诺任意未来版本或整包热升级。
 
-包内 LICENSE 为项目许可证。其它独立消费者的代码、依赖与许可证由其作者负责。此包不包含游戏资产、官方 UI、第三方 Mod、存档或测试记录。
+Host提供有归属的挂载、资源租约、Source、Command和View，不管理游戏变量、Mod加载顺序、存档事务或第三方业务。官方UI使用相同公开接口，没有专用权限。Source失败或Command的unknown不证明业务未执行，不得自动重试。Host需要AbortSignal.any等浏览器能力；不支持时退让，不强行接管。
+
+从2.7升级前备份存档并保留旧包。停用旧DoLGameUI，启用Host和RC UI后重启；不要同时启用两份同名UI或Host。回退时停用新UI、恢复2.7并重启；没有其他消费者时可停用Host。保留旧偏好和新布局数据。主动释放消费者不是加载器整包热卸载。
+
+本包没有GameVersion白名单，也不依赖官方UI；官方UI的游戏版本声明不等于Host适配所有游戏。许可证见LICENSE。反馈可在DoL-Game-UI仓库Issues说明Host/UI/Game版本、设备、复现步骤及可公开截图；不要上传存档、凭证或完整私有日志。

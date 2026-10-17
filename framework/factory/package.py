@@ -6,7 +6,7 @@ assert re.fullmatch(r'[A-Za-z][A-Za-z0-9]{0,63}',meta['modName']),'Invalid techn
 assert re.fullmatch(r'\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?',meta['version']),'Invalid package version'
 styles=['style.css'] if (root/'dist/style.css').is_file() else []
 boot=dict(name=meta['modName'],version=meta['version'],scriptFileList=['index.js'],styleFileList=styles,tweeFileList=[],imgFileList=[],
-          additionFile=['LICENSE','README.md','THIRD-PARTY-NOTICES.txt'],dependenceInfo=[{'modName':'ModLoader','version':'>=2.100.0'},{'modName':'StoneFreeHost','version':'=0.1.3-experimental'}])
+          additionFile=['LICENSE','README.md','THIRD-PARTY-NOTICES.txt'],dependenceInfo=[{'modName':'ModLoader','version':'>=2.100.0'},{'modName':'StoneFreeHost','version':'>=0.1.2-experimental && <0.2.0'}])
 files={name:(root/'dist'/name).read_bytes() for name in ['index.js']+styles}
 for name in ['LICENSE','README.md']:files[name]=(root/name).read_bytes()
 licenses=[]
