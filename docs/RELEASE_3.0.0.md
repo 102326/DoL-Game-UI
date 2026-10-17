@@ -1,6 +1,6 @@
 # Soft & Wet 3.0.0 — Stone Free
 
-本地 Stable 候选，等待负责人最终批准，**尚未公开发布为稳定版**。当前公开 RC 为 [3.0.0-rc.1](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0-rc.1)，[2.7.0](https://github.com/102326/DoL-Game-UI/releases/tag/v2.7.0) 继续保留为稳定版本。
+本地整改候选，**Stable Gate 仍因视觉验收待定而阻断，尚未公开发布为稳定版**。当前公开 RC 为 [3.0.0-rc.1](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0-rc.1)，[2.7.0](https://github.com/102326/DoL-Game-UI/releases/tag/v2.7.0) 继续保留为稳定版本。
 
 ## 主要变化
 
@@ -38,7 +38,7 @@ Loader 的预发布比较存在限制：部分 0.2.0 预发布可能满足依赖
 <details>
 <summary>技术与许可</summary>
 
-正式 2.7 功能对照继续使用已有覆盖矩阵；稳定性承诺不要求将成熟模块全部改写为新的内部结构。原业务和保存格式不变，继续保留 gameTime 及有效附加 metadata。此候选相较 RC-01 的运行代码仅更新官方版本身份，不改变 Host、协议、业务操作和样式。
+正式 2.7 功能对照继续使用已有覆盖矩阵；稳定性承诺不要求将成熟模块全部改写为新的内部结构。原业务和保存格式不变，继续保留 gameTime 及有效附加 metadata。玩家实测后的本地整改还修复了商店玻璃层遮住原生内容与退出入口的问题，统一首页/游戏内导航及设置分组，并修正 Hub 提示、展开几何和快捷入口。Host、公共协议和游戏业务保持原有所有权；最终视觉仍需负责人验收。
 
 Host 复用已公开 0.1.4 原包，不在同版本下替换字节；包内 RC 描述记录其冻结时点。许可及来源声明见各包 LICENSE、THIRD-PARTY-NOTICES.txt 和 UPSTREAM-RENDERER 文件。玩家包不包含内部验收收据、截图、游戏本体、APK 或存档。
 

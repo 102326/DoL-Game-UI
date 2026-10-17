@@ -28,7 +28,7 @@ export function startOfficialHub(host:Host,owner:Participant){
  };
  const settings=owner.provideView({id:'interface-settings',title:'界面设置',setup(context){const button=document.createElement('button');button.type='button';button.textContent='打开界面设置';button.onclick=()=>{if(context.isCurrent())directActions['SoftWetOfficialUI:interface-settings']()};context.element.append(button);return()=>{button.onclick=null}}});
  const inspector=owner.provideView({id:'runtime-inspector',title:'运行检查',setup(context){const button=document.createElement('button');button.type='button';button.textContent='打开只读 Inspector';button.onclick=()=>{if(context.isCurrent())directActions['SoftWetOfficialUI:runtime-inspector']()};context.element.append(button);return()=>{button.onclick=null}}});
- const nativeViews=(['native-saves','native-social','native-attributes'] as const).map((id,index)=>owner.provideView({id,title:['原版存档','原版社交','原版属性'][index],setup(context){const button=document.createElement('button');button.type='button';button.textContent='打开原版入口';button.onclick=()=>{if(context.isCurrent())directActions[`SoftWetOfficialUI:${id}`]()};context.element.append(button);return()=>{button.onclick=null}}}));
+ const nativeViews=(['native-saves','native-social','native-attributes'] as const).map((id,index)=>owner.provideView({id,title:['存档','社交','属性'][index],setup(context){const button=document.createElement('button');button.type='button';button.textContent='打开原版入口';button.onclick=()=>{if(context.isCurrent())directActions[`SoftWetOfficialUI:${id}`]()};context.element.append(button);return()=>{button.onclick=null}}}));
  function sync(){
   if(stopped)return;
   const p=root.DoLFloatingTools?.getPreferences();

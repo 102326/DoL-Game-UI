@@ -128,7 +128,7 @@ onBeforeUnmount(() => {interrupt();document.removeEventListener('dol-floating-re
    :style="{left: `${panel.x}px`, top: `${panel.y}px`, width: `${panel.width}px`, height: `${panel.height}px`, '--origin-x': `${point.x + 28 - panel.x}px`, '--origin-y': `${point.y + 28 - panel.y}px`}">
    <header><div><small>STONE FREE · 快捷工具</small><h2 ref="heading" tabindex="-1">{{ selected?.title || '自由工具' }}</h2></div><button type="button" aria-label="关闭详情" @click="close()">×</button></header>
    <main><ViewOutlet v-if="selected" :view="selected" :instance="instance" /></main>
-   <footer><button type="button" @click="selected = undefined; expanded = true; ball?.focus({preventScroll: true})">返回工具</button><span>公开视图 · 原版状态</span></footer>
+   <footer><button type="button" @click="selected = undefined; expanded = true; ball?.focus({preventScroll: true})">返回工具</button><span>返回后继续游戏</span></footer>
   </section>
   <button ref="ball" type="button" class="sf-motion-ball" :class="{'is-dragging': dragging, 'is-docked': docked, 'is-open': expanded || !!selected}"
    :aria-label="docked ? '恢复悬浮工具' : 'Stone Free 自由工具'" title="点击展开；拖到边缘停靠；方向键移动，Escape 收起" :aria-expanded="expanded || !!selected" :style="{transform: `translate3d(${point.x}px, ${point.y}px, 0)`}"
