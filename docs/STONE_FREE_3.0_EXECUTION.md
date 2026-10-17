@@ -95,3 +95,13 @@ Windows 另完成购买并穿戴和触手测试回合，严格区分原结果、
 本轮当前依据为STONE_FREE_3.0_RC01_POLICY.md与STONE_FREE_3.0_RC01.md，取代R17精确配对建议。最终产品源码0df554ab1802d4ee37ea7ed89ec632d1dd6db101，UI真正生成为3.0.0-rc.1；Host因包内说明改变生成唯一0.1.4，不覆盖0.1.3，运行代码不变。最低Host取有R15场景桥保障的0.1.2，范围采用Loader已验证的 `>=0.1.2-experimental && <0.2.0`，明确prerelease比较与运行时非包版本门禁的限制。
 
 Windows推荐/最低Host两组、Android推荐组使用同一最终RC UI字节完成实际Loader升级、原生存档与偏好保全、衣柜/Hub/开关及回退。Android恢复原清单/偏好，原槽details保持。公开UI声明仅DoL0.5.12.13，Host不继承白名单；SDK不机械跟随最新Host提高下限。当前为Ready for Owner Approval，未推送、合并、Tag或发布。
+
+## Stable Gate：本地稳定候选（2026-10-17）
+
+本轮依据负责人 Stable Gate 任务书。RC-01 已公开：v3.0.0-rc.1 指向 0df554a，Pre-release，双包摘要与冻结值一致；2.7 仍为最新稳定版。入场 HEAD 425d16c、工作区干净，远端研究分支同 HEAD；当前 Issues 列表为空，不称已获社区验证。
+
+交付仅为可供批准的本地 UI 3.0.0 + 原 Host 0.1.4 双包。公共协议仍 0.1-experimental、最低 Host 0.1.2 和原范围不变；没有新增 Host 调用，也不强制 API 1.0。Framework 优先实际官方 UI、当前合同可靠性和已知消费者，未来是否合包另行决策。SDK/Factory/Author Kit 不删除，不新增混装仲裁。
+
+继续使用 R14 功能矩阵与 R15–RC01 有效业务证据；本轮不改游戏业务、样式、metadata 或 Host 生命周期。仅更新 UI 版本身份、玩家说明及定向测试参数，最终固定源码构建后检查运行成员差异，执行 Windows/Android 实际安装、2.7 升级、存档和偏好读回、回退及恢复。平板入场实际为 RC-01/Host0.1.4 的商店，测试只用自有临时键准备 2.7 基线，原 RC 包不覆盖，结束恢复入场清单与偏好。
+
+正式 Stable 发布、main 合并、Stable Tag 和远端推送未获本轮授权。Gate 的实际结果及覆盖边界将单独记录；未执行的验收不提前写 Pass。

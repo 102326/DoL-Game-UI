@@ -1,5 +1,11 @@
 # Stone Free Host：研发原型
 
+## 当前产品政策：Stable Gate
+
+官方 UI 3.0.0 本地候选继续采用独立 Host + UI，正式发布待批准。Framework 优先服务官方 UI 的实际需求与当前合同可靠性；公共协议保留 `0.1-experimental`，不以 API 1.0 或外部采用人数作为官方产品发布前置。SDK、Factory、Author Kit 仍可选使用，作者须核对协议与支持版本，破坏性变化需明确通知。未来是否合包依实际收益另行决策，本轮不维护两套混装方案。
+
+推荐 Host 复用已公开 0.1.4 冻结包，最低 0.1.2 及原依赖范围不变。下文 RC 与研究消费者记录保留其历史范围；当前候选说明见[官方 UI](official-ui/README.md)。
+
 这组离线 Mod 用来检验 3.0 的公共接缝，不是 Soft & Wet 3.0 正式版。正式 2.7 制品不改；本研究分支保留 API v1 和存档格式，R15 对共享衣柜异步清理作了定向加固。协议 `0.1-experimental` 可能在研究后调整，请勿作为稳定第三方依赖发布。
 
 正式目标已确定为独立 Framework Host 与独立官方 UI 消费者。当前研究包版本为 `0.1.4-experimental`，消费者依赖最低Host0.1.2（含R15桥接修正），范围为 `>=0.1.2-experimental && <0.2.0`；协议版本仍为 `0.1-experimental`。推荐本轮Host0.1.4与UI rc.1；声明允许范围和实际验证组合分开，不要求无关UI更新时同步Host。SDK 和 Author Kit 只用于开发，不是玩家 Runtime。
