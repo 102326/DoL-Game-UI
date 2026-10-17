@@ -9,3 +9,21 @@
 .dgw-reference-chip label{min-height:36px;cursor:pointer}
 html[data-dol-midnight]:not([data-dgu-visualGlass]) :is(.dgw-reference-chip,.dgw-reference-compare,.dgw-reference-flight){backdrop-filter:none;background:#202a31}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.dgw-reference-chip,.dgw-reference-compare,.dgw-reference-flight{background:#202a31}}
+
+/* The reference shares the owned side column; only compact containers use a floating sheet. */
+.dgw-side:has(.dgw-reference-space[data-compare-open])>.dgw-preview-disclosure{display:none}
+.dgw-reference-space{min-width:0}
+.dgw-reference-space .dgw-reference-chip{position:static;max-width:none;width:100%;margin:0 0 10px;flex-wrap:wrap;gap:8px;padding:10px 12px}
+.dgw-reference-space .dgw-reference-chip>div{flex:1;min-width:100px}
+.dgw-reference-space .dgw-reference-compare{position:static;width:100%;max-height:70dvh;margin:0;box-shadow:0 10px 36px #0004}
+.dgw-reference-space .dgw-reference-status{position:static;padding:8px 2px;margin:0;max-width:none;background:none;color:var(--dgw-secondary);font-size:11px}
+.dgw-root:has(.dgw-reference-space[data-compare-open]) .dgw-workspace{grid-template-columns:minmax(0,1fr) minmax(310px,40%)}
+.dgw-reference-space .dgw-reference-fields>div{padding:10px 5px;gap:6px;font-size:12px}
+.dgw-reference-space .dgw-reference-pair{margin:0 10px 8px;padding:10px}
+.dgw-reference-space .dgw-reference-pair strong{font-size:14px}
+.dgw-reference-space .dgw-reference-compare header{padding:12px;flex-wrap:wrap}
+.dgw-reference-space .dgw-reference-compare h3{font-size:17px}
+.dgw-reference-space .dgw-reference-compare footer{padding:0 15px 14px}
+.dgw-side{min-width:0}
+.dgw-root:has(.dgw-reference-space[data-compact][data-compare-open]) .dgw-workspace{grid-template-columns:1fr}
+.dgw-side:has(.dgw-reference-space[data-compact][data-compare-open])>.dgw-preview-disclosure{display:block}

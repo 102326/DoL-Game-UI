@@ -8,7 +8,7 @@ type Tool={id:ToolId;name:string;icon:string;description:string;reason:string};
 export type FloatingState={x:number;y:number;intentX:number;intentY:number;open:boolean;mode:'fan'|'grid';config:boolean;dragging:boolean;tools:Tool[];fan:{x:number;y:number}[];menuX:number;menuY:number;menuWidth:number;menuMaxHeight:number;message:string};
 export type FloatingApi={getPreferences():FloatingPreferences;setPreference(key:keyof FloatingPreferences,value:unknown):void;show():void;hide():void;resetPosition():void;refresh():void;destroy():void};
 type Root=Window & {DoLFloatingTools?:FloatingApi;DoLMidnightTheme?:{openSettings():void};DoLGameUI?:{openSettings():void;ui?:{openInspector?:()=>unknown}}};
-export function startFloatingTools(root:Root=window){
+export function startFloatingTools(root:Root=window,renderSurface=true){
  if(root.DoLFloatingTools)return root.DoLFloatingTools;
  let p:FloatingPreferences;try{p=readFloatingPreferences(root.localStorage.getItem(floatingKey))}catch{p={...floatingDefaults,tools:[...toolIds]}}
  const state=reactive<FloatingState>({x:0,y:0,intentX:p.x,intentY:p.y,open:false,mode:p.mode,config:false,dragging:false,tools:[],fan:[],menuX:0,menuY:0,menuWidth:280,menuMaxHeight:600,message:''});
@@ -84,7 +84,7 @@ export function startFloatingTools(root:Root=window){
  function modalVisible(){return [...document.querySelectorAll('dialog[open],#customOverlay,#ui-dialog')].some(e=>e.getClientRects().length>0&&getComputedStyle(e).visibility!=='hidden'&&getComputedStyle(e).display!=='none')}
  function refresh(){
   if(disposed)return;blocked=modalVisible();
-  const wanted=p.enabled&&!p.hidden;
+  const wanted=renderSurface&&p.enabled&&!p.hidden;
   if(wanted&&!masterListening){document.addEventListener('dol-ui-master-change',schedule);masterListening=true}else if(!wanted&&masterListening){document.removeEventListener('dol-ui-master-change',schedule);masterListening=false}
   if(wanted&&isMasterEnabled()&&!watching&&document.body){observer?.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','open']});watching=true}else if((!wanted||!isMasterEnabled())&&watching){observer?.disconnect();watching=false}
   const visible=isMasterEnabled()&&wanted&&!blocked;
@@ -99,7 +99,7 @@ export function startFloatingTools(root:Root=window){
   position();
  }
  function schedule(){if(disposed||frame)return;frame=requestAnimationFrame(()=>{frame=0;blocked=modalVisible();refresh()})}
- const api:FloatingApi={getPreferences:()=>({...p,tools:[...p.tools]}),setPreference,show(){p.enabled=true;p.hidden=false;persist();refresh()},hide(){p.hidden=true;persist();refresh()},resetPosition(){p.x=floatingDefaults.x;p.y=floatingDefaults.y;persist();refresh()},refresh,destroy(){if(disposed)return;disposed=true;observer?.disconnect();document.removeEventListener('dol-ui-master-change',schedule);document.removeEventListener('DOMContentLoaded',schedule);if(frame)cancelAnimationFrame(frame);release();delete root.DoLFloatingTools}};
+ const api:FloatingApi={getPreferences:()=>({...p,tools:[...p.tools]}),setPreference,show(){p.enabled=true;p.hidden=false;persist();refresh()},hide(){p.hidden=true;persist();refresh()},resetPosition(){p.x=floatingDefaults.x;p.y=floatingDefaults.y;persist();refresh();document.dispatchEvent(new Event('dol-floating-reset'))},refresh,destroy(){if(disposed)return;disposed=true;observer?.disconnect();document.removeEventListener('dol-ui-master-change',schedule);document.removeEventListener('DOMContentLoaded',schedule);if(frame)cancelAnimationFrame(frame);release();delete root.DoLFloatingTools}};
  root.DoLFloatingTools=api;
  observer=new MutationObserver(schedule);if(!document.body)document.addEventListener('DOMContentLoaded',schedule,{once:true});blocked=modalVisible();refresh();document.dispatchEvent(new Event('dol-floating-change'));
  return api;

@@ -203,7 +203,7 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   if(!enabled){host.className='';host.append(original);return}
   let appParent:HTMLElement=host;
   if(framework){s.binding=framework.host.binding();s.owned=framework.owner.mount({id:'wardrobe',parent:host,lifetime:'passage',setup(context){appParent=context.element;context.onCleanup(()=>{if(active===s)release()})}})}
-  const reference=s.binding?{binding:s.binding,read:(key:string)=>{const entry=resolveBindings(s,[key])?.[0];return entry?referenceItem(entry,state.slots.find(slot=>slot.key===entry.slot)?.label??entry.slot):null}}:undefined;
+  const reference=s.binding?{binding:s.binding,publish:framework?framework.owner.provideView:undefined,read:(key:string)=>{const entry=resolveBindings(s,[key])?.[0];return entry?referenceItem(entry,state.slots.find(slot=>slot.key===entry.slot)?.label??entry.slot):null}}:undefined;
   s.app=createApp(WardrobePanel,{model:state,reference,resolveIcon:async(src:string)=>{try{return await root.modUtils?.getImage?.(src)||src}catch{return src}},onSplit:(keys:string[])=>review(s,keys,'separateOutfits'),onRepair:(keys:string[])=>review(s,keys,'repair'),onTransfer:(keys:string[],target:string)=>review(s,keys,'transfer',target),onTowel:(kind:'towel'|'large_towel')=>{if(!state.busy&&active===s&&isCurrentPassage(s)){try{withNativeListHidden(s,()=>native.action('wear',state.slot,kind));state.message=native.message(s.original)||'已由游戏处理毛巾操作'}catch(error){state.message=error instanceof Error?error.message:'毛巾操作失败'}queueRefresh(s)}},onSlot:(key:string)=>{
    if(state.busy||!state.slots.some(t=>t.key===key))return;cancel(s);state.slot=key;
    s.nativeListDirty=true;

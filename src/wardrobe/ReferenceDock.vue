@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import {computed,nextTick,onBeforeUnmount,ref,shallowRef,watch} from 'vue';
+import {computed,nextTick,onMounted,onBeforeUnmount,ref,shallowRef,watch} from 'vue';
 import {compareReferences,type ReferenceContext,type ReferenceItem} from './reference';
 const props=defineProps<{context:ReferenceContext;items:readonly {key:string}[]}>();
 const pinned=shallowRef<ReferenceItem>(),selected=shallowRef<ReferenceItem>(),opened=ref(false),spatial=ref(true),message=ref('');
 const chip=ref<HTMLElement>(),panel=ref<HTMLElement>();
 const panelTop=ref('128px');
+const space=ref<HTMLElement>(),narrow=ref(innerWidth<=800);
+let resize:ResizeObserver|undefined,withdraw:(()=>void)|undefined;
 let returnTo:HTMLElement|undefined,selectedKey='',epoch=0;
 const motions=new Set<Animation>(),ghosts=new Set<HTMLElement>();
 const rows=computed(()=>pinned.value&&selected.value?compareReferences(pinned.value,selected.value):[]);
@@ -26,22 +28,30 @@ function flight(from:DOMRect,to:DOMRect,name:string){
  animate(ghost,[{transform:'translate(0,0) scale(1)',opacity:.9},{transform:`translate(${to.left-from.left}px,${to.top-from.top}px) scale(.65)`,opacity:0}],480);
  if(!motions.size){ghost.remove();ghosts.delete(ghost)}
 }
-function clear(){interrupt();opened.value=false;pinned.value=undefined;selected.value=undefined;returnTo=undefined;selectedKey='';message.value=''}
+function clear(){interrupt();opened.value=false;pinned.value=undefined;selected.value=undefined;returnTo=undefined;selectedKey='';message.value='';withdraw?.();withdraw=undefined}
 function valid(){if(props.context.binding.isCurrent())return true;clear();return false}
 function position(){if(!opened.value||!returnTo?.isConnected)return;const header=returnTo.closest('.dgw-shell')?.querySelector('.dgw-header');panelTop.value=Math.max(12,Math.min((header?.getBoundingClientRect().bottom??120)+8,innerHeight-170))+'px'}
-function layout(){if(opened.value){interrupt();position()}}
+function layout(){narrow.value=(space.value?.closest('.dgw-root')?.getBoundingClientRect().width??innerWidth)<=800;if(opened.value){interrupt();position()}}
+function publish(){
+ withdraw?.();withdraw=props.context.publish?.({id:'wardrobe-reference',title:'衣柜临时参照',setup(context){
+  const title=document.createElement('p'),button=document.createElement('button');
+  title.textContent=`A · ${pinned.value?.name??'参照已清除'}（只读快照）`;button.type='button';button.textContent='回到衣柜参照';
+  const focus=()=>{if(!valid()||!context.isCurrent())return;const target=opened.value?panel.value:chip.value;target?.scrollIntoView({block:'nearest'});(target?.querySelector('button') as HTMLElement|null)?.focus({preventScroll:true})};
+  button.addEventListener('click',focus);context.element.append(title,button);return()=>button.removeEventListener('click',focus);
+ }});
+}
 async function choose(key:string,node:HTMLElement){
  if(!valid())return;const fresh=props.context.read(key);if(!fresh){message.value='目录已变化，请重新选择。';return}
  interrupt();const ticket=epoch,source=node.closest<HTMLElement>('.dgw-item-row')??node;
  if(!pinned.value){
-  pinned.value=fresh;message.value='已固定 A，继续浏览衣柜，点另一件衣物旁的“对照”。';const from=source.getBoundingClientRect();
+  pinned.value=fresh;publish();message.value='已固定 A，继续浏览衣柜，点另一件衣物旁的“对照”。';const from=source.getBoundingClientRect();
   await nextTick();if(ticket===epoch&&valid()&&chip.value&&visible(source))flight(from,chip.value.getBoundingClientRect(),fresh.name);return;
  }
  selected.value=fresh;selectedKey=key;returnTo=node;opened.value=true;message.value='';
  position();
  const from=visible(source)?source.getBoundingClientRect():undefined;
  await nextTick();if(ticket!==epoch||!valid()||!panel.value)return;
- if(spatial.value&&from){const to=panel.value.getBoundingClientRect();animate(panel.value,[{transformOrigin:'top left',transform:`translate(${from.left-to.left}px,${from.top-to.top}px) scale(.45)`,opacity:.15,filter:'blur(5px)'},{transformOrigin:'top left',transform:'translate(0,0) scale(1)',opacity:1,filter:'blur(0)'}])}
+ if(spatial.value&&from){const to=panel.value.getBoundingClientRect();animate(panel.value,[{transformOrigin:'top left',transform:`translate(${from.left-to.left}px,${from.top-to.top}px) scale(.45)`,opacity:.15,filter:'blur(5px)'},{transformOrigin:'top left',transform:'translate(0,0) scale(1)',opacity:1,filter:'blur(0)'}]);panel.value.querySelectorAll<HTMLElement>('.is-different b').forEach((field,index)=>animate(field,[{opacity:.2,clipPath:'inset(0 100% 0 0)'},{opacity:1,clipPath:'inset(0 0 0 0)'}],360+index*45))}
  panel.value.querySelector<HTMLButtonElement>('[data-reference-back]')?.focus({preventScroll:true});
 }
 function back(){
@@ -57,12 +67,14 @@ props.context.binding.signal.addEventListener('abort',clear,{once:true});
 watch(spatial,interrupt);motionMedia?.addEventListener('change',interrupt);
 const themeObserver=new MutationObserver(()=>{if(reduced())interrupt()});
 themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-dol-midnight','data-dgu-visualMotion']});
+onMounted(()=>{layout();const root=space.value?.closest('.dgw-root');if(root&&typeof ResizeObserver==='function'){resize=new ResizeObserver(layout);resize.observe(root)}});
 window.addEventListener('resize',layout);window.addEventListener('scroll',layout,true);
-onBeforeUnmount(()=>{clear();themeObserver.disconnect();props.context.binding.signal.removeEventListener('abort',clear);motionMedia?.removeEventListener('change',interrupt);window.removeEventListener('resize',layout);window.removeEventListener('scroll',layout,true)});
+onBeforeUnmount(()=>{clear();resize?.disconnect();themeObserver.disconnect();props.context.binding.signal.removeEventListener('abort',clear);motionMedia?.removeEventListener('change',interrupt);window.removeEventListener('resize',layout);window.removeEventListener('scroll',layout,true)});
 defineExpose({choose,hasReference:computed(()=>!!pinned.value)});
 </script>
 <template>
- <Teleport to="body">
+ <div ref="space" class="dgw-reference-space" :data-compact="narrow||undefined" :data-compare-open="opened||undefined">
+ <Teleport to="body" :disabled="!narrow">
   <aside v-if="pinned" ref="chip" class="dgw-reference-chip" aria-label="临时衣物参照" @keydown="key">
    <div><small>A · 只读快照</small><strong>{{pinned.name}}</strong><span>{{pinned.slot}} · {{pinned.colour||'颜色未知'}}</span></div>
    <label title="关闭后使用普通按钮对照路径"><input v-model="spatial" type="checkbox">空间转场</label>
@@ -77,4 +89,5 @@ defineExpose({choose,hasReference:computed(()=>!!pinned.value)});
   </dialog>
   <p v-if="message" class="dgw-reference-status" role="status">{{message}}</p>
  </Teleport>
+ </div>
 </template>

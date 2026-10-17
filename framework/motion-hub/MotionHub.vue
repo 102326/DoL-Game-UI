@@ -4,7 +4,7 @@ import type {Binding, Host, MountContext, View} from '../contracts';
 import ViewOutlet from '../workspace/ViewOutlet.vue';
 import {clamp, initialPosition, locate, positionKey, readPosition} from './geometry';
 
-const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void}>();
+const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';officialPreferences?:boolean}>();
 const layer = ref<HTMLElement>(), ball = ref<HTMLButtonElement>(), heading = ref<HTMLElement>();
 let saved = initialPosition();
 try {saved = readPosition(localStorage.getItem(positionKey))} catch { /* Storage is optional. */ }
@@ -14,7 +14,7 @@ const selected = shallowRef<View>(), views = shallowRef(props.host.views()), mes
 let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string} | undefined;
 let suppressClick = false, frame = 0, sequence = 0, instance = ref('motion-view-0'), binding: Binding;
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
-const grid = computed(() => views.value.length > 3 || area.height < 360);
+const grid = computed(() => props.preferredMode==='grid'||views.value.length > 3 || area.height < 360);
 const menu = computed(() => ({x: clamp(side.value === 'right' ? point.x - 180 : point.x - 10, area.left + 12, area.left + area.width - 222),
  y: clamp(point.y - 90, area.top + 12, area.top + area.height - (grid.value ? Math.min(280, area.height - 24) : 278))}));
 const panel = computed(() => {
@@ -100,9 +100,9 @@ function interrupt() {cancel(); close(false)}
 function arm() {binding?.signal.removeEventListener('abort', interrupt); binding = props.hostContext.binding(); binding.signal.addEventListener('abort', interrupt, {once: true})}
 const stopScene = props.hostContext.onScene(arm);
 const stopViews = props.host.onViews(() => {views.value = props.host.views(); if (selected.value && !views.value.some(view => view.mount === selected.value?.mount)) close()});
-onMounted(() => {sync(); arm(); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
+onMounted(() => {sync(); arm();if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
  window.visualViewport?.addEventListener('resize', schedule); window.visualViewport?.addEventListener('scroll', schedule); document.addEventListener('pointerdown', outside); document.addEventListener('focusin', outside)});
-onBeforeUnmount(() => {interrupt(); cancelAnimationFrame(frame); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
+onBeforeUnmount(() => {interrupt();document.removeEventListener('dol-floating-reset',reset); cancelAnimationFrame(frame); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
  window.removeEventListener('resize', schedule); window.removeEventListener('blur', interrupt); window.removeEventListener('pagehide', interrupt);
  window.visualViewport?.removeEventListener('resize', schedule); window.visualViewport?.removeEventListener('scroll', schedule); document.removeEventListener('pointerdown', outside); document.removeEventListener('focusin', outside)});
 </script>

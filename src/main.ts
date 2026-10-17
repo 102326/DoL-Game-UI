@@ -46,9 +46,9 @@ if(!runtime.DoLGameUI){
  start('DoLCharacteristicsUI',()=>startCharacteristics(runtime));
  start('DoLSocialUI',()=>startSocial(runtime));
  start('DoLPanelsUI',()=>startPanels(runtime));
- start('DoLShopUI',()=>startShop(runtime));
+ start('DoLShopUI',()=>startShop(runtime,wardrobeFramework));
  start('DoLSavesUI',()=>startSaves(runtime));
- start('DoLCombatUI',()=>startCombat());start('DMTLayout',()=>startLayout());start('DoLMidnightTheme',()=>startTheme());
+ start('DoLCombatUI',()=>startCombat(wardrobeFramework));start('DMTLayout',()=>startLayout());start('DoLMidnightTheme',()=>startTheme());
  let floating:ReturnType<typeof startFloatingTools>|undefined;
  let uiRuntime:ReturnType<typeof createUiRuntime>|undefined;
  runtime.DoLGameUI={version:'2.7.0',openSettings:()=>runtime.DoLMidnightTheme?.openSettings(),
@@ -59,7 +59,7 @@ if(!runtime.DoLGameUI){
  };
  uiRuntime=isolate('UI runtime',()=>createUiRuntime(runtime,()=>runtime.DoLGameUI?.getPreferences()??{}));
  if(uiRuntime){runtime.DoLGameUI.ui=uiRuntime.api;document.dispatchEvent(new Event('dol-ui-runtime-ready'))}
- floating=isolate('floating tools',()=>startFloatingTools());
+ floating=isolate('floating tools',()=>startFloatingTools(runtime,!wardrobeFramework));
  if(!runtime.DoLMidnightTheme){const button=document.createElement('button');button.id='dol-ui-recovery';button.type='button';button.textContent='关闭 Soft & Wet，恢复原版';button.onclick=()=>{runtime.DoLGameUI!.setPreference('enabled',false);if(!isMasterEnabled())button.remove()};document.body?.append(button)}
 }
 return runtime.DoLGameUI;

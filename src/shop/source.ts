@@ -1,5 +1,6 @@
 export interface ShopProjection {key:string;title:string;price:string;owned:string}
 export interface ShopFacts {variables:Record<string,unknown>|undefined;definition:unknown}
+export function copyShopItem(item:ShopProjection):Readonly<Omit<ShopProjection,'key'>>{return Object.freeze({title:item.title,price:item.price,owned:item.owned})}
 
 const purchaseSelector='.buy-buttons a.link-internal,.buy-buttons button.link-internal,.try-buttons a.link-internal,.try-buttons button.link-internal';
 const text=(node:Element|null)=>node?.textContent?.replace(/^\s*\([^)]*\)\s*/,'').trim()??'';

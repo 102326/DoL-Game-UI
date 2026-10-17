@@ -1,6 +1,6 @@
 // Controlled 40-item UI fixture supplements the real game's small inventory.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const root=path.resolve(__dirname,'..'),out=path.join(root,'tests/artifacts/stone-free-r10','panel-'+Date.now());fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(__dirname,'..'),out=path.join(root,'tests/artifacts/stone-free-r11','panel-'+Date.now());fs.mkdirSync(out,{recursive:true});
 const entry=path.join(out,'entry.ts'),importPath=file=>JSON.stringify(path.join(root,file).replaceAll('\\','/'));
 fs.writeFileSync(entry,`import {createApp,reactive} from 'vue';import Panel from ${importPath('src/wardrobe/WardrobePanel.vue')};import ${importPath('src/wardrobe/style.css')};import {createHost} from ${importPath('framework/host.ts')};import {referenceItem} from ${importPath('src/wardrobe/reference.ts')};
 const host=createHost(window),binding=host.binding(),items=Array.from({length:40},(_,i)=>({key:'upper:'+i,name:'Fixture shirt '+i,colour:'blue',warmth:6,durability:100,lewd:200,outfit:'单件',detail:'read only fixture',icons:[],traits:[],splittable:false}));let available=true,wearCalls=0;

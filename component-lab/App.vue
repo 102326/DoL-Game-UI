@@ -9,7 +9,7 @@ function floatingRun(id:string){record('floating.run',id);if(id==='move')floatin
 function updateGlass(){document.documentElement.toggleAttribute('data-dgu-visualGlass',glass.value);document.documentElement.setAttribute('data-dgu-visual',tier.value)}
 function noGesture(){record('pointer','Lab 不接入生产拖动算法')}
 const scenario=ref('ordinary'),width=ref(960),index=ref<any>(null),events=ref<{name:string;value:unknown}[]>([]);
-const state=reactive({hasDetails:true,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'虚构样品',defaultGender:'game',message:''});
+const state=reactive({hasDetails:true,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'虚构样品',referenceEnabled:false,referenceA:null,comparisonB:null,defaultGender:'game',message:''});
 const record=(name:string,value:unknown)=>{events.value=[...events.value.slice(-15),{name,value}]};
 function setDefaultGender(value:string){state.defaultGender=value;state.message='Lab 内存分类：'+value;record('setDefaultGender',value)}
 function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;record('toggleCategories',state.categoriesOpen)}
@@ -28,7 +28,7 @@ if(import.meta.hot){import.meta.hot.on('lab:source-change',refreshIndex);import.
  <div class="lab-controls"><label>场景 <select aria-label="Lab 场景" v-model="scenario" @change="changeScene"><option value="ordinary">普通</option><option value="compact">窄／紧凑</option><option value="long">长标题／状态消息</option></select></label><label>预览容器宽度 <input aria-label="预览宽度" type="range" min="320" max="1000" v-model.number="width"> {{width}}px</label></div>
  <p>宽度滑杆仅改变容器几何；narrow/compact 由场景设置，未复用正式父层宽度监听。</p>
  <section v-if="component==='shop.toolbar'" class="lab-stage" :style="{width:width+'px'}"><div class="dgshop-host" data-dgu-role="toolbar" data-dgu-component="shop.toolbar" data-dgu-instance="lab-toolbar-1">
-  <Toolbar :state="state" :toggle="toggle" :toggleCategories="toggleCategories" :setDefaultGender="setDefaultGender" />
+  <Toolbar :state="state" :toggle="toggle" :toggleCategories="toggleCategories" :setDefaultGender="setDefaultGender" :pinReference="()=>record('reference','Lab only')" :compareReference="()=>record('compare','Lab only')" :clearReference="()=>record('clearReference','Lab only')" :closeComparison="()=>record('closeComparison','Lab only')" />
  </div><div id="shopCategories" :hidden="!state.categoriesOpen" class="lab-placeholder">Lab 分类占位目标（非原生游戏列表）</div><div v-if="state.open" class="lab-placeholder" role="region" aria-label="Lab 详情占位">{{state.selectedTitle}} <button @click="toggle">关闭详情</button></div></section>
  <section v-else class="lab-floating lab-stage" :style="{width:width+'px'}">
   <p>悬浮球位置和菜单几何是手动 props，不代表生产拖动、自动避让或游戏操作验收。</p>

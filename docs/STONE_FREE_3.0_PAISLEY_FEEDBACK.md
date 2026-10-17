@@ -103,3 +103,13 @@
 桌面资源服务器只有编译 HTML，未提供完整图片资源；角色预览出现图片超时。只报告这一资源覆盖限制，不把它推定为 Android 预览缺陷。泛化启动 Event 的原因仍 Unknown。实际字段比较、原状态和清理通过不代表全游戏 Console 无错。
 
 现有工具足够完成当前 UI 任务，未发现明确 Tools 实现缺陷。不新增 Full Evidence、Perfetto、bugreport、Gameplay Provider 或复杂 Journey，也没有触碰历史 Unknown。具体结果见 `STONE_FREE_3.0_OFFICIAL_INTEGRATION.md`，通用经验与第九轮/F001 去重后收件即可，不授权工具重构。
+
+
+## 第十一轮增补：运行来源、补丁观察与恢复读回
+
+- 实际使用：已安装 Skill resolver 6.1.0；Doctor 区分无设备和明确平板连接；标准 execution-context 绑定独立包 WebView；Action 的 web-click/web-input/restart；项目自己的 Playwright Windows Loader 测试及 CDP 原状态断言。没有重装工具或修改 Paisley Park。
+- 子链接看似可见但被原 div-link 覆盖，另一次选择命中多页重复节点。工具准确拒绝，实际命中范围与原操作身份优先，不能为过测试使用 force-click。这与 R10 命中经验重复，作为新实例，不另提通用架构需求。
+- 运行时 Story.get(widgetName) 返回错误占位内容而非源码；关键词未出现不能说明补丁失败。应先确认来源存在，再选择真实行为验证。本轮改查单页生成/原翻页。具体谁移除 widget Passage 仍 Unknown；属于目标项目/宿主知识，不固化成所有 DoL 的通用事实。
+- 一次功能流程通过而清理失败：恢复 Mod 清单后，强制重启读回发现 UI 位置偏好有漂移。已保留 cleanup-failed；用原备份停止消费者、恢复精确键值、等待提交并重启读回，另存修复收据。原因 Unknown，没有证据认定是 Tools 缺陷。通用 Skill 可提示：恢复的执行 ACK 不等于重启后的持久恢复，跨设备交接应保留实际 readback。
+- 重型采集未使用：未发现持续卡顿、泄漏或崩溃问题，没有启动 Perfetto、bugreport、Full Evidence 或 GER。旧 Unknown 未派发、清理或绕过。战斗只有组件接缝证明，真实行动入口不可用仍明确标记覆盖不足。
+- 结论：没有确认的 Tools 实现缺陷。建议仅去重补充恢复读回和来源存在性提示，不自动重构工具；本轮临时命中标签、具体 widget 名称和 UI 偏好键留在项目文档。

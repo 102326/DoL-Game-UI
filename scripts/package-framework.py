@@ -1,6 +1,7 @@
 """Research ZIPs, independent from the unchanged official UI packaging path."""
 from pathlib import Path
 import json, zipfile, hashlib
+from shop_package import add_shop_patches
 
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
@@ -23,7 +24,7 @@ for directory, name in packages:
         dependencies.append({'modName': 'StoneFreeHost', 'version': '=' + version})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
-    package_version = '3.0.0-lab.10' if directory == 'official-ui' else version
+    package_version = '3.0.0-lab.11' if directory == 'official-ui' else '0.1.2-experimental' if directory == 'motion-hub' else version
     boot = dict(name=name, version=package_version, nickName=name + ' (Research)', scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
@@ -40,6 +41,14 @@ for directory, name in packages:
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
     if directory == 'official-ui':
+        for declaration in ['ui.d.ts','wardrobe.d.ts']:
+            asset_name = 'types/'+declaration
+            files[asset_name] = (root/'dist/types'/declaration).read_bytes(); boot['additionFile'].append(asset_name)
+        boot['scriptFileList_inject_early'] = ['shop-page-experiment.js']
+        files['shop-page-experiment.js'] = (root/'dist/shop-page-experiment.js').read_bytes()
+        boot['dependenceInfo'] += [{'modName':'TweeReplacer','version':'>=1.0.0'}, {'modName':'GameVersion','version':'=0.5.11.9 || =0.5.12.13'}]
+        boot['addonPlugin'] = [{'modName':'TweeReplacer','addonName':'TweeReplacerAddon','modVersion':'>=1.0.0','params':[]}]
+        add_shop_patches(root,boot,files)
         for notice in ['UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
             files[notice] = (root/notice).read_bytes(); boot['additionFile'].append(notice)
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()

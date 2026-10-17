@@ -156,6 +156,14 @@
 .dgshop-default-filter{display:flex;align-items:center;gap:8px;margin-left:auto;font-size:.85em;color:var(--dgu-secondary)}
 .dgshop-host .dgshop-default-filter select{padding:6px 10px;min-height:40px}
 .dgshop-default-message{margin:6px 0 0;font-size:.8em;color:var(--dgu-secondary)}
+.dgshop-reference-tools{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:6px 0;padding:8px 0;border:0;border-radius:8px;background:transparent;font-size:.85em}
+.dgshop-reference-status{margin:0;color:var(--dgu-secondary)}
+.dgshop-reference-comparison{display:grid;grid-template-columns:1fr;gap:0;width:100%;margin:2px 0 0}
+.dgshop-reference-comparison>div{display:grid;grid-template-columns:minmax(80px,.6fr) repeat(2,minmax(0,1fr));gap:8px;align-items:center;min-width:0;padding:8px 2px;border-top:1px solid var(--dgu-border,#ffffff12);background:none}
+.dgshop-reference-comparison dt{color:var(--dgu-secondary);font-size:.8em}
+.dgshop-reference-comparison dd{margin:3px 0 0;overflow-wrap:anywhere}
+@media(max-width:600px){.dgshop-reference-comparison{grid-template-columns:1fr}}
+.dgshop-reference-note{flex-basis:100%;font-size:11px;color:var(--dgu-secondary);margin:0!important}
 @media(max-width:600px){.dgshop-default-filter{margin-left:0}.dgshop-toolbar{gap:8px}.dgshop-toolbar h2{width:100%}}
 
 .dgshop-content .dgshop-browse-tools .searchBar{white-space:nowrap}.dgshop-content .dgshop-browse-tools .searchGroup{min-width:0}.dgshop-content .dgshop-browse-tools #shopCategories{flex-basis:600px}.dgshop-content .dgshop-browse-tools .optionsBar{flex-basis:480px}
