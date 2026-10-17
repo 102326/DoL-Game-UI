@@ -1,11 +1,14 @@
 """Research ZIPs, independent from the unchanged official UI packaging path."""
 from pathlib import Path
-import json, zipfile, hashlib
+import json, zipfile, hashlib, argparse
 from shop_package import add_shop_patches
 
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
-version = '0.1.2-experimental'
+version = '0.1.3-experimental'
+parser = argparse.ArgumentParser()
+parser.add_argument('--players-only', action='store_true', help='Package only the paired Host and official UI')
+args = parser.parse_args()
 def write_archive(name, target, files):
     with zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED) as z:
         for filename, payload in sorted(files.items()):
@@ -18,19 +21,21 @@ def write_archive(name, target, files):
 
 packages = [('host', 'StoneFreeHost'), ('native-status', 'StoneFreeNativeStatus'), ('comparison', 'StoneFreeStatusComparison'), ('soft-wet-surface', 'StoneFreeSoftWetSurface'), ('workspace', 'StoneFreeWorkspace'), ('alternate-workspace', 'StoneFreeAlternateWorkspace'), ('native-reading', 'StoneFreeNativeReading'), ('reading-controls', 'StoneFreeReadingControls'), ('motion-hub', 'StoneFreeMotionHub'), ('wardrobe-reference', 'StoneFreeWardrobeReference'), ('official-ui', 'DoLGameUI')]
 for directory, name in packages:
+    if args.players_only and directory not in ('host', 'official-ui'):
+        continue
     base = out / directory
     dependencies = [{'modName': 'ModLoader', 'version': '>=2.100.0'}]
     if directory != 'host':
         dependencies.append({'modName': 'StoneFreeHost', 'version': '=' + version})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
-    package_version = '3.0.0-lab.16' if directory == 'official-ui' else '0.1.3-experimental' if directory == 'motion-hub' else version
+    package_version = '3.0.0-lab.17' if directory == 'official-ui' else '0.1.3-experimental' if directory == 'motion-hub' else version
     boot = dict(name=name, version=package_version, nickName=name + ' (Research)', scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
     files = {p: (base/p).read_bytes() for p in boot['scriptFileList'] + boot['styleFileList']}
     files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
-    readme = f'framework/{directory}/README.md' if directory in ('motion-hub', 'wardrobe-reference', 'official-ui') else 'framework/README.md'
+    readme = f'framework/{directory}/README.md' if directory in ('host', 'motion-hub', 'wardrobe-reference', 'official-ui') else 'framework/README.md'
     files['README.md'] = (root/readme).read_bytes()
     files['LICENSE'] = (root/'LICENSE').read_bytes()
     if directory in ('native-status', 'comparison', 'soft-wet-surface', 'workspace', 'alternate-workspace', 'reading-controls', 'motion-hub', 'wardrobe-reference', 'official-ui'):
@@ -58,6 +63,8 @@ for directory, name in packages:
     write_archive(name, target, files)
 
 # Development sources only: no runtime boot.json, UI sources, dependencies or test evidence.
+if args.players_only:
+    raise SystemExit(0)
 kit_paths = ['LICENSE', 'scripts/framework-factory.mjs', 'framework/contracts.ts', 'framework/vue.ts', 'framework/connect.ts',
              'framework/factory/Panel.vue', 'framework/factory/preview.ts', 'framework/factory/index.html',
              'framework/factory/vite.config.mjs', 'framework/factory/package.py']

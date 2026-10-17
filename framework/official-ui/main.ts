@@ -11,7 +11,7 @@ const disconnect=connectConsumer(host=>{
  let ui:ReturnType<typeof startGameUI>|undefined;
  let destroyUi:(()=>void)|undefined;
  let stopHub:(()=>void)|undefined;
- const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion='3.0.0-lab.16';
+ const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion='3.0.0-lab.17';
  const release=()=>{try{stopHub?.();shelf.dispose();destroyUi?.()}finally{ui=undefined;destroyUi=undefined;stopHub=undefined;owner.dispose();if(html.getAttribute('data-stone-free')===visualVersion){if(previous===null)html.removeAttribute('data-stone-free');else html.setAttribute('data-stone-free',previous)}}};
  try{
   if(!owner.claim('region','soft-wet-official-ui')){release();return release}
