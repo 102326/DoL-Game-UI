@@ -1,6 +1,6 @@
 # Stone Free 作者源码包
 
-`0.1.2-experimental`，协议 `0.1-experimental`。供作者创建和维护独立 Vue Mod。源码和实验协议可能继续调整，尚不是稳定 SDK。
+`0.1.3-experimental`，协议 `0.1-experimental`。供作者创建和维护独立 Vue Mod。源码和实验协议可能继续调整，尚不是稳定 SDK。
 
 这是开发用 `.source.zip`，不是游戏 Mod，不要导入 ModLoader。解压到新的开发目录后，在该目录运行：
 
@@ -12,7 +12,7 @@ node scripts/framework-factory.mjs create E:/my-mods/ReadingNotes ReadingNotes
 
 `npm run dev` 启动普通 Vite 组件预览。结束预览后，用 `npm run check` 检查类型，`npm run package` 构建 `dist/ReadingNotes-0.1.0.mod.zip`。预览不含游戏或模拟 Host，不能代替实际游戏检查。
 
-生成的游戏 Mod 依赖 `StoneFreeHost 0.1.2-experimental`，由单独的 Host `.mod.zip` 提供运行能力，不依赖完整官方 UI 或共享 Vue 包。安装到测试游戏时不要解压 `.mod.zip`。源码包本身不提供或下载游戏、ModLoader、APK 和存档。
+生成的游戏 Mod 依赖 `StoneFreeHost 0.1.3-experimental`，由单独的 Host `.mod.zip` 提供运行能力，不依赖完整官方 UI 或共享 Vue 包。安装到测试游戏时不要解压 `.mod.zip`。源码包本身不提供或下载游戏、ModLoader、APK 和存档。
 
 ## 修改与可选组合
 

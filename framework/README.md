@@ -2,9 +2,11 @@
 
 这组离线 Mod 用来检验 3.0 的公共接缝，不是 Soft & Wet 3.0 正式版。正式 2.7 制品不改；本研究分支保留 API v1 和存档格式，R15 对共享衣柜异步清理作了定向加固。协议 `0.1-experimental` 可能在研究后调整，请勿作为稳定第三方依赖发布。
 
-正式目标已确定为独立 Framework Host 与独立官方 UI 消费者。当前研究包版本为 `0.1.2-experimental`，消费者要求同版本 Host；协议版本仍为 `0.1-experimental`。首版按明确配对安装和更新，不承诺任意版本独立升级。SDK 和 Author Kit 只用于开发，不是玩家 Runtime。
+正式目标已确定为独立 Framework Host 与独立官方 UI 消费者。当前研究包版本为 `0.1.3-experimental`，消费者要求同版本 Host；协议版本仍为 `0.1-experimental`。首版按明确配对安装和更新，不承诺任意版本独立升级。SDK 和 Author Kit 只用于开发，不是玩家 Runtime。
 
 Loader 的依赖报告不能替代消费者接入检查。缺少或不支持的 Host 会使消费者退让；不要同时启用多份 Host。停用 Mod 后需要重启，消费者主动退出只释放自己的资源，不等于整包热卸载。
+
+普通玩家的本地候选仅为 Host 0.1.3 与官方 UI lab17，见 [Host说明](host/README.md)和[官方UI说明](official-ui/README.md)。使用 `python scripts/package-framework.py --players-only` 只装配这两包。下面的同伴和作者包是可选研究内容，不是官方 UI 依赖。旧版本制品保留，消费者升级支持仍按明确配对。
 
 ## 运行
 
@@ -85,7 +87,7 @@ Host 退出时，仍然安装的消费者可以等待新 Host，这是预期行�
 
 ## 最小作者配方
 
-源码仓库的[作者指南](../docs/STONE_FREE_3.0_AUTHOR_GUIDE.md)说明完整流程。`framework:build` 还生成 `StoneFreeAuthorKit-0.1.2-experimental.source.zip`：只含配方、SDK、模板及许可证，解压后可在完整 UI 仓库之外创建作者项目。它不是 Mod，不要导入 ModLoader；运行中的 Host 由单独的 `.mod.zip` 提供。
+源码仓库的[作者指南](../docs/STONE_FREE_3.0_AUTHOR_GUIDE.md)说明完整流程。`framework:build` 还生成 `StoneFreeAuthorKit-0.1.3-experimental.source.zip`：只含配方、SDK、模板及许可证，解压后可在完整 UI 仓库之外创建作者项目。它不是 Mod，不要导入 ModLoader；运行中的 Host 由单独的 `.mod.zip` 提供。
 
 运行 `node scripts/framework-factory.mjs create NEW_DIRECTORY ModId`，生成由作者拥有的 Vue/TS 项目、独立 ZIP 打包脚本和实验 SDK 快照。已有目录会拒绝，不覆盖作者文件。自行安装声明的依赖并保存自己的锁文件后，使用生成项目的 `npm run package`。
 
