@@ -43,8 +43,11 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
    assert.equal(await page.evaluate(()=>calls),0);
   }
   for(const name of ['材质','入口','阅读']){await page.getByRole('button',{name,exact:true}).click();await page.waitForTimeout(80)}
-  await page.waitForTimeout(700);
+   // WAAPI completion can be scheduled after its nominal duration on a loaded CI runner.
+   await page.waitForFunction(()=>!document.querySelector('#dol-midnight-controls[data-workspace-transition]')&&document.querySelectorAll('.dmt-workspace-section').length===1,null,{timeout:3000});
   assert.equal(await page.locator('.dmt-workspace-section[inert]').count(),0);
+   assert.equal(await page.locator('.dmt-workspace-section').getAttribute('aria-labelledby'),'dmt-reading-heading');
+   assert.equal(await page.getByLabel('舒适阅读间距',{exact:true}).isEnabled(),true);
   assert.deepEqual(await page.evaluate(()=>leaked),[],'settings events cannot leak to delegated game handlers');
   await page.locator('.dmt-close').click();await page.waitForTimeout(450);
   assert.equal(await dialog.evaluate(n=>n.open),false);

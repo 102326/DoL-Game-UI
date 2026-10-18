@@ -59,6 +59,7 @@ Host 使用公开 0.1.4-experimental 原 ZIP，公共协议未修改。当前 CI
 - Android 使用原 Loader 安装 API，备份旧自有包和清单，校验存储 ZIP 与启动后实际脚本／样式成员。最后主 UI 和所有适用自有兼容包已安装；原生重启后默认全部展开，Hub 显示。ReOverfits 无目标，未强行安装。
 - 模式持久化存在一次“写偏好后立即 force-stop，读回旧 true”的失败，保留。等待写入并核对后，后续原生重启为 false；未将该现象根因宣称已解决。
 - 一次 Page.reload 触发工具 DocumentChanged，保留失败；重新绑定后核实运行成员，没有盲目重复操作。
+- [首次最终提交 CI](https://github.com/102326/DoL-Game-UI/actions/runs/39161341795) 在设置快速切换后固定等待 700ms 的采样点失败，未创建 Release。Windows 诊断记录显示转场完成／取消回调负责移除离场节点；不能从该采样点推定永久残留。测试改为有界等待实际转场结束及唯一正文，再保留无 inert、正确分类、控件可用和无输入泄漏断言。没有修改运行代码，也没有把失败记录覆盖为通过。后续最终提交 CI 的结果单独核对。
 - 现场准备期间页面被人工切走，几个带场景前置检查的脚本明确拒绝操作；重新观察正确页面后继续，没有把前置失败计为通过。
 
 本地原始证据在忽略目录 `tests/artifacts/kraft-work-maintenance-20261019/`，不公开游戏 HTML、第三方包或测试进度。最终安装目录 `tablet-release-last-3.0.1-1792353310817/`，最新三页结果为 `current-mods-20261019/save-three-tabs-final.json`，日志为 `journal-items-final.json`；最终战斗检查为该目录最后一次 `tablet-combat-regression-*.json`。中间输入和失败报告保留。

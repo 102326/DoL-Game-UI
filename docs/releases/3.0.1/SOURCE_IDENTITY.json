@@ -1,7 +1,7 @@
 {
   "releaseTag": "v3.0.1",
   "runtimeSourceCommit": "e204da46ffb97b26994600cb6649a568c3005877",
-  "sourceCommitNote": "The release tag additionally commits this identity record; runtime and packaged inputs remain unchanged.",
+  "sourceCommitNote": "The release tag additionally commits release identities and CI settling checks; all packaged runtime inputs remain unchanged.",
   "sourceInputs": [
     {
       "path": "LICENSE",
