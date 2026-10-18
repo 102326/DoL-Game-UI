@@ -104,16 +104,16 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 
 | 包 | 作用与范围 |
 | --- | --- |
-| ModHubSoftWet 0.2.5 | ModHub >=1.3.0 的管理器外观 |
-| MapleBirchSoftWet 0.2.5 | MapleBirch >=5.2.3 的云存档页面外观，不接管云端业务 |
-| DolOptimizationSoftWet 0.1.7 | 原版优化 >=1.1.1.2 的存档页面外观，保留原描述编辑与槽位控件 |
-| CheatExtendedSoftWet 0.1.0 | 原作者 Cheat Extended 的外观；另行验证并标注独立维护的 rebuild.30 |
-| ReOverfitsSoftWet 0.2.2 | ReOverfits >=4.1.1 的额外服装槽位接入，沿用原包 |
-| LyraMouthCompat051213 0.1.2 | 指定 Lyra 0.5.12.13 嘴部资源适配，沿用原包 |
+| ModHubSoftWet | ModHub 管理器外观 |
+| MapleBirchSoftWet | MapleBirch 云存档页面外观，不接管云端业务 |
+| DolOptimizationSoftWet | 原版优化的存档页面外观，保留原描述编辑与槽位控件 |
+| CheatExtendedSoftWet | Cheat Extended 外观，适配原作者版及已支持的独立维护版 |
+| ReOverfitsSoftWet | ReOverfits 额外服装槽位接入 |
+| LyraMouthCompat051213 | 指定 Lyra 环境的嘴部资源适配 |
 
-前三个外观包和 CE 外观包要求 UI >=3.0.0。CE 原作者版与 rebuild.30 的技术名相同，只能启用其中一个；本次分别实测原作者 1.20.3.1 与独立维护的 1.20.3.1-rebuild.30，不代表全部作弊功能通过。
+按自己安装的 Mod 选用相应兼容包；Cheat Extended 的不同发行版不要同时启用。具体版本、依赖要求、安装顺序和已验证范围以[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)为准，后续更新统一在那里说明。
 
-兼容包不会自动美化所有第三方页面。目标结构、接口或数据不匹配时会减少或退出适配；最低版本范围不等于所有后续版本都经过验收。完整依赖见 [兼容包说明](docs/OPTIONAL_ADAPTERS.md)。
+兼容包不会自动美化所有第三方页面。目标结构、接口或数据不匹配时会减少或退出适配。
 
 ## 设置、兼容与回退
 
