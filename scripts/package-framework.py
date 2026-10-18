@@ -33,7 +33,7 @@ for directory, name in packages:
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
     package_version = '3.0.0' if directory == 'official-ui' else host_version if directory == 'host' else '0.1.5-experimental' if directory == 'motion-hub' else version
-    nickname = 'DoL Soft & Wet Game UI' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
+    nickname = 'Soft & Wet 3.0 — Kraft Work' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
     boot = dict(name=name, version=package_version, nickName=nickname, scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)

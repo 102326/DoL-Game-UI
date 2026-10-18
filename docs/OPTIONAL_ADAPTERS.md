@@ -1,31 +1,32 @@
-# 独立兼容包（2.7）
+# 独立兼容包（Kraft Work 3.0 候选）
 
 UI 主包负责通用界面；以下包按需要安装，不能代替目标 Mod。没有安装外观包时，目标 Mod 使用自己的界面与功能。
 
 | 包 / 适配包版本 | 目标版本 | 用途 |
 | --- | --- | --- |
-| MapleBirchSoftWet 0.2.4 | MapleBirch >=5.2.3 / UI >=2.2.2 / DoL 0.5.12.13 | 云存档外观 |
-| ModHubSoftWet 0.2.4 | ModHub >=1.3.0 / UI >=2.2.2 / DoL 0.5.12.13 | 管理器 Acrylic 外壳、轻内容区和按钮样式 |
-| DolOptimizationSoftWet 0.1.6 | 原版优化 >=1.1.1.2 / UI >=2.2.2 / DoL 0.5.12.13 | 统一原节点存档卡片，保留可编辑描述与游戏内日期 |
+| MapleBirchSoftWet 0.2.5 | MapleBirch >=5.2.3 / UI >=3.0.0 / DoL 0.5.12.13 | 云存档外观 |
+| ModHubSoftWet 0.2.5 | ModHub >=1.3.0 / UI >=3.0.0 / DoL 0.5.12.13 | 管理器 Acrylic 外壳、轻内容区和按钮样式 |
+| DolOptimizationSoftWet 0.1.7 | 原版优化 >=1.1.1.2 / UI >=3.0.0 / DoL 0.5.12.13 | 统一原节点存档卡片，保留可编辑描述与游戏内日期 |
 | ReOverfitsSoftWet 0.2.2 | ReOverfits >=4.1.1 / UI >=2.2.2 / DoL 0.5.12.13 | 外层服装槽位接入新版衣柜与商店；修正首页分类的重复边框及图标隐藏 |
-| LyraMouthCompat051213 0.1.1 | Lyra 0.5.12.13-1.0.1a-1004.1-goose-ucb / MapleBirch 5.2.3 | Goose 主角色嘴部路径修复，不依赖 UI |
+| CheatExtendedSoftWet 0.1.0 | CE >=1.20.3，接口基线原作者 1.20.3.1；另验独立维护 rebuild.30 / UI >=3.0.0 / DoL 0.5.12.13 | 独立与内嵌 CE 两级目录、控件外观；不修改作弊业务 |
+| LyraMouthCompat051213 0.1.2（沿用已验收原包） | Lyra 0.5.12.13-1.0.1a-1004.1-goose-ucb / MapleBirch >=5.2.3 <6.0.0 | Goose 主角色嘴部路径修复，不依赖 UI |
 | LyraWardrobeMouthSoftWet 0.1.5 | Lyra 0.5.11.9-1.0.0a-0815-goose-ucb / UI >=2.2.2 | 旧版本衣柜私有预览嘴部路径，**不用于 0.5.12.13** |
 
 `>=` 表示最低版本及以上；不表示每个后续版本都已验证。结构、接口或槽位不匹配时减少或退出适配。文件名中的 `plus` 对应这个最低版本要求。Lyra 嘴部包继续限定指定资源版本。
 
-本轮沿用已发布兼容包，四个通用包的 UI 最低要求仍为 2.2.2，并未锁定 2.7。最低版本不等于全部组合已经通过本轮验证。
+Kraft Work 本轮更新 ModHub、MapleBirch、原版优化三个外观包并新增 Cheat Extended 外观包，使用主包已有的导航、动效和天气机制。UI 2.x 请继续使用 ModHub/Maple 0.2.4、原版优化 0.1.6；不能安装上述要求 UI 3.0 的新外观包。ReOverfits 槽位扩展和嘴部功能修复按原边界沿用，不为外观更新虚增版本。最低版本不等于全部组合经过验证。
 
 旧 `LyraWardrobeMouthSoftWet 0.1.5` 将 UI 依赖放宽为 `>=2.2.2`，可配套 2.7；指定旧 Lyra 与游戏资源范围仍精确限定。未来 UI 版本仍依赖相同准备事件与模型结构，不保证任意版本。旧 UI 2.0.3～2.2.1 使用历史 0.1.4。
 
 ## 安装与升级
 
-1. 替换旧 UI，导入 `DoL-SoftWet-GameUI-2.7.0.mod.zip`，不要解压。
+1. 备份存档并保留旧 UI。安装 Kraft Work 候选时，导入 `StoneFreeHost-0.1.4-experimental.mod.zip` 与 `DoLGameUI-3.0.0.mod.zip`；Host 排在 UI 前，不要解压。同名 UI 只启用一份。
 2. 根据目标 Mod 的版本选择兼容包；原版游戏不需要 Goose 或第三方外观包。
 3. 每个兼容包只启用一个版本。已安装 preview 包时，导入对应正式包替换同名 Mod。
 4. 普通兼容包在 UI 和目标 Mod 之后加载。旧 Lyra 衣柜包使用提前注入监听器，以覆盖第一次预览。
 5. 重启游戏。关闭 Soft & Wet 总开关后，外观包回到原版样式；禁用兼容包并重启可完整撤销。
 
-0.5.12.13 不安装旧 Lyra 衣柜包。已有 `LyraMouthCompat051213` 可替换为同名 0.1.1；路径修复代码保持一致。MapleBirch 外观包只影响云存档外观，不影响连接、上传、下载等业务。
+0.5.12.13 不安装旧 Lyra 衣柜包。已有 `LyraMouthCompat051213` 采用已验收的同名 0.1.2 原包；该包在另一条独立适配工作树维护，本轮不重写嘴部路径或扩大支持范围。MapleBirch 外观包只影响云存档外观，不影响连接、上传、下载等业务。
 
 统一文件命名：`包名-目标Mod-目标版本-v适配包版本.mod.zip`。目标版本同时写入依赖清单和运行时检查。
 
@@ -59,7 +60,7 @@ UI 主包负责通用界面；以下包按需要安装，不能代替目标 Mod�
 - ModHub 包的专属 CSS 由 Core Style Adapter 的结构校验控制；不改原节点、安装、排序、删除、市场或恢复逻辑。
 - UI 的 `dol-ui-outfit-prepared` 事件仅传递已绑定 options 的私有 `{model, options}`，发生在编译前；旧 Lyra 包只调整这个模型的 mouth.srcfn，不改全局角色模型或 V/T。
 - 0.5.12.13 嘴部包通过 MapleBirch 的公开角色图层接口注册 main 嘴部路径，使用游戏内已有资源，不随包分发图片。
-- cheat_extended 没有专属兼容层；通用作弊页面继续美化原控件。
+- CheatExtendedSoftWet 主要适配 chris81605 原作者版 1.20.3.1，另验 102326 的 rebuild.30，明确是独立维护版本；同技术名只启用一份。CE-R1 和 DoLCheatReboot 不包含在本包中。
 
 ## 历史验证范围
 

@@ -1,0 +1,131 @@
+/* Moving contours are disposable decoration, never replacement controls. */
+.kw-moving-focus{position:fixed;z-index:10050;pointer-events:none!important;box-sizing:border-box;border:1px solid #8fb6a65c;border-radius:14px;background:#8fb6a606;box-shadow:inset 0 1px #d5c7e414,0 8px 24px #0002;transform-origin:0 0}
+.kw-context-plane{position:fixed;inset:0;z-index:998;pointer-events:none!important;background:#08090b18;backdrop-filter:blur(3px) contrast(.94);-webkit-backdrop-filter:blur(3px) contrast(.94)}
+html:not([data-dgu-visualGlass]) .kw-context-plane{backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-stone-free] .sf-motion-hub{transition:opacity 280ms}
+html[data-kw-character-layer] .sf-motion-hub{opacity:.35;transition:opacity 280ms}
+html[data-kw-character-layer] .sf-motion-hub button{pointer-events:none}
+html[data-stone-free] #customOverlay :is(.dgc-host,.dgs-host,.dgp-host) button:focus-visible{outline:1px solid #8fb6a677!important;outline-offset:2px;box-shadow:none!important}
+
+/* Hub petals release from the same shell, then fold back toward the ball. */
+html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub .sf-motion-orbit.is-grid .sf-motion-petal{opacity:0;transform:translate3d(0,calc((var(--i) + 1)*10px),0) rotateX(-14deg) scale(.88);transform-origin:50% 100%;transition:transform 560ms cubic-bezier(.16,1,.3,1),opacity 200ms,background-color 180ms;transition-delay:0s}
+html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub .sf-motion-orbit.is-grid.is-expanded .sf-motion-petal{opacity:1;transform:none;transition-delay:calc(var(--i)*32ms)}
+html[data-stone-free] .sf-motion-hub .sf-motion-petal{--kw-tool:#92aaa3;isolation:isolate}
+html[data-stone-free] .sf-motion-hub .sf-motion-petal[data-motion-view$="interface-settings"]{--kw-tool:#b5a4c1}
+html[data-stone-free] .sf-motion-hub .sf-motion-petal[data-motion-view$="native-saves"]{--kw-tool:#b9ae8d}
+html[data-stone-free] .sf-motion-hub .sf-motion-petal[data-motion-view$="native-social"]{--kw-tool:#aa9fb8}
+html[data-stone-free] .sf-motion-hub .sf-motion-petal[data-motion-view$="native-attributes"]{--kw-tool:#8baeb3}
+html[data-stone-free] .sf-motion-hub .sf-motion-petal::after{content:"";position:absolute;inset:0;border:1px solid var(--kw-tool);border-radius:inherit;opacity:0;pointer-events:none;transition:opacity 220ms}
+html[data-stone-free] .sf-motion-hub .sf-motion-petal:is(:hover,:focus-visible)::after{opacity:.42}
+html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub .sf-motion-petal:active{scale:.96}
+html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub .sf-motion-ball:active>span{scale:.83}
+html[data-stone-free] .sf-motion-hub .sf-motion-ball>span{transition:transform 420ms cubic-bezier(.2,1.4,.3,1),scale 220ms}
+
+/* This whitelist is tagged only after checking the direct Bedroom link contract. */
+html[data-stone-free] #passages a[data-kw-native]{text-decoration-thickness:1px;text-underline-offset:4px;border-radius:5px}
+html[data-stone-free] #passages a[data-kw-native]:focus-visible{outline:1px solid #8fb6a699;outline-offset:4px}
+html[data-stone-free] #passages a[data-kw-native]:active{background:#8fb6a617;box-shadow:inset 0 -1px #8fb6a677}
+
+/* Stable controls, expressive material: no transforms on native fixed ancestors. */
+html[data-stone-free] :is(.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){transition:background-color 220ms,border-color 220ms,box-shadow 280ms}
+html[data-stone-free] .dgw-slots button[aria-pressed=true]{background:#8fb6a610!important;box-shadow:inset 0 -2px #8fb6a580!important}
+html[data-stone-free] .dcu-arrangement button[aria-current]{box-shadow:inset 2px 0 #9ca9bb99!important}
+html[data-stone-free] .dgw-equipped{border-color:#8fb6a51c;background:linear-gradient(110deg,#8fb6a509,transparent 70%)}
+html[data-stone-free][data-dgu-visualMotion] :is(.dgw-operation-status,.dgshop-transaction)[role=status]:not(:empty){animation:kw-result-material 600ms cubic-bezier(.16,1,.3,1)}
+@keyframes kw-result-material{from{box-shadow:inset 0 -2px #8fb6a550;background-color:#8fb6a512}to{box-shadow:inset 0 -2px transparent;background-color:transparent}}
+@media(prefers-reduced-motion:reduce){
+ html[data-stone-free] .sf-motion-hub .sf-motion-orbit.is-grid.is-expanded .sf-motion-petal{transform:none;opacity:1}
+ html[data-stone-free] :is(.dgw-operation-status,.dgshop-transaction){animation:none!important}
+ html[data-stone-free] .sf-motion-hub :is(.sf-motion-petal,.sf-motion-ball>span){transition:none!important;scale:1!important}
+}
+html[data-stone-free]:not([data-dgu-visualMotion]) :is(.dgw-operation-status,.dgshop-transaction){animation:none}
+
+/* Official Hub: constellation grouping with the ribbon study's clear labels and quiet edges.
+   The two earlier silhouettes remain in the R5 evidence, not two product modes. */
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official]{--kw-hub-fill:var(--kw-shell);--kw-hub-edge:#ffffff16;color:var(--sf-ink)}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-ball{border-radius:22px 22px 22px 9px;border-color:var(--kw-hub-edge);background:linear-gradient(140deg,#a7b9b017,transparent 65%),var(--kw-hub-fill);box-shadow:inset 0 1px #ffffff14,0 12px 30px #0004;backdrop-filter:blur(24px) saturate(.9)}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-emblem{display:block;width:32px;height:32px;margin:auto;color:#b0bcb6;transition:transform 520ms cubic-bezier(.16,1,.3,1),color 240ms}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-ball.is-open{border-radius:16px;box-shadow:inset 0 1px #ffffff14,0 9px 26px #0004}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-ball.is-open>span{transform:rotate(90deg) scale(.86)}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-ball::before{inset:5px;border-color:#8baea34d;border-radius:13px;transform:scale(.7) rotate(-30deg)}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-ball.is-open::before{transform:scale(1) rotate(0);opacity:1}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-ball.is-docked{border-radius:7px 22px 22px 7px;background:rgba(30,31,35,.8);box-shadow:inset 2px 0 #8baea377,0 5px 16px #0003}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-ball.is-docked .sf-motion-emblem{width:24px;height:24px;transform:rotate(90deg)}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-ball.is-dragging{border-radius:24px;box-shadow:0 20px 48px #0005,inset 0 1px #ffffff1a}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-orbit.is-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:12px;border:1px solid var(--kw-hub-edge);border-radius:26px 26px 12px 26px;background:linear-gradient(125deg,#ffffff07,transparent 58%),var(--kw-hub-fill);box-shadow:inset 0 1px #ffffff0c,0 18px 42px #0004;backdrop-filter:blur(28px) saturate(.9)}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-orbit.is-grid .sf-motion-petal{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;min-height:66px;padding:8px 4px;border:1px solid transparent;border-radius:12px;background:transparent;box-shadow:none;backdrop-filter:none}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-orbit.is-grid .sf-motion-petal[data-motion-view$=interface-settings]{grid-column:1/-1;flex-direction:row;justify-content:flex-start;gap:14px;padding:12px 16px;min-height:58px;background:#a89bb80a}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-tool-icon{flex:none;width:23px;height:23px;color:var(--kw-tool)}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-tool-label{font-size:13px;line-height:1.4;color:inherit;overflow-wrap:anywhere}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-utilities{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;padding-top:10px;margin-top:3px;border-top:1px solid #ffffff0b}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-utilities button{font-size:10px;min-height:44px;padding:4px 2px;border:0;border-radius:9px;background:transparent;color:var(--sf-muted);white-space:normal}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-petal:is(:hover,:focus-visible){background:#a3b9af12;box-shadow:inset 0 1px #ffffff08}
+html[data-stone-free] .sf-motion-hub[data-official] .sf-motion-petal:focus{outline:1px solid var(--kw-tool);outline-offset:1px}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-ball:focus{outline:1px solid #8baea380;outline-offset:3px}
+
+html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub[data-official] .sf-motion-orbit{transform-origin:var(--origin-x) var(--origin-y);transform:perspective(1000px) rotateY(-26deg) rotateZ(5deg) scale(.32);opacity:0;transition:transform 620ms cubic-bezier(.16,1,.3,1),opacity 220ms,visibility 0s 620ms}
+html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub[data-official] .sf-motion-orbit.is-expanded{transform:none;opacity:1;transition-delay:0s}
+html[data-stone-free][data-dol-midnight]:not([data-dgu-visualGlass]) .sf-motion-hub[data-official] :is(.sf-motion-orbit.is-grid,.sf-motion-ball){background:#242528;backdrop-filter:none}
+@supports not (backdrop-filter:blur(1px)){html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] :is(.sf-motion-orbit.is-grid,.sf-motion-ball){background:#242528}}
+html[data-stone-free]:not([data-dgu-visualMotion]) .sf-motion-hub[data-official] :is(.sf-motion-orbit,.sf-motion-emblem){transition:none!important;animation:none!important;transform:none}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] .sf-motion-hub[data-official] :is(.sf-motion-orbit,.sf-motion-emblem){transition:none!important;animation:none!important;transform:none}}
+
+/* Native reading links keep their text flow; only reviewed navigation gets a material cue. */
+html[data-stone-free] #passages a[data-kw-native]{padding:3px 2px;background:transparent;box-shadow:inset 0 -1px #91aba42b;line-height:1.9}
+html[data-stone-free][data-dgu-visualMotion] #passages a[data-kw-native]{transition:background-color 240ms,box-shadow 300ms,color 240ms}
+html[data-stone-free] #passages a[data-kw-native]:is(:hover,:focus-visible){background:#8baea30d;box-shadow:inset 0 -1px #91aba480}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry],html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button{background:transparent;border:0;border-bottom:1px solid #ffffff09;border-radius:11px;color:var(--sf-ink);box-shadow:none}
+html[data-stone-free] #ui-bar [data-kw-entry]::before{content:"";display:inline-block;flex:none;width:4px;height:4px;margin-right:10px;border-radius:50%;background:#8baea370}
+html[data-stone-free][data-dgu-visualMotion] #ui-bar [data-kw-entry]{transition:background-color 240ms,box-shadow 320ms,border-color 240ms}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry]:is(:hover,:focus-visible),html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button:is(:hover,:focus-visible){background:#8baea310;box-shadow:inset 2px 0 #8baea366;border-color:#ffffff0e}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry]:focus,html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button:focus{outline:1px solid #8baea380;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] :is(#ui-bar [data-kw-entry],#passages a[data-kw-native]){transition:none}}
+
+/* R5 review studies are opt-in, non-persistent, and limited to the Hub chain. */
+.kw-hub-transfer{position:fixed;z-index:10050;pointer-events:none!important;box-sizing:border-box;border:1px solid #a4b8af3d;border-radius:24px;transform-origin:center;background:linear-gradient(145deg,#819e942e,#111315d9 38%,#151419d9 72%,#b7a1be26);box-shadow:0 24px 80px #0005,inset 0 1px #d4cfda26;overflow:hidden}
+.kw-hub-transfer::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 14% 0,#a7bcb421,transparent 56%),linear-gradient(115deg,transparent 35%,#b1a5c612 50%,transparent 68%);border-radius:inherit;pointer-events:none}
+.kw-hub-transfer.is-spatial{background:linear-gradient(125deg,#b4a6c11c,#17191b52 46%,#8baea318);box-shadow:-18px 26px 90px #0004,inset 0 1px #d4cfda26}
+html[data-stone-free][data-kw-hub-study] .kw-context-plane{background:#08090b28;backdrop-filter:blur(6px) contrast(.9);-webkit-backdrop-filter:blur(6px) contrast(.9)}
+html[data-stone-free][data-kw-hub-study]:not([data-dgu-visualGlass]) .kw-context-plane{backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-stone-free][data-kw-hub-study][data-kw-character-layer] .sf-motion-hub{opacity:.14}
+html[data-stone-free][data-kw-hub-study][data-dgu-visualMotion] .sf-motion-orbit{transform-origin:var(--origin-x) var(--origin-y);transition:transform 620ms cubic-bezier(.16,1,.3,1),border-radius 620ms,opacity 260ms,visibility 0s 620ms;opacity:0}
+html[data-stone-free][data-kw-hub-study=material][data-dgu-visualMotion] .sf-motion-orbit{transform:scale(.08,.12) rotate(-8deg);border-radius:60%}
+html[data-stone-free][data-kw-hub-study=spatial][data-dgu-visualMotion] .sf-motion-orbit{transform:perspective(1000px) rotateY(-34deg) rotateZ(9deg) scale(.38)}
+html[data-stone-free][data-kw-hub-study][data-dgu-visualMotion] .sf-motion-orbit.is-expanded{transform:none;opacity:1;border-radius:24px;transition-delay:0s}
+html[data-stone-free][data-kw-hub-study][data-dgu-visualMotion] .sf-motion-hub .sf-motion-orbit.is-grid .sf-motion-petal{transform:translateY(28px) scale(.72);transition:transform 620ms cubic-bezier(.16,1,.3,1),opacity 240ms,background-color 180ms}
+html[data-stone-free][data-kw-hub-study=spatial][data-dgu-visualMotion] .sf-motion-hub .sf-motion-orbit.is-grid .sf-motion-petal{transform:perspective(700px) rotateX(-24deg) translateX(32px) scale(.82)}
+html[data-stone-free][data-kw-hub-study][data-dgu-visualMotion] .sf-motion-hub .sf-motion-orbit.is-grid.is-expanded .sf-motion-petal{transform:none;transition-delay:calc(60ms + var(--i)*42ms)}
+html[data-stone-free][data-kw-hub-study][data-dgu-visualMotion] .sf-motion-ball:not(.is-docked).is-open{border-radius:20px}
+@media(prefers-reduced-motion:reduce){
+ html[data-stone-free][data-kw-hub-study] .sf-motion-orbit{transform:none!important;transition:none!important}
+ html[data-stone-free][data-kw-hub-study] .sf-motion-hub .sf-motion-orbit.is-grid.is-expanded .sf-motion-petal{transform:none!important}
+}
+
+/* Caption markers are assigned only to the reviewed native/official/Mod entry contracts.
+   Their actual nodes, order, shortcuts and handlers remain untouched. */
+html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry]{display:flex;align-items:center;justify-content:flex-start;text-align:left;min-height:44px;padding:9px 12px;background:transparent!important;border:0!important;border-bottom:1px solid transparent!important;border-radius:11px!important;box-shadow:none!important;color:var(--sf-ink)}
+html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry]:is(:hover,:focus){background:#8baea310!important;box-shadow:inset 0 0 0 1px #8baea333!important;outline:1px solid #8baea344;outline-offset:1px}
+html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry].macro-button-selected{background:#8baea315!important;box-shadow:inset 0 0 0 1px #8baea33d!important}
+
+/* Shared states for our controls, not a global button/link/input reset. */
+html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){--kw-control-accent:#8baea3;transition:background-color 220ms,border-color 240ms,box-shadow 280ms;color:var(--sf-ink)}
+html[data-stone-free][data-dol-midnight] :is(.dgc-navigation,.dgs-navigation,.dgp-navigation) button{background:#ffffff02!important;border:1px solid transparent!important;box-shadow:none!important;border-radius:11px!important}
+html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab):not(:disabled,[aria-disabled=true]):is(:hover,:focus-visible){background-color:#8baea311!important;box-shadow:inset 0 1px #ffffff0a!important;border-color:#8baea33b!important;outline:1px solid #8baea35c;outline-offset:2px}
+html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab):not(:disabled,[aria-disabled=true]):is(:active,[data-kw-press]){background-color:#8baea324!important;box-shadow:inset 0 0 0 1px #8baea352!important}
+html[data-stone-free][data-dol-midnight] :is(.dgc-navigation,.dgs-navigation) button[aria-pressed=true]{background:#8baea314!important;box-shadow:inset 0 -2px #8baea37a!important;color:#d2e1db}
+html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab):is(:disabled,[aria-disabled=true]){opacity:.4;cursor:default;box-shadow:none!important}
+html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgw-slots button,.dgshop-content .category-tab)[aria-busy=true]{cursor:progress;border-style:dashed}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){transition:none!important}}
+html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){transition:none!important}
+html[data-stone-free]:not([data-dgu-visualMotion]) #dol-midnight-controls input[type=checkbox]{transition:none!important}
+
+html[data-stone-free][data-dol-midnight] :is(#ui-bar button[data-kw-entry],.sf-motion-hub[data-official] button)[data-kw-press]{background-color:#8baea324!important;box-shadow:inset 0 0 0 1px #8baea352!important}
+/* The settings window remains available when the theme is off; disabled still means unavailable. */
+html[data-stone-free] #dol-midnight-controls button:disabled{opacity:.4;cursor:default;box-shadow:none!important}
+
+/* Material travels between actual source and destination bounds; it never receives input. */
+.kw-object-relay{position:fixed;z-index:100100;pointer-events:none!important;user-select:none;transform-origin:center;background:linear-gradient(135deg,#8baea32e,#1a1b2073 58%,#b0a3c224);border:1px solid #b4c5bd65;box-shadow:inset 0 1px #ffffff1c,0 24px 70px #0006;overflow:hidden;contain:layout paint}
+.kw-object-relay img{position:absolute;width:48px;height:48px;object-fit:contain;top:calc(50% - 24px);left:calc(50% - 24px);image-rendering:pixelated;pointer-events:none}
+
+/* Filled stage material; native window geometry and input remain real throughout. */
+.kw-window-stage{position:fixed;z-index:999;pointer-events:none!important;user-select:none;box-sizing:border-box;border:1px solid #ffffff17;border-radius:22px;background:linear-gradient(135deg,#ffffff07,transparent 65%),#24262ac7;box-shadow:inset 0 1px #ffffff0b,0 20px 52px #0005}

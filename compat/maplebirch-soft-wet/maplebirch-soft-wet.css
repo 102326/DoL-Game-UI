@@ -24,3 +24,7 @@ html[data-dol-midnight] #customOverlay[data-dgu-adapter="MapleBirchSoftWet"][dat
  html[data-dol-midnight] #customOverlay[data-dgu-adapter="MapleBirchSoftWet"][data-dgu-adapter-match="full"] #maplebirch-cloud-save :is(button,input[type=button]):not(:disabled):hover {background:#2b2d32}
 }
 html[data-dol-midnight] #customOverlay[data-dgu-adapter="MapleBirchSoftWet"][data-dgu-adapter-match="full"] #maplebirch-cloud-save :is(button,input[type=button]):not(:disabled):active {background:#202226}
+
+/* Kraft Work 3.0: keep the shell as the single acrylic surface. */
+html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-dgu-adapter="MapleBirchSoftWet"][data-dgu-adapter-match="full"][data-overlay=saves] {--dgu-acrylic-base:rgb(36 36 38 / var(--sf-main-alpha,.48));backdrop-filter:blur(var(--sf-blur,28px)) saturate(.85);-webkit-backdrop-filter:blur(var(--sf-blur,28px)) saturate(.85)}
+html[data-stone-free][data-dol-midnight] #customOverlay[data-dgu-adapter="MapleBirchSoftWet"][data-dgu-adapter-match="full"][data-overlay=saves] #customOverlayContent {background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}

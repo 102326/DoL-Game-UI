@@ -16,7 +16,7 @@ export function locate(position: Position, area: Area) {
  return {x: position.side === 'left' ? area.left + gap : area.left + area.width - width - gap,
   y: area.top + 12 + Math.max(0, area.height - height - 24) * position.y};
 }
-export function menuLayout(point: {x:number;y:number}, area: Area, count: number, preferGrid = false, ballWidth = 56) {
+export function menuLayout(point: {x:number;y:number}, area: Area, count: number, preferGrid = false, ballWidth = 56,gridHeight=count*51+100) {
  const margin = 12, gap = 12, right = area.left + area.width, bottom = area.top + area.height;
  const leftSpace = point.x - area.left - margin - gap, rightSpace = right - point.x - ballWidth - margin - gap;
  const side = rightSpace >= 210 ? 'right' : leftSpace >= 210 ? 'left' : rightSpace >= leftSpace ? 'right' : 'left';
@@ -25,7 +25,7 @@ export function menuLayout(point: {x:number;y:number}, area: Area, count: number
  let x = side === 'right' ? point.x + ballWidth + gap : point.x - width - gap;
  x = clamp(x, area.left + margin, right - width - margin);
  const overlapsBall = x < point.x + ballWidth + gap && x + width > point.x - gap;
- let height = fan ? 266 : Math.min(area.height - margin * 2, count * 51 + 100);
+ let height = fan ? 266 : Math.min(area.height - margin * 2, gridHeight);
  let y = clamp(point.y - (fan ? 95 : height / 2), area.top + margin, bottom - height - margin);
  if (!fan && overlapsBall) {
   const above = point.y - area.top - margin - gap, below = bottom - point.y - 56 - margin - gap;

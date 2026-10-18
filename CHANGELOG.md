@@ -1,5 +1,13 @@
 # 更新记录
 
+## 3.0.0 — Kraft Work（2026-10-19）
+
+- 统一黑灰 Acrylic、导航与交互动效，增加游戏天气响应和设置双布局。
+- 保留默认关闭的 Floating Hub 与实验战斗聚焦编辑；衣物详情使用抽屉。
+- 更新 ModHub／MapleBirch／原版优化外观包，新增原作者 CE 与单独标注 rebuild.30 的外观兼容。
+- UI 与 Host 独立双包发行；依赖、回退、验证范围及 Known limitations 见 [发布说明](docs/RELEASE_3.0.0.md)。
+
+
 ## 2.7.0 · Crazy Diamond
 
 - 旧 Lyra 衣柜嘴部兼容包更新为 0.1.5，UI 依赖放宽为 2.2.2+，指定 Lyra 资源范围保持。

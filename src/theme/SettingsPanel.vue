@@ -1,17 +1,137 @@
 <script setup lang="ts">
+import {computed,nextTick,onBeforeUnmount,onMounted,ref,watch} from 'vue';
 import type {PanelKind} from '../panels/main';
 import FloatingSettings from '../floating/Settings.vue';
 import GameButton from '../ui/GameButton.vue';
 import SettingsToggle from '../ui/SettingsToggle.vue';
 import type {SettingsState,PreferenceKey} from './preferences';
 import type {UiApi} from '../public/ui';
+import SettingsPreview from './SettingsPreview.vue';
+import SettingsNavigation from './SettingsNavigation.vue';
+import {sourceMotion} from '../ui/source-motion';
+
 const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
+declare const __STONE_FREE_CONSUMER__:boolean;
+const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
+const category=ref<'reading'|'material'|'entry'|'pages'|'advanced'>('reading');
+const categories=[{id:'reading',label:'阅读'},{id:'material',label:'材质'},{id:'entry',label:'入口'},{id:'pages',label:'页面'},{id:'advanced',label:'高级'}] as const;
+// Private display choice: not a public preference/API or a responsive-mode truth.
+const layoutKey='DoLGameUI.settingsLayout.v1',savedLayout=ref<'horizontal'|'vertical'>('horizontal'),layoutMessage=ref('');
+try{if(localStorage.getItem(layoutKey)==='vertical')savedLayout.value='vertical'}catch{layoutMessage.value='设置布局暂不能读取，本次使用上下布局。'}
+const workspace=ref<HTMLElement>(),workspaceWidth=ref(0),layoutMotion=sourceMotion();
+const effectiveLayout=computed(()=>savedLayout.value==='vertical'&&workspaceWidth.value>=760*Math.max(1,props.state.preferences.fontScale/100)?'vertical':'horizontal');
+let layoutResize:ResizeObserver|undefined,layoutVisibility:MutationObserver|undefined,layoutRevision=0,layoutFrame=0;
+function chooseLayout(value:'horizontal'|'vertical'){savedLayout.value=value;try{localStorage.setItem(layoutKey,value);layoutMessage.value='设置布局已保存。'}catch{layoutMessage.value='本次布局已应用；当前无法保存布局选择。'}}
+watch(effectiveLayout,async()=>{
+ const ticket=++layoutRevision,nodes=[...workspace.value?.querySelectorAll<HTMLElement>('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-workspace-section>.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab')??[]];
+ const before=new Map(nodes.map(node=>[node,node.getBoundingClientRect()]));layoutMotion.cancel();await nextTick();
+ if(ticket!==layoutRevision)return;
+ for(const [node,from]of before){if(!node.isConnected||!node.getClientRects().length)continue;const to=node.getBoundingClientRect();if(!from.width||!to.width)continue;
+  layoutMotion.animate(node,[{transformOrigin:'0 0',transform:`translate(${from.left-to.left}px,${from.top-to.top}px) scale(${from.width/to.width},${from.height/to.height})`},{transformOrigin:'0 0',transform:'translate(0,0) scale(1,1)'}],680);
+ }
+});
+watch(()=>props.state.message,()=>{layoutMessage.value=''});
+onMounted(()=>{
+ const dialog=workspace.value?.closest('dialog');
+ // Do not change the observed layout inside ResizeObserver delivery, or reflow a closed dialog.
+ const schedule=()=>{if(layoutFrame)return;layoutFrame=requestAnimationFrame(()=>{layoutFrame=0;const width=workspace.value?.offsetWidth??0;if(dialog?.open&&width>0)workspaceWidth.value=width})};
+ if(workspace.value&&typeof ResizeObserver==='function'){layoutResize=new ResizeObserver(schedule);layoutResize.observe(workspace.value)}
+ if(dialog){layoutVisibility=new MutationObserver(()=>{if(!dialog.open||dialog.hasAttribute('data-sf-leaving')){layoutRevision++;layoutMotion.cancel()}else schedule()});layoutVisibility.observe(dialog,{attributes:true,attributeFilter:['open','data-sf-leaving']})}schedule();
+});
+const motion=sourceMotion(),activeTransitions=new Set<symbol>();let direction=1;
+function selectCategory(id:string){const item=categories.find(item=>item.id===id);if(!item||item.id===category.value)return;const next=item.id;const from=categories.findIndex(item=>item.id===category.value),to=categories.findIndex(item=>item.id===next);direction=to>=from?1:-1;layoutRevision++;layoutMotion.cancel();motion.cancel();category.value=next}
+function transitionTask(element:Element,frames:Keyframe[],done:()=>void){const token=Symbol();activeTransitions.add(token);const dialog=document.getElementById('dol-midnight-controls');dialog?.setAttribute('data-workspace-transition','');let complete=false;const finish=()=>{if(complete)return;complete=true;activeTransitions.delete(token);if(!activeTransitions.size)dialog?.removeAttribute('data-workspace-transition');done()};const animation=motion.animate(element as HTMLElement,frames,620);if(animation)void animation.finished.then(finish,finish);else finish()}
+function enterTask(element:Element,done:()=>void){element.removeAttribute('inert');element.removeAttribute('aria-hidden');const x=direction*110;transitionTask(element,[{transform:`translate3d(${x}px,24px,-90px) rotateY(${-direction*5}deg)`,opacity:0,filter:'blur(8px)',clipPath:'inset(4% 0 0 round 20px)'},{transform:`translate3d(${-direction*5}px,0,0) rotateY(0deg)`,opacity:1,filter:'blur(0)',clipPath:'inset(0 round 16px)',offset:.78},{transform:'translate3d(0,0,0)',opacity:1,filter:'blur(0)',clipPath:'inset(0 round 16px)'}],done)}
+function leaveTask(element:Element,done:()=>void){element.setAttribute('inert','');element.setAttribute('aria-hidden','true');const x=direction*-90;transitionTask(element,[{transform:'translate3d(0,0,0)',opacity:1,filter:'blur(0)'},{transform:`translate3d(${x}px,-16px,-70px) rotateY(${direction*4}deg)`,opacity:0,filter:'blur(6px)'}],done)}
+onBeforeUnmount(()=>{layoutRevision++;cancelAnimationFrame(layoutFrame);layoutResize?.disconnect();layoutVisibility?.disconnect();layoutMotion.dispose();motion.dispose();activeTransitions.clear();document.getElementById('dol-midnight-controls')?.removeAttribute('data-workspace-transition')});
 function wardrobeChange(event:Event){const input=event.target as HTMLSelectElement;props.onWardrobe(input.value==='new');input.value=props.state.wardrobe?'new':'original'}
 function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'openInspector'>}}).DoLGameUI?.ui?.openInspector?.()}catch{/* UI diagnostics must not affect settings. */}}
 </script>
 <template>
  <header class="dmt-settings-header cu:flex cu:items-center cu:justify-between cu:gap-4"><div><p class="dmt-eyebrow">SOFT &amp; WET</p><h2 id="dol-midnight-title">界面设置</h2></div><GameButton class="dmt-close" @click="onClose">关闭</GameButton></header>
- <div class="dmt-controls-content cu:grid cu:gap-4 cu:md:grid-cols-2">
+
+ <div v-if="official" class="dmt-layout-choice" role="group" aria-label="设置布局"><span>设置布局</span><GameButton type="button" :aria-pressed="savedLayout==='horizontal'" @click="chooseLayout('horizontal')">上下</GameButton><GameButton type="button" :aria-pressed="savedLayout==='vertical'" @click="chooseLayout('vertical')">左右</GameButton><small v-if="savedLayout!==effectiveLayout">空间较窄，暂用上下布局；保留左右选择。</small></div>
+ <div v-if="official" ref="workspace" class="dmt-controls-content dmt-workspace" :data-settings-layout="effectiveLayout" :data-settings-layout-choice="savedLayout">
+  <SettingsNavigation :items="categories" :active="category" :layout="effectiveLayout" @select="selectCategory"/>
+  <main class="dmt-workspace-page" :aria-label="categories.find(item=>item.id===category)?.label">
+   <Transition :css="false" @enter="enterTask" @leave="leaveTask">
+   <section v-if="category==='reading'" class="dmt-workspace-section dmt-workspace-reading" aria-labelledby="dmt-reading-heading">
+    <div class="dmt-workspace-intro"><p class="dmt-eyebrow">阅读</p><h3 id="dmt-reading-heading">按自己的节奏阅读</h3><p>调整正文密度与常用控件大小，改动会立即生效并自动保存。</p></div>
+    <div class="dmt-setting-card dmt-control-sheet dmt-reading-controls">
+     <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
+     <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
+     <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
+     <label v-for="item in ([{key:'fontScale',label:'字体'},{key:'buttonScale',label:'按钮'}] as const)" :key="item.key" class="dgu-setting-row"><span>{{item.label}} {{state.preferences[item.key]}}%</span><input type="range" min="50" max="150" step="5" :aria-label="item.label+'大小'" :value="state.preferences[item.key]" @input="onPreference(item.key,Number(($event.target as HTMLInputElement).value))"/></label>
+     <div class="dmt-workspace-actions"><GameButton @click="onPreference('fontScale',100);onPreference('buttonScale',100)">恢复 100%</GameButton><p>字号和按钮范围均为 50%–150%，默认 100%。图片保持原大小。</p></div>
+     <SettingsToggle label="手机紧凑按钮间距" description="缩小操作控件的留白，保留至少 44px 点击区域；仅在手机尺寸生效" :checked="state.preferences.mobileCompactControls" @change="onPreference('mobileCompactControls',$event)"/>
+    </div>
+    <aside class="dmt-reading-sample"><span>文字与控件预览</span><p>这段正文按当前字号显示，帮助检查长句和行距是否舒适。</p><GameButton type="button">当前按钮比例</GameButton></aside>
+   </section>
+
+   <section v-else-if="category==='material'" class="dmt-workspace-section dmt-workspace-material" aria-labelledby="dmt-material-heading">
+    <div class="dmt-workspace-intro"><p class="dmt-eyebrow">材质</p><h3 id="dmt-material-heading">看见层次如何变化</h3><p>预览会使用当前材质与动效设置。预览操作不会改动游戏内容。</p></div>
+    <div class="dmt-setting-card dmt-control-sheet dmt-material-controls">
+     <SettingsToggle label="玻璃模糊" :checked="state.preferences.visualGlass" @change="onPreference('visualGlass',$event)"/>
+     <SettingsToggle label="交互与进入动画" :checked="state.preferences.visualMotion" @change="onPreference('visualMotion',$event)"/>
+     <SettingsToggle label="交互层次反馈" description="只调整选中项的额外层次反馈；不改变主体配色或游戏状态" :checked="state.preferences.visualGlow" @change="onPreference('visualGlow',$event)"/>
+     <p>当前主体材质默认使用完整表现。关闭动画或系统减少动态效果时，操作仍会立即完成。</p>
+    </div>
+    <SettingsPreview :state="state"/>
+   </section>
+
+   <section v-else-if="category==='entry'" class="dmt-workspace-section" aria-labelledby="dmt-entry-heading">
+    <div class="dmt-workspace-intro"><p class="dmt-eyebrow">入口与布局</p><h3 id="dmt-entry-heading">决定界面从哪里开始</h3><p>这些设置只影响页面入口与排布，不改变游戏状态。</p></div>
+    <div class="dmt-setting-card dmt-control-sheet">
+     <SettingsToggle label="启用响应式布局" description="适配手机抽屉与平板侧栏；关闭可恢复原版布局" :checked="state.preferences.layout" @change="onPreference('layout',$event)"/>
+     <SettingsToggle label="紧凑状态间距" :checked="state.preferences.compactStats" @change="onPreference('compactStats',$event)"/>
+     <p>角色状态保持展开。折叠侧栏沿用游戏原有操作。</p>
+    </div>
+    <FloatingSettings/>
+   </section>
+
+   <section v-else-if="category==='pages'" class="dmt-workspace-section" aria-labelledby="dmt-pages-heading">
+    <div class="dmt-workspace-intro"><p class="dmt-eyebrow">页面</p><h3 id="dmt-pages-heading">选择使用哪些 Soft &amp; Wet 页面</h3><p>每项可以单独切回原版；偏好自动保存。</p></div>
+    <details class="dmt-setting-card dmt-control-sheet dmt-page-switches"><summary><strong>各页面与兼容开关</strong><span>按页面切回原版</span></summary>
+     <SettingsToggle label="启用新版存档界面" :checked="state.saves" @change="onSaves"/>
+     <SettingsToggle label="启用新版服装店" :checked="state.shop" @change="onShop"/>
+     <SettingsToggle label="启用新版日志与笔记" :checked="state.panels.journal" @change="onPanel('journal',$event)"/>
+     <SettingsToggle label="启用新版特质界面" :checked="state.panels.traits" @change="onPanel('traits',$event)"/>
+     <SettingsToggle label="启用新版统计界面" :checked="state.panels.statistics" @change="onPanel('statistics',$event)"/>
+     <SettingsToggle label="启用态度界面美化" :checked="state.panels.attitudes" @change="onPanel('attitudes',$event)"/>
+     <SettingsToggle label="启用游戏设置美化" :checked="state.panels.settings" @change="onPanel('settings',$event)"/>
+     <SettingsToggle label="启用作弊界面美化" :checked="state.panels.cheats" @change="onPanel('cheats',$event)"/>
+     <SettingsToggle label="启用新版成就界面" :checked="state.panels.feats" @change="onPanel('feats',$event)"/>
+     <SettingsToggle label="启用新版社交界面" :checked="state.social" @change="onSocial"/>
+     <SettingsToggle label="启用新版属性界面" :checked="state.characteristics" @change="onCharacteristics"/>
+     <SettingsToggle label="启用新版战斗界面" :checked="state.combat" @change="onCombat"/>
+     <SettingsToggle label="战斗聚焦编辑（实验）" description="默认关闭并使用原版战斗控件；启用后在原控件上方展开聚焦编辑区" :checked="state.preferences.combatFocused" @change="onPreference('combatFocused',$event)"/>
+    </details>
+    <div class="dmt-setting-card dmt-control-sheet">
+     <h3>衣柜与存档</h3>
+     <SettingsToggle v-if="state.saves" label="存档 V2 双栏详情" description="宽屏并排显示列表与详情；窄屏使用弹出详情" :checked="state.preferences.savesV2" @change="onPreference('savesV2',$event)"/>
+     <label class="dgu-setting-row" for="dmt-wardrobe"><span><strong>衣柜界面</strong></span><select id="dmt-wardrobe" aria-label="衣柜界面" :value="state.wardrobe?'new':'original'" @change="wardrobeChange"><option value="new">新版穿搭衣柜</option><option value="original">原版衣柜（兼容回退）</option></select></label>
+     <SettingsToggle v-if="state.wardrobe" label="衣柜按页渲染" description="每页显示 40 件；搜索、排序和全选仍覆盖整个分类" :checked="state.preferences.wardrobePaged" @change="onPreference('wardrobePaged',$event)"/>
+     <p>这些选项只调整显示，不改变存档或衣物数据。</p>
+    </div>
+   </section>
+
+   <section v-else class="dmt-workspace-section" aria-labelledby="dmt-advanced-heading">
+    <div class="dmt-workspace-intro"><p class="dmt-eyebrow">高级</p><h3 id="dmt-advanced-heading">兼容与恢复</h3><p>仅在需要时调整；遇到异常可以单独关闭。</p></div>
+    <details class="dmt-setting-card dmt-control-sheet dmt-experiments"><summary><strong>性能与兼容选项</strong><span>默认收起，按需启用</span></summary>
+     <SettingsToggle label="标题边缘纹样" description="可选静态装饰" :checked="state.preferences.visualPattern" @change="onPreference('visualPattern',$event)"/>
+     <SettingsToggle label="衣柜延迟原版隐藏列表（实验）" description="新版衣柜换装时暂不重建隐藏的原版列表；出现兼容问题时关闭此项" :checked="state.preferences.wardrobeHiddenList" @change="onPreference('wardrobeHiddenList',$event)"/>
+     <SettingsToggle label="商店离屏绘制延后（实验）" description="让支持的浏览器跳过屏幕外商品的排版与绘制；滚动异常时关闭此项" :checked="state.preferences.shopDeferredPaint" @change="onPreference('shopDeferredPaint',$event)"/>
+     <SettingsToggle v-if="state.shopPageExperimentAvailable" label="商店按页生成（实验）" description="只生成当前页商品；下次进入商店列表时生效，异常时关闭此项" :checked="state.preferences.shopPageExperiment" @change="onPreference('shopPageExperiment',$event)"/>
+     <p>这些选项默认关闭；不会改变购买、换装与存档规则。</p>
+    </details>
+    <section class="dmt-setting-card dmt-control-sheet"><h3>原版回退</h3><p>关闭 Soft &amp; Wet 后返回原版界面；重新启用会恢复保留的页面与显示选择。游戏进度与模组配置不受影响。</p><div class="dmt-recovery cu:flex cu:flex-wrap cu:gap-2"><GameButton @click="onRecovery(false)">回退原版界面</GameButton><GameButton @click="onRecovery(true)">启用新版界面</GameButton></div></section>
+    <details class="dmt-setting-card dmt-debug"><summary><strong>问题诊断</strong><span>仅排查问题时使用</span></summary><GameButton :disabled="!state.preferences.enabled" @click="inspectRuntime">Runtime Inspector</GameButton><p>只读查看能力、Adapter 和降级原因；可复制诊断。需要启用 Soft &amp; Wet。</p></details>
+   </section>
+   </Transition>
+  </main>
+ </div>
+
+ <div v-else class="dmt-controls-content cu:grid cu:gap-4 cu:md:grid-cols-2">
   <section class="dmt-setting-card"><h3>主题与阅读</h3>
    <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
@@ -25,18 +145,18 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    <p>流畅档不使用模糊。均衡与华丽共享布局，主要区别是材质强度；系统减少动态效果设置优先。</p>
   </section>
   <section class="dmt-setting-card"><h3>字体与按钮大小</h3><p>调整主界面与弹窗；侧边栏与模组管理弹窗保持原有大小。</p>
-<label v-for="item in ([{key:'fontScale',label:'字体'},{key:'buttonScale',label:'按钮'}] as const)" :key="item.key" class="dgu-setting-row"><span>{{item.label}} {{state.preferences[item.key]}}%</span><input type="range" min="50" max="150" step="5" :aria-label="item.label+'大小'" :value="state.preferences[item.key]" @input="onPreference(item.key,Number(($event.target as HTMLInputElement).value))"/></label>
-<GameButton @click="onPreference('fontScale',100);onPreference('buttonScale',100)">恢复 100%</GameButton><p>字号和按钮范围均为 50%–150%，默认 100%。图片保持原大小。</p>
+   <label v-for="item in ([{key:'fontScale',label:'字体'},{key:'buttonScale',label:'按钮'}] as const)" :key="item.key" class="dgu-setting-row"><span>{{item.label}} {{state.preferences[item.key]}}%</span><input type="range" min="50" max="150" step="5" :aria-label="item.label+'大小'" :value="state.preferences[item.key]" @input="onPreference(item.key,Number(($event.target as HTMLInputElement).value))"/></label>
+   <GameButton @click="onPreference('fontScale',100);onPreference('buttonScale',100)">恢复 100%</GameButton><p>字号和按钮范围均为 50%–150%，默认 100%。图片保持原大小。</p>
    <SettingsToggle label="手机紧凑按钮间距" description="缩小操作控件的留白，保留至少 44px 点击区域；仅在手机尺寸生效" :checked="state.preferences.mobileCompactControls" @change="onPreference('mobileCompactControls',$event)"/>
   </section>
-<section class="dmt-setting-card"><h3>侧栏与布局</h3>
+  <section class="dmt-setting-card"><h3>侧栏与布局</h3>
    <SettingsToggle label="启用响应式布局" description="适配手机抽屉与平板侧栏；关闭可恢复原版布局" :checked="state.preferences.layout" @change="onPreference('layout',$event)"/>
    <SettingsToggle label="紧凑状态间距" :checked="state.preferences.compactStats" @change="onPreference('compactStats',$event)"/>
    <p>角色状态保持展开。折叠侧栏沿用游戏原有操作。</p>
   </section>
   <details class="dmt-setting-card dmt-page-switches"><summary><strong>各页面与兼容开关</strong><span>按页面切回原版</span></summary>
    <SettingsToggle label="启用新版存档界面" :checked="state.saves" @change="onSaves"/>
-<SettingsToggle label="启用新版服装店" :checked="state.shop" @change="onShop"/>
+   <SettingsToggle label="启用新版服装店" :checked="state.shop" @change="onShop"/>
    <SettingsToggle label="启用新版日志与笔记" :checked="state.panels.journal" @change="onPanel('journal',$event)"/>
    <SettingsToggle label="启用新版特质界面" :checked="state.panels.traits" @change="onPanel('traits',$event)"/>
    <SettingsToggle label="启用新版统计界面" :checked="state.panels.statistics" @change="onPanel('statistics',$event)"/>
@@ -62,8 +182,10 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    <p>这些选项默认关闭；仅在需要时开启，出现异常可单独关闭。不会改变购买、换装与存档规则。</p>
   </details>
   <FloatingSettings/>
-  <section class="dmt-setting-card"><h3>兼容回退</h3><p>关闭 Soft & Wet 后返回原版界面；重新启用会恢复保留的页面与显示选择。游戏进度与模组配置不受影响。</p><div class="dmt-recovery cu:flex cu:flex-wrap cu:gap-2"><GameButton @click="onRecovery(false)">回退原版界面</GameButton><GameButton @click="onRecovery(true)">启用新版界面</GameButton></div></section>
+  <section class="dmt-setting-card"><h3>兼容回退</h3><p>关闭 Soft &amp; Wet 后返回原版界面；重新启用会恢复保留的页面与显示选择。游戏进度与模组配置不受影响。</p><div class="dmt-recovery cu:flex cu:flex-wrap cu:gap-2"><GameButton @click="onRecovery(false)">回退原版界面</GameButton><GameButton @click="onRecovery(true)">启用新版界面</GameButton></div></section>
   <details class="dmt-setting-card dmt-debug cu:md:col-span-2"><summary><strong>问题诊断</strong><span>仅排查问题时使用</span></summary><GameButton :disabled="!state.preferences.enabled" @click="inspectRuntime">Runtime Inspector</GameButton><p>只读查看能力、Adapter 和降级原因；可复制诊断。需要启用 Soft &amp; Wet。</p></details>
  </div>
- <footer class="dmt-settings-footer"><p role="status">{{state.message}}</p></footer>
+ <footer class="dmt-settings-footer"><p role="status">{{layoutMessage||state.message}}</p></footer>
 </template>
+
+<style src="./settings-workspace.css"></style>

@@ -120,8 +120,21 @@ R16最终提交957122d、正式2.7源965afcf保留；最终H/U源码固定于3c9
 
 物理手机/IME、其它Provider和全部Mod/交易/结算、云端/文件、新Hub位置持久化及长期性能未扩展；源代码未变的历史结果与本轮新装配结果分开。首轮工程结论曾为 Gate Passed，后续玩家实测已将当前 Gate 改为 Blocked。详见[Stable Gate](STONE_FREE_3.0_STABLE_GATE.md)。
 
-## 玩家与全局视觉专项（2026-10-17，当前）
+## 玩家与全局视觉专项（2026-10-17，历史）
 
 运行源码 `c23b372` 修正商店原生正文/退出的绘制遮挡、Start 轻导航、官方设置构图及控件、Hub 提示/方向/原面板快捷入口。公共 Host 不变。真实 Android 连续原出口退出/重入及释放、侧栏八类面板、ModHub 共存、Hub 左右/角落命中与停靠/恢复、主要工具和受控 390px 宽度已有本轮记录；受控输入不等于物理触控，390px 不等于手机验收。
 
 当前 `Functional / Interaction` 按实际通过项目记录，**Visual Gate、Owner Acceptance 尚未通过，Stable Gate Blocked**。先前 R15/R16/RC 存档、购买、穿戴证据只复用于未改业务；不声称新候选重新完成全部矩阵。当前归属地图、失败记录、截图及具体覆盖见 [玩家与视觉专项](STONE_FREE_3.0_PLAYER_FINDINGS.md)。
+
+## Kraft Work 整合增补（2026-10-18，当前）
+
+沿用本矩阵，细项、精确身份与失败见 [Release Gate](KRAFT_WORK_3.0_RELEASE_GATE.md)。当前候选是内容寻址源码快照，而非旧研究 HEAD；主视觉基本收口，Stable / Owner Acceptance 仍 Pending，未获发布授权。
+
+| 领域 | 本轮证据 | 边界 |
+| --- | --- | --- |
+| 主题/设置/窗口 | 黑灰 Acrylic、双布局、输入阻挡与滚动、Orbit、天气和动态效果定向通过；两端重复原窗口/设置/Hub | 窄视口非物理手机，视觉认可不由脚本代替 |
+| 衣柜 | 新详情抽屉复用原节点；Windows/Android 实际关闭、离场和无业务变化；原单击穿戴、叠穿及原版回退通过 | 非所有第三方槽；selectedWardrobe 仍 Unknown / 未复现 |
+| 商店/战斗 | 最终两端指定社区商品报价/购买/入库；Combat Demo 原回合和退出 | 非所有交易、试穿或自然结算；战斗 B 默认 false |
+| 存档/回退 | 最终两端自有空槽存读档并清理；本轮整合包两端 2.7 升级回退；Windows 最终包文本导入导出 | Android 文本传输复用 R15 + 当前单测；无私人旧档、云/文件操作 |
+| 制品/生态 | 双包 ZIP、许可、运行成员与实际两端 Loader 核对；Windows 固定 R16，Android 现场 CE30 组合 | 不称全部社区兼容；公开 Host 原包不改字节 |
+| 稳定性 | Windows UI 12 分钟/94 循环，无 UI 控制 8 分钟/58 循环；自有天气/装饰/挂载清理成立 | 两组均有资源增长，未定因；无有效 gfxinfo 帧样本，不声称 FPS 通过；Android 见完整报告 |

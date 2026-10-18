@@ -18,6 +18,7 @@ import type {WardrobeSlotMapping} from '../public/wardrobe';
 import {createWardrobeSource} from './source';
 import type {Host,Participant,Binding,MountHandle} from '../../framework/contracts';
 import {referenceItem} from './reference';
+import {sourceMotion} from '../ui/source-motion';
 export interface WardrobeFramework {host:Host;owner:Participant;rememberReference?:(item:ReturnType<typeof referenceItem>)=>void}
 export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework){
  const slotMappings=createSlotMappings(name=>root.modUtils?.getMod?.(name)?.version, root.modUtils);
@@ -25,9 +26,9 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
  const KEY='DoLGameUI.wardrobe.v1';let enabled=true,nativeHiddenList=false,disposed=false,queued=false,generation=0;
  try{enabled=localStorage.getItem(KEY)!=='false'}catch{}
  interface WardrobeView {preview?:HTMLElement;exits:HTMLElement;native:HTMLElement;actions:HTMLElement;warmth:HTMLElement;equipment:HTMLElement;services:HTMLElement}
- interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:WardrobeView|null;state:WardrobeModel;snapshot:Snapshot;owned?:Readonly<MountHandle>;binding?:Binding;plan?:{mode:Operation;entries:Entry[];location:string;inventory:Inventory;fingerprint:string;target?:string;targetFingerprint?:string};paintKey?:string;refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
+ interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:WardrobeView|null;state:WardrobeModel;snapshot:Snapshot;owned?:Readonly<MountHandle>;binding?:Binding;plan?:{mode:Operation;entries:Entry[];location:string;inventory:Inventory;fingerprint:string;target?:string;targetFingerprint?:string};paintKey?:string;wearOrigin?:{width:number;height:number;at:number};refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
  let active:Session|undefined,previewAbort:AbortController|undefined,source:ReturnType<typeof createWardrobeSource>|undefined;
- const outfits=createOutfitLayout();
+ const outfits=createOutfitLayout(),motion=sourceMotion();
  function isCurrentPassage(s:Session){return s.passage.isConnected&&!s.passage.classList.contains('passage-out')&&s.passage.dataset.passage===(root.SugarCube?.State??root.State)?.passage&&document.querySelector('#passages .passage:not(.passage-out)')===s.passage}
  function flushNative(s:Session,force=false){
   if(!s.nativeListDirty||!isCurrentPassage(s)||(!force&&!s.nativeOpen))return;
@@ -45,7 +46,7 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   list.removeAttribute('id');s.nativeListDirty=true;
   try{return operation()}finally{list.id='wardrobeList'}
  }
- function release(){const s=active;if(!s)return;active=undefined;flushNative(s,true);source?.destroy();source=undefined;generation++;previewAbort?.abort();
+ function release(){extras.closeDetails();motion.cancel();const s=active;if(!s)return;active=undefined;flushNative(s,true);source?.destroy();source=undefined;generation++;previewAbort?.abort();
   outfits.restore();
   // Restore the actual nodes, including changes made by native widgets.
   for(const {node,anchor} of s.moved??[]){restoreNative(node,anchor,s.original.isConnected?s.original:s.passage)}
@@ -57,7 +58,13 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   previewAbort?.abort();const controller=new AbortController();previewAbort=controller;
   const ticket=++generation;let revision=0;
   const valid=()=>ticket===generation&&active===s&&!controller.signal.aborted;
-  const show=(canvas:HTMLCanvasElement)=>{if(!valid())return;revision++;s.view!.preview?.replaceChildren(canvas);s.state.previewStatus='当前角色的完整穿搭';s.state.loading=false};
+  const show=(canvas:HTMLCanvasElement)=>{if(!valid())return;revision++;s.view!.preview?.replaceChildren(canvas);s.state.previewStatus='当前角色的完整穿搭';s.state.loading=false;
+   const origin=s.wearOrigin;s.wearOrigin=undefined;
+   if(origin&&origin.width===innerWidth&&origin.height===innerHeight&&performance.now()-origin.at<2000&&document.documentElement.hasAttribute('data-stone-free')&&s.view?.preview?.getClientRects().length){
+    motion.animate(canvas,[{left:Math.min(160,s.view.preview.clientWidth*.38)+'px',opacity:.2},{left:'-3px',opacity:1,offset:.8},{left:'0px',opacity:1}],700);
+    const badge=s.host.querySelector<HTMLElement>('.dgw-equipped');if(badge)motion.animate(badge,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0)'}],600);
+   }
+  };
   async function fallback(){
    const attempt=++revision;
    try{const canvas=await renderOutfit(root,s.snapshot,s.snapshot.worn,[],timing);if(valid()&&attempt===revision)show(canvas)}
@@ -84,7 +91,7 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   s.state.items=projection.items;
   const worn=fresh.worn[s.state.slot];s.state.wornItem=worn&&worn.name!=='naked'?itemView(fresh,s.state.slot,worn,'worn:'+s.state.slot):null;s.state.wornName=worn?itemName(fresh,s.state.slot,worn):'';
   const def=fresh.setup.clothes[s.state.slot]?.find(d=>d.variable===worn?.variable&&d.modder===worn?.modder);s.state.currentWarmth=Number.isFinite(def?.warmth)?def!.warmth!:null;
-  const key=JSON.stringify([fresh.worn,fresh.variables.upperTucked,fresh.variables.lowerTucked,fresh.variables.bellyTucked,fresh.variables.facelayer,fresh.variables.dontHide,fresh.variables.upperwet,fresh.variables.lowerwet,fresh.variables.underupperwet,fresh.variables.underlowerwet]);
+  const key=JSON.stringify([fresh.worn,fresh.variables.wornStacking,fresh.variables.upperTucked,fresh.variables.lowerTucked,fresh.variables.bellyTucked,fresh.variables.facelayer,fresh.variables.dontHide,fresh.variables.upperwet,fresh.variables.lowerwet,fresh.variables.underupperwet,fresh.variables.underlowerwet]);
   if(force||key!==s.paintKey){s.paintKey=key;void paint(s)}
   s.state.message=message;
   try{if(s.view?.equipment&&s.view?.services)extras.render(fresh,s.state.slot,s.view!.equipment,s.view!.services,()=>queueRefresh(s))}catch(error){s.state.message=error instanceof Error?error.message:'附加衣柜功能不可用，请在界面设置中打开原版衣柜。'}
@@ -105,14 +112,30 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   if(!native.available()){s.state.message='换装接口尚不可用';return}
   // Resolve the current source first; the original wear-link widget owns the operation.
   try{
+   motion.cancel();s.wearOrigin=undefined;
+   const original=s.host.querySelector<HTMLElement>(`.dgw-item[data-key="${CSS.escape(key)}"]`);
+   const origin=original?{width:innerWidth,height:innerHeight,at:performance.now()}:undefined;
+   // Native wear may remove the row immediately. Keep only its input-inert press material, never its control.
+   if(original&&motion.enabled()&&document.documentElement.hasAttribute('data-stone-free')){
+    const rect=original.getBoundingClientRect(),plane=document.createElement('span');plane.className='kw-shop-ripple kw-wardrobe-press is-activated';plane.setAttribute('aria-hidden','true');
+    Object.assign(plane.style,{position:'fixed',inset:'auto',left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px',zIndex:'1001',borderRadius:'14px'});
+    for(const name of ['kw-shop-stream','kw-shop-ring','kw-shop-ring']){const child=document.createElement('span');child.className=name;plane.append(child)}
+    document.body.append(plane);const animation=motion.animate(plane,[{opacity:.475},{opacity:0}],1250);
+    if(animation)void animation.finished.then(()=>plane.remove(),()=>plane.remove());else plane.remove();
+   }
+   const before=JSON.stringify([s.snapshot.worn,s.snapshot.variables.wornStacking]);
    s.state.busy=true;s.state.canWear=false;
    const output=withNativeListHidden(s,()=>native.action('wear',e.slot,e.index));
    const error=output.querySelector('.error')||s.passage.querySelector('.error');
+   const after=snapshot(root);
+   // Presentation waits for a real equipment change, including third-party stacking.
+   if(!error&&after&&before!==JSON.stringify([after.worn,after.variables.wornStacking]))s.wearOrigin=origin;
    s.state.message=error?'原版换装报告了错误，请在界面设置中切换原版衣柜检查。':(native.message(s.original)||'已由游戏处理换装。');queueRefresh(s);
   }catch{refresh(s);s.state.message='原版换装结果未知，请在原版衣柜检查当前装备，不要重复操作。'}finally{s.state.busy=false}
  }
  function strip(s:Session){
   if(s.state.busy||active!==s||!isCurrentPassage(s))return;
+  motion.cancel();s.wearOrigin=undefined;
   const slot=s.state.slot;if(!s.state.slots.some(t=>t.key===slot))return;
   if(!native.available())return;
   try{withNativeListHidden(s,()=>native.action('wear',slot,'strip'));
@@ -205,8 +228,8 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   let appParent:HTMLElement=host;
   if(framework){s.binding=framework.host.binding();s.owned=framework.owner.mount({id:'wardrobe',parent:host,lifetime:'passage',setup(context){appParent=context.element;context.onCleanup(()=>{if(active===s)release()})}})}
   const reference=s.binding?{binding:s.binding,remember:framework?.rememberReference,publish:framework?framework.owner.provideView:undefined,read:(key:string)=>{const entry=resolveBindings(s,[key])?.[0];return entry?referenceItem(entry,state.slots.find(slot=>slot.key===entry.slot)?.label??entry.slot):null}}:undefined;
-  s.app=createApp(WardrobePanel,{model:state,reference,resolveIcon:async(src:string)=>{try{return await root.modUtils?.getImage?.(src)||src}catch{return src}},onSplit:(keys:string[])=>review(s,keys,'separateOutfits'),onRepair:(keys:string[])=>review(s,keys,'repair'),onTransfer:(keys:string[],target:string)=>review(s,keys,'transfer',target),onTowel:(kind:'towel'|'large_towel')=>{if(!state.busy&&active===s&&isCurrentPassage(s)){try{withNativeListHidden(s,()=>native.action('wear',state.slot,kind));state.message=native.message(s.original)||'已由游戏处理毛巾操作'}catch(error){state.message=error instanceof Error?error.message:'毛巾操作失败'}queueRefresh(s)}},onSlot:(key:string)=>{
-   if(state.busy||!state.slots.some(t=>t.key===key))return;cancel(s);state.slot=key;
+  s.app=createApp(WardrobePanel,{model:state,reference,resolveIcon:async(src:string)=>{try{return await root.modUtils?.getImage?.(src)||src}catch{return src}},onSplit:(keys:string[])=>review(s,keys,'separateOutfits'),onRepair:(keys:string[])=>review(s,keys,'repair'),onTransfer:(keys:string[],target:string)=>review(s,keys,'transfer',target),onTowel:(kind:'towel'|'large_towel')=>{if(!state.busy&&active===s&&isCurrentPassage(s)){motion.cancel();s.wearOrigin=undefined;try{withNativeListHidden(s,()=>native.action('wear',state.slot,kind));state.message=native.message(s.original)||'已由游戏处理毛巾操作'}catch(error){state.message=error instanceof Error?error.message:'毛巾操作失败'}queueRefresh(s)}},onSlot:(key:string)=>{
+   if(state.busy||!state.slots.some(t=>t.key===key))return;motion.cancel();s.wearOrigin=undefined;cancel(s);state.slot=key;
    s.nativeListDirty=true;
    if(native.available()){try{native.setSlot(key);if(s.nativeOpen)flushNative(s)}catch(error){console.error('[DoLGameUI] wardrobe category update failed',error);state.message='原版衣柜分类刷新失败，请在界面设置中切换原版衣柜检查。'} }
    refresh(s);
@@ -243,5 +266,5 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   const changed=()=>{if(disposed)return;if(active?.app&&!active.state.busy){cancel(active);refresh(active)}else schedule()};
   changed();return Object.freeze({destroy(){handle.destroy();changed()}});
  }
- return {registerSlotMapping,getSlotSupport:()=>slotMappings.support(disposed?null:snapshot(root)),performance:timing,getEnabled:()=>enabled&&!failed,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()||failed){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){slotMappings.destroy();timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release()}};
+ return {registerSlotMapping,getSlotSupport:()=>slotMappings.support(disposed?null:snapshot(root)),performance:timing,getEnabled:()=>enabled&&!failed,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()||failed){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){motion.dispose();slotMappings.destroy();timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release();extras.destroy()}};
 }

@@ -30,7 +30,7 @@
 Core 逐步统一以下规范，优先整理现有 CSS 变量与样式：
 
 - Token：Neutral / Ocean / Mist、语义色、字体、圆角、间距、阴影、Acrylic、Glass Edge、动效时长和 Focus / Hover / Press。
-- Visual Tier：Smooth、Balanced、Fancy。能力查询区分用户偏好与实际有效效果，包括 backdrop-filter、reduced motion、布局档位和启用状态；提供信息，不替第三方决定效果。
+- Visual Tier：API v1 保留 Smooth、Balanced、Fancy 词汇供经典消费者使用；Stone Free 官方入口返回兼容值 Fancy，不再提供玩家档位选择。能力查询区分用户偏好与实际有效效果，包括 backdrop-filter、reduced motion、布局档位和启用状态；提供信息，不替第三方决定效果。
 - Surface：Page、Modal、Drawer、Overlay、Dropdown、Context Menu、Tooltip、Action Dock，共享空间层级与回退规则。
 - Component contract：Light Card、Compact Row、Control Row、Metric Row + Meter、Switch、Segmented Control、Input、Select、Glass Button、Badge、Status、Section。先稳定外观与语义契约，不默认另造控件或组件 SDK。
 

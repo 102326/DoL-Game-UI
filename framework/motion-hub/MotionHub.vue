@@ -14,7 +14,11 @@ const selected = shallowRef<View>(), views = shallowRef(props.host.views()), mes
 let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string} | undefined;
 let suppressClick = false, frame = 0, sequence = 0, hintTimer = 0, instance = ref('motion-view-0'), binding: Binding;
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
-const menu = computed(() => menuLayout(point, area, views.value.length, props.preferredMode==='grid'||views.value.length>3, docked.value?38:56));
+const menu = computed(() => {
+ const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
+ const rows=Math.ceil((count-(hasSettings?1:0))/2),officialHeight=24+(hasSettings?58:0)+rows*66+(rows+(hasSettings?1:0))*6+57;
+ return menuLayout(point,area,count,props.preferredMode==='grid'||count>3,docked.value?38:56,props.officialPreferences?officialHeight:undefined);
+});
 const grid = computed(() => menu.value.grid);
 function clearHint(){clearTimeout(hintTimer);hintTimer=0;message.value=''}
 function hint(text:string){clearHint();message.value=text;hintTimer=window.setTimeout(clearHint,2200)}
@@ -114,26 +118,32 @@ onBeforeUnmount(() => {interrupt();document.removeEventListener('dol-floating-re
 </script>
 
 <template>
- <div ref="layer" class="sf-motion-hub" @keydown="key">
+ <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" @keydown="key">
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
   :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
    <button v-for="(view, index) in views" :key="`${view.owner}:${view.id}`" type="button" class="sf-motion-petal" :data-motion-view="`${view.owner}:${view.id}`"
     :style="{'--i': index, '--x': `${menu.petalX}px`, '--y': `${index * 66}px`}" @click="choose(view)">
-    <span aria-hidden="true">{{ ['◉', '◈', '⇄'][index % 3] }}</span>{{ view.title }}
+    <svg v-if="officialPreferences" class="sf-motion-tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+     <path v-if="view.id==='interface-settings'" d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6m-6 0v6"/>
+     <path v-else-if="view.id==='native-saves'" d="M5 3h12l3 3v15H4V3h1Zm3 0v7h8V3M8 21v-7h8v7"/>
+     <path v-else-if="view.id==='native-social'" d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-1a3 3 0 1 0 0-6M1 21v-2a7 7 0 0 1 14 0v2m1-8a6 6 0 0 1 7 6v2"/>
+     <path v-else-if="view.id==='native-attributes'" d="M4 20V10m5 10V4m6 16v-7m5 7V7M2 20h20"/>
+     <path v-else d="m12 2 10 10-10 10L2 12 12 2Zm0 5v6m0 3v1"/>
+    </svg><span v-else aria-hidden="true">{{ ['◉', '◈', '⇄'][index % 3] }}</span><span class="sf-motion-tool-label">{{ view.title }}</span>
    </button>
    <div class="sf-motion-utilities"><button type="button" @click="dock">停靠侧边</button><button type="button" @click="reset">恢复位置</button><button type="button" @click="dismiss">隐藏工具</button></div>
   </nav>
   <section class="sf-motion-sheet" aria-label="自由工具详情" :aria-hidden="!selected" :inert="!selected" :class="{'is-open': !!selected}"
    :style="{left: `${panel.x}px`, top: `${panel.y}px`, width: `${panel.width}px`, height: `${panel.height}px`, '--origin-x': `${point.x + 28 - panel.x}px`, '--origin-y': `${point.y + 28 - panel.y}px`}">
-   <header><div><small>STONE FREE · 快捷工具</small><h2 ref="heading" tabindex="-1">{{ selected?.title || '自由工具' }}</h2></div><button type="button" aria-label="关闭详情" @click="close()">×</button></header>
+   <header><div><small>SOFT & WET · KRAFT WORK</small><h2 ref="heading" tabindex="-1">{{ selected?.title || '自由工具' }}</h2></div><button type="button" aria-label="关闭详情" @click="close()">×</button></header>
    <main><ViewOutlet v-if="selected" :view="selected" :instance="instance" /></main>
    <footer><button type="button" @click="selected = undefined; expanded = true; ball?.focus({preventScroll: true})">返回工具</button><span>返回后继续游戏</span></footer>
   </section>
   <button ref="ball" type="button" class="sf-motion-ball" :class="{'is-dragging': dragging, 'is-docked': docked, 'is-open': expanded || !!selected}"
-   :aria-label="docked ? '恢复悬浮工具' : 'Stone Free 自由工具'" title="点击展开；拖到边缘停靠；方向键移动，Escape 收起" :aria-expanded="expanded || !!selected" :style="{transform: `translate3d(${point.x}px, ${point.y}px, 0)`}"
+   :aria-label="docked ? '恢复悬浮工具' : 'Kraft Work 自由工具'" title="点击展开；拖到边缘停靠；方向键移动，Escape 收起" :aria-expanded="expanded || !!selected" :style="{transform: `translate3d(${point.x}px, ${point.y}px, 0)`}"
    @click="toggle" @pointerdown.stop="down" @pointermove.stop="move" @pointerup.stop="up" @pointercancel.stop="cancel" @lostpointercapture="cancel"
-   @touchstart.stop @touchmove.stop @touchend.stop @touchcancel.stop><span aria-hidden="true">{{ docked ? '⋮' : '✦' }}</span></button>
+   @touchstart.stop @touchmove.stop @touchend.stop @touchcancel.stop><span aria-hidden="true"><svg v-if="officialPreferences" class="sf-motion-emblem" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 4 27 16 16 28 5 16 16 4Z"/><path d="m10 16 6-6 6 6-6 6-6-6Z"/><path d="M16 1v6m15 9h-6M16 31v-6M1 16h6"/></svg><template v-else>{{ docked ? '⋮' : '✦' }}</template></span></button>
   <p class="sf-motion-feedback" role="status" :style="{left: `${clamp(point.x - 100, area.left + 12, area.left + area.width - 212)}px`, top: `${clamp(point.y + 80, area.top + 12, area.top + area.height - 38)}px`}">{{ dragging ? (magnet ? '松手停靠' : '拖到边缘可停靠') : message }}</p>
  </div>
 </template>

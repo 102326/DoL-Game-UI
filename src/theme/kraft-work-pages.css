@@ -1,0 +1,135 @@
+/* Keep the accepted attributes header; separate reading planes from raised content. */
+html[data-stone-free][data-dol-midnight] #customOverlay.dgs-overlay #relation-display .relation-box-list{gap:18px;margin-bottom:26px;padding:4px 2px 12px}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgs-overlay #relation-display .relation-box{background:linear-gradient(125deg,#ffffff04,transparent 60%),#242427!important;border:1px solid #ffffff0c!important;box-shadow:0 7px 18px #0002!important;border-radius:16px;backdrop-filter:none}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgs-overlay #relation-display :is(.relation-top-line,.relation-description,.relation-stat-list){background:transparent}
+
+@supports((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgc-overlay #customOverlayContent{background:linear-gradient(#ffffff02,transparent 55%),rgba(19,20,23,.46)!important;box-shadow:inset 0 1px #ffffff07!important}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgc-overlay #customOverlayContent .characteristic-box{background:rgba(35,36,40,.76)!important;border-color:#ffffff07!important;box-shadow:inset 0 1px #ffffff04!important}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgs-overlay #customOverlayContent{background:rgba(13,14,17,.22)!important;box-shadow:inset 0 1px #ffffff06!important}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgs-overlay #relation-display .relation-box{background:linear-gradient(125deg,#ffffff05,transparent 60%),rgba(36,36,39,.88)!important}
+}
+
+/* One shop material family. Blur stays on the decorative plane, never the
+   native fixed-control ancestor; drawer and tooltip hitboxes keep their contract. */
+html[data-stone-free][data-dol-midnight] :is(.dgshop-host,.dgshop-content){--kw-shop-shell:var(--kw-shell);--kw-shop-island:var(--kw-island);border-color:#ffffff13;box-shadow:inset 0 1px #ffffff0c,0 12px 32px #0003}
+html[data-stone-free][data-dol-midnight] .dgshop-host{border-radius:20px}
+html[data-stone-free][data-dol-midnight] .dgshop-content{border-radius:20px}
+@supports((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] .dgshop-host{background:linear-gradient(125deg,#ffffff08,transparent 60%),var(--kw-shop-shell);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] .dgshop-content::before{background:linear-gradient(125deg,#ffffff08,transparent 60%),var(--kw-shop-shell);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+}
+html[data-stone-free][data-dol-midnight] .dgshop-content :is(.dgshop-browse-tools,.optionsBar){background:transparent;border:0;box-shadow:none}
+html[data-stone-free][data-dol-midnight] .dgshop-content .dgshop-layout>.clothing-details{background:#1e1f23;border:1px solid #ffffff09;box-shadow:inset 0 1px #ffffff06}
+html[data-stone-free][data-dol-midnight] .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details.dgshop-detail-open{box-shadow:inset 0 1px #ffffff0c,0 16px 48px #0008}
+html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] .dgshop-content .dgshop-layout>.clothing-details{background:var(--kw-shop-island)}
+html[data-stone-free][data-dol-midnight] .dgshop-content :is(.dgshop-detail-body,.dgshop-purchase){background:transparent}
+html[data-stone-free][data-dol-midnight] .dgshop-content .dgshop-catalog .clothing-item{background:var(--kw-island);border:1px solid #ffffff07;border-radius:13px;box-shadow:0 3px 10px #0001;margin-bottom:7px}
+html[data-stone-free][data-dol-midnight] .dgshop-content .dgshop-catalog .clothing-item.dgshop-selected{background:rgba(23,37,54,.9);border-color:#6caef45c;box-shadow:inset 2px 0 #79b8ee99,0 4px 14px #0002}
+html[data-stone-free][data-dol-midnight] .dgshop-content .category-tab{background:#ffffff03;border-color:transparent;box-shadow:none}
+html[data-stone-free][data-dol-midnight] .dgshop-content .category-tab.active{background:#8bb0a510;border-color:transparent;box-shadow:inset 0 -2px #8bb0a5a6}
+html[data-stone-free][data-dol-midnight] .dgshop-entry-category{background:#ffffff04;border:1px solid #ffffff05;box-shadow:none}
+html[data-stone-free][data-dol-midnight] .dgshop-content .dgshop-catalog #shop-pagination{background:rgba(20,21,24,.95)}
+html[data-stone-free][data-dol-midnight] .dgshop-content :is(input[type=text],select){background:#17181c;border-color:#ffffff13}
+@media(hover:hover){
+ html[data-stone-free][data-dol-midnight] .dgshop-content .dgshop-catalog .clothing-item:hover{background:rgba(43,44,48,.94)}
+ html[data-stone-free][data-dol-midnight] .dgshop-entry-category:has(a:hover){background:#ffffff09}
+}
+@media(max-width:600px){html[data-stone-free][data-dol-midnight] #customOverlay.dgs-overlay #relation-display .relation-box-list{gap:12px;margin-bottom:20px}}
+
+/* Native cards keep their content and hitboxes; focus is a temporary material response. */
+html[data-stone-free][data-dol-midnight] #customOverlay.dgs-overlay #relation-display .relation-box:is(:focus-within,:active),
+html[data-stone-free][data-dol-midnight] #customOverlay.dgc-overlay #customOverlayContent .characteristic-box:is(:focus-within,:active),
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay :is(.trait,.feat):is(:focus-within,:active){border-color:#9eabb03d!important;box-shadow:inset 0 0 0 1px #9eabb01a,0 8px 22px #0003!important}
+@media(hover:hover){
+ html[data-stone-free][data-dol-midnight] #customOverlay.dgs-overlay #relation-display .relation-box:hover,
+ html[data-stone-free][data-dol-midnight] #customOverlay.dgc-overlay #customOverlayContent .characteristic-box:hover,
+ html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay :is(.trait,.feat):hover{border-color:#9eabb02e!important;box-shadow:inset 0 0 0 1px #9eabb012,0 8px 22px #0003!important}
+}
+
+/* Traits share the character shell width, but small collections need less height.
+   auto-fill leaves a spare column instead of stretching one trait across the page. */
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #customOverlay.dgp-overlay[data-dgp-panel=traits]{width:min(1000px,100%);height:auto;min-height:min(560px,70dvh);max-height:calc(100dvh - 24px)}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=feats])>.dgp-host{padding:4px 12px}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=feats]) .dgp-navigation select{max-width:18rem}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #customOverlayContent{flex:1 1 auto;padding:12px 20px 24px}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch .foldout{background:transparent!important;box-shadow:none!important;border:0;padding:0;margin:0 0 12px}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch .foldoutHeader{display:inline-flex;align-items:center;gap:8px;min-height:44px;line-height:1.4;padding:0 10px;border-radius:10px;background:#ffffff04}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .traitHeading{margin-top:12px;padding-bottom:12px;letter-spacing:.025em}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .traits{grid-template-columns:repeat(auto-fill,minmax(min(100%,22rem),1fr));gap:16px}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .trait{background:linear-gradient(125deg,#ffffff05,transparent 60%),#242427!important;box-shadow:0 6px 18px #0002!important;border:1px solid #ffffff0c!important;border-radius:15px;padding:18px 20px;margin:0;align-self:start}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .trait>small{line-height:1.7;color:var(--dgu-text)}
+
+/* Collection cards: the original coin, title, hint and date remain in place.
+   No inferred unlock flags: native coin/dot and dull coin treatment stay authoritative. */
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList{grid-template-columns:repeat(auto-fill,minmax(min(100%,24rem),1fr));gap:16px;padding:8px 2px 20px;align-items:start}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .feat{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:start;gap:18px;background:linear-gradient(125deg,#ffffff06,transparent 60%),#222326!important;border:1px solid #ffffff0b!important;border-radius:16px;padding:20px;box-shadow:0 7px 20px #0002!important;line-height:1.6;min-width:0}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featImage{display:grid;place-items:center;width:64px;min-height:72px;border-radius:14px;background:radial-gradient(ellipse at 50% 25%,#e3ceb412,transparent 75%);padding:0;align-self:start}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featCoin{width:56px;height:56px;object-fit:contain}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .dot{width:28px;height:28px}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .feat:has(.dot){background:#ffffff02!important;border-style:dashed!important;box-shadow:none!important}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featText{display:grid;gap:7px;padding:0;min-width:0;text-align:start}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featText>.title{font-size:1.05em;font-weight:650;line-height:1.4}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featText>.text{font-size:.9em;line-height:1.6}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featText>br{display:none}
+/* The native date follows a br; unknown extra content keeps its own presentation. */
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featText>br+.text{font-size:.75em;color:var(--dgu-secondary);padding-top:7px;border-top:1px solid #ffffff07;font-variant-numeric:tabular-nums}
+@supports((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=feats]) #customOverlayContent{background:rgba(15,16,19,.28)!important;box-shadow:inset 0 1px #ffffff06!important}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists .trait{background:linear-gradient(125deg,#ffffff06,transparent 60%),rgba(34,35,39,.78)!important}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .feat:has(.featCoin){background:linear-gradient(125deg,#ffffff06,transparent 60%),rgba(29,30,34,.72)!important}
+}
+html[data-stone-free][data-dgu-visualMotion] #customOverlay.dgp-overlay :is(#featsList .feat,#traitLists .trait){transition:transform 380ms cubic-bezier(.16,1,.3,1),border-color 250ms}
+html[data-stone-free][data-dgu-visualMotion] #customOverlay.dgp-overlay:not(.hidden):not([hidden]) :is(#featsList .feat,#traitLists .trait):not(:has(a,button,input,select,textarea,[tabindex])){animation:kw-collection-enter 480ms cubic-bezier(.16,1,.3,1)}
+@keyframes kw-collection-enter{from{opacity:.35;transform:translateY(14px) scale(.975)}to{opacity:1;transform:none}}
+@media(hover:hover){html[data-stone-free][data-dgu-visualMotion] #customOverlay.dgp-overlay :is(#featsList .feat,#traitLists .trait):not(:has(a,button,input,select,textarea,[tabindex])):hover{transform:translateY(-3px);border-color:#a7b7b02e!important}}
+@media(max-width:600px){
+ html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #customOverlayContent{padding:10px 12px 18px}
+ html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .feat{grid-template-columns:48px minmax(0,1fr);gap:12px;padding:16px 12px}
+ html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featImage{width:48px;min-height:56px}
+ html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=feats] #featsList .featCoin{width:44px;height:44px}
+}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] #customOverlay.dgp-overlay :is(#featsList .feat,#traitLists .trait){animation:none!important;transition:none!important;transform:none!important}}
+
+/* Selection stays on the actual native card. One owned, input-inert flow plane per selection. */
+.kw-shop-ripple{position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:inherit;pointer-events:none!important;user-select:none;animation:kw-shop-breathe 8s ease-in-out infinite}
+.kw-shop-stream{position:absolute;inset:-70%;background:radial-gradient(ellipse at 30% 35%,#4686bd45,transparent 45%),radial-gradient(ellipse at 70% 60%,#8475b43b,transparent 40%),repeating-radial-gradient(ellipse at 20% 80%,transparent 0 22px,#5ca8d71b 27px,transparent 34px 58px);animation:kw-shop-flow 10s ease-in-out infinite alternate;pointer-events:none}
+.kw-shop-ring{position:absolute;left:var(--kw-ripple-x,50%);top:var(--kw-ripple-y,50%);width:var(--kw-ripple-size,900px);height:var(--kw-ripple-size,900px);border-radius:50%;background:radial-gradient(circle,transparent 35%,#5c9bd325 46%,#9b8fce35 52%,transparent 63%);opacity:0;transform:translate(-50%,-50%) scale(0);pointer-events:none}
+.kw-shop-ripple.is-activated .kw-shop-ring{animation:kw-shop-ripple 1250ms cubic-bezier(.16,1,.3,1) both}
+.kw-shop-ripple.is-activated .kw-shop-ring:last-child{animation-delay:120ms}
+@keyframes kw-shop-ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.95}65%{opacity:.58}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+@keyframes kw-shop-flow{from{transform:translate(-10%,-7%) rotate(-12deg) scale(.86)}to{transform:translate(12%,10%) rotate(12deg) scale(1.08)}}
+@keyframes kw-shop-breathe{0%,100%{background:#3174ad0e;opacity:.325}45%{background:#466eaa24;opacity:.475}75%{background:#71629420;opacity:.4}}
+html[data-stone-free] .dgshop-detail-body,html[data-stone-free] .dgshop-purchase{position:relative;left:0}
+html[data-stone-free] .dgshop-content .clothing-details.dgshop-detail-open{animation:none!important}
+html:not([data-dgu-visualMotion]) .kw-shop-ripple{display:none}
+@media(prefers-reduced-motion:reduce){.kw-shop-ripple{display:none!important}.kw-shop-ripple,.kw-shop-ripple *{animation:none!important}}
+html:not([data-dgu-visualMotion]) .kw-shop-ripple,html:not([data-dgu-visualMotion]) .kw-shop-ripple *{animation:none!important}
+
+/* Wardrobe shares the accepted half-strength selection flow, not purchase state. */
+html[data-stone-free] .dgw-item{position:relative;isolation:isolate;overflow:hidden}
+html[data-stone-free] .dgw-item[data-motion-active]{box-shadow:inset 0 0 0 1px #80b2db50!important;background:#172536b0!important}
+html[data-stone-free] .dgw-preview canvas{position:relative;left:0}
+
+/* Original forms: keep native inputs, values, grouping and action handlers. */
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent{background:rgba(13,14,17,.22)!important;box-shadow:inset 0 1px #ffffff06}
+html[data-stone-free][data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) :is(.settingsGrid,.settingsGridSmall){column-gap:20px;row-gap:8px}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit],input[type=text],input[type=number],textarea,select){background:linear-gradient(125deg,#ffffff04,transparent 75%),rgba(12,14,17,.38)!important;color:var(--sf-ink);border-color:#ffffff12!important;box-shadow:inset 0 1px #ffffff04;backdrop-filter:none}
+html[data-stone-free][data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent :is(button.macro-button,input[type=button],input[type=submit],input[type=text],input[type=number],textarea,select){border-radius:11px;min-height:44px;padding:8px 12px;font:inherit;max-width:100%}
+html[data-stone-free][data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent button.numberStepper{border-radius:7px}
+html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit]):not(:disabled):is(:hover,:active,[data-kw-press]){background:linear-gradient(125deg,#8baea31b,transparent 85%),#11131542!important;border-color:#a8c0b633!important;box-shadow:inset 0 0 0 1px #a8c0b61a}
+html[data-stone-free][data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent :is(input[type=checkbox],input[type=radio],input[type=range]){accent-color:#83a89e}
+html[data-stone-free][data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent input[type=range]{accent-color:#9a91ad}
+html[data-stone-free][data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent label:has(>input:is([type=checkbox],[type=radio])){max-width:100%;padding-inline:6px;border-radius:8px}
+html[data-stone-free][data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent label:has(>input:checked){background:linear-gradient(125deg,#8baea314,transparent 90%)}
+html[data-stone-free][data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent :is(input,select,textarea,button):focus-visible{outline:1px solid #9bb9ae99;outline-offset:3px}
+html[data-stone-free][data-dgu-visualMotion] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent :is(button,input,select,textarea,label){transition:background-color 180ms,border-color 220ms,box-shadow 240ms}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) #customOverlayContent :is(button,input,select,textarea,label){transition:none!important}}
+
+/* Only full, explicitly reviewed optional adapters join the official control language. */
+html[data-stone-free][data-dol-midnight] #customOverlay[data-dgu-adapter-match=full]:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet]) :is(button,input[type=button],input[type=submit]){color:var(--sf-ink);border-color:#ffffff16;border-radius:11px;background-color:#1b1d2166;box-shadow:none}
+html[data-stone-free][data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-dgu-adapter-match=full]:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet]) :is(button,input[type=button],input[type=submit]){transition:background-color 220ms,border-color 240ms,box-shadow 280ms}
+html[data-stone-free][data-dol-midnight] #customOverlay[data-dgu-adapter-match=full]:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet]) :is(button,input[type=button],input[type=submit]):not(:disabled,[aria-disabled=true]):is(:hover,:focus-visible,[data-kw-press]){background-color:#8baea31b!important;border-color:#8baea33b!important;box-shadow:inset 0 0 0 1px #8baea326!important}
+html[data-stone-free][data-dol-midnight] #customOverlay[data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] :is(.modhub-section,.modhub-item,.modhub-market-card){background:linear-gradient(125deg,#ffffff04,transparent 70%),var(--kw-island)!important;border-color:#ffffff10;box-shadow:inset 0 1px #ffffff06}
+html[data-stone-free][data-dol-midnight] #customOverlay[data-dgu-adapter=MapleBirchSoftWet][data-dgu-adapter-match=full] #maplebirch-cloud-save>.settingsToggleItemWide{background:var(--kw-island);border-color:#ffffff10;box-shadow:inset 0 1px #ffffff06}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] #customOverlay[data-dgu-adapter-match=full] :is(button,input[type=button],input[type=submit]){transition:none!important}}

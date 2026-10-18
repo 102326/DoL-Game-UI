@@ -1,0 +1,32 @@
+{
+  "name": "CheatExtendedSoftWet",
+  "version": "0.1.0",
+  "description": "Kraft Work 外观兼容：原作者 Cheat Extended 1.20.3.1；另验独立维护 rebuild.30，非原作者发布。",
+  "styleFileList": [
+    "cheat-extended-soft-wet.css"
+  ],
+  "scriptFileList": [
+    "cheat-extended-soft-wet.js"
+  ],
+  "scriptFileList_inject_early": [],
+  "tweeFileList": [],
+  "imgFileList": [],
+  "additionFile": [
+    "README.md",
+    "LICENSE"
+  ],
+  "dependenceInfo": [
+    {
+      "modName": "cheat extended",
+      "version": ">=1.20.3"
+    },
+    {
+      "modName": "DoLGameUI",
+      "version": ">=3.0.0"
+    },
+    {
+      "modName": "GameVersion",
+      "version": "=0.5.12.13"
+    }
+  ]
+}

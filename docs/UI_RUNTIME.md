@@ -13,7 +13,7 @@
 | 接口 | 返回 / 范围 |
 | --- | --- |
 | `ui.getTheme()` | 冻结的 `{id, enabled, tokens}`；tokens 为现有 CSS 变量名，不另存主题状态 |
-| `ui.getVisualTier()` | 用户选择的 `Smooth / Balanced / Fancy`；关闭主题后偏好仍保留 |
+| `ui.getVisualTier()` | 经典入口返回 `Smooth / Balanced / Fancy`；Stone Free 官方入口返回兼容值 `Fancy`，表示完整模式。旧偏好保留，实际效果查询 capabilities |
 | `ui.getCapabilities()` | 冻结的启用状态、档位、blur 支持、reduced motion、实际有效 glass / motion、mobile / tablet / desktop 布局与 Style Adapter 可用性 |
 | `ui.registerStyleAdapter(spec)` | 注册一个明确目标的 Style Only 契约；返回冻结的 `refresh / destroy / getDiagnostics` 句柄 |
 | `ui.getAdapterDiagnostics()` | 所有已注册适配的最新只读诊断快照，不返回 DOM 或业务值 |
@@ -161,3 +161,5 @@ API 仍为 v1。调用前检查 `typeof window.DoLGameUI?.wardrobe?.getSlotSuppo
 新槽位只有库存、定义和穿戴对象还不够。原版衣柜宏有固定的部位列表；注册映射的作者还须保证自己的槽位支持原 `wear_<slot>` / `updatewardrobe` 链及相关整理操作。`author-declared-native` 表示作者作出了这一声明，不表示 Core 验证过任意第三方业务。使用私有库存或专属操作的槽位应保留原入口，不应注册成原生业务槽位。未注册的未知衣槽保留原版信息入口，Core 不猜测操作、不读取私有库存。
 
 映射仅复用目标已经实现的衣柜数据与原操作链，不会替新增槽位实现穿戴业务；其它服装 Mod 可选择接入，不自动接管任意新业务结构，也不提供自定义业务回调、状态镜像或通用 Proxy / Deep Adapter 执行器。
+
+Stone Free 官方入口采用中性黑灰 Acrylic，旧 token 名 `ocean` 保留为 API v1 兼容键，映射中性 `--dgu-accent`。它不再表示蓝色品牌。官方设置取消档位选择，玻璃、动态与 reduced motion 独立生效；上文档位表述仅适用于经典入口。

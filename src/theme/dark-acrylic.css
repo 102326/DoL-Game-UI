@@ -1,0 +1,152 @@
+/* Official dark Acrylic; game semantic colors and the independent Host remain outside this palette. */
+html[data-stone-free]{--sf-main:#242426;--sf-reading:#202022;--sf-float:#29292c;--sf-edge:#ffffff28;--sf-ink:#e6e6e8;--sf-muted:#aaa9ad;--sf-edit:#d0d0d2;--sf-change:#d2d2d4;--sf-blur:28px;--sf-main-alpha:.48;--sf-float-alpha:.38;--kw-shell:rgba(36,38,42,.68);--kw-island:rgba(29,30,34,.72);--kw-hairline:#ffffff0b;--dgu-accent:#c9c9cd;--dgu-text:var(--sf-ink);--dgu-secondary:var(--sf-muted);--dgu-card:#272729;--dgu-hover:#303032;--dgu-panel:#242426;--dgu-surface:#202022}
+html[data-stone-free] :is(.sf-material-main,.sf-material-reading,.sf-material-float,.sf-material-reference){color:var(--sf-ink);border:1px solid var(--sf-edge);border-radius:22px;background:var(--sf-reading);box-shadow:inset 0 1px #ffffff15,0 16px 44px #0003}
+html[data-stone-free] .sf-material-reading{background:#202022a6;border-color:#ffffff09;box-shadow:inset 0 1px #ffffff08;border-radius:16px}
+html[data-stone-free] .sf-material-reference{background:#29292c;border-color:#ffffff20;border-radius:18px;transition:background-color 420ms,box-shadow 420ms,border-color 420ms}
+@supports(backdrop-filter:blur(1px)){
+ html[data-stone-free][data-dgu-visualGlass] :is(.sf-material-main,.sf-material-float):not(.dcu-shell){background:linear-gradient(125deg,#ffffff16,transparent 37%,#ffffff07),rgb(36 36 38 / var(--sf-main-alpha));backdrop-filter:blur(var(--sf-blur)) saturate(.85);-webkit-backdrop-filter:blur(var(--sf-blur)) saturate(.85)}
+ html[data-stone-free][data-dgu-visualGlass] .sf-material-float{background:linear-gradient(132deg,#ffffff1f,transparent 45%,#ffffff13),rgb(41 41 44 / var(--sf-float-alpha));box-shadow:inset 0 1px #ffffff14,inset 1px 0 #fff1,0 20px 44px #0005}
+ html[data-stone-free][data-dgu-visualGlass] .sf-material-reference.is-floating{background:#29292c65;backdrop-filter:blur(var(--sf-blur));box-shadow:inset 0 1px #ffffff20,0 22px 40px #0005;border-color:#ffffff20}
+}
+html[data-stone-free] :is(.sf-material-float.is-focused,[data-preview-state="focused"] .sf-material-float){border-color:#ffffff24;box-shadow:inset 0 1px #ffffff28,0 25px 52px #0006,0 0 0 1px #d0d0d216}
+/* Let real game content participate in settings, with a stable reading area inside. */
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls>.dmt-settings-shell{background:#222326;border:1px solid #ffffff13;box-shadow:inset 0 1px #ffffff08,0 28px 80px #0006}
+html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls>.dmt-settings-shell{background:linear-gradient(132deg,#ffffff06,transparent 44%),rgba(29,31,35,.38);backdrop-filter:blur(24px) saturate(.9);-webkit-backdrop-filter:blur(24px) saturate(.9)}
+html[data-stone-free] #dol-midnight-controls::backdrop{background:transparent;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+html[data-stone-free] #dol-midnight-controls .dmt-settings-header{background:transparent;border-color:#ffffff14}
+/* Focused combat keeps native controls stable; only owned presentation folds are hidden. */
+html[data-stone-free][data-dol-midnight] .dcu-shell{position:relative;border:1px solid #ffffff16;background:transparent;box-shadow:none}
+html[data-stone-free] .dcu-group[data-dcu-folded]{display:none!important}
+html[data-stone-free] .dcu-display-actions{display:flex;flex-wrap:wrap;gap:6px}
+html[data-stone-free] .dcu-round-title{font-size:17px;font-weight:600}.dcu-round-title small{display:block;font-size:11px;font-weight:400;color:var(--sf-muted)}
+html[data-stone-free] .dcu-shell[data-focused] .dcu-workspace{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:18px;padding:14px}
+html[data-stone-free] .dcu-arrangement{display:flex;flex-direction:column;gap:4px;align-self:start;min-width:0}
+html[data-stone-free] .dcu-arrangement button{display:grid;gap:4px;text-align:left;padding:12px 14px;background:transparent;border:1px solid transparent;border-radius:14px;box-shadow:none;color:var(--sf-muted);overflow-wrap:anywhere}
+html[data-stone-free] .dcu-arrangement button span{font-size:12px}.dcu-arrangement button strong{font-size:14px;font-weight:500;color:var(--sf-ink)}
+html[data-stone-free] .dcu-arrangement button small{font-size:10px;color:var(--sf-muted)}
+html[data-stone-free] .dcu-arrangement button small[data-edited]{color:var(--sf-change)}
+html[data-stone-free] .dcu-arrangement button[aria-current]{background:#dddddd10;border-color:#dddddd28;color:var(--sf-edit);box-shadow:inset 2px 0 #d0d0d2}
+html[data-stone-free] .dcu-editor{min-width:0;padding:18px}
+html[data-stone-free] .dcu-editor-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:0 0 18px;margin-bottom:14px;border-bottom:1px solid #ffffff12}
+html[data-stone-free] .dcu-editor-heading small{font-size:11px;color:var(--sf-edit)}
+html[data-stone-free] .dcu-editor-heading h3{margin:4px 0 0;font-size:24px;letter-spacing:.03em;color:var(--sf-ink)}
+html[data-stone-free] .dcu-editor-heading>span{font-size:11px;color:var(--sf-muted)}
+html[data-stone-free][data-dol-midnight] .dcu-shell .dcu-native :is(#listContainer,[data-dcu-action-list]){grid-template-columns:minmax(0,1fr)!important}
+html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-native .dcu-group{background:transparent;border:0;box-shadow:none!important;animation:none!important;padding:10px 0;line-height:2}
+html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-group::before{color:var(--sf-muted);display:block;margin-bottom:10px;font-weight:500}
+html[data-stone-free][data-dol-midnight] #passages .dcu-shell[data-focused] .dcu-group[data-dcu-active]::before{display:none}
+html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-native .dcu-group label{background:#ffffff03;border-color:transparent;box-shadow:none;border-radius:10px;padding:8px 10px;min-height:44px;color:inherit}
+html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-native .dcu-group label:has(input:checked){background:#e3e8ee0c;border-color:#e3e8ee26;box-shadow:none;color:inherit}
+html[data-stone-free] #passages .dcu-shell .dcu-native input[type=radio]{accent-color:#c9c9cd}
+html[data-stone-free] #passages .dcu-shell .dcu-native :focus-visible{outline:2px solid #c9c9cd;outline-offset:3px}
+html[data-stone-free] .dcu-extension-note{font-size:11px;color:var(--sf-muted)}
+html[data-stone-free][data-dol-midnight] .dcu-shell .dcu-footer{background:#242426ef;border:1px solid #ffffff24;border-radius:18px 18px 0 0;box-shadow:0 -12px 36px #0004;gap:10px}
+html[data-stone-free] .dcu-shell[data-focused] .dcu-summary-toggle{margin-right:auto!important}
+html[data-stone-free][data-dgu-visualGlass] .dcu-shell .dcu-footer{background:#242426b8;backdrop-filter:blur(20px)}
+@container combat (max-width:699px){
+ html[data-stone-free] .dcu-shell[data-focused] .dcu-workspace{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;padding:8px}
+ html[data-stone-free] .dcu-arrangement{display:contents}.dcu-arrangement button{grid-row:var(--dcu-part-row)}
+ html[data-stone-free] .dcu-arrangement button{padding:9px 11px}.dcu-arrangement button strong{font-size:13px}
+ html[data-stone-free] .dcu-editor{padding:14px 10px;grid-row:var(--dcu-edit-row)}
+ html[data-stone-free] .dcu-editor-heading{align-items:start;gap:6px}.dcu-editor-heading>span{max-width:9em}
+ html[data-stone-free] .dcu-header{gap:6px}
+}
+html[data-stone-free][data-dgu-visualGlass] :is(.dgw-root,.dgshop-host,.dgshop-content,.dgw-reference-chip,.dgw-reference-compare){--dgu-acrylic-base:var(--kw-shell);--dgu-acrylic-light:#ffffff07;--dgu-acrylic-edge:#ffffff16;--dgu-acrylic-blur:var(--sf-blur)}
+html[data-stone-free] .sf-source-trace{background-color:#29292c;backdrop-filter:blur(18px);border:1px solid #ffffff44}
+html[data-stone-free]:not([data-dgu-visualGlass]) :is(.sf-material-main,.sf-material-float,.sf-material-reference.is-floating){background:#29292c;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub :is(.sf-motion-ball,.sf-motion-petal,.sf-motion-orbit.is-grid){background:#29292c;backdrop-filter:none}
+html[data-stone-free]:not([data-dgu-visualMotion]) :is(.sf-material-reference,.sf-material-float){transition:none}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] :is(.sf-material-reference,.sf-material-float){transition:none}}
+
+@supports(backdrop-filter:blur(1px)){
+ html[data-stone-free][data-dgu-visualGlass] .dcu-shell::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;background:linear-gradient(125deg,#ffffff16,transparent 45%),rgb(36 36 38 / var(--sf-main-alpha));backdrop-filter:blur(var(--sf-blur)) saturate(.85)}
+}
+
+html[data-stone-free] .dcu-shell[data-focused] .dcu-editor{max-height:min(64dvh,680px);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+html[data-stone-free] .dcu-shell[data-focused] .dcu-editor-heading{position:sticky;top:-18px;z-index:1;background:#202022f2;padding-top:10px}
+
+@media(min-width:980px){html[data-stone-free] #dol-midnight-controls:has(.dmt-workspace)>.dmt-settings-shell{width:min(1000px,calc(100vw - 40px))}}
+/* Remove inherited 78% inner plane; only dense reading/control islands stay stable. */
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-controls-content.dmt-workspace{background:transparent;box-shadow:none}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-settings-header{background:transparent;backdrop-filter:none;padding:22px 24px 12px;border-bottom:0}
+html[data-stone-free] #dol-midnight-controls .dmt-settings-header h2{font-size:24px;margin:4px 0 0}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls::backdrop{background:transparent;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-section>.dmt-setting-card{grid-column:auto}
+html[data-stone-free] #dol-midnight-controls :focus-visible{outline:2px solid #c9c9cd;outline-offset:3px}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating.is-focused{border-color:#ffffff24}
+
+/* The legacy shared :is() button rule carries native IDs; these controls are ours. */
+html[data-stone-free][data-dol-midnight] .dcu-shell .dcu-arrangement button{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;border-bottom:1px solid #ffffff0b!important;padding:10px 12px!important}
+html[data-stone-free][data-dol-midnight] .dcu-shell .dcu-arrangement button[aria-current]{background:#d0d0d20c!important;border-radius:12px!important;box-shadow:inset 2px 0 #d0d0d2!important}
+html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-native label:focus-within{outline:none;box-shadow:none}
+
+/* These are our settings islands, not an opaque second dialog. */
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-control-sheet{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{transform-origin:50% 50%;overflow:hidden}
+html[data-stone-free] #dol-midnight-controls::backdrop{transition:backdrop-filter 460ms,background-color 460ms}
+@starting-style{html[data-stone-free] #dol-midnight-controls::backdrop{backdrop-filter:blur(0);background:transparent}}
+html[data-stone-free] #dol-midnight-controls[data-sf-leaving]::backdrop{backdrop-filter:blur(0);background:transparent}
+html[data-stone-free] .dcu-shell[data-focused] .dcu-editor{position:relative;isolation:isolate}
+html[data-stone-free] .dcu-editor-plane{position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:linear-gradient(120deg,#ffffff08,transparent 55%),#2020226b;border:1px solid #ffffff08}
+/* Tool surfaces expand from the ball, while controls finish at stable hitboxes. */
+html[data-stone-free] .sf-motion-hub{color:var(--sf-ink)}
+html[data-stone-free] .sf-motion-hub .sf-motion-orbit.is-grid{transform-origin:var(--origin-x) var(--origin-y);transform:scale(.18);clip-path:inset(40% round 50%);opacity:0;transition:transform 540ms cubic-bezier(.16,1,.3,1),clip-path 540ms cubic-bezier(.16,1,.3,1),opacity 220ms,visibility 0s 540ms}
+html[data-stone-free] .sf-motion-hub .sf-motion-orbit.is-grid.is-expanded{transform:none;clip-path:inset(0 round 22px);opacity:1;transition-delay:0s}
+html[data-stone-free] .sf-motion-hub .sf-motion-sheet{color:var(--sf-ink);background:linear-gradient(135deg,#ffffff0a,transparent 60%),#29292ca6;border-color:#ffffff16;backdrop-filter:blur(var(--sf-blur)) saturate(.85);box-shadow:inset 0 1px #ffffff12,0 24px 64px #0006}
+html[data-stone-free] .sf-motion-hub .sf-motion-sheet main{background:#17171970}
+html[data-stone-free] .sf-motion-hub :is(.sf-motion-petal span,.sf-motion-sheet small,.sf-motion-feedback,.sf-motion-sheet footer span,.sf-motion-sheet .sf-projection){color:var(--sf-muted)}
+html[data-stone-free] .sf-motion-hub .sf-motion-sheet h2{color:var(--sf-ink)}
+html[data-stone-free] .sf-motion-hub .sf-motion-utilities button{background:#29292cb8}
+html[data-stone-free] .sf-motion-hub button:focus-visible{outline-color:var(--dgu-accent)}
+html[data-stone-free] .sf-motion-hub button:hover{background-color:#ffffff0e}
+html[data-stone-free] .sf-motion-ball::before{border-color:#ffffff12}
+html[data-stone-free] .sf-motion-rail{background:linear-gradient(transparent,#ffffff35,transparent)}
+html[data-stone-free][data-dol-midnight] :is(.dgw-root,.dgshop-host,.dgshop-content,.dgw-reference-chip,.dgw-reference-compare,.dgw-reference-flight){--dgu-accent:#c9c9cd;--dgu-card:#272729;--dgu-text:#e6e6e8;--dgu-secondary:#aaa9ad}
+html[data-stone-free][data-dol-midnight] :is(#ui-bar,#dol-midnight-controls,#dol-midnight-controls>.dmt-settings-shell,.dcu-root){--dgu-accent:#c9c9cd;--dgu-accent-soft:#ffffff10;--dgu-accent-glow:transparent;--dgu-control-border:#ffffff14;--dgu-control-selected:#ffffff0c;--dgu-control-selected-border:#ffffff20}
+html[data-stone-free]:not([data-dgu-visualGlass]) :is(#dol-midnight-controls>.dmt-settings-shell,.sf-motion-hub .sf-motion-sheet){background:#242426;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-stone-free]:not([data-dgu-visualGlass]) #dol-midnight-controls::backdrop{backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-stone-free]:not([data-dgu-visualGlow]) :is(.sf-material-float,.sf-motion-ball,.sf-motion-sheet){box-shadow:0 8px 24px #0003}
+html[data-stone-free]:not([data-dgu-visualMotion]) #dol-midnight-controls::backdrop{transition:none}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] #dol-midnight-controls::backdrop{transition:none}}
+
+/* Override local legacy token scopes, without recoloring original game text. */
+html[data-stone-free][data-dol-midnight] :is(.dgu-surface,[data-dgu-adapter][data-dgu-role~="page-shell"],.dgs-host,.dgw-root,.dcu-root,.dgshop-host,.dgshop-content,#dol-midnight-controls,#dol-midnight-controls>.dmt-settings-shell,.dgp-overlay,.dgs-overlay,.dgc-overlay){--dgu-surface:#202022;--dgu-panel:#242426;--dgu-card:#272729;--dgu-hover:#303032;--dgu-border:#ffffff16;--dgu-accent:#c9c9cd;--dgu-selected:#303032;--dgu-text:#e6e6e8;--dgu-secondary:#aaa9ad;--dgu-on-accent:#202022}
+html[data-stone-free][data-dol-midnight] .dgshop-content .dgshop-purchase .buy-buttons>.buy-button:has(>.buy-button-inner:not(.disabled)){box-shadow:inset 0 -2px #c9c9cd60}
+html[data-stone-free][data-dol-midnight] .dgs-host .dgs-item[aria-pressed=true]::after{content:none;animation:none}
+html[data-stone-free][data-dol-midnight] .dgs-host .dgs-item[aria-pressed=true]{background:#2d2d30;box-shadow:inset 2px 0 #c9c9cd;outline:none;animation:none}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls :is(input[type=checkbox],input[type=range]){accent-color:#c9c9cd}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls input[type=checkbox]:checked{background:#2c4943!important;border-color:#6d918666!important;box-shadow:none!important}
+html[data-stone-free] .sf-motion-hub .sf-motion-ball.is-dragging{transition:none}
+html[data-stone-free]:not([data-dgu-visualMotion]) .sf-motion-hub *::before{transition:none!important;animation:none!important}
+
+/* Eyes' legacy :is() contains two native IDs. Pin official tokens at owned scopes. */
+html[data-stone-free][data-dol-midnight] :is(.dgu-surface,[data-dgu-adapter][data-dgu-role~="page-shell"],.dgs-host,.dgw-root,.dcu-root,.dgshop-host,.dgshop-content,#dol-midnight-controls,#dol-midnight-controls>.dmt-settings-shell,.dgp-overlay,.dgs-overlay,.dgc-overlay){--dgu-surface:#202022!important;--dgu-panel:#242426!important;--dgu-card:#272729!important;--dgu-hover:#303032!important;--dgu-border:#ffffff16!important;--dgu-accent:#c9c9cd!important;--dgu-selected:#303032!important;--dgu-text:#e6e6e8!important;--dgu-secondary:#aaa9ad!important;--dgu-on-accent:#202022!important}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-setting-card.sf-material-reading{border-radius:16px!important}
+html[data-stone-free] #dol-midnight-controls :focus-visible{outline:1px solid #bdbdc280;outline-offset:3px}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-settings-header{padding:22px 24px}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls input[type=checkbox]:checked::before{background:#8eb0a4}
+html[data-stone-free][data-dol-midnight] #ui-bar{--dgu-sidebar-accent:#c9c9cd}
+html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-native .dcu-group label:has(input:checked){color:var(--sf-ink)!important;background:#ffffff0a!important;border-color:#ffffff16!important;box-shadow:none!important}
+html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-native input[type=radio]{accent-color:#c9c9cd!important}
+/* Disable the old coloured reflection pass on official controls. */
+html[data-stone-free][data-dol-midnight] :is(.dgs-host,.dgw-root,.dcu-root,.dgshop-host,#dol-midnight-controls) button:not(:disabled):is(:active,:focus-visible,:hover){background-image:none!important}
+
+/* Kraft Work: dark neutral material, coloured controls with no luminous white fill. */
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls>.dmt-settings-shell{--kw-control:#83a89e;--kw-slider:#9a91ad}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls input[type=checkbox]{background:#242428;transition:background-color 240ms,border-color 240ms}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls input[type=checkbox]::before{background:#7d7e87;transition:transform 320ms cubic-bezier(.16,1,.3,1),background-color 240ms}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls input[type=range]::-webkit-slider-thumb{background:var(--kw-slider);border-color:#c4b8d426;box-shadow:0 2px 5px #0004}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls input[type=range]::-moz-range-thumb{background:var(--kw-slider);border-color:#c4b8d426}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-reading-sample{background:linear-gradient(135deg,#ffffff06,transparent 70%),rgba(29,30,34,.52);box-shadow:inset 0 1px #ffffff06,0 9px 28px #0002;border-color:#ffffff0e}
+/* The outer shell already blurs the game; inner preview surfaces need separation, not another blur. */
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-preview-stage.sf-material-main{background:linear-gradient(135deg,#ffffff04,transparent 65%),rgb(32 33 36 / .22);border-color:#ffffff10;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:inset 0 1px #ffffff07,0 12px 28px #0002}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-preview-reading.sf-material-reading{background:rgb(29 30 33 / .36)}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-preview-reference.sf-material-reference{background:rgb(41 39 45 / .5);border-color:#ffffff14}
+html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-preview-reference.is-floating{background:rgb(41 39 45 / .4);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:#9c8fa933}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{background:#ffffff05}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-settings-footer{background:linear-gradient(transparent,#ffffff03);border-top:1px solid #ffffff0b;box-shadow:none}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-preview-reference.is-focused{box-shadow:0 18px 40px #0005;border-color:#9c8fa944}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls :focus-visible{outline:1px solid #87a99d99;outline-offset:3px}
+html[data-stone-free]:not([data-dgu-visualGlass]) #dol-midnight-controls .dmt-preview-stage{background:#19191c;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-stone-free]:not([data-dgu-visualMotion]) #dol-midnight-controls input[type=checkbox]::before{transition:none}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] #dol-midnight-controls input[type=checkbox],html[data-stone-free] #dol-midnight-controls input[type=checkbox]::before{transition:none}}

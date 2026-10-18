@@ -62,7 +62,18 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
   const hasDetails=[body,footer].some(node=>!!node&&(!!node.textContent?.trim()||!!node.querySelector('input,select,button,a,img,canvas')));
   return {...native,items,selected:items.find(item=>item.key===selectedKey)??null,hasDetails};
  }
- function select(item:HTMLElement){const links=item.querySelectorAll('a.link-internal');selected=links.length===1?links[0]:null;selectedDisplay=displayIdentity(item)}
+ function select(item:HTMLElement){const links=item.querySelectorAll('a.link-internal');selected=links.length===1?links[0]:null;selectedDisplay=displayIdentity(item);return selectedDisplay}
+ /** Native linkify can rebuild rows before their ready callbacks attach handlers. A click is not an outcome. */
+ function reconcileSelection(){
+  if(disposed||!selected||!current())return;
+  const definition=facts().definition;if(!definition||typeof definition!=='object')return;
+  const d=definition as Record<string,unknown>,names=['cn_name_cap','cn_name','name_cap','name'].map(k=>d[k]).filter((n):n is string=>typeof n==='string'&&!!n);
+  if(!names.length)return;
+  if(names.includes(text(selected)))return;
+  const matches=[...shop.querySelectorAll<HTMLElement>('.clothing-item')].filter(n=>{const links=n.querySelectorAll('a.link-internal');return links.length===1&&names.includes(text(links[0]))});
+  selected=matches.length===1?matches[0].querySelector('a.link-internal'):null;
+  selectedDisplay=selected?displayIdentity(matches[0]):'';
+ }
  function selectedItem(item:HTMLElement){return selected!==null&&item.contains(selected)}
  function guard(target:Element):'native'|'valid'|'stale'{
   const control=purchaseControl(target);
@@ -80,5 +91,5 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
   for(const control of bound){const b=bindings.get(control);if(control.isConnected&&!consumed.has(control)&&b&&b.base===base&&b.variables===f.variables&&b.definition===f.definition){bindings.set(control,{...b,quote});updated=true}}
   return updated;
  }
- return {context,read,select,selectedItem,guard,quantityChanged,clearSelection(){selected=null},destroy(){disposed=true;selected=null;bound=[]}};
+ return {context,read,select,reconcileSelection,selectionDisplay:()=>selectedDisplay,selectedItem,guard,quantityChanged,clearSelection(){selected=null},destroy(){disposed=true;selected=null;bound=[]}};
 }

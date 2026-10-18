@@ -1,6 +1,10 @@
 # DoL Soft & Wet Game UI
 
-> **当前研究分支：Stone Free 3.0 Stable Gate。** 官方 UI 3.0.0 为本地候选，尚未获准正式发布；公开 RC 见 [v3.0.0-rc.1](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0-rc.1)。双包安装、支持范围及实验协议政策见 [3.0 说明](docs/RELEASE_3.0.0.md)。下方保留当前稳定版 2.7 的用户说明与经典构建入口。
+> **Soft & Wet 3.0 — Kraft Work**：黑灰 Acrylic、游戏天气响应、双布局设置与可选 Floating Hub。普通玩家需要 UI + Framework Host 两包。见 [3.0 下载](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0)、[安装与回退](docs/INSTALL_3.0.0.md)、[完整发布说明](docs/RELEASE_3.0.0.md)及[发行身份](docs/KRAFT_WORK_3.0_PUBLISH.md)。
+
+## 2.7 使用说明（历史参考）
+
+以下内容记录 2.7 的单包安装和旧界面，不能替代上方 3.0 双包指南；[2.7 稳定发行](https://github.com/102326/DoL-Game-UI/releases/tag/v2.7.0) 继续保留。
 
 > **2.7.0 · Crazy Diamond** 本轮整理设置中心并修复战斗操作栏、商店说明遮挡，重点是已有体验的稳定性；悬浮球为默认关闭的可选工具，不包含 Widget 或全局动作底栏。见 [本轮变化](docs/RELEASE_2.7.0.md)。
 

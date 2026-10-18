@@ -3,6 +3,7 @@ import Navigation from './Navigation.vue';
 import {panelPresentation} from './presentation';
 import {visible} from './visibility';
 import {isMasterEnabled} from '../runtime/master';
+import {sourceMotion} from '../ui/source-motion';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 import './style.css';
@@ -28,13 +29,15 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
  const counts={mounts:0,scans:0,failures:0};
  let lastFailure='';
  const presentation=panelPresentation(),passagePresentation=panelPresentation();
+ const motion=sourceMotion();
  function unmount(value:App|undefined){try{value?.unmount()}catch(error){console.warn('DoLGameUI panel cleanup',error)}}
- function release(){const mount=overlayMount;overlayMount=undefined;presentation.release();unmount(app);app=undefined;if(mount){disposingOverlayMount=true;mount.dispose();disposingOverlayMount=false}host?.remove();host=null;overlay?.classList.remove('dgp-overlay');overlay?.removeAttribute('data-dgp-panel');content=null;active=undefined;targets=[]}
+ function release(){motion.cancel();const mount=overlayMount;overlayMount=undefined;presentation.release();unmount(app);app=undefined;if(mount){disposingOverlayMount=true;mount.dispose();disposingOverlayMount=false}host?.remove();host=null;overlay?.classList.remove('dgp-overlay');overlay?.removeAttribute('data-dgp-panel');content=null;active=undefined;targets=[]}
  function go(index:number){
   if(!content)return;
   const target=targets[index];
   if(index!==-1&&(!target||!content.contains(target)||!visible(target)))return;
-  content.scrollTo({top:index<0?0:content.scrollTop+target.getBoundingClientRect().top-content.getBoundingClientRect().top-12,behavior:'auto'});
+  const top=index<0?0:content.scrollTop+target.getBoundingClientRect().top-content.getBoundingClientRect().top-12;
+  if(document.documentElement.hasAttribute('data-stone-free')){motion.scroll(content,top);if(target)motion.animate(target,[{boxShadow:'inset 3px 0 #a79ab380',backgroundColor:'#a79ab318'},{boxShadow:getComputedStyle(target).boxShadow,backgroundColor:getComputedStyle(target).backgroundColor}],900)}else content.scrollTo({top,behavior:'auto'});
  }
  let seenPassage:Element|null=null;
  let passage:HTMLElement|null=null,passageHost:HTMLElement|null=null,passageApp:App|undefined,passageOwnerExited=false,passageClaimUnavailable=false,disposingPassageMount=false,passageMount:Readonly<MountHandle>|undefined,passageLease:Readonly<Claim>|undefined;
@@ -142,5 +145,5 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
  if(overlayParent)discovery.observe(overlayParent,{childList:true});
  if(passages)discovery.observe(passages,{childList:true});
  root.jQuery?.(document).on(':passageend.dolPanels',schedule);refresh();
- return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts}),getLastFailure:()=>lastFailure,destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);root.jQuery?.(document).off(':passageend.dolPanels',schedule);discovery.disconnect();observer.disconnect();release();releasePassage();overlayLease?.release();overlayLease=undefined;passageLease?.release();passageLease=undefined;document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
+ return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts}),getLastFailure:()=>lastFailure,destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);root.jQuery?.(document).off(':passageend.dolPanels',schedule);discovery.disconnect();observer.disconnect();release();releasePassage();motion.dispose();overlayLease?.release();overlayLease=undefined;passageLease?.release();passageLease=undefined;document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
 }

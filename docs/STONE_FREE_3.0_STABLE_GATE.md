@@ -1,5 +1,7 @@
 # Stone Free 3.0 — Stable Gate
 
+> **当前接续（2026-10-18）：Kraft Work 收尾材料见 [Release Integration & Regression Gate](KRAFT_WORK_3.0_RELEASE_GATE.md)。** 主视觉按负责人决定基本收口；本地最终双包和代表性业务已有新证据，资源增长仍保留 Unknown。Stable / Owner Acceptance Pending，未授权发布。下文 Blocked、Gate Passed 和旧候选均为相应历史轮次的结论。
+
 > 后续玩家实测与负责人视觉决议已将当前 Gate 改为 **Blocked**。下文保留首轮工程验收的历史范围，不能作为当前发布批准。当前整改见 [玩家与视觉专项](STONE_FREE_3.0_PLAYER_FINDINGS.md)。
 
 当前整改候选：`c23b372`，原生退出、Hub/输入与窄详情定向工程合同通过；Visual Gate 和 Owner Acceptance 仍待负责人明确确认。没有推送、合并、创建 Stable Tag 或发布。

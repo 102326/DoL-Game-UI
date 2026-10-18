@@ -3,6 +3,7 @@ import {createApp,reactive,type App} from 'vue';
 import {isMasterEnabled} from '../runtime/master';
 import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 import Navigation from './Navigation.vue';
+import {sourceMotion} from '../ui/source-motion';
 import './style.css';
 const groups=[['base-characteristics','基础属性'],['base-skills','生活技能'],['sex-skills','身体技能'],['sex-diagram','身体技能'],['school-grades','学业'],['prof','武器技能']];
 export function startCharacteristics(root:Window,framework?:{host:Host;owner:Participant}){
@@ -11,17 +12,32 @@ export function startCharacteristics(root:Window,framework?:{host:Host;owner:Par
  try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference remains available. */}
  const state=reactive({sections:[] as Array<{id:string;label:string}>});
  const counts={mounts:0,scans:0};
+ const motion=sourceMotion();
  let failed=false;
  function recover(){failed=true;release();document.dispatchEvent(new Event('dol-ui-characteristics-change'))}
- function release(){const mount=frameworkMount;frameworkMount=undefined;unmountUI(app);app=undefined;if(mount){disposingMount=true;mount.dispose();disposingMount=false}host?.remove();host=null;overlay?.classList.remove('dgc-overlay');content=null}
+ function release(){motion.cancel();content?.scrollTo({top:content.scrollTop,behavior:'instant'});const mount=frameworkMount;frameworkMount=undefined;unmountUI(app);app=undefined;if(mount){disposingMount=true;mount.dispose();disposingMount=false}host?.remove();host=null;overlay?.classList.remove('dgc-overlay');content=null}
  function mountNavigation(parent:HTMLElement){app=createApp(Navigation,{...state,go,fallback:()=>setEnabled(false)});mountUI(app,parent,recover);counts.mounts++}
  function go(id:string){
+  motion.cancel();
+  const group=id?content?.querySelector<HTMLElement>(`#${id}`):null;
   let target=id?content?.querySelector<HTMLElement>(`#${id}`):content;
   // Native group labels sit before the grid; include the label in the jump.
   if(id&&target?.previousElementSibling?.matches('.gold,h1,h2,h3,h4'))target=target.previousElementSibling as HTMLElement;
-  if(!target||!overlay)return;
+  if(!target||!overlay||!content?.contains(target))return false;
   // Scroll only the overlay, never the underlying passage or game sidebar.
-  content!.scrollTo({top:id?content!.scrollTop+target.getBoundingClientRect().top-content!.getBoundingClientRect().top-16:0,behavior:'auto'});
+  const top=id?content!.scrollTop+target.getBoundingClientRect().top-content!.getBoundingClientRect().top-16:0;
+  if(document.documentElement.hasAttribute('data-stone-free')){
+   const origin=host?.querySelector<HTMLElement>(`[data-section="${id}"]`)?.getBoundingClientRect()??host?.getBoundingClientRect();
+   motion.scroll(content!,top,()=>{
+    if(!group?.isConnected||!content?.contains(group))return;
+    const bounds=group.getBoundingClientRect(),viewport=content.getBoundingClientRect();
+    const rect=new DOMRect(bounds.left,Math.max(bounds.top,viewport.top),bounds.width,Math.min(bounds.bottom,viewport.bottom)-Math.max(bounds.top,viewport.top));
+    if(origin)motion.relay(origin,rect);
+    // Only reviewed stat cards without interactive descendants receive depth motion.
+    [...group.querySelectorAll<HTMLElement>(':scope>.characteristic-box')].filter(n=>!n.querySelector('a,button,input,select,textarea,[tabindex]')).slice(0,12).forEach((n,i)=>motion.animate(n,[{transform:'perspective(900px) translateY(38px) rotateX(-12deg) scale(.94)',opacity:.45},{transform:'perspective(900px) translateY(-4px) rotateX(0) scale(1)',opacity:1,offset:.72},{transform:'none',opacity:1}],620+i*24));
+   });
+  }else content!.scrollTo({top,behavior:'auto'});
+  return true;
  }
  function refresh(){isolate('characteristics',update,recover)}
  function update(){
@@ -56,5 +72,5 @@ export function startCharacteristics(root:Window,framework?:{host:Host;owner:Par
  const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay)schedule()});
  function setEnabled(value:boolean){if(destroyed)return;failed=false;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* No gameplay write required. */}refresh();document.dispatchEvent(new Event('dol-ui-characteristics-change'))}
  discovery.observe(document.body,{childList:true,subtree:true});refresh();
- return {getEnabled:()=>enabled&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);discovery.disconnect();overlayObserver.disconnect();release();ownerLease?.release();ownerLease=undefined;overlay=null}};
+ return {getEnabled:()=>enabled&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);discovery.disconnect();overlayObserver.disconnect();release();motion.dispose();ownerLease?.release();ownerLease=undefined;overlay=null}};
 }

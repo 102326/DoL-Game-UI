@@ -4,12 +4,14 @@ import type {WardrobeModel} from './types';
 import ClothingIcon from './ClothingIcon.vue';
 import ClothingTraits from './ClothingTraits.vue';
 import GameButton from '../ui/GameButton.vue';
+import OrbitFocus from '../ui/OrbitFocus.vue';
 import {experiments} from '../runtime/experiments';
 import ReferenceDock from './ReferenceDock.vue';
 import type {ReferenceContext} from './reference';
 import './reference.css';
+import {sourceMotion} from '../ui/source-motion';
 const props=defineProps<{model:WardrobeModel;reference?:ReferenceContext;resolveIcon:(src:string)=>Promise<string>;onSplit:(keys:string[])=>void;onSlot:(key:string)=>void;onRepair:(keys:string[])=>void;onTransfer:(keys:string[],target:string)=>void;onTowel:(kind:'towel'|'large_towel')=>void;onSearch:(acrossSlots:boolean)=>void;onWear:(key:string)=>void;onNative:(open:boolean)=>void;onReview:(keys:string[])=>void;onConfirm:()=>void;onCancel:()=>void;onStrip:()=>void}>();
-const view=computed(()=>props.model);
+const view=computed(()=>props.model),officialMotion=document.documentElement.hasAttribute('data-stone-free');
 const referenceDock=ref<InstanceType<typeof ReferenceDock>>();
 const preview=ref<HTMLElement>(),native=ref<HTMLElement>(),actions=ref<HTMLElement>(),warmth=ref<HTMLElement>(),equipment=ref<HTMLElement>(),services=ref<HTMLElement>(),confirmationTitle=ref<HTMLElement>();
 const exits=ref<HTMLElement>();
@@ -21,13 +23,17 @@ function resizePreview(){
  const nextNarrow=root.clientWidth<=700;
  if(nextNarrow!==lastNarrow){lastNarrow=nextNarrow;previewOpen.value=!nextNarrow;quickOpen.value=!nextNarrow}
 }
-function schedulePreviewResize(){cancelAnimationFrame(previewFrame);previewFrame=requestAnimationFrame(resizePreview)}
+function schedulePreviewResize(){pulse.value.key='';cancelAnimationFrame(previewFrame);previewFrame=requestAnimationFrame(resizePreview)}
 onMounted(()=>{resizePreview();const root=shell.value?.closest<HTMLElement>('.dgw-root');if(root&&typeof ResizeObserver!=='undefined'){previewResize=new ResizeObserver(schedulePreviewResize);previewResize.observe(root)}else window.addEventListener('resize',schedulePreviewResize)});
 onBeforeUnmount(()=>{previewResize?.disconnect();cancelAnimationFrame(previewFrame);window.removeEventListener('resize',schedulePreviewResize)});
 function capacityWarning(count:number,capacity:number|null){return capacity!==null&&capacity>=0&&(capacity===0||count>=capacity)?'full':capacity!==null&&capacity>0&&count/capacity>=.9?'near':''}
 const destination=ref('');
 const query=ref(''),sort=ref('name'),descending=ref(false),zoom=ref(false);
 const page=ref(0),itemsList=ref<HTMLElement>();
+const motion=sourceMotion();
+watch(()=>props.model.slot,()=>{if(document.documentElement.hasAttribute('data-stone-free')){if(itemsList.value)motion.animate(itemsList.value,[{opacity:.65,backgroundColor:'#8baea312'},{opacity:1,backgroundColor:'transparent'}],480);const label=shell.value?.querySelector<HTMLElement>('.dgw-count');if(label)motion.animate(label,[{transform:'translateY(12px)',opacity:.4},{transform:'none',opacity:1}],520)}},{flush:'post'});
+
+onBeforeUnmount(()=>motion.dispose());
 const pageSize=40;
 const manageMode=ref(false),checked=ref<string[]>([]);
 watch(()=>!!query.value.trim()&&!manageMode.value,acrossSlots=>props.onSearch(acrossSlots),{flush:'sync'});
@@ -46,12 +52,14 @@ const allVisibleSelected=computed(()=>items.value.length>0&&items.value.every(it
 function slot(key:string){if(busy.value)return;query.value='';checked.value=[];props.onSlot(key)}
 function clampPage(){page.value=Math.min(page.value,Math.max(0,pageCount.value-1))}
 async function goToPage(next:number){if(busy.value||!paging.value)return;page.value=Math.max(0,Math.min(next,pageCount.value-1));await nextTick();itemsList.value?.scrollTo({top:0})}
-function toggleItem(key:string){if(busy.value)return;if(!manageMode.value){props.onWear(key);return}props.onCancel();checked.value=checked.value.includes(key)?checked.value.filter(item=>item!==key):[...checked.value,key]}
+const pulse=ref({key:'',revision:0,x:'50%',y:'50%',size:'900px'});
+function toggleItem(key:string,event:MouseEvent){if(busy.value)return;if(!manageMode.value){const n=event.currentTarget as HTMLElement,r=n.getBoundingClientRect();if(document.documentElement.hasAttribute('data-stone-free'))pulse.value={key,revision:pulse.value.revision+1,x:(event.detail?100*(event.clientX-r.left)/r.width:50)+'%',y:(event.detail?100*(event.clientY-r.top)/r.height:50)+'%',size:Math.hypot(r.width,r.height)*2+'px'};props.onWear(key);return}props.onCancel();checked.value=checked.value.includes(key)?checked.value.filter(item=>item!==key):[...checked.value,key]}
 function toggleManage(){if(busy.value)return;props.onCancel();query.value='';manageMode.value=!manageMode.value;if(!manageMode.value)checked.value=[]}
 function selectVisible(){if(busy.value)return;props.onCancel();const visible=items.value.map(item=>item.key);checked.value=allVisibleSelected.value?checked.value.filter(key=>!visible.includes(key)):[...new Set([...checked.value,...visible])]}
 function review(){if(!checked.value.length||busy.value)return;props.onReview([...checked.value])}
 watch(()=>[manageMode.value,props.model.slot],([mode,slotNow],[oldMode,oldSlot])=>{if(mode!==oldMode||slotNow!==oldSlot)checked.value=[]});
-watch(()=>props.model.items,()=>{checked.value=[];if(!busy.value)props.onCancel()});
+watch(()=>props.model.items,()=>{checked.value=[];if(!props.model.items.some(i=>i.key===pulse.value.key))pulse.value.key='';if(!busy.value)props.onCancel()});
+watch([query,sort,descending,manageMode,page,()=>props.model.slot],()=>{pulse.value.key=''});
 watch([query,sort,descending,()=>props.model.slot],()=>{page.value=0});
 watch(()=>props.model.items,clampPage);
 watch(()=>props.model.items.length,clampPage);
@@ -63,11 +71,11 @@ defineExpose({exits,preview,native,actions,warmth,equipment,services});
 </script>
 <template>
  <section ref="shell" class="dgw-shell dgw-candidate" :class="{'dgw-managing':manageMode,'dgw-complex':complexContent}" aria-label="穿搭衣柜">
-  <header class="dgw-header"><div><small v-if="reference" class="sf-eyebrow">WARDROBE</small><h2>衣柜</h2><p>{{reference?'挑选穿搭，留一件作参照。点选衣物仍直接穿戴。':'快速穿戴：点选即换装，预览为当前实际穿搭'}}</p></div><div class="dgw-header-actions"><div ref="exits" class="dgw-exits"></div><GameButton :disabled="busy" @click="toggleManage">{{manageMode?'退出整理':'整理模式'}}</GameButton></div></header>
+  <header class="dgw-header"><div><small v-if="reference" class="sf-eyebrow">WARDROBE</small><h2>衣柜</h2><p>{{reference?'挑选穿搭，留一件作参照。点选衣物仍直接穿戴。':'快速穿戴：点选即换装，预览为当前实际穿搭'}}</p></div><div class="dgw-header-actions"><div ref="exits" class="dgw-exits"></div><GameButton data-kw-nav-control="action" :disabled="busy" @click="toggleManage">{{manageMode?'退出整理':'整理模式'}}</GameButton></div></header>
   <details class="dgw-quick" :open="quickOpen" @toggle="quickOpen=($event.target as HTMLDetailsElement).open"><summary>常用操作与套装</summary><div ref="actions" class="dgw-actions"></div></details>
   <div ref="services" class="dgw-services" :inert="busy"></div>
   <section class="dgw-original-access"><GameButton class="dgw-open-original" :disabled="busy" :aria-expanded="model.nativeVisible" @click="onNative(!model.nativeVisible)">{{model.nativeVisible?'收起原版及扩展信息':'查看原版及扩展信息'}}</GameButton><p v-if="model.unknownSlots.length">未接管分类：{{model.unknownSlots.join('、')}}。请打开原版信息查看与操作。</p><div ref="native" class="dgw-native" :hidden="!model.nativeVisible" :aria-hidden="!model.nativeVisible"></div></section>
-  <nav class="dgw-slots" aria-label="服装分类"><GameButton v-for="s in model.slots" :key="s.key" :data-slot="s.key" :disabled="busy" :aria-pressed="s.key===model.slot" @click="slot(s.key)">{{s.label}} <span v-if="capacityWarning(s.count,s.capacity)" class="dgw-capacity-alert" :class="capacityWarning(s.count,s.capacity)" :aria-label="capacityWarning(s.count,s.capacity)==='full'?'容量已满':'容量即将用尽'" :title="`${s.count} / ${s.capacity}`">!</span></GameButton></nav>
+  <nav class="dgw-slots dgu-orbit-nav" aria-label="服装分类"><OrbitFocus v-if="officialMotion" :active="model.slot" selector="[aria-pressed=true]"/><GameButton v-for="s in model.slots" :key="s.key" :data-slot="s.key" :disabled="busy" :aria-pressed="s.key===model.slot" @click="slot(s.key)">{{s.label}} <span v-if="capacityWarning(s.count,s.capacity)" class="dgw-capacity-alert" :class="capacityWarning(s.count,s.capacity)" :aria-label="capacityWarning(s.count,s.capacity)==='full'?'容量已满':'容量即将用尽'" :title="`${s.count} / ${s.capacity}`">!</span></GameButton></nav>
   <div class="dgw-mobile-category"><select class="dgw-slot-select" aria-label="服装分类" :value="model.slot" :disabled="busy" @change="slot(($event.target as HTMLSelectElement).value)"><option v-for="s in model.slots" :key="s.key" :value="s.key">{{s.label}}{{capacityWarning(s.count,s.capacity)?' · 容量提醒':''}}</option></select></div>
   <p v-if="model.categoryNote" class="dgw-category-note">{{model.categoryNote}}</p>
   <div class="dgw-workspace">
@@ -77,7 +85,7 @@ defineExpose({exits,preview,native,actions,warmth,equipment,services});
     <GameButton class="dgw-strip" :disabled="busy||manageMode" @click="onStrip">脱下当前部位</GameButton>
     <div ref="equipment" class="dgw-equipment" :inert="busy"></div><div class="dgw-towels"><GameButton v-if="model.slot==='upper'" :disabled="busy||manageMode" @click="onTowel('large_towel')">裹上大浴巾</GameButton><GameButton v-if="['upper','lower'].includes(model.slot)" :disabled="busy||manageMode" @click="onTowel('towel')">裹上毛巾</GameButton></div><p class="dgw-message dgw-operation-status" role="status">{{model.message}}</p><p class="dgw-count"><strong>{{model.searchAll?'当前分类 ':''}}{{model.owned}} / {{model.capacity ?? '—'}}</strong> 件<span v-if="query"> · {{model.searchAll?'跨分类搜索':'筛选结果'}} {{items.length}} 件</span> · {{manageMode?'选择要整理的衣物':'点选即穿上'}}</p>
     <div v-if="manageMode" class="dgw-select-tools"><GameButton :disabled="busy||!items.length" @click="selectVisible">{{allVisibleSelected?'清除当前筛选':'全选当前筛选'}}</GameButton><GameButton :disabled="busy||!checked.length" @click="clearSelection">清除选择</GameButton></div>
-    <div ref="itemsList" class="dgw-items" aria-label="衣物列表"><div v-for="item in displayedItems" :key="item.key" class="dgw-item-row" :data-reference-current="item.key===referenceDock?.currentKey||undefined"><GameButton class="dgw-item" :data-key="item.key" :disabled="busy" :aria-pressed="manageMode&&checked.includes(item.key)" @click="toggleItem(item.key)"><span class="dgw-item-main"><ClothingIcon :layers="item.icons" :resolve="resolveIcon"/><span v-if="manageMode" class="dgw-check" aria-hidden="true">{{checked.includes(item.key)?'✓':''}}</span><span><strong>{{item.name}}</strong><small>{{item.colour || '原色'}}<template v-if="model.searchAll"> · {{item.slotLabel}}</template></small><ClothingTraits :traits="item.traits"/></span></span><span class="dgw-metrics"><small>{{item.outfit}} · 暴露 {{item.lewd ?? '—'}}</small><small>保暖 {{item.warmth ?? '—'}}</small><small>耐久 {{item.durability===null?'—':item.durability+'%'}}</small></span></GameButton><button v-if="reference&&!manageMode" type="button" class="dgw-reference-action" :data-reference-key="item.key" :disabled="busy" :aria-label="`${referenceDock?.hasReference?'对照':'固定参照'} ${item.name}`" @click="referenceDock?.choose(item.key,$event.currentTarget as HTMLElement)">{{referenceDock?.hasReference?'对照':'参照'}}</button></div><p v-if="!items.length" class="dgw-empty">{{query ? '没有符合条件的衣物' : model.owned ? '该分类的关联部件随套装主件显示，可查看原版信息。' : '这个分类还没有衣物'}}</p></div>
+    <div ref="itemsList" class="dgw-items" aria-label="衣物列表"><div v-for="item in displayedItems" :key="item.key" class="dgw-item-row" :data-reference-current="item.key===referenceDock?.currentKey||undefined"><GameButton class="dgw-item" :data-key="item.key" :data-motion-active="pulse.key===item.key||undefined" :disabled="busy" :aria-pressed="manageMode&&checked.includes(item.key)" @click="toggleItem(item.key,$event)"><span v-if="pulse.key===item.key" :key="pulse.revision" class="kw-shop-ripple kw-wardrobe-ripple is-activated" aria-hidden="true" :style="{'--kw-ripple-x':pulse.x,'--kw-ripple-y':pulse.y,'--kw-ripple-size':pulse.size}"><span class="kw-shop-stream"/><span class="kw-shop-ring"/><span class="kw-shop-ring"/></span><span class="dgw-item-main"><ClothingIcon :layers="item.icons" :resolve="resolveIcon"/><span v-if="manageMode" class="dgw-check" aria-hidden="true">{{checked.includes(item.key)?'✓':''}}</span><span><strong>{{item.name}}</strong><small>{{item.colour || '原色'}}<template v-if="model.searchAll"> · {{item.slotLabel}}</template></small><ClothingTraits :traits="item.traits"/></span></span><span class="dgw-metrics"><small>{{item.outfit}} · 暴露 {{item.lewd ?? '—'}}</small><small>保暖 {{item.warmth ?? '—'}}</small><small>耐久 {{item.durability===null?'—':item.durability+'%'}}</small></span></GameButton><button v-if="reference&&!manageMode" type="button" class="dgw-reference-action" :data-reference-key="item.key" :disabled="busy" :aria-label="`${referenceDock?.hasReference?'对照':'固定参照'} ${item.name}`" @click="referenceDock?.choose(item.key,$event.currentTarget as HTMLElement)">{{referenceDock?.hasReference?'对照':'参照'}}</button></div><p v-if="!items.length" class="dgw-empty">{{query ? '没有符合条件的衣物' : model.owned ? '该分类的关联部件随套装主件显示，可查看原版信息。' : '这个分类还没有衣物'}}</p></div>
     <nav v-if="paging&&items.length" class="dgw-pagination" aria-label="衣物分页"><GameButton :disabled="busy||page===0" aria-label="上一页" @click="goToPage(page-1)">上一页</GameButton><span aria-live="polite">第 {{page+1}} / {{pageCount}} 页</span><GameButton :disabled="busy||page>=pageCount-1" aria-label="下一页" @click="goToPage(page+1)">下一页</GameButton><small>分页仅影响显示；全选当前筛选会选择全部结果。</small></nav>
 
    </div>

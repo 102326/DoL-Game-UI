@@ -1,0 +1,80 @@
+@property --kw-heading-wave{syntax:"<number>";inherits:true;initial-value:-1}
+@property --kw-heading-wave-opacity{syntax:"<number>";inherits:true;initial-value:0}
+@property --kw-navigation-sheen{syntax:"<number>";inherits:false;initial-value:.025}
+/* Settings' material language, limited to reviewed navigation and original controls. */
+html[data-stone-free][data-dol-midnight] :is([data-kw-nav-control],.dgw-exits a.link-internal){position:relative;box-sizing:border-box;min-height:44px;padding:9px 12px;border:1px solid transparent!important;border-radius:11px!important;background:transparent!important;color:var(--sf-muted,#aaa9ad);box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;line-height:1.45;text-decoration:none}
+html[data-stone-free][data-dol-midnight] :is([data-kw-nav-control],.dgw-exits a.link-internal):is([aria-pressed=true],[aria-current=page],[data-kw-selected=true],.tab-selected){color:var(--sf-ink,#e6e6e8);background:linear-gradient(125deg,rgba(139,174,163,var(--kw-navigation-sheen)),transparent 65%),rgba(12,14,15,.2)!important;border-color:#8baea32b!important;box-shadow:inset 0 1px #ffffff06!important}
+html[data-stone-free][data-dol-midnight] :is([data-kw-nav-control],.dgw-exits a.link-internal):not(:disabled):is(:hover,:focus-visible){color:var(--sf-ink,#e6e6e8);background:linear-gradient(125deg,#8baea310,transparent 75%),#17191b20!important;border-color:#8baea338!important}
+html[data-stone-free][data-dol-midnight] :is([data-kw-nav-control],.dgw-exits a.link-internal):focus-visible{outline:1px solid #9bb9ae99!important;outline-offset:3px}
+html[data-stone-free][data-dol-midnight] :is([data-kw-nav-control],.dgw-exits a.link-internal):not(:disabled):is(:active,[data-kw-press]){background:linear-gradient(125deg,#8baea31b,transparent 80%),#11131542!important;box-shadow:inset 0 0 0 1px #a8c0b633!important}
+html[data-stone-free][data-dol-midnight] select:is([data-kw-nav-control],.dgw-exits a.link-internal){color:var(--sf-ink);max-width:100%;cursor:pointer}
+html[data-stone-free] :is([data-kw-nav-control],.dgw-exits a.link-internal) option{color:#e6e6e8;background:#232529}
+html[data-stone-free] #overlayTabs.kw-heading-nav{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+html[data-stone-free] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]{min-width:112px;padding:11px 22px;font-weight:500}
+html[data-stone-free][data-dol-midnight] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]{overflow:hidden;background:transparent!important;border-color:transparent!important;animation:none}
+html[data-stone-free] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]::after{content:'';position:absolute;inset:0;pointer-events:none;background:center/160% 100% no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 70'%3E%3Cpath d='M-40 39 Q0 4 40 35 T120 35 T200 35 T280 35' fill='none' stroke='%239bb9ae' stroke-width='2' opacity='.5'/%3E%3Cpath d='M-40 45 Q0 13 40 42 T120 42 T200 42 T280 42' fill='none' stroke='%23a89bb5' stroke-width='1' opacity='.35'/%3E%3C/svg%3E");opacity:var(--kw-heading-wave-opacity);transform:translateX(calc(var(--kw-heading-wave)*100%))}
+html[data-stone-free] #ui-bar :is(#overlayButtons,#startCaption).dgu-orbit-nav{position:relative}
+html[data-stone-free] #ui-bar [data-kw-nav-control=entry]{width:100%;text-align:left;color:var(--sf-muted);border-radius:11px!important;padding-inline:18px}
+html[data-stone-free] #ui-bar [data-kw-nav-control=entry]::before{content:none}
+.kw-native-orbit{display:contents;pointer-events:none!important}
+html[data-stone-free][data-dgu-visualMotion] :is([data-kw-nav-control],.dgw-exits a.link-internal){transition:background-color 240ms,border-color 260ms,box-shadow 300ms,color 240ms}
+html[data-stone-free][data-dgu-visualMotion][data-dgu-visualGlow] :is([data-kw-nav-control],.dgw-exits a.link-internal):not([data-kw-nav-control=tab]):is([aria-pressed=true],[aria-current=page],[data-kw-selected=true],.tab-selected){animation:kw-navigation-material 5.8s ease-in-out infinite alternate}
+@keyframes kw-navigation-material{from{--kw-navigation-sheen:.025}to{--kw-navigation-sheen:.085}}
+html[data-stone-free]:not([data-dgu-visualMotion]) :is([data-kw-nav-control],.dgw-exits a.link-internal){transition:none;animation:none}
+html[data-stone-free]:not([data-dgu-visualMotion]) :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]::after{opacity:0;transition:none;transform:none}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] :is([data-kw-nav-control],.dgw-exits a.link-internal),html[data-stone-free] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]::after{transition:none!important;animation:none!important;transform:none}html[data-stone-free] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]::after{opacity:0}}
+@media(max-width:600px){html[data-stone-free] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]{min-width:88px;padding:9px 16px}}
+
+html[data-stone-free][data-dol-midnight] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab].tab-selected{background:linear-gradient(125deg,#a8c0b612,transparent 75%),#10121440!important;border-color:#a8c0b624!important;box-shadow:none!important}
+/* Foreground weather fades into the window; it never filters the shell or receives input. */
+.kw-heading-weather{display:none;position:absolute;inset:0;overflow:hidden;pointer-events:none!important;z-index:1;opacity:.85;border-radius:inherit;mask-image:linear-gradient(#000 0%,#000e 18%,#0007 43%,#0002 65%,transparent 82%)}
+html[data-stone-free][data-dol-midnight] .kw-heading-weather:not([data-weather=unknown]){display:block}
+.kw-heading-weather::before,.kw-heading-weather::after{content:'';position:absolute;inset:0 -5%;pointer-events:none}
+.kw-heading-weather,.kw-heading-weather::before,.kw-heading-weather::after,.kw-heading-weather *,.kw-heading-weather *::before,.kw-heading-weather *::after{pointer-events:none!important;animation-play-state:paused!important}
+/* A localized warm reflection moves across clear glass, with open dark space around it. */
+.kw-heading-weather[data-weather=clear]::before{background:radial-gradient(ellipse 24% 30% at 24% 18%,#dbc28a66,#d9bd7714 55%,transparent 85%),linear-gradient(116deg,transparent 28%,#e2d4ae12 34%,transparent 42%);animation:kw-weather-sun 22s ease-in-out infinite alternate}
+.kw-heading-weather[data-weather=clear]::after{background:radial-gradient(ellipse 45% 30% at 65% 28%,#070b0f29,transparent 80%);animation:kw-weather-cloud-shadow 27s ease-in-out infinite alternate}
+.kw-heading-weather[data-weather=clear][data-night]::before{background:radial-gradient(ellipse 28% 32% at 68% 15%,#aabfd334,transparent 85%)}
+.kw-heading-weather[data-weather=cloud]::before{background:radial-gradient(ellipse 42% 33% at 20% 18%,#030812ad,transparent 85%),radial-gradient(ellipse 48% 28% at 78% 37%,#080e1b99,transparent 85%);animation:kw-weather-cloud-shadow 18s ease-in-out infinite alternate}
+.kw-heading-weather[data-weather=cloud]::after{background:radial-gradient(ellipse 44% 26% at 60% 9%,#a9b9c34d,transparent 80%);animation:kw-weather-cloud-shadow 26s ease-in-out infinite alternate-reverse}
+.kw-heading-weather:is([data-weather=rain],[data-weather=storm]){--kw-drop-scale:1;--kw-drop-rate:1;--kw-shower-time:1.35s;--kw-shower-width:560px;--kw-shower-height:320px;background-image:url('./kw-weather-shower.svg'),radial-gradient(ellipse at 65% 8%,#abc3d51a,transparent 65%);background-size:var(--kw-shower-width) var(--kw-shower-height),100% 100%;animation:kw-weather-shower calc(var(--kw-shower-time)*3/1.4) linear infinite}
+.kw-heading-weather:is([data-weather=rain],[data-weather=storm])[data-rain=heavy]{--kw-drop-scale:1.25;--kw-drop-rate:.75;--kw-shower-time:.9s;--kw-shower-width:700px;--kw-shower-height:400px}
+.kw-heading-weather:is([data-weather=rain],[data-weather=storm])[data-rain=severe]{--kw-drop-scale:1.5;--kw-drop-rate:.5;--kw-shower-time:.55s;--kw-shower-width:560px;--kw-shower-height:320px}
+.kw-heading-weather:is([data-weather=rain],[data-weather=storm])::after{background:0 0/530px 370px repeat url('./kw-weather-condensation.svg');opacity:.5;animation:kw-weather-condensation 14s ease-in-out infinite alternate}
+.kw-glass-drop{display:none;position:absolute;left:var(--kw-x);top:var(--kw-y);width:calc(var(--kw-size)*var(--kw-drop-scale));height:calc(var(--kw-size)*var(--kw-drop-scale)*1.6);border-radius:46% 48% 43% 45%;box-sizing:border-box;background:radial-gradient(ellipse at 25% 24%,#e0eef0a0,transparent 32%),radial-gradient(ellipse at 66% 70%,#b2ced333,transparent 65%),#0c182547;border-left:1px solid #d6e3e688;border-right:1px solid #10181d4d;border-bottom:1px solid #dce5e56b;box-shadow:0 1px 2px #080f1533;animation:kw-weather-drop calc(var(--kw-duration)*var(--kw-drop-rate)/1.4) cubic-bezier(.36,0,.72,1) calc(var(--kw-delay)*var(--kw-drop-rate)/1.4) infinite}
+.kw-heading-weather:is([data-weather=rain],[data-weather=storm])>.kw-glass-drop{display:block}
+.kw-heading-weather[data-rain=light]>.kw-glass-drop:nth-of-type(n+11),.kw-heading-weather[data-rain=heavy]>.kw-glass-drop:nth-of-type(n+15){display:none}
+.kw-glass-drop::after{content:'';position:absolute;bottom:75%;left:46%;width:1px;height:var(--kw-trail);transform-origin:bottom;background:linear-gradient(transparent,#bfd6dc12 70%,#bfd6dc32);opacity:0;animation:kw-weather-trace calc(var(--kw-duration)*var(--kw-drop-rate)/1.4) linear calc(var(--kw-delay)*var(--kw-drop-rate)/1.4) infinite}
+.kw-heading-weather[data-weather=storm]::before{background:radial-gradient(ellipse 50% 38% at 22% 12%,#02071299,transparent 85%),radial-gradient(ellipse 48% 30% at 85% 35%,#070c1966,transparent 85%);animation:kw-weather-cloud-shadow 13s ease-in-out infinite alternate}
+.kw-weather-lightning{display:none;position:absolute;inset:0;pointer-events:none!important}
+.kw-heading-weather[data-weather=storm]>.kw-weather-lightning{display:block}
+/* A strike lights nearby glass and its edges, rather than drawing a bolt over the text. */
+.kw-weather-lightning::before,.kw-weather-lightning::after{content:'';position:absolute;inset:0;opacity:0;animation:kw-weather-lightning 14.6s linear infinite}
+.kw-weather-lightning::before{background:radial-gradient(ellipse 42% 36% at 72% 12%,#d7ebfc99,#b9d4e229 48%,transparent 85%),radial-gradient(ellipse 24% 42% at 98% 40%,#cbdfe94d,transparent 90%)}
+.kw-weather-lightning::after{inset:1px;border-radius:inherit;border-top:1px solid #d7e9f2aa;border-right:1px solid #c9e2ed88;box-shadow:inset 0 12px 25px #d6e8f21c,inset -14px 0 30px #c4deec1c}
+.kw-heading-weather[data-weather=snow]{background:radial-gradient(ellipse at 68% 0,#b7ccdf25,transparent 65%)}
+.kw-heading-weather[data-weather=snow]::before{background:0 0/680px 380px repeat url('./kw-weather-snow-near.svg');--kw-rain-distance:380px;opacity:.9;animation:kw-weather-snow 11s linear infinite}
+.kw-heading-weather[data-weather=snow]::after{background:0 0/900px 520px repeat url('./kw-weather-snow-far.svg');--kw-rain-distance:520px;opacity:.6;animation:kw-weather-snow 21s linear infinite}
+.kw-heading-weather[data-weather=fog]::before{inset:8% -12% 25%;background:0 0/100% 100% no-repeat url('./kw-weather-mist.svg');opacity:.85;animation:kw-weather-fog 24s ease-in-out infinite alternate}
+.kw-heading-weather[data-weather=fog]::after{inset:22% -18% 6%;background:0 0/100% 100% no-repeat url('./kw-weather-mist.svg');opacity:.6;animation:kw-weather-fog 33s ease-in-out infinite alternate-reverse}
+@keyframes kw-weather-shower{to{background-position:var(--kw-shower-width) calc(var(--kw-shower-height)*3),0 0}}
+@keyframes kw-weather-drop{0%{opacity:0;transform:translateY(0) scale(.4)}14%{opacity:.6;transform:translateY(0) scale(.7)}48%{opacity:.8;transform:translateY(0) scale(1)}58%{opacity:.9;transform:translateY(0) scale(1.12)}72%{opacity:.8;transform:translateY(calc(var(--kw-travel)*.18)) scale(.95,1.08)}91%{opacity:.45;transform:translateY(var(--kw-travel)) scale(.8,1.12)}100%{opacity:0;transform:translateY(var(--kw-travel)) scale(.7,1)}}
+@keyframes kw-weather-trace{0%,58%,100%{opacity:0;transform:scaleY(0)}72%{opacity:.45;transform:scaleY(.7)}85%{opacity:.3;transform:scaleY(1)}95%{opacity:0;transform:scaleY(1)}}
+@keyframes kw-weather-condensation{from{opacity:.3}to{opacity:.65}}
+@keyframes kw-weather-sun{from{transform:translateX(-9%);opacity:.65}to{transform:translateX(23%);opacity:1}}
+@keyframes kw-weather-cloud-shadow{from{transform:translate(-10%,-2%) scale(1.1);opacity:.65}to{transform:translate(12%,4%) scale(1.04);opacity:1}}
+@keyframes kw-weather-snow{to{background-position:24px var(--kw-rain-distance)}}
+@keyframes kw-weather-fog{from{transform:translateX(-5%) scale(.95);opacity:.5}to{transform:translateX(8%) scale(1.08);opacity:.9}}
+@keyframes kw-weather-lightning{0%,33%,39%,100%{opacity:0}33.4%{opacity:.9}34.8%{opacity:.07}35.6%{opacity:.58}38%{opacity:0}}
+html[data-stone-free][data-dgu-visualMotion] :is(.kw-heading-weather,.kw-heading-weather *),html[data-stone-free][data-dgu-visualMotion] :is(.kw-heading-weather,.kw-heading-weather *)::before,html[data-stone-free][data-dgu-visualMotion] :is(.kw-heading-weather,.kw-heading-weather *)::after{animation-play-state:running!important}
+html[data-stone-free]:not([data-dgu-visualGlow]) .kw-heading-weather{opacity:.45}
+@media(prefers-reduced-motion:reduce){html[data-stone-free][data-dgu-visualMotion] :is(.kw-heading-weather,.kw-heading-weather *),html[data-stone-free][data-dgu-visualMotion] :is(.kw-heading-weather,.kw-heading-weather *)::before,html[data-stone-free][data-dgu-visualMotion] :is(.kw-heading-weather,.kw-heading-weather *)::after{animation-play-state:paused!important}}
+
+html[data-stone-free] .dgw-exits a.link-internal{display:inline-flex;align-items:center;min-height:44px}
+
+html[data-stone-free] .dgw-header-actions{align-items:center}
+html[data-stone-free] :is(.dgw-exits,.dgw-exits>#wardrobeExits){display:flex;align-items:center;gap:6px;line-height:1.45}
+html[data-stone-free] .dgw-exits>#wardrobeExits>br{display:none}
+html[data-stone-free] :is(.dgw-header-actions>button,.dgw-exits a.link-internal){font:inherit;font-weight:500;line-height:1.45;padding:9px 12px;min-height:44px;margin:0}
+
+html[data-stone-free][data-dgu-visualMotion] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]{transition:background-color 240ms,color 240ms}

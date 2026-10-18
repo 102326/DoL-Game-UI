@@ -15,9 +15,14 @@ const code=buildSync({entryPoints:['src/shop/source.ts'],bundle:true,format:'iif
   const wrapperSource=ShopSourceTest.createShopSource(shop,()=>true,()=>({variables,definition}));wrapperSource.read();const wrapperValid=wrapperSource.guard(wrapper),wrapperReplay=wrapperSource.guard(wrapped);wrapperSource.destroy();
   const panel=document.querySelector('.clothing-details');panel.innerHTML='<div class="dgshop-detail-body"></div><div class="dgshop-purchase"><button>Unknown Mod operation</button></div>';
   const fallback=ShopSourceTest.createShopSource(shop,()=>true,()=>({variables,definition}));const footerOnly=fallback.read().hasDetails;fallback.destroy();
-  return {projection:first.items,selected:projection.selected,staleMoney,stillStale,valid,replay,changedDefinition,stalePage,unknown,disposed,footerOnly,wrapperValid,wrapperReplay};
+  const coat=shop.querySelector('.clothing-item'),second=coat.cloneNode(true);second.querySelector('a').textContent='Dress';coat.after(second);let extraClicks=0;second.querySelector('a').onclick=()=>extraClicks++;
+  const nativeDefinition={cn_name_cap:'Coat'};const outcome=ShopSourceTest.createShopSource(shop,()=>true,()=>({variables,definition:nativeDefinition}));
+  const attempted=outcome.select(second);outcome.reconcileSelection();const reconciled=outcome.read().selected?.title,changedDisplay=outcome.selectionDisplay()!==attempted;
+  const duplicate=coat.cloneNode(true);second.after(duplicate);outcome.select(second);outcome.reconcileSelection();const ambiguous=outcome.read().selected??null;outcome.destroy();
+  return {reconciled,changedDisplay,ambiguous,extraClicks,projection:first.items,selected:projection.selected,staleMoney,stillStale,valid,replay,changedDefinition,stalePage,unknown,disposed,footerOnly,wrapperValid,wrapperReplay};
  });
+ assert.equal(result.reconciled,'Coat');assert.equal(result.changedDisplay,true);assert.equal(result.ambiguous,null);assert.equal(result.extraClicks,0,'presentation reconciliation never replays an unbound native click');
  assert.deepEqual(result.projection,[{key:'shop:1',title:'Coat',price:'£15',owned:'Coat'}]);assert.equal(result.selected.key,'shop:1');
  for(const k of ['staleMoney','stillStale','replay','changedDefinition','stalePage','disposed'])assert.equal(result[k],'stale',k);
- assert.equal(result.wrapperValid,'valid');assert.equal(result.wrapperReplay,'stale');assert.equal(result.valid,'valid');assert.equal(result.unknown,'native');assert.equal(result.footerOnly,true);console.log('PASS source display projection, stale quote/definition/page, no rebind/replay, unknown native control and footer');
+ assert.equal(result.wrapperValid,'valid');assert.equal(result.wrapperReplay,'stale');assert.equal(result.valid,'valid');assert.equal(result.unknown,'native');assert.equal(result.footerOnly,true);console.log('PASS source display projection, stale quote/definition/page, no rebind/replay, unknown native control/footer, rapid unbound selection reconciled to actual definition without replay and ambiguity exits');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

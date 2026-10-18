@@ -1,9 +1,29 @@
 import type {WardrobeDataHost,Inventory} from './host';
 import type {Snapshot} from './data';
 import {descriptor} from './data';
+import {createSurfaces} from '../runtime/surfaces';
+import {isMasterEnabled} from '../runtime/master';
 /** Small native widgets keep their rule handlers; the inventory remains Vue-owned. */
 export function createWardrobeExtras(root:WardrobeDataHost){
  const signatures=new WeakMap<HTMLElement,string>();
+ const surfaces=createSurfaces(window,isMasterEnabled);
+ type Detail={details:HTMLDetailsElement;summary:HTMLElement;content:HTMLElement;nodes:Node[];wasOpen:boolean;handle?:NonNullable<ReturnType<typeof surfaces.openDrawer>>};
+ let detail:Detail|undefined;
+ function restore(current:Detail){
+  current.details.append(...current.nodes);current.details.open=current.wasOpen;
+  if(detail===current)detail=undefined;
+  if(current.summary.isConnected)current.summary.focus({preventScroll:true});
+ }
+ function closeDetails(){detail?.handle?.close()}
+ function openDetails(details:HTMLDetailsElement,summary:HTMLElement){
+  if(!surfaces.available())return false;
+  closeDetails();
+  const current:Detail={details,summary,content:document.createElement('div'),nodes:[...details.childNodes].filter(node=>node!==summary),wasOpen:details.open};
+  detail=current;current.content.append(...current.nodes);
+  const handle=surfaces.openDrawer({id:'wardrobe-item-details',title:summary.textContent?.trim()||'衣物详情与特质',content:current.content,onClose:()=>restore(current)});
+  if(!handle){restore(current);details.open=!current.wasOpen;return false}
+  current.handle=handle;return true;
+ }
  function write(container:HTMLElement,source:string){
   const W=root.SugarCube?.Wikifier??root.Wikifier;
   if(!W)return;
@@ -15,6 +35,7 @@ export function createWardrobeExtras(root:WardrobeDataHost){
   const v=s.variables,w=s.worn,item=w[slot],d=item&&descriptor(s,slot,item);
   const key=JSON.stringify([slot,w,v.upperTucked,v.lowerTucked,v.bellyTucked,v.facelayer,v.wardrobeDefaults]);
   if(signatures.get(equipment)!==key){
+   if(detail&&equipment.contains(detail.details))closeDetails();
    const macros:string[]=[];
    if(item&&item.name!=='naked'&&d){
     const value=JSON.stringify(slot);
@@ -35,7 +56,7 @@ export function createWardrobeExtras(root:WardrobeDataHost){
    }
    write(equipment,macros.join(' '));
    if(d){const description=document.createElement('p');description.className='dgw-muted';description.textContent=d.cn_description??d.description??'';equipment.prepend(description)}
-   equipment.onclick=()=>requestAnimationFrame(refresh);
+   equipment.onclick=event=>{const summary=event.target instanceof Element?event.target.closest<HTMLElement>('details.dgw-item-details > summary'):null;if(summary&&equipment.contains(summary)&&surfaces.available()){event.preventDefault();openDetails(summary.parentElement as HTMLDetailsElement,summary)}requestAnimationFrame(refresh)};
    signatures.set(equipment,key);
   }
   const serviceKey=JSON.stringify([v.location,v.tailorMonthlyService,v.debug,v.settings?.multipleWardrobes,v.wardrobeDefaults,Object.entries(v.wardrobes??{}).map(([key,x]:[string,Inventory])=>[key,x.unlocked,x.name]),s.location]);
@@ -57,5 +78,5 @@ export function createWardrobeExtras(root:WardrobeDataHost){
    write(services,source.join(' '));services.onchange=()=>requestAnimationFrame(refresh);signatures.set(services,serviceKey);
   }
  }
- return {render};
+ return {render,closeDetails,destroy(){closeDetails();surfaces.destroy()}};
 }

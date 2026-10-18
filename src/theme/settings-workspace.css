@@ -1,0 +1,99 @@
+/* Both layouts share the same live controls and material; only their geometry changes. */
+html[data-stone-free] #dol-midnight-controls .dmt-layout-choice{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 24px 14px;border-bottom:1px solid #ffffff08}
+html[data-stone-free] #dol-midnight-controls .dmt-layout-choice>span{font-size:12px;color:var(--sf-muted);margin-right:8px}
+html[data-stone-free] #dol-midnight-controls .dmt-layout-choice button{min-height:44px;padding:7px 16px;background:transparent;border-color:transparent;box-shadow:none}
+html[data-stone-free] #dol-midnight-controls .dmt-layout-choice button[aria-pressed=true]{background:#8baea312;border-color:#8baea338;color:#d3e1db}
+html[data-stone-free] #dol-midnight-controls .dmt-layout-choice small{flex:1 1 200px;font-size:11px;color:var(--sf-muted)}
+html[data-stone-free] #dol-midnight-controls .dmt-controls-content.dmt-workspace{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:22px;padding:0 24px 24px}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-settings-layout=vertical]{grid-template-columns:140px minmax(0,1fr);gap:22px}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-settings-layout=vertical] .dmt-workspace-nav{grid-template-columns:minmax(0,1fr);position:sticky;top:0;gap:8px;border-bottom:0;padding:12px 0}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{container-type:inline-size}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-width:0;padding:10px 0 14px;border-bottom:1px solid #ffffff0b}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:flex-start;min-height:44px;padding:9px 12px;border-color:transparent;border-radius:11px;background:transparent;color:var(--sf-muted,#aaa9ad);text-align:left}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{background:rgba(12,14,15,.2);box-shadow:none;color:var(--sf-ink,#e6e6e8)}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{display:grid;perspective:1200px;min-width:0;min-height:18rem}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{grid-area:1/1;align-self:start;display:grid;gap:14px;min-width:0;width:100%;backface-visibility:hidden;transform-origin:center top}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro{padding:2px 2px 4px}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro .dmt-eyebrow{margin:0 0 4px}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro h3{margin:0;font-size:calc(20px * var(--dgu-font-scale,1));font-weight:600}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro>p:last-child{max-width:48rem;margin:7px 0 0;line-height:1.65}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-section>.dmt-setting-card{padding:4px 0 14px}
+html[data-stone-free] #dol-midnight-controls .dmt-control-sheet .dgu-setting-row{border-bottom:1px solid #ffffff08;padding:12px 2px;min-height:52px}
+html[data-stone-free] #dol-midnight-controls .dmt-control-sheet .dgu-setting-row:last-child{border-bottom:0}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-section>.dmt-setting-card h3{margin:0 0 8px}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:4px 0}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-actions p{flex:1 1 16rem;margin:0}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-lab{display:grid;gap:10px;min-width:0}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-lab>header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-lab>header h3{margin:0}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-lab>header span{font-size:12px;color:var(--sf-muted,#aaa9ad)}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-stage{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(112px,.65fr);gap:12px;align-items:center;min-height:206px;padding:14px;border-radius:15px}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reading{align-self:stretch;display:grid;align-content:center;gap:8px;min-width:0;padding:14px;border-radius:13px}
+html[data-stone-free] #dol-midnight-controls :is(.dmt-preview-reading,.dmt-preview-reference)>span{font-size:11px;letter-spacing:.04em;color:var(--sf-muted,#aaa9ad)}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reading p{margin:0;line-height:1.65}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reading button{justify-self:start}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reference{display:grid;justify-items:start;align-content:center;gap:3px;min-width:0;min-height:86px;padding:12px;text-align:left}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating{position:absolute;z-index:2;right:10px;bottom:10px;width:min(190px,calc(100% - 20px));min-height:104px}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reference :is(span,small){font-size:11px;color:var(--sf-muted,#aaa9ad)}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reference strong{font-size:14px;color:var(--sf-ink,#e6e6e8)}
+html[data-stone-free] #dol-midnight-controls :is(.dmt-reading-sample,.dmt-preview-reading,.dmt-preview-reference) button{min-height:44px!important}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating{box-shadow:0 12px 32px #0005;transition:box-shadow .24s ease,border-color .24s ease}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating.is-focused{border-color:var(--sf-change,#d2d2d4)}
+html[data-stone-free] #dol-midnight-controls .dmt-preview-status{margin:0;min-height:1.5em}
+@media(max-width:680px){
+ html[data-stone-free] #dol-midnight-controls .dmt-controls-content.dmt-workspace{grid-template-columns:minmax(0,1fr);gap:14px;padding:0 16px 16px}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:center;min-height:44px;padding:7px 5px;text-align:center}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{box-shadow:none}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{min-height:0}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace-section>.dmt-setting-card{padding:4px 0 12px}
+}
+@media(min-width:980px){
+ html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{width:min(1000px,calc(100vw - 32px))}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace-reading,html[data-stone-free] #dol-midnight-controls .dmt-workspace-material{grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr);align-items:start;gap:18px 28px}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro{grid-column:1/-1}
+ html[data-stone-free] #dol-midnight-controls .dmt-reading-sample{align-self:start;position:sticky;top:12px;margin-top:8px}
+ html[data-stone-free] #dol-midnight-controls .dmt-material-controls{align-self:start}
+}
+@container(max-width:680px){
+ html[data-stone-free] #dol-midnight-controls :is(.dmt-workspace-reading,.dmt-workspace-material){grid-template-columns:minmax(0,1fr);gap:18px}
+ html[data-stone-free] #dol-midnight-controls .dmt-reading-sample{position:static}
+}
+@media(max-width:420px){html[data-stone-free] #dol-midnight-controls .dmt-preview-stage{grid-template-columns:minmax(0,1fr);padding-bottom:124px}html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating{right:8px;bottom:8px;width:min(190px,calc(100% - 16px))}}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] #dol-midnight-controls :is(.dmt-preview-reference,.dmt-workspace-nav button){transition:none}}
+
+html[data-stone-free] #dol-midnight-controls .dmt-reading-sample{display:grid;align-content:center;justify-items:start;gap:14px;min-width:0;padding:24px 20px;border:1px solid #ffffff10;border-radius:16px}
+html[data-stone-free] #dol-midnight-controls .dmt-reading-sample p{font-size:calc(15px * var(--dgu-font-scale,1));line-height:1.7;margin:0;color:var(--sf-ink,#eef0f4)}
+html[data-stone-free] #dol-midnight-controls .dmt-reading-sample>span{font-size:11px;color:var(--sf-muted,#aaa9ad)}
+html[data-stone-free]:not([data-dgu-visualMotion]) #dol-midnight-controls .dmt-preview-reference{transition:none}
+
+/* One moving contour follows selection; the original buttons retain their hitboxes. */
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-focus{position:absolute;z-index:2;pointer-events:none;transform-origin:0 0;border-radius:12px}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-focus svg{display:block;width:100%;height:100%;overflow:visible}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-focus rect{fill:none;vector-effect:non-scaling-stroke}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-base{stroke:#78958c66;stroke-width:1}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-flow{stroke:#86aaa3;stroke-width:1.3;stroke-linecap:round;stroke-dasharray:16 84;opacity:.7;animation:dmt-orbit-flow 7s linear infinite paused}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-tail{stroke:#9c8fa9;stroke-width:1;stroke-linecap:round;stroke-dasharray:8 92;stroke-dashoffset:42;opacity:.45;animation:dmt-orbit-tail 7s linear infinite paused}
+html[data-stone-free][data-dgu-visualMotion][data-dgu-visualGlow] :is(#dol-midnight-controls[open]:not([data-sf-leaving]),.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation-play-state:running}
+html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls,.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation:none}
+html[data-stone-free]:not([data-dgu-visualGlow]) :is(#dol-midnight-controls,.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){opacity:0}
+@keyframes dmt-orbit-flow{to{stroke-dashoffset:-100}}
+@keyframes dmt-orbit-tail{to{stroke-dashoffset:-58}}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation:none!important}}
+
+html[data-stone-free] .dgs-navigation{position:relative}
+
+html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{animation:none}
+html[data-stone-free] #dol-midnight-controls .dmt-open-material{position:absolute;inset:0;z-index:-1;pointer-events:none!important;border-radius:inherit;background:linear-gradient(130deg,#c0d3ce0e,transparent 60%),#23262a;box-shadow:inset 0 1px #ffffff12}
+
+/* Match Social's nested backdrop roots; sibling blur layers smear the game behind the shell. */
+html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none;border-color:transparent}
+html[data-stone-free] #dol-midnight-controls::backdrop{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.dmt-settings-context,.dmt-settings-material{position:fixed;pointer-events:none!important;user-select:none}
+.dmt-settings-context{inset:0;z-index:10000;background:transparent}
+.dmt-settings-material{z-index:10001;box-sizing:border-box;border:1px solid #ffffff13;border-radius:22px;background:#222326;box-shadow:inset 0 1px #ffffff08,0 28px 80px #0006}
+html[data-stone-free][data-dgu-visualGlass] .dmt-settings-context{backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+html[data-stone-free][data-dgu-visualGlass] .dmt-settings-material{background:linear-gradient(#ffffff09,transparent 90%),rgba(36,38,42,.74);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+
+html[data-stone-free] .dgu-orbit-nav{position:relative}
+html[data-stone-free] .hidden .dgu-orbit-nav :is(.dmt-orbit-flow,.dmt-orbit-tail){animation-play-state:paused}
