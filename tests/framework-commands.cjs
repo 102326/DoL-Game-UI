@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..'),dir=path.join(root,'tests/artifacts/ston
 const bundle=entry=>buildSync({entryPoints:[path.join(root,entry)],bundle:true,write:false,format:'iife',globalName:'TestHost'}).outputFiles[0].text;
 const checks=[],check=async(name,fn)=>{await fn();checks.push(name);console.log('PASS',name)};
 (async()=>{
- const browser=await chromium.launch({channel:'msedge',headless:true});
+ const browser=await chromium.launch(require('./browser-options.cjs'));
  try {
   const p=await browser.newPage({viewport:{width:1100,height:850}}),errors=[];p.setDefaultTimeout(5000);p.on('pageerror',e=>errors.push(e.message));
   await p.setContent('<div id="ui-bar"><button id="ui-bar-toggle">Native sidebar</button></div><input id="foreign"><main id="passages">Reading position</main>');
@@ -38,6 +38,8 @@ const checks=[],check=async(name,fn)=>{await fn();checks.push(name);console.log(
   for(const name of ['host','native-reading','reading-controls','workspace','alternate-workspace']){
    const base=path.join(root,'dist/framework',name);if(fs.existsSync(path.join(base,'style.css')))await p.addStyleTag({path:path.join(base,'style.css')});await p.addScriptTag({path:path.join(base,'index.js')});
   }
+  // This controlled fixture has no SugarCube event bridge; complete its scene explicitly.
+  await p.evaluate(()=>{if(DoLUiHost.binding().isCurrent())throw Error('Unbridged Host must stay pending');DoLUiHost.sceneReady()});
   const controls=p.locator('[data-sf-owner="ReadingControls"][data-sf-mount="toolbar"]');
   await check('actual independent consumer invokes the original control once and verifies native state',async()=>{
    await controls.getByRole('button',{name:'切换侧栏',exact:true}).click();await p.waitForFunction(()=>document.querySelector('#ui-bar').classList.contains('stowed'));

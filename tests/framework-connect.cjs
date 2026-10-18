@@ -5,7 +5,7 @@ const source=path.join(root,'framework/connect.ts'),bundle=path.join(dir,'connec
 buildSync({entryPoints:[source],bundle:true,format:'iife',globalName:'ConnectTest',platform:'browser',outfile:bundle});
 buildSync({entryPoints:[path.join(root,'framework/host.ts')],bundle:true,format:'iife',globalName:'HostTest',platform:'browser',outfile:hostBundle});
 (async()=>{
- const browser=await chromium.launch({channel:'msedge',headless:true});
+ const browser=await chromium.launch(require('./browser-options.cjs'));
  try {
   const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setContent('<!doctype html><body><main id="passages"></main></body>');await page.addScriptTag({path:bundle});await page.addScriptTag({path:hostBundle});

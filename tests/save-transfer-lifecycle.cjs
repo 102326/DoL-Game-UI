@@ -1,5 +1,5 @@
 const {chromium}=require('playwright'),{buildSync}=require('esbuild'),assert=require('node:assert/strict');
-(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{
+(async()=>{const b=await chromium.launch(require('./browser-options.cjs'));try{
  const p=await b.newPage();const js=buildSync({entryPoints:['src/saves/transfer.ts'],bundle:true,write:false,format:'iife',globalName:'Transfer'}).outputFiles[0].text;
  await p.setContent('<div id="customOverlayContent"><div id="source"><input id="saveImport" type="file"><span class="gold">Code</span><textarea id="saveDataInput"></textarea><input id="native-action" type="button" value="Copy"></div></div>');await p.addScriptTag({content:js});
  await p.evaluate(()=>{window.transfer=Transfer.createSaveTransfer();window.original=document.querySelector('#source').innerHTML;window.input=document.querySelector('#saveDataInput');input.value='unchanged';transfer.refresh(true)});

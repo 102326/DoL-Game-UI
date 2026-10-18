@@ -3,7 +3,7 @@ const {chromium}=require('playwright'),{buildSync}=require('esbuild');
 const bundle=buildSync({entryPoints:[path.join(__dirname,'../src/wardrobe/extras.ts')],bundle:true,write:false,format:'iife',globalName:'WardrobeExtrasBundle',target:'es2022'}).outputFiles[0].text;
 
 (async()=>{
- const browser=await chromium.launch({channel:'msedge',headless:true});
+ const browser=await chromium.launch(require('./browser-options.cjs'));
  try{
   const page=await browser.newPage({viewport:{width:900,height:700}});
   await page.setContent('<button id="underlay">Underlying action</button><main id="root"></main>');

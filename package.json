@@ -29,7 +29,12 @@
     "lab:build": "vite build --config vite.lab.config.ts",
     "lab:check": "vue-tsc --noEmit -p tsconfig.lab.json",
     "lab:index": "node component-lab/source-index.cjs",
-    "lab:test": "node tests/stone-free-lab.cjs"
+    "lab:test": "node tests/stone-free-lab.cjs",
+    "ci:check": "node scripts/render-state-fields.cjs --check && npm run typecheck && npm run framework:check",
+    "ci:unit": "node scripts/test-ci.cjs unit",
+    "ci:browser": "node scripts/test-ci.cjs browser",
+    "ci:build": "node scripts/build-framework.mjs && python scripts/package-framework.py --players-only",
+    "ci:packages": "python scripts/check-ci-packages.py && python -m unittest discover -s tests -p test_ci_packages.py"
   },
   "dependencies": {
     "vue": "^3.5.0"

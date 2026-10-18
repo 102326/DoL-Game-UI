@@ -12,7 +12,7 @@ const host = bundle('framework/host.ts'), sdk = bundle('framework/vue.ts');
 const tests = [];
 async function check(name, callback) {await callback();tests.push(name);console.log('PASS', name)}
 (async () => {
- const browser = await chromium.launch({channel:'msedge', headless:true});
+ const browser = await chromium.launch(require('./browser-options.cjs'));
  try {
   const page = await browser.newPage({viewport:{width:1280,height:900}}), errors = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -262,6 +262,6 @@ async function check(name, callback) {await callback();tests.push(name);console.
    await p.evaluate(()=>{DoLUiHost.dispose();officialRuntime.destroy()});
   });
   assert.deepEqual(sampleErrors,[]);await p.close();
-  fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'passed',environment:'Headless Edge / browser fixture, not Android',tests},null,2));console.log('OUTPUT',output);
+  fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'passed',environment:'Headless Chromium / browser fixture, not Android',tests},null,2));console.log('OUTPUT',output);
  } finally {await browser.close()}
 })().catch(e=>{fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({status:'failed',tests,error:e.message},null,2));console.error(e);process.exitCode=1});
