@@ -45,7 +45,7 @@ Linux 首次运行浏览器检查前执行 `npx playwright install --with-deps c
 
 全部检查通过后上传 `kraft-work-build-<SHA>`，保存 7 天，包含：
 
-- `DoLGameUI-3.0.0.mod.zip`
+- `DoLGameUI-3.0.1.mod.zip`
 - `StoneFreeHost-0.1.4-experimental.mod.zip`
 - `PACKAGE_CHECKS.json`：实际提交、工作区状态、依赖和每个 ZIP 成员的 SHA-256。
 - `SHA256SUMS.txt`：上述三个负载的 SHA-256，校验清单自身除外。

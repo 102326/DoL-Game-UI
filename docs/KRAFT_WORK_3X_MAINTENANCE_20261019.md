@@ -7,10 +7,10 @@
 | 状态 | 本轮结果 |
 | --- | --- |
 | Delivered | 独立 CI PR；默认平铺战斗与显示 Hub；六个兼容包 1.0.0；原生选择器样式与宽度修复；存档窗口视口约束；3.x 视觉基线 |
-| Validated | Windows 类型／合同／构建／包检查，12 项单元和 17 项受控浏览器用例；Android 已安装 3.0.0 上的局部 CSS 与原控件检查 |
-| Not validated | 新整包在真实 Loader 中安装、六个新版兼容包的真实社区组合、iPad Safari、旧 WebView、物理触控、新包真实战斗回合与结束 |
+| Validated | Windows 类型／合同／构建／包检查，12 项单元和 17 项受控浏览器用例；Android 局部控件检查；后续 3.0.1 候选和五个适用兼容包的真实 Loader 安装与成员摘要核对 |
+| Not validated | 新版 ReOverfits 真实组合、全部社区业务、iPad Safari、旧 WebView、物理触控、新包真实战斗回合与结束 |
 | Owner Acceptance | 新选择器及兼容包的最终视觉验收待负责人确认 |
-| Release Authorization | 本轮没有新增运行版本的推送或发布授权；未合并 main、未创建 Tag／Release |
+| Release Authorization | 后续已获统一发布授权，负责人又要求先安装到平板试看；公开操作暂停，等待效果确认，尚未推送维护改动或创建 Tag／Release |
 
 CI 位于 [PR #2](https://github.com/102326/DoL-Game-UI/pull/2)，提交 `720e2a042a595bab52c4574005d9a40715288d9a`。[该提交的 PR Actions](https://github.com/102326/DoL-Game-UI/actions/runs/39152026982) 在 Ubuntu 通过，耗时 1 分 21 秒。它只检查、构建和短期保存产物，不自动发布。该远端运行包含首轮 11 项单元与 12 项浏览器用例，不包含之后的本地维护改动。
 
@@ -69,3 +69,13 @@ Android 17／WebView 154 的独立测试 App 中，只对已安装 3.0.0 注入�
 - 设备证据、错误日志与候选身份保存在忽略目录 `tests/artifacts/kraft-work-maintenance-20261019/`，不提交游戏画面、私人数据或第三方包。自动 CI 只上传仓库自有受控用例日志。
 
 本地 UI 技术版本暂保持 3.0.0，候选字节已不同于公开冻结包，不能直接替换公开同名附件。Host 公共协议和运行代码未修改；CI 重打包所得 Host ZIP 也不替代已冻结公开 Host。下一次运行版本号、真实 Loader 整包验收与发布须另行决定。
+
+## 后续：3.0.1 平板预览安装
+
+负责人随后授权统一发布，又要求先在平板查看效果。主 UI 因此准备为 3.0.1，避免覆盖公开 3.0.0；兼容包为 1.0.0。类型／合同、构建、ZIP 校验和实际构建默认值检查再次通过。切换版本时，CI 输出目录中的旧 3.0.0 包被严格白名单拒绝；将该自有旧产物归档后，新包检查通过，没有放宽断言。
+
+在已授权平板独立测试 App 上备份原包及 Loader 清单，然后通过原公开安装 API 更新 UI、ModHubSoftWet、MapleBirchSoftWet、DolOptimizationSoftWet、CheatExtendedSoftWet、LyraMouthCompat051213。一次原生 App 重启后，实际版本分别为 3.0.1／1.0.0，所有脚本和样式成员摘要与输入 ZIP 一致。Host 保持 0.1.4-experimental，原隐藏清单不变，未调用保存／读取业务。平板未安装 ReOverfits，因此未安装它的适配包。
+
+本次 UI ZIP SHA-256：`00317f2212653c1efc84e53cd77399a99dd7fa03414d353d883d930f046115da`。逐包身份、备份和安装结果位于本地忽略目录 `tests/artifacts/kraft-work-maintenance-20261019/tablet-install-3.0.1-1792349173708/`。源码版本更新不改变此前受控业务测试覆盖的运行行为。
+
+重启后位于开始页，已打开真实设置窗口供负责人查看。现有 Hub 开启偏好和战斗聚焦开启偏好继续保留，没有通过清空配置强制呈现新默认值。未进行真实回合结算，Visual Acceptance Pending。此次远端读取还确认 CI PR #2 已由外部操作合入 main（`304a893`）；本轮仅 fetch，没有执行该合并或任何公开发布。
