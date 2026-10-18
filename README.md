@@ -1,8 +1,140 @@
-# DoL Soft & Wet Game UI
+# Soft & Wet 3.0 — Kraft Work
 
-> **Soft & Wet 3.0 — Kraft Work**：黑灰 Acrylic、游戏天气响应、双布局设置与可选 Floating Hub。普通玩家需要 UI + Framework Host 两包。见 [3.0 下载](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0)、[安装与回退](docs/INSTALL_3.0.0.md)、[完整发布说明](docs/RELEASE_3.0.0.md)及[发行身份](docs/KRAFT_WORK_3.0_PUBLISH.md)。
+[![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)
+![Game](https://img.shields.io/badge/DoL-0.5.12.13-blue)
 
-3.0 的源码构建入口如下。仓库的 `package.json` 版本、经典 `npm run package` 和既有通用 CI 制品继续保留 2.7 入口，不用它们代替正式 3.0 Release。公开 Host 沿用其冻结原包；新构建的 ZIP 文档或元数据可能不同，应按发行身份核对运行成员，不自动覆盖公开附件。
+**Soft & Wet UI** 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，重新组织衣柜、服装店、角色信息和常用窗口。半透明材质让游戏背景自然参与画面，导航焦点、按钮反馈与空间转场让操作更连贯。
+
+Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。购买、穿戴、角色数值和存档仍由原游戏及对应 Mod 处理。
+
+[下载 3.0](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0) · [安装步骤](#安装与升级) · [完整更新说明](docs/RELEASE_3.0.0.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+
+普通玩家需要 **主 UI + Framework Host 两个 ZIP**，使用相应第三方 Mod 时再选装兼容包。**不要解压**，导入后重启游戏。安装包不包含游戏本体、APK 或第三方原 Mod。
+
+![Kraft Work 设置界面：上下布局](docs/media/3.0.0/KraftWork-3.0-settings-horizontal.png)
+
+以上为正式运行包在 Android 测试环境中的真实画面。视口、背景、偏好与 Mod 组合会影响实际效果。
+
+## 核心界面
+
+### 衣柜
+
+- 按分类或跨已支持分类搜索，查看衣物状态、已穿戴标记与保暖情况。
+- 点选衣物仍直接穿戴，保留原穿戴限制和已验证的第三方叠穿行为。
+- 查看当前完整穿搭，暂存参照并比较；“衣物详情与特质”使用独立抽屉。
+- 整理模式保留原有丢弃、套装处理、修理与转移入口，具体操作依原游戏条件执行。
+
+### 服装店
+
+- 分类、搜索、配色与购买区域集中组织，可保存进店默认服装类型。
+- 商品选中波纹、详情过渡与信息比较帮助查看当前选择；窄屏使用详情抽屉。
+- 保留原报价、购买与试穿路径，视觉展示不改写交易规则。
+
+### 角色信息与常用窗口
+
+属性、社交、特质、成就、日志和统计等已适配窗口使用协调的 Acrylic 外壳、导航与内容层次。保留原游戏的语义颜色，以及原有按钮、链接与表单操作。
+
+<details>
+<summary>查看角色信息画面</summary>
+
+![Kraft Work 角色信息](docs/media/3.0.0/KraftWork-3.0-character.png)
+
+</details>
+
+### 战斗
+
+默认使用原版战斗控件，保留原动作、判定与结算。“战斗聚焦编辑（实验）”是**默认关闭**的可选功能，可在设置中主动开启，不改变游戏战斗规则。
+
+## 材质、天气与交互
+
+黑色与深灰色为主体，半透明、柔和模糊与分层材质共同承载内容。窗口展开与退场、动态导航焦点、按钮按压和不同场景的过渡使用适合各自用途的动画。材质与动画可以关闭，系统减少动态效果时自动退化。
+
+窗口响应 **DoL 游戏内部天气**，无需现实天气服务：晴天暖光、多云明暗漂移、雨天细雨与玻璃水珠、雷雨局部照明，以及雾、雪的环境表现。雨量影响动态节奏，装饰层不接收点击。
+
+![Kraft Work 天气响应](docs/media/3.0.0/KraftWork-3.0-weather.png)
+
+[观看 Android 原速天气视频（约 12 秒）](docs/media/3.0.0/KraftWork-3.0-weather-android.mp4)。演示通过游戏原有天气接口准备雷雨，不代表帧率性能测量。
+
+## 设置双布局与 Floating Hub
+
+设置支持**上下布局**和**左右布局**，共享同一套真实控件、偏好与预览；修改后自动保存。打开设置时阻挡背后游戏输入，长内容可以滚动。
+
+Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、侧边停靠和已支持窗口的工具交接。**新安装默认关闭**，在“界面设置 → 入口 → 高级快捷工具”开启“启用悬浮球”。点击展开，拖动移动，也可使用键盘方向键调整。
+
+<details>
+<summary>查看左右设置布局与 Floating Hub</summary>
+
+![Kraft Work 设置界面：左右布局](docs/media/3.0.0/KraftWork-3.0-settings-vertical.png)
+
+![Kraft Work Floating Hub](docs/media/3.0.0/KraftWork-3.0-floating-hub.png)
+
+</details>
+
+## 其它界面与功能
+
+| 界面 | 主要内容 |
+| --- | --- |
+| 存档管理 | 列表、详情和可选显示布局，保留原存读档、描述与回退入口 |
+| 游戏选项与作弊 | 原生控件外观和响应式布局，生效规则由游戏或目标 Mod 负责 |
+| 阅读与界面设置 | 字号、按钮大小、阅读宽度、间距、材质、动效与独立页面开关 |
+| 进阶选项 | 衣柜分页和按需启用的兼容／性能实验；不以减少 DOM 工作量代替整体性能承诺 |
+
+本版不包含 Widget、自由布局编辑器或全局动作底栏。
+
+## 安装与升级
+
+| 项目 | 要求 |
+| --- | --- |
+| DoL | 当前适配与主要验收版本为 **0.5.12.13** |
+| ModLoader | **>=2.100.0**，实测 2.101.1 |
+| TweeReplacer | **>=1.0.0** |
+| Framework Host | **>=0.1.2-experimental 且 <0.2.0**；推荐并实测 **0.1.4-experimental** |
+
+最低要求、推荐版本与实测组合分别说明；满足最低要求不代表所有后续版本或整合包均已验证。Host 的公共协议仍为实验性协议。
+
+1. 备份存档，保留原 UI 和对应兼容包以便回退。
+2. 停用原 `DoLGameUI`，每个技术身份只启用一个版本。
+3. 从 [3.0 Release](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0) 下载并导入 `StoneFreeHost-0.1.4-experimental.mod.zip` 与 `DoLGameUI-3.0.0.mod.zip`，不要解压。
+4. Host 排在 UI 前。可选兼容包排在对应目标 Mod 和 UI 之后；没有目标 Mod 就不安装相应兼容包。
+5. 重启游戏，检查界面与版本，再载入自己的进度。显示偏好保存在当前浏览器或应用中，与游戏存档分离。
+
+`StoneFreeHost` 是 Framework Host 保留的技术包名；对外版本代号为 **Kraft Work**。开发样例、Factory 和 Author Kit 不是玩家必装项。详细说明见 [安装与回退](docs/INSTALL_3.0.0.md)。
+
+## 可选兼容包
+
+| 包 | 作用与范围 |
+| --- | --- |
+| ModHubSoftWet 0.2.5 | ModHub >=1.3.0 的管理器外观 |
+| MapleBirchSoftWet 0.2.5 | MapleBirch >=5.2.3 的云存档页面外观，不接管云端业务 |
+| DolOptimizationSoftWet 0.1.7 | 原版优化 >=1.1.1.2 的存档页面外观，保留原描述编辑与槽位控件 |
+| CheatExtendedSoftWet 0.1.0 | 原作者 Cheat Extended 的外观；另行验证并标注独立维护的 rebuild.30 |
+| ReOverfitsSoftWet 0.2.2 | ReOverfits >=4.1.1 的额外服装槽位接入，沿用原包 |
+| LyraMouthCompat051213 0.1.2 | 指定 Lyra 0.5.12.13 嘴部资源适配，沿用原包 |
+
+前三个外观包和 CE 外观包要求 UI >=3.0.0。CE 原作者版与 rebuild.30 的技术名相同，只能启用其中一个；本次分别实测原作者 1.20.3.1 与独立维护的 1.20.3.1-rebuild.30，不代表全部作弊功能通过。
+
+兼容包不会自动美化所有第三方页面。目标结构、接口或数据不匹配时会减少或退出适配；最低版本范围不等于所有后续版本都经过验收。完整依赖见 [兼容包说明](docs/OPTIONAL_ADAPTERS.md)。
+
+## 设置、兼容与回退
+
+各专用界面可独立关闭；关闭“启用 Soft & Wet 界面”可恢复原版显示。衣柜操作进行时应先等待操作结束。若设置也无法打开，可在 Loader 中停用 UI 并重启。
+
+需要回退时，停用当前 UI 与只适用于当前 UI 的兼容包，恢复保留的原包后重启。其它 Mod 仍使用 Host 时应保留 Host。不要清空整个游戏数据，不依赖整包热卸载。
+
+Windows 浏览器和 Android 平板 WebView 已有代表性验证，未覆盖所有手机、IME、WebView、交易、战斗结算、衣槽或社区 Mod。部分社区告警与长期资源增长尚未归因；`selectedWardrobe` 相关历史异常未复现，根因仍未确认。更多边界见 [已知问题与限制](docs/RELEASE_3.0.0.md#已知问题与限制)。
+
+## Mod 作者与开发者
+
+技术栈为 Vue 3、TypeScript、Vite 与 Tailwind CSS。独立 Framework Host 提供公共 UI 能力，作者可只安装 Host，不依赖官方 UI；公共协议当前为 `0.1-experimental`，官方 UI API 为 v1。
+
+- [UI Runtime API](docs/UI_RUNTIME.md) 与 [接入示例](examples/ui-surfaces/README.md)
+- [基础设施与所有权边界](docs/UI_INFRASTRUCTURE.md)、[独立 Adapter](docs/OPTIONAL_ADAPTERS.md)
+- [发行身份与验证记录](docs/KRAFT_WORK_3.0_PUBLISH.md)、[源码与包身份](docs/releases/3.0.0/SOURCE_IDENTITY.json)
+
+<details>
+<summary>3.0 源码构建</summary>
+
+需要 Node.js 22.12+、npm 和 Python 3.10+。以下为 Framework／官方 UI 双包入口：
 
 ```text
 npm ci
@@ -12,118 +144,14 @@ node scripts/build-framework.mjs
 python scripts/package-framework.py --players-only
 ```
 
-## 2.7 使用说明（历史参考）
-
-以下内容记录 2.7 的单包安装和旧界面，不能替代上方 3.0 双包指南；[2.7 稳定发行](https://github.com/102326/DoL-Game-UI/releases/tag/v2.7.0) 继续保留。
-
-> **2.7.0 · Crazy Diamond** 本轮整理设置中心并修复战斗操作栏、商店说明遮挡，重点是已有体验的稳定性；悬浮球为默认关闭的可选工具，不包含 Widget 或全局动作底栏。见 [本轮变化](docs/RELEASE_2.7.0.md)。
-
-[![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)
-![Game](https://img.shields.io/badge/DoL-0.5.11.9%20%2F%200.5.12.13-blue)
-
-**Soft & Wet UI** 为 Degrees of Lewdity 提供统一的现代深色界面，重新组织衣柜、服装店、战斗及常用菜单。手机使用紧凑布局与详情抽屉，平板和桌面利用宽屏展示列表与详情；外层柔雾 Acrylic、内层轻卡片，让信息与操作保持清楚。
-
-[下载当前版本](https://github.com/102326/DoL-Game-UI/releases/tag/v2.7.0) · [安装步骤](#安装与升级) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
-
-普通玩家只需主包；使用对应第三方 Mod 时再选装兼容包。需要 ModLoader **2.100.0+**、TweeReplacer **1.0.0+**。导入 ZIP，**不要解压**，然后重启游戏。模组不包含游戏本体、图片素材或 APK。
-
-## 核心界面
-
-### 衣柜
-
-- 查看完整穿搭、已穿戴标记、服装信息、状态与保暖情况。
-- 按分类或跨已支持分类搜索，结果标明分类；点选衣物直接换装。
-- 在整理模式中审查多选丢弃、剪开套装，以及满足条件时的修理和衣柜转移。
-
-### 服装店
-
-- 宽屏展示商品列表与详情，手机使用详情抽屉。
-- 分类、搜索、配色与购买操作区集中组织，可保存进店默认服装类型。
-- 沿用原游戏价格、购买和试穿规则。
-
-**服装店分类入口 · Soft & Wet UI 2.2.2 · Android 平板**
-
-![2.2.2 平板服装店分类入口](docs/screenshots/2.2.2/shop-entry-tablet.png)
-
-这是已安装版本的真实截图，包含 ReOverfits 4.1.1 与兼容包 0.2.2 的三个外层分类。展示的是分类入口，不是商品列表。界面会随视口、背景、显示偏好和 Mod 组合变化。
-
-### 战斗
-
-- 按部位组织行动区域，显示当前选择摘要与状态反馈。
-- 区分普通行动、选中状态和底部操作，方便检查后继续。
-- 保留原游戏动作、判定和结算。
-
-当前版本的衣柜、商品列表和战斗截图后续补充。
-
-## 其它界面与功能
-
-| 界面 | 主要内容 |
-| --- | --- |
-| 存档管理 | 宽屏双列、手机单列，最近保存标记与详情抽屉；可选“存档 V2”列表/详情布局，保留原版操作与回退 |
-| 社交与角色面板 | 轻卡片与分组，组织关系、属性、特质和状态信息 |
-| 日志、统计与成就 | 内容分组与导航，稳定的正文阅读区域 |
-| 游戏设置、态度与作弊 | 原生控件美化、轻分组与响应式布局，沿用原控件和生效规则 |
-| 界面设置 | 字体、阅读宽度、间距、视觉档位、减少动态效果与独立页面开关 |
-
-<details>
-<summary>查看存档界面原版对比（Soft & Wet 2.0.2）</summary>
-
-以下为同一隔离新游戏、同一桌面视口下的真实截图，不使用用户存档。它们展示 **2.0.2**，不是 2.2.2。
-
-| 原版存档 | Soft & Wet 2.0.2 存档 |
-| --- | --- |
-| ![原版存档](docs/screenshots/2.0.2/saves-native.png) | ![2.0.2 存档](docs/screenshots/2.0.2/saves-v2.png) |
-
-存档详情与社交对比见 [2.0.2 更新报告](docs/RELEASE_2.0.2_PUBLIC.md)。
+构建结果位于 `dist/framework/`。仓库另有经典构建入口，不应替代上述 3.0 构建。公开 Host 使用冻结原包；重新构建的文档或 ZIP 元数据可能不同，应核对运行成员，不自动覆盖公开附件。
 
 </details>
 
-游戏规则、购买价格、穿戴限制与存档格式仍由原游戏处理。衣柜整理确认后逐件执行；中途出错会停止并报告进度，已完成的操作不自动撤销。
-
-## 安装与升级
-
-1. 准备 DoL **0.5.11.9 或 0.5.12.13**，以及 ModLoader **2.100.0+**、TweeReplacer **1.0.0+**。升级前建议备份存档。
-2. 下载并导入 UI 主包 ZIP，**不要解压**。升级时替换已有同名包，不要同时启用多个版本。
-3. 建议在内容 Mod 之后加载 UI；需要兼容包时，在 UI 和目标 Mod 之后加载对应兼容包。特殊 Lyra 包的顺序见 [兼容包说明](docs/OPTIONAL_ADAPTERS.md)。
-4. 重启游戏，在侧栏 **界面设置** 调整显示与页面功能。
-
-加载器中原有的 `DoLGameUI` 是本 Mod 的内部标识，升级时继续替换它。曾安装 **DoLShopPageExperiment、DoLMidnightTheme 或 DoLCombatUI** 独立包的用户，应先禁用旧包，避免重复修改同一界面。详细迁移说明见 [旧独立包迁移](docs/OPTIONAL_ADAPTERS.md#旧独立包迁移)。
-
-## 设置、兼容与回退
-
-- 各专用界面可独立关闭，回到对应原版页面；全局关闭 **启用 Soft & Wet 界面** 或使用 **回退原版界面**，直接使用原版 UI。
-- 衣柜操作执行期间需等待结束后再回退。显示偏好保存在当前浏览器或应用中，与游戏存档分离。
-- 若界面设置也无法打开，在加载器中禁用本 Mod 并重启。
-- **1.x（1.1.0）是独立 LTS**，不作为 2.x 总关闭后的第二套主题。
-
-支持的游戏版本为 **0.5.11.9 / 0.5.12.13**，不保证所有整合包和 Mod 组合。完全替换商店、动作、角色图层或页面结构的 Mod 可能需要专门适配；遇到异常可先关闭对应专用界面。
-
-ModHub、MapleBirch、原版优化、ReOverfits 及指定 Lyra 的适配由 [独立兼容包](docs/OPTIONAL_ADAPTERS.md) 提供，按需安装。最低版本放宽不代表全部后续版本已经验证；不满足结构、接口或数据条件时，适配可能减少或退出。
-
-### 性能选项
-
-衣柜分页在新安装时默认开启，每页显示 40 件；普通浏览搜索覆盖已支持分类；整理模式的搜索、排序与全选仍作用于当前分类的完整数据。已有用户的偏好保持原值。
-
-衣柜隐藏列表、商店离屏绘制和商店按页生成等**进阶实验，新安装时默认关闭**，可分别控制，商店按页生成不需要额外 ZIP。减少 DOM 工作量不等于已证明换装、购买或启动整体变快。
-
-生效时机、作用范围与关闭方式见 [性能选项与实验](docs/UI_SETTINGS.md#性能选项与实验)。
-
-## Mod 作者与开发者
-
-技术栈：**Vue 3 / TypeScript / Vite / Tailwind CSS**。UI Runtime 与 Adapter 接入是可选能力，不要求第三方 Mod 依赖 Soft & Wet。
-
-- [UI Runtime API](docs/UI_RUNTIME.md) 与 [接入示例](examples/ui-surfaces/README.md)
-- [基础设施与兼容边界](docs/UI_INFRASTRUCTURE.md)、[独立 Adapter](docs/OPTIONAL_ADAPTERS.md)
-- [开发、构建与测试](docs/DEVELOPMENT.md)、[2.2 TypeScript 整理](docs/TYPESCRIPT_2.2.md)、[更新记录](CHANGELOG.md)
-
-构建需要 Node.js **22.12+**、npm、Python **3.10+**；运行 `npm ci` 和 `npm run package`，输出为 `dist/DoL-SoftWet-GameUI-<版本>.mod.zip`。普通构建无需游戏本体，游戏集成测试资源需自行准备。可通过 `DOL_RELEASE_DIR` 指定额外输出目录。
-
-**界面设置 → 问题诊断** 中的 Runtime Inspector 可查看页面、Adapter 和降级原因。排查第三方接入时，以实际原节点、事件与原版状态为准。
-
 ## 反馈
 
-请提供游戏与 UI 版本、设备和视口、相关 Mod 版本、复现步骤及错误信息。截图请遮挡不希望公开的内容；通常不需要上传完整存档。[提交问题](https://github.com/102326/DoL-Game-UI/issues)。
+通过 [GitHub Issues](https://github.com/102326/DoL-Game-UI/issues) 提供 DoL／Lyra、Loader、Host／UI、相关 Mod 版本，以及设备、浏览器或 WebView、复现步骤、实际和期望表现。适用时附日志片段或截图；不要公开上传私人存档、账号信息、敏感数据或未获授权分发的 Mod 包。
 
 ## 许可与来源
 
-项目原创代码使用 [MIT](LICENSE)。衣柜隔离绘图代码派生自 Degrees of Lewdity，适用 **CC BY-NC-SA 4.0**，见 [来源与修改说明](UPSTREAM-RENDERER-NOTICE.md) 和 [完整许可](UPSTREAM-RENDERER-LICENSE)。包含该代码的发行包不是整体仅适用 MIT；第三方依赖声明随安装包附带。
+项目原创代码使用 [MIT](LICENSE)。衣柜衍生渲染及四项游戏 Twee 替换适用 **CC BY-NC-SA 4.0**，见 [来源与修改说明](UPSTREAM-RENDERER-NOTICE.md) 和 [完整许可](UPSTREAM-RENDERER-LICENSE)。MIT 不替代这些代码的原许可；第三方依赖声明随运行包保留。展示截图与录像的来源见 [素材说明](docs/media/3.0.0/README.md)。

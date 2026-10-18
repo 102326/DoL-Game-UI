@@ -1,0 +1,477 @@
+{
+  "product": "Soft & Wet 3.0 — Kraft Work",
+  "tag": "v3.0.0",
+  "commit": "03cb4de1b4269d4ad5d77e35c87b32185f203739",
+  "gitTree": "79d2b0c182cb1f39c8f19e7bb632bdce4551ee78",
+  "sourceBranch": "main",
+  "sourceUrl": "https://github.com/102326/DoL-Game-UI/tree/03cb4de1b4269d4ad5d77e35c87b32185f203739",
+  "validatedSourceTreeSHA256": "a71929feccea15a717dbd7023a8dd630fc74b5f139867940fbecc326a20b90ed",
+  "validatedSourceArchiveSHA256": "6a661d9d13c5fb5cb08411c3e56b2e2f166db923a070bf88701525928e6cbd87",
+  "documentOnlyChangesAfterValidation": [
+    "CHANGELOG.md",
+    "README.md",
+    "docs/RELEASE_3.0.0.md",
+    "docs/INSTALL_3.0.0.md",
+    "docs/KRAFT_WORK_3.0_PUBLISH.md"
+  ],
+  "packages": [
+    {
+      "name": "CheatExtendedSoftWet",
+      "version": "0.1.0",
+      "file": "CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v0.1.0.mod.zip",
+      "sha256": "19e55cd527b81c5ad04b4fed7d825d0c9cd67b0c23a271497803a39509891274",
+      "bytes": 4948,
+      "boot": {
+        "name": "CheatExtendedSoftWet",
+        "version": "0.1.0",
+        "description": "Kraft Work 外观兼容：原作者 Cheat Extended 1.20.3.1；另验独立维护 rebuild.30，非原作者发布。",
+        "styleFileList": [
+          "cheat-extended-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "cheat-extended-soft-wet.js"
+        ],
+        "scriptFileList_inject_early": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "cheat extended",
+            "version": ">=1.20.3"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "members": {
+        "boot.json": "69b7ee06db761dc030852eb2445856c5a8ad7590d827375b639f1eec9d8e076e",
+        "cheat-extended-soft-wet.css": "87ae2c4d2564bb0e42fce491e56fe0713dcbed61a6937f0b75025697286f64aa",
+        "cheat-extended-soft-wet.js": "a8c4be70e3281469983d50fa876239f6c0450bddf1e235d24cd728572be1a2a1",
+        "README.md": "08e4b8d48f43c355f8c4de732e8098958b48f5f5595692c6a333838cd0acb56d",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      },
+      "origin": "validated current source",
+      "validatedFile": "CheatExtendedSoftWet-cheat extended-1.20.3-plus-v0.1.0.mod.zip"
+    },
+    {
+      "name": "DoLGameUI",
+      "version": "3.0.0",
+      "file": "DoLGameUI-3.0.0.mod.zip",
+      "sha256": "0cfcdcd4a6db500adbb7781e45636761cd2028b7cce55c9c1b7be92ed654865a",
+      "bytes": 229968,
+      "boot": {
+        "name": "DoLGameUI",
+        "version": "3.0.0",
+        "nickName": "Soft & Wet 3.0 — Kraft Work",
+        "scriptFileList": [
+          "index.js"
+        ],
+        "styleFileList": [
+          "style.css"
+        ],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE",
+          "THIRD-PARTY-NOTICES.txt",
+          "docs/UI_SETTINGS.md",
+          "docs/OPTIONAL_ADAPTERS.md",
+          "docs/RELEASE_3.0.0.md",
+          "types/ui.d.ts",
+          "types/wardrobe.d.ts",
+          "UPSTREAM-RENDERER-LICENSE",
+          "UPSTREAM-RENDERER-NOTICE.md"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "ModLoader",
+            "version": ">=2.100.0"
+          },
+          {
+            "modName": "StoneFreeHost",
+            "version": ">=0.1.2-experimental && <0.2.0"
+          },
+          {
+            "modName": "TweeReplacer",
+            "version": ">=1.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ],
+        "scriptFileList_inject_early": [
+          "shop-page-experiment.js"
+        ],
+        "addonPlugin": [
+          {
+            "modName": "TweeReplacer",
+            "addonName": "TweeReplacerAddon",
+            "modVersion": ">=1.0.0",
+            "params": [
+              {
+                "tip": "服装店按需分页：锁定本次列表渲染开关",
+                "passage": "Clothing Shop v2 Widgets",
+                "findString": "\t<div id=\"shop-list-pages\" class=\"shop-list-pages\">",
+                "replaceFile": "twee/patch-list-mode.twee"
+              },
+              {
+                "tip": "服装店按需分页：关闭时保留原版后台生成",
+                "passage": "Clothing Shop v2 Widgets",
+                "findString": "\t\t<!-- Generate other pages in background after a delay, so that shop can be displayed sooner -->\n\t\t<!-- Having all pages loaded allows for very fast shop catalogue navigation -->\n\t\t<!-- Generate via <<repeat>> one by one to not cause a lag spike -->\n\t\t<<timed 0.2s>>\n\t\t\t<<set _ppre = _startingShopPage - 1>>\n\t\t\t<<repeat 0.1s>>\n\t\t\t\t<<if document.getElementById(\"shop-list-pages\") eq null or _ppre lt 0>>\n\t\t\t\t\t<<stop>>\n\t\t\t\t<</if>>\n\t\t\t\t<!-- Prepend pages before the current page -->\n\t\t\t\t<<prepend '#shop-list-pages'>>\n\t\t\t\t\t<<generateshoppage _ppre>>\n\t\t\t\t<</prepend>>\n\t\t\t\t<<set _ppre-->>\n\t\t\t<</repeat>>\n\t\t\t<!-- Append pages after the current page -->\n\t\t\t<<set _papp = _startingShopPage + 1>>\n\t\t\t<<repeat 0.1s>>\n\t\t\t\t<<if document.getElementById(\"shop-list-pages\") eq null or _papp gte _maxPage>>\n\t\t\t\t\t<<stop>>\n\t\t\t\t<</if>>\n\t\t\t\t<<append '#shop-list-pages'>>\n\t\t\t\t\t<<generateshoppage _papp>>\n\t\t\t\t<</append>>\n\t\t\t\t<<set _papp++>>\n\t\t\t<</repeat>>\n\t\t<</timed>>",
+                "replaceFile": "twee/patch-background.twee"
+              },
+              {
+                "tip": "服装店按需分页：翻页时只生成目标页",
+                "passage": "Clothing Shop v2 Widgets",
+                "findString": "\t<<run $('#shop-list-pages > div.clothing-shop-page').addClass('hidden no-numberify')>>\n\t<<run $('#shop-list-pages > div.clothing-shop-page:nth-of-type(' + ($shopPage + 1) + ')').removeClass('hidden no-numberify')>>",
+                "replaceFile": "twee/patch-page-change.twee"
+              },
+              {
+                "tip": "服装店按需分页：只复用实验模式的分页宽度监听器",
+                "passage": "Clothing Shop v2 Widgets",
+                "findString": "\t<<run $(window).on('resize', () => {\n\t\tlet pagination = $('#shop-pagination');\n\t\tlet pages = $(pagination).find('.shop-pages');\n\t\tlet buttons = $(pagination).find('.btn-pagination');\n\t\tlet isEnoughSpace = (pagination.width() - buttons.outerWidth() * 2 - 32) / pages.children().length >= 22;\n\n\t\tpages.toggleClass('hidden', !isEnoughSpace);\n\t\tpagination.find('.shop-pages-number').toggleClass('hidden', isEnoughSpace);\n\t})>>",
+                "replaceFile": "twee/patch-resize.twee"
+              }
+            ]
+          }
+        ]
+      },
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "b953e7033c354886e1bc15fd4fd9c386111721aed4658b7f194da1edab881575",
+        "THIRD-PARTY-NOTICES.txt": "9c115886c745c8bab1bb34ec11a7ba5a1d34be99e962a444034e019e24a7b03c",
+        "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+        "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+        "boot.json": "69c99442ccee8ca472453da7a6d5cc83ed0f41116e034db79ef6e57fbc96e632",
+        "docs/OPTIONAL_ADAPTERS.md": "7d7fa1e8656b484cb45117d3fc64ba4cc803e89db1c82dee9e1d2bde1ea14226",
+        "docs/RELEASE_3.0.0.md": "ae972f413bfd34462ea50aea0d908e98ec4436a0120786a29e9e8c85c7d096c1",
+        "docs/UI_SETTINGS.md": "861be7cab1ade725d806a3007b803c9f5e7e4c7f4f9c70bf69d132af4baa9d2f",
+        "index.js": "477adf55d9bcef92a3d0573051d323746ca2f67cb41383a5b9be78483ae5e39c",
+        "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+        "style.css": "159f59725f7c4154cbce71221504d5029fc437bf956626cfdd659b43c7450ed4",
+        "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+        "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+        "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+        "twee/patch-resize.twee": "4d604afceeb23ee0d17733fe248f24736ed01b1284be467daab6039223305da3",
+        "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+        "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+      },
+      "origin": "validated current source"
+    },
+    {
+      "name": "DolOptimizationSoftWet",
+      "version": "0.1.7",
+      "file": "DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v0.1.7.mod.zip",
+      "sha256": "7817939dd460496c30ce57c6b96935c2689b68b7104195a0cec9bc7845bfa725",
+      "bytes": 7952,
+      "boot": {
+        "name": "DolOptimizationSoftWet",
+        "version": "0.1.7",
+        "description": "原版优化 1.1.1.2 及以上的存档兼容外观：保留描述编辑、游戏内日期及原槽位控件。",
+        "styleFileList": [
+          "dol-optimization-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "dol-optimization-soft-wet.js"
+        ],
+        "scriptFileList_inject_early": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "原版优化",
+            "version": ">=1.1.1.2"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "members": {
+        "boot.json": "ce13c7c7a11f1d892f2ac19d24313335a12900935e4f58ce29c8b7b432c45b4f",
+        "dol-optimization-soft-wet.css": "59f285fe961cb2f26bafcae976295078c4b30a20e87536e66d2026e86a27a262",
+        "dol-optimization-soft-wet.js": "64b3be47e00e1ad60743a49644ae5f0095d13ad5fe88895a3136834571aaef21",
+        "README.md": "197cfef00bda0926d0a70d6ce10fc7888d0c4d93380b00689010b805e3617aa5",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      },
+      "origin": "validated current source",
+      "validatedFile": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v0.1.7.mod.zip"
+    },
+    {
+      "name": "LyraMouthCompat051213",
+      "version": "0.1.2",
+      "file": "LyraMouthCompat051213-Lyra-0.5.12.13-v0.1.2.mod.zip",
+      "sha256": "2a2517389e7d6e26c6752d21f133fbef43730dbbe20911c7f776a5b82babf2da",
+      "bytes": 3554,
+      "boot": {
+        "name": "LyraMouthCompat051213",
+        "version": "0.1.2",
+        "scriptFileList": [
+          "mouth-compat.js"
+        ],
+        "styleFileList": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "Lyra",
+            "version": "=0.5.12.13-1.0.1a-1004.1-goose-ucb"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          },
+          {
+            "modName": "maplebirch",
+            "version": ">=5.2.3 <6.0.0"
+          }
+        ]
+      },
+      "members": {
+        "boot.json": "704f9111b7e5fe71379b4e8e422b8863b40c1c158b5bbf856fa1fddea7a681c9",
+        "mouth-compat.js": "fc507845d33c5f1001c9830fe9a17d0b6ff0e9d7e7843fa22ec712fb55d787bb",
+        "README.md": "bd963562c15c36be10fd11c32abff44552c6862eaf439337e930dead658b3835",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      },
+      "origin": "unchanged separately maintained 0.1.2 resource package; not rebuilt from this checkout older 0.1.1 source"
+    },
+    {
+      "name": "MapleBirchSoftWet",
+      "version": "0.2.5",
+      "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v0.2.5.mod.zip",
+      "sha256": "46247b6d5bad0b1ea49cf08ca1f95960685daabc3806cf98d0cb460dd64a7243",
+      "bytes": 5479,
+      "boot": {
+        "name": "MapleBirchSoftWet",
+        "version": "0.2.5",
+        "description": "MapleBirch 5.2.3 及以上云存档页面的独立 Soft & Wet 外观适配。",
+        "styleFileList": [
+          "maplebirch-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "maplebirch-soft-wet.js"
+        ],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "maplebirch",
+            "version": ">=5.2.3"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "members": {
+        "boot.json": "be9c24ad0cd027f13c51ae85dfe4e45a2294dbffb8bf0695ecdc49f2c1694289",
+        "maplebirch-soft-wet.css": "31c714ac15a37633b0a5a5c18655092a6d797a76caabd41ed866c0342b364e09",
+        "maplebirch-soft-wet.js": "3c0163a93f1458c2389c7ecae47a2199159fb3a7e68b52ac103fd54fc254c44c",
+        "README.md": "8bce3899c85b5a99cd1726b34a9cc39526ed30546f08635bfc1f7878ad30bc64",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      },
+      "origin": "validated current source"
+    },
+    {
+      "name": "ModHubSoftWet",
+      "version": "0.2.5",
+      "file": "ModHubSoftWet-ModHub-1.3.0-plus-v0.2.5.mod.zip",
+      "sha256": "6f6bf18f3d690aa800212217061750bac5dc7b0fe51a44890cf1237d87c47dc6",
+      "bytes": 6256,
+      "boot": {
+        "name": "ModHubSoftWet",
+        "version": "0.2.5",
+        "description": "ModHub 1.3.0 及以上的独立柔和亚克力外观样式。",
+        "styleFileList": [
+          "modhub-soft-wet.css"
+        ],
+        "scriptFileList_inject_early": [],
+        "scriptFileList": [
+          "modhub-soft-wet.js"
+        ],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "ModHub",
+            "version": ">=1.3.0"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "members": {
+        "boot.json": "8b355682f3230a7aa5c2455a3f345c21831bfadfcadab82fd8c480e77ae45faa",
+        "modhub-soft-wet.css": "315e777b722edaa23bdeadbc287e13172cd74c9261a61c5d231cd4e848c7d36d",
+        "modhub-soft-wet.js": "3b230c4cb2992cc300e6af0e5b5704025d5595de42b2cb6577cc27bd0ae02838",
+        "README.md": "e2f346039671df4c6b2190f2aed2bd6a59a14036abc39db88a471ac9d2101658",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      },
+      "origin": "validated current source"
+    },
+    {
+      "name": "ReOverfitsSoftWet",
+      "version": "0.2.2",
+      "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v0.2.2.mod.zip",
+      "sha256": "d6f9f5e1c26766023e946530737889faae290a18d9b15e6b005ca5806902c766",
+      "bytes": 5163,
+      "boot": {
+        "name": "ReOverfitsSoftWet",
+        "version": "0.2.2",
+        "description": "ReOverfits 4.1.1 及以上槽位语义扩展：复用 Soft & Wet Vue 衣柜与原业务接口。",
+        "styleFileList": [
+          "reoverfits-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "reoverfits-soft-wet.js"
+        ],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "ReOverfits",
+            "version": ">=4.1.1"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=2.2.2"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ],
+        "nickName": "ReOverfits · Soft & Wet UI 兼容"
+      },
+      "members": {
+        "boot.json": "f5cd4812d5b1f90957c4d8cd389575eb6db3f859242f6033f42fa7b1df8f26e7",
+        "reoverfits-soft-wet.css": "2983923d0ec0c2fcb1c155aa850d4c1afb20657c9308953f211256ad895c24b0",
+        "reoverfits-soft-wet.js": "073add35eab57cb6a133cec1c4a3b99d941de61ea421087ce12fe0bfffa56031",
+        "README.md": "53a687a4dc43de3455659e85abdcb3c6237416ad94d0fc6bc94358b7abaced82",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      },
+      "origin": "unchanged retained original ZIP; no new target-environment acceptance in this round"
+    },
+    {
+      "name": "StoneFreeHost",
+      "version": "0.1.4-experimental",
+      "file": "StoneFreeHost-0.1.4-experimental.mod.zip",
+      "sha256": "ad78fca929e3819fce4da6f0d10affb4fc91318661583e4dacec896b64936153",
+      "bytes": 6326,
+      "boot": {
+        "name": "StoneFreeHost",
+        "version": "0.1.4-experimental",
+        "nickName": "Stone Free Framework Host",
+        "scriptFileList": [
+          "index.js"
+        ],
+        "styleFileList": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "ModLoader",
+            "version": ">=2.100.0"
+          }
+        ]
+      },
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "c10e22b69d121133551e1f2dcd7264e4082891fbb289c4c8096d0ec07a35d05d",
+        "boot.json": "7c115d20a217d2e6020f183f716033653c8fb937c39964bd526a4b366f4cf720",
+        "index.js": "5b7818db0802255c535db6ae73fcd6d7cb15b224fc0c9711ed71fce46cc2b495"
+      },
+      "origin": "unchanged published Host 0.1.4-experimental ZIP"
+    }
+  ],
+  "media": {
+    "KraftWork-3.0-character.png": {
+      "sha256": "6ddf2225992c152ef4d634bd53864bc0f78760bb3c6d0e8c8e2628775ee77044",
+      "bytes": 1421673,
+      "repositoryPath": "docs/media/3.0.0/KraftWork-3.0-character.png"
+    },
+    "KraftWork-3.0-floating-hub.png": {
+      "sha256": "cb475ec2e54674895561a493513de75904c627ced3db290cb012573b54e34498",
+      "bytes": 472746,
+      "repositoryPath": "docs/media/3.0.0/KraftWork-3.0-floating-hub.png"
+    },
+    "KraftWork-3.0-settings-horizontal.png": {
+      "sha256": "3d9961260caa24afae16d1bb1aa38e09086d75869166433b82fa8e326b03c58a",
+      "bytes": 1571868,
+      "repositoryPath": "docs/media/3.0.0/KraftWork-3.0-settings-horizontal.png"
+    },
+    "KraftWork-3.0-settings-vertical.png": {
+      "sha256": "0306f8bb01e0ca969db854cf5fd2398b7a69817e4363c7faef8ef984f5605c98",
+      "bytes": 1560642,
+      "repositoryPath": "docs/media/3.0.0/KraftWork-3.0-settings-vertical.png"
+    },
+    "KraftWork-3.0-weather-android.mp4": {
+      "sha256": "0225354ba51c4b7bc1d7bd6e28e252bb599d72cc2d0e806ed9c5c46e643f2673",
+      "bytes": 6425257,
+      "repositoryPath": "docs/media/3.0.0/KraftWork-3.0-weather-android.mp4"
+    },
+    "KraftWork-3.0-weather.png": {
+      "sha256": "e307418cdd5c561c5b043cb0e3107f38d07a3fa55009d9b4afd240d362323d64",
+      "bytes": 1619375,
+      "repositoryPath": "docs/media/3.0.0/KraftWork-3.0-weather.png"
+    }
+  },
+  "mediaScope": "final runtime ZIPs on Android test app; isolated test progress, controlled Weather; native original time scale, not physical touch or FPS proof",
+  "legacyPolicy": "Lyra 0.5.11.9 package excluded from this Release, retained separately in historical v2.7.0 Release",
+  "runtimeRebuiltForPublication": false,
+  "downloadFilenamePolicy": "ASCII names for CE/Optimization to avoid GitHub server normalization; approved ZIP bytes unchanged",
+  "publicationDocumentationCommit": "13283952fd7c2b1d6d586bc162e66bb5cdc3fcfd",
+  "presentationPolicy": "Player downloads contain 8 runtime/compatibility ZIPs plus optional SHA256SUMS. Screenshots/video live under docs/media/3.0.0; installation and technical records live in the repository."
+}

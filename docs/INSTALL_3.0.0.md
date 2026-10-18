@@ -31,7 +31,6 @@ DoLGameUI 3.0.0
 
 CE 原作者版与 rebuild.30 的技术名都为 `cheat extended`，必须二选一。Loader 的四段预发布比较会把 rebuild.30 判为低于 1.20.3.1，因此安装声明采用 >=1.20.3；运行时仍以原作者 1.20.3.1 接口与结构为基线，单列已知 rebuild.30。不要将这个安装门槛理解成对全部旧版或未来版的承诺。Modernization／CE-R1、DoLCheatReboot 未验收。
 
-`legacy-0.5.11.9/` 内的 LyraWardrobeMouthSoftWet 0.1.5 仅留给指定旧 Lyra，不与 0.5.12.13 主安装混用。其游戏／资源精确门槛有实际原因，不随通用前置放宽。
 
 ## 从 2.7 升级
 
@@ -45,4 +44,4 @@ Floating Hub 默认关闭，在“界面设置 → 入口 → 高级快捷工具
 
 ## 核对下载
 
-从 [v3.0.0 Release](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0) 下载。使用同页 SHA256SUMS.txt 核对文件；它覆盖全部附件负载，清单自身除外。源码 Tag 为 v3.0.0，精确提交、包来源及成员摘要见 SOURCE_IDENTITY.json。
+从 [v3.0.0 Release](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0) 下载。使用同页 SHA256SUMS.txt 核对文件；它覆盖全部附件负载，清单自身除外。源码 Tag 为 v3.0.0，精确提交、包来源及成员摘要见 [仓库身份记录](releases/3.0.0/SOURCE_IDENTITY.json)。

@@ -26,7 +26,7 @@ Kraft Work 重新整理了 DoL 的界面材质、导航和动态反馈：黑灰 
 
 ### 商店与衣柜
 
-商店提供商品信息参照、比较与详情展示，保留原报价和购买路径。衣柜仍然单击直接穿戴，“衣物详情与特质”使用独立抽屉，支持穿搭预览与参照比较。R16-W01 修复使快穿沿用当前原穿戴入口，保留已验证的第三方服装叠加语义。
+商店提供商品信息参照、比较与详情展示，保留原报价和购买路径。衣柜仍然单击直接穿戴，“衣物详情与特质”使用独立抽屉，支持穿搭预览与参照比较。快穿沿用原穿戴入口，保留已验证的第三方服装叠加行为。
 
 战斗继续默认使用原版控件。“战斗聚焦编辑（实验）”是默认关闭的可选项。本版不包含 Widget、自由布局编辑器或全局动作底栏。
 
@@ -36,28 +36,28 @@ Kraft Work 重新整理了 DoL 的界面材质、导航和动态反馈：黑灰 
 
 Cheat Extended 主要适配 **chris81605 原作者版**，实测 1.20.3.1；另行验证 **102326 独立维护的 1.20.3.1-rebuild.30**。后者不是原作者发行版。二者技术名相同，只能启用其中一版。没有验收 Modernization／CE-R1 或 DoLCheatReboot，也未穷举所有作弊功能。
 
-ReOverfits 0.2.2 与当前 Lyra 0.5.12.13 嘴部适配 0.1.2 沿用已固定的原包。旧 Lyra 0.5.11.9 衣柜嘴部包单独保留，**不要用于当前 0.5.12.13 安装**。
+ReOverfits 0.2.2 与当前 Lyra 0.5.12.13 嘴部适配 0.1.2 沿用已固定的原包。
 
 ## 画面与预览
 
 以下为最终发行 ZIP 在 Android 独立测试版中的真实画面，使用隔离新进度；背景和部分状态来自现场社区组合。
 
-![设置上下布局](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/KraftWork-3.0-settings-horizontal.png)
+![设置上下布局](media/3.0.0/KraftWork-3.0-settings-horizontal.png)
 
 <details>
 <summary>设置左右布局、角色信息与 Floating Hub</summary>
 
-![设置左右布局](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/KraftWork-3.0-settings-vertical.png)
+![设置左右布局](media/3.0.0/KraftWork-3.0-settings-vertical.png)
 
-![角色信息](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/KraftWork-3.0-character.png)
+![角色信息](media/3.0.0/KraftWork-3.0-character.png)
 
-![Floating Hub](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/KraftWork-3.0-floating-hub.png)
+![Floating Hub](media/3.0.0/KraftWork-3.0-floating-hub.png)
 
 </details>
 
-![游戏天气响应](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/KraftWork-3.0-weather.png)
+![游戏天气响应](media/3.0.0/KraftWork-3.0-weather.png)
 
-[观看 Android 原速天气视频（约 12 秒）](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/KraftWork-3.0-weather-android.mp4)。录像使用原游戏 Weather 接口准备雷雨，保留原时间尺度；不作为 FPS 或物理触控测量。
+[观看 Android 原速天气视频（约 12 秒）](media/3.0.0/KraftWork-3.0-weather-android.mp4)。录像使用原游戏 Weather 接口准备雷雨，保留原时间尺度；不作为 FPS 或物理触控测量。
 
 ## 安装要求
 
@@ -83,7 +83,7 @@ ReOverfits 0.2.2 与当前 Lyra 0.5.12.13 嘴部适配 0.1.2 沿用已固定的�
 
 加载关系：基础游戏依赖 → Host → UI；对应第三方 Mod 与 UI → 其外观兼容包。Host 与 UI 是普通玩家需要的两个运行包，开发样例、Factory、Author Kit 和独立研究包均不是必装项。
 
-2.7 的主题、字号、密度、侧栏、页面与存档显示偏好有沿用路径，已完成代表性升级／回退验证；未穷举所有历史配置，不迁移存档格式。新兼容包要求 UI 3.0，回退 2.7 时一并恢复旧兼容包。停用 3.0、重新启用原 2.7 包并重启即可回退。其它 Mod 仍使用 Host 时保留 Host。不要删除整个游戏数据，不承诺热卸载。
+原有主题、字号、密度、侧栏、页面与存档显示偏好有沿用路径，已完成代表性升级／回退验证；未穷举所有配置，不迁移存档格式。新兼容包要求 UI 3.0，回退时一并恢复对应兼容包。停用当前 UI、重新启用保留的原包并重启即可回退。其它 Mod 仍使用 Host 时保留 Host。不要删除整个游戏数据，不承诺热卸载。
 
 ## 已知问题与限制
 
@@ -106,12 +106,9 @@ ReOverfits 0.2.2 与当前 Lyra 0.5.12.13 嘴部适配 0.1.2 沿用已固定的�
 | [CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v0.1.0.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v0.1.0.mod.zip) | Cheat Extended 外观，选装；原作者／rebuild.30 二选一 |
 | [ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v0.2.2.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v0.2.2.mod.zip) | ReOverfits 槽位兼容，沿用原包，选装 |
 | [LyraMouthCompat051213-Lyra-0.5.12.13-v0.1.2.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/LyraMouthCompat051213-Lyra-0.5.12.13-v0.1.2.mod.zip) | 指定 Lyra 0.5.12.13 嘴部资源适配，沿用原包，选装 |
-| [INSTALL.md](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/INSTALL.md) | 安装、兼容包与回退 |
-| [VALIDATION.md](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/VALIDATION.md) | 验证范围与 Known limitations |
-| [SOURCE_IDENTITY.json](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/SOURCE_IDENTITY.json) | Git／冻结输入／包成员及素材身份 |
-| [SHA256SUMS.txt](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/SHA256SUMS.txt) | 全部下载负载的 SHA-256，校验清单自身除外 |
+| [SHA256SUMS.txt](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/SHA256SUMS.txt) | 文件完整性校验（可选） |
 
-旧 Lyra 0.5.11.9 专用包继续从 [2.7 历史 Release](https://github.com/102326/DoL-Game-UI/releases/tag/v2.7.0) 获取，不属于当前主安装。研究制品、作者工具、游戏本体、APK 与第三方原 Mod 不随本次运行附件分发。
+研究制品、作者工具、游戏本体、APK 与第三方原 Mod 不随本次运行附件分发。
 
 ## 反馈与许可
 
