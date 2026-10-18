@@ -1,6 +1,6 @@
 const {chromium}=require('playwright'),{buildSync}=require('esbuild'),assert=require('node:assert/strict');
 const code=buildSync({entryPoints:['src/shop/source.ts'],bundle:true,format:'iife',globalName:'ShopSourceTest',write:false}).outputFiles[0].text;
-(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});try{
+(async()=>{const browser=await chromium.launch(require('./browser-options.cjs'));try{
  const page=await browser.newPage();await page.setContent('<div id="shop"><div id="clothes-list"><div class="clothing-item"><span class="clothing-name"><a class="link-internal">Coat</a></span><span class="clothing-price">£15</span></div><div class="clothing-details"><div class="clothing-colours-div"></div><div class="buy-buttons"><a class="link-internal">Buy</a><span class="gold">£15</span></div><button id="unknown">Mod action</button></div></div></div>');await page.addScriptTag({content:code});
  const result=await page.evaluate(()=>{
   const shop=document.querySelector('#shop'),variables={clothes_choice:1,money:500,colouraction:'blue'},definition={name:'coat',cost:15};let current=true;

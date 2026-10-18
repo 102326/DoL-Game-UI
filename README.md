@@ -124,6 +124,7 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 技术栈为 Vue 3、TypeScript、Vite 与 Tailwind CSS。独立 Framework Host 提供公共 UI 能力，作者可只安装 Host，不依赖官方 UI；公共协议当前为 `0.1-experimental`，官方 UI API 为 v1。
 
 - [UI Runtime API](docs/UI_RUNTIME.md) 与 [接入示例](examples/ui-surfaces/README.md)
+- [持续集成：检查范围与本地运行](docs/CI.md)
 - [基础设施与所有权边界](docs/UI_INFRASTRUCTURE.md)、[独立 Adapter](docs/OPTIONAL_ADAPTERS.md)
 - [发行身份与验证记录](docs/KRAFT_WORK_3.0_PUBLISH.md)、[源码与包身份](docs/releases/3.0.0/SOURCE_IDENTITY.json)
 
