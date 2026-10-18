@@ -49,3 +49,7 @@
 发布前核对暂存清单、提交内容、Tag、ZIP 元数据、SHA、运行成员、LICENSE／NOTICE、正文与素材。先整理全部文件和文案，再快进推送 main 与 Tag、创建 GitHub draft、上传并逐项核对附件，最后公开为正式 Release。遇到实质性身份或内容差异即暂停，不静默替换；旧 Release 的状态和附件保持原样。
 
 发布回执保存实际 Release URL、Commit、Tag、附件摘要及旧 Release 保留检查；正文入口见 [正式说明](RELEASE_3.0.0.md)，具体安装见 [安装指南](INSTALL_3.0.0.md)。
+
+## 下载名规范化补记
+
+GitHub 上传时会将空格及中文文件名规范化。公开前将 CE 与原版优化两个附件改为稳定 ASCII 下载名，更新正文、SOURCE_IDENTITY 和 SHA256SUMS；ZIP 字节与所有运行成员摘要完全不变。原验证文件名由身份清单保留映射。`v3.0.0` 继续指向运行源码固化提交 `03cb4de1b4269d4ad5d77e35c87b32185f203739`，不改写已经推送的 Tag；main 的后续提交只同步下载名与文档。

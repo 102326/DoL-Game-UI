@@ -102,8 +102,8 @@ ReOverfits 0.2.2 与当前 Lyra 0.5.12.13 嘴部适配 0.1.2 沿用已固定的�
 | [StoneFreeHost-0.1.4-experimental.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/StoneFreeHost-0.1.4-experimental.mod.zip) | Framework Host，必装 |
 | [ModHubSoftWet-ModHub-1.3.0-plus-v0.2.5.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/ModHubSoftWet-ModHub-1.3.0-plus-v0.2.5.mod.zip) | ModHub 外观，选装 |
 | [MapleBirchSoftWet-maplebirch-5.2.3-plus-v0.2.5.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/MapleBirchSoftWet-maplebirch-5.2.3-plus-v0.2.5.mod.zip) | MapleBirch 云存档外观，选装 |
-| [DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v0.1.7.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/DolOptimizationSoftWet-%E5%8E%9F%E7%89%88%E4%BC%98%E5%8C%96-1.1.1.2-plus-v0.1.7.mod.zip) | 原版优化存档外观，选装 |
-| [CheatExtendedSoftWet-cheat extended-1.20.3-plus-v0.1.0.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/CheatExtendedSoftWet-cheat%20extended-1.20.3-plus-v0.1.0.mod.zip) | Cheat Extended 外观，选装；原作者／rebuild.30 二选一 |
+| [DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v0.1.7.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v0.1.7.mod.zip) | 原版优化存档外观，选装 |
+| [CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v0.1.0.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v0.1.0.mod.zip) | Cheat Extended 外观，选装；原作者／rebuild.30 二选一 |
 | [ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v0.2.2.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v0.2.2.mod.zip) | ReOverfits 槽位兼容，沿用原包，选装 |
 | [LyraMouthCompat051213-Lyra-0.5.12.13-v0.1.2.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/LyraMouthCompat051213-Lyra-0.5.12.13-v0.1.2.mod.zip) | 指定 Lyra 0.5.12.13 嘴部资源适配，沿用原包，选装 |
 | [INSTALL.md](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.0/INSTALL.md) | 安装、兼容包与回退 |
