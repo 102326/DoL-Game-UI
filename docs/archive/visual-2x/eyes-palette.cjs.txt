@@ -7,10 +7,10 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
   const boundary=await browser.newPage();
   await boundary.setContent('<html data-dol-midnight data-dgu-visual="2" data-dgu-visualGlow><body><aside id="sidebar"><button>Sidebar</button></aside><section id="modhub"><button>Unknown mod</button></section><section class="dgs-host">Owned</section></body></html>');
   const outside=()=>boundary.evaluate(()=>['sidebar','modhub'].flatMap(id=>[document.getElementById(id),document.querySelector('#'+id+' button')]).map(e=>({color:getComputedStyle(e).color,background:getComputedStyle(e).backgroundColor,font:getComputedStyle(e).fontSize})));
-  const before=await outside();await boundary.addStyleTag({path:path.join(__dirname,'../src/theme/eyes.css')});assert.deepEqual(await outside(),before);await boundary.close();
+  const before=await outside();await boundary.addStyleTag({path:path.join(__dirname,'../src/theme/kraft-work-surfaces.css')});assert.deepEqual(await outside(),before);await boundary.close();
   const overlay=await browser.newPage();
   await overlay.setContent('<html data-dol-midnight data-dgu-visualGlass><head><style>#customOverlay{background-color:rgb(60,60,60)}</style></head><body><div id="customOverlay" data-overlay="saves"><div id="customOverlayContent"><div id="saveList"><section class="dgs-host"></section></div></div></div></body></html>');
-  await overlay.addStyleTag({path:path.join(__dirname,'../src/theme/eyes.css')});
+  await overlay.addStyleTag({path:path.join(__dirname,'../src/theme/kraft-work-surfaces.css')});
   assert.equal(await overlay.locator('#customOverlayContent').evaluate(e=>getComputedStyle(e).backgroundColor),'rgba(31, 33, 37, 0.78)');
   await overlay.locator('#customOverlay').evaluate(e=>e.dataset.overlay='modloader');
   assert.equal(await overlay.locator('#customOverlay').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(60, 60, 60)');

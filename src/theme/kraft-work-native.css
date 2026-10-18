@@ -1,0 +1,420 @@
+/* Kraft Work 3.x native fallback: paint only, native state and layout stay intact. */
+
+html[data-dol-midnight] {
+    --000: #e5e5e5;
+    --100: #d8d8dc;
+    --150: #ceced3;
+    --200: #c2c2c8;
+    --300: #b8b8bd;
+    --400: #9b9ba2;
+    --500: #7b7b83;
+    --600: #626269;
+    --700: #4a4a50;
+    --750: #303033;
+    --800: #252526;
+    --850: #1f1f1f;
+    --900: #181818;
+    --link: #8ab4e8;
+    --link-hover: #b8d4f5;
+    --tooltip-background: #1f1f1f;
+    --tooltip-border: #4a4a50;
+    color: var(--000);
+    color-scheme: dark;
+    background-color: var(--900);
+}
+
+html[data-dol-midnight] body {
+    background: var(--900);
+    color: var(--000);
+}
+
+html[data-dol-midnight] #story {
+    color: var(--000);
+}
+
+html[data-dol-midnight] #passages,
+html[data-dol-midnight] .passage {
+    color: var(--000);
+}
+
+html[data-dol-midnight] .passage {
+    line-height: 1.65;
+}
+
+html[data-dol-midnight][data-dol-midnight-comfortable] .passage {
+    line-height: 1.8;
+}
+
+html[data-dol-midnight] #ui-bar {
+    background: var(--850);
+    border-right-color: var(--700);
+    color: var(--000);
+}
+
+html[data-dol-midnight] #ui-bar-body {
+    color: var(--000);
+}
+
+html[data-dol-midnight] #ui-bar hr,
+html[data-dol-midnight] #menu ul,
+html[data-dol-midnight] #menu li:not(:first-child) {
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] #ui-bar-history [id|="history"],
+html[data-dol-midnight] #ui-bar-toggle {
+    color: var(--000);
+    border-color: var(--600);
+    background-color: var(--850);
+}
+
+html[data-dol-midnight] #ui-bar-history [id|="history"]:hover,
+html[data-dol-midnight] #ui-bar-toggle:hover,
+html[data-dol-midnight] #menu li a:hover {
+    background-color: var(--750);
+    border-color: var(--link);
+}
+
+html[data-dol-midnight] #ui-bar-history [id|="history"]:disabled {
+    color: var(--600);
+    border-color: var(--700);
+    background-color: transparent;
+}
+
+html[data-dol-midnight] #menu li a {
+    color: inherit;
+    border-color: transparent;
+}
+
+/* Native meters use z-index:-10 and disappear behind our opaque page panels. */
+html[data-dol-midnight] .meter { z-index: 0; }
+
+html[data-dol-midnight] .settings-container,
+html[data-dol-midnight] .statsTable,
+html[data-dol-midnight] .saveBorder,
+html[data-dol-midnight] #wardrobewear,
+html[data-dol-midnight] #wardrobeItemDetails,
+html[data-dol-midnight] .main-shop-div,
+html[data-dol-midnight] #journalNotesTextarea {
+    color: var(--000);
+}
+
+html[data-dol-midnight] .settings-container,
+html[data-dol-midnight] .saveBorder,
+html[data-dol-midnight] .statsTable,
+html[data-dol-midnight] .clothing-shop-page,
+html[data-dol-midnight] .shop-category-tabs,
+html[data-dol-midnight] #wardrobeItems,
+html[data-dol-midnight] #wardrobeItemDetails {
+    background-color: var(--850);
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] .settings-container .numberslider-group,
+html[data-dol-midnight] .settings-container .numberslider-inline,
+html[data-dol-midnight] .optionsBar,
+html[data-dol-midnight] .searchBar,
+html[data-dol-midnight] .shop-pagination,
+html[data-dol-midnight] .shop-pages,
+html[data-dol-midnight] .wardrobe-options-container,
+html[data-dol-midnight] .wardrobe-options {
+    background: var(--800);
+    border-color: var(--700);
+    color: var(--000);
+}
+
+html[data-dol-midnight] .wardrobeItem,
+html[data-dol-midnight] .outfitContainer,
+html[data-dol-midnight] .clothing-item,
+html[data-dol-midnight] .category-group,
+html[data-dol-midnight] .saveGroup,
+html[data-dol-midnight] #saves-list-container .savesListRow,
+html[data-dol-midnight] .statsTable tr {
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] .outfitContainer,
+html[data-dol-midnight] .clothing-item,
+html[data-dol-midnight] .saveGroup,
+html[data-dol-midnight] .statsTable tbody {
+    background: var(--850);
+}
+
+html[data-dol-midnight] .clothing-item:hover,
+html[data-dol-midnight] .category-tab:hover,
+html[data-dol-midnight] .wardrobe-options-button:hover,
+html[data-dol-midnight] .outfitContainer button:hover {
+    background-color: var(--750);
+    border-color: var(--link);
+}
+
+html[data-dol-midnight] .category-tab,
+html[data-dol-midnight] .shop-pages-number,
+html[data-dol-midnight] .wardrobe-options-button,
+html[data-dol-midnight] .clothingshop-options-button,
+html[data-dol-midnight] .shop-legend-button {
+    color: inherit;
+    border-color: var(--700);
+    background-color: var(--800);
+}
+
+html[data-dol-midnight] .category-tab.active,
+html[data-dol-midnight] .tab button.tab-selected,
+html[data-dol-midnight] .macro-button-selected {
+    color: var(--link-hover);
+    border-color: var(--link);
+    background-color: #303033;
+}
+
+html[data-dol-midnight] .buy-button,
+html[data-dol-midnight] .try-button,
+html[data-dol-midnight] .filters-button,
+html[data-dol-midnight] .clothingshop-options-button,
+html[data-dol-midnight] .shop-legend-button,
+html[data-dol-midnight] .buy-buttons,
+html[data-dol-midnight] .try-buttons {
+    border-color: var(--700);
+    background-color: var(--800);
+    color: inherit;
+}
+
+html[data-dol-midnight] .buy-button:hover,
+html[data-dol-midnight] .try-button:hover,
+html[data-dol-midnight] .filters-button:hover,
+html[data-dol-midnight] .clothingshop-options-button:hover,
+html[data-dol-midnight] .shop-legend-button:hover {
+    border-color: var(--link);
+    background-color: var(--750);
+}
+
+html[data-dol-midnight] .shop-legend-button.active {
+    border-color: var(--link);
+    background-color: #303033;
+}
+
+html[data-dol-midnight] .statsTable caption,
+html[data-dol-midnight] .statsTable th,
+html[data-dol-midnight] .statsTable td,
+html[data-dol-midnight] .saveBorder,
+html[data-dol-midnight] .saveGroup {
+    color: inherit;
+}
+
+html[data-dol-midnight] #saves-list-container .savesListRow {
+    background-color: var(--850);
+    border-top-color: var(--700);
+}
+
+html[data-dol-midnight] .saveMenuButton {
+    border-color: var(--link);
+    background-color: #303033 !important;
+    color: var(--link-hover);
+}
+
+html[data-dol-midnight] .saveMenuConfirm {
+    background-color: var(--800);
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] .tab.inventory,
+html[data-dol-midnight] details.journal,
+html[data-dol-midnight] summary.journal,
+html[data-dol-midnight] ul.journal,
+html[data-dol-midnight] .hpi_gridHeader {
+    color: inherit;
+    border-color: var(--700);
+}
+
+html[data-dol-midnight] .tab.inventory button,
+html[data-dol-midnight] summary.journal {
+    background-color: var(--800);
+}
+
+html[data-dol-midnight] input:not([type="checkbox"]):not([type="radio"]),
+html[data-dol-midnight] select,
+html[data-dol-midnight] textarea {
+    background-color: var(--800);
+    border-color: var(--700);
+    color: var(--000);
+}
+
+html[data-dol-midnight] input:not([type="checkbox"]):not([type="radio"]):focus,
+html[data-dol-midnight] select:focus,
+html[data-dol-midnight] textarea:focus {
+    border-color: var(--link);
+    background-color: var(--750);
+}
+
+html[data-dol-midnight] input[type="checkbox"],
+html[data-dol-midnight] input[type="radio"] {
+    accent-color: var(--link);
+}
+
+/* Size ordinary actions only. Specialized icon, colour and stepper controls retain dimensions. */
+html[data-dol-midnight] .passage button.macro-button:not(.imgButton):not(.customOverlayClose):not([style]),
+html[data-dol-midnight] #saveList .saveMenuButton,
+html[data-dol-midnight] .buy-button,
+html[data-dol-midnight] .try-button {
+    min-height:44px;
+    border-radius:9px;
+}
+
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) {
+    color: var(--000);
+    background: var(--sf-reading);
+    border-color: var(--kw-hairline);
+}
+
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayTitle,
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayContent,
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #overlayTabs {
+    background-color: transparent;
+    border-color: var(--kw-hairline);
+}
+
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #overlayTabs button {
+    color: inherit;
+    border-color: var(--700);
+    background-color: var(--800);
+}
+
+html[data-dol-midnight] .passage :focus-visible,
+html[data-dol-midnight] #ui-bar :focus-visible,
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) :focus-visible {
+    outline: 3px solid var(--link-hover);
+    outline-offset: 2px;
+}
+
+html[data-dol-midnight] .passage,
+html[data-dol-midnight] #ui-bar-body,
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayContent {
+    overflow-wrap: anywhere;
+}
+
+/* The debugger is inside .passage; stop inherited wrapping collapsing its grids. */
+html[data-dol-midnight] #customOverlay[data-overlay="canvasModel"] #customOverlayContent {
+    overflow-wrap: normal;
+}
+
+@media (max-width: 640px) {
+    html[data-dol-midnight][data-dmt-layout] #customOverlay:not([data-overlay="modloader"]),
+    html[data-dol-midnight] .settings-container,
+    html[data-dol-midnight] .main-shop-div,
+    html[data-dol-midnight] .clothing-shop-page {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    html[data-dol-midnight] .shop-category-tabs,
+    html[data-dol-midnight] .shop-pagination,
+    html[data-dol-midnight] .tab {
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+    }
+
+    html[data-dol-midnight] #saves-list-container .savesListRow,
+    html[data-dol-midnight] .saveGroup {
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html[data-dol-midnight] #story,
+    html[data-dol-midnight] #ui-bar {
+        transition-duration: 0s !important;
+        animation-duration: 0s !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Surface treatment does not change dialog positioning, visibility or content layout. */
+html[data-dol-midnight] #passages > .passage {
+    background-color:#1f1f1f;
+    border:1px solid var(--700);
+    border-radius:14px;
+    padding:clamp(12px,2.5vw,24px);
+    box-sizing:border-box;
+}
+html[data-dol-midnight] #ui-dialog-titlebar,
+html[data-dol-midnight] #ui-dialog-body {
+    background-color:#1f1f1f;
+    color:var(--000);
+    border-color:var(--700);
+}
+html[data-dol-midnight] #ui-dialog-titlebar {border-radius:12px 12px 0 0;}
+html[data-dol-midnight] #ui-dialog-body {border-radius:0 0 12px 12px;}
+html[data-dol-midnight] #ui-dialog-close {color:var(--000);background-color:#303033;}
+html[data-dol-midnight] #ui-dialog-body :focus-visible {outline:2px solid var(--link-hover);outline-offset:2px;}
+html[data-dol-midnight] .settings-container,
+html[data-dol-midnight] .outfitContainer,
+html[data-dol-midnight] .clothing-item,
+html[data-dol-midnight] .saveGroup,
+html[data-dol-midnight] .itemInventory,
+html[data-dol-midnight] #wardrobeItemDetails {border-radius:12px;}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) {border-radius:12px;}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #overlayTabs button.tab-selected {background-color:#303033;color:var(--link-hover);border-bottom-color:var(--link);}
+
+html[data-dol-midnight] input[type="text"],
+html[data-dol-midnight] input[type="search"],
+html[data-dol-midnight] input[type="password"],
+html[data-dol-midnight] textarea,
+html[data-dol-midnight] select {border-radius:7px;}
+html[data-dol-midnight] .settings-container {padding:12px;border:1px solid var(--700);box-sizing:border-box;}
+html[data-dol-midnight] details.journal {background:var(--850);border:1px solid var(--700);border-radius:10px;padding:8px;}
+
+/* Native radio-action pages: retain labels, inputs, handlers and keyboard bindings. */
+html[data-dol-midnight] #passages:has(#masturbationButtons):not(:has(.dcu-root)) label:has(> input[type="radio"]){display:inline-block;box-sizing:border-box;max-width:100%;margin:3px 2px;padding:calc(6px * var(--dgu-button-scale,1)) calc(10px * var(--dgu-button-scale,1));min-height:36px;border:1px solid var(--700);border-radius:10px;background:var(--850);vertical-align:middle;overflow-wrap:anywhere;cursor:pointer}
+html[data-dol-midnight] #passages:has(#masturbationButtons):not(:has(.dcu-root)) label:has(> input[type="radio"]:checked){border-color:var(--link);background:#343047;box-shadow:inset 3px 0 var(--link)}
+html[data-dol-midnight] #passages:has(#masturbationButtons):not(:has(.dcu-root)) label:has(> input[type="radio"]:focus-visible){outline:2px solid var(--link);outline-offset:2px}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons){position:sticky;bottom:0;display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));background:var(--900);max-width:100%;box-sizing:border-box}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons)>div{position:static;display:flex;align-items:center;min-width:0;max-width:100%;border:0;background:transparent;box-sizing:border-box}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons)>div>a{box-sizing:border-box;display:flex;align-items:center;justify-content:center;min-height:44px;max-width:100%;padding:calc(10px * var(--dgu-button-scale,1)) calc(16px * var(--dgu-button-scale,1));border:1px solid var(--700);border-radius:12px;background:var(--800);white-space:normal;overflow-wrap:anywhere}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons)>div>a:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+html[data-dol-midnight] #masturbationButtons:not(.dcu-dock-native #masturbationButtons)>#next>a{background:var(--dgu-accent,#c9c9cd);color:#171722;border-color:var(--dgu-accent,#c9c9cd)}
+
+/* Kitchen layout only: original controls and replace targets retain ownership. */
+html[data-dol-midnight] #kitchenDisplay{height:auto;min-width:0;border:1px solid var(--700);border-radius:14px;background:var(--850);padding:12px}
+html[data-dol-midnight] #kitchenDisplay>#body{height:auto;overflow:visible;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.65fr);grid-template-rows:min-content 1fr;gap:12px;align-items:start}
+html[data-dol-midnight] #kitchenDisplay #mainSection{display:contents}
+html[data-dol-midnight] #kitchenDisplay #search{grid-column:1;grid-row:1;height:auto;min-width:0;white-space:nowrap;border:1px solid var(--700);border-radius:10px;padding:10px;gap:10px}
+html[data-dol-midnight] #kitchenDisplay #search input{width:0;flex:1;min-width:40px;box-sizing:border-box}
+html[data-dol-midnight] #kitchenDisplay #search>a{flex-shrink:0}
+html[data-dol-midnight] #kitchenDisplay #itemList{grid-column:1;grid-row:2;height:auto;overflow:visible;display:flex;flex-direction:column;flex-wrap:nowrap;gap:10px;padding:0;min-width:0}
+html[data-dol-midnight] #kitchenDisplay #itemList>div{flex:none;border-radius:10px;padding:10px;overflow-wrap:anywhere}
+html[data-dol-midnight] #kitchenDisplay #altSection{grid-column:2;grid-row:1 / span 2;height:auto;width:auto;min-width:0;border:1px solid var(--700);border-radius:10px;background:var(--800);overflow-wrap:anywhere}
+html[data-dol-midnight] #kitchenDisplay #basket{height:auto;padding:10px;border-color:var(--700)}
+html[data-dol-midnight] #kitchenDisplay #basketItems{height:auto;overflow:visible;padding:12px;min-width:0}
+html[data-dol-midnight] #kitchenDisplay :is(select,input[type=number]){max-width:100%;box-sizing:border-box}
+html[data-dol-midnight] #kitchenDisplay .item .details{min-width:0;align-content:start}
+/* The options state has no recipe details, so it needs no dedicated column. */
+html[data-dol-midnight] #kitchenDisplay>#body:has(#listbox-optionsingredientssearch){display:flex;flex-direction:column;align-items:stretch}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #search{order:0}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #altSection{order:1;display:block!important;position:static;max-height:none;min-height:0;width:auto}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #itemList{order:2}
+html[data-dol-midnight] #kitchenDisplay #basketItems:has(#listbox-optionsingredientssearch){display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px}
+html[data-dol-midnight] #kitchenDisplay #basketItems:has(#listbox-optionsingredientssearch)>br{display:none}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #basket{display:none}
+html[data-dol-midnight] #kitchenDisplay #body:has(#listbox-optionsingredientssearch) #mobileCloser{display:none!important}
+@media(max-width:600px){
+ html[data-dol-midnight] #kitchenDisplay{padding:8px}
+ html[data-dol-midnight] #kitchenDisplay>#body{display:flex;flex-direction:column;align-items:stretch;height:auto}
+ html[data-dol-midnight] #kitchenDisplay #search{order:0}
+ html[data-dol-midnight] #kitchenDisplay #altSection{order:1;position:static;min-height:0;max-height:none;width:auto}
+ html[data-dol-midnight] #kitchenDisplay #itemList{order:2}
+ html[data-dol-midnight] #kitchenDisplay #mobileCloser{display:none!important}
+ html[data-dol-midnight] #kitchenDisplay #mainSection .item .details{width:100%}
+}
+
+.dmt-experiments>summary{cursor:pointer}.dmt-experiments>summary span{display:block;margin-top:.35em;font-size:.85em;opacity:.7}
+
+/* The shared native window is the 3.x fallback for tabs supplied by Mods too.
+   No structural selectors, node moves or third-party event interception. */
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]){color:var(--sf-ink);background:var(--sf-reading);border:1px solid var(--kw-hairline);border-radius:20px}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) :is(#customOverlayTitle,#overlayTabs){background:transparent;border-color:var(--kw-hairline)}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayContent{background:transparent;color:var(--sf-ink)}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayContent :is(button:not(.imgButton),input[type=button],input[type=submit],input[type=text],input[type=number],input[type=password],select,textarea){font:inherit;color:var(--sf-ink);background:var(--kw-control);border:1px solid var(--kw-hairline);border-radius:11px;min-height:44px;box-sizing:border-box;max-width:100%}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #customOverlayContent :is(button:not(.imgButton),input[type=button],input[type=submit]):not(:disabled):is(:hover,:focus-visible,:active){background:var(--kw-control-hover);border-color:#8baea35c}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #overlayTabs button{background:transparent;border:1px solid transparent;border-radius:11px;color:var(--sf-ink)}
+html[data-dol-midnight] #customOverlay:not([data-overlay="modloader"]) #overlayTabs button.tab-selected{background:#8baea312;border-color:#8baea32e;color:var(--sf-ink)}
+@supports(backdrop-filter:blur(1px)){html[data-dol-midnight][data-dgu-visualGlass] #customOverlay:not([data-overlay="modloader"]){background:linear-gradient(125deg,#ffffff06,transparent 70%),var(--kw-shell);backdrop-filter:blur(var(--sf-blur,28px)) saturate(.85)}}

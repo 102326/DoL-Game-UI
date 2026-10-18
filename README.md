@@ -1,11 +1,11 @@
-# Soft & Wet 3.0 — Kraft Work
+# Soft & Wet 3.0.1 — Kraft Work
 
 [![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)
 ![Game](https://img.shields.io/badge/DoL-0.5.12.13-blue)
 
 **Soft & Wet UI** 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，重新组织衣柜、服装店、角色信息和常用窗口。半透明材质让游戏背景自然参与画面，导航焦点、按钮反馈与空间转场让操作更连贯。
 
-Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。购买、穿戴、角色数值和存档仍由原游戏及对应 Mod 处理。
+Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。购买、穿戴、角色数值和存档仍由原游戏及对应 Mod 处理。3.0.1 补齐 ModHub 管理器／帮助中心、存档三页与默认兼容外观，统一采用 3.X 视觉基线。
 
 [下载 3.0](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0) · [安装步骤](#安装与升级) · [完整更新说明](docs/RELEASE_3.0.0.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
@@ -43,7 +43,7 @@ Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。�
 
 ### 战斗
 
-默认使用原版战斗控件，保留原动作、判定与结算。“战斗聚焦编辑（实验）”是**默认关闭**的可选功能，可在设置中主动开启，不改变游戏战斗规则。
+默认开启战斗界面与动画，原生动作控件**全部展开、平铺显示**，保留原动作、判定与结算。聚焦编辑仍为可选模式；模式选择会保存，聚焦时也能上下滚动。已有关闭偏好继续生效。
 
 ## 材质、天气与交互
 
@@ -59,7 +59,7 @@ Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。�
 
 设置支持**上下布局**和**左右布局**，共享同一套真实控件、偏好与预览；修改后自动保存。打开设置时阻挡背后游戏输入，长内容可以滚动。
 
-Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、侧边停靠和已支持窗口的工具交接。**新安装默认关闭**，在“界面设置 → 入口 → 高级快捷工具”开启“启用悬浮球”。点击展开，拖动移动，也可使用键盘方向键调整。
+Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、侧边停靠和已支持窗口的工具交接。**新安装默认显示**，在“界面设置 → 入口 → 高级快捷工具”可调整或关闭。已有隐藏偏好保留。点击展开，拖动移动，也可使用键盘方向键调整。
 
 <details>
 <summary>查看左右设置布局与 Floating Hub</summary>
@@ -74,12 +74,14 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 
 | 界面 | 主要内容 |
 | --- | --- |
-| 存档管理 | 列表、详情和可选显示布局，保留原存读档、描述与回退入口 |
+| 存档管理 | 存档、导出／载入与已适配云存档共用页头；列表、详情及底部操作可滚动触达 |
 | 游戏选项与作弊 | 原生控件外观和响应式布局，生效规则由游戏或目标 Mod 负责 |
 | 阅读与界面设置 | 字号、按钮大小、阅读宽度、间距、材质、动效与独立页面开关 |
 | 进阶选项 | 衣柜分页和按需启用的兼容／性能实验；不以减少 DOM 工作量代替整体性能承诺 |
 
 本版不包含 Widget、自由布局编辑器或全局动作底栏。
+
+![Kraft Work 存档管理与导出／载入](docs/media/3.0.1/KraftWork-3.0.1-transfer.png)
 
 ## 安装与升级
 
@@ -94,11 +96,11 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 
 1. 备份存档，保留原 UI 和对应兼容包以便回退。
 2. 停用原 `DoLGameUI`，每个技术身份只启用一个版本。
-3. 从 [3.0 Release](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0) 下载并导入 `StoneFreeHost-0.1.4-experimental.mod.zip` 与 `DoLGameUI-3.0.0.mod.zip`，不要解压。
+3. 从 [最新 Release](https://github.com/102326/DoL-Game-UI/releases/latest) 下载并导入 `StoneFreeHost-0.1.4-experimental.mod.zip` 与 `DoLGameUI-3.0.1.mod.zip`，不要解压。
 4. Host 排在 UI 前。可选兼容包排在对应目标 Mod 和 UI 之后；没有目标 Mod 就不安装相应兼容包。
 5. 重启游戏，检查界面与版本，再载入自己的进度。显示偏好保存在当前浏览器或应用中，与游戏存档分离。
 
-`StoneFreeHost` 是 Framework Host 保留的技术包名；对外版本代号为 **Kraft Work**。开发样例、Factory 和 Author Kit 不是玩家必装项。详细说明见 [安装与回退](docs/INSTALL_3.0.0.md)。
+`StoneFreeHost` 是 Framework Host 保留的技术包名；对外版本代号为 **Kraft Work**。开发样例、Factory 和 Author Kit 不是玩家必装项。详细说明见 [安装与回退](docs/INSTALL_3.0.1.md)。
 
 ## 可选兼容包
 
@@ -126,7 +128,7 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 - [UI Runtime API](docs/UI_RUNTIME.md) 与 [接入示例](examples/ui-surfaces/README.md)
 - [持续集成：检查范围与本地运行](docs/CI.md)
 - [基础设施与所有权边界](docs/UI_INFRASTRUCTURE.md)、[独立 Adapter](docs/OPTIONAL_ADAPTERS.md)
-- [发行身份与验证记录](docs/KRAFT_WORK_3.0_PUBLISH.md)、[源码与包身份](docs/releases/3.0.0/SOURCE_IDENTITY.json)
+- [发行验证记录](docs/KRAFT_WORK_3.0.1_TABLET_COMPAT_20261019.md)、[源码与包身份](docs/releases/3.0.1/SOURCE_IDENTITY.json)
 
 <details>
 <summary>3.0 源码构建</summary>

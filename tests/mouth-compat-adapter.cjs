@@ -22,6 +22,6 @@ for(const args of [['unknown'],[undefined,'unknown'],[undefined,undefined,false]
  const out=load(...args);assert.equal(out.calls.length,0);assert.equal(out.messages.length,1);
 }
 assert.doesNotThrow(()=>vm.runInNewContext(source,{window:{},console:{warn(){}}}));
-for(const version of ['5.2.3','5.4.2','5.4.3','5.9.0+build.1'])assert.equal(load(undefined,version).calls.length,1,version);
+for(const version of ['5.2.3','5.4.2','5.4.3','5.5.0','5.9.0+build.1'])assert.equal(load(undefined,version).calls.length,1,version);
 for(const version of ['5.2.2','6.0.0','5.4.3-beta.1','unknown'])assert.equal(load(undefined,version).calls.length,0,version);
 console.log('PASS main mouth adapter: published 0.1.2 minimum/range gate, missing API, resource fallback, main-only layer patch and no UI/game-state dependency');

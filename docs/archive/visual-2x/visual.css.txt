@@ -1,0 +1,53 @@
+/* First visual experiment owns only the save UI; no game or mod-manager nodes. */
+html[data-dgu-visual="1"] { --dgu-save-blur: 8px; --dgu-save-duration: 160ms; }
+html[data-dgu-visual="2"] { --dgu-save-blur: 18px; --dgu-save-duration: 220ms; }
+html[data-dgu-visual]:not([data-dgu-visual="0"]) .dgs-host {
+ --dgu-save-accent: var(--dgu-accent, #bcb7ff);
+}
+html[data-dgu-visualGlass] .dgs-host :is(.dgs-item,.dgs-detail[open],.dgs-list-tools) {
+ background: linear-gradient(135deg,rgba(48,49,69,.86),rgba(24,25,36,.9));
+ border-color: rgba(190,190,230,.22);
+}
+/* Blur only the detail surface, never every scrolling card. */
+html[data-dgu-visualGlass] .dgs-host .dgs-detail[open] {
+ -webkit-backdrop-filter: blur(var(--dgu-save-blur));
+ backdrop-filter: blur(var(--dgu-save-blur));
+}
+html[data-dgu-visualGlow] .dgs-host .dgs-item[aria-pressed="true"] {
+ border-color: var(--dgu-save-accent);
+ background: linear-gradient(120deg,#393653,#262735);
+ box-shadow: inset 3px 0 var(--dgu-save-accent),0 0 12px #bcb7ff18;
+}
+html[data-dgu-visualGlow] .dgs-host .dgs-item.dgs-recent {
+ border-color: #71bca4;
+ box-shadow: inset 3px 0 #71bca4;
+}
+html[data-dgu-visualGlow] .dgs-host .dgs-item.dgs-recent[aria-pressed="true"] {
+ outline: 2px solid var(--dgu-save-accent); outline-offset: -2px;
+}
+html[data-dgu-visualGlow] .dgs-host .dgs-detail[open] {
+ box-shadow: inset 0 1px #ffffff12,0 12px 36px #00000030;
+}
+html[data-dgu-visualGlow] .dgs-host .dgs-detail[open]>h2 {
+ padding: 1.1rem .85rem;
+ border-radius: 10px;
+ border: 1px solid #bcb7ff28;
+ background: radial-gradient(ellipse at top right,#bcb7ff26,transparent 70%),linear-gradient(120deg,#323149,#222331);
+}
+html[data-dgu-visualMotion] .dgs-host button {
+ transition: transform var(--dgu-save-duration) ease-out,border-color var(--dgu-save-duration) ease-out,background-color var(--dgu-save-duration) ease-out;
+}
+html[data-dgu-visualMotion] .dgs-host button:not(:disabled):active { transform: scale(.985); }
+html[data-dgu-visualMotion] .dgs-host .dgs-detail[open] {
+ animation: dgu-save-enter var(--dgu-save-duration) ease-out both;
+}
+html[data-dgu-visual="2"][data-dgu-visualMotion] .dgs-host .dgs-item[aria-pressed="true"] {
+ animation: dgu-save-select 280ms ease-out;
+}
+@keyframes dgu-save-enter { from { opacity:0;transform:translateY(8px); } to { opacity:1;transform:none; } }
+@keyframes dgu-save-select { from { transform:translateX(3px); } to { transform:none; } }
+@media (prefers-reduced-motion:reduce) {
+ html[data-dgu-visualMotion] .dgs-host button { transition:none; }
+ html[data-dgu-visualMotion] .dgs-host :is(.dgs-detail[open],.dgs-item[aria-pressed="true"]) { animation:none; }
+ html[data-dgu-visualMotion] .dgs-host button:not(:disabled):active { transform:none; }
+}

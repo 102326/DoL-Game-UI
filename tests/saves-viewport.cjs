@@ -18,7 +18,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
     await page.evaluate(value=>theme.setPreference('savesV2',value),v2);
     if(v2)await page.reload();
     if(v2){await page.waitForSelector('.dgs-item');await page.addStyleTag({path:'dist/framework/official-ui/style.css'})}
-    await page.waitForTimeout(150);
+    await page.waitForTimeout(150);assert.equal(await page.locator('.dgs-titlebar').count(),1,'one shared save management header');
     assert.equal(await page.evaluate(()=>theme.getPreferences().savesV2),v2,'actual preference persists across fixture reload');
     assert.equal(await page.evaluate(()=>theme.getPreferences().fontScale),100,'no scaling workaround');
     await page.locator('.dgs-item').first().click();

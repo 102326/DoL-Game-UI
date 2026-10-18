@@ -1,12 +1,12 @@
-/* First visual experiment owns only the save UI; no game or mod-manager nodes. */
+/* Kraft Work save feedback; quality settings change effects, never the theme generation. */
 html[data-dgu-visual="1"] { --dgu-save-blur: 8px; --dgu-save-duration: 160ms; }
 html[data-dgu-visual="2"] { --dgu-save-blur: 18px; --dgu-save-duration: 220ms; }
 html[data-dgu-visual]:not([data-dgu-visual="0"]) .dgs-host {
- --dgu-save-accent: var(--dgu-accent, #bcb7ff);
+ --dgu-save-accent: var(--dgu-accent, var(--kw-accent));
 }
 html[data-dgu-visualGlass] .dgs-host :is(.dgs-item,.dgs-detail[open],.dgs-list-tools) {
- background: linear-gradient(135deg,rgba(48,49,69,.86),rgba(24,25,36,.9));
- border-color: rgba(190,190,230,.22);
+ background: var(--kw-island);
+ border-color: var(--kw-hairline);
 }
 /* Blur only the detail surface, never every scrolling card. */
 html[data-dgu-visualGlass] .dgs-host .dgs-detail[open] {
@@ -15,8 +15,8 @@ html[data-dgu-visualGlass] .dgs-host .dgs-detail[open] {
 }
 html[data-dgu-visualGlow] .dgs-host .dgs-item[aria-pressed="true"] {
  border-color: var(--dgu-save-accent);
- background: linear-gradient(120deg,#393653,#262735);
- box-shadow: inset 3px 0 var(--dgu-save-accent),0 0 12px #bcb7ff18;
+ background: #8baea314;
+ box-shadow: inset 3px 0 var(--dgu-save-accent);
 }
 html[data-dgu-visualGlow] .dgs-host .dgs-item.dgs-recent {
  border-color: #71bca4;
@@ -31,8 +31,8 @@ html[data-dgu-visualGlow] .dgs-host .dgs-detail[open] {
 html[data-dgu-visualGlow] .dgs-host .dgs-detail[open]>h2 {
  padding: 1.1rem .85rem;
  border-radius: 10px;
- border: 1px solid #bcb7ff28;
- background: radial-gradient(ellipse at top right,#bcb7ff26,transparent 70%),linear-gradient(120deg,#323149,#222331);
+ border: 1px solid #ffffff18;
+ background: var(--kw-island);
 }
 html[data-dgu-visualMotion] .dgs-host button {
  transition: transform var(--dgu-save-duration) ease-out,border-color var(--dgu-save-duration) ease-out,background-color var(--dgu-save-duration) ease-out;

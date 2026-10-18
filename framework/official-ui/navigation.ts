@@ -13,7 +13,9 @@ export function nativeNavigation(){
  const labels:Record<string,string>={属性:'characteristics',Attributes:'characteristics',社交:'social',Social:'social',特质:'traits',Traits:'traits',日志:'journal',Journal:'journal',统计:'statistics',Statistics:'statistics',成就:'gameFeats',Feats:'gameFeats',选项:'options',Options:'options',存档:'saves',Saves:'saves',作弊:'cheats',Cheats:'cheats'};
  const tabNames=new Set(['社交','特征','特质','成就','日志','笔记','统计','额外统计 (包含剧透)','模组统计','作弊','选项','游戏设置','Social','Characteristics','Traits','Feats','Journal','Notes','Statistics','Extra Statistics (Spoilers)','Mod Statistics','Cheats','Options']);
  const formTabs:Record<string,Set<string>>={
+  journal:new Set(['可用物品','Available Items']),
   cheats:new Set(['状态','外观','NPC','传送','其它','模组作弊','Stats','Appearance','Teleport','Other','Mods Cheats']),
+  saves:new Set(['存档','导出/载入','云存档','Saves','Export/Import','Cloud Saves']),
   options:new Set(['通用','主题','性能','高级','信息','原版优化','模组设置','General','Theme','Performance','Advanced','Information','Mod Settings'])
  };
  function restore(group:Group,node?:HTMLElement){for(const[n,[role,selected]]of group.attrs){if(node&&node!==n)continue;if(role===null)n.removeAttribute('data-kw-nav-control');else n.setAttribute('data-kw-nav-control',role);if(selected===null)n.removeAttribute('data-kw-selected');else n.setAttribute('data-kw-selected',selected);group.attrs.delete(n)}}
@@ -30,7 +32,7 @@ export function nativeNavigation(){
  function mark(g:Group,n:HTMLElement,role:string,selected:boolean){if(!g.attrs.has(n))g.attrs.set(n,[n.getAttribute('data-kw-nav-control'),n.getAttribute('data-kw-selected')]);n.setAttribute('data-kw-nav-control',role);if(selected)n.setAttribute('data-kw-selected','true');else n.removeAttribute('data-kw-selected')}
  function refresh(){
   if(dead)return;if(!isMasterEnabled()){release('tabs');release('sidebar');release('ce-inline');weather.clear();return}
-  const overlay=document.querySelector<HTMLElement>('#customOverlay:not(.hidden):is(.dgs-overlay,.dgc-overlay,.dgp-overlay),'+adaptedOverlaySelector+':not(.hidden)'),kind=overlay?.dataset.overlay;
+  const overlay=document.querySelector<HTMLElement>('#customOverlay:not(.hidden):is(.dgs-overlay,.dgc-overlay,.dgp-overlay,.dgs-native-tools),'+adaptedOverlaySelector+':not(.hidden)'),kind=overlay?.dataset.overlay;
   const sidebar=group('sidebar',document.querySelector<HTMLElement>('#ui-bar #overlayButtons,#ui-bar #startCaption')??undefined);
   if(sidebar){const buttons=[...sidebar.node.querySelectorAll<HTMLElement>('[data-kw-entry=native-caption],[data-kw-entry=official-settings]')];for(const n of sidebar.attrs.keys())if(!buttons.includes(n))restore(sidebar,n);
    let current='';for(const n of buttons){const own=n.dataset.kwEntry==='official-settings',selected=document.documentElement.hasAttribute('data-dgu-settings-open')?own:!own&&!!kind&&(labels[n.textContent?.trim()??'']===kind||kind==='journalNotes'&&labels[n.textContent?.trim()??'']==='journal');mark(sidebar,n,'entry',selected);if(selected)current=n.textContent??''}sidebar.state.active=current;

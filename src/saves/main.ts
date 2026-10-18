@@ -29,6 +29,22 @@ export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Par
  const observedSaves=new Map<string,number>();
  const recentFeedback=new Map<string,{kind:'saved'|'deleted';until:number}>();
  const moved:{node:HTMLElement;anchor:Comment}[]=[];
+ let titlebar:HTMLElement|null=null;
+ function releaseTitle(){titlebar?.remove();titlebar=null}
+ function syncTitle(){
+  const overlay=document.querySelector<HTMLElement>('#customOverlay:not(.hidden):is([data-overlay=saves],[data-overlay=export])');
+  const target=overlay?.querySelector<HTMLElement>('#customOverlayTitle');
+  const cloud=overlay?.matches('[data-dgu-adapter=MapleBirchSoftWet][data-dgu-adapter-match=full]')&&overlay.querySelector('#maplebirch-cloud-save');
+  const description=overlay?.querySelector('.dgs-transfer')?'通过文件或存档码备份与载入进度。':cloud?'云端连接与操作仍由 MapleBirch 管理。':overlay?.querySelector('.dgs-host')?'选择一个存档，查看详情与可用操作。':'';
+  if(!target||!description||destroyed||ownerExited||failed||!enabled||!isMasterEnabled()){releaseTitle();return}
+  if(titlebar?.parentElement!==target){
+   releaseTitle();titlebar=document.createElement('header');titlebar.className='dgs-toolbar dgs-titlebar';
+   const text=document.createElement('div'),eyebrow=document.createElement('p'),heading=document.createElement('h2'),hint=document.createElement('p'),fallback=document.createElement('button');
+   eyebrow.className='dgs-eyebrow';eyebrow.textContent='YOUR STORY';heading.textContent='存档管理';hint.className='dgs-muted';fallback.type='button';fallback.textContent='原版界面';fallback.addEventListener('click',()=>setEnabled(false));
+   text.append(eyebrow,heading,hint);titlebar.append(text,fallback);target.prepend(titlebar);
+  }
+  const hint=titlebar.querySelector('.dgs-muted')!;if(hint.textContent!==description)hint.textContent=description;
+ }
  function closeDetails(){host?.querySelector<HTMLDialogElement>('dialog[open]')?.close?.()}
  function release(){
   const mounted=frameworkMount;frameworkMount=undefined;
@@ -58,12 +74,12 @@ export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Par
  }
  let failed=false,failedContainer:HTMLElement|null=null;
  function recover(){failed=true;failedContainer=container;release();transfer.release();metadata?.destroy();metadata=undefined;document.dispatchEvent(new Event('dol-ui-saves-change'))}
- function refresh(){isolate('saves',update,recover)}
+ function refresh(){isolate('saves',()=>{update();syncTitle()},()=>{releaseTitle();recover()})}
  function update(){
   if(destroyed)return;
   visibility.disconnect();const overlayRoot=document.getElementById('customOverlay');
   const visibilityNodes=new Set<Element>([overlayRoot,overlayRoot?.parentElement,document.querySelector('#saveList'),document.querySelector('#saveList #saves-list-container,#saveList #savesListContainer')].filter((n):n is Element=>!!n));
-  for(const n of visibilityNodes)visibility.observe(n,{attributes:true,attributeFilter:['class','style','hidden','data-overlay']});
+  for(const n of visibilityNodes)visibility.observe(n,{attributes:true,attributeFilter:['class','style','hidden','data-overlay','data-dgu-adapter','data-dgu-adapter-match']});
   if(failed&&failedContainer&&!failedContainer.isConnected){failed=false;failedContainer=null}
   if(ownerLease&&!ownerLease.isCurrent())ownerExited=true;
   if(ownerExited||!isMasterEnabled()||!enabled||failed||!supportsDialog()){metadata?.destroy();metadata=undefined;transfer.refresh(false);release();return}
@@ -120,5 +136,5 @@ export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Par
  root.jQuery?.(document).on(':oncloseoverlay.dolSaves',overlayClosed);
  observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['disabled']});refresh();
  function setEnabled(value:boolean){failed=false;failedContainer=null;enabled=!!value;try{root.localStorage.setItem('DoLGameUI.saves.enabled',String(enabled))}catch{}refresh();document.dispatchEvent(new Event('dol-ui-saves-change'))}
- return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled&&!failed,setEnabled,refresh,destroy(){metadata?.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',overlayClosed);observer.disconnect();visibility.disconnect();if(frame)cancelAnimationFrame(frame);release();transfer.release();ownerLease?.release();ownerLease=undefined}};
+ return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled&&!failed,setEnabled,refresh,destroy(){metadata?.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',overlayClosed);observer.disconnect();visibility.disconnect();if(frame)cancelAnimationFrame(frame);releaseTitle();release();transfer.release();ownerLease?.release();ownerLease=undefined}};
 }

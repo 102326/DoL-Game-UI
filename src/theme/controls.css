@@ -1,5 +1,5 @@
 /* Scoped settings styles: no global reset or ownership of native game controls. */
-#dol-midnight-sidebar-button{box-sizing:border-box;display:block;width:100%;min-height:44px;margin:8px 0;padding:8px 12px;border:1px solid var(--dgu-border,#363640);border-radius:12px;background:var(--dgu-panel,#222229);color:var(--dgu-accent,#c4c7f5);font:inherit;text-align:center;cursor:pointer}
+#dol-midnight-sidebar-button{box-sizing:border-box;display:block;width:100%;min-height:44px;margin:8px 0;padding:8px 12px;border:1px solid var(--dgu-border,#363640);border-radius:12px;background:var(--dgu-panel,#242426);color:var(--dgu-accent,var(--kw-accent));font:inherit;text-align:center;cursor:pointer}
 #dol-midnight-sidebar-button:hover{background:#303039}
 #dol-midnight-sidebar-button.dmt-fallback{position:fixed;right:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:10000;width:180px;max-width:calc(100vw - 20px);box-shadow:0 8px 28px #0008}
 #ui-bar.stowed #dol-midnight-sidebar-button{visibility:hidden!important;pointer-events:none}

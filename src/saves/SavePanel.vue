@@ -29,7 +29,7 @@ function act(key:number,index:number){if(!inline.value)drawer.value?.close();pro
 function newSave(){const entry=props.state.entries.find(e=>!e.auto&&e.empty&&e.saveAction>=0&&!e.actions[e.saveAction]?.disabled);if(entry)select(entry)}
 </script>
 <template>
- <Teleport :to="headerTarget||'body'" :disabled="!headerTarget"><header class="dgs-toolbar" :class="{'dgs-titlebar':headerTarget}"><div><p v-if="headerTarget" class="dgs-eyebrow">YOUR STORY</p><h2>存档管理</h2><p v-if="headerTarget" class="dgs-muted">选择一个存档，查看详情与可用操作。</p></div><button type="button" @click="fallback">原版界面</button></header></Teleport>
+ <header v-if="!headerTarget" class="dgs-toolbar"><h2>存档管理</h2><button type="button" @click="fallback">原版界面</button></header>
  <div ref="layout" class="dgs-layout" :class="{'dgs-v2':inline}">
   <aside class="dgs-list">
    <div class="dgs-search"><button type="button" class="dgs-create" @click="newSave" :disabled="state.pending||!state.entries.some(e=>!e.auto&&e.empty&&e.saveAction>=0&&!e.actions[e.saveAction]?.disabled)">＋ 新建存档</button><input v-model="query" type="search" aria-label="搜索当前页存档" placeholder="搜索当前页存档…"/></div>

@@ -19,7 +19,7 @@ html[data-stone-free][data-dol-midnight] .dcu-shell{position:relative;border:1px
 html[data-stone-free] .dcu-group[data-dcu-folded]{display:none!important}
 html[data-stone-free] .dcu-display-actions{display:flex;flex-wrap:wrap;gap:6px}
 html[data-stone-free] .dcu-round-title{font-size:17px;font-weight:600}.dcu-round-title small{display:block;font-size:11px;font-weight:400;color:var(--sf-muted)}
-html[data-stone-free] .dcu-shell[data-focused] .dcu-workspace{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:18px;padding:14px}
+html[data-stone-free] .dcu-shell[data-focused] .dcu-workspace{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);align-items:start;gap:18px;padding:14px}
 html[data-stone-free] .dcu-arrangement{display:flex;flex-direction:column;gap:4px;align-self:start;min-width:0}
 html[data-stone-free] .dcu-arrangement button{display:grid;gap:4px;text-align:left;padding:12px 14px;background:transparent;border:1px solid transparent;border-radius:14px;box-shadow:none;color:var(--sf-muted);overflow-wrap:anywhere}
 html[data-stone-free] .dcu-arrangement button span{font-size:12px}.dcu-arrangement button strong{font-size:14px;font-weight:500;color:var(--sf-ink)}
@@ -62,8 +62,8 @@ html[data-stone-free]:not([data-dgu-visualMotion]) :is(.sf-material-reference,.s
  html[data-stone-free][data-dgu-visualGlass] .dcu-shell::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;background:linear-gradient(125deg,#ffffff16,transparent 45%),rgb(36 36 38 / var(--sf-main-alpha));backdrop-filter:blur(var(--sf-blur)) saturate(.85)}
 }
 
-html[data-stone-free] .dcu-shell[data-focused] .dcu-editor{max-height:min(64dvh,680px);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
-html[data-stone-free] .dcu-shell[data-focused] .dcu-editor-heading{position:sticky;top:-18px;z-index:1;background:#202022f2;padding-top:10px}
+html[data-stone-free] .dcu-shell[data-focused] .dcu-editor{max-height:none;overflow:visible;overscroll-behavior:auto}
+html[data-stone-free] .dcu-shell[data-focused] .dcu-editor-heading{position:static;background:transparent;padding-top:10px}
 
 @media(min-width:980px){html[data-stone-free] #dol-midnight-controls:has(.dmt-workspace)>.dmt-settings-shell{width:min(1000px,calc(100vw - 40px))}}
 /* Remove inherited 78% inner plane; only dense reading/control islands stay stable. */
