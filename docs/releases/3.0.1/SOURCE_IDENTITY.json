@@ -1,0 +1,1128 @@
+{
+  "releaseTag": "v3.0.1",
+  "runtimeSourceCommit": "e204da46ffb97b26994600cb6649a568c3005877",
+  "sourceCommitNote": "The release tag additionally commits this identity record; runtime and packaged inputs remain unchanged.",
+  "sourceInputs": [
+    {
+      "path": "LICENSE",
+      "sha256": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+    },
+    {
+      "path": "UPSTREAM-RENDERER-LICENSE",
+      "sha256": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361"
+    },
+    {
+      "path": "UPSTREAM-RENDERER-NOTICE.md",
+      "sha256": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc"
+    },
+    {
+      "path": "compat/cheat-extended-soft-wet/LICENSE",
+      "sha256": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+    },
+    {
+      "path": "compat/cheat-extended-soft-wet/README.md",
+      "sha256": "4f8c67d4328011e7f3a4b3f65da46fb159b68503d574448919346522224684df"
+    },
+    {
+      "path": "compat/cheat-extended-soft-wet/boot.json",
+      "sha256": "dcc52645aea7715fcaaa992a29c17b7bbee1fb0ed656abe8a1f847ea06cb4a3d"
+    },
+    {
+      "path": "compat/cheat-extended-soft-wet/cheat-extended-soft-wet.css",
+      "sha256": "4136ddb79ca18417b8f2d8e9a62e0ffc6a296279327fc4ee469161f24f0f8311"
+    },
+    {
+      "path": "compat/cheat-extended-soft-wet/cheat-extended-soft-wet.ts",
+      "sha256": "2b81ba4bdcf304f1ea2c4d4fc80c0ebc33c93b6ce42fc2cefb1b4557b9374270"
+    },
+    {
+      "path": "compat/dol-optimization-soft-wet/LICENSE",
+      "sha256": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+    },
+    {
+      "path": "compat/dol-optimization-soft-wet/README.md",
+      "sha256": "627347b15d33148c078d57f25019297f2586d9cc920056e6bb6d83f1060d356f"
+    },
+    {
+      "path": "compat/dol-optimization-soft-wet/boot.json",
+      "sha256": "87b205c4758dd2dd448876f63f2aef0bddbcc7e6b1fd30cc75dd1ac6a25560ba"
+    },
+    {
+      "path": "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.css",
+      "sha256": "de518cbae7fdd63db4d15a59cad408f398df6c70ba5b1e32ece85f00de33851d"
+    },
+    {
+      "path": "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.ts",
+      "sha256": "6e4925b3538f4d1bcd50eea142c61b56b8b6298bbe0b63ebb838d6c5dae8d54e"
+    },
+    {
+      "path": "compat/lyra-wardrobe-mouth-soft-wet/LICENSE",
+      "sha256": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+    },
+    {
+      "path": "compat/lyra-wardrobe-mouth-soft-wet/README.md",
+      "sha256": "7c94df91e4aecc99bf612e8b36ede448219bddf6159cd7440fc609611693830b"
+    },
+    {
+      "path": "compat/lyra-wardrobe-mouth-soft-wet/boot.json",
+      "sha256": "b07b3d8f779686135be77f03b8bf79a116d10e88c7a0759e41c3ae6a3c31734d"
+    },
+    {
+      "path": "compat/lyra-wardrobe-mouth-soft-wet/lyra-wardrobe-mouth.ts",
+      "sha256": "faf9480e719b457ff48b611b6b397a2268b76579fa8d3db8c4eab3668c3bc81d"
+    },
+    {
+      "path": "compat/maplebirch-soft-wet/LICENSE",
+      "sha256": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+    },
+    {
+      "path": "compat/maplebirch-soft-wet/README.md",
+      "sha256": "1eaf85f348aac61e254c0c2ab50fe0a9c819a071d7b2c17e692bffb88ae4d41f"
+    },
+    {
+      "path": "compat/maplebirch-soft-wet/boot.json",
+      "sha256": "2db03f5ff206a95ccbd82145bfa585eb0175ee5fbcd6165e39437168158a57ea"
+    },
+    {
+      "path": "compat/maplebirch-soft-wet/maplebirch-soft-wet.css",
+      "sha256": "7dd3709637bb3bbabf68d5113c68fa861b5540cf8c4c72824331a2f48ef02987"
+    },
+    {
+      "path": "compat/maplebirch-soft-wet/maplebirch-soft-wet.ts",
+      "sha256": "682f8eb3a53638916b600bd2ced1434b0961e17823295f99d2da87d4de7acfff"
+    },
+    {
+      "path": "compat/modhub-soft-wet/LICENSE",
+      "sha256": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+    },
+    {
+      "path": "compat/modhub-soft-wet/README.md",
+      "sha256": "3a2838d48a8f22afbccfb584c2677e4ca328c0bedf89d9d938d6d481c1ff052c"
+    },
+    {
+      "path": "compat/modhub-soft-wet/boot.json",
+      "sha256": "83cfee8af8ae8833c516c81509ad158afa0942f9d3929df96293bbd29d00ec51"
+    },
+    {
+      "path": "compat/modhub-soft-wet/modhub-soft-wet.css",
+      "sha256": "31c9cd5b4888c8b72927efc37445449bff597c4244380cd8c674ac3b24349c43"
+    },
+    {
+      "path": "compat/modhub-soft-wet/modhub-soft-wet.ts",
+      "sha256": "033b28f21630a7164a0b582a2fbdfd3e7783e2828103436554dcfb538d7145ea"
+    },
+    {
+      "path": "compat/mouth-compat-051213/LICENSE",
+      "sha256": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+    },
+    {
+      "path": "compat/mouth-compat-051213/README.md",
+      "sha256": "a9c212a73285dfeef018803c2289eb99494de5a38435a37910028c54910e6230"
+    },
+    {
+      "path": "compat/mouth-compat-051213/boot.json",
+      "sha256": "d73c5520592eaec94c3ffc40167ac933d4df2d3602d67e388f9552c2e212c739"
+    },
+    {
+      "path": "compat/mouth-compat-051213/mouth-compat.ts",
+      "sha256": "2838fbd0c445661b4d53153bb85b917b3948a5ffd9ad0dcbf20869844c78829c"
+    },
+    {
+      "path": "compat/reoverfits-soft-wet/LICENSE",
+      "sha256": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+    },
+    {
+      "path": "compat/reoverfits-soft-wet/README.md",
+      "sha256": "642c897f365ddd233182a33645937c86aaf9fa3f63a82c8f415729c731da1f05"
+    },
+    {
+      "path": "compat/reoverfits-soft-wet/boot.json",
+      "sha256": "67357cc4b8a0ae9d3f43292237ba4e8265d1313f958ba6477e3e1e54f241abe3"
+    },
+    {
+      "path": "compat/reoverfits-soft-wet/check.cjs",
+      "sha256": "305b7eecec1235c726cf43c8c3795a3e2453844ceee5b9c99a66f878aafaa329"
+    },
+    {
+      "path": "compat/reoverfits-soft-wet/reoverfits-soft-wet.css",
+      "sha256": "c1006cda3df1af8673385be903884100e0c333cbc28c3669f68b3d9f7d2edfd8"
+    },
+    {
+      "path": "compat/reoverfits-soft-wet/reoverfits-soft-wet.ts",
+      "sha256": "681b5d1045e9492a2571f19f373847a2da0b56bf7863d88cbd7cd51e92077270"
+    },
+    {
+      "path": "docs/OPTIONAL_ADAPTERS.md",
+      "sha256": "c74cf3e1f332a3c488c657ec10daf90442e7d2ad401541a634ca28b62bda27ed"
+    },
+    {
+      "path": "docs/RELEASE_3.0.1.md",
+      "sha256": "6f97ec535f96253fb6dbfae6e5f224d1b270bc6f1ed3b80707e92e6c43d23d8c"
+    },
+    {
+      "path": "docs/UI_SETTINGS.md",
+      "sha256": "e9081b3083b637969ea333ac887234f85c4eb0b44ed5c92e2077f47f278e696f"
+    },
+    {
+      "path": "framework/README.md",
+      "sha256": "d6b48aebbec848e7f4023e04585228d9b31fdaf243bab033eb0e7243c3fcae99"
+    },
+    {
+      "path": "framework/boot.ts",
+      "sha256": "55f02022a05dc32e70acea53dc9fc70956c9ede10534da211952b41d8d2334ff"
+    },
+    {
+      "path": "framework/connect.ts",
+      "sha256": "a70719b14f088c1cf4fd34148b8ae43a0a46c8f423f90e8c9a7821d65641a92e"
+    },
+    {
+      "path": "framework/contracts.ts",
+      "sha256": "155d420806e441910949f616a2c7764183a00e92b89fb1ecbdd6acd3f2d3f43a"
+    },
+    {
+      "path": "framework/examples/ComparisonInline.vue",
+      "sha256": "f889b9328262f43fda72e9dd7d35b77150a1cc114f11df5006f59aff97c3616a"
+    },
+    {
+      "path": "framework/examples/ComparisonPanel.vue",
+      "sha256": "6ed0de1eb1685af489b61f67f1e26194205d797f72d0226dcc207be1974a821b"
+    },
+    {
+      "path": "framework/examples/ReadingPanel.vue",
+      "sha256": "4ac1eef77bb9ec5dba0487ab8d41fab1e63c29fbac48c4c1c16844b4023b3c73"
+    },
+    {
+      "path": "framework/examples/StatusInline.vue",
+      "sha256": "97b28ca6cc20f461880dcce7f84d284abc99632e062308fac34e251354998623"
+    },
+    {
+      "path": "framework/examples/StatusPanel.vue",
+      "sha256": "3f5caf7c5edff30a5227cc8d3bb8be3fe791bff1b004560ad3cc6f66f25e10a0"
+    },
+    {
+      "path": "framework/examples/SurfacePanel.vue",
+      "sha256": "957e370ca77b23df4fb85365c8a4ad0860b133f3c0f1ba503d76b6c717d4949c"
+    },
+    {
+      "path": "framework/examples/alternate-workspace-mod.ts",
+      "sha256": "fef77cc9af373fa379810523b93f562b0ced48c8d53e466fa7410f881478f2ff"
+    },
+    {
+      "path": "framework/examples/comparison-mod.ts",
+      "sha256": "113eb87521cbc9c2580b3d64734928a63c9b674c4e6867f0d0a8585bfe8c86ea"
+    },
+    {
+      "path": "framework/examples/native-reading.ts",
+      "sha256": "61cb0f07f7b965d9435e9cad0f7bdf38aac5f5cd4bfc59342ea49957bf077a5b"
+    },
+    {
+      "path": "framework/examples/native-status.ts",
+      "sha256": "fbe96b43caea56995588e4351ba0862f9337631c450a497d1ce816cd707a1ae7"
+    },
+    {
+      "path": "framework/examples/panel.css",
+      "sha256": "96f424249c95fc466d38c527e0a027e8b950820e7d9caa1cd35e2d6da1800f51"
+    },
+    {
+      "path": "framework/examples/reading-controls-mod.ts",
+      "sha256": "bb8095b5de3df53405fea5262252011f979a483570bc37a991f220508d5fb175"
+    },
+    {
+      "path": "framework/examples/reading-source-mod.ts",
+      "sha256": "618fa65cc70f29f8d63cde18933344c8162e46a0de7ffc3f174f5a85b7026f66"
+    },
+    {
+      "path": "framework/examples/reading.css",
+      "sha256": "e7aafec2cc6bcc9a7e12fbaca195a6cb069b85fe671a8793046196a4dc25d677"
+    },
+    {
+      "path": "framework/examples/soft-wet-surface.ts",
+      "sha256": "90a70592b49895c2b2598440ac437d38b50d52309521cbe522f8ffd72c26182a"
+    },
+    {
+      "path": "framework/examples/status-mod.ts",
+      "sha256": "84f1cb97385bae48ec48fa8fccc14f5c1a0bfc70aed030e7eb1a133859c0d32a"
+    },
+    {
+      "path": "framework/examples/workspace-mod.ts",
+      "sha256": "8292635be3b78f6420b230236830d06cb84e0d81baf62a7cb4833379f1eac2ea"
+    },
+    {
+      "path": "framework/experiments/README.md",
+      "sha256": "60b3183800ff2001a23aabd8e2611c2a5fdfeed028ddd711430a0b2bd0294dd0"
+    },
+    {
+      "path": "framework/experiments/shared-vue.ts",
+      "sha256": "673fdc1715a6c0453bac7f4c8f347336e20e3b0fe6145bd0ff56046adfa5ca4b"
+    },
+    {
+      "path": "framework/factory/AUTHOR_KIT.md",
+      "sha256": "4ba32b92a09be320cce1e27639b81572c71834c6b9dd94318fe309988b2781cd"
+    },
+    {
+      "path": "framework/factory/Panel.vue",
+      "sha256": "333e703145aa5e028decc73d54c49b7c25ee4761c1878f737333df0eb8fb2d65"
+    },
+    {
+      "path": "framework/factory/index.html",
+      "sha256": "3b8fcdd06dd9239ef01056db611cd143e6915116d406ce68de529fe34e0bb97d"
+    },
+    {
+      "path": "framework/factory/package.py",
+      "sha256": "1281e8b72529b36a42b3952dda22f86677a259f1493fd9b9bc5491ce4c8257ef"
+    },
+    {
+      "path": "framework/factory/preview.ts",
+      "sha256": "c871e40737259e9224219aa186e8bb262715aa3c8175b666bc07a616ab6954e5"
+    },
+    {
+      "path": "framework/factory/vite.config.mjs",
+      "sha256": "366fc3073b0d8c4956935ff14224464d64f781c7bb17f9f600fb8e4ed1f814ca"
+    },
+    {
+      "path": "framework/host.ts",
+      "sha256": "b7c56963f0eae60f081b6da6989597277e0c920132d8f962c4e9b1d4017db214"
+    },
+    {
+      "path": "framework/host/README.md",
+      "sha256": "653689e1988982ea565b167dbc1cc516b252ec044e687f604f43ce69736f30a9"
+    },
+    {
+      "path": "framework/motion-hub/MotionHub.vue",
+      "sha256": "2de88720adaf96938946b29d9a16ec49b961fe180337c621526b910c63ca78e8"
+    },
+    {
+      "path": "framework/motion-hub/README.md",
+      "sha256": "3943a89891557fe2f8a70240797bb86b079618d9e0875bb387dc07583dcd3e45"
+    },
+    {
+      "path": "framework/motion-hub/geometry.ts",
+      "sha256": "179e09aa237f99a4874d3d062d25ba542d9cd9d0f756ff1b3e50f78cde4680f0"
+    },
+    {
+      "path": "framework/motion-hub/main.ts",
+      "sha256": "14059bca19c75196d4f9162070250eb22b3ab2eb546b3817d9647f079915734a"
+    },
+    {
+      "path": "framework/motion-hub/style.css",
+      "sha256": "a30b30400e22a95c922c929e090fe809021cfb91961a71b5123517bf020ddbf1"
+    },
+    {
+      "path": "framework/official-ui/README.md",
+      "sha256": "c40118075c5dad4609dcabc629542616e1dc923ac8764a75e7496cc3c849802c"
+    },
+    {
+      "path": "framework/official-ui/hub.ts",
+      "sha256": "8bf2ed4b6a23892f958c5304d89520fe119fa552b6fdd50617249f4774574c9f"
+    },
+    {
+      "path": "framework/official-ui/main.ts",
+      "sha256": "4a31164ed88379420f360325d2025b4b29170ef918e770378311f95e0e126caa"
+    },
+    {
+      "path": "framework/official-ui/motion.ts",
+      "sha256": "b02f66d3be83027002da46637fd8c090d6badbd3384c64be7c2383ba1020e15c"
+    },
+    {
+      "path": "framework/official-ui/navigation.ts",
+      "sha256": "3d50fc9c749f76c5377ab00e28e06c5a3ea196e78dbb387f8c4fafadd92916b0"
+    },
+    {
+      "path": "framework/official-ui/reference-shelf.ts",
+      "sha256": "5a0c18a49c1c42a8319a1f6d25f295a3f860f96d7d7c5b102aad3b22d66117db"
+    },
+    {
+      "path": "framework/official-ui/weather.ts",
+      "sha256": "816d9933f2ad45050acddc905bb8b351df6439508a46c3252e71e1053ab7d294"
+    },
+    {
+      "path": "framework/vue.ts",
+      "sha256": "ec08cf58d9e19ae2523b84b222ad079c3d78d2e48a324192bf5f99a397eb5056"
+    },
+    {
+      "path": "framework/wardrobe-reference/README.md",
+      "sha256": "252f1e6d3e6532074a3d8ad119be02c9814b56b8d457df36bf8eb74a3bdb4fd1"
+    },
+    {
+      "path": "framework/wardrobe-reference/ReferenceSpace.vue",
+      "sha256": "27d1d7b9187f98a4efdd4b4cd21619da62934eced2519dc9c91f55f10582fd1a"
+    },
+    {
+      "path": "framework/wardrobe-reference/main.ts",
+      "sha256": "97dcb53a57dcd105dda651e156bcd9fa54c3cfaec451cf186d7c82eec1d9ab98"
+    },
+    {
+      "path": "framework/wardrobe-reference/source.ts",
+      "sha256": "1dc9ed392937df53bbf529f30363812bdef5080eecb121deae0ba7ff076c0538"
+    },
+    {
+      "path": "framework/wardrobe-reference/style.css",
+      "sha256": "1760fee299ec5020be4b6834cba6b7a99a81fc97ef9c6e645790fbd58c68d82d"
+    },
+    {
+      "path": "framework/workspace/ViewOutlet.vue",
+      "sha256": "53897be06ada7c7accba7a8c2c3bde83f89728317d71dbc66c6de0d1ce55e6e9"
+    },
+    {
+      "path": "framework/workspace/WorkspacePanel.vue",
+      "sha256": "14766487aaae8c69dadc97ae0eb6f42b69f88ebc57bd5ae48d4fe025ce7b53a5"
+    },
+    {
+      "path": "framework/workspace/preferences.ts",
+      "sha256": "4991d3ea6ca3f8dd2ad6f83734753d055f6a28c6cf3d49a29abc95fb0ef94b91"
+    },
+    {
+      "path": "framework/workspace/start.ts",
+      "sha256": "a8122a5e7929ec6d2f0fd9c044eaee33cff655c6522692671f01636d31a72c10"
+    },
+    {
+      "path": "framework/workspace/style.css",
+      "sha256": "0f7141057ec2527ae52df35a5c1074611215683d20c842150442272cf8c5a28c"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "5d11cd802c2f0a5c28c831f7bd95493806dae0187f1b2c529c218ff6cd12be8b"
+    },
+    {
+      "path": "package.json",
+      "sha256": "965915bdd7055dec8e36100a438cdb869f52d9595b3afcad6feb115a64183451"
+    },
+    {
+      "path": "scripts/build-adapters.cjs",
+      "sha256": "de257d49bb44d98e2952b2921ca338a467752db1c9dade7d586d2e0ed7cd3317"
+    },
+    {
+      "path": "scripts/build-early.cjs",
+      "sha256": "c3a848bb595d5205f0eef2fd870f95c2310628e2f755278740562f49c942f4c7"
+    },
+    {
+      "path": "scripts/build-fixture.py",
+      "sha256": "995a997ba86f495819e23255a8b43fb052e5377f4b0362d85a0ae001ba1c8d8e"
+    },
+    {
+      "path": "scripts/build-framework-vue-comparison.mjs",
+      "sha256": "6559abdc545db6632cc99970eb7ec85b09610457f792e7c76eaa7d63f4e0bf46"
+    },
+    {
+      "path": "scripts/build-framework.mjs",
+      "sha256": "575b4218aa1dfd6e0c1015d5dd186b3530335e188a0ca1a22b8deb40e9c45d75"
+    },
+    {
+      "path": "scripts/check-ci-packages.py",
+      "sha256": "d73897780042a267071197fc9b9e2db137e3b04ece3197e8fa79b411bac5f69d"
+    },
+    {
+      "path": "scripts/framework-factory.mjs",
+      "sha256": "990977adeb1a97089edc3669e54ea5c8a6066aefd7145eb3a7141fed8afe4bf0"
+    },
+    {
+      "path": "scripts/package-adapter.py",
+      "sha256": "915432b19ed47deb5f2104472220ffa702af0f7908c3ef67855846a68b0e54a9"
+    },
+    {
+      "path": "scripts/package-framework-vue-comparison.py",
+      "sha256": "11c67260c52eaee7d4055e0e1ec6c88b527edadef00937a7ec0593f5356c9023"
+    },
+    {
+      "path": "scripts/package-framework.py",
+      "sha256": "7ed65f6dd3fa7af7af83563856e5eed2ac20d647004f02eb087b81752c697667"
+    },
+    {
+      "path": "scripts/package.py",
+      "sha256": "29cf8b8ec222e6cb2bd67a1164bb4c05e62eb055b98f5055cd790a79c834c57f"
+    },
+    {
+      "path": "scripts/render-state-fields.cjs",
+      "sha256": "96b083b46024bcfa70976f52d9fbc090274501754a99e4b7e6d0e4a74b4d49f4"
+    },
+    {
+      "path": "scripts/shop_package.py",
+      "sha256": "623d448be431aa7377c38f050f03614f0f9c26e7bd2024aab1b232f29c9d6b7a"
+    },
+    {
+      "path": "scripts/test-ci.cjs",
+      "sha256": "c3556a68bbd12581c356357673ac93a68d5775bc16f4b6143b8d74c0cdc7776b"
+    },
+    {
+      "path": "scripts/test-unit.cjs",
+      "sha256": "9396d8593d377d7a9db6c97fb72ba02cf8cfe64e522b4f5cdf3124cfca79510c"
+    },
+    {
+      "path": "scripts/test-workflow.cjs",
+      "sha256": "ecf821d80de5b6bdb8529bc98d50145f8ee3240f61a2401535ce452ad15d3d5a"
+    },
+    {
+      "path": "scripts/vendor-wardrobe.cjs",
+      "sha256": "0d2becb950ee863d80565ccea05e26e4262a800e8533611467ed81a8ca8563d7"
+    },
+    {
+      "path": "src/characteristics/Navigation.vue",
+      "sha256": "e689b0cc2bfde8ab45de56748825dd0b0139306b21faf55b2d59f56d37bdbc65"
+    },
+    {
+      "path": "src/characteristics/main.ts",
+      "sha256": "46622478fe0d8ac36a15cccf79c3e909c0e8f854d86c86a93e47e5050fda2baf"
+    },
+    {
+      "path": "src/characteristics/style.css",
+      "sha256": "60b9433cad86e3bce931a02076fbbfa2001c4dba328105a3f181bb3e780a36b7"
+    },
+    {
+      "path": "src/combat/CombatPanel.vue",
+      "sha256": "5f44427e01cc77d706a71d33981746f258caf41082bb94fc08e99787baed9906"
+    },
+    {
+      "path": "src/combat/main.ts",
+      "sha256": "91cc129088608d8d050e9b16077304c4657e0fe5deec1f2a90a31fe84f22f393"
+    },
+    {
+      "path": "src/combat/native-actions.ts",
+      "sha256": "b1e42c6c06a400224fd5907505fd4a29e2df0c0612996148c06f1cfaad8f696a"
+    },
+    {
+      "path": "src/combat/select.css",
+      "sha256": "b3697f4d1c4ce42ec95974947473137d7b8c04515c4faa6bc4b0b35f831da707"
+    },
+    {
+      "path": "src/combat/source.ts",
+      "sha256": "3d7fae6efceafbfeccbc91c1176ffa3a016c7de5bbafa5baa3cb9777906b0739"
+    },
+    {
+      "path": "src/combat/style.css",
+      "sha256": "d33d08ac7d3ff731d5bbc04cf298f795bf053b695bec9dd6b8ad942dd24098b5"
+    },
+    {
+      "path": "src/combat/types.ts",
+      "sha256": "95d50de8fc8b1dc37dc47eaa0813d996b0382e859cf3d3759739190d7bcb114b"
+    },
+    {
+      "path": "src/floating/FloatingTools.vue",
+      "sha256": "c9d980be417b3048c9442ec58979b65358fa6ead74a7ce7dfc41c5012999b5c7"
+    },
+    {
+      "path": "src/floating/Settings.vue",
+      "sha256": "e7f7f5ac4bb623a60b019ecb02123c8d89af2162a2aeae08a25498e794f25a5a"
+    },
+    {
+      "path": "src/floating/main.ts",
+      "sha256": "f019525f45c13e027bf7f0c607a51a8340ae0e9f9545e58e0b0ef0c69d147835"
+    },
+    {
+      "path": "src/floating/preferences.ts",
+      "sha256": "6409aba4924383b3da0e018e1e47033861f196d64f827cfcfc41c2297dc3dc40"
+    },
+    {
+      "path": "src/floating/style.css",
+      "sha256": "eb067b375a1eb88073b848e82bd9bbb4fabf55d06a57c8dbbdb7e60a44ecef4d"
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "9933ad9fe7ab3812ed256daf2649597bafe1e47c985d01a08af81f54a0427695"
+    },
+    {
+      "path": "src/panels/Navigation.vue",
+      "sha256": "90f03a25ad6d5d58bf5a18579e8e9da02b4532249731384706c93c3e7b8b6068"
+    },
+    {
+      "path": "src/panels/main.ts",
+      "sha256": "913c1e8f3d50f283d191215095897a4291392d20ec04162869c8cf3776538b30"
+    },
+    {
+      "path": "src/panels/presentation.ts",
+      "sha256": "60a98d57e7185a9341b34b5673a63108ed13be77a93fd1bdb12519303c5dcf6c"
+    },
+    {
+      "path": "src/panels/style.css",
+      "sha256": "c44bb2f17b50b4642e8b3c8225bf6db466b9ae0e3218e1e7fed061c5a258207b"
+    },
+    {
+      "path": "src/panels/visibility.ts",
+      "sha256": "1048ed46b039c7089f14d3825ab3a4ffdf08e70ceb2640febd0617cf895d35e0"
+    },
+    {
+      "path": "src/public/ui.ts",
+      "sha256": "2cf21f9d7b3d1b6e4c75161ce1a78f22b58fcaff4b2b3d2e6990cec7a840c223"
+    },
+    {
+      "path": "src/public/wardrobe.ts",
+      "sha256": "1e297cbeea01628527748276e2e21923a87cee96f231bc003b1f216cbce38fe9"
+    },
+    {
+      "path": "src/runtime/experiments.ts",
+      "sha256": "24765c1b69032a66c61a71f4d5594923ab7490f03a86dbcdf03fe8bbd099ee1f"
+    },
+    {
+      "path": "src/runtime/inspector.ts",
+      "sha256": "b2d97b7d0e2ded6ffd881a6d825615c8b27a5b17351aa4676419ffbdc08d0da0"
+    },
+    {
+      "path": "src/runtime/master.ts",
+      "sha256": "127f55b702c149b8cf537a7ece0b24e00cd1fdb2006bff2e4dabfcd4d74e1857"
+    },
+    {
+      "path": "src/runtime/presentation.ts",
+      "sha256": "f3d28659d51d0b23780a35c8e211f2670e06920755ccd154d0ac6db86b4e0a7d"
+    },
+    {
+      "path": "src/runtime/roles.css",
+      "sha256": "4451e3da819b5248e830abe2ee2aeff84048c9faa0e4024f7d5db33762be0f2e"
+    },
+    {
+      "path": "src/runtime/status.ts",
+      "sha256": "9bb0a5733a39dfbd7a61ecb644dfc0b80b9e5240a3dd227d26822282c7aa61a4"
+    },
+    {
+      "path": "src/runtime/sugarcube.ts",
+      "sha256": "7c5da87baa9ecec843dd0be755cd4e11e00a56e2c1dac3c1ac1ddb1d94bc5724"
+    },
+    {
+      "path": "src/runtime/surfaces.css",
+      "sha256": "32f2c0d827f1122f759567e4bdc33b32d3938a1e142fe331fd73892c323e0e54"
+    },
+    {
+      "path": "src/runtime/surfaces.ts",
+      "sha256": "03867dfeb632e4058f723ef899b2aec480bec121bdad89df65d4ad5014130e24"
+    },
+    {
+      "path": "src/runtime/target-version.ts",
+      "sha256": "c59c5db2af0b8e6e0f15eb5be2e65fd01b2b04b26468ba16b82e6500735dcd96"
+    },
+    {
+      "path": "src/runtime/ui.ts",
+      "sha256": "e99d9982fc62868c8c0e4aa4e36d182d80041cc644e1529e2b0382945ff5b639"
+    },
+    {
+      "path": "src/saves/SavePanel.vue",
+      "sha256": "b42683393490c8c5703eaf42909eb1ab22ea976f7677798635fa1405dcaa60be"
+    },
+    {
+      "path": "src/saves/main.ts",
+      "sha256": "d2aded374f318bcd15284c3e9f04b2cb104cb2dd397061b0f590845b0882cc5f"
+    },
+    {
+      "path": "src/saves/metadata.ts",
+      "sha256": "15426d53b9bddc2e8bb298de15a4f8922a24e77610749dcf8f4480e3d9561fff"
+    },
+    {
+      "path": "src/saves/source.ts",
+      "sha256": "1a245e6a936f1e178a9b9917b7efa4db48c903562e9cc8c299fa9433341c836f"
+    },
+    {
+      "path": "src/saves/style.css",
+      "sha256": "ae1613cf589955f971897208121417ceef48803465a4cc1e8da6aa157f4eb0e7"
+    },
+    {
+      "path": "src/saves/transfer.ts",
+      "sha256": "5c53f56fae7ae3edd783c2aee7052eb54a4e7612e1db2a68c7ee476960076ada"
+    },
+    {
+      "path": "src/shop/ShopReference.vue",
+      "sha256": "5839663d909cacdd6d21a21054e6bf80cc47c7d12650c0d1843a72b52edecf69"
+    },
+    {
+      "path": "src/shop/Toolbar.vue",
+      "sha256": "050d0a92be7094dfec5619c9d93109dd9c1910020c84818a58014434c9cf1531"
+    },
+    {
+      "path": "src/shop/main.ts",
+      "sha256": "855c1d7f2ad5ae883ea280d13e4dd6cdb6f252366f56b8ebbe7aa6afe9818081"
+    },
+    {
+      "path": "src/shop/source.ts",
+      "sha256": "21296e537b8ff071deb4b4e2e06d2232b06b6553e3f4ce0e110028cc5a7bbc05"
+    },
+    {
+      "path": "src/shop/style.css",
+      "sha256": "8fe2d4b4689c0b8c6c937f31b83c904c83545041c86ccbf5c7a3b136a545ed88"
+    },
+    {
+      "path": "src/shop/transaction.ts",
+      "sha256": "10ad8d12d6149c5e9d87300c2555b785e52d60078e8d3d3f3b0e5d41de1ee508"
+    },
+    {
+      "path": "src/social/Navigation.vue",
+      "sha256": "6bca4771ebe1a4c6d0a40a22e5d7f2f495d491b251ad364b613606a2a0e88646"
+    },
+    {
+      "path": "src/social/main.ts",
+      "sha256": "8992528d5664c6e5cfa8006d35760a529fcbcb071592c9bbce0ae6922741b6a4"
+    },
+    {
+      "path": "src/social/style.css",
+      "sha256": "bf4f1603ef975a75cd7c632398b60a94ad7d8dd801cf4704316df95f23197374"
+    },
+    {
+      "path": "src/story-actions/main.ts",
+      "sha256": "252a6afb5a69c0ab372cad74f1c2ba88fb414dd7003ea0f2b5e671a08e216871"
+    },
+    {
+      "path": "src/story-actions/style.css",
+      "sha256": "6180247f028b0345907f35b7bc8cc20549e265f63bf4fc86d55e873dc2599f23"
+    },
+    {
+      "path": "src/theme/SettingsNavigation.vue",
+      "sha256": "1918559e405ca1eedce46748aa0ac5654ff68bc4d38489a808540629be72e3a4"
+    },
+    {
+      "path": "src/theme/SettingsPanel.vue",
+      "sha256": "2dfbecc876aa0766f8c8ade2f4abcfd42ecabdcaf11cbbf478bb9c85abc26196"
+    },
+    {
+      "path": "src/theme/SettingsPreview.vue",
+      "sha256": "a7ef85fee0e51d2ea48826f37e777f3d565e061ee183a7a50cba76ae2718d7c2"
+    },
+    {
+      "path": "src/theme/controller.ts",
+      "sha256": "1d84e56ae53e8675d7165da9186670ffaca2b71c986b34de646feec1ed87cece"
+    },
+    {
+      "path": "src/theme/controls.css",
+      "sha256": "f00f119884bfc44d645d14423a2d57c63eb5e8b2d7ca30ebe6bced9d0e8b3e70"
+    },
+    {
+      "path": "src/theme/dark-acrylic.css",
+      "sha256": "dd73dd3da963bd5e134f07a6d7ab64bd6e0416b0723e03c0431b673e04f4afd3"
+    },
+    {
+      "path": "src/theme/drawer-corner.svg",
+      "sha256": "bd1da769f8c78bdaa768e70effec79334563eb53511e04623ca6612ca3892bbf"
+    },
+    {
+      "path": "src/theme/kraft-work-motion.css",
+      "sha256": "75c81140b5ade32036627586d028b05350d6620324df81c5aaa5aac702212706"
+    },
+    {
+      "path": "src/theme/kraft-work-native.css",
+      "sha256": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa"
+    },
+    {
+      "path": "src/theme/kraft-work-pages.css",
+      "sha256": "bd3216c939b64c2fbfba053979c19417915807a15f0378d5e84121f2ed805de7"
+    },
+    {
+      "path": "src/theme/kraft-work-surfaces.css",
+      "sha256": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0"
+    },
+    {
+      "path": "src/theme/kw-weather-condensation.svg",
+      "sha256": "17be23fb7f9244a1142ce64666d7c69e455d550ab230ccd83d892a652890a9e2"
+    },
+    {
+      "path": "src/theme/kw-weather-mist.svg",
+      "sha256": "ca34fdd9a419a0ef046b05adcde47b23e87399dfd7181a6ffdbdd55b4a9990e9"
+    },
+    {
+      "path": "src/theme/kw-weather-shower.svg",
+      "sha256": "292f76ffe7d4f176fd5a5391075f1ff8709eae9c3d703747c2b0678266861c79"
+    },
+    {
+      "path": "src/theme/kw-weather-snow-far.svg",
+      "sha256": "9495be704894987db880997ed8080aceccd3ada3a5ae1d71c35899ac2ad026bc"
+    },
+    {
+      "path": "src/theme/kw-weather-snow-near.svg",
+      "sha256": "b8a52c072432d7ffe129ad643b74aacfebf9add32c7b4da010f4712a25314678"
+    },
+    {
+      "path": "src/theme/layout.css",
+      "sha256": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265"
+    },
+    {
+      "path": "src/theme/layout.ts",
+      "sha256": "0031b897705b32e2c52236c0478f8c162d94ea240fe0a06f7e0990275c50246f"
+    },
+    {
+      "path": "src/theme/mobile.css",
+      "sha256": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1"
+    },
+    {
+      "path": "src/theme/navigation-material.css",
+      "sha256": "513196bf3d8cade83f3dd829fbeeb4cee629098e94763d2fe612efbdf18d522b"
+    },
+    {
+      "path": "src/theme/preferences.ts",
+      "sha256": "2486a663c7eddab9f0b0733240dee8bc495879a7741c6ad494878344c10aab60"
+    },
+    {
+      "path": "src/theme/settings-workspace.css",
+      "sha256": "7ba627ea7861809a77c9136afeea443fb21116ae28c6b3ad4e23c3ac74c75e85"
+    },
+    {
+      "path": "src/theme/sidebar-layout.ts",
+      "sha256": "76bc16439b994577538877852389a05e944adee0c265a441eb5a6585e5b180a0"
+    },
+    {
+      "path": "src/theme/sidebar.css",
+      "sha256": "65926604dc7c2ba303ca45e704b8735d6b07927de3090b9e60a2433b5239a7b7"
+    },
+    {
+      "path": "src/theme/stone-free.css",
+      "sha256": "0c12d6c52904718b41e06afb44946b30ca591be59b2ec50e7c9c0c17d6acfd8d"
+    },
+    {
+      "path": "src/theme/theme.ts",
+      "sha256": "223423adea451d4a7c25be98c3f102bc4de79d9bbd85b1a92e081a49bc42c92d"
+    },
+    {
+      "path": "src/theme/visual.css",
+      "sha256": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6"
+    },
+    {
+      "path": "src/tokens.css",
+      "sha256": "0487c6ad1e6f598fa8d2845f2da00b603f48ad93dbe200d66e10b5a18577dc17"
+    },
+    {
+      "path": "src/ui/GameButton.vue",
+      "sha256": "ec3fb9866e83bdaf27be7245c4574b7a50931a6ac40b67ea510d721a4fac4bec"
+    },
+    {
+      "path": "src/ui/OrbitFocus.vue",
+      "sha256": "c18e998e4c998bdba831beb2f5763a9e85f4ef56d353a316db51d27f78205475"
+    },
+    {
+      "path": "src/ui/SettingsToggle.vue",
+      "sha256": "f8e3626a8c495310b182d5f2b5fee4ee222d81b0eb60506f0dcd57012f34764d"
+    },
+    {
+      "path": "src/ui/source-motion.ts",
+      "sha256": "9cb5aab5d68d778bb0e417fc2e2bcd78c41e493dc444527eda8eefe9989cce5f"
+    },
+    {
+      "path": "src/wardrobe/ClothingIcon.vue",
+      "sha256": "3e544037aaea137e8dc3f3592a2f2a6cd6080e96d3096f52970fa7f5a529bead"
+    },
+    {
+      "path": "src/wardrobe/ClothingTraits.vue",
+      "sha256": "e1baa89b2abf1a61d21efc3a8e3eb55e334fe3e05a04c7ecc15995c377a938a0"
+    },
+    {
+      "path": "src/wardrobe/ReferenceDock.vue",
+      "sha256": "20e47c791a405dab238182d086fcd9045e4a12315b83cf46e7bbe97cd01ef792"
+    },
+    {
+      "path": "src/wardrobe/WardrobePanel.vue",
+      "sha256": "c3db281f23b940d47fbc557eecf4d4a45717d36ef88fa7ae3a6d4949b454f337"
+    },
+    {
+      "path": "src/wardrobe/data.ts",
+      "sha256": "aeab6b12e936e7b806e9e02f35aeb0bc41d337ec7ac5f8f5dbe1ce147a16c7ca"
+    },
+    {
+      "path": "src/wardrobe/extras.ts",
+      "sha256": "1a86c7b986abc64f8ceb763e54cfe70cdc4e7c3767206dfebccae2b0efeb7ee1"
+    },
+    {
+      "path": "src/wardrobe/host.ts",
+      "sha256": "081093dc2142af05e9253afdd1f1ad5d8facf1248257bd845199e9ee96aa5aff"
+    },
+    {
+      "path": "src/wardrobe/icons.ts",
+      "sha256": "f90d490abd7245cf5e0aa3a914af1adf962b128affb3dc4415eaa5cfdc65c02e"
+    },
+    {
+      "path": "src/wardrobe/main.ts",
+      "sha256": "7cf6e4de7e5a053a30e5b763662c53378743a5dab4bdb8bc362d5d5ef965282d"
+    },
+    {
+      "path": "src/wardrobe/native.ts",
+      "sha256": "601d4a1dd223b4d0641a9bf449618b5d3bc5ff444755035883459f81ba792bb8"
+    },
+    {
+      "path": "src/wardrobe/operations.ts",
+      "sha256": "f95ef3d1f6d9495aa56f435cd9a6fad008c993c354dcae585dd0232806bd34b9"
+    },
+    {
+      "path": "src/wardrobe/outfit-layout.ts",
+      "sha256": "60eff48b672c846c4a6a93c33036fd66193e3dcf9f9d8e9c2094924a8defb528"
+    },
+    {
+      "path": "src/wardrobe/performance.ts",
+      "sha256": "5586cf46ba6c681233cbf6d38f3a589689c22525f7979e91012a11281913cc6b"
+    },
+    {
+      "path": "src/wardrobe/reference.css",
+      "sha256": "e6daf079d01780294f4730b6dd288a0155aaf30a814a41a904d02d6541f5b1d0"
+    },
+    {
+      "path": "src/wardrobe/reference.ts",
+      "sha256": "42d16a0baa0ee28368b5921260972db738d7aa491e9b451ab67cd16849e51a83"
+    },
+    {
+      "path": "src/wardrobe/render-state-fields.ts",
+      "sha256": "04b2ce19efac40c805a2edb94afda0f0cc2038770eea90649adb57f1d6fcee76"
+    },
+    {
+      "path": "src/wardrobe/render-state.ts",
+      "sha256": "63104728c2768df02479a6b9e12079485ed87ee08530e833f848a8732e1fad5a"
+    },
+    {
+      "path": "src/wardrobe/render.ts",
+      "sha256": "57f8a527c06174d4fb082a7da9eadc59cf1678ead0f1259c27ea408480d28c13"
+    },
+    {
+      "path": "src/wardrobe/sidebar-preview.ts",
+      "sha256": "28ae19c2542a162d0fa2b4c87ec133f30a61f27a4324e9d40b6cfbdc37d1d8a0"
+    },
+    {
+      "path": "src/wardrobe/slot-mappings.ts",
+      "sha256": "b0334343f88750aacc9bf0765665a9d536193e40b1100b468f3586ea88263c30"
+    },
+    {
+      "path": "src/wardrobe/source.ts",
+      "sha256": "9383b5a207617afeacd6c51391237ac295726e96036b4ec1c24b7b2c2dfb9bdb"
+    },
+    {
+      "path": "src/wardrobe/style.css",
+      "sha256": "fd494e65134658750b56016b4cfac252a71761ad6da87fecaf07f53d62cc532f"
+    },
+    {
+      "path": "src/wardrobe/types.ts",
+      "sha256": "bbe91ba527981bafbc2a94869b6b6149e30afec9edac00ae01dc80a6680ef767"
+    },
+    {
+      "path": "src/wardrobe/vendor/isolated-model.js",
+      "sha256": "c30d30131c349ec82f2cb5e067fb822cd688ee83e766276a5fc7e7da7886d6a6"
+    }
+  ],
+  "packages": [
+    {
+      "file": "CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.0.mod.zip",
+      "name": "CheatExtendedSoftWet",
+      "version": "1.0.0",
+      "sha256": "ba8f17fb23f1c81214266ceb4ce3150bed0133b3e2904b856c4984a9e83c68f9",
+      "bytes": 5011,
+      "dependencies": [
+        {
+          "modName": "cheat extended",
+          "version": ">=1.20.3"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ],
+      "members": {
+        "boot.json": "dcc52645aea7715fcaaa992a29c17b7bbee1fb0ed656abe8a1f847ea06cb4a3d",
+        "cheat-extended-soft-wet.css": "4136ddb79ca18417b8f2d8e9a62e0ffc6a296279327fc4ee469161f24f0f8311",
+        "cheat-extended-soft-wet.js": "cff9a52e58540b2b255074335ac4d1b3f37a3a6aa0f9d596acb53e4d63fbc550",
+        "README.md": "4f8c67d4328011e7f3a4b3f65da46fb159b68503d574448919346522224684df",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      }
+    },
+    {
+      "file": "DoLGameUI-3.0.1.mod.zip",
+      "name": "DoLGameUI",
+      "version": "3.0.1",
+      "sha256": "488ffc402c1ae4ad2adb66a58da38072419c000c9884a1725db9776ad3642b26",
+      "bytes": 229188,
+      "dependencies": [
+        {
+          "modName": "ModLoader",
+          "version": ">=2.100.0"
+        },
+        {
+          "modName": "StoneFreeHost",
+          "version": ">=0.1.2-experimental && <0.2.0"
+        },
+        {
+          "modName": "TweeReplacer",
+          "version": ">=1.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ],
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "c40118075c5dad4609dcabc629542616e1dc923ac8764a75e7496cc3c849802c",
+        "THIRD-PARTY-NOTICES.txt": "9c115886c745c8bab1bb34ec11a7ba5a1d34be99e962a444034e019e24a7b03c",
+        "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+        "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+        "boot.json": "60d75a323348775c228f060691e49a2f833a344fc4dcf539d05d5ec55d6ef7d6",
+        "docs/OPTIONAL_ADAPTERS.md": "c74cf3e1f332a3c488c657ec10daf90442e7d2ad401541a634ca28b62bda27ed",
+        "docs/RELEASE_3.0.1.md": "6f97ec535f96253fb6dbfae6e5f224d1b270bc6f1ed3b80707e92e6c43d23d8c",
+        "docs/UI_SETTINGS.md": "e9081b3083b637969ea333ac887234f85c4eb0b44ed5c92e2077f47f278e696f",
+        "index.js": "c9502183fb5a158a3cc88eb7b6dc9f3f370bd1201b1342736172efc17372baac",
+        "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+        "style.css": "1af71a194bb5274f94845e309ae90d077beb7470c1095c8912afd1a40eaa8260",
+        "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+        "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+        "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+        "twee/patch-resize.twee": "4d604afceeb23ee0d17733fe248f24736ed01b1284be467daab6039223305da3",
+        "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+        "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+      }
+    },
+    {
+      "file": "DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.0.mod.zip",
+      "name": "DolOptimizationSoftWet",
+      "version": "1.0.0",
+      "sha256": "71aa281a2900ffd97958798a3d73012632c0d855efe924fba915c0f8ce62e371",
+      "bytes": 5543,
+      "dependencies": [
+        {
+          "modName": "原版优化",
+          "version": ">=1.1.1.2"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ],
+      "members": {
+        "boot.json": "87b205c4758dd2dd448876f63f2aef0bddbcc7e6b1fd30cc75dd1ac6a25560ba",
+        "dol-optimization-soft-wet.css": "de518cbae7fdd63db4d15a59cad408f398df6c70ba5b1e32ece85f00de33851d",
+        "dol-optimization-soft-wet.js": "063c774bab80c2fd488bd9066479024acec4e1678bf88927bb590ef4d7dd47fe",
+        "README.md": "627347b15d33148c078d57f25019297f2586d9cc920056e6bb6d83f1060d356f",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      }
+    },
+    {
+      "file": "LyraMouthCompat051213-Lyra-0.5.12.13-v1.0.0.mod.zip",
+      "name": "LyraMouthCompat051213",
+      "version": "1.0.0",
+      "sha256": "71080a79771149a0edf80cc66943518645835e1b6259a01e23869d6da2a34974",
+      "bytes": 3052,
+      "dependencies": [
+        {
+          "modName": "Lyra",
+          "version": "=0.5.12.13-1.0.1a-1004.1-goose-ucb"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        },
+        {
+          "modName": "maplebirch",
+          "version": ">=5.2.3 <6.0.0"
+        }
+      ],
+      "members": {
+        "boot.json": "d73c5520592eaec94c3ffc40167ac933d4df2d3602d67e388f9552c2e212c739",
+        "mouth-compat.js": "fc507845d33c5f1001c9830fe9a17d0b6ff0e9d7e7843fa22ec712fb55d787bb",
+        "README.md": "a9c212a73285dfeef018803c2289eb99494de5a38435a37910028c54910e6230",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      }
+    },
+    {
+      "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.0.mod.zip",
+      "name": "MapleBirchSoftWet",
+      "version": "1.0.0",
+      "sha256": "b3baa723027bc20e815677133e9b5e7b0082f8cb13deb5240c49e3ddb569f13a",
+      "bytes": 4211,
+      "dependencies": [
+        {
+          "modName": "maplebirch",
+          "version": ">=5.2.3"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ],
+      "members": {
+        "boot.json": "2db03f5ff206a95ccbd82145bfa585eb0175ee5fbcd6165e39437168158a57ea",
+        "maplebirch-soft-wet.css": "7dd3709637bb3bbabf68d5113c68fa861b5540cf8c4c72824331a2f48ef02987",
+        "maplebirch-soft-wet.js": "3d61fea90a47cb58a12003d37081ecfee721b13b3292cdfa9b9ceb7146c2c6a6",
+        "README.md": "1eaf85f348aac61e254c0c2ab50fe0a9c819a071d7b2c17e692bffb88ae4d41f",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      }
+    },
+    {
+      "file": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.0.mod.zip",
+      "name": "ModHubSoftWet",
+      "version": "1.0.0",
+      "sha256": "df6356be81f8def8ed22b69aa2e04069a4e027a20b31e9c23aba79322a80b041",
+      "bytes": 5388,
+      "dependencies": [
+        {
+          "modName": "ModHub",
+          "version": ">=1.3.0"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ],
+      "members": {
+        "boot.json": "83cfee8af8ae8833c516c81509ad158afa0942f9d3929df96293bbd29d00ec51",
+        "modhub-soft-wet.css": "31c9cd5b4888c8b72927efc37445449bff597c4244380cd8c674ac3b24349c43",
+        "modhub-soft-wet.js": "7b288f0dd4b30045de4d8310aad66fecdabd360750213a47ae00a2340f01f0bc",
+        "README.md": "3a2838d48a8f22afbccfb584c2677e4ca328c0bedf89d9d938d6d481c1ff052c",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      }
+    },
+    {
+      "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip",
+      "name": "ReOverfitsSoftWet",
+      "version": "1.0.0",
+      "sha256": "78eb0061d06972645d1c48e039be8b3d935f2710fddf83eb5b094f2b59a6efdb",
+      "bytes": 4415,
+      "dependencies": [
+        {
+          "modName": "ReOverfits",
+          "version": ">=4.1.1"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ],
+      "members": {
+        "boot.json": "67357cc4b8a0ae9d3f43292237ba4e8265d1313f958ba6477e3e1e54f241abe3",
+        "reoverfits-soft-wet.css": "c1006cda3df1af8673385be903884100e0c333cbc28c3669f68b3d9f7d2edfd8",
+        "reoverfits-soft-wet.js": "79f87a42556d29acc775250006e3e66383df163006096924c0388957bc0b5016",
+        "README.md": "642c897f365ddd233182a33645937c86aaf9fa3f63a82c8f415729c731da1f05",
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888"
+      }
+    },
+    {
+      "file": "StoneFreeHost-0.1.4-experimental.mod.zip",
+      "name": "StoneFreeHost",
+      "version": "0.1.4-experimental",
+      "sha256": "ad78fca929e3819fce4da6f0d10affb4fc91318661583e4dacec896b64936153",
+      "bytes": 6326,
+      "dependencies": [
+        {
+          "modName": "ModLoader",
+          "version": ">=2.100.0"
+        }
+      ],
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "c10e22b69d121133551e1f2dcd7264e4082891fbb289c4c8096d0ec07a35d05d",
+        "boot.json": "7c115d20a217d2e6020f183f716033653c8fb937c39964bd526a4b366f4cf720",
+        "index.js": "5b7818db0802255c535db6ae73fcd6d7cb15b224fc0c9711ed71fce46cc2b495"
+      }
+    }
+  ],
+  "hostOrigin": "Unmodified public v3.0.0 asset, SHA-256 ad78fca929e3819fce4da6f0d10affb4fc91318661583e4dacec896b64936153",
+  "media": [
+    {
+      "path": "docs/media/3.0.1/KraftWork-3.0.1-transfer.png",
+      "sha256": "004bb4b745c8d1d8683994cc42a01b227d64f2b267492c3e42d2b1b99d72e0af",
+      "origin": "Actual Android WebView; last UI ZIP installed and runtime members verified"
+    }
+  ]
+}
