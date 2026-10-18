@@ -2,7 +2,7 @@ export const toolIds=['settings','inspector','move'] as const;
 export type ToolId=typeof toolIds[number];
 export type FloatingPreferences={enabled:boolean;hidden:boolean;mode:'fan'|'grid';x:number;y:number;tools:ToolId[]};
 export const floatingKey='DoLGameUI.stoneFree.floating.v1';
-export const floatingDefaults:FloatingPreferences={enabled:false,hidden:false,mode:'fan',x:.88,y:.45,tools:[...toolIds]};
+export const floatingDefaults:FloatingPreferences={enabled:true,hidden:false,mode:'fan',x:.88,y:.45,tools:[...toolIds]};
 export function readFloatingPreferences(raw:string|null):FloatingPreferences{
  const p={...floatingDefaults,tools:[...floatingDefaults.tools]};
  try{if(!raw||raw.length>2048)return p;const v=JSON.parse(raw);if(!v||typeof v!=='object')return p;

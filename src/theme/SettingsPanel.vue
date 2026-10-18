@@ -104,7 +104,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
      <SettingsToggle label="启用新版社交界面" :checked="state.social" @change="onSocial"/>
      <SettingsToggle label="启用新版属性界面" :checked="state.characteristics" @change="onCharacteristics"/>
      <SettingsToggle label="启用新版战斗界面" :checked="state.combat" @change="onCombat"/>
-     <SettingsToggle label="战斗聚焦编辑（实验）" description="默认关闭并使用原版战斗控件；启用后在原控件上方展开聚焦编辑区" :checked="state.preferences.combatFocused" @change="onPreference('combatFocused',$event)"/>
+     <SettingsToggle label="战斗聚焦编辑（实验）" description="默认平铺显示原版战斗控件；开启后聚焦单组动作，关闭后恢复全部平铺" :checked="state.preferences.combatFocused" @change="onPreference('combatFocused',$event)"/>
     </details>
     <div class="dmt-setting-card dmt-control-sheet">
      <h3>衣柜与存档</h3>

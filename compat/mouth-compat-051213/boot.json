@@ -1,6 +1,6 @@
 {
   "name": "LyraMouthCompat051213",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "scriptFileList": [
     "mouth-compat.js"
   ],
@@ -22,7 +22,7 @@
     },
     {
       "modName": "maplebirch",
-      "version": "=5.2.3"
+      "version": ">=5.2.3 <6.0.0"
     }
   ]
 }

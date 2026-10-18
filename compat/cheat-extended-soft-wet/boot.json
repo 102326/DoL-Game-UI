@@ -1,6 +1,6 @@
 {
   "name": "CheatExtendedSoftWet",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Kraft Work 外观兼容：原作者 Cheat Extended 1.20.3.1；另验独立维护 rebuild.30，非原作者发布。",
   "styleFileList": [
     "cheat-extended-soft-wet.css"

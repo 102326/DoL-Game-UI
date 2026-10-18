@@ -1,6 +1,6 @@
 {
   "name": "MapleBirchSoftWet",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "description": "MapleBirch 5.2.3 及以上云存档页面的独立 Soft & Wet 外观适配。",
   "styleFileList": [
     "maplebirch-soft-wet.css"

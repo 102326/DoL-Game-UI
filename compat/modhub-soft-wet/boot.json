@@ -1,6 +1,6 @@
 {
   "name": "ModHubSoftWet",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "description": "ModHub 1.3.0 及以上的独立柔和亚克力外观样式。",
   "styleFileList": [
     "modhub-soft-wet.css"

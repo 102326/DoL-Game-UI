@@ -71,3 +71,9 @@
 .dgs-v2 .dgs-list{min-width:0}
 
 .dgs-name-form{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}.dgs-name-form label{flex:1;min-width:0}.dgs-name-form input{display:block;width:100%}.dgs-name-form small,.dgs-name-form p{flex-basis:100%;margin:0;color:#aaa9bb}
+
+/* A percentage max-height can resolve against an oversized native grid track.
+   Bound our active save window to the viewport and scroll the content instead. */
+html[data-stone-free][data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host){display:flex;flex-direction:column;min-height:0;max-height:calc(100dvh - 24px);box-sizing:border-box}
+html[data-stone-free][data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host)>#customOverlayTitle{flex:0 0 auto;min-width:0}
+html[data-stone-free][data-dol-midnight] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host)>#customOverlayContent{flex:1 1 auto;min-height:0;height:auto;overflow:auto}

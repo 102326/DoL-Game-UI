@@ -10,7 +10,9 @@ declare const window: Window & {
  "use strict";
  const lyra = window.modUtils?.getMod?.("Lyra");
  const maple = window.modUtils?.getMod?.("maplebirch");
- if (lyra?.version !== "0.5.12.13-1.0.1a-1004.1-goose-ucb" || maple?.version !== "5.2.3") {
+ const version = /^5\.(\d+)\.(\d+)(?:\+[0-9A-Za-z.-]+)?$/.exec(maple?.version ?? "");
+ const compatible = version && (Number(version[1]) > 2 || Number(version[1]) === 2 && Number(version[2]) >= 3);
+ if (lyra?.version !== "0.5.12.13-1.0.1a-1004.1-goose-ucb" || !compatible) {
   console.warn("[LyraMouthCompat051213] Unreviewed environment; no changes applied");
   return;
  }

@@ -1,0 +1,27 @@
+/* Only the reviewed native mouth-action select in our combat panel.
+   Unsupported engines keep their native picker; no proxy values or events. */
+@supports (appearance:base-select) and selector(::picker(select)) {
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction,
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction::picker(select) {appearance:base-select}
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction {display:inline-flex;align-items:center;justify-content:space-between;gap:12px;width:12rem;min-width:0;max-width:100%;flex:0 1 auto;vertical-align:middle}
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction::picker-icon {margin-inline-start:auto}
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction::picker(select) {
+  color:var(--sf-ink,#e6e6e8);background:linear-gradient(135deg,#ffffff06,transparent 65%),rgb(24 25 28 / .92);
+  border:1px solid #ffffff1d;border-radius:14px;box-shadow:inset 0 1px #ffffff09,0 16px 42px #0006;
+  padding:6px;max-width:calc(100vw - 24px);max-height:min(56dvh,420px);overflow:auto;overscroll-behavior:contain;
+ }
+ html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] .dcu-shell #mouthaction select#listbox-askaction::picker(select) {background-color:rgb(24 25 28 / .68);backdrop-filter:blur(22px) saturate(.85)}
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction option {min-height:44px;padding:10px 12px;white-space:normal;border:1px solid transparent;border-radius:9px;color:inherit;background:transparent}
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction option:checked {color:#c2ddd4;background:#8baea31c;border-color:#8baea33b}
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction option:not(:disabled):is(:hover,:focus-visible) {background:#8baea329;outline:1px solid #8baea35c;outline-offset:-2px}
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction option:disabled {opacity:.4}
+ html[data-stone-free][data-dol-midnight] .dcu-shell #mouthaction select#listbox-askaction option::checkmark {color:#9cc6b8}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualMotion] .dcu-shell #mouthaction select#listbox-askaction::picker(select) {opacity:0;transform:translateY(-7px) scale(.98);transform-origin:top;transition:opacity 180ms,transform 220ms,display 220ms allow-discrete,overlay 220ms allow-discrete}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualMotion] .dcu-shell #mouthaction select#listbox-askaction:open::picker(select) {opacity:1;transform:none}
+ html[data-stone-free][data-dol-midnight][data-dgu-visualMotion] .dcu-shell #mouthaction select#listbox-askaction option {transition:background-color 180ms,border-color 220ms}
+ @starting-style {html[data-stone-free][data-dol-midnight][data-dgu-visualMotion] .dcu-shell #mouthaction select#listbox-askaction:open::picker(select) {opacity:0;transform:translateY(-7px) scale(.98)}}
+}
+@media(prefers-reduced-motion:reduce) {
+ html[data-stone-free] .dcu-shell #mouthaction select#listbox-askaction::picker(select),
+ html[data-stone-free] .dcu-shell #mouthaction select#listbox-askaction option {transition:none!important;transform:none!important}
+}

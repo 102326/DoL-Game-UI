@@ -1,8 +1,8 @@
 const {spawnSync}=require('node:child_process');
 const fs=require('node:fs'),path=require('node:path');
 const suites={
- unit:['floating-preferences.test.cjs','test-workflow.test.cjs','status.test.cjs','target-version.test.cjs','wardrobe-data.test.cjs','wardrobe-source-m2.test.cjs','wardrobe-slot-mappings.test.cjs','wardrobe-performance.test.cjs','wardrobe-operations.test.cjs','render-state.test.cjs','startup-cache.test.cjs'],
- browser:['framework.cjs','framework-connect.cjs','framework-commands.cjs','settings-ci.cjs','wardrobe-details-drawer.cjs','shop-source.test.cjs','save-transfer-lifecycle.cjs','header-weather.cjs','official-game-motion.cjs','kraft-work-adapters.cjs','selection-motion.cjs','shop-ripple-motion.cjs']
+ unit:['floating-preferences.test.cjs','test-workflow.test.cjs','status.test.cjs','target-version.test.cjs','wardrobe-data.test.cjs','wardrobe-source-m2.test.cjs','wardrobe-slot-mappings.test.cjs','wardrobe-performance.test.cjs','wardrobe-operations.test.cjs','render-state.test.cjs','startup-cache.test.cjs','mouth-compat-adapter.cjs'],
+ browser:['framework.cjs','framework-connect.cjs','framework-commands.cjs','settings-ci.cjs','wardrobe-details-drawer.cjs','shop-source.test.cjs','save-transfer-lifecycle.cjs','header-weather.cjs','official-game-motion.cjs','kraft-work-adapters.cjs','selection-motion.cjs','shop-ripple-motion.cjs','official-defaults.cjs','combat-focused.cjs','combat-select.cjs','saves-viewport.cjs','adapter-materials.cjs']
 };
 const suite=process.argv[2];
 if(!Object.hasOwn(suites,suite))throw Error('Expected unit or browser');
