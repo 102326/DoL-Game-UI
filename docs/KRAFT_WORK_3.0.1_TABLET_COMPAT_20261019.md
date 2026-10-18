@@ -60,9 +60,10 @@ Host 使用公开 0.1.4-experimental 原 ZIP，公共协议未修改。当前 CI
 - 模式持久化存在一次“写偏好后立即 force-stop，读回旧 true”的失败，保留。等待写入并核对后，后续原生重启为 false；未将该现象根因宣称已解决。
 - 一次 Page.reload 触发工具 DocumentChanged，保留失败；重新绑定后核实运行成员，没有盲目重复操作。
 - [首次最终提交 CI](https://github.com/102326/DoL-Game-UI/actions/runs/39161341795) 在设置快速切换后固定等待 700ms 的采样点失败，未创建 Release。Windows 诊断记录显示转场完成／取消回调负责移除离场节点；不能从该采样点推定永久残留。测试改为有界等待实际转场结束及唯一正文，再保留无 inert、正确分类、控件可用和无输入泄漏断言。没有修改运行代码，也没有把失败记录覆盖为通过。后续最终提交 CI 的结果单独核对。
+- [第二次 CI](https://github.com/102326/DoL-Game-UI/actions/runs/39161721706) 的设置检查通过，随后聚焦战斗导航的横向边界检查失败。定向诊断确认 display:contents 容器返回零尺寸，原 OrbitFocus 生成 NaN SVG 坐标；原独立夹具还遗漏实际共享焦点 CSS。修复为使用装饰层真实定位祖先计算与观察尺寸，零尺寸时清空旧几何；夹具加载同一共享样式，并增加窄／宽切换后的有限坐标和按钮对齐检查，不放宽溢出断言。此次运行代码变化重新构建并复验，最终包摘要按后续冻结记录更新。
 - 现场准备期间页面被人工切走，几个带场景前置检查的脚本明确拒绝操作；重新观察正确页面后继续，没有把前置失败计为通过。
 
-本地原始证据在忽略目录 `tests/artifacts/kraft-work-maintenance-20261019/`，不公开游戏 HTML、第三方包或测试进度。最终安装目录 `tablet-release-last-3.0.1-1792353310817/`，最新三页结果为 `current-mods-20261019/save-three-tabs-final.json`，日志为 `journal-items-final.json`；最终战斗检查为该目录最后一次 `tablet-combat-regression-*.json`。中间输入和失败报告保留。
+本地原始证据在忽略目录 `tests/artifacts/kraft-work-maintenance-20261019/`，不公开游戏 HTML、第三方包或测试进度。最终安装目录为本地清单中最后一个 `tablet-release-last-3.0.1-*/`（以记录的 ZIP 摘要核对，不复用旧目录），最新三页结果为 `current-mods-20261019/save-three-tabs-final.json`，日志为 `journal-items-final.json`；最终战斗检查为该目录最后一次 `tablet-combat-regression-*.json`。中间输入和失败报告保留。
 
 ## 最终发行字节
 
@@ -70,7 +71,7 @@ Host 使用公开 0.1.4-experimental 原 ZIP，公共协议未修改。当前 CI
 
 | 文件 | SHA-256 |
 | --- | --- |
-| DoLGameUI-3.0.1.mod.zip | `488ffc402c1ae4ad2adb66a58da38072419c000c9884a1725db9776ad3642b26` |
+| DoLGameUI-3.0.1.mod.zip | `8e9b5903bf55fc2aaffddc9878e245e159794ab9d1b7d81564400d63385f2527` |
 | ModHubSoftWet-ModHub-1.3.0-plus-v1.0.0.mod.zip | `df6356be81f8def8ed22b69aa2e04069a4e027a20b31e9c23aba79322a80b041` |
 | MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.0.mod.zip | `b3baa723027bc20e815677133e9b5e7b0082f8cb13deb5240c49e3ddb569f13a` |
 | DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.0.mod.zip | `71aa281a2900ffd97958798a3d73012632c0d855efe924fba915c0f8ce62e371` |
