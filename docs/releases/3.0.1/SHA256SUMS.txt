@@ -1,5 +1,5 @@
 ba8f17fb23f1c81214266ceb4ce3150bed0133b3e2904b856c4984a9e83c68f9  CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.0.mod.zip
-488ffc402c1ae4ad2adb66a58da38072419c000c9884a1725db9776ad3642b26  DoLGameUI-3.0.1.mod.zip
+8e9b5903bf55fc2aaffddc9878e245e159794ab9d1b7d81564400d63385f2527  DoLGameUI-3.0.1.mod.zip
 71aa281a2900ffd97958798a3d73012632c0d855efe924fba915c0f8ce62e371  DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.0.mod.zip
 71080a79771149a0edf80cc66943518645835e1b6259a01e23869d6da2a34974  LyraMouthCompat051213-Lyra-0.5.12.13-v1.0.0.mod.zip
 b3baa723027bc20e815677133e9b5e7b0082f8cb13deb5240c49e3ddb569f13a  MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.0.mod.zip

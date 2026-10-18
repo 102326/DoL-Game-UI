@@ -1,7 +1,7 @@
 {
   "releaseTag": "v3.0.1",
-  "runtimeSourceCommit": "e204da46ffb97b26994600cb6649a568c3005877",
-  "sourceCommitNote": "The release tag additionally commits release identities and CI settling checks; all packaged runtime inputs remain unchanged.",
+  "runtimeSourceCommit": "e23f631ab7b1b7d06f79534cc885af1132e0e256",
+  "sourceCommitNote": "The release tag additionally commits release identities and final device evidence; all packaged runtime inputs remain unchanged.",
   "sourceInputs": [
     {
       "path": "LICENSE",
@@ -777,7 +777,7 @@
     },
     {
       "path": "src/ui/OrbitFocus.vue",
-      "sha256": "c18e998e4c998bdba831beb2f5763a9e85f4ef56d353a316db51d27f78205475"
+      "sha256": "f9421ac700f1badc2797f9b8d4ae68b0fed1a4cc41773adda72c97999fd679f0"
     },
     {
       "path": "src/ui/SettingsToggle.vue",
@@ -917,8 +917,8 @@
       "file": "DoLGameUI-3.0.1.mod.zip",
       "name": "DoLGameUI",
       "version": "3.0.1",
-      "sha256": "488ffc402c1ae4ad2adb66a58da38072419c000c9884a1725db9776ad3642b26",
-      "bytes": 229188,
+      "sha256": "8e9b5903bf55fc2aaffddc9878e245e159794ab9d1b7d81564400d63385f2527",
+      "bytes": 229263,
       "dependencies": [
         {
           "modName": "ModLoader",
@@ -947,7 +947,7 @@
         "docs/OPTIONAL_ADAPTERS.md": "c74cf3e1f332a3c488c657ec10daf90442e7d2ad401541a634ca28b62bda27ed",
         "docs/RELEASE_3.0.1.md": "6f97ec535f96253fb6dbfae6e5f224d1b270bc6f1ed3b80707e92e6c43d23d8c",
         "docs/UI_SETTINGS.md": "e9081b3083b637969ea333ac887234f85c4eb0b44ed5c92e2077f47f278e696f",
-        "index.js": "c9502183fb5a158a3cc88eb7b6dc9f3f370bd1201b1342736172efc17372baac",
+        "index.js": "8b79a282cd470f1305a4939b7b8ec8ef817380c450bf2733d05014128a1f8f6b",
         "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
         "style.css": "1af71a194bb5274f94845e309ae90d077beb7470c1095c8912afd1a40eaa8260",
         "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
@@ -1121,8 +1121,8 @@
   "media": [
     {
       "path": "docs/media/3.0.1/KraftWork-3.0.1-transfer.png",
-      "sha256": "004bb4b745c8d1d8683994cc42a01b227d64f2b267492c3e42d2b1b99d72e0af",
-      "origin": "Actual Android WebView; last UI ZIP installed and runtime members verified"
+      "sha256": "3f277b7c6d9b1ae5a6a35f92538ac7ab039adc8fb9dd8b7309cc8a3803a7bea3",
+      "origin": "Actual Android WebView; final UI ZIP installed and runtime members verified"
     }
   ]
 }
