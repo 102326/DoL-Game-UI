@@ -4,7 +4,7 @@
 
 ## 源码与 Tag
 
-发布 Tag 为 `v3.0.0`，以本轮源码固化提交为准，不能使用旧研究 HEAD。研究分支 `research/stone-free-3.0-framework` 在无远端分歧的前提下快进推送；main 不合并、不覆盖。2.7 及公开 RC 保留原 Release 和附件。
+发布 Tag 为 `v3.0.0`，以本轮源码固化提交为准，不能使用旧研究 HEAD。负责人随后明确要求更新 GitHub main；确认远端 main 是最终提交祖先后，只做快进更新，不强推。公开发行核对完成后，删除已由 main 完整包含的远端 `research/stone-free-3.0-framework`；其它实验分支不删除。其它本地 checkout 和其 main 工作区保持原样。2.7 及公开 RC 保留原 Release 和附件。
 
 已验收运行源码的源树摘要为 `a71929feccea15a717dbd7023a8dd630fc74b5f139867940fbecc326a20b90ed`，源码快照 ZIP 摘要为 `6a661d9d13c5fb5cb08411c3e56b2e2f166db923a070bf88701525928e6cbd87`。Git 的文本换行规范与快照原始字节摘要分别记录；核对内容时不把正常 CRLF／LF 转换视为业务修改。
 
@@ -46,6 +46,6 @@
 
 ## 公开核对
 
-发布前核对暂存清单、提交内容、Tag、ZIP 元数据、SHA、运行成员、LICENSE／NOTICE、正文与素材。先整理全部文件和文案，再快进推送源码与 Tag、创建 GitHub draft、上传并逐项核对附件，最后公开为正式 Release。遇到实质性身份或内容差异即暂停，不静默替换；旧 Release 的状态和附件保持原样。
+发布前核对暂存清单、提交内容、Tag、ZIP 元数据、SHA、运行成员、LICENSE／NOTICE、正文与素材。先整理全部文件和文案，再快进推送 main 与 Tag、创建 GitHub draft、上传并逐项核对附件，最后公开为正式 Release。遇到实质性身份或内容差异即暂停，不静默替换；旧 Release 的状态和附件保持原样。
 
 发布回执保存实际 Release URL、Commit、Tag、附件摘要及旧 Release 保留检查；正文入口见 [正式说明](RELEASE_3.0.0.md)，具体安装见 [安装指南](INSTALL_3.0.0.md)。

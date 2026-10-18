@@ -2,6 +2,16 @@
 
 > **Soft & Wet 3.0 — Kraft Work**：黑灰 Acrylic、游戏天气响应、双布局设置与可选 Floating Hub。普通玩家需要 UI + Framework Host 两包。见 [3.0 下载](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.0)、[安装与回退](docs/INSTALL_3.0.0.md)、[完整发布说明](docs/RELEASE_3.0.0.md)及[发行身份](docs/KRAFT_WORK_3.0_PUBLISH.md)。
 
+3.0 的源码构建入口如下。仓库的 `package.json` 版本、经典 `npm run package` 和既有通用 CI 制品继续保留 2.7 入口，不用它们代替正式 3.0 Release。公开 Host 沿用其冻结原包；新构建的 ZIP 文档或元数据可能不同，应按发行身份核对运行成员，不自动覆盖公开附件。
+
+```text
+npm ci
+npm run typecheck
+npm run framework:check
+node scripts/build-framework.mjs
+python scripts/package-framework.py --players-only
+```
+
 ## 2.7 使用说明（历史参考）
 
 以下内容记录 2.7 的单包安装和旧界面，不能替代上方 3.0 双包指南；[2.7 稳定发行](https://github.com/102326/DoL-Game-UI/releases/tag/v2.7.0) 继续保留。
