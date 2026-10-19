@@ -127,20 +127,20 @@ class SourceVersions(unittest.TestCase):
                 with self.subTest(defect=defect):
                     restore()
                     if defect in ['root', 'joint-ui']:
-                        data = json.loads((root / 'package.json').read_text())
-                        data['version'] = '3.0.2'
-                        (root / 'package.json').write_text(json.dumps(data))
+                        data = json.loads((root / 'package.json').read_text(encoding='utf-8'))
+                        data['version'] = '3.0.3'
+                        (root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
                     if defect in ['runtime', 'joint-ui']:
-                        (root / 'framework/official-ui/main.ts').write_text(originals['framework/official-ui/main.ts'].replace("visualVersion='3.0.1'", "visualVersion='3.0.2'"))
+                        (root / 'framework/official-ui/main.ts').write_text(originals['framework/official-ui/main.ts'].replace("visualVersion='3.0.2'", "visualVersion='3.0.3'"), encoding='utf-8')
                     if defect == 'joint-ui':
                         # Producer follows the wrong root version too: independent policy must still refuse it.
-                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("official_version if directory", "'3.0.2' if directory"))
+                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("official_version if directory", "'3.0.3' if directory"), encoding='utf-8')
                     if defect == 'host':
-                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_version = '0.1.4-experimental'", "host_version = '3.0.1'"))
+                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_version = '0.1.4-experimental'", "host_version = '3.0.1'"), encoding='utf-8')
                     if defect == 'protocol':
-                        (root / 'framework/contracts.ts').write_text(originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"))
+                        (root / 'framework/contracts.ts').write_text(originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"), encoding='utf-8')
                     if defect == 'range':
-                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_requirement = '>=0.1.2-experimental && <0.2.0'", "host_requirement = '*'"))
+                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_requirement = '>=0.1.2-experimental && <0.2.0'", "host_requirement = '*'"), encoding='utf-8')
                     with self.assertRaisesRegex(AssertionError, reason):
                         checks.check_version_sources(root)
 
@@ -212,20 +212,20 @@ class OptionalContracts(unittest.TestCase):
             base = Path(tmp)
             (base / 'dist/scripts').mkdir(parents=True)
             manifest = {'name': 'ControlledFixture', 'version': '1.0.0', 'dependenceInfo': [{'modName': 'ControlledTarget', 'version': '>=1.0.0'}], 'scriptFileList': ['fixture.js']}
-            (base / 'boot.json').write_text(json.dumps(manifest))
-            (base / 'fixture.ts').write_text('export const fresh = true;')
-            (base / 'dist/scripts/fixture.js').write_text('stale output')
-            (base / 'dist/preserved.log').write_text('keep unrelated local log')
+            (base / 'boot.json').write_text(json.dumps(manifest), encoding='utf-8')
+            (base / 'fixture.ts').write_text('export const fresh = true;', encoding='utf-8')
+            (base / 'dist/scripts/fixture.js').write_text('stale output', encoding='utf-8')
+            (base / 'dist/preserved.log').write_text('keep unrelated local log', encoding='utf-8')
             with patch.object(sys, 'argv', ['package-adapter.py', str(base)]), patch('subprocess.run') as compiler:
                 compiler.return_value.returncode = 0  # Controlled compiler exits 0 but writes nothing.
                 with self.assertRaisesRegex(AssertionError, 'CJ3C_MISSING_COMPILED_ADAPTER'):
                     runpy.run_path(str(ROOT / 'scripts/package-adapter.py'), run_name='__main__')
-            self.assertEqual((base / 'dist/preserved.log').read_text(), 'keep unrelated local log')
-        mouth = json.loads((ROOT / 'compat/mouth-compat-051213/boot.json').read_text())
+            self.assertEqual((base / 'dist/preserved.log').read_text(encoding='utf-8'), 'keep unrelated local log')
+        mouth = json.loads((ROOT / 'compat/mouth-compat-051213/boot.json').read_text(encoding='utf-8'))
         mouth['dependenceInfo'].append({'modName': 'DoLGameUI', 'version': '>=3.0.0'})
         with self.assertRaisesRegex(AssertionError, 'CJ3C_ADAPTER_POLICY'):
             checks.check_adapter_manifest(mouth, 'mouth-compat-051213')
-        legacy = json.loads((ROOT / 'compat/lyra-wardrobe-mouth-soft-wet/boot.json').read_text())
+        legacy = json.loads((ROOT / 'compat/lyra-wardrobe-mouth-soft-wet/boot.json').read_text(encoding='utf-8'))
         with self.assertRaisesRegex(AssertionError, 'CJ3C_ADAPTER_POLICY'):
             checks.check_adapter_manifest(legacy, 'mouth-compat-051213')
 

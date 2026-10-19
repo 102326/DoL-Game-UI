@@ -18,7 +18,7 @@ const disconnect=connectConsumer(host=>{
  let destroyUi:(()=>void)|undefined;
  let stopHub:(()=>void)|undefined;
  let stopMotion:(()=>void)|undefined;
- const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion='3.0.1';
+ const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion='3.0.2';
  const release=()=>{try{stopMotion?.();stopHub?.();shelf.dispose();destroyUi?.()}finally{ui=undefined;destroyUi=undefined;stopHub=undefined;stopMotion=undefined;owner.dispose();if(html.getAttribute('data-stone-free')===visualVersion){if(previous===null)html.removeAttribute('data-stone-free');else html.setAttribute('data-stone-free',previous)}}};
  try{
   if(!owner.claim('region','soft-wet-official-ui')){release();return release}

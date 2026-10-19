@@ -54,7 +54,7 @@ for directory, name in packages:
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
     if directory == 'official-ui':
-        for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md','docs/RELEASE_3.0.1.md']:
+        for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md','docs/RELEASE_3.0.2.md']:
             files[doc] = (root/doc).read_bytes(); boot['additionFile'].append(doc)
         for declaration in ['ui.d.ts','wardrobe.d.ts']:
             asset_name = 'types/'+declaration

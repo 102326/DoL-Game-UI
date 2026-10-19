@@ -20,7 +20,7 @@ from shop_package import shop_patches
 ROOT = Path(__file__).resolve().parent.parent
 PACKAGES = {
     'StoneFreeHost': ('0.1.4-experimental', 'host'),
-    'DoLGameUI': ('3.0.1', 'official-ui'),
+    'DoLGameUI': ('3.0.2', 'official-ui'),
 }
 
 
@@ -28,7 +28,7 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
-# Independent policies for the current 3.0.1 release line. Producers do not read them.
+# Independent policies for the current 3.0.2 release line. Producers do not read them.
 ADAPTERS = {
     'modhub-soft-wet': ('ModHubSoftWet', 'ModHub', '>=1.3.0', 'modhub-soft-wet'),
     'maplebirch-soft-wet': ('MapleBirchSoftWet', 'maplebirch', '>=5.2.3', 'maplebirch-soft-wet'),
@@ -246,7 +246,7 @@ def check_package(path, name):
         expected['shop-page-experiment.js'] = ROOT / 'dist/shop-page-experiment.js'
         for filename in ['ui.d.ts', 'wardrobe.d.ts']:
             expected['types/' + filename] = ROOT / 'dist/types' / filename
-        for filename in ['docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', 'docs/RELEASE_3.0.1.md', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
+        for filename in ['docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', 'docs/RELEASE_3.0.2.md', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
             expected[filename] = ROOT / filename
         notices = []
         for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom', 'tailwindcss']:
@@ -257,7 +257,7 @@ def check_package(path, name):
         assert boot['addonPlugin'] == [{'modName': 'TweeReplacer', 'addonName': 'TweeReplacerAddon', 'modVersion': '>=1.0.0', 'params': params}], 'Wrong shop patch metadata'
         for _, _, filename in shop_patches:
             expected[filename] = ROOT / filename
-        lists['additionFile'] += ['THIRD-PARTY-NOTICES.txt', 'docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', 'docs/RELEASE_3.0.1.md', 'types/ui.d.ts', 'types/wardrobe.d.ts', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']
+        lists['additionFile'] += ['THIRD-PARTY-NOTICES.txt', 'docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', 'docs/RELEASE_3.0.2.md', 'types/ui.d.ts', 'types/wardrobe.d.ts', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']
     else:
         assert not boot.get('addonPlugin') and not boot.get('scriptFileList_inject_early'), 'Unexpected Host entry'
     assert boot['dependenceInfo'] == deps, 'Dependency policy drift'

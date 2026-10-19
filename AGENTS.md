@@ -1,6 +1,7 @@
 # DoL UI project rules
 
 - Current visual authority: [Kraft Work 3.x baseline](docs/VISUAL_BASELINE_3X.md). Use it for new official UI and compatible presentation unless the owner specifies an exception. Historical 1.x/2.x design ideas, Eyes demos and earlier visual plans are archived reference, not current design direction. Preserve native fallbacks, configuration migration and historical evidence; do not delete live compatibility paths merely to remove an old theme.
+- All current UI design uses the 3.x baseline. Earlier 1.x/2.x styles stay archived and must not be restored as runtime themes, default compatibility styling or design sources without a new explicit owner decision.
 
 - This isolated branch begins the newly authorized Stone Free 3.0 research implementation: read [current execution scope](docs/STONE_FREE_3.0_EXECUTION.md), [2.7 preserved baseline](docs/CRAZY_DIAMOND_2.7.md), and [inherited ownership boundaries](docs/STONE_FREE_3.0_BASELINE.md). Older Stone Free feature lists are historical; the accepted 2026-10-15 Framework/Contribution/Factory plan is the direction, not a claim that all candidate features ship.
 - Follow Scoped Done and Risk-Proportional Validation: define the task's delivery and acceptance, reuse valid evidence, and keep untested coverage separate from unfinished work. Documentation-only rules need link/consistency checks, not new game or full build runs.
