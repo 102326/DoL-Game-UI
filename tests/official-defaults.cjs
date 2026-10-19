@@ -5,7 +5,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),http
  let browser;
  try{
   browser=await chromium.launch(require('./browser-options.cjs'));const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
-  async function boot(){await page.goto('http://127.0.0.1:'+server.address().port);await page.addStyleTag({path:'dist/framework/official-ui/style.css'});await page.addScriptTag({path:'dist/framework/host/index.js'});await page.evaluate(()=>DoLUiHost.sceneReady());await page.addScriptTag({path:'dist/framework/official-ui/index.js'});await page.waitForFunction(()=>window.DoLGameUI?.version==='3.0.2')}
+  async function boot(){await page.goto('http://127.0.0.1:'+server.address().port);await page.addStyleTag({path:'dist/framework/official-ui/style.css'});await page.addScriptTag({path:'dist/framework/host/index.js'});await page.evaluate(()=>DoLUiHost.sceneReady());await page.addScriptTag({path:'dist/framework/official-ui/index.js'});await page.waitForFunction(()=>window.DoLGameUI?.version==='3.0.3')}
   await boot();await page.waitForSelector('.sf-motion-ball');await page.waitForSelector('.dcu-shell:not([data-focused])');
   const defaults=await page.evaluate(()=>({floating:DoLFloatingTools.getPreferences().enabled,combat:DoLCombatUI.getEnabled(),focused:DoLGameUI.getPreferences().combatFocused,motion:DoLGameUI.getPreferences().visualMotion}));
   assert.deepEqual(defaults,{floating:true,combat:true,focused:false,motion:true});

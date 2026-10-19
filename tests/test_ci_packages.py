@@ -128,13 +128,13 @@ class SourceVersions(unittest.TestCase):
                     restore()
                     if defect in ['root', 'joint-ui']:
                         data = json.loads((root / 'package.json').read_text(encoding='utf-8'))
-                        data['version'] = '3.0.3'
+                        data['version'] = '99.0.0'
                         (root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
                     if defect in ['runtime', 'joint-ui']:
-                        (root / 'framework/official-ui/main.ts').write_text(originals['framework/official-ui/main.ts'].replace("visualVersion='3.0.2'", "visualVersion='3.0.3'"), encoding='utf-8')
+                        (root / 'framework/official-ui/main.ts').write_text(originals['framework/official-ui/main.ts'].replace("visualVersion='3.0.3'", "visualVersion='99.0.0'"), encoding='utf-8')
                     if defect == 'joint-ui':
                         # Producer follows the wrong root version too: independent policy must still refuse it.
-                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("official_version if directory", "'3.0.3' if directory"), encoding='utf-8')
+                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("official_version if directory", "'99.0.0' if directory"), encoding='utf-8')
                     if defect == 'host':
                         (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_version = '0.1.4-experimental'", "host_version = '3.0.1'"), encoding='utf-8')
                     if defect == 'protocol':
