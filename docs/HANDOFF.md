@@ -1,73 +1,70 @@
 # Soft & Wet — 跨设备交接
 
-更新：2026-10-19。此文档是当前快照；接手时必须重新核对本机事实。
+更新：2026-10-19。当前快照；接手必须重新核对本机事实。
 
 ## Current — 当前做什么
 
-- 目标：P0 的 CJ-3A/B 已验证；继续负责人新增的 P1 CJ-3D 设备矩阵与连续扫描。
-- 工作分支：`ci/moody-blues-p0`；起点 HEAD：
-  `9c162939dca50b11549b8a88aefa0069e4ea1896`，与重新获取的 `origin/main`
-  和 `v3.0.1^{commit}` 一致。已推送代码 HEAD：
-  `1e8010808a7d1c71f0cfe1d3049227df1258ea8b`；新增 CJ-3D 工作尚未提交/推送。
-- 已隔离原有研究分支。旧工作区、忽略的构建/夹具/日志仍在原机，未复制入 Git。
-- 当前待办：CJ-3D 配置/来源、实际样式夹具、扫描、反例、证据及标准/深度 CI。
-  未收到真机视口/DPR/缩放实测值，配置库不得标记为实测；不阻塞模拟覆盖实施。
-- 已登记 Redmi K90ProMax、Xiaomi pad9 pro max 两台自有设备及 5 个未持有 Apple
-  目标；平板准确型号及 iPad 代际待确认。七个目标均 pending，未知视口/DPR 为 null。
-  [离线采集页说明](DEVICE_MEASUREMENT.md) 已完成受控横竖屏、隐私及导出验证。
+- 目标：Moody Blues 的 CJ-3A/B、CI-HANDOFF-01 与 CJ-3D 模拟覆盖已交付；
+  接续重点为两台自有设备的同宿主实测数据。当前没有实施阻塞。
+- 分支：`ci/moody-blues-p0`；3.0.1 起点、`origin/main`、`v3.0.1^{commit}` 均为
+  `9c162939dca50b11549b8a88aefa0069e4ea1896`。
+  P0 提交 `1e8010808a7d1c71f0cfe1d3049227df1258ea8b`；CJ-3D 实现提交
+  `6f3c982b2e89c5b39e53eb7239ba673073b83abb`。本快照随文档更新提交推送；
+  文档提交不改变已验证实现，实际 HEAD 以 `git rev-parse HEAD` 为准。
+  交付时应无未提交/未推送工作，接手须重新检查。
+- 旧研究分支、原型工作区及忽略的构建/日志均已保留，没有带入本轮分支。
+- 真机数据待补：Redmi K90ProMax、Xiaomi pad9 pro max 两台自有设备，以及五个
+  Apple 目标共七项均 pending，viewport/DPR 为 null。平板准确型号与 iPad 代际待确认。
+  [离线采集说明](DEVICE_MEASUREMENT.md) 已通过受控横竖屏、隐私与导出验证；
+  浏览器观测值及用户勾选的真机确认不等于独立硬件认证。此缺口不阻塞模拟覆盖交付。
 
 ## Decided — 已经确定什么
 
-- 本轮只增强 CI 脚本、受控测试和交接文档；保留既有测试/打包合同及 CI/CD 隔离。
-  不合并 main，不修改 Release、Tag、ZIP、ruleset 或 bypass；不引入 AI 服务。
-- 证据绑定 HEAD、非忽略源码内容摘要、lockfile、平台/运行版本、Actions Run/Attempt。
-  必需检查未执行、报告缺失或身份不符均不能 PASS；具体格式见
-  [Moody Blues P0](MOODY_BLUES_P0.md)。
-- 原始 3.0.1 本机验证：macOS arm64，Node 24.18.0、Python 3.12.14、
-  lockfile 的 Playwright 1.63.0 / Chromium。
-  `npm ci`、`npm run ci:check`、`ci:unit`（原 12 项）、`ci:build`、`ci:packages`
-  通过；原 `ci:browser` 在 `header-weather.cjs` 失败，其后检查未运行。
-  已定位为媒体匹配先更新、JS change 后投递的测试竞态；修正测试等待事件，
-  保留全部动画停止断言，不计作第三个产品缺陷。
-- 增强后的本机七阶段已通过：dependencies / check / unit（13 项）/ build /
-  packages / browser-install / browser（19 项），含两个历史反例。
-  本机 summary 因没有 GitHub setup action 的真实 outcome 正确显示 PARTIAL，
-  七个实际命令均 PASS。独立审阅指出的夹具 JSON 最终字节上限问题已修正，
-  64 KiB 写入/上传边界及 Runner 的失败、超时、取消、漏跑、陈旧报告用例均通过。
-  源码内容摘要 `ad0c8af9d89d20cfaa7286c2da3ef4b3a44b19bed157a5f0dee89f6fe15696d8`
-  与已推送提交 `1e801080` 一致。
-- [P0 Actions](https://github.com/102326/DoL-Game-UI/actions/runs/39222671934)
-  对 `1e801080` 成功（validate 2m19s）：Linux x64、Node 22.23.3、
-  npm 10.9.9、Python 3.12.15、Playwright 1.63.0；13 单元/源码入口、19 浏览器入口。
-  已下载核对 52 项证据及索引内哈希，98,364 字节，遗漏 0；保留至 2026-10-26。
-- 两案目标验证已通过：#78 合法延迟完成、真实取消/连续切换及残留节点反例；
-  #79 健康几何、旧定位计算非有限值反例、遗漏生产共享 CSS 反例。
-  未修改生产 UI 源码，对应提交与 Actions 同上。
-- 历史依据：[成功基线](https://github.com/102326/DoL-Game-UI/actions/runs/39162456554)、
-  [#78](https://github.com/102326/DoL-Game-UI/actions/runs/39161341795)、
-  [#79](https://github.com/102326/DoL-Game-UI/actions/runs/39161721706)。
-  第三案证据未对应，不据此增加产品缺陷结论。
-- 本地原始日志和构建只在原机；路径记录于被忽略的 `HANDOFF.local.md`。
-  另一本地原型的两条提交已核对可达 `origin/test/paisley-park-component-lab`，
-  原型工作区保持原样，未带入本轮分支。
-  开发分支 CI 制品保留 7 天；过期后须按提交重跑，不假定另一台设备可访问本地文件。
-- Windows、本轮 Android 实机、真实游戏/ModLoader 联调均未验证。
-  macOS 通过不等于 Windows 通过，Actions 通过不等于 Android 通过。
+- 只改 CI 脚本、受控测试和文档，保留全部原有有效检查与打包合同。
+  未修改生产 UI、main、Release、Tag、正式 ZIP、ruleset/bypass；没有 CD 或 AI 服务。
+- [P0 证据合同](MOODY_BLUES_P0.md)：必需项未执行、缺失、超时、取消或身份不符
+  不得 PASS。记录源码内容摘要、HEAD、lockfile、平台/版本、Run/Attempt，有限日志及白名单证据。
+- 原始 3.0.1 本机 macOS arm64：依赖、类型/合同、12 单元入口、构建及 ZIP 合同通过；
+  原浏览器检查 7 项通过，header-weather 失败、后 10 项未运行。已确认媒体匹配/JS change
+  投递时序竞态，只修测试等待事件，保留动画停止断言，不计第三个产品缺陷。
+- [P0 Actions](https://github.com/102326/DoL-Game-UI/actions/runs/39222671934)：
+  `1e801080`，validate 2m19s 成功，Linux x64 / Node 22.23.3 / Python 3.12.15 /
+  Playwright 1.63.0，13 单元及 19 浏览器入口。下载核对 52 项证据的哈希，遗漏 0。
+  [#78](https://github.com/102326/DoL-Game-UI/actions/runs/39161341795) 的合法延迟、
+  取消/连续切换、残留反例及 [#79](https://github.com/102326/DoL-Game-UI/actions/runs/39161721706)
+  的旧定位计算/缺失共享 CSS 反例均有对应证据。第三案尚无完整对应。
+- [设备配置/来源](DEVICE_PROFILES.md)：标准/深度 48/62 个模拟配置，70/173 个
+  扫描宽度（320–2560、断点 ±1、每宽 390/900 两高度），另有同页旋转及四个精确反例。
+  使用当前官方 Hub 与生产 CSS，左右停靠、上下边界、设置、动态存档抽屉、长文本/密集行。
+  [CJ-3D 结果](MOODY_BLUES_CJ3D.md) 记录断言、预期失败截图样例及维护约定。
+- CJ-3D 本机七命令均 PASS：macOS arm64、Node 24.18.0、npm 11.16.0、Python 3.12.14、
+  Playwright 1.63.0；14 单元/源码、21 浏览器入口，标准 124/124；布局 167.452 秒。
+  内容摘要 `e3172af922e1ad85994c1a271d4606395c6fe46de421db6b2f95fd9aa925d5c7`
+  与 `6f3c982` 一致。本机整轮 summary 正确为 PARTIAL（无 GitHub setup outcome），
+  七个实际命令均 PASS，58 项证据 219,339 字节、哈希已核对、遗漏 0。
+- [深度 Actions](https://github.com/102326/DoL-Game-UI/actions/runs/39226899118)：
+  `6f3c982` 成功，validate 8m7s；同 P0 云端版本，14 单元/21 浏览器入口，241/241。
+  布局 353.450 秒；下载核对 58 项证据及哈希，345,708 字节、遗漏 0，保留至 2026-10-26。
+  完整报告/源码身份和深度均匹配，云端整轮 summary 与上传成功。
+  文档提交后标准模式结果应按实际 HEAD 在 Actions 列表核对，不将未触发视作通过。
+- Artifact 保留 7 天，过期按提交重跑。本机独有日志/构建/报告绝对路径仅记在忽略的
+  `HANDOFF.local.md`，另一设备不能假定可访问。原型两条提交已确认可达远端研究分支。
+- macOS 不代表 Windows，Actions/Chromium 不代表 Android/WebView、Safari/iOS 或真实
+  游戏/ModLoader。系统缩放、浏览器菜单缩放、键盘/系统下拉框及物理触控均未验证。
 
 ## Next — 下一步做什么
 
-1. 按 [CJ-3D 计划](superpowers/plans/2026-10-19-moody-blues-cj3d.md) 完成新增范围，
-   验证标准/深度模式，提交推送并显式运行 Actions；未触发不得报告 CI 通过。
-   配置为 48/62 个模拟场景，70/173 个扫描宽度；每个宽度覆盖 390/900 高度。
-   使用当前正式 Hub（非旧悬浮球），仅左右停靠；上下为边界位置。最终整轮待验证。
-2. 新设备先运行 `git status --short`、`git branch --show-current`、
-   `git rev-parse HEAD`、`git remote -v`、`git fetch origin --prune`；
-   核对本地独有提交/文件，保留后再同步，禁止覆盖尚未上传工作。
-3. 最低验证：`npm ci`，`npm run ci:check`、`ci:unit`、`ci:build`、
-   `ci:packages`；安装 lockfile 浏览器后运行 `ci:browser`。
-   先核对 Node >=22.12、Python >=3.10 和 `python` 命令及实际平台。
-4. 接续 CJ-3C 版本/可选包/确定性合同；CJ-4 只准备必需检查、缺失阻断和 bypass
-   配置建议。修改远端合并政策须负责人明确批准；当前没有待确认的 P0 实施决策。
+1. 先收集两台自有设备在实际浏览器/游戏宿主的横竖屏数据，再加入固定实测样本。
+   不能用代理模拟器结果补填七个目标。宿主无法打开测量页时保留缺口。
+2. 新设备先 `git status --short`、`git branch --show-current`、`git rev-parse HEAD`、
+   `git remote -v`、`git fetch origin --prune`；核对本机独有提交/文件，保留后再同步。
+   检查 Node >=22.12、Python >=3.10 及 `python` 命令、lockfile 和实际浏览器环境。
+3. 最低验证：`npm ci`、`npm run ci:check`、`ci:unit`、`ci:build`、`ci:packages`，
+   安装 lockfile 浏览器后 `ci:browser`。记录实际命令/平台/提交，不复用他机 PASS 当本机结果。
+   此研发分支 push 不触发原工作流；用手动 `build.yml`，默认 standard，`device_depth=deep`
+   为深度，检查实际 Run/Artifact 和完整报告；未触发不是通过。
+4. 后续 CJ-3C 版本/可选包/确定性合同；CJ-4 只准备必需检查、缺失阻断、bypass 建议。
+   修改远端规则或合并 main 需负责人明确批准；当前没有待确认的已授权实施决策。
 
-更新约定：交接前用当前事实更新三个部分，注明未提交/未推送及验证对应提交；
-仅文档更新时说明代码验证沿用的提交。禁止私人存档、凭据、设备标识和大段日志。
+更新约定：交接前更新 Current / Decided / Next，标明未提交/未推送和证据对应提交；
+文档提交注明沿用的代码验证。禁私人存档、凭据、设备标识、大段日志及机器绝对路径。

@@ -50,7 +50,7 @@ Download `kraft-work-checks-<SHA>` from the Actions run:
 - required `fixtures/device-layouts.cjs/layout-report.json` for device coverage;
 - `upload-index.json`: actual relative files, SHA-256 hashes and size omissions.
 
-Only the known stage/check files and settings/combat fixture snapshots are copied
+Only the known stage/check files and allowlisted controlled fixture snapshots are copied
 into the upload directory. Symlinks/outside paths are rejected; unknown files,
 full HTML, saves and broad `tests/artifacts` trees are not collected. JSON is
 limited to 256 KiB per report, fixture payload to 64 KiB, viewport JPEG to 512 KiB,
