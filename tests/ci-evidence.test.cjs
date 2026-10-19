@@ -4,7 +4,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { classify, overall, runCommand, summarize, prepareUpload, writeJson, stages, suites } = require('../scripts/ci-evidence.cjs');
 const { runSuite } = require('../scripts/test-ci.cjs');
-const { captureFailure } = require('./moody-fixture-evidence.cjs');
+const { captureFailure, writeLayoutReport } = require('./moody-fixture-evidence.cjs');
 const { root } = require('../scripts/ci-evidence.cjs');
 
 (async () => {
@@ -66,8 +66,17 @@ const { root } = require('../scripts/ci-evidence.cjs');
     for (const suite of ['unit', 'browser']) {
       writeJson(path.join(dir, `${suite}.json`), { identity: ctx.identity, suite, status: 'PASS', expected: suites[suite], results: suites[suite].map(name => ({ name, status: 'PASS', rawStatus: 'passed', exitCode: 0, milliseconds: 1 })) });
     }
+    assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED', 'device file exit 0 alone cannot establish coverage');
+    const layoutPath = path.join(dir, 'fixtures/device-layouts.cjs/layout-report.json');
+    const layout = { identity: ctx.identity, status: 'PASS', depth: 'standard', results: require('./device-layouts.cjs').expectedCaseIds('standard').map(id => ({ id, status: 'PASS' })) };
+    writeJson(layoutPath, layout);
     summary = summarize(ctx, { checkout: { outcome: 'success' }, node: { outcome: 'success' }, python: { outcome: 'success' } });
     assert.equal(summary.status, 'PASS');
+    writeJson(layoutPath, { ...layout, results: layout.results.slice(1) });
+    assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED', 'missing device/scan case cannot pass');
+    writeJson(layoutPath, { ...layout, depth: 'deep' });
+    assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED', 'standard evidence cannot certify deep coverage');
+    writeJson(layoutPath, layout);
     const browserFile = path.join(dir, 'browser.json');
     const fullBrowser = JSON.parse(fs.readFileSync(browserFile));
     writeJson(browserFile, { ...fullBrowser, results: fullBrowser.results.slice(1) });
@@ -106,6 +115,19 @@ const { root } = require('../scripts/ci-evidence.cjs');
       const captured = fs.readFileSync(path.join(process.env.MOODY_EVIDENCE_DIR, 'snapshot.json'));
       assert.ok(captured.length <= 65536, 'limit must apply after pretty printing');
       assert.ok(JSON.parse(captured).snapshotOmitted);
+      let screenshotOptions;
+      await captureFailure({ viewportSize: () => ({ width: 3840, height: 2160 }), screenshot: async options => { screenshotOptions = options; return Buffer.from('controlled screenshot stub'); } }, {
+        kind: 'settings', error: Error('controlled wide viewport'), snapshot: { focusRect: { x: NaN, y: Infinity, width: 44, height: 44 } }
+      });
+      assert.equal(screenshotOptions.scale, 'css');
+      assert.equal(screenshotOptions.clip.width, 2048); assert.equal(screenshotOptions.clip.height, 1536);
+      assert.ok(Object.values(screenshotOptions.clip).every(Number.isFinite));
+      process.env.MOODY_CHECK_NAME = 'device-layouts.cjs';
+      process.env.MOODY_EVIDENCE_DIR = path.join(captureDir, 'fixtures/device-layouts.cjs');
+      assert.throws(() => writeLayoutReport({ padding: 'x'.repeat(262144) }), /256 KiB/);
+      assert.equal(writeLayoutReport({ status: 'FAIL', depth: 'standard', results: [] }), true);
+      const layoutFile = JSON.parse(fs.readFileSync(path.join(process.env.MOODY_EVIDENCE_DIR, 'layout-report.json')));
+      assert.ok(layoutFile.identity.source.head, 'standalone controlled report binds its observed source');
     } finally {
       for (const [key, value] of Object.entries(priorEnv)) value === undefined ? delete process.env[key] : process.env[key] = value;
       fs.rmSync(captureDir, { recursive: true, force: true });

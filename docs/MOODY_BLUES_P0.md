@@ -1,10 +1,16 @@
 # Moody Blues P0 evidence contract
 
 Moody Blues extends `scripts/test-ci.cjs`; it does not introduce a Judge service.
-The existing check order, test scope, ZIP contract, workflow triggers, read-only
+The existing check order, ZIP contract, workflow triggers, read-only
 permissions, 15-minute job timeout and seven-day artifact retention remain intact.
 Use `gh workflow run build.yml --ref ci/moody-blues-p0` for this development branch;
 its push alone does not match the existing trigger.
+
+The owner's CJ-3D extension adds a focused device layout entry to the end of the
+browser suite and a device-catalog unit check. Existing tests remain. Manual
+`device_depth` selects `standard` (default, also PR/push) or `deep`; it does not
+rerun every business test for every device. See [device profiles](DEVICE_PROFILES.md)
+and the [CJ-3D plan](superpowers/plans/2026-10-19-moody-blues-cj3d.md).
 
 ## Reading a result
 
@@ -26,6 +32,9 @@ Workflow stages wrap the existing commands and persist their own exit results.
 The `always()` summary also consumes GitHub action outcomes, so setup/install
 failure and skipped stages remain visible. A green unit/browser stage requires
 the matching complete per-check report. Missing files cannot make a stage green.
+Device coverage also requires a source/run/depth-matched `layout-report.json`
+containing every expected profile/scan/rotation/negative case exactly once and
+passing. Child exit 0 without that evidence remains UNVERIFIED.
 The summary exits nonzero unless all required stages are verified. Hard job/runner
 termination can prevent final summary or upload: absent evidence is unverified.
 The later evidence upload's actual outcome must also be checked in the job.
@@ -38,15 +47,19 @@ Download `kraft-work-checks-<SHA>` from the Actions run:
 - `summary.json`, `identity.json`, `stage-*.json`, `unit.json`, `browser.json`;
 - bounded stage/per-check logs (last 64 KiB, original byte count and output digest);
 - optional `fixtures/<allowlisted-check>/snapshot.json` and `viewport.jpg`;
+- required `fixtures/device-layouts.cjs/layout-report.json` for device coverage;
 - `upload-index.json`: actual relative files, SHA-256 hashes and size omissions.
 
 Only the known stage/check files and settings/combat fixture snapshots are copied
 into the upload directory. Symlinks/outside paths are rejected; unknown files,
 full HTML, saves and broad `tests/artifacts` trees are not collected. JSON is
 limited to 256 KiB per report, fixture payload to 64 KiB, viewport JPEG to 512 KiB,
-and selected files to 16 MiB total. Capture failure never masks the original
-assertion. Pixels are limited to a <=2048x1536 controlled viewport; no full-page
-capture. Artifacts expire after seven days. Development build ZIP upload remains
+and selected files to 16 MiB total. The device layout report has a separate
+256 KiB cap; incomplete or over-limit coverage cannot be silently dropped into
+PASS. Capture failure never masks the original assertion. Pixels use CSS scale,
+limited to a <=2048x1536 clip within the controlled viewport; wide/tall viewports
+record the clip and cropping, focused on the supplied failed-control rectangle.
+There is no full-page capture. Artifacts expire after seven days. Development build ZIP upload remains
 separate and is not a Release or CD.
 
 For a local run, set a fresh `MOODY_EVIDENCE_ID` once for the stages. Existing
@@ -54,6 +67,12 @@ For a local run, set a fresh `MOODY_EVIDENCE_ID` once for the stages. Existing
 Run `node scripts/test-ci.cjs stage <id>` for dependencies/check/unit/build/packages/
 browser-install/browser. Local `summary` has UNVERIFIED action setup unless real
 action outcomes are supplied; never invent GitHub outcomes for a local run.
+For manual deep coverage use `gh workflow run build.yml --ref ci/moody-blues-p0
+-f device_depth=deep`. Local `MOODY_DEVICE_DEPTH=deep npm run ci:browser` selects
+the same case plan (with the existing business suite once). Source identity also
+records the selected depth. Device checks have a six-minute standard / ten-minute
+deep child limit; other existing checks retain their two-minute limit. The job
+still has its original fifteen-minute limit.
 
 ## Historical counterexamples
 

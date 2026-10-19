@@ -5,8 +5,8 @@ const crypto = require('node:crypto');
 const { spawn, execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const suites = {
-  unit: ['ci-evidence.test.cjs', 'floating-preferences.test.cjs', 'test-workflow.test.cjs', 'status.test.cjs', 'target-version.test.cjs', 'wardrobe-data.test.cjs', 'wardrobe-source-m2.test.cjs', 'wardrobe-slot-mappings.test.cjs', 'wardrobe-performance.test.cjs', 'wardrobe-operations.test.cjs', 'render-state.test.cjs', 'startup-cache.test.cjs', 'mouth-compat-adapter.cjs'],
-  browser: ['framework.cjs', 'framework-connect.cjs', 'framework-commands.cjs', 'settings-ci.cjs', 'moody-historical-regressions.cjs', 'wardrobe-details-drawer.cjs', 'shop-source.test.cjs', 'save-transfer-lifecycle.cjs', 'header-weather.cjs', 'official-game-motion.cjs', 'kraft-work-adapters.cjs', 'selection-motion.cjs', 'shop-ripple-motion.cjs', 'official-defaults.cjs', 'combat-focused.cjs', 'combat-select.cjs', 'saves-viewport.cjs', 'adapter-materials.cjs', 'kraft-work-baseline.cjs']
+  unit: ['ci-evidence.test.cjs', 'device-profiles.test.cjs', 'floating-preferences.test.cjs', 'test-workflow.test.cjs', 'status.test.cjs', 'target-version.test.cjs', 'wardrobe-data.test.cjs', 'wardrobe-source-m2.test.cjs', 'wardrobe-slot-mappings.test.cjs', 'wardrobe-performance.test.cjs', 'wardrobe-operations.test.cjs', 'render-state.test.cjs', 'startup-cache.test.cjs', 'mouth-compat-adapter.cjs'],
+  browser: ['framework.cjs', 'framework-connect.cjs', 'framework-commands.cjs', 'settings-ci.cjs', 'moody-historical-regressions.cjs', 'wardrobe-details-drawer.cjs', 'shop-source.test.cjs', 'save-transfer-lifecycle.cjs', 'header-weather.cjs', 'official-game-motion.cjs', 'kraft-work-adapters.cjs', 'selection-motion.cjs', 'shop-ripple-motion.cjs', 'official-defaults.cjs', 'combat-focused.cjs', 'combat-select.cjs', 'saves-viewport.cjs', 'adapter-materials.cjs', 'kraft-work-baseline.cjs', 'device-layouts.cjs', 'device-probe.cjs']
 };
 const stages = [
   { id: 'dependencies', scope: 'Locked npm dependencies and install scripts', args: ['ci'] },
@@ -17,7 +17,7 @@ const stages = [
   { id: 'browser-install', scope: 'Lockfile-pinned Playwright Chromium installation', command: 'npx', args: ['playwright', 'install', '--with-deps', 'chromium'] },
   { id: 'browser', scope: 'Required controlled browser suite, including historical negatives', args: ['run', 'ci:browser'] }
 ];
-const fixtureChecks = ['settings-ci.cjs', 'combat-focused.cjs', 'moody-historical-regressions.cjs'];
+const fixtureChecks = ['settings-ci.cjs', 'combat-focused.cjs', 'moody-historical-regressions.cjs', 'device-layouts.cjs'];
 const coverage = 'Controlled fixtures and source contracts only; not real DoL/ModLoader, Windows or Android acceptance.';
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const sameIdentity = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -55,7 +55,7 @@ function context() {
       repository: process.env.GITHUB_REPOSITORY || null, ref: process.env.GITHUB_REF || null,
       workflow: process.env.GITHUB_WORKFLOW || null, job: process.env.GITHUB_JOB || null,
       url: process.env.GITHUB_RUN_ID ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null },
-    environment: { platform: process.platform, arch: process.arch, node: process.version, npm: version('npm'), python: version('python'),
+    environment: { platform: process.platform, arch: process.arch, deviceDepth: process.env.MOODY_DEVICE_DEPTH || 'standard', node: process.version, npm: version('npm'), python: version('python'),
       playwright: require('../package-lock.json').packages['node_modules/playwright'].version,
       browser: process.platform === 'win32' ? 'Microsoft Edge (browser suite)' : 'Pinned Playwright Chromium (browser suite)' }
   };
@@ -131,6 +131,18 @@ function verifiedPass(result) {
     !result.signal && Number.isFinite(result.milliseconds) && result.milliseconds >= 0;
 }
 
+function layoutEvidence(ctx) {
+  const report = readReport(ctx, 'fixtures/device-layouts.cjs/layout-report.json');
+  if (!report || report.status !== 'PASS') return false;
+  try {
+    const depth = ctx.identity.environment?.deviceDepth || 'standard';
+    const expected = require('../tests/device-layouts.cjs').expectedCaseIds(depth);
+    return report.depth === depth && expected.length > 0 && report.results?.length === expected.length &&
+      new Set(report.results.map(r => r.id)).size === expected.length &&
+      report.results.every(r => expected.includes(r.id) && r.status === 'PASS');
+  } catch { return false; }
+}
+
 function summarize(ctx, steps = {}) {
   const results = [];
   for (const [name, scope] of [['checkout', 'Source checkout'], ['node', 'Node environment'], ['python', 'Python environment']]) {
@@ -155,6 +167,9 @@ function summarize(ctx, steps = {}) {
           suite.results?.length !== suites[stage.id].length || !suite.results.every((r, i) => r.name === suites[stage.id][i] && verifiedPass(r))) {
         Object.assign(entry, { status: 'UNVERIFIED', reason: 'Required per-check evidence missing, incomplete or not passing' });
       }
+      if (stage.id === 'browser' && entry.status === 'PASS' && !layoutEvidence(ctx)) {
+        Object.assign(entry, { status: 'UNVERIFIED', reason: 'Device layout coverage report missing, stale, incomplete or not passing' });
+      }
     }
     results.push(entry);
   }
@@ -173,12 +188,12 @@ function prepareUpload(ctx) {
   fs.mkdirSync(destination);
   const candidates = ['identity.json', 'unit.json', 'browser.json', 'summary.json', ...stages.flatMap(s => [`stage-${s.id}.json`, `${s.id}.log`]),
     ...Object.entries(suites).flatMap(([suite, tests]) => tests.map(test => `${suite}/${test}.log`)),
-    ...fixtureChecks.flatMap(test => [`fixtures/${test}/snapshot.json`, `fixtures/${test}/viewport.jpg`])];
+    ...fixtureChecks.flatMap(test => [`fixtures/${test}/snapshot.json`, `fixtures/${test}/viewport.jpg`]), 'fixtures/device-layouts.cjs/layout-report.json'];
   const files = [], omitted = []; let bytes = 0;
   for (const file of candidates) {
     const source = path.join(ctx.dir, file);
     if (!fs.existsSync(source)) continue;
-    const stat = fs.lstatSync(source), limit = file.endsWith('.jpg') ? 524288 : file.startsWith('fixtures/') ? 65536 : file.endsWith('.json') ? 262144 : 65536;
+    const stat = fs.lstatSync(source), limit = file.endsWith('.jpg') ? 524288 : file === 'fixtures/device-layouts.cjs/layout-report.json' ? 262144 : file.startsWith('fixtures/') ? 65536 : file.endsWith('.json') ? 262144 : 65536;
     const relativeReal = path.relative(fs.realpathSync(ctx.dir), fs.realpathSync(source));
     if (!stat.isFile() || stat.isSymbolicLink() || relativeReal.startsWith('..') || path.isAbsolute(relativeReal) || stat.size > limit || bytes + stat.size > 16 * 1024 * 1024) {
       omitted.push({ file, reason: 'Non-regular, outside run directory or evidence size limit' }); continue;
@@ -191,4 +206,4 @@ function prepareUpload(ctx) {
   return { files, bytes, omitted };
 }
 
-module.exports = { root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload };
+module.exports = { root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, layoutEvidence };

@@ -5,6 +5,12 @@ on:
   push:
     branches: [main, 'ci/kraft-work-*']
   workflow_dispatch:
+    inputs:
+      device_depth:
+        description: Device layout coverage depth (Chromium emulation)
+        type: choice
+        default: standard
+        options: [standard, deep]
 permissions:
   contents: read
 concurrency:
@@ -16,6 +22,7 @@ jobs:
     timeout-minutes: 15
     env:
       MOODY_EVIDENCE_ID: ${{ github.run_id }}-${{ github.run_attempt }}-validate
+      MOODY_DEVICE_DEPTH: ${{ inputs.device_depth || 'standard' }}
     steps:
       - id: checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

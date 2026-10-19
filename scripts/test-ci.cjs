@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { suites, stages, coverage, context, writeJson, overall, runCommand, summarize, prepareUpload } = require('./ci-evidence.cjs');
+const { suites, stages, coverage, context, writeJson, overall, runCommand, summarize, prepareUpload, layoutEvidence } = require('./ci-evidence.cjs');
 
 async function runSuite(ctx, mode, tests = suites[mode], { signal, timeoutMs = 120000, quiet = false } = {}) {
   const report = { schema: 1, identity: ctx.identity, suite: mode, coverage, expected: tests, status: 'UNVERIFIED',
@@ -11,10 +11,14 @@ async function runSuite(ctx, mode, tests = suites[mode], { signal, timeoutMs = 1
     if (blocked || signal?.aborted) { Object.assign(check, { status: 'BLOCKED', reason: blocked || 'cancelled' }); save(); continue; }
     Object.assign(check, { status: 'PARTIAL', rawStatus: 'running', startedAt: new Date().toISOString(), log: `${mode}/${check.name}.log`, evidence: [] }); save();
     const env = { ...process.env, MOODY_CHECK_NAME: check.name, MOODY_EVIDENCE_DIR: path.join(ctx.dir, 'fixtures', check.name) };
-    const result = await runCommand(process.execPath, [path.join(ctx.root, 'tests', check.name)], { cwd: ctx.root, log: path.join(ctx.dir, check.log), env, timeoutMs, signal, quiet });
+    const checkTimeout = check.name === 'device-layouts.cjs' ? (process.env.MOODY_DEVICE_DEPTH === 'deep' ? 10 : 6) * 60 * 1000 : timeoutMs;
+    const result = await runCommand(process.execPath, [path.join(ctx.root, 'tests', check.name)], { cwd: ctx.root, log: path.join(ctx.dir, check.log), env, timeoutMs: checkTimeout, signal, quiet });
     Object.assign(check, result);
-    check.evidence = ['snapshot.json', 'viewport.jpg'].map(file => `fixtures/${check.name}/${file}`).filter(file => fs.existsSync(path.join(ctx.dir, file)));
-    if (result.status !== 'PASS') blocked = `Fail-fast after ${check.name} (${result.rawStatus})`;
+    if (check.name === 'device-layouts.cjs' && check.status === 'PASS' && !layoutEvidence(ctx)) {
+      Object.assign(check, { status: 'UNVERIFIED', reason: 'Required device coverage evidence missing or incomplete' });
+    }
+    check.evidence = ['snapshot.json', 'viewport.jpg', 'layout-report.json'].map(file => `fixtures/${check.name}/${file}`).filter(file => fs.existsSync(path.join(ctx.dir, file)));
+    if (check.status !== 'PASS') blocked = `Fail-fast after ${check.name} (${check.rawStatus})`;
     save(); if (!quiet) console.log(`${check.status} ${check.name} (${check.milliseconds}ms, exit=${check.exitCode}, signal=${check.signal})`);
   }
   return report;
