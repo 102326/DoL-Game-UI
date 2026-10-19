@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "releaseTag": "v3.0.2",
+  "reuse": [
+    {
+      "file": "CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.0.mod.zip",
+      "sha256": "ba8f17fb23f1c81214266ceb4ce3150bed0133b3e2904b856c4984a9e83c68f9",
+      "identity": {
+        "name": "CheatExtendedSoftWet",
+        "version": "1.0.0"
+      },
+      "sourceRelease": "v3.0.1"
+    },
+    {
+      "file": "DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.0.mod.zip",
+      "sha256": "71aa281a2900ffd97958798a3d73012632c0d855efe924fba915c0f8ce62e371",
+      "identity": {
+        "name": "DolOptimizationSoftWet",
+        "version": "1.0.0"
+      },
+      "sourceRelease": "v3.0.1"
+    },
+    {
+      "file": "LyraMouthCompat051213-Lyra-0.5.12.13-v1.0.0.mod.zip",
+      "sha256": "71080a79771149a0edf80cc66943518645835e1b6259a01e23869d6da2a34974",
+      "identity": {
+        "name": "LyraMouthCompat051213",
+        "version": "1.0.0"
+      },
+      "sourceRelease": "v3.0.1"
+    },
+    {
+      "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.0.mod.zip",
+      "sha256": "b3baa723027bc20e815677133e9b5e7b0082f8cb13deb5240c49e3ddb569f13a",
+      "identity": {
+        "name": "MapleBirchSoftWet",
+        "version": "1.0.0"
+      },
+      "sourceRelease": "v3.0.1"
+    },
+    {
+      "file": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.0.mod.zip",
+      "sha256": "df6356be81f8def8ed22b69aa2e04069a4e027a20b31e9c23aba79322a80b041",
+      "identity": {
+        "name": "ModHubSoftWet",
+        "version": "1.0.0"
+      },
+      "sourceRelease": "v3.0.1"
+    },
+    {
+      "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip",
+      "sha256": "78eb0061d06972645d1c48e039be8b3d935f2710fddf83eb5b094f2b59a6efdb",
+      "identity": {
+        "name": "ReOverfitsSoftWet",
+        "version": "1.0.0"
+      },
+      "sourceRelease": "v3.0.1"
+    },
+    {
+      "file": "StoneFreeHost-0.1.4-experimental.mod.zip",
+      "sha256": "ad78fca929e3819fce4da6f0d10affb4fc91318661583e4dacec896b64936153",
+      "identity": {
+        "name": "StoneFreeHost",
+        "version": "0.1.4-experimental"
+      },
+      "sourceRelease": "v3.0.1"
+    }
+  ],
+  "ui": {
+    "file": "DoLGameUI-3.0.2.mod.zip",
+    "sha256": "3a79c2dd6cf2e816d012370972e85639ec3add29943fd9f325a5d5a53c7284a2",
+    "phoneValidatedCandidateSha256": "cbbfa756e5abc1bb3dbad0da42ad46a0c0b071a980b9b5a64cee4189c67c1390",
+    "runtimeEquivalence": "index.js differs only in product version 3.0.1 to 3.0.2; CSS, early script, Twee, declarations and license members identical",
+    "members": {
+      "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+      "README.md": "2accd436f27d72c11676fb1be48a8fbd7f26d8e094f56dabb2801689f11b4514",
+      "THIRD-PARTY-NOTICES.txt": "9c115886c745c8bab1bb34ec11a7ba5a1d34be99e962a444034e019e24a7b03c",
+      "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+      "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+      "boot.json": "eb6244720cd30a6a53bb993b86caa3cf398c544cb027bdb023b5d831358cbc4d",
+      "docs/OPTIONAL_ADAPTERS.md": "36976832fee5e30ac0bb258f0d8c533df2ca98955b0692d34131cd0d443ff1fa",
+      "docs/RELEASE_3.0.2.md": "bccc053c968336d1c2f55349ffae1e094aed0c6d7e80aed7e6bdd25c722e1289",
+      "docs/UI_SETTINGS.md": "aadfaa280925e245f0f0d19aeac2caeb3a205bd907f16a457d495d100f6e2d4f",
+      "index.js": "e6001e6f7d04b57117762f36ff5d6db2d86a8f7f202624b5f0a1affde59b256b",
+      "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+      "style.css": "a1a7746c27adca8ae81a8a7c0a19caf50a33c484d167c51dd914a29df40b1a95",
+      "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+      "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+      "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+      "twee/patch-resize.twee": "4d604afceeb23ee0d17733fe248f24736ed01b1284be467daab6039223305da3",
+      "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+      "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+    },
+    "dependencies": [
+      {
+        "modName": "ModLoader",
+        "version": ">=2.100.0"
+      },
+      {
+        "modName": "StoneFreeHost",
+        "version": ">=0.1.2-experimental && <0.2.0"
+      },
+      {
+        "modName": "TweeReplacer",
+        "version": ">=1.0.0"
+      },
+      {
+        "modName": "GameVersion",
+        "version": "=0.5.12.13"
+      }
+    ]
+  },
+  "runtimeSourceCommit": "ad6e6bc5d46f6d7684b2a4e277aa3a35d9c2067f",
+  "sourceCommitNote": "The release tag additionally commits this identity record; packaged runtime and documentation inputs are unchanged.",
+  "validatedImplementationCommit": "f672ab30683a1ae5e0eb28d85aed21f0efa917e4",
+  "localValidation": {
+    "checks": [
+      "ci:check",
+      "ci:build",
+      "ci:packages (seven negative cases and two builds)",
+      "settings-ci.cjs",
+      "official-defaults.cjs"
+    ],
+    "result": "PASS",
+    "scope": "Windows controlled browser and packaging; Android runtime evidence reused through member equivalence; no new physical input or iOS proof"
+  },
+  "sourceInputs": {
+    "package.json": "63fcd9b41354d69500d773f6dfa485537321d072406c4e7354aa6e89f9a66075",
+    "package-lock.json": "6beb5cfb1a24358a9a5d7ba3d829341c21653a8bd667bc1cddfd20ab640257e4",
+    "framework/official-ui/main.ts": "043042b05c7931054d33265caa85d06f2337b0e3ab795874c3bcad7b98171125",
+    "framework/official-ui/README.md": "2accd436f27d72c11676fb1be48a8fbd7f26d8e094f56dabb2801689f11b4514",
+    "src/theme/controller.ts": "b658c2e47eb341c763e5623bb369499e9975c1eda111367e10da374c3253ca0c",
+    "src/theme/controls.css": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+    "scripts/package-framework.py": "d4c57a78d6707c42f4591e286b2d9bc18ed0260c6a5f64640e4bd73782327d26",
+    "scripts/check-ci-packages.py": "127ce722d0d6ff3e65f9d6468ad9dc5de10b6c43c43075110c18965c08cf78d8",
+    "docs/RELEASE_3.0.2.md": "bccc053c968336d1c2f55349ffae1e094aed0c6d7e80aed7e6bdd25c722e1289",
+    "docs/UI_SETTINGS.md": "aadfaa280925e245f0f0d19aeac2caeb3a205bd907f16a457d495d100f6e2d4f",
+    "docs/OPTIONAL_ADAPTERS.md": "36976832fee5e30ac0bb258f0d8c533df2ca98955b0692d34131cd0d443ff1fa",
+    "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+    "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+    "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc"
+  }
+}
