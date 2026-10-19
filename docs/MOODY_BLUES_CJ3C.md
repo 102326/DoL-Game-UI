@@ -56,3 +56,13 @@
 完整验证顺序：`npm ci` → `ci:check` → `ci:unit` → `ci:build` → `ci:packages` → 安装锁定 Chromium → `ci:browser`。使用现有 stage runner 时所有阶段共享一个 `MOODY_EVIDENCE_ID`。`ci:packages` 需要该源码的最新首轮 receipt；改源码后必须重跑 build，不能挪用旧包。
 
 新增成本是一次真实 Framework/adapter 重编译和七方法 ZIP 变异，布局标准/深度计划仍为 124/241，未扩大矩阵。耗时以实际 Run 为准。没有真机、Windows、游戏存档/ModLoader 联合验收；受控输入不包含玩家存档、游戏 HTML 或未知制品。主动授权的存档仅在源码树外隔离复现，不自动进入 CI。
+
+## 2026-10-19 实际验证快照
+
+实现提交 `b32c022c8158016f86f0408e1aa0e5b1ca27d8f2`；本节和 HANDOFF 随后只更新文档。源码内容 SHA `773360d00f992d15eab8ccf63dff155279ca8457cc891ba49e6f6f2564a1d2b7` 在本机测试输入、提交后源码及云端报告一致。
+
+- 本机 macOS arm64 / Node24.18.0 / npm11.16.0 / Python3.12.14 / Playwright1.63.0：七阶段命令均 PASS，14 单元/21 浏览器入口、124/124；build4.943s、packages5.155s、浏览器216.339s。summary 为 PARTIAL（没有 GitHub setup action outcome），59 项证据345,512B、哈希全验、遗漏0。
+- [实际 push Actions 39237922746](https://github.com/102326/DoL-Game-UI/actions/runs/39237922746)：准确 checkout b32c022，Linux x64 / Node22.23.3 / npm10.9.9 / Python3.12.15 / Playwright1.63.0，整轮 PASS，validate5m24s。build7.786s、packages8.763s、浏览器259.067s，14/21 入口、124/124。
+- 云端下载验证59项受控证据365,025B、八个实际开发ZIP和PACKAGE_CHECKS的9条SHA，全部匹配、遗漏0。报告118,096B，两个唯一invocation、八包完整、两轮内容/压缩字节/元数据/ZIP SHA一致，七个负例方法全执行、无跳过。开发制品和证据保留7天，首次运行证据到2026-10-26。
+
+这次观察中本机与云端八包 hash 也相同；这只是已测两种环境的结果，不扩大为所有 OS/zlib 组合保证。正式Release仍保留原附件；CJ-3C未合并main、未创建第三PR。
