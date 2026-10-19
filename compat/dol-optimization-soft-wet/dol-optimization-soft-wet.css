@@ -81,3 +81,22 @@ html[data-stone-free][data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftW
 /* Kraft Work 3.0: retain the native save layout on one shared acrylic shell. */
 html[data-stone-free][data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #customOverlayContent {background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
 html[data-stone-free][data-dol-midnight] [data-dgu-adapter="DolOptimizationSoftWet"][data-dgu-adapter-match="full"] #saves-list-container>.savesListRow {background:linear-gradient(150deg,rgba(255,255,255,.025),transparent 60%),var(--kw-island);box-shadow:inset 0 1px rgba(255,255,255,.025)}
+
+/* Native stacking links keep their handlers; only the presentation belongs to Kraft Work. */
+html[data-stone-free][data-dol-midnight] .dgu-optimization-stacking {
+ margin:.75rem 0;padding:1rem;border:1px solid rgba(255,255,255,.07);border-radius:14px;
+ background:var(--kw-island,rgba(18,19,21,.48));color:inherit;line-height:1.65;overflow-wrap:anywhere;
+}
+html[data-stone-free][data-dol-midnight] .dgu-optimization-stacking .wardrobeItem {
+ display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;padding:.65rem;margin:.5rem 0;
+ background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:10px;
+}
+html[data-stone-free][data-dol-midnight] .dgu-optimization-stacking a.link-internal {
+ display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:.35rem .65rem;
+ color:var(--sf-ink,#e6e6e8);background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:9px;
+ text-decoration:none;box-sizing:border-box;transition:background .18s,transform .18s;
+}
+html[data-stone-free][data-dol-midnight] .dgu-optimization-stacking a.link-internal:hover {background:rgba(145,183,171,.12)}
+html[data-stone-free][data-dol-midnight] .dgu-optimization-stacking a.link-internal:active {transform:scale(.97)}
+html[data-stone-free][data-dol-midnight] .dgu-optimization-stacking a.link-internal:focus-visible {outline:2px solid var(--sf-ink,#e6e6e8);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){html[data-stone-free][data-dol-midnight] .dgu-optimization-stacking a.link-internal{transition:none;transform:none}}

@@ -6,6 +6,12 @@
 
 ## 本次更新
 
+### 10 月 20 日兼容包补充：原版优化叠穿管理
+
+**DolOptimizationSoftWet 1.0.1** 在衣柜接入原版优化的叠加装备列表、卸下和层级调整，使用已加载 Mod 的原控件及事件，展示同步 Kraft Work 3.X。主要验证作者最新正式版 [原版优化 v1.1.2](https://github.com/ANLINSTUDIO/Degrees-of-Lewdity-DolOptimization/releases/tag/v1.1.2)，并回归固定 1.1.1.5。
+
+原版优化 v1.1.2 将叠穿默认关闭，请在其设置中自行启用；兼容包不强制开启。已有原版优化兼容包的玩家停用旧同名包，导入 1.0.1 并重启即可。本次补充只更新该兼容包和校验清单，主 UI、Host 及其它附件不变。未知模板退回原版及扩展信息入口。
+
 ### 设置：外壳、内容与点击范围保持对齐
 
 - 修复游戏全局缩放造成的玻璃外壳重复缩放。
@@ -32,7 +38,7 @@
 | [DoLGameUI-3.0.2.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.2/DoLGameUI-3.0.2.mod.zip) | 主 UI，本次更新 |
 | [StoneFreeHost-0.1.4-experimental.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.2/StoneFreeHost-0.1.4-experimental.mod.zip) | Framework Host，已有此原包可沿用 |
 
-六个可选兼容包维持 **1.0.0**，本次沿用已发布的原包：ModHubSoftWet、MapleBirchSoftWet、DolOptimizationSoftWet、CheatExtendedSoftWet、ReOverfitsSoftWet、LyraMouthCompat051213。没有对应目标 Mod 就无需安装；已经安装这些版本的玩家只需更新主 UI。附件不含游戏本体、APK 或第三方原 Mod。`SHA256SUMS.txt` 用于核对下载完整性。
+可选兼容包按已安装的目标 Mod 选择：DolOptimizationSoftWet 为 **1.0.1**；ModHubSoftWet、MapleBirchSoftWet、CheatExtendedSoftWet、ReOverfitsSoftWet、LyraMouthCompat051213 维持 **1.0.0** 原包。没有对应目标 Mod 就无需安装。附件不含游戏本体、APK 或第三方原 Mod。`SHA256SUMS.txt` 用于核对下载完整性；本次补充的业务结果来自隔离 Windows 真实游戏／Loader，不冒充 Android／iOS 实测。
 
 当前游戏适配基线为 **DoL 0.5.12.13**；需要 **ModLoader >=2.100.0、TweeReplacer >=1.0.0**。Host 要求 **>=0.1.2-experimental 且 <0.2.0**，推荐 0.1.4-experimental。最低要求不代表所有后续版本已实测；Host 协议仍为实验性，Loader 的预发布版本比较限制仍在。
 

@@ -108,7 +108,7 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 | --- | --- |
 | ModHubSoftWet | ModHub 管理器外观 |
 | MapleBirchSoftWet | MapleBirch 云存档页面外观，不接管云端业务 |
-| DolOptimizationSoftWet | 原版优化的存档页面外观，保留原描述编辑与槽位控件 |
+| DolOptimizationSoftWet | 原版优化的存档外观与衣柜叠穿管理，保留原描述编辑、槽位和叠穿操作 |
 | CheatExtendedSoftWet | Cheat Extended 外观，适配原作者版及已支持的独立维护版 |
 | ReOverfitsSoftWet | ReOverfits 额外服装槽位接入 |
 | LyraMouthCompat051213 | 指定 Lyra 环境的嘴部资源适配 |

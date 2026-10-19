@@ -1,7 +1,7 @@
 {
   "name": "DolOptimizationSoftWet",
-  "version": "1.0.0",
-  "description": "原版优化 1.1.1.2 及以上的存档兼容外观：保留描述编辑、游戏内日期及原槽位控件。",
+  "version": "1.0.1",
+  "description": "原版优化的存档与衣柜兼容：Kraft Work 3.X 外观，接入原叠穿管理、卸下及层级调整控件。",
   "styleFileList": [
     "dol-optimization-soft-wet.css"
   ],
