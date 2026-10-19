@@ -33,6 +33,7 @@ const source=buildSync({entryPoints:['compat/dol-optimization-soft-wet/dol-optim
  await page.evaluate(()=>{busy=true;document.querySelector('.dgw-equipment').inert=true;document.querySelector('.dgu-optimization-stacking a')?.click()});assert.equal(await page.evaluate(()=>nativeCalls),1);await page.waitForFunction(()=>!document.querySelector('.dgu-optimization-stacking'));
  await page.evaluate(()=>{busy=false;document.querySelector('.dgw-equipment').inert=false});await page.waitForSelector('.dgu-optimization-stacking');
  for(const invalid of ['',null,'duplicate']){
+  await page.evaluate(()=>{template=validTemplate;signal()});await page.waitForSelector('.dgu-optimization-stacking');
   await page.evaluate(value=>{template=value==='duplicate'?validTemplate+validTemplate:value??'unknown';signal()},invalid);
   await page.waitForFunction(()=>!document.querySelector('.dgu-optimization-stacking'));
  }
