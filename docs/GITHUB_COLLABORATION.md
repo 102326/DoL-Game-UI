@@ -13,7 +13,7 @@ V1.2 首批候选，更新于 2026-10-19。中文或英文均可填写，不要�
 | Issues | 已启用 / Enabled |
 | Issue / PR 模板（Templates） | 默认分支原先均无；`.github` 仅有 `workflows/build.yml` |
 | 开放 PR（Open Pull Requests） | 审计时 0；获取的分支历史未发现同类模板提交 |
-| Labels | 现存 10 个，见下文；本轮未创建或修改远端标签 |
+| Labels | 现存 10 个，见下文；本表为初次审计快照；后续已获准新增八项，见下文 |
 | Discussions / Projects | 原有开关均为 true；本轮未开启、关闭或配置任何对象 |
 | HANDOFF | P0 开发分支已有；默认分支尚无，未声称已部署 |
 | 稳定 CI（Existing CI） | `Kraft Work CI` / `validate`；PR→main、push→main/ci/kraft-work-*，手动运行 |
@@ -32,11 +32,11 @@ V1.2 首批候选，更新于 2026-10-19。中文或英文均可填写，不要�
 | 入口（Form） | 必填内容（Required） | 默认已有标签（Existing Default Labels） |
 | --- | --- | --- |
 | 功能错误反馈（Bug Report） | 实际结果、预期结果、复现步骤 / Actual, expected, steps | `bug` |
-| 希望支持的 Mod（Compatibility Request） | Mod 名称、希望的支持、场景 / Mod, requested support, use case | `enhancement` |
-| Mod 兼容问题（Compatibility Bug） | Mod 名称、实际异常、步骤 / Mod, actual, steps | `bug` |
+| 希望支持的 Mod（Compatibility Request） | Mod 名称、希望的支持、场景 / Mod, requested support, use case | `enhancement`、`compatibility-request` |
+| Mod 兼容问题（Compatibility Bug） | Mod 名称、实际异常、步骤 / Mod, actual, steps | `bug`、`compatibility-bug` |
 | 功能建议（Feature Request） | 当前问题、希望功能 / Problem, feature | `enhancement` |
-| 界面与交互反馈（UI / UX Feedback） | 界面、问题、理想效果 / Screen, problem, desired behavior | 暂不设置 / None yet |
-| CI 与工程问题（CI / Engineering） | 实际问题、预期结果 / Actual, expected | 暂不设置 / None yet |
+| 界面与交互反馈（UI / UX Feedback） | 界面、问题、理想效果 / Screen, problem, desired behavior | `ui-ux` |
+| CI 与工程问题（CI / Engineering） | 实际问题、预期结果 / Actual, expected | `ci-quality` |
 
 所有版本允许留空或 Unknown；截图/日志/存档、设备详细参数、Mod 对照均可选。
 UI 反馈不强制 DPR / CSS viewport。兼容许愿不承诺支持；兼容报告也不预先判定责任。
@@ -44,12 +44,12 @@ UI 反馈不强制 DPR / CSS viewport。兼容许愿不承诺支持；兼容报�
 附件 textarea 保持 Markdown 模式，不使用会关闭附件支持的 `render` 属性。
 没有增加 Projects/自动指派/自动关闭/机器人权限。
 
-### 标签建议（Proposed Labels — Approval Pending）
+### 标签配置（Labels — Approved）
 
 现有 10 项：`accessibility`、`bug`、`documentation`、`duplicate`、`enhancement`、
 `good first issue`、`help wanted`、`invalid`、`question`、`wontfix`，均原样保留。
-当前配置只引用真实存在的 `bug`、`enhancement`。以下八项尚未存在，须负责人批准后
-才创建并补入相应表单；表单 YAML 本身不会替远端创建标签。
+2026-10-19负责人授权完成剩余事项后，已创建以下八项并回读确认；原十项颜色/说明均未改变。
+四类别标签加入对应表单；表单YAML本身不会替远端创建标签。
 
 | 建议 ID（Proposed ID） | 用途（Purpose） |
 | --- | --- |
@@ -62,7 +62,7 @@ UI 反馈不强制 DPR / CSS viewport。兼容许愿不承诺支持；兼容报�
 | `confirmed` | 已确认 / Confirmed |
 | `blocked` | 存在阻塞 / Blocked |
 
-后四项为维护状态，不自动贴到新 Issue；前四项批准前不假装已生效。
+后四项为维护状态，不自动贴到新Issue；前四项进入相应类别表单。
 
 ## GH-2：PR 模板（Pull Request Template）
 
@@ -106,3 +106,5 @@ P0的独立触发修补已由真实push [Run39230872314](https://github.com/1023
 依据：[GitHub Issue Form语法](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)、[原生字段与附件规则](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema)、[默认分支生效](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)。
 
 合并后验收New Issue六入口及各表单原生字段、独立兼容入口和PR模板，不批量创建测试Issue。标签、Ruleset/bypass与Release/CD是独立事项；协作模板合并不构成这些操作的授权。
+
+2026-10-19收口：原生六表单与PR自动填充已实际验收；本次新增类别标签以合入默认分支后的YAML/API回读核对，不创建测试Issue。CJ-4和标签获得负责人后续明确授权，最新实施及验证见HANDOFF和专项报告；初次审计表保留历史时间点。

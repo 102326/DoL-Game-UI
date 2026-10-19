@@ -4,10 +4,9 @@
 
 ## Current — 当前做什么
 
-- 交付主线为main，本快照随CJ-3C集成PR交付。若仍在研发分支阅读，先核对PR是否已合并；合入后以最新main接续，不默认本机已同步。
-- P0 PR #3已由负责人合入main：`cac52c198b1992530edb6a8910dbb7921fb566a8`。原协作PR #4合入P0分支a820145，后由[转交PR #5](https://github.com/102326/DoL-Game-UI/pull/5)进入main：`cabc18a39b7eab4f0597a74193332c9dc2da4fec`，未重写原合并。
-- CJ-3C分支 `ci/moody-blues-cj3c` 整合了上述main；原实现b32c022、文档672fe65均保留，后续收紧职责说明、对齐README存档授权政策；集成时另修复下述已观察的关闭测试采样问题。实际HEAD、未提交/未推送状态以本机Git为准，交付推送后应干净。
-- 负责人已明确授权P0、协作、CJ-3C在各自真实PR检查通过后合并；CJ-4规则/bypass需另行具体批准。没有正式Release/CD授权。
+- 基线main `16bca36282e3a17c2b70529ef6a43386468c4f98`：P0 #3、协作转交#5、CJ-3C #6均合入；原#4合入P0分支的历史保留。
+- 本轮研发分支 `ci/moody-blues-cj4`，实施[质量门禁](MOODY_BLUES_CJ4.md)与八个已批准协作标签；以本机Git确认实际HEAD/未提交或未推送状态。最终合入及CI以该PR和交付报告/远端规则回读核对。
+- 负责人2026-10-19“允许完成剩余的所有问题”授权本轮工程、规则/标签及验证后合并；不延伸为正式Release/CD、危险存档操作或虚构实机数据。
 
 ## Decided — 已经确定什么
 
@@ -17,16 +16,17 @@
 - main [Run39243023242](https://github.com/102326/DoL-Game-UI/actions/runs/39243023242)真实失败：settings测试固定450ms后仍open，后续检查BLOCKED，不能用PR成功抹去。改为有界等待真实关闭/标记/材质清理终态，保留原断言；新增慢关闭合法通过、实际paused关闭拒绝反例，本机两入口通过。未改生产代码，不另算第三产品缺陷。修补提交ea1db9d本机两入口、证据单元/Ruby结构检查通过；PR #6最终head及main CI以该PR检查与交付报告核对，不拿旧b9a37e1的成功替代。
 - [协作规范](GITHUB_COLLABORATION.md)的六类双语表单/独立兼容入口、Unknown、证据可选、blank issue、PR六部分已进入默认分支。已在默认分支实际验收六类原生表单及新PR页面六部分自动填充，保存公开页面正文证据；未创建测试Issue或研究PR。
 - [CJ-3C](MOODY_BLUES_CJ3C.md)：UI/Host及六个当前可选包、规范ZIP元数据、两次实际编译/打包及七个制品测试方法。精确版本/依赖/ZIP成员字节合同由Python检查器执行；整轮汇总器核对报告身份、规定结构、必要执行及两轮一致性，不是第二套独立ZIP验证器。
+- CJ-3C最终[PR Run39245282564](https://github.com/102326/DoL-Game-UI/actions/runs/39245282564)和[main Run39246276630](https://github.com/102326/DoL-Game-UI/actions/runs/39246276630)成功；main59项365,258B/八ZIP/51成员完整核验，14单元/21浏览器、124/124。
 - 集成[PR #6](https://github.com/102326/DoL-Game-UI/pull/6)基于main/cabc18a；原候选[push Run39238808024](https://github.com/102326/DoL-Game-UI/actions/runs/39238808024)成功5m16s，准确checkout672fe65；59项365,013B及八ZIP+报告9条SHA全验、遗漏0，两轮invocation不同、八包快照一致。最新main集成仍以本次真实PR/合入后push检查为准，不拿旧候选成功代替。
 - 本机完整验证环境：macOS arm64 / Node24.18.0 / npm11.16.0 / Python3.12.14 / Playwright1.63.0，七阶段实际PASS；summary正确PARTIAL（无GitHub setup outcomes）。云端Linux x64 / Node22.23.3 / npm10.9.9 / Python3.12.15。各平台结果不能互换。
-- 原活动ruleset仍有update/deletion/non_fast_forward，未配置必需CI。其admin/Connector/DeployKey类别保留always bypass；转交合并使用已有管理员权限，没有改规则/名单。CJ-4的validate/App15368、strict、bypass具体候选尚未生效；CI成功不等于强制门禁已建。八个建议标签未创建。
+- CJ-4以独立规则要求validate及moody-gate/App15368、strict=true、bypass空名单；先在隔离目标做真实合并拒绝验证，再收窄到main。实际启用状态、规则ID及Run以交付报告/API回读为证。原jijizi及其admin/Connector/DeployKey豁免不改。八个建议标签已创建并回读，四类别接入表单，维护状态标签不自动贴。
 - v3.0.1仍指向 `9c162939dca50b11549b8a88aefa0069e4ea1896`，正式附件不替换。真实Android/WebView、Safari、Windows、DoL/ModLoader多Mod、系统键盘/缩放/下拉框和物理触控未验收。
 - 两台自有设备及五项Apple目标实测仍pending（viewport/DPR=null），由用户主动采集；不阻塞代码集成。Artifact保存7天，本机原始路径只放忽略的HANDOFF.local.md，不能假定另一设备可访问。
 
 ## Next — 下一步做什么
 
-1. 合入前核对最新head/base、真实pull_request Run、实际测试merge与完整证据；合入后核对main push结果。接手时先fetch并确认main，不从旧研发分支/旧报告复制PASS。当前授权不包含CJ-4规则写入或正式发布。
-2. CJ-4具体规则和bypass单独提交负责人审批；有明确批准才应用配置。真实设备数据在用户方便时采集，用于校准现有回归，不继续堆设备名称或扩大常规矩阵。
+1. 接手先fetch并确认main、工作区及当前规则，按最新PR/Run复核，不从旧研发分支/阶段报告复制PASS。CJ-4相关PR合入后应具备validate和moody-gate两个成功检查；main变化需重新验证。没有正式发布授权。
+2. 两台自有设备实测仍待用户主动采集；收到实际宿主viewport/DPR后校准固定回归，不堆设备名或扩大常规矩阵。Windows/Android/iOS及游戏多Mod必须在实际环境另验收。
 3. 新设备先status、branch、HEAD、remote、fetch；保护本地独有工作，再核对Node>=22.12、Python>=3.10及python命令、lockfile/浏览器。最低npm ci、ci:check/unit/build/packages及锁定浏览器ci:browser；所有stage共享MOODY_EVIDENCE_ID，记录实际环境/提交/Run。
 
 更新约定：交接前维护Current/Decided/Next，未提交/未推送须注明；详细历史留专项报告。主动授权的玩家存档只在源码树外隔离复现，自动CI不读/上传或纳入公开Artifact；不提交凭据、敏感设备标识或大段日志。机器路径只放本地补充。
