@@ -1,0 +1,44 @@
+name: "功能建议（Feature Request）"
+description: "描述希望改善的问题或新增功能，无需技术背景 / Suggest improvements without technical expertise"
+title: "[建议 / Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        可以用简体中文或英文填写；版本不清楚可填“不知道 / Unknown”。无需翻译日志，也无须执行破坏性排查。
+        Chinese or English is welcome. Unknown versions are OK; no log translation or destructive troubleshooting is required.
+
+        可主动提供排错存档，并注明授权用于本问题的隔离复现。公开 Issue 和附件可被他人查看；不要提交密码、Token 或敏感设备标识，分享前检查截图和日志。
+        You may voluntarily provide a save and authorize isolated reproduction of this issue. Public issues and attachments are visible to others; remove passwords, tokens and sensitive device identifiers.
+
+        自动证据收集仅使用受控白名单，不读取或上传玩家存档；主动提供的存档不自动纳入公开 CI Artifact。
+        Automated evidence uses a controlled allowlist and never reads or uploads player saves. Provided saves are not automatically included in public CI artifacts.
+  - type: textarea
+    id: problem
+    attributes:
+      label: "当前遇到的问题（Current Problem）"
+      description: "什么让你不方便？ / What is difficult today?"
+    validations:
+      required: true
+  - type: textarea
+    id: feature
+    attributes:
+      label: "希望加入的功能（Requested Feature）"
+      description: "希望增加或改变什么？ / What would you add or change?"
+    validations:
+      required: true
+  - type: textarea
+    id: usage
+    attributes:
+      label: "期望使用方式（Expected Usage）"
+      description: "你希望怎样使用它？ / How would you use it?"
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: "参考图片或补充说明（References / Additional Information）"
+      description: "可选；可以拖入图片或附链接 / Optional: attach images or links"
+    validations:
+      required: false

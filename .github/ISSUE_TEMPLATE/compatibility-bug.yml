@@ -1,0 +1,145 @@
+name: "Mod 兼容问题（Compatibility Bug）"
+description: "反馈与其他 Mod 同时使用时的异常，未列为支持也可反馈 / Report conflicts, including unsupported mods"
+title: "[兼容问题 / Compatibility Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        可以用简体中文或英文填写；版本不清楚可填“不知道 / Unknown”。无需翻译日志，也无须执行破坏性排查。
+        Chinese or English is welcome. Unknown versions are OK; no log translation or destructive troubleshooting is required.
+
+        可主动提供排错存档，并注明授权用于本问题的隔离复现。公开 Issue 和附件可被他人查看；不要提交密码、Token 或敏感设备标识，分享前检查截图和日志。
+        You may voluntarily provide a save and authorize isolated reproduction of this issue. Public issues and attachments are visible to others; remove passwords, tokens and sensitive device identifiers.
+
+        自动证据收集仅使用受控白名单，不读取或上传玩家存档；主动提供的存档不自动纳入公开 CI Artifact。
+        Automated evidence uses a controlled allowlist and never reads or uploads player saves. Provided saves are not automatically included in public CI artifacts.
+  - type: input
+    id: mod-name
+    attributes:
+      label: "发生问题的 Mod（Affected Mod）"
+    validations:
+      required: true
+  - type: input
+    id: mod-url
+    attributes:
+      label: "Mod 项目地址（Mod URL）"
+    validations:
+      required: false
+  - type: input
+    id: soft-wet-version
+    attributes:
+      label: "Soft & Wet 版本（Soft & Wet Version）"
+      description: "可留空或填写不知道 / Leave blank or enter Unknown"
+      placeholder: "不知道 / Unknown"
+    validations:
+      required: false
+  - type: input
+    id: dol-version
+    attributes:
+      label: "DoL 版本（DoL Version）"
+      description: "可留空或填写不知道 / Leave blank or enter Unknown"
+      placeholder: "不知道 / Unknown"
+    validations:
+      required: false
+  - type: input
+    id: modloader-version
+    attributes:
+      label: "ModLoader 版本（ModLoader Version）"
+      description: "可留空或填写不知道 / Leave blank or enter Unknown"
+      placeholder: "不知道 / Unknown"
+    validations:
+      required: false
+  - type: input
+    id: mod-version
+    attributes:
+      label: "Mod 版本（Mod Version）"
+      description: "可留空或填写不知道 / Leave blank or enter Unknown"
+      placeholder: "不知道 / Unknown"
+    validations:
+      required: false
+  - type: dropdown
+    id: compatibility-package
+    attributes:
+      label: "是否使用兼容包（Compatibility Package）"
+      description: "若使用，可在补充信息中写版本 / If used, add its version in the evidence field"
+      options:
+        - "不知道 / Unknown"
+        - "未使用（Not used）"
+        - "已使用（Used）"
+    validations:
+      required: false
+  - type: dropdown
+    id: platform
+    attributes:
+      label: "使用平台（Platform）"
+      description: "选择最接近的环境；详细设备信息可补充 / Choose the closest environment; details are optional"
+      options:
+        - "不知道 / Unknown"
+        - "Android 浏览器或 WebView（Android browser / WebView）"
+        - "iPhone / iPad（iOS / iPadOS）"
+        - "Windows"
+        - "macOS"
+        - "Linux"
+        - "其他（Other）"
+    validations:
+      required: false
+  - type: textarea
+    id: actual
+    attributes:
+      label: "实际异常（Actual Behavior）"
+      description: |
+        报告不自动判定任何一方有责任，需进一步调查。
+        A report does not assign responsibility; investigation is needed.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "预期结果（Expected Behavior）"
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: "复现步骤（Steps to Reproduce）"
+      description: |
+        描述操作顺序；不能稳定复现也可以说明最近的操作。无需破坏性排查。
+        Describe the steps, or recent actions if intermittent. No destructive troubleshooting.
+      placeholder: |
+        1. 打开… / Open…
+        2. 点击… / Click…
+        3. 出现… / Observe…
+    validations:
+      required: true
+  - type: dropdown
+    id: conflict-type
+    attributes:
+      label: "冲突类型（Conflict Type）"
+      description: "可选；不确定可留空 / Optional; leave blank if unsure"
+      options:
+        - "不知道 / Unknown"
+        - "布局或样式（Layout / Style）"
+        - "点击或操作（Input / Interaction）"
+        - "脚本报错（Script Error）"
+        - "其他（Other）"
+    validations:
+      required: false
+  - type: textarea
+    id: comparison
+    attributes:
+      label: "已有对照结果（Existing Comparison Results）"
+      description: |
+        仅填写已有观察；不要求卸载必要依赖、破坏存档或进行危险实验。
+        Existing observations only. Do not remove required dependencies, damage saves or run risky experiments.
+    validations:
+      required: false
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "截图、日志或存档（Screenshots, Logs or Save）"
+      description: |
+        可选。可拖入附件或附链接；存档请注明“允许用于本问题的隔离复现”。不要附密码或 Token。
+        Optional: attach files or links. For a save, state permission for isolated reproduction of this issue. No passwords or tokens.
+    validations:
+      required: false
