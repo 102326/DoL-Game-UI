@@ -37,8 +37,12 @@ export function startTheme(root:Runtime=window as Runtime){
  function clearStage(){if(stage){motion.cancel(stage);stage.remove();stage=undefined}}
  let glass:HTMLElement|undefined,environment:HTMLElement|undefined,glassResize:ResizeObserver|undefined,glassFrame=0;
  function syncGlass(){
-  if(!controls?.open||!glass)return;const rect=settingsPanel()!.getBoundingClientRect();
-  Object.assign(glass.style,{left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px'});
+  if(!controls?.open||!glass||!environment)return;
+  const rect=settingsPanel()!.getBoundingClientRect(),basis=environment.getBoundingClientRect(),style=getComputedStyle(environment);
+  // Client rects already include DoL's body zoom; fixed-position CSS lengths do not.
+  const x=basis.width/parseFloat(style.width),y=basis.height/parseFloat(style.height);
+  if(!Number.isFinite(x)||!Number.isFinite(y)||x<=0||y<=0)return;
+  Object.assign(glass.style,{left:(rect.left-basis.left)/x+'px',top:(rect.top-basis.top)/y+'px',width:rect.width/x+'px',height:rect.height/y+'px'});
  }
  function stopGlass(){glassResize?.disconnect();glassResize=undefined;cancelAnimationFrame(glassFrame);glassFrame=0;if(glass)motion.cancel(glass);glass?.remove();environment?.remove();glass=environment=undefined}
  function startGlass(){
