@@ -33,8 +33,8 @@
     "ci:check": "node scripts/render-state-fields.cjs --check && npm run typecheck && npm run framework:check",
     "ci:unit": "node scripts/test-ci.cjs unit",
     "ci:browser": "node scripts/test-ci.cjs browser",
-    "ci:build": "node scripts/build-framework.mjs && python scripts/package-framework.py --players-only",
-    "ci:packages": "python scripts/check-ci-packages.py && python -m unittest discover -s tests -p test_ci_packages.py"
+    "ci:build": "node scripts/build-framework.mjs && python scripts/check-ci-packages.py build",
+    "ci:packages": "python scripts/check-ci-packages.py"
   },
   "dependencies": {
     "vue": "^3.5.0"

@@ -7,6 +7,8 @@ root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
 version = '0.1.4-experimental'
 host_version = '0.1.4-experimental'
+# Official product version is independent of the Host package/protocol.
+official_version = json.loads((root / 'package.json').read_text(encoding='utf-8'))['version']
 # Minimum includes the R15 scene bridge guarantees; SDK/package edits do not raise it.
 host_requirement = '>=0.1.2-experimental && <0.2.0'
 parser = argparse.ArgumentParser()
@@ -15,8 +17,10 @@ args = parser.parse_args()
 def write_archive(name, target, files):
     with zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED) as z:
         for filename, payload in sorted(files.items()):
-            member = zipfile.ZipInfo(filename, (2026, 1, 1, 0, 0, 0)); member.compress_type = zipfile.ZIP_DEFLATED
-            z.writestr(member, payload)
+            member = zipfile.ZipInfo(filename, (2026, 1, 1, 0, 0, 0))
+            member.create_system = 3
+            member.external_attr = 0o600 << 16
+            z.writestr(member, payload, compress_type=zipfile.ZIP_DEFLATED, compresslevel=6)
     with zipfile.ZipFile(target) as z:
         assert z.testzip() is None and len(z.namelist()) == len(files) and set(z.namelist()) == set(files)
         assert all(z.read(k) == v for k, v in files.items())
@@ -32,7 +36,7 @@ for directory, name in packages:
         dependencies.append({'modName': 'StoneFreeHost', 'version': host_requirement})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
-    package_version = '3.0.1' if directory == 'official-ui' else host_version if directory == 'host' else '0.1.5-experimental' if directory == 'motion-hub' else version
+    package_version = official_version if directory == 'official-ui' else host_version if directory == 'host' else '0.1.5-experimental' if directory == 'motion-hub' else version
     nickname = 'Soft & Wet 3.0 — Kraft Work' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
     boot = dict(name=name, version=package_version, nickName=nickname, scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],

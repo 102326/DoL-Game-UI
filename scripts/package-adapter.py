@@ -4,8 +4,8 @@ import json
 import sys
 import subprocess
 import re
-from pathlib import Path
-from zipfile import ZipFile, ZIP_DEFLATED
+from pathlib import Path, PurePosixPath
+from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
 if len(sys.argv) != 2:
     raise SystemExit('Usage: python scripts/package-adapter.py compat/<adapter>')
@@ -16,16 +16,30 @@ assert re.fullmatch(r'(?:=|>=)\d[\w.+-]*', dependency['version']), 'Adapter targ
 target_version = dependency['version'].removeprefix('>=').removeprefix('=')
 if dependency['version'].startswith('>='):
     target_version += '-plus'
+members = ['boot.json'] + [name for field in ['styleFileList', 'scriptFileList', 'scriptFileList_inject_early', 'tweeFileList', 'imgFileList', 'additionFile'] for name in boot.get(field, [])]
+assert len(members) == len(set(members)), 'Duplicate adapter member'
+for name in members + [boot['name'], dependency['modName']]:
+    value = PurePosixPath(name)
+    assert not value.is_absolute() and '..' not in value.parts and '\\' not in name and ':' not in name, 'Unsafe adapter path'
 dist = root / 'dist'
 dist.mkdir(exist_ok=True)
-if any(name.endswith('.js') and (root / name).with_suffix('.ts').exists() for field in ['scriptFileList', 'scriptFileList_inject_early'] for name in boot.get(field, [])):
+compiled = [name for field in ['scriptFileList', 'scriptFileList_inject_early'] for name in boot.get(field, []) if name.endswith('.js') and (root / name).with_suffix('.ts').exists()]
+if compiled:
+    # Invalidate only these generated entries; preserve all unrelated builds/logs.
+    for name in compiled:
+        (dist / 'scripts' / name).unlink(missing_ok=True)
     subprocess.run(['node', str(Path(__file__).with_name('build-adapters.cjs')), str(root)], check=True)
+    assert all((dist / 'scripts' / name).is_file() and not (dist / 'scripts' / name).is_symlink() for name in compiled), 'CJ3C_MISSING_COMPILED_ADAPTER'
+
 def source(name):
     return dist / 'scripts' / name if name.endswith('.js') and (root / name).with_suffix('.ts').exists() else root / name
 target = dist / f"{boot['name']}-{dependency['modName']}-{target_version}-v{boot['version']}.mod.zip"
 with ZipFile(target, 'w', ZIP_DEFLATED) as out:
-    for name in ['boot.json'] + [name for field in ['styleFileList','scriptFileList','scriptFileList_inject_early','tweeFileList','additionFile'] for name in boot.get(field, [])]:
-        out.write(source(name), name)
+    for name in sorted(members):
+        member = ZipInfo(name, (2026, 1, 1, 0, 0, 0))
+        member.create_system = 3
+        member.external_attr = 0o600 << 16
+        out.writestr(member, source(name).read_bytes(), compress_type=ZIP_DEFLATED, compresslevel=6)
 with ZipFile(target) as out:
     assert out.testzip() is None
     assert json.loads(out.read('boot.json')) == boot
