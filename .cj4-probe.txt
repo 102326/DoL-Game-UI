@@ -1,1 +1,1 @@
-Controlled skipped CI probe.
+Controlled success CI probe.
