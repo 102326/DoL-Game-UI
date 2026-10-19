@@ -47,10 +47,10 @@ jobs:
         name: Business and source checks
         run: node scripts/test-ci.cjs stage unit
       - id: build
-        name: Build Framework and package player Mods
+        name: Build Framework and eight current packages
         run: node scripts/test-ci.cjs stage build
       - id: packages
-        name: ZIP identity, dependencies, licenses and negative cases
+        name: ZIP contracts, negative cases and two-build comparison
         run: node scripts/test-ci.cjs stage packages
       - id: browser-install
         name: Install pinned browser

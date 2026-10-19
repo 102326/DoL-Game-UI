@@ -12,8 +12,8 @@ const stages = [
   { id: 'dependencies', scope: 'Locked npm dependencies and install scripts', args: ['ci'] },
   { id: 'check', scope: 'Render-state generation, TypeScript and Framework contracts', args: ['run', 'ci:check'] },
   { id: 'unit', scope: 'Required unit and source suite', args: ['run', 'ci:unit'] },
-  { id: 'build', scope: 'Framework build and player Mod packaging', args: ['run', 'ci:build'] },
-  { id: 'packages', scope: 'ZIP identity, contents, dependencies, licenses and negative contracts', args: ['run', 'ci:packages'] },
+  { id: 'build', scope: 'Framework build and two player plus six current optional packages', args: ['run', 'ci:build'] },
+  { id: 'packages', scope: 'Eight ZIP/version contracts, exact negative checks and two fresh builds', args: ['run', 'ci:packages'] },
   { id: 'browser-install', scope: 'Lockfile-pinned Playwright Chromium installation', command: 'npx', args: ['playwright', 'install', '--with-deps', 'chromium'] },
   { id: 'browser', scope: 'Required controlled browser suite, including historical negatives', args: ['run', 'ci:browser'] }
 ];
@@ -143,6 +143,35 @@ function layoutEvidence(ctx) {
   } catch { return false; }
 }
 
+const requiredPackages = ['StoneFreeHost', 'DoLGameUI', 'ModHubSoftWet', 'MapleBirchSoftWet', 'DolOptimizationSoftWet', 'CheatExtendedSoftWet', 'ReOverfitsSoftWet', 'LyraMouthCompat051213'];
+function packageEvidence(ctx) {
+  // Malformed or partial evidence must not prevent the whole-run summary/upload.
+  try {
+    const report = readReport(ctx, 'package-contracts.json');
+    if (!report || report.kind !== 'package-contracts' || report.status !== 'PASS' || report.versionSources?.status !== 'PASS' || report.reproducibility?.status !== 'PASS' || !Array.isArray(report.reproducibility.differences) || report.reproducibility.differences.length !== 0) return false;
+    const namesMatch = values => Array.isArray(values) && values.length === requiredPackages.length && new Set(values).size === requiredPackages.length && values.every(name => requiredPackages.includes(name));
+    const negatives = report.negativeTests;
+    const requiredNegatives = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'];
+    if (!Array.isArray(report.contracts) || !namesMatch(report.expectedPackages) || !namesMatch(report.contracts.map(p => p.name)) || !report.contracts.every(p => p.status === 'PASS' && /^[a-f0-9]{64}$/.test(p.sha256))) return false;
+    if (negatives?.status !== 'PASS' || !Array.isArray(negatives.plan) || !requiredNegatives.every(name => negatives.plan.some(id => typeof id === 'string' && id.endsWith('.' + name))) || new Set(negatives.plan).size !== negatives.plan.length || negatives.testsRun !== negatives.plan.length || ['failures', 'errors', 'skipped', 'expectedFailures', 'unexpectedSuccesses'].some(field => negatives[field] !== 0)) return false;
+    if (!Array.isArray(report.builds) || report.builds.length !== 2 || !report.builds.every(b => typeof b.receipt?.invocation === 'string' && b.receipt.invocation && sameIdentity(b.receipt.source, ctx.identity.source) && b.receipt.runId === ctx.identity.run.id && Array.isArray(b.receipt.packages) && namesMatch(b.receipt.packages.map(p => p.name)) && Array.isArray(b.snapshots) && b.snapshots.length === requiredPackages.length && new Set(b.snapshots.map(s => s.file)).size === requiredPackages.length)) return false;
+    if (report.builds[0].receipt.invocation === report.builds[1].receipt.invocation) return false;
+    return report.builds.every(b => b.receipt.packages.every(p => {
+      const expected = report.contracts.find(c => c.name === p.name), snapshot = b.snapshots.find(s => s.file === p.file);
+      if (p.file !== expected.file || p.sha256 !== expected.sha256 || snapshot?.sha256 !== p.sha256 || snapshot.archiveComment !== '' || !Array.isArray(snapshot.members)) return false;
+      const members = expected.members;
+      if (!members || !Object.hasOwn(members, 'boot.json') || !Object.hasOwn(members, 'LICENSE') || Object.keys(members).length !== snapshot.members.length || new Set(snapshot.members.map(m => m.name)).size !== snapshot.members.length) return false;
+      if (!sameIdentity(snapshot.members.map(m => m.name), Object.keys(members).sort())) return false;
+      return snapshot.members.every(m => {
+        const meta = m.metadata;
+        return /^[a-f0-9]{64}$/.test(m.sha256) && m.sha256 === members[m.name] && /^[a-f0-9]{64}$/.test(m.compressedSha256) &&
+          meta && sameIdentity(meta.date_time, [2026, 1, 1, 0, 0, 0]) && meta.compress_type === 8 && meta.create_system === 3 && meta.create_version === 20 && meta.extract_version === 20 && meta.external_attr === (0o600 << 16) && meta.internal_attr === 0 &&
+          meta.flag_bits === (/^[\x00-\x7F]*$/.test(m.name) ? 0 : 0x800) && meta.extra === '' && meta.comment === '' && ['file_size', 'compress_size', 'CRC', 'header_offset'].every(field => Number.isSafeInteger(meta[field]) && meta[field] >= 0);
+      }) && sameIdentity(snapshot, report.builds[0].snapshots.find(s => s.file === p.file));
+    }));
+  } catch { return false; }
+}
+
 function summarize(ctx, steps = {}) {
   const results = [];
   for (const [name, scope] of [['checkout', 'Source checkout'], ['node', 'Node environment'], ['python', 'Python environment']]) {
@@ -171,6 +200,9 @@ function summarize(ctx, steps = {}) {
         Object.assign(entry, { status: 'UNVERIFIED', reason: 'Device layout coverage report missing, stale, incomplete or not passing' });
       }
     }
+    if (stage.id === 'packages' && entry.status === 'PASS' && !packageEvidence(ctx)) {
+      Object.assign(entry, { status: 'UNVERIFIED', reason: 'Eight-package/version/negative/repeated-build evidence missing, stale or incomplete' });
+    }
     results.push(entry);
   }
   if (steps['build-artifacts']) {
@@ -186,7 +218,7 @@ function prepareUpload(ctx) {
   const destination = path.join(ctx.dir, 'upload');
   if (fs.existsSync(destination)) throw Error('Upload directory already exists; use a fresh evidence ID');
   fs.mkdirSync(destination);
-  const candidates = ['identity.json', 'unit.json', 'browser.json', 'summary.json', ...stages.flatMap(s => [`stage-${s.id}.json`, `${s.id}.log`]),
+  const candidates = ['identity.json', 'unit.json', 'browser.json', 'summary.json', 'package-contracts.json', ...stages.flatMap(s => [`stage-${s.id}.json`, `${s.id}.log`]),
     ...Object.entries(suites).flatMap(([suite, tests]) => tests.map(test => `${suite}/${test}.log`)),
     ...fixtureChecks.flatMap(test => [`fixtures/${test}/snapshot.json`, `fixtures/${test}/viewport.jpg`]), 'fixtures/device-layouts.cjs/layout-report.json'];
   const files = [], omitted = []; let bytes = 0;
@@ -206,4 +238,4 @@ function prepareUpload(ctx) {
   return { files, bytes, omitted };
 }
 
-module.exports = { root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, layoutEvidence };
+module.exports = { sourceIdentity, root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, layoutEvidence, packageEvidence, requiredPackages };

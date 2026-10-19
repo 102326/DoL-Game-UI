@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { classify, overall, runCommand, summarize, prepareUpload, writeJson, stages, suites } = require('../scripts/ci-evidence.cjs');
+const { classify, overall, runCommand, summarize, prepareUpload, writeJson, stages, suites, requiredPackages } = require('../scripts/ci-evidence.cjs');
 const { runSuite } = require('../scripts/test-ci.cjs');
 const { captureFailure, writeLayoutReport } = require('./moody-fixture-evidence.cjs');
 const { root } = require('../scripts/ci-evidence.cjs');
@@ -70,6 +70,37 @@ const { root } = require('../scripts/ci-evidence.cjs');
     const layoutPath = path.join(dir, 'fixtures/device-layouts.cjs/layout-report.json');
     const layout = { identity: ctx.identity, status: 'PASS', depth: 'standard', results: require('./device-layouts.cjs').expectedCaseIds('standard').map(id => ({ id, status: 'PASS' })) };
     writeJson(layoutPath, layout);
+    assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'package command exit 0 alone cannot establish eight-package coverage');
+    const contracts = requiredPackages.map(name => ({ name, file: name + '.zip', sha256: 'a'.repeat(64), status: 'PASS', members: { 'LICENSE': 'b'.repeat(64), 'boot.json': 'c'.repeat(64) } }));
+    const negativePlan = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'].map(name => 'controlled.' + name);
+    const snapshots = contracts.map(p => ({ file: p.file, sha256: p.sha256, archiveComment: '', members: Object.entries(p.members).map(([name, sha256]) => ({ name, sha256, compressedSha256: 'd'.repeat(64), metadata: { date_time: [2026,1,1,0,0,0], compress_type: 8, create_system: 3, create_version: 20, extract_version: 20, flag_bits: 0, internal_attr: 0, external_attr: 0o600 << 16, file_size: 1, compress_size: 3, CRC: 1, header_offset: 0, extra: '', comment: '' } })) }));
+    const packageReport = { kind: 'package-contracts', identity: ctx.identity, status: 'PASS', versionSources: { status: 'PASS' },
+      expectedPackages: requiredPackages, contracts, reproducibility: { status: 'PASS', differences: [] },
+      negativeTests: { status: 'PASS', plan: negativePlan, testsRun: negativePlan.length, failures: 0, errors: 0, skipped: 0, expectedFailures: 0, unexpectedSuccesses: 0 },
+      builds: ['first','second'].map(invocation => ({ receipt: { invocation, source: ctx.identity.source, runId: ctx.identity.run.id, packages: contracts }, snapshots })) };
+    const packageFile = path.join(dir, 'package-contracts.json');
+    writeJson(packageFile, packageReport);
+    writeJson(packageFile, { ...packageReport, builds: packageReport.builds.slice(1) });
+    assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'one build cannot establish repeatability');
+    writeJson(packageFile, { ...packageReport, contracts: contracts.slice(1) });
+    assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'missing optional package cannot pass');
+    writeJson(packageFile, { ...packageReport, negativeTests: { ...packageReport.negativeTests, skipped: 1 } });
+    assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'skipped negative tests cannot pass');
+    for (const defect of ['members', 'metadata', 'negative-plan']) {
+      const incomplete = structuredClone(packageReport);
+      if (defect === 'members') delete incomplete.builds[0].snapshots[0].members;
+      if (defect === 'metadata') delete incomplete.builds[0].snapshots[0].members[0].metadata;
+      if (defect === 'negative-plan') incomplete.negativeTests.plan = negativePlan.map((_, i) => 'unrelated.' + i);
+      writeJson(packageFile, incomplete);
+      assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'missing member/metadata or required negative identity cannot pass');
+    }
+    for (const malformed of [{ contracts: {} }, { contracts: [null] }, { builds: { length: 2 } },
+      { builds: [null, null] }, { builds: [{ receipt: { invocation: 'bad', packages: [null] } }, null] },
+      { identity: { source: { head: 'stale' } } }]) {
+      writeJson(packageFile, { ...packageReport, ...malformed });
+      assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'malformed or stale package evidence cannot crash or pass');
+    }
+    writeJson(packageFile, packageReport);
     summary = summarize(ctx, { checkout: { outcome: 'success' }, node: { outcome: 'success' }, python: { outcome: 'success' } });
     assert.equal(summary.status, 'PASS');
     writeJson(layoutPath, { ...layout, results: layout.results.slice(1) });
