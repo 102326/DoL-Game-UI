@@ -14,42 +14,61 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      MOODY_EVIDENCE_ID: ${{ github.run_id }}-${{ github.run_attempt }}-validate
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - id: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - id: node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '22'
           cache: npm
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - id: python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
-      - run: npm ci
-      - name: TypeScript and Framework contracts
-        run: npm run ci:check
-      - name: Business and source checks
-        run: npm run ci:unit
-      - name: Build Framework and package player Mods
-        run: npm run ci:build
-      - name: ZIP identity, dependencies, licenses and negative cases
-        run: npm run ci:packages
-      - name: Install pinned browser
-        run: npx playwright install --with-deps chromium
-      - name: Browser contracts, interactions, motion and compatibility
-        run: npm run ci:browser
-      - name: Build artifacts (not a Release)
+      - id: dependencies
+        name: Locked dependencies
+        run: node scripts/test-ci.cjs stage dependencies
+      - id: check
+        name: TypeScript and Framework contracts
+        run: node scripts/test-ci.cjs stage check
+      - id: unit
+        name: Business and source checks
+        run: node scripts/test-ci.cjs stage unit
+      - id: build
+        name: Build Framework and package player Mods
+        run: node scripts/test-ci.cjs stage build
+      - id: packages
+        name: ZIP identity, dependencies, licenses and negative cases
+        run: node scripts/test-ci.cjs stage packages
+      - id: browser-install
+        name: Install pinned browser
+        run: node scripts/test-ci.cjs stage browser-install
+      - id: browser
+        name: Browser contracts, interactions, motion and compatibility
+        run: node scripts/test-ci.cjs stage browser
+      - id: build-artifacts
+        name: Build artifacts (not a Release)
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: kraft-work-build-${{ github.sha }}
           path: dist/ci-packages/*
           if-no-files-found: error
           retention-days: 7
+      - name: Moody Blues whole-run evidence
+        if: always()
+        env:
+          MOODY_STEPS: ${{ toJSON(steps) }}
+        run: node scripts/test-ci.cjs summary
       - name: Controlled test logs
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: kraft-work-checks-${{ github.sha }}
-          path: tests/artifacts/ci/
-          if-no-files-found: ignore
+          path: tests/artifacts/ci/${{ env.MOODY_EVIDENCE_ID }}/upload/
+          if-no-files-found: error
           retention-days: 7

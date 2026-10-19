@@ -10,3 +10,6 @@ __pycache__/
 *.save
 *.keystore
 *.jks
+
+# Cross-device handoff supplement: local paths and artifacts stay on this machine.
+docs/HANDOFF.local.md
