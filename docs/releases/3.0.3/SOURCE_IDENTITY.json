@@ -1,0 +1,400 @@
+{
+  "schema": 1,
+  "version": "3.0.3",
+  "runtimeSourceCommit": "34ffb00e2eb0490204563bdf69756befae9f326e",
+  "testedCandidate": {
+    "sha256": "38ca958f293e48763612f2593ef9ee333360a5a8aaf9d8b5c4212be81f5b9c5c",
+    "runtimeDifference": "Only product version 3.0.2 -> 3.0.3",
+    "cssDifference": "none",
+    "changedMembers": [
+      "README.md",
+      "boot.json",
+      "docs/OPTIONAL_ADAPTERS.md",
+      "docs/RELEASE_3.0.2.md",
+      "docs/RELEASE_3.0.3.md",
+      "index.js"
+    ]
+  },
+  "ui": {
+    "name": "DoLGameUI-3.0.3.mod.zip",
+    "sha256": "6aba54f5c4b9256b78808887420693be51d46444fe1c0fe604113b963be98233",
+    "metadata": {
+      "name": "DoLGameUI",
+      "version": "3.0.3",
+      "nickName": "Soft & Wet 3.0 — Kraft Work",
+      "scriptFileList": [
+        "index.js"
+      ],
+      "styleFileList": [
+        "style.css"
+      ],
+      "tweeFileList": [],
+      "imgFileList": [],
+      "additionFile": [
+        "README.md",
+        "LICENSE",
+        "THIRD-PARTY-NOTICES.txt",
+        "docs/UI_SETTINGS.md",
+        "docs/OPTIONAL_ADAPTERS.md",
+        "docs/RELEASE_3.0.3.md",
+        "types/ui.d.ts",
+        "types/wardrobe.d.ts",
+        "UPSTREAM-RENDERER-LICENSE",
+        "UPSTREAM-RENDERER-NOTICE.md"
+      ],
+      "dependenceInfo": [
+        {
+          "modName": "ModLoader",
+          "version": ">=2.100.0"
+        },
+        {
+          "modName": "StoneFreeHost",
+          "version": ">=0.1.2-experimental && <0.2.0"
+        },
+        {
+          "modName": "TweeReplacer",
+          "version": ">=1.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ],
+      "scriptFileList_inject_early": [
+        "shop-page-experiment.js"
+      ],
+      "addonPlugin": [
+        {
+          "modName": "TweeReplacer",
+          "addonName": "TweeReplacerAddon",
+          "modVersion": ">=1.0.0",
+          "params": [
+            {
+              "tip": "服装店按需分页：锁定本次列表渲染开关",
+              "passage": "Clothing Shop v2 Widgets",
+              "findString": "\t<div id=\"shop-list-pages\" class=\"shop-list-pages\">",
+              "replaceFile": "twee/patch-list-mode.twee"
+            },
+            {
+              "tip": "服装店按需分页：关闭时保留原版后台生成",
+              "passage": "Clothing Shop v2 Widgets",
+              "findString": "\t\t<!-- Generate other pages in background after a delay, so that shop can be displayed sooner -->\n\t\t<!-- Having all pages loaded allows for very fast shop catalogue navigation -->\n\t\t<!-- Generate via <<repeat>> one by one to not cause a lag spike -->\n\t\t<<timed 0.2s>>\n\t\t\t<<set _ppre = _startingShopPage - 1>>\n\t\t\t<<repeat 0.1s>>\n\t\t\t\t<<if document.getElementById(\"shop-list-pages\") eq null or _ppre lt 0>>\n\t\t\t\t\t<<stop>>\n\t\t\t\t<</if>>\n\t\t\t\t<!-- Prepend pages before the current page -->\n\t\t\t\t<<prepend '#shop-list-pages'>>\n\t\t\t\t\t<<generateshoppage _ppre>>\n\t\t\t\t<</prepend>>\n\t\t\t\t<<set _ppre-->>\n\t\t\t<</repeat>>\n\t\t\t<!-- Append pages after the current page -->\n\t\t\t<<set _papp = _startingShopPage + 1>>\n\t\t\t<<repeat 0.1s>>\n\t\t\t\t<<if document.getElementById(\"shop-list-pages\") eq null or _papp gte _maxPage>>\n\t\t\t\t\t<<stop>>\n\t\t\t\t<</if>>\n\t\t\t\t<<append '#shop-list-pages'>>\n\t\t\t\t\t<<generateshoppage _papp>>\n\t\t\t\t<</append>>\n\t\t\t\t<<set _papp++>>\n\t\t\t<</repeat>>\n\t\t<</timed>>",
+              "replaceFile": "twee/patch-background.twee"
+            },
+            {
+              "tip": "服装店按需分页：翻页时只生成目标页",
+              "passage": "Clothing Shop v2 Widgets",
+              "findString": "\t<<run $('#shop-list-pages > div.clothing-shop-page').addClass('hidden no-numberify')>>\n\t<<run $('#shop-list-pages > div.clothing-shop-page:nth-of-type(' + ($shopPage + 1) + ')').removeClass('hidden no-numberify')>>",
+              "replaceFile": "twee/patch-page-change.twee"
+            },
+            {
+              "tip": "服装店按需分页：只复用实验模式的分页宽度监听器",
+              "passage": "Clothing Shop v2 Widgets",
+              "findString": "\t<<run $(window).on('resize', () => {\n\t\tlet pagination = $('#shop-pagination');\n\t\tlet pages = $(pagination).find('.shop-pages');\n\t\tlet buttons = $(pagination).find('.btn-pagination');\n\t\tlet isEnoughSpace = (pagination.width() - buttons.outerWidth() * 2 - 32) / pages.children().length >= 22;\n\n\t\tpages.toggleClass('hidden', !isEnoughSpace);\n\t\tpagination.find('.shop-pages-number').toggleClass('hidden', isEnoughSpace);\n\t})>>",
+              "replaceFile": "twee/patch-resize.twee"
+            }
+          ]
+        }
+      ]
+    },
+    "members": {
+      "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+      "README.md": "fc2cde6e091f775c3492b5fbd570f9b40561f1718308e7cd117633fb6a6bccd3",
+      "THIRD-PARTY-NOTICES.txt": "9c115886c745c8bab1bb34ec11a7ba5a1d34be99e962a444034e019e24a7b03c",
+      "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+      "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+      "boot.json": "2c59d26fca1bab76dee97acaa37e3db78f8aa0eac9f71b70f222451783aa7b73",
+      "docs/OPTIONAL_ADAPTERS.md": "cab986657b15e33fc6372746d19a94dfe59f346fdb4e51409d981efec4174dc0",
+      "docs/RELEASE_3.0.3.md": "db15e74bbdcda879106629708543a9b24645db3434186a5b764ee699178cf8be",
+      "docs/UI_SETTINGS.md": "aadfaa280925e245f0f0d19aeac2caeb3a205bd907f16a457d495d100f6e2d4f",
+      "index.js": "b789dff9ea429616b200bdcd93baf34e5edfcbd78938ec5bb9ffaab80c8da7cb",
+      "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+      "style.css": "39a2cc870bc06f45540d0b6afe9a943f344d2c44451d0a353d4e9f715a4d6cf7",
+      "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+      "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+      "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+      "twee/patch-resize.twee": "4d604afceeb23ee0d17733fe248f24736ed01b1284be467daab6039223305da3",
+      "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+      "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+    }
+  },
+  "retainedAssets": {
+    "CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.0.mod.zip": {
+      "sha256": "ba8f17fb23f1c81214266ceb4ce3150bed0133b3e2904b856c4984a9e83c68f9",
+      "metadata": {
+        "name": "CheatExtendedSoftWet",
+        "version": "1.0.0",
+        "description": "Kraft Work 外观兼容：原作者 Cheat Extended 1.20.3.1；另验独立维护 rebuild.30，非原作者发布。",
+        "styleFileList": [
+          "cheat-extended-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "cheat-extended-soft-wet.js"
+        ],
+        "scriptFileList_inject_early": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "cheat extended",
+            "version": ">=1.20.3"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "sourceRelease": "v3.0.2"
+    },
+    "DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.1.mod.zip": {
+      "sha256": "b8955cd1f2685cb53e7b2777d6cafd6e2f85fab2c97ee680e2e2515c91740652",
+      "metadata": {
+        "name": "DolOptimizationSoftWet",
+        "version": "1.0.1",
+        "description": "原版优化的存档与衣柜兼容：Kraft Work 3.X 外观，接入原叠穿管理、卸下及层级调整控件。",
+        "styleFileList": [
+          "dol-optimization-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "dol-optimization-soft-wet.js"
+        ],
+        "scriptFileList_inject_early": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "原版优化",
+            "version": ">=1.1.1.2"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "sourceRelease": "v3.0.2"
+    },
+    "LyraMouthCompat051213-Lyra-0.5.12.13-v1.0.0.mod.zip": {
+      "sha256": "71080a79771149a0edf80cc66943518645835e1b6259a01e23869d6da2a34974",
+      "metadata": {
+        "name": "LyraMouthCompat051213",
+        "version": "1.0.0",
+        "scriptFileList": [
+          "mouth-compat.js"
+        ],
+        "styleFileList": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "Lyra",
+            "version": "=0.5.12.13-1.0.1a-1004.1-goose-ucb"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          },
+          {
+            "modName": "maplebirch",
+            "version": ">=5.2.3 <6.0.0"
+          }
+        ]
+      },
+      "sourceRelease": "v3.0.2"
+    },
+    "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.0.mod.zip": {
+      "sha256": "b3baa723027bc20e815677133e9b5e7b0082f8cb13deb5240c49e3ddb569f13a",
+      "metadata": {
+        "name": "MapleBirchSoftWet",
+        "version": "1.0.0",
+        "description": "MapleBirch 5.2.3 及以上云存档页面的独立 Soft & Wet 外观适配。",
+        "styleFileList": [
+          "maplebirch-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "maplebirch-soft-wet.js"
+        ],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "maplebirch",
+            "version": ">=5.2.3"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "sourceRelease": "v3.0.2"
+    },
+    "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.0.mod.zip": {
+      "sha256": "df6356be81f8def8ed22b69aa2e04069a4e027a20b31e9c23aba79322a80b041",
+      "metadata": {
+        "name": "ModHubSoftWet",
+        "version": "1.0.0",
+        "description": "ModHub 1.3.0 及以上的独立柔和亚克力外观样式。",
+        "styleFileList": [
+          "modhub-soft-wet.css"
+        ],
+        "scriptFileList_inject_early": [],
+        "scriptFileList": [
+          "modhub-soft-wet.js"
+        ],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "ModHub",
+            "version": ">=1.3.0"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "sourceRelease": "v3.0.2"
+    },
+    "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip": {
+      "sha256": "78eb0061d06972645d1c48e039be8b3d935f2710fddf83eb5b094f2b59a6efdb",
+      "metadata": {
+        "name": "ReOverfitsSoftWet",
+        "version": "1.0.0",
+        "description": "ReOverfits 4.1.1 及以上槽位语义扩展：复用 Soft & Wet Vue 衣柜与原业务接口。",
+        "styleFileList": [
+          "reoverfits-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "reoverfits-soft-wet.js"
+        ],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "ReOverfits",
+            "version": ">=4.1.1"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.0"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ],
+        "nickName": "ReOverfits · Soft & Wet UI 兼容"
+      },
+      "sourceRelease": "v3.0.2"
+    },
+    "SmartPhoneSoftWet-SmartPhoneAlpha-0.3.91-v1.1.0.mod.zip": {
+      "sha256": "254327acc647353f23c7a93703384754d59edd5e1a4c97f753e2bf4f85bf6073",
+      "metadata": {
+        "name": "SmartPhoneSoftWet",
+        "version": "1.1.0",
+        "description": "SmartPhone Alpha 0.3.91 的 Kraft Work 3.X 可选外观包。",
+        "styleFileList": [
+          "smartphone-soft-wet.css"
+        ],
+        "scriptFileList": [
+          "smartphone-soft-wet.js"
+        ],
+        "scriptFileList_inject_early": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "SmartPhone Alpha",
+            "version": "=0.3.91"
+          },
+          {
+            "modName": "DoLGameUI",
+            "version": ">=3.0.2"
+          },
+          {
+            "modName": "GameVersion",
+            "version": "=0.5.12.13"
+          }
+        ]
+      },
+      "sourceRelease": "v3.0.2"
+    },
+    "StoneFreeHost-0.1.4-experimental.mod.zip": {
+      "sha256": "ad78fca929e3819fce4da6f0d10affb4fc91318661583e4dacec896b64936153",
+      "metadata": {
+        "name": "StoneFreeHost",
+        "version": "0.1.4-experimental",
+        "nickName": "Stone Free Framework Host",
+        "scriptFileList": [
+          "index.js"
+        ],
+        "styleFileList": [],
+        "tweeFileList": [],
+        "imgFileList": [],
+        "additionFile": [
+          "README.md",
+          "LICENSE"
+        ],
+        "dependenceInfo": [
+          {
+            "modName": "ModLoader",
+            "version": ">=2.100.0"
+          }
+        ]
+      },
+      "sourceRelease": "v3.0.2"
+    }
+  },
+  "validation": {
+    "local": "TypeScript / Framework, eight ZIP contracts, seven negative tests, two fresh builds, wardrobe motion and official defaults PASS",
+    "android": "Installed corrected candidate; programmatic click; not physical input",
+    "ci": "Exact PR / main run linked separately in release completion record"
+  }
+}
