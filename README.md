@@ -149,7 +149,7 @@ python scripts/package-framework.py --players-only
 
 ## 反馈
 
-通过 [GitHub Issues](https://github.com/102326/DoL-Game-UI/issues) 提供 DoL／Lyra、Loader、Host／UI、相关 Mod 版本，以及设备、浏览器或 WebView、复现步骤、实际和期望表现。适用时附日志片段或截图；不要公开上传私人存档、账号信息、敏感数据或未获授权分发的 Mod 包。
+通过 [GitHub Issues](https://github.com/102326/DoL-Game-UI/issues) 提供 DoL／Lyra、Loader、Host／UI、相关 Mod 版本，以及设备、浏览器或 WebView、复现步骤、实际和期望表现。适用时附日志片段或截图；截图、日志和存档均可选；可主动提供并明确授权使用有助于复现的存档，公开 Issue 附件可能被他人访问。开发侧在源码树外隔离复现，不自动纳入公开 CI Artifact；不要提交账号凭据、敏感数据或未获授权分发的 Mod 包。
 
 ## 许可与来源
 
