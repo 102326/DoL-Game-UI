@@ -107,6 +107,7 @@ html:not([data-dgu-visualMotion]) .kw-shop-ripple{display:none}
 html:not([data-dgu-visualMotion]) .kw-shop-ripple,html:not([data-dgu-visualMotion]) .kw-shop-ripple *{animation:none!important}
 
 /* Wardrobe shares the accepted half-strength selection flow, not purchase state. */
+html[data-stone-free] .dgw-items{position:relative}
 html[data-stone-free] .dgw-item{position:relative;isolation:isolate;overflow:hidden}
 html[data-stone-free] .dgw-item[data-motion-active]{box-shadow:inset 0 0 0 1px #80b2db50!important;background:#172536b0!important}
 html[data-stone-free] .dgw-preview canvas{position:relative;left:0}
