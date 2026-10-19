@@ -1,1 +1,1 @@
-Controlled CI gate acceptance fixture; no player data.
+Controlled failure CI probe.

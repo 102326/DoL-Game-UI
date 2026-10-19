@@ -1,0 +1,27 @@
+name: Moody Blues controlled gate probe
+on:
+  pull_request:
+    branches: [test/moody-blues-cj4-target-20261019]
+permissions:
+  contents: read
+jobs:
+  validate:
+    if: ${{ true }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+
+  moody-gate:
+    needs: validate
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require actual validation success
+        env:
+          VALIDATE_RESULT: ${{ needs.validate.result }}
+        run: |
+          if [ "$VALIDATE_RESULT" != success ]; then
+            echo "::error::validate result is ${VALIDATE_RESULT:-missing}; refusing merge approval"
+            exit 1
+          fi
