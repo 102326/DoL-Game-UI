@@ -1,64 +1,32 @@
 # Soft & Wet — 跨设备交接
 
-更新：2026-10-19。当前快照；接手必须核对本机 HEAD、工作树、依赖和实际环境。
+更新：2026-10-19。接手先核对实际 Git / Actions；本文是阶段快照。
 
 ## Current — 当前做什么
 
-- 当前专项：MB-GH-01 V1.2。分支 `collab/moody-blues-gh-01`，基准 HEAD
-  `1739c17cd9327063985d21097619ddf5cefed73f`；实际候选 HEAD 用 `git rev-parse HEAD`。
-  表单/PR 模板、结构检查与协作约定随本快照提交推送；交付时应无未提交或未推送内容。
-- 依赖 `ci/moody-blues-p0` 的 P0 与触发修补，未混为同一个提交。默认 main 仍为
-  `9c162939dca50b11549b8a88aefa0069e4ea1896`（v3.0.1）。原研究/原型工作区保持原样。
-- 协作候选：六表单、PR 模板、本地检查已完成；PR 未创建、未合并、线上入口未生效。
-  八个新增标签只是建议，未修改远端；具体见 [协作约定](GITHUB_COLLABORATION.md)。
-- P0 触发修补 `1739c17` 的真实 push [Run 39230872314](https://github.com/102326/DoL-Game-UI/actions/runs/39230872314)
-  成功5m27s：标准124/124、14单元/21浏览器入口，58项证据237,676字节、哈希匹配、遗漏0。
-  event=push、源码身份与完整计划已下载核对，未用手动运行替代自动触发。
+- 负责人已 Accept P0、MB-GH-01 与 CJ-3C 研发候选，并授权继续完成 P0/协作合并流程。
+- PR #3 已由负责人合并到 main：`cac52c198b1992530edb6a8910dbb7921fb566a8`，保留原 P0 头 `1739c17`。PR #4 随后合入 P0 分支 `a820145ddae3437767639ce94f093e7cea1a1a3a`，并未进入 main。
+- 当前 `collab/moody-blues-gh-01-main` 从 a820145 转交协作差异到 main，不重写两次已完成合并。本文随转交提交更新；实际 HEAD 以 `git rev-parse HEAD` 为准。需要实际 PR CI 与默认分支表单验收，不能用旧手动运行替代。
+- CJ-3C 在独立 `ci/moody-blues-cj3c`：实现 `b32c022c8158016f86f0408e1aa0e5b1ca27d8f2`，文档 `672fe65e3f00b582d82f242b6957ffd151ec29c9`。接下来按合并后的 main 核对差异、更新交接/职责表述、独立开 PR。没有扩大布局矩阵的计划。
+- 本轮基线检查时各工作区干净；旧研究/原型分支与忽略产物均保留。交付后应提交推送干净，接手仍需重新核对未同步内容。
 
 ## Decided — 已经确定什么
 
-- 只交已授权范围：CI/受控测试/文档和协作模板。未合并 main、建 PR、改保护规则/bypass、
-  修改 Release/Tag/正式 ZIP、启用 CD 或 AI 服务。Discussions/Projects 原开关保持原状。
-- [P0 证据合同](MOODY_BLUES_P0.md)：未执行、缺失、陈旧、超时、取消、身份/计划不符
-  不得 PASS；原始状态和断言保留。上传受控白名单、体积上限与七天保存期限不放宽。
-- CJ-3A/B：`1e8010808a7d1c71f0cfe1d3049227df1258ea8b`，
-  [P0 Run](https://github.com/102326/DoL-Game-UI/actions/runs/39222671934) 成功。
-  历史 [Run 39161341795](https://github.com/102326/DoL-Game-UI/actions/runs/39161341795)
-  的合法延迟/取消/残留和 [Run 39161721706](https://github.com/102326/DoL-Game-UI/actions/runs/39161721706)
-  的旧定位/遗漏生产 CSS 有精确反例；无第三案完整对应。
-- CJ-3D 实现 `6f3c982b2e89c5b39e53eb7239ba673073b83abb`，
-  [深度](https://github.com/102326/DoL-Game-UI/actions/runs/39226899118) 241/241、8m7s；
-  文档 HEAD `79b1d7fdff9809a296585b0fc3ba37972429ae59` 的
-  [标准](https://github.com/102326/DoL-Game-UI/actions/runs/39228132750) 124/124、5m19s。
-  Linux x64、Node 22.23.3、Python 3.12.15、Playwright 1.63.0，14 单元/21 浏览器入口。
-  两轮各 58 项证据哈希已核对、遗漏 0；深度实现可复用至仅文档差异的 79b。
-- 本机 macOS arm64、Node 24.18.0、Python 3.12.14 的七阶段命令 PASS；
-  标准 124/124；本机 summary 为 PARTIAL，因为没有 GitHub setup action outcome。
-  环境与范围详见 [CJ-3D 结果](MOODY_BLUES_CJ3D.md)，不将他机结果等同本机通过。
-- MB-GH-01 本地 Ruby 2.6.10 / Psych 3.1.0 结构检查、六个错误反例通过；
-  六表单各 360/1280 本地排版共 12 份无横向溢出。自建预览不是 GitHub 原生 renderer。
-  这类模板/文档检查没有扩展 CI 矩阵或重跑游戏构建。
-- 两个独立兼容入口、Unknown 版本、可选设备/证据/对照、中文或英文填写、空白 Issue、
-  不强制先建 Issue 的 PR 均保留。默认标签只引用真实已有 bug / enhancement。
-- 玩家主动提供并授权的存档可用于针对性隔离复现，不自动纳入公开 CI Artifact。
-  自动采集仍限受控白名单，不读取/上传玩家存档。授权输入放源码树外隔离目录，
-  避免 JSON 等非忽略文件进入源码摘要读取；本轮没有收到或使用任何玩家存档。
-- 私密日志/构建/报告路径仅记被忽略的 `HANDOFF.local.md`；另一设备不能假定可访问。
-  不提交凭据、敏感设备标识或大段敏感日志。Artifact 过期后按提交重跑。
+- [P0](MOODY_BLUES_P0.md) 的 CJ-3A/B、[CJ-3D](MOODY_BLUES_CJ3D.md) 和 push 范围修补已完成。#78 转场与 #79 几何/CSS 反例保留，第三案不凑数。工作流 Kraft Work CI / job validate 名称不变、只读权限、无 CD。
+- [P0 PR CI](https://github.com/102326/DoL-Game-UI/actions/runs/39234097956) 成功，测试 merge `ef8648636aff64ae1505649567edae4b0368c5c0` 与原 head 树相同。#4 [手动检查](https://github.com/102326/DoL-Game-UI/actions/runs/39234937375) 为准确 head `63de7d5`；它不是 main PR 检查。
+- CJ-3C [最终候选 push CI](https://github.com/102326/DoL-Game-UI/actions/runs/39238808024) 成功5m16s：准确checkout672fe65；14单元/21浏览器入口、124/124、七个制品测试方法，八包两次实际编译/打包相同，59项365,013B及八ZIP+报告9条SHA全验、遗漏0。
+  本机 macOS arm64 / Node24.18.0 / Python3.12.14 七阶段实际PASS，summary正确PARTIAL（没有GitHub setup outcomes）；云端Linux x64 / Node22.23.3 / Python3.12.15。新目标 main 的 PR 证据仍要重新取得。
+- Python 制品检查器执行精确版本、依赖及ZIP成员/字节合同；整轮汇总器检查报告身份、规定的完整结构和两轮一致性，不是第二套独立解包重验器。
+- [协作约定](GITHUB_COLLABORATION.md)：六类双语表单、独立兼容许愿/兼容Bug、Unknown、附件可选及PR六部分保留。本地结构/预览通过不等于GitHub服务端生效；默认分支验收需打开原生页面，不批量建测试Issue。八项建议标签尚未批准/创建。
+- CJ-4 已有只读调查；目前活动ruleset只有更新/删除/非快进规则，没有必需CI。admin/Connector/DeployKey类别有always bypass。真实check validate，Actions App15368。新增必需检查、strict策略及bypass仍需具体批准；不能把CI成功当作强制门禁已启用。
+- 3.0.1 Tag仍是 `9c162939dca50b11549b8a88aefa0069e4ea1896`，不更换Release附件。macOS不等于Windows，Chromium/Actions不等于Android WebView、Safari、真实DoL/ModLoader或物理触控。
+- 两台自有设备及五项Apple目标实测仍pending（viewport/DPR=null）；采集由用户主动完成，不阻塞CJ-3C。Artifact保存7天，本机路径只放忽略的HANDOFF.local.md。
 
 ## Next — 下一步做什么
 
-1. MB-GH-01 候选推送后，待负责人批准创建 PR 和八个标签；P0 未进 main 时注明分支依赖，
-   不创建包含全部 P0 改动而未解释依赖的 PR。不自动合并；原生表单在默认分支生效后再验证。
-2. CJ-3C 制品合同可立即与两台自有设备采集并行，不以手机/平板参数为前置条件。
-   不继续扩张模拟矩阵，不要求收齐未持有 Apple 设备。现有七目标均 pending，不能补猜测值；
-   按 [采集说明](DEVICE_MEASUREMENT.md) 获取同一宿主观察值后校准回归输入。
-3. 新设备先 status / branch / HEAD / remote / fetch，保护独有工作。CI 改动的最低验证为
-   dependencies、check、unit、build、packages、browser-install、browser 七阶段；
-   模板改动运行 `ruby scripts/check-github-collaboration.rb` 并核对默认分支及真实标签。
-   `ci/moody-blues-*` push 标准模式自动检查，深度手动；检查 event、SHA、Run/Artifact。
-4. 保留深度报告的 256 KiB 明确报错，不截断为 PASS。CJ-4 仅准备质量门禁建议，
-   改规则/bypass、合并或正式发布均需另行授权；Windows、Android/WebView、Safari、
-   真机触控/键盘/下拉框、真实游戏/ModLoader 的验收仍独立未验证。
+1. 将已批准协作变更经main目标PR与实际PR CI完成转交；合并后验证New Issue六入口、双语字段/独立兼容入口及新PR模板原生展示。
+2. CJ-3C与最新main安全合并，不覆盖双方HANDOFF；仅保留制品增强及相关文档差异，独立PR、准确测试merge与全量证据校验，交负责人评审。保持Python检查器/汇总器职责分工，不复制全部ZIP合同逻辑。
+3. CJ-4准备具体可审阅的JSON和影响说明，授权后才写远端规则。真实设备资料继续由用户在方便时主动采集。
+4. 新设备先status、branch、HEAD、remote、fetch，保护本地独有内容，再核对Node>=22.12、Python>=3.10及python命令、lockfile/浏览器。最低npm ci、ci:check/unit/build/packages和锁定浏览器ci:browser；所有stage共享MOODY_EVIDENCE_ID，记录真实环境/提交/Run。
 
-交接前更新以上三部分，注明实际提交/推送与证据对应版本；机器绝对路径仅放本机补充。
+更新约定：交接前维护Current/Decided/Next，标明未提交/未推送和测试对应源码；详细历史放专项报告。主动提供且授权的存档只在源码树外隔离复现，自动CI不读/上传或纳入公开Artifact。凭据、敏感设备标识、大段日志不进仓库，机器路径仅在本机补充。

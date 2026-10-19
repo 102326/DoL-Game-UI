@@ -75,7 +75,7 @@ Compatibility Impact / Rollback / Limitations 六部分。Issue 可填 N/A；小
 
 - 持续追踪：Issue → 开发分支 → PR → Moody Blues → 人工审查 → 合并。
   小型明确修改允许从开发分支开始，不把 Issue 变成强制审批入口。
-- Issue 用 `#编号` 或完整 URL；PR 没有 Issue 时写 N/A。当前没有为本专项创建 Issue/PR。
+- Issue 用 `#编号` 或完整 URL；PR 没有 Issue 时写 N/A。不要求先有 Issue；PR 创建和生效状态以 GitHub 为准。
 - 代码证据用完整 Commit SHA；复用结果时指出两个提交之间的相关实现是否变化。
 - CI 用确切 Run URL、Commit SHA、event 和深度，必要时注明 attempt；链接到文件时优先固定 SHA。
   未执行为 BLOCKED，缺失/尚无证据为 UNVERIFIED，部分范围为 PARTIAL；不得冒充 PASS。
@@ -99,24 +99,10 @@ Compatibility Impact / Rollback / Limitations 六部分。Issue 可填 N/A；小
 标题、字段和说明可换行。此预览不是 GitHub 原生 renderer，也没有向 GitHub 提交测试 Issue。
 原生展示和交互仍需候选进入默认分支后验证；本地成功不称线上部署成功。
 
-本地文件、结构与排版检查已完成；本候选将独立提交推送，具体 SHA 以 Git 和交付报告为准。
-P0 的独立触发修补已由真实 push [Run 39230872314](https://github.com/102326/DoL-Game-UI/actions/runs/39230872314)
-验证成功（1739c17、标准124/124、5m27s），不冒充本候选的表单服务端验证。
-PR 未创建、未合并，Issue 新建页未生效。待批准的动作只有 PR 创建与上述标签变更，
-Ruleset / bypass / Release / CD 不在本轮操作范围。
+本地文件、结构与排版检查已完成。负责人于2026-10-19批准合并协作变更；原PR #4已合入P0分支，并未因此进入main。后续经main目标PR完成转交，必须核对该PR的实际检查及默认分支原生页面，不以历史手动成功代替。当前状态见[HANDOFF](HANDOFF.md)和GitHub实际提交。
 
-依据：[GitHub Issue Form 语法](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)、
-[原生字段与附件规则](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema)、
-[进入默认分支后生效](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)。
+P0的独立触发修补已由真实push [Run39230872314](https://github.com/102326/DoL-Game-UI/actions/runs/39230872314)验证；协作head63de7d5的[手动Run39234937375](https://github.com/102326/DoL-Game-UI/actions/runs/39234937375)也通过，但两者均不是本次转交main的PR检查。
 
-### 待批准的 PR 候选（Proposed PR — Not Created）
+依据：[GitHub Issue Form语法](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)、[原生字段与附件规则](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema)、[默认分支生效](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)。
 
-建议标题：`协作：新增双语反馈表单与 PR 验证模板`。
-
-变更摘要：新增六类中文（English）Issue Forms 与 PR 模板，独立保留兼容许愿/兼容报错；
-版本可 Unknown，技术附件可选，保留空白反馈及无关联 Issue 的小型 PR。
-新增本地结构检查和协作引用约定，更新存档授权/隔离及 HANDOFF。
-
-验证摘要：Ruby/Psych 结构与语法、六个结构负例、12 份本地排版预览和独立审阅通过；
-原生 GitHub 表单尚未部署验证。此提交不改 CI 脚本、工作流、依赖或生产 UI。
-以 `1739c17` 为评审边界检查本专项差异；向 main 提 PR 前须处理 P0 分支依赖。
+合并后验收New Issue六入口及各表单原生字段、独立兼容入口和PR模板，不批量创建测试Issue。标签、Ruleset/bypass与Release/CD是独立事项；协作模板合并不构成这些操作的授权。
