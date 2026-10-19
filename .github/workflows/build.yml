@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main, 'ci/kraft-work-*']
+    branches: [main, 'ci/kraft-work-*', 'ci/moody-blues-*']
   workflow_dispatch:
     inputs:
       device_depth:

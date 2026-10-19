@@ -1,10 +1,12 @@
 # Moody Blues P0 evidence contract
 
 Moody Blues extends `scripts/test-ci.cjs`; it does not introduce a Judge service.
-The existing check order, ZIP contract, workflow triggers, read-only
+The existing check order, ZIP contract, main/PR/Kraft Work triggers, read-only
 permissions, 15-minute job timeout and seven-day artifact retention remain intact.
-Use `gh workflow run build.yml --ref ci/moody-blues-p0` for this development branch;
-its push alone does not match the existing trigger.
+Pushes to `ci/moody-blues-*` now also run standard coverage, alongside the existing
+main and `ci/kraft-work-*` triggers. Manual `gh workflow run build.yml --ref
+ci/moody-blues-p0` remains available. The workflow display name and `validate` job
+name are preserved; this trigger repair does not edit remote required-check rules.
 
 The owner's CJ-3D extension adds a focused device layout entry to the end of the
 browser suite and a device-catalog unit check. Existing tests remain. Manual
@@ -52,7 +54,11 @@ Download `kraft-work-checks-<SHA>` from the Actions run:
 
 Only the known stage/check files and allowlisted controlled fixture snapshots are copied
 into the upload directory. Symlinks/outside paths are rejected; unknown files,
-full HTML, saves and broad `tests/artifacts` trees are not collected. JSON is
+full HTML, saves and broad `tests/artifacts` trees are not automatically collected.
+Voluntarily provided saves with explicit authorization may be used for isolated,
+targeted reproduction; they are not automatically added to public CI artifacts.
+Keep these inputs in an isolated directory outside the source checkout: source
+identity hashes tracked and non-ignored source files, including JSON files. JSON is
 limited to 256 KiB per report, fixture payload to 64 KiB, viewport JPEG to 512 KiB,
 and selected files to 16 MiB total. The device layout report has a separate
 256 KiB cap; incomplete or over-limit coverage cannot be silently dropped into

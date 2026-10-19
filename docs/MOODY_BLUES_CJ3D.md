@@ -51,7 +51,8 @@
 Artifact 中的 `fixtures/device-layouts.cjs/snapshot.json` 与 `viewport.jpg` 配套读取。
 布局报告限 256 KiB、快照 64 KiB、单图 512 KiB、选中文件总计 16 MiB；
 截图按 CSS 像素裁剪到最多 2048×1536，证据保留七天，遗漏在索引明示。
-不上传游戏 HTML、玩家存档或未知第三方文件。
+自动采集不上传游戏 HTML、玩家存档或未知第三方文件。玩家主动提供并授权的存档
+可用于针对性隔离复现，不自动纳入公开 CI Artifact。
 
 ## 实际验证及维护成本
 
@@ -77,8 +78,9 @@ Python 3.12.15 / Playwright 1.63.0，14 单元/源码与 21 浏览器入口，�
 Runner 提示 ubuntu-latest 将迁移 Ubuntu 26，未来环境变化须按新运行实际报告解释，
 本轮不更改原运行镜像策略。
 
-默认 PR/main push 使用标准模式；研发分支不匹配原 push 条件，已使用
+默认 PR/main push 使用标准模式；首次验证时研发分支不匹配原 push 条件，故使用
 `gh workflow run build.yml --ref ci/moody-blues-p0 -f device_depth=deep` 实际触发。
+后续触发修补增加 `ci/moody-blues-*` push 的标准检查，保留 `validate` 检查名称。
 不对每个配置重跑全部业务测试。不新增依赖、定时服务或独立 Judge。
 标准/深度布局子检查上限 6/10 分钟，浏览器阶段 12 分钟，原 job 上限仍为 15 分钟。
 升级 Playwright 时须审阅描述符哈希快照；CSS 断点变化会自动改变扫描计划，应核对报告
@@ -92,6 +94,7 @@ Android WebView、软键盘、系统下拉框、物理触控、实际 DoL/ModLoa
 和这七台目标真机均未验证。夹具提供 `#overlayButtons` 原生入口；宿主缺少该入口时的
 后备入口模式未覆盖。矩阵全绿不能宣称全部手机/平板实机兼容。
 
-接续优先采集两台自有设备、固定同宿主回归；随后 CJ-3C 制品合同。
+接续 CJ-3C 制品合同可与两台自有设备采集并行；真机参数用于校准回归输入，
+不是制品检查的前置条件。不再扩大模拟矩阵，也不要求补齐未持有的 Apple 真机。
 CJ-4 仅准备远端规则建议，修改规则/bypass 或合并 main 仍须负责人另行明确批准。
 当前不修改 main、Release、Tag 或正式 ZIP，不启用 CD。
