@@ -1,6 +1,7 @@
 name: "界面与交互反馈（UI / UX Feedback）"
 description: "反馈排版、显示或操作体验 / Report layout, display or interaction concerns"
 title: "[界面 / UI UX] "
+labels: ["ui-ux"]
 body:
   - type: markdown
     attributes:

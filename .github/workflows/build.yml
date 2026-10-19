@@ -37,6 +37,8 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
+      - name: CI gate and collaboration configuration
+        run: ruby scripts/check-ci-gate.rb && ruby scripts/check-github-collaboration.rb
       - id: dependencies
         name: Locked dependencies
         run: node scripts/test-ci.cjs stage dependencies
@@ -79,3 +81,18 @@ jobs:
           path: tests/artifacts/ci/${{ env.MOODY_EVIDENCE_ID }}/upload/
           if-no-files-found: error
           retention-days: 7
+
+  moody-gate:
+    needs: validate
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require actual validation success
+        env:
+          VALIDATE_RESULT: ${{ needs.validate.result }}
+        run: |
+          if [ "$VALIDATE_RESULT" != success ]; then
+            echo "::error::validate result is ${VALIDATE_RESULT:-missing}; refusing merge approval"
+            exit 1
+          fi

@@ -1,7 +1,7 @@
 name: "Mod 兼容问题（Compatibility Bug）"
 description: "反馈与其他 Mod 同时使用时的异常，未列为支持也可反馈 / Report conflicts, including unsupported mods"
 title: "[兼容问题 / Compatibility Bug] "
-labels: ["bug"]
+labels: ["bug", "compatibility-bug"]
 body:
   - type: markdown
     attributes:

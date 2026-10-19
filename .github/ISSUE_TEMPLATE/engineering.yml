@@ -1,6 +1,7 @@
 name: "CI 与工程问题（CI / Engineering）"
 description: "反馈 Actions、构建、打包、断言、Host 或开发文档问题 / Report CI, build, packaging, Host or tooling issues"
 title: "[工程 / Engineering] "
+labels: ["ci-quality"]
 body:
   - type: markdown
     attributes:

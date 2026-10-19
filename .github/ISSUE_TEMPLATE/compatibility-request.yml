@@ -1,7 +1,7 @@
 name: "希望支持的 Mod（Compatibility Request）"
 description: "提出希望适配或美化的第三方 Mod；不代表承诺支持 / Request support without a support commitment"
 title: "[兼容许愿 / Compatibility Request] "
-labels: ["enhancement"]
+labels: ["enhancement", "compatibility-request"]
 body:
   - type: markdown
     attributes:
