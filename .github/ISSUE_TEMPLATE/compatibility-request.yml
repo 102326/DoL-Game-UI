@@ -1,0 +1,58 @@
+name: "希望支持的 Mod（Compatibility Request）"
+description: "提出希望适配或美化的第三方 Mod；不代表承诺支持 / Request support without a support commitment"
+title: "[兼容许愿 / Compatibility Request] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        可以用简体中文或英文填写；版本不清楚可填“不知道 / Unknown”。无需翻译日志，也无须执行破坏性排查。
+        Chinese or English is welcome. Unknown versions are OK; no log translation or destructive troubleshooting is required.
+
+        可主动提供排错存档，并注明授权用于本问题的隔离复现。公开 Issue 和附件可被他人查看；不要提交密码、Token 或敏感设备标识，分享前检查截图和日志。
+        You may voluntarily provide a save and authorize isolated reproduction of this issue. Public issues and attachments are visible to others; remove passwords, tokens and sensitive device identifiers.
+
+        自动证据收集仅使用受控白名单，不读取或上传玩家存档；主动提供的存档不自动纳入公开 CI Artifact。
+        Automated evidence uses a controlled allowlist and never reads or uploads player saves. Provided saves are not automatically included in public CI artifacts.
+  - type: input
+    id: mod-name
+    attributes:
+      label: "Mod 名称（Mod Name）"
+    validations:
+      required: true
+  - type: input
+    id: mod-url
+    attributes:
+      label: "项目链接（Mod URL）"
+      description: "可选；知道的话请提供项目或发布页 / Optional: project or release URL if known"
+    validations:
+      required: false
+  - type: input
+    id: mod-version
+    attributes:
+      label: "Mod 版本（Mod Version）"
+      description: "可留空或填写不知道 / Leave blank or enter Unknown"
+      placeholder: "不知道 / Unknown"
+    validations:
+      required: false
+  - type: textarea
+    id: requested-support
+    attributes:
+      label: "希望支持的功能（Requested Support）"
+      description: "例如 UI 适配、快捷交互或其他明确体验 / e.g. UI integration, shortcuts or another specific experience"
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: "使用场景（Use Case）"
+      description: "你通常在什么情况下需要它？ / When would you use it?"
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: "补充说明（Additional Information）"
+      description: "可附参考图片或说明 / Optional references or context"
+    validations:
+      required: false

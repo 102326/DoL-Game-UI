@@ -1,0 +1,68 @@
+name: "界面与交互反馈（UI / UX Feedback）"
+description: "反馈排版、显示或操作体验 / Report layout, display or interaction concerns"
+title: "[界面 / UI UX] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        可以用简体中文或英文填写；版本不清楚可填“不知道 / Unknown”。无需翻译日志，也无须执行破坏性排查。
+        Chinese or English is welcome. Unknown versions are OK; no log translation or destructive troubleshooting is required.
+
+        可主动提供排错存档，并注明授权用于本问题的隔离复现。公开 Issue 和附件可被他人查看；不要提交密码、Token 或敏感设备标识，分享前检查截图和日志。
+        You may voluntarily provide a save and authorize isolated reproduction of this issue. Public issues and attachments are visible to others; remove passwords, tokens and sensitive device identifiers.
+
+        自动证据收集仅使用受控白名单，不读取或上传玩家存档；主动提供的存档不自动纳入公开 CI Artifact。
+        Automated evidence uses a controlled allowlist and never reads or uploads player saves. Provided saves are not automatically included in public CI artifacts.
+  - type: input
+    id: page
+    attributes:
+      label: "相关界面（Affected Screen）"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: "使用平台（Platform）"
+      description: "选择最接近的环境；详细设备信息可补充 / Choose the closest environment; details are optional"
+      options:
+        - "不知道 / Unknown"
+        - "Android 浏览器或 WebView（Android browser / WebView）"
+        - "iPhone / iPad（iOS / iPadOS）"
+        - "Windows"
+        - "macOS"
+        - "Linux"
+        - "其他（Other）"
+    validations:
+      required: false
+  - type: input
+    id: screen-info
+    attributes:
+      label: "设备与屏幕信息（Device / Screen Information）"
+      description: |
+        可选：型号、横竖屏、显示区域或实际现象；不要求 DPR 或 CSS viewport。
+        Optional: model, orientation, visible area or symptoms. No DPR or CSS viewport required.
+    validations:
+      required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: "排版或操作问题（Layout / Interaction Problem）"
+      description: "哪些内容被挡住、越界或难以操作？ / What is clipped, off-screen or hard to use?"
+    validations:
+      required: true
+  - type: textarea
+    id: ideal
+    attributes:
+      label: "理想效果（Desired Behavior）"
+      description: "你希望怎样显示或操作？ / How should it look or work?"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "截图、日志或存档（Screenshots, Logs or Save）"
+      description: |
+        可选。可拖入附件或附链接；存档请注明“允许用于本问题的隔离复现”。不要附密码或 Token。
+        Optional: attach files or links. For a save, state permission for isolated reproduction of this issue. No passwords or tokens.
+    validations:
+      required: false
