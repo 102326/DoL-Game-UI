@@ -1,6 +1,6 @@
 // CI #78/#79 counterexamples use real production components in a controlled first-party fixture.
 const assert=require('node:assert/strict'),path=require('node:path'),{chromium}=require('playwright');
-const {settingsSnapshot,assertSettings,waitSettings,orbitSnapshot,assertOrbit,waitOrbit}=require('./moody-oracles.cjs');
+const {settingsSnapshot,assertSettings,waitSettings,waitSettingsClosed,orbitSnapshot,assertOrbit,waitOrbit}=require('./moody-oracles.cjs');
 const root=path.resolve(__dirname,'..');
 const combatBody='<div id="story"><div id="passages"><div class="passage"><div id="listContainer"><div id="leftaction"><label><input type="radio" name="leftaction" value="rest" checked>Rest</label><label><input type="radio" name="leftaction" value="guard">Guard</label></div><div id="rightaction"><label><input type="radio" name="rightaction" value="rest" checked>Rest</label><label><input type="radio" name="rightaction" value="guard">Guard</label></div></div><div id="next"><a href="#">Continue</a></div></div></div></div>';
 function rejectPrecisely(run,code){let rejection;assert.throws(run,error=>{if(error.code!=='ERR_ASSERTION'||!error.message.startsWith(code+':'))return false;rejection=error;return true});console.log(JSON.stringify({counterexample:code,rejected:true}));return rejection;}
@@ -54,6 +54,21 @@ async function combatPage(browser,server,{missingCSS=false}={}){
   await page.evaluate(()=>{const n=document.createElement('section');n.className='dmt-workspace-section';n.setAttribute('inert','');n.setAttribute('aria-hidden','true');n.dataset.moodyResidual='';document.querySelector('.dmt-workspace-page').append(n)});
   await assert.rejects(()=>waitSettings(page,undefined,{timeout:150}),e=>e.code==='ERR_ASSERTION'&&e.message.startsWith('MOODY_SETTINGS_RESIDUAL:'));
   console.log(JSON.stringify({counterexample:'MOODY_SETTINGS_RESIDUAL',rejected:true}));await page.locator('[data-moody-residual]').evaluate(n=>n.remove());await waitSettings(page);
+  // main Run39243023242: 450ms is not a completed-close contract.
+  await page.evaluate(()=>{
+   const animate=Element.prototype.animate;window.moodyCloseMode='slow';
+   Element.prototype.animate=function(...args){const a=animate.apply(this,args);if(this.matches('.dmt-settings-shell')&&this.closest('[data-sf-leaving]')){window.moodyCloseStarted=performance.now();if(moodyCloseMode==='slow')a.updatePlaybackRate(.25);else if(moodyCloseMode==='stuck')a.pause()}return a};
+  });
+  await page.locator('.dmt-close').click();
+  await page.waitForFunction(()=>performance.now()-moodyCloseStarted>=450&&document.querySelector('#dol-midnight-controls')?.open&&document.querySelector('#dol-midnight-controls[data-sf-leaving]'));
+  const oldClose=await settingsSnapshot(page);assert.throws(()=>assert.equal(oldClose.dialog.open,false),{name:'AssertionError',actual:true,expected:false,operator:'strictEqual'});
+  console.log(JSON.stringify({counterexample:'settings-premature-close-sample',rejected:true,open:oldClose.dialog.open}));
+  await waitSettingsClosed(page);console.log(JSON.stringify({control:'settings-delayed-close-completion',passed:true,oldSampleMs:450}));
+  await page.evaluate(()=>{moodyCloseMode='stuck';theme.openSettings()});await waitSettings(page);
+  await page.locator('.dmt-close').click();await page.waitForFunction(()=>document.querySelector('#dol-midnight-controls[data-sf-leaving]'));
+  const stuckClose=await settingsSnapshot(page);assert.ok(stuckClose.closeAnimations.some(a=>a.state==='paused'),'controlled close animation must actually be paused');
+  await assert.rejects(()=>waitSettingsClosed(page,{timeout:150}),e=>e.code==='ERR_ASSERTION'&&e.message.startsWith('MOODY_SETTINGS_CLOSE_PENDING:'));
+  console.log(JSON.stringify({counterexample:'MOODY_SETTINGS_CLOSE_PENDING',rejected:true}));
   await page.evaluate(()=>theme.destroy());assert.equal(await page.locator('#dol-midnight-controls,.dmt-settings-context,.dmt-settings-material').count(),0);assert.deepEqual(errors,[]);await page.close();
   kind='combat';page=await combatPage(browser,healthy);const good=await waitOrbit(page);assert.equal(good.navDisplay,'contents');assert.equal(good.baseIsNav,false);console.log(JSON.stringify({control:'combat-current-positioning-and-production-css',passed:true}));await page.close();
   page=await combatPage(browser,healthy,{missingCSS:true});const missing=await orbitSnapshot(page);rejectPrecisely(()=>assertOrbit(missing),'MOODY_ORBIT_POSITION');await page.close();

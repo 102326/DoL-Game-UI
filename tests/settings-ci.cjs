@@ -1,6 +1,6 @@
 // Actual settings controller/components in a first-party fixture, without game sources.
 const {chromium}=require('playwright'),assert=require('node:assert/strict');
-const {waitSettings,settingsSnapshot}=require('./moody-oracles.cjs');
+const {waitSettings,waitSettingsClosed,settingsSnapshot}=require('./moody-oracles.cjs');
 const {captureFailure}=require('./moody-fixture-evidence.cjs');
 (async()=>{
  const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;
@@ -51,7 +51,7 @@ const {captureFailure}=require('./moody-fixture-evidence.cjs');
    assert.equal(await page.locator('.dmt-workspace-section').getAttribute('aria-labelledby'),'dmt-reading-heading');
    assert.equal(await page.getByLabel('舒适阅读间距',{exact:true}).isEnabled(),true);
   assert.deepEqual(await page.evaluate(()=>leaked),[],'settings events cannot leak to delegated game handlers');
-  await page.locator('.dmt-close').click();await page.waitForTimeout(450);
+  await page.locator('.dmt-close').click();await waitSettingsClosed(page);
   assert.equal(await dialog.evaluate(n=>n.open),false);
   await page.locator('#background').click();assert.equal(await page.evaluate(()=>calls),1);
   await page.evaluate(()=>theme.destroy());

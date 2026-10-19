@@ -2,6 +2,10 @@
 const assert=require('node:assert/strict');
 function check(ok,code,snapshot){assert.ok(ok,`${code}: ${JSON.stringify(snapshot)}`)}
 async function settingsSnapshot(page){return page.evaluate(()=>({
+ dialog:(()=>{const d=document.querySelector('#dol-midnight-controls');return{present:!!d,open:!!d?.open,modal:!!d?.matches(':modal'),leaving:!!d?.hasAttribute('data-sf-leaving')}})(),
+ settingsOpen:document.documentElement.hasAttribute('data-dgu-settings-open'),
+ materialCount:document.querySelectorAll('.dmt-settings-context,.dmt-settings-material').length,
+ closeAnimations:[...(document.querySelector('.dmt-settings-shell')?.getAnimations()||[])].map(a=>({state:a.playState,time:a.currentTime,duration:a.effect?.getTiming().duration})),
  transition:!!document.querySelector('#dol-midnight-controls[data-workspace-transition]'),
  sections:[...document.querySelectorAll('.dmt-workspace-section')].map(n=>({heading:n.getAttribute('aria-labelledby'),inert:n.hasAttribute('inert'),hidden:n.getAttribute('aria-hidden')==='true'})),
  readingEnabled:!!document.querySelector('[aria-label="舒适阅读间距"]:enabled'),
@@ -17,6 +21,14 @@ async function waitSettings(page,heading='dmt-reading-heading',{timeout=3000}={}
  try{await page.waitForFunction(()=>!document.querySelector('#dol-midnight-controls[data-workspace-transition]')&&document.querySelectorAll('.dmt-workspace-section').length===1,null,{timeout})}
  catch(error){if(error.name!=='TimeoutError')throw error;assertSettings(await settingsSnapshot(page),heading);throw error}
  const snapshot=await settingsSnapshot(page);assertSettings(snapshot,heading);return snapshot;
+}
+function assertSettingsClosed(snapshot){
+ check(snapshot.dialog?.present&&!snapshot.dialog.open&&!snapshot.dialog.modal&&!snapshot.dialog.leaving&&!snapshot.settingsOpen&&snapshot.materialCount===0,'MOODY_SETTINGS_CLOSE_PENDING',snapshot);
+}
+async function waitSettingsClosed(page,{timeout=3000}={}){
+ try{await page.waitForFunction(()=>{const d=document.querySelector('#dol-midnight-controls');return d&&!d.open&&!d.matches(':modal')&&!d.hasAttribute('data-sf-leaving')&&!document.documentElement.hasAttribute('data-dgu-settings-open')&&!document.querySelector('.dmt-settings-context,.dmt-settings-material')},null,{timeout})}
+ catch(error){if(error.name!=='TimeoutError')throw error;assertSettingsClosed(await settingsSnapshot(page));throw error}
+ const snapshot=await settingsSnapshot(page);assertSettingsClosed(snapshot);return snapshot;
 }
 async function orbitSnapshot(page){return page.evaluate(()=>{
  const nav=document.querySelector('.dcu-arrangement'),ring=nav?.querySelector('.dmt-orbit-focus'),button=nav?.querySelector('[aria-current]'),base=ring?.offsetParent,shell=document.querySelector('.dcu-shell');
@@ -38,4 +50,4 @@ async function waitOrbit(page,{timeout=3000}={}){
  do{snapshot=await orbitSnapshot(page);try{assertOrbit(snapshot);return snapshot}catch(error){if(error.code!=='ERR_ASSERTION')throw error}if(Date.now()>=until)break;await page.evaluate(()=>new Promise(requestAnimationFrame))}while(true);
  assertOrbit(snapshot);
 }
-module.exports={settingsSnapshot,assertSettings,waitSettings,orbitSnapshot,assertOrbit,waitOrbit};
+module.exports={settingsSnapshot,assertSettings,waitSettings,assertSettingsClosed,waitSettingsClosed,orbitSnapshot,assertOrbit,waitOrbit};
