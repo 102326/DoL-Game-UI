@@ -20,7 +20,7 @@
 
 ## 可选兼容包
 
-当前原版优化兼容包为 DolOptimizationSoftWet 1.0.1，其余五个为 1.0.0；没有目标 Mod 就不安装对应包。
+当前原版优化兼容包为 DolOptimizationSoftWet 1.0.1，万能手机为 SmartPhoneSoftWet 1.1.0，其余五个为 1.0.0；没有目标 Mod 就不安装对应包。
 
 | 包 | 作用与目标最低声明 |
 | --- | --- |
@@ -30,6 +30,7 @@
 | CheatExtendedSoftWet | CE >=1.20.3；结构基线原作者 1.20.3.1，另接受独立维护 1.20.3.1-rebuild.30 |
 | ReOverfitsSoftWet | ReOverfits >=4.1.1，额外衣槽复用主衣柜；此前平板未安装其目标 |
 | LyraMouthCompat051213 | 指定 Lyra 0.5.12.13 资源环境；MapleBirch >=5.2.3 且 <6.0.0 稳定版 |
+| SmartPhoneSoftWet | SmartPhone Alpha =0.3.91、UI >=3.0.2；不适用于 Omega，原手机与 PhotoPack 需另行安装 |
 
 前五项要求 UI >=3.0.0。嘴部资源包不依赖 UI，必须核对指定资源环境。CE 原作者与 rebuild.30 同名，二选一；独立维护版单列，不代表所有作弊功能已验收。未知版本或结构无法确认时保留原界面。
 
@@ -45,6 +46,6 @@
 
 ## 从 3.0.x 更新
 
-本次只需更换主 UI。Host 0.1.4-experimental 和已安装的对应版本兼容包可以沿用。需要原版优化叠穿管理时使用 DolOptimizationSoftWet 1.0.1；其余五个兼容包仍为 1.0.0。
+本次只需更换主 UI。Host 0.1.4-experimental 和已安装的对应版本兼容包可以沿用。需要原版优化叠穿管理时使用 DolOptimizationSoftWet 1.0.1；SmartPhoneSoftWet 沿用 1.1.0，其余五个兼容包仍为 1.0.0。
 
 3.0.3 保留波纹的原样式和强度，修复衣柜叠穿区增高、滚动和缩放后的特效错位。原版优化 1.1.2 默认关闭叠穿，请在其设置中按需启用。所有现行 UI 设计继续使用 3.X 基线。

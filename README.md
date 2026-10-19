@@ -112,8 +112,11 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 | CheatExtendedSoftWet | Cheat Extended 外观，适配原作者版及已支持的独立维护版 |
 | ReOverfitsSoftWet | ReOverfits 额外服装槽位接入 |
 | LyraMouthCompat051213 | 指定 Lyra 环境的嘴部资源适配 |
+| SmartPhoneSoftWet | 万能手机 Alpha 的手机与 debug 外观，保留原手机形态和业务 |
 
 按自己安装的 Mod 选用相应兼容包；Cheat Extended 的不同发行版不要同时启用。具体版本、依赖要求、安装顺序和已验证范围以[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)为准，后续更新统一在那里说明。
+
+万能手机兼容不适用于 Omega；当前新衣柜会连同原版内容隐藏手机与 debug 入口，返回卧室后可使用。
 
 ## 设置、兼容与回退
 

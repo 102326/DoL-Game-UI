@@ -22,7 +22,9 @@
 | [DoLGameUI-3.0.3.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.3/DoLGameUI-3.0.3.mod.zip) | 主 UI，本次更新 |
 | [StoneFreeHost-0.1.4-experimental.mod.zip](https://github.com/102326/DoL-Game-UI/releases/download/v3.0.3/StoneFreeHost-0.1.4-experimental.mod.zip) | Framework Host，已有原包可沿用 |
 
-其余附件为按需安装的兼容包：ModHub、MapleBirch、Cheat Extended、ReOverfits 与指定 Lyra 嘴部资源包均沿用 1.0.0，原版优化兼容包沿用 1.0.1。没有对应目标 Mod 就无需安装。万能手机兼容仍独立开发，不包含在本次发行中。
+其余附件为按需安装的兼容包：ModHub、MapleBirch、Cheat Extended、ReOverfits 与指定 Lyra 嘴部资源包均沿用 1.0.0，原版优化兼容包沿用 1.0.1，万能手机外观包 SmartPhoneSoftWet 沿用已发布的 1.1.0。没有对应目标 Mod 就无需安装。
+
+SmartPhoneSoftWet 对应 **SmartPhone Alpha 0.3.91**，不含手机主 Mod 或 PhotoPack，不适配 Omega。它沿用并行任务的已验证原包，保留原手机及 debug 业务；[验证范围与来源](https://github.com/102326/DoL-Game-UI/issues/14)单独记录。
 
 备份存档并保留旧包，停用同身份旧 UI，导入新 ZIP 后重启；不要解压。顺序为 **Host → UI → 对应兼容包**，兼容包还应排在目标 Mod 后。每个技术身份只启用一个版本。无需转换存档或清空数据，回退时恢复保留的 UI 和配套包。
 
@@ -34,7 +36,7 @@
 
 修复已在 Android 独立测试 App 中以程序点击复验；Windows 受控浏览器覆盖 80%／100%／125% 缩放、窗口与列表内部滚动、重复穿戴和释放清理。正式版在已验证实现上更新产品版本与发行文档，具体制品对比及 CI 记录见[验证说明](https://github.com/102326/DoL-Game-UI/blob/v3.0.3/docs/KRAFT_WORK_3.0.3_VALIDATION.md)。
 
-本轮不代表物理触控、真实 iOS、全部衣物套装或全部 Mod 组合均已验证。第三方自定义界面、历史 `selectedWardrobe` 异常、部分社区告警及长期资源变化仍沿用已披露的覆盖限制。
+本轮不代表物理触控、真实 iOS、全部衣物套装或全部 Mod 组合均已验证。当前新衣柜隐藏原版内容时，万能手机与 debug 入口也会随之隐藏，返回卧室后可使用。第三方自定义界面、历史 `selectedWardrobe` 异常、部分社区告警及长期资源变化仍沿用已披露的覆盖限制。
 
 问题反馈请前往 [GitHub Issues](https://github.com/102326/DoL-Game-UI/issues)，提供游戏／Lyra、Loader、UI／Host、相关 Mod、设备及 WebView 版本，附复现步骤和适用的截图或日志；显示问题请注明游戏全局缩放与 UI 字体大小。不要公开上传账号凭据、敏感数据或未经许可的第三方包。
 
