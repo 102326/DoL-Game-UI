@@ -116,11 +116,14 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
    const original=s.host.querySelector<HTMLElement>(`.dgw-item[data-key="${CSS.escape(key)}"]`);
    const origin=original?{width:innerWidth,height:innerHeight,at:performance.now()}:undefined;
    // Native wear may remove the row immediately. Keep only its input-inert press material, never its control.
-   if(original&&motion.enabled()&&document.documentElement.hasAttribute('data-stone-free')){
+   const list=original?.closest<HTMLElement>('.dgw-items');
+   if(original&&list&&list.offsetWidth&&list.offsetHeight&&motion.enabled()&&document.documentElement.hasAttribute('data-stone-free')){
     const rect=original.getBoundingClientRect(),plane=document.createElement('span');plane.className='kw-shop-ripple kw-wardrobe-press is-activated';plane.setAttribute('aria-hidden','true');
-    Object.assign(plane.style,{position:'fixed',inset:'auto',left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px',zIndex:'1001',borderRadius:'14px'});
+    const box=list.getBoundingClientRect(),scaleX=box.width/list.offsetWidth,scaleY=box.height/list.offsetHeight;
+    // Stacking controls can grow above the inventory after wear; follow its scroll/zoom space.
+    Object.assign(plane.style,{position:'absolute',inset:'auto',left:((rect.left-box.left)/scaleX+list.scrollLeft-list.clientLeft)+'px',top:((rect.top-box.top)/scaleY+list.scrollTop-list.clientTop)+'px',width:rect.width/scaleX+'px',height:rect.height/scaleY+'px',zIndex:'1001',borderRadius:'14px'});
     for(const name of ['kw-shop-stream','kw-shop-ring','kw-shop-ring']){const child=document.createElement('span');child.className=name;plane.append(child)}
-    document.body.append(plane);const animation=motion.animate(plane,[{opacity:.475},{opacity:0}],1250);
+    list.append(plane);const animation=motion.animate(plane,[{opacity:.475},{opacity:0}],1250);
     if(animation)void animation.finished.then(()=>plane.remove(),()=>plane.remove());else plane.remove();
    }
    const before=JSON.stringify([s.snapshot.worn,s.snapshot.variables.wornStacking]);
