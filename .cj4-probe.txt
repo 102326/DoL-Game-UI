@@ -1,1 +1,1 @@
-Controlled failure CI probe.
+Controlled skipped CI probe.
