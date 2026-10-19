@@ -106,7 +106,8 @@ def adapter_policy(directory):
     lists = {field: [] for field in ENTRY_FIELDS}
     lists.update(scriptFileList=[stem + '.js'], styleFileList=[] if mouth else [stem + '.css'], additionFile=['README.md', 'LICENSE'])
     suffix = requirement.removeprefix('>=').removeprefix('=') + ('-plus' if requirement.startswith('>=') else '')
-    return {'name': name, 'version': '1.0.0', 'dependenceInfo': deps, **lists}, f'{name}-{target}-{suffix}-v1.0.0.mod.zip'
+    version = '1.0.1' if directory == 'dol-optimization-soft-wet' else '1.0.0'
+    return {'name': name, 'version': version, 'dependenceInfo': deps, **lists}, f'{name}-{target}-{suffix}-v{version}.mod.zip'
 
 
 def check_adapter_manifest(boot, directory):
@@ -134,7 +135,7 @@ def check_adapter(path, directory):
         assert source.is_file() and not source.is_symlink() and source.resolve().is_relative_to(base.resolve()), f'CJ3C_ADAPTER_INPUT: {directory}/{name}'
         assert files[name] == source.read_bytes(), f'CJ3C_ADAPTER_BYTES: {directory}/{name}'
     check_zip_metadata(path)
-    return {'status': 'PASS', 'file': filename, 'name': expected['name'], 'version': '1.0.0',
+    return {'status': 'PASS', 'file': filename, 'name': expected['name'], 'version': expected['version'],
             'dependencies': expected['dependenceInfo'], 'sha256': digest(path.read_bytes()),
             'members': {name: digest(data) for name, data in sorted(files.items())}}
 

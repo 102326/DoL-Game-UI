@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "kind": "compatibility-asset-update",
+  "releaseTag": "v3.0.2",
+  "runtimeSourceCommit": "d6d8899428156f497951ecfe3b1cffc0f2ab5eb0",
+  "note": "Release tag and original UI stay frozen; this record identifies the later compatibility asset update.",
+  "package": {
+    "name": "DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.1.mod.zip",
+    "sha256": "b8955cd1f2685cb53e7b2777d6cafd6e2f85fab2c97ee680e2e2515c91740652",
+    "metadata": {
+      "name": "DolOptimizationSoftWet",
+      "version": "1.0.1",
+      "description": "原版优化的存档与衣柜兼容：Kraft Work 3.X 外观，接入原叠穿管理、卸下及层级调整控件。",
+      "styleFileList": [
+        "dol-optimization-soft-wet.css"
+      ],
+      "scriptFileList": [
+        "dol-optimization-soft-wet.js"
+      ],
+      "scriptFileList_inject_early": [],
+      "tweeFileList": [],
+      "imgFileList": [],
+      "additionFile": [
+        "README.md",
+        "LICENSE"
+      ],
+      "dependenceInfo": [
+        {
+          "modName": "原版优化",
+          "version": ">=1.1.1.2"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ]
+    },
+    "members": {
+      "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+      "README.md": "818bc0ff5ccc339f8c3b3164bb64abd9149b72c8961a54ce0a365abf0b4e5e6d",
+      "boot.json": "1d7784dd893eda5056b484dc353cc8a9b57d2a96381378bf0afac78360eb5069",
+      "dol-optimization-soft-wet.css": "ee7d3433ffcf59fa7cca388813fa8dabb5a1cbfad89d551bbfb9a4fb4daffdee",
+      "dol-optimization-soft-wet.js": "130c2e0d1475fbb0232b60187af2ca07946f91e8f1155c8a809bc60bb529ce8f"
+    }
+  },
+  "targets": {
+    "latestOfficial": "1.1.2",
+    "latestTagCommit": "0bfba4bfb719dbf35ed66f4875cefe394ff0fa61",
+    "latestZipSha256": "12e6f38a0d5c77478e88b01904b2aa116cd7d33361782dd537d02793b92dd2d8",
+    "fixedRegression": "1.1.1.5"
+  },
+  "validation": {
+    "windowsRealGameLoader": "PASS: native wear, remove, layer order, primary swap, repeated old input, UI restore and passage cleanup",
+    "controlledBrowser": "PASS: target/template/context guards, no forced opt-in, busy/master-off/destroy",
+    "nativeSaveMethodWithFakeSaves": "PASS: description confirmation/cancel, dates, original handlers and narrow rows",
+    "narrowVisual": "PASS after native welcome acknowledgement and sidebar stow; ancestor blur absent",
+    "androidIosPhysicalInput": "NOT VALIDATED",
+    "windowsSymlinkEvidenceTest": "EPERM; no assertion/permission change; cloud CI pending"
+  },
+  "retainedAssets": {
+    "CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.0.mod.zip": "sha256:ba8f17fb23f1c81214266ceb4ce3150bed0133b3e2904b856c4984a9e83c68f9",
+    "DoLGameUI-3.0.2.mod.zip": "sha256:3a79c2dd6cf2e816d012370972e85639ec3add29943fd9f325a5d5a53c7284a2",
+    "LyraMouthCompat051213-Lyra-0.5.12.13-v1.0.0.mod.zip": "sha256:71080a79771149a0edf80cc66943518645835e1b6259a01e23869d6da2a34974",
+    "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.0.mod.zip": "sha256:b3baa723027bc20e815677133e9b5e7b0082f8cb13deb5240c49e3ddb569f13a",
+    "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.0.mod.zip": "sha256:df6356be81f8def8ed22b69aa2e04069a4e027a20b31e9c23aba79322a80b041",
+    "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip": "sha256:78eb0061d06972645d1c48e039be8b3d935f2710fddf83eb5b094f2b59a6efdb",
+    "StoneFreeHost-0.1.4-experimental.mod.zip": "sha256:ad78fca929e3819fce4da6f0d10affb4fc91318661583e4dacec896b64936153"
+  },
+  "sourceInputs": {
+    "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.ts": "611a38ec30d9ec03f7e797822e32d7d70704a1187fe86be42c9a17d34f675b16",
+    "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.css": "ee7d3433ffcf59fa7cca388813fa8dabb5a1cbfad89d551bbfb9a4fb4daffdee",
+    "compat/dol-optimization-soft-wet/boot.json": "1d7784dd893eda5056b484dc353cc8a9b57d2a96381378bf0afac78360eb5069",
+    "compat/dol-optimization-soft-wet/README.md": "818bc0ff5ccc339f8c3b3164bb64abd9149b72c8961a54ce0a365abf0b4e5e6d",
+    "compat/dol-optimization-soft-wet/LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+    "scripts/package-adapter.py": "dfd801202f29d0bd7801deedcf5c7ae13d454271317927b4c857bb35612a5c67",
+    "scripts/build-adapters.cjs": "de257d49bb44d98e2952b2921ca338a467752db1c9dade7d586d2e0ed7cd3317"
+  }
+}
