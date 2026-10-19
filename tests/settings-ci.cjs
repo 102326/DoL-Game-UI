@@ -51,6 +51,30 @@ const {captureFailure}=require('./moody-fixture-evidence.cjs');
    assert.equal(await page.locator('.dmt-workspace-section').getAttribute('aria-labelledby'),'dmt-reading-heading');
    assert.equal(await page.getByLabel('舒适阅读间距',{exact:true}).isEnabled(),true);
   assert.deepEqual(await page.evaluate(()=>leaked),[],'settings events cannot leak to delegated game handlers');
+  // DoL's global zoom changes body CSS zoom, independently of our font preference.
+  await page.evaluate(()=>theme.setPreference('fontScale',80));
+  for(const viewport of [{width:400,height:821},{width:821,height:400}]){
+   await page.setViewportSize(viewport);
+   for(const zoom of [.8,1,1.25]){
+    await page.evaluate(zoom=>document.body.style.zoom=String(zoom),zoom);
+    await page.waitForTimeout(150);
+    const geometry=await page.evaluate(()=>{const rect=s=>document.querySelector(s).getBoundingClientRect().toJSON();return {mask:rect('#dol-midnight-controls'),shell:rect('.dmt-settings-shell'),glass:rect('.dmt-settings-material')}});
+    for(const [key,value]of Object.entries({x:0,y:0,width:viewport.width,height:viewport.height}))assert.ok(Math.abs(geometry.mask[key]-value)<1,`global zoom ${zoom}: input shield ${key} must cover viewport`);
+    for(const key of ['x','y','width','height'])assert.ok(Math.abs(geometry.shell[key]-geometry.glass[key])<1,`global zoom ${zoom}: glass ${key} must match live shell`);
+    assert.ok(geometry.shell.x>=0&&geometry.shell.y>=0&&geometry.shell.right<=viewport.width+1&&geometry.shell.bottom<=viewport.height+1,'zoomed shell stays within viewport');
+    assert.equal(await page.evaluate(()=>document.elementFromPoint(innerWidth-1,innerHeight/2)===document.querySelector('#dol-midnight-controls')),true,'zoomed shield still receives input at viewport edge');
+    const workspace=page.locator('.dmt-workspace');
+    await workspace.evaluate(n=>n.scrollTop=n.scrollHeight);
+    assert.ok(await workspace.evaluate(n=>n.scrollTop>0),'zoomed long content remains scrollable');
+    await workspace.evaluate(n=>n.scrollTop=0);
+    const before=await page.evaluate(()=>theme.getPreferences().comfortable);
+    await page.getByLabel('舒适阅读间距',{exact:true}).click();
+    assert.equal(await page.evaluate(()=>theme.getPreferences().comfortable),!before,'zoomed original setting remains operable');
+    assert.equal(await page.evaluate(()=>calls),0);
+   }
+  }
+  await page.evaluate(()=>{document.body.style.removeProperty('zoom');theme.setPreference('fontScale',100)});
+  await page.setViewportSize({width:1363,height:620});
   await page.locator('.dmt-close').click();await waitSettingsClosed(page);
   assert.equal(await dialog.evaluate(n=>n.open),false);
   await page.locator('#background').click();assert.equal(await page.evaluate(()=>calls),1);

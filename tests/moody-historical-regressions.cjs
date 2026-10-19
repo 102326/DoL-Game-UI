@@ -5,7 +5,7 @@ const root=path.resolve(__dirname,'..');
 const combatBody='<div id="story"><div id="passages"><div class="passage"><div id="listContainer"><div id="leftaction"><label><input type="radio" name="leftaction" value="rest" checked>Rest</label><label><input type="radio" name="leftaction" value="guard">Guard</label></div><div id="rightaction"><label><input type="radio" name="rightaction" value="rest" checked>Rest</label><label><input type="radio" name="rightaction" value="guard">Guard</label></div></div><div id="next"><a href="#">Continue</a></div></div></div></div>';
 function rejectPrecisely(run,code){let rejection;assert.throws(run,error=>{if(error.code!=='ERR_ASSERTION'||!error.message.startsWith(code+':'))return false;rejection=error;return true});console.log(JSON.stringify({counterexample:code,rejected:true}));return rejection;}
 function oldGeometry(){return{name:'moody-ci79-old-positioning',enforce:'pre',transform(source,id){
- if(id.split('?')[0]!==path.join(root,'src/ui/OrbitFocus.vue'))return;
+ if(path.normalize(id.split('?')[0])!==path.join(root,'src/ui/OrbitFocus.vue'))return;
  // Exact pre-e23f631 calculation: a display:contents nav yields 0/0 scales.
  const start=source.indexOf(' // A display:contents navigation'),end=source.indexOf(' await nextTick();',start);
  assert.ok(start>=0&&end>start,'historical transform must match the current production placement block');
