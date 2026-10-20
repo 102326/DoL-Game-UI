@@ -3,7 +3,7 @@ import {onMounted,onBeforeUnmount,ref} from 'vue';
 import {createSphere} from './sphere';
 const canvas=ref<HTMLCanvasElement>();
 const phase=ref('idle'), duration=ref(1),strength=ref(1);
-const labels:Record<string,string>={idle:'等待蓄势',charge:'球体蓄势 · 加速回旋',release:'黄金螺旋 · 动能释放',afterglow:'余韵消散 · 自然减速',return:'回旋收束',reduced:'减少动态效果 · 静态展示',disposed:'已卸载'};
+const labels:Record<string,string>={idle:'等待蓄势',charge:'球面加速 · 切向回旋',release:'螺旋卷出 · 动能释放',afterglow:'余韵消散 · 自然减速',return:'回旋收束',reduced:'减少动态效果 · 静态展示',disposed:'已卸载'};
 let sphere:ReturnType<typeof createSphere>|undefined;
 function configure(){sphere?.configure({duration:duration.value,strength:strength.value})}
 onMounted(()=>{sphere=createSphere(canvas.value!,value=>phase.value=value);Object.assign(window,{goldenSphereLab:sphere})});
@@ -11,7 +11,7 @@ onBeforeUnmount(()=>{sphere?.destroy();delete (window as unknown as Record<strin
 </script>
 <template>
  <main class="sphere-lab">
-  <header><p class="sphere-kicker">SOFT & WET 3.1 · MOTION EVOLUTION</p><h1>Golden <em>Spin.</em></h1><p class="sphere-subtitle">回旋之力是主角，工具展开是结果。</p><span class="sphere-badge">球体视觉研究 / Prototype A · 待负责人验收</span></header>
+  <header><p class="sphere-kicker">SOFT & WET 3.1 · MOTION EVOLUTION</p><h1>Golden <em>Spin.</em></h1><p class="sphere-subtitle">球面纹带 · 高速回旋 · 力量释放</p><span class="sphere-badge">球体视觉研究 / 第三轮 · 待负责人验收</span></header>
   <section class="sphere-stage" aria-label="球体回旋视觉样片">
    <div class="sphere-stage-meta"><span>01 / THE CORE</span><span>STEEL · MOMENTUM · RELEASE</span></div>
    <canvas ref="canvas" aria-hidden="true"></canvas>

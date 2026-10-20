@@ -8,6 +8,8 @@
 
 当前默认网页为 **Prototype A：回旋之力本体**，不展开菜单。A / B 是新实验阶段名，不是原产品方案投票；正式目标仍为 Golden Spin B。
 
+第三轮强化球面横向纹带、背面遮挡、切向短残影与更快的启动加速；收小并衰减外围流线。当前桌面、窄屏及前后对照视频均为自制网页样片，仍待负责人视觉确认。后续 Issue 和交付只描述实际效果，不强调灵感来源。
+
 [运行与视频](../prototypes/golden-spin-b/README.md)、[当前技术记录](MOTION_EVOLUTION_GOLDEN_SPIN_B.md)、[旧菜单研究归档](MOTION_EVOLUTION_MENU_STUDY_ARCHIVE.md)。旧媒体及 Android 接入结果不证明新球体已获验收。
 
 ## 保留的工程与边界

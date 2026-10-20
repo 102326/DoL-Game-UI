@@ -6,7 +6,7 @@ const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:
  const b=await chromium.launch(process.platform==='win32'?{channel:'msedge',headless:true}:{headless:true});
  const outputs=[];
  try{
-  for(const [name,size]of [['sphere-desktop',{width:1280,height:960}],['sphere-narrow',{width:390,height:844}]]){
+  for(const [name,size]of [['sphere-gs03-desktop',{width:1280,height:960}],['sphere-gs03-narrow',{width:390,height:844}]]){
    const context=await b.newContext({viewport:size,recordVideo:{dir:path.join(dir,name),size},hasTouch:true});
    const p=await context.newPage();await p.goto('http://127.0.0.1:5181/');await p.waitForFunction(()=>window.goldenSphereLab);
    const play=()=>p.getByRole('button',{name:'启动球体回旋',exact:true}).click(),idle=()=>p.waitForFunction(()=>goldenSphereLab.inspect().phase==='idle');
@@ -20,6 +20,6 @@ const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:
    execFileSync('ffmpeg',['-y','-i',source,'-c:v','libx264','-crf','20','-preset','medium','-pix_fmt','yuv420p','-movflags','+faststart',output],{stdio:'pipe'});
    outputs.push({name,source,output,bytes:fs.statSync(output).size});
   }
-  fs.writeFileSync(path.join(dir,'recording.json'),JSON.stringify({stage:'ball-only Prototype A',source:'standalone controlled browser; no game footage',outputs},null,2));console.log(JSON.stringify({dir,outputs},null,2));
+  fs.writeFileSync(path.join(dir,'recording.json'),JSON.stringify({stage:'ball-only surface motion revision 3',source:'standalone controlled browser; no game footage',outputs},null,2));console.log(JSON.stringify({dir,outputs},null,2));
  }finally{await b.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

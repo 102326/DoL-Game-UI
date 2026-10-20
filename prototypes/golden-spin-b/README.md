@@ -1,6 +1,6 @@
 # Golden Spin B · 球体优先
 
-Soft & Wet 3.1 的隔离视觉原型，[Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)。当前只研究球体蓄势、高速回旋、黄金螺旋释放和余韵；工具菜单不展开。**Prototype A 是新阶段名，正式产品目标仍是 Golden Spin B。**
+Soft & Wet 3.1 的隔离视觉原型，[Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)。当前只研究球体蓄势、高速回旋、螺旋释放和余韵；工具菜单不展开。**Prototype A 是新阶段名，正式产品目标仍是 Golden Spin B。**
 
 ## 观看和操作
 
@@ -13,8 +13,9 @@ npm run prototype:golden-spin
 
 打开 `http://127.0.0.1:5181/`。点击球体或“启动回旋”，可在途中收束、再次启动，调整时间倍率和能量强度。跟随系统减少动态效果设置。
 
-- [桌面视频](../../docs/media/golden-spin-b/sphere-desktop.mp4)
-- [窄屏视频](../../docs/media/golden-spin-b/sphere-narrow.mp4)
+- [修改前后对照](../../docs/media/golden-spin-b/gs03-before-after.mp4)
+- [当前桌面视频](../../docs/media/golden-spin-b/sphere-gs03-desktop.mp4)
+- [当前窄屏视频](../../docs/media/golden-spin-b/sphere-gs03-narrow.mp4)
 - [实现、验证和当前边界](../../docs/MOTION_EVOLUTION_GOLDEN_SPIN_B.md)
 
 这是独立网页，不是 ModLoader 安装包。视频没有执行游戏业务。球体方向待负责人确认，认可后才进入真实 Hub 的菜单联动。
