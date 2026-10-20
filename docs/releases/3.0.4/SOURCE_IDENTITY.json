@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "version": "3.0.4",
+  "baselineCommit": "450e86042fb5ca2d419d251cfc66a1044c730999",
+  "sourceReference": "Resolve final runtime source from v3.0.4 Git tag; listed input SHA256 and ZIP members bind this snapshot without self-referential commit hashes.",
+  "runtimeInputs": {
+    "framework/boot.ts": "4a9d35e8a9819264edeee6c45dc5b90c0bbacec093fc0893c4226461a7ceba10",
+    "framework/host.ts": "cfe13f34257525286492d15154c3ec8443bf44ace7e915419a600014102d3e11",
+    "framework/connect.ts": "0072f693366492397e4001dbabf11111f1c912cd464ecbd79bd9db943987920f",
+    "framework/signals.ts": "b3172e4255c505c123b1092f89dc2d7145e17b35237a352385a79cb9fa8af374",
+    "framework/official-ui/main.ts": "72112d011ce8aa45f6ebc741a450c15f030010604a16b42f27f017ff7564c750",
+    "framework/official-ui/startup-notice.ts": "88fd2ec3e340d8e131cb6fdc85e3e7b2d1182503b174cd49d859a1ce13939dcc",
+    "scripts/package-framework.py": "f726128c49d3f06cb20575e072c862a37f1ec83d93c609964f8ec6eb1f09f26c",
+    "package-lock.json": "84534342a9ea0ad060ae5c1188e553ee6cc0d3e96331fd2ae452174e28e1bee8"
+  },
+  "officialEntries": [
+    "dist/framework/host/index.js",
+    "dist/framework/official-ui/index.js"
+  ],
+  "protocol": "0.1-experimental",
+  "uiHostRequirement": ">=0.1.2-experimental && <0.2.0",
+  "physicalDeviceAcceptance": "WAIVED by project owner for P0; not performed in this hotfix",
+  "reusedSmartphoneSource": "de95ad4a2ae2fc62b04690e062ab4c2e889dfe23 (independent branch, not merged)",
+  "assets": {
+    "CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.0.mod.zip": {
+      "sha256": "ba8f17fb23f1c81214266ceb4ce3150bed0133b3e2904b856c4984a9e83c68f9",
+      "bytes": 5011,
+      "modName": "CheatExtendedSoftWet",
+      "version": "1.0.0",
+      "origin": "v3.0.3 unchanged public asset",
+      "sourceAssetId": "RA_kwDOUtT0Yc4nKxnk"
+    },
+    "DoLGameUI-3.0.4.mod.zip": {
+      "sha256": "5f0dfcdfeb44608daa3e4c903af417809e6599fa199325c8499cc53dd49ee82a",
+      "bytes": 226513,
+      "modName": "DoLGameUI",
+      "version": "3.0.4",
+      "origin": "new-build",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+        "THIRD-PARTY-NOTICES.txt": "9c115886c745c8bab1bb34ec11a7ba5a1d34be99e962a444034e019e24a7b03c",
+        "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+        "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+        "boot.json": "74f40cfaa65dc641e3f87d1c381296df18f1b6c17010be37f55067b78f90c3f8",
+        "docs/OPTIONAL_ADAPTERS.md": "cab986657b15e33fc6372746d19a94dfe59f346fdb4e51409d981efec4174dc0",
+        "docs/RELEASE_3.0.4.md": "b41c6214cb631a2d72ace5b8f6c284ea237f3bdca8cfd2125c5b26fb5ff26c42",
+        "docs/UI_SETTINGS.md": "aadfaa280925e245f0f0d19aeac2caeb3a205bd907f16a457d495d100f6e2d4f",
+        "index.js": "d25940770a837e62b8e9fd7f13bb030144463543f2e70db5da7b343b1116e975",
+        "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+        "style.css": "39a2cc870bc06f45540d0b6afe9a943f344d2c44451d0a353d4e9f715a4d6cf7",
+        "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+        "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+        "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+        "twee/patch-resize.twee": "4d604afceeb23ee0d17733fe248f24736ed01b1284be467daab6039223305da3",
+        "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+        "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+      }
+    },
+    "DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.1.mod.zip": {
+      "sha256": "b8955cd1f2685cb53e7b2777d6cafd6e2f85fab2c97ee680e2e2515c91740652",
+      "bytes": 8376,
+      "modName": "DolOptimizationSoftWet",
+      "version": "1.0.1",
+      "origin": "v3.0.3 unchanged public asset",
+      "sourceAssetId": "RA_kwDOUtT0Yc4nKxnV"
+    },
+    "LyraMouthCompat051213-Lyra-0.5.12.13-v1.0.0.mod.zip": {
+      "sha256": "71080a79771149a0edf80cc66943518645835e1b6259a01e23869d6da2a34974",
+      "bytes": 3052,
+      "modName": "LyraMouthCompat051213",
+      "version": "1.0.0",
+      "origin": "v3.0.3 unchanged public asset",
+      "sourceAssetId": "RA_kwDOUtT0Yc4nKxnW"
+    },
+    "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.0.mod.zip": {
+      "sha256": "b3baa723027bc20e815677133e9b5e7b0082f8cb13deb5240c49e3ddb569f13a",
+      "bytes": 4211,
+      "modName": "MapleBirchSoftWet",
+      "version": "1.0.0",
+      "origin": "v3.0.3 unchanged public asset",
+      "sourceAssetId": "RA_kwDOUtT0Yc4nKxnU"
+    },
+    "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.0.mod.zip": {
+      "sha256": "df6356be81f8def8ed22b69aa2e04069a4e027a20b31e9c23aba79322a80b041",
+      "bytes": 5388,
+      "modName": "ModHubSoftWet",
+      "version": "1.0.0",
+      "origin": "v3.0.3 unchanged public asset",
+      "sourceAssetId": "RA_kwDOUtT0Yc4nKxns"
+    },
+    "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip": {
+      "sha256": "78eb0061d06972645d1c48e039be8b3d935f2710fddf83eb5b094f2b59a6efdb",
+      "bytes": 4415,
+      "modName": "ReOverfitsSoftWet",
+      "version": "1.0.0",
+      "origin": "v3.0.3 unchanged public asset",
+      "sourceAssetId": "RA_kwDOUtT0Yc4nKxnx"
+    },
+    "SmartPhoneSoftWet-SmartPhoneAlpha-0.3.91-v1.1.0.mod.zip": {
+      "sha256": "254327acc647353f23c7a93703384754d59edd5e1a4c97f753e2bf4f85bf6073",
+      "bytes": 5569,
+      "modName": "SmartPhoneSoftWet",
+      "version": "1.1.0",
+      "origin": "v3.0.3 unchanged public asset",
+      "sourceAssetId": "RA_kwDOUtT0Yc4nKxnz"
+    },
+    "StoneFreeHost-0.1.5-experimental.mod.zip": {
+      "sha256": "6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8",
+      "bytes": 5934,
+      "modName": "StoneFreeHost",
+      "version": "0.1.5-experimental",
+      "origin": "new-build",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "aa854537a1931b5e5134eab2b8d118e5fe51f0b8bdaa057efd654f9d49ca921a",
+        "boot.json": "80eee7e2f83d0dc23edf7828571ca745cde1e9b8be10ac40198dbdfaa26061c5",
+        "index.js": "86b828ae8aa2f389f17ac10eb887752d2972cdfddf172c06a8237e25a43ef7bd"
+      }
+    }
+  }
+}

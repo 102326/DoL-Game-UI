@@ -6,7 +6,7 @@ from shop_package import add_shop_patches
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
 version = '0.1.4-experimental'
-host_version = '0.1.4-experimental'
+host_version = '0.1.5-experimental'
 # Official product version is independent of the Host package/protocol.
 official_version = json.loads((root / 'package.json').read_text(encoding='utf-8'))['version']
 # Minimum includes the R15 scene bridge guarantees; SDK/package edits do not raise it.
