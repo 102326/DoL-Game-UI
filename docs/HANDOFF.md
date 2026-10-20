@@ -4,22 +4,22 @@
 
 ## Current — 当前做什么
 
-- [Issue #18](https://github.com/102326/DoL-Game-UI/issues/18) P0：官方 Host/UI 无反应。基线 main/v3.0.3 `450e86042fb5ca2d419d251cfc66a1044c730999`；分支 `fix/startup-host-compat`，本快照写入时尚未提交/推送，HEAD 仍为基线。提交、PR、main 与 Release 的最终身份以远端及交付报告为准。
-- 实现 Host 局部取消信号合并，移除 `AbortSignal.any` 强制依赖；UI 增加可关闭启动诊断。准备正式 UI 3.0.4 + Host 0.1.5-experimental，负责人已授权修复并发布、跳过实机等待。
-- 报告者实际环境 Unknown；不把一个已复现路径当成所有报告的最终归因。本机证据目录/原始失败日志只在忽略的 HANDOFF.local.md 记录，另一台设备不能假定可访问。
+- 当前公开版为 UI 3.0.4／Host 0.1.5-experimental。本轮在 `fix/modhub-mobile-list-width` 修复 [Issue #20](https://github.com/102326/DoL-Game-UI/issues/20)，不沿用上次 P0 的发布授权。
+- ModHubSoftWet 1.0.1 修正手机列表与更新提示的纵向 flex 空白，并补齐 ModHub 1.8.0 的顶栏材质覆盖。手机从 1.7.6 更新至负责人选择的 1.8.0 后继续验证，具体范围见[本轮记录](MODHUB_MOBILE_1.0.1.md)。
+- 按钮大小检查已由负责人明确跳过，不调整保存的比例或共享按钮尺寸。私人原始证据仅保留本地。
 
 ## Decided — 已经确定什么
 
-- 保留 3.X 设计、原游戏事件与存档业务。协议 0.1-experimental、Host 依赖 >=0.1.2-experimental 且 <0.2.0 不变。只改 Host 的后续发行只升 Host；本次 UI 有诊断功能变更，故升 3.0.4。
-- macOS 受控复现先对旧构建失败，修复后八启动场景、两种取消及清理通过；类型与 14 个单元/源码脚本通过。精确包与 CI 结果关联 [3.0.4 验证](KRAFT_WORK_3.0.4_VALIDATION.md)及最终交付报告。初次 Host README 版本格式合同失败保留并修正，不冒充首次全绿。
-- 七个可选兼容包沿用 3.0.3 公开冻结字节：原版优化 1.0.1、万能手机 1.1.0、其余五包 1.0.0。万能手机源码固定独立分支 `de95ad4a2ae2fc62b04690e062ab4c2e889dfe23`，本轮不合并、不重打同版本包。只上传两个新包加七个冻结 ZIP 和校验清单。
+- 保留 3.X 设计、原游戏事件与存档业务。本轮只修改 ModHubSoftWet 和针对性测试／文档，主 UI、Host 和公共协议不变。
+- ModHubSoftWet 1.0.1 的列表、更新提示和 1.8.0 顶栏修正均已在连接手机验证；本地浏览器覆盖 320–1100px 代表尺寸与断点两侧，包合同通过。详见本轮验证记录，不能扩大为所有管理业务或所有平台通过。
+- 3.0.4 的已发布附件保持不变。新兼容候选仅在本地及授权测试手机使用，不用重新构建的同版本 Host／UI 或其它兼容包替换公开字节。独立万能手机分支不合并、不改动。
 - CI 规则要求 validate、moody-gate，strict=true、无 bypass；原 jijizi 更新锁与维护权限保留。只能在实际所需 CI 成功后维护合并，不调整规则或跳过失败检查。
 - 自动证据继续受控白名单；主动授权的存档只能隔离复现，不自动公开 CI Artifact。本轮无需存档。旧 Release/Tag 不改写。
 
 ## Next — 下一步做什么
 
-1. 完成本轮最终包合同、共享 Framework 回归、静态审阅和真实 PR CI；通过后按已获授权合并，取得 main CI 后创建 v3.0.4 Release，回读九个 ZIP 和 SHA256 清单。
-2. 用具体提交、Run、附件摘要更新 Issue #18 和本地完整报告；实机跳过必须保持明确，等待报告者反馈后再判断其原问题是否完全消失。
-3. 新设备先查实际 Git 与 Release，不把本快照的“准备”理解为已发布。macOS/Actions 通过均不等于 Windows、Android、iOS 真机或原游戏业务通过。
+1. 本轮本地实现与 Android 1.8.0 复核已完成。源码提交、候选摘要和 Issue #20 的完成记录关联交付；本轮不自动推送或发布。
+2. 需要公开更新时另行核对授权、精确源码与候选包，并执行对应 PR CI；本地检查不冒充 GitHub Actions 已通过。
+3. 新设备先核对实际 Git、Release 和目标版本；其它版本、iOS 与管理业务的未覆盖项不冒充验证通过。
 
 后续每次交接更新 Current/Decided/Next，不提交凭据、设备标识或大段原始日志。机器绝对路径写入 Git 忽略的 HANDOFF.local.md。

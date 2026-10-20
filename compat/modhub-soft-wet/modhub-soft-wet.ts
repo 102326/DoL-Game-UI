@@ -9,7 +9,7 @@ declare const window: Window & {
  "use strict";
  if (window.ModHubSoftWet) return;
  const spec: StyleAdapter = {
-  id: "ModHubSoftWet", version: "1.0.0", target: {name: "ModHub", versions: [">=1.3.0"]},
+  id: "ModHubSoftWet", version: "1.0.1", target: {name: "ModHub", versions: [">=1.3.0"]},
   scope: ['#customOverlay[data-overlay="modloader"]'],
   fingerprint: {
    id: "modhub-overlay-1.3.0",
@@ -29,7 +29,7 @@ declare const window: Window & {
  };
  // ModHub portals this reviewed menu to body; it is no longer inside the overlay.
  const toolsSpec: StyleAdapter = {
-  id: 'ModHubSoftWetTools', version: '1.0.0', target: spec.target,
+  id: 'ModHubSoftWetTools', version: '1.0.1', target: spec.target,
   scope: ['#modHubManagerToolsMenu.modhub-manager-tools-menu[role="menu"]'],
   fingerprint: {id:'modhub-manager-tools-1.7.6', safe:[[':scope']], required:[[':scope>.modhub-manager-tool-row:first-child>.modhub-manager-tool-action']]},
   roles: [{role:'page-shell',selectors:[':scope'],safe:true},{role:'toolbar',selectors:['.modhub-manager-tool-row'],all:true}]
