@@ -9,7 +9,7 @@ declare const window: Window & {
  "use strict";
  if (window.ModHubSoftWet) return;
  const spec: StyleAdapter = {
-  id: "ModHubSoftWet", version: "1.0.0", target: {name: "ModHub", versions: [">=1.3.0"]},
+  id: "ModHubSoftWet", version: "1.0.1", target: {name: "ModHub", versions: [">=1.3.0"]},
   scope: ['#customOverlay[data-overlay="modloader"]'],
   fingerprint: {
    id: "modhub-overlay-1.3.0",
@@ -29,25 +29,33 @@ declare const window: Window & {
  };
  // ModHub portals this reviewed menu to body; it is no longer inside the overlay.
  const toolsSpec: StyleAdapter = {
-  id: 'ModHubSoftWetTools', version: '1.0.0', target: spec.target,
+  id: 'ModHubSoftWetTools', version: '1.0.1', target: spec.target,
   scope: ['#modHubManagerToolsMenu.modhub-manager-tools-menu[role="menu"]'],
   fingerprint: {id:'modhub-manager-tools-1.7.6', safe:[[':scope']], required:[[':scope>.modhub-manager-tool-row:first-child>.modhub-manager-tool-action']]},
   roles: [{role:'page-shell',selectors:[':scope'],safe:true},{role:'toolbar',selectors:['.modhub-manager-tool-row'],all:true}]
  };
+ // Native install dialogs are body portals, separate from the manager window.
+ const modalSpec: StyleAdapter = {
+  id:'ModHubSoftWetModal', version:'1.0.1', target:spec.target,
+  scope:['.modhub-modal-backdrop'],
+  fingerprint:{id:'modhub-modal-1.8.0',safe:[[':scope>.modhub-modal-dialog[role="dialog"][aria-modal="true"]']],
+   required:[['.modhub-modal-header'],['.modhub-modal-body'],['.modhub-modal-footer']]},
+  roles:[{role:'section',selectors:[':scope>.modhub-modal-dialog']}]
+ };
  let owner: Partial<UiApi> | null | undefined = null;
- let handle: Readonly<AdapterHandle> | null = null, tools: Readonly<AdapterHandle> | null = null, reason = "runtime-unavailable";
+ let handle: Readonly<AdapterHandle> | null = null, tools: Readonly<AdapterHandle> | null = null, modal: Readonly<AdapterHandle> | null = null, reason = "runtime-unavailable";
  function attach() {
   const ui = window.DoLGameUI?.ui;
   if (owner === ui) return;
-  handle?.destroy(); tools?.destroy(); owner = ui; handle = tools = null; reason = ui ? "runtime-api-unsupported" : "runtime-unavailable";
+  handle?.destroy(); tools?.destroy(); modal?.destroy(); owner = ui; handle = tools = modal = null; reason = ui ? "runtime-api-unsupported" : "runtime-unavailable";
   if (ui?.apiVersion !== 1 || typeof ui.getCapabilities !== "function" || typeof ui.registerStyleAdapter !== "function") return;
   try {if (!ui.getCapabilities().styleAdapters) {reason = "style-adapter-unavailable"; return}} catch {reason = "runtime-capability-failed"; return}
-  try {handle = ui.registerStyleAdapter(spec); tools = ui.registerStyleAdapter(toolsSpec)} catch {reason = "registration-failed"; /* Leave unmatched components native. */ }
+  try {handle = ui.registerStyleAdapter(spec); tools = ui.registerStyleAdapter(toolsSpec); modal = ui.registerStyleAdapter(modalSpec)} catch {reason = "registration-failed"; /* Leave unmatched components native. */ }
  }
  document.addEventListener("dol-ui-runtime-ready", attach);
  window.ModHubSoftWet = Object.freeze({
-  getDiagnostics: () => handle ? Object.freeze({...handle.getDiagnostics(),components:{tools:tools?.getDiagnostics()}}) : Object.freeze({status: "inactive", reason}),
-  destroy() {document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); tools?.destroy(); handle = tools = null; owner = null; delete window.ModHubSoftWet}
+  getDiagnostics: () => handle ? Object.freeze({...handle.getDiagnostics(),components:{tools:tools?.getDiagnostics(),modal:modal?.getDiagnostics()}}) : Object.freeze({status: "inactive", reason}),
+  destroy() {document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); tools?.destroy(); modal?.destroy(); handle = tools = modal = null; owner = null; delete window.ModHubSoftWet}
  });
  attach();
 })();

@@ -9,6 +9,8 @@ Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。�
 
 [下载 3.0.4](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.4) · [安装步骤](#安装与升级) · [完整更新说明](docs/RELEASE_3.0.4.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
+**ModHub 兼容包已更新至 1.0.1**：收紧手机 Mod 列表和更新提示，优化安装／更新时的加载动画。已安装 3.0.4 的玩家只需更新该兼容包；下载见同一发布页。
+
 普通玩家需要 **主 UI + Framework Host 两个 ZIP**，使用相应第三方 Mod 时再选装兼容包。**不要解压**，导入后重启游戏。安装包不包含游戏本体、APK 或第三方原 Mod。
 
 ![Kraft Work 设置界面：上下布局](docs/media/3.0.0/KraftWork-3.0-settings-horizontal.png)

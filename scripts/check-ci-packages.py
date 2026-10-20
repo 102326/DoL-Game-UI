@@ -106,7 +106,7 @@ def adapter_policy(directory):
     lists = {field: [] for field in ENTRY_FIELDS}
     lists.update(scriptFileList=[stem + '.js'], styleFileList=[] if mouth else [stem + '.css'], additionFile=['README.md', 'LICENSE'])
     suffix = requirement.removeprefix('>=').removeprefix('=') + ('-plus' if requirement.startswith('>=') else '')
-    version = '1.0.1' if directory == 'dol-optimization-soft-wet' else '1.0.0'
+    version = '1.0.1' if directory in ['dol-optimization-soft-wet', 'modhub-soft-wet'] else '1.0.0'
     return {'name': name, 'version': version, 'dependenceInfo': deps, **lists}, f'{name}-{target}-{suffix}-v{version}.mod.zip'
 
 

@@ -1,5 +1,15 @@
 # Soft & Wet 3.0.4 — P0启动热修复
 
+## 2026-10-21：ModHub 兼容包 1.0.1
+
+- 修复手机 Mod 列表与可用更新提示中的大块空白。
+- 同步 ModHub 1.8.0 顶栏的 Kraft Work 材质与按钮颜色。
+- 改用 ModHub 原有圆环加载动画，减少安装／更新时的持续布局开销。
+
+已安装 3.0.4 的玩家只需替换 ModHubSoftWet 并重启，主 UI、Host 与其它兼容包无需重复更新。仍支持 ModHub >=1.3.0、UI >=3.0.0，本轮主要验证 ModHub 1.8.0。安装核验仍可能短暂停顿，闪烁的完整原因继续跟踪于 [Issue #20](https://github.com/102326/DoL-Game-UI/issues/20)。
+
+## 原始 3.0.4 更新
+
 **本次关键更新：StoneFreeHost 0.1.5-experimental。只更新 UI 不能修复旧 Host 的启动退出，请务必更新前置。**
 
 修复Host在缺少AbortSignal.any的环境直接退出、主UI没有设置入口的已复现路径。配套StoneFreeHost更新为0.1.5-experimental；使用局部信号合并保留场景与挂载取消，不给浏览器全局打补丁。
