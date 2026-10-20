@@ -20,11 +20,11 @@
 
 ## 可选兼容包
 
-当前原版优化兼容包为 DolOptimizationSoftWet 1.0.1，万能手机为 SmartPhoneSoftWet 1.1.0，其余五个为 1.0.0；没有目标 Mod 就不安装对应包。
+当前 ModHubSoftWet 与 DolOptimizationSoftWet 为 1.0.1，SmartPhoneSoftWet 为 1.1.0，其余四个为 1.0.0；没有目标 Mod 就不安装对应包。已安装旧版 ModHub 外观包的玩家，只需替换该兼容包并重启。
 
 | 包 | 作用与目标最低声明 |
 | --- | --- |
-| ModHubSoftWet | ModHub >=1.3.0；此前平板 1.7.6，包含管理器、帮助中心和已核对的工具菜单 |
+| ModHubSoftWet | ModHub >=1.3.0；本轮手机实测 1.8.0，包含管理器、帮助中心和已核对的工具菜单 |
 | MapleBirchSoftWet | MapleBirch >=5.2.3；此前平板 5.5.0，云存档外观 |
 | DolOptimizationSoftWet | 原版优化 >=1.1.1.2；叠穿管理主要验证官方 1.1.2、回归 1.1.1.5，保留原存档与穿戴业务 |
 | CheatExtendedSoftWet | CE >=1.20.3；结构基线原作者 1.20.3.1，另接受独立维护 1.20.3.1-rebuild.30 |
@@ -46,7 +46,7 @@
 
 ## 从 3.0.x 更新
 
-本次必须同时更换主UI和Host至0.1.5-experimental；对应版本兼容包沿用。需要原版优化叠穿管理时使用 DolOptimizationSoftWet 1.0.1；SmartPhoneSoftWet 沿用 1.1.0，其余五个兼容包仍为 1.0.0。
+3.0.4 启动热修复需要主 UI 和 Host 0.1.5-experimental。2026-10-21 的 ModHub 兼容补丁只更新 ModHubSoftWet 至 1.0.1，不需要重复更新其它包。DolOptimizationSoftWet 保持 1.0.1，SmartPhoneSoftWet 保持 1.1.0，其余四个兼容包保持 1.0.0。
 
 3.0.4修复Host兼容启动并增加启动诊断，保留3.0.3的波纹样式、强度及对齐修正。原版优化 1.1.2 默认关闭叠穿，请在其设置中按需启用。所有现行 UI 设计继续使用 3.X 基线。
 
