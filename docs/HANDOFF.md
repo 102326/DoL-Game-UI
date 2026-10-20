@@ -1,26 +1,25 @@
-# Soft & Wet — 跨设备交接
+# Soft & Wet 3.1 研究交接
 
-更新：2026-10-21。接手必须先核对本机 HEAD、工作区、依赖、运行环境和远端状态。
+2026-10-21。当前分支 `prototype/golden-spin-b`，[Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)。接续先核对本机 HEAD、工作区和实际环境，不复用旧设备身份。
 
-## Current — 当前做什么
+## 当前有效方向
 
-- 当前公开版为 UI 3.0.4／Host 0.1.5-experimental。本轮在 `fix/modhub-mobile-list-width` 修复 [Issue #20](https://github.com/102326/DoL-Game-UI/issues/20)，负责人已于 2026-10-21 明确授权本轮发布，按 PR CI → 合并 main → 更新 v3.0.4 兼容附件执行。
-- ModHubSoftWet 1.0.1 修正手机列表与更新提示的纵向 flex 空白，并补齐 ModHub 1.8.0 的顶栏材质覆盖。手机从 1.7.6 更新至负责人选择的 1.8.0 后继续验证，具体范围见[本轮记录](MODHUB_MOBILE_1.0.1.md)。
-- 按钮大小检查已由负责人明确跳过，不调整保存的比例或共享按钮尺寸。私人原始证据仅保留本地。
-- 负责人补充了兼容包开启／关闭的录屏，明确安装／更新为触发条件。新增圆环加载画法以消除已复现的 SVG 字体条连续布局；Android 真实市场安装／更新未再观察到持续闪烁，仍有 0.6–0.7 秒的单次核验停顿。Issue #20 保持打开跟踪剩余问题，本轮已获公开更新授权。
+负责人已否决菜单旋转为主体的首轮样片。停止精修工具多圈螺旋，优先做球体自身蓄势、高速回旋、黄金螺旋释放和余韵。
 
-## Decided — 已经确定什么
+当前默认网页为 **Prototype A：回旋之力本体**，不展开菜单。A / B 是新实验阶段名，不是原产品方案投票；正式目标仍为 Golden Spin B。
 
-- 保留 3.X 设计、原游戏事件与存档业务。本轮只修改 ModHubSoftWet 和针对性测试／文档，主 UI、Host 和公共协议不变。
-- ModHubSoftWet 1.0.1 的列表、更新提示和 1.8.0 顶栏修正均已在连接手机验证；本地浏览器覆盖 320–1100px 代表尺寸与断点两侧，包合同通过。详见本轮验证记录，不能扩大为所有管理业务或所有平台通过。
-- v3.0.4 新增 ModHubSoftWet 1.0.1，旧附件原字节保留供回退，SHA256SUMS 同步包含新旧包。不用重新构建的同版本 Host／UI 或其它兼容包替换公开字节。独立万能手机分支不合并、不改动。
-- CI 规则要求 validate、moody-gate，strict=true、无 bypass；原 jijizi 更新锁与维护权限保留。只能在实际所需 CI 成功后维护合并，不调整规则或跳过失败检查。
-- 自动证据继续受控白名单；主动授权的存档只能隔离复现，不自动公开 CI Artifact。本轮无需存档。原 v3.0.4 Tag 不移动；兼容补丁源码以本轮 PR 和合并提交追溯。
+[运行与视频](../prototypes/golden-spin-b/README.md)、[当前技术记录](MOTION_EVOLUTION_GOLDEN_SPIN_B.md)、[旧菜单研究归档](MOTION_EVOLUTION_MENU_STUDY_ARCHIVE.md)。旧媒体及 Android 接入结果不证明新球体已获验收。
 
-## Next — 下一步做什么
+## 保留的工程与边界
 
-1. 当前候选为 ModHubSoftWet 1.0.1，SHA-256 `c92f0f8bf2957617d10d98cb439fd4a4c2c3268f3fe77a3bdb6d4f2d1714142c`。原布局提交 `4dde6f0204fad56b8c2621bac0d2d4d34266b5ba` 是基线，后续加载图标修正另看最新提交／工作区；不得用旧 SHA 代表当前包。新候选已按负责人授权启用测试。保留 Issue 打开跟踪未完整归因的闪烁与核验停顿。
-2. 完成对应 PR CI 后合并 main，上传冻结兼容包并回读附件及校验清单。实际运行链接记录在 PR 和 Issue；本地检查不冒充 GitHub Actions 已通过。
-3. CE 已按负责人要求恢复 rebuild.30，核对公开 ZIP 与实际加载的 94 个成员；勿再自动换回原作者版。新设备先核对实际 Git、Release 和目标版本；其它版本、iOS 与管理业务的未覆盖项不冒充验证通过。
+- 基线 main `6a6e3c00b705dc67d37c1780b27f585847da5d1a`；当前公开稳定 UI 3.0.4 / Host 0.1.5-experimental，未覆盖公开制品。
+- 旧研究的测量、反向、取消、生命周期及 opt-in hook 保留。正式入口不传入 `experimentalMotion`，球体新阶段是独立网页。
+- GSAP 3.15.0 为原型 devDependency；Canvas 2D 绘制球面与能量。没有确定生产框架或修改 Host 公共合同。
+- SW31-MOTION-02 长期允许全 UI 动效演进，但不启动全 UI 重写，不自动扩大 3.1 或延期 3.5。
+- 可推送原型分支和运行 CI；不得合并 main、Tag、Release 或自动发布。
 
-后续每次交接更新 Current/Decided/Next，不提交凭据、设备标识或大段原始日志。机器绝对路径写入 Git 忽略的 HANDOFF.local.md。
+## 下一步
+
+先让负责人观看球体样片，判断回旋力量的视觉方向。未确认前不开始 Prototype B 的真实 Hub 联动，不把技术检查通过写成 Visual Gate Passed。
+
+当前球体检查涵盖受控浏览器的阶段、中断、重播、窄屏、减少动态效果和卸载；真实游戏整合与新球体 Android 性能尚未验证。设备身份、原始日志及临时接入资料只保留本地忽略目录。

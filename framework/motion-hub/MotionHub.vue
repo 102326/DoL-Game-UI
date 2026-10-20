@@ -4,7 +4,7 @@ import type {Binding, Host, MountContext, View} from '../contracts';
 import ViewOutlet from '../workspace/ViewOutlet.vue';
 import {clamp, initialPosition, locate, menuLayout, positionKey, readPosition} from './geometry';
 
-const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>}>();
+const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>;experimentalMotion?:(root:HTMLElement)=>()=>void}>();
 const layer = ref<HTMLElement>(), ball = ref<HTMLButtonElement>(), heading = ref<HTMLElement>();
 let saved = initialPosition();
 try {saved = readPosition(localStorage.getItem(positionKey))} catch { /* Storage is optional. */ }
@@ -13,6 +13,7 @@ const point = reactive(locate(saved, area)), docked = ref(saved.docked), expande
 const selected = shallowRef<View>(), views = shallowRef(props.host.views()), message = ref('');
 let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string} | undefined;
 let suppressClick = false, frame = 0, sequence = 0, hintTimer = 0, instance = ref('motion-view-0'), binding: Binding;
+let stopExperimental:(()=>void)|undefined,coordinateScale={x:1,y:1};
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
 const menu = computed(() => {
  const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
@@ -51,11 +52,13 @@ function sync() {
  const viewport = window.visualViewport, css = layer.value && getComputedStyle(layer.value);
  const inset = (name: string) => parseFloat(css?.getPropertyValue(name) || '') || 0;
  const left = inset('--safe-left'), right = inset('--safe-right'), top = inset('--safe-top'), bottom = inset('--safe-bottom');
- Object.assign(area, {left: (viewport?.offsetLeft || 0) + left, top: (viewport?.offsetTop || 0) + top,
-  width: Math.max(80, (viewport?.width || innerWidth) - left - right), height: Math.max(100, (viewport?.height || innerHeight) - top - bottom)});
+ const rect=props.experimentalMotion?layer.value?.getBoundingClientRect():undefined;
+ coordinateScale={x:rect?rect.width/Math.max(1,layer.value!.offsetWidth):1,y:rect?rect.height/Math.max(1,layer.value!.offsetHeight):1};
+ Object.assign(area, {left: ((viewport?.offsetLeft || 0)-(rect?.left||0))/coordinateScale.x+left, top: ((viewport?.offsetTop || 0)-(rect?.top||0))/coordinateScale.y+top,
+  width: Math.max(80, (viewport?.width || innerWidth)/coordinateScale.x - left - right), height: Math.max(100, (viewport?.height || innerHeight)/coordinateScale.y - top - bottom)});
  Object.assign(point, locate(saved, area));
 }
-const viewportStamp = () => {const v = window.visualViewport; return [v?.width || innerWidth, v?.height || innerHeight, v?.offsetLeft || 0, v?.offsetTop || 0].join(':')};
+const viewportStamp = () => {const v = window.visualViewport; return [v?.width || innerWidth, v?.height || innerHeight, v?.offsetLeft || 0, v?.offsetTop || 0,props.experimentalMotion?getComputedStyle(document.body).zoom:''].join(':')};
 function schedule() {cancel(); if (!frame) frame = requestAnimationFrame(() => {frame = 0; sync()})}
 function toggle(event: MouseEvent) {
  if (suppressClick && event.detail > 0) {suppressClick = false; return}
@@ -80,7 +83,7 @@ function down(event: PointerEvent) {
 }
 function move(event: PointerEvent) {
  if (!gesture || event.pointerId !== gesture.id) return;
- const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+ const dx = (event.clientX - gesture.x)/coordinateScale.x, dy = (event.clientY - gesture.y)/coordinateScale.y;
  if (!dragging.value && Math.hypot(dx, dy) < 8) return;
  if (!dragging.value) {close(false); docked.value = false; dragging.value = true}
  point.x = clamp(gesture.startX + dx, area.left, area.left + area.width - 56);
@@ -110,9 +113,9 @@ function interrupt() {cancel(); close(false)}
 function arm() {binding?.signal.removeEventListener('abort', interrupt); binding = props.hostContext.binding(); binding.signal.addEventListener('abort', interrupt, {once: true})}
 const stopScene = props.hostContext.onScene(arm);
 const stopViews = props.host.onViews(() => {views.value = props.host.views(); if (selected.value && !views.value.some(view => view.mount === selected.value?.mount)) close()});
-onMounted(() => {sync(); arm();if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
+onMounted(() => {sync(); arm();if(props.experimentalMotion&&layer.value)stopExperimental=props.experimentalMotion(layer.value);if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
  window.visualViewport?.addEventListener('resize', schedule); window.visualViewport?.addEventListener('scroll', schedule); document.addEventListener('pointerdown', outside); document.addEventListener('focusin', outside)});
-onBeforeUnmount(() => {interrupt();document.removeEventListener('dol-floating-reset',reset); cancelAnimationFrame(frame); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
+onBeforeUnmount(() => {stopExperimental?.();interrupt();document.removeEventListener('dol-floating-reset',reset); cancelAnimationFrame(frame); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
  window.removeEventListener('resize', schedule); window.removeEventListener('blur', interrupt); window.removeEventListener('pagehide', interrupt);
  window.visualViewport?.removeEventListener('resize', schedule); window.visualViewport?.removeEventListener('scroll', schedule); document.removeEventListener('pointerdown', outside); document.removeEventListener('focusin', outside)});
 </script>
