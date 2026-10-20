@@ -2,6 +2,8 @@
 
 Soft & Wet 3.1 的隔离视觉原型，[Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)。当前只研究球体蓄势、高速回旋、螺旋释放和余韵；工具菜单不展开。**Prototype A 是新阶段名，正式产品目标仍是 Golden Spin B。**
 
+跨设备继续开发请先读 [Mac 接续与当前进度](../../docs/HANDOFF.md)，使用分支 `prototype/golden-spin-b`。
+
 ## 观看和操作
 
 在仓库根目录运行：
