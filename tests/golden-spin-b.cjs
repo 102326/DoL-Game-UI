@@ -39,12 +39,15 @@ fs.mkdirSync(out,{recursive:true});
    await p.setViewportSize({width:844,height:390});await p.waitForTimeout(50);assert.ok((await inspect()).width>0);
   });
   await check('reduced motion renders a static response with keyboard-accessible controls',async()=>{
+   await p.getByRole('button',{name:'启动球体回旋',exact:true}).press('Enter');
+   await p.waitForFunction(()=>goldenSphereLab.inspect().speed>5);
    await p.emulateMedia({reducedMotion:'reduce'});
-   // matchMedia's change event is asynchronous; settle it before measuring idle draws.
+   // Change the preference during motion; both notifications and the active-frame check must stop it.
    await p.waitForFunction(()=>goldenSphereLab.inspect().phase==='reduced');
    await p.getByRole('button',{name:'启动球体回旋',exact:true}).press('Enter');
    const before=await inspect();assert.equal(before.phase,'reduced');assert.equal(before.running,false);
-   await p.waitForTimeout(180);assert.equal((await inspect()).draws,before.draws);
+   await p.waitForTimeout(180);const after=await inspect();assert.equal(after.angle,before.angle);assert.equal(after.running,false);
+   assert.equal(after.draws-before.draws,after.motionChanges-before.motionChanges,'only a delivered preference notification may redraw the static frame');
    await p.getByRole('button',{name:'收束 / 中断',exact:true}).click();assert.equal((await inspect()).phase,'idle');
    await p.emulateMedia({reducedMotion:'no-preference'});
   });

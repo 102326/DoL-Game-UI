@@ -13,7 +13,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  const state = {speed: .3, charge: 0, energy: 0, spread: 0, pressure: 0};
  let phase: Phase = 'idle', angle = 0, orbit = 0, last = 0, frame = 0, draws = 0;
  let width = 1, height = 1, dead = false, timeline: gsap.core.Timeline | undefined;
- let duration = 1, strength = 1;
+ let duration = 1, strength = 1, motionChanges = 0;
  const setPhase = (value: Phase) => {phase = value; changed(value)};
 
  function resize() {
@@ -138,7 +138,9 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  }
  function tick(now: number) {
   frame=0;
-  if(dead || document.hidden || media.matches)return;
+  if(dead || document.hidden)return;
+  // Also sample while active: a host may update matches before dispatching its change event.
+  if(media.matches){reduced();return}
   const dt=last?Math.min((now-last)/1000,.05):0;last=now;
   angle=(angle+state.speed*dt)%TAU;orbit=(orbit+(1.1+state.speed*.17)*dt)%TAU;
   draw();
@@ -172,12 +174,13 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   wake();
  }
  const visibility=()=>{if(document.hidden){timeline?.pause();cancelAnimationFrame(frame);frame=0;last=0}else{timeline?.resume();wake()}};
- const motion=()=>{if(media.matches)reduced();else{stop();Object.assign(state,{speed:.3,charge:0,energy:0,spread:0,pressure:0});setPhase('idle');draw()}};
+ const motion=()=>{motionChanges++;if(media.matches)reduced();else{stop();Object.assign(state,{speed:.3,charge:0,energy:0,spread:0,pressure:0});setPhase('idle');draw()}};
  const observer=new ResizeObserver(resize);observer.observe(canvas);
  media.addEventListener('change',motion);document.addEventListener('visibilitychange',visibility);resize();
  return {play,recover,
   configure(options:{duration?:number;strength?:number}){duration=Math.max(.5,Math.min(2,options.duration??duration));strength=Math.max(.3,Math.min(1.3,options.strength??strength));draw()},
-  inspect:()=>({phase,...state,angle,orbit,draws,running:!!frame,dead,reduced:media.matches,width,height}),
+  // GSAP adds a circular private cache to its target; do not expose that as research state.
+  inspect:()=>({phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,running:!!frame,dead,reduced:media.matches,motionChanges,width,height}),
   destroy(){if(dead)return;stop();observer.disconnect();media.removeEventListener('change',motion);document.removeEventListener('visibilitychange',visibility);dead=true;setPhase('disposed');c.clearRect(0,0,width,height)}
  };
 }
