@@ -11,6 +11,16 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  const c = ctx;
  const media = matchMedia('(prefers-reduced-motion: reduce)');
  const state = {speed: .3, charge: 0, energy: 0, spread: 0, pressure: 0};
+ const marks=[-1.05,-.55,0,.55,1.05].flatMap((latitude,row)=>
+  Array.from({length:[4,7,9,7,4][row]},(_,i)=>({latitude,longitude:i*TAU/[4,7,9,7,4][row]+row*.31}))
+ );
+ const normalAt=(latitude:number,longitude:number)=>({x:Math.cos(latitude)*Math.sin(longitude),y:Math.sin(latitude),z:Math.cos(latitude)*Math.cos(longitude)});
+ const rotateNormal=(p:{x:number;y:number;z:number},angle:number)=>{
+  const x=p.x*Math.cos(angle)+p.z*Math.sin(angle),z=p.z*Math.cos(angle)-p.x*Math.sin(angle);
+  return {x:x*Math.cos(.12)-p.y*Math.sin(.12),y:x*Math.sin(.12)+p.y*Math.cos(.12),z};
+ };
+ type Meteor={x:number;y:number;vx:number;vy:number;age:number;life:number;tail:number};
+ const meteors:Meteor[]=[];let emission=0,emitted=0;
  let phase: Phase = 'idle', angle = 0, orbit = 0, last = 0, frame = 0, draws = 0;
  let width = 1, height = 1, dead = false, timeline: gsap.core.Timeline | undefined;
  let duration = 1, strength = 1, motionChanges = 0;
@@ -22,7 +32,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   canvas.width = Math.max(1, Math.round(width * dpr)); canvas.height = Math.max(1, Math.round(height * dpr));
   c.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
  }
- function stroke(points: Array<[number, number]>, color: string, lineWidth: number) {
+ function stroke(points: Array<[number, number]>, color: string|CanvasGradient, lineWidth: number) {
   c.beginPath(); points.forEach(([x,y], i) => i ? c.lineTo(x,y) : c.moveTo(x,y));
   c.strokeStyle = color; c.lineWidth = lineWidth; c.stroke();
  }
@@ -54,7 +64,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
    }
    stroke(points,`rgba(200,181,104,${heat*.22 + energy*.08})`,1.4-band*.25);
   }
-  c.save(); c.scale(1 + state.pressure*.045,1 - state.pressure*.035);
+  c.save();
   // Metallic body stays spatially grounded; engraved geometry rotates on its surface.
   const body = c.createRadialGradient(-radius*.37,-radius*.46,radius*.05,radius*.15,radius*.2,radius*1.2);
   body.addColorStop(0,'#b6c09a'); body.addColorStop(.23,'#697f56'); body.addColorStop(.53,'#354b37');
@@ -142,17 +152,15 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
    }
    if(points.length)stroke(points,`rgba(227,223,157,${heat*(.47-echo*.1)})`,(1.65-echo*.23)*(radius/82));
   }
-  // Asymmetric surface landmarks leave curved trails, rather than blurring the whole ball.
-  for(let mark=0;mark<3;mark++) {
-   const latitude=[-.62,.16,.72][mark],longitude=[.2,2.65,4.1][mark];
+  // Surface trails and external streaks retain their existing emission sites.
+  if(heat>.05)for(const mark of marks.filter((_,i)=>i%5===0)) {
    const trail:Array<[number,number]>=[];
-   for(let i=0;i<=16;i++) {
-    const p=project(latitude,longitude,i/16*Math.min(1.2,state.speed*.022));
+   for(let i=0;i<=20;i++) {
+    const p=project(mark.latitude,mark.longitude,i/20*Math.min(1.15,state.speed*.02));
     if(p.z>0)trail.push([p.x,p.y]);
+    else if(trail.length){stroke(trail,`rgba(224,211,158,${heat*.35})`,1.2);trail.length=0}
    }
-   if(heat>.05)stroke(trail,`rgba(225,204,125,${heat*.55})`,2.2);
-   const p=project(latitude,longitude);
-   if(p.z>0){c.save();c.translate(p.x,p.y);c.rotate(.6);c.fillStyle=`rgba(242,220,142,${.25+p.z*.6})`;c.fillRect(-2.4,-3,4.8,6);c.restore()}
+   if(trail.length)stroke(trail,`rgba(224,211,158,${heat*.35})`,1.2);
   }
   if(heat>.05)for(let i=0;i<4;i++) {
    c.save();c.rotate(-.12);c.scale(1,.48);
@@ -189,7 +197,37 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
    }
    c.restore();
   }
-  c.restore();
+  // Outside-only streaks preserve the complete metal silhouette.
+  c.save();c.beginPath();c.rect(-width,-height,width*2,height*2);c.moveTo(radius,0);c.arc(0,0,radius,0,TAU);c.clip('evenodd');
+  for(const meteor of meteors) {
+   const fade=Math.sin(Math.PI*Math.min(1,meteor.age/meteor.life));
+   const length=Math.hypot(meteor.vx,meteor.vy)||1,tx=meteor.vx/length,ty=meteor.vy/length;
+   const headX=meteor.x*radius,headY=meteor.y*radius,tail=meteor.tail*radius;
+   const streak=c.createLinearGradient(headX-tx*tail,headY-ty*tail,headX,headY);
+   streak.addColorStop(0,'rgba(170,160,102,0)');streak.addColorStop(.7,`rgba(200,183,119,${fade*.32})`);streak.addColorStop(1,`rgba(249,231,174,${fade*.8})`);
+   stroke([[headX-tx*tail,headY-ty*tail],[headX,headY]],streak,1.1);
+   c.beginPath();c.arc(headX,headY,1.05,0,TAU);c.fillStyle=`rgba(251,238,200,${fade*.8})`;c.fill();
+  }
+  c.restore();c.restore();
+ }
+ function stepMeteors(dt:number) {
+  for(let i=meteors.length-1;i>=0;i--) {
+   const m=meteors[i];m.age+=dt;
+   if(m.age>=m.life){meteors.splice(i,1);continue}
+   if(phase==='return'){m.vx+=(-m.x*18-m.vx*5)*dt;m.vy+=(-m.y*18-m.vy*5)*dt}
+   m.x+=m.vx*dt;m.y+=m.vy*dt;
+  }
+  if(phase==='return'||state.charge<.18)return;
+  emission+=dt*(8*state.charge+23*state.energy)*strength;
+  while(emission>=1&&meteors.length<28) {
+   emission--;
+   const visible=marks.filter(mark=>rotateNormal(normalAt(mark.latitude,mark.longitude),angle).z>.15);
+   if(!visible.length)break;
+   const mark=visible[emitted%visible.length],p=rotateNormal(normalAt(mark.latitude,mark.longitude),angle);
+   const next=rotateNormal(normalAt(mark.latitude,mark.longitude),angle+.015);
+   const dx=next.x-p.x,dy=next.y-p.y,length=Math.hypot(dx,dy)||1,speed=2.8+state.speed*.045;
+   meteors.push({x:p.x,y:p.y,vx:dx/length*speed+p.x*.85,vy:dy/length*speed+p.y*1.9,age:0,life:.4+(emitted%4)*.07,tail:.42+(emitted%3)*.16});emitted++;
+  }
  }
  function tick(now: number) {
   frame=0;
@@ -198,18 +236,19 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   if(media.matches){reduced();return}
   const dt=last?Math.min((now-last)/1000,.05):0;last=now;
   angle=(angle+state.speed*dt)%TAU;orbit=(orbit+(1.1+state.speed*.17)*dt)%TAU;
+  stepMeteors(dt);
   draw();
   // The first RAF may precede GSAP's first tick; isActive() is false during that gap.
   if(timeline)frame=requestAnimationFrame(tick);
  }
  function wake() {if(!dead&&!frame&&!document.hidden&&!media.matches){last=0;frame=requestAnimationFrame(tick)}}
  function stop() {timeline?.kill();timeline=undefined;cancelAnimationFrame(frame);frame=0;last=0}
- function reduced() {stop();Object.assign(state,{speed:0,charge:.18,energy:.28,spread:.45,pressure:0});setPhase('reduced');draw()}
+ function reduced() {stop();meteors.length=0;emission=0;Object.assign(state,{speed:0,charge:.18,energy:.28,spread:.45,pressure:0});setPhase('reduced');draw()}
  function play() {
   if(dead)return;
   if(media.matches){reduced();return}
   stop();setPhase('charge');
-  timeline=gsap.timeline({onComplete(){timeline=undefined;setPhase('idle');draw()}});
+  timeline=gsap.timeline({onComplete(){timeline=undefined;meteors.length=0;emission=0;setPhase('idle');draw()}});
   timeline.to(state,{speed:16,charge:.45,pressure:.3,energy:0,spread:0,duration:.16*duration,ease:'power2.out'})
    .to(state,{speed:29,charge:.78,pressure:.7,duration:.4*duration,ease:'power2.in'})
    .to(state,{speed:52,charge:1,pressure:1,duration:.55*duration,ease:'power3.in'})
@@ -222,21 +261,21 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  }
  function recover() {
   if(dead)return;
-  if(media.matches){stop();Object.assign(state,{speed:0,charge:0,energy:0,spread:0,pressure:0});setPhase('idle');draw();return}
+  if(media.matches){stop();meteors.length=0;emission=0;Object.assign(state,{speed:0,charge:0,energy:0,spread:0,pressure:0});setPhase('idle');draw();return}
   stop();setPhase('return');
-  timeline=gsap.timeline({onComplete(){timeline=undefined;setPhase('idle');draw()}})
+  timeline=gsap.timeline({onComplete(){timeline=undefined;meteors.length=0;emission=0;setPhase('idle');draw()}})
    .to(state,{energy:Math.min(.65,state.energy+.15),spread:0,charge:.2,speed:10,pressure:.2,duration:.55*duration,ease:'power2.inOut'})
    .to(state,{energy:0,charge:0,speed:.3,pressure:0,duration:.55*duration,ease:'power2.out'});
   wake();
  }
  const visibility=()=>{if(document.hidden){timeline?.pause();cancelAnimationFrame(frame);frame=0;last=0}else{timeline?.resume();wake()}};
- const motion=()=>{motionChanges++;if(media.matches)reduced();else{stop();Object.assign(state,{speed:.3,charge:0,energy:0,spread:0,pressure:0});setPhase('idle');draw()}};
+ const motion=()=>{motionChanges++;if(media.matches)reduced();else{stop();meteors.length=0;emission=0;Object.assign(state,{speed:.3,charge:0,energy:0,spread:0,pressure:0});setPhase('idle');draw()}};
  const observer=new ResizeObserver(resize);observer.observe(canvas);
  media.addEventListener('change',motion);document.addEventListener('visibilitychange',visibility);resize();
  return {play,recover,
   configure(options:{duration?:number;strength?:number}){duration=Math.max(.5,Math.min(2,options.duration??duration));strength=Math.max(.3,Math.min(1.3,options.strength??strength));draw()},
   // GSAP adds a circular private cache to its target; do not expose that as research state.
-  inspect:()=>({phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,running:!!frame,dead,reduced:media.matches,motionChanges,width,height}),
-  destroy(){if(dead)return;stop();observer.disconnect();media.removeEventListener('change',motion);document.removeEventListener('visibilitychange',visibility);dead=true;setPhase('disposed');c.clearRect(0,0,width,height)}
+  inspect:()=>({phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,meteors:meteors.length,running:!!frame,dead,reduced:media.matches,motionChanges,width,height}),
+  destroy(){if(dead)return;stop();meteors.length=0;emission=0;observer.disconnect();media.removeEventListener('change',motion);document.removeEventListener('visibilitychange',visibility);dead=true;setPhase('disposed');c.clearRect(0,0,width,height)}
  };
 }

@@ -35,5 +35,8 @@ jobs:
             tests/artifacts/golden-spin-b/sphere-validation-*/result.json
             tests/artifacts/golden-spin-b/sphere-validation-*/failure.json
             tests/artifacts/golden-spin-b/sphere-validation-*/*.png
+            tests/artifacts/golden-spin-b/hub-validation-*/result.json
+            tests/artifacts/golden-spin-b/hub-validation-*/failure.json
+            tests/artifacts/golden-spin-b/hub-validation-*/*.png
           if-no-files-found: error
           retention-days: 14

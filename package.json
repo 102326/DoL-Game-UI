@@ -38,7 +38,7 @@
     "prototype:golden-spin": "vite --config vite.golden-spin.config.ts",
     "prototype:golden-spin:check": "vue-tsc --noEmit -p tsconfig.golden-spin.json",
     "prototype:golden-spin:build": "node scripts/build-golden-spin.mjs",
-    "prototype:golden-spin:test": "node tests/golden-spin-b.cjs"
+    "prototype:golden-spin:test": "node tests/golden-spin-b.cjs && node tests/golden-spin-hub.cjs"
   },
   "dependencies": {
     "vue": "^3.5.0"

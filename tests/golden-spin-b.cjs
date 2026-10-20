@@ -21,9 +21,9 @@ fs.mkdirSync(out,{recursive:true});
    assert.ok(coreAfter.filter((value,i)=>i%4!==3&&Math.abs(value-coreBefore[i])>12).length>300,'the ball interior itself must move before the outer release begins');
    await p.screenshot({path:path.join(out,'charge.png')});
    await p.waitForFunction(()=>goldenSphereLab.inspect().phase==='release'&&goldenSphereLab.inspect().spread>.65);
-   const release=await inspect();assert.ok(release.energy>.6&&release.speed>40);assert.ok(release.running&&release.draws>before.draws+10,'phase labels alone do not prove the canvas is animating');assert.notEqual(release.angle,before.angle);await p.screenshot({path:path.join(out,'release.png')});
+   const release=await inspect();assert.ok(release.energy>.6&&release.speed>40);assert.ok(release.meteors>0&&release.meteors<=28,'meteor trails must be live and bounded');assert.ok(release.running&&release.draws>before.draws+10,'phase labels alone do not prove the canvas is animating');assert.notEqual(release.angle,before.angle);await p.screenshot({path:path.join(out,'release.png')});
    await p.waitForFunction(()=>goldenSphereLab.inspect().phase==='afterglow');await idle();await p.waitForTimeout(80);
-   const end=await inspect();assert.ok(end.speed<.31&&end.energy===0&&!end.running);
+   const end=await inspect();assert.ok(end.speed<.31&&end.energy===0&&!end.running&&end.meteors===0);
   });
   await check('rapid restart and mid-flight collection retain angular continuity and release all motion',async()=>{
    await p.evaluate(()=>goldenSphereLab.configure({duration:.5}));
@@ -48,7 +48,7 @@ fs.mkdirSync(out,{recursive:true});
    // Change the preference during motion; both notifications and the active-frame check must stop it.
    await p.waitForFunction(()=>goldenSphereLab.inspect().phase==='reduced');
    await p.getByRole('button',{name:'启动球体回旋',exact:true}).press('Enter');
-   const before=await inspect();assert.equal(before.phase,'reduced');assert.equal(before.running,false);
+   const before=await inspect();assert.equal(before.phase,'reduced');assert.equal(before.running,false);assert.equal(before.meteors,0);
    await p.waitForTimeout(180);const after=await inspect();assert.equal(after.angle,before.angle);assert.equal(after.running,false);
    assert.equal(after.draws-before.draws,after.motionChanges-before.motionChanges,'only a delivered preference notification may redraw the static frame');
    await p.getByRole('button',{name:'收束 / 中断',exact:true}).click();assert.equal((await inspect()).phase,'idle');
@@ -57,7 +57,7 @@ fs.mkdirSync(out,{recursive:true});
   await check('dispose cancels the timeline, frame, observers and responsive callbacks',async()=>{
    await p.evaluate(()=>{goldenSphereLab.play();goldenSphereLab.destroy()});const before=await inspect();
    await p.setViewportSize({width:800,height:700});await p.emulateMedia({reducedMotion:'reduce'});await p.waitForTimeout(120);
-   const after=await inspect();assert.ok(after.dead&&!after.running);assert.equal(after.phase,'disposed');assert.equal(after.draws,before.draws);
+   const after=await inspect();assert.ok(after.dead&&!after.running);assert.equal(after.meteors,0);assert.equal(after.phase,'disposed');assert.equal(after.draws,before.draws);
   });
   assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({stage:'ball-only Prototype A',checks,errors,visualAcceptance:'pending',coverage:'controlled desktop Edge or CI Chromium; no game integration'},null,2));
  }catch(error){const state=p?await p.evaluate(()=>({state:window.goldenSphereLab?.inspect(),visibility:document.visibilityState})).catch(()=>null):null;fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({message:error.stack,checks,errors,state},null,2));console.error('failure state',state);throw error}

@@ -11,7 +11,7 @@ onBeforeUnmount(()=>{sphere?.destroy();delete (window as unknown as Record<strin
 </script>
 <template>
  <main class="sphere-lab">
-  <header><p class="sphere-kicker">SOFT & WET 3.1 · MOTION EVOLUTION</p><h1>Golden <em>Spin.</em></h1><p class="sphere-subtitle">球面纹带 · 高速回旋 · 力量释放</p><span class="sphere-badge">球体视觉研究 / 第三轮 · 待负责人验收</span></header>
+  <header><p class="sphere-kicker">SOFT & WET 3.1 · MOTION EVOLUTION</p><h1>Golden <em>Spin.</em></h1><p class="sphere-subtitle">铁球刻纹 · 旋转残影 · 流星轨迹</p><span class="sphere-badge">金属球原型 · 待负责人验收</span><p><a href="/hub.html" style="color:#cabb8e">查看完整悬浮球效果 →</a></p></header>
   <section class="sphere-stage" aria-label="球体回旋视觉样片">
    <div class="sphere-stage-meta"><span>01 / THE CORE</span><span>STEEL · MOMENTUM · RELEASE</span></div>
    <canvas ref="canvas" aria-hidden="true"></canvas>
