@@ -38,13 +38,40 @@ const cases=[
     if(item.drift==='#modHubModManageContainer')assert.ok(await page.locator('.modhub-item').evaluate(n=>n.getBoundingClientRect().height<180),'phone Mod row fits its information and actions without a blank 18rem block');
    }
    if(item.id==='ModHubSoftWet'){assert.equal(await page.locator('#customOverlayTitle').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)','1.8 header keeps the shared transparent shell');assert.equal(await page.locator('#overlayTabs button').evaluate(n=>getComputedStyle(n).color),await page.locator('#customOverlay').evaluate(n=>getComputedStyle(n).color),'1.8 selected tab keeps Kraft Work ink');await page.waitForSelector('#modHubManagerToolsMenu[data-dgu-adapter=ModHubSoftWetTools][data-dgu-adapter-match=full]');await page.locator('#portaled-action').click();assert.equal(await page.evaluate(()=>portalCalls),1)}
+   if(item.drift==='#modHubModManageContainer'){
+    await page.addStyleTag({content:'.modhub-progress-frames{display:none}.modhub-progress-font-ready .modhub-progress-ring:not(.is-determinate) .modhub-progress-frames{display:inline;animation:modhub-progress-frames 2s steps(120,end) infinite}.modhub-progress-font-ready .modhub-progress-ring:not(.is-determinate),.modhub-progress-indeterminate{animation:none}.modhub-progress-font-ready .modhub-progress-indeterminate{display:none}.modhub-progress-ring.is-determinate{animation:none}@keyframes modhub-progress-frames{to{transform:translateX(-3840px)}}@keyframes modhub-progress-rotate{to{transform:rotate(360deg)}}@keyframes modhub-progress-arc{to{stroke-dashoffset:-82}}'});
+    await page.evaluate(()=>{document.documentElement.classList.add('modhub-progress-font-ready');const svg='<svg class="modhub-progress-ring" role="progressbar" aria-label="Checking"><text class="modhub-progress-frames">Frames</text><circle class="modhub-progress-indeterminate" r="13"></circle></svg>';document.querySelector('#customOverlayContent').insertAdjacentHTML('beforeend','<div id="progress-fixture">'+svg+'</div>');const modal=document.createElement('div');modal.id='modHubConfirmOverlay';modal.className='modhub-modal-backdrop';modal.innerHTML='<div class="modhub-modal-dialog" role="dialog" aria-modal="true"><div class="modhub-modal-header">Native title</div><div class="modhub-modal-body">'+svg+'</div><div class="modhub-modal-footer"><button id="native-modal-close">Cancel</button></div></div>';document.body.append(modal);window.nativeProgressDisplay=getComputedStyle(modal.querySelector('text')).display;window.nativeProgressAnimation=getComputedStyle(modal.querySelector('text')).animationName;window.modalNode=modal;window.modalCalls=0;document.querySelector('#native-modal-close').onclick=()=>{modalCalls++;modal.remove()}});
+    await page.waitForSelector('#modHubConfirmOverlay[data-dgu-adapter=ModHubSoftWetModal][data-dgu-adapter-match=full]');
+    assert.equal(await page.evaluate(()=>ModHubSoftWet.getDiagnostics().components.modal.level),'Style Only');
+    for(const selector of ['#progress-fixture','#modHubConfirmOverlay']){
+     assert.equal(await page.locator(selector+' .modhub-progress-frames').evaluate(n=>getComputedStyle(n).display),'none','no animated wide font strip');
+     assert.equal(await page.locator(selector+' .modhub-progress-indeterminate').evaluate(n=>getComputedStyle(n).display),'block','native circle remains visible');
+     assert.equal(await page.locator(selector+' .modhub-progress-ring').evaluate(n=>getComputedStyle(n).animationName),'modhub-progress-rotate');
+     assert.equal(await page.locator(selector+' .modhub-progress-ring').getAttribute('aria-label'),'Checking');
+    }
+    await page.emulateMedia({reducedMotion:'reduce'});
+    assert.equal(await page.locator('#modHubConfirmOverlay .modhub-progress-ring').evaluate(n=>getComputedStyle(n).animationName),'none');
+    await page.emulateMedia({reducedMotion:'no-preference'});
+    await page.evaluate(()=>document.documentElement.removeAttribute('data-dgu-visualMotion'));
+    assert.equal(await page.locator('#progress-fixture .modhub-progress-ring').evaluate(n=>getComputedStyle(n).animationName),'none');
+    await page.evaluate(()=>{document.documentElement.setAttribute('data-dgu-visualMotion','');const n=document.querySelector('#progress-fixture .modhub-progress-ring');n.classList.add('is-determinate');n.setAttribute('aria-valuenow','42')});
+    assert.equal(await page.locator('#progress-fixture .modhub-progress-ring').evaluate(n=>getComputedStyle(n).animationName),'none','determinate progress stays native');
+    assert.equal(await page.locator('#progress-fixture .modhub-progress-ring').getAttribute('aria-valuenow'),'42');
+    await page.evaluate(()=>{window.nativeFooter=document.querySelector('.modhub-modal-footer');nativeFooter.remove()});
+    await page.waitForFunction(()=>document.querySelector('#modHubConfirmOverlay').dataset.dguAdapterMatch!=='full');
+    assert.equal(await page.locator('#modHubConfirmOverlay .modhub-progress-frames').evaluate(n=>getComputedStyle(n).display),await page.evaluate(()=>nativeProgressDisplay),'unrecognized dialog returns native loading visuals');
+    assert.equal(await page.locator('#modHubConfirmOverlay .modhub-progress-frames').evaluate(n=>getComputedStyle(n).animationName),await page.evaluate(()=>nativeProgressAnimation));
+    await page.evaluate(()=>document.querySelector('.modhub-modal-dialog').append(nativeFooter));
+    await page.waitForSelector('#modHubConfirmOverlay[data-dgu-adapter-match=full]');
+    await page.locator('#native-modal-close').click();assert.equal(await page.evaluate(()=>modalCalls),1);
+   }
    assert.equal(await page.evaluate(()=>calls),widths.length);assert.equal(await page.evaluate(()=>original.parentNode===nativeParent&&originalInput===document.querySelector('#value')),true);
    assert.equal(await page.locator('#customOverlayContent').evaluate(n=>getComputedStyle(n).backdropFilter),'none','no nested content blur');
    if(item.card!=='#CE_settingsDiv')assert.match(await page.locator(item.card).first().evaluate(n=>getComputedStyle(n).backgroundColor),/^rgba\(/,item.id+' uses translucent content plane');
    await page.locator(item.drift).evaluate(n=>n.remove());await page.evaluate(()=>runtime.api.rescan());
    assert.notEqual(await page.locator('#customOverlay').getAttribute('data-dgu-adapter-match'),'full','structure drift withdraws full styling');
    await page.evaluate(id=>{window[id].destroy();runtime.destroy()},item.id);
-   if(item.id==='ModHubSoftWet'){assert.equal(await page.locator('#modHubManagerToolsMenu[data-dgu-adapter]').count(),0);assert.equal(await page.locator('#portaled-action').count(),1)}
+   if(item.id==='ModHubSoftWet'){assert.equal(await page.locator('#modHubManagerToolsMenu[data-dgu-adapter]').count(),0);assert.equal(await page.locator('#portaled-action').count(),1);if(item.drift==='#modHubModManageContainer')assert.equal(await page.evaluate(()=>modalNode.hasAttribute('data-dgu-adapter')),false)}
    assert.equal(await page.locator('#native').count(),['#modHubModManageContainer','#modHubHelpContainer'].includes(item.drift)?0:1);
    assert.deepEqual(errors,[]);await page.close();console.log('PASS '+item.id+' 3.x material, native events/input, 44px controls, narrow width and structure fallback');
   }
