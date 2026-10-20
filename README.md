@@ -1,19 +1,19 @@
-# Soft & Wet 3.0.3 — Kraft Work
+# Soft & Wet 3.0.4 — Kraft Work
 
 [![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)
 ![Game](https://img.shields.io/badge/DoL-0.5.12.13-blue)
 
 **Soft & Wet UI** 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，重新组织衣柜、服装店、角色信息和常用窗口。半透明材质让游戏背景自然参与画面，导航焦点、按钮反馈与空间转场让操作更连贯。
 
-Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。购买、穿戴、角色数值和存档仍由原游戏及对应 Mod 处理。当前版本包含 ModHub 管理器／帮助中心、存档三页与默认兼容外观；3.0.3 修复衣柜叠穿时穿戴波纹相对衣物列表错位，适应区域增高、滚动与缩放。所有现行 UI 设计统一采用 3.X，1.X／2.X 设计封存，不再使用。
+Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。购买、穿戴、角色数值和存档仍由原游戏及对应 Mod 处理。当前版本包含 ModHub 管理器／帮助中心、存档三页与默认兼容外观；3.0.4 修复部分环境缺少 AbortSignal.any 时 Host 无法启动的问题，并增加可见启动诊断；保留3.0.3衣柜波纹修正。所有现行 UI 设计统一采用 3.X，1.X／2.X 设计封存，不再使用。
 
-[下载 3.0.3](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.3) · [安装步骤](#安装与升级) · [完整更新说明](docs/RELEASE_3.0.3.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+[下载 3.0.4](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.4) · [安装步骤](#安装与升级) · [完整更新说明](docs/RELEASE_3.0.4.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 普通玩家需要 **主 UI + Framework Host 两个 ZIP**，使用相应第三方 Mod 时再选装兼容包。**不要解压**，导入后重启游戏。安装包不包含游戏本体、APK 或第三方原 Mod。
 
 ![Kraft Work 设置界面：上下布局](docs/media/3.0.0/KraftWork-3.0-settings-horizontal.png)
 
-以上为正式运行包在 Android 测试环境中的真实画面。视口、背景、偏好与 Mod 组合会影响实际效果。
+以上为3.0系列既有运行包在Android测试环境中的画面，不代表3.0.4热修复已实机验收。视口、背景、偏好与 Mod 组合会影响实际效果。
 
 ## 核心界面
 
@@ -90,17 +90,17 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 | DoL | 当前适配与主要验收版本为 **0.5.12.13** |
 | ModLoader | **>=2.100.0**，实测 2.101.1 |
 | TweeReplacer | **>=1.0.0** |
-| Framework Host | **>=0.1.2-experimental 且 <0.2.0**；推荐并实测 **0.1.4-experimental** |
+| Framework Host | **>=0.1.2-experimental 且 <0.2.0**；推荐并实测 **0.1.5-experimental** |
 
 最低要求、推荐版本与实测组合分别说明；满足最低要求不代表所有后续版本或整合包均已验证。Host 的公共协议仍为实验性协议。
 
 1. 备份存档，保留原 UI 和对应兼容包以便回退。
 2. 停用原 `DoLGameUI`，每个技术身份只启用一个版本。
-3. 从 [最新 Release](https://github.com/102326/DoL-Game-UI/releases/latest) 下载并导入 `StoneFreeHost-0.1.4-experimental.mod.zip` 与 `DoLGameUI-3.0.3.mod.zip`，不要解压。
+3. 从 [最新 Release](https://github.com/102326/DoL-Game-UI/releases/latest) 下载并导入 `StoneFreeHost-0.1.5-experimental.mod.zip` 与 `DoLGameUI-3.0.4.mod.zip`，不要解压。
 4. Host 排在 UI 前。可选兼容包排在对应目标 Mod 和 UI 之后；没有目标 Mod 就不安装相应兼容包。
 5. 重启游戏，检查界面与版本，再载入自己的进度。显示偏好保存在当前浏览器或应用中，与游戏存档分离。
 
-`StoneFreeHost` 是 Framework Host 保留的技术包名；对外版本代号为 **Kraft Work**。开发样例、Factory 和 Author Kit 不是玩家必装项。详细说明见 [安装与回退](docs/INSTALL_3.0.3.md)。
+`StoneFreeHost` 是 Framework Host 保留的技术包名；对外版本代号为 **Kraft Work**。开发样例、Factory 和 Author Kit 不是玩家必装项。详细说明见 [安装与回退](docs/INSTALL_3.0.4.md)。
 
 ## 可选兼容包
 
@@ -131,7 +131,7 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 - [UI Runtime API](docs/UI_RUNTIME.md) 与 [接入示例](examples/ui-surfaces/README.md)
 - [持续集成：检查范围与本地运行](docs/CI.md)
 - [基础设施与所有权边界](docs/UI_INFRASTRUCTURE.md)、[独立 Adapter](docs/OPTIONAL_ADAPTERS.md)
-- [发行验证记录](docs/KRAFT_WORK_3.0.3_VALIDATION.md)、[下载校验清单](docs/releases/3.0.3/SHA256SUMS.txt)
+- [发行验证记录](docs/KRAFT_WORK_3.0.4_VALIDATION.md)、[下载校验清单](docs/releases/3.0.4/SHA256SUMS.txt)
 
 <details>
 <summary>3.0 源码构建</summary>

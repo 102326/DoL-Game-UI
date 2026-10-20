@@ -1,5 +1,6 @@
 import {PROTOCOL, type Host, type Binding, type Cleanup, type Contribution, type MountContext,
  type MountRequest, type MountHandle, type Participant, type ResourceKind, type Source, type Json, type View, type ViewContribution, type CommandContribution, type Command} from './contracts';
+import {combineSignals} from './signals';
 
 const validId = (value: unknown): value is string => typeof value === 'string' && /^[A-Za-z][A-Za-z0-9_.-]{0,79}$/.test(value);
 function requireId(value: unknown) {if (!validId(value)) throw new TypeError('Invalid participant/resource id')}
@@ -26,7 +27,7 @@ function snapshot(value: Json): Json {
 
 /** No Vue, theme, State, storage, global input handlers or third-party DOM rewrites. */
 export function createHost(root: Window & Pick<typeof globalThis, 'MutationObserver' | 'HTMLElement'>): Readonly<Host> {
- if (typeof AbortSignal.any !== 'function') throw new Error('AbortSignal.any is required by this experimental Host');
+ if (typeof AbortController !== 'function') throw new Error('AbortController is required by this experimental Host');
  const doc = root.document;
  let disposed = false, scenePending = false, generation = 0, scene = new AbortController();
  const participants = new Map<string, {dispose: Cleanup}>();
@@ -85,7 +86,8 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
      || !['passage', 'persistent'].includes(request.lifetime) || typeof request.setup !== 'function') throw new TypeError('Invalid mount');
     const element = doc.createElement('div'); element.dataset.sfOwner = id; element.dataset.sfMount = request.id;
     const controller = new AbortController(), cleanup: Cleanup[] = [];
-    let closed = false;
+    let closed = false, mergedScene:AbortSignal|undefined, mergedSignal:AbortSignal|undefined;
+    let stopMerged:Cleanup=()=>{};
     const isCurrent = () => alive() && !closed && element.isConnected;
     function onCleanup(fn: Cleanup) {
      if (typeof fn !== 'function') throw new TypeError('Cleanup must be a function');
@@ -93,13 +95,14 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
     }
     function release() {
      if (closed) return;
-     closed = true; controller.abort();
+     closed = true; controller.abort(); stopMerged();
      for (const fn of cleanup.splice(0).reverse()) safely(id, 'mount-cleanup', fn);
      element.remove(); mounts.delete(entry); owned.delete(release); ids.delete(request.id); watch();
     }
     function mountBinding(): Binding {
      const current = binding();
-     const value = Object.freeze({...current, signal: AbortSignal.any([controller.signal, current.signal]), isCurrent: () => isCurrent() && current.isCurrent()});
+     if(mergedScene!==current.signal){stopMerged();const merged=combineSignals([controller.signal,current.signal]);mergedScene=current.signal;mergedSignal=merged.signal;stopMerged=merged.dispose}
+     const value = Object.freeze({...current, signal: mergedSignal!, isCurrent: () => isCurrent() && current.isCurrent()});
      bindings.add(value); return value;
     }
     const context: MountContext = Object.freeze({element, signal: controller.signal, isCurrent, binding: mountBinding,

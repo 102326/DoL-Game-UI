@@ -1,9 +1,10 @@
 import {PROTOCOL, type Host} from './contracts';
 
 /** One consumer owns its own lifecycle subscription; existing Mods need not opt in. */
-export function connectConsumer(start: (host: Host) => () => void, root = window) {
+export function connectConsumer(start: (host: Host) => () => void, root = window, onStatus?: (reason:string|null)=>void) {
  let cleanup: (() => void) | undefined, current: Host | undefined, closed = false, lastReason = '';
- function warn(reason: string) {if (reason !== lastReason) console.warn(`[Stone Free] Consumer unavailable: ${reason}`); lastReason = reason}
+ function status(reason:string|null){try{onStatus?.(reason)}catch{/* Diagnostics cannot invalidate a consumer. */}}
+ function warn(reason: string) {if (reason !== lastReason) console.warn(`[Stone Free] Consumer unavailable: ${reason}`); lastReason = reason;status(reason)}
  function stop() {
   const release = cleanup; cleanup = undefined; current = undefined;
   try {release?.()} catch {console.warn('[Stone Free] Consumer cleanup failed')}
@@ -26,14 +27,15 @@ export function connectConsumer(start: (host: Host) => () => void, root = window
    const diagnostics = host.getDiagnostics(), capabilities = host.getCapabilities();
    if (!diagnostics || typeof diagnostics.disposed !== 'boolean' || !capabilities || typeof capabilities.views !== 'boolean' || typeof capabilities.commands !== 'boolean') {warn('Host unrecognized'); return}
    if (diagnostics.disposed) {warn('Host disposed'); return}
-   failure = 'Consumer initialization failed'; cleanup = start(host); current = host; lastReason = '';
+   failure = 'Consumer initialization failed'; cleanup = start(host); current = host; lastReason = '';status(null);
   } catch {stop(); warn(failure)}
  }
+ const stopped=()=>{stop();warn('Host stopped')};
  try {
   root.document.addEventListener('stone-free-host-ready', bind);
-  root.document.addEventListener('stone-free-host-stopped', stop);
+  root.document.addEventListener('stone-free-host-stopped', stopped);
   root.document.addEventListener('DOMContentLoaded', bind);
   bind();
  } catch {stop(); warn('Host connection unavailable')}
- return () => {if (closed) return; closed = true; stop(); try {root.document.removeEventListener('stone-free-host-ready', bind); root.document.removeEventListener('stone-free-host-stopped', stop); root.document.removeEventListener('DOMContentLoaded', bind)} catch {}}
+ return () => {if (closed) return; closed = true; stop(); try {root.document.removeEventListener('stone-free-host-ready', bind); root.document.removeEventListener('stone-free-host-stopped', stopped); root.document.removeEventListener('DOMContentLoaded', bind)} catch {}}
 }

@@ -5,7 +5,7 @@ type NativeWindow = Window & Pick<typeof globalThis, 'MutationObserver' | 'HTMLE
 
 export function installHost(root: NativeWindow = window) {
  // Unknown implementations are never replaced or disposed by this package.
- try {if ('DoLUiHost' in root || typeof root.MutationObserver !== 'function' || typeof AbortSignal.any !== 'function') return null}
+ try {if ('DoLUiHost' in root || typeof root.MutationObserver !== 'function' || typeof AbortController !== 'function') return null}
  catch {return null}
  const core = createHost(root), doc = root.document;
  let bridge: ReturnType<NonNullable<NativeWindow['jQuery']>> | undefined, closed = false, retry=0;

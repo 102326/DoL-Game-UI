@@ -1,13 +1,13 @@
 # Soft & Wet 3.0 — Kraft Work
 
-`DoLGameUI 3.0.3` 是 Kraft Work 3.x 的维护更新，修复衣柜叠穿时穿戴波纹的位置。技术名仍为 DoLGameUI，原有 UI API v1 保留，Framework Host 独立安装。
+`DoLGameUI 3.0.4` 是 Kraft Work 3.x 的维护更新，修复缺少AbortSignal.any时Host无法启动，并增加可见启动诊断；保留既有波纹修正。技术名仍为 DoLGameUI，原有 UI API v1 保留，Framework Host 独立安装。
 
 ## 安装与升级
 
 1. 备份存档，保留可回退的旧 UI 与兼容包。
 2. 在 ModLoader 中停用旧 DoLGameUI，导入并启用 Host 和本 UI 两个 ZIP，**不要解压**。Host 排在 UI 前，只启用一份同名 Host 和 UI。
 3. 本 UI 支持 DoL **0.5.12.13**，需要 ModLoader **>=2.100.0**、TweeReplacer **>=1.0.0**。实际 Loader 验证版本为 2.101.1。
-4. 最低 Host 为 **0.1.2-experimental**，推荐使用已公开的 **0.1.4-experimental** 原包；依赖表达式为 `>=0.1.2-experimental && <0.2.0`。
+4. 最低 Host 为 **0.1.2-experimental**，推荐使用已公开的 **0.1.5-experimental** 原包；依赖表达式为 `>=0.1.2-experimental && <0.2.0`。
 5. 按加载器提示重启，再载入进度并检查偏好。安装报告不代替实际加载检查。
 
 NativeStatus、独立 MotionHub、WardrobeReference、Factory 和 Author Kit 均不是玩家必装项。可选外观兼容包按各自说明安装，不代表所有后续第三方版本已验证。
@@ -30,12 +30,12 @@ R16-W01 修复保留：快穿和脱下通过当前原穿戴入口执行，避免
 
 Framework 公共协议仍为 **0.1-experimental**，没有长期 API 1.0 冻结承诺；官方 UI 的产品稳定性与公共协议稳定性分开。作者应核对协议、所需能力和具体 Host 版本，破坏性变化需要明确通知。Host 不依赖官方 UI，也不管理 Mod 加载、第三方状态或存档事务。
 
-Loader 2.101.1 的预发布比较有已知限制，部分 0.2.0 预发布可能满足安装表达式，但不属于当前支持组合。消费者检查协议与能力，不能保证拦截所有错误 Host 包。Host 需要 AbortSignal.any 等环境能力，不支持时应回退。
+Loader 2.101.1 的预发布比较有已知限制，部分 0.2.0 预发布可能满足安装表达式，但不属于当前支持组合。消费者检查协议与能力，不能保证拦截所有错误 Host 包。Host 0.1.5 使用局部信号合并，不再要求 AbortSignal.any；仍需基础 AbortController、MutationObserver 等浏览器能力。不保证所有旧浏览器可用。
 
 物理手机与 IME 的完整设备覆盖、全部 Mod 与衣槽、所有交易目的地和战斗结束类型、长期性能、云端及文件选择未完整验证。部分社区 Patch、资源或 TypeError 告警仍需按具体场景判断，不能统一认定为 UI 缺陷或无害。新 Hub 位置落盘及回退读回没有本轮新增证明。
 
-Host 0.1.4 沿用已公开的冻结字节，包内 RC 描述记录其当时状态，不因 UI 更新而改写同版本包。Framework 不提供单包/双包混装或整包热替换。
+Host 0.1.5 修复缺少 AbortSignal.any 时不启动的问题；历史0.1.4包保留，不覆盖同版本字节。Framework 不提供单包/双包混装或整包热替换。
 
-设置与可选包见 `docs/UI_SETTINGS.md`、`docs/OPTIONAL_ADAPTERS.md`，本版变化见 `docs/RELEASE_3.0.3.md`。许可证见 LICENSE、THIRD-PARTY-NOTICES.txt 及 UPSTREAM-RENDERER 文件。
+设置与可选包见 `docs/UI_SETTINGS.md`、`docs/OPTIONAL_ADAPTERS.md`，本版变化见 `docs/RELEASE_3.0.4.md`。许可证见 LICENSE、THIRD-PARTY-NOTICES.txt 及 UPSTREAM-RENDERER 文件。
 
 反馈入口：https://github.com/102326/DoL-Game-UI/issues 。请附 DoL/Lyra、Loader、Host/UI、相关 Mod 版本、平台/WebView、复现步骤及实际与期望表现。不要公开上传私人存档、账号、敏感数据或未获授权的第三方 Mod 包。

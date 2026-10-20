@@ -131,12 +131,12 @@ class SourceVersions(unittest.TestCase):
                         data['version'] = '99.0.0'
                         (root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
                     if defect in ['runtime', 'joint-ui']:
-                        (root / 'framework/official-ui/main.ts').write_text(originals['framework/official-ui/main.ts'].replace("visualVersion='3.0.3'", "visualVersion='99.0.0'"), encoding='utf-8')
+                        (root / 'framework/official-ui/main.ts').write_text(originals['framework/official-ui/main.ts'].replace("visualVersion='3.0.4'", "visualVersion='99.0.0'"), encoding='utf-8')
                     if defect == 'joint-ui':
                         # Producer follows the wrong root version too: independent policy must still refuse it.
                         (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("official_version if directory", "'99.0.0' if directory"), encoding='utf-8')
                     if defect == 'host':
-                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_version = '0.1.4-experimental'", "host_version = '3.0.1'"), encoding='utf-8')
+                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_version = '0.1.5-experimental'", "host_version = '3.0.1'"), encoding='utf-8')
                     if defect == 'protocol':
                         (root / 'framework/contracts.ts').write_text(originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"), encoding='utf-8')
                     if defect == 'range':
@@ -232,7 +232,7 @@ class OptionalContracts(unittest.TestCase):
 
 class ZipMetadata(unittest.TestCase):
     def test_metadata_drift_and_comparison_diagnostics(self):
-        original = ROOT / 'dist/framework/StoneFreeHost-0.1.4-experimental.mod.zip'
+        original = ROOT / 'dist/framework/StoneFreeHost-0.1.5-experimental.mod.zip'
         checks.check_package(original, 'StoneFreeHost')
         clean = contents(original)
         mutations = {
