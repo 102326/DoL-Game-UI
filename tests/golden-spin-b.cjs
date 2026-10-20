@@ -39,7 +39,10 @@ fs.mkdirSync(out,{recursive:true});
    await p.setViewportSize({width:844,height:390});await p.waitForTimeout(50);assert.ok((await inspect()).width>0);
   });
   await check('reduced motion renders a static response with keyboard-accessible controls',async()=>{
-   await p.emulateMedia({reducedMotion:'reduce'});await p.getByRole('button',{name:'启动球体回旋',exact:true}).press('Enter');
+   await p.emulateMedia({reducedMotion:'reduce'});
+   // matchMedia's change event is asynchronous; settle it before measuring idle draws.
+   await p.waitForFunction(()=>goldenSphereLab.inspect().phase==='reduced');
+   await p.getByRole('button',{name:'启动球体回旋',exact:true}).press('Enter');
    const before=await inspect();assert.equal(before.phase,'reduced');assert.equal(before.running,false);
    await p.waitForTimeout(180);assert.equal((await inspect()).draws,before.draws);
    await p.getByRole('button',{name:'收束 / 中断',exact:true}).click();assert.equal((await inspect()).phase,'idle');
@@ -51,6 +54,6 @@ fs.mkdirSync(out,{recursive:true});
    const after=await inspect();assert.ok(after.dead&&!after.running);assert.equal(after.phase,'disposed');assert.equal(after.draws,before.draws);
   });
   assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({stage:'ball-only Prototype A',checks,errors,visualAcceptance:'pending',coverage:'controlled desktop Edge or CI Chromium; no game integration'},null,2));
- }catch(error){fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({message:error.stack,checks,errors},null,2));throw error}
+ }catch(error){const state=p?await p.evaluate(()=>({state:window.goldenSphereLab?.inspect(),visibility:document.visibilityState})).catch(()=>null):null;fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({message:error.stack,checks,errors,state},null,2));console.error('failure state',state);throw error}
  finally{await browser.close();await server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
