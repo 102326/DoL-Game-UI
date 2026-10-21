@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Soft & Wet 3.1 product direction: read [approved V1.0](docs/SOFT_WET_3.1_PRODUCT_DIRECTION_V1.md) and its linked source report before future visual work. Fast/fluid, visibly gorgeous/refined, and comfortable must be achieved together. Do not default to shorter/weaker motion, forbid all functional waiting, restrict all movement to decorative proxies, or impose minimal rewrites/dependencies as a product scope cap. Preserve the stated Host/UI, 3.x Acrylic, business/save and compatibility contracts. Current authorization is product-policy and planning synchronization only; the next visual proposal and implementation remain unapproved. b507f1a is foundational tuning/reliability work, not accepted new-window visual rework.
+
 - Current visual authority: [Kraft Work 3.x baseline](docs/VISUAL_BASELINE_3X.md). Use it for new official UI and compatible presentation unless the owner specifies an exception. Historical 1.x/2.x design ideas, Eyes demos and earlier visual plans are archived reference, not current design direction. Preserve native fallbacks, configuration migration and historical evidence; do not delete live compatibility paths merely to remove an old theme.
 - All current UI design uses the 3.x baseline. Earlier 1.x/2.x styles stay archived and must not be restored as runtime themes, default compatibility styling or design sources without a new explicit owner decision.
 
