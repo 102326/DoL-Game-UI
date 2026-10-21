@@ -58,6 +58,8 @@ jobs:
             tests/artifacts/settings-refraction-v1/provenance.json
             tests/artifacts/settings-refraction-v1/review-*/result.json
             tests/artifacts/settings-refraction-v1/review-*/failure.json
+            tests/artifacts/settings-refraction-v1/review-*/geometry-*.json
+            tests/artifacts/settings-refraction-v1/review-*/reversal-*.json
             tests/artifacts/settings-refraction-v1/review-*/*.png
           if-no-files-found: error
           retention-days: 14

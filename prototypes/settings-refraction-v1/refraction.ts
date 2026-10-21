@@ -1,5 +1,8 @@
 // An isolated settings study: no global motion adapter or game action ownership.
 import {gsap} from 'gsap';
+// Owner requested V2 pacing near 3.0.4. Keep V1 as an explicit visual reference.
+const original=new URLSearchParams(location.search).get('revision')==='v1';
+export const timing=original?{revision:'v1',open:1.30,close:1.30,enter:.83,leave:.42}:{revision:'v2',open:.56,close:.30,enter:.62,leave:.30};
 type Evidence={event:string;at:number;[key:string]:unknown};
 export const evidence:Evidence[]=[];
 const note=(event:string,detail:Record<string,unknown>={})=>evidence.push({event,at:performance.now(),...detail});
@@ -22,7 +25,8 @@ export function refractPage(node:HTMLElement,direction:number,entering:boolean,d
  }else{
   timeline.to(node,{transformOrigin:direction>0?'100% 0%':'0% 0%',rotationY:direction*20,x:direction*-45,z:-100,opacity:0,filter:'blur(3px)',duration:.42,ease:'power2.inOut'},0);
  }
- note('category-start',{entering,direction,heading:node.getAttribute('aria-labelledby')});
+ timeline.timeScale((entering?.83:.42)/(entering?timing.enter:timing.leave));
+ note('category-start',{entering,direction,heading:node.getAttribute('aria-labelledby'),duration:entering?timing.enter:timing.leave,revision:timing.revision});
 }
 export function createSettingsRefraction(){
  let timeline:gsap.core.Timeline|undefined,shell:HTMLElement|undefined,dialog:HTMLDialogElement|undefined,stage:HTMLElement|undefined;
@@ -46,7 +50,7 @@ export function createSettingsRefraction(){
  function open(nextDialog:HTMLDialogElement,nextShell:HTMLElement,glass?:HTMLElement,lastFocus?:HTMLElement|null){
   if(disposed)return;dialog=nextDialog;shell=nextShell;closing=false;onClosed=undefined;origin=lastFocus??origin;
   note('open-request');
-  if(timeline){timeline.play();update();return}
+  if(timeline){timeline.timeScale(timeline.duration()/timing.open).play();update();return}
   if(!enabled()){dialog.dataset.rfState='open';return}
   if(glass)glass.style.opacity='0';
   content=shell.querySelector<HTMLElement>('.dmt-workspace-page')??undefined;
@@ -72,8 +76,8 @@ export function createSettingsRefraction(){
    .to(caustic,{opacity:0,duration:.3},1.0);
   groups.forEach((group,index)=>timeline!.fromTo(group,{y:26+index*4,rotationX:-9,opacity:0,clipPath:'inset(0 90% 0 0 round 12px)'},{y:0,rotationX:0,opacity:1,clipPath:'inset(0 0% 0 0 round 0px)',duration:.61,ease:'power3.out'},.30+index*.075));
   if(origin?.isConnected)gsap.fromTo(origin,{scale:.94},{scale:1,duration:.3,clearProps:'transform'});
-  timeline.play();update();note('input-acknowledged',{duration:timeline.duration(),origin:!!from});
+  timeline.timeScale(timeline.duration()/timing.open).play();update();note('input-acknowledged',{duration:timing.open,virtualDuration:timeline.duration(),origin:!!from,revision:timing.revision});
  }
- function close(done:()=>void){closing=true;onClosed=done;note('close-request',{time:timeline?.time()??0});disposeRefractedPages();if(!enabled()||!timeline||timeline.time()===0){clean();onClosed=undefined;done();return}timeline.reverse();update()}
+ function close(done:()=>void){closing=true;onClosed=done;note('close-request',{time:timeline?.time()??0,duration:timing.close,revision:timing.revision});disposeRefractedPages();if(!enabled()||!timeline||timeline.time()===0){clean();onClosed=undefined;done();return}timeline.timeScale(timeline.duration()/timing.close).reverse();update()}
  return {open,close,dispose(){disposed=true;clean();if(origin){gsap.killTweensOf(origin);gsap.set(origin,{clearProps:'transform'})}disposeRefractedPages();observer.disconnect();reduced.removeEventListener('change',changed);document.removeEventListener('visibilitychange',changed);window.removeEventListener('resize',resize)}};
 }

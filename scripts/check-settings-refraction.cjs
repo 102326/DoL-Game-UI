@@ -4,7 +4,7 @@ const {chromium}=require('playwright');
 const root=path.resolve('tests/artifacts/settings-refraction-v1'),dist=path.join(root,'dist');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const output=path.join(root,'review-'+Date.now());fs.mkdirSync(output,{recursive:true});
-const record=process.argv.includes('--record'),checks=[],errors=[];
+const record=process.argv.includes('--record'),checks=[],errors=[],timingMeasurements={};
 const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.json':'application/json'};
 const server=http.createServer((req,res)=>{const file=path.resolve(dist,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname==='/'?'/index.html':new URL(req.url,'http://local').pathname));if(!file.startsWith(dist+path.sep)||!fs.existsSync(file)){res.writeHead(404);res.end();return}res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res)});
 const browserOptions=require('../tests/browser-options.cjs');
@@ -15,7 +15,7 @@ const waitClosed=page=>page.waitForFunction(()=>!document.querySelector('dialog'
 const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelector('dialog'),nodes=[...document.querySelectorAll('.dmt-workspace-section')];return !d?.hasAttribute('data-workspace-transition')&&nodes.length===1&&nodes[0].getAttribute('aria-labelledby')==='dmt-'+id+'-heading'&&!nodes[0].hasAttribute('inert')},id);
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const base='http://127.0.0.1:'+server.address().port;
- const browser=await chromium.launch(browserOptions);let page;
+ const browser=await chromium.launch({...browserOptions,args:[...(browserOptions.args||[]),'--site-per-process']});let page;
  const watch=page=>{page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push('HTTP '+r.status()+' '+r.url())})};
  try{
   await check('frozen baseline source identity; only two generated candidate source files differ',async()=>{
@@ -26,11 +26,27 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
     assert.equal(actual,expected,variant+': '+name);
    }
   });
+  await check('V2 open, close and category settlement stay near the actual 3.0.4 baseline',async()=>{
+   for(const variant of ['old','new']){
+    page=await browser.newPage({viewport:{width:1280,height:900}});watch(page);await page.goto(base+'/scene.html?variant='+variant);await page.waitForFunction(()=>window.settingsStudy);
+    timingMeasurements[variant]=await page.evaluate(async variant=>{
+     const measure=async(action,ready)=>{const start=performance.now();settingsStudy.act(action);await new Promise((resolve,reject)=>{const tick=()=>{if(ready())resolve();else if(performance.now()-start>3000)reject(Error('Settlement timeout: '+action));else requestAnimationFrame(tick)};requestAnimationFrame(tick)});return performance.now()-start};
+     const opened=()=>variant==='new'?document.querySelector('dialog')?.dataset.rfState==='open':!document.querySelector('.dmt-open-material')&&document.querySelector('dialog')?.open&&document.querySelector('.dmt-settings-shell').getAnimations().every(a=>a.playState!=='running');
+     const open=await measure('打开设置',opened);
+     const category=await measure('切换：材质',()=>!document.querySelector('dialog').hasAttribute('data-workspace-transition')&&document.querySelectorAll('.dmt-workspace-section').length===1&&!!document.getElementById('dmt-material-heading'));
+     const close=await measure('关闭设置',()=>!document.querySelector('dialog')?.open);
+     return {open,category,close};
+    },variant);await page.close();
+   }
+   for(const action of ['open','close','category'])assert.ok(timingMeasurements.new[action]>100&&timingMeasurements.new[action]<=timingMeasurements.old[action]+180,action+' is not near baseline: '+JSON.stringify(timingMeasurements));
+   console.log('TIMING',JSON.stringify(timingMeasurements));
+  });
   for(const viewport of [{width:1280,height:900},{width:390,height:844}]){
    page=await browser.newPage({viewport,deviceScaleFactor:1});watch(page);await page.goto(base+'/scene.html?variant=new');await page.waitForFunction(()=>window.settingsStudy);
    await check(viewport.width+': real modal, geometry, hit testing, actual preference input and keyboard close',async()=>{
+    await page.evaluate(()=>document.getElementById('dol-midnight-sidebar-button').addEventListener('click',()=>{window.__studyInitiallyInert=document.querySelector('.dmt-workspace-page').hasAttribute('inert')},{once:true}));
     await page.getByRole('button',{name:'界面设置',exact:true}).click();
-    assert.equal(await page.locator('.dmt-workspace-page').evaluate(n=>n.hasAttribute('inert')),true,'Clipped content must remain inert until the reveal completes');await waitOpen(page);
+    assert.equal(await page.evaluate(()=>window.__studyInitiallyInert),true,'Clipped content must remain inert until the reveal completes');await waitOpen(page);
     const geometry=await page.evaluate(()=>{
      const shell=document.querySelector('.dmt-settings-shell'),r=shell.getBoundingClientRect();return {modal:document.querySelector('dialog').matches(':modal'),rect:r.toJSON(),width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,hit:[...document.querySelectorAll('.dmt-workspace-nav button,.dmt-close')].map(n=>{const b=n.getBoundingClientRect();return n.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2))}),decorative:[...document.querySelectorAll('.rf-stage,.rf-stage *')].every(n=>getComputedStyle(n).pointerEvents==='none')};
     });
@@ -45,9 +61,15 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
     await waitPage(page,'reading');assert.equal(await page.locator('.dmt-workspace-section[aria-hidden=true]').count(),0);assert.equal(await page.locator('.dmt-workspace-page[inert]').count(),0);
    });
    await check(viewport.width+': close during unfolding and reverse from current geometry without restart',async()=>{
-    await act(page,'关闭设置');await waitClosed(page);await act(page,'打开设置');await page.waitForTimeout(410);
-    const values=await page.evaluate(()=>{const stage=document.querySelector('.rf-stage');const initial=getComputedStyle(stage).transform;settingsStudy.act('展开中关闭');const closed=getComputedStyle(stage).transform;settingsStudy.act('关闭中重新打开');const reopened=getComputedStyle(stage).transform;return {initial,closed,reopened}});
-    assert.equal(values.initial,values.closed);assert.equal(values.closed,values.reopened);await waitOpen(page);await act(page,'关闭设置');await waitClosed(page);assert.equal(await page.locator('.rf-stage,.dmt-settings-context').count(),0);
+    await act(page,'关闭设置');await waitClosed(page);await act(page,'打开设置');
+    const values=await page.evaluate(()=>new Promise((resolve,reject)=>{const start=performance.now();const tick=()=>{const stage=document.querySelector('.rf-stage'),shell=document.querySelector('.dmt-settings-shell');const ratio=stage&&shell?stage.getBoundingClientRect().width/shell.getBoundingClientRect().width:0;
+     // Sample an actually unfolding frame; a fixed sleep can still land at t=0.
+     if(ratio>.10&&ratio<.85){const sample=()=>{const matrix=new DOMMatrixReadOnly(getComputedStyle(stage).transform);return [[0,0],[stage.offsetWidth,0],[0,stage.offsetHeight],[stage.offsetWidth,stage.offsetHeight]].map(([x,y])=>new DOMPoint(x,y).matrixTransform(matrix).toJSON())};const initial=sample();settingsStudy.act('展开中关闭');const closed=sample();settingsStudy.act('关闭中重新打开');const reopened=sample();resolve({initial,closed,reopened,ratio})}
+     else if(performance.now()-start>3000)reject(Error('No intermediate unfolding frame observed'));else requestAnimationFrame(tick)};requestAnimationFrame(tick)}));
+    // GSAP rate changes can round a CSS matrix by 0.0001px. Check every corner
+    // within one browser layout quantum, rather than decimal string spelling.
+    for(const [a,b]of [[values.initial,values.closed],[values.closed,values.reopened]])for(let i=0;i<4;i++)for(const axis of ['x','y','z'])assert.ok(Math.abs(a[i][axis]-b[i][axis])<=1/64,'Reversal corner jumped: '+JSON.stringify(values));
+    fs.writeFileSync(path.join(output,'reversal-'+viewport.width+'.json'),JSON.stringify(values,null,2));await waitOpen(page);await act(page,'关闭设置');await waitClosed(page);assert.equal(await page.locator('.rf-stage,.dmt-settings-context').count(),0);
    });
    await check(viewport.width+': reduced motion, preference cancellation and hidden-page settlement',async()=>{
     await page.emulateMedia({reducedMotion:'reduce'});await act(page,'打开设置');await waitOpen(page);assert.equal(await page.locator('.rf-stage').count(),0);await act(page,'切换：材质');await waitPage(page,'material');await page.keyboard.press('Escape');await waitClosed(page);
@@ -77,18 +99,18 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
    assert.ok(await page.locator('.screen').evaluateAll(nodes=>nodes.every(node=>node.getBoundingClientRect().bottom<=innerHeight)),'Recording must show the entire comparison viewport');
    await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('对照结束'),{},{timeout:25000});
    const frames=page.frames().filter(frame=>frame.url().includes('scene.html'));
-   const data=await Promise.all(frames.map(frame=>frame.evaluate(()=>({variant:settingsStudy.variant,viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio,zoom:getComputedStyle(document.body).zoom},preferences:settingsStudy.preferences(),operations:settingsStudy.operations,evidence:settingsStudy.motionEvidence,final:{open:document.querySelector('dialog')?.open,sections:document.querySelectorAll('.dmt-workspace-section').length,stage:document.querySelectorAll('.rf-stage').length}}))));
+   const data=await Promise.all(frames.map(frame=>frame.evaluate(()=>({variant:settingsStudy.variant,revision:settingsStudy.revision,viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio,zoom:getComputedStyle(document.body).zoom},preferences:settingsStudy.preferences(),operations:settingsStudy.operations,evidence:settingsStudy.motionEvidence,final:{open:document.querySelector('dialog')?.open,sections:document.querySelectorAll('.dmt-workspace-section').length,stage:document.querySelectorAll('.rf-stage').length}}))));
    assert.equal(data.length,2);for(const item of data){assert.deepEqual(item.viewport,{...viewport,dpr:1,zoom:'1'});assert.equal(item.operations.length,12);assert.equal(item.final.open,false);assert.equal(item.final.stage,0)}
    assert.deepEqual(data[0].operations.map(x=>x.action),data[1].operations.map(x=>x.action));
    assert.deepEqual(data[0].preferences,data[1].preferences,'Comparison settings must match');
-   const skew=data[0].operations.map((x,i)=>Math.abs(x.wallTime-data[1].operations[i].wallTime));assert.ok(Math.max(...skew)<80,'Input delivery skew too large: '+Math.max(...skew));
-   const video=page.video();await context.close();const source=await video.path(),target=path.join(output,'settings-refraction-'+name+'-1x.mp4');
+   const skew=data[0].operations.map((x,i)=>Math.abs(x.wallTime-data[1].operations[i].wallTime));fs.writeFileSync(path.join(output,'recording-inputs-'+name+'.json'),JSON.stringify({data,skew},null,2));assert.ok(Math.max(...skew)<80,'Input delivery skew too large: '+Math.max(...skew));
+   const video=page.video();await context.close();const source=await video.path(),target=path.join(output,'settings-refraction-v2-'+name+'-1x.mp4');
    execFileSync('ffmpeg',['-y','-i',source,'-c:v','libx264','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+faststart',target],{stdio:'pipe'});
    const probe=JSON.parse(execFileSync('ffprobe',['-v','quiet','-show_format','-show_streams','-of','json',target],{encoding:'utf8'}));
    assert.ok(Number(probe.format.duration)>=17.4);recordings.push({name,viewport,video:path.basename(target),sha256:sha(fs.readFileSync(target)),bytes:fs.statSync(target).size,inputSkewMs:Math.max(...skew),duration:Number(probe.format.duration),data});console.log('RECORDED',target);
   }
   assert.deepEqual(errors,[]);
-  const result={scope:'Playwright Chromium static-build controlled real-settings study; actual OS in runtime; not game, physical-device/WebView or owner visual acceptance',checks,errors,recordings,provenance:JSON.parse(fs.readFileSync(path.join(root,'provenance.json'))),runtime:{platform:process.platform,node:process.version,chromium:browser.version()},sourceHead:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),prototypeFiles:Object.fromEntries(execFileSync('git',['ls-files','--cached','--others','--exclude-standard','prototypes/settings-refraction-v1','scripts/prepare-settings-refraction.mjs','scripts/check-settings-refraction.cjs','vite.settings-refraction.config.ts','tsconfig.settings-refraction.json'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).map(file=>[file,sha(fs.readFileSync(file))]))};
+  const result={scope:'Playwright Chromium static-build controlled real-settings study; actual OS in runtime; not game, physical-device/WebView or owner visual acceptance',checks,errors,recordings,timingMeasurements,provenance:JSON.parse(fs.readFileSync(path.join(root,'provenance.json'))),runtime:{platform:process.platform,node:process.version,chromium:browser.version()},sourceHead:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),prototypeFiles:Object.fromEntries(execFileSync('git',['ls-files','--cached','--others','--exclude-standard','prototypes/settings-refraction-v1','scripts/prepare-settings-refraction.mjs','scripts/check-settings-refraction.cjs','vite.settings-refraction.config.ts','tsconfig.settings-refraction.json'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).map(file=>[file,sha(fs.readFileSync(file))]))};
   fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(result,null,2)+'\n');console.log('RESULT',output);
  }catch(error){if(page&&!page.isClosed())await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:error.stack,checks,errors},null,2));throw error}
  finally{await browser.close();await new Promise(resolve=>server.close(resolve))}
