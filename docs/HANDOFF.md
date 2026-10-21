@@ -1,86 +1,27 @@
-# Soft & Wet 3.1 研究交接
+# Soft & Wet / #22 — 当前研发交接
 
-2026-10-21。当前分支 `prototype/golden-spin-b`，[Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)。接续先核对本机 HEAD、工作区和实际环境，不复用旧设备身份。
+2026-10-21。接手先核对 HEAD、工作区、依赖、实际运行环境和远端 #22；旧快照不代表现在仍在等待球体认可。
 
-## 已同步的源码与演示
+## Current — 当前做什么
 
-本轮运行代码和演示对应提交 [`8e30d7d3e1bc600a1943c53119170142ab454f4d`](https://github.com/102326/DoL-Game-UI/commit/8e30d7d3e1bc600a1943c53119170142ab454f4d)。[该提交的 CI](https://github.com/102326/DoL-Game-UI/actions/runs/39471457908) 已通过，包含类型、Framework 合同、独立构建和原型交互检查。之后的接续文档提交不改变该运行代码。
+- 主任务 [#22 全局 UI 特效改造与重做](https://github.com/102326/DoL-Game-UI/issues/22)。负责人已认可球体，并授权继续分批升级、每批完成后在该 Issue 简短更新；不因此关闭总任务。
+- 主线已同步到 `6a6e3c00b705dc67d37c1780b27f585847da5d1a`，公开 UI3.0.4 / Host0.1.5-experimental / ModHub兼容1.0.1。研发分支 `prototype/golden-spin-b`，本批基线 `50b491dc0acb3d8af2fc6f18e7d0093dc49140bf`；最终提交与实际 CI 链接见分支 HEAD 和 #22 最新本批更新。
+- SW31-MOTION-03 第一批：真实窗口与设置工作区、共享动画隐藏/卸载清理。已认可球体的绘制不变，真实 MotionHub 的独立完整样片保留。窗口视觉与完整 Hub 仍需负责人判断，实际游戏整合尚未完成。
+- 源码、受控截图/自制视频随本分支同步；忽略目录中的原始失败、验证输出、node_modules 和本机预览进程不会同步。机器路径写入忽略的 HANDOFF.local.md。
 
-- [前后对照](media/golden-spin-b/gs03-before-after.mp4)：左旧右新，两侧均为自制原型原速录制。
-- [桌面完整演示](media/golden-spin-b/sphere-gs03-desktop.mp4)
-- [窄屏完整演示](media/golden-spin-b/sphere-gs03-narrow.mp4)
-- [本轮 Issue 更新](https://github.com/102326/DoL-Game-UI/issues/22#issuecomment-6297707984)
+## Decided — 已经确定什么
 
-源码、锁文件、自制视频和接续文档已纳入仓库。本机原始素材、设备日志、`node_modules`、忽略目录中的构建与验证资料没有上传；在 Mac 上重新安装依赖和生成构建。Windows 正在运行的本地预览服务也不会同步。
+- 共享取消与偏好能力，各场景保留运动语义；不让整个 UI 使用球体旋转，不恢复旧菜单多圈轨道。设计继续使用3.X基线，游戏业务、事件、存档、Host合同不变。
+- 本批设置分类短程方向交接，离场内容 inert；窗口由材质层展开，真实控件保持最终坐标。补充材质层 body zoom 换算，验证80/100/125%；不裁切控件或移动原生业务节点制造通过。
+- 共享 sourceMotion 在隐藏页取消，卸载后不重启。旧实现隐藏后仍 running 的反例被拒绝；审阅补充的80%窗口材质坐标反例也先失败。原生回归发现并修复焦点代理重复清理。首次夹具导入/选项字面值、TS可选参数错误只算测试设置问题，保留而不冒充行为反例。
+- macOS arm64 / Node24.18.0 / Playwright1.63.0 Chromium 已实际运行原有球体、完整Hub、新窗口检查；类型、UI/Framework合同、真实设置、历史反例与原生窗口定向回归通过。精确命令与最终CI见[本批计划](superpowers/plans/2026-10-21-motion-evolution-batch1.md)和#22。Mac成功不等于Windows/Android/iOS或游戏通过。
+- 不新增生产依赖；球体GSAP仍为原型devDependency，窗口复用WAAPI。没有升级正式版本、合并main、创建Tag或替换公开ZIP。本轮授权是研究分支开发/推送与Issue进度。
 
-## 在 Mac 上接续
+## Next — 下一步做什么
 
-需要 Git 和 Node.js >=22.12.0。先确认 Mac 工作区没有需要保留的未提交改动，再切换分支；不要用重置覆盖本机工作。
+1. 新设备先安全获取研究分支并 `npm ci`，Mac 首次 `npx playwright install chromium`；执行 `npm run prototype:golden-spin:check`、`npm run ci:check`、`npm run prototype:golden-spin:build`、`npm run prototype:golden-spin:test`。修改真实展示代码还需 Framework 构建与settings-ci、moody-historical-regressions、official-game-motion定向回归。
+2. `npm run prototype:golden-spin` 后打开 localhost:5181：`/`已认可球体、`/hub.html`完整Hub、`/windows.html`本批窗口与设置。默认页只含球体，不能用它判断其它入口没有实现。
+3. 后续批次处理导航/按钮/结果反馈、商店/衣柜、战斗、天气；按实际交互和成本选择技术，不盲目扩大矩阵或重写所有业务。
+4. 实际游戏整合、设备表现与最终视觉验收另外记录；新批次技术绿灯不等于全部UI完工。main合并与正式发行须取得对应授权。
 
-已有仓库时，在仓库根目录执行：
-
-```sh
-git fetch origin
-git switch prototype/golden-spin-b
-git pull --ff-only origin prototype/golden-spin-b
-npm ci
-npm run prototype:golden-spin
-```
-
-如果本机没有仓库，先克隆研究分支，再执行上面的 `npm` 命令：
-
-```sh
-git clone --branch prototype/golden-spin-b --single-branch https://github.com/102326/DoL-Game-UI.git DoL-Game-UI-spin
-cd DoL-Game-UI-spin
-```
-
-在浏览器打开 `http://127.0.0.1:5181/`，应看到第三轮球体研究页面，可启动、收束、重新蓄势和调整参数。它是独立网页，不需要安装游戏或 Mod。
-
-修改后的最小检查如下。Mac 的浏览器检查使用 Playwright Chromium，首次运行前安装对应浏览器：
-
-```sh
-npx playwright install chromium
-npm run prototype:golden-spin:check
-npm run prototype:golden-spin:build
-npm run prototype:golden-spin:test
-```
-
-交互预览不需要 FFmpeg。重新录制视频时，先保持预览服务运行，并确保 `ffmpeg` 可从终端调用，再在另一个终端执行 `node scripts/record-golden-sphere.cjs`；脚本会更新当前自制演示文件。
-
-当前已验证 Windows Edge 和 Linux CI Chromium，Mac 尚未实测。接续时先做上述检查，不把跨平台启动说明当作 Mac 已通过的证据。
-
-## 当前代码入口
-
-| 文件 | 职责 |
-| --- | --- |
-| `prototypes/golden-spin-b/sphere.ts` | 球面绘制、纹带与流线、时序、中断和释放 |
-| `prototypes/golden-spin-b/SphereApp.vue` | 当前球体样片与参数控件 |
-| `prototypes/golden-spin-b/sphere.css` | 独立样片布局、命中区域和窄屏样式 |
-| `tests/golden-spin-b.cjs` | 当前球体阶段的交互与清理检查 |
-| `scripts/record-golden-sphere.cjs` | 当前桌面与窄屏录制 |
-
-默认入口 `main.ts` 挂载 `SphereApp.vue`。旧 `App.vue` 和 `menu-study.html` 是已停止精修的菜单研究，不能误当当前入口。
-
-## 当前有效方向
-
-负责人已否决菜单旋转为主体的首轮样片。停止精修工具多圈螺旋，优先做球体自身蓄势、高速回旋、黄金螺旋释放和余韵。
-
-当前默认网页为 **Prototype A：回旋之力本体**，不展开菜单。A / B 是新实验阶段名，不是原产品方案投票；正式目标仍为 Golden Spin B。
-
-第三轮强化球面横向纹带、背面遮挡、切向短残影与更快的启动加速；收小并衰减外围流线。当前桌面、窄屏及前后对照视频均为自制网页样片，仍待负责人视觉确认。后续 Issue 和交付只描述实际效果，不强调灵感来源。
-
-[运行与视频](../prototypes/golden-spin-b/README.md)、[当前技术记录](MOTION_EVOLUTION_GOLDEN_SPIN_B.md)、[旧菜单研究归档](MOTION_EVOLUTION_MENU_STUDY_ARCHIVE.md)。旧媒体及 Android 接入结果不证明新球体已获验收。
-
-## 保留的工程与边界
-
-- 基线 main `6a6e3c00b705dc67d37c1780b27f585847da5d1a`；当前公开稳定 UI 3.0.4 / Host 0.1.5-experimental，未覆盖公开制品。
-- 旧研究的测量、反向、取消、生命周期及 opt-in hook 保留。正式入口不传入 `experimentalMotion`，球体新阶段是独立网页。
-- GSAP 3.15.0 为原型 devDependency；Canvas 2D 绘制球面与能量。没有确定生产框架或修改 Host 公共合同。
-- SW31-MOTION-02 长期允许全 UI 动效演进，但不启动全 UI 重写，不自动扩大 3.1 或延期 3.5。
-- 可推送原型分支和运行 CI；不得合并 main、Tag、Release 或自动发布。
-
-## 下一步
-
-先让负责人观看球体样片，判断回旋力量的视觉方向。未确认前不开始 Prototype B 的真实 Hub 联动，不把技术检查通过写成 Visual Gate Passed。
-
-当前球体检查涵盖受控浏览器的阶段、中断、重播、窄屏、减少动态效果和卸载；真实游戏整合与新球体 Android 性能尚未验证。设备身份、原始日志及临时接入资料只保留本地忽略目录。
+当前没有需要另一设备访问的私人存档或第三方包；自动证据保持受控白名单。不要上传凭据、设备标识、原始设备日志。

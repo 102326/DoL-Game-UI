@@ -136,8 +136,8 @@ export function startTheme(root:Runtime=window as Runtime){
   if(!controls?.open||controls.hasAttribute('data-sf-leaving'))return;
   const ticket=++transition,dialog=controls;
   dialog.setAttribute('data-sf-leaving','');
-  clearStage();const animation=official?motion.animate(settingsPanel()!,[{opacity:1},{opacity:0}],300):undefined;
-  if(official&&glass)motion.animate(glass,[{opacity:1},{opacity:0}],300);
+  clearStage();const animation=official?motion.animate(settingsPanel()!,[{opacity:1},{opacity:0}],220):undefined;
+  if(official&&glass)motion.animate(glass,[{opacity:1},{opacity:0}],220);
   if(!animation){finishClose();return}
   void animation.finished.catch(()=>{}).then(()=>{if(ticket===transition&&!destroyed)finishClose()});
  }
@@ -152,9 +152,9 @@ export function startTheme(root:Runtime=window as Runtime){
    if(official){
     // Animate material, not the live controls' hitboxes while a finger is down.
     const plane=document.createElement('div');stage=plane;plane.className='dmt-open-material';plane.setAttribute('aria-hidden','true');settingsPanel()!.append(plane);
-    const animation=motion.animate(plane,[{clipPath:'inset(32% 38% round 48px)',opacity:.8},{clipPath:'inset(0 round 22px)',opacity:0}],560);
+    const animation=motion.animate(plane,[{clipPath:'inset(22% 26% round 40px)',opacity:.8},{clipPath:'inset(0 round 22px)',opacity:.5,offset:.65},{clipPath:'inset(0 round 22px)',opacity:0}],420);
     if(animation)void animation.finished.then(()=>{plane.remove();if(stage===plane)stage=undefined},()=>{plane.remove();if(stage===plane)stage=undefined});else clearStage();
-    motion.animate(settingsPanel()!,[{opacity:.12},{opacity:1}],560);
+    motion.animate(settingsPanel()!,[{opacity:.18},{opacity:1}],300);
    }
   }
   controls.querySelector<HTMLButtonElement>('.dmt-close')?.focus({preventScroll:true});

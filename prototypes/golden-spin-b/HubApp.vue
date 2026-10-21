@@ -33,7 +33,7 @@ onBeforeUnmount(()=>{unmount();owner.dispose();host.dispose();document.body.styl
 </script>
 <template>
  <main class="gs-lab-shell">
-  <header><p class="gs-eyebrow">SOFT & WET 3.1 · MOTION EVOLUTION</p><h1>Golden Spin <i>B</i></h1><p>铁球蓄势与释放，驱动工具展开与回收。</p><span class="gs-lab-tag">完整悬浮球原型 · 待验收</span><a class="hub-preview-link" href="/">返回球体单独样片</a></header>
+  <header><p class="gs-eyebrow">SOFT & WET 3.1 · MOTION EVOLUTION</p><h1>Golden Spin <i>B</i></h1><p>铁球蓄势与释放，驱动工具展开与回收。</p><span class="gs-lab-tag">完整悬浮球原型 · 待验收</span><a class="hub-preview-link" href="./index.html">已认可球体</a> · <a class="hub-preview-link" href="./windows.html">窗口与设置工作区</a></header>
   <section class="gs-lab-controls" aria-label="原型控制">
    <label>页面 CSS Zoom<select aria-label="页面缩放" :value="zoom" @change="setZoom(Number(($event.target as HTMLSelectElement).value))"><option :value="80">80%</option><option :value="100">100%</option><option :value="125">125%</option></select></label>
    <div class="gs-lab-actions"><button @click="side('ArrowLeft')">左侧停靠</button><button @click="side('ArrowRight')">右侧停靠</button><button @click="mountExtra">增减工具</button><button @click="settleScene">模拟 Passage 切换</button><button @click="mounted?unmount():remount()">{{mounted?'卸载原型':'重新挂载'}}</button></div>

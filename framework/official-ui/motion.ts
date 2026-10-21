@@ -26,10 +26,14 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function windowStage(rect:DOMRect,mode:'center'|'rise',closing=false){
   shell?.remove();shell=undefined;if(!motion.enabled()||!rect.width||!rect.height)return;
   const n=document.createElement('div');n.className='kw-window-stage';n.dataset.motion=mode;n.setAttribute('aria-hidden','true');
-  Object.assign(n.style,{left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px'});document.body.append(n);shell=n;
-  const open:Keyframe[]=mode==='center'?[{clipPath:'inset(36% 38% round 64px)',opacity:.88},{clipPath:'inset(0 round 22px)',opacity:.72,offset:.72},{clipPath:'inset(0 round 22px)',opacity:0}]:[{transform:'translateY(140px)',opacity:.35},{transform:'translateY(-5px)',opacity:.55,offset:.72},{transform:'none',opacity:0}];
-  const close:Keyframe[]=mode==='center'?[{clipPath:'inset(0 round 22px)',opacity:.65},{clipPath:'inset(30% 34% round 54px)',opacity:0}]:[{transform:'none',opacity:.55},{transform:'translateY(110px)',opacity:0}];
-  const a=motion.animate(n,closing?close:open,closing?360:760);
+  // getBoundingClientRect already includes body zoom; calibrate this fixed layer's CSS basis.
+  Object.assign(n.style,{left:'0px',top:'0px',width:'100px',height:'100px'});document.body.append(n);
+  const basis=n.getBoundingClientRect(),x=basis.width/100,y=basis.height/100;
+  if(!Number.isFinite(x)||!Number.isFinite(y)||x<=0||y<=0){n.remove();return}
+  Object.assign(n.style,{left:(rect.left-basis.left)/x+'px',top:(rect.top-basis.top)/y+'px',width:rect.width/x+'px',height:rect.height/y+'px'});shell=n;
+  const open:Keyframe[]=mode==='center'?[{clipPath:'inset(22% 26% round 40px)',opacity:.8},{clipPath:'inset(0 round 22px)',opacity:.6,offset:.65},{clipPath:'inset(0 round 22px)',opacity:0}]:[{transform:'translateY(28px) scale(.98)',opacity:.4},{transform:'none',opacity:.55,offset:.65},{transform:'none',opacity:0}];
+  const close:Keyframe[]=mode==='center'?[{clipPath:'inset(0 round 22px)',opacity:.55},{clipPath:'inset(18% 22% round 36px)',opacity:0}]:[{transform:'none',opacity:.5},{transform:'translateY(20px) scale(.985)',opacity:0}];
+  const a=motion.animate(n,closing?close:open,closing?240:420);
   const remove=()=>{n.remove();if(shell===n)shell=undefined};if(a)void a.finished.then(remove,remove);else remove();
  }
  function clearMarks(){for(const [nodes,attribute]of [[marked,'data-kw-native'],[entries,'data-kw-entry']] as const){for(const [node,value]of nodes)if(value===null)node.removeAttribute(attribute);else node.setAttribute(attribute,value);nodes.clear()}}
@@ -89,14 +93,12 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    // Local review choice only: a fixed candidate per opening, no random page assignments.
    study=document.documentElement.getAttribute('data-kw-window-study')==='rise'?'rise':'center';
    activeRect=active.getBoundingClientRect();windowStage(activeRect,study);
-   const style=getComputedStyle(active),top=Number.parseFloat(style.top);
-   const frames:Keyframe[]=study==='rise'&&style.position!=='static'&&Number.isFinite(top)?[{top:(top+140)+'px',opacity:.12},{top:(top-4)+'px',opacity:1,offset:.76},{top:style.top,opacity:1}]:[{opacity:.12},{opacity:.7,offset:.5},{opacity:1}];
-   // Top/opacity preserve the existing fixed-descendant coordinate contract; no root transform/filter/clip.
-   motion.animate(active,frames,760);
+   // Material owns movement. Live controls and fixed descendants keep their final coordinates.
+   motion.animate(active,[{opacity:.18},{opacity:1}],300);
    const nav=active.querySelector<HTMLElement>('.dgc-host,.dgs-host,.dgp-host');
-   if(nav)motion.animate(nav,[{opacity:.2,transform:study==='center'?'translateY(18px)':'translateY(34px)'},{opacity:1,transform:'none'}],650);
+   if(nav)motion.animate(nav,[{opacity:.45},{opacity:1}],300);
    const body=active.querySelector<HTMLElement>('#customOverlayContent');
-   if(body)motion.animate(body,[{opacity:.18},{opacity:.6,offset:.38},{opacity:1}],760);
+   if(body)motion.animate(body,[{opacity:.35},{opacity:1}],360);
    const focus=active.querySelector<HTMLElement>('.dgc-host button,.dgs-host button,.dgp-host button');
    if(focus&&!active.contains(document.activeElement))focus.focus({preventScroll:true});
   }else{

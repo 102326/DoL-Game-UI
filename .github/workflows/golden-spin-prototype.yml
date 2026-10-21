@@ -25,6 +25,12 @@ jobs:
       - run: npm run prototype:golden-spin:check && npm run ci:check
       - run: npm run prototype:golden-spin:build
       - run: npm run prototype:golden-spin:test
+      - name: Settings and native presentation regressions
+        run: |
+          node scripts/build-framework.mjs
+          node tests/settings-ci.cjs
+          node tests/moody-historical-regressions.cjs
+          node tests/official-game-motion.cjs
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
@@ -38,5 +44,8 @@ jobs:
             tests/artifacts/golden-spin-b/hub-validation-*/result.json
             tests/artifacts/golden-spin-b/hub-validation-*/failure.json
             tests/artifacts/golden-spin-b/hub-validation-*/*.png
+            tests/artifacts/golden-spin-b/windows-validation-*/result.json
+            tests/artifacts/golden-spin-b/windows-validation-*/failure.json
+            tests/artifacts/golden-spin-b/windows-validation-*/*.png
           if-no-files-found: error
           retention-days: 14
