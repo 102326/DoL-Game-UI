@@ -25,10 +25,10 @@
         "height": 900
       },
       "video": "settings-simple-v2-3-desktop-1x.mp4",
-      "sha256": "2bf567bc4fe4516dbbda0482602dadb61911e1d8c2f97ba553d2b46be5382c7b",
-      "bytes": 2923525,
-      "inputSkewMs": 0.5,
-      "duration": 18.8,
+      "sha256": "12bb4eb4bdd4a4972d1b3277a8a50956ab128fcaf771900a8f64b0d5d590d6ae",
+      "bytes": 2882398,
+      "inputSkewMs": 1.10009765625,
+      "duration": 18.84,
       "data": [
         {
           "variant": "old",
@@ -68,63 +68,63 @@
           "operations": [
             {
               "action": "打开设置",
-              "at": 871.3000000119209,
-              "wallTime": 1792574974069.7
+              "at": 894.5,
+              "wallTime": 1792575202195.1
             },
             {
               "action": "切换：材质",
-              "at": 3069.600000023842,
-              "wallTime": 1792574976268
+              "at": 3094.800000011921,
+              "wallTime": 1792575204395.3
             },
             {
               "action": "切换：入口",
-              "at": 4770,
-              "wallTime": 1792574977968.4
+              "at": 4794.800000011921,
+              "wallTime": 1792575206095.3
             },
             {
               "action": "切换：阅读",
-              "at": 6471.400000035763,
-              "wallTime": 1792574979669.7998
+              "at": 6494.699999988079,
+              "wallTime": 1792575207795.2
             },
             {
               "action": "切换：材质",
-              "at": 8371.699999988079,
-              "wallTime": 1792574981570.0999
+              "at": 8394.300000011921,
+              "wallTime": 1792575209694.8
             },
             {
               "action": "切换：入口",
-              "at": 8530.400000035763,
-              "wallTime": 1792574981728.7998
+              "at": 8554.300000011921,
+              "wallTime": 1792575209854.8
             },
             {
               "action": "切换：阅读",
-              "at": 8691.800000011921,
-              "wallTime": 1792574981890.2
+              "at": 8714.800000011921,
+              "wallTime": 1792575210015.3
             },
             {
               "action": "关闭设置",
-              "at": 10372.100000023842,
-              "wallTime": 1792574983570.5
+              "at": 10394.300000011921,
+              "wallTime": 1792575211694.8
             },
             {
               "action": "打开设置",
-              "at": 12471.400000035763,
-              "wallTime": 1792574985669.7998
+              "at": 12494.199999988079,
+              "wallTime": 1792575213794.7
             },
             {
               "action": "展开中关闭",
-              "at": 12772.100000023842,
-              "wallTime": 1792574985970.5
+              "at": 12794.5,
+              "wallTime": 1792575214095
             },
             {
               "action": "关闭中重新打开",
-              "at": 12931.800000011921,
-              "wallTime": 1792574986130.2
+              "at": 12954.599999964237,
+              "wallTime": 1792575214255.1
             },
             {
               "action": "关闭设置",
-              "at": 15171.400000035763,
-              "wallTime": 1792574988369.7998
+              "at": 15193.800000011921,
+              "wallTime": 1792575216494.3
             }
           ],
           "evidence": [],
@@ -172,89 +172,89 @@
           "operations": [
             {
               "action": "打开设置",
-              "at": 870.6999999880791,
-              "wallTime": 1792574974069.9
+              "at": 893.7999999523163,
+              "wallTime": 1792575202195.6
             },
             {
               "action": "切换：材质",
-              "at": 3069.199999988079,
-              "wallTime": 1792574976268.4
+              "at": 3094,
+              "wallTime": 1792575204395.8
             },
             {
               "action": "切换：入口",
-              "at": 4769.5,
-              "wallTime": 1792574977968.7
+              "at": 4793.799999952316,
+              "wallTime": 1792575206095.6
             },
             {
               "action": "切换：阅读",
-              "at": 6471,
-              "wallTime": 1792574979670.2
+              "at": 6493.699999988079,
+              "wallTime": 1792575207795.5
             },
             {
               "action": "切换：材质",
-              "at": 8371.300000011921,
-              "wallTime": 1792574981570.5
+              "at": 8393.299999952316,
+              "wallTime": 1792575209695.1
             },
             {
               "action": "切换：入口",
-              "at": 8529.899999976158,
-              "wallTime": 1792574981729.0999
+              "at": 8553.299999952316,
+              "wallTime": 1792575209855.1
             },
             {
               "action": "切换：阅读",
-              "at": 8691.199999988079,
-              "wallTime": 1792574981890.4
+              "at": 8713.699999988079,
+              "wallTime": 1792575210015.5
             },
             {
               "action": "关闭设置",
-              "at": 10371.600000023842,
-              "wallTime": 1792574983570.8
+              "at": 10393.099999964237,
+              "wallTime": 1792575211694.9001
             },
             {
               "action": "打开设置",
-              "at": 12470.800000011921,
-              "wallTime": 1792574985670
+              "at": 12493.299999952316,
+              "wallTime": 1792575213795.1
             },
             {
               "action": "展开中关闭",
-              "at": 12771.699999988079,
-              "wallTime": 1792574985971
+              "at": 12793.5,
+              "wallTime": 1792575214095.3
             },
             {
               "action": "关闭中重新打开",
-              "at": 12931.300000011921,
-              "wallTime": 1792574986130.5
+              "at": 12953.5,
+              "wallTime": 1792575214255.3
             },
             {
               "action": "关闭设置",
-              "at": 15170.800000011921,
-              "wallTime": 1792574988370
+              "at": 15193.599999964237,
+              "wallTime": 1792575216495.4001
             }
           ],
           "evidence": [
             {
               "event": "open-request",
-              "at": 877.1000000238419
+              "at": 902.2999999523163
             },
             {
               "event": "content-usable",
-              "at": 878,
+              "at": 903.0999999642372,
               "time": 0
             },
             {
               "event": "input-acknowledged",
-              "at": 878,
+              "at": 903.0999999642372,
               "duration": 0.1,
               "revision": "v2.3",
               "transition": "opacity-only"
             },
             {
               "event": "visual-settled",
-              "at": 1123.5
+              "at": 1015.5
             },
             {
               "event": "category-start",
-              "at": 3070.699999988079,
+              "at": 3096.099999964237,
               "entering": false,
               "direction": 1,
               "heading": "dmt-reading-heading",
@@ -264,7 +264,7 @@
             },
             {
               "event": "category-start",
-              "at": 3074.199999988079,
+              "at": 3101.199999988079,
               "entering": true,
               "direction": 1,
               "heading": "dmt-material-heading",
@@ -274,19 +274,19 @@
             },
             {
               "event": "category-settled",
-              "at": 3942,
+              "at": 3942.699999988079,
               "entering": false,
               "heading": "dmt-reading-heading"
             },
             {
               "event": "category-settled",
-              "at": 3943.199999988079,
+              "at": 3943.599999964237,
               "entering": true,
               "heading": "dmt-material-heading"
             },
             {
               "event": "category-start",
-              "at": 4770.5,
+              "at": 4794.899999976158,
               "entering": false,
               "direction": 1,
               "heading": "dmt-material-heading",
@@ -296,7 +296,7 @@
             },
             {
               "event": "category-start",
-              "at": 4777.5,
+              "at": 4799.199999988079,
               "entering": true,
               "direction": 1,
               "heading": "dmt-entry-heading",
@@ -306,19 +306,19 @@
             },
             {
               "event": "category-settled",
-              "at": 5661.899999976158,
+              "at": 5652.199999988079,
               "entering": false,
               "heading": "dmt-material-heading"
             },
             {
               "event": "category-settled",
-              "at": 5663.300000011921,
+              "at": 5653.399999976158,
               "entering": true,
               "heading": "dmt-entry-heading"
             },
             {
               "event": "category-start",
-              "at": 6471.699999988079,
+              "at": 6494.299999952316,
               "entering": false,
               "direction": -1,
               "heading": "dmt-entry-heading",
@@ -328,7 +328,7 @@
             },
             {
               "event": "category-start",
-              "at": 6474.800000011921,
+              "at": 6497.699999988079,
               "entering": true,
               "direction": -1,
               "heading": "dmt-reading-heading",
@@ -338,19 +338,19 @@
             },
             {
               "event": "category-settled",
-              "at": 7337.800000011921,
+              "at": 7348.699999988079,
               "entering": false,
               "heading": "dmt-entry-heading"
             },
             {
               "event": "category-settled",
-              "at": 7338.899999976158,
+              "at": 7349.599999964237,
               "entering": true,
               "heading": "dmt-reading-heading"
             },
             {
               "event": "category-start",
-              "at": 8371.899999976158,
+              "at": 8394.299999952316,
               "entering": false,
               "direction": 1,
               "heading": "dmt-reading-heading",
@@ -360,7 +360,7 @@
             },
             {
               "event": "category-start",
-              "at": 8374.300000011921,
+              "at": 8397.399999976158,
               "entering": true,
               "direction": 1,
               "heading": "dmt-material-heading",
@@ -370,13 +370,13 @@
             },
             {
               "event": "category-settled",
-              "at": 8531.399999976158,
+              "at": 8555.5,
               "entering": true,
               "heading": "dmt-material-heading"
             },
             {
               "event": "category-start",
-              "at": 8531.399999976158,
+              "at": 8555.699999988079,
               "entering": false,
               "direction": 1,
               "heading": "dmt-material-heading",
@@ -386,7 +386,7 @@
             },
             {
               "event": "category-start",
-              "at": 8533.899999976158,
+              "at": 8559,
               "entering": true,
               "direction": 1,
               "heading": "dmt-entry-heading",
@@ -396,13 +396,13 @@
             },
             {
               "event": "category-settled",
-              "at": 8692.300000011921,
+              "at": 8714.799999952316,
               "entering": true,
               "heading": "dmt-entry-heading"
             },
             {
               "event": "category-start",
-              "at": 8692.300000011921,
+              "at": 8714.899999976158,
               "entering": false,
               "direction": -1,
               "heading": "dmt-entry-heading",
@@ -412,7 +412,7 @@
             },
             {
               "event": "category-start",
-              "at": 8694.399999976158,
+              "at": 8717.299999952316,
               "entering": true,
               "direction": -1,
               "heading": "dmt-reading-heading",
@@ -422,100 +422,100 @@
             },
             {
               "event": "category-settled",
-              "at": 9267.800000011921,
+              "at": 9355.5,
               "entering": false,
               "heading": "dmt-reading-heading"
             },
             {
               "event": "category-settled",
-              "at": 9373.399999976158,
+              "at": 9563.099999964237,
               "entering": false,
               "heading": "dmt-material-heading"
             },
             {
               "event": "category-settled",
-              "at": 9374.300000011921,
+              "at": 9564.299999952316,
               "entering": false,
               "heading": "dmt-entry-heading"
             },
             {
               "event": "category-settled",
-              "at": 9375.199999988079,
+              "at": 9565.099999964237,
               "entering": true,
               "heading": "dmt-reading-heading"
             },
             {
               "event": "close-request",
-              "at": 10371.800000011921,
+              "at": 10393.299999952316,
               "time": 0.1,
               "duration": 0.08,
               "revision": "v2.3"
             },
             {
               "event": "closed",
-              "at": 10383.300000011921
+              "at": 10545.899999976158
             },
             {
               "event": "open-request",
-              "at": 12473
+              "at": 12498.899999976158
             },
             {
               "event": "content-usable",
-              "at": 12473.199999988079,
+              "at": 12499.199999988079,
               "time": 0
             },
             {
               "event": "input-acknowledged",
-              "at": 12473.199999988079,
+              "at": 12499.199999988079,
               "duration": 0.1,
               "revision": "v2.3",
               "transition": "opacity-only"
             },
             {
               "event": "visual-settled",
-              "at": 12631.399999976158
+              "at": 12665.5
             },
             {
               "event": "close-request",
-              "at": 12771.899999976158,
+              "at": 12793.599999964237,
               "time": 0.1,
               "duration": 0.08,
               "revision": "v2.3"
             },
             {
               "event": "closed",
-              "at": 12807.199999988079
+              "at": 12846.099999964237
             },
             {
               "event": "open-request",
-              "at": 12933.199999988079
+              "at": 12955.399999976158
             },
             {
               "event": "content-usable",
-              "at": 12933.399999976158,
+              "at": 12955.5,
               "time": 0
             },
             {
               "event": "input-acknowledged",
-              "at": 12933.399999976158,
+              "at": 12955.5,
               "duration": 0.1,
               "revision": "v2.3",
               "transition": "opacity-only"
             },
             {
               "event": "visual-settled",
-              "at": 13062.199999988079
+              "at": 13110.699999988079
             },
             {
               "event": "close-request",
-              "at": 15170.899999976158,
+              "at": 15193.699999988079,
               "time": 0.1,
               "duration": 0.08,
               "revision": "v2.3"
             },
             {
               "event": "closed",
-              "at": 15219.600000023842
+              "at": 15280.899999976158
             }
           ],
           "final": {
@@ -533,9 +533,9 @@
         "height": 844
       },
       "video": "settings-simple-v2-3-narrow-1x.mp4",
-      "sha256": "3473c7c345e482c9cf63348926b2046404a2d7ddef3eead7e8d5433182cfb286",
-      "bytes": 1632449,
-      "inputSkewMs": 3.699951171875,
+      "sha256": "997db3bb4ec6189ab63cf0117cb9106447abe1151abab981e5a9dd3591dce7d7",
+      "bytes": 1635740,
+      "inputSkewMs": 0.599853515625,
       "duration": 18.6,
       "data": [
         {
@@ -576,63 +576,63 @@
           "operations": [
             {
               "action": "打开设置",
-              "at": 877.3000000119209,
-              "wallTime": 1792574997667.4001
+              "at": 872.8999999761581,
+              "wallTime": 1792575225622.5
             },
             {
               "action": "切换：材质",
-              "at": 3076.399999976158,
-              "wallTime": 1792574999866.5
+              "at": 3071.5,
+              "wallTime": 1792575227821.2002
             },
             {
               "action": "切换：入口",
-              "at": 4775.800000011921,
-              "wallTime": 1792575001565.9001
+              "at": 4772.5,
+              "wallTime": 1792575229522.1
             },
             {
               "action": "切换：阅读",
-              "at": 6476.100000023842,
-              "wallTime": 1792575003266.2002
+              "at": 6471.899999976158,
+              "wallTime": 1792575231221.5
             },
             {
               "action": "切换：材质",
-              "at": 8376.5,
-              "wallTime": 1792575005166.6
+              "at": 8372.300000011921,
+              "wallTime": 1792575233121.9001
             },
             {
               "action": "切换：入口",
-              "at": 8536.600000023842,
-              "wallTime": 1792575005326.7002
+              "at": 8531.899999976158,
+              "wallTime": 1792575233281.5
             },
             {
               "action": "切换：阅读",
-              "at": 8696.5,
-              "wallTime": 1792575005486.6
+              "at": 8692.5,
+              "wallTime": 1792575233442.1
             },
             {
               "action": "关闭设置",
-              "at": 10376.399999976158,
-              "wallTime": 1792575007166.5
+              "at": 10372,
+              "wallTime": 1792575235121.6
             },
             {
               "action": "打开设置",
-              "at": 12477.300000011921,
-              "wallTime": 1792575009267.4001
+              "at": 12472.399999976158,
+              "wallTime": 1792575237222
             },
             {
               "action": "展开中关闭",
-              "at": 12777.699999988079,
-              "wallTime": 1792575009567.8
+              "at": 12771.600000023842,
+              "wallTime": 1792575237521.2002
             },
             {
               "action": "关闭中重新打开",
-              "at": 12936.699999988079,
-              "wallTime": 1792575009726.8
+              "at": 12933.199999988079,
+              "wallTime": 1792575237682.8
             },
             {
               "action": "关闭设置",
-              "at": 15177.100000023842,
-              "wallTime": 1792575011967.2002
+              "at": 15172.199999988079,
+              "wallTime": 1792575239921.8
             }
           ],
           "evidence": [],
@@ -680,89 +680,89 @@
           "operations": [
             {
               "action": "打开设置",
-              "at": 877,
-              "wallTime": 1792574997667.7
+              "at": 872.3999999761581,
+              "wallTime": 1792575225622.5999
             },
             {
               "action": "切换：材质",
-              "at": 3076.199999988079,
-              "wallTime": 1792574999866.9
+              "at": 3071.199999988079,
+              "wallTime": 1792575227821.4
             },
             {
               "action": "切换：入口",
-              "at": 4775.399999976158,
-              "wallTime": 1792575001566.0999
+              "at": 4772.099999964237,
+              "wallTime": 1792575229522.3
             },
             {
               "action": "切换：阅读",
-              "at": 6475.800000011921,
-              "wallTime": 1792575003266.5
+              "at": 6471.5,
+              "wallTime": 1792575231221.7
             },
             {
               "action": "切换：材质",
-              "at": 8376.300000011921,
-              "wallTime": 1792575005167
+              "at": 8372,
+              "wallTime": 1792575233122.2
             },
             {
               "action": "切换：入口",
-              "at": 8536.300000011921,
-              "wallTime": 1792575005327
+              "at": 8531.599999964237,
+              "wallTime": 1792575233281.8
             },
             {
               "action": "切换：阅读",
-              "at": 8696.199999988079,
-              "wallTime": 1792575005486.9
+              "at": 8692.199999988079,
+              "wallTime": 1792575233442.4
             },
             {
               "action": "关闭设置",
-              "at": 10376.100000023842,
-              "wallTime": 1792575007166.8
+              "at": 10371.599999964237,
+              "wallTime": 1792575235121.8
             },
             {
               "action": "打开设置",
-              "at": 12477.100000023842,
-              "wallTime": 1792575009267.8
+              "at": 12472,
+              "wallTime": 1792575237222.2
             },
             {
               "action": "展开中关闭",
-              "at": 12780.800000011921,
-              "wallTime": 1792575009571.5
+              "at": 12771.599999964237,
+              "wallTime": 1792575237521.8
             },
             {
               "action": "关闭中重新打开",
-              "at": 12936.399999976158,
-              "wallTime": 1792575009727.0999
+              "at": 12932.699999988079,
+              "wallTime": 1792575237682.9
             },
             {
               "action": "关闭设置",
-              "at": 15177.100000023842,
-              "wallTime": 1792575011967.8
+              "at": 15171.899999976158,
+              "wallTime": 1792575239922.0999
             }
           ],
           "evidence": [
             {
               "event": "open-request",
-              "at": 881.8999999761581
+              "at": 879
             },
             {
               "event": "content-usable",
-              "at": 882.6000000238419,
+              "at": 879.7999999523163,
               "time": 0
             },
             {
               "event": "input-acknowledged",
-              "at": 882.6000000238419,
+              "at": 879.7999999523163,
               "duration": 0.1,
               "revision": "v2.3",
               "transition": "opacity-only"
             },
             {
               "event": "visual-settled",
-              "at": 997.5
+              "at": 984.5999999642372
             },
             {
               "event": "category-start",
-              "at": 3077.5,
+              "at": 3072.899999976158,
               "entering": false,
               "direction": 1,
               "heading": "dmt-reading-heading",
@@ -772,7 +772,7 @@
             },
             {
               "event": "category-start",
-              "at": 3080.5,
+              "at": 3076.599999964237,
               "entering": true,
               "direction": 1,
               "heading": "dmt-material-heading",
@@ -782,19 +782,19 @@
             },
             {
               "event": "category-settled",
-              "at": 3759.399999976158,
+              "at": 3743.699999988079,
               "entering": false,
               "heading": "dmt-reading-heading"
             },
             {
               "event": "category-settled",
-              "at": 3759.600000023842,
+              "at": 3744,
               "entering": true,
               "heading": "dmt-material-heading"
             },
             {
               "event": "category-start",
-              "at": 4776,
+              "at": 4772.699999988079,
               "entering": false,
               "direction": 1,
               "heading": "dmt-material-heading",
@@ -804,7 +804,7 @@
             },
             {
               "event": "category-start",
-              "at": 4781.399999976158,
+              "at": 4777.899999976158,
               "entering": true,
               "direction": 1,
               "heading": "dmt-entry-heading",
@@ -814,19 +814,19 @@
             },
             {
               "event": "category-settled",
-              "at": 5466.699999988079,
+              "at": 5430.099999964237,
               "entering": false,
               "heading": "dmt-material-heading"
             },
             {
               "event": "category-settled",
-              "at": 5466.899999976158,
+              "at": 5430.199999988079,
               "entering": true,
               "heading": "dmt-entry-heading"
             },
             {
               "event": "category-start",
-              "at": 6476.199999988079,
+              "at": 6472.099999964237,
               "entering": false,
               "direction": -1,
               "heading": "dmt-entry-heading",
@@ -836,7 +836,7 @@
             },
             {
               "event": "category-start",
-              "at": 6478.100000023842,
+              "at": 6473.799999952316,
               "entering": true,
               "direction": -1,
               "heading": "dmt-reading-heading",
@@ -846,19 +846,19 @@
             },
             {
               "event": "category-settled",
-              "at": 7163.699999988079,
+              "at": 7142.899999976158,
               "entering": false,
               "heading": "dmt-entry-heading"
             },
             {
               "event": "category-settled",
-              "at": 7163.899999976158,
+              "at": 7143.799999952316,
               "entering": true,
               "heading": "dmt-reading-heading"
             },
             {
               "event": "category-start",
-              "at": 8376.699999988079,
+              "at": 8372.5,
               "entering": false,
               "direction": 1,
               "heading": "dmt-reading-heading",
@@ -868,7 +868,7 @@
             },
             {
               "event": "category-start",
-              "at": 8378.100000023842,
+              "at": 8374.299999952316,
               "entering": true,
               "direction": 1,
               "heading": "dmt-material-heading",
@@ -878,13 +878,13 @@
             },
             {
               "event": "category-settled",
-              "at": 8537.699999988079,
+              "at": 8532.899999976158,
               "entering": true,
               "heading": "dmt-material-heading"
             },
             {
               "event": "category-start",
-              "at": 8537.800000011921,
+              "at": 8532.899999976158,
               "entering": false,
               "direction": 1,
               "heading": "dmt-material-heading",
@@ -894,7 +894,7 @@
             },
             {
               "event": "category-start",
-              "at": 8539.300000011921,
+              "at": 8534.299999952316,
               "entering": true,
               "direction": 1,
               "heading": "dmt-entry-heading",
@@ -904,13 +904,13 @@
             },
             {
               "event": "category-settled",
-              "at": 8697.100000023842,
+              "at": 8694.199999988079,
               "entering": true,
               "heading": "dmt-entry-heading"
             },
             {
               "event": "category-start",
-              "at": 8697.199999988079,
+              "at": 8694.399999976158,
               "entering": false,
               "direction": -1,
               "heading": "dmt-entry-heading",
@@ -920,7 +920,7 @@
             },
             {
               "event": "category-start",
-              "at": 8698.399999976158,
+              "at": 8696.399999976158,
               "entering": true,
               "direction": -1,
               "heading": "dmt-reading-heading",
@@ -930,100 +930,100 @@
             },
             {
               "event": "category-settled",
-              "at": 9043.800000011921,
+              "at": 9070.5,
               "entering": false,
               "heading": "dmt-reading-heading"
             },
             {
               "event": "category-settled",
-              "at": 9224.800000011921,
+              "at": 9232.799999952316,
               "entering": false,
               "heading": "dmt-material-heading"
             },
             {
               "event": "category-settled",
-              "at": 9374.399999976158,
+              "at": 9386.299999952316,
               "entering": false,
               "heading": "dmt-entry-heading"
             },
             {
               "event": "category-settled",
-              "at": 9374.699999988079,
+              "at": 9386.5,
               "entering": true,
               "heading": "dmt-reading-heading"
             },
             {
               "event": "close-request",
-              "at": 10376.100000023842,
+              "at": 10371.699999988079,
               "time": 0.1,
               "duration": 0.08,
               "revision": "v2.3"
             },
             {
               "event": "closed",
-              "at": 10469.5
+              "at": 10464.5
             },
             {
               "event": "open-request",
-              "at": 12479.100000023842
+              "at": 12473.699999988079
             },
             {
               "event": "content-usable",
-              "at": 12479.300000011921,
+              "at": 12473.899999976158,
               "time": 0
             },
             {
               "event": "input-acknowledged",
-              "at": 12479.300000011921,
+              "at": 12473.899999976158,
               "duration": 0.1,
               "revision": "v2.3",
               "transition": "opacity-only"
             },
             {
               "event": "visual-settled",
-              "at": 12610.600000023842
+              "at": 12597.199999988079
             },
             {
               "event": "close-request",
-              "at": 12780.899999976158,
+              "at": 12771.599999964237,
               "time": 0.1,
               "duration": 0.08,
               "revision": "v2.3"
             },
             {
               "event": "closed",
-              "at": 12872.199999988079
+              "at": 12852.899999976158
             },
             {
               "event": "open-request",
-              "at": 12938.100000023842
+              "at": 12934.599999964237
             },
             {
               "event": "content-usable",
-              "at": 12938.199999988079,
+              "at": 12934.599999964237,
               "time": 0
             },
             {
               "event": "input-acknowledged",
-              "at": 12938.199999988079,
+              "at": 12934.599999964237,
               "duration": 0.1,
               "revision": "v2.3",
               "transition": "opacity-only"
             },
             {
               "event": "visual-settled",
-              "at": 13049.5
+              "at": 13052.899999976158
             },
             {
               "event": "close-request",
-              "at": 15177.199999988079,
+              "at": 15171.899999976158,
               "time": 0.1,
               "duration": 0.08,
               "revision": "v2.3"
             },
             {
               "event": "closed",
-              "at": 15268.199999988079
+              "at": 15251.299999952316
             }
           ],
           "final": {
@@ -1037,14 +1037,14 @@
   ],
   "timingMeasurements": {
     "old": {
-      "open": 634.3999999761581,
-      "category": 736.9000000357628,
-      "close": 429.0999999642372
+      "open": 664.9000000357628,
+      "category": 762.5999999642372,
+      "close": 446.9000000357628
     },
     "new": {
-      "open": 112.60000002384186,
-      "category": 696.5,
-      "close": 123.19999998807907
+      "open": 117.5,
+      "category": 661.1000000238419,
+      "close": 81.19999998807907
     }
   },
   "categoryProgress": {
@@ -1434,18 +1434,18 @@
     "chromium": "153.0.8010.12"
   },
   "prototypeFiles": {
-    "prototypes/settings-refraction-v1/README.md": "88d33634a7905f6eb7ccea9b6d8eef3778a687de03b1f0e2862b46a3bc30ff29",
+    "prototypes/settings-refraction-v1/README.md": "d673d1f48379420e69658efed5729fb870f930ff74847459399ebed9c68d01fc",
     "prototypes/settings-refraction-v1/compare.ts": "1eb54a1589ea0afa246c6231ae82ab6d9899a0f431050e183bfa00271b556059",
     "prototypes/settings-refraction-v1/index.html": "4b96e89fbc2c70b63b6c189c74ecd7b0a8dbe9b20088e7fdb316680fafda67fa",
     "prototypes/settings-refraction-v1/new.ts": "48483accbcd4177539ddab4d765b4550cf1b25ef66331d855e0920ca5b5ea36c",
     "prototypes/settings-refraction-v1/old.ts": "b849cafc09d4c43b7cc8af13e95fa7e040c3a3ff0097bba77c3aec89d2ec2566",
-    "prototypes/settings-refraction-v1/refraction.css": "fdbd804ce9d471d9a7f14f18bd524198c8c67e55876be2c4145da73531ea0b7c",
+    "prototypes/settings-refraction-v1/refraction.css": "b2db5924d2cb3584cf3549c9d8bcc202564dbe0e67d7ed960fb9e5eff3c62a5e",
     "prototypes/settings-refraction-v1/refraction.ts": "ca17d24055f0f06c32fff15fc00fad954c6ef22df99b05cd98d0f09233161e8e",
     "prototypes/settings-refraction-v1/scene.css": "72737ea3c56c64ad2f29ad4b9815a0a32e941b8f75fc1f31ff5a5b7518514b7a",
     "prototypes/settings-refraction-v1/scene.html": "e4050063f6626d0bf5443d0548f3fa8e9e8b8d7745f0fd26ade520f4b3ca882b",
     "prototypes/settings-refraction-v1/scene.ts": "36b7c6a19a69b3fbbafc984512d4225bf2d42a6a234dac4c7dc019b4ed8ee46f",
     "prototypes/settings-refraction-v1/sequence.ts": "8b38c3da4f891126354477edfa2e4aa00a6ac889af42ca0a11a9d2f317005045",
-    "scripts/check-settings-refraction.cjs": "ae8518c6f43eeabf421a761078194c6261fcf8c95eedc62cb9f7f3aa966e3c12",
+    "scripts/check-settings-refraction.cjs": "a19a2254b28845f452913cbc78c55aee4d13e06604ad888a0b0e205e3d7b8428",
     "scripts/prepare-settings-refraction.mjs": "67ec13915595ff6a265652dc883338cfdd56229d82dbf5ae04dd8b2892f49304",
     "tsconfig.settings-refraction.json": "ce0ef1f76ffcbbe0d8cb0d8240d1749f6c82bec86a31eb6cb0db4301536bc861",
     "vite.settings-refraction.config.ts": "d07ca2972e86a8bd5afa2d2a947880901426127c260accb507c8b5310cfa39b0"
@@ -1456,19 +1456,19 @@
     "assets/compare-C4L008ho.js": "a859a4e55746c74b173711dcd67f7131670fe0ffdf2c14204bbdfb65e1b0686b",
     "assets/kw-weather-condensation-Deeqv1zV.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
     "assets/modulepreload-polyfill-B5Qt9EMX.js": "d2a32840421496e872ade591618d2fa5c33797605d1aec04301717e5a90757d0",
-    "assets/new-BI9V2fgE.css": "3c47471440cac54b2bf534627be2230c8954ea9ad632ec00c55b4092a622e164",
-    "assets/new-DK_MgK9t.js": "009188e8cbccc475d3a8536ad766e1de8fb7904e8ca937355e4c0d90b625b2c2",
+    "assets/new-BPA12jfc.js": "009188e8cbccc475d3a8536ad766e1de8fb7904e8ca937355e4c0d90b625b2c2",
+    "assets/new-CZ2FBFyR.css": "374bb341fcf30593a5a4c218d9287b5608ec91068e08f26b4d7697d3f195ad0a",
     "assets/old-BMAlx5Zy.js": "12fa1bf6599da34fc49caf5ca402437b515835ae61b5504e6c1546f913185279",
     "assets/old-DIxzhhSP.css": "626186fbe1c5f0010c5b7c41cc7b7797c4d11ad1990433eb13125592397a7e52",
     "assets/refraction-DQVSyrzP.js": "65cc26448db022f7f463afedf1022bbd3f7f790f41f32e6bd99da64b14e264f3",
     "assets/runtime-dom.esm-bundler-BubMrm3P.js": "97a45dbed7250c5af64e079116d936e5721aab182ea8ef54d8393b9e1824a345",
-    "assets/scene-CGw98sgV.js": "4553b013ebb802925c712b103c5850e8c44d1e4b7fe8a6557d06eb7e00b506a2",
+    "assets/scene-Bvq7Pczy.js": "9863b3f7697e1b396dde09b96ac8b63e935fd667bf002f3c2eaf2b54a0aa9d6a",
     "assets/scene-DsA_8Ahf.css": "1c77584b9a04af8e6bfb75dab2d56fcd76e9e1c185c5f47c1307e42d558c34ab",
     "index.html": "1fcce9a88b3ea793be190c3a24c717c7d541b196447cbe275dd9fa4eb663f197",
-    "scene.html": "82b6415eb3322c1ae5b3a61f9655855f930b3139cdefa8c13ed1156261186972"
+    "scene.html": "e2ea3c0f1e36ced013f735852130714079a378c9ba9e921358397e45bbab9591"
   },
   "testedTree": {
-    "baseHead": "e903cbc6b09eca116c2915dbab1b9d48fa145f81",
+    "baseHead": "38b858da53ffeb538529fb22a177cbf90d8f7422",
     "uncommittedPrototype": true,
     "identity": "Match prototypeFiles to the committed tree; parent HEAD is not the tested implementation."
   },
@@ -1485,6 +1485,7 @@
         "bottom": 881.46875,
         "left": 140
       },
+      "surface": "rgba(36, 38, 42, 0.85)",
       "width": 1280,
       "height": 900,
       "scrollWidth": 1280,
@@ -1510,6 +1511,7 @@
         "bottom": 832,
         "left": 12
       },
+      "surface": "rgba(36, 38, 42, 0.85)",
       "width": 390,
       "height": 844,
       "scrollWidth": 390,
@@ -1537,7 +1539,7 @@
           "bottom": 881.46875,
           "left": 140
         },
-        "opacity": 0.29,
+        "opacity": 0.25,
         "transform": "none",
         "clip": "none"
       },
@@ -1552,7 +1554,7 @@
           "bottom": 881.46875,
           "left": 140
         },
-        "opacity": 0.29,
+        "opacity": 0.25,
         "transform": "none",
         "clip": "none"
       },
@@ -1567,7 +1569,7 @@
           "bottom": 881.46875,
           "left": 140
         },
-        "opacity": 0.29,
+        "opacity": 0.25,
         "transform": "none",
         "clip": "none"
       },
