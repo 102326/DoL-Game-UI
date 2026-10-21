@@ -1,0 +1,10 @@
+import {startTheme} from '../../tests/artifacts/settings-refraction-v1/old/src/theme/controller';
+import '../../tests/artifacts/settings-refraction-v1/old/src/tokens.css';
+import '../../tests/artifacts/settings-refraction-v1/old/src/theme/controls.css';
+import '../../tests/artifacts/settings-refraction-v1/old/src/theme/layout.css';
+import '../../tests/artifacts/settings-refraction-v1/old/src/theme/kraft-work-surfaces.css';
+import '../../tests/artifacts/settings-refraction-v1/old/src/theme/dark-acrylic.css';
+import '../../tests/artifacts/settings-refraction-v1/old/src/theme/kraft-work-pages.css';
+import '../../tests/artifacts/settings-refraction-v1/old/src/theme/kraft-work-motion.css';
+import '../../tests/artifacts/settings-refraction-v1/old/src/theme/navigation-material.css';
+export {startTheme};

@@ -25,6 +25,13 @@ jobs:
       - run: npm run prototype:golden-spin:check && npm run ci:check
       - run: npm run prototype:golden-spin:build
       - run: npm run prototype:golden-spin:test
+      - name: Isolated settings refraction study
+        run: |
+          git fetch --no-tags --depth=1 origin 915dcb9e85f3266a73a3e7ce38d769edd0c29ff4 b507f1a7d18d4d77067fa0c793aea44d7de96b57
+          node scripts/prepare-settings-refraction.mjs
+          npx vue-tsc --noEmit -p tsconfig.settings-refraction.json
+          npx vite build --config vite.settings-refraction.config.ts
+          node scripts/check-settings-refraction.cjs
       - name: Settings and native presentation regressions
         run: |
           node scripts/build-framework.mjs
@@ -47,5 +54,10 @@ jobs:
             tests/artifacts/golden-spin-b/windows-validation-*/result.json
             tests/artifacts/golden-spin-b/windows-validation-*/failure.json
             tests/artifacts/golden-spin-b/windows-validation-*/*.png
+            tests/artifacts/settings-refraction-v1/dist/**
+            tests/artifacts/settings-refraction-v1/provenance.json
+            tests/artifacts/settings-refraction-v1/review-*/result.json
+            tests/artifacts/settings-refraction-v1/review-*/failure.json
+            tests/artifacts/settings-refraction-v1/review-*/*.png
           if-no-files-found: error
           retention-days: 14

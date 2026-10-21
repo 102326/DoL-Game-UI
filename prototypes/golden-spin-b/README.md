@@ -2,7 +2,7 @@
 
 当前分支 `prototype/golden-spin-b`。负责人于 2026-10-21 确认球体效果，授权继续全局 UI 动效升级，并在每批主要任务后向 [Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)简短更新。
 
-**最新状态：** [正式产品口径V1.0](../../docs/SOFT_WET_3.1_PRODUCT_DIRECTION_V1.md)已批准，具体新方案与实现尚未批准；本轮只同步文档和Issue，不恢复编码、合并或发布。目标是快速流畅、华丽精致、感知舒服协同成立，允许有价值的演出/功能等待和合理的大改，不默认缩短/减弱效果。下列入口为已有研究参考，`windows.html`属于b507基础修整，**新窗口视觉重做尚未通过验收**。下一步建议见[窗口运动草案](../../docs/superpowers/plans/2026-10-21-window-motion-proposal-v1.md)。
+**最新状态：** [正式产品口径V1.0](../../docs/SOFT_WET_3.1_PRODUCT_DIRECTION_V1.md)已批准，负责人后续已授权[界面设置折光候选](../settings-refraction-v1/README.md)的一版隔离原型及原速对照，视觉结果待验收；不推广其它窗口、不合并或发布。目标是快速流畅、华丽精致、感知舒服协同成立，允许有价值的演出/功能等待和合理的大改，不默认缩短/减弱效果。下列入口为已有研究参考，`windows.html`属于b507基础修整，**新窗口视觉重做尚未通过验收**。下一步建议见[窗口运动草案](../../docs/superpowers/plans/2026-10-21-window-motion-proposal-v1.md)。
 
 ## 三个可操作入口
 

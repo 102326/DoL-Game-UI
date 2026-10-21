@@ -1,0 +1,13 @@
+/* This sheet is imported exclusively by the isolated candidate. */
+html[data-variant=new][data-stone-free] #dol-midnight-controls>.dmt-settings-shell{position:relative;isolation:isolate;perspective:1400px;background:transparent!important;border-color:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}
+html[data-variant=new] #dol-midnight-controls .dmt-settings-shell>.rf-stage{position:absolute;inset:0;z-index:-1;pointer-events:none!important;transform-origin:50% 50%;perspective:1100px;overflow:hidden;border-radius:22px}
+.rf-stage *{pointer-events:none!important}.rf-plane{position:absolute;inset:0;border-radius:22px;transform-origin:0 0;border:1px solid #d4ece42b}
+.rf-back{background:linear-gradient(130deg,#c3d6c944,transparent 65%),#1a2029;box-shadow:0 30px 60px #0009;transform:translate(9px,10px)}
+.rf-mid{background:linear-gradient(120deg,#adc4d92e,transparent 50%),#343944;transform:translate(4px,4px);border-color:#c9dae344}
+.rf-face{background:linear-gradient(125deg,#bfd4df12,transparent 55%),#24262aee;box-shadow:inset 0 1px #e5f2f329,0 24px 80px #0006}
+html[data-dgu-visualGlass] .rf-face{background:linear-gradient(130deg,#e3f3ff14,transparent 56%),#24262ad9;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.rf-ridge{position:absolute;inset:-25% -45%;width:80%;transform:rotate(-28deg);background:linear-gradient(90deg,transparent 46%,#b6d2ce14 48%,#d0f4ed99 49.7%,#fff9 50%,#d5d1ff4d 50.6%,transparent 53%);mix-blend-mode:screen;filter:blur(.3px)}
+.rf-caustic{position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,#a4e1c50c 42%,#b8caf922 49%,#f1e9d51c 52%,transparent 60%);mix-blend-mode:screen}
+html[data-variant=new] #dol-midnight-controls .dmt-workspace-page{perspective:1400px}
+html[data-variant=new] #dol-midnight-controls [data-rf-group]{transform-origin:50% 0}
+html[data-variant=new] #dol-midnight-controls .dmt-workspace-section{transform-style:preserve-3d}
