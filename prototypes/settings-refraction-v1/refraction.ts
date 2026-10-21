@@ -1,8 +1,8 @@
 // An isolated settings study: no global motion adapter or game action ownership.
 import {gsap} from 'gsap';
-// Owner requested V2 pacing near 3.0.4. Keep V1 as an explicit visual reference.
-const original=new URLSearchParams(location.search).get('revision')==='v1';
-export const timing=original?{revision:'v1',open:1.30,close:1.30,enter:.83,leave:.42}:{revision:'v2',open:.56,close:.30,enter:.62,leave:.30};
+// Owner accepted V2 and requested slightly faster open/close; preserve both references.
+const revision=new URLSearchParams(location.search).get('revision');
+export const timing=revision==='v1'?{revision:'v1',open:1.30,close:1.30,enter:.83,leave:.42}:revision==='v2'?{revision:'v2',open:.56,close:.30,enter:.62,leave:.30}:{revision:'v2.1',open:.50,close:.26,enter:.62,leave:.30};
 type Evidence={event:string;at:number;[key:string]:unknown};
 export const evidence:Evidence[]=[];
 const note=(event:string,detail:Record<string,unknown>={})=>evidence.push({event,at:performance.now(),...detail});

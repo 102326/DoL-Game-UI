@@ -1,8 +1,14 @@
-# #22 / SW31-SETTINGS-RF-02 — 界面设置折光原型 V2
+# #22 / SW31-SETTINGS-RF-02 — 界面设置折光原型 V2.1（开关微调）
 
-2026-10-21。负责人认可折光/层叠设计方向，要求打开、关闭及分类切换接近旧版速度；本轮已获V2原型授权，**V2视觉验收待负责人决定**。范围仅界面设置；不推广其它窗口、不合并main、不改Tag/正式制品、不发布。当前工作分支 `prototype/golden-spin-b`。
+2026-10-21。负责人认可折光/层叠设计方向，要求打开、关闭及分类切换接近旧版速度；**负责人已确认V2设计通过（实现e018f5e），随后要求开关再稍快一点；当前V2.1待观看确认**。范围仅界面设置；不推广其它窗口、不合并main、不改Tag/正式制品、不发布。当前工作分支 `prototype/golden-spin-b`。
 
-## 看什么
+## 当前微调
+
+V2.1只将打开560→500ms、关闭300→260ms（分别缩短约11%/13%）。分类进入620ms/退出300ms、折光形态、层次、运动路径和中断处理不变，正文约438ms可操作。默认与`?revision=v2.1`为本轮微调；`?revision=v2`保留已认可版，`?revision=v1`保留原始慢版。原V2媒体及摘要不覆盖。
+
+本轮[桌面对照](../../docs/media/settings-refraction-v2-fast/settings-refraction-v2-fast-desktop-1x.mp4)、[窄屏对照](../../docs/media/settings-refraction-v2-fast/settings-refraction-v2-fast-narrow-1x.mp4)及[验证摘要](../../docs/media/settings-refraction-v2-fast/validation.json)独立保存，仍为与公开3.0.4的同操作、同视口、原速对照。下面V2参数与录像是已认可版的历史记录。
+
+## 已认可V2的证据
 
 - [桌面原速并排](../../docs/media/settings-refraction-v2/settings-refraction-v2-desktop-1x.mp4)：两侧内部均为1280×900 CSS px。
 - [窄屏原速并排](../../docs/media/settings-refraction-v2/settings-refraction-v2-narrow-1x.mp4)：两侧内部均为390×844 CSS px。
@@ -19,7 +25,7 @@
 | 分类进入 | 620ms | 830ms | 620ms |
 | 分类退出 | 620ms | 420ms | 300ms（与进入交叠） |
 
-这是负责人针对本窗口的节奏修订，不把它设为全部特效统一上限。[V1原速录像](../../docs/media/settings-refraction-v1/settings-refraction-desktop-1x.mp4)与旧证据原样保留。实验目录沿用settings-refraction-v1避免破坏既有入口；默认和`?revision=v2`均为V2，`?revision=v1`为V1慢版参考。未改变共同源码冻结身份。
+这是负责人针对本窗口的节奏修订，不把它设为全部特效统一上限。[V1原速录像](../../docs/media/settings-refraction-v1/settings-refraction-desktop-1x.mp4)与旧证据原样保留。实验目录沿用settings-refraction-v1避免破坏既有入口；`?revision=v2`为已认可V2，默认改为上述V2.1，`?revision=v1`为V1慢版参考。未改变共同源码冻结身份。
 
 ## 冻结身份和隔离
 
@@ -55,4 +61,4 @@ node scripts/check-settings-refraction.cjs --record
 
 对照共12次操作，使用同一个墙钟计划：首次打开，材质→入口→阅读，160ms间隔连续三次切换，关闭；再次打开300ms后关闭，160ms后反向重开，最后关闭。两侧使用同一HTTP端口的127.0.0.1/localhost两份本机来源；录制Chromium启用站点进程隔离，避免一侧布局阻塞另一侧操作接收。消息只接受已知本机父页面、相同协议/端口与精确来源；仍保存实际投递偏差并执行80ms上限，不扩大阈值制造通过。操作通过受控父页面消息调用真实控件/设置控制器；鼠标命中和真实偏好操作另由浏览器检查覆盖。视频中的正常与打断操作均保留原速。
 
-未完成：负责人视觉验收、实际游戏/ModLoader整合、Windows/Android/iOS/WebView/真实触摸性能和兼容。未制作其它窗口候选，也未把这一版参数推广到共享正式动效。下一步等负责人观看后决定修改或接受。
+未完成：V2.1微调的负责人观看确认、实际游戏/ModLoader整合、Windows/Android/iOS/WebView/真实触摸性能和兼容。未制作其它窗口候选，也未把这一版参数推广到共享正式动效。V2设计已通过，V2.1仅等待本次速度反馈；不从视觉认可推断实际游戏整合或推广授权。

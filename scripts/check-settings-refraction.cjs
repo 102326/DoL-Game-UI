@@ -26,7 +26,7 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
     assert.equal(actual,expected,variant+': '+name);
    }
   });
-  await check('V2 open, close and category settlement stay near the actual 3.0.4 baseline',async()=>{
+  await check('V2.1 open, close and category settlement stay near the actual 3.0.4 baseline',async()=>{
    for(const variant of ['old','new']){
     page=await browser.newPage({viewport:{width:1280,height:900}});watch(page);await page.goto(base+'/scene.html?variant='+variant);await page.waitForFunction(()=>window.settingsStudy);
     timingMeasurements[variant]=await page.evaluate(async variant=>{
@@ -104,7 +104,7 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
    assert.deepEqual(data[0].operations.map(x=>x.action),data[1].operations.map(x=>x.action));
    assert.deepEqual(data[0].preferences,data[1].preferences,'Comparison settings must match');
    const skew=data[0].operations.map((x,i)=>Math.abs(x.wallTime-data[1].operations[i].wallTime));fs.writeFileSync(path.join(output,'recording-inputs-'+name+'.json'),JSON.stringify({data,skew},null,2));assert.ok(Math.max(...skew)<80,'Input delivery skew too large: '+Math.max(...skew));
-   const video=page.video();await context.close();const source=await video.path(),target=path.join(output,'settings-refraction-v2-'+name+'-1x.mp4');
+   const video=page.video();await context.close();const source=await video.path(),target=path.join(output,'settings-refraction-v2-fast-'+name+'-1x.mp4');
    execFileSync('ffmpeg',['-y','-i',source,'-c:v','libx264','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+faststart',target],{stdio:'pipe'});
    const probe=JSON.parse(execFileSync('ffprobe',['-v','quiet','-show_format','-show_streams','-of','json',target],{encoding:'utf8'}));
    assert.ok(Number(probe.format.duration)>=17.4);recordings.push({name,viewport,video:path.basename(target),sha256:sha(fs.readFileSync(target)),bytes:fs.statSync(target).size,inputSkewMs:Math.max(...skew),duration:Number(probe.format.duration),data});console.log('RECORDED',target);
