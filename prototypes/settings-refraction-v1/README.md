@@ -1,8 +1,18 @@
-# #22 / SW31-SETTINGS-RF-02 — 界面设置折光原型 V2.2（新效果、旧版分类节奏）
+# #22 / SW31-SETTINGS-RF-02 — 界面设置折光原型 V2.3（简短开关过渡）
 
 2026-10-21。负责人认可折光/层叠设计方向，要求打开、关闭及分类切换接近旧版速度；**负责人已确认V2设计通过（实现e018f5e），随后要求开关再稍快一点；当前V2.1待观看确认**。范围仅界面设置；不推广其它窗口、不合并main、不改Tag/正式制品、不发布。当前工作分支 `prototype/golden-spin-b`。
 
-## 当前微调：V2.2
+## 当前版本：V2.3
+
+负责人最新要求删除当前开关界面的效果，采用简单过渡，极短时无需过渡。本版将打开/关闭替换为100/80ms的透明度过渡，不生成折光代理、光脊、层叠展开、旋转、缩放或分批内容入场；正文从打开时就可操作，不为过渡加等待。减少动态、关闭动画或隐藏时立即结算。静态材质沿用3.x Acrylic；分类效果和620ms旧版曲线保持V2.2。
+
+[桌面原速对照](../../docs/media/settings-simple-v2-3/settings-simple-v2-3-desktop-1x.mp4) · [窄屏原速对照](../../docs/media/settings-simple-v2-3/settings-simple-v2-3-narrow-1x.mp4) · [本轮验证摘要](../../docs/media/settings-simple-v2-3/validation.json)。默认及`?revision=v2.3`为当前候选；显式V1/V2/V2.1/V2.2入口及原媒体保留历史参考，不作为当前默认效果。
+
+验证使用14组现有检查：开关不再要求最低100ms，也不再要求已被删除的代理层展开；改为检查没有代理/分层节点、内容无过渡锁定、快速开关保持最新意图、固定命中矩形与透明度反向连续，以及偏好/键盘、分类显现、溢出、减少动态、隐藏、卸载、旋转/缩放。原几何容差及溢出门槛保留。原速对照时间表仍一致；第二次打开300ms后关闭时，短过渡已经完成，旧版可能仍在展开，不将两边都标成正在展开的证明。
+
+本轮仅为设置原型修订，待负责人观看；未进行实际游戏/ModLoader或真机验证，不推广其它窗口、不合并main、不发布。正式src/framework/依赖及历史证据保持不变。
+
+## 历史 V2.2（已由最新开关方案替代）
 
 负责人澄清：**速度与旧版一样，其它依旧新版**，不恢复旧版视觉。开关保留V2.1的500/260ms，允许有完整演出；本轮针对分类响应。V2.1虽然总进入时长已为620ms，但有约52ms起始延迟且正文前段被裁切，不能仅凭总时长声称感知速度一致。
 
@@ -10,7 +20,7 @@ V2.2保留新分类的方向、24°折转、位移、折光裁切与层次，取
 
 新增浏览器检查比较真实组件在同一动画时间160/300ms的透明度×未裁切横向比例（显现进度代理，不等同阅读理解/完整可操作面积）。V2.1在约201ms时只有0.511，旧版为0.936，该检查已正确拒绝V2.1。初始实时时钟采样用于重现；最终对照将浏览器原生动画暂停并定位到相同动画时间，避免两次独立等待采到不同帧。整轮点击至终态耗时另测。微调后数据见[本轮摘要](../../docs/media/settings-refraction-v2-response/validation.json)，不以总时长相同替代这个检查，也不以数值通过代替负责人感受。
 
-[桌面原速对照](../../docs/media/settings-refraction-v2-response/settings-refraction-v2-response-desktop-1x.mp4) · [窄屏原速对照](../../docs/media/settings-refraction-v2-response/settings-refraction-v2-response-narrow-1x.mp4)。仍与公开3.0.4同操作、同视口、原速比较。默认及`?revision=v2.2`为当前候选；`?revision=v2.1`、`?revision=v2`（已认可）、`?revision=v1`保留参考，原媒体及证据不覆盖。分类使用原生WAAPI复用旧版时间曲线，开关仍用既有GSAP；取消、隐藏、卸载仍归同一个受控任务集合管理，没有新增依赖。
+[桌面原速对照](../../docs/media/settings-refraction-v2-response/settings-refraction-v2-response-desktop-1x.mp4) · [窄屏原速对照](../../docs/media/settings-refraction-v2-response/settings-refraction-v2-response-narrow-1x.mp4)。仍与公开3.0.4同操作、同视口、原速比较。显式`?revision=v2.2`为历史候选；`?revision=v2.1`、`?revision=v2`（已认可）、`?revision=v1`保留参考，原媒体及证据不覆盖。分类使用原生WAAPI复用旧版时间曲线，开关仍用既有GSAP；取消、隐藏、卸载仍归同一个受控任务集合管理，没有新增依赖。
 
 ## 已认可V2的证据
 
@@ -29,7 +39,7 @@ V2.2保留新分类的方向、24°折转、位移、折光裁切与层次，取
 | 分类进入 | 620ms | 830ms | 620ms |
 | 分类退出 | 620ms | 420ms | 300ms（与进入交叠） |
 
-这是负责人针对本窗口的节奏修订，不把它设为全部特效统一上限。[V1原速录像](../../docs/media/settings-refraction-v1/settings-refraction-desktop-1x.mp4)与旧证据原样保留。实验目录沿用settings-refraction-v1避免破坏既有入口；`?revision=v2`为已认可V2，默认改为上述V2.2，`?revision=v1`为V1慢版参考。未改变共同源码冻结身份。
+这是负责人针对本窗口的节奏修订，不把它设为全部特效统一上限。[V1原速录像](../../docs/media/settings-refraction-v1/settings-refraction-desktop-1x.mp4)与旧证据原样保留。实验目录沿用settings-refraction-v1避免破坏既有入口；`?revision=v2`为已认可V2，默认改为上述V2.3，`?revision=v1`为V1慢版参考。未改变共同源码冻结身份。
 
 ## 冻结身份和隔离
 
@@ -65,4 +75,4 @@ node scripts/check-settings-refraction.cjs --record
 
 对照共12次操作，使用同一个墙钟计划：首次打开，材质→入口→阅读，160ms间隔连续三次切换，关闭；再次打开300ms后关闭，160ms后反向重开，最后关闭。两侧使用同一HTTP端口的127.0.0.1/localhost两份本机来源；录制Chromium启用站点进程隔离，避免一侧布局阻塞另一侧操作接收。消息只接受已知本机父页面、相同协议/端口与精确来源；仍保存实际投递偏差并执行80ms上限，不扩大阈值制造通过。操作通过受控父页面消息调用真实控件/设置控制器；鼠标命中和真实偏好操作另由浏览器检查覆盖。视频中的正常与打断操作均保留原速。
 
-未完成：V2.2微调的负责人观看确认、实际游戏/ModLoader整合、Windows/Android/iOS/WebView/真实触摸性能和兼容。未制作其它窗口候选，也未把这一版参数推广到共享正式动效。V2设计已通过，V2.2仅等待本次速度反馈；不从视觉认可推断实际游戏整合或推广授权。
+未完成：V2.3简单过渡的负责人观看确认、实际游戏/ModLoader整合、Windows/Android/iOS/WebView/真实触摸性能和兼容。未制作其它窗口候选，也未把这一版参数推广到共享正式动效。V2设计已通过，V2.3等待本次简单过渡反馈；不从视觉认可推断实际游戏整合或推广授权。

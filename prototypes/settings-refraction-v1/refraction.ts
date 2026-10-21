@@ -2,7 +2,8 @@
 import {gsap} from 'gsap';
 // Keep the new visual path; match the release category response curve, not just duration.
 const revision=new URLSearchParams(location.search).get('revision');
-export const timing=revision==='v1'?{revision:'v1',open:1.30,close:1.30,enter:.83,leave:.42}:revision==='v2'?{revision:'v2',open:.56,close:.30,enter:.62,leave:.30}:revision==='v2.1'?{revision:'v2.1',open:.50,close:.26,enter:.62,leave:.30}:{revision:'v2.2',open:.50,close:.26,enter:.62,leave:.62};
+export const timing=revision==='v1'?{revision:'v1',open:1.30,close:1.30,enter:.83,leave:.42}:revision==='v2'?{revision:'v2',open:.56,close:.30,enter:.62,leave:.30}:revision==='v2.1'?{revision:'v2.1',open:.50,close:.26,enter:.62,leave:.30}:revision==='v2.2'?{revision:'v2.2',open:.50,close:.26,enter:.62,leave:.62}:{revision:'v2.3',open:.10,close:.08,enter:.62,leave:.62};
+const simple=timing.revision==='v2.3';
 type Evidence={event:string;at:number;[key:string]:unknown};
 export const evidence:Evidence[]=[];
 const note=(event:string,detail:Record<string,unknown>={})=>evidence.push({event,at:performance.now(),...detail});
@@ -18,7 +19,7 @@ export function refractPage(node:HTMLElement,direction:number,entering:boolean,d
  if(!enabled()){done();return}
  dialog?.setAttribute('data-workspace-transition','');let finished=false;
  const finish=()=>{if(finished)return;finished=true;pages.delete(node);gsap.set(node,{clearProps:'transform,opacity,filter,clipPath,transformOrigin'});if(!pages.size)dialog?.removeAttribute('data-workspace-transition');done();note('category-settled',{entering,heading:node.getAttribute('aria-labelledby')})};
- if(timing.revision==='v2.2'){
+ if(timing.revision==='v2.2'||simple){
   // The release's 620ms curve does most visible work early. Retain the new
   // fold/rotation, remove its dead lead-in and reveal clipping early as well.
   const origin=direction>0?'0% 0%':'100% 0%';
@@ -51,7 +52,7 @@ export function createSettingsRefraction(){
  function update(){
   if(!timeline||!dialog)return;
   // The page's reveal ends at .525 + .61. Do not advertise partly clipped inputs as ready.
-  const time=timeline.time();const nextUsable=!closing&&time>=1.14;
+  const time=timeline.time();const nextUsable=!closing&&(simple||time>=1.14);
   content?.toggleAttribute('inert',!nextUsable);dialog.dataset.rfState=closing?'closing':time>=timeline.duration()?'open':nextUsable?'afterglow':'unfolding';
   if(nextUsable&&!usable)note('content-usable',{time});usable=nextUsable;
  }
@@ -70,6 +71,11 @@ export function createSettingsRefraction(){
   if(!enabled()){dialog.dataset.rfState='open';return}
   if(glass)glass.style.opacity='0';
   content=shell.querySelector<HTMLElement>('.dmt-workspace-page')??undefined;
+  if(simple){
+   timeline=gsap.timeline({paused:true,onUpdate:update,onComplete:()=>{update();note('visual-settled')},onReverseComplete:()=>{clean();onClosed?.();onClosed=undefined;note('closed')}});
+   timeline.fromTo(shell,{opacity:0},{opacity:1,duration:timing.open,ease:'none'}).play();update();
+   note('input-acknowledged',{duration:timing.open,revision:timing.revision,transition:'opacity-only'});return;
+  }
   const rect=shell.getBoundingClientRect(),from=origin?.isConnected?origin.getBoundingClientRect():null;
   const scale=rect.width/shell.offsetWidth;
   const unit=Number.isFinite(scale)&&scale>0?scale:1;

@@ -26,7 +26,7 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
     assert.equal(actual,expected,variant+': '+name);
    }
   });
-  await check('V2.2 open, close and category settlement stay near the actual 3.0.4 baseline',async()=>{
+  await check('V2.3 open, close and category settlement stay near the actual 3.0.4 baseline',async()=>{
    for(const variant of ['old','new']){
     page=await browser.newPage({viewport:{width:1280,height:900}});watch(page);await page.goto(base+'/scene.html?variant='+variant);await page.waitForFunction(()=>window.settingsStudy);
     timingMeasurements[variant]=await page.evaluate(async variant=>{
@@ -38,7 +38,7 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
      return {open,category,close};
     },variant);await page.close();
    }
-   for(const action of ['open','close','category'])assert.ok(timingMeasurements.new[action]>100&&timingMeasurements.new[action]<=timingMeasurements.old[action]+180,action+' is not near baseline: '+JSON.stringify(timingMeasurements));
+   for(const action of ['open','close','category'])assert.ok(timingMeasurements.new[action]>=0&&timingMeasurements.new[action]<=timingMeasurements.old[action]+180,action+' is not near baseline: '+JSON.stringify(timingMeasurements));
    console.log('TIMING',JSON.stringify(timingMeasurements));
   });
   await check('category readable progress matches the old release, not only its final duration',async()=>{
@@ -68,7 +68,7 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
    await check(viewport.width+': real modal, geometry, hit testing, actual preference input and keyboard close',async()=>{
     await page.evaluate(()=>document.getElementById('dol-midnight-sidebar-button').addEventListener('click',()=>{window.__studyInitiallyInert=document.querySelector('.dmt-workspace-page').hasAttribute('inert')},{once:true}));
     await page.getByRole('button',{name:'界面设置',exact:true}).click();
-    assert.equal(await page.evaluate(()=>window.__studyInitiallyInert),true,'Clipped content must remain inert until the reveal completes');await waitOpen(page);
+    assert.equal(await page.evaluate(()=>window.__studyInitiallyInert),false,'Short opacity-only opening must not gate the content');await waitOpen(page);
     const geometry=await page.evaluate(()=>{
      const shell=document.querySelector('.dmt-settings-shell'),r=shell.getBoundingClientRect();return {modal:document.querySelector('dialog').matches(':modal'),rect:r.toJSON(),width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,hit:[...document.querySelectorAll('.dmt-workspace-nav button,.dmt-close')].map(n=>{const b=n.getBoundingClientRect();return n.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2))}),decorative:[...document.querySelectorAll('.rf-stage,.rf-stage *')].every(n=>getComputedStyle(n).pointerEvents==='none')};
     });
@@ -82,18 +82,22 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
     for(const category of ['材质','入口','页面','高级','阅读']){await act(page,'切换：'+category);await page.waitForTimeout(70)}
     await waitPage(page,'reading');assert.equal(await page.locator('.dmt-workspace-section[aria-hidden=true]').count(),0);assert.equal(await page.locator('.dmt-workspace-page[inert]').count(),0);
    });
-   await check(viewport.width+': close during unfolding and reverse from current geometry without restart',async()=>{
+   await check(viewport.width+': short opacity-only open/close keeps latest intent and stationary hitboxes',async()=>{
     await act(page,'关闭设置');await waitClosed(page);
-    // Start the real opening and install the sampler in one browser task; a
-    // separate automation round trip may miss its short intermediate window.
-    const values=await page.evaluate(()=>new Promise((resolve,reject)=>{const start=performance.now(),observed=[];settingsStudy.act('打开设置');const tick=()=>{const stage=document.querySelector('.rf-stage'),shell=document.querySelector('.dmt-settings-shell');const ratio=stage&&shell?stage.getBoundingClientRect().width/shell.getBoundingClientRect().width:0;observed.push({elapsed:performance.now()-start,ratio});
-     // Sample an actually unfolding frame; a fixed sleep can still land at t=0.
-     if(ratio>.10&&ratio<.85){const sample=()=>{const matrix=new DOMMatrixReadOnly(getComputedStyle(stage).transform);return [[0,0],[stage.offsetWidth,0],[0,stage.offsetHeight],[stage.offsetWidth,stage.offsetHeight]].map(([x,y])=>new DOMPoint(x,y).matrixTransform(matrix).toJSON())};const initial=sample();settingsStudy.act('展开中关闭');const closed=sample();settingsStudy.act('关闭中重新打开');const reopened=sample();resolve({initial,closed,reopened,ratio})}
-     else if(performance.now()-start>3000)reject(Error('No intermediate unfolding frame observed: '+JSON.stringify(observed)));else requestAnimationFrame(tick)};requestAnimationFrame(tick)}));
-    // GSAP rate changes can round a CSS matrix by 0.0001px. Check every corner
-    // within one browser layout quantum, rather than decimal string spelling.
-    for(const [a,b]of [[values.initial,values.closed],[values.closed,values.reopened]])for(let i=0;i<4;i++)for(const axis of ['x','y','z'])assert.ok(Math.abs(a[i][axis]-b[i][axis])<=1/64,'Reversal corner jumped: '+JSON.stringify(values));
-    fs.writeFileSync(path.join(output,'reversal-'+viewport.width+'.json'),JSON.stringify(values,null,2));await waitOpen(page);await act(page,'关闭设置');await waitClosed(page);assert.equal(await page.locator('.rf-stage,.dmt-settings-context').count(),0);
+    const values=await page.evaluate(()=>new Promise(resolve=>{
+     settingsStudy.act('打开设置');requestAnimationFrame(()=>{
+      const shell=document.querySelector('.dmt-settings-shell');
+      const sample=()=>({rect:shell.getBoundingClientRect().toJSON(),opacity:Number(getComputedStyle(shell).opacity),transform:getComputedStyle(shell).transform,clip:getComputedStyle(shell).clipPath});
+      const initial=sample();settingsStudy.act('展开中关闭');const closed=sample();settingsStudy.act('关闭中重新打开');const reopened=sample();resolve({initial,closed,reopened,stages:document.querySelectorAll('.rf-stage,[data-rf-group]').length,inert:document.querySelector('.dmt-workspace-page').hasAttribute('inert')});
+     });
+    }));
+    assert.equal(values.stages,0);assert.equal(values.inert,false);
+    for(const value of [values.initial,values.closed,values.reopened]){assert.equal(value.transform,'none');assert.equal(value.clip,'none');for(const key of ['x','y','width','height'])assert.ok(Number.isFinite(value.rect[key])&&Math.abs(value.rect[key]-values.initial.rect[key])<=1/64);assert.ok(Math.abs(value.opacity-values.initial.opacity)<.001)}
+    fs.writeFileSync(path.join(output,'reversal-'+viewport.width+'.json'),JSON.stringify(values,null,2));await waitOpen(page);
+    assert.equal(await page.locator('.rf-stage,[data-rf-group]').count(),0);
+    const events=await page.evaluate(()=>settingsStudy.motionEvidence);assert.ok(events.some(e=>e.event==='input-acknowledged'&&e.transition==='opacity-only'&&e.duration<=.12));
+    await page.evaluate(()=>{settingsStudy.act('关闭设置');settingsStudy.act('关闭中重新打开')});await waitOpen(page);
+    await act(page,'关闭设置');await waitClosed(page);assert.equal(await page.locator('.rf-stage,.dmt-settings-context').count(),0);
    });
    await check(viewport.width+': reduced motion, preference cancellation and hidden-page settlement',async()=>{
     await page.emulateMedia({reducedMotion:'reduce'});await act(page,'打开设置');await waitOpen(page);assert.equal(await page.locator('.rf-stage').count(),0);await act(page,'切换：材质');await waitPage(page,'material');await page.keyboard.press('Escape');await waitClosed(page);
@@ -111,8 +115,8 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
    await page.evaluate(()=>{document.body.style.zoom='1.25';window.dispatchEvent(new Event('resize'))});
    for(const selector of ['.dmt-workspace-nav button','.dmt-close']){const rect=await page.locator(selector).first().boundingBox();assert.ok(rect&&Object.values(rect).every(Number.isFinite));await page.locator(selector).first().click()}
    await waitClosed(page);await act(page,'打开设置');await waitOpen(page);
-   const zoomed=await page.evaluate(()=>({shell:document.querySelector('.dmt-settings-shell').getBoundingClientRect().toJSON(),stage:document.querySelector('.rf-stage').getBoundingClientRect().toJSON()}));
-   for(const key of ['x','y','width','height'])assert.ok(Number.isFinite(zoomed.stage[key])&&Math.abs(zoomed.shell[key]-zoomed.stage[key])<=3,'125% stage alignment: '+key);
+   const zoomed=await page.evaluate(()=>({shell:document.querySelector('.dmt-settings-shell').getBoundingClientRect().toJSON(),stageCount:document.querySelectorAll('.rf-stage').length,transform:getComputedStyle(document.querySelector('.dmt-settings-shell')).transform}));
+   assert.equal(zoomed.stageCount,0);assert.equal(zoomed.transform,'none');for(const key of ['x','y','width','height'])assert.ok(Number.isFinite(zoomed.shell[key]),'125% shell geometry: '+key);
    await page.keyboard.press('Escape');await waitClosed(page);await page.close();
   });
   const recordings=[];
@@ -128,7 +132,7 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
    assert.deepEqual(data[0].operations.map(x=>x.action),data[1].operations.map(x=>x.action));
    assert.deepEqual(data[0].preferences,data[1].preferences,'Comparison settings must match');
    const skew=data[0].operations.map((x,i)=>Math.abs(x.wallTime-data[1].operations[i].wallTime));fs.writeFileSync(path.join(output,'recording-inputs-'+name+'.json'),JSON.stringify({data,skew},null,2));assert.ok(Math.max(...skew)<80,'Input delivery skew too large: '+Math.max(...skew));
-   const video=page.video();await context.close();const source=await video.path(),target=path.join(output,'settings-refraction-v2-response-'+name+'-1x.mp4');
+   const video=page.video();await context.close();const source=await video.path(),target=path.join(output,'settings-simple-v2-3-'+name+'-1x.mp4');
    execFileSync('ffmpeg',['-y','-i',source,'-c:v','libx264','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+faststart',target],{stdio:'pipe'});
    const probe=JSON.parse(execFileSync('ffprobe',['-v','quiet','-show_format','-show_streams','-of','json',target],{encoding:'utf8'}));
    assert.ok(Number(probe.format.duration)>=17.4);recordings.push({name,viewport,video:path.basename(target),sha256:sha(fs.readFileSync(target)),bytes:fs.statSync(target).size,inputSkewMs:Math.max(...skew),duration:Number(probe.format.duration),data});console.log('RECORDED',target);
