@@ -4,7 +4,7 @@ const {chromium}=require('playwright');
 const root=path.resolve('tests/artifacts/settings-refraction-v1'),dist=path.join(root,'dist');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const output=path.join(root,'review-'+Date.now());fs.mkdirSync(output,{recursive:true});
-const record=process.argv.includes('--record'),checks=[],errors=[],timingMeasurements={};
+const record=process.argv.includes('--record'),checks=[],errors=[],timingMeasurements={},categoryProgress={};
 const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.json':'application/json'};
 const server=http.createServer((req,res)=>{const file=path.resolve(dist,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname==='/'?'/index.html':new URL(req.url,'http://local').pathname));if(!file.startsWith(dist+path.sep)||!fs.existsSync(file)){res.writeHead(404);res.end();return}res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res)});
 const browserOptions=require('../tests/browser-options.cjs');
@@ -26,7 +26,7 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
     assert.equal(actual,expected,variant+': '+name);
    }
   });
-  await check('V2.1 open, close and category settlement stay near the actual 3.0.4 baseline',async()=>{
+  await check('V2.2 open, close and category settlement stay near the actual 3.0.4 baseline',async()=>{
    for(const variant of ['old','new']){
     page=await browser.newPage({viewport:{width:1280,height:900}});watch(page);await page.goto(base+'/scene.html?variant='+variant);await page.waitForFunction(()=>window.settingsStudy);
     timingMeasurements[variant]=await page.evaluate(async variant=>{
@@ -40,6 +40,28 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
    }
    for(const action of ['open','close','category'])assert.ok(timingMeasurements.new[action]>100&&timingMeasurements.new[action]<=timingMeasurements.old[action]+180,action+' is not near baseline: '+JSON.stringify(timingMeasurements));
    console.log('TIMING',JSON.stringify(timingMeasurements));
+  });
+  await check('category readable progress matches the old release, not only its final duration',async()=>{
+   for(const variant of ['old','new']){
+    page=await browser.newPage({viewport:{width:1280,height:900}});watch(page);await page.goto(base+'/scene.html?variant='+variant);await page.waitForFunction(()=>window.settingsStudy);await act(page,'打开设置');
+    if(variant==='new')await waitOpen(page);else await page.waitForFunction(()=>!document.querySelector('.dmt-open-material')&&document.querySelector('dialog')?.open&&document.querySelector('.dmt-settings-shell').getAnimations().every(a=>a.playState!=='running'));
+    await act(page,'切换：材质');
+    await page.waitForFunction(()=>document.querySelector('[aria-labelledby="dmt-material-heading"]')?.getAnimations().some(a=>a.effect?.getTiming().duration===620));
+    categoryProgress[variant]=await page.evaluate(()=>{
+     const node=document.querySelector('[aria-labelledby="dmt-material-heading"]'),animation=node.getAnimations().find(a=>a.effect.getTiming().duration===620),samples=[];
+     // Seek both actual browser effects to the same animation time. Comparing
+     // independent 160ms sleeps can sample different frames under layout load.
+     animation.pause();
+     for(const target of [160,300]){
+      animation.currentTime=target;const style=getComputedStyle(node);
+      const inset=style.clipPath.match(/^inset\((.*?)(?: round |\))/)?.[1].trim().split(/\s+/).map(parseFloat)??[0];
+      const right=inset[1]??inset[0],left=inset[3]??right;
+      samples.push({animationTime:target,opacity:Number(style.opacity),clipPath:style.clipPath,easing:animation.effect.getTiming().easing,transform:style.transform,readableFraction:Number(style.opacity)*Math.max(0,1-(left+right)/100)});
+     }return samples;
+    });await page.close();
+   }
+   fs.writeFileSync(path.join(output,'category-progress.json'),JSON.stringify(categoryProgress,null,2));
+   for(let i=0;i<2;i++)assert.ok(categoryProgress.new[i].readableFraction>=categoryProgress.old[i].readableFraction-.10,'New category still reveals substantially later than old: '+JSON.stringify(categoryProgress));
   });
   for(const viewport of [{width:1280,height:900},{width:390,height:844}]){
    page=await browser.newPage({viewport,deviceScaleFactor:1});watch(page);await page.goto(base+'/scene.html?variant=new');await page.waitForFunction(()=>window.settingsStudy);
@@ -61,11 +83,13 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
     await waitPage(page,'reading');assert.equal(await page.locator('.dmt-workspace-section[aria-hidden=true]').count(),0);assert.equal(await page.locator('.dmt-workspace-page[inert]').count(),0);
    });
    await check(viewport.width+': close during unfolding and reverse from current geometry without restart',async()=>{
-    await act(page,'关闭设置');await waitClosed(page);await act(page,'打开设置');
-    const values=await page.evaluate(()=>new Promise((resolve,reject)=>{const start=performance.now();const tick=()=>{const stage=document.querySelector('.rf-stage'),shell=document.querySelector('.dmt-settings-shell');const ratio=stage&&shell?stage.getBoundingClientRect().width/shell.getBoundingClientRect().width:0;
+    await act(page,'关闭设置');await waitClosed(page);
+    // Start the real opening and install the sampler in one browser task; a
+    // separate automation round trip may miss its short intermediate window.
+    const values=await page.evaluate(()=>new Promise((resolve,reject)=>{const start=performance.now(),observed=[];settingsStudy.act('打开设置');const tick=()=>{const stage=document.querySelector('.rf-stage'),shell=document.querySelector('.dmt-settings-shell');const ratio=stage&&shell?stage.getBoundingClientRect().width/shell.getBoundingClientRect().width:0;observed.push({elapsed:performance.now()-start,ratio});
      // Sample an actually unfolding frame; a fixed sleep can still land at t=0.
      if(ratio>.10&&ratio<.85){const sample=()=>{const matrix=new DOMMatrixReadOnly(getComputedStyle(stage).transform);return [[0,0],[stage.offsetWidth,0],[0,stage.offsetHeight],[stage.offsetWidth,stage.offsetHeight]].map(([x,y])=>new DOMPoint(x,y).matrixTransform(matrix).toJSON())};const initial=sample();settingsStudy.act('展开中关闭');const closed=sample();settingsStudy.act('关闭中重新打开');const reopened=sample();resolve({initial,closed,reopened,ratio})}
-     else if(performance.now()-start>3000)reject(Error('No intermediate unfolding frame observed'));else requestAnimationFrame(tick)};requestAnimationFrame(tick)}));
+     else if(performance.now()-start>3000)reject(Error('No intermediate unfolding frame observed: '+JSON.stringify(observed)));else requestAnimationFrame(tick)};requestAnimationFrame(tick)}));
     // GSAP rate changes can round a CSS matrix by 0.0001px. Check every corner
     // within one browser layout quantum, rather than decimal string spelling.
     for(const [a,b]of [[values.initial,values.closed],[values.closed,values.reopened]])for(let i=0;i<4;i++)for(const axis of ['x','y','z'])assert.ok(Math.abs(a[i][axis]-b[i][axis])<=1/64,'Reversal corner jumped: '+JSON.stringify(values));
@@ -104,13 +128,13 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
    assert.deepEqual(data[0].operations.map(x=>x.action),data[1].operations.map(x=>x.action));
    assert.deepEqual(data[0].preferences,data[1].preferences,'Comparison settings must match');
    const skew=data[0].operations.map((x,i)=>Math.abs(x.wallTime-data[1].operations[i].wallTime));fs.writeFileSync(path.join(output,'recording-inputs-'+name+'.json'),JSON.stringify({data,skew},null,2));assert.ok(Math.max(...skew)<80,'Input delivery skew too large: '+Math.max(...skew));
-   const video=page.video();await context.close();const source=await video.path(),target=path.join(output,'settings-refraction-v2-fast-'+name+'-1x.mp4');
+   const video=page.video();await context.close();const source=await video.path(),target=path.join(output,'settings-refraction-v2-response-'+name+'-1x.mp4');
    execFileSync('ffmpeg',['-y','-i',source,'-c:v','libx264','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+faststart',target],{stdio:'pipe'});
    const probe=JSON.parse(execFileSync('ffprobe',['-v','quiet','-show_format','-show_streams','-of','json',target],{encoding:'utf8'}));
    assert.ok(Number(probe.format.duration)>=17.4);recordings.push({name,viewport,video:path.basename(target),sha256:sha(fs.readFileSync(target)),bytes:fs.statSync(target).size,inputSkewMs:Math.max(...skew),duration:Number(probe.format.duration),data});console.log('RECORDED',target);
   }
   assert.deepEqual(errors,[]);
-  const result={scope:'Playwright Chromium static-build controlled real-settings study; actual OS in runtime; not game, physical-device/WebView or owner visual acceptance',checks,errors,recordings,timingMeasurements,provenance:JSON.parse(fs.readFileSync(path.join(root,'provenance.json'))),runtime:{platform:process.platform,node:process.version,chromium:browser.version()},sourceHead:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),prototypeFiles:Object.fromEntries(execFileSync('git',['ls-files','--cached','--others','--exclude-standard','prototypes/settings-refraction-v1','scripts/prepare-settings-refraction.mjs','scripts/check-settings-refraction.cjs','vite.settings-refraction.config.ts','tsconfig.settings-refraction.json'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).map(file=>[file,sha(fs.readFileSync(file))]))};
+  const result={scope:'Playwright Chromium static-build controlled real-settings study; actual OS in runtime; not game, physical-device/WebView or owner visual acceptance',checks,errors,recordings,timingMeasurements,categoryProgress,provenance:JSON.parse(fs.readFileSync(path.join(root,'provenance.json'))),runtime:{platform:process.platform,node:process.version,chromium:browser.version()},sourceHead:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),prototypeFiles:Object.fromEntries(execFileSync('git',['ls-files','--cached','--others','--exclude-standard','prototypes/settings-refraction-v1','scripts/prepare-settings-refraction.mjs','scripts/check-settings-refraction.cjs','vite.settings-refraction.config.ts','tsconfig.settings-refraction.json'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).map(file=>[file,sha(fs.readFileSync(file))]))};
   fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(result,null,2)+'\n');console.log('RESULT',output);
  }catch(error){if(page&&!page.isClosed())await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:error.stack,checks,errors},null,2));throw error}
  finally{await browser.close();await new Promise(resolve=>server.close(resolve))}

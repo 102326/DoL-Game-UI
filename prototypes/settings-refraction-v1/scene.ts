@@ -1,7 +1,7 @@
 import './scene.css';
 const variant=new URLSearchParams(location.search).get('variant')==='old'?'old':'new';
 const requested=new URLSearchParams(location.search).get('revision');
-const revision=requested==='v1'||requested==='v2'?requested:'v2.1';
+const revision=requested==='v1'||requested==='v2'||requested==='v2.1'?requested:'v2.2';
 document.documentElement.setAttribute('data-stone-free','research');
 document.documentElement.dataset.variant=variant;
 document.getElementById('app')!.innerHTML=`<header class="study-header"><span>SOFT & WET · SETTINGS STUDY 02</span><strong>${variant==='old'?'旧版 3.0.4':revision==='v1'?'参考 V1 · 原始慢节奏':`候选 ${revision.toUpperCase()} · 折光聚合与层叠展开`}</strong><small>同视口 · 原速 · 受控真实设置组件 · 非游戏整合</small></header>

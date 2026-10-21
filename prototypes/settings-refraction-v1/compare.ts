@@ -1,9 +1,9 @@
 import {sequence,sequenceEnd} from './sequence';
 const requested=new URLSearchParams(location.search).get('revision');
-const revision=requested==='v1'||requested==='v2'?requested:'v2.1';
-document.getElementById('revision-name')!.textContent=revision==='v1'?'参考 V1 · 原始慢节奏':revision==='v2'?'已认可 V2 · 560 / 300ms':'候选 V2.1 · 500 / 260ms';
+const revision=requested==='v1'||requested==='v2'||requested==='v2.1'?requested:'v2.2';
+document.getElementById('revision-name')!.textContent=revision==='v1'?'参考 V1 · 原始慢节奏':revision==='v2'?'已认可 V2 · 560 / 300ms':revision==='v2.1'?'参考 V2.1 · 500 / 260ms':'候选 V2.2 · 分类节奏对齐旧版';
 const candidate=document.getElementById('candidate-link')! as HTMLAnchorElement;candidate.href='./scene.html?variant=new&revision='+revision;
-const reference=document.getElementById('revision-link')! as HTMLAnchorElement;reference.href=revision==='v2.1'?'./?revision=v2':'./?revision=v2.1';reference.textContent=revision==='v2.1'?'查看已认可 V2 ↗':'查看 V2.1 微调 ↗';
+const reference=document.getElementById('revision-link')! as HTMLAnchorElement;reference.href=revision==='v2.2'?'./?revision=v2.1':'./?revision=v2.2';reference.textContent=revision==='v2.2'?'查看 V2.1 参考 ↗':'查看 V2.2 候选 ↗';
 let frames:HTMLIFrameElement[]=[],timers:ReturnType<typeof setTimeout>[]=[],running=false;
 const screens=document.getElementById('screens')!,view=document.getElementById('viewport')! as HTMLSelectElement,status=document.getElementById('status')!;
 function size(){const [width,height]=view.value.split(',').map(Number),scale=Math.min(1,(innerWidth-70)/(width*2));screens.querySelectorAll<HTMLElement>('.screen').forEach(box=>{box.style.width=width*scale+2+'px';box.style.height=height*scale+32+'px'});frames.forEach(frame=>{frame.style.width=width+'px';frame.style.height=height+'px';frame.style.transform=`scale(${scale})`})}

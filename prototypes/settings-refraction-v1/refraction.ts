@@ -1,15 +1,15 @@
 // An isolated settings study: no global motion adapter or game action ownership.
 import {gsap} from 'gsap';
-// Owner accepted V2 and requested slightly faster open/close; preserve both references.
+// Keep the new visual path; match the release category response curve, not just duration.
 const revision=new URLSearchParams(location.search).get('revision');
-export const timing=revision==='v1'?{revision:'v1',open:1.30,close:1.30,enter:.83,leave:.42}:revision==='v2'?{revision:'v2',open:.56,close:.30,enter:.62,leave:.30}:{revision:'v2.1',open:.50,close:.26,enter:.62,leave:.30};
+export const timing=revision==='v1'?{revision:'v1',open:1.30,close:1.30,enter:.83,leave:.42}:revision==='v2'?{revision:'v2',open:.56,close:.30,enter:.62,leave:.30}:revision==='v2.1'?{revision:'v2.1',open:.50,close:.26,enter:.62,leave:.30}:{revision:'v2.2',open:.50,close:.26,enter:.62,leave:.62};
 type Evidence={event:string;at:number;[key:string]:unknown};
 export const evidence:Evidence[]=[];
 const note=(event:string,detail:Record<string,unknown>={})=>evidence.push({event,at:performance.now(),...detail});
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 const enabled=()=>!document.hidden&&!reduced.matches&&document.documentElement.hasAttribute('data-dgu-visualMotion');
-const pages=new Map<HTMLElement,{timeline:gsap.core.Timeline;finish:()=>void}>();
-export function cancelRefractedPage(element:Element){const job=pages.get(element as HTMLElement);if(job){job.timeline.kill();job.finish()}}
+const pages=new Map<HTMLElement,{timeline?:gsap.core.Timeline;animation?:Animation;finish:()=>void}>();
+export function cancelRefractedPage(element:Element){const job=pages.get(element as HTMLElement);if(job){job.timeline?.kill();job.animation?.cancel();job.finish()}}
 export function disposeRefractedPages(){for(const element of [...pages.keys()])cancelRefractedPage(element)}
 export function refractPage(node:HTMLElement,direction:number,entering:boolean,done:()=>void){
  cancelRefractedPage(node);
@@ -18,6 +18,22 @@ export function refractPage(node:HTMLElement,direction:number,entering:boolean,d
  if(!enabled()){done();return}
  dialog?.setAttribute('data-workspace-transition','');let finished=false;
  const finish=()=>{if(finished)return;finished=true;pages.delete(node);gsap.set(node,{clearProps:'transform,opacity,filter,clipPath,transformOrigin'});if(!pages.size)dialog?.removeAttribute('data-workspace-transition');done();note('category-settled',{entering,heading:node.getAttribute('aria-labelledby')})};
+ if(timing.revision==='v2.2'){
+  // The release's 620ms curve does most visible work early. Retain the new
+  // fold/rotation, remove its dead lead-in and reveal clipping early as well.
+  const origin=direction>0?'0% 0%':'100% 0%';
+  const animation=node.animate(entering?[
+   {transformOrigin:origin,transform:`translate3d(${direction*80}px,16px,-100px) rotateY(${-direction*24}deg) rotateX(7deg)`,opacity:0,clipPath:direction>0?'inset(0 96% 0 0 round 16px)':'inset(0 0 0 96% round 16px)'},
+   {clipPath:'inset(0 0% 0 0% round 0px)',offset:.55},
+   {transformOrigin:origin,transform:'translate3d(0,0,0) rotateY(0deg) rotateX(0deg)',opacity:1,clipPath:'inset(0 0% 0 0% round 0px)',offset:.78},
+   {transformOrigin:origin,transform:'translate3d(0,0,0) rotateY(0deg) rotateX(0deg)',opacity:1,clipPath:'inset(0 0% 0 0% round 0px)'}
+  ]:[
+   {transformOrigin:direction>0?'100% 0%':'0% 0%',transform:'translate3d(0,0,0) rotateY(0deg)',opacity:1,filter:'blur(0px)'},
+   {transformOrigin:direction>0?'100% 0%':'0% 0%',transform:`translate3d(${direction*-45}px,0,-100px) rotateY(${direction*20}deg)`,opacity:0,filter:'blur(3px)'}
+  ],{duration:1000*(entering?timing.enter:timing.leave),easing:'cubic-bezier(.16,1,.3,1)'});
+  pages.set(node,{animation,finish});void animation.finished.then(finish,finish);
+  note('category-start',{entering,direction,heading:node.getAttribute('aria-labelledby'),duration:entering?timing.enter:timing.leave,revision:timing.revision,easing:'cubic-bezier(.16,1,.3,1)'});return;
+ }
  const timeline=gsap.timeline({onComplete:finish});pages.set(node,{timeline,finish});
  if(entering){
   gsap.set(node,{transformOrigin:direction>0?'0% 0%':'100% 0%',rotationY:direction*-24,rotationX:7,x:direction*80,y:16,z:-100,opacity:0,clipPath:direction>0?'inset(0 96% 0 0 round 16px)':'inset(0 0 0 96% round 16px)'});
