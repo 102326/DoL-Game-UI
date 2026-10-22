@@ -2,6 +2,8 @@
 
 2026-10-22，开发分支`dev/evolution-4.0`，输入提交`98c32bc18a7537e0abf8577ec83cee087be0c35f`；最终提交和实际CI链接见[#22第二轮记录](https://github.com/102326/DoL-Game-UI/issues/22)。本报告是阶段交付，不是4.0完成报告。
 
+后续反馈：负责人认为A/B都有问题，要求先寻找实拍雨窗图片/视频。两者均未获视觉认可；下面的交付与测试记录作为历史技术证据保留，下一步以[实拍参考研究](EVO-WEATHER-REFERENCE-STUDY.md)为输入，不能继续把状态解释为等待二选一。
+
 ## 裁决落实
 
 [首轮裁决](EVO-ROUND1-DECISION.md)已记录：当前P0消费者表及必要例外获批作为A2/A3范围，之前“暂不冻结”已被新裁决更新；V1雨天视觉Reject。V1的状态/释放/中断技术成果和原媒体保留，不将自动测试解释为画质通过。设置V2.3、金属球/真实Hub布局、3.x Acrylic和Host/native/third-party/save边界保留。

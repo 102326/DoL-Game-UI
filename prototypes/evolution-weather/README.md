@@ -2,6 +2,8 @@
 
 2026-10-22。负责人首轮裁决：**Architecture Continue / Weather Visual Reject**。原V1雨天视觉已否决；连续参数、状态中断、释放与原证据保留。当前A/B均为新视觉候选，等待负责人评审，**不是Visually Accepted、正式Integrated或Release Ready**。
 
+最新反馈：负责人认为A/B都有问题，要求先研究真实雨窗图片/视频。A/B保留为未获认可的历史候选；[实拍参考与重做要点](../../docs/evolution/EVO-WEATHER-REFERENCE-STUDY.md)记录已查看来源和观察边界。本次没有修改绘制器或生成新候选。
+
 ## 观看和操作
 
 ```sh
