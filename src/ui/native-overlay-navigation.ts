@@ -1,0 +1,78 @@
+import {createApp,reactive,type Component,type App} from 'vue';
+import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
+import {isolate,mountUI,unmountUI} from '../runtime/presentation';
+import {isMasterEnabled} from '../runtime/master';
+import {sourceMotion} from './source-motion';
+
+type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:string[][];component:Component;
+ navigate:(context:{target:HTMLElement;group:HTMLElement|null;content:HTMLElement;origin:DOMRect|undefined;motion:ReturnType<typeof sourceMotion>;scroll:(after?:()=>void)=>void;relay:(from:DOMRect,to:DOMRect)=>Animation|undefined;current:()=>boolean})=>void};
+/** Internal adapter for this reviewed native family; never owns/rebuilds native content. */
+export function nativeOverlayNavigation(root:Window,options:Options,framework?:{host:Host;owner:Participant}){
+ const key=`DoLGameUI.${options.kind}.enabled`,state=reactive({sections:[] as {id:string;label:string}[]}),motion=sourceMotion();
+ let enabled=true,destroyed=false,failed=false,ownerExited=false,disposing=false,frame=0,generation=0,intent=0;
+ let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,mount:Readonly<MountHandle>|undefined,lease:Readonly<Claim>|undefined,hadClass=false,decorated:HTMLElement|null=null;
+ const counts={mounts:0,scans:0,failures:0};
+ try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference remains available. */}
+ function release(){
+  generation++;intent++;motion.cancel();content?.scrollTo({top:content.scrollTop,behavior:'instant'});
+  const previous=mount;mount=undefined;unmountUI(app);app=undefined;
+  if(previous){disposing=true;try{previous.dispose()}finally{disposing=false}}
+  lease?.release();lease=undefined;host?.remove();host=null;
+  if(decorated&&!hadClass)decorated.classList.remove(options.prefix+'-overlay');decorated=null;content=null;
+ }
+ function recover(){failed=true;counts.failures++;release();document.dispatchEvent(new Event(`dol-ui-${options.kind}-change`))}
+ function go(id:string){
+  if(destroyed||failed||!host?.isConnected||!content?.isConnected||!overlay||overlay.classList.contains('hidden')||overlay.dataset.overlay!==options.kind)return false;
+  if(framework&&(!mount?.isCurrent()||!lease?.isCurrent()))return false;
+  const pane=content,group=id?pane.querySelector<HTMLElement>(`#${id}`):null;
+  let target=id?group:pane;if(id&&target?.previousElementSibling?.matches('.gold,h1,h2,h3,h4'))target=target.previousElementSibling as HTMLElement;
+  if(!target||!pane.contains(target))return false;
+  const view=pane.getBoundingClientRect(),scale=view.height/pane.offsetHeight;
+  if(!Number.isFinite(scale)||scale<=0)return false;
+  const top=id?pane.scrollTop+(target.getBoundingClientRect().top-view.top)/scale-16:0;
+  if(!Number.isFinite(top))return false;
+  motion.cancel();const ticket=++intent,epoch=generation;
+  const current=()=>!destroyed&&!failed&&intent===ticket&&generation===epoch&&pane===content&&!!host?.isConnected&&target.isConnected;
+  const scroll=(after?:()=>void)=>motion.scroll(pane,top,()=>{if(current())after?.()});
+  const relay=(from:DOMRect,to:DOMRect)=>{const body=document.body,scale=body.getBoundingClientRect().width/body.offsetWidth;if(!current()||!Number.isFinite(scale)||scale<=0)return;const local=(r:DOMRect)=>new DOMRect(r.x/scale,r.y/scale,r.width/scale,r.height/scale);return motion.relay(local(from),local(to))};
+  if(document.documentElement.hasAttribute('data-stone-free'))options.navigate({target,group,content:pane,origin:host.querySelector<HTMLElement>(`[data-section="${id}"]`)?.getBoundingClientRect()??host.getBoundingClientRect(),motion,scroll,relay,current});
+  else pane.scrollTo({top,behavior:'auto'});
+  return true;
+ }
+ function refresh(){isolate(options.kind,update,recover)}
+ function update(){
+  if(destroyed)return;
+  const next=document.getElementById('customOverlay');
+  if(next!==overlay){release();overlay=next;observer.disconnect();if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['data-overlay','class'],childList:true,subtree:true})}
+  const pane=overlay?.querySelector<HTMLElement>('#customOverlayContent')??null;
+  if(lease&&!lease.isCurrent())ownerExited=true;
+  if(!isMasterEnabled()||!enabled||failed||ownerExited||!overlay||overlay.classList.contains('hidden')||overlay.dataset.overlay!==options.kind||!pane?.querySelector('#'+options.marker)){
+   if(host||mount||lease)release();return;
+  }
+  if(content!==pane||!host?.isConnected||!!framework&&!mount?.isCurrent()){
+   release();
+   // Claim before touching DOM. Contention leaves native content available and
+   // a later explicit refresh may retry without creating a mutation loop.
+   if(framework){lease=framework.owner.claim('region',options.claimKey)??undefined;if(!lease)return}
+   content=pane;host=document.createElement('div');host.className=options.prefix+'-host';pane.before(host);hadClass=overlay.classList.contains(options.prefix+'-overlay');
+   const epoch=generation;
+   const setup=(parent:HTMLElement)=>{app=createApp(options.component,{...state,go,fallback:()=>setEnabled(false)});mountUI(app,parent,()=>{if(generation===epoch)recover()});counts.mounts++};
+   if(framework){
+    const value=framework.owner.mount({id:options.kind+'-navigation',parent:host,lifetime:'persistent',setup(context){
+     context.onCleanup(()=>{if(disposing||generation!==epoch)return;if(!lease?.isCurrent())ownerExited=true;release()});setup(context.element);
+    }});
+    if(!value.isCurrent()||generation!==epoch){value.dispose();if(!destroyed&&!ownerExited&&!failed)recover();return}mount=value;
+   }else setup(host);
+   decorated=overlay;overlay.classList.add(options.prefix+'-overlay');
+  }
+  counts.scans++;
+  const sections=options.groups.filter(([id])=>content!.querySelector(`#${id}`)).map(([id,label])=>({id,label}));
+  if(JSON.stringify(state.sections)!==JSON.stringify(sections))state.sections.splice(0,state.sections.length,...sections);
+ }
+ function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
+ const observer=new MutationObserver(records=>{if(records.some(r=>!(host?.contains(r.target)||r.target===host)&&!(r.type==='attributes'&&r.target!==overlay)))schedule()});
+ const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay)schedule()});
+ function setEnabled(value:boolean){if(destroyed)return;failed=false;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* No gameplay write. */}refresh();document.dispatchEvent(new Event(`dol-ui-${options.kind}-change`))}
+ discovery.observe(document.body,{childList:true,subtree:true});refresh();
+ return{getEnabled:()=>enabled&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts,implementation:'native-overlay-navigation/v1',consumer:options.kind,generation,mounted:!!host?.isConnected}),destroy(){if(destroyed)return;destroyed=true;if(frame)cancelAnimationFrame(frame);discovery.disconnect();observer.disconnect();release();motion.dispose();overlay=null}};
+}

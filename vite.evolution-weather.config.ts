@@ -1,0 +1,4 @@
+import {defineConfig} from 'vite';
+import vue from '@vitejs/plugin-vue';
+import path from 'node:path';
+export default defineConfig({root:path.resolve('prototypes/evolution-weather'),plugins:[vue()],base:'./',define:{__VUE_OPTIONS_API__:false,__VUE_PROD_DEVTOOLS__:false},server:{host:'127.0.0.1',port:5190,strictPort:true,fs:{allow:[path.resolve('.')]}},build:{outDir:path.resolve('tests/artifacts/evolution/weather-dist'),emptyOutDir:true,target:'es2022'}});

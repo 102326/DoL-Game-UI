@@ -1,0 +1,905 @@
+{
+  "schema": 1,
+  "scope": "Tracked first-party runtime, official adapters and explicitly retained studies; lexical hits require manual consumer decisions. Does not inspect third-party game/save files.",
+  "roots": [
+    "src/",
+    "framework/official-ui/",
+    "framework/motion-hub/",
+    "compat/",
+    "prototypes/golden-spin-b/",
+    "prototypes/settings-refraction-v1/"
+  ],
+  "sourceBase": "baf0d48d3d4b63cae1e17ff324d233b9a37e16b4",
+  "consumers": [
+    {
+      "file": "compat/cheat-extended-soft-wet/cheat-extended-soft-wet.css",
+      "sha256": "8f0880a9c517c4e1a38873d21aa76680d552052d35c7a9e6927cc9a379cb92d9",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 5
+      }
+    },
+    {
+      "file": "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.css",
+      "sha256": "ee7d3433ffcf59fa7cca388813fa8dabb5a1cbfad89d551bbfb9a4fb4daffdee",
+      "signals": {
+        "motion": 2,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.ts",
+      "sha256": "611a38ec30d9ec03f7e797822e32d7d70704a1187fe86be42c9a17d34f675b16",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "compat/maplebirch-soft-wet/maplebirch-soft-wet.css",
+      "sha256": "ae8fcf9c46a6b2d4cd9163960eb74c5af261ef419cbeec74bd543cba6c57a774",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 5
+      }
+    },
+    {
+      "file": "compat/modhub-soft-wet/modhub-soft-wet.css",
+      "sha256": "44983082f3586ba220d01a29924fc9b6d01f2456dc5f23fc7a751d16c15cdee1",
+      "signals": {
+        "motion": 5,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 6
+      }
+    },
+    {
+      "file": "compat/reoverfits-soft-wet/reoverfits-soft-wet.ts",
+      "sha256": "d33f83107c764636e98f31fa167dfd693e1bc6cda91331da2a94d607738c26e3",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "framework/motion-hub/MotionHub.vue",
+      "sha256": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 4,
+        "geometry": 7,
+        "material": 0
+      }
+    },
+    {
+      "file": "framework/motion-hub/main.ts",
+      "sha256": "14059bca19c75196d4f9162070250eb22b3ab2eb546b3817d9647f079915734a",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "framework/motion-hub/style.css",
+      "sha256": "a30b30400e22a95c922c929e090fe809021cfb91961a71b5123517bf020ddbf1",
+      "signals": {
+        "motion": 14,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 6
+      }
+    },
+    {
+      "file": "framework/official-ui/hub.ts",
+      "sha256": "55520f36d3a7b0efa5d155f63b1648ff47448c42e91cc746c40e2a40a56f3a7f",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "framework/official-ui/main.ts",
+      "sha256": "72112d011ce8aa45f6ebc741a450c15f030010604a16b42f27f017ff7564c750",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 4,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "framework/official-ui/motion.ts",
+      "sha256": "7a4ac51bc0150fdd0e7948ee8ff6f3432d96234b06e1a94d92fe8bbe8e0029b7",
+      "signals": {
+        "motion": 11,
+        "lifecycle": 6,
+        "geometry": 11,
+        "material": 0
+      }
+    },
+    {
+      "file": "framework/official-ui/navigation.ts",
+      "sha256": "e938cd89dbfa4a391a2e32e402666f96a7df1dbbcb6947dfbad7078e67efcba5",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 5,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "framework/official-ui/weather.ts",
+      "sha256": "00efae74d05fe01f7621560a29f136961b558f81855321b515b162eba13cffdf",
+      "signals": {
+        "motion": 4,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 13
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/App.vue",
+      "sha256": "bb3d6240bafb2e0ff01e79901473f7feb1713fa4846d676796c75749579f4ab4",
+      "signals": {
+        "motion": 2,
+        "lifecycle": 5,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/HubApp.vue",
+      "sha256": "721bf76923f747fedb64507cf3b9d28017051dc05e0c554ac2f5d989f3c9cc42",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 5,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/SphereApp.vue",
+      "sha256": "1c551ba4a4e4568a71906b0780ad9a1f082c2d130013f8ea3238d361fed9eebe",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 2,
+        "geometry": 0,
+        "material": 6
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/controller.ts",
+      "sha256": "a5ed13896c92ac36d1bb85db020f2990171e84463e20e344a0d7fca76cb5f735",
+      "signals": {
+        "motion": 1,
+        "lifecycle": 5,
+        "geometry": 6,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/engines.ts",
+      "sha256": "dab836e3e26b9e7b6945d562b0eb04cd942e5272739d03a9672f30a04f32e8f4",
+      "signals": {
+        "motion": 5,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/gsap-clock.ts",
+      "sha256": "3b0c7bf4bafb8c468560e8c3571cb195cb96b6b5c2f738bf5f8348e0f16fed01",
+      "signals": {
+        "motion": 4,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/hub-motion.ts",
+      "sha256": "fc9c236c81d532b53360b6d37d532fb728916f4ab8127de1559ccb863917cf38",
+      "signals": {
+        "motion": 4,
+        "lifecycle": 3,
+        "geometry": 3,
+        "material": 8
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/hub.css",
+      "sha256": "5a775158e0ef565ba65560331cee741d128b4f5cc8c455b24f65fe4c040112bd",
+      "signals": {
+        "motion": 4,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 5
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/lab.css",
+      "sha256": "5d370873b6be90ade26d5dc3d9a6549c3ee4b0b72d671dc974f050ac8775a177",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/live.ts",
+      "sha256": "f5fa941e2ea1d462f0e64f8bc1f19a129625e7da9920750304b065066de301e8",
+      "signals": {
+        "motion": 1,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/motion.css",
+      "sha256": "129c2c6b1fd509dc50ef6bc595ccc0d45b1d9f300b6f5c40ecd39fcec8ad3524",
+      "signals": {
+        "motion": 6,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 4
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/sphere.css",
+      "sha256": "106109e6bb9167418167f559fdada32fd49cda306cc8ef35e884e8adf1577c0d",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/sphere.ts",
+      "sha256": "8e89d7f1bb71de23abdd88c90a25ce87606dbf5802118ddee22220cf2bd1cf4e",
+      "signals": {
+        "motion": 5,
+        "lifecycle": 3,
+        "geometry": 2,
+        "material": 9
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/waapi-clock.ts",
+      "sha256": "c4dc5856d5dc3b4a48c075cc05e9f99a4fe997c7c26dddd87205ba3583684cf3",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 2,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/golden-spin-b/windows-main.ts",
+      "sha256": "263f09b4f1bff97dfcd699b804536f8743a93fd9d039b2716058ed2ee094d37a",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 2,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/settings-refraction-v1/compare.ts",
+      "sha256": "1eb54a1589ea0afa246c6231ae82ab6d9899a0f431050e183bfa00271b556059",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/settings-refraction-v1/refraction.css",
+      "sha256": "b2db5924d2cb3584cf3549c9d8bcc202564dbe0e67d7ed960fb9e5eff3c62a5e",
+      "signals": {
+        "motion": 1,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 5
+      }
+    },
+    {
+      "file": "prototypes/settings-refraction-v1/refraction.ts",
+      "sha256": "ca17d24055f0f06c32fff15fc00fad954c6ef22df99b05cd98d0f09233161e8e",
+      "signals": {
+        "motion": 15,
+        "lifecycle": 1,
+        "geometry": 2,
+        "material": 0
+      }
+    },
+    {
+      "file": "prototypes/settings-refraction-v1/scene.ts",
+      "sha256": "36b7c6a19a69b3fbbafc984512d4225bf2d42a6a234dac4c7dc019b4ed8ee46f",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 1,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "src/characteristics/main.ts",
+      "sha256": "5980de1d1386b4b3dcc8423c9b688ef2a1a9d89d91ffb5021f632fbfa607005c",
+      "signals": {
+        "motion": 3,
+        "lifecycle": 5,
+        "geometry": 8,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/characteristics/style.css",
+      "sha256": "60b9433cad86e3bce931a02076fbbfa2001c4dba328105a3f181bb3e780a36b7",
+      "signals": {
+        "motion": 2,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/combat/CombatPanel.vue",
+      "sha256": "6bb9c727c24c2ef9c0405a8ad174f315694f96bdca27f7c51b03ae6d77febaf5",
+      "signals": {
+        "motion": 6,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/combat/main.ts",
+      "sha256": "75a4999f79aca7e78c4f1d603a0cfc7c96e557fc0e5850c04d3bc6ea0b930224",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 7,
+        "geometry": 8,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/combat/select.css",
+      "sha256": "202fa72261bb217402d3c01efa7e3dc6c2bde36ca83afce142500f566005b741",
+      "signals": {
+        "motion": 3,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "src/combat/style.css",
+      "sha256": "d33d08ac7d3ff731d5bbc04cf298f795bf053b695bec9dd6b8ad942dd24098b5",
+      "signals": {
+        "motion": 11,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "src/floating/main.ts",
+      "sha256": "f019525f45c13e027bf7f0c607a51a8340ae0e9f9545e58e0b0ef0c69d147835",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 9,
+        "geometry": 7,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/floating/style.css",
+      "sha256": "eb067b375a1eb88073b848e82bd9bbb4fabf55d06a57c8dbbdb7e60a44ecef4d",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 5
+      }
+    },
+    {
+      "file": "src/panels/main.ts",
+      "sha256": "913c1e8f3d50f283d191215095897a4291392d20ec04162869c8cf3776538b30",
+      "signals": {
+        "motion": 3,
+        "lifecycle": 8,
+        "geometry": 3,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/panels/style.css",
+      "sha256": "c44bb2f17b50b4642e8b3c8225bf6db466b9ae0e3218e1e7fed061c5a258207b",
+      "signals": {
+        "motion": 2,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/runtime/inspector.ts",
+      "sha256": "b2d97b7d0e2ded6ffd881a6d825615c8b27a5b17351aa4676419ffbdc08d0da0",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 1,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "src/runtime/sugarcube.ts",
+      "sha256": "7c5da87baa9ecec843dd0be755cd4e11e00a56e2c1dac3c1ac1ddb1d94bc5724",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 2,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/runtime/surfaces.css",
+      "sha256": "32f2c0d827f1122f759567e4bdc33b32d3938a1e142fe331fd73892c323e0e54",
+      "signals": {
+        "motion": 3,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 5
+      }
+    },
+    {
+      "file": "src/runtime/surfaces.ts",
+      "sha256": "03867dfeb632e4058f723ef899b2aec480bec121bdad89df65d4ad5014130e24",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 1,
+        "geometry": 1,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/runtime/ui.ts",
+      "sha256": "bd61a9f04c05b17c43b0e696c47cfdf29a6b5cba1a066382b039555d71d61490",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 8,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "src/saves/SavePanel.vue",
+      "sha256": "b42683393490c8c5703eaf42909eb1ab22ea976f7677798635fa1405dcaa60be",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 6,
+        "geometry": 2,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/saves/main.ts",
+      "sha256": "c94d66e07a207a332ea264c126deb1f35c79ef98b1e66e518b72672b40fb7fec",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 4,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/saves/style.css",
+      "sha256": "ae1613cf589955f971897208121417ceef48803465a4cc1e8da6aa157f4eb0e7",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 5
+      }
+    },
+    {
+      "file": "src/shop/ShopReference.vue",
+      "sha256": "fe0b00ec77048c58a1245c96b27bc6b38e471c45f11b6999d62adb900651602b",
+      "signals": {
+        "motion": 5,
+        "lifecycle": 4,
+        "geometry": 2,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/shop/main.ts",
+      "sha256": "58e0e8970b2be8c6d29e66cf268c91e20a29a0171e88d714642a2882bc590da3",
+      "signals": {
+        "motion": 5,
+        "lifecycle": 12,
+        "geometry": 16,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/shop/source.ts",
+      "sha256": "4efa5adb9a64c4a24c79350f24c04df8d29c5e79674b83eec539ae03ef461f66",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "src/shop/style.css",
+      "sha256": "8fe2d4b4689c0b8c6c937f31b83c904c83545041c86ccbf5c7a3b136a545ed88",
+      "signals": {
+        "motion": 5,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/social/main.ts",
+      "sha256": "320686c3fdbad6ecc02f3ee0a304ac1d557b3c9164e5f9ccc4f73f0d121576c8",
+      "signals": {
+        "motion": 3,
+        "lifecycle": 5,
+        "geometry": 4,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/social/style.css",
+      "sha256": "bf4f1603ef975a75cd7c632398b60a94ad7d8dd801cf4704316df95f23197374",
+      "signals": {
+        "motion": 2,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/story-actions/main.ts",
+      "sha256": "252a6afb5a69c0ab372cad74f1c2ba88fb414dd7003ea0f2b5e671a08e216871",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 2,
+        "geometry": 6,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/story-actions/style.css",
+      "sha256": "6180247f028b0345907f35b7bc8cc20549e265f63bf4fc86d55e873dc2599f23",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "src/theme/SettingsPanel.vue",
+      "sha256": "47b69b05516bc837b368cdbef00c78383d77d2377f3fd2794af268b4a5cd59d0",
+      "signals": {
+        "motion": 6,
+        "lifecycle": 11,
+        "geometry": 2,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/theme/SettingsPreview.vue",
+      "sha256": "f659043e62370fb718573b055db09cc11584e019080a2a5122e296bef08b1bf9",
+      "signals": {
+        "motion": 3,
+        "lifecycle": 3,
+        "geometry": 2,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/theme/controller.ts",
+      "sha256": "f479e1a18241e5e2c878613c16149432ceb2126712a507001498f177310430c9",
+      "signals": {
+        "motion": 6,
+        "lifecycle": 9,
+        "geometry": 2,
+        "material": 2
+      }
+    },
+    {
+      "file": "src/theme/controls.css",
+      "sha256": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+      "signals": {
+        "motion": 4,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "src/theme/dark-acrylic.css",
+      "sha256": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+      "signals": {
+        "motion": 17,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 33
+      }
+    },
+    {
+      "file": "src/theme/kraft-work-motion.css",
+      "sha256": "5606dc48ff813db966ebbadfadfc5beb3699363df02cc3515e9dbcc1503f026e",
+      "signals": {
+        "motion": 27,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 13
+      }
+    },
+    {
+      "file": "src/theme/kraft-work-native.css",
+      "sha256": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 3
+      }
+    },
+    {
+      "file": "src/theme/kraft-work-pages.css",
+      "sha256": "7cb5caf798ca15575a3415c1c271d5b7399b6bf02fec6e46514846999e07339f",
+      "signals": {
+        "motion": 18,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 13
+      }
+    },
+    {
+      "file": "src/theme/kraft-work-surfaces.css",
+      "sha256": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0",
+      "signals": {
+        "motion": 26,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 59
+      }
+    },
+    {
+      "file": "src/theme/layout.css",
+      "sha256": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265",
+      "signals": {
+        "motion": 6,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/theme/layout.ts",
+      "sha256": "0031b897705b32e2c52236c0478f8c162d94ea240fe0a06f7e0990275c50246f",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/theme/mobile.css",
+      "sha256": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "src/theme/navigation-material.css",
+      "sha256": "6df318a851446678ad100e0069266fec6400c18eaf890f6109a94fe6acbad54a",
+      "signals": {
+        "motion": 33,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "src/theme/settings-workspace.css",
+      "sha256": "30f332a4c871eaf2c6c5a2ed57ead85a545f46e7b6d5a59c444111d89b36329e",
+      "signals": {
+        "motion": 10,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 8
+      }
+    },
+    {
+      "file": "src/theme/stone-free.css",
+      "sha256": "3feacbac9933aab21a9eb0d1ff6b9a91e3dc47a57f0a8706971f4c870c908d17",
+      "signals": {
+        "motion": 5,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 17
+      }
+    },
+    {
+      "file": "src/theme/visual.css",
+      "sha256": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6",
+      "signals": {
+        "motion": 7,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 2
+      }
+    },
+    {
+      "file": "src/ui/OrbitFocus.vue",
+      "sha256": "8587738edad55c61dcb69019378fe5ecaad0c018c09b5d630e6bbe5235d80774",
+      "signals": {
+        "motion": 3,
+        "lifecycle": 9,
+        "geometry": 5,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/ui/source-motion.ts",
+      "sha256": "49938840b11111fd8b85903fb063cbc733ec68440236d3bb18857bb39889ba5c",
+      "signals": {
+        "motion": 2,
+        "lifecycle": 3,
+        "geometry": 4,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/ClothingIcon.vue",
+      "sha256": "3e544037aaea137e8dc3f3592a2f2a6cd6080e96d3096f52970fa7f5a529bead",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 2,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/ClothingTraits.vue",
+      "sha256": "e1baa89b2abf1a61d21efc3a8e3eb55e334fe3e05a04c7ecc15995c377a938a0",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 2,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/ReferenceDock.vue",
+      "sha256": "400a0e1a6c9f9bb499380cc00a04442a7585dfa7347416f598bd198d72de492f",
+      "signals": {
+        "motion": 2,
+        "lifecycle": 6,
+        "geometry": 9,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/WardrobePanel.vue",
+      "sha256": "eb3192576b8d6b3ad2fd23a8fccc183f7a6f3c654ef7e85a943274d2d6e477c8",
+      "signals": {
+        "motion": 4,
+        "lifecycle": 8,
+        "geometry": 1,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/extras.ts",
+      "sha256": "1a86c7b986abc64f8ceb763e54cfe70cdc4e7c3767206dfebccae2b0efeb7ee1",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 2,
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/host.ts",
+      "sha256": "081093dc2142af05e9253afdd1f1ad5d8facf1248257bd845199e9ee96aa5aff",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "src/wardrobe/main.ts",
+      "sha256": "5cec77c5a7146a1fbcdbabd674ec0de7150696246c3f3ebeb1cfb707c21b56b9",
+      "signals": {
+        "motion": 5,
+        "lifecycle": 6,
+        "geometry": 3,
+        "material": 6
+      }
+    },
+    {
+      "file": "src/wardrobe/reference.css",
+      "sha256": "94326187360e8215ec3eef63f23586af6348c91d1c7b55122d54d38261764d65",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 6
+      }
+    },
+    {
+      "file": "src/wardrobe/render.ts",
+      "sha256": "57f8a527c06174d4fb082a7da9eadc59cf1678ead0f1259c27ea408480d28c13",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 1,
+        "geometry": 0,
+        "material": 10
+      }
+    },
+    {
+      "file": "src/wardrobe/sidebar-preview.ts",
+      "sha256": "28ae19c2542a162d0fa2b4c87ec133f30a61f27a4324e9d40b6cfbdc37d1d8a0",
+      "signals": {
+        "motion": 0,
+        "lifecycle": 3,
+        "geometry": 0,
+        "material": 27
+      }
+    },
+    {
+      "file": "src/wardrobe/style.css",
+      "sha256": "fd494e65134658750b56016b4cfac252a71761ad6da87fecaf07f53d62cc532f",
+      "signals": {
+        "motion": 3,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 1
+      }
+    },
+    {
+      "file": "src/wardrobe/vendor/isolated-model.js",
+      "sha256": "c30d30131c349ec82f2cb5e067fb822cd688ee83e766276a5fc7e7da7886d6a6",
+      "signals": {
+        "motion": 90,
+        "lifecycle": 0,
+        "geometry": 0,
+        "material": 87
+      }
+    }
+  ]
+}

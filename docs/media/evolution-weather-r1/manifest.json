@@ -1,0 +1,41 @@
+{
+  "scope": "Controlled first-party research evidence; not game/device or visual acceptance",
+  "date": "2026-10-22",
+  "sourceBase": "baf0d48d3d4b63cae1e17ff324d233b9a37e16b4",
+  "worktreeEvidence": true,
+  "note": "Weather result hashes match tested runtime inputs. README was added after recording. Navigation source hashes below identify the tested working tree; CI on the subsequent commit provides clean commit identity.",
+  "navigationSources": {
+    "src/ui/native-overlay-navigation.ts": "9cfd380fd4a203f873e7940e893d927ee5a543b59b65c6deb73d3f2f08d7d656",
+    "src/characteristics/main.ts": "fcbb084fe11e68aa0a979d5f00a43dbe316918cd470c29d0ac6e248fe1cf6ab6",
+    "src/social/main.ts": "932e61474701e9357b6f888b2b54a4bf29e4ea9c4cb1b6d8d7b8750d0dfbdb07",
+    "tests/evolution-navigation.cjs": "2d4ad6dd0771172f662944333ec270e32682c81de12a1882626d51df29c7a135",
+    "framework/host.ts": "cfe13f34257525286492d15154c3ec8443bf44ace7e915419a600014102d3e11",
+    "src/ui/source-motion.ts": "49938840b11111fd8b85903fb063cbc733ec68440236d3bb18857bb39889ba5c"
+  },
+  "files": {
+    "W1-clear.png": {
+      "bytes": 528247,
+      "sha256": "0fe8cfaa1a623ce81cb0e32e47fffcad20bf1a3397377bdb8d84e9509d9ca119"
+    },
+    "W2-rain.png": {
+      "bytes": 521352,
+      "sha256": "ff7e35f50389092240a797177df527335ef5090ea2b67a0ad437b2425d24a87e"
+    },
+    "W3-snow-interrupt.png": {
+      "bytes": 540122,
+      "sha256": "6e8e9758b1d33d1e37f87db5680ce7203b5f22edea58e86c66f5e7f7ca66d692"
+    },
+    "navigation.json": {
+      "bytes": 2778,
+      "sha256": "08c76e86cf8a962a76ec7f772994de3697236014118b68b49dac0d9305455279"
+    },
+    "result.json": {
+      "bytes": 4349,
+      "sha256": "43d5fc79e8a0b7cdf45294fbb6b031b96b6d99693ddeaf3c23e3256ddd3cd2b0"
+    },
+    "weather-original-speed.mp4": {
+      "bytes": 2382354,
+      "sha256": "0a7e1f2242f105ed8581f305eef3dc612afbe856b989b381159a6e64410b16da"
+    }
+  }
+}

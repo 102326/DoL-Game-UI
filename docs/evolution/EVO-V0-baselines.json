@@ -1,0 +1,25 @@
+{
+  "authority": "SOFT_WET_4.0_EVOLUTION_V1.2_ORIGINAL.md",
+  "sourceBase": "baf0d48d3d4b63cae1e17ff324d233b9a37e16b4",
+  "main": "6a6e3c00b705dc67d37c1780b27f585847da5d1a",
+  "releaseTag": "v3.0.4",
+  "releaseSource": "915dcb9e85f3266a73a3e7ce38d769edd0c29ff4",
+  "settingsAccepted": "6510a1d221f4f845cb766d03b71e2d48fedc0445",
+  "settingsCI": "https://github.com/102326/DoL-Game-UI/actions/runs/39578067270",
+  "states": [
+    "Implemented",
+    "Tested",
+    "Visually Accepted",
+    "Integrated",
+    "Release Ready"
+  ],
+  "files": {
+    "prototypes/golden-spin-b/sphere.ts": "8e89d7f1bb71de23abdd88c90a25ce87606dbf5802118ddee22220cf2bd1cf4e",
+    "prototypes/golden-spin-b/hub-motion.ts": "fc9c236c81d532b53360b6d37d532fb728916f4ab8127de1559ccb863917cf38",
+    "framework/motion-hub/MotionHub.vue": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28",
+    "prototypes/settings-refraction-v1/refraction.ts": "ca17d24055f0f06c32fff15fc00fad954c6ef22df99b05cd98d0f09233161e8e",
+    "prototypes/settings-refraction-v1/refraction.css": "b2db5924d2cb3584cf3549c9d8bcc202564dbe0e67d7ed960fb9e5eff3c62a5e",
+    "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+    "framework/official-ui/weather.ts": "00efae74d05fe01f7621560a29f136961b558f81855321b515b162eba13cffdf"
+  }
+}

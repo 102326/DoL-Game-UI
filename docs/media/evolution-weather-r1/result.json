@@ -1,0 +1,163 @@
+{
+  "scope": "Controlled actual settings component; first visual candidate, short W4 observation only, not long-term/device/game acceptance",
+  "checks": [
+    "W1 actual approved settings component and clear Acrylic surface",
+    "W2 same-surface wetting, beads and tracks consume real weather classification",
+    "W3 mid-rain snow redirects continuous parameters with no state reset",
+    "W4 short controlled use: real category controls, hidden/resume, resize, reduced preference, close/reopen and release"
+  ],
+  "snapshots": {
+    "W1": {
+      "target": {
+        "kind": "clear",
+        "night": false,
+        "rain": "normal"
+      },
+      "wet": 0,
+      "snow": 0,
+      "light": 1,
+      "night": 0,
+      "frames": 2,
+      "reads": 1,
+      "width": 998,
+      "height": 874,
+      "dpr": 1,
+      "activeFrames": 0,
+      "activePolls": 1,
+      "disposed": false,
+      "particles": 42
+    },
+    "W2": {
+      "target": {
+        "kind": "rain",
+        "night": false,
+        "rain": "heavy"
+      },
+      "wet": 0.5553845174661601,
+      "snow": 0,
+      "light": 0.6467141767851771,
+      "night": 0,
+      "frames": 63,
+      "reads": 6,
+      "width": 998,
+      "height": 874,
+      "dpr": 1,
+      "activeFrames": 1,
+      "activePolls": 1,
+      "disposed": false,
+      "particles": 42
+    },
+    "retarget": {
+      "before": {
+        "target": {
+          "kind": "rain",
+          "night": false,
+          "rain": "heavy"
+        },
+        "wet": 0.5970913648582187,
+        "snow": 0,
+        "light": 0.617169357624897,
+        "night": 0,
+        "frames": 69,
+        "reads": 7,
+        "width": 998,
+        "height": 874,
+        "dpr": 1,
+        "activeFrames": 1,
+        "activePolls": 1,
+        "disposed": false,
+        "particles": 42
+      },
+      "after": {
+        "target": {
+          "kind": "snow",
+          "night": false,
+          "rain": "heavy"
+        },
+        "wet": 0.5970913648582187,
+        "snow": 0,
+        "light": 0.617169357624897,
+        "night": 0,
+        "frames": 69,
+        "reads": 8,
+        "width": 998,
+        "height": 874,
+        "dpr": 1,
+        "activeFrames": 1,
+        "activePolls": 1,
+        "disposed": false,
+        "particles": 42
+      }
+    },
+    "W3": {
+      "target": {
+        "kind": "snow",
+        "night": false,
+        "rain": "heavy"
+      },
+      "wet": 0.25366758441090476,
+      "snow": 0.4552978399550483,
+      "light": 0.43739450811150354,
+      "night": 0,
+      "frames": 134,
+      "reads": 11,
+      "width": 998,
+      "height": 874,
+      "dpr": 1,
+      "activeFrames": 1,
+      "activePolls": 1,
+      "disposed": false,
+      "particles": 42
+    },
+    "W4": {
+      "width": 390,
+      "scroll": 390,
+      "canvas": {
+        "x": 13,
+        "y": 13,
+        "width": 364,
+        "height": 818,
+        "top": 13,
+        "right": 377,
+        "bottom": 831,
+        "left": 13
+      },
+      "state": {
+        "target": {
+          "kind": "snow",
+          "night": false,
+          "rain": "heavy"
+        },
+        "wet": 1.5674757550500374e-13,
+        "snow": 0.9999999988205979,
+        "light": 0.2500000000478542,
+        "night": 0,
+        "frames": 2293,
+        "reads": 135,
+        "width": 364,
+        "height": 818,
+        "dpr": 1,
+        "activeFrames": 1,
+        "activePolls": 1,
+        "disposed": false,
+        "particles": 42
+      }
+    }
+  },
+  "errors": [],
+  "hashes": {
+    "prototypes/evolution-weather/index.html": "a026bba76f63285436f1bb0a4694519ff7058735d60ebb55205b68d75630a45d",
+    "prototypes/evolution-weather/main.ts": "5f2232ffd4204815464437001457cf442c553457a5a652385af69edd6b128a40",
+    "prototypes/evolution-weather/renderer.ts": "e8788d8e0c4ed279d561341de5f12cd402c0c0d71e5251cb511421a201f7ccf5",
+    "prototypes/evolution-weather/style.css": "972cacf495892af93b82d9fa4794acd25ee8a200a35dbb73d421ea26357c7a1b",
+    "tests/evolution-weather.cjs": "7e180982b802397d63da85baf10aa4824e48fed96c6f928bc7cefd38a8a48f9c",
+    "tsconfig.evolution.json": "06b86d86688256488877db82511369dd524199c551637af81f8426720f0f4f45",
+    "vite.evolution-weather.config.ts": "6323b72c2bc77a3adfc310a5a03ff4e46223aa41d0a066ddecc5bcf797d1e12a"
+  },
+  "enduranceMs": 60000,
+  "runtime": {
+    "platform": "darwin",
+    "node": "v24.18.0",
+    "chromium": "153.0.8010.12"
+  }
+}
