@@ -5,7 +5,7 @@
 ## Current — 当前做什么
 
 - 当前授权为[正式总纲V1.2原文](references/SOFT_WET_4.0_EVOLUTION_V1.2_ORIGINAL.md)，替代此前“设置原型验收后暂停”的施工状态。独立分支`dev/evolution-4.0`，源自`baf0d48d3d4b63cae1e17ff324d233b9a37e16b4`；精确阶段提交、推送状态和CI见[#22](https://github.com/102326/DoL-Game-UI/issues/22)最新Evolution记录及本机Git。本文随研发提交交接，不自填自身提交SHA。
-- 已实施P0审计、A1属性＋社交共享首片、V1隔离天气首候选。[首报](evolution/EVO-P0-REPORT.md)、[消费者范围表](evolution/EVO-P0-COVERAGE.md)、[实施计划](superpowers/plans/2026-10-22-evolution-first-round.md)。**A2完整迁移范围待负责人冻结，天气画面待视觉验收。** 无main合并、Release或公开API/版本变更授权。
+- 已实施P0审计、A1属性＋社交共享首片、V1隔离天气首候选。[首报](evolution/EVO-P0-REPORT.md)、[消费者范围表](evolution/EVO-P0-COVERAGE.md)、[实施计划](superpowers/plans/2026-10-22-evolution-first-round.md)。**负责人已批准当前消费者表及例外作为A2/A3范围；V1雨天视觉Reject，技术成果保留。两种新候选须先视觉评审。** 无main合并、Release或公开API/版本变更授权。
 - 开工核对main `6a6e3c00b705dc67d37c1780b27f585847da5d1a`，正式3.0.4 Tag源码`915dcb9e85f3266a73a3e7ce38d769edd0c29ff4`；研究输入领先main16提交。没有覆盖旧研究分支；公开UI3.0.4/Host0.1.5-experimental/兼容1.0.1保持。阶段本机未同步内容和本地证据须另查Git与忽略的HANDOFF.local，不能假设另一设备可用。
 
 ## Decided — 已经确定什么
@@ -18,9 +18,11 @@
 
 ## Next — 下一步做什么
 
-1. 负责人确认完整消费者范围及例外，观看V1决定视觉方向；A1需独立技术复核。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
-2. 依据反馈继续A1/V1与真实Hub H1–H4交互研究；A2/A3只在范围冻结后推广，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
+1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2先完成[坐标首批](evolution/EVO-A2-COORDINATES.md)；天气改为两种候选，详见[第二轮报告](evolution/EVO-ROUND2-REPORT.md)。A1/A2仍需独立技术复核。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
+2. 依据反馈继续A1/V1与真实Hub H1–H4交互研究；A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
 3. 新设备先fetch并检查HEAD/dirty/unpushed，安装锁定依赖，获取设置研究固定源码，复建后核对证据摘要。仅文档改动不重复跑整轮，运行源码变更按风险重验。
 4. Windows、Android/iOS/WebView、真实游戏/ModLoader、多Mod、多表面长期性能及真机输入均未完成4.0验证；已有设备型号不是实测viewport。真实G3另安排，不以60秒/DPR1/390px模拟代替。
 
 不自动读取/上传玩家存档。主动授权的存档可隔离复现，不进入公开CI Artifact。机器路径、服务会话和原始日志留本地忽略文件，公开只保留受控第一方证据。
+
+第二轮补充：天气新候选的原生背景滤镜和表面着色不获取任意DOM纹理；V1保留为已否决参考。比较页、原速媒体、实际性能数值和最终CI身份见第二轮报告及#22。本批没有执行Golden Spin V2新联动，旧工具整段禁用问题未因此解决。

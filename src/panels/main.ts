@@ -4,6 +4,7 @@ import {panelPresentation} from './presentation';
 import {visible} from './visibility';
 import {isMasterEnabled} from '../runtime/master';
 import {sourceMotion} from '../ui/source-motion';
+import {navigationScrollTop} from '../ui/navigation-geometry';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 import './style.css';
@@ -36,7 +37,8 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   if(!content)return;
   const target=targets[index];
   if(index!==-1&&(!target||!content.contains(target)||!visible(target)))return;
-  const top=index<0?0:content.scrollTop+target.getBoundingClientRect().top-content.getBoundingClientRect().top-12;
+  const top=index<0?0:navigationScrollTop(content,target,12);
+  if(top===undefined)return;
   if(document.documentElement.hasAttribute('data-stone-free')){motion.scroll(content,top);if(target)motion.animate(target,[{boxShadow:'inset 3px 0 #a79ab380',backgroundColor:'#a79ab318'},{boxShadow:getComputedStyle(target).boxShadow,backgroundColor:getComputedStyle(target).backgroundColor}],900)}else content.scrollTo({top,behavior:'auto'});
  }
  let seenPassage:Element|null=null;

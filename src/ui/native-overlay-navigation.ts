@@ -3,6 +3,7 @@ import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts
 import {isolate,mountUI,unmountUI} from '../runtime/presentation';
 import {isMasterEnabled} from '../runtime/master';
 import {sourceMotion} from './source-motion';
+import {navigationScrollTop} from './navigation-geometry';
 
 type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:string[][];component:Component;
  navigate:(context:{target:HTMLElement;group:HTMLElement|null;content:HTMLElement;origin:DOMRect|undefined;motion:ReturnType<typeof sourceMotion>;scroll:(after?:()=>void)=>void;relay:(from:DOMRect,to:DOMRect)=>Animation|undefined;current:()=>boolean})=>void};
@@ -27,10 +28,8 @@ export function nativeOverlayNavigation(root:Window,options:Options,framework?:{
   const pane=content,group=id?pane.querySelector<HTMLElement>(`#${id}`):null;
   let target=id?group:pane;if(id&&target?.previousElementSibling?.matches('.gold,h1,h2,h3,h4'))target=target.previousElementSibling as HTMLElement;
   if(!target||!pane.contains(target))return false;
-  const view=pane.getBoundingClientRect(),scale=view.height/pane.offsetHeight;
-  if(!Number.isFinite(scale)||scale<=0)return false;
-  const top=id?pane.scrollTop+(target.getBoundingClientRect().top-view.top)/scale-16:0;
-  if(!Number.isFinite(top))return false;
+  const top=id?navigationScrollTop(pane,target,16):0;
+  if(top===undefined)return false;
   motion.cancel();const ticket=++intent,epoch=generation;
   const current=()=>!destroyed&&!failed&&intent===ticket&&generation===epoch&&pane===content&&!!host?.isConnected&&target.isConnected;
   const scroll=(after?:()=>void)=>motion.scroll(pane,top,()=>{if(current())after?.()});

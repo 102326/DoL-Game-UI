@@ -1,33 +1,42 @@
-# EVO-V1 / 天气 Acrylic 首个研究候选
+# Evolution / 雨天 Acrylic 第二轮研究
 
-2026-10-22。Implemented / Controlled Tested / **Visually Accepted待负责人，Integrated与Release Ready未通过**。
+2026-10-22。负责人首轮裁决：**Architecture Continue / Weather Visual Reject**。原V1雨天视觉已否决；连续参数、状态中断、释放与原证据保留。当前A/B均为新视觉候选，等待负责人评审，**不是Visually Accepted、正式Integrated或Release Ready**。
 
-使用真实设置组件及已认可V2.3开关/分类，旧研究副本通过`prepare-settings-refraction.mjs`固定来源。只在独立研究入口叠加自有Canvas材质，不把受控天气写进真实游戏。`readGameWeather`权威字段分类、雷暴/雨量/夜间与unknown/异常fallback代码未改；原生产headerWeather仍在正式路径。
-
-## 观看
+## 观看和操作
 
 ```sh
 node scripts/prepare-settings-refraction.mjs
 npx vite --config vite.evolution-weather.config.ts
 ```
 
-预览http://127.0.0.1:5190/。模态内工具条：W1晴天、W2晴转雨、W3雨途中转雪，以及直接观雪。原分类、布局、偏好和关闭照常操作；关闭后可从背景入口重新打开。
+打开 `http://127.0.0.1:5190/compare.html` 查看原速对照，或单独打开：
 
-- W1：静态玻璃主面、暖色环境照明，稳态不保持无用RAF。
-- W2：同一表面上湿度连续增加，立体水珠、窄水痕与反射边缘逐渐建立，不交叉淡化两套旧天气层。
-- W3：从当前湿度继续改变雪/霜参数，水痕衰退与局部霜枝增长可重叠，不跳回固定首帧。工具条先设雨、900ms后转雪；也可手动先W2再直接观雪。
-- W4：持续状态下切换真实设置分类，隐藏/恢复、关闭/重开和缩放不会留下自有RAF/轮询；重开按当前天气建立新实例。
+- `/?candidate=v1`：冻结98c32bc绘制器的已否决参考；新对照使用相同研究夹具，原R1布局与[旧录像](../../docs/media/evolution-weather-r1/weather-original-speed.mp4)单独保留。
+- `/?candidate=beads`：A「雨沿」，清透附着玻璃，非均匀水珠在边缘和观察带积聚/滑移，局部湿痕、透亮与明暗体积。
+- `/?candidate=film`：B「雾脉」，凝露/雾化水膜和柔化的排水通道，水珠为局部细节，雨中转雪沿湿边生霜。
 
-[原速录像](../../docs/media/evolution-weather-r1/weather-original-speed.mp4) · [晴天](../../docs/media/evolution-weather-r1/W1-clear.png) · [雨天](../../docs/media/evolution-weather-r1/W2-rain.png) · [中途转雪](../../docs/media/evolution-weather-r1/W3-snow-interrupt.png) · [本机证据](../../docs/media/evolution-weather-r1/result.json)。画面是受控输入的真实设置组件，不是游戏天气实录；这仍是第一版视觉候选，未宣布高保真目标已经验收。
+真实设置组件与已认可V2.3的100/80ms、立即可用及原分类保留。研究夹具新增工具条与材质观察带，不是正式布局升级；标题/正文/主要操作区按真实几何保护。W1、W2、W3与直接观雪控制受控天气；实际游戏Weather/存档不写入。A/B的「静止观察」是主动暂停，关闭重开恢复正常，V1不添加暂停机制。减少动态尊重用户选择，不自动改变DPR/效果档位。
 
-## 验证与成本
+[原速 V1](../../docs/media/evolution-weather-r2/v1-1x.mp4) · [原速 A](../../docs/media/evolution-weather-r2/beads-1x.mp4) · [原速 B](../../docs/media/evolution-weather-r2/film-1x.mp4) · [A 稳态](../../docs/media/evolution-weather-r2/beads-rain.png) · [B 稳态](../../docs/media/evolution-weather-r2/film-rain.png) · [实测记录](../../docs/media/evolution-weather-r2/result.json) · [摘要](../../docs/media/evolution-weather-r2/manifest.json)。源证据是受控真实组件，不是游戏天气实录。
 
-`npx vue-tsc --noEmit -p tsconfig.evolution.json`、`npx vite build --config vite.evolution-weather.config.ts`、`EVO_WEATHER_ENDURANCE_MS=60000 node tests/evolution-weather.cjs --record`。本机macOS / Node24.18 / Chromium153，4个场景检查组通过；W4正常动画持续观察60秒，再检查隐藏/恢复、390×844、用户主动减少动态、关闭/重开与释放。视频为1×原速，无剪辑/加速，不把60秒等同数小时或真机长期稳定。
+## 技术可行性与验证
 
-没有新增npm依赖；使用已有GSAP/Vue的设置原型及原生Canvas。当前固定42个种子点，同步推进湿度/雪/照明参数，每表面至多1个RAF＋1个500ms采样轮询，独立ResizeObserver及可见性监听，dispose显式释放。snapshot.reads计refresh次数，不含初始化读取。DPR使用实际值，本轮浏览器为DPR1；没有用隐性自动降低档位制造通过。Canvas缺失时只保留基本静态UI，不称完整视觉效果。
+不同绘制层复用连续wet/snow/light/night状态及隐藏/减少动态/关闭释放。原`readGameWeather`提供者未改。A/B使用原生背景滤镜、SVG遮罩/剪裁、CSS曲面着色与Canvas局部细节；没有新增生产依赖。WebGL无法凭空读取任意DOM纹理，本轮也没有捕获/重建游戏DOM背景。**原生模糊/提亮与表面高光不是物理光学折射。**
+
+`optics.html`提供普通CSS条纹DOM背景实验：暂停同一表面，只切换原生背景滤镜，截图必须发生变化。正文则反向检查真实阅读样本的晴/雨PNG字节一致，避免仅凭CSS支持或内部几何数据声称可用。实际经历过滤镜声明但不生效的失败，修正后再录制。
+
+```sh
+npx vue-tsc --noEmit -p tsconfig.evolution.json
+npx vite build --config vite.evolution-weather.config.ts
+node tests/evolution-weather-candidates.cjs --optics-only
+node tests/evolution-weather-candidates.cjs --record
+node tests/evolution-weather.cjs
+```
+
+三段原速录制使用相同1280×900/DPR1与事件计划：晴天静观、雨附着、稳态、真实分类使用、中途转雪；各自保留完整等待，不剪辑/加速。真实分类/调度可能令总长不同，JSON记录实际时间戳。普通CI不录影，使用1/4时间表做行为smoke，不把它称为原速或长期稳定。原V1技术检查独立保留。
+
+基本性能记录rAF帧间隔和JS/Canvas绘制时间，**不是GPU合成计时或实际设备FPS承诺**；实际数值见JSON。水珠滤镜限定各自边界，水膜只处理周边/观察带五块区域，未靠减少画质来通过。候选仍可能比V1有额外合成成本。单表面至多1个RAF与500ms采样轮询，geometry observer/scroll listener与光学层随dispose释放。媒体仅复制白名单，显式16MiB上限超限报错。
 
 ## 未完成
 
-尚未比较WebGL/Shader方案、完成雨量等级视觉差异、多个正式表面共用环境实例、长时间/多窗性能或真实Android WebView验证；当前Canvas模块是研究资源所有者，不是已经推广的中央Runtime。W4其他目标设备与长时间观察、正式管理合同接入和独立技术复核仍待继续。源代码/截图/录像没有玩家存档、私人设备标识或游戏HTML。
-
-G2需要负责人认可实际画面，不能由场景检查替代；本轮没有动正式Weather读取或生产天气层，没有删除旧SVG/CSS。
+负责人画质验收、Safari/Windows/Android WebView、DPR2+实机、游戏背景根/多Mod整合、多表面与长期性能未通过。A/B本轮不是中央Weather Runtime的正式推广，未替换生产SVG/CSS或材质合同。G2不能由测试代替，G1/G3也未完成。更详细的失败/成果/未做事项见[第二轮报告](../../docs/evolution/EVO-ROUND2-REPORT.md)。

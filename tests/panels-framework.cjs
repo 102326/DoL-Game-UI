@@ -2,7 +2,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
 (async()=>{
  const [{createServer},{default:vue}]=await Promise.all([import('vite'),import('@vitejs/plugin-vue')]);
  const vite=await createServer({configFile:false,root:process.cwd(),plugins:[vue(),{name:'panels-framework-test-page',configureServer(server){server.middlewares.use('/__panels_framework_test__',(_req,res)=>{res.setHeader('Content-Type','text/html');res.end('<!doctype html><html><body></body></html>')})}}],optimizeDeps:{noDiscovery:true,include:['vue']},server:{host:'127.0.0.1',port:0},logLevel:'error'});
- const browser=await chromium.launch({channel:'msedge',headless:true});
+ const browser=await chromium.launch(require('./browser-options.cjs'));
  try{await vite.listen();const page=await browser.newPage(),address=vite.httpServer.address();await page.goto(`http://127.0.0.1:${address.port}/__panels_framework_test__`);
   const result=await page.evaluate(async()=>{
    const [{startPanels},{createHost}]=await Promise.all([import('/src/panels/main.ts'),import('/framework/host.ts')]);

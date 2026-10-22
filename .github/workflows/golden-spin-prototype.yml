@@ -42,9 +42,12 @@ jobs:
         run: |
           node scripts/evolution-inventory.cjs
           node tests/evolution-navigation.cjs
+          node tests/evolution-panels.cjs
+          node tests/panels-framework.cjs
           npx vue-tsc --noEmit -p tsconfig.evolution.json
           npx vite build --config vite.evolution-weather.config.ts
           node tests/evolution-weather.cjs
+          node tests/evolution-weather-candidates.cjs
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
@@ -52,6 +55,10 @@ jobs:
           path: |
             tests/artifacts/evolution/inventory.json
             tests/artifacts/evolution/navigation.json
+            tests/artifacts/evolution/panels.json
+            tests/artifacts/evolution/weather-r2-*/result.json
+            tests/artifacts/evolution/weather-r2-*/failure.json
+            tests/artifacts/evolution/weather-r2-*/*.png
             tests/artifacts/evolution/weather-dist/**
             tests/artifacts/evolution/weather-review-*/result.json
             tests/artifacts/evolution/weather-review-*/failure.json
