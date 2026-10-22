@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "date": "2026-10-22",
+  "scope": "EVO-HUB-V2-INPUT; standalone actual MotionHub, simulated tool contents; not game/physical-device or owner visual acceptance",
+  "inputCommit": "5a656c602cdf5d9bf569ba9364ee46f5475e5c66",
+  "runtime": {
+    "platform": "win32",
+    "node": "v26.12.0",
+    "browser": "installed Microsoft Edge via Playwright",
+    "viewports": [
+      {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      }
+    ],
+    "recording": "original speed, no cuts or time remapping"
+  },
+  "hashPolicy": "workingTreeSHA256 is recorded Windows source bytes; gitLF_SHA256 normalizes CRLF to LF as required by .gitattributes. Linux checkout uses the same LF source. This is an explicitly disclosed line-ending difference, not a second implementation.",
+  "sources": {
+    "prototypes/golden-spin-b/hub-motion.ts": {
+      "workingTreeSHA256": "8e7b90e13441f849cbe795a1703c679f2197658ea52ca5530926d6c7088ec7d5",
+      "gitLF_SHA256": "9b182e2ed50617d60b4dd86972e1c3c33ec55801ab389dce303f24c04cae59a0"
+    },
+    "prototypes/golden-spin-b/HubApp.vue": {
+      "workingTreeSHA256": "59f2bed87df345f567c9453bf4eccb221aa4e6e676daf6b8147200c959ae623c",
+      "gitLF_SHA256": "2ea80c7a9f233c372cdf089fe139afab9988afd16372bfa51be48d326a5c266f"
+    },
+    "prototypes/golden-spin-b/hub.css": {
+      "workingTreeSHA256": "a6379f277339c2b00eef0e9d856a378ae8db715ae265576c4a4a7ab78e19e8e8",
+      "gitLF_SHA256": "5a775158e0ef565ba65560331cee741d128b4f5cc8c455b24f65fe4c040112bd"
+    },
+    "prototypes/golden-spin-b/sphere.ts": {
+      "workingTreeSHA256": "7fcd7b7cfa1c586d9cbc417ca16afec072244fb792bccdf9c98eea8d6014c6d8",
+      "gitLF_SHA256": "8e89d7f1bb71de23abdd88c90a25ce87606dbf5802118ddee22220cf2bd1cf4e"
+    },
+    "framework/motion-hub/MotionHub.vue": {
+      "workingTreeSHA256": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28",
+      "gitLF_SHA256": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28"
+    },
+    "scripts/record-golden-hub.cjs": {
+      "workingTreeSHA256": "4bf78cd4a4a0734178de02584d937dc0c4611fbe4fcaf2364037db51b593047c",
+      "gitLF_SHA256": "9ef5ee2a8edfabac1b59bf9796bc80959bcd2abff0a6b276672dcccc9b7d4f27"
+    }
+  },
+  "media": {
+    "hub-input-v2-desktop-input.png": {
+      "bytes": 436053,
+      "sha256": "586aac882526b6c2415cf12e57b4e0786b52d7455a1f5b330c6a67c0086aebc7"
+    },
+    "hub-input-v2-desktop.mp4": {
+      "bytes": 1240957,
+      "sha256": "7261f601daf1320e3776800560f54aa3e39ba1f8724db79b93b8017f0e0a89a6"
+    },
+    "hub-input-v2-desktop.png": {
+      "bytes": 437818,
+      "sha256": "1d4511c2001aef7fa8fd6614199176537ca1d21f12d32c274246acfa9a1f147f"
+    },
+    "hub-input-v2-narrow-input.png": {
+      "bytes": 200609,
+      "sha256": "4a2f0da23194fb21ec015c6ef67a2837b420917f23e9492f23ce0e78adc4885c"
+    },
+    "hub-input-v2-narrow.mp4": {
+      "bytes": 1155615,
+      "sha256": "a17dbede37f2a9e272d8667ae839e808b7f44c9bbd25df7544bcff840bfbcb03"
+    },
+    "hub-input-v2-narrow.png": {
+      "bytes": 192927,
+      "sha256": "8f9b117641b85939e2e80f424774b06739f356481f04587d1ddad3a808a4aab1"
+    }
+  },
+  "protected": {
+    "prototypes/golden-spin-b/sphere.ts": {
+      "baselineLF": "8e89d7f1bb71de23abdd88c90a25ce87606dbf5802118ddee22220cf2bd1cf4e",
+      "currentLF": "8e89d7f1bb71de23abdd88c90a25ce87606dbf5802118ddee22220cf2bd1cf4e",
+      "unchanged": true
+    },
+    "prototypes/golden-spin-b/hub-motion.ts": {
+      "baselineLF": "fc9c236c81d532b53360b6d37d532fb728916f4ab8127de1559ccb863917cf38",
+      "currentLF": "5703e7f9cedb1aabb8da4594ce9a3d6819887a1e5b9e7ff179974cf9a847363f",
+      "unchanged": false
+    },
+    "framework/motion-hub/MotionHub.vue": {
+      "baselineLF": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28",
+      "currentLF": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28",
+      "unchanged": true
+    },
+    "prototypes/settings-refraction-v1/refraction.ts": {
+      "baselineLF": "ca17d24055f0f06c32fff15fc00fad954c6ef22df99b05cd98d0f09233161e8e",
+      "currentLF": "ca17d24055f0f06c32fff15fc00fad954c6ef22df99b05cd98d0f09233161e8e",
+      "unchanged": true
+    },
+    "prototypes/settings-refraction-v1/refraction.css": {
+      "baselineLF": "b2db5924d2cb3584cf3549c9d8bcc202564dbe0e67d7ed960fb9e5eff3c62a5e",
+      "currentLF": "b2db5924d2cb3584cf3549c9d8bcc202564dbe0e67d7ed960fb9e5eff3c62a5e",
+      "unchanged": true
+    },
+    "src/theme/dark-acrylic.css": {
+      "baselineLF": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+      "currentLF": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+      "unchanged": true
+    },
+    "framework/official-ui/weather.ts": {
+      "baselineLF": "00efae74d05fe01f7621560a29f136961b558f81855321b515b162eba13cffdf",
+      "currentLF": "00efae74d05fe01f7621560a29f136961b558f81855321b515b162eba13cffdf",
+      "unchanged": true
+    }
+  },
+  "validationSources": {
+    "tests/golden-spin-hub-input.cjs": "ff23755d481191291d5b8e27a5badffb9ea1a193b766682cd21111bd99b399f4",
+    "tests/motion-workspace.cjs": "bfe1752a1418d05ac17d59ffb0748ccbaddcb40c2d9a55a487975331b28d885b"
+  },
+  "durationsSeconds": {
+    "hub-input-v2-desktop.mp4": 27.16,
+    "hub-input-v2-narrow.mp4": 27.36
+  }
+}

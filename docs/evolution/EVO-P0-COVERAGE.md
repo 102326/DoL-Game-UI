@@ -54,3 +54,5 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 ## 当前迁移增量
 
 [EVO-A2-L01](EVO-A2-MOUNT-LIFECYCLE.md)让属性/社交、通用面板overlay及passage实际共用导航挂载事务；保留专用发现、内容索引、演出和宿主生命周期，退出旧独立claim/mount清理路径。这里只更新已迁移族的状态，不重写上表冻结输入身份，不宣称其余消费者或整个A2/A3/G1完成。
+
+[EVO-HUB-V2-INPUT](EVO-HUB-V2-INPUT.md)已在隔离真实Hub组件退出整段输入禁用，完成H1–H4受控输入/生命周期检查；球体与终态布局冻结。它是V2研究增量，不将正式Hub标为已迁移或Integrated，也不更改上表的原始输入身份。

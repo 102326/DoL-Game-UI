@@ -1,8 +1,10 @@
 # Motion Evolution / #22
 
-当前分支 `prototype/golden-spin-b`。负责人于 2026-10-21 确认球体效果，授权继续全局 UI 动效升级，并在每批主要任务后向 [Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)简短更新。
+当前研发分支 `dev/evolution-4.0`，[Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)。本目录保留已认可金属球和真实 MotionHub 的研究入口。
 
-**最新状态：** [正式产品口径V1.0](../../docs/SOFT_WET_3.1_PRODUCT_DIRECTION_V1.md)已批准，负责人后续已授权[界面设置折光候选](../settings-refraction-v1/README.md)的一版隔离原型及原速对照，视觉结果待验收；不推广其它窗口、不合并或发布。目标是快速流畅、华丽精致、感知舒服协同成立，允许有价值的演出/功能等待和合理的大改，不默认缩短/减弱效果。下列入口为已有研究参考，`windows.html`属于b507基础修整，**新窗口视觉重做尚未通过验收**。下一步建议见[窗口运动草案](../../docs/superpowers/plans/2026-10-21-window-motion-proposal-v1.md)。
+最新批次为 [悬浮球 V2 中途输入](../../docs/evolution/EVO-HUB-V2-INPUT.md)：已可见工具提前可操作，按下/聚焦期间保持位置，保留真实工具、排序和终态布局。Windows受控H1–H4及原速桌面/窄屏演示已完成，完整Hub效果仍待负责人确认；不合并main或发布。[当前4.0接续](../../docs/HANDOFF.md)是范围与后续任务依据，旧3.1草案保持历史身份。
+
+[桌面原速演示](../../docs/media/evolution-hub-v2/hub-input-v2-desktop.mp4) · [窄屏原速演示](../../docs/media/evolution-hub-v2/hub-input-v2-narrow.mp4)
 
 ## 三个可操作入口
 
@@ -29,9 +31,9 @@ npm run prototype:golden-spin:build
 npm run prototype:golden-spin:test
 ```
 
-最后一项依次执行球体、完整 Hub、窗口工作区三个检查。Mac 使用 Chromium，Windows 既有脚本使用 Edge；均为受控网页，不是 Android/iOS 实机证明。静态输出在 Git 忽略的 `tests/artifacts/golden-spin-b/dist/`，含 LICENSE 和第三方声明。可用 `python -m http.server 5181 --directory tests/artifacts/golden-spin-b/dist` 预览。
+最后一项依次执行球体、完整 Hub、窗口工作区和V2中途输入四个检查。Mac 使用 Chromium，Windows 既有脚本使用 Edge；均为受控网页，不是 Android/iOS 实机证明。静态输出在 Git 忽略的 `tests/artifacts/golden-spin-b/dist/`，含 LICENSE 和第三方声明。可用 `python -m http.server 5181 --directory tests/artifacts/golden-spin-b/dist` 预览。
 
-录屏在预览服务运行时执行 `node scripts/record-golden-sphere.cjs`、`node scripts/record-golden-hub.cjs` 或 `node scripts/record-motion-workspace.cjs`，需要 FFmpeg。录像均为自制页面，没有游戏画面或设备日志。
+录屏在预览服务运行时执行 `node scripts/record-golden-sphere.cjs`、`node scripts/record-golden-hub.cjs --v2` 或 `node scripts/record-motion-workspace.cjs`，需要 FFmpeg。录像均为自制页面，没有游戏画面或设备日志。
 
 ## 当前实现边界
 

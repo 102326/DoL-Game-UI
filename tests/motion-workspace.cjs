@@ -20,7 +20,7 @@ const {chromium}=require('playwright'),{waitSettings,waitSettingsClosed}=require
     if(own)Object.defineProperty(document,'hidden',own);else delete document.hidden;
     document.dispatchEvent(new Event('visibilitychange'));motion.dispose();
     const restarted=motion.animate(node,[{opacity:0},{opacity:1}],60000);const result={started:!!a,hidden,restarted:!!restarted};restarted?.cancel();node.remove();return result;
-   },'/@fs'+path.resolve('src/ui/source-motion.ts'));
+   },'/@fs/'+path.resolve('src/ui/source-motion.ts').split(path.sep).join('/'));
    assert.equal(value.started,true);assert.equal(value.hidden,'idle','hidden document must release owned active animation');assert.equal(value.restarted,false,'disposed motion must stay disposed');
   });
   await check('real settings keep stable hitboxes, directional category completion and modal boundaries',async()=>{
