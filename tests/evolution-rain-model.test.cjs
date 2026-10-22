@@ -47,3 +47,9 @@ test('rain intensity changes replenishment while default intensity preserves the
  assert.ok(born.every((n,i)=>i===0||n>born[i-1]),JSON.stringify(born));
  const a=rainModel(19,true,true),b=rainModel(19,true,true);a.resize(900,600);b.resize(900,600);for(let i=0;i<500;i++){a.step(.025,1);b.step(.025,1,1)}assert.deepEqual(a.snapshot(),b.snapshot());assert.throws(()=>a.step(.025,1,NaN));
 });
+
+test('optional rain energy makes the same runoff drop descend faster and keeps default behavior',()=>{
+ const distances=[1,1.32,1.6,1.9,2.325].map(energy=>{const m=rainModel(19,true,true);m.resize(900,600);let id;for(let i=0;i<20;i++){m.step(.025,1,1,energy);id??=m.snapshot().drops.find(d=>d.runoff)?.id}assert.ok(id);const start=m.snapshot().drops.find(d=>d.id===id);assert.ok(start);for(let i=0;i<70;i++)m.step(.025,1,1,energy);const end=m.snapshot().drops.find(d=>d.id===id);assert.ok(end);return end.y-start.y});
+ assert.ok(distances.every((n,i)=>i===0||n>distances[i-1]),JSON.stringify(distances));
+ const a=rainModel(19,true,true),b=rainModel(19,true,true);a.resize(900,600);b.resize(900,600);for(let i=0;i<500;i++){a.step(.025,1,1);b.step(.025,1,1,1)}assert.deepEqual(a.snapshot(),b.snapshot());assert.throws(()=>a.step(.025,1,1,Infinity));
+});

@@ -5,7 +5,7 @@
 ## Current — 当前做什么
 
 - 当前授权为[正式总纲V1.2原文](references/SOFT_WET_4.0_EVOLUTION_V1.2_ORIGINAL.md)，替代此前“设置原型验收后暂停”的施工状态。独立分支`dev/evolution-4.0`，源自`baf0d48d3d4b63cae1e17ff324d233b9a37e16b4`；精确阶段提交、推送状态和CI见[#22](https://github.com/102326/DoL-Game-UI/issues/22)最新Evolution记录及本机Git。本文随研发提交交接，不自填自身提交SHA。
-- 当前天气批次为C5斜雨叠加：负责人要求把此前斜向雨幕加到当前水滴，见[R7报告](evolution/EVO-WEATHER-R7-REPORT.md)；C3雨滴已认可，C4雪天及C5新增效果待视觉评审。未正式整合或发布。
+- 当前天气批次为C5.1雨势增强：负责人要求雨滴更有力、整体加快且雨越大越多越快，见[R8报告](evolution/EVO-WEATHER-R8-REPORT.md)。C5为待增强上一版，C3雨滴已认可；C5.1及C4雪天待视觉裁决。未正式整合或发布。
 - 已实施P0审计、A1属性＋社交共享首片、V1隔离天气首候选。[首报](evolution/EVO-P0-REPORT.md)、[消费者范围表](evolution/EVO-P0-COVERAGE.md)、[实施计划](superpowers/plans/2026-10-22-evolution-first-round.md)。**负责人已批准当前消费者表及例外作为A2/A3范围；V1雨天视觉Reject，技术成果保留。两种新候选须先视觉评审。** 无main合并、Release或公开API/版本变更授权。
 - 开工核对main `6a6e3c00b705dc67d37c1780b27f585847da5d1a`，正式3.0.4 Tag源码`915dcb9e85f3266a73a3e7ce38d769edd0c29ff4`；研究输入领先main16提交。没有覆盖旧研究分支；公开UI3.0.4/Host0.1.5-experimental/兼容1.0.1保持。阶段本机未同步内容和本地证据须另查Git与忽略的HANDOFF.local，不能假设另一设备可用。
 
@@ -19,7 +19,7 @@
 
 ## Next — 下一步做什么
 
-负责人已认可 C2（`ca6fa0a`）及 C3（`9fa1fb0`）雨滴/底边流出。最新要求：恢复不同雨量，并增强不明显的雪天。C4在显式`climate=1`启用，保留C3入口和R5媒体；[R6报告](evolution/EVO-WEATHER-R6-REPORT.md)、`climate-review.html`提供四档雨量及雨雪往返原速对照。C4雪天仍待视觉评审；本轮按新反馈加入C5斜雨叠加（显式`shower=1`），`shower-review.html`可开关及看同操作原速对照。雨滴认可不代表雪天、全局G2、整合或发布通过。
+负责人已认可 C2（`ca6fa0a`）及 C3（`9fa1fb0`）雨滴/底边流出。最新要求：恢复不同雨量，并增强不明显的雪天。C4在显式`climate=1`启用，保留C3入口和R5媒体；[R6报告](evolution/EVO-WEATHER-R6-REPORT.md)、`climate-review.html`提供四档雨量及雨雪往返原速对照。C4雪天仍待视觉评审；本轮按新反馈加入C5斜雨叠加（显式`shower=1`），`shower-review.html`可开关及看同操作原速对照。最新C5.1（`shower=1&force=1`）按反馈增强雨幕及滑落滴密度/速度，`rain-force-review.html`提供原C5/增强版四档原速对照。雨滴认可不代表雪天、全局G2、整合或发布通过。
 
 最新天气反馈：负责人认为第二轮A/B都有问题，先研究实拍雨窗，后已授权按[参考研究](evolution/EVO-WEATHER-REFERENCE-STUDY.md)制作下一版并展示。[R3候选C报告](evolution/EVO-WEATHER-R3-REPORT.md)：原生SVG背景位移、碰撞合并/滑移、移除观察带、正文保护，新四段同夹具原速对照及材质近景。C经C2/C3修订后雨滴已获认可，A/B未获认可；不沿用“等待二选一”假设。实际本机证据见`docs/media/evolution-weather-r3`；提交/CI以#22与Git为准。
 

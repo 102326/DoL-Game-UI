@@ -15,8 +15,8 @@ export function rainModel(seed=0x27fa29,naturalTrails=false,runoff=false){
   if(naturalTrails&&(w!==width||h!==height)){trails=[];anchors.clear()}
   for(const d of drops){d.x*=w/width;d.y*=h/height}width=w;height=h;
  }
- function step(dt:number,wet:number,amount=1){
-  if(!Number.isFinite(dt+wet+amount)||dt<0||dt>.1||amount<0||amount>2)throw Error('Invalid rain step');
+ function step(dt:number,wet:number,amount=1,energy=1){
+  if(!Number.isFinite(dt+wet+amount+energy)||dt<0||dt>.1||amount<0||amount>2||energy<.25||energy>3)throw Error('Invalid rain step');
   wet=Math.max(0,Math.min(1,wet));
   if(!initialized&&wet>.12){
    initialized=true;
@@ -40,7 +40,7 @@ export function rainModel(seed=0x27fa29,naturalTrails=false,runoff=false){
    d.area=Math.max(0,d.area+dt*(wet>.2?wet*(.16+d.shape*.22):-4-d.area*.2));
    const moving=(d.area>40||d.runoff&&d.area>12)&&d.age>d.pin&&wet>.18;
    if(moving&&d.vy===0)slides++;
-   d.vy=moving?Math.min(52,d.vy+dt*(6+d.area*.16)):0;
+   d.vy=moving?Math.min(52*energy,d.vy+dt*(6+d.area*.16)*energy*energy):0;
    if(d.vy){const oldX=d.x,oldY=d.y;d.y+=dt*d.vy;
     if(naturalTrails){
      let a=anchors.get(d.id);if(!a){a={x:oldX,y:oldY,distance:0,strand:++strand,steer:0};anchors.set(d.id,a)}

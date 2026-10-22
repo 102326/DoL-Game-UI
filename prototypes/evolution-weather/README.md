@@ -109,3 +109,12 @@ node tests/evolution-weather-levels.cjs --record
 现有Canvas先画斜雨，再清除正文/控件保护矩形的并集，再画原玻璃内容；没有另开Canvas/DOM雨幕/定时器/RAF。顶部“斜雨：开启/关闭”直接对照，默认C4和C3入口不启用。雨幕粒子与附着滴未建立逐滴物理碰撞关系。
 
 `shower-review.html` 提供C4/C5同操作/1280×900/DPR1原速对照；`node tests/evolution-weather-shower.cjs`核对实际窗口内容像素、阅读/关闭保护、暂停、减少动态、隐藏与释放。`--record --baseline`和`--record`录制约22秒小雨→强雨→雪。增加一组16MiB硬上限媒体，九组理论上限144MiB，超限不截断。旧媒体及其摘要保留原始身份，不冒充新录制。
+
+
+## C5.1 雨势增强（R8，待评审）
+
+按“更铿锵有力、整体加快、雨越大越多越快”反馈，显式 `shower=1&force=1` 启用C5.1。`rain-force-review.html`提供原C5/增强C5.1同操作原速对照，斜雨两边均开启。增强素材`shower-force.svg`从原第一方SVG加长/提亮，最多三层错位雨幕；四档连续增加雨幕数量、速度、微滴与滑落补充，滑落加速度/速度上限随雨量提高。现有雪效与保护边界保留，不自动代表视觉通过。
+
+水滴模型新增可选energy=1，默认算法保持；仅增强路径使用1.05+.85×连续雨量系数，微滴池最多912，滑落/总滴/轨迹/足迹上限7/90/900/32不变。`node tests/evolution-weather-shower.cjs --force`验证四档实际绘制/速度参数递增及原像素/生命周期合同；`--force --record --baseline`与`--force --record`各录制约32秒。原C5、C4和C3入口仍可复查。
+
+R8新增一组16MiB硬上限，总十组理论上限160MiB；旧媒体及源码摘要保持历史身份，超限不截断。

@@ -54,6 +54,7 @@ jobs:
           node tests/evolution-rain-glass.cjs --runoff
           node tests/evolution-weather-levels.cjs
           node tests/evolution-weather-shower.cjs
+          node tests/evolution-weather-shower.cjs --force
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
@@ -65,6 +66,9 @@ jobs:
             tests/artifacts/evolution/weather-r2-*/result.json
             tests/artifacts/evolution/weather-r2-*/failure.json
             tests/artifacts/evolution/weather-r2-*/*.png
+            tests/artifacts/evolution/weather-r8-*/result.json
+            tests/artifacts/evolution/weather-r8-*/failure.json
+            tests/artifacts/evolution/weather-r8-*/*.png
             tests/artifacts/evolution/weather-r7-*/result.json
             tests/artifacts/evolution/weather-r7-*/failure.json
             tests/artifacts/evolution/weather-r7-*/*.png
