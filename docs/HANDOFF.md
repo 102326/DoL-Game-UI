@@ -5,7 +5,7 @@
 ## Current — 当前做什么
 
 - 当前授权为[正式总纲V1.2原文](references/SOFT_WET_4.0_EVOLUTION_V1.2_ORIGINAL.md)，替代此前“设置原型验收后暂停”的施工状态。独立分支`dev/evolution-4.0`，源自`baf0d48d3d4b63cae1e17ff324d233b9a37e16b4`；精确阶段提交、推送状态和CI见[#22](https://github.com/102326/DoL-Game-UI/issues/22)最新Evolution记录及本机Git。本文随研发提交交接，不自填自身提交SHA。
-- 当前天气批次为C5.2稀疏独立雨滴：负责人指出C5.1数量太大、规律很强；本轮减少数量并退出平铺雨幕，见[R9报告](evolution/EVO-WEATHER-R9-REPORT.md)。负责人已认可`6e2b298`的C5.2雨天原型；当前按裁决移除C5.2斜雨开关、雨天默认显示，C4雪天仍待视觉裁决。未正式整合或发布。
+- 当前天气批次为C5.2稀疏独立雨滴：负责人指出C5.1数量太大、规律很强；本轮减少数量并退出平铺雨幕，见[R9报告](evolution/EVO-WEATHER-R9-REPORT.md)。负责人已认可`6e2b298`的C5.2雨天原型；当前按裁决移除C5.2斜雨开关、雨天默认显示，负责人最新要求天气转场提速后即可通过；本轮仅C5.2渐变时间缩至四分之一，见[R10报告](evolution/EVO-WEATHER-R10-REPORT.md)。已认可雨天效果保留，尚未把新时序记录为负责人实际观看后的无条件验收。未正式整合或发布。
 - 已实施P0审计、A1属性＋社交共享首片、V1隔离天气首候选。[首报](evolution/EVO-P0-REPORT.md)、[消费者范围表](evolution/EVO-P0-COVERAGE.md)、[实施计划](superpowers/plans/2026-10-22-evolution-first-round.md)。**负责人已批准当前消费者表及例外作为A2/A3范围；V1雨天视觉Reject，技术成果保留。两种新候选须先视觉评审。** 无main合并、Release或公开API/版本变更授权。
 - 开工核对main `6a6e3c00b705dc67d37c1780b27f585847da5d1a`，正式3.0.4 Tag源码`915dcb9e85f3266a73a3e7ce38d769edd0c29ff4`；研究输入领先main16提交。没有覆盖旧研究分支；公开UI3.0.4/Host0.1.5-experimental/兼容1.0.1保持。阶段本机未同步内容和本地证据须另查Git与忽略的HANDOFF.local，不能假设另一设备可用。
 
