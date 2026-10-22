@@ -1,0 +1,113 @@
+{
+  "scope": "R9 C5.1 tiled baseline versus C5.2 sparse independent rain, same four-level 1x plan. Pending owner naturalness review, not real-device evidence.",
+  "baseHead": "e2ee5dd8d0b110dd2635eef34d7e12644cf75b7f",
+  "sourceHashes": {
+    "prototypes/evolution-weather/scatter-review.html": "facaa52d80760e29bd4b48f6994885e62f15d712f5c1ed8b38407a244b56945f",
+    "prototypes/evolution-weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "tests/evolution-scattered-shower.test.cjs": "624c932dcfa3c6beadddfdeb812bf1426c01c2a1b0b179efcb19f2b5d7525f6c",
+    "prototypes/evolution-weather/README.md": "3ddddbda46915b0dca14d55d4e45d067c51396a78c824eab5eaee0c0fa645903",
+    "prototypes/evolution-weather/climate-review.html": "4e4f025a0682f34a21e68aefd30d5f779082a5175f0f03a6594b359c58517644",
+    "prototypes/evolution-weather/compare.html": "600b4e4eee73b17c356b0280620de593264e1a67632a8cdf793ad8b08ba01558",
+    "prototypes/evolution-weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "prototypes/evolution-weather/glass-optics.html": "cff5ed496385188f196fc89f2b027fcbddc0a419c9e848202a24751c03f5d065",
+    "prototypes/evolution-weather/index.html": "5b692205f386ef756d981f84bfb026db95deff974069b493944eec845ba9d8eb",
+    "prototypes/evolution-weather/main.ts": "d08894e9b5f0bfaca68627af68487988f4350171db5cf66704c32150ed7b1bdc",
+    "prototypes/evolution-weather/material.ts": "5c33c29180c35e75a9226ec20cc4ce446c68ebb0324116fe9aafd2a1a149e815",
+    "prototypes/evolution-weather/optics.html": "e08f1c5e50a5c79f02c36f1c2ab11293e86084976417a172e0226b09342243a2",
+    "prototypes/evolution-weather/rain-force-review.html": "94619dacb6bb9dbf88b283234da776c651d8b9ddb1e6743a26aad5fec17cf4d1",
+    "prototypes/evolution-weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+    "prototypes/evolution-weather/rain-review.html": "57e53167b28082ae7ebb0aa0b2287230ae270fcfb28fd529b9668cbc2cdda0f9",
+    "prototypes/evolution-weather/renderer.ts": "fd94b9458f098d90cdca7cb69fe256852585379eb602add77042e8e0e234e8f9",
+    "prototypes/evolution-weather/runoff-review.html": "1b02dde0a234c3fa77119f059426b5360521477348b5ed9148b527805b262b04",
+    "prototypes/evolution-weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "prototypes/evolution-weather/shower-review.html": "1daebf3c051b83a62bddfb6a82db352fad2b54d8ef3ba847806c90fbdb5ba84a",
+    "prototypes/evolution-weather/style.css": "1809a77f2a1d6ef39fbf1fa84beb37b0110a8a7202027ebc618f1996fdcb4031",
+    "prototypes/evolution-weather/trail-review.html": "3b5876f86787a4be4b138184de742751a148092fd912a85958c0320bec578672",
+    "prototypes/evolution-weather/v1-renderer.ts": "e8788d8e0c4ed279d561341de5f12cd402c0c0d71e5251cb511421a201f7ccf5",
+    "prototypes/evolution-weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "prototypes/evolution-weather/wet-glass.ts": "2bc4669aff1808b890d49b96421bf74f0e8a8792305a64d50b13708dfba3f62f",
+    "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+    "tests/evolution-rain-model.test.cjs": "db829d76dcdc837d13d4749ba7fe97413cbc11537dda714e4d4e0b077f651d8b",
+    "tests/evolution-weather-shower.cjs": "83fbd8a9bce52661cae2a379c3a219ef3cadce4ff5a2ff17954e15653fa18bb0",
+    "vite.evolution-weather.config.ts": "ea51a315ee8bbea860ccbab8a3202ac1ac0842b5b26f674ad926cb13e1374287"
+  },
+  "totalBytesExcludingManifest": 12481027,
+  "durationsSeconds": {
+    "before": 33.52,
+    "after": 33.56
+  },
+  "pixelEvidence": {
+    "scope": "Separate paused smoke, identical source hashes, dmt-workspace crop excludes toggle label/focus",
+    "runtime": {
+      "node": "v24.18.0",
+      "platform": "darwin",
+      "chromium": "153.0.8010.12"
+    }
+  },
+  "files": {
+    "shower-after-1x.mp4": {
+      "bytes": 1373945,
+      "sha256": "1af4c66ba3fba02ee549832f5da95f9711f9588583fdeb5525d1b5d0e860cc7e"
+    },
+    "shower-after-heavy.png": {
+      "bytes": 414005,
+      "sha256": "9c8741803b6dd60fd1b6348cca0fd0e1e3816b03b17bec447fe11934e5c951bc"
+    },
+    "shower-after-light.png": {
+      "bytes": 409355,
+      "sha256": "0302b3109b9f8873053a331b5d7c8b69fc31e0d1b13d6036b9b515fc0f6e0bf9"
+    },
+    "shower-after-normal.png": {
+      "bytes": 412962,
+      "sha256": "3b8e776c7636f5011580db318b81509cd7aadd2f0710add2ad2f6369b33e46b1"
+    },
+    "shower-after-result.json": {
+      "bytes": 154627,
+      "sha256": "967bbd2f9509fd82fe0720caa892c096d4b5f2863f341c174a66e5e852b4016c"
+    },
+    "shower-after-severe.png": {
+      "bytes": 414205,
+      "sha256": "d5400215ed8fc63abfb21a64b637c90c4c0753fae1ff25273dad2fbc7eb93577"
+    },
+    "shower-after-snow.png": {
+      "bytes": 425830,
+      "sha256": "642c514b99ea3afe0f9e530489ba423bcaa99dc12888753edbd3cb0d1703ddc0"
+    },
+    "shower-before-1x.mp4": {
+      "bytes": 6099566,
+      "sha256": "5758367a09f4aad296ecf3d45af326646722a63adaf7486ed558838301e61739"
+    },
+    "shower-before-heavy.png": {
+      "bytes": 478479,
+      "sha256": "a1f875a7a4db8a680b0ba1c719f2977b49236462fa54af01ab595c068c11be9b"
+    },
+    "shower-before-light.png": {
+      "bytes": 441905,
+      "sha256": "1e7089d717dc55cbc1091f45f8c9a6a0fe220b0e71bf8217edca071bc16e4a07"
+    },
+    "shower-before-normal.png": {
+      "bytes": 457165,
+      "sha256": "fe0438b51a508ee39eb02273a1385623313a9d55bf3082b1f075c9a27b972d76"
+    },
+    "shower-before-result.json": {
+      "bytes": 147158,
+      "sha256": "808e89184268f1e7603db2a5efcc6a5e0e30c4e5c5bb2b6550aa86fb0bd83242"
+    },
+    "shower-before-severe.png": {
+      "bytes": 486820,
+      "sha256": "2e10a1ffbe2b03c1163212c8dcbc531ce252bff7e24afb7cc439d0a7352a4786"
+    },
+    "shower-before-snow.png": {
+      "bytes": 426212,
+      "sha256": "dbdbe8abb41a93a05d45d28979182037d3240f205fa54cc92bb737ccfff50103"
+    },
+    "shower-pixels-off.png": {
+      "bytes": 168608,
+      "sha256": "da1ff45e7f7fbff1e173dc6e438bdeffa946c92980204fb71a01f4f032ed95ff"
+    },
+    "shower-pixels-on.png": {
+      "bytes": 170185,
+      "sha256": "f0d417df83b1d739ecaa93070b26079919ea871db164af6b51fb047960947071"
+    }
+  }
+}

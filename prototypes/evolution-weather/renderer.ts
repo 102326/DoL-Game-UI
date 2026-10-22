@@ -3,13 +3,13 @@ import {wetGlass} from './wet-glass';
 import {readGameWeather} from '../../framework/official-ui/weather';
 type Weather=ReturnType<typeof readGameWeather>;
 /** Owned research surface. The provider uses the same authority mapping as production. */
-export function weatherSurface(canvas:HTMLCanvasElement,read:()=>Weather=readGameWeather,kind:MaterialKind|'glass'|'glass-natural'|'glass-runoff'|'glass-weather'|'glass-shower'|'glass-force'='beads'){
+export function weatherSurface(canvas:HTMLCanvasElement,read:()=>Weather=readGameWeather,kind:MaterialKind|'glass'|'glass-natural'|'glass-runoff'|'glass-weather'|'glass-shower'|'glass-force'|'glass-scatter'='beads'){
  const ctx=canvas.getContext('2d');if(!ctx)throw Error('Canvas unavailable; static Acrylic remains usable');
  const context=ctx,reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let dead=false,frame=0,timer:ReturnType<typeof setTimeout>|undefined,last=0,time=0,reads=0,width=1,height=1,dpr=1;
  let target=read(),wet=0,snow=0,light=1,night=0,frames=0,paused=false,paintMs=0,intensity=1;
- const climate=kind==='glass-weather'||kind==='glass-shower'||kind==='glass-force';
- const material=kind.startsWith('glass')?wetGlass(canvas,()=>request(true),kind!=='glass',kind==='glass-runoff'||climate,climate,kind==='glass-shower'||kind==='glass-force',kind==='glass-force'):rainMaterial(canvas,kind as MaterialKind);
+ const climate=kind==='glass-weather'||kind==='glass-shower'||kind==='glass-force'||kind==='glass-scatter';
+ const material=kind.startsWith('glass')?wetGlass(canvas,()=>request(true),kind!=='glass',kind==='glass-runoff'||climate,climate,kind==='glass-shower'||kind==='glass-force'||kind==='glass-scatter',kind==='glass-scatter'?'scatter':kind==='glass-force'):rainMaterial(canvas,kind as MaterialKind);
  const targets=()=>({wet:target.kind==='rain'||target.kind==='storm'?1:0,snow:target.kind==='snow'?1:0,intensity:climate?({light:.32,normal:.65,heavy:1,severe:1.5}[target.rain]):1,light:target.kind==='clear'?1:target.kind==='unknown'?0:.25,night:target.night?1:0});
  const initial=targets();wet=initial.wet;snow=initial.snow;light=initial.light;night=initial.night;intensity=initial.intensity;
  function draw(){const start=performance.now();material.draw({wet,snow,light,night,time,width,height,dpr,intensity,kind:target.kind});paintMs=performance.now()-start}
