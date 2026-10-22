@@ -43,6 +43,7 @@ jobs:
           node scripts/evolution-inventory.cjs
           node tests/evolution-navigation.cjs
           node tests/evolution-panels.cjs
+          node tests/evolution-orbit.cjs
           node tests/panels-framework.cjs
           npx vue-tsc --noEmit -p tsconfig.evolution.json
           npx vite build --config vite.evolution-weather.config.ts
@@ -64,6 +65,7 @@ jobs:
             tests/artifacts/evolution/inventory.json
             tests/artifacts/evolution/navigation.json
             tests/artifacts/evolution/panels.json
+            tests/artifacts/evolution/orbit*.json
             tests/artifacts/evolution/weather-r2-*/result.json
             tests/artifacts/evolution/weather-r2-*/failure.json
             tests/artifacts/evolution/weather-r2-*/*.png

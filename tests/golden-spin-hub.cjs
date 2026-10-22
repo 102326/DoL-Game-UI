@@ -1,5 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require('playwright');
+const reverseHub=require('./hub-reversal-probe.cjs');
 (async()=>{
  const out=path.resolve('tests/artifacts/golden-spin-b/hub-validation-'+Date.now());fs.mkdirSync(out,{recursive:true});
  const {createServer}=await import('vite');const server=await createServer({configFile:path.resolve('vite.golden-spin.config.ts'),server:{port:5183,strictPort:true}});await server.listen();
@@ -28,8 +29,9 @@ const {chromium}=require('playwright');
    await ball.press('Escape');await closed();assert.equal(await nav.getAttribute('inert'),'');
   });
   await check('rapid reversals retain the current menu progress and sphere angle',async()=>{
-   await ball.click();await p.waitForFunction(()=>goldenSpinLab.controller.inspect().q>.2);
-   const before=await inspect();await ball.click();const after=await inspect();assert.ok(Math.abs(before.q-after.q)<.3);
+   await ball.click();const reversal=await reverseHub(p);fs.writeFileSync(path.join(out,'reversal.json'),JSON.stringify(reversal,null,2));
+   assert.ok(Math.abs(reversal.before.q-reversal.after.q)<.015,'native reversal must preserve the current progress');
+   assert.ok(Math.abs(reversal.before.sphere.angle-reversal.after.sphere.angle)<.015,'native reversal must preserve the sphere angle');
    for(let i=0;i<5;i++){await ball.click();await p.waitForTimeout(85)}
    if((await inspect()).target===1)await open();else await closed();
    if((await inspect()).target===1){await ball.click();await closed()}

@@ -1,5 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
 const {chromium}=require('playwright');
+const reverseHub=require('./hub-reversal-probe.cjs');
 const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf569ba9364ee46f5475e5c66';
 (async()=>{
  const out=path.resolve('tests/artifacts/golden-spin-b/hub-validation-input-'+Date.now());fs.mkdirSync(out,{recursive:true});
@@ -39,7 +40,7 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
    await p.mouse.move(700,240);await p.mouse.up();await open();assert.equal(await p.evaluate(()=>nativeToolClicks),prior);assert.equal((await inspect()).paused,false);await ball.press('Escape');await closed();
   });
   await check('H1 H2 opening and closing reverse continuously, keep native terminal layout and settle resources',async()=>{
-   await ball.click();await mid();const before=await inspect();await ball.click();const after=await inspect();assert.ok(Math.abs(before.q-after.q)<.25);
+   await ball.click();evidence.reversal=await reverseHub(p);assert.ok(Math.abs(evidence.reversal.before.q-evidence.reversal.after.q)<.015);assert.ok(Math.abs(evidence.reversal.before.sphere.angle-evidence.reversal.after.sphere.angle)<.015);
    await p.waitForTimeout(100);await ball.click();await open();
    for(const n of await p.locator('.sf-motion-petal').all())assert.equal(await n.evaluate(n=>n.style.transform),'none');
    await ball.click();await closed();await p.waitForFunction(()=>!goldenSpinLab.controller.inspect().sphere.running);
