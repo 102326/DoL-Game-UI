@@ -1,11 +1,13 @@
 import {rainModel, type Trail} from './rain-model';
 import './wet-glass.css';
+import showerUrl from '../../src/theme/kw-weather-shower.svg';
 import {frostSurface} from './frost';
 type Box={x:number;y:number;width:number;height:number};
 type Frame={wet:number;snow:number;light:number;night:number;time:number;width:number;height:number;dpr:number;intensity:number;kind:string};
 let instance=0;
 /** Native SVG displacement reads the browser's backdrop. No DOM capture or substitute texture. */
-export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false,climate=false){
+export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false,climate=false,withShower=false){
+ let showerEnabled=withShower,showerPhase=0;const showerImage=withShower?new Image():undefined;if(showerImage){showerImage.onload=()=>invalidate();showerImage.src=showerUrl}
  const shell=canvas.parentElement!,ctx=canvas.getContext('2d')!,model=rainModel(0x27fa29,naturalTrails,runoff);
  const layer=document.createElement('div');layer.className='evo-material-layer evo-glass-layer';layer.setAttribute('aria-hidden','true');
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('width','0');svg.setAttribute('height','0');
@@ -88,6 +90,16 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   const dt=Math.min(.05,Math.max(0,s.time-lastTime));lastTime=s.time;
   const humidity=s.wet*(1-s.snow*.8);model.step(dt,humidity,climate?s.intensity:1);
   const state=model.snapshot();active=[];visibleFlow=0;ctx.clearRect(0,0,width,height);
+  // Reuse the owned 3.x shower artwork and down-right tile motion. Draw first,
+  // then erase the union of protected rectangles before painting the existing glass.
+  // No second canvas, timer or RAF; pause/hidden/reduced motion share the original clock.
+  if(showerEnabled&&showerImage?.complete&&showerImage.naturalWidth&&humidity*(1-s.snow)>.005){
+   showerPhase=(showerPhase+dt*(.5+s.intensity*.5)/2.89)%1;
+   const scale=1.3-.25*s.intensity,tw=560*scale,th=320*scale,dx=showerPhase*tw,dy=showerPhase*3*th%th;
+   ctx.save();ctx.globalAlpha=Math.min(1,humidity*(1-s.snow)*(.55+s.intensity*.35));
+   for(let y=-th+dy;y<height;y+=th)for(let x=-tw+dx;x<width;x+=tw)ctx.drawImage(showerImage,x,y,tw,th);
+   ctx.restore();for(const p of frameProtection)ctx.clearRect(p.x-7,p.y-7,p.width+14,p.height+14);
+  }
   const luminance=.6+s.light*.4-s.night*.15;
   // Tiny attached surface droplets: no travelling particles or uniform screen-space veil.
   microVisible=0;for(const [i,p] of micro.entries()){const density=climate?Math.min(1,Math.max(0,380*s.intensity-i)):1;if(!density)continue;const x=5+p.x*(width-10),y=5+p.y*(height-10),r=p.r*Math.sqrt(humidity);if(r<.12||!safe({x:x-r,y:y-r,width:2*r,height:2*r},3))continue;microVisible++;
@@ -112,5 +124,5 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   if(frost)frost.draw(s.snow,s.time,width,height);
   else if(s.snow>.01){ctx.strokeStyle=`rgba(207,230,238,${s.snow*.4})`;ctx.lineWidth=.5;for(let i=0;i<50;i++){const y=i*height/50,edge=i%2?width-2:2,sign=i%2?-1:1,len=(4+(i*19%17))*s.snow;ctx.beginPath();ctx.moveTo(edge,y);ctx.lineTo(edge+sign*len,y-len*.5);ctx.lineTo(edge+sign*len*.65,y-len*.8);ctx.stroke()}}
  }
- return{draw,count:nodes.length,layoutMoving:()=>wasMoving,snapshot:()=>{const s=model.snapshot(),cold=frost?.snapshot();return{material:'glass',climateEnabled:climate,microVisible,...cold,runoffEnabled:runoff,runoffBorn:s.runoffBorn,runoffDrained:s.runoffDrained,trailMode:naturalTrails?'natural-footprint':'linear-stroke',wetBounds,wetPaths:wetBounds.length,activeDrops:active.length,moving:visibleFlow,attached:active.length-visibleFlow,merges:s.merges,slides:s.slides,drained:s.drained,trailSegments:s.trails.length,protected:frameProtection,dropBounds:active,protectedOverlap:[...active,...wetBounds,...(cold?.iceBounds??[]),...(cold?.flakeBounds??[])].filter(b=>frameProtection.some(q=>intersects(b,q))).length,backdropSupported:CSS.supports('backdrop-filter',`url(#${ids[0]})`),optics:'Native SVG backdrop displacement; approximate normal field, not a physical refraction solver',drops:s.drops}},dispose(){observer.disconnect();shell.removeEventListener('scroll',mark,true);layer.remove()}};
+ return{draw,shower(value:boolean){showerEnabled=withShower&&value},count:nodes.length,layoutMoving:()=>wasMoving,snapshot:()=>{const s=model.snapshot(),cold=frost?.snapshot();return{material:'glass',showerEnabled,showerReady:!!(showerImage?.complete&&showerImage.naturalWidth),showerPhase,climateEnabled:climate,microVisible,...cold,runoffEnabled:runoff,runoffBorn:s.runoffBorn,runoffDrained:s.runoffDrained,trailMode:naturalTrails?'natural-footprint':'linear-stroke',wetBounds,wetPaths:wetBounds.length,activeDrops:active.length,moving:visibleFlow,attached:active.length-visibleFlow,merges:s.merges,slides:s.slides,drained:s.drained,trailSegments:s.trails.length,protected:frameProtection,dropBounds:active,protectedOverlap:[...active,...wetBounds,...(cold?.iceBounds??[]),...(cold?.flakeBounds??[])].filter(b=>frameProtection.some(q=>intersects(b,q))).length,backdropSupported:CSS.supports('backdrop-filter',`url(#${ids[0]})`),optics:'Native SVG backdrop displacement; approximate normal field, not a physical refraction solver',drops:s.drops}},dispose(){if(showerImage)showerImage.onload=null;observer.disconnect();shell.removeEventListener('scroll',mark,true);layer.remove()}};
 }
