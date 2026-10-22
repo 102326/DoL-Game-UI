@@ -2,9 +2,9 @@
 
 当前研发分支 `dev/evolution-4.0`，[Issue #22](https://github.com/102326/DoL-Game-UI/issues/22)。本目录保留已认可金属球和真实 MotionHub 的研究入口。
 
-最新批次为 [悬浮球 V2 中途输入](../../docs/evolution/EVO-HUB-V2-INPUT.md)：已可见工具提前可操作，按下/聚焦期间保持位置，保留真实工具、排序和终态布局。Windows受控H1–H4及原速桌面/窄屏演示已完成，完整Hub效果仍待负责人确认；不合并main或发布。[当前4.0接续](../../docs/HANDOFF.md)是范围与后续任务依据，旧3.1草案保持历史身份。
+最新批次为 [悬浮球 V2 展开提速](../../docs/evolution/EVO-HUB-V2-INPUT.md#2026-10-23-已确认的展开速度)：点击即展开、240ms落位，球体以0.65倍时长并行播放，负责人已确认当前速度。保留中途输入、Mac生命周期修复、真实工具和终态布局；本轮Windows Hub/输入/生命周期17组及类型和构建通过。不合并main或发布。[当前4.0接续](../../docs/HANDOFF.md)是范围与后续任务依据，旧3.1草案保持历史身份。
 
-[桌面原速演示](../../docs/media/evolution-hub-v2/hub-input-v2-desktop.mp4) · [窄屏原速演示](../../docs/media/evolution-hub-v2/hub-input-v2-narrow.mp4)
+[历史桌面演示](../../docs/media/evolution-hub-v2/hub-input-v2-desktop.mp4) · [历史窄屏演示](../../docs/media/evolution-hub-v2/hub-input-v2-narrow.mp4)：对应21509a8，未包含最新展开速度和生命周期补强；当前效果以操作页为准。
 
 Mac 后续已同步 Windows 实现并补强释放落在球体、隐藏后场景替换和零尺寸恢复，见 [EVO-HUB-V2-MAC](../../docs/evolution/EVO-HUB-V2-MAC-LIFECYCLE.md)。新增三项回归进入现有命令；上述 Windows 媒体保持旧提交身份，未重录、未据此宣布完整 Hub 视觉通过。
 
@@ -16,7 +16,7 @@ npm run prototype:golden-spin
 ```
 
 - `http://127.0.0.1:5181/`：已获认可的独立球体，保留金属刻纹、纹带、残影、蓄势与释放。
-- `http://127.0.0.1:5181/hub.html`：复用真实 MotionHub 的完整悬浮球，菜单内容模拟；技术检查通过，完整视觉及实际游戏接入未验收。
+- `http://127.0.0.1:5181/hub.html`：复用真实 MotionHub 的完整悬浮球，菜单内容模拟；当前展开速度已认可，实际游戏接入未验收。端口冲突时可运行 `npm run prototype:golden-spin -- --port 5182` 后打开5182的同一路径。
 - `http://127.0.0.1:5181/windows.html`：b507窗口基础修整参考。真实设置控制器/组件、原生面板展示逻辑，原生业务内容模拟；可查看分类方向、材质展开、动画开关、缩放与卸载重挂载。新窗口视觉重做尚未通过负责人验收，不作为下一方案。
 
 [本批桌面录屏](../../docs/media/golden-spin-b/windows-desktop.mp4) · [窄屏录屏](../../docs/media/golden-spin-b/windows-narrow.mp4)。均为原速自制演示。

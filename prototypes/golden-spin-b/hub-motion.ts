@@ -6,7 +6,7 @@ export function sphereHub(root:HTMLElement) {
  const ball=root.querySelector<HTMLButtonElement>('.sf-motion-ball')!;
  const orbit=root.querySelector<HTMLElement>('.sf-motion-orbit')!;
  const canvas=document.createElement('canvas');canvas.className='spin-hub-canvas';canvas.setAttribute('aria-hidden','true');ball.append(canvas);
- const makeSphere=()=>createSphere(canvas,phase=>{root.dataset.spinBall=phase});
+ const makeSphere=()=>{const visual=createSphere(canvas,phase=>{root.dataset.spinBall=phase});visual.configure({duration:.65});return visual};
  let sphere=makeSphere();
  const media=matchMedia('(prefers-reduced-motion: reduce)');
  type Property={value:string;priority:string;written:string;writtenPriority:string};
@@ -87,7 +87,7 @@ export function sphereHub(root:HTMLElement) {
   if(next)sphere.play();else{press=undefined;sphere.recover()}
   if(!next&&orbit.contains(document.activeElement))ball.focus({preventScroll:true});
   timeline=gsap.timeline({onUpdate:render,onComplete(){timeline=undefined;state.q=next;render()}});
-  timeline.to(state,{q:next,delay:next&&state.q===0?1.06:0,duration:Math.max(.2,Math.abs(next-state.q)*(next?.85:.65)),ease:next?'power3.out':'power2.inOut'});
+  timeline.to(state,{q:next,duration:Math.max(.2,Math.abs(next-state.q)*(next?.24:.65)),ease:next?'power3.out':'power2.inOut'});
   render();holdInput();
  }
  function relayout(){frame=0;if(dead)return;measure();render();holdInput()}

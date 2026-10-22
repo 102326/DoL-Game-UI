@@ -1,8 +1,10 @@
 # Soft & Wet 4.0 — Evolution 研发交接
 
-更新：2026-10-22。接手必须先核对本机HEAD、工作区、远端、依赖及实际运行环境；本文件不是清洁工作区或测试通过的证明。
+更新：2026-10-23。接手必须先核对本机HEAD、工作区、远端、依赖及实际运行环境；本文件不是清洁工作区或测试通过的证明。
 
 ## Current — 当前做什么
+
+- 负责人已在操作页确认悬浮球最新速度：点击后菜单立即展开，240ms落位；球体演出使用0.65倍时长，与菜单并行，收束仍为650ms。已先快进合入Mac `c014cbb1dcc393dca4f00c97da97ae69d0121c8d` 的释放、隐藏和零尺寸修复，再保留本次节奏。[当前参数与接续](evolution/EVO-HUB-V2-INPUT.md#2026-10-23-已确认的展开速度)。Windows Edge的Hub六组、输入八组、生命周期三组，以及原型类型检查和构建通过；精确提交及新CI见#22。认可范围是当前隔离Hub展开速度，不是正式游戏整合或全局视觉验收。
 
 - Mac 接续已安全同步 Windows `21509a8`，保留其 V2 输入方案；新增 [EVO-HUB-V2-MAC 生命周期补强](evolution/EVO-HUB-V2-MAC-LIFECYCLE.md)：释放落在球体、隐藏后场景替换、零尺寸宿主恢复三项旧缺陷均被固定负例拒绝并修复。本机原 24 项＋新增 3 项、类型/构建/合同通过。精确提交、推送及最终 CI 见 #22；完整 Hub 视觉仍待负责人确认。本机替代方案仅保存在本地 `research/mac-hub-v2-alternative` / `5ed6569`，未同步、未采用。
 
@@ -28,7 +30,7 @@
 当前接续重点从天气调参转向架构迁移。天气原型保持已认可的自然湿痕、底边流出、四档雨量、稀疏独立斜雨及更快天气转场；历史候选和原速媒体沿用其原源码身份，记录见[R9](evolution/EVO-WEATHER-R9-REPORT.md)/[R10](evolution/EVO-WEATHER-R10-REPORT.md)。不再把当前原型写成“等待A/B二选一”或“提速待确认”。
 
 1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2已有[坐标首批](evolution/EVO-A2-COORDINATES.md)及[导航挂载首批](evolution/EVO-A2-MOUNT-LIFECYCLE.md)，后者进入独立只读技术复核；其余已批准消费者仍需逐项迁移。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
-2. V2输入首批与Mac生命周期补强已在真实Hub完成受控检查，先核对最终CI，再评审[原速演示](media/evolution-hub-v2/hub-input-v2-desktop.mp4)及当前操作页；历史视频不包含本批后台/零尺寸修复。A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
+2. V2输入、Mac生命周期补强及最新240ms展开节奏已在真实Hub完成受控检查，展开速度已获负责人确认。接手先核对本次提交CI，再运行当前 `/hub.html`；[旧原速演示](media/evolution-hub-v2/hub-input-v2-desktop.mp4)不含生命周期补强和本次提速，不能作为最新节奏参考。A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
 3. 新设备先fetch并检查HEAD/dirty/unpushed，安装锁定依赖，获取设置研究固定源码，复建后核对证据摘要。仅文档改动不重复跑整轮，运行源码变更按风险重验。
 4. Windows、Android/iOS/WebView、真实游戏/ModLoader、多Mod、多表面长期性能及真机输入均未完成4.0验证；已有设备型号不是实测viewport。真实G3另安排，不以60秒/DPR1/390px模拟代替。
 

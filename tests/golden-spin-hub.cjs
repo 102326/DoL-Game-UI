@@ -13,9 +13,9 @@ const {chromium}=require('playwright');
   const inspect=()=>p.evaluate(()=>goldenSpinLab.controller.inspect());
   const open=()=>p.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='open');
   const closed=()=>p.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='closed');
-  await check('sphere charges before real tool nodes unfold and remain hittable in their native layout',async()=>{
-   await ball.click();assert.equal(await ball.evaluate(n=>getComputedStyle(n).outlineStyle),'none','pointer activation must not show the old rectangular focus frame');await p.waitForTimeout(450);const charge=await inspect();assert.equal(charge.q,0);assert.ok(charge.sphere.speed>10);
-   assert.equal(await p.locator('.sf-motion-petal').first().evaluate(n=>getComputedStyle(n).pointerEvents),'none');
+  await check('real tools unfold immediately alongside sphere charge and remain hittable in their native layout',async()=>{
+   await ball.click();assert.equal(await ball.evaluate(n=>getComputedStyle(n).outlineStyle),'none','pointer activation must not show the old rectangular focus frame');await p.waitForTimeout(120);const charge=await inspect();assert.ok(charge.q>0,'menu must not wait for sphere charge');assert.ok(charge.sphere.speed>10);
+   assert.notEqual(await p.locator('.sf-motion-petal').first().evaluate(n=>getComputedStyle(n).pointerEvents),'none','visible tools must already accept input');
    await open();assert.equal((await inspect()).nodes,5);assert.equal(await nav.getAttribute('aria-hidden'),'false');
    for(const node of await p.locator('.sf-motion-petal').all())assert.ok(await node.evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}));
    await p.screenshot({path:path.join(out,'desktop-open.png')});
