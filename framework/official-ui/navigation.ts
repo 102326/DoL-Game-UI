@@ -3,13 +3,15 @@ import OrbitFocus from '../../src/ui/OrbitFocus.vue';
 import {mountUI,unmountUI} from '../../src/runtime/presentation';
 import {isMasterEnabled} from '../../src/runtime/master';
 import {headerWeather} from './weather';
+import {visualScope} from '../../src/ui/visual-scope';
 
 export const adaptedOverlaySelector='#customOverlay[data-dgu-adapter-match=full]:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet])';
 
 // Decoration for reviewed native navigation only; native nodes and handlers stay in place.
 export function nativeNavigation(){
  type Group={node:HTMLElement;host?:HTMLElement;app?:App;state:{active:string};attrs:Map<HTMLElement,[string|null,string|null]>;className:string;hadClass:boolean;observer:MutationObserver};
- const groups=new Map<'sidebar'|'tabs'|'ce-inline',Group>(),weather=headerWeather();let frame=0,dead=false;
+ const groups=new Map<'sidebar'|'tabs'|'ce-inline',Group>(),weather=headerWeather(),scope=visualScope();
+ scope.own(()=>weather.dispose());for(const key of ['ce-inline','sidebar','tabs'] as const)scope.own(()=>release(key));
  const labels:Record<string,string>={属性:'characteristics',Attributes:'characteristics',社交:'social',Social:'social',特质:'traits',Traits:'traits',日志:'journal',Journal:'journal',统计:'statistics',Statistics:'statistics',成就:'gameFeats',Feats:'gameFeats',选项:'options',Options:'options',存档:'saves',Saves:'saves',作弊:'cheats',Cheats:'cheats'};
  const tabNames=new Set(['社交','特征','特质','成就','日志','笔记','统计','额外统计 (包含剧透)','模组统计','作弊','选项','游戏设置','Social','Characteristics','Traits','Feats','Journal','Notes','Statistics','Extra Statistics (Spoilers)','Mod Statistics','Cheats','Options']);
  const formTabs:Record<string,Set<string>>={
@@ -20,7 +22,7 @@ export function nativeNavigation(){
  };
  function restore(group:Group,node?:HTMLElement){for(const[n,[role,selected]]of group.attrs){if(node&&node!==n)continue;if(role===null)n.removeAttribute('data-kw-nav-control');else n.setAttribute('data-kw-nav-control',role);if(selected===null)n.removeAttribute('data-kw-selected');else n.setAttribute('data-kw-selected',selected);group.attrs.delete(n)}}
  function release(key:'sidebar'|'tabs'|'ce-inline'){const g=groups.get(key);if(!g)return;groups.delete(key);g.observer.disconnect();unmountUI(g.app);g.host?.remove();restore(g);if(!g.hadClass)g.node.classList.remove(g.className)}
- function schedule(){if(dead||frame)return;frame=requestAnimationFrame(()=>{frame=0;refresh()})}
+ function schedule(){scope.frame(refresh)}
  function group(key:'sidebar'|'tabs'|'ce-inline',node:HTMLElement|undefined){
   if(groups.get(key)?.node!==node)release(key);if(!node)return;
   let g=groups.get(key);if(g)return g;
@@ -31,7 +33,7 @@ export function nativeNavigation(){
  }
  function mark(g:Group,n:HTMLElement,role:string,selected:boolean){if(!g.attrs.has(n))g.attrs.set(n,[n.getAttribute('data-kw-nav-control'),n.getAttribute('data-kw-selected')]);n.setAttribute('data-kw-nav-control',role);if(selected)n.setAttribute('data-kw-selected','true');else n.removeAttribute('data-kw-selected')}
  function refresh(){
-  if(dead)return;if(!isMasterEnabled()){release('tabs');release('sidebar');release('ce-inline');weather.clear();return}
+  if(!scope.active())return;if(!isMasterEnabled()){release('tabs');release('sidebar');release('ce-inline');weather.clear();return}
   const overlay=document.querySelector<HTMLElement>('#customOverlay:not(.hidden):is(.dgs-overlay,.dgc-overlay,.dgp-overlay,.dgs-native-tools),'+adaptedOverlaySelector+':not(.hidden)'),kind=overlay?.dataset.overlay;
   const sidebar=group('sidebar',document.querySelector<HTMLElement>('#ui-bar #overlayButtons,#ui-bar #startCaption')??undefined);
   if(sidebar){const buttons=[...sidebar.node.querySelectorAll<HTMLElement>('[data-kw-entry=native-caption],[data-kw-entry=official-settings]')];for(const n of sidebar.attrs.keys())if(!buttons.includes(n))restore(sidebar,n);
@@ -46,5 +48,5 @@ export function nativeNavigation(){
   weather.set('settings',settings??undefined,settings?.closest<HTMLElement>('.dmt-settings-shell')??undefined);weather.refresh();
  }
  const visibility=new MutationObserver(schedule);visibility.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['data-dgu-settings-open','data-dgu-adapter','data-dgu-adapter-match']});
- return{refresh,dispose(){dead=true;cancelAnimationFrame(frame);visibility.disconnect();release('tabs');release('sidebar');release('ce-inline');weather.dispose()}};
+ scope.own(()=>visibility.disconnect());return{refresh,dispose:scope.dispose};
 }

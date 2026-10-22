@@ -2,12 +2,14 @@
 import {nextTick,onBeforeUnmount,onMounted,reactive,ref,watch} from 'vue';
 import {sourceMotion} from '../ui/source-motion';
 import {navigationRect} from './navigation-geometry';
+import {visualScope} from './visual-scope';
 const props=defineProps<{active:string;layout?:string;selector?:string;container?:HTMLElement}>();
 
 const focus=ref<HTMLElement>();let nav:HTMLElement|undefined;
 const bounds=reactive({left:0,top:0,width:0,height:0,radius:11});
-const motion=sourceMotion();let resize:ResizeObserver|undefined,paintRoot:HTMLElement|undefined,dialog:HTMLElement|null=null,visibility:MutationObserver|undefined,frame=0,revision=0;
+const scope=visualScope(),motion=sourceMotion();scope.own(()=>motion.dispose());let resize:ResizeObserver|undefined,paintRoot:HTMLElement|undefined,dialog:HTMLElement|null=null,visibility:MutationObserver|undefined,revision=0;
 async function place(moving=false){
+ if(!scope.active())return;
  const ticket=++revision;
  const root=nav,ring=focus.value,button=root?.querySelector<HTMLElement>(props.selector??'[aria-current="page"]');
  if(!root||!ring)return;if(!button){bounds.width=0;motion.cancel(ring);return}
@@ -18,20 +20,21 @@ async function place(moving=false){
  const from=navigationRect(base,ring.getBoundingClientRect()),target=navigationRect(base,button.getBoundingClientRect());
  if(!target){motion.cancel(ring);Object.assign(bounds,{left:0,top:0,width:0,height:0});return}
  Object.assign(bounds,{...target,radius:Math.min(target.width/2,target.height/2,parseFloat(getComputedStyle(button).borderTopLeftRadius)||11)});
- await nextTick();if(ticket!==revision||!ring.isConnected)return;
+ await nextTick();if(!scope.active()||ticket!==revision||!ring.isConnected)return;
  motion.cancel(ring);
  if(moving&&from)motion.animate(ring,[{transform:`translate(${from.left-bounds.left}px,${from.top-bounds.top}px) scale(${from.width/bounds.width},${from.height/bounds.height})`},{transform:'translate(0,0) scale(1,1)'}],580);
 }
-function schedule(){if(frame)return;frame=requestAnimationFrame(()=>{frame=0;void place()})}
+function realign(){void place()}
+function schedule(){scope.frame(realign)}
 watch(()=>props.active,()=>void place(true),{flush:'post'});
 watch(()=>props.layout,()=>{revision++;motion.cancel();schedule()},{flush:'post'});
 onMounted(()=>{
  nav=props.container??focus.value?.parentElement??undefined;nav?.addEventListener('scroll',schedule,{passive:true});dialog=nav?.closest('dialog,#customOverlay')||null;
- if(typeof ResizeObserver==='function'){resize=new ResizeObserver(schedule);if(nav)resize.observe(nav)}
- if(dialog){visibility=new MutationObserver(()=>{revision++;motion.cancel();schedule()});visibility.observe(dialog,{attributes:true,attributeFilter:['open','data-sf-leaving','class','hidden']})}
- window.addEventListener('resize',schedule);schedule();
+ if(typeof ResizeObserver==='function'){resize=new ResizeObserver(schedule);scope.own(()=>resize?.disconnect());if(nav)resize.observe(nav)}
+ if(dialog){visibility=new MutationObserver(()=>{revision++;motion.cancel();schedule()});scope.own(()=>visibility?.disconnect());visibility.observe(dialog,{attributes:true,attributeFilter:['open','data-sf-leaving','class','hidden']})}
+ scope.own(()=>nav?.removeEventListener('scroll',schedule));window.addEventListener('resize',schedule);scope.own(()=>window.removeEventListener('resize',schedule));schedule();
 });
-onBeforeUnmount(()=>{nav?.removeEventListener('scroll',schedule);revision++;cancelAnimationFrame(frame);resize?.disconnect();visibility?.disconnect();window.removeEventListener('resize',schedule);motion.dispose()});
+onBeforeUnmount(()=>{revision++;scope.dispose()});
 </script>
 <template>
   <div ref="focus" class="dmt-orbit-focus" aria-hidden="true" :style="{left:bounds.left+'px',top:bounds.top+'px',width:bounds.width+'px',height:bounds.height+'px',borderRadius:bounds.radius+'px',visibility:bounds.width?'visible':'hidden'}">

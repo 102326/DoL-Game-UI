@@ -53,6 +53,8 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 
 ## 当前迁移增量
 
+[EVO-A2 视觉资源作用域首批](EVO-A2-VISUAL-SCOPE.md)使OrbitFocus和原生导航共用visualScope帧/清理所有权，删除对应局部排帧与顶层释放序列；保留原宿主、分组、业务和例外。这是两个消费者的A2/A3增量，其它表面与sourceMotion内部资源仍继续逐项迁移。
+
 [EVO-A2 焦点坐标与反向检查](EVO-A2-ORBIT-CONTINUITY.md)使OrbitFocus迁移起点/终点共用 `navigationRect`，修复边框重复计入和失效定位；保留原动作及事件。组件/原生导航的完整资源作用域收敛尚未完成，不借本次坐标增量将该行标为全部退出旧管理路径。
 
 [EVO-A2-L01](EVO-A2-MOUNT-LIFECYCLE.md)让属性/社交、通用面板overlay及passage实际共用导航挂载事务；保留专用发现、内容索引、演出和宿主生命周期，退出旧独立claim/mount清理路径。这里只更新已迁移族的状态，不重写上表冻结输入身份，不宣称其余消费者或整个A2/A3/G1完成。

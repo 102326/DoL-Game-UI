@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict'),vm=require('node:vm'),{buildSync}=require('esbuild');
+const pending=new Map(),cancelled=[],moduleObject={exports:{}};let serial=0;
+vm.runInNewContext(buildSync({entryPoints:['src/ui/visual-scope.ts'],bundle:true,write:false,format:'cjs'}).outputFiles[0].text,{module:moduleObject,exports:moduleObject.exports,requestAnimationFrame(callback){pending.set(++serial,callback);return serial},cancelAnimationFrame(id){cancelled.push(id);pending.delete(id)}});
+const {visualScope}=moduleObject.exports,owner=visualScope(),peer=visualScope();let calls=0,peerCalls=0;
+const update=()=>calls++,peerUpdate=()=>peerCalls++;
+owner.frame(update);owner.frame(update);peer.frame(peerUpdate);assert.equal(pending.size,2,'same-owner updates coalesce; peers remain independent');
+const stale=[...pending.values()][0];owner.dispose();assert.equal(pending.size,1);stale();assert.equal(calls,0,'already-delivered frame cannot revive a disposed owner');
+owner.frame(update);assert.equal(pending.size,1);const peerFrame=[...pending.entries()][0];pending.delete(peerFrame[0]);peerFrame[1]();assert.equal(peerCalls,1);
+let releases=0;owner.own(()=>releases++);assert.equal(releases,1,'late ownership releases immediately');owner.dispose();assert.equal(releases,1);
+const live=visualScope();let ticks=0;const repeat=()=>{ticks++;if(ticks===1)live.frame(repeat)};live.frame(repeat);
+for(let i=0;i<2;i++){const [id,callback]=[...pending.entries()][0];pending.delete(id);callback()}assert.equal(ticks,2,'a delivered task may schedule its next frame');
+const order=[];live.own(()=>order.push('first'));live.own(()=>{order.push('fault');throw Error('controlled cleanup failure')});live.own(()=>order.push('last'));
+assert.throws(()=>live.dispose(),error=>error.name==='AggregateError'&&error.errors.length===1);assert.deepEqual(order,['last','fault','first']);assert.equal(live.active(),false);live.dispose();peer.dispose();assert.equal(pending.size,0);assert.ok(cancelled.length);
+console.log('PASS visual scope: owner/peer isolation, frame coalescing, stale callbacks, late cleanup, requeue and complete failure cleanup');

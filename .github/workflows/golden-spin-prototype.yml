@@ -40,6 +40,7 @@ jobs:
           node tests/official-game-motion.cjs
       - name: Evolution P0, shared navigation and weather research
         run: |
+          node --test tests/visual-scope.test.cjs
           node scripts/evolution-inventory.cjs
           node tests/evolution-navigation.cjs
           node tests/evolution-panels.cjs
