@@ -1,0 +1,96 @@
+{
+  "scope": "R4 first-party controlled original-speed C/C2 evidence, not visually accepted",
+  "baseHead": "1d6d9d29d49b90a1c3f32f393ce5002f066e5a50",
+  "naturalTrails": true,
+  "totalBytesExcludingManifest": 5436633,
+  "durationsSeconds": {
+    "glass-1x.mp4": 27.16,
+    "contact-1x.mp4": 18.24
+  },
+  "sourceHashes": {
+    "prototypes/evolution-weather/trail-review.html": "fe12d92b6ed067865dd8f15357a8991f2ae7e6889fa504102c6e2dc5735e535a",
+    "prototypes/evolution-weather/README.md": "de37ac83d03c397c676c8323f7ba56e3b1eeed270300649562781e0e83ce17d0",
+    "prototypes/evolution-weather/compare.html": "600b4e4eee73b17c356b0280620de593264e1a67632a8cdf793ad8b08ba01558",
+    "prototypes/evolution-weather/glass-optics.html": "414df42488185fda31049c672fd17533124fb2d3ec9b142a8b1fbf356357be72",
+    "prototypes/evolution-weather/index.html": "5b692205f386ef756d981f84bfb026db95deff974069b493944eec845ba9d8eb",
+    "prototypes/evolution-weather/main.ts": "a0c30c8aeb8aa71ed7b3024cd1df54bbf6628ebf78346a201c99198fae107f2f",
+    "prototypes/evolution-weather/material.ts": "5c33c29180c35e75a9226ec20cc4ce446c68ebb0324116fe9aafd2a1a149e815",
+    "prototypes/evolution-weather/optics.html": "e08f1c5e50a5c79f02c36f1c2ab11293e86084976417a172e0226b09342243a2",
+    "prototypes/evolution-weather/rain-model.ts": "546559598e4416e2a4001f595f8f2cab069499ded6943b1b10fc163ab5b23cfe",
+    "prototypes/evolution-weather/rain-review.html": "57e53167b28082ae7ebb0aa0b2287230ae270fcfb28fd529b9668cbc2cdda0f9",
+    "prototypes/evolution-weather/renderer.ts": "f74010ac036fdbbbacf306bf706814e1c520135c1d4ae2f833b873d0f12f1d8e",
+    "prototypes/evolution-weather/style.css": "1809a77f2a1d6ef39fbf1fa84beb37b0110a8a7202027ebc618f1996fdcb4031",
+    "prototypes/evolution-weather/v1-renderer.ts": "e8788d8e0c4ed279d561341de5f12cd402c0c0d71e5251cb511421a201f7ccf5",
+    "prototypes/evolution-weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "prototypes/evolution-weather/wet-glass.ts": "a09562a1bd73717f213d20fb9adcddb6f4c9cad923398a1f26f36b1f7863f2dd",
+    "tests/evolution-rain-glass.cjs": "52d8efae99656ae22aaa59df21e864ee61e412c508b74f0e0fcf2129cb2a3a0f",
+    "tests/evolution-rain-model.test.cjs": "08e15c0e68d76c5b95436d9e4b961b153ffbb96822b95e659c2b89dff213f835",
+    "vite.evolution-weather.config.ts": "36eced101b5192376deadc95e90982e1b06307dd1602df7015e1956cb3025283"
+  },
+  "files": {
+    "contact-1x.mp4": {
+      "bytes": 485172,
+      "sha256": "3b4ceb55f69ff4056d2f7aaee40bd6fb476db1d7da5fc6168dad993feae30ea7"
+    },
+    "contact-after.png": {
+      "bytes": 331756,
+      "sha256": "e560b6b259c8265f6605903b997ce1a07773959dbd6bd65d5e1668e8274851db"
+    },
+    "contact-before.png": {
+      "bytes": 331097,
+      "sha256": "aa876c10791f50318061b2a16a051d86e24c121560e370b8f1d94fb4faca49ae"
+    },
+    "displacement-off.png": {
+      "bytes": 141321,
+      "sha256": "87d5e023fed7b41b4fe80e26499692a9a6e0667e406ad66676161d676d1d513b"
+    },
+    "displacement-on.png": {
+      "bytes": 143115,
+      "sha256": "4e388c5704c5c090108a24045406387b1fd32f99ba92100d52e7fa096bedb64a"
+    },
+    "glass-1x.mp4": {
+      "bytes": 1160852,
+      "sha256": "4986fbd29169cd4cf23c13f7c1134c3bf105dffde0c6c563314669fcd817b911"
+    },
+    "glass-clear.png": {
+      "bytes": 411188,
+      "sha256": "16d337b48360a6646d26da2b961579a6d6ea84dfdcc87dad62c4fd06e80fd2ec"
+    },
+    "glass-rain.png": {
+      "bytes": 424886,
+      "sha256": "999a2668be6d2432444cd1012a7495e7587a27eec07ef0be6df398e72b334950"
+    },
+    "glass-snow.png": {
+      "bytes": 419504,
+      "sha256": "5c6843b3f6e3e11c6c9cc08ccf776090780f1656fee08496a84e33139fd20742"
+    },
+    "material-dark.png": {
+      "bytes": 325595,
+      "sha256": "374eb6cc430dd30b342745ee5e0a19bac9b9097d4b95b3485493f7bfd0ed98b7"
+    },
+    "material-day.png": {
+      "bytes": 335340,
+      "sha256": "da889caea6f11767462361707f8277d0d45313ae7e01fa1828c9e9005608b276"
+    },
+    "material-night.png": {
+      "bytes": 236552,
+      "sha256": "61f1b2ac29c8e169824b6d006cbe142592c2e9502f179c4e5e3c606d8b9147bc"
+    },
+    "result.json": {
+      "bytes": 73777,
+      "sha256": "2d09296fa227623b0c9b1ca636f494940c5ff84e7c60d52a04a3e31372647f4e"
+    },
+    "wet-path-off.png": {
+      "bytes": 140559,
+      "sha256": "b519b2cb0f4bcb436e88d99bd6aac53fd8dd83483176f45f1e2662c504fdc0c8"
+    },
+    "wet-path-on.png": {
+      "bytes": 141316,
+      "sha256": "cb4bed6a4d55b7a906ae79a29ffc3a2efc2bacadce30d8e5353ccd7ca8f43402"
+    },
+    "wet-trail.png": {
+      "bytes": 334603,
+      "sha256": "3cd2fc2d0c05b3c7fe4f86f89943bbaa3615ee0acd68d5c3211b328ca0cd7a7e"
+    }
+  }
+}

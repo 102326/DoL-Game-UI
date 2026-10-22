@@ -50,3 +50,19 @@ node tests/evolution-rain-glass.cjs --record
 ## 未完成
 
 负责人画质验收、Safari/Windows/Android WebView、DPR2+实机、游戏背景根/多Mod整合、多表面与长期性能未通过。A/B本轮不是中央Weather Runtime的正式推广，未替换生产SVG/CSS或材质合同。G2不能由测试代替，G1/G3也未完成。更详细的失败/成果/未做事项见[第二轮报告](../../docs/evolution/EVO-ROUND2-REPORT.md)。
+
+
+## C2 湿痕反馈修订（R4，待视觉评审）
+
+负责人指出 C 的“湿痕太直，像画了条线”。本轮只调整湿痕及其实际水滴路径：原 C 默认查询与 R3 媒体保留；`trail=natural`启用 C2 的稳定空间偏移、按距离留痕、宽窄与干燥收细，以及无连续亮描线的原生背景湿润足迹。重力加速、速度上限、合并规则、静止水滴和设置 V2.3 不变。尺寸变化清除旧坐标湿痕，合并重置湿痕段，避免连接跳变位置。
+
+打开 `trail-review.html` 看 C/C2 同操作同视口原速对照，或 `glass-optics.html?trail=natural` 操作近景。C2 最多 32 个裁剪背景足迹、900 条模型轨迹；按真实文字/控件及最终足迹边界保护。局部背景滤镜仍是近似效果，不是真实流体。四组媒体各自 16 MiB 上限，超限报错，合计最多 64 MiB；本轮不重录 V1/A/B。
+
+```sh
+node --test tests/evolution-rain-model.test.cjs
+node tests/evolution-rain-glass.cjs --natural-trails
+node tests/evolution-rain-glass.cjs --record --trail-baseline
+node tests/evolution-rain-glass.cjs --record --natural-trails
+```
+
+原速录制的实际时间、性能与源码摘要写入各自 result.json；普通 smoke 为四分之一时间表，不称原速。新湿痕单独开关检查实际 DOM 像素变化，阅读区域晴/雨像素一致；技术检查不能代替负责人对自然感的判断。

@@ -18,6 +18,8 @@
 
 ## Next — 下一步做什么
 
+负责人对C最新反馈：**方向有改进，仍需调整**，已明确为**湿痕太直、像画线、没有自然感**。C2仅修订水滴路径与湿痕，整体滑速/合并/静止材质不改。保留`1d6d9d2`的C及原速媒体；[R4报告](evolution/EVO-WEATHER-R4-REPORT.md)和`trail-review.html`提供同操作原速C/C2对照。C/C2均未获视觉通过，不能据研究CI成功整合或发布。
+
 最新天气反馈：负责人认为第二轮A/B都有问题，先研究实拍雨窗，后已授权按[参考研究](evolution/EVO-WEATHER-REFERENCE-STUDY.md)制作下一版并展示。[R3候选C报告](evolution/EVO-WEATHER-R3-REPORT.md)：原生SVG背景位移、碰撞合并/滑移、移除观察带、正文保护，新四段同夹具原速对照及材质近景。C仍待视觉裁决，A/B未获认可；不沿用“等待二选一”假设。实际本机证据见`docs/media/evolution-weather-r3`；提交/CI以#22与Git为准。
 
 1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2先完成[坐标首批](evolution/EVO-A2-COORDINATES.md)；天气改为两种候选，详见[第二轮报告](evolution/EVO-ROUND2-REPORT.md)。A1/A2仍需独立技术复核。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。

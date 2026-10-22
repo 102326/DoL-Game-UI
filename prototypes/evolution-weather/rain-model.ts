@@ -1,13 +1,18 @@
 // Bounded research model: area proxy conservation, not a calibrated fluid solver.
 export type Drop = {id:number;x:number;y:number;area:number;vy:number;age:number;pin:number;shape:number};
-export type Trail = {x:number;y:number;endX:number;endY:number;width:number;life:number};
-export function rainModel(seed=0x27fa29){
+export type Trail = {x:number;y:number;endX:number;endY:number;width:number;life:number;strand?:number;distance?:number};
+export function rainModel(seed=0x27fa29,naturalTrails=false){
  let drops:Drop[]=[],trails:Trail[]=[],id=0,birth=0,merges=0,slides=0,drained=0;
  let width=1,height=1,initialized=false;
+ const fieldSeed=seed;let strand=0;
+ const anchors=new Map<number,{x:number;y:number;distance:number;strand:number;steer:number}>();
+ const hash=(x:number,y:number)=>{let v=Math.imul(x+173,374761393)^Math.imul(y+197,668265263)^fieldSeed;v=Math.imul(v^(v>>>13),1274126177);return((v^(v>>>16))>>>0)/4294967296};
+ const field=(x:number,y:number)=>{const gx=x/46,gy=y/52,ix=Math.floor(gx),iy=Math.floor(gy),ease=(t:number)=>t*t*(3-2*t),u=ease(gx-ix),v=ease(gy-iy),a=hash(ix,iy)*(1-u)+hash(ix+1,iy)*u,b=hash(ix,iy+1)*(1-u)+hash(ix+1,iy+1)*u;return(a*(1-v)+b*v)*2-1};
  const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296};
  const add=(x:number,y:number,r:number,pin:number)=>drops.push({id:++id,x,y,area:r*r,vy:0,age:0,pin,shape:random()});
  function resize(w:number,h:number){
   if(!Number.isFinite(w+h)||w<=0||h<=0)throw Error('Rain surface dimensions must be finite and positive');
+  if(naturalTrails&&(w!==width||h!==height)){trails=[];anchors.clear()}
   for(const d of drops){d.x*=w/width;d.y*=h/height}width=w;height=h;
  }
  function step(dt:number,wet:number){
@@ -31,8 +36,14 @@ export function rainModel(seed=0x27fa29){
    const moving=d.area>40&&d.age>d.pin&&wet>.18;
    if(moving&&d.vy===0)slides++;
    d.vy=moving?Math.min(52,d.vy+dt*(6+d.area*.16)):0;
-   if(d.vy){const oldX=d.x,oldY=d.y;d.y+=dt*d.vy;d.x+=Math.sin(d.y*.065+d.shape*17)*dt*.8;
-    if(d.y-oldY>.12)trails.push({x:oldX,y:oldY,endX:d.x,endY:d.y,width:Math.sqrt(d.area)*.25,life:1});
+   if(d.vy){const oldX=d.x,oldY=d.y;d.y+=dt*d.vy;
+    if(naturalTrails){
+     let a=anchors.get(d.id);if(!a){a={x:oldX,y:oldY,distance:0,strand:++strand,steer:0};anchors.set(d.id,a)}
+     // Stable surface variation, not a time-looping sine-wave drawn behind the bead.
+     a.steer+=(field(d.x,d.y)*.24-a.steer)*(1-Math.exp(-dt*7));d.x+=(d.y-oldY)*a.steer;
+     const distance=Math.hypot(d.x-a.x,d.y-a.y);
+     if(distance>=1){a.distance+=distance;const footprint=.35+(.65*(field(d.x+81,d.y*1.6)+1)/2);trails.push({x:a.x,y:a.y,endX:d.x,endY:d.y,width:Math.sqrt(d.area)*.34*footprint,life:1,strand:a.strand,distance:a.distance});a.x=d.x;a.y=d.y}
+    }else{d.x+=Math.sin(d.y*.065+d.shape*17)*dt*.8;if(d.y-oldY>.12)trails.push({x:oldX,y:oldY,endX:d.x,endY:d.y,width:Math.sqrt(d.area)*.25,life:1})}
     d.area=Math.max(0,d.area-dt*d.vy*.018);
    }
   }
@@ -40,9 +51,9 @@ export function rainModel(seed=0x27fa29){
    const a=drops[i],b=drops[j];if(a.area===0||b.area===0)continue;
    if(Math.hypot(a.x-b.x,a.y-b.y)>(Math.sqrt(a.area)+Math.sqrt(b.area))*.88)continue;
    const sum=a.area+b.area;a.x=(a.x*a.area+b.x*b.area)/sum;a.y=(a.y*a.area+b.y*b.area)/sum;
-   a.vy=Math.max(a.vy,b.vy);a.pin=Math.min(a.pin,b.pin);a.age=Math.max(a.age,b.age);a.area=sum;b.area=0;merges++;
+   a.vy=Math.max(a.vy,b.vy);a.pin=Math.min(a.pin,b.pin);a.age=Math.max(a.age,b.age);a.area=sum;b.area=0;merges++;anchors.delete(a.id);anchors.delete(b.id);
   }
-  drops=drops.filter(d=>{if(d.y>height+15){drained++;return false}return d.area>.08});
+  drops=drops.filter(d=>{if(d.y>height+15){drained++;anchors.delete(d.id);return false}if(d.area<=.08){anchors.delete(d.id);return false}return true});
   trails=trails.filter(t=>(t.life-=dt*(wet>.2?.16:.6))>0).slice(-900);
   if(wet<.01&&drops.length===0)initialized=false;
  }

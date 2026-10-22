@@ -3,8 +3,8 @@ import vue from '@vitejs/plugin-vue';
 import path from 'node:path';
 import fs from 'node:fs';
 const output=path.resolve('tests/artifacts/evolution/weather-dist');
-const allowed=(name:string)=>/^(v1|beads|film|glass)-(clear|rain|snow)\.png$/.test(name)||/^(v1|beads|film|glass|contact)-1x\.mp4$/.test(name)||/^(contact-(before|after)|material-(day|night|dark)|displacement-(on|off))\.png$/.test(name)||name==='result.json';
-const reviews=[{route:'review',source:'docs/media/evolution-weather-r2'},{route:'rain-review',source:'docs/media/evolution-weather-r3'}];
+const allowed=(name:string)=>/^(v1|beads|film|glass)-(clear|rain|snow)\.png$/.test(name)||/^(v1|beads|film|glass|contact)-1x\.mp4$/.test(name)||/^(contact-(before|after)|material-(day|night|dark)|displacement-(on|off))\.png$/.test(name)||name==='result.json'||/^(wet-trail|wet-path-on|wet-path-off)\.png$/.test(name);
+const reviews=[{route:'review',source:'docs/media/evolution-weather-r2'},{route:'rain-review',source:'docs/media/evolution-weather-r3'},{route:'trail-review',source:'docs/media/evolution-weather-r4'},{route:'trail-baseline',source:'docs/media/evolution-weather-r4-baseline'}];
 export default defineConfig({
  root:path.resolve('prototypes/evolution-weather'),
  plugins:[vue(),{name:'first-party-review-media',configureServer(server){
@@ -20,5 +20,5 @@ export default defineConfig({
   }
  }}],base:'./',define:{__VUE_OPTIONS_API__:false,__VUE_PROD_DEVTOOLS__:false},
  server:{host:'127.0.0.1',port:5190,strictPort:true,fs:{allow:[path.resolve('.')]}},
- build:{outDir:output,emptyOutDir:true,target:'es2022',rollupOptions:{input:{index:path.resolve('prototypes/evolution-weather/index.html'),compare:path.resolve('prototypes/evolution-weather/compare.html'),rainReview:path.resolve('prototypes/evolution-weather/rain-review.html'),optics:path.resolve('prototypes/evolution-weather/optics.html'),glassOptics:path.resolve('prototypes/evolution-weather/glass-optics.html')}}}
+ build:{outDir:output,emptyOutDir:true,target:'es2022',rollupOptions:{input:{trailReview:path.resolve('prototypes/evolution-weather/trail-review.html'),index:path.resolve('prototypes/evolution-weather/index.html'),compare:path.resolve('prototypes/evolution-weather/compare.html'),rainReview:path.resolve('prototypes/evolution-weather/rain-review.html'),optics:path.resolve('prototypes/evolution-weather/optics.html'),glassOptics:path.resolve('prototypes/evolution-weather/glass-optics.html')}}}
 });

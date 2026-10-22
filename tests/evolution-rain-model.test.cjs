@@ -15,3 +15,17 @@ test('same simulation step history reproduces drop identities and trajectories',
  const run=()=>{const m=rainModel(19);m.resize(900,600);for(let i=0;i<500;i++)m.step(.025,.8);return m.snapshot()};assert.deepEqual(run(),run());
 });
 test('invalid geometry and time are rejected',()=>{const m=rainModel();assert.throws(()=>m.resize(Infinity,600));assert.throws(()=>m.step(NaN,1));assert.throws(()=>m.step(-1,1));});
+
+test('natural wet trails follow a non-straight drop route, vary in width, and reset on resize',()=>{
+ const m=rainModel(19,true);m.resize(900,600);
+ for(let i=0;i<900;i++)m.step(.025,1);
+ const s=m.snapshot(),groups=new Map();
+ assert.ok(s.trails.length>0&&s.trails.length<=900);
+ for(const t of s.trails){assert.ok(Number.isFinite(t.x+t.y+t.endX+t.endY+t.width));const g=groups.get(t.strand)||[];g.push(t);groups.set(t.strand,g)}
+ const long=[...groups.values()].filter(g=>g.length>50);assert.ok(long.length>0);
+ assert.ok(long.some(g=>Math.max(...g.map(t=>t.width))/Math.min(...g.map(t=>t.width))>1.1));
+ assert.ok(long.some(g=>{const a=g[0],b=g.at(-1),dx=b.endX-a.x,dy=b.endY-a.y;return Math.max(...g.map(t=>Math.abs((t.x-a.x)*dy-(t.y-a.y)*dx)/Math.hypot(dx,dy)))>1}),'route deviates from a ruler-straight chord');
+ for(const g of groups.values())for(let i=1;i<g.length;i++){assert.equal(g[i].x,g[i-1].endX);assert.equal(g[i].y,g[i-1].endY)}
+ m.resize(390,844);assert.equal(m.snapshot().trails.length,0,'old-coordinate trails must not bridge a resize');
+ for(let i=0;i<2400;i++)m.step(.025,0);assert.equal(m.snapshot().trails.length,0);assert.equal(m.snapshot().drops.length,0);
+});

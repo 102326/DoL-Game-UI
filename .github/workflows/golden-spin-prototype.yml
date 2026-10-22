@@ -50,6 +50,7 @@ jobs:
           node tests/evolution-weather-candidates.cjs
           node --test tests/evolution-rain-model.test.cjs
           node tests/evolution-rain-glass.cjs
+          node tests/evolution-rain-glass.cjs --natural-trails
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
@@ -61,6 +62,9 @@ jobs:
             tests/artifacts/evolution/weather-r2-*/result.json
             tests/artifacts/evolution/weather-r2-*/failure.json
             tests/artifacts/evolution/weather-r2-*/*.png
+            tests/artifacts/evolution/weather-r4-*/result.json
+            tests/artifacts/evolution/weather-r4-*/failure.json
+            tests/artifacts/evolution/weather-r4-*/*.png
             tests/artifacts/evolution/weather-r3-*/result.json
             tests/artifacts/evolution/weather-r3-*/failure.json
             tests/artifacts/evolution/weather-r3-*/*.png
