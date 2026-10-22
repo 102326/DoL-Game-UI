@@ -4,6 +4,7 @@
 
 ## Current — 当前做什么
 
+- 最新[EVO-A2共享动效与设置布局资源迁移](evolution/EVO-A2-SETTINGS-RESOURCES.md)，输入 `9893644`：sourceMotion滚动帧/观察器/监听和设置布局帧/观察器实际接入visualScope，当批删除对应重复清理路径。旧源码受控迟到回调产生额外轮询被精确拒绝；当前版本及设置卸载后资源归零通过。类型、UI/Host构建与受影响组件回归通过；精确提交和两套CI见#22。尚未正式接入已认可设置/天气/球体原型。
 - 最新 [EVO-A2 视觉资源作用域首批](evolution/EVO-A2-VISUAL-SCOPE.md)，输入 `9807e0b`：OrbitFocus和原生导航实际共用visualScope，合并帧任务/清理所有权；当批删除局部frame/dead及重复卸载路径。正常组件、原生导航、Framework Host及设置/选择/战斗受控回归通过，焦点卸载后观察器与帧计数为0。尚未覆盖其它消费者或正式游戏，精确提交与两套CI见#22。
 - 反例修复批次 `9807e0b` 的输入为 `d0e06e5`。输入的两套CI均因同一个历史反例生成器重复声明 `ticket` 而失败；后续汇总和gate为连锁失败，不是多个产品缺陷。修复仅去掉生成器重复声明，本地正常几何、缺样式及旧几何的精确拒绝均通过；完整CI结果见#22，未完成的后续检查不能沿用旧成功。
 - 共享导航已经实际接线：属性/社交共用adapter，adapter与通用面板overlay/passage共用navigationMount；OrbitFocus坐标及本批资源所有权已收敛，其它消费者仍待迁移。设置正式入口仍300/220ms及代理展开，正式天气仍旧paint，球体由原型注入；已认可原型尚未正式交付。
@@ -41,7 +42,7 @@
 
 当前接续重点从天气调参转向架构迁移。天气原型保持已认可的自然湿痕、底边流出、四档雨量、稀疏独立斜雨及更快天气转场；历史候选和原速媒体沿用其原源码身份，记录见[R9](evolution/EVO-WEATHER-R9-REPORT.md)/[R10](evolution/EVO-WEATHER-R10-REPORT.md)。不再把当前原型写成“等待A/B二选一”或“提速待确认”。
 
-1. 先跑通反例生成修复后的两套完整CI，再按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续A2与正式原型接线。A1保留技术结果，A2已有[坐标首批](evolution/EVO-A2-COORDINATES.md)及[导航挂载首批](evolution/EVO-A2-MOUNT-LIFECYCLE.md)；其余消费者逐项迁移，每项验证后立即退出对应重复路径，保留原生回退和登记例外。状态分别记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
+1. 反例生成修复后的两套完整CI均已通过；导航资源首批两套完整CI亦已核对。当前共享动效/设置布局批次先核对新提交及CI，再按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续A2与正式原型接线。A1保留技术结果，A2已有[坐标首批](evolution/EVO-A2-COORDINATES.md)及[导航挂载首批](evolution/EVO-A2-MOUNT-LIFECYCLE.md)；其余消费者逐项迁移，每项验证后立即退出对应重复路径，保留原生回退和登记例外。状态分别记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
 2. V2输入、Mac生命周期补强及最新240ms展开节奏已在真实Hub完成受控检查，展开速度已获负责人确认。接手先核对本次提交CI，再运行当前 `/hub.html`；[旧原速演示](media/evolution-hub-v2/hub-input-v2-desktop.mp4)不含生命周期补强和本次提速，不能作为最新节奏参考。A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
 3. 新设备先fetch并检查HEAD/dirty/unpushed，安装锁定依赖，获取设置研究固定源码，复建后核对证据摘要。仅文档改动不重复跑整轮，运行源码变更按风险重验。
 4. 真实宿主、输入、生命周期与必要性能检查贯穿每批迁移，不能全部留到最后。Windows、Android/iOS/WebView、真实游戏/ModLoader、多Mod、多表面长期性能及真机输入仍需相应证据，最后进行完整G3回归；已有设备型号不是实测viewport，不以60秒/DPR1/390px模拟代替。

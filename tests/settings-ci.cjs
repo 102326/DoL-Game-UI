@@ -1,5 +1,5 @@
 // Actual settings controller/components in a first-party fixture, without game sources.
-const {chromium}=require('playwright'),assert=require('node:assert/strict');
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
 const {waitSettings,waitSettingsClosed,settingsSnapshot}=require('./moody-oracles.cjs');
 const {captureFailure}=require('./moody-fixture-evidence.cjs');
 (async()=>{
@@ -10,6 +10,16 @@ const {captureFailure}=require('./moody-fixture-evidence.cjs');
   await server.listen();browser=await chromium.launch(require('./browser-options.cjs'));
   const errors=[];page=await browser.newPage({viewport:{width:1363,height:620}});
   page.on('pageerror',e=>errors.push(e.message));
+  await page.addInitScript(()=>{
+   const NativeResize=window.ResizeObserver,raf=window.requestAnimationFrame.bind(window),caf=window.cancelAnimationFrame.bind(window),frames=new Set(),workspaceObservers=new Set(),late=[];
+   window.ResizeObserver=class extends NativeResize{
+    constructor(callback){super(callback);this.deliver=()=>callback([],this)}
+    observe(node,...rest){if(node.matches('.dmt-workspace')){workspaceObservers.add(this);late.push(this.deliver)}return super.observe(node,...rest)}
+    disconnect(){workspaceObservers.delete(this);super.disconnect()}
+   };
+   window.requestAnimationFrame=callback=>{const id=raf(time=>{frames.delete(id);callback(time)});frames.add(id);return id};window.cancelAnimationFrame=id=>{frames.delete(id);caf(id)};
+   window.settingsResources={stats:()=>({frames:frames.size,workspaces:workspaceObservers.size}),deliver:()=>late.forEach(callback=>callback())};
+  });
   await page.goto('http://127.0.0.1:'+server.httpServer.address().port+'/__settings_ci__');
   await page.waitForFunction(()=>!!window.theme);
   await page.addStyleTag({path:'dist/framework/official-ui/style.css'});
@@ -84,7 +94,10 @@ const {captureFailure}=require('./moody-fixture-evidence.cjs');
   await page.waitForTimeout(700);
   assert.equal(await page.locator('.dmt-workspace').getAttribute('data-settings-layout'),'horizontal');
   assert.equal(await page.evaluate(()=>theme.getPreferences().comfortable),true,'persisted preference is read on remount');
-  await page.evaluate(()=>theme.destroy());assert.deepEqual(errors,[]);
+  const teardown=await page.evaluate(()=>{const mounted=settingsResources.stats();settingsResources.deliver();const queued=settingsResources.stats();theme.destroy();const disposed=settingsResources.stats();settingsResources.deliver();return{mounted,queued,disposed,late:settingsResources.stats()}});
+  fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/settings-resources.json',JSON.stringify(teardown,null,2));
+  assert.equal(teardown.mounted.workspaces,1);assert.ok(teardown.queued.frames>0,'teardown exercises an actually queued workspace measurement');
+  assert.deepEqual(teardown.disposed,{frames:0,workspaces:0});assert.deepEqual(teardown.late,teardown.disposed,'late workspace observer cannot schedule work after unmount');assert.deepEqual(errors,[]);
   console.log('PASS real settings controller: dual layouts, long scroll, modal input boundary, keyboard preference, category interruption, persistence and cleanup; controlled browser fixture only');
  }catch(error){try{if(page)await captureFailure(page,{kind:'settings',error,snapshot:await settingsSnapshot(page)})}catch{console.error('Settings fixture evidence unavailable; retaining original failure')}throw error}
  finally{await browser?.close();await server.close()}

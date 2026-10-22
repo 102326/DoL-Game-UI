@@ -38,6 +38,8 @@ jobs:
           node tests/settings-ci.cjs
           node tests/moody-historical-regressions.cjs
           node tests/official-game-motion.cjs
+          node tests/source-motion-lifecycle.cjs
+          node tests/game-first-motion.cjs
       - name: Evolution P0, shared navigation and weather research
         run: |
           node --test tests/visual-scope.test.cjs
@@ -64,6 +66,8 @@ jobs:
           name: golden-spin-prototype-${{ github.sha }}
           path: |
             tests/artifacts/evolution/inventory.json
+            tests/artifacts/evolution/source-motion.json
+            tests/artifacts/evolution/settings-resources.json
             tests/artifacts/evolution/navigation.json
             tests/artifacts/evolution/panels.json
             tests/artifacts/evolution/orbit*.json

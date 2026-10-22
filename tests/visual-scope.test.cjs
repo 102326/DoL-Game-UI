@@ -9,6 +9,8 @@ owner.frame(update);assert.equal(pending.size,1);const peerFrame=[...pending.ent
 let releases=0;owner.own(()=>releases++);assert.equal(releases,1,'late ownership releases immediately');owner.dispose();assert.equal(releases,1);
 const live=visualScope();let ticks=0;const repeat=()=>{ticks++;if(ticks===1)live.frame(repeat)};live.frame(repeat);
 for(let i=0;i<2;i++){const [id,callback]=[...pending.entries()][0];pending.delete(id);callback()}assert.equal(ticks,2,'a delivered task may schedule its next frame');
+live.frame(repeat);const replaced=[...pending.values()][0];live.cancelFrame(repeat);live.frame(repeat);replaced();assert.equal(ticks,2,'cancelled delivery must not run or erase the replacement frame');assert.equal(pending.size,1);
+const [replacementId,replacement]=[...pending.entries()][0];pending.delete(replacementId);replacement();assert.equal(ticks,3);live.cancelFrame(repeat);
 const order=[];live.own(()=>order.push('first'));live.own(()=>{order.push('fault');throw Error('controlled cleanup failure')});live.own(()=>order.push('last'));
 assert.throws(()=>live.dispose(),error=>error.name==='AggregateError'&&error.errors.length===1);assert.deepEqual(order,['last','fault','first']);assert.equal(live.active(),false);live.dispose();peer.dispose();assert.equal(pending.size,0);assert.ok(cancelled.length);
 console.log('PASS visual scope: owner/peer isolation, frame coalescing, stale callbacks, late cleanup, requeue and complete failure cleanup');
