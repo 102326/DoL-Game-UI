@@ -2,6 +2,8 @@
 import GameButton from '../ui/GameButton.vue';
 import {onBeforeUnmount,ref,watch,nextTick} from 'vue';
 import {sourceMotion} from '../ui/source-motion';
+import {visualScope} from '../ui/visual-scope';
+const scope=visualScope();
 type DisplayItem={title:string;price:string;owned:string};
 type Origin={left:number;top:number;width:number;height:number}|null;
 const props=defineProps<{enabled:boolean;hasSelection:boolean;referenceA:DisplayItem|null;comparisonB:DisplayItem|null;target:string|null;origin:Origin}>();
@@ -21,10 +23,11 @@ function transition(element:Element,done:()=>void,returning=false){
 const enter=(element:Element,done:()=>void)=>transition(element,done),leave=(element:Element,done:()=>void)=>transition(element,done,true);
 watch(spatial,()=>motion.cancel());
 watch(()=>props.referenceA,async(item,old)=>{motion.cancel();if(item&&item!==old){await nextTick();if(item===props.referenceA&&spatial.value&&chip.value?.isConnected&&props.origin)motion.flight(DOMRect.fromRect(props.origin),chip.value.getBoundingClientRect(),item.title)}});
-onBeforeUnmount(()=>motion.dispose());
+scope.own(()=>motion.dispose());onBeforeUnmount(scope.dispose);
 function afterEnter(element:Element){if(!element.isConnected)return;(element as HTMLElement).querySelector<HTMLElement>('[data-shop-close]')?.focus({preventScroll:true})}
 function compareFrom(event:MouseEvent){if(event.currentTarget instanceof HTMLElement){compareTrigger.value=event.currentTarget;emit('compare',event.currentTarget)}}
-function closeFromPanel(){emit('close');requestAnimationFrame(()=>compareTrigger.value?.isConnected&&compareTrigger.value.focus({preventScroll:true}))}
+function restoreFocus(){if(compareTrigger.value?.isConnected)compareTrigger.value.focus({preventScroll:true})}
+function closeFromPanel(){emit('close');scope.frame(restoreFocus)}
 function relation(a:string,b:string){return !a||!b?'未提供':a===b?'显示文字相同':'显示文字不同'}
 </script>
 <template>

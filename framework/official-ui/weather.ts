@@ -1,3 +1,4 @@
+import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
 type WeatherKind='clear'|'cloud'|'rain'|'snow'|'storm'|'fog'|'unknown';
 type RainLevel='normal'|'light'|'heavy'|'severe';
@@ -23,25 +24,25 @@ export function readGameWeather(root:{Weather?:GameWeather}=window as Window & {
 
 export function headerWeather(){
  type Surface={header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number};
- const surfaces=new Map<string,Surface>(),motion=sourceMotion();let timer:ReturnType<typeof setTimeout>|undefined,dead=false;
+ const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=sourceMotion();scope.own(()=>motion.dispose());let stopTimer:(()=>void)|undefined;
  const visible=(n:HTMLElement)=>n.isConnected&&!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert],[data-sf-leaving]');
- function remove(key:string){const s=surfaces.get(key);if(!s)return;s.revision++;motion.cancel(s.node);s.node.remove();surfaces.delete(key);if(!surfaces.size){clearTimeout(timer);timer=undefined}}
+ function remove(key:string){const s=surfaces.get(key);if(!s)return;s.revision++;motion.cancel(s.node);s.node.remove();surfaces.delete(key);if(!surfaces.size){stopTimer?.();stopTimer=undefined}}
  function paint(s:Surface,state:ReturnType<typeof readGameWeather>){
   const key=state.kind+':'+state.night+':'+state.rain;if(s.key===key)return;s.key=key;const revision=++s.revision,opacity=parseFloat(getComputedStyle(s.node).opacity);motion.cancel(s.node);
-  const apply=()=>{if(dead||s.revision!==revision||!s.node.isConnected)return;s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.toggleAttribute('data-night',state.night);if(state.kind!=='unknown')motion.animate(s.node,[{opacity:0},{opacity:parseFloat(getComputedStyle(s.node).opacity)}],480)};
+  const apply=()=>{if(!scope.active()||s.revision!==revision||!s.node.isConnected)return;s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.toggleAttribute('data-night',state.night);if(state.kind!=='unknown')motion.animate(s.node,[{opacity:0},{opacity:parseFloat(getComputedStyle(s.node).opacity)}],480)};
   // Retire the old paint before changing it; never keep two particle systems alive.
   const exit=s.node.dataset.weather&&s.node.dataset.weather!=='unknown'?motion.animate(s.node,[{opacity},{opacity:0}],180):undefined;
   if(exit)void exit.finished.then(apply,apply);else apply();
  }
  function refresh(){
-  clearTimeout(timer);timer=undefined;if(dead||!surfaces.size||document.hidden)return;
+  stopTimer?.();stopTimer=undefined;if(!scope.active()||!surfaces.size||document.hidden)return;
   const state=readGameWeather();
   for(const[key,s]of surfaces){if(!visible(s.header)){remove(key);continue}paint(s,state)}
   // One shared low-frequency read, only while an owned header and document are visible.
-  if(surfaces.size&&!document.hidden)timer=setTimeout(refresh,2000);
+  if(surfaces.size&&!document.hidden)stopTimer=scope.timeout(refresh,2000);
  }
  function set(key:string,header?:HTMLElement,parent?:HTMLElement){
-  if(dead)return;const old=surfaces.get(key);
+  if(!scope.active())return;const old=surfaces.get(key);
   if(old&&(old.header!==header||old.parent!==parent))remove(key);
   if(!header||!parent||!visible(header)){remove(key);return}
   if(!surfaces.has(key)){
@@ -55,6 +56,6 @@ export function headerWeather(){
    parent.append(node);surfaces.set(key,{header,parent,node,key:'',revision:0});
   }
  }
- document.addEventListener('visibilitychange',refresh);
- return{set,refresh,clear(){for(const key of surfaces.keys())remove(key)},dispose(){dead=true;clearTimeout(timer);for(const key of surfaces.keys())remove(key);motion.dispose();document.removeEventListener('visibilitychange',refresh)}};
+ document.addEventListener('visibilitychange',refresh);scope.own(()=>document.removeEventListener('visibilitychange',refresh));
+ return{set,refresh,clear(){for(const key of surfaces.keys())remove(key)},dispose(){scope.dispose();for(const key of surfaces.keys())remove(key)}};
 }

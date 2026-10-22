@@ -42,7 +42,8 @@ jobs:
           node tests/game-first-motion.cjs
       - name: Evolution P0, shared navigation and weather research
         run: |
-          node --test tests/visual-scope.test.cjs
+          node --test tests/visual-scope.test.cjs tests/evolution-resource-contract.test.cjs
+          node tests/evolution-owner-resources.cjs
           node scripts/evolution-inventory.cjs
           node tests/evolution-navigation.cjs
           node tests/evolution-panels.cjs
@@ -66,6 +67,7 @@ jobs:
           name: golden-spin-prototype-${{ github.sha }}
           path: |
             tests/artifacts/evolution/inventory.json
+            tests/artifacts/evolution/owners.json
             tests/artifacts/evolution/source-motion.json
             tests/artifacts/evolution/settings-resources.json
             tests/artifacts/evolution/navigation.json

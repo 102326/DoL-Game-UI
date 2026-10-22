@@ -1,3 +1,4 @@
+import {visualScope} from '../ui/visual-scope';
 import {createWardrobePerformance,type WardrobePerformance} from './performance';
 import {createIsolatedModel} from './vendor/isolated-model.js';
 import {copy,type Snapshot} from './data';
@@ -65,8 +66,8 @@ export async function renderOutfit(root:WardrobeDataHost,s:Snapshot,worn:Worn,ch
  // The native image resolver is retained so image ZIPs still resolve.
  await new Promise<void>((resolve,reject)=>{
   const endCompose=timing.start('render.compose');
-  let finished=false;const timer=setTimeout(()=>finish(Error('图片加载超时，请重试')),15000);
-  function finish(error?:Error){if(finished)return;finished=true;endCompose();clearTimeout(timer);error?reject(error):resolve()}
+  const scope=visualScope();let finished=false;scope.timeout(()=>finish(Error('图片加载超时，请重试')),15000);
+  function finish(error?:Error){if(finished)return;finished=true;scope.dispose();endCompose();error?reject(error):resolve()}
   const ctx=canvas.getContext('2d'),previousCall=live.lastCall;
   try{live.composeLayers(ctx,layers,1,{renderingDone:()=>finish(),loadError:()=>finish(Error('有衣物图片未能加载，请使用原版衣柜')),error:()=>finish(Error('穿搭绘图失败，请使用原版衣柜'))})}catch(error){finish(error as Error)}
   finally{if(live.lastCall?.[0]===ctx)live.lastCall=previousCall}

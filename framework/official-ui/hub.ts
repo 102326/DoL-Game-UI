@@ -1,3 +1,4 @@
+import {visualScope} from '../../src/ui/visual-scope';
 import {mountVue} from '../vue';
 import type {Host,Participant,MountHandle} from '../contracts';
 import MotionHub from '../motion-hub/MotionHub.vue';
@@ -8,7 +9,7 @@ import type {UiApi} from '../../src/public/ui';
 
 /** The existing opt-in floating preference also controls the official public-view Hub. */
 export function startOfficialHub(host:Host,owner:Participant){
- let mounted:Readonly<MountHandle>|undefined,stopped=false;
+ const scope=visualScope();let mounted:Readonly<MountHandle>|undefined;
  const root=window as Window & {DoLFloatingTools?:FloatingApi};
  let mode='';
  const game=()=> (window as Window & {DoLGameUI?:{openSettings():void;ui?:UiApi}}).DoLGameUI;
@@ -30,7 +31,7 @@ export function startOfficialHub(host:Host,owner:Participant){
  const inspector=owner.provideView({id:'runtime-inspector',title:'运行检查',setup(context){const button=document.createElement('button');button.type='button';button.textContent='打开只读 Inspector';button.onclick=()=>{if(context.isCurrent())directActions['SoftWetOfficialUI:runtime-inspector']()};context.element.append(button);return()=>{button.onclick=null}}});
  const nativeViews=(['native-saves','native-social','native-attributes'] as const).map((id,index)=>owner.provideView({id,title:['存档','社交','属性'][index],setup(context){const button=document.createElement('button');button.type='button';button.textContent='打开原版入口';button.onclick=()=>{if(context.isCurrent())directActions[`SoftWetOfficialUI:${id}`]()};context.element.append(button);return()=>{button.onclick=null}}}));
  function sync(){
-  if(stopped)return;
+  if(!scope.active())return;
   const p=root.DoLFloatingTools?.getPreferences();
   if(isMasterEnabled()&&p?.enabled&&!p.hidden){
    if(mode!==p.mode){mounted?.dispose();mounted=undefined;mode=p.mode}
@@ -38,5 +39,6 @@ export function startOfficialHub(host:Host,owner:Participant){
   }else{mounted?.dispose();mounted=undefined}
  }
  document.addEventListener('dol-floating-change',sync);document.addEventListener('dol-ui-master-change',sync);sync();
- return()=>{stopped=true;document.removeEventListener('dol-floating-change',sync);document.removeEventListener('dol-ui-master-change',sync);mounted?.dispose();settings();inspector();for(const stop of nativeViews)stop()};
+ scope.own(settings);scope.own(inspector);for(const stop of nativeViews)scope.own(stop);scope.own(()=>mounted?.dispose());
+ scope.own(()=>{document.removeEventListener('dol-floating-change',sync);document.removeEventListener('dol-ui-master-change',sync)});return scope.dispose;
 }

@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),vm=require('node:vm'),{buildSync}=require('esbuild');
-const pending=new Map(),cancelled=[],moduleObject={exports:{}};let serial=0;
-vm.runInNewContext(buildSync({entryPoints:['src/ui/visual-scope.ts'],bundle:true,write:false,format:'cjs'}).outputFiles[0].text,{module:moduleObject,exports:moduleObject.exports,requestAnimationFrame(callback){pending.set(++serial,callback);return serial},cancelAnimationFrame(id){cancelled.push(id);pending.delete(id)}});
+const timers=new Map(),pending=new Map(),cancelled=[],moduleObject={exports:{}};let serial=0;
+vm.runInNewContext(buildSync({entryPoints:['src/ui/visual-scope.ts'],bundle:true,write:false,format:'cjs'}).outputFiles[0].text,{module:moduleObject,exports:moduleObject.exports,requestAnimationFrame(callback){pending.set(++serial,callback);return serial},cancelAnimationFrame(id){cancelled.push(id);pending.delete(id)},setTimeout(callback){timers.set(++serial,callback);return serial},clearTimeout(id){timers.delete(id)}});
 const {visualScope}=moduleObject.exports,owner=visualScope(),peer=visualScope();let calls=0,peerCalls=0;
 const update=()=>calls++,peerUpdate=()=>peerCalls++;
 owner.frame(update);owner.frame(update);peer.frame(peerUpdate);assert.equal(pending.size,2,'same-owner updates coalesce; peers remain independent');
@@ -14,3 +14,9 @@ const [replacementId,replacement]=[...pending.entries()][0];pending.delete(repla
 const order=[];live.own(()=>order.push('first'));live.own(()=>{order.push('fault');throw Error('controlled cleanup failure')});live.own(()=>order.push('last'));
 assert.throws(()=>live.dispose(),error=>error.name==='AggregateError'&&error.errors.length===1);assert.deepEqual(order,['last','fault','first']);assert.equal(live.active(),false);live.dispose();peer.dispose();assert.equal(pending.size,0);assert.ok(cancelled.length);
 console.log('PASS visual scope: owner/peer isolation, frame coalescing, stale callbacks, late cleanup, requeue and complete failure cleanup');
+
+const timed=visualScope();let timeCalls=0;
+const stop=timed.timeout(()=>timeCalls++,20),lateTimer=[...timers.values()][0];stop();lateTimer();assert.equal(timeCalls,0);assert.equal(timers.size,0);
+timed.timeout(()=>timeCalls++,20);const [tid,tick]=[...timers.entries()][0];timers.delete(tid);tick();assert.equal(timeCalls,1);
+let freed=0;const free=timed.own(()=>freed++);free();free();assert.equal(freed,1);timed.timeout(()=>timeCalls++,20);const disposedTimer=[...timers.values()][0];timed.dispose();disposedTimer();timed.timeout(()=>timeCalls++,20);assert.equal(timeCalls,1);assert.equal(freed,1);assert.equal(timers.size,0);
+console.log('PASS visual scope timers and detachable child cleanup: completion, cancellation, late delivery and disposal');

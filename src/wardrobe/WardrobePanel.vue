@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import {computed,ref,watch,nextTick,onMounted,onBeforeUnmount} from 'vue';
+import {visualScope} from '../ui/visual-scope';
+const scope=visualScope();
 import type {WardrobeModel} from './types';
 import ClothingIcon from './ClothingIcon.vue';
 import ClothingTraits from './ClothingTraits.vue';
@@ -17,15 +19,15 @@ const preview=ref<HTMLElement>(),native=ref<HTMLElement>(),actions=ref<HTMLEleme
 const exits=ref<HTMLElement>();
 const shell=ref<HTMLElement>(),previewOpen=ref(true),quickOpen=ref(true);
 const complexContent=computed(()=>props.model.slots.length>11||props.model.items.length>8);
-let previewResize:ResizeObserver|undefined,lastNarrow:boolean|undefined,previewFrame=0;
+let previewResize:ResizeObserver|undefined,lastNarrow:boolean|undefined;
 function resizePreview(){
  const root=shell.value?.closest<HTMLElement>('.dgw-root');if(!root)return;
  const nextNarrow=root.clientWidth<=700;
  if(nextNarrow!==lastNarrow){lastNarrow=nextNarrow;previewOpen.value=!nextNarrow;quickOpen.value=!nextNarrow}
 }
-function schedulePreviewResize(){pulse.value.key='';cancelAnimationFrame(previewFrame);previewFrame=requestAnimationFrame(resizePreview)}
+function schedulePreviewResize(){pulse.value.key='';scope.frame(resizePreview)}
 onMounted(()=>{resizePreview();const root=shell.value?.closest<HTMLElement>('.dgw-root');if(root&&typeof ResizeObserver!=='undefined'){previewResize=new ResizeObserver(schedulePreviewResize);previewResize.observe(root)}else window.addEventListener('resize',schedulePreviewResize)});
-onBeforeUnmount(()=>{previewResize?.disconnect();cancelAnimationFrame(previewFrame);window.removeEventListener('resize',schedulePreviewResize)});
+scope.own(()=>{previewResize?.disconnect();window.removeEventListener('resize',schedulePreviewResize)});onBeforeUnmount(scope.dispose);
 function capacityWarning(count:number,capacity:number|null){return capacity!==null&&capacity>=0&&(capacity===0||count>=capacity)?'full':capacity!==null&&capacity>0&&count/capacity>=.9?'near':''}
 const destination=ref('');
 const query=ref(''),sort=ref('name'),descending=ref(false),zoom=ref(false);
@@ -33,7 +35,7 @@ const page=ref(0),itemsList=ref<HTMLElement>();
 const motion=sourceMotion();
 watch(()=>props.model.slot,()=>{if(document.documentElement.hasAttribute('data-stone-free')){if(itemsList.value)motion.animate(itemsList.value,[{opacity:.65,backgroundColor:'#8baea312'},{opacity:1,backgroundColor:'transparent'}],480);const label=shell.value?.querySelector<HTMLElement>('.dgw-count');if(label)motion.animate(label,[{transform:'translateY(12px)',opacity:.4},{transform:'none',opacity:1}],520)}},{flush:'post'});
 
-onBeforeUnmount(()=>motion.dispose());
+scope.own(()=>motion.dispose());
 const pageSize=40;
 const manageMode=ref(false),checked=ref<string[]>([]);
 watch(()=>!!query.value.trim()&&!manageMode.value,acrossSlots=>props.onSearch(acrossSlots),{flush:'sync'});

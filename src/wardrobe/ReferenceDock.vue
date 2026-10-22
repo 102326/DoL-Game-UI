@@ -2,6 +2,8 @@
 import {computed,nextTick,onMounted,onBeforeUnmount,ref,shallowRef,watch} from 'vue';
 import {compareReferences,type ReferenceContext,type ReferenceItem} from './reference';
 import {sourceMotion} from '../ui/source-motion';
+import {visualScope} from '../ui/visual-scope';
+const scope=visualScope();
 const props=defineProps<{context:ReferenceContext;items:readonly {key:string}[]}>();
 const pinned=shallowRef<ReferenceItem>(),selected=shallowRef<ReferenceItem>(),opened=ref(false),spatial=ref(true),message=ref('');
 const chip=ref<HTMLElement>(),panel=ref<HTMLElement>();
@@ -20,7 +22,7 @@ const animate=motion.animate,flight=motion.flight;
 function clear(){interrupt();opened.value=false;pinned.value=undefined;selected.value=undefined;returnTo=undefined;selectedKey='';message.value='';withdraw?.();withdraw=undefined}
 function valid(){if(props.context.binding.isCurrent())return true;clear();return false}
 function position(){if(!opened.value||!returnTo?.isConnected)return;const header=returnTo.closest('.dgw-shell')?.querySelector('.dgw-header');panelTop.value=Math.max(12,Math.min((header?.getBoundingClientRect().bottom??120)+8,innerHeight-170))+'px'}
-function layout(event?:Event){
+function layout(event?:Event){if(!scope.active())return;
  const width=space.value?.closest('.dgw-root')?.getBoundingClientRect().width??innerWidth;
  const shifted=event?.type==='scroll'||width!==layoutWidth||innerWidth!==viewportWidth||innerHeight!==viewportHeight;
  layoutWidth=width;viewportWidth=innerWidth;viewportHeight=innerHeight;narrow.value=width<=800;
@@ -62,7 +64,7 @@ props.context.binding.signal.addEventListener('abort',clear,{once:true});
 watch(spatial,interrupt);
 onMounted(()=>{layout();const root=space.value?.closest('.dgw-root');if(root&&typeof ResizeObserver==='function'){resize=new ResizeObserver(()=>layout());resize.observe(root)}});
 window.addEventListener('resize',layout);window.addEventListener('scroll',layout,true);
-onBeforeUnmount(()=>{clear();resize?.disconnect();motion.dispose();props.context.binding.signal.removeEventListener('abort',clear);window.removeEventListener('resize',layout);window.removeEventListener('scroll',layout,true)});
+scope.own(()=>{clear();resize?.disconnect();motion.dispose();props.context.binding.signal.removeEventListener('abort',clear);window.removeEventListener('resize',layout);window.removeEventListener('scroll',layout,true)});onBeforeUnmount(scope.dispose);
 defineExpose({choose,hasReference:computed(()=>!!pinned.value),currentKey:computed(()=>opened.value?selectedKey:'')});
 </script>
 <template>

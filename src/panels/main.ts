@@ -1,3 +1,4 @@
+import {visualScope} from '../ui/visual-scope';
 import {createApp,reactive,type App} from 'vue';
 import Navigation from './Navigation.vue';
 import {panelPresentation} from './presentation';
@@ -26,13 +27,13 @@ const fixedLabels:Record<string,string>={journalNotesTextarea:'笔记编辑',mon
 export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Participant}){
  const preferences:Record<PanelKind,boolean>={journal:true,traits:true,statistics:true,feats:true,cheats:true,attitudes:true,settings:true};
  for(const kind of Object.keys(preferences) as PanelKind[])try{preferences[kind]=root.localStorage.getItem(`DoLGameUI.${kind}.enabled`)!=='false'}catch{/* Session fallback. */}
- let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined,frame=0,destroyed=false;
+ let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined;const scope=visualScope();
  let targets:HTMLElement[]=[];
  const state=reactive<NavigationState>({title:'',sections:[]});
  const counts={mounts:0,scans:0,failures:0};
  let lastFailure='';
  const presentation=panelPresentation(),passagePresentation=panelPresentation();
- const motion=sourceMotion();
+ const motion=sourceMotion();scope.own(()=>motion.dispose());
  const overlayLife=framework?navigationMount(framework.owner,'panels-overlay-life',release):undefined;
  const passageLife=framework?navigationMount(framework.owner,'panels-passage-life',releasePassage):undefined;
  let restoreOverlay=()=>{},restorePassage=()=>{};
@@ -101,7 +102,7 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   passageTargets=index(passage,kind,passageState);
  }
  function refresh(){
-  if(destroyed)return;
+  if(!scope.active())return;
   if(!isMasterEnabled())document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());
   try{refreshPassage()}catch(error){recover(passage?.dataset.dgpPanel as PanelKind||'settings',error,true)}
   try{refreshOverlay()}catch(error){recover(active||panelKeys[overlay?.dataset.overlay??'']||'settings',error)}
@@ -130,7 +131,7 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   // clone notes inputs, or cache game variables. Native tabs can replace this body.
   targets=index(body,kind,state);
  }
- function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
+ function schedule(){scope.frame(refresh)}
  const watch:MutationObserverInit={childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['data-overlay','hidden','class','style']};
  function changed(records:MutationRecord[],inline=false){
   if(!inline&&!panelKeys[overlay?.dataset.overlay??'']){if(host)schedule();return}
@@ -146,10 +147,12 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
  const observer=new MutationObserver(records=>changed(records)),passageObserver=new MutationObserver(records=>changed(records,true));
  // Discover only root replacement; never watch the entire document subtree.
  const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay||document.querySelector('#passages .passage:last-child')!==seenPassage)schedule()});
- function setEnabled(kind:PanelKind,value:boolean){if(destroyed||!Object.hasOwn(preferences,kind))return;preferences[kind]=!!value;try{root.localStorage.setItem(`DoLGameUI.${kind}.enabled`,String(!!value))}catch{/* Display changes still apply. */}refresh();document.dispatchEvent(new Event('dol-ui-panels-change'))}
+ function setEnabled(kind:PanelKind,value:boolean){if(!scope.active()||!Object.hasOwn(preferences,kind))return;preferences[kind]=!!value;try{root.localStorage.setItem(`DoLGameUI.${kind}.enabled`,String(!!value))}catch{/* Display changes still apply. */}refresh();document.dispatchEvent(new Event('dol-ui-panels-change'))}
  const overlayParent=document.getElementById('customOverlay')?.parentElement,passages=document.getElementById('passages');
  if(overlayParent)discovery.observe(overlayParent,{childList:true});
  if(passages)discovery.observe(passages,{childList:true});
  root.jQuery?.(document).on(':passageend.dolPanels',schedule);refresh();
- return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts,mountContract:overlayLife?.implementation??'classic'}),getLastFailure:()=>lastFailure,destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);root.jQuery?.(document).off(':passageend.dolPanels',schedule);discovery.disconnect();observer.disconnect();release();releasePassage();motion.dispose();document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
+
+ scope.own(()=>discovery.disconnect());scope.own(()=>observer.disconnect());scope.own(()=>passageObserver.disconnect());
+ return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts,mountContract:overlayLife?.implementation??'classic'}),getLastFailure:()=>lastFailure,destroy(){scope.dispose();root.jQuery?.(document).off(':passageend.dolPanels',schedule);release();releasePassage();document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
 }

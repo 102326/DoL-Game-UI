@@ -1,3 +1,4 @@
+import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {isMasterEnabled} from '../../src/runtime/master';
 import type {NativeEventsHost} from '../../src/runtime/sugarcube';
@@ -5,8 +6,9 @@ import {nativeNavigation,adaptedOverlaySelector} from './navigation';
 
 /** Presentation only: never cancel an event, dispatch an action or read game variables. */
 export function startOfficialMotion(root:NativeEventsHost=window){
- const motion=sourceMotion(),navigation=nativeNavigation(),frames=new Set<number>(),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
- let overlay:HTMLElement|null=null,active:HTMLElement|null=null,activeKind='',plane:HTMLElement|undefined,dead=false;
+ const scope=visualScope(),motion=sourceMotion(),navigation=nativeNavigation(),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
+ let overlay:HTMLElement|null=null,active:HTMLElement|null=null,activeKind='',plane:HTMLElement|undefined;
+ scope.own(()=>motion.dispose());scope.own(()=>navigation.dispose());
  let origin:{rect:DOMRect;node:HTMLElement;time:number;hub:boolean;bedroom:boolean}|undefined,returnTo:HTMLElement|null=null,activeRect:DOMRect|undefined;
  let previousPetal:DOMRect|undefined;
  let sidebarRoots:HTMLElement[]=[];
@@ -16,11 +18,11 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function clearPress(event?:PointerEvent){if(!pressed||event&&event.pointerId!==pressed.pointer)return;const {node,pointer,before}=pressed;if(node.getAttribute('data-kw-press')===String(pointer)){if(before===null)node.removeAttribute('data-kw-press');else node.setAttribute('data-kw-press',before)}pressed=undefined}
  function press(event:PointerEvent){if(!live()||!event.isPrimary||event.button!==0||!(event.target instanceof Element))return;const node=event.target.closest<HTMLElement>(pressSelector);if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;clearPress();pressed={node,pointer:event.pointerId,before:node.getAttribute('data-kw-press')};node.setAttribute('data-kw-press',String(event.pointerId))}
  let study:'center'|'rise'='center',shell:HTMLElement|undefined;
- const live=()=>!dead&&isMasterEnabled()&&document.documentElement.hasAttribute('data-stone-free');
+ const live=()=>scope.active()&&isMasterEnabled()&&document.documentElement.hasAttribute('data-stone-free');
  const visible=(n:HTMLElement)=>!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert]');
- function later(callback:()=>void){const id=requestAnimationFrame(()=>{frames.delete(id);if(live())callback()});frames.add(id)}
+ function later(callback:()=>void){scope.frame(()=>{if(live())callback()})}
  function settle(callback:()=>void){later(()=>later(callback))}
- function clearFrames(){for(const id of frames)cancelAnimationFrame(id);frames.clear()}
+ const clearFrames=scope.cancelFrames;
  function cancelPresentation(){clearPress();motion.cancel();shell?.remove();shell=undefined}
  // The plane shares the final stage, never a button's origin. Native controls are not cloned.
  function windowStage(rect:DOMRect,mode:'center'|'rise',closing=false){
@@ -80,7 +82,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
  function syncOverlay(){
-  if(dead)return;
+  if(!scope.active())return;
   const next=document.getElementById('customOverlay');
   if(next!==overlay){observer.disconnect();overlay=next;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
@@ -148,16 +150,17 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=null;activeKind='';study='center';origin=undefined;returnTo=null;activeRect=undefined;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
  function resize(){cancelPresentation();if(active&&visible(active))activeRect=active.getBoundingClientRect()}
- const observer=new MutationObserver(()=>later(syncOverlay));
- const sidebarObserver=new MutationObserver(()=>later(sidebar));
+ const observer=new MutationObserver(()=>later(syncOverlay));scope.own(()=>observer.disconnect());
+ const sidebarObserver=new MutationObserver(()=>later(sidebar));scope.own(()=>sidebarObserver.disconnect());
  const blur=()=>clearPress();
  const parent=document.getElementById('customOverlay')?.parentElement;
- const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay)later(syncOverlay)});
+ const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay)later(syncOverlay)});scope.own(()=>discovery.disconnect());
  if(parent)discovery.observe(parent,{childList:true});
  root.jQuery?.(document).on(':passageend.kwOfficialMotion',scene);
  document.addEventListener('click',click,true);document.addEventListener('change',collectionChange,true);document.addEventListener('pointerover',hover,true);document.addEventListener('focusin',hover,true);document.addEventListener('dol-ui-master-change',enabled);
  document.addEventListener('pointerdown',press,true);document.addEventListener('pointerup',clearPress,true);document.addEventListener('pointercancel',clearPress,true);document.addEventListener('lostpointercapture',clearPress,true);window.addEventListener('blur',blur);
  window.addEventListener('resize',resize);window.visualViewport?.addEventListener('resize',resize);
  bedroom();syncOverlay();
- return()=>{dead=true;navigation.dispose();clearFrames();cancelPresentation();observer.disconnect();sidebarObserver.disconnect();sidebarRoots=[];discovery.disconnect();root.jQuery?.(document).off('.kwOfficialMotion');document.removeEventListener('click',click,true);document.removeEventListener('change',collectionChange,true);document.removeEventListener('pointerover',hover,true);document.removeEventListener('focusin',hover,true);document.removeEventListener('dol-ui-master-change',enabled);document.removeEventListener('pointerdown',press,true);document.removeEventListener('pointerup',clearPress,true);document.removeEventListener('pointercancel',clearPress,true);document.removeEventListener('lostpointercapture',clearPress,true);window.removeEventListener('blur',blur);window.removeEventListener('resize',resize);window.visualViewport?.removeEventListener('resize',resize);motion.dispose();clearMarks();plane?.remove();document.documentElement.removeAttribute('data-kw-character-layer')};
+ scope.own(()=>{cancelPresentation();sidebarRoots=[];root.jQuery?.(document).off('.kwOfficialMotion');document.removeEventListener('click',click,true);document.removeEventListener('change',collectionChange,true);document.removeEventListener('pointerover',hover,true);document.removeEventListener('focusin',hover,true);document.removeEventListener('dol-ui-master-change',enabled);document.removeEventListener('pointerdown',press,true);document.removeEventListener('pointerup',clearPress,true);document.removeEventListener('pointercancel',clearPress,true);document.removeEventListener('lostpointercapture',clearPress,true);window.removeEventListener('blur',blur);window.removeEventListener('resize',resize);window.visualViewport?.removeEventListener('resize',resize);clearMarks();plane?.remove();document.documentElement.removeAttribute('data-kw-character-layer')});
+ return scope.dispose;
 }

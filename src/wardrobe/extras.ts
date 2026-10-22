@@ -1,3 +1,4 @@
+import {visualScope} from '../ui/visual-scope';
 import type {WardrobeDataHost,Inventory} from './host';
 import type {Snapshot} from './data';
 import {descriptor} from './data';
@@ -5,7 +6,7 @@ import {createSurfaces} from '../runtime/surfaces';
 import {isMasterEnabled} from '../runtime/master';
 /** Small native widgets keep their rule handlers; the inventory remains Vue-owned. */
 export function createWardrobeExtras(root:WardrobeDataHost){
- const signatures=new WeakMap<HTMLElement,string>();
+ const scope=visualScope(),signatures=new WeakMap<HTMLElement,string>();
  const surfaces=createSurfaces(window,isMasterEnabled);
  type Detail={details:HTMLDetailsElement;summary:HTMLElement;content:HTMLElement;nodes:Node[];wasOpen:boolean;handle?:NonNullable<ReturnType<typeof surfaces.openDrawer>>};
  let detail:Detail|undefined;
@@ -56,7 +57,7 @@ export function createWardrobeExtras(root:WardrobeDataHost){
    }
    write(equipment,macros.join(' '));
    if(d){const description=document.createElement('p');description.className='dgw-muted';description.textContent=d.cn_description??d.description??'';equipment.prepend(description)}
-   equipment.onclick=event=>{const summary=event.target instanceof Element?event.target.closest<HTMLElement>('details.dgw-item-details > summary'):null;if(summary&&equipment.contains(summary)&&surfaces.available()){event.preventDefault();openDetails(summary.parentElement as HTMLDetailsElement,summary)}requestAnimationFrame(refresh)};
+   equipment.onclick=event=>{const summary=event.target instanceof Element?event.target.closest<HTMLElement>('details.dgw-item-details > summary'):null;if(summary&&equipment.contains(summary)&&surfaces.available()){event.preventDefault();openDetails(summary.parentElement as HTMLDetailsElement,summary)}scope.frame(refresh)};
    signatures.set(equipment,key);
   }
   const serviceKey=JSON.stringify([v.location,v.tailorMonthlyService,v.debug,v.settings?.multipleWardrobes,v.wardrobeDefaults,Object.entries(v.wardrobes??{}).map(([key,x]:[string,Inventory])=>[key,x.unlocked,x.name]),s.location]);
@@ -75,8 +76,8 @@ export function createWardrobeExtras(root:WardrobeDataHost){
     for(const [target,meta]of Object.entries(v.wardrobes??{}) as [string,Inventory][]){if(meta.unlocked===undefined)continue;source.push(`<<link ${JSON.stringify(String(meta.name??target))} $passage>><<set $forceWardrobeLocation=${JSON.stringify(target)}>><</link>>`)}
     source.push('</details>');
    }
-   write(services,source.join(' '));services.onchange=()=>requestAnimationFrame(refresh);signatures.set(services,serviceKey);
+   write(services,source.join(' '));services.onchange=()=>{scope.frame(refresh)};signatures.set(services,serviceKey);
   }
  }
- return {render,closeDetails,destroy(){closeDetails();surfaces.destroy()}};
+ return {render,closeDetails,destroy(){scope.dispose();closeDetails();surfaces.destroy()}};
 }

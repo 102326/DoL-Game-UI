@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import {computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, shallowRef} from 'vue';
+import {visualScope} from '../../src/ui/visual-scope';
+const scope=visualScope();
 import type {Binding, Host, MountContext, View} from '../contracts';
 import ViewOutlet from '../workspace/ViewOutlet.vue';
 import {clamp, initialPosition, locate, menuLayout, positionKey, readPosition} from './geometry';
@@ -12,7 +14,7 @@ const area = reactive({left: 0, top: 0, width: innerWidth, height: innerHeight})
 const point = reactive(locate(saved, area)), docked = ref(saved.docked), expanded = ref(false), dragging = ref(false);
 const selected = shallowRef<View>(), views = shallowRef(props.host.views()), message = ref('');
 let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string} | undefined;
-let suppressClick = false, frame = 0, sequence = 0, hintTimer = 0, instance = ref('motion-view-0'), binding: Binding;
+let suppressClick = false, sequence = 0, stopHint:(()=>void)|undefined, instance = ref('motion-view-0'), binding: Binding;
 let stopExperimental:(()=>void)|undefined,coordinateScale={x:1,y:1};
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
 const menu = computed(() => {
@@ -21,8 +23,8 @@ const menu = computed(() => {
  return menuLayout(point,area,count,props.preferredMode==='grid'||count>3,docked.value?38:56,props.officialPreferences?officialHeight:undefined);
 });
 const grid = computed(() => menu.value.grid);
-function clearHint(){clearTimeout(hintTimer);hintTimer=0;message.value=''}
-function hint(text:string){clearHint();message.value=text;hintTimer=window.setTimeout(clearHint,2200)}
+function clearHint(){stopHint?.();stopHint=undefined;message.value=''}
+function hint(text:string){clearHint();message.value=text;stopHint=scope.timeout(clearHint,2200)}
 const panel = computed(() => {
  const width = Math.min(360, area.width - 24), height = Math.min(540, area.height - 24);
  return {width, height, x: clamp(side.value === 'right' ? point.x - width - 16 : point.x + 72, area.left + 12, area.left + area.width - width - 12),
@@ -59,7 +61,7 @@ function sync() {
  Object.assign(point, locate(saved, area));
 }
 const viewportStamp = () => {const v = window.visualViewport; return [v?.width || innerWidth, v?.height || innerHeight, v?.offsetLeft || 0, v?.offsetTop || 0,props.experimentalMotion?getComputedStyle(document.body).zoom:''].join(':')};
-function schedule() {cancel(); if (!frame) frame = requestAnimationFrame(() => {frame = 0; sync()})}
+function schedule() {if(!scope.active())return;cancel();scope.frame(sync)}
 function toggle(event: MouseEvent) {
  if (suppressClick && event.detail > 0) {suppressClick = false; return}
  suppressClick = false;
@@ -115,9 +117,10 @@ const stopScene = props.hostContext.onScene(arm);
 const stopViews = props.host.onViews(() => {views.value = props.host.views(); if (selected.value && !views.value.some(view => view.mount === selected.value?.mount)) close()});
 onMounted(() => {sync(); arm();if(props.experimentalMotion&&layer.value)stopExperimental=props.experimentalMotion(layer.value);if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
  window.visualViewport?.addEventListener('resize', schedule); window.visualViewport?.addEventListener('scroll', schedule); document.addEventListener('pointerdown', outside); document.addEventListener('focusin', outside)});
-onBeforeUnmount(() => {stopExperimental?.();interrupt();document.removeEventListener('dol-floating-reset',reset); cancelAnimationFrame(frame); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
+scope.own(() => {stopExperimental?.();interrupt();document.removeEventListener('dol-floating-reset',reset); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
  window.removeEventListener('resize', schedule); window.removeEventListener('blur', interrupt); window.removeEventListener('pagehide', interrupt);
  window.visualViewport?.removeEventListener('resize', schedule); window.visualViewport?.removeEventListener('scroll', schedule); document.removeEventListener('pointerdown', outside); document.removeEventListener('focusin', outside)});
+onBeforeUnmount(scope.dispose);
 </script>
 
 <template>

@@ -53,9 +53,11 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 
 ## 当前迁移增量
 
+[EVO-A2/A3消费者迁移](EVO-A2-A3-CONSUMERS.md)完成本轮已批准呈现资源的共同所有权接线与重复路径退出：设置/侧栏、正式窗口/天气/Hub、导航/通用面板、商店/衣柜/战斗/存档及自有兼容装饰均有实际消费者；13个根入口资源及迟到回调检查通过。既有UiApi/Host工厂、原生业务和六项调度边界明确保留。G1技术复核、原型正式接线、设备与ModLoader验收分别记录，不用此批自动替代。
+
 [EVO-A2共享动效与设置布局资源迁移](EVO-A2-SETTINGS-RESOURCES.md)将sourceMotion内部滚动帧/环境监听及SettingsPanel布局测量/观察器实际交给visualScope；对应旧帧管理和卸载序列当批退出，单节点/peer取消与正式设置行为保留。已完成这两项资源迁移，不代表sourceMotion的所有页面消费者或已认可原型已正式整合。
 
-[EVO-A2 视觉资源作用域首批](EVO-A2-VISUAL-SCOPE.md)使OrbitFocus和原生导航共用visualScope帧/清理所有权，删除对应局部排帧与顶层释放序列；保留原宿主、分组、业务和例外。这是两个消费者的A2/A3增量，sourceMotion内部资源已由后续设置布局批次接入；其它表面仍继续逐项迁移。
+[EVO-A2 视觉资源作用域首批](EVO-A2-VISUAL-SCOPE.md)使OrbitFocus和原生导航共用visualScope帧/清理所有权，删除对应局部排帧与顶层释放序列；保留原宿主、分组、业务和例外。这是两个消费者的A2/A3增量，sourceMotion内部资源已由后续设置布局批次接入；其它表面随后由消费者批次完成本轮资源迁移。
 
 [EVO-A2 焦点坐标与反向检查](EVO-A2-ORBIT-CONTINUITY.md)使OrbitFocus迁移起点/终点共用 `navigationRect`，修复边框重复计入和失效定位；保留原动作及事件。该坐标批次未覆盖资源作用域；后续导航批次已收敛其帧/清理所有权，见上方作用域记录。
 

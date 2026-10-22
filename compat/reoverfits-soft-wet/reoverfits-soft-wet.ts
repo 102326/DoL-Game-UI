@@ -1,3 +1,4 @@
+import {visualScope} from '../../src/ui/visual-scope';
 import type {UiApi} from '../../src/public/ui';
 import type {WardrobeApi, WardrobeSlotMappingHandle} from '../../src/public/wardrobe';
 import type {VersionToolsHost} from '../../src/runtime/target-version';
@@ -12,7 +13,7 @@ import type {VersionToolsHost} from '../../src/runtime/target-version';
  const icons: Record<string, string> = {overhead:'外层头饰', overupper:'外套上装', overlower:'外套下装'};
  const undo = new Map<Element, Map<string, {before: string | null; applied: string | null}>>();
  let owner: Readonly<WardrobeApi> | undefined, mapping: Readonly<WardrobeSlotMappingHandle> | undefined;
- let frame = 0, destroyed = false, reason = 'runtime-unavailable';
+ const scope=visualScope();let reason = 'runtime-unavailable';
  function supported() {
   const version = host.modUtils?.getMod('ReOverfits')?.version;
   if (typeof version !== 'string' || !/^\d+(?:\.\d+){1,3}(?:-[\w.-]+)?(?:\+[\w.-]+)?$/.test(version)) return false;
@@ -65,18 +66,19 @@ import type {VersionToolsHost} from '../../src/runtime/target-version';
     attribute(img.nextElementSibling, 'data-reoverfits-entry', '');
    }
   }
-  if (!destroyed) {
+  if (scope.active()) {
    const passages = document.getElementById('passages');
    if (passages) observer.observe(passages, {childList:true, subtree:true});
   }
  }
- function schedule() {if (!destroyed && !frame) frame = requestAnimationFrame(() => {frame = 0; refresh()})}
+ function schedule() {scope.frame(refresh)}
  const observer = new MutationObserver(schedule), themeObserver = new MutationObserver(schedule);
  themeObserver.observe(document.documentElement, {attributes:true, attributeFilter:['data-dol-midnight']});
  document.addEventListener('dol-ui-runtime-ready', schedule);
+ scope.own(()=>observer.disconnect());scope.own(()=>themeObserver.disconnect());
  Object.assign(host, {ReOverfitsSoftWet:Object.freeze({
   getDiagnostics:() => Object.freeze({adapterVersion:'1.0.0', target:'ReOverfits', targetVersion:host.modUtils?.getMod('ReOverfits')?.version ?? '', supportedVersions:['>=4.1.1'], level:'UI Model Extension', reason}),
-  destroy() {destroyed = true; cancelAnimationFrame(frame); observer.disconnect(); themeObserver.disconnect(); document.removeEventListener('dol-ui-runtime-ready', schedule); mapping?.destroy(); mapping = undefined; owner = undefined; restore(); delete host.ReOverfitsSoftWet}
+  destroy() {scope.dispose(); document.removeEventListener('dol-ui-runtime-ready', schedule); mapping?.destroy(); mapping = undefined; owner = undefined; restore(); delete host.ReOverfitsSoftWet}
  })});
  refresh();
 })();

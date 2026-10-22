@@ -1,3 +1,4 @@
+import {visualScope} from '../ui/visual-scope';
 import {createApp,reactive,nextTick,type App} from 'vue';
 import FloatingTools from './FloatingTools.vue';
 import {floatingDefaults,floatingKey,readFloatingPreferences,displayPosition,positionIntent,ballSize,edge,toolIds,type FloatingPreferences,type ToolId,type Viewport} from './preferences';
@@ -12,10 +13,10 @@ export function startFloatingTools(root:Root=window,renderSurface=true){
  if(root.DoLFloatingTools)return root.DoLFloatingTools;
  let p:FloatingPreferences;try{p=readFloatingPreferences(root.localStorage.getItem(floatingKey))}catch{p={...floatingDefaults,tools:[...toolIds]}}
  const state=reactive<FloatingState>({x:0,y:0,intentX:p.x,intentY:p.y,open:false,mode:p.mode,config:false,dragging:false,tools:[],fan:[],menuX:0,menuY:0,menuWidth:280,menuMaxHeight:600,message:''});
- let host:HTMLElement|undefined,app:App|undefined,disposed=false,frame=0,observer:MutationObserver|undefined,sizeObserver:ResizeObserver|undefined,locked=false,blocked=false,outsideAttached=false,watching=false,masterListening=false;
+ const scope=visualScope();let liveScope=visualScope(),releaseLive=()=>{};
+ let host:HTMLElement|undefined,app:App|undefined,observer:MutationObserver|undefined,sizeObserver:ResizeObserver|undefined,locked=false,blocked=false,outsideAttached=false,watching=false,masterListening=false;
  let menuPress:{id:number;target:HTMLElement}|undefined,menuSuppressClick=false;
- let gesture:{id:number;button:HTMLElement;startX:number;startY:number;x:number;y:number;timer:ReturnType<typeof setTimeout>|undefined;drag:boolean;abandoned:boolean}|undefined,suppressClick=false;
- const liveCleanups:Array<()=>void>=[];
+ let gesture:{id:number;button:HTMLElement;startX:number;startY:number;x:number;y:number;timer:(()=>void)|undefined;drag:boolean;abandoned:boolean}|undefined,suppressClick=false;
  function viewport():Viewport{
   const v=root.visualViewport,s=host?getComputedStyle(host):undefined;
   const inset=(side:string)=>parseFloat(s?.getPropertyValue('padding-'+side)||'0')||0;
@@ -49,17 +50,17 @@ export function startFloatingTools(root:Root=window,renderSurface=true){
  function open(mode=p.mode){menuSuppressClick=false;state.mode=mode;state.tools=tools().filter(t=>mode==='grid'||p.tools.includes(t.id));state.config=false;state.message='';state.open=true;if(!outsideAttached){document.addEventListener('pointerdown',outside);outsideAttached=true}position();void nextTick(position)}
  function toggle(event:MouseEvent){if(event.detail>0&&suppressClick){suppressClick=false;return}if(state.open)close();else open()}
  function finish(cancelled:boolean){
-  const g=gesture;if(!g)return;gesture=undefined;if(g.timer)clearTimeout(g.timer);state.dragging=false;
+  const g=gesture;if(!g)return;gesture=undefined;g.timer?.();state.dragging=false;
   if(g.drag&&!cancelled){const intent=positionIntent(state.x,state.y,viewport());p.x=intent.x;p.y=intent.y;persist()}
   if(g.drag||g.abandoned||cancelled)suppressClick=true;
   try{if(g.button.hasPointerCapture(g.id))g.button.releasePointerCapture(g.id)}catch{/* Already cancelled by the browser. */}
   position();
  }
- function down(event:PointerEvent){if(event.button!==0||!event.isPrimary||gesture)return;suppressClick=false;const button=event.currentTarget as HTMLElement;const g={id:event.pointerId,button,startX:event.clientX,startY:event.clientY,x:state.x,y:state.y,timer:undefined as ReturnType<typeof setTimeout>|undefined,drag:false,abandoned:false};gesture=g;
+ function down(event:PointerEvent){if(event.button!==0||!event.isPrimary||gesture)return;suppressClick=false;const button=event.currentTarget as HTMLElement;const g={id:event.pointerId,button,startX:event.clientX,startY:event.clientY,x:state.x,y:state.y,timer:undefined as (()=>void)|undefined,drag:false,abandoned:false};gesture=g;
   try{button.setPointerCapture(event.pointerId)}catch{gesture=undefined;return}
-  g.timer=setTimeout(()=>{if(gesture!==g||g.abandoned)return;close(false);g.drag=true;state.dragging=true},450);
+  g.timer=liveScope.timeout(()=>{if(gesture!==g||g.abandoned)return;close(false);g.drag=true;state.dragging=true},450);
  }
- function move(event:PointerEvent){const g=gesture;if(!g||g.id!==event.pointerId)return;const dx=event.clientX-g.startX,dy=event.clientY-g.startY;if(!g.drag){if(Math.hypot(dx,dy)>8){g.abandoned=true;if(g.timer)clearTimeout(g.timer)}return}const v=viewport();state.x=Math.max(v.left+edge,Math.min(v.left+v.width-ballSize-edge,g.x+dx));state.y=Math.max(v.top+edge,Math.min(v.top+v.height-ballSize-edge,g.y+dy))}
+ function move(event:PointerEvent){const g=gesture;if(!g||g.id!==event.pointerId)return;const dx=event.clientX-g.startX,dy=event.clientY-g.startY;if(!g.drag){if(Math.hypot(dx,dy)>8){g.abandoned=true;g.timer?.()}return}const v=viewport();state.x=Math.max(v.left+edge,Math.min(v.left+v.width-ballSize-edge,g.x+dx));state.y=Math.max(v.top+edge,Math.min(v.top+v.height-ballSize-edge,g.y+dy))}
  function up(event:PointerEvent){if(gesture?.id===event.pointerId)finish(false)}
  function configure(){state.mode='grid';state.tools=tools();state.config=true;state.open=true;void nextTick(position)}
  function run(id:ToolId){const tool=tools().find(t=>t.id===id);if(!tool)return;if(tool.reason){open('grid');state.message=tool.reason;return}if(id==='move'){configure();return}close(false);try{if(id==='settings')root.DoLGameUI?.openSettings();else root.DoLGameUI?.ui?.openInspector?.()}catch{open('grid');state.message='这个工具暂时无法打开，请从界面设置重试。'}}
@@ -78,12 +79,12 @@ export function startFloatingTools(root:Root=window,renderSurface=true){
  function guard(event:MouseEvent){if(menuSuppressClick&&event.detail>0){menuSuppressClick=false;event.preventDefault();event.stopImmediatePropagation()}}
  function setPreference(key:keyof FloatingPreferences,value:unknown){if(!Object.hasOwn(p,key))return;if((key==='enabled'||key==='hidden')&&typeof value!=='boolean')return;if((key==='x'||key==='y')&&(typeof value!=='number'||!Number.isFinite(value)))return;if(key==='mode'&&value!=='fan'&&value!=='grid')return;if(key==='tools'&&!Array.isArray(value))return;const next=readFloatingPreferences(JSON.stringify({...p,[key]:value}));p=next;persist();if(state.open)close(false);refresh()}
  function setPosition(axis:'x'|'y',value:number){if(!Number.isFinite(value))return;p[axis]=Math.max(0,Math.min(1,value));state.intentX=p.x;state.intentY=p.y;persist();position()}
- function listen(target:EventTarget,type:string,callback:EventListener){target.addEventListener(type,callback);liveCleanups.push(()=>target.removeEventListener(type,callback))}
+ function listen(target:EventTarget,type:string,callback:EventListener){target.addEventListener(type,callback);liveScope.own(()=>target.removeEventListener(type,callback))}
  function resize(){if(gesture)finish(true);position()}
- function release(){finish(true);close(false);if(frame){cancelAnimationFrame(frame);frame=0}sizeObserver?.disconnect();sizeObserver=undefined;liveCleanups.splice(0).forEach(fn=>fn());unmountUI(app);app=undefined;host?.remove();host=undefined}
+ function release(){finish(true);close(false);scope.cancelFrame(update);releaseLive();sizeObserver=undefined;unmountUI(app);app=undefined;host?.remove();host=undefined}
  function modalVisible(){return [...document.querySelectorAll('dialog[open],#customOverlay,#ui-dialog')].some(e=>e.getClientRects().length>0&&getComputedStyle(e).visibility!=='hidden'&&getComputedStyle(e).display!=='none')}
  function refresh(){
-  if(disposed)return;blocked=modalVisible();
+  if(!scope.active())return;blocked=modalVisible();
   const wanted=renderSurface&&p.enabled&&!p.hidden;
   if(wanted&&!masterListening){document.addEventListener('dol-ui-master-change',schedule);masterListening=true}else if(!wanted&&masterListening){document.removeEventListener('dol-ui-master-change',schedule);masterListening=false}
   if(wanted&&isMasterEnabled()&&!watching&&document.body){observer?.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','open']});watching=true}else if((!wanted||!isMasterEnabled())&&watching){observer?.disconnect();watching=false}
@@ -91,16 +92,17 @@ export function startFloatingTools(root:Root=window,renderSurface=true){
   if(!visible){if(host)release();return}
   if(host?.isConnected){position();return}
   if(host)release();if(!document.body)return;if(document.getElementById('dol-stone-free-floating'))return;
-  host=document.createElement('div');host.id='dol-stone-free-floating';document.body.append(host);
+  liveScope=visualScope();const mountedScope=liveScope;releaseLive=scope.own(()=>mountedScope.dispose());host=document.createElement('div');host.id='dol-stone-free-floating';document.body.append(host);
   app=createApp(FloatingTools,{state,toggle,down,move,up,cancel:()=>finish(true),run,grid:()=>open('grid'),close:()=>close(),configure,hide:()=>api.hide(),position:setPosition,lock,unlock,guard});
   try{mountUI(app,host,()=>{p.enabled=false;release();document.dispatchEvent(new Event('dol-floating-change'))})}catch{p.enabled=false;release();return}
   listen(root,'resize',resize);listen(root,'blur',()=>{finish(true);unlock()});if(root.visualViewport){listen(root.visualViewport,'resize',resize);listen(root.visualViewport,'scroll',resize)}
-  if(typeof ResizeObserver==='function'){sizeObserver=new ResizeObserver(()=>position());sizeObserver.observe(host)}
+  if(typeof ResizeObserver==='function'){const mounted=liveScope;sizeObserver=new ResizeObserver(()=>{if(mounted.active())position()});const resize=sizeObserver;mounted.own(()=>resize.disconnect());resize.observe(host)}
   position();
  }
- function schedule(){if(disposed||frame)return;frame=requestAnimationFrame(()=>{frame=0;blocked=modalVisible();refresh()})}
- const api:FloatingApi={getPreferences:()=>({...p,tools:[...p.tools]}),setPreference,show(){p.enabled=true;p.hidden=false;persist();refresh()},hide(){p.hidden=true;persist();refresh()},resetPosition(){p.x=floatingDefaults.x;p.y=floatingDefaults.y;persist();refresh();document.dispatchEvent(new Event('dol-floating-reset'))},refresh,destroy(){if(disposed)return;disposed=true;observer?.disconnect();document.removeEventListener('dol-ui-master-change',schedule);document.removeEventListener('DOMContentLoaded',schedule);if(frame)cancelAnimationFrame(frame);release();delete root.DoLFloatingTools}};
+ function update(){blocked=modalVisible();refresh()}
+ function schedule(){scope.frame(update)}
+ const api:FloatingApi={getPreferences:()=>({...p,tools:[...p.tools]}),setPreference,show(){p.enabled=true;p.hidden=false;persist();refresh()},hide(){p.hidden=true;persist();refresh()},resetPosition(){p.x=floatingDefaults.x;p.y=floatingDefaults.y;persist();refresh();document.dispatchEvent(new Event('dol-floating-reset'))},refresh,destroy(){if(!scope.active())return;scope.dispose();document.removeEventListener('dol-ui-master-change',schedule);document.removeEventListener('DOMContentLoaded',schedule);release();delete root.DoLFloatingTools}};
  root.DoLFloatingTools=api;
- observer=new MutationObserver(schedule);if(!document.body)document.addEventListener('DOMContentLoaded',schedule,{once:true});blocked=modalVisible();refresh();document.dispatchEvent(new Event('dol-floating-change'));
+ observer=new MutationObserver(schedule);scope.own(()=>observer?.disconnect());if(!document.body)document.addEventListener('DOMContentLoaded',schedule,{once:true});blocked=modalVisible();refresh();document.dispatchEvent(new Event('dol-floating-change'));
  return api;
 }

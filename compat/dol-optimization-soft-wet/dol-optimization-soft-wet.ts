@@ -1,3 +1,4 @@
+import {visualScope} from '../../src/ui/visual-scope';
 import type {UiApi, StyleAdapter, AdapterHandle, AdapterDiagnostics} from '../../src/public/ui';
 
 
@@ -76,11 +77,11 @@ function stackingSource(text: string): string | null {
 }
 
 function createOptimizationWardrobe(root: Host){
- let section: HTMLElement | undefined, frame=0, destroyed=false, reason='wardrobe-unavailable';
+ const scope=visualScope();let section: HTMLElement | undefined, reason='wardrobe-unavailable';
  let binding: {passage: Element; variables: Variables; inventory: unknown; slot: string; key: string; template: string} | undefined;
  let focusIndex: number | undefined;
- const observer=new MutationObserver(schedule);
- function observe(){if(!destroyed)observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['inert','data-dol-midnight']})}
+ const observer=new MutationObserver(schedule);scope.own(()=>observer.disconnect());
+ function observe(){if(scope.active())observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['inert','data-dol-midnight']})}
  function clear(){section?.remove();section=undefined;binding=undefined;focusIndex=undefined}
  function context(){
   try{
@@ -120,7 +121,7 @@ function createOptimizationWardrobe(root: Host){
     if(!fresh||!binding||!templateCurrent||fresh.passage!==binding.passage||fresh.variables!==binding.variables||fresh.inventory!==binding.inventory||fresh.key!==binding.key){event.preventDefault();event.stopImmediatePropagation();schedule();return}
     focusIndex=[...next.querySelectorAll('a,button,input')].indexOf(link);
     // Let the original handler run once; refresh only its presentation afterwards.
-    requestAnimationFrame(()=>{if(destroyed||!next.isConnected)return;root.DoLWardrobeUI?.refresh();schedule()});
+    scope.frame(()=>{if(!scope.active()||!next.isConnected)return;root.DoLWardrobeUI?.refresh();schedule()});
    },true);
    const focused=section?.contains(document.activeElement);
    section?.remove();section=next;binding={...rendered,template};current.equipment.after(next);reason='active';
@@ -129,10 +130,10 @@ function createOptimizationWardrobe(root: Host){
   }catch{reason='native-stacking-unavailable';clear()}
   finally{observe()}
  }
- function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
+ function schedule(){scope.frame(refresh)}
  document.addEventListener('dol-ui-runtime-ready',schedule);document.addEventListener('dol-ui-wardrobe-change',schedule);
  observe();schedule();
- return {getDiagnostics:()=>Object.freeze({status:reason==='active'?'active':'inactive',reason}),destroy(){destroyed=true;observer.disconnect();if(frame)cancelAnimationFrame(frame);document.removeEventListener('dol-ui-runtime-ready',schedule);document.removeEventListener('dol-ui-wardrobe-change',schedule);clear()}};
+ return {getDiagnostics:()=>Object.freeze({status:reason==='active'?'active':'inactive',reason}),destroy(){scope.dispose();document.removeEventListener('dol-ui-runtime-ready',schedule);document.removeEventListener('dol-ui-wardrobe-change',schedule);clear()}};
 }
 
 function targetSupported(root: Host){
