@@ -25,7 +25,7 @@
 
 ## 明确保留的调度边界
 
-`tests/evolution-resource-contract.test.cjs`检查src、官方呈现/Hub和compat中的原生帧/计时入口，禁止迁移后重新引入私有呈现调度。当前只有以下六个文件允许直接调用；vendor及研究原型不在玩家呈现扫描范围内：
+`tests/evolution-resource-contract.test.cjs`检查src、官方呈现/Hub和compat中的原生帧/计时入口，禁止迁移后重新引入私有呈现调度。当前只有以下六个文件允许直接调用；vendor、生成dist及研究原型不在玩家呈现源码扫描范围内：
 
 | 文件 | 保留理由 |
 | --- | --- |
@@ -52,6 +52,8 @@ Windows / Node26 / Edge：
 - 类型/Framework合同、UI及Framework构建通过。新增两个检查接入现有标准与研究CI，研究Artifact记录 `owners.json`。
 
 新owner夹具首次计数包含Vue开发模式初始化的3秒devtools探测定时器。已先初始化同一Vue renderer，再开始消费者资源计数；保留首次失败JSON，严格归零断言不变。该框架初始化任务未记作UI资源泄漏。
+
+完整标准CI首轮 `39834323662` 在兼容包构建阶段失败：构建器原先要求导入全部为type-only，新接入的纯资源原语也因此被拒绝。汇总与moody-gate属于连锁失败，浏览器和包验证阶段没有执行。修正构建边界：仅额外允许复制确切的 `src/ui/visual-scope.ts`，仍拒绝其它任何直接或传递模块；没有允许打入第二份Runtime、Vue或业务代码。新增构建正反例，实际证明资源原语可打包、Runtime与其它内部模块被同一错误拒绝且不生成成员。两个兼容消费者保留共享原语，不退回独立调度。包构建后源码扫描首次误扫生成dist，已将生成目录排除，源码入口和六项例外断言保持。随后本地八包完整构建和包合同/可复现性检查通过；最终完整CI状态另见#22。
 
 补充 `node tests/ui-runtime.cjs` 在版本身份断言停止：实际 `DoLGameUI.version` 为2.7.0，package.json为3.0.4。已确认输入fbf0269的 `src/main.ts` 同样硬编码2.7.0，当前没有修改该文件或断言。此补充套件不能记为整轮通过；版本诊断标识问题列为已知旧问题，后续正式整合时处理，不在本批擅改公开身份。
 

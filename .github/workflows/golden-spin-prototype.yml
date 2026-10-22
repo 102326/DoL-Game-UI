@@ -42,7 +42,7 @@ jobs:
           node tests/game-first-motion.cjs
       - name: Evolution P0, shared navigation and weather research
         run: |
-          node --test tests/visual-scope.test.cjs tests/evolution-resource-contract.test.cjs
+          node --test tests/adapter-build-boundary.test.cjs tests/visual-scope.test.cjs tests/evolution-resource-contract.test.cjs
           node tests/evolution-owner-resources.cjs
           node scripts/evolution-inventory.cjs
           node tests/evolution-navigation.cjs
