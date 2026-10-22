@@ -1,10 +1,11 @@
 import {rainModel, type Trail} from './rain-model';
 import './wet-glass.css';
+import {frostSurface} from './frost';
 type Box={x:number;y:number;width:number;height:number};
-type Frame={wet:number;snow:number;light:number;night:number;time:number;width:number;height:number;dpr:number;kind:string};
+type Frame={wet:number;snow:number;light:number;night:number;time:number;width:number;height:number;dpr:number;intensity:number;kind:string};
 let instance=0;
 /** Native SVG displacement reads the browser's backdrop. No DOM capture or substitute texture. */
-export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false){
+export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false,climate=false){
  const shell=canvas.parentElement!,ctx=canvas.getContext('2d')!,model=rainModel(0x27fa29,naturalTrails,runoff);
  const layer=document.createElement('div');layer.className='evo-material-layer evo-glass-layer';layer.setAttribute('aria-hidden','true');
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('width','0');svg.setAttribute('height','0');
@@ -27,7 +28,8 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
  let wetBounds:Box[]=[];
  const nodes=Array.from({length:90},()=>{const n=document.createElement('i');n.className='evo-glass-drop';n.style.display='none';layer.append(n);return n});
  let seed=18972;const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296};
- const micro=Array.from({length:380},()=>({x:random(),y:random(),r:.22+Math.pow(random(),3)*.65,a:.25+random()*.75}));
+ const micro=Array.from({length:climate?570:380},()=>({x:random(),y:random(),r:.22+Math.pow(random(),3)*.65,a:.25+random()*.75}));
+ let microVisible=0;const frost=climate?frostSurface(ctx,safe):undefined;
  let protectedBoxes:Box[]=[],frameProtection:Box[]=[],active:Box[]=[],dirty=true,width=0,height=0,lastTime=0,visibleFlow=0,wasMoving=false;
  let layoutAnimations:Animation[]=[];
  const mark=()=>{dirty=true;invalidate()};const observer=new MutationObserver(mark);observer.observe(shell,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-workspace-transition','data-settings-layout','open']});shell.addEventListener('scroll',mark,true);
@@ -84,13 +86,13 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   if(movingLayout&&workspace){const r=workspace.getBoundingClientRect(),base=canvas.getBoundingClientRect(),scale=base.width/s.width||1;frameProtection=[...protectedBoxes,{x:(r.x-base.x)/scale-96,y:(r.y-base.y)/scale-48,width:r.width/scale+192,height:r.height/scale+96}]}
   wasMoving=movingLayout;
   const dt=Math.min(.05,Math.max(0,s.time-lastTime));lastTime=s.time;
-  const humidity=s.wet*(1-s.snow*.8);model.step(dt,humidity);
+  const humidity=s.wet*(1-s.snow*.8);model.step(dt,humidity,climate?s.intensity:1);
   const state=model.snapshot();active=[];visibleFlow=0;ctx.clearRect(0,0,width,height);
   const luminance=.6+s.light*.4-s.night*.15;
   // Tiny attached surface droplets: no travelling particles or uniform screen-space veil.
-  for(const p of micro){const x=5+p.x*(width-10),y=5+p.y*(height-10),r=p.r*Math.sqrt(humidity);if(r<.12||!safe({x:x-r,y:y-r,width:2*r,height:2*r},3))continue;
-   ctx.strokeStyle=`rgba(194,215,222,${humidity*p.a*.25*luminance})`;ctx.lineWidth=.45;ctx.beginPath();ctx.ellipse(x,y,r,r*.82,-.2,0,Math.PI*.85);ctx.stroke();
-   ctx.fillStyle=`rgba(0,9,16,${humidity*p.a*.24})`;ctx.fillRect(x-r*.5,y+r*.3,r,.4);
+  microVisible=0;for(const [i,p] of micro.entries()){const density=climate?Math.min(1,Math.max(0,380*s.intensity-i)):1;if(!density)continue;const x=5+p.x*(width-10),y=5+p.y*(height-10),r=p.r*Math.sqrt(humidity);if(r<.12||!safe({x:x-r,y:y-r,width:2*r,height:2*r},3))continue;microVisible++;
+   ctx.strokeStyle=`rgba(194,215,222,${humidity*p.a*.25*luminance*density})`;ctx.lineWidth=.45;ctx.beginPath();ctx.ellipse(x,y,r,r*.82,-.2,0,Math.PI*.85);ctx.stroke();
+   ctx.fillStyle=`rgba(0,9,16,${humidity*p.a*.24*density})`;ctx.fillRect(x-r*.5,y+r*.3,r,.4);
   }
   if(naturalTrails)wetPaths(state.trails,humidity);
   else for(const t of state.trails){const r={x:Math.min(t.x,t.endX)-2,y:t.y-1,width:Math.abs(t.x-t.endX)+4,height:t.endY-t.y+2};if(!safe(r,7))continue;
@@ -99,14 +101,16 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   nodes.forEach((node,i)=>{
    const d=state.drops[i];if(!d||humidity<.015){node.style.display='none';delete node.dataset.dropId;delete node.dataset.runoff;delete node.dataset.moving;return}
    const r=Math.sqrt(d.area),stretch=1+Math.min(.55,d.vy*.012),rx=r/(Math.sqrt(stretch)),ry=r*Math.sqrt(stretch),b={x:d.x-rx,y:d.y-ry,width:rx*2,height:ry*2};
-   if(!safe(b,5,!!d.runoff)){node.style.display='none';delete node.dataset.dropId;delete node.dataset.runoff;delete node.dataset.moving;return}
+   const density=climate&&!d.runoff?Math.min(1,Math.max(0,(s.intensity-.1-d.shape*.72)/.16)):1;
+   if(density<=.001||!safe(b,5,!!d.runoff)){node.style.display='none';delete node.dataset.dropId;delete node.dataset.runoff;delete node.dataset.moving;return}
    active.push(b);if(d.vy>0)visibleFlow++;
    const shape=Math.min(2,Math.floor(d.shape*3));
-   Object.assign(node.style,{display:'block',left:b.x+'px',top:b.y+'px',width:b.width+'px',height:b.height+'px',borderRadius:d.vy>0?'47% 53% 51% 49% / 41% 38% 62% 59%':`${44+d.shape*9}% ${53-d.shape*7}% 49% 51% / 46% 42% 58% 54%`,backdropFilter:`url(#${ids[shape]})`,opacity:String(Math.min(1,humidity*1.35)*(d.runoff?Math.min(1,d.age/.6):1)),'--drop-light':String(luminance)});
+   Object.assign(node.style,{display:'block',left:b.x+'px',top:b.y+'px',width:b.width+'px',height:b.height+'px',borderRadius:d.vy>0?'47% 53% 51% 49% / 41% 38% 62% 59%':`${44+d.shape*9}% ${53-d.shape*7}% 49% 51% / 46% 42% 58% 54%`,backdropFilter:`url(#${ids[shape]})`,opacity:String(Math.min(1,humidity*1.35)*(d.runoff?Math.min(1,d.age/.6):1)*density),'--drop-light':String(luminance)});
    node.dataset.dropId=String(d.id);node.dataset.moving=String(d.vy>0);node.dataset.runoff=String(!!d.runoff);
   });
   const rim=ctx.createLinearGradient(0,0,width,height);rim.addColorStop(0,`rgba(184,209,214,${humidity*.28+s.snow*.3})`);rim.addColorStop(.3,'transparent');rim.addColorStop(1,`rgba(130,166,182,${humidity*.16+s.snow*.3})`);ctx.strokeStyle=rim;ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(1.5,1.5,width-3,height-3,21);ctx.stroke();
-  if(s.snow>.01){ctx.strokeStyle=`rgba(207,230,238,${s.snow*.4})`;ctx.lineWidth=.5;for(let i=0;i<50;i++){const y=i*height/50,edge=i%2?width-2:2,sign=i%2?-1:1,len=(4+(i*19%17))*s.snow;ctx.beginPath();ctx.moveTo(edge,y);ctx.lineTo(edge+sign*len,y-len*.5);ctx.lineTo(edge+sign*len*.65,y-len*.8);ctx.stroke()}}
+  if(frost)frost.draw(s.snow,s.time,width,height);
+  else if(s.snow>.01){ctx.strokeStyle=`rgba(207,230,238,${s.snow*.4})`;ctx.lineWidth=.5;for(let i=0;i<50;i++){const y=i*height/50,edge=i%2?width-2:2,sign=i%2?-1:1,len=(4+(i*19%17))*s.snow;ctx.beginPath();ctx.moveTo(edge,y);ctx.lineTo(edge+sign*len,y-len*.5);ctx.lineTo(edge+sign*len*.65,y-len*.8);ctx.stroke()}}
  }
- return{draw,count:nodes.length,layoutMoving:()=>wasMoving,snapshot:()=>{const s=model.snapshot();return{material:'glass',runoffEnabled:runoff,runoffBorn:s.runoffBorn,runoffDrained:s.runoffDrained,trailMode:naturalTrails?'natural-footprint':'linear-stroke',wetBounds,wetPaths:wetBounds.length,activeDrops:active.length,moving:visibleFlow,attached:active.length-visibleFlow,merges:s.merges,slides:s.slides,drained:s.drained,trailSegments:s.trails.length,protected:frameProtection,dropBounds:active,protectedOverlap:[...active,...wetBounds].filter(b=>frameProtection.some(q=>intersects(b,q))).length,backdropSupported:CSS.supports('backdrop-filter',`url(#${ids[0]})`),optics:'Native SVG backdrop displacement; approximate normal field, not a physical refraction solver',drops:s.drops}},dispose(){observer.disconnect();shell.removeEventListener('scroll',mark,true);layer.remove()}};
+ return{draw,count:nodes.length,layoutMoving:()=>wasMoving,snapshot:()=>{const s=model.snapshot(),cold=frost?.snapshot();return{material:'glass',climateEnabled:climate,microVisible,...cold,runoffEnabled:runoff,runoffBorn:s.runoffBorn,runoffDrained:s.runoffDrained,trailMode:naturalTrails?'natural-footprint':'linear-stroke',wetBounds,wetPaths:wetBounds.length,activeDrops:active.length,moving:visibleFlow,attached:active.length-visibleFlow,merges:s.merges,slides:s.slides,drained:s.drained,trailSegments:s.trails.length,protected:frameProtection,dropBounds:active,protectedOverlap:[...active,...wetBounds,...(cold?.iceBounds??[]),...(cold?.flakeBounds??[])].filter(b=>frameProtection.some(q=>intersects(b,q))).length,backdropSupported:CSS.supports('backdrop-filter',`url(#${ids[0]})`),optics:'Native SVG backdrop displacement; approximate normal field, not a physical refraction solver',drops:s.drops}},dispose(){observer.disconnect();shell.removeEventListener('scroll',mark,true);layer.remove()}};
 }

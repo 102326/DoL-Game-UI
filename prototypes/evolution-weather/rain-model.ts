@@ -15,12 +15,12 @@ export function rainModel(seed=0x27fa29,naturalTrails=false,runoff=false){
   if(naturalTrails&&(w!==width||h!==height)){trails=[];anchors.clear()}
   for(const d of drops){d.x*=w/width;d.y*=h/height}width=w;height=h;
  }
- function step(dt:number,wet:number){
-  if(!Number.isFinite(dt+wet)||dt<0||dt>.1)throw Error('Invalid rain step');
+ function step(dt:number,wet:number,amount=1){
+  if(!Number.isFinite(dt+wet+amount)||dt<0||dt>.1||amount<0||amount>2)throw Error('Invalid rain step');
   wet=Math.max(0,Math.min(1,wet));
   if(!initialized&&wet>.12){
    initialized=true;
-   for(let i=0;i<64;i++){
+   for(let i=0;i<Math.min(80,Math.round(64*amount));i++){
     let x=8+random()*Math.max(0,width-16),y=8+random()*Math.max(0,height-16);
     if(Math.hypot(x-width*.63,y-height*.15-8)<40)x=width*.2;
     add(x,y,.8+Math.pow(random(),2.7)*7.4,4+random()*22);
@@ -28,11 +28,11 @@ export function rainModel(seed=0x27fa29,naturalTrails=false,runoff=false){
    // Composed contact pair: real collision/area transfer, visible in the material close-up.
    add(width*.63,height*.15,6.5,2);add(width*.63+.7,height*.15+16,5.3,20);
   }
-  birth+=dt*wet*1.8;
+  birth+=dt*wet*1.8*amount;
   while(birth>=1){birth--;if(drops.length<(runoff?82:90))add(7+random()*Math.max(0,width-14),7+random()*Math.max(0,height-14),.8+random()*1.4,5+random()*18)}
   // Feed a sparse renewing population; reserve capacity so static microdrops
   // cannot eventually starve the sliding water. Reuse the same contact model.
-  if(runoff&&wet>.55){runoffWait-=dt*wet;if(runoffWait<=0&&drops.filter(d=>d.runoff).length<7){
+  if(runoff&&wet>.55){runoffWait-=dt*wet*amount;if(runoffWait<=0&&drops.filter(d=>d.runoff).length<7){
    const r=6.8+random()*1.6;add(width*(.48+random()*.46),-r,r,.2+random()*.5);drops.at(-1)!.runoff=true;runoffBorn++;runoffWait=3.8+random()*2.4;
   }}
   for(const d of drops){

@@ -41,3 +41,9 @@ test('runoff renews through sustained rain and leaves only after crossing the bo
  const rain=m.snapshot();assert.ok(rain.runoffBorn>midBorn+4,'new flowing drops continue after the initial population');assert.ok(exited.size>0&&rain.runoffDrained>0,'generated water crosses the bottom and is reclaimed');
  for(let i=0;i<2400;i++)m.step(.025,0);assert.equal(m.snapshot().drops.length,0);assert.equal(m.snapshot().trails.length,0);
 });
+
+test('rain intensity changes replenishment while default intensity preserves the existing model',()=>{
+ const born=[.32,.65,1,1.5].map(amount=>{const m=rainModel(19,true,true);m.resize(900,600);for(let i=0;i<2400;i++)m.step(.025,1,amount);return m.snapshot().runoffBorn});
+ assert.ok(born.every((n,i)=>i===0||n>born[i-1]),JSON.stringify(born));
+ const a=rainModel(19,true,true),b=rainModel(19,true,true);a.resize(900,600);b.resize(900,600);for(let i=0;i<500;i++){a.step(.025,1);b.step(.025,1,1)}assert.deepEqual(a.snapshot(),b.snapshot());assert.throws(()=>a.step(.025,1,NaN));
+});

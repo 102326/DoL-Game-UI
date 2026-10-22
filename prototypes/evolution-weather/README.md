@@ -83,3 +83,20 @@ node tests/evolution-rain-glass.cjs --record --runoff
 ```
 
 C2当前视觉认可不自动延伸到C3，更不等于整合或发布。模型检查覆盖持续生成、容量和干燥；真实设置底边在暂停时单独隐藏该滴对照实际像素，再恢复并核对回收。浏览器/设备/游戏验证边界同上。
+
+
+## C4 雨量与雪天（R6，待评审）
+
+负责人已认可 C3（9fa1fb0）的雨滴/底边流出，要求恢复雨量差别并指出雪效不明显。显式 `climate=1` 启用 C4，C3入口继续保留。沿权威 `readGameWeather` 的 light/normal/heavy/severe 分类，研究密度系数 .32/.65/1/1.5 连续变化，影响附着密度、微滴和补充频率；不是毫米雨量实测。速度参数和已认可水滴光学不变。四档按钮使用受控输入；未改生产天气提供者。
+
+雪天在同一 Canvas 上以84个预设边缘雪晶和最多24个慢雪点为候选，按实际正文/控件几何保护；不新增全屏粒子层或定时器。雨雪沿原连续状态过渡，暂停/减少动态/隐藏/关闭仍复用原调度。C4微滴上限570，滑落/总水滴上限仍7/90，湿痕900段/32足迹；不自动降DPR或画质。
+
+`climate-review.html` 提供 C3/C4 同控制行、同视口原速雨量/雪天对照。`glass-optics.html?climate=1`可切换四档雨量和雪天看近景。新增两组媒体各16MiB上限，八组历史/当前媒体合计最多128MiB，超限报错，不截断。
+
+```sh
+node tests/evolution-weather-levels.cjs
+node tests/evolution-weather-levels.cjs --record --baseline
+node tests/evolution-weather-levels.cjs --record
+```
+
+主计划包含四档雨量、30秒转雪、45秒稳定雪天、46秒回雨；普通检查以实际状态条件推进，不把它称为原速。C4 仍待负责人视觉判断，不代表G2整体通过、整合或发布。

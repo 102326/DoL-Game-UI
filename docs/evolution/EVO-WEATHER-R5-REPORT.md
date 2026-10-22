@@ -40,3 +40,6 @@
 C2仅隔离视觉认可。C3状态为Implemented/Tested（实际命令和最终CI以结果/#22为准），Visually Accepted待负责人、Integrated/Release Ready否；G1/G2/G3仍未通过。没有main合并、版本/Tag/Release或规则/bypass调整，没有全局推广。A2/A3、Golden Spin V2等未完成项未因本轮自动完成。
 
 Safari/Windows/Android/iOS WebView、DPR2+、真实游戏/ModLoader/多Mod、多表面长期性能未验证。rAF/JS计时包含受控操作/录像，不是GPU合成成本或真机FPS承诺。下一步先评审生成频率、滑落是否自然、底边流出是否可信；经负责人确认后再决定后续范围。
+
+
+负责人后续裁决（2026-10-22）：**“可以了，允许通过雨滴”**，并要求恢复不同雨量、增强不明显的下雪效果。C3（9fa1fb0）雨滴与底边流出在隔离原型范围获认可；雨量/雪天增强见R6。以上待评审状态保留为当时交付记录，不代表正式整合或全局G2通过。

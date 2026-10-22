@@ -5,6 +5,7 @@
 ## Current — 当前做什么
 
 - 当前授权为[正式总纲V1.2原文](references/SOFT_WET_4.0_EVOLUTION_V1.2_ORIGINAL.md)，替代此前“设置原型验收后暂停”的施工状态。独立分支`dev/evolution-4.0`，源自`baf0d48d3d4b63cae1e17ff324d233b9a37e16b4`；精确阶段提交、推送状态和CI见[#22](https://github.com/102326/DoL-Game-UI/issues/22)最新Evolution记录及本机Git。本文随研发提交交接，不自填自身提交SHA。
+- 当前天气批次为C4雨量/雪天增强：C3雨滴已获负责人认可，C4新增效果待视觉评审；完整命令、证据与未做事项见[R6报告](evolution/EVO-WEATHER-R6-REPORT.md)。未正式整合或发布。
 - 已实施P0审计、A1属性＋社交共享首片、V1隔离天气首候选。[首报](evolution/EVO-P0-REPORT.md)、[消费者范围表](evolution/EVO-P0-COVERAGE.md)、[实施计划](superpowers/plans/2026-10-22-evolution-first-round.md)。**负责人已批准当前消费者表及例外作为A2/A3范围；V1雨天视觉Reject，技术成果保留。两种新候选须先视觉评审。** 无main合并、Release或公开API/版本变更授权。
 - 开工核对main `6a6e3c00b705dc67d37c1780b27f585847da5d1a`，正式3.0.4 Tag源码`915dcb9e85f3266a73a3e7ce38d769edd0c29ff4`；研究输入领先main16提交。没有覆盖旧研究分支；公开UI3.0.4/Host0.1.5-experimental/兼容1.0.1保持。阶段本机未同步内容和本地证据须另查Git与忽略的HANDOFF.local，不能假设另一设备可用。
 
@@ -18,9 +19,9 @@
 
 ## Next — 下一步做什么
 
-负责人已于2026-10-22认可 C2（`ca6fa0a`）的湿痕效果，并要求补充“下落雨滴生成后流过界面底部”。C3仅在显式`runoff=1`启用持续生成与底边裁出；C2入口/原速媒体保留。见[R5报告](evolution/EVO-WEATHER-R5-REPORT.md)及`runoff-review.html`的C2/C3同操作对照。C2的认可只覆盖当前隔离视觉，C3新增效果仍待评审；不自动代表全局G2、整合或发布。
+负责人已认可 C2（`ca6fa0a`）及 C3（`9fa1fb0`）雨滴/底边流出。最新要求：恢复不同雨量，并增强不明显的雪天。C4在显式`climate=1`启用，保留C3入口和R5媒体；[R6报告](evolution/EVO-WEATHER-R6-REPORT.md)、`climate-review.html`提供四档雨量及雨雪往返原速对照。C4仍待视觉评审；雨滴认可不代表雪天、全局G2、整合或发布通过。
 
-最新天气反馈：负责人认为第二轮A/B都有问题，先研究实拍雨窗，后已授权按[参考研究](evolution/EVO-WEATHER-REFERENCE-STUDY.md)制作下一版并展示。[R3候选C报告](evolution/EVO-WEATHER-R3-REPORT.md)：原生SVG背景位移、碰撞合并/滑移、移除观察带、正文保护，新四段同夹具原速对照及材质近景。C仍待视觉裁决，A/B未获认可；不沿用“等待二选一”假设。实际本机证据见`docs/media/evolution-weather-r3`；提交/CI以#22与Git为准。
+最新天气反馈：负责人认为第二轮A/B都有问题，先研究实拍雨窗，后已授权按[参考研究](evolution/EVO-WEATHER-REFERENCE-STUDY.md)制作下一版并展示。[R3候选C报告](evolution/EVO-WEATHER-R3-REPORT.md)：原生SVG背景位移、碰撞合并/滑移、移除观察带、正文保护，新四段同夹具原速对照及材质近景。C经C2/C3修订后雨滴已获认可，A/B未获认可；不沿用“等待二选一”假设。实际本机证据见`docs/media/evolution-weather-r3`；提交/CI以#22与Git为准。
 
 1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2先完成[坐标首批](evolution/EVO-A2-COORDINATES.md)；天气改为两种候选，详见[第二轮报告](evolution/EVO-ROUND2-REPORT.md)。A1/A2仍需独立技术复核。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
 2. 依据反馈继续A1/V1与真实Hub H1–H4交互研究；A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
