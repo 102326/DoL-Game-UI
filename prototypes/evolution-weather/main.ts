@@ -3,7 +3,7 @@ import {readGameWeather} from '../../framework/official-ui/weather';
 import {weatherSurface as candidateSurface} from './renderer';
 import {weatherSurface as v1Surface} from './v1-renderer';
 const params=new URLSearchParams(location.search),candidate=params.get('candidate')||'glass',surface=candidate==='glass'||params.get('layout')==='surface';
-const weatherSurface=(canvas:HTMLCanvasElement,read:Parameters<typeof v1Surface>[1])=>candidate==='v1'?v1Surface(canvas,read):candidateSurface(canvas,read,candidate==='glass'?(params.get('trail')==='natural'?'glass-natural':'glass'):candidate==='film'?'film':'beads');
+const weatherSurface=(canvas:HTMLCanvasElement,read:Parameters<typeof v1Surface>[1])=>candidate==='v1'?v1Surface(canvas,read):candidateSurface(canvas,read,candidate==='glass'?(params.get('runoff')==='1'?'glass-runoff':params.get('trail')==='natural'?'glass-natural':'glass'):candidate==='film'?'film':'beads');
 const html=document.documentElement;html.dataset.variant='new';html.dataset.settingsStudy='simple';html.setAttribute('data-stone-free','research');html.dataset.weatherCandidate=candidate;html.dataset.weatherLayout=surface?'surface':'legacy';html.dataset.rainBackground=params.get('background')||'dark';
 const {startTheme}=await import('../settings-refraction-v1/new');
 startTheme(window as Parameters<typeof startTheme>[0]);

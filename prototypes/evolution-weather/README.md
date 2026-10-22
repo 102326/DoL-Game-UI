@@ -66,3 +66,20 @@ node tests/evolution-rain-glass.cjs --record --natural-trails
 ```
 
 原速录制的实际时间、性能与源码摘要写入各自 result.json；普通 smoke 为四分之一时间表，不称原速。新湿痕单独开关检查实际 DOM 像素变化，阅读区域晴/雨像素一致；技术检查不能代替负责人对自然感的判断。
+
+
+## C3 持续滑落与底边流出（R5）
+
+负责人认可 C2 后要求水滴生成并流过界面底部。`runoff=1` 在相同 C2 表面新增稀疏、持续的较大水滴，复用现有碰撞、光学、速度参数和湿痕；预留容量避免小滴填满后停止生成。水滴从上沿逐渐出现，到底边仍可见，由层本身裁剪，完全离开后回收。原 C/C2 不开启新行为。
+
+C3 仍保护实际文字行、按钮、输入与阅读样本；不再把整块工具条/页脚的空白作为禁入区。保护区会隐藏经过的水滴，是可读性处理，不能声称在每条路径都无间断可见。新参数 `runoff=1` 仅用于研究场景，不改真实天气或生产UI。
+
+`runoff-review.html` 提供 C2/C3 同操作原速对照；`glass-optics.html?trail=natural&runoff=1` 为近景。主录像延长雨天稳态12秒，便于看见水滴流出底边，然后保持原分类与雨转雪操作。近景前16秒为动态、后段为技术开关检查。六组历史/当前媒体各16MiB上限（合计最多96MiB），超限报错，不截断。
+
+```sh
+node tests/evolution-rain-glass.cjs --runoff
+node tests/evolution-rain-glass.cjs --record --runoff-baseline
+node tests/evolution-rain-glass.cjs --record --runoff
+```
+
+C2当前视觉认可不自动延伸到C3，更不等于整合或发布。模型检查覆盖持续生成、容量和干燥；真实设置底边在暂停时单独隐藏该滴对照实际像素，再恢复并核对回收。浏览器/设备/游戏验证边界同上。

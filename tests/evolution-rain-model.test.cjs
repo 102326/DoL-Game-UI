@@ -29,3 +29,15 @@ test('natural wet trails follow a non-straight drop route, vary in width, and re
  m.resize(390,844);assert.equal(m.snapshot().trails.length,0,'old-coordinate trails must not bridge a resize');
  for(let i=0;i<2400;i++)m.step(.025,0);assert.equal(m.snapshot().trails.length,0);assert.equal(m.snapshot().drops.length,0);
 });
+
+test('runoff renews through sustained rain and leaves only after crossing the bottom',()=>{
+ const m=rainModel(19,true,true);m.resize(900,600);let seen=new Map(),bottom=new Set(),exited=new Set(),midBorn=0;
+ for(let i=0;i<4800;i++){
+  m.step(.025,1);const s=m.snapshot();assert.ok(s.drops.length<=90);
+  for(const d of s.drops.filter(d=>d.runoff)){assert.ok(Number.isFinite(d.x+d.y+d.area+d.vy));seen.set(d.id,d);if(d.y>600)bottom.add(d.id)}
+  for(const id of bottom)if(!s.drops.some(d=>d.id===id))exited.add(id);
+  if(i===2400)midBorn=s.runoffBorn;
+ }
+ const rain=m.snapshot();assert.ok(rain.runoffBorn>midBorn+4,'new flowing drops continue after the initial population');assert.ok(exited.size>0&&rain.runoffDrained>0,'generated water crosses the bottom and is reclaimed');
+ for(let i=0;i<2400;i++)m.step(.025,0);assert.equal(m.snapshot().drops.length,0);assert.equal(m.snapshot().trails.length,0);
+});

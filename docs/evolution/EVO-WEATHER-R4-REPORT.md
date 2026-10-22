@@ -44,3 +44,6 @@ macOS、Node24.18.0、锁定Chromium153.0.8010.12。实际命令：
 C2 **Implemented/Tested，Visually Accepted待负责人判断，Integrated/Release Ready否**。G1/G2/G3仍未通过。请先在对照页判断湿痕是否更像残留水膜、滑移后自然消退，尤其注意明背景长时间观看；不以弱到看不见作为成功标准。
 
 没有修改正式窗口/天气运行层、推广其它窗口、合并main、修改版本/Tag/Release或规则/bypass。A2/A3、Golden Spin V2其它未完成项没有因本轮样片自动完成。Safari、Windows、Android/iOS WebView、真实游戏/ModLoader/多Mod、DPR2+与多表面长时性能仍未验证。
+
+
+负责人后续裁决（2026-10-22）：**“可以了，如果能实现下落雨滴生成后流过界面底部的效果，就更完美了”**。C2（ca6fa0a）当前视觉获认可；该认可不包含随后新增的底边滑落行为，也不改变未整合/未发布和G1/G2/G3边界。后续见R5记录。上文“待评审”是本轮交付时状态。

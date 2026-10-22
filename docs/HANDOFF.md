@@ -18,7 +18,7 @@
 
 ## Next — 下一步做什么
 
-负责人对C最新反馈：**方向有改进，仍需调整**，已明确为**湿痕太直、像画线、没有自然感**。C2仅修订水滴路径与湿痕，整体滑速/合并/静止材质不改。保留`1d6d9d2`的C及原速媒体；[R4报告](evolution/EVO-WEATHER-R4-REPORT.md)和`trail-review.html`提供同操作原速C/C2对照。C/C2均未获视觉通过，不能据研究CI成功整合或发布。
+负责人已于2026-10-22认可 C2（`ca6fa0a`）的湿痕效果，并要求补充“下落雨滴生成后流过界面底部”。C3仅在显式`runoff=1`启用持续生成与底边裁出；C2入口/原速媒体保留。见[R5报告](evolution/EVO-WEATHER-R5-REPORT.md)及`runoff-review.html`的C2/C3同操作对照。C2的认可只覆盖当前隔离视觉，C3新增效果仍待评审；不自动代表全局G2、整合或发布。
 
 最新天气反馈：负责人认为第二轮A/B都有问题，先研究实拍雨窗，后已授权按[参考研究](evolution/EVO-WEATHER-REFERENCE-STUDY.md)制作下一版并展示。[R3候选C报告](evolution/EVO-WEATHER-R3-REPORT.md)：原生SVG背景位移、碰撞合并/滑移、移除观察带、正文保护，新四段同夹具原速对照及材质近景。C仍待视觉裁决，A/B未获认可；不沿用“等待二选一”假设。实际本机证据见`docs/media/evolution-weather-r3`；提交/CI以#22与Git为准。
 
