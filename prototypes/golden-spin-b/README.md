@@ -6,6 +6,8 @@
 
 [桌面原速演示](../../docs/media/evolution-hub-v2/hub-input-v2-desktop.mp4) · [窄屏原速演示](../../docs/media/evolution-hub-v2/hub-input-v2-narrow.mp4)
 
+Mac 后续已同步 Windows 实现并补强释放落在球体、隐藏后场景替换和零尺寸恢复，见 [EVO-HUB-V2-MAC](../../docs/evolution/EVO-HUB-V2-MAC-LIFECYCLE.md)。新增三项回归进入现有命令；上述 Windows 媒体保持旧提交身份，未重录、未据此宣布完整 Hub 视觉通过。
+
 ## 三个可操作入口
 
 ```sh

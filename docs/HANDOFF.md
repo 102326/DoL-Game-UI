@@ -4,6 +4,8 @@
 
 ## Current — 当前做什么
 
+- Mac 接续已安全同步 Windows `21509a8`，保留其 V2 输入方案；新增 [EVO-HUB-V2-MAC 生命周期补强](evolution/EVO-HUB-V2-MAC-LIFECYCLE.md)：释放落在球体、隐藏后场景替换、零尺寸宿主恢复三项旧缺陷均被固定负例拒绝并修复。本机原 24 项＋新增 3 项、类型/构建/合同通过。精确提交、推送及最终 CI 见 #22；完整 Hub 视觉仍待负责人确认。本机替代方案仅保存在本地 `research/mac-hub-v2-alternative` / `5ed6569`，未同步、未采用。
+
 - 最新批次 [EVO-HUB-V2-INPUT](evolution/EVO-HUB-V2-INPUT.md)：隔离真实 Hub 不再整段禁用已可见工具；按下/聚焦保持姿态，真实事件单次执行，补齐H1–H4中途输入与生命周期。Windows Edge受控验证及原速桌面/窄屏录像已完成，精确提交与最终CI见#22；完整Hub视觉仍待确认，尚未生产接入。
 
 - 当前授权为[正式总纲V1.2原文](references/SOFT_WET_4.0_EVOLUTION_V1.2_ORIGINAL.md)，替代此前“设置原型验收后暂停”的施工状态。独立分支`dev/evolution-4.0`，源自`baf0d48d3d4b63cae1e17ff324d233b9a37e16b4`；精确阶段提交、推送状态和CI见[#22](https://github.com/102326/DoL-Game-UI/issues/22)最新Evolution记录及本机Git。本文随研发提交交接，不自填自身提交SHA。
@@ -19,13 +21,14 @@
 - V1使用真实设置组件及权威天气分类，Canvas同表面湿润/霜纹/光照连续变化，未接正式天气层。[观看与启动说明](../prototypes/evolution-weather/README.md)、[原速录像](media/evolution-weather-r1/weather-original-speed.mp4)、[受控结果](media/evolution-weather-r1/result.json)、[源码与媒体摘要](media/evolution-weather-r1/manifest.json)。不宣称高保真目标已认可。
 - 本机macOS / Node24.18 / Chromium153：`npm run ci:check`、`node scripts/build-framework.mjs`、`node tests/evolution-navigation.cjs`、`node tests/header-weather.cjs`、`node tests/settings-ci.cjs`、`node --test tests/ci-evidence.test.cjs tests/test-workflow.test.cjs`通过；天气研究TypeScript及Vite构建通过，`EVO_WEATHER_ENDURANCE_MS=60000 node tests/evolution-weather.cjs --record`通过W1–W4四组受控检查。A1测试须先构建Framework生产CSS；天气须先`node scripts/prepare-settings-refraction.mjs`。本机工作树文件摘要见媒体manifest/result；最终提交CI身份另列#22。
 - 研究工作流沿用已有检查名称，覆盖4.0分支push；标准Moody CI手动触发并单独报告。不把研究检查当完整标准CI，不把未执行/缺失证据算PASS。
+- 跨设备 `21509a8` 的研究 CI39795026297 成功；标准 CI39795032787 因浏览器安装耗时、validate 超时取消，moody-gate 失败，不能记整轮通过。Mac 补强单独核对最终源码与 CI，不沿用过时的“运行中”。Windows原速媒体仍属旧提交，六项媒体摘要已在Mac重算相符；未冒充本批修复后的新录制。
 
 ## Next — 下一步做什么
 
 当前接续重点从天气调参转向架构迁移。天气原型保持已认可的自然湿痕、底边流出、四档雨量、稀疏独立斜雨及更快天气转场；历史候选和原速媒体沿用其原源码身份，记录见[R9](evolution/EVO-WEATHER-R9-REPORT.md)/[R10](evolution/EVO-WEATHER-R10-REPORT.md)。不再把当前原型写成“等待A/B二选一”或“提速待确认”。
 
 1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2已有[坐标首批](evolution/EVO-A2-COORDINATES.md)及[导航挂载首批](evolution/EVO-A2-MOUNT-LIFECYCLE.md)，后者进入独立只读技术复核；其余已批准消费者仍需逐项迁移。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
-2. V2输入首批已在真实Hub组件完成H1–H4受控检查，先评审[原速演示](media/evolution-hub-v2/hub-input-v2-desktop.mp4)；A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
+2. V2输入首批与Mac生命周期补强已在真实Hub完成受控检查，先核对最终CI，再评审[原速演示](media/evolution-hub-v2/hub-input-v2-desktop.mp4)及当前操作页；历史视频不包含本批后台/零尺寸修复。A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
 3. 新设备先fetch并检查HEAD/dirty/unpushed，安装锁定依赖，获取设置研究固定源码，复建后核对证据摘要。仅文档改动不重复跑整轮，运行源码变更按风险重验。
 4. Windows、Android/iOS/WebView、真实游戏/ModLoader、多Mod、多表面长期性能及真机输入均未完成4.0验证；已有设备型号不是实测viewport。真实G3另安排，不以60秒/DPR1/390px模拟代替。
 

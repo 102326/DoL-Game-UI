@@ -13,6 +13,7 @@ export function sphereHub(root:HTMLElement) {
  const saved=new Map<HTMLElement,Map<string,Property>>(),tabs=new Map<HTMLElement,string|null>();
  const state={q:0};let target=0,dead=false,timeline:gsap.core.Timeline|undefined,frame=0,renders=0;
  let press:{id:number;node:HTMLElement}|undefined;
+ let geometryValid=true;
  let nodes:HTMLElement[]=[],controls:HTMLElement[]=[],targets:{x:number;y:number}[]=[],origin={x:0,y:0},scale={x:1,y:1};
  const expanded=()=>orbit.classList.contains('is-expanded');
  const reduced=()=>media.matches||(document.documentElement.hasAttribute('data-dol-midnight')&&!document.documentElement.hasAttribute('data-dgu-visualMotion'));
@@ -40,6 +41,8 @@ export function sphereHub(root:HTMLElement) {
   for(const node of previous)if(!controls.includes(node)){restore(node);restoreTab(node);if(press?.node===node)press=undefined}
   for(const node of nodes)set(node,'transform','none');
   const rect=root.getBoundingClientRect();scale={x:rect.width/Math.max(1,root.offsetWidth),y:rect.height/Math.max(1,root.offsetHeight)};
+  geometryValid=Number.isFinite(scale.x)&&Number.isFinite(scale.y)&&scale.x>0&&scale.y>0;
+  if(!geometryValid){sphere.pause(true);timeline?.pause();return}
   const b=ball.getBoundingClientRect();origin={x:b.x+b.width/2,y:b.y+b.height/2};
   targets=nodes.map(node=>{const r=node.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}});
  }
@@ -54,23 +57,25 @@ export function sphereHub(root:HTMLElement) {
   set(orbit,'--spin-shell',String(Math.max(0,(q-.25)/.75)));
   for(const [i,node]of nodes.entries()){
    const t=Math.max(0,Math.min(1,(q-i*.035)/(1-i*.035)));
-   const dx=origin.x-targets[i].x,dy=origin.y-targets[i].y;
+   const point=targets[i]??origin,dx=origin.x-point.x,dy=origin.y-point.y;
    const bend=Math.sin(t*Math.PI)*Math.min(34,Math.hypot(dx,dy)*.12);
-   set(node,'transform',t===1?'none':`translate(${(dx*(1-t)+bend)/scale.x}px,${(dy*(1-t)-bend*.5)/scale.y}px) scale(${.3+.7*t})`);
+   if(geometryValid)set(node,'transform',t===1?'none':`translate(${(dx*(1-t)+bend)/scale.x}px,${(dy*(1-t)-bend*.5)/scale.y}px) scale(${.3+.7*t})`);
    set(node,'opacity',String(Math.min(1,t*2)));
-   interactive(node,target===1&&t>=.65);
+   interactive(node,geometryValid&&target===1&&t>=.65);
   }
   const utility=orbit.querySelector<HTMLElement>('.sf-motion-utilities');
-  if(utility){set(utility,'opacity',String(Math.max(0,(q-.65)/.35)));for(const node of utility.querySelectorAll<HTMLElement>('button'))interactive(node,target===1&&q>=.85)}
+  if(utility){set(utility,'opacity',String(Math.max(0,(q-.65)/.35)));for(const node of utility.querySelectorAll<HTMLElement>('button'))interactive(node,geometryValid&&target===1&&q>=.85)}
  }
  function stop(){timeline?.kill();timeline=undefined}
  function stillSphere(){
   if(media.matches)sphere.recover();
   else{sphere.destroy();sphere=makeSphere()}
  }
- function settleMotion(){stop();press=undefined;state.q=target=expanded()?1:0;stillSphere();render()}
+ function settleMotion(){stop();press=undefined;state.q=target=expanded()?1:0;stillSphere();render();holdInput()}
  function holdInput(){
-  if(!timeline||document.hidden)return;
+  const blocked=document.hidden||!geometryValid||reduced();sphere.pause(blocked);
+  if(!timeline)return;
+  if(blocked){timeline.pause();return}
   const focused=document.activeElement;
   const keyboard=focused instanceof HTMLElement&&controls.includes(focused)&&focused.matches(':focus-visible');
   if(target===1&&(press||keyboard))timeline.pause();else timeline.resume();
@@ -94,8 +99,8 @@ export function sphereHub(root:HTMLElement) {
   else if(records.some(r=>r.type==='childList'))schedule();
  });
  const resize=new ResizeObserver(schedule);
- const preference=()=>{if(reduced())settleMotion()};
- const visibility=()=>{if(document.hidden)timeline?.pause();else schedule()};
+ const preference=()=>{if(reduced())settleMotion();else holdInput()};
+ const visibility=()=>{holdInput();if(!document.hidden)schedule()};
  const down=(event:PointerEvent)=>{
   const node=event.target instanceof Element?event.target.closest<HTMLElement>('button'):null;
   if(target!==1||!node||!controls.includes(node)||event.button!==0||!event.isPrimary)return;
@@ -105,14 +110,14 @@ export function sphereHub(root:HTMLElement) {
  const focus=()=>{holdInput();schedule()};
  const leave=()=>settleMotion();
  const flags=new MutationObserver(preference);
- root.setAttribute('data-spin-hub','');measure();target=state.q=expanded()?1:0;render();
+ root.setAttribute('data-spin-hub','');measure();target=state.q=expanded()?1:0;render();holdInput();
  observer.observe(orbit,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
  observer.observe(ball,{attributes:true,attributeFilter:['class','style']});
  flags.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-visualmotion']});
  resize.observe(orbit);resize.observe(ball);resize.observe(root);
  media.addEventListener('change',preference);document.addEventListener('visibilitychange',visibility);window.addEventListener('resize',schedule);window.addEventListener('pagehide',leave);
- root.addEventListener('pointerdown',down,true);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);root.addEventListener('focusin',focus);root.addEventListener('focusout',focus);
- return {get sphere(){return sphere},relayout:schedule,inspect:()=>({q:state.q,target,moving:!!timeline,paused:!!timeline?.paused(),pressed:!!press,nodes:nodes.length,phase:root.dataset.spinPhase,dead,renders,framePending:!!frame,sphere:sphere.inspect()}),
-  destroy(){if(dead)return;stop();dead=true;press=undefined;cancelAnimationFrame(frame);frame=0;observer.disconnect();flags.disconnect();resize.disconnect();media.removeEventListener('change',preference);document.removeEventListener('visibilitychange',visibility);window.removeEventListener('resize',schedule);window.removeEventListener('pagehide',leave);root.removeEventListener('pointerdown',down,true);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);root.removeEventListener('focusin',focus);root.removeEventListener('focusout',focus);sphere.destroy();canvas.remove();for(const node of [...saved.keys()])restore(node);for(const node of [...tabs.keys()])restoreTab(node);root.removeAttribute('data-spin-hub');delete root.dataset.spinPhase;delete root.dataset.spinBall}
+ root.addEventListener('pointerdown',down,true);window.addEventListener('pointerup',up,true);window.addEventListener('pointercancel',up,true);root.addEventListener('focusin',focus);root.addEventListener('focusout',focus);
+ return {get sphere(){return sphere},relayout:schedule,inspect:()=>({q:state.q,target,moving:!!timeline,paused:!!timeline?.paused(),pressed:!!press,geometryValid,nodes:nodes.length,phase:root.dataset.spinPhase,dead,renders,framePending:!!frame,sphere:sphere.inspect()}),
+  destroy(){if(dead)return;stop();dead=true;press=undefined;cancelAnimationFrame(frame);frame=0;observer.disconnect();flags.disconnect();resize.disconnect();media.removeEventListener('change',preference);document.removeEventListener('visibilitychange',visibility);window.removeEventListener('resize',schedule);window.removeEventListener('pagehide',leave);root.removeEventListener('pointerdown',down,true);window.removeEventListener('pointerup',up,true);window.removeEventListener('pointercancel',up,true);root.removeEventListener('focusin',focus);root.removeEventListener('focusout',focus);sphere.destroy();canvas.remove();for(const node of [...saved.keys()])restore(node);for(const node of [...tabs.keys()])restoreTab(node);root.removeAttribute('data-spin-hub');delete root.dataset.spinPhase;delete root.dataset.spinBall}
  };
 }

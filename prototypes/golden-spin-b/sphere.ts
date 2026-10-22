@@ -22,12 +22,13 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  type Meteor={x:number;y:number;vx:number;vy:number;age:number;life:number;tail:number};
  const meteors:Meteor[]=[];let emission=0,emitted=0;
  let phase: Phase = 'idle', angle = 0, orbit = 0, last = 0, frame = 0, draws = 0;
- let width = 1, height = 1, dead = false, timeline: gsap.core.Timeline | undefined;
+ let width = 1, height = 1, dead = false, paused=false, timeline: gsap.core.Timeline | undefined;
  let duration = 1, strength = 1, motionChanges = 0;
  const setPhase = (value: Phase) => {phase = value; changed(value)};
 
  function resize() {
-  const rect = canvas.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+  const rect = canvas.getBoundingClientRect();if(rect.width<4||rect.height<4)return;
+  const dpr = Math.min(devicePixelRatio || 1, 2);
   width = rect.width; height = rect.height;
   canvas.width = Math.max(1, Math.round(width * dpr)); canvas.height = Math.max(1, Math.round(height * dpr));
   c.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
@@ -37,7 +38,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   c.strokeStyle = color; c.lineWidth = lineWidth; c.stroke();
  }
  function draw() {
-  if (dead) return;
+  if (dead||width<4||height<4) return;
   draws++;
   c.clearRect(0,0,width,height);
   const radius = Math.min(82, width * .16, height * .21);
@@ -231,7 +232,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  }
  function tick(now: number) {
   frame=0;
-  if(dead || document.hidden)return;
+  if(dead || document.hidden||paused)return;
   // Also sample while active: a host may update matches before dispatching its change event.
   if(media.matches){reduced();return}
   const dt=last?Math.min((now-last)/1000,.05):0;last=now;
@@ -241,7 +242,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   // The first RAF may precede GSAP's first tick; isActive() is false during that gap.
   if(timeline)frame=requestAnimationFrame(tick);
  }
- function wake() {if(!dead&&!frame&&!document.hidden&&!media.matches){last=0;frame=requestAnimationFrame(tick)}}
+ function wake() {if(paused||document.hidden){timeline?.pause();return}if(!dead&&!frame&&!document.hidden&&!paused&&!media.matches){last=0;frame=requestAnimationFrame(tick)}}
  function stop() {timeline?.kill();timeline=undefined;cancelAnimationFrame(frame);frame=0;last=0}
  function reduced() {stop();meteors.length=0;emission=0;Object.assign(state,{speed:0,charge:.18,energy:.28,spread:.45,pressure:0});setPhase('reduced');draw()}
  function play() {
@@ -268,14 +269,14 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
    .to(state,{energy:0,charge:0,speed:.3,pressure:0,duration:.55*duration,ease:'power2.out'});
   wake();
  }
- const visibility=()=>{if(document.hidden){timeline?.pause();cancelAnimationFrame(frame);frame=0;last=0}else{timeline?.resume();wake()}};
+ const visibility=()=>{if(document.hidden||paused){timeline?.pause();cancelAnimationFrame(frame);frame=0;last=0}else{timeline?.resume();wake()}};
  const motion=()=>{motionChanges++;if(media.matches)reduced();else{stop();meteors.length=0;emission=0;Object.assign(state,{speed:.3,charge:0,energy:0,spread:0,pressure:0});setPhase('idle');draw()}};
  const observer=new ResizeObserver(resize);observer.observe(canvas);
  media.addEventListener('change',motion);document.addEventListener('visibilitychange',visibility);resize();
- return {play,recover,
+ return {play,recover,pause(value:boolean){paused=value;visibility()},
   configure(options:{duration?:number;strength?:number}){duration=Math.max(.5,Math.min(2,options.duration??duration));strength=Math.max(.3,Math.min(1.3,options.strength??strength));draw()},
   // GSAP adds a circular private cache to its target; do not expose that as research state.
-  inspect:()=>({phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,meteors:meteors.length,running:!!frame,dead,reduced:media.matches,motionChanges,width,height}),
+  inspect:()=>({phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,meteors:meteors.length,running:!!frame,dead,paused,reduced:media.matches,motionChanges,width,height}),
   destroy(){if(dead)return;stop();meteors.length=0;emission=0;observer.disconnect();media.removeEventListener('change',motion);document.removeEventListener('visibilitychange',visibility);dead=true;setPhase('disposed');c.clearRect(0,0,width,height)}
  };
 }

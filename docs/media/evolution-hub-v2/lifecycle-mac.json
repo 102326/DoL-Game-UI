@@ -1,0 +1,271 @@
+{
+  "scope": "Mac Chromium controlled lifecycle, real MotionHub with mock view bodies; not owner visual acceptance or physical device validation",
+  "baseline": {
+    "identity": {
+      "head": "21509a89b20f43bec4798b370f31fc6c63d59b69",
+      "baseline": "21509a89b20f43bec4798b370f31fc6c63d59b69",
+      "workingTree": false,
+      "runtime": {
+        "node": "v24.18.0",
+        "platform": "darwin",
+        "chromium": "153.0.8010.12"
+      },
+      "hashes": {
+        "prototypes/golden-spin-b/hub-motion.ts": "9b182e2ed50617d60b4dd86972e1c3c33ec55801ab389dce303f24c04cae59a0",
+        "prototypes/golden-spin-b/sphere.ts": "8e89d7f1bb71de23abdd88c90a25ce87606dbf5802118ddee22220cf2bd1cf4e",
+        "framework/motion-hub/MotionHub.vue": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28",
+        "tests/golden-spin-hub-lifecycle.cjs": "4262cef588cb296bc44b2dd495e4042f0eb3ed4e5791e5ff51408fb3db33da96"
+      }
+    },
+    "results": [
+      {
+        "name": "H3 release over native ball clears the pressed tool without replay",
+        "status": "FAIL",
+        "error": "page.waitForFunction: Timeout 2000ms exceeded.",
+        "state": {
+          "q": 0.734757,
+          "target": 1,
+          "moving": true,
+          "paused": true,
+          "pressed": true,
+          "nodes": 5,
+          "phase": "moving",
+          "dead": false,
+          "renders": 82,
+          "framePending": false,
+          "sphere": {
+            "phase": "afterglow",
+            "speed": 2.38108,
+            "charge": 0.024401,
+            "energy": 0.022658,
+            "spread": 1,
+            "pressure": 0,
+            "angle": 3.4088854828674475,
+            "orbit": 4.76976165051824,
+            "draws": 210,
+            "meteors": 0,
+            "running": true,
+            "dead": false,
+            "reduced": false,
+            "motionChanges": 0,
+            "width": 175,
+            "height": 174.99996948242188
+          }
+        },
+        "errors": []
+      },
+      {
+        "name": "H4 hidden scene replacement freezes both new clocks until visible",
+        "status": "FAIL",
+        "error": "AssertionError [ERR_ASSERTION]: hidden replacement menu clock",
+        "state": {
+          "q": 0.01165,
+          "target": 0,
+          "moving": true,
+          "paused": false,
+          "pressed": false,
+          "nodes": 5,
+          "phase": "moving",
+          "dead": false,
+          "renders": 103,
+          "framePending": false,
+          "sphere": {
+            "phase": "return",
+            "speed": 15.51834,
+            "charge": 0.28958,
+            "energy": 0.67914,
+            "spread": 0.087654,
+            "pressure": 0.187657,
+            "angle": 0.6426631021224853,
+            "orbit": 1.6281764335044135,
+            "draws": 78,
+            "meteors": 6,
+            "running": false,
+            "dead": false,
+            "reduced": false,
+            "motionChanges": 0,
+            "width": 175,
+            "height": 174.99996948242188
+          }
+        },
+        "errors": []
+      },
+      {
+        "name": "H4 zero-root scene replacement retains finite geometry and restores native input",
+        "status": "FAIL",
+        "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+        "state": {
+          "q": 0.077876,
+          "target": 0,
+          "moving": true,
+          "paused": false,
+          "pressed": false,
+          "nodes": 5,
+          "phase": "moving",
+          "dead": false,
+          "renders": 105,
+          "framePending": false,
+          "sphere": {
+            "phase": "return",
+            "speed": 19.550729,
+            "charge": 0.353869,
+            "energy": 0.709055,
+            "spread": 0.158304,
+            "pressure": 0.169795,
+            "angle": 2.6746126393224823,
+            "orbit": 2.0102378548284134,
+            "draws": 82,
+            "meteors": 7,
+            "running": false,
+            "dead": false,
+            "reduced": false,
+            "motionChanges": 0,
+            "width": 0,
+            "height": 0
+          }
+        },
+        "errors": [
+          "Failed to execute 'arc' on 'CanvasRenderingContext2D': The radius provided (-0.5) is negative.",
+          "Failed to execute 'arc' on 'CanvasRenderingContext2D': The radius provided (-0.5) is negative.",
+          "Failed to execute 'arc' on 'CanvasRenderingContext2D': The radius provided (-0.5) is negative."
+        ]
+      }
+    ]
+  },
+  "fixedWorkingTree": {
+    "identity": {
+      "head": "21509a89b20f43bec4798b370f31fc6c63d59b69",
+      "baseline": null,
+      "workingTree": true,
+      "runtime": {
+        "node": "v24.18.0",
+        "platform": "darwin",
+        "chromium": "153.0.8010.12"
+      },
+      "hashes": {
+        "prototypes/golden-spin-b/hub-motion.ts": "f3bfe530b79719c6aa50d26bfa55876f8d15502be28ce28478c2641e52b59fcd",
+        "prototypes/golden-spin-b/sphere.ts": "ee4393aeb6bdc23ee4307a22cf2d4155efe1eb77eac813791a7ed19e45700423",
+        "framework/motion-hub/MotionHub.vue": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28",
+        "tests/golden-spin-hub-lifecycle.cjs": "4262cef588cb296bc44b2dd495e4042f0eb3ed4e5791e5ff51408fb3db33da96"
+      }
+    },
+    "results": [
+      {
+        "name": "H3 release over native ball clears the pressed tool without replay",
+        "status": "PASS",
+        "state": {
+          "q": 1,
+          "target": 1,
+          "moving": false,
+          "paused": false,
+          "pressed": false,
+          "geometryValid": true,
+          "nodes": 5,
+          "phase": "open",
+          "dead": false,
+          "renders": 120,
+          "framePending": false,
+          "sphere": {
+            "phase": "release",
+            "speed": 60,
+            "charge": 0.715704,
+            "energy": 0.668321,
+            "spread": 0.992671,
+            "pressure": 0,
+            "angle": 2.9357578299449583,
+            "orbit": 2.8770362433778254,
+            "draws": 120,
+            "meteors": 13,
+            "running": true,
+            "dead": false,
+            "paused": false,
+            "reduced": false,
+            "motionChanges": 0,
+            "width": 175,
+            "height": 174.99996948242188
+          }
+        },
+        "errors": []
+      },
+      {
+        "name": "H4 hidden scene replacement freezes both new clocks until visible",
+        "status": "PASS",
+        "state": {
+          "q": 0,
+          "target": 0,
+          "moving": false,
+          "paused": false,
+          "pressed": false,
+          "geometryValid": true,
+          "nodes": 5,
+          "phase": "closed",
+          "dead": false,
+          "renders": 110,
+          "framePending": false,
+          "sphere": {
+            "phase": "return",
+            "speed": 10.677849,
+            "charge": 0.210998,
+            "energy": 0.653624,
+            "spread": 0.010801,
+            "pressure": 0.198438,
+            "angle": 4.922232624363311,
+            "orbit": 4.986986256726413,
+            "draws": 108,
+            "meteors": 1,
+            "running": true,
+            "dead": false,
+            "paused": false,
+            "reduced": false,
+            "motionChanges": 0,
+            "width": 175,
+            "height": 174.99996948242188
+          }
+        },
+        "errors": []
+      },
+      {
+        "name": "H4 zero-root scene replacement retains finite geometry and restores native input",
+        "status": "PASS",
+        "state": {
+          "q": 0.99932,
+          "target": 0,
+          "moving": true,
+          "paused": false,
+          "pressed": false,
+          "geometryValid": true,
+          "nodes": 5,
+          "phase": "moving",
+          "dead": false,
+          "renders": 238,
+          "framePending": false,
+          "sphere": {
+            "phase": "return",
+            "speed": 59.943915,
+            "charge": 0.711247,
+            "energy": 0.663777,
+            "spread": 0.993367,
+            "pressure": 0.000224,
+            "angle": 0.1363616765491198,
+            "orbit": 2.550963305146654,
+            "draws": 235,
+            "meteors": 12,
+            "running": true,
+            "dead": false,
+            "paused": false,
+            "reduced": false,
+            "motionChanges": 0,
+            "width": 175,
+            "height": 174.99996948242188
+          }
+        },
+        "errors": []
+      }
+    ]
+  },
+  "historicalMedia": {
+    "commit": "21509a89b20f43bec4798b370f31fc6c63d59b69",
+    "mediaDigestsVerified": true,
+    "note": "Windows media kept unchanged. The new Mac lifecycle fixes are not claimed as sources of historical recordings."
+  }
+}
