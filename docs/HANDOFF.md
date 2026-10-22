@@ -5,8 +5,9 @@
 ## Current — 当前做什么
 
 - 当前授权为[正式总纲V1.2原文](references/SOFT_WET_4.0_EVOLUTION_V1.2_ORIGINAL.md)，替代此前“设置原型验收后暂停”的施工状态。独立分支`dev/evolution-4.0`，源自`baf0d48d3d4b63cae1e17ff324d233b9a37e16b4`；精确阶段提交、推送状态和CI见[#22](https://github.com/102326/DoL-Game-UI/issues/22)最新Evolution记录及本机Git。本文随研发提交交接，不自填自身提交SHA。
-- 当前天气批次为C5.2稀疏独立雨滴：负责人指出C5.1数量太大、规律很强；本轮减少数量并退出平铺雨幕，见[R9报告](evolution/EVO-WEATHER-R9-REPORT.md)。负责人已认可`6e2b298`的C5.2雨天原型；当前按裁决移除C5.2斜雨开关、雨天默认显示，负责人最新要求天气转场提速后即可通过；本轮仅C5.2渐变时间缩至四分之一，见[R10报告](evolution/EVO-WEATHER-R10-REPORT.md)。已认可雨天效果保留，尚未把新时序记录为负责人实际观看后的无条件验收。未正式整合或发布。
-- 已实施P0审计、A1属性＋社交共享首片、V1隔离天气首候选。[首报](evolution/EVO-P0-REPORT.md)、[消费者范围表](evolution/EVO-P0-COVERAGE.md)、[实施计划](superpowers/plans/2026-10-22-evolution-first-round.md)。**负责人已批准当前消费者表及例外作为A2/A3范围；V1雨天视觉Reject，技术成果保留。两种新候选须先视觉评审。** 无main合并、Release或公开API/版本变更授权。
+- 当前天气原型已通过负责人确认：C5.2自然雨滴＋默认斜雨＋R10提速，验收源码`ca0d606b775ae76f3bc1b321e5b62549afde62cf`，[CI39772188441/attempt2](https://github.com/102326/DoL-Game-UI/actions/runs/39772188441/attempts/2)成功；首轮安装耗时触及10分钟取消的记录保留。[R10报告](evolution/EVO-WEATHER-R10-REPORT.md)。当前页面视觉验收不是正式整合或4.0整体G2/G3通过。
+- 下一批已推进[EVO-A2-L01导航挂载事务](evolution/EVO-A2-MOUNT-LIFECYCLE.md)：属性/社交及通用面板overlay/passage共同使用`navigation-mount/v1`。本机检查和旧基线负例已执行，精确提交/推送及最终CI见#22本批记录。
+- 已实施P0审计、A1属性＋社交共享首片、V1隔离天气首候选。[首报](evolution/EVO-P0-REPORT.md)、[消费者范围表](evolution/EVO-P0-COVERAGE.md)、[实施计划](superpowers/plans/2026-10-22-evolution-first-round.md)。**负责人已批准当前消费者表及例外作为A2/A3范围；原V1/A/B的视觉否决属于历史，当前C5.2/R10原型已获认可，技术与媒体证据分版本保留。** 无main合并、Release或公开API/版本变更授权。
 - 开工核对main `6a6e3c00b705dc67d37c1780b27f585847da5d1a`，正式3.0.4 Tag源码`915dcb9e85f3266a73a3e7ce38d769edd0c29ff4`；研究输入领先main16提交。没有覆盖旧研究分支；公开UI3.0.4/Host0.1.5-experimental/兼容1.0.1保持。阶段本机未同步内容和本地证据须另查Git与忽略的HANDOFF.local，不能假设另一设备可用。
 
 ## Decided — 已经确定什么
@@ -19,11 +20,9 @@
 
 ## Next — 下一步做什么
 
-负责人已认可 C2（`ca6fa0a`）及 C3（`9fa1fb0`）雨滴/底边流出。最新要求：恢复不同雨量，并增强不明显的雪天。C4在显式`climate=1`启用，保留C3入口和R5媒体；[R6报告](evolution/EVO-WEATHER-R6-REPORT.md)、`climate-review.html`提供四档雨量及雨雪往返原速对照。C4雪天仍待视觉评审；本轮按新反馈加入C5斜雨叠加（显式`shower=1`），`shower-review.html`可开关及看同操作原速对照。最新C5.1（`shower=1&force=1`）按反馈增强雨幕及滑落滴密度/速度，`rain-force-review.html`提供原C5/增强版四档原速对照。C5.1后被指出密集/规律，当前C5.2显式`scatter=1`；`scatter-review.html`提供C5.1/独立雨滴原速对照；C5.2已认可，当前操作页无斜雨开关，历史录像保留验收时的界面。雨滴认可不代表雪天、全局G2、整合或发布通过。
+当前接续重点从天气调参转向架构迁移。天气原型保持已认可的自然湿痕、底边流出、四档雨量、稀疏独立斜雨及更快天气转场；历史候选和原速媒体沿用其原源码身份，记录见[R9](evolution/EVO-WEATHER-R9-REPORT.md)/[R10](evolution/EVO-WEATHER-R10-REPORT.md)。不再把当前原型写成“等待A/B二选一”或“提速待确认”。
 
-最新天气反馈：负责人认为第二轮A/B都有问题，先研究实拍雨窗，后已授权按[参考研究](evolution/EVO-WEATHER-REFERENCE-STUDY.md)制作下一版并展示。[R3候选C报告](evolution/EVO-WEATHER-R3-REPORT.md)：原生SVG背景位移、碰撞合并/滑移、移除观察带、正文保护，新四段同夹具原速对照及材质近景。C经C2/C3修订后雨滴已获认可，A/B未获认可；不沿用“等待二选一”假设。实际本机证据见`docs/media/evolution-weather-r3`；提交/CI以#22与Git为准。
-
-1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2先完成[坐标首批](evolution/EVO-A2-COORDINATES.md)；天气改为两种候选，详见[第二轮报告](evolution/EVO-ROUND2-REPORT.md)。A1/A2仍需独立技术复核。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
+1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2已有[坐标首批](evolution/EVO-A2-COORDINATES.md)及[导航挂载首批](evolution/EVO-A2-MOUNT-LIFECYCLE.md)，后者进入独立只读技术复核；其余已批准消费者仍需逐项迁移。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
 2. 依据反馈继续A1/V1与真实Hub H1–H4交互研究；A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
 3. 新设备先fetch并检查HEAD/dirty/unpushed，安装锁定依赖，获取设置研究固定源码，复建后核对证据摘要。仅文档改动不重复跑整轮，运行源码变更按风险重验。
 4. Windows、Android/iOS/WebView、真实游戏/ModLoader、多Mod、多表面长期性能及真机输入均未完成4.0验证；已有设备型号不是实测viewport。真实G3另安排，不以60秒/DPR1/390px模拟代替。

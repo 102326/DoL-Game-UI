@@ -48,7 +48,7 @@ const {chromium}=require('playwright');
   results.push(r);fs.writeFileSync('tests/artifacts/evolution/navigation.json',JSON.stringify({results,errors},null,2));
   for(const key of ['mounted','disabled','leaseReleased','respectsLease','reentered','noUnrelatedScan','replacementSafe','cancelled','ownerReleased','nativeSafe','proxyZoom','faultClean','recovered','classicMounted'])assert.equal(r[key],true,kind+': '+key);
   for(const z of r.zoom)assert.ok(Math.abs(z.gap-z.expected)<=3,kind+': zoom coordinate '+JSON.stringify(z));
-  assert.equal(r.shared.implementation,'native-overlay-navigation/v1');assert.equal(r.finalNodes,0);assert.deepEqual(errors,[]);console.log('PASS EVO-A1',kind);await page.close();
+  assert.equal(r.shared.implementation,'native-overlay-navigation/v1');assert.equal(r.shared.mountContract,'navigation-mount/v1');assert.equal(r.finalNodes,0);assert.deepEqual(errors,[]);console.log('PASS EVO-A1',kind);await page.close();
  }
  }finally{await browser?.close();await server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
