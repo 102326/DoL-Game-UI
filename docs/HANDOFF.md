@@ -4,6 +4,13 @@
 
 ## Current — 当前做什么
 
+- 当前研发输入 `d0e06e5`。两套CI均因同一个历史反例生成器重复声明 `ticket` 而失败；后续汇总和gate为连锁失败，不是多个产品缺陷。本批只去掉生成器重复声明，本地正常几何、缺样式及旧几何的精确拒绝均通过；新提交完整CI结果见#22，未完成的后续检查不能沿用旧成功。
+- 共享导航已经实际接线：属性/社交共用adapter，adapter与通用面板overlay/passage共用navigationMount。OrbitFocus坐标已收敛，observer/rAF等完整资源作用域仍待迁移。设置正式入口仍300/220ms及代理展开，正式天气仍旧paint，球体由原型注入；已认可原型尚未正式交付。
+- 每个消费者迁移并验证后立即退出对应重复路径；导航挂载批次已经退出部分独立claim/mount清理，A3不是尚未开始。每批进行针对性的真实宿主、输入与资源/性能验证，最后再做完整设备和多Mod回归。
+
+<details>
+<summary>历史批次记录（以下状态仅对应各自提交，以顶部当前快照为准）</summary>
+
 - 最新批次 [EVO-A2 焦点坐标与反向检查](evolution/EVO-A2-ORBIT-CONTINUITY.md)：OrbitFocus起点/终点统一进入共享坐标换算，修复有边框时的12px起点跳变，补齐隐藏/零尺寸与定位失效；保留580ms焦点动作及已确认Hub速度。输入 `5b028d0` 的标准CI成功、研究CI反向断言失败已查明采样时点问题；新探针收紧容差并通过真实跳变注入反例。最终提交与新CI见#22。Windows证据测试因符号链接权限EPERM未通过，须与Linux CI结果分开记录。
 
 - 负责人已在操作页确认悬浮球最新速度：点击后菜单立即展开，240ms落位；球体演出使用0.65倍时长，与菜单并行，收束仍为650ms。已先快进合入Mac `c014cbb1dcc393dca4f00c97da97ae69d0121c8d` 的释放、隐藏和零尺寸修复，再保留本次节奏。[当前参数与接续](evolution/EVO-HUB-V2-INPUT.md#2026-10-23-已确认的展开速度)。Windows Edge的Hub六组、输入八组、生命周期三组，以及原型类型检查和构建通过；精确提交及新CI见#22。认可范围是当前隔离Hub展开速度，不是正式游戏整合或全局视觉验收。
@@ -18,6 +25,8 @@
 - 已实施P0审计、A1属性＋社交共享首片、V1隔离天气首候选。[首报](evolution/EVO-P0-REPORT.md)、[消费者范围表](evolution/EVO-P0-COVERAGE.md)、[实施计划](superpowers/plans/2026-10-22-evolution-first-round.md)。**负责人已批准当前消费者表及例外作为A2/A3范围；原V1/A/B的视觉否决属于历史，当前C5.2/R10原型已获认可，技术与媒体证据分版本保留。** 无main合并、Release或公开API/版本变更授权。
 - 开工核对main `6a6e3c00b705dc67d37c1780b27f585847da5d1a`，正式3.0.4 Tag源码`915dcb9e85f3266a73a3e7ce38d769edd0c29ff4`；研究输入领先main16提交。没有覆盖旧研究分支；公开UI3.0.4/Host0.1.5-experimental/兼容1.0.1保持。阶段本机未同步内容和本地证据须另查Git与忽略的HANDOFF.local，不能假设另一设备可用。
 
+</details>
+
 ## Decided — 已经确定什么
 
 - 保留已认可设置V2.3：开100/关80ms简单透明度、正文立即可操作、V2.2分类；验收实现`6510a1d221f4f845cb766d03b71e2d48fedc0445`及[CI39578067270](https://github.com/102326/DoL-Game-UI/actions/runs/39578067270)。仍是隔离原型，尚未正式整合。保留已认可金属球、真实Hub工具/布局、3.x Acrylic及原生/第三方/存档边界。[V0摘要](evolution/EVO-V0-baselines.json)冻结输入。旧Hub整段禁用策略已由V2输入批次在隔离原型中退出；正式入口未启用该原型，生产接入仍需单独验证。
@@ -31,10 +40,10 @@
 
 当前接续重点从天气调参转向架构迁移。天气原型保持已认可的自然湿痕、底边流出、四档雨量、稀疏独立斜雨及更快天气转场；历史候选和原速媒体沿用其原源码身份，记录见[R9](evolution/EVO-WEATHER-R9-REPORT.md)/[R10](evolution/EVO-WEATHER-R10-REPORT.md)。不再把当前原型写成“等待A/B二选一”或“提速待确认”。
 
-1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2已有[坐标首批](evolution/EVO-A2-COORDINATES.md)及[导航挂载首批](evolution/EVO-A2-MOUNT-LIFECYCLE.md)，后者进入独立只读技术复核；其余已批准消费者仍需逐项迁移。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
+1. 先跑通反例生成修复后的两套完整CI，再按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续A2与正式原型接线。A1保留技术结果，A2已有[坐标首批](evolution/EVO-A2-COORDINATES.md)及[导航挂载首批](evolution/EVO-A2-MOUNT-LIFECYCLE.md)；其余消费者逐项迁移，每项验证后立即退出对应重复路径，保留原生回退和登记例外。状态分别记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
 2. V2输入、Mac生命周期补强及最新240ms展开节奏已在真实Hub完成受控检查，展开速度已获负责人确认。接手先核对本次提交CI，再运行当前 `/hub.html`；[旧原速演示](media/evolution-hub-v2/hub-input-v2-desktop.mp4)不含生命周期补强和本次提速，不能作为最新节奏参考。A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
 3. 新设备先fetch并检查HEAD/dirty/unpushed，安装锁定依赖，获取设置研究固定源码，复建后核对证据摘要。仅文档改动不重复跑整轮，运行源码变更按风险重验。
-4. Windows、Android/iOS/WebView、真实游戏/ModLoader、多Mod、多表面长期性能及真机输入均未完成4.0验证；已有设备型号不是实测viewport。真实G3另安排，不以60秒/DPR1/390px模拟代替。
+4. 真实宿主、输入、生命周期与必要性能检查贯穿每批迁移，不能全部留到最后。Windows、Android/iOS/WebView、真实游戏/ModLoader、多Mod、多表面长期性能及真机输入仍需相应证据，最后进行完整G3回归；已有设备型号不是实测viewport，不以60秒/DPR1/390px模拟代替。
 
 不自动读取/上传玩家存档。主动授权的存档可隔离复现，不进入公开CI Artifact。机器路径、服务会话和原始日志留本地忽略文件，公开只保留受控第一方证据。
 

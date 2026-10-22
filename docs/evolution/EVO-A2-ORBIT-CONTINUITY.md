@@ -20,6 +20,8 @@
 
 ## 验证与接续
 
+后续核对：提交 `d0e06e5` 的[研究CI39815730395](https://github.com/102326/DoL-Game-UI/actions/runs/39815730395)与[标准CI39815700199](https://github.com/102326/DoL-Game-UI/actions/runs/39815700199)均因同一测试夹具失败。OrbitFocus已将 `ticket` 提前声明，`moody-historical-regressions.cjs` 重写旧几何时又插入声明，导致反例无法编译、等待超时；validate、汇总及moody-gate是连锁结果，不另算产品Bug。现仅移除生成器重复声明，`node tests/moody-historical-regressions.cjs` 在本机通过：正常几何通过，旧几何仍被 `MOODY_ORBIT_NONFINITE`、缺生产CSS仍被 `MOODY_ORBIT_POSITION` 精确拒绝，原设置正反例也全部保留。新提交须完整执行两套CI，不能因局部修复而跳过此前被阻断的检查；最终状态见#22。
+
 Windows / Node26 / Edge受控检查：
 
 - `node tests/evolution-orbit.cjs`：真实组件在1、1.25、0.85倍Zoom的迁移起点/终点对齐，滚动、单次原生点击、减少动态、隐藏/零尺寸恢复、待执行定位卸载通过。
@@ -34,4 +36,4 @@ Windows / Node26 / Edge受控检查：
 
 焦点夹具首轮遗漏正式导航类、并使用了另一Vue导入入口，导致等待超时；修正为正式类与同源Vue模块后，才取得上述固定源码12px反例。基础设施失败与产品失败分开记录。
 
-当前状态：Implemented / Windows Controlled Tested。新受控结果输出到 `tests/artifacts/evolution/orbit.json`，固定反例输出 `orbit-baseline.json`。这些目录由Git忽略；CI上传白名单结果，不依赖另一设备拥有本机原始文件。无main合并、正式发布、玩家存档或第三方业务操作；实际游戏、Android/iOS和长期多表面表现未验证。下一批继续覆盖表中尚未迁移的自有资源与作用域，不再重调已确认速度。
+当前状态：Implemented / Windows Controlled Tested。新受控结果输出到 `tests/artifacts/evolution/orbit.json`，固定反例输出 `orbit-baseline.json`。这些目录由Git忽略；CI上传白名单结果，不依赖另一设备拥有本机原始文件。无main合并、正式发布、玩家存档或第三方业务操作；实际游戏、Android/iOS和长期多表面表现未验证。后续A2迁移、正式原型接线与A3逐批并行：每个消费者验证后立即退出对应重复路径，原生回退和明确例外保留；针对性宿主、输入与资源/性能检查贯穿每批，最后才是完整设备及多Mod回归。不再重调已确认速度。

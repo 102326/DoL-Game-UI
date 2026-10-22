@@ -9,7 +9,7 @@ function oldGeometry(){return{name:'moody-ci79-old-positioning',enforce:'pre',tr
  // Exact pre-e23f631 calculation: a display:contents nav yields 0/0 scales.
  const start=source.indexOf(' // A display:contents navigation'),end=source.indexOf(' await nextTick();',start);
  assert.ok(start>=0&&end>start,'historical transform must match the current production placement block');
- return source.slice(0,start)+` const ticket=++revision,r=ring.getBoundingClientRect(),n=root.getBoundingClientRect();
+ return source.slice(0,start)+` const r=ring.getBoundingClientRect(),n=root.getBoundingClientRect();
  const sx=root.offsetWidth/n.width,sy=root.offsetHeight/n.height;
  const from={left:(r.left-n.left)*sx+root.scrollLeft,top:(r.top-n.top)*sy+root.scrollTop,width:r.width*sx,height:r.height*sy};
  const target=button.getBoundingClientRect();
