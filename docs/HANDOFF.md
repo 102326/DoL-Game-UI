@@ -18,7 +18,7 @@
 
 ## Next — 下一步做什么
 
-最新天气反馈：负责人认为第二轮A/B都有问题，先研究实拍雨窗。[参考研究](evolution/EVO-WEATHER-REFERENCE-STUDY.md)已记录实际查看的三段视频/一张照片、观察限制、A/B问题与重做顺序。本次仅文档；两者未获认可，没有新渲染实现或新CI结果。后续不沿用“等待二选一”假设。
+最新天气反馈：负责人认为第二轮A/B都有问题，先研究实拍雨窗，后已授权按[参考研究](evolution/EVO-WEATHER-REFERENCE-STUDY.md)制作下一版并展示。[R3候选C报告](evolution/EVO-WEATHER-R3-REPORT.md)：原生SVG背景位移、碰撞合并/滑移、移除观察带、正文保护，新四段同夹具原速对照及材质近景。C仍待视觉裁决，A/B未获认可；不沿用“等待二选一”假设。实际本机证据见`docs/media/evolution-weather-r3`；提交/CI以#22与Git为准。
 
 1. 范围已批准，按[首轮裁决](evolution/EVO-ROUND1-DECISION.md)继续。A1保留技术结果，A2先完成[坐标首批](evolution/EVO-A2-COORDINATES.md)；天气改为两种候选，详见[第二轮报告](evolution/EVO-ROUND2-REPORT.md)。A1/A2仍需独立技术复核。状态必须分开记录Implemented、Tested、Visually Accepted、Integrated、Release Ready，G1/G2/G3目前均未通过。
 2. 依据反馈继续A1/V1与真实Hub H1–H4交互研究；A2/A3按已批准范围逐项实施，迁移通过后再退出旧路径，不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。

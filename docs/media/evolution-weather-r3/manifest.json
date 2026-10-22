@@ -1,0 +1,186 @@
+{
+  "scope": "Final first-party R3 controlled settings / material after actual geometry regressions. Visual acceptance pending. No private saves or third-party media.",
+  "sourceBase": "4a99c4491a883191564ab2922d0cc25b622c5354",
+  "sourceIdentity": "All recorded source, scene, styles, config, test and README hashes match delivered files. Final Git identity linked from Issue #22.",
+  "sourceHashesMatch": true,
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "chromium": "153.0.8010.12"
+  },
+  "files": {
+    "v1-clear.png": {
+      "bytes": 624383,
+      "sha256": "1ba15141f27dee1b6063c3483dff20a523db1acc49344c1d64de9d36ebad07d9"
+    },
+    "v1-rain.png": {
+      "bytes": 591895,
+      "sha256": "258b842ad71965fb560604f0669ddd91ec68d685b5b0c45a0bad869013645e30"
+    },
+    "v1-snow.png": {
+      "bytes": 623874,
+      "sha256": "708c7a7fadcaab10f5d93c3dc44ddf6ec3a56a34c147720bc298689c2e14e9c1"
+    },
+    "beads-clear.png": {
+      "bytes": 410476,
+      "sha256": "4d423cd21ae6f110428e5a40c5b0a4f058fc0cbc262faf0d95d296f757413564"
+    },
+    "beads-rain.png": {
+      "bytes": 423284,
+      "sha256": "37ff13dcfc80713647b8dacaa014bb081b34589046b5499dce998d1bdba3d87a"
+    },
+    "beads-snow.png": {
+      "bytes": 417378,
+      "sha256": "f73b333502ce38babb7c1962a1247f930566c07f5bfa761cd3a6e20724262d7c"
+    },
+    "film-clear.png": {
+      "bytes": 410458,
+      "sha256": "765c753f34ed35c80f772c9aecaad7a431ec1a0531e9cb7d3f487cc6cead97eb"
+    },
+    "film-rain.png": {
+      "bytes": 422766,
+      "sha256": "72a02745d6429c70bbcb1f1fcf8754ca49e95fda369ec0c56242a43717334c16"
+    },
+    "film-snow.png": {
+      "bytes": 416184,
+      "sha256": "6f46c23b7c04bf4e9289f745b70ddde496e50f609b7a5766da2caab0225f89f3"
+    },
+    "glass-clear.png": {
+      "bytes": 411206,
+      "sha256": "ad3750f85195426a57a9f977e769607477431a7111a9cf9ef506c82797b2624c"
+    },
+    "glass-rain.png": {
+      "bytes": 425085,
+      "sha256": "e00c243d5c2e174c65b2ec0ea906159c716af1be33e84b2b6e663e9c918ce49a"
+    },
+    "glass-snow.png": {
+      "bytes": 419493,
+      "sha256": "05a91a5a317ee9faca66008d938ae2e3b2f9e923420dff4a69b9c195c8cbd47e"
+    },
+    "v1-1x.mp4": {
+      "bytes": 1699243,
+      "sha256": "dc505c559de23d8481321201684edeffc4f57409336e00857ebb95d6936037a9"
+    },
+    "beads-1x.mp4": {
+      "bytes": 1236595,
+      "sha256": "3a1076d9b037ff14066b45cdb3596c68a671c0d002cfbf8fa74604712201fcb5"
+    },
+    "film-1x.mp4": {
+      "bytes": 1186389,
+      "sha256": "103d7889ad2e3db70dec1b4b2f94e27086adfd3f157823566c1973bfed7ff0b6"
+    },
+    "glass-1x.mp4": {
+      "bytes": 1186052,
+      "sha256": "5a7a6eacab02efc08416668acaa7a24b9ea9e00574aa5018d63902efb35557c3"
+    },
+    "contact-1x.mp4": {
+      "bytes": 170828,
+      "sha256": "1dd33273615ae10f2a5d80a62e25e6da6b235dd3e8ec2698c05b9c682afa8b6d"
+    },
+    "contact-before.png": {
+      "bytes": 331084,
+      "sha256": "b9261de6ee1d7b4acc9747487e0a79fc493f947e24741103d2d23a9f046356a6"
+    },
+    "contact-after.png": {
+      "bytes": 331828,
+      "sha256": "676354d63e5cf97779130569e43d4a2b252ab10c28c6497cb73f45d78a290861"
+    },
+    "displacement-on.png": {
+      "bytes": 140988,
+      "sha256": "9ed94ad5011938b61f492fbad8dd6940f4a2737c0bd0321378c0f92b669ba261"
+    },
+    "displacement-off.png": {
+      "bytes": 139154,
+      "sha256": "7908676491b5ec83f0c52893ca83c43b997a0d8129a2ce42db6f8114ec2dc247"
+    },
+    "material-day.png": {
+      "bytes": 332399,
+      "sha256": "9540e1d8a9389e497ff355a3edbb6c3aa8f689e258354b493e93a83d5fb1ce97"
+    },
+    "material-night.png": {
+      "bytes": 234733,
+      "sha256": "01b3e3788b8795fa98f0781b7becf6fb137420de0186606500522b245d02a35d"
+    },
+    "material-dark.png": {
+      "bytes": 322399,
+      "sha256": "eebe427bf70b6cdefbc9d67a1a118ca6165163151d1c533da7e6cbcd202876f1"
+    },
+    "result.json": {
+      "bytes": 83002,
+      "sha256": "a63ffa4dd757bea7ef4fa736842bf33e33ab0373869361291189fdb835746741"
+    }
+  },
+  "videos": {
+    "v1-1x.mp4": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900,
+          "r_frame_rate": "25/1"
+        }
+      ],
+      "format": {
+        "duration": "27.280000"
+      }
+    },
+    "beads-1x.mp4": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900,
+          "r_frame_rate": "25/1"
+        }
+      ],
+      "format": {
+        "duration": "27.320000"
+      }
+    },
+    "film-1x.mp4": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900,
+          "r_frame_rate": "25/1"
+        }
+      ],
+      "format": {
+        "duration": "27.280000"
+      }
+    },
+    "glass-1x.mp4": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900,
+          "r_frame_rate": "25/1"
+        }
+      ],
+      "format": {
+        "duration": "27.320000"
+      }
+    },
+    "contact-1x.mp4": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900,
+          "r_frame_rate": "25/1"
+        }
+      ],
+      "format": {
+        "duration": "5.280000"
+      }
+    }
+  },
+  "totalBytes": 12991176
+}
