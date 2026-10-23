@@ -1,11 +1,11 @@
 # Soft & Wet 4.0 — 跨设备当前交接
 
-更新：2026-10-23。分支 `dev/evolution-4.0`。本快照包含Android游戏内回归及修复；精确提交以 Git / Issue #22 为准，不能用文档自证工作区或 CI 通过。旧累计记录已移到[历史快照](HANDOFF-2026-10-23-history.md)。
+更新：2026-10-24。分支 `dev/evolution-4.0`。本快照包含Android游戏内回归及修复；精确提交以 Git / Issue #22 为准，不能用文档自证工作区或 CI 通过。旧累计记录已移到[历史快照](HANDOFF-2026-10-23-history.md)。
 
 ## Current — 当前做什么
 
-- **游戏内回归及Hub收尾修复**：[现场与修复记录](evolution/EVO-ANDROID-GAMEPLAY-2026-10-23.md)。最终产品cea3bf7已推送并实际安装 / 重启核验：战斗底栏按真实CSS zoom换算且无空闲resize循环；衣柜失效列表不再刷新；Hub去掉重复背景层，球体立即响应、菜单等待500ms再沿原240ms展开。真实Android触控约549ms出现，关闭材质消退及三次快速取消通过。衣柜三次原生退出、原版教程单次继续和390px / 四缩放 / 两模式证据按未改模块复用，受控窄视口不冒称物理手机。最终设备保留新候选在标题Start，原偏好、位置 / 视口恢复；具体衣柜修复不代表所有历史同名异常已解决。
-- **本批CI**：c120首轮标准39974214664因15分钟总预算取消；cb8baff仅将总预算改35分钟，其标准39976922115 / 研究39976917265成功，未删断言。最终Hub的[标准39980206625](https://github.com/102326/DoL-Game-UI/actions/runs/39980206625) / [研究39980204002](https://github.com/102326/DoL-Game-UI/actions/runs/39980204002)均completed / success，独立下载校验通过，标准moody-gate成功；bb44374标准39978381903 / 研究39978375981也成功。Windows Hub集成、输入 / 生命周期、ci:check及八包构建通过，原失败保留。最终Run受测源码为cea3bf7，后续文档HEAD不能冒称重新完成整轮。
+- **发布前工程与Mod更新收口**：[完整报告](evolution/EVO-PRERELEASE-2026-10-24.md)、[九包冻结身份](evolution/EVO-PRERELEASE-PACKAGES-2026-10-24.json)、[安装/回退](INSTALL_EVOLUTION_CANDIDATE.md)、[玩家发布草稿](RELEASE_EVOLUTION_DRAFT.md)。受验实现37da596，保留cea3bf7的Hub背景退出、500ms蓄势、战斗缩放及衣柜修复。按测试App ModHub清单更新四个目标及兼容包，CE保留rebuild.30，银商启动不另行查找。Android实际八个适用自有包全部成员与下载候选一致、顺序和禁用列表不变；Windows实际Loader/新目标组合代表界面通过。新建槽4、存档码、Android文件导出/Windows载入、九次原生战斗推进及结束、一次实际购买/试穿/退出、两件叠穿/原顺序调整/卸下、33次开关和后台返回均已记录。最终App恢复本轮测试槽的Bedroom及原偏好，原槽1–3未覆盖。
+- **精确源码CI**：37da596的[标准39992958236](https://github.com/102326/DoL-Game-UI/actions/runs/39992958236)和[研究39992955737](https://github.com/102326/DoL-Game-UI/actions/runs/39992955737)含独立下载验收均success；标准moody-gate成功。42aefd6遗漏九包最终校验、8b49b50精确源码锁的CRLF/LF差异均有失败记录，37da596已修正，未缩减断言。Windows本地全量unit与旧采样反例仍有失败，不能冒称本机全量CI通过。资源短时节点/监听器回落，PSS仍偏高且gfxinfo有效帧为0，不宣称泄漏或FPS已验收。G1/G2/G3负责人裁决、正式版本/Tag/main/发布仍Pending；READ01保持隔离，不作为本轮未实现任务。
 - **首批Android设置 / Hub验证**：[实际安装与触控记录](evolution/EVO-ANDROID-SMOKE-2026-10-23.md)。受测源码56ffb00，M367FC / Android17 / WebView155，独立测试App持久安装后重启，加载成员与候选一致；设置双布局/真实触控、150%字体滚动、实际Hub工具与快速反向通过。晴天映射及临时诊断输入的雨雪呈现分别记录，原偏好与天气绑定恢复；首批未测游戏业务 / 自然天气转换或长期性能，后续现场已由上方cea3bf7候选接续，原始设备材料不公开。
 - 前批READ01按交接范围收口；负责人随后授权继续现有开发和设备验证，没有启动新视觉实验。研发基线已从 `d60ccc8` 安全快进到 `3e6e0396f70dacf5dc6c730fec8fb73cfd7360c2`（CI PR #24 合入），其后设备批次见上方记录，默认产品材质保持。
 - **EVO-INT-FROST02：已视觉通过并已接入研发设置。** 认可源码 `5a0f244`，新增边霜浓度0.56；验收交付 `d60ccc8`，保留霜羽、雨天和设置/Hub节奏。不是其它窗口或全局 G2/G3 通过。
@@ -25,8 +25,8 @@
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node >=22.12（22需启用 `NODE_OPTIONS=--experimental-strip-types`）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
-3. 核对最终cea3bf7的标准39980206625和研究39980204002终态及后续文档HEAD，区分研究push与手动标准。旧实现成功不能替代新修复结果；未触发 / 运行中 / 取消都不是通过。先复用有效证据，再选择最小充分验证，文档修改不重复全量矩阵。
+3. 核对受验实现37da596的两套CI、冻结JSON及后续文档HEAD；仅文档差异复用实现证据。实际CI/Tag必须对应目标源码，不能用旧Run或原型认可替代。未触发、运行中或取消不算通过。
 4. 本次提交不要求马上接入READ01。若继续研究，先在目标浏览器复核桌面帧退化，使用报告的成对对照和短时观测命令；不要仅减弱已认可天气、移除断言或把减少模糊半径当修复。性能证据与负责人材质评审分别通过后，才决定实际接入范围。
-5. 已补上述Android真实Loader安装、设置 / Hub、角色窗口、衣柜代表性业务与教程战斗受控窄屏检查；已补一个正常教程回合，下一批按实际需求补商店交易、更多战斗 / 结束及存档流程。物理手机 / iOS、多Mod完整业务和长期性能仍未验证。G1/G2/G3正式裁决、其它窗口新天气/材质推广、main/Release及CJ-4规则另行决定，不将受控视口扩大为所有设备通过。
+5. 本轮约定技术工作已完成，下一步由负责人审阅当前实际效果与资源/覆盖限制，裁决G1/G2/G3及正式版本和发布范围。未获新授权前不合并main、不改公开版本、不创建Tag/Release；最终媒体目前仅在本地。物理手机/iOS、长期资源、未知组合属于Coverage Ledger，不自动追加无限回归。
 
 交接更新约定：每批主要任务更新 Current / Decided / Next，记录实际输入SHA、命令/环境/范围、CI链接和未同步内容。绝对路径、服务会话、临时文件仅放Git忽略的 `docs/HANDOFF.local.md`；本文件保持一至两页，历史细节链接到专题报告。

@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "date": "2026-10-24",
+  "status": "research candidate; no Release or Tag",
+  "branch": "dev/evolution-4.0",
+  "source": {
+    "head": "37da59637e42e53bc0ccc73973c87fe39b3231e3",
+    "tree": "cbf15103cd380f2ec9e13bd05503f85c3d5e80eb",
+    "dirty": false,
+    "contentSha256": "4a7f9975c5ce5501470e7310db301732f2db4270616df74ce90357ffedd1658a",
+    "lockSha256": "e0313e47f5f2c8939839120f2da0bf5a142582578f8ef4cb89a8c6bc265f61a6"
+  },
+  "standardCI": "https://github.com/102326/DoL-Game-UI/actions/runs/39992958236",
+  "researchCI": "https://github.com/102326/DoL-Game-UI/actions/runs/39992955737",
+  "packages": [
+    {
+      "name": "StoneFreeHost",
+      "version": "0.1.5-experimental",
+      "file": "StoneFreeHost-0.1.5-experimental.mod.zip",
+      "bytes": 5934,
+      "sha256": "6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8"
+    },
+    {
+      "name": "DoLGameUI",
+      "version": "3.0.4",
+      "file": "DoLGameUI-3.0.4.mod.zip",
+      "bytes": 275917,
+      "sha256": "6c9f6e2704168bf57deec0dceedd3cd6f27e784ec96906c461f4ad4bacac4064"
+    },
+    {
+      "name": "ModHubSoftWet",
+      "version": "1.0.2",
+      "file": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.2.mod.zip",
+      "bytes": 6354,
+      "sha256": "6fc7893961d9f9ad6d1ecb90d039406c1b5f7061ece8f61b6300d37a65e01214"
+    },
+    {
+      "name": "MapleBirchSoftWet",
+      "version": "1.0.1",
+      "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip",
+      "bytes": 4273,
+      "sha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00"
+    },
+    {
+      "name": "DolOptimizationSoftWet",
+      "version": "1.0.2",
+      "file": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.2.mod.zip",
+      "bytes": 8889,
+      "sha256": "20bb98e08d220ed13acf1a48b04b1aa8590122e17415b6172f9ec37701e68c05"
+    },
+    {
+      "name": "CheatExtendedSoftWet",
+      "version": "1.0.0",
+      "file": "CheatExtendedSoftWet-cheat extended-1.20.3-plus-v1.0.0.mod.zip",
+      "bytes": 4944,
+      "sha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d"
+    },
+    {
+      "name": "ReOverfitsSoftWet",
+      "version": "1.0.0",
+      "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip",
+      "bytes": 4818,
+      "sha256": "eb9d80205e139b9e180d33efe26e66380f3848417350ae4fec4e49e41adfb970"
+    },
+    {
+      "name": "LyraMouthCompat051213",
+      "version": "1.0.0",
+      "file": "LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip",
+      "bytes": 3018,
+      "sha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827"
+    },
+    {
+      "name": "SmartPhoneSoftWet",
+      "version": "1.1.1",
+      "file": "SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.1.mod.zip",
+      "bytes": 5585,
+      "sha256": "43dd325355754f36c38b7336e135964cd0e181744cdcb344eeca79ce9d63c1d8"
+    }
+  ],
+  "updatedTargets": [
+    {
+      "name": "ModHub",
+      "version": "1.8.3",
+      "file": "ModHub-v1.8.3.zip",
+      "sha256": "3287c14c236f745a42f7678786eabde6d54b385f84d4dac27ccebb2c69a46241"
+    },
+    {
+      "name": "maplebirch",
+      "version": "5.5.4",
+      "file": "maplebirch-0.5.12.13-v5.5.4.mod.zip",
+      "sha256": "23fda98b5d39cf0057b4ce693498c0946c4187b1054ec8c15ebc3d52fcac6284"
+    },
+    {
+      "name": "原版优化",
+      "version": "1.1.2.1",
+      "file": "Dol-Optimization-v1.1.2.1.mod.zip",
+      "sha256": "2f5c0aeaffa109ca9cee412fadf10ed182997537dfa02dce8d84443db3fc3e8a"
+    },
+    {
+      "name": "SmartPhone Alpha",
+      "version": "0.3.91.1",
+      "file": "SmartPhone.Alpha-v0.3.91.1.mod.zip",
+      "sha256": "3dbd41559a244672a7cd5d89a7765ce01f234f70639b34fb0d414bba4830961d"
+    }
+  ],
+  "runtime": {
+    "installedFirstPartyPackages": 8,
+    "excludedTargetNotInstalled": "ReOverfits",
+    "exactLoadedMemberComparison": "PASS; eight complete package member sets",
+    "authorPackagesRedistributed": false
+  }
+}
