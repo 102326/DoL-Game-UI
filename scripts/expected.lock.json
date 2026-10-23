@@ -1,0 +1,2009 @@
+{
+  "schema": 1,
+  "devicePlans": {
+    "standard": [
+      "profile:iphone-16e-portrait",
+      "profile:iphone-16e-landscape",
+      "profile:iphone-17-pro-portrait",
+      "profile:iphone-17-pro-landscape",
+      "profile:iphone-air-portrait",
+      "profile:iphone-air-landscape",
+      "profile:iphone-16-plus-portrait",
+      "profile:iphone-16-plus-landscape",
+      "profile:pixel-9-pro-xl-portrait",
+      "profile:pixel-9-pro-xl-landscape",
+      "profile:iphone-17-pro-max-portrait",
+      "profile:iphone-17-pro-max-landscape",
+      "profile:galaxy-fold6-unfolded-portrait",
+      "profile:galaxy-fold6-unfolded-landscape",
+      "profile:galaxy-s24-portrait",
+      "profile:galaxy-s24-landscape",
+      "profile:galaxy-a55-portrait",
+      "profile:galaxy-a55-landscape",
+      "profile:galaxy-tab-s9-portrait",
+      "profile:galaxy-tab-s9-landscape",
+      "profile:ipad-pro-11-portrait",
+      "profile:ipad-pro-11-landscape",
+      "profile:android-tablet-2k-portrait",
+      "profile:android-tablet-2k-landscape",
+      "profile:android-tablet-2-5k-portrait",
+      "profile:android-tablet-2-5k-landscape",
+      "profile:android-tablet-3k-portrait",
+      "profile:android-tablet-3k-landscape",
+      "profile:android-tablet-3-2k-portrait",
+      "profile:android-tablet-3-2k-landscape",
+      "profile:android-tablet-large-portrait",
+      "profile:android-tablet-large-landscape",
+      "profile:phone-approx-7-portrait",
+      "profile:phone-approx-7-landscape",
+      "profile:desktop-1080-landscape",
+      "profile:desktop-1440-landscape",
+      "profile:desktop-4k-landscape",
+      "profile:desktop-ultrawide-landscape",
+      "profile:window-1363-landscape",
+      "profile:window-1280-landscape",
+      "profile:regression-844x390-landscape",
+      "profile:regression-390x320-landscape",
+      "profile:minimum-320-portrait",
+      "profile:safe-area-portrait",
+      "profile:safe-area-landscape",
+      "profile:desktop-1440-layout-zoom-1.25",
+      "profile:desktop-1440-layout-zoom-1.5",
+      "profile:desktop-1440-layout-zoom-2",
+      "orientation:iphone-16e-portrait",
+      "orientation:galaxy-tab-s9-portrait",
+      "scan:320",
+      "scan:384",
+      "scan:419",
+      "scan:420",
+      "scan:421",
+      "scan:448",
+      "scan:479",
+      "scan:480",
+      "scan:481",
+      "scan:512",
+      "scan:576",
+      "scan:599",
+      "scan:600",
+      "scan:601",
+      "scan:639",
+      "scan:640",
+      "scan:641",
+      "scan:649",
+      "scan:650",
+      "scan:651",
+      "scan:679",
+      "scan:680",
+      "scan:681",
+      "scan:698",
+      "scan:699",
+      "scan:700",
+      "scan:701",
+      "scan:704",
+      "scan:768",
+      "scan:799",
+      "scan:800",
+      "scan:801",
+      "scan:832",
+      "scan:896",
+      "scan:898",
+      "scan:899",
+      "scan:900",
+      "scan:901",
+      "scan:960",
+      "scan:979",
+      "scan:980",
+      "scan:981",
+      "scan:1024",
+      "scan:1088",
+      "scan:1099",
+      "scan:1100",
+      "scan:1101",
+      "scan:1152",
+      "scan:1216",
+      "scan:1280",
+      "scan:1344",
+      "scan:1408",
+      "scan:1472",
+      "scan:1536",
+      "scan:1600",
+      "scan:1664",
+      "scan:1728",
+      "scan:1792",
+      "scan:1856",
+      "scan:1920",
+      "scan:1984",
+      "scan:2048",
+      "scan:2112",
+      "scan:2176",
+      "scan:2240",
+      "scan:2304",
+      "scan:2368",
+      "scan:2432",
+      "scan:2496",
+      "scan:2560",
+      "negative:overflow",
+      "negative:offscreen",
+      "negative:nan",
+      "negative:blockedClose"
+    ],
+    "deep": [
+      "profile:iphone-16e-portrait",
+      "profile:iphone-16e-landscape",
+      "profile:iphone-17-pro-portrait",
+      "profile:iphone-17-pro-landscape",
+      "profile:iphone-air-portrait",
+      "profile:iphone-air-landscape",
+      "profile:iphone-16-plus-portrait",
+      "profile:iphone-16-plus-landscape",
+      "profile:pixel-9-pro-xl-portrait",
+      "profile:pixel-9-pro-xl-landscape",
+      "profile:iphone-17-pro-max-portrait",
+      "profile:iphone-17-pro-max-landscape",
+      "profile:galaxy-fold6-unfolded-portrait",
+      "profile:galaxy-fold6-unfolded-landscape",
+      "profile:galaxy-s24-portrait",
+      "profile:galaxy-s24-landscape",
+      "profile:galaxy-a55-portrait",
+      "profile:galaxy-a55-landscape",
+      "profile:galaxy-tab-s9-portrait",
+      "profile:galaxy-tab-s9-landscape",
+      "profile:ipad-pro-11-portrait",
+      "profile:ipad-pro-11-landscape",
+      "profile:android-tablet-2k-portrait",
+      "profile:android-tablet-2k-landscape",
+      "profile:android-tablet-2-5k-portrait",
+      "profile:android-tablet-2-5k-landscape",
+      "profile:android-tablet-3k-portrait",
+      "profile:android-tablet-3k-landscape",
+      "profile:android-tablet-3-2k-portrait",
+      "profile:android-tablet-3-2k-landscape",
+      "profile:android-tablet-large-portrait",
+      "profile:android-tablet-large-landscape",
+      "profile:phone-approx-7-portrait",
+      "profile:phone-approx-7-landscape",
+      "profile:desktop-1080-landscape",
+      "profile:desktop-1440-landscape",
+      "profile:desktop-4k-landscape",
+      "profile:desktop-ultrawide-landscape",
+      "profile:window-1363-landscape",
+      "profile:window-1280-landscape",
+      "profile:regression-844x390-landscape",
+      "profile:regression-390x320-landscape",
+      "profile:minimum-320-portrait",
+      "profile:safe-area-portrait",
+      "profile:safe-area-landscape",
+      "profile:desktop-1440-layout-zoom-1.25",
+      "profile:desktop-1440-layout-zoom-1.5",
+      "profile:desktop-1440-layout-zoom-2",
+      "profile:desktop-1080-dpr-1.25",
+      "profile:desktop-1080-dpr-2",
+      "profile:desktop-1440-dpr-1.25",
+      "profile:desktop-1440-dpr-2",
+      "profile:desktop-4k-dpr-1.25",
+      "profile:desktop-4k-dpr-2",
+      "profile:desktop-ultrawide-dpr-1.25",
+      "profile:desktop-ultrawide-dpr-2",
+      "profile:window-1363-dpr-1.25",
+      "profile:window-1363-dpr-2",
+      "profile:window-1280-dpr-1.25",
+      "profile:window-1280-dpr-2",
+      "profile:window-800x600-landscape",
+      "profile:window-1024x768-landscape",
+      "orientation:iphone-16e-portrait",
+      "orientation:galaxy-tab-s9-portrait",
+      "scan:320",
+      "scan:336",
+      "scan:352",
+      "scan:368",
+      "scan:384",
+      "scan:400",
+      "scan:416",
+      "scan:419",
+      "scan:420",
+      "scan:421",
+      "scan:432",
+      "scan:448",
+      "scan:464",
+      "scan:479",
+      "scan:480",
+      "scan:481",
+      "scan:496",
+      "scan:512",
+      "scan:528",
+      "scan:544",
+      "scan:560",
+      "scan:576",
+      "scan:592",
+      "scan:599",
+      "scan:600",
+      "scan:601",
+      "scan:608",
+      "scan:624",
+      "scan:639",
+      "scan:640",
+      "scan:641",
+      "scan:649",
+      "scan:650",
+      "scan:651",
+      "scan:656",
+      "scan:672",
+      "scan:679",
+      "scan:680",
+      "scan:681",
+      "scan:688",
+      "scan:698",
+      "scan:699",
+      "scan:700",
+      "scan:701",
+      "scan:704",
+      "scan:720",
+      "scan:736",
+      "scan:752",
+      "scan:768",
+      "scan:784",
+      "scan:799",
+      "scan:800",
+      "scan:801",
+      "scan:816",
+      "scan:832",
+      "scan:848",
+      "scan:864",
+      "scan:880",
+      "scan:896",
+      "scan:898",
+      "scan:899",
+      "scan:900",
+      "scan:901",
+      "scan:912",
+      "scan:928",
+      "scan:944",
+      "scan:960",
+      "scan:976",
+      "scan:979",
+      "scan:980",
+      "scan:981",
+      "scan:992",
+      "scan:1008",
+      "scan:1024",
+      "scan:1040",
+      "scan:1056",
+      "scan:1072",
+      "scan:1088",
+      "scan:1099",
+      "scan:1100",
+      "scan:1101",
+      "scan:1104",
+      "scan:1120",
+      "scan:1136",
+      "scan:1152",
+      "scan:1168",
+      "scan:1184",
+      "scan:1200",
+      "scan:1216",
+      "scan:1232",
+      "scan:1248",
+      "scan:1264",
+      "scan:1280",
+      "scan:1296",
+      "scan:1312",
+      "scan:1328",
+      "scan:1344",
+      "scan:1360",
+      "scan:1376",
+      "scan:1392",
+      "scan:1408",
+      "scan:1424",
+      "scan:1440",
+      "scan:1456",
+      "scan:1472",
+      "scan:1488",
+      "scan:1504",
+      "scan:1520",
+      "scan:1536",
+      "scan:1552",
+      "scan:1568",
+      "scan:1584",
+      "scan:1600",
+      "scan:1616",
+      "scan:1632",
+      "scan:1648",
+      "scan:1664",
+      "scan:1680",
+      "scan:1696",
+      "scan:1712",
+      "scan:1728",
+      "scan:1744",
+      "scan:1760",
+      "scan:1776",
+      "scan:1792",
+      "scan:1808",
+      "scan:1824",
+      "scan:1840",
+      "scan:1856",
+      "scan:1872",
+      "scan:1888",
+      "scan:1904",
+      "scan:1920",
+      "scan:1936",
+      "scan:1952",
+      "scan:1968",
+      "scan:1984",
+      "scan:2000",
+      "scan:2016",
+      "scan:2032",
+      "scan:2048",
+      "scan:2064",
+      "scan:2080",
+      "scan:2096",
+      "scan:2112",
+      "scan:2128",
+      "scan:2144",
+      "scan:2160",
+      "scan:2176",
+      "scan:2192",
+      "scan:2208",
+      "scan:2224",
+      "scan:2240",
+      "scan:2256",
+      "scan:2272",
+      "scan:2288",
+      "scan:2304",
+      "scan:2320",
+      "scan:2336",
+      "scan:2352",
+      "scan:2368",
+      "scan:2384",
+      "scan:2400",
+      "scan:2416",
+      "scan:2432",
+      "scan:2448",
+      "scan:2464",
+      "scan:2480",
+      "scan:2496",
+      "scan:2512",
+      "scan:2528",
+      "scan:2544",
+      "scan:2560",
+      "negative:overflow",
+      "negative:offscreen",
+      "negative:nan",
+      "negative:blockedClose"
+    ]
+  },
+  "nativeCases": {
+    "adapter-build-boundary.test.cjs": [
+      "standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules"
+    ],
+    "evolution-rain-model.test.cjs": [
+      "seeded attached drops grow, coalesce and drain with finite bounded geometry",
+      "same simulation step history reproduces drop identities and trajectories",
+      "invalid geometry and time are rejected",
+      "natural wet trails follow a non-straight drop route, vary in width, and reset on resize",
+      "runoff renews through sustained rain and leaves only after crossing the bottom",
+      "rain intensity changes replenishment while default intensity preserves the existing model",
+      "optional rain energy makes the same runoff drop descend faster and keeps default behavior"
+    ],
+    "evolution-scattered-shower.test.cjs": [
+      "seeded rain is reproducible, sparse and has independent motion rather than a common tile translation",
+      "rain levels increase budget/speed while renewal remains finite, bounded and staggered"
+    ]
+  },
+  "researchCases": {
+    "check-settings-refraction": [
+      "frozen baseline source identity; only two generated candidate source files differ",
+      "V2.3 open, close and category settlement stay near the actual 3.0.4 baseline",
+      "category readable progress matches the old release, not only its final duration",
+      "1280: real modal, geometry, hit testing, actual preference input and keyboard close",
+      "1280: fast latest-intent category switching settles one accessible page",
+      "1280: short opacity-only open/close keeps latest intent and stationary hitboxes",
+      "1280: reduced motion, preference cancellation and hidden-page settlement",
+      "1280: unmount while moving removes owned nodes and remount preserves preference",
+      "390: real modal, geometry, hit testing, actual preference input and keyboard close",
+      "390: fast latest-intent category switching settles one accessible page",
+      "390: short opacity-only open/close keeps latest intent and stationary hitboxes",
+      "390: reduced motion, preference cancellation and hidden-page settlement",
+      "390: unmount while moving removes owned nodes and remount preserves preference",
+      "resize/rotation and 125% page zoom settle usable controls"
+    ],
+    "evolution-weather": [
+      "W1 actual approved settings component and clear Acrylic surface",
+      "W2 same-surface wetting, beads and tracks consume real weather classification",
+      "W3 mid-rain snow redirects continuous parameters with no state reset",
+      "W4 short controlled use: real category controls, hidden/resume, resize, reduced preference, close/reopen and release"
+    ],
+    "golden-spin-b": [
+      "ball-only stages accelerate, release an expanding spiral, then naturally settle",
+      "rapid restart and mid-flight collection retain angular continuity and release all motion",
+      "narrow screen and resize keep the ball hit target inside the stage",
+      "reduced motion renders a static response with keyboard-accessible controls",
+      "dispose cancels the timeline, frame, observers and responsive callbacks"
+    ],
+    "golden-spin-hub-input": [
+      "H3 visible moving tool accepts a real pointer once without moving beneath the press",
+      "H3 keyboard activation and cancel during opening retain native focus and single activation",
+      "H3 releasing a pointer outside cancels activation and resumes instead of pinning pointer focus",
+      "H1 H2 opening and closing reverse continuously, keep native terminal layout and settle resources",
+      "H3 H4 drag during opening closes safely, then dock and restore work during the next opening",
+      "H4 narrow touch and zoom preserve targets; active reduced/disabled motion settles immediately",
+      "H4 hidden view pauses both layers and resumes the latest intent",
+      "H4 scene exit, owner teardown and re-mount cannot replay activation or retain callbacks"
+    ],
+    "golden-spin-hub-lifecycle": [
+      "H3 release over native ball clears the pressed tool without replay",
+      "H4 hidden scene replacement freezes both new clocks until visible",
+      "H4 zero-root scene replacement retains finite geometry and restores native input"
+    ],
+    "golden-spin-hub": [
+      "real tools unfold immediately alongside sphere charge and remain hittable in their native layout",
+      "real tool detail opens once and returns to the menu; Escape collects it",
+      "rapid reversals retain the current menu progress and sphere angle",
+      "left/right docking, narrow touch, resize and reduced motion preserve interaction",
+      "dynamic tools, zoom and scene invalidation keep the native Hub owner in control",
+      "unmount stops both controllers and removes the experimental canvas"
+    ],
+    "motion-workspace": [
+      "shared motion cancels hidden work and cannot restart after disposal",
+      "real settings keep stable hitboxes, directional category completion and modal boundaries",
+      "native-window material owns movement while original controls stay stationary and execute once",
+      "narrow zoomed settings, reduced motion and disabling during category motion settle",
+      "unmount during motion removes only owned presentation; remount preserves settings"
+    ]
+  },
+  "entries": [
+    {
+      "entry": "scripts/check-settings-refraction.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "named",
+      "cases": [
+        {
+          "id": "frozen baseline source identity; only two generated candidate source files differ",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "V2.3 open, close and category settlement stay near the actual 3.0.4 baseline",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "category readable progress matches the old release, not only its final duration",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "1280: real modal, geometry, hit testing, actual preference input and keyboard close",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "1280: fast latest-intent category switching settles one accessible page",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "1280: short opacity-only open/close keeps latest intent and stationary hitboxes",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "1280: reduced motion, preference cancellation and hidden-page settlement",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "1280: unmount while moving removes owned nodes and remount preserves preference",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "390: real modal, geometry, hit testing, actual preference input and keyboard close",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "390: fast latest-intent category switching settles one accessible page",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "390: short opacity-only open/close keeps latest intent and stationary hitboxes",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "390: reduced motion, preference cancellation and hidden-page settlement",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "390: unmount while moving removes owned nodes and remount preserves preference",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "resize/rotation and 125% page zoom settle usable controls",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a23e4487d5e31335356ec0461d734f8d2947a48abe6b5a927ef3f6d84083f0b1",
+      "assertionSites": 80
+    },
+    {
+      "entry": "scripts/ci-research-unit.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "13f576a7e8b562a76222fa42b576383bb032f4d85a0fc2aaf17f6a5a446629a4",
+      "assertionSites": 0
+    },
+    {
+      "entry": "scripts/evolution-inventory.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "8590d06f4053d68cd8eb7009e345935388ad7f970878c964844153a061e3e881",
+      "assertionSites": 0
+    },
+    {
+      "entry": "tests/adapter-build-boundary.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "44c58035c05359d7482f7fec1ea088f2d83593590e909ee6402e87a797938625",
+      "assertionSites": 5
+    },
+    {
+      "entry": "tests/adapter-materials.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "72547aac5054e9078e10548341cf9fda0550cffab736bec96fa6185a8e312c26",
+      "assertionSites": 170
+    },
+    {
+      "entry": "tests/ci-evidence.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "b7f5845d295246a5938a12a5f55a1c29a7fbb81e21b4172d43e46bbfb463f85e",
+      "assertionSites": 84
+    },
+    {
+      "entry": "tests/ci-gate.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "bc71a2b94f3159f06efb5443fb55d6c2f2e51b83902d019224696dd532d01dbf",
+      "assertionSites": 81
+    },
+    {
+      "entry": "tests/ci-v12.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "305a37046cb2a06622d6f15ae4c2bee180578c87ef35d0004fd0c0a1670d6264",
+      "assertionSites": 26
+    },
+    {
+      "entry": "tests/combat-focused.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "9daf3b5fb294c62022a4a4041372e7f6029e8822b8cd83549679ca463f0f9a6a",
+      "assertionSites": 37
+    },
+    {
+      "entry": "tests/combat-select.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "506da1e15e75c34e30f0b36bb053586f0423c847da1332e5b0d6f99091b94524",
+      "assertionSites": 23
+    },
+    {
+      "entry": "tests/device-layouts.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "8dc72d5ac8ba99f62e635de494e110de84ae27a9e8dee55ea1c0d0f520891469",
+      "assertionSites": 13
+    },
+    {
+      "entry": "tests/device-probe.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "0fa232f9c04b22534239f0802a92d4436341c1affedcc21905cd0f390bebfe3d",
+      "assertionSites": 39
+    },
+    {
+      "entry": "tests/device-profiles.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "85b4112629ec96b7e24ba56869b4992474bb8d8656c5b046066f63d4e033abfa",
+      "assertionSites": 82
+    },
+    {
+      "entry": "tests/evolution-navigation.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "14121e0301a9b31ce62e3013fa279f25620f518fabd8858e68af300ac3621644",
+      "assertionSites": 38
+    },
+    {
+      "entry": "tests/evolution-orbit.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "42552c1f8b28379c311e9b2c11e414442a081cca34c1ce1cb02ee0d590c9f923",
+      "assertionSites": 17
+    },
+    {
+      "entry": "tests/evolution-owner-resources.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "composed",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:actual official registration",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:preview style isolation and scrollbar-free scrolling",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:actual settings action once during movement and protected real settings",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:actual glass preference gates the new shell",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:native whitelist single action, unavailable fallback and third-party view",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:keyboard, latest intent, drag cancel and docking",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:zoom, rotation, finite geometry and reachable tools",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:hidden scene, zero-size, motion preference and owner release",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:partial visual construction failure preserves classic actual Hub",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:observer constructor failure leaves no appended canvas",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:peer clock survives Hub teardown and throwing cleanup retires every owned node",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "0b19768a8c2b673ec2a35048f41d7e3d19e2e669304771035d4a06a0b3376183",
+      "assertionSites": 107,
+      "rendererContexts": [
+        "sphere:2d"
+      ]
+    },
+    {
+      "entry": "tests/evolution-panels.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "d706de9a410307c0b637bee012a2e49ce3fb938c3cd0a8697bec1cacdcc05e70",
+      "assertionSites": 18
+    },
+    {
+      "entry": "tests/evolution-rain-glass.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "6f46021dfdff5804411b2d20999eb4a65b97feb23f824d3904c4d7e58adfb3bc",
+      "assertionSites": 33
+    },
+    {
+      "entry": "tests/evolution-rain-model.test.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "seeded attached drops grow, coalesce and drain with finite bounded geometry",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "same simulation step history reproduces drop identities and trajectories",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "invalid geometry and time are rejected",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "natural wet trails follow a non-straight drop route, vary in width, and reset on resize",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "runoff renews through sustained rain and leaves only after crossing the bottom",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "rain intensity changes replenishment while default intensity preserves the existing model",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "optional rain energy makes the same runoff drop descend faster and keeps default behavior",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "7c1358b6476ebfff0f3d04575986816a9746483b8ae6d1cc8af6b7868e879c43",
+      "assertionSites": 40
+    },
+    {
+      "entry": "tests/evolution-resource-contract.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "be91bcf51e3affeee797c255ae84d1254799862e3ce39cfaf13397233413ffa3",
+      "assertionSites": 4
+    },
+    {
+      "entry": "tests/evolution-scattered-shower.test.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "seeded rain is reproducible, sparse and has independent motion rather than a common tile translation",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "rain levels increase budget/speed while renewal remains finite, bounded and staggered",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a3e2cfaa9250b2267bb6c4272654da614216f8203ca5a648a7cfa9420ee8a7d4",
+      "assertionSites": 17
+    },
+    {
+      "entry": "tests/evolution-weather-candidates.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "322a57064ac0f3d5cf660c016a44a27543df3ac8be6ff3291c82187c2fd386ed",
+      "assertionSites": 22
+    },
+    {
+      "entry": "tests/evolution-weather-levels.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "bf58454d029591be69ee029a24093ee81d97a73a58b512e6652dcaacd4b93b54",
+      "assertionSites": 20
+    },
+    {
+      "entry": "tests/evolution-weather-shower.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "67a09d024a3a8b64b4c35f1d18c50a175358a4ed692e8be72c0b886d3ee0f80c",
+      "assertionSites": 26
+    },
+    {
+      "entry": "tests/evolution-weather.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "checkpoint",
+      "cases": [
+        {
+          "id": "W1 actual approved settings component and clear Acrylic surface",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "W2 same-surface wetting, beads and tracks consume real weather classification",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "W3 mid-rain snow redirects continuous parameters with no state reset",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "W4 short controlled use: real category controls, hidden/resume, resize, reduced preference, close/reopen and release",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "ffea0e76b96dc7a6b4d8660155995d9caff27922d84ed5d518370c1dd851a379",
+      "assertionSites": 18,
+      "rendererContexts": [
+        "weather:2d"
+      ]
+    },
+    {
+      "entry": "tests/floating-preferences.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "b105350d62ca1eaf1c62f08cf3c89c4490d7c69baf93c066c1f4b1a2e9e81b78",
+      "assertionSites": 12
+    },
+    {
+      "entry": "tests/framework-commands.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "089c262451059d3ea37ff09fdacca6c0ac4e48224fd6a0f6e4da2dae6c4e592d",
+      "assertionSites": 49
+    },
+    {
+      "entry": "tests/framework-connect.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a60700582dc4f7ef7570a00fb744533bc1ef14b2ebb268f2e66c8e841503fb6f",
+      "assertionSites": 8
+    },
+    {
+      "entry": "tests/framework-startup.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "checkpoint",
+      "cases": [
+        {
+          "id": "missing-any",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "healthy",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "disabled",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "late-host",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "wrong-host",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "missing-host",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "broken-init",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "host-stopped",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "signal-composition",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "884b1de361c96557cb5984d7f8263a15ccbde8b762673dab4501114799c5363e",
+      "assertionSites": 154
+    },
+    {
+      "entry": "tests/framework.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "07689c7aaa921c58643915ba315b80d262e08f5d18a89d61ecd014e7cd565374",
+      "assertionSites": 73
+    },
+    {
+      "entry": "tests/game-first-motion.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "871f06c2f240e184701f103bb467c667d80941a0b5307ce08858523db550cea6",
+      "assertionSites": 15
+    },
+    {
+      "entry": "tests/golden-spin-b.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "named",
+      "cases": [
+        {
+          "id": "ball-only stages accelerate, release an expanding spiral, then naturally settle",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "rapid restart and mid-flight collection retain angular continuity and release all motion",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "narrow screen and resize keep the ball hit target inside the stage",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "reduced motion renders a static response with keyboard-accessible controls",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "dispose cancels the timeline, frame, observers and responsive callbacks",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "61139b80109b96f39b3792adaa8e93091fcd3d43733ff51b373e1f3f9f0f99e8",
+      "assertionSites": 26,
+      "rendererContexts": [
+        "sphere:2d"
+      ]
+    },
+    {
+      "entry": "tests/golden-spin-hub-input.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "named",
+      "cases": [
+        {
+          "id": "H3 visible moving tool accepts a real pointer once without moving beneath the press",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H3 keyboard activation and cancel during opening retain native focus and single activation",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H3 releasing a pointer outside cancels activation and resumes instead of pinning pointer focus",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H1 H2 opening and closing reverse continuously, keep native terminal layout and settle resources",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H3 H4 drag during opening closes safely, then dock and restore work during the next opening",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H4 narrow touch and zoom preserve targets; active reduced/disabled motion settles immediately",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H4 hidden view pauses both layers and resumes the latest intent",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H4 scene exit, owner teardown and re-mount cannot replay activation or retain callbacks",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "9fa09f335c5e1c5888cbcc075efe3eae2d4b7f14a1402911d9849cd454df2c28",
+      "assertionSites": 35
+    },
+    {
+      "entry": "tests/golden-spin-hub-lifecycle.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "named",
+      "cases": [
+        {
+          "id": "H3 release over native ball clears the pressed tool without replay",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H4 hidden scene replacement freezes both new clocks until visible",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "H4 zero-root scene replacement retains finite geometry and restores native input",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a50dd68160b1fa0a348f445de8c19aaa3b8024f665926f8aba8eb24f832dc656",
+      "assertionSites": 18
+    },
+    {
+      "entry": "tests/golden-spin-hub.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "named",
+      "cases": [
+        {
+          "id": "real tools unfold immediately alongside sphere charge and remain hittable in their native layout",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "real tool detail opens once and returns to the menu; Escape collects it",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "rapid reversals retain the current menu progress and sphere angle",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "left/right docking, narrow touch, resize and reduced motion preserve interaction",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "dynamic tools, zoom and scene invalidation keep the native Hub owner in control",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "unmount stops both controllers and removes the experimental canvas",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "f0a43ef9bbc177d8c6fd4c518d0eabf67d11e3422b1adc70865559e5d5250a47",
+      "assertionSites": 22,
+      "rendererContexts": [
+        "sphere:2d"
+      ]
+    },
+    {
+      "entry": "tests/header-weather.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "695d82b2bc2c99bbc0fb73ff2b4e7371961ee8bd92367c29583c99288b07b9bd",
+      "assertionSites": 59
+    },
+    {
+      "entry": "tests/kraft-work-adapters.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a45d851cd1c9790dbfe3b4f8c23141357cfcc7c0225de240cf924225a92aceb8",
+      "assertionSites": 15
+    },
+    {
+      "entry": "tests/kraft-work-baseline.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "c9ac265a69cdcbefcee6f57b7543b06be81ec0463358558385337f09715cbb32",
+      "assertionSites": 21
+    },
+    {
+      "entry": "tests/moody-historical-regressions.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "9ec1fe65fcb705cbe6ebbe2f68d241584764c94d4a8eaabad5c50f015c32157b",
+      "assertionSites": 15
+    },
+    {
+      "entry": "tests/motion-workspace.cjs",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "named",
+      "cases": [
+        {
+          "id": "shared motion cancels hidden work and cannot restart after disposal",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "real settings keep stable hitboxes, directional category completion and modal boundaries",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "native-window material owns movement while original controls stay stationary and execute once",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "narrow zoomed settings, reduced motion and disabling during category motion settle",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "unmount during motion removes only owned presentation; remount preserves settings",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "64c6049f980befd15557bec5d3150ecaf9cdef0c51b9e73e4551893de76c15d3",
+      "assertionSites": 67
+    },
+    {
+      "entry": "tests/mouth-compat-adapter.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a24dd17951b28212fc26cbb69380c5fc924cf3b52098b96a1e9eb49840257b37",
+      "assertionSites": 24
+    },
+    {
+      "entry": "tests/official-defaults.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "63fdee20e96ab197c283287a503667b9ffdd38fb3ed1edb9c50d5d218e8cace1",
+      "assertionSites": 22
+    },
+    {
+      "entry": "tests/official-game-motion.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "032e3c00971d7f3cefaa9755abb646d762611761ddbd12bb181708bbb99433d1",
+      "assertionSites": 96
+    },
+    {
+      "entry": "tests/optimization-wardrobe.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "269af16d2d294ab60fb78ee80fcd333ecff136ef653fe394370af2fb3c1b595e",
+      "assertionSites": 8
+    },
+    {
+      "entry": "tests/panels-framework.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "ce191d80015e88b38885274aa7fd08b822670462666ad42d0dac70fe703958ca",
+      "assertionSites": 15
+    },
+    {
+      "entry": "tests/render-state.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "8bed27c098fe5d0624f5ea837237d8c448966576e09d23a3be440cefe7730a96",
+      "assertionSites": 14
+    },
+    {
+      "entry": "tests/research-evidence.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "cb1f66e60349b8a6e5f99bcad9a82b94355ef5871485cc4c801f4e0501fbdda1",
+      "assertionSites": 56
+    },
+    {
+      "entry": "tests/save-transfer-lifecycle.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "0fc6e966fe988812d782950d848304d1df9138ff5cf5fe9adf8f4725218cbacb",
+      "assertionSites": 8
+    },
+    {
+      "entry": "tests/saves-viewport.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "acb2cdfd4938bdafad1f5000c5a040f9e7b8243e51b2678971de756e62bd8cf8",
+      "assertionSites": 85
+    },
+    {
+      "entry": "tests/selection-motion.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "f4130ba36a223361c85f2e992f380ea8536a27abc24927a2513104b0317c19d0",
+      "assertionSites": 13
+    },
+    {
+      "entry": "tests/settings-ci.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "composed",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:S01 approved shell and page timing, real input and single material surface",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:S01 reversal samples current opacity before cancellation and latest open wins",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:S01 closing and native close cancel category WAAPI and settle exactly one page",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:S01 cancellation, preferences, hidden/resize and teardown keep latest usable state",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:S01 modeless fallback and replaced dialog cancel retired shell work",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:accepted actual entry, one renderer, no legacy layer or study controls",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:continuous R10 and four levels",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:mid-snow reversal and throwing provider neutral fallback",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:unchanged reading/close pixels, visible rain and real preference input",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:zoom, narrow rotation/resize and zero-size recovery",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:motion off, hidden, close/reopen and dispose stop owned work",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:nativeNavigation uses new settings surface and removes it on close",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:partial material construction failure leaves usable static settings and no owned nodes",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "weather:throwing cleanup remains observable while all surfaces and nodes retire",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "b85b8134780d5e267b674f22f5292960352e4ad209b08e293d4a5512e55301be",
+      "assertionSites": 152,
+      "rendererContexts": [
+        "weather:2d"
+      ]
+    },
+    {
+      "entry": "tests/shop-early-api.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "checkpoint",
+      "cases": [
+        {
+          "id": "default-off",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "strict-boolean",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "repeat-identity",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "foreign-fields",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "reset",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "f68c2a5c680c7a440e54f30423baa480304e3fb1449abed3b53f37589de76eb1",
+      "assertionSites": 7,
+      "evidence": "checkpoints"
+    },
+    {
+      "entry": "tests/shop-ripple-motion.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "baa4425f423a4abb39e1a0a0633f30cc305127b5773282624fd091f1a0754358",
+      "assertionSites": 19
+    },
+    {
+      "entry": "tests/shop-source.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "f7cbedb83be38ff0f1201b05c030315fab0effcdd099cd18b0f4497f5a52d806",
+      "assertionSites": 17
+    },
+    {
+      "entry": "tests/source-motion-lifecycle.cjs",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "528f6feb7f184bc608f4a6df768020947c9d513bb53f5a1ae6d58cb2e54df5d0",
+      "assertionSites": 11
+    },
+    {
+      "entry": "tests/startup-cache.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "2de4701c9b1b63f7f3309294f4470911f52aa089c29e4459891c22e5ca43143c",
+      "assertionSites": 5
+    },
+    {
+      "entry": "tests/status.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "4eeb64a278c137ea6cda75fbe3a95860895199c1bbc626a1fd2d2cb960e3b7d9",
+      "assertionSites": 27
+    },
+    {
+      "entry": "tests/target-version.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "e8b6b85ca6542f4b0939a6e9c40d2041c0725b8297fae970ed73e88c6b7c0a56",
+      "assertionSites": 17
+    },
+    {
+      "entry": "tests/test-workflow.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "dc924dfeb44a942cebc0dfc0cb8ca1b7216d63f31d193094a9ebdc72ce903d2c",
+      "assertionSites": 35
+    },
+    {
+      "entry": "tests/ui-runtime-compat.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "checkpoint",
+      "cases": [
+        {
+          "id": "before-core",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "unsupported-api",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "core-arrives",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "disable-restore",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "destroy-reinject",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "peer-preservation",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "72bc616ff9e168e6d0432b763ad1b7d0dac11193b5117e5054e347c9df43b54d",
+      "assertionSites": 45,
+      "evidence": "checkpoints"
+    },
+    {
+      "entry": "tests/ui-runtime-identity.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "checkpoint",
+      "cases": [
+        {
+          "id": "core-identity",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "72bc616ff9e168e6d0432b763ad1b7d0dac11193b5117e5054e347c9df43b54d",
+      "assertionSites": 7,
+      "evidence": "checkpoints"
+    },
+    {
+      "entry": "tests/ui-runtime-inspector.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "checkpoint",
+      "cases": [
+        {
+          "id": "privacy",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "clipboard-export",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "bounded-stable-events",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "cleanup",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "72bc616ff9e168e6d0432b763ad1b7d0dac11193b5117e5054e347c9df43b54d",
+      "assertionSites": 48,
+      "evidence": "checkpoints"
+    },
+    {
+      "entry": "tests/ui-runtime-regressions.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "178bb0437fd518e1e53428114f26351afd3f73d2a9f4b4da939789295c92bc27",
+      "assertionSites": 19
+    },
+    {
+      "entry": "tests/ui-runtime-surfaces.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "checkpoint",
+      "cases": [
+        {
+          "id": "focus-escape",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "identity-detach-form",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "fallback-errors",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idempotent-destroy",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "72bc616ff9e168e6d0432b763ad1b7d0dac11193b5117e5054e347c9df43b54d",
+      "assertionSites": 39,
+      "evidence": "checkpoints"
+    },
+    {
+      "entry": "tests/visual-scope.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "3ed8ef0ce1aa8f4d993667dff4bf09839640da03581b4d5453be5008908bc009",
+      "assertionSites": 23
+    },
+    {
+      "entry": "tests/wardrobe-data.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "8ad12b86e6f3657e7f0967033b7ff816f0e4012b49675d08a9a9286e0e7bd7ba",
+      "assertionSites": 20
+    },
+    {
+      "entry": "tests/wardrobe-details-drawer.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a541ccedb95730dbccfbccb5601885116e163c0e4872e8187d01748c4cd45482",
+      "assertionSites": 11
+    },
+    {
+      "entry": "tests/wardrobe-operations.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "e88a066814a95093cb1857f3498968ae9460422cf2e9c432c300d19efd5a0feb",
+      "assertionSites": 21
+    },
+    {
+      "entry": "tests/wardrobe-performance.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "0bf90b26aa1beb879664e6bbe8f51ec1577d8a54642669e764fa60418d6308f5",
+      "assertionSites": 8
+    },
+    {
+      "entry": "tests/wardrobe-slot-mappings.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "62615b89a1bd47f3abe52a03ef1ece74a3bf1177eb71453d37d970d8b4c7e9a1",
+      "assertionSites": 32
+    },
+    {
+      "entry": "tests/wardrobe-source-m2.test.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "bba9b23b9c967771f17d049440ae151e3eaaf473c5e5709231bba61c9fee5998",
+      "assertionSites": 43
+    },
+    {
+      "entry": "tests/wardrobe-wear-motion.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "89d720f652038745d7448e7211a9dc9b0787d9cfd4e94624450b04b348d2b48a",
+      "assertionSites": 33
+    }
+  ]
+}

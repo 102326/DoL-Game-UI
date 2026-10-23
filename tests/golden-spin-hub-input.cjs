@@ -1,3 +1,5 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"named","caseSource":"check"}
+const {runCase}=require('../scripts/ci-cases.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
 const {chromium}=require('playwright');
 const reverseHub=require('./hub-reversal-probe.cjs');
@@ -9,7 +11,7 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
  const server=await createServer({configFile:path.resolve('vite.golden-spin.config.ts'),plugins:baseline?[{name:'frozen-hub-input-baseline',enforce:'pre',load(id){if(id.replaceAll('\\','/').endsWith('/prototypes/golden-spin-b/hub-motion.ts'))return old}}]:[],server:{port:5184,strictPort:true}});await server.listen();
  const browser=await chromium.launch(process.platform==='win32'?{channel:'msedge',headless:true}:{headless:true});
  const evidence={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p;
- const check=async(name,fn)=>{await fn();evidence.checks.push(name);console.log('PASS',name)};
+ const check=async(name,fn)=>{await runCase(name,fn);evidence.checks.push(name);console.log('PASS',name)};
  try{
   p=await browser.newPage({viewport:{width:1280,height:900},hasTouch:true});p.on('pageerror',e=>evidence.errors.push(e.message));
   await p.goto('http://127.0.0.1:5184/hub.html');await p.waitForFunction(()=>window.goldenSpinLab?.controller);

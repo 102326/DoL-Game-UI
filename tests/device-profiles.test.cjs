@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const { devices } = require('playwright');

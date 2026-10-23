@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"entry"}
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path'),cp=require('node:child_process');
 const baseline=process.argv.includes('--baseline'),baselineSource=baseline?cp.execFileSync('git',['show','ca0d606b775ae76f3bc1b321e5b62549afde62cf:src/panels/main.ts'],{encoding:'utf8'}):undefined;
 (async()=>{

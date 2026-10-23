@@ -1,7 +1,7 @@
 const path=require('node:path'),{recordFailure,recordNodeCases}=require('./ci-process-receipt.cjs');
 module.exports=async function*(source){let assertion,summary;const cases=[];const expected=JSON.parse(process.env.MOODY_EXPECTED_NODE_CASES||'[]');
  for await(const event of source){
-  if(['test:pass','test:fail'].includes(event.type)&&event.data.file){const id=path.basename(event.data.file)+'::'+event.data.name;cases.push({id,status:event.data.skip||event.data.todo?'SKIP':event.type==='test:fail'?'FAIL':'PASS'});}
+  if(['test:pass','test:fail'].includes(event.type)&&event.data.file){const id=path.basename(event.data.file)+'::'+event.data.name;cases.push({id,status:event.data.skip||event.data.todo?'SKIP':event.type==='test:fail'?'FAIL':'PASS',milliseconds:event.data.details?.duration_ms??null,assertions:null,assertionEvidence:'native node:test outcome; individual assertion counts unavailable',path:'node:test',...(event.type==='test:fail'?{failureSignature:String(event.data.details?.error?.message||'native test failed').slice(0,500)}:{})});}
   if(event.type==='test:fail'){const error=event.data.details?.error?.cause||event.data.details?.error;if(error?.code==='ERR_ASSERTION')assertion=error;recordFailure(assertion||error,{nodeTest:true})}
   if(event.type==='test:summary')summary=event.data;
   yield JSON.stringify({type:event.type,name:event.data.name,counts:event.data.counts,message:event.data.details?.error?.message})+'\n';

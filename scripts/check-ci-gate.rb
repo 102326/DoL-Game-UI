@@ -16,4 +16,23 @@ end
  output,status=Open3.capture2e({'VALIDATE_RESULT'=>'success','EVIDENCE_RESULT'=>result},'bash','-e','-o','pipefail','-c',script)
  raise "gate accepted incomplete remote evidence #{result.inspect}" if status.success?
 end
+%w[build.yml golden-spin-prototype.yml].each do |file|
+ w=YAML.safe_load(File.read(File.join(root,'.github/workflows',file)), permitted_classes: [], aliases: false)
+ producer=file=='build.yml' ? 'validate' : 'prototype'
+ concurrency=w.fetch('concurrency')
+ raise "event/manual concurrency collision: #{file}" unless concurrency['group'].include?('github.event_name') && concurrency['group'].include?('github.run_id')
+ raise "main push may be cancelled: #{file}" unless concurrency['cancel-in-progress'].include?("github.ref != 'refs/heads/main'")
+ remote=w.fetch('jobs').fetch('evidence-verify')
+ raise "remote gate can skip: #{file}" unless remote['if']=='${{ always() }}' && remote['needs']==producer
+ expected='${{ needs.'+producer+'.outputs.evidence_upload }}'
+ raise "upload outcome not anchored: #{file}" unless remote.dig('env','MOODY_UPLOAD_OUTCOME')==expected
+ verify=remote.fetch('steps').find{|s|s['name']=='Verify actual downloaded evidence'}
+ raise "download failure skips verifier: #{file}" unless verify && verify['if']=='always()' && verify.dig('env','MOODY_DOWNLOAD_OUTCOME')=='${{ steps.evidence-download.outcome }}'
+ upload=w.fetch('jobs').fetch(producer).fetch('steps').find{|s|s['id']=='evidence-upload'}
+ raise "missing actual upload: #{file}" unless upload && upload['if']=='always()'
+end
+%w[build packages browser-install browser build-artifacts].each do |id|
+ step=workflow.fetch('jobs').fetch('validate').fetch('steps').find{|s|s['id']==id}
+ raise "independent stage uses implicit success(): #{id}" unless step && step['if'].include?('!cancelled()')
+end
 puts 'PASS: actual CI gate accepts success only; failure/skip/cancel/neutral/timeout/missing rejected'

@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),path=require('node:path'),{spawnSync}=require('node:child_process');
 const run=(...args)=>spawnSync(process.execPath,[path.join(__dirname,'../scripts/test-workflow.cjs'),...args],{encoding:'utf8'});
 for(const mode of ['quick','release','performance']){

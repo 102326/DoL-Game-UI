@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),path=require('node:path'),vm=require('node:vm');
 const {buildSync}=require('esbuild');
 const code=buildSync({entryPoints:[path.join(__dirname,'../src/wardrobe/performance.ts')],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text;

@@ -1,3 +1,5 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"named","caseSource":"check"}
+const {runCase}=require('./ci-cases.cjs');
 // Run against the actual static build. Evidence/recording stays first-party and local.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),{execFileSync}=require('node:child_process'),{createHash}=require('node:crypto');
 const {chromium}=require('playwright');
@@ -8,7 +10,7 @@ const record=process.argv.includes('--record'),checks=[],errors=[],timingMeasure
 const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.json':'application/json'};
 const server=http.createServer((req,res)=>{const file=path.resolve(dist,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname==='/'?'/index.html':new URL(req.url,'http://local').pathname));if(!file.startsWith(dist+path.sep)||!fs.existsSync(file)){res.writeHead(404);res.end();return}res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res)});
 const browserOptions=require('../tests/browser-options.cjs');
-async function check(name,fn){await fn();checks.push(name);console.log('PASS',name)}
+async function check(name,fn){await runCase(name,fn);checks.push(name);console.log('PASS',name)}
 const act=(page,action)=>page.evaluate(action=>window.settingsStudy.act(action),action);
 const waitOpen=page=>page.waitForFunction(()=>document.querySelector('dialog')?.dataset.rfState==='open');
 const waitClosed=page=>page.waitForFunction(()=>!document.querySelector('dialog')?.open);

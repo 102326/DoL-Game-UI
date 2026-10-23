@@ -9,6 +9,7 @@ import ast
 import io
 import re
 import sys
+import tempfile
 import uuid
 import platform
 import zlib
@@ -351,11 +352,17 @@ def main():
         report['builds'].append(first)
         report['contracts'] = packages
         write_json(destination, report)
-        # Genuine new compiler and archive invocations; no deletion of old logs or broad dist trees.
-        subprocess.run(['node', str(ROOT / 'scripts/build-framework.mjs')], cwd=ROOT, check=True)
-        build_packages()
+        # Independent checkout/output/cache; volatile identity stays outside ZIPs.
+        with tempfile.TemporaryDirectory(prefix='moody-independent-build-') as temporary:
+            subprocess.run(['node', str(ROOT / 'scripts/ci/isolated-build.ts'), str(ROOT), temporary, sys.executable], cwd=ROOT, check=True)
+            first_root = ROOT
+            try:
+                globals()['ROOT'] = Path(temporary)
+                second, packages = build_observation(identity, identity['run']['id'])
+                second['isolation'] = json.loads((ROOT / 'dist/CJ3C_ISOLATION.json').read_text())
+            finally:
+                globals()['ROOT'] = first_root
         assert observed_source() == identity['source'], 'CJ3C_SOURCE_CHANGED_BETWEEN_BUILDS'
-        second, packages = build_observation(identity, identity['run']['id'])
         report['builds'].append(second)
         assert first['receipt']['invocation'] != second['receipt']['invocation'], 'CJ3C_REUSED_BUILD_RECEIPT'
         differences = []

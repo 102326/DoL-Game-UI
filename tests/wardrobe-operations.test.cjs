@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),path=require('node:path'),vm=require('node:vm'),{buildSync}=require('esbuild');
 const m={exports:{}};vm.runInNewContext(buildSync({entryPoints:[path.join(__dirname,'../src/wardrobe/operations.ts')],bundle:true,write:false,format:'cjs',platform:'node'}).outputFiles[0].text,{module:m,exports:m.exports});
 const {relatedPieces,pieces,repairMinutes,canRepair,destinations,transferProblem}=m.exports;

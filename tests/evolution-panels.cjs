@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"entry"}
 // Shared coordinate contract on actual native panel consumers; not game acceptance.
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
 (async()=>{const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;

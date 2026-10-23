@@ -1,3 +1,5 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"named","caseSource":"check"}
+const {runCase}=require('../scripts/ci-cases.cjs');
 // Real settings/controller and native-overlay presentation on first-party controlled HTML.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require('playwright'),{waitSettings,waitSettingsClosed}=require('./moody-oracles.cjs');
@@ -5,7 +7,7 @@ const {chromium}=require('playwright'),{waitSettings,waitSettingsClosed}=require
  const out=path.resolve('tests/artifacts/golden-spin-b/windows-validation-'+Date.now());fs.mkdirSync(out,{recursive:true});
  const {createServer}=await import('vite');const server=await createServer({configFile:path.resolve('vite.golden-spin.config.ts'),server:{port:5184,strictPort:true}});await server.listen();
  const browser=await chromium.launch(require('./browser-options.cjs'));let page;const checks=[],errors=[];
- const check=async(name,fn)=>{await fn();checks.push(name);console.log('PASS',name)};
+ const check=async(name,fn)=>{await runCase(name,fn);checks.push(name);console.log('PASS',name)};
  try{
   page=await browser.newPage({viewport:{width:1280,height:900}});page.on('pageerror',e=>errors.push(e.message));
   await page.goto('http://127.0.0.1:5184/windows.html');await page.waitForFunction(()=>window.motionWorkspace&&window.DoLMidnightTheme);

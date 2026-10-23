@@ -14,16 +14,19 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: kraft-work-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: kraft-work-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}-${{ github.event_name == 'workflow_dispatch' && github.run_id || 'shared' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref != 'refs/heads/main') }}
 defaults:
   run:
     shell: bash
+env:
+  NODE_OPTIONS: --experimental-strip-types
 jobs:
   validate:
     outputs:
       manifest_sha256: ${{ steps.evidence.outputs.manifest_sha256 }}
       evidence_nonce: ${{ steps.evidence.outputs.evidence_nonce }}
+      evidence_upload: ${{ steps.evidence-upload.outcome }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -59,18 +62,23 @@ jobs:
         name: Business and source checks
         run: node scripts/test-ci.cjs stage unit
       - id: build
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' && steps.check.outcome == 'success' }}
         name: Build Framework and eight current packages
         run: node scripts/test-ci.cjs stage build
       - id: packages
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         name: ZIP contracts, negative cases and two-build comparison
         run: node scripts/test-ci.cjs stage packages
       - id: browser-install
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         name: Install pinned browser
         run: node scripts/test-ci.cjs stage browser-install
       - id: browser
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.browser-install.outcome == 'success' }}
         name: Browser contracts, interactions, motion and compatibility
         run: node scripts/test-ci.cjs stage browser
       - id: build-artifacts
+        if: ${{ !cancelled() && steps.packages.outcome == 'success' }}
         name: Build artifacts (not a Release)
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -84,7 +92,8 @@ jobs:
         env:
           MOODY_STEPS: ${{ toJSON(steps) }}
         run: node scripts/test-ci.cjs summary
-      - name: Controlled test logs
+      - id: evidence-upload
+        name: Controlled test logs
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -92,6 +101,12 @@ jobs:
           path: tests/artifacts/ci/${{ env.MOODY_EVIDENCE_ID }}/upload/
           if-no-files-found: error
           retention-days: 7
+
+      - name: Record actual evidence upload outcome
+        if: always()
+        env:
+          MOODY_UPLOAD_OUTCOME: ${{ steps.evidence-upload.outcome }}
+        run: node scripts/ci/upload-result.ts
 
   moody-gate:
     needs: [validate, evidence-verify]
@@ -120,6 +135,8 @@ jobs:
       MOODY_EXPECTED_NONCE: ${{ needs.validate.outputs.evidence_nonce }}
       MOODY_MANIFEST_SHA256: ${{ needs.validate.outputs.manifest_sha256 }}
       MOODY_PRODUCER_JOB: validate
+      MOODY_UPLOAD_OUTCOME: ${{ needs.validate.outputs.evidence_upload }}
+      MOODY_PRODUCER_RESULT: ${{ needs.validate.result }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -128,11 +145,15 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: '22'
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - id: evidence-download
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: kraft-work-checks-${{ github.sha }}
           path: tests/artifacts/download-evidence
       - name: Verify actual downloaded evidence
+        if: always()
+        env:
+          MOODY_DOWNLOAD_OUTCOME: ${{ steps.evidence-download.outcome }}
         run: node scripts/ci-verify-remote.cjs tests/artifacts/download-evidence
       - name: Persist remote verification result
         if: always()

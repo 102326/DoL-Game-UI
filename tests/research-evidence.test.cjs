@@ -1,3 +1,6 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
+const {healthyCaseFields}=require('./ci-fixtures.cjs');
+const {familyReports}=require('../scripts/ci/research-families.ts');
 const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const {plan,caseIds,recordReport,researchSummary,researchUpload,stamp,runResearch}=require('../scripts/ci-research.cjs');
 const {catalogFor,catalogIdentity,visualEvidence,researchUnitEntries,nodeTestCases,nodeCaseIds,commandCaseIds}=require('../scripts/ci-catalog.cjs');
@@ -7,9 +10,9 @@ const {writeJson,hash,runCommand,verifyRemote}=require('../scripts/ci-evidence.c
  const ctx={root:dir,dir:path.join(dir,'evidence'),identity:{projectId:require('../project-identity.json').projectId,profile:'research',catalog:catalogIdentity('research'),source:{head:'controlled-head'},run:{id:'controlled-run',attempt:'2'}}};
  fs.mkdirSync(ctx.dir,{recursive:true});
  const pass={status:'PASS',rawStatus:'passed',exitCode:0,milliseconds:1,assertions:1};
- const report={schema:1,identity:ctx.identity,suite:'research',expected:plan.map(c=>c.id),status:'PASS',results:[]};
+ const report={schema:1,identity:ctx.identity,suite:'research',sourceAfter:ctx.identity.source,expected:plan.map(c=>c.id),status:'PASS',results:[]};
  try{
-  writeJson(path.join(ctx.dir,'unit.json'),{schema:1,identity:ctx.identity,status:'PASS',suite:'unit',expected:researchUnitEntries,results:researchUnitEntries.map(name=>({name,...pass,assertions:1,nodeTests:nodeTestCases[name]?.map(n=>({id:name+'::'+n,status:'PASS'}))}))});
+  writeJson(path.join(ctx.dir,'unit.json'),{schema:1,identity:ctx.identity,status:'PASS',sourceAfter:ctx.identity.source,suite:'unit',expected:researchUnitEntries,results:researchUnitEntries.map(name=>({name,...pass,...healthyCaseFields(name),assertions:1,nodeTests:nodeTestCases[name]?.map(n=>({id:name+'::'+n,status:'PASS'}))}))});
   writeJson(path.join(ctx.dir,'catalog.json'),{schema:1,identity:ctx.identity,catalog:catalogFor('research')});
   const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=','base64');
   for(const [id,files]of Object.entries(visualEvidence))for(const file of files){const target=path.join(ctx.dir,'review',id,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,png)}
@@ -28,9 +31,9 @@ const {writeJson,hash,runCommand,verifyRemote}=require('../scripts/ci-evidence.c
     }
     writeJson(path.join(ctx.dir,file),data);
    }
-   report.results.push({name:check.id,nodeTests:nodeCaseIds(check.args).length?nodeCaseIds(check.args).map(id=>({id,status:'PASS'})):undefined,...pass,caseIds:ids,artifacts:spec?[{file,sha256:hash(fs.readFileSync(path.join(ctx.dir,file)))}]:[]});
+   report.results.push({name:check.id,...healthyCaseFields(check.args.find(a=>a.endsWith('.cjs'))?.split('/').at(-1)),nodeTests:nodeCaseIds(check.args).length?nodeCaseIds(check.args).map(id=>({id,status:'PASS'})):undefined,...pass,caseIds:ids,artifacts:spec?[{file,sha256:hash(fs.readFileSync(path.join(ctx.dir,file)))}]:[]});
   }
-  const save=()=>writeJson(path.join(ctx.dir,'research.json'),report);
+  const save=()=>{writeJson(path.join(ctx.dir,'research.json'),report);for(const family of familyReports(ctx.identity,report.expected,report.results,report.sourceAfter))writeJson(path.join(ctx.dir,'families',family.family+'.json'),family);};
   const summary=()=>researchSummary(ctx);
   save();for(const id of ['dependencies','browser-install'])writeJson(path.join(ctx.dir,`stage-${id}.json`),{schema:1,identity:ctx.identity,...pass});
   writeJson(path.join(ctx.dir,'identity.json'),{schema:1,identity:ctx.identity});
@@ -49,7 +52,7 @@ const {writeJson,hash,runCommand,verifyRemote}=require('../scripts/ci-evidence.c
     const file=path.join(ctx.dir,`stage-${stage}.json`),original=JSON.parse(fs.readFileSync(file));writeJson(file,{...original,...actual,status:'PASS',assertionResult:'PASS'});
     assert.equal(summary().status,'ERROR','F1 research tool stages retain terminal failure despite claimed PASS');writeJson(file,original);
    }
-   const unitFile=path.join(ctx.dir,'unit.json'),unitOriginal=JSON.parse(fs.readFileSync(unitFile)),unitPoisoned=structuredClone(unitOriginal);Object.assign(unitPoisoned.results[0],actual,{status:'PASS',assertionResult:'PASS'});writeJson(unitFile,unitPoisoned);
+   const unitIndex=JSON.parse(fs.readFileSync(path.join(ctx.dir,'unit.json'))),unitFile=path.join(ctx.dir,unitIndex.results[0].resultFile),unitOriginal=JSON.parse(fs.readFileSync(unitFile)),unitPoisoned=structuredClone(unitOriginal);Object.assign(unitPoisoned.result,actual,{status:'PASS',assertionResult:'PASS'});writeJson(unitFile,unitPoisoned);
    assert.equal(summary().status,status,'F1 research required unit subentries retain terminal failure despite claimed PASS');writeJson(unitFile,unitOriginal);
   }
   for(const id of ['official-game-motion','game-first-motion','panels-framework']){
@@ -125,7 +128,7 @@ const {writeJson,hash,runCommand,verifyRemote}=require('../scripts/ci-evidence.c
   assert.throws(()=>recordReport(ctx,plan.find(c=>c.id==='golden-spin-b'),new Map()),/fresh required report/);
   assert.notEqual(researchSummary(ctx,{research:{outcome:'cancelled'}}).status,'PASS');
   const result=await runResearch(ctx,{quiet:true,checks:[{id:'fails',command:process.execPath,args:['-e','process.exit(7)']},{id:'blocked',command:process.execPath,args:['-e','throw Error("must not execute")']}]});
-  assert.deepEqual(result.results.map(r=>r.status),['ERROR','UNVERIFIED']);
-  console.log('PASS research evidence: full profile, source/run/attempt/schema, missing/stale/dist-only/hash/case negatives, command failure and fail-fast');
+  assert.deepEqual(result.results.map(r=>r.status),['ERROR','ERROR']);
+  console.log('PASS research evidence: full profile, source/run/attempt/schema, missing/stale/dist-only/hash/case negatives, independent command failure without cross-family fail-fast');
  }finally{fs.rmSync(dir,{recursive:true,force:true})}
 })().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

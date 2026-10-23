@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),vm=require('node:vm'),{buildSync}=require('esbuild');
 const timers=new Map(),pending=new Map(),cancelled=[],moduleObject={exports:{}};let serial=0;
 vm.runInNewContext(buildSync({entryPoints:['src/ui/visual-scope.ts'],bundle:true,write:false,format:'cjs'}).outputFiles[0].text,{module:moduleObject,exports:moduleObject.exports,requestAnimationFrame(callback){pending.set(++serial,callback);return serial},cancelAnimationFrame(id){cancelled.push(id);pending.delete(id)},setTimeout(callback){timers.set(++serial,callback);return serial},clearTimeout(id){timers.delete(id)}});

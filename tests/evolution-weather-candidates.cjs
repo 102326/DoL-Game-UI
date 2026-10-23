@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"entry"}
 // Deterministic evidence, not a visual quality judge. Same operation/viewport/time plan for V1/A/B.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),cp=require('node:child_process'),crypto=require('node:crypto');
 const {chromium}=require('playwright'),dist=path.resolve('tests/artifacts/evolution/weather-dist'),out=path.resolve('tests/artifacts/evolution/weather-r2-'+Date.now());fs.mkdirSync(out,{recursive:true});

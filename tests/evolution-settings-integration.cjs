@@ -1,3 +1,5 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"named","caseSource":"check"}
+const {runCase}=require('../scripts/ci-cases.cjs');
 // Real settings source and production CSS; all page content is a first-party fixture.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
 async function verifySettingsIntegration(browser,{baseline=false}={}){
@@ -9,7 +11,7 @@ async function verifySettingsIntegration(browser,{baseline=false}={}){
  const check=async(name,fn)=>{const errors=[];page=await browser.newPage({viewport:{width:1280,height:900}});page.on('pageerror',e=>errors.push(e.message));try{
   await page.goto('http://127.0.0.1:'+server.httpServer.address().port+'/__settings_integration__');await page.waitForFunction(()=>window.theme);await page.addStyleTag({path:'dist/framework/official-ui/style.css'});
   await page.evaluate(()=>{window.nativeCalls=0;document.querySelector('#native').onclick=()=>nativeCalls++;window.settingsAnimations=[];const animate=Element.prototype.animate;Element.prototype.animate=function(frames,options){const a=animate.call(this,frames,options);if(this.matches('.dmt-settings-shell,.dmt-workspace-section'))settingsAnimations.push({node:this,frames,options,animation:a});return a}});
-  const detail=await fn();assert.deepEqual(errors,[]);checks.push({name,status:'PASS',detail});console.log('PASS',name);
+  const detail=await runCase(name,fn);assert.deepEqual(errors,[]);checks.push({name,status:'PASS',detail});console.log('PASS',name);
  }catch(e){await page.screenshot({path:path.join(out,'failure-'+checks.length+'.png')}).catch(()=>{});const failure={name,status:'FAIL',error:e.message,errors};checks.push(failure);failures.push(failure);if(failures.length===1)await require('./moody-fixture-evidence.cjs').captureFailure(page,{kind:'settings',error:e,snapshot:{...(await require('./moody-oracles.cjs').settingsSnapshot(page)),integrationCase:name}});console.log('FAIL',name,e.message)}finally{await page.close()}};
  const open=()=>page.evaluate(()=>theme.openSettings()),close=()=>page.locator('.dmt-close').click(),closed=()=>page.waitForFunction(()=>!document.querySelector('dialog').open),frames=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
  try{await server.listen();
@@ -42,4 +44,4 @@ async function verifySettingsIntegration(browser,{baseline=false}={}){
  }finally{await server.close()}
 }
 module.exports={verifySettingsIntegration};
-if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifySettingsIntegration(browser,{baseline:process.argv.includes('--baseline')})}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
+if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifySettingsIntegration(browser,{baseline:process.argv.includes('--baseline')})}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 // Real save/theme modules with isolated rows and a representative native overlay wrapper.
 const {chromium}=require('playwright'),assert=require('node:assert/strict');
 (async()=>{

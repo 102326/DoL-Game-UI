@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 // Lifecycle and stale-input contracts only; real Mod business is checked separately.
 const assert=require('node:assert/strict'),{buildSync}=require('esbuild'),{chromium}=require('playwright');
 const source=buildSync({entryPoints:['compat/dol-optimization-soft-wet/dol-optimization-soft-wet.ts'],bundle:true,write:false,format:'iife'}).outputFiles[0].text;

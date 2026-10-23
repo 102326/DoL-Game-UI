@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"entry"}
 const {chromium}=require('playwright'),assert=require('node:assert/strict');
 (async()=>{const browser=await chromium.launch(require('./browser-options.cjs'));try{
  const p=await browser.newPage({viewport:{width:1200,height:900}}),errors=[];p.on('pageerror',e=>errors.push(e.message));

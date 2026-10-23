@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"entry"}
 // Controlled actual consumers + actual Host, not a full game/device acceptance.
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {chromium}=require('playwright');

@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"entry"}
 // Real OrbitFocus, production CSS and native buttons; no game state.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),{chromium}=require('playwright');
 (async()=>{

@@ -1,5 +1,7 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"composed","includes":[{"prefix":"hub","source":"tests/evolution-hub-integration.cjs"}],"rendererContexts":["sphere:2d"]}
 // Real owners and components; controlled resources, no game variables or player saves.
 const assert=require('node:assert/strict'),fs=require('node:fs'),{chromium}=require('playwright');
+const {withCaseScope}=require('../scripts/ci-cases.cjs');
 (async()=>{
  const baseline=process.argv.includes('--baseline'),revision='fbf026997c73ac35b22e3a697a13d74e0686a065',results=[],hubIntegration={checks:[],counterexamples:[]};
  const old=baseline?require('node:child_process').execFileSync('git',['show',revision+':src/wardrobe/main.ts'],{encoding:'utf8'}):null;
@@ -48,7 +50,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),{chromium}=requ
    await page.waitForTimeout(60);assert.deepEqual(errors,[],kind);console.log('PASS actual owner resources and late teardown:',kind);await page.close();
   }
   const {verifyHubIntegration}=require('./evolution-hub-integration.cjs');
-  hubIntegration.checks=await verifyHubIntegration(browser);
+  hubIntegration.checks=await withCaseScope('hub',()=>verifyHubIntegration(browser));
   await assert.rejects(()=>verifyHubIntegration(browser,{unsafeConstruction:true}),error=>{if(error.code!=='ERR_ASSERTION'||!/constructor fallback must remove the already appended canvas/.test(error.message))return false;hubIntegration.counterexamples.push({kind:'constructor-outside-cleanup',status:'REJECTED',assertion:error.message,...error.hubIntegration});return true});
   await assert.rejects(()=>verifyHubIntegration(browser,{oldGeometry:true}),error=>{if(error.code!=='ERR_ASSERTION'||!/restored Hub geometry must fit the resized hidden viewport|finite restored menu origin/.test(error.message))return false;hubIntegration.counterexamples.push({kind:'frozen-MotionHub-d3f04ee',status:'REJECTED',assertion:error.message,...error.hubIntegration});return true});
   await assert.rejects(()=>verifyHubIntegration(browser,{oldScroll:true}),error=>{if(error.code!=='ERR_ASSERTION'||!/short viewport utility must scroll within safe bounds/.test(error.message))return false;hubIntegration.counterexamples.push({kind:'old-overflow-specificity',status:'REJECTED',assertion:error.message,...error.hubIntegration});return true});

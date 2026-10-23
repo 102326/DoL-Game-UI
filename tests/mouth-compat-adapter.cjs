@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),{buildSync}=require('esbuild');
 const source=buildSync({entryPoints:[path.resolve(__dirname,'../compat/mouth-compat-051213/mouth-compat.ts')],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text;
 function load(lyra='0.5.12.13-1.0.1a-1004.1-goose-ucb',maple='5.2.3',hasApi=true){

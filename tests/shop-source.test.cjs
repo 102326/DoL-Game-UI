@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const {chromium}=require('playwright'),{buildSync}=require('esbuild'),assert=require('node:assert/strict');
 const code=buildSync({entryPoints:['src/shop/source.ts'],bundle:true,format:'iife',globalName:'ShopSourceTest',write:false}).outputFiles[0].text;
 (async()=>{const browser=await chromium.launch(require('./browser-options.cjs'));try{

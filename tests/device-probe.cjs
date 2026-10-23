@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 // Controlled file-only smoke test; no physical-device acceptance claim.
 const assert=require('node:assert/strict');
 const fs=require('node:fs');

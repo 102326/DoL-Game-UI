@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const {chromium}=require('playwright'),{buildSync}=require('esbuild'),assert=require('node:assert/strict');
 (async()=>{const b=await chromium.launch(require('./browser-options.cjs'));try{
  const p=await b.newPage();const js=buildSync({entryPoints:['src/saves/transfer.ts'],bundle:true,write:false,format:'iife',globalName:'Transfer'}).outputFiles[0].text;

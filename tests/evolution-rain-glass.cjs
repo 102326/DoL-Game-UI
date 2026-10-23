@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"entry"}
 // Controlled visual evidence plus deterministic checks. The owner judges material quality.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),cp=require('node:child_process'),crypto=require('node:crypto');
 const runoff=process.argv.includes('--runoff'),runoffReview=runoff||process.argv.includes('--runoff-baseline'),natural=runoffReview||process.argv.includes('--natural-trails'),trailReview=natural||process.argv.includes('--trail-baseline'),query=natural?'trail=natural'+(runoff?'&runoff=1':''):'';

@@ -4,6 +4,8 @@
 
 ## Current — 当前做什么
 
+- **Moody Blues CI V1.2**：PR #24在原动态版本/Build Identity基础上升级为可信度整改，Catalog 1.3.0；已保留Snow R11输入7d531a0（合并2df0e3d）。生成式锁、严格TS调度/合同、独立用例分片/源码后置校验/封存/真实上传结果、四族研究依赖及独立二次构建见[报告](audits/MOODY-CI-V1.2.md)。设置/天气/Hub原已被现有父入口调用，现组合记录15/12用例，不增加重复入口。当前21 Unit、36 Browser、38 Research与原124/241布局计划保留。精确候选、实际Actions与下载复验以PR/#22及本次专项交付为准；仍为Draft，未合入研发/main、未发布，旧CI成功不证明新V1.2。
+
 - CI 版本策略改为[固定 Project ID + 动态组件版本 + 唯一 Build Identity](audits/MOODY-PROJECT-BUILD-IDENTITY.md)，Catalog 1.2.0；UI/Core/Host 保持独立，产品 3.x→4.x 不因硬编码误报。Host 协议、依赖范围、制品字节及八包双轮合同保留。输入 f318241；精确提交、独立 PR 与标准/研究 Actions 见专项交付及 #22，本文不自行证明 CI 已通过。旧 Catalog 1.1.1 验收记录继续属于其原提交。
 
 - **EVO-V1-SNOW-R11 / EVO-V1-MAT**：按负责人“先做不依赖实机的任务”授权，新增隔离雪天A「霜羽」/B「雪沿」、现行雪效同操作原速参考、四类材质角色提案。保留当前雨天、设置V2.3及球体；实际设置默认雪效不改，其它真实窗口没有推广。见[雪天报告](evolution/EVO-V1-SNOW-R11.md)及[角色表](evolution/EVO-MATERIAL-ROLES.md)。新手动检查不扩默认矩阵；Implemented/Tested与Visually Accepted/Integrated分开，具体最终源码、证据和Actions见报告/#22。CI Build Identity另由PR #24独立推进，本批未合入。

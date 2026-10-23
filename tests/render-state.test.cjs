@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{buildSync}=require('esbuild');
 const {fields}=require('../scripts/render-state-fields.cjs');
 const source=fs.readFileSync(path.join(__dirname,'../src/wardrobe/vendor/isolated-model.js'),'utf8');

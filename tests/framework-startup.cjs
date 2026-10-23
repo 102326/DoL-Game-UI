@@ -1,4 +1,6 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"checkpoint","caseSource":"caseCheckpoint"}
 // Real built player entries on controlled HTML. No game/Loader or physical-device claim.
+const {caseCheckpoint}=require('../scripts/ci-cases.cjs');
 const assert=require('node:assert/strict'),http=require('node:http'),path=require('node:path');
 const {chromium}=require('playwright'),version=require('../package.json').version;
 const root=path.resolve(__dirname,'..');
@@ -15,7 +17,7 @@ const root=path.resolve(__dirname,'..');
    if(['late-host','wrong-host','missing-host','broken-init'].includes(mode)){
     const notice=page.locator('#soft-wet-startup-notice');await notice.waitFor();assert.equal(await notice.getAttribute('role'),'alert');assert.match(await notice.textContent(),mode==='wrong-host'?/协议/:mode==='broken-init'?/初始化失败/:/Host/);
     if(mode==='late-host'){await host();await page.waitForFunction(()=>!document.getElementById('soft-wet-startup-notice'))}
-    else{await page.getByRole('button',{name:'关闭启动提示',exact:true}).click();assert.equal(await notice.count(),0);await page.evaluate(()=>document.dispatchEvent(new Event('stone-free-host-ready')));assert.equal(await notice.count(),0,'dismissed same reason must stay dismissed');if(mode==='wrong-host')assert.equal(await page.evaluate(()=>DoLUiHost.foreign),true);if(mode==='broken-init')assert.equal(await page.evaluate(()=>DoLGameUI.foreign),true);await page.evaluate(()=>StoneFree_official_ui.dispose());await page.close();continue}
+    else{await page.getByRole('button',{name:'关闭启动提示',exact:true}).click();assert.equal(await notice.count(),0);await page.evaluate(()=>document.dispatchEvent(new Event('stone-free-host-ready')));assert.equal(await notice.count(),0,'dismissed same reason must stay dismissed');if(mode==='wrong-host')assert.equal(await page.evaluate(()=>DoLUiHost.foreign),true);if(mode==='broken-init')assert.equal(await page.evaluate(()=>DoLGameUI.foreign),true);await page.evaluate(()=>StoneFree_official_ui.dispose());await page.close();caseCheckpoint(mode);continue}
    }
    assert.equal(await page.evaluate(()=>!!window.DoLUiHost),true,mode+': Host must start');
    assert.equal(await page.evaluate(()=>window.DoLGameUI?.version),version);assert.equal(await page.locator('#dol-midnight-sidebar-button').count(),1);
@@ -29,11 +31,12 @@ const root=path.resolve(__dirname,'..');
    }
    if(mode==='host-stopped'){await page.evaluate(()=>DoLUiHost.dispose());await page.locator('#soft-wet-startup-notice').waitFor();assert.match(await page.locator('#soft-wet-startup-notice').textContent(),/停止/);await page.evaluate(()=>StoneFree_host.installHost());await page.waitForFunction(()=>!document.getElementById('soft-wet-startup-notice'));assert.equal(await page.evaluate(()=>DoLGameUI.version),version)}
    if(mode==='disabled')assert.equal(await page.evaluate(()=>DoLGameUI.getPreferences().enabled),false);
-   await page.evaluate(()=>StoneFree_official_ui.dispose());assert.equal(await page.locator('#soft-wet-startup-notice,#dol-midnight-sidebar-button').count(),0);assert.deepEqual(errors,[]);await page.close();
+   await page.evaluate(()=>StoneFree_official_ui.dispose());assert.equal(await page.locator('#soft-wet-startup-notice,#dol-midnight-sidebar-button').count(),0);assert.deepEqual(errors,[]);await page.close();caseCheckpoint(mode);
   }
   const bundle=require('esbuild').buildSync({entryPoints:[path.join(root,'framework/signals.ts')],bundle:true,write:false,format:'cjs'}).outputFiles[0].text,mod={exports:{}};new Function('module','exports',bundle)(mod,mod.exports);
   for(const index of [0,1]){const a=new AbortController(),b=new AbortController(),inputs=[a,b],reason={expected:'reason-'+index},counts=new Set();for(const c of inputs){const add=c.signal.addEventListener.bind(c.signal),remove=c.signal.removeEventListener.bind(c.signal);c.signal.addEventListener=(t,f,o)=>{counts.add(f);return add(t,f,o)};c.signal.removeEventListener=(t,f,o)=>{counts.delete(f);return remove(t,f,o)}}const combined=mod.exports.combineSignals(inputs.map(c=>c.signal));assert.equal(counts.size,2);inputs[index].abort(reason);assert.equal(combined.signal.reason,reason);assert.equal(counts.size,0);combined.dispose();assert.equal(inputs[1-index].signal.aborted,false)}
   const first=new AbortController(),second=new AbortController();first.abort('first');second.abort('second');assert.equal(mod.exports.combineSignals([first.signal,second.signal]).signal.reason,'first');const a=new AbortController(),b=new AbortController(),disposed=mod.exports.combineSignals([a.signal,b.signal]);disposed.dispose();a.abort('ignored');assert.equal(disposed.signal.aborted,false);
+  caseCheckpoint('signal-composition');
   console.log('PASS built player startup: missing any without global polyfill, owner/scene cancellation, saved opt-out, late Host, visible/dismissible diagnosis and cleanup; controlled fixture only');
  }finally{await browser.close();await new Promise(r=>server.close(r))}
 })().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

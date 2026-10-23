@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs'),{chromium}=require('playwright');
 const {waitOrbit,orbitSnapshot}=require('./moody-oracles.cjs');
 const {captureFailure}=require('./moody-fixture-evidence.cjs');

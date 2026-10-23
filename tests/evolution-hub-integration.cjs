@@ -1,3 +1,5 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"checkpoint","caseSource":"done","rendererContexts":["sphere:2d"]}
+const {caseCheckpoint}=require('../scripts/ci-cases.cjs');
 // Actual startOfficialHub registration, original controls, no game or saves.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
 async function verifyHubIntegration(browser,{unsafeConstruction=false,oldGeometry=false,oldScroll=false,previewLayoutOnly=false,oldPreviewStyle=false}={}){
@@ -13,7 +15,7 @@ async function verifyHubIntegration(browser,{unsafeConstruction=false,oldGeometr
   if(file.endsWith('/src/ui/golden-spin/hub-motion.ts')){const actual=unsafeConstruction?code.replace(' try{\n const ball=', ' const ball=').replace(' sphere=makeSphere();',' try{\n sphere=makeSphere();'):code;if(unsafeConstruction)overrides['src/ui/golden-spin/hub-motion.ts']=crypto.createHash('sha256').update(actual).digest('hex');return actual.replace('export function sphereHub(', 'function actualSphereHub(')+'\nexport function sphereHub(root){return window.testHubVisual=actualSphereHub(root)}'}
  },configureServer(server){if(oldScroll)server.middlewares.use((req,res,next)=>{if((req.url??'').split('?')[0]!=='/dist/framework/official-ui/style.css')return next();res.setHeader('Content-Type','text/css');res.end(oldScrollCSS(fs.readFileSync('dist/framework/official-ui/style.css','utf8'),'dist/framework/official-ui/style.css'))})}}]);
  const out=path.resolve('tests/artifacts/evolution/hub-integration-'+Date.now()),checks=[],errors=[];fs.mkdirSync(out,{recursive:true});let p,step='actual official registration';
- const done=name=>{checks.push({name,status:'PASS'});console.log('PASS H01',name)};
+ const done=name=>{caseCheckpoint(name);checks.push({name,status:'PASS'});console.log('PASS H01',name)};
  try{
   p=await browser.newPage({viewport:{width:1280,height:900}});p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(5000);await p.goto('http://127.0.0.1:'+server.httpServer.address().port+'/');await p.waitForSelector('.sf-motion-ball');
   assert.equal(await p.locator('.sf-motion-hub[data-official][data-spin-hub] canvas.spin-hub-canvas').count(),1,'actual official Hub must use accepted sphere');
@@ -66,4 +68,4 @@ async function shortMenu(p){
  await p.evaluate(()=>shortPeer.dispose());const cdp=await p.context().newCDPSession(p);await cdp.send('Emulation.setSafeAreaInsetsOverride',{insets:{top:0,right:0,bottom:0,left:0}});await cdp.detach();await p.setViewportSize({width:1280,height:900});
 }
 module.exports={verifyHubIntegration};
-if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifyHubIntegration(browser,{unsafeConstruction:process.argv.includes('--unsafe-construction'),oldGeometry:process.argv.includes('--old-geometry'),oldScroll:process.argv.includes('--old-scroll'),previewLayoutOnly:process.argv.includes('--preview-layout'),oldPreviewStyle:process.argv.includes('--old-preview-style')})}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
+if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifyHubIntegration(browser,{unsafeConstruction:process.argv.includes('--unsafe-construction'),oldGeometry:process.argv.includes('--old-geometry'),oldScroll:process.argv.includes('--old-scroll'),previewLayoutOnly:process.argv.includes('--preview-layout'),oldPreviewStyle:process.argv.includes('--old-preview-style')})}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

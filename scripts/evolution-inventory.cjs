@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"entry"}
 // Lexical census is an audit aid, never a claim of semantic 100% ownership.
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
 const roots=['src/','framework/official-ui/','framework/motion-hub/','compat/','prototypes/golden-spin-b/','prototypes/settings-refraction-v1/'];

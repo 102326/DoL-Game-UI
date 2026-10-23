@@ -2,6 +2,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const {sealProblems,reconcileIdentity}=require('./ci/contracts.ts');
+const {writeSuite,hydrateSuite}=require('./ci/records.ts');
+const {entryDeclaration,entryCaseProblems,expectedLockSha256}=require('./ci/lock.ts');
 const { spawn, execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const { suites, stages, catalogFor, catalogIdentity,checkpoints,nodeTestCases,researchUnitEntries,projectId } = require('./ci-catalog.cjs');
@@ -10,12 +13,12 @@ const coverage = 'Controlled fixtures and source contracts only; not real DoL/Mo
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const sameIdentity = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
-function sourceIdentity() {
-  const git = (...args) => execFileSync('git', args, { cwd: root, maxBuffer: 16 * 1024 * 1024 });
+function sourceIdentity(checkout = root) {
+  const git = (...args) => execFileSync('git', args, { cwd: checkout, maxBuffer: 16 * 1024 * 1024 });
   const files = [...new Set(git('ls-files', '--cached', '--others', '--exclude-standard', '-z').toString().split('\0').filter(Boolean))].sort();
   const content = crypto.createHash('sha256');
   for (const file of files) {
-    const absolute = path.join(root, file);
+    const absolute = path.join(checkout, file);
     const stat = fs.existsSync(absolute) ? fs.lstatSync(absolute) : null;
     content.update(file + '\0');
     content.update(stat?.isFile() ? fs.readFileSync(absolute) : stat?.isSymbolicLink() ? fs.readlinkSync(absolute) : '<missing>');
@@ -26,11 +29,14 @@ function sourceIdentity() {
     tree: git('rev-parse', 'HEAD^{tree}').toString().trim(),
     dirty: Boolean(git('status', '--porcelain', '--untracked-files=normal').length),
     contentSha256: content.digest('hex'),
-    lockSha256: hash(fs.readFileSync(path.join(root, 'package-lock.json')))
+    lockSha256: hash(fs.readFileSync(path.join(checkout, 'package-lock.json')))
   };
 }
 
-function context() {
+// Structural source-less contexts are isolated gate fixtures; real identities always have a tree.
+function observeSource(ctx){if(!ctx.identity.source?.tree)return ctx.identity.source;try{return sourceIdentity(ctx.root)}catch(error){return {error:'SourceUnavailable',message:String(error.message).slice(0,200)}}}
+
+function context({allowSourceDrift=false}={}) {
   const started=Date.now();
   const id = process.env.MOODY_EVIDENCE_ID || `local-${Date.now()}-${process.pid}`;
   if (!/^[a-zA-Z0-9_-]{1,100}$/.test(id)) throw Error('Invalid MOODY_EVIDENCE_ID');
@@ -42,7 +48,7 @@ function context() {
   let event={};if(process.env.GITHUB_EVENT_PATH)event=JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH));
   const priorFile=path.join(dir,'identity.json');let prior;
   if(fs.existsSync(priorFile)){if(fs.lstatSync(priorFile).isSymbolicLink()||fs.statSync(priorFile).size>262144)throw Error('Unsafe prior identity');prior=JSON.parse(fs.readFileSync(priorFile)).identity;}
-  const identity = {
+  let identity = {
     projectId,
     source: sourceIdentity(),
     run: { id, attempt: process.env.GITHUB_RUN_ATTEMPT || 'local', githubRunId: process.env.GITHUB_RUN_ID || null,
@@ -51,12 +57,12 @@ function context() {
       url: process.env.GITHUB_RUN_ID ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null },
     nonce:prior?.nonce||crypto.randomBytes(16).toString('hex'), profile, catalog:catalogIdentity(profile,depth),
     pr:event.pull_request?{head:event.pull_request.head.sha,base:event.pull_request.base.sha,merge:process.env.GITHUB_SHA}:null,
-    environment: { platform: process.platform, arch: process.arch, deviceDepth: process.env.MOODY_DEVICE_DEPTH || 'standard', node: process.version, npm: version('npm'), python: version('python'),
+    environment: { orderSeed:process.env.MOODY_ORDER_SEED||null,runnerImage:process.env.ImageOS||null,runnerImageVersion:process.env.ImageVersion||null,platform: process.platform, arch: process.arch, deviceDepth: process.env.MOODY_DEVICE_DEPTH || 'standard', node: process.version, npm: version('npm'), python: version('python'),
       playwright: require('../package-lock.json').packages['node_modules/playwright'].version,
       browser: process.platform === 'win32' ? 'Microsoft Edge (browser suite)' : 'Pinned Playwright Chromium (browser suite)' }
   };
+  if(prior)identity=reconcileIdentity(prior,identity,allowSourceDrift);
   if(process.env.GITHUB_ACTIONS==='true'&&identity.source.head!==process.env.GITHUB_SHA)throw Error('Checkout differs from workflow SHA');
-  if(prior&&!sameIdentity(prior,identity))throw Error('Run identity changed; fresh run directory required');
   if(!prior){writeJson(priorFile,{schema:1,identity});writeJson(path.join(dir,'catalog.json'),{schema:1,identity,catalog:catalogFor(profile,depth)});}
   return {root,dir,identity,preparationMs:Date.now()-started};
 }
@@ -97,7 +103,9 @@ function runCommand(command, args, { cwd = root, log, timeoutMs = 120000, signal
     let tail = Buffer.alloc(0), bytes = 0, error, timedOut = false, cancelled = false, forceKill;
     const executionId = crypto.randomBytes(16).toString('hex'), receiptFile=log+'.assertion.json';
     fs.rmSync(receiptFile,{force:true});
-    const childEnv={...env,MOODY_PROCESS_RECEIPT:receiptFile,MOODY_EXECUTION_ID:executionId,NODE_OPTIONS:[env.NODE_OPTIONS,`--require=${path.join(root,'scripts/ci-process-receipt.cjs')}`].filter(Boolean).join(' ')};
+    const childEnv={...env,MOODY_CASE_PLAN:'[]',MOODY_CASE_GRANULARITY:'',MOODY_CASE_ENTRY:'',MOODY_PROCESS_RECEIPT:receiptFile,MOODY_EXECUTION_ID:executionId,NODE_OPTIONS:[env.NODE_OPTIONS,`--require=${path.join(root,'scripts/ci-process-receipt.cjs')}`].filter(Boolean).join(' ')};
+    const caseEntry=execution==='contract'?args.find(a=>/\.[cm]?js$/.test(a)&&entryDeclaration(path.basename(a))):null;
+    if(caseEntry){const declaration=entryDeclaration(path.basename(caseEntry));if(declaration.granularity!=='native'){childEnv.MOODY_CASE_PLAN=JSON.stringify(declaration.cases);childEnv.MOODY_CASE_GRANULARITY=declaration.granularity;childEnv.MOODY_CASE_ENTRY=path.resolve(cwd,caseEntry);}}
     let nativeSource=false;if(command===process.execPath&&!args.includes('--test')){const source=args[0]==='-e'?args[1]:args.find(a=>/\.(cjs|mjs|js)$/.test(a)&&fs.existsSync(a));if(source)nativeSource=require('./ci-source-policy.cjs').usesNodeTest(args[0]==='-e'?source:fs.readFileSync(source,'utf8'));}
     if(nativeSource&&args[0]==='-e'){const inline=path.join(path.dirname(log),'inline-'+executionId+'.test.cjs');fs.mkdirSync(path.dirname(inline),{recursive:true});fs.writeFileSync(inline,args[1]);args=['--test',inline];}
     const nativeFiles=args.filter(a=>nodeTestCases[path.basename(a)]),expectedNodeIds=nativeFiles.flatMap(file=>nodeTestCases[path.basename(file)].map(name=>path.basename(file)+'::'+name));childEnv.MOODY_EXPECTED_NODE_CASES=JSON.stringify(expectedNodeIds);if(command===process.execPath&&(nativeFiles.length||nativeSource)&&!args.includes('--test'))args=['--test',...args];
@@ -127,7 +135,7 @@ function runCommand(command, args, { cwd = root, log, timeoutMs = 120000, signal
       fs.mkdirSync(path.dirname(log), { recursive: true });
       fs.writeFileSync(log, tail);
       let assertionFailed=false,terminalFailed=false,naturalCompletion=false,terminalReceipt=null;const ownReceipt=receiptFile+'.'+child.pid+'.json';
-      try {const st=fs.lstatSync(ownReceipt);if(st.isFile()&&!st.isSymbolicLink()&&st.size<=8192){const receipt=JSON.parse(fs.readFileSync(ownReceipt));terminalReceipt=receipt;terminalFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true;naturalCompletion=receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.naturalCompletion===true;assertionFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true&&receipt.kind==='assertion'&&receipt.code==='ERR_ASSERTION'&&receipt.name==='AssertionError';}} catch {}
+      try {const st=fs.lstatSync(ownReceipt);if(st.isFile()&&!st.isSymbolicLink()&&st.size<=65536){const receipt=JSON.parse(fs.readFileSync(ownReceipt));terminalReceipt=receipt;terminalFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true;naturalCompletion=receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.naturalCompletion===true;assertionFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true&&receipt.kind==='assertion'&&receipt.code==='ERR_ASSERTION'&&receipt.name==='AssertionError';}} catch {}
       const classified=classify({code,error:error||childSignal,timedOut,cancelled,assertionFailed:execution==='contract'&&assertionFailed,terminalFailed}),status=classified==='PASS'&&command===process.execPath&&((execution==='contract'&&!naturalCompletion)||(requireAssertions&&!(terminalReceipt?.assertions>0||terminalReceipt?.nodeTests?.length>0)))?'UNVERIFIED':classified==='ERROR'&&!terminalFailed&&terminalReceipt?.nodeCaseIssues?.length?'UNVERIFIED':classified;
       resolve({status,execution,executionId,pid:child.pid,contradictions:terminalFailed&&code===0?['TerminalFailureWithExitZero']:[],nodeTests:terminalReceipt?.nodeTests,nodeCaseIssues:terminalReceipt?.nodeCaseIssues,assertions:terminalReceipt?.assertions??0,terminalReceipt,assertionResult:status==='PASS'?'PASS':status==='FAIL'?'FAIL':'UNKNOWN',reasonCode:cancelled?'RunCancelled':timedOut?'ProcessTimeout':error?'SpawnError':childSignal?'ProcessSignal':status==='FAIL'?'AssertionFailed':terminalFailed?'TerminalFailure':code===0?(status==='PASS'?'ExitZero':naturalCompletion?'NoAssertions':'EarlyExitWithoutCompletion'):'ProcessExitError',
         rawStatus: cancelled ? 'cancelled' : timedOut ? 'timeout' : error ? 'spawn-error' : childSignal ? 'signal' : code === 0 ? 'passed' : 'failed',
@@ -142,7 +150,7 @@ function readReport(ctx, file) {
     const p = path.join(ctx.dir, file);
     if (fs.lstatSync(p).isSymbolicLink() || fs.statSync(p).size > 262144) return null;
     const result = JSON.parse(fs.readFileSync(p, 'utf8'));
-    return sameIdentity(result.identity, ctx.identity) ? result : null;
+    return sameIdentity(result.identity, ctx.identity) ? (result.kind==='suite-index'?hydrateSuite(ctx,result):result) : null;
   } catch { return null; }
 }
 
@@ -160,7 +168,7 @@ function verifiedPass(result, execution=result?.execution||'contract') {
     !result.signal && Number.isFinite(result.milliseconds) && result.milliseconds >= 0;
 }
 
-function suiteEvidence(ctx,mode,expected=suites[mode]){const suite=readReport(ctx,mode+'.json');return !!suite&&suite.schema===1&&suite.status==='PASS'&&sameIdentity(suite.expected,expected)&&suite.results?.length===expected.length&&suite.results.every((r,i)=>r.name===expected[i]&&verifiedPass(r)&&(r.assertions>0||r.nodeTests?.length>0)&&(!nodeTestCases[r.name]||(exactIds(nodeTestCases[r.name].map(n=>r.name+'::'+n),r.nodeTests?.map(c=>c.id))&&r.nodeTests.every(c=>c.status==='PASS')&&!r.nodeCaseIssues?.length))&&checkpointEvidence(ctx,r.name));}
+function suiteEvidence(ctx,mode,expected=suites[mode]){const suite=readReport(ctx,mode+'.json');return !!suite&&suite.schema===1&&suite.status==='PASS'&&sameIdentity(suite.expected,expected)&&suite.results?.length===expected.length&&suite.results.every((r,i)=>r.name===expected[i]&&verifiedPass(r)&&(r.assertions>0||r.nodeTests?.length>0)&&(!nodeTestCases[r.name]||(exactIds(nodeTestCases[r.name].map(n=>r.name+'::'+n),r.nodeTests?.map(c=>c.id))&&r.nodeTests.every(c=>c.status==='PASS')&&!r.nodeCaseIssues?.length))&&checkpointEvidence(ctx,r.name)&&entryCaseProblems(r.name,r).length===0)&&sameIdentity(suite.sourceAfter,ctx.identity.source);}
 function layoutEvidence(ctx) {
   const report = readReport(ctx, 'fixtures/device-layouts.cjs/layout-report.json');
   if (!report || report.status !== 'PASS') return false;
@@ -188,6 +196,7 @@ function packageEvidence(ctx) {
     if (negatives?.status !== 'PASS' || !Array.isArray(negatives.plan) || !requiredNegatives.every(name => negatives.plan.some(id => typeof id === 'string' && id.endsWith('.' + name))) || new Set(negatives.plan).size !== negatives.plan.length || negatives.testsRun !== negatives.plan.length || ['failures', 'errors', 'skipped', 'expectedFailures', 'unexpectedSuccesses'].some(field => negatives[field] !== 0)) return false;
     if (!Array.isArray(report.builds) || report.builds.length !== 2 || !report.builds.every(b => sameIdentity(b.receipt?.buildIdentity,expectedBuild) && typeof b.receipt?.invocation === 'string' && b.receipt.invocation && sameIdentity(b.receipt.source, ctx.identity.source) && b.receipt.runId === ctx.identity.run.id && Array.isArray(b.receipt.packages) && namesMatch(b.receipt.packages.map(p => p.name)) && Array.isArray(b.snapshots) && b.snapshots.length === requiredPackages.length && new Set(b.snapshots.map(s => s.file)).size === requiredPackages.length)) return false;
     if (report.builds[0].receipt.invocation === report.builds[1].receipt.invocation) return false;
+    const isolation=report.builds[1].isolation;if(!isolation||isolation.workspace!=='independent Git checkout and source overlay'||isolation.compilerCache!=='fresh isolated directory'||isolation.environment?.TZ!=='Pacific/Kiritimati'||isolation.environment?.LC_ALL!=='C')return false;
     return report.builds.every(b => b.receipt.packages.every(p => {
       const expected = report.contracts.find(c => c.name === p.name), snapshot = b.snapshots.find(s => s.file === p.file);
       if (p.file !== expected.file || p.sha256 !== expected.sha256 || snapshot?.sha256 !== p.sha256 || snapshot.archiveComment !== '' || !Array.isArray(snapshot.members)) return false;
@@ -251,8 +260,10 @@ function summarize(ctx, steps = {}) {
 }
 
 function requiredEvidence(profile='standard') {
-  if(profile==='research')return ['unit.json','metrics.json','catalog.json','identity.json','summary.json','research.json','stage-dependencies.json','stage-browser-install.json',...catalogFor('research').contracts.flatMap(c=>[...c.evidence,...c.visualEvidence])];
-  return ['metrics.json','catalog.json', ...Object.keys(checkpoints).map(name=>`fixtures/${name}/checkpoints.json`), 'identity.json', 'summary.json', 'unit.json', 'browser.json', 'package-contracts.json', ...stages.map(s=>`stage-${s.id}.json`),'fixtures/device-layouts.cjs/layout-report.json'];
+  const shards=profile==='research'?[...researchUnitEntries.map(n=>'checks/unit/'+n+'.json'),...require('./ci-catalog.cjs').researchPlan.map(c=>'checks/research/'+c.id+'.json')]:Object.entries(suites).flatMap(([mode,names])=>names.map(n=>'checks/'+mode+'/'+n+'.json'));
+
+  if(profile==='research')return [...require('./ci/research-families.ts').researchFamilies.map(f=>'families/'+f+'.json'),...shards,'unit.json','metrics.json','catalog.json','identity.json','summary.json','research.json','stage-dependencies.json','stage-browser-install.json',...catalogFor('research').contracts.flatMap(c=>[...c.evidence,...c.visualEvidence])];
+  return [...shards,'metrics.json','catalog.json', ...Object.keys(checkpoints).map(name=>`fixtures/${name}/checkpoints.json`), 'identity.json', 'summary.json', 'unit.json', 'browser.json', 'package-contracts.json', ...stages.map(s=>`stage-${s.id}.json`),'fixtures/device-layouts.cjs/layout-report.json'];
 }
 function safeFile(base,file) {
  if(typeof file!=='string'||!file||file.includes('\\')||path.isAbsolute(file)||file.split('/').some(p=>!p||p==='.'||p==='..'))throw Error('Unsafe evidence path');
@@ -286,6 +297,7 @@ function validateUpload(ctx, required=requiredEvidence(ctx.identity.profile), id
 }
 function finalizeUpload(ctx,summary,options={}) {
  const start=Date.now(),required=requiredEvidence(ctx.identity.profile),raw=new Set(catalogFor(ctx.identity.profile||'standard').contracts.filter(c=>c.group==='research').flatMap(c=>c.evidence)),identityFiles=required.filter(f=>f.endsWith('.json')&&!raw.has(f));
+ for(const mode of ['unit','browser','research']){const suite=readReport(ctx,mode+'.json');if(suite?.results&&suite.suite)writeSuite(ctx,suite);}
  writeJson(path.join(ctx.dir,'summary.json'),summary);
  const stageMetrics=stages.map(s=>{const r=readReport(ctx,`stage-${s.id}.json`);return r?{id:s.id,status:r.status,milliseconds:r.milliseconds,cache:r.cache,retry:r.retry}:null}).filter(Boolean),researchMetrics=readReport(ctx,'research.json');
  writeJson(path.join(ctx.dir,'metrics.json'),{schema:1,identity:ctx.identity,preparationMs:ctx.preparationMs??null,stages:stageMetrics,research:researchMetrics?.results.map(r=>({id:r.name,status:r.status,milliseconds:r.milliseconds})),automaticRetries:0,uploadTiming:'GitHub job steps; collected by ci-metrics.cjs',samplesNeededForP95:20});
@@ -293,10 +305,12 @@ function finalizeUpload(ctx,summary,options={}) {
  const problems=validateUpload(ctx,required,identityFiles);
  if(summary.evidenceIntegrity==='INCOMPLETE')problems.push({file:'summary.json',reason:'EvidenceIncomplete in required result set'});
  if(!sameIdentity(ctx.identity.catalog,catalogIdentity(ctx.identity.profile||'standard',ctx.identity.environment?.deviceDepth||'standard')))problems.push({file:'catalog.json',reason:'Catalog identity mismatch'});
+ const sourceAfter=observeSource(ctx);
+ if(!sameIdentity(sourceAfter,ctx.identity.source))problems.push({file:'source-after',reason:'SourceChangedDuringExecution'});
  const delivery={schema:1,identity:ctx.identity,...verdict(summary.assertionResult|| (summary.status==='FAIL'?'FAIL':summary.status==='PASS'?'PASS':'UNKNOWN'),problems,summary.status),checkStatus:summary.status,problems,files:upload.files.length,bytes:upload.bytes,omitted:upload.omitted,localPreparationMs:Date.now()-start,remoteVerification:'PENDING'};
  const destination=path.join(ctx.dir,'upload');writeJson(path.join(destination,'delivery.json'),delivery);
  const indexPath=path.join(destination,'upload-index.json'),index=JSON.parse(fs.readFileSync(indexPath)),target=path.join(destination,'delivery.json');
- index.files.push({file:'delivery.json',sha256:hash(fs.readFileSync(target)),size:fs.statSync(target).size,capture:null,...evidenceMeta('delivery.json',[...required,'delivery.json'],[...identityFiles,'delivery.json'])});index.required.push('delivery.json');index.bytes+=fs.statSync(target).size;writeJson(indexPath,index);
+ index.files.push({file:'delivery.json',sha256:hash(fs.readFileSync(target)),size:fs.statSync(target).size,capture:null,...evidenceMeta('delivery.json',[...required,'delivery.json'],[...identityFiles,'delivery.json'])});index.required.push('delivery.json');index.bytes+=fs.statSync(target).size;index.seal={state:problems.length?'INCOMPLETE':'SEALED',expectedLockSha256,sourceAfter};writeJson(indexPath,index);
  if(process.env.GITHUB_OUTPUT)fs.appendFileSync(process.env.GITHUB_OUTPUT,`manifest_sha256=${hash(fs.readFileSync(indexPath))}\nevidence_nonce=${ctx.identity.nonce}\n`);
  return delivery;
 }
@@ -312,6 +326,7 @@ function verifyRemote(directory,expected) {
   const ctx={dir:directory,root,identity},required=[...requiredEvidence(expected.profile),'delivery.json'],raw=new Set(catalogFor(expected.profile).contracts.filter(c=>c.group==='research').flatMap(c=>c.evidence));
   problems.push(...validateUpload(ctx,required,required.filter(f=>f.endsWith('.json')&&!raw.has(f)),{destination:directory,remote:true}));
   const index=readJsonBounded(directory,'upload-index.json',1048576),actual=[];let total=0;
+  for(const reason of sealProblems(index.seal,expectedLockSha256,expected.source))problems.push({file:'upload-index.json',reason});
   function scan(dir,prefix=''){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const name=prefix+entry.name;if(entry.isSymbolicLink())throw Error('Downloaded symlink');if(entry.isDirectory())scan(path.join(dir,entry.name),name+'/');else{actual.push(name);total+=fs.statSync(path.join(dir,entry.name)).size;if(actual.length>2001||total>(expected.profile==='research'?160:16)*1048576)throw Error('Downloaded evidence budget exceeded')}}}scan(directory);
   if(!exactIds([...index.files.map(e=>e.file),'upload-index.json'],actual))problems.push({file:'upload-index.json',reason:'Actual downloaded set differs from manifest'});
   if(!sameIdentity(readJsonBounded(directory,'catalog.json').catalog,catalogFor(expected.profile,expected.depth||'standard')))problems.push({file:'catalog.json',reason:'Catalog snapshot mismatch'});
@@ -345,4 +360,4 @@ function prepareUpload(ctx, { candidates: extra = [], totalLimit = 16 * 1024 * 1
   return { files, bytes, omitted };
 }
 
-module.exports = {resultStatus,suiteEvidence, verifyRemote, safeFile, readJsonBounded, verdict, exactIds, checkpointEvidence, sourceIdentity, root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, finalizeUpload, validateUpload, requiredEvidence, layoutEvidence, packageEvidence, requiredPackages, readReport, verifiedPass, sameIdentity, hash };
+module.exports = {observeSource,resultStatus,suiteEvidence, verifyRemote, safeFile, readJsonBounded, verdict, exactIds, checkpointEvidence, sourceIdentity, root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, finalizeUpload, validateUpload, requiredEvidence, layoutEvidence, packageEvidence, requiredPackages, readReport, verifiedPass, sameIdentity, hash };

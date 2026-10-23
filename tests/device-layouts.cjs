@@ -1,12 +1,12 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 // Real production modules, controlled native rows, and emulation inputs; no game/save files.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require('playwright');
-const {buildCases,scanWidths}=require('./device-profiles.cjs');
+const {buildCases,scanWidths,orientationProfiles}=require('./device-profiles.cjs');
 const {layoutSnapshot,assertLayout}=require('./device-layout-oracles.cjs');
 const {captureFailure,writeLayoutReport}=require('./moody-fixture-evidence.cjs');
 const root=path.resolve(__dirname,'..');
 const {negativeCodes,expectedCaseIds}=require('./device-case-plan.cjs');
-function orientationProfiles(depth){const cases=buildCases(depth);return ['phone','tablet'].map(category=>cases.find(p=>p.category===category&&p.orientation==='portrait'));}
 function spec(selector,extra={}){return {selector,inside:true,...extra};}
 const ball=spec('.sf-motion-ball',{safe:true,hittable:true}),menu=spec('.sf-motion-orbit.is-expanded',{safe:true}),hubClose=spec('.sf-motion-ball.is-open',{safe:true,hittable:true});
 const settings=[spec('#dol-midnight-controls>.dmt-settings-shell',{noOverflow:true}),spec('.dmt-close',{hittable:true})];
