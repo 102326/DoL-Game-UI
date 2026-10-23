@@ -4,6 +4,8 @@ const {chromium}=require('playwright'),{build}=require('esbuild');
 const root=path.resolve(__dirname,'..');
 const group=process.argv.find(a=>a.startsWith('--group='))?.split('=')[1]||'all';
 assert.ok(['all','identity','inspector','surfaces','compat'].includes(group),'Unknown runtime group');
+const uncaughtPageError=process.argv.includes('--uncaught-page-error');
+assert.ok(!uncaughtPageError||['inspector','surfaces'].includes(group),'Page-error injection is limited to isolated test groups');
 require('node:child_process').execFileSync(process.execPath,[path.join(root,'node_modules/vite/bin/vite.js'),'build','--outDir','tests/artifacts/legacy-runtime'],{cwd:root,stdio:'inherit'});
 const {plugins,mutation}=require('./runtime-mutations.cjs');
 (async()=>{
@@ -13,7 +15,7 @@ const compile=async name=>(await build({plugins,entryPoints:[path.join(root,name
 const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
 const browser=await chromium.launch(require('./browser-options.cjs'));try{
  const errors=[];
- async function page(html){const p=await browser.newPage({viewport:{width:1280,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.route('http://ui-runtime.test/',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://ui-runtime.test/');return p}
+ async function page(html){const p=await browser.newPage({viewport:{width:1280,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.route('http://ui-runtime.test/',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://ui-runtime.test/');if(uncaughtPageError){const message='controlled '+group+' unhandled window error',observed=p.waitForEvent('pageerror',{predicate:e=>e.message===message});await p.evaluate(message=>{setTimeout(()=>{throw new Error(message)},0)},message);await observed;}return p}
  const settle=p=>p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  let p;
  if(group==='identity'){
@@ -181,5 +183,6 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  await p.evaluate(()=>MapleBirchSoftWet.destroy());await settle(p);assert.equal(await p.locator('[data-dgu-adapter="MapleBirchSoftWet"]').count(),0);assert.deepEqual(await p.evaluate(()=>DoLGameUI.ui.getAdapterDiagnostics().map(d=>d.id).sort()),peerAdapters,'disposing MapleBirch removes only its adapter and preserves every peer');
  assert.equal(await p.evaluate(()=>JSON.stringify(V)===beforeV),true);checkpoint('peer-preservation');assert.deepEqual(errors,[]);await p.close();
  }
+ assert.deepEqual(errors,[],'UI_RUNTIME_PAGEERROR');
  console.log('PASS UI runtime: readonly Inspector/export/privacy/bounded events, native surfaces, scoped adapters/fallback/rollback/restart and unchanged native business state');
 }finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});
