@@ -9,7 +9,7 @@ html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit::before{con
 html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub[data-spin-hub] .sf-motion-petal{transition:none!important;animation:none!important;transform-origin:center}
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-utilities{transition:none;transform:none;grid-column:1/-1}
 html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=moving] .sf-motion-petal{background:linear-gradient(135deg,#bda77615,transparent 75%),rgba(29,31,31,.75);border-color:#c8b28122;box-shadow:0 8px 20px #0003}
-html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=open] .sf-motion-orbit{overflow:auto}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub][data-spin-phase=open] .sf-motion-orbit.is-grid{overflow:auto}
 
 
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-ball{border-radius:50%!important;outline:none}

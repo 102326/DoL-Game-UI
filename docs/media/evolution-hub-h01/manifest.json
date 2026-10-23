@@ -2,24 +2,24 @@
   "scope": "Actual official Hub and settings/weather owners with first-party native-entry stand-ins. Original speed, all waits retained. Inspector is a mock notification. Not full game, physical touch, frozen old/new comparison or owner G2 approval.",
   "files": {
     "desktop.png": {
-      "bytes": 100844,
-      "sha256": "3573e634e1703c176b10b4fbf7a910e11ff5a78a9aa0626f2e3b993ca7b381e0"
+      "bytes": 98737,
+      "sha256": "b089c103933a8a52e54c86459006be4446efc56f4f63a5c8e58f264a497618e2"
     },
     "narrow.png": {
-      "bytes": 91695,
-      "sha256": "89ab4ea184ce64deeb4587176436cbf1ee9574955c4943967c6ca4933f42693c"
+      "bytes": 89721,
+      "sha256": "17f6841801fb774d335efcbfe5698eccd568327991375da46fad05383f6543ab"
     },
     "desktop-1x.mp4": {
-      "bytes": 577385,
-      "sha256": "09510739cf67d56a969a5aa73162ce7c031e6b7dabff7457cde1486db73518b2"
+      "bytes": 534390,
+      "sha256": "0d175dce9d206966779c0607111feb665917e61bcb06bea91220af33fbf85cdc"
     },
     "narrow-1x.mp4": {
-      "bytes": 490106,
-      "sha256": "7401acbfc416779b84bd8b5923536712d75fc38acf45f3a4c2fa4e0700bbb81a"
+      "bytes": 539993,
+      "sha256": "81d58515a7d1ff8e11581ddb6ed19d901a46381ccf0e8c1b23228749ecb2cae1"
     },
     "result.json": {
       "bytes": 4947,
-      "sha256": "db04b0972c6b7bf9179e018827705f9d0ea42245668c658ca6baa0fa16ee0278"
+      "sha256": "b6e26326406cea133820615c86328194eb0832983ff0d05329fb8740d1fe62ab"
     }
   }
 }

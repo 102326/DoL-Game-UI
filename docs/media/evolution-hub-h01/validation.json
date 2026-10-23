@@ -447,13 +447,69 @@
         "executedOverrides": {
           "framework/motion-hub/MotionHub.vue": "7cafc9ef5c93caa53c4c3684757e163e48fcdc42a78f051fd039705e90c2b324"
         }
+      },
+      {
+        "kind": "old-overflow-specificity",
+        "status": "REJECTED",
+        "assertion": "short viewport utility must scroll within safe bounds: {\"width\":756,\"height\":352,\"bottom\":21,\"rect\":{\"x\":479,\"y\":319,\"width\":59.328125,\"height\":44,\"top\":319,\"right\":538.328125,\"bottom\":363,\"left\":479},\"overflow\":\"visible\",\"scrollTop\":0,\"hit\":true}",
+        "checks": [
+          {
+            "name": "actual official registration",
+            "status": "PASS"
+          },
+          {
+            "name": "short viewport scroll counterexample",
+            "status": "FAIL",
+            "error": "short viewport utility must scroll within safe bounds: {\"width\":756,\"height\":352,\"bottom\":21,\"rect\":{\"x\":479,\"y\":319,\"width\":59.328125,\"height\":44,\"top\":319,\"right\":538.328125,\"bottom\":363,\"left\":479},\"overflow\":\"visible\",\"scrollTop\":0,\"hit\":true}"
+          }
+        ],
+        "executedOverrides": {
+          "dist/framework/official-ui/style.css": "d5298eaaf692474cecf3184d9c7695993321002927a30d6a85246530370309a4",
+          "src/ui/golden-spin/hub.css": "d3b29d18941469c23e2dc59fdf9bb0ce5043017808858cbae6b3820d479d195c"
+        }
       }
     ]
   },
   "runs": [
     {
+      "kind": "old-overflow-specificity",
+      "source": "ed81b5aaf1b0d71f8069dcdc7300ffb7762ab7cc",
+      "workingTree": true,
+      "executedOverrides": {
+        "dist/framework/official-ui/style.css": "d5298eaaf692474cecf3184d9c7695993321002927a30d6a85246530370309a4",
+        "src/ui/golden-spin/hub.css": "d3b29d18941469c23e2dc59fdf9bb0ce5043017808858cbae6b3820d479d195c"
+      },
+      "faultInjection": "old-overflow-specificity",
+      "runtime": {
+        "platform": "darwin",
+        "node": "v24.18.0",
+        "chromium": "153.0.8010.12"
+      },
+      "checks": [
+        {
+          "name": "actual official registration",
+          "status": "PASS"
+        },
+        {
+          "name": "short viewport scroll counterexample",
+          "status": "FAIL",
+          "error": "short viewport utility must scroll within safe bounds: {\"width\":756,\"height\":352,\"bottom\":21,\"rect\":{\"x\":479,\"y\":319,\"width\":59.328125,\"height\":44,\"top\":319,\"right\":538.328125,\"bottom\":363,\"left\":479},\"overflow\":\"visible\",\"scrollTop\":0,\"hit\":true}"
+        }
+      ],
+      "errors": [],
+      "hashes": {
+        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
+        "scripts/preview-evolution-hub.mjs": "92913a1290aed283f0ce8216409359c5ba1f065f4e57b2ee69a2f190acaaa08e",
+        "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
+        "src/ui/golden-spin/hub.css": "e20131eca4c2d7feea56ba923643c68dd090e1ded8bcb72825842887eac3f21a",
+        "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
+        "tests/evolution-hub-integration.cjs": "c91a9fc6f8ad9d76c54c1d8ed762537076c16c6cf123f0f59cc2c5b218c337b0"
+      }
+    },
+    {
       "kind": "frozen-MotionHub-d3f04ee",
-      "source": "d3f04ee4569082d22d30c43dc066a786de1c605d",
+      "source": "ed81b5aaf1b0d71f8069dcdc7300ffb7762ab7cc",
       "workingTree": true,
       "executedOverrides": {
         "framework/motion-hub/MotionHub.vue": "7cafc9ef5c93caa53c4c3684757e163e48fcdc42a78f051fd039705e90c2b324"
@@ -477,18 +533,18 @@
       ],
       "errors": [],
       "hashes": {
+        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
         "scripts/preview-evolution-hub.mjs": "92913a1290aed283f0ce8216409359c5ba1f065f4e57b2ee69a2f190acaaa08e",
         "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
-        "src/ui/golden-spin/hub.css": "d3b29d18941469c23e2dc59fdf9bb0ce5043017808858cbae6b3820d479d195c",
+        "src/ui/golden-spin/hub.css": "e20131eca4c2d7feea56ba923643c68dd090e1ded8bcb72825842887eac3f21a",
         "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
-        "tests/evolution-hub-integration.cjs": "2dc1b76fe23340375ad4084f4427f5c2480d0bc38eb2a760a9914dcc050ea642",
-        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
-        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746"
+        "tests/evolution-hub-integration.cjs": "c91a9fc6f8ad9d76c54c1d8ed762537076c16c6cf123f0f59cc2c5b218c337b0"
       }
     },
     {
       "kind": "constructor-outside-cleanup",
-      "source": "d3f04ee4569082d22d30c43dc066a786de1c605d",
+      "source": "ed81b5aaf1b0d71f8069dcdc7300ffb7762ab7cc",
       "workingTree": true,
       "executedOverrides": {
         "src/ui/golden-spin/hub-motion.ts": "570456536d269d481220077f81e269bdfefe36c1d73739ddd69cc172003a6794"
@@ -512,18 +568,18 @@
       ],
       "errors": [],
       "hashes": {
+        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
         "scripts/preview-evolution-hub.mjs": "92913a1290aed283f0ce8216409359c5ba1f065f4e57b2ee69a2f190acaaa08e",
         "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
-        "src/ui/golden-spin/hub.css": "d3b29d18941469c23e2dc59fdf9bb0ce5043017808858cbae6b3820d479d195c",
+        "src/ui/golden-spin/hub.css": "e20131eca4c2d7feea56ba923643c68dd090e1ded8bcb72825842887eac3f21a",
         "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
-        "tests/evolution-hub-integration.cjs": "2dc1b76fe23340375ad4084f4427f5c2480d0bc38eb2a760a9914dcc050ea642",
-        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
-        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746"
+        "tests/evolution-hub-integration.cjs": "c91a9fc6f8ad9d76c54c1d8ed762537076c16c6cf123f0f59cc2c5b218c337b0"
       }
     },
     {
       "kind": "current",
-      "source": "d3f04ee4569082d22d30c43dc066a786de1c605d",
+      "source": "ed81b5aaf1b0d71f8069dcdc7300ffb7762ab7cc",
       "workingTree": true,
       "executedOverrides": {},
       "faultInjection": null,
@@ -576,13 +632,13 @@
       ],
       "errors": [],
       "hashes": {
+        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
         "scripts/preview-evolution-hub.mjs": "92913a1290aed283f0ce8216409359c5ba1f065f4e57b2ee69a2f190acaaa08e",
         "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
-        "src/ui/golden-spin/hub.css": "d3b29d18941469c23e2dc59fdf9bb0ce5043017808858cbae6b3820d479d195c",
+        "src/ui/golden-spin/hub.css": "e20131eca4c2d7feea56ba923643c68dd090e1ded8bcb72825842887eac3f21a",
         "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
-        "tests/evolution-hub-integration.cjs": "2dc1b76fe23340375ad4084f4427f5c2480d0bc38eb2a760a9914dcc050ea642",
-        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
-        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746"
+        "tests/evolution-hub-integration.cjs": "c91a9fc6f8ad9d76c54c1d8ed762537076c16c6cf123f0f59cc2c5b218c337b0"
       }
     }
   ]
