@@ -19,7 +19,7 @@ export function frostedFeatherSnow(ctx:CanvasRenderingContext2D,safe:Safe){
   edgeFrostBounds=[];
   if(snow>=.005&&width>8&&height>8){
    const growth=.25+.75*snow;
-   ctx.save();ctx.globalAlpha*=.8; // Softer edge glaze/facets; keep the original feather layer unchanged.
+   ctx.save();ctx.globalAlpha*=.56; // 30% lighter than the .8 revision; original feather layer stays unchanged.
    for(const p of deposits){
     const vertical=p.side<2,along=vertical?height:width,across=vertical?width:height;
     const span=Math.min(p.span,along-4),depth=Math.min(p.depth*growth,across-4);
