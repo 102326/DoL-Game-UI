@@ -28,7 +28,8 @@ jobs:
       evidence_nonce: ${{ steps.evidence.outputs.evidence_nonce }}
       evidence_upload: ${{ steps.evidence-upload.outcome }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Browser installation and browser contracts each have a 12-minute stage bound.
+    timeout-minutes: 35
     env:
       MOODY_PROFILE: standard
       MOODY_EVIDENCE_ID: ${{ github.run_id }}-${{ github.run_attempt }}-validate
