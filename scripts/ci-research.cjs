@@ -185,10 +185,16 @@ function researchUpload(ctx, summary) {
     }
   }
   for (const folder of ['golden-spin-b/dist','settings-refraction-v1/dist','evolution/weather-dist']) {
-    for (const source of filesBelow(path.join(ctx.root, 'tests/artifacts', folder), ctx.root).filter(f=>/\.(css|js|html|svg|md|txt)$/.test(f) || path.basename(f)==='LICENSE')) {
+    for (const source of filesBelow(path.join(ctx.root, 'tests/artifacts', folder), ctx.root).filter(f=>/\.(css|js|html|svg|md|txt|json|png|jpe?g|webp|mp4|webm|woff2?)$/.test(f) || path.basename(f)==='LICENSE')) {
       const relative = 'builds/' + path.relative(path.join(ctx.root,'tests/artifacts'), source).split(path.sep).join('/');
       fs.mkdirSync(path.dirname(path.join(ctx.dir, relative)), { recursive: true }); fs.copyFileSync(source, path.join(ctx.dir, relative)); assets.push(relative);
     }
+  }
+  for (const file of ['golden-spin-b/bundle-sizes.json','settings-refraction-v1/provenance.json']) {
+    const source = path.join(ctx.root, 'tests/artifacts', file);
+    if (!safeSource(ctx.root, source) || !fs.statSync(source).isFile()) continue;
+    const relative = 'build-metadata/' + file;
+    fs.mkdirSync(path.dirname(path.join(ctx.dir, relative)), { recursive: true }); fs.copyFileSync(source, path.join(ctx.dir, relative)); assets.push(relative);
   }
   return finalizeUpload(ctx, summary, { required, identityFiles: required.filter(f=>!rawFiles.includes(f)), candidates: [...required,...optional,...assets], totalLimit: 160 * 1024 * 1024,
     fileLimit: file => file.startsWith('review/') ? (file.endsWith('.png') ? 8 : 2) * 1024 * 1024 : file.startsWith('builds/') ? 8 * 1024 * 1024 : file.startsWith('research/') && file.endsWith('.json') ? 2 * 1024 * 1024 : undefined });

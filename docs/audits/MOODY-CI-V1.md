@@ -47,7 +47,8 @@ also compares the complete event sequence. Both checks retain their original int
 Standard: required identity, stages, unit/browser, layout coverage, package report and
 summary, 256 KiB per structured report / 16 MiB total, 7 days. Research: required run
 envelope and raw result reports, 2 MiB per raw report; allowlisted review images up to
-8 MiB each and JS/CSS/HTML/SVG/license comparison builds up to 8 MiB each, 160 MiB
+8 MiB each and allowlisted comparison builds (JS/CSS/HTML/SVG/licenses plus their
+first-party JSON/images/original-speed video/fonts) up to 8 MiB each, 160 MiB
 total, 14 days. This keeps the roughly 112 MiB historical comparison tier possible.
 Optional diagnostics are indexed and omissions are explicit; necessary structured
 proof cannot be dropped. Only files under controlled first-party artifact roots and
@@ -141,3 +142,22 @@ CI/tests/packaging/documentation relative to the new base. Old green runs and th
 f5afac3 deep sample are explicitly older-baseline evidence; the merged candidate
 requires new actual PR checks and identities. Earlier f587e1a UI ZIP byte equality
 also belongs to the old baseline, not the newly integrated settings source.
+
+Actual weather-dist is about 94 MiB, largely committed first-party comparison
+PNG/MP4/JSON rather than runtime code. A targeted original-failure test caught
+the initial build extension filter excluding these media. The build whitelist
+now preserves them under the same three safe roots, 8 MiB per file / 160 MiB
+total and 14-day retention. Comparison media remain historical, not new runtime
+PASS records; `.save` and arbitrary files remain excluded. This is preservation
+of the original dist review scope, not a new upload source or player-data scan.
+The two original directory-external JSON paths, golden-spin-b/bundle-sizes.json
+and settings-refraction-v1/provenance.json, remain exact-path optional metadata
+under the default 256 KiB JSON cap. Their parents are never swept and symlinks
+are rejected before copying.
+
+The new S01 baseline's 80 ms closing fade exposed a historical-counterexample
+precondition race (actual PR run 39895657097): category readiness could precede
+the 100 ms opening fade. Closing at zero opacity yields zero duration and no
+paused-animation witness. The fixture now waits for the actual shell opening
+completion before injecting a stuck close. The paused witness, exact
+MOODY_SETTINGS_CLOSE_PENDING rejection and positive delayed-close control remain.
