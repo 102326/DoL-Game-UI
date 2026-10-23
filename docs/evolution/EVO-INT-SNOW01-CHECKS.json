@@ -1,0 +1,515 @@
+{
+  "status": "PASS",
+  "reference": "7d531a0b09c89c3cfe59659437834f40d995f4d9",
+  "referenceSourceSha256": "0fd5b6e042009bbb34c3be48265680e23cefd2ce0765498d5a0b147d652bfc13",
+  "source": "7d531a0b09c89c3cfe59659437834f40d995f4d9",
+  "workingTree": true,
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "chromium": "153.0.8010.12"
+  },
+  "rasters": [
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0,
+      "time": 0,
+      "sha256": "4549af7a4f0d07d2ca3bf9d3b19ddec452f6a888785a1066b909d417bc50e9e2"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0,
+      "time": 3,
+      "sha256": "4549af7a4f0d07d2ca3bf9d3b19ddec452f6a888785a1066b909d417bc50e9e2"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0,
+      "time": 21,
+      "sha256": "4549af7a4f0d07d2ca3bf9d3b19ddec452f6a888785a1066b909d417bc50e9e2"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0.2,
+      "time": 0,
+      "sha256": "07ef42304b6948a65875855c0866af2e183389d998c34e7bef6c7bbf292d17db"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0.2,
+      "time": 3,
+      "sha256": "cb1e7bfb552a6045ae14cadf29f2dd77bdcca1c513b9ccb67913fd1e83ad7f51"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0.2,
+      "time": 21,
+      "sha256": "d1d26be48eab726179741a1643a8ef6697fceca3e0a686ab993db7ee7dbc2e06"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0.65,
+      "time": 0,
+      "sha256": "34379e40b0e1cd44b1491d857b32140f24e320a216ba4ab316bb2e124031ee9b"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0.65,
+      "time": 3,
+      "sha256": "0d29424aa325c5c7e805cb96b3591544f801335beb47a921b9e6972fc24814a6"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 0.65,
+      "time": 21,
+      "sha256": "8f971e3ae873c670451fe7e4fd6cb1c7decae9823cbcfcb8924aa4f7cf0f7aea"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 1,
+      "time": 0,
+      "sha256": "52f03928fa2053c15d40ed6f0af357d59310bf5af459cb4a763e7631bb987a1d"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 1,
+      "time": 3,
+      "sha256": "d56e6caf00230d6ecf7d3e3251f0bd48585b9fa64902952f5fbb3d364b8557e7"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 1,
+      "snow": 1,
+      "time": 21,
+      "sha256": "270eaf245dc9e2e2159f80e20c5c6d77db6b996038c098b86e3f209f6acc9192"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0,
+      "time": 0,
+      "sha256": "6eecf85e29ff1504ea3759a53299623d8bb9598aa51424d0b259281a0f124274"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0,
+      "time": 3,
+      "sha256": "6eecf85e29ff1504ea3759a53299623d8bb9598aa51424d0b259281a0f124274"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0,
+      "time": 21,
+      "sha256": "6eecf85e29ff1504ea3759a53299623d8bb9598aa51424d0b259281a0f124274"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0.2,
+      "time": 0,
+      "sha256": "f094d5b71bde75f95804fc06b747f5551d19a37375babd61468c843ffdaf4c41"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0.2,
+      "time": 3,
+      "sha256": "77e7bf912f16b0da1a1d4aadee316ba9e024e10e9c787d56494d06c702f8c31a"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0.2,
+      "time": 21,
+      "sha256": "795e622afa9e4b8c8f4e07edc8bec3f8572d3d04a2aadeb020480a95f0467d09"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0.65,
+      "time": 0,
+      "sha256": "ef490cfeb9b5d4fac476b1a82ab1a69d3085e9ebfd3eed9403f61d4f2cf4fc70"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0.65,
+      "time": 3,
+      "sha256": "905edf2a51111c742a40f5483ba68c89b80833edcaadf606039f64ddffea81c0"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 0.65,
+      "time": 21,
+      "sha256": "f19f19cc2c9625d712c0e4a78e2072777942aece1e9c6582154087432da2ac8e"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 1,
+      "time": 0,
+      "sha256": "e50282f73d4ae4cf525a91a95385dfd2def49485206a48f706731bacb5a003ad"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 1,
+      "time": 3,
+      "sha256": "ee2046f800ddd820b484026486be739819a6802c1cabbef3ef9606307b7688b9"
+    },
+    {
+      "w": 360,
+      "h": 640,
+      "dpr": 2,
+      "snow": 1,
+      "time": 21,
+      "sha256": "b87acb0af1a8193c4f1947ead23583a6fe69ef9ac0c2969a6c8b358ec7ae0b7b"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0,
+      "time": 0,
+      "sha256": "48f78b0348fc62c358a8c173aad8f7ed068c49b8c731bb7578ae1b09ee04b97f"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0,
+      "time": 3,
+      "sha256": "48f78b0348fc62c358a8c173aad8f7ed068c49b8c731bb7578ae1b09ee04b97f"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0,
+      "time": 21,
+      "sha256": "48f78b0348fc62c358a8c173aad8f7ed068c49b8c731bb7578ae1b09ee04b97f"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0.2,
+      "time": 0,
+      "sha256": "41821422d075ef10a43135934a2685699ec6ed11a21969ef76da26b864dfa854"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0.2,
+      "time": 3,
+      "sha256": "a0c54d53b7f0f840335de50416f5b2664b90ee72761357a912be4c2c1ed6cadd"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0.2,
+      "time": 21,
+      "sha256": "3188e5731caf50d63bc4373db76cf9c3675f856e674eb875951668432b6b7ad5"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0.65,
+      "time": 0,
+      "sha256": "5d955f6d8275aae33e523c6b38e5524821836c2c21f80150d92596a7ee82ff5e"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0.65,
+      "time": 3,
+      "sha256": "8476e5dbe1b84fdde78bc61dcd0b8fb132d2606828f7867619d1555e856bd012"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 0.65,
+      "time": 21,
+      "sha256": "d28d60ba3dcd417ad52e96984dc1b212cd84128f546145dceedc11c40b591271"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 1,
+      "time": 0,
+      "sha256": "53f72ef539933f5acb0eba25d090cb21818ad1d77ac883a9bc000c3408edcbf6"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 1,
+      "time": 3,
+      "sha256": "e477afcc36e3c85b691e6144124a3b80665c7588233d5249a671248c8a57c7ce"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 1,
+      "snow": 1,
+      "time": 21,
+      "sha256": "cc9733dd48fba52d3c98ca4f5d1544175895ff9c45cd75369e0a7ec4b7666b73"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0,
+      "time": 0,
+      "sha256": "8913a327c1d13cdafdb5a28a7b356afa41fad907ae2fb9463d3a481fe2bdbd49"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0,
+      "time": 3,
+      "sha256": "8913a327c1d13cdafdb5a28a7b356afa41fad907ae2fb9463d3a481fe2bdbd49"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0,
+      "time": 21,
+      "sha256": "8913a327c1d13cdafdb5a28a7b356afa41fad907ae2fb9463d3a481fe2bdbd49"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0.2,
+      "time": 0,
+      "sha256": "8aac34716b74d60292d6cf54968ab25fcf0fcca0269485fccc7176d0132cfc50"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0.2,
+      "time": 3,
+      "sha256": "e5410fceb11f1d240f5c8ebbee3a9dd24c5245adff288cddeef321e8d3e73465"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0.2,
+      "time": 21,
+      "sha256": "e9ecd7f95144af243d893c8b54e69678ea47cda1bcbe665ae05be3b7e81296ba"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0.65,
+      "time": 0,
+      "sha256": "0614f52769a1c847b6b55db309717313388f940183def355d8de1b8e3f930127"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0.65,
+      "time": 3,
+      "sha256": "c6a04d7a4bb5d933e803458d433f4d77b8d14e927f04b0099b4263b2a8396612"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 0.65,
+      "time": 21,
+      "sha256": "2ecb49c79a3fb3c7be8fe1c0d4c063ccf4728354436bfaac52d62d70704d6569"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 1,
+      "time": 0,
+      "sha256": "c6c3707409bbe9485a37d2bc9f75e43f7deb8b64b58fb9c99390022d16818432"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 1,
+      "time": 3,
+      "sha256": "009a66c021bd44a3d12450dd4798426d5da93faa5697527adf7bbfcb3b60d6c9"
+    },
+    {
+      "w": 940,
+      "h": 760,
+      "dpr": 2,
+      "snow": 1,
+      "time": 21,
+      "sha256": "649b8df071ae0255022caeb8d71ae79e6defaff62e06a59236d55f87633d1493"
+    }
+  ],
+  "surfaces": [
+    {
+      "mode": "legacy",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "rain": "ab7c344b5b0f28d0e96763e763895bfcd836fc6d3fb0aa68bcd84e682de9a5ff",
+      "snow": "eca8d37efd2939ad1001ce415b57d6b30e16c6adedef937c040e0a1dd85a957e",
+      "reading": "d18bb1708d6e780dd6036ea12c2a0784f3aa2059d129e22ecf2ed64a1cda35cd",
+      "close": "09dbf902a80c5e212b63b334cfd0bf7bc1c1da5e0854c51bc19fe1d1f5fbc492"
+    },
+    {
+      "mode": "legacy",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 2
+      },
+      "rain": "e1cdc0bb1cce088e62dd191bbbf43debd82946c3b56ed6dcfba42698c081ca9a",
+      "snow": "36c62e14433b287e49fb6dcf570a0e80d9964bcf09967e3ace91abbd03e9e0aa",
+      "reading": "7689360958db5a49c5896ae56e20ecafd740d6acd748de03f5c363d551de6025",
+      "close": "2399c928d193a96fdc452b989cad903f49f19399f81df2acdd4a289440e786c2"
+    },
+    {
+      "mode": "feather",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "rain": "ab7c344b5b0f28d0e96763e763895bfcd836fc6d3fb0aa68bcd84e682de9a5ff",
+      "snow": "0892b5de23e954daff9f2c2fd18717731b2f064d2957b76bd6594d58e1022d22",
+      "reading": "d18bb1708d6e780dd6036ea12c2a0784f3aa2059d129e22ecf2ed64a1cda35cd",
+      "close": "09dbf902a80c5e212b63b334cfd0bf7bc1c1da5e0854c51bc19fe1d1f5fbc492"
+    },
+    {
+      "mode": "feather",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 2
+      },
+      "rain": "e1cdc0bb1cce088e62dd191bbbf43debd82946c3b56ed6dcfba42698c081ca9a",
+      "snow": "83d970387d19b45779360779deebe28b84b0c505e3338981193d24dca65fb622",
+      "reading": "7689360958db5a49c5896ae56e20ecafd740d6acd748de03f5c363d551de6025",
+      "close": "2399c928d193a96fdc452b989cad903f49f19399f81df2acdd4a289440e786c2"
+    }
+  ],
+  "errors": [],
+  "hashes": {
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "tests/evolution-snow-integration.cjs": "bed903de340cfd22c2df81aaab74d71c12f466e24b2887d359ea5b3aac9849c4",
+    "framework/official-ui/README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+    "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
+    "framework/official-ui/main.ts": "72112d011ce8aa45f6ebc741a450c15f030010604a16b42f27f017ff7564c750",
+    "framework/official-ui/motion.ts": "6331487a96d23256c2330b21dcb2a1e4797f9f3858e02aa29ae3333ad70fcecc",
+    "framework/official-ui/navigation.ts": "2c23118e017cd2d57bb9e235f195ae708e6fbe6f0367f05540c2dba0ab97edf6",
+    "framework/official-ui/reference-shelf.ts": "bcc8c881ea21bc8c38c69b5bf78c6c9f5fd4a115ad0f29a958fdd81ca69a3117",
+    "framework/official-ui/startup-notice.ts": "88fd2ec3e340d8e131cb6fdc85e3e7b2d1182503b174cd49d859a1ce13939dcc",
+    "framework/official-ui/weather.ts": "1f1d8681c06c8140e152f55b08ad3474e318905cfc5888996cec85b1877edab9",
+    "package-lock.json": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4",
+    "scripts/preview-evolution-settings.mjs": "f22af126fc8d25d912d459227673c34b70308420ef8fd2906e1bfd3c1387377e",
+    "src/theme/SettingsNavigation.vue": "b9971a5d7812d002b003c71feed0feac842221f48afdfe6779ad6830a6e5d522",
+    "src/theme/SettingsPanel.vue": "92024ad0eaf7fc02c9f105f0e1d1a497551284472975362a59eaeefb7f4d782e",
+    "src/theme/SettingsPreview.vue": "f659043e62370fb718573b055db09cc11584e019080a2a5122e296bef08b1bf9",
+    "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+    "src/theme/controls.css": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+    "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+    "src/theme/drawer-corner.svg": "bd1da769f8c78bdaa768e70effec79334563eb53511e04623ca6612ca3892bbf",
+    "src/theme/kraft-work-motion.css": "5606dc48ff813db966ebbadfadfc5beb3699363df02cc3515e9dbcc1503f026e",
+    "src/theme/kraft-work-native.css": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa",
+    "src/theme/kraft-work-pages.css": "7cb5caf798ca15575a3415c1c271d5b7399b6bf02fec6e46514846999e07339f",
+    "src/theme/kraft-work-surfaces.css": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0",
+    "src/theme/kw-weather-condensation.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
+    "src/theme/kw-weather-mist.svg": "ca34fdd9a419a0ef046b05adcde47b23e87399dfd7181a6ffdbdd55b4a9990e9",
+    "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+    "src/theme/kw-weather-snow-far.svg": "599565b90efeb72292b7be34ede0442330c848f776eb806d1b6339e98d59f6cf",
+    "src/theme/kw-weather-snow-near.svg": "089055a38f1256bef1e0d7bea4b4a6f4031ab460add848bf4a263f80d2a3ad2e",
+    "src/theme/layout.css": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265",
+    "src/theme/layout.ts": "4a7779635d50ae0de3040effe6ed23ba32be22f21d7376654b7602bf9dcfc19f",
+    "src/theme/mobile.css": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1",
+    "src/theme/navigation-material.css": "6df318a851446678ad100e0069266fec6400c18eaf890f6109a94fe6acbad54a",
+    "src/theme/preferences.ts": "a8169ec051969fd3d4817256bf612d36037a522ff40c36ae4da7de7f48fb7b42",
+    "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+    "src/theme/sidebar-layout.ts": "76bc16439b994577538877852389a05e944adee0c265a441eb5a6585e5b180a0",
+    "src/theme/sidebar.css": "65926604dc7c2ba303ca45e704b8735d6b07927de3090b9e60a2433b5239a7b7",
+    "src/theme/stone-free.css": "3feacbac9933aab21a9eb0d1ff6b9a91e3dc47a57f0a8706971f4c870c908d17",
+    "src/theme/theme.ts": "223423adea451d4a7c25be98c3f102bc4de79d9bbd85b1a92e081a49bc42c92d",
+    "src/theme/visual.css": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6",
+    "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "2cc71805e9520f60933749597fb33982f6dc32a56020ef9cea0fa04c00d90c4c",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/surface.ts": "5d61766221293b7fde0599a76bda89ed1ffa1bebddff1db5cff77ecae6edcdf2",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "ff78f9cd06aeaa400026f178b6626d7440046577c99e7fb3e150226fcc97a428",
+    "tests/evolution-weather-integration.cjs": "197c7ee1d5473375bd40fba983b7a96546230487572691cbbe08adebbfd192e0",
+    "dist/framework/official-ui/style.css": "68eb1dfe1e075e9bcb8b853776d98fdb73341a88b2062a891c029fbd917c5f2c"
+  },
+  "legacySelectionCounterexample": {
+    "verdict": "REJECTED_AS_EXPECTED",
+    "reference": "7d531a0b09c89c3cfe59659437834f40d995f4d9",
+    "file": "src/ui/weather/settings.ts",
+    "sourceSha256": "e05231f13a5be3e7c1312a822ccca252349c63ea1f0822a9d970c1607e5d2a91",
+    "exitCode": 1,
+    "completedChecks": 3,
+    "failedCheck": {
+      "name": "W01 real pixel protection and input",
+      "status": "FAIL",
+      "error": "actual settings must select R11 feather snow\n+ actual - expected\n\n+ undefined\n- 'feather'\n"
+    }
+  }
+}
