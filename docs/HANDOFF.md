@@ -20,7 +20,7 @@
 ## Next — 接手顺序
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
-2. 核对Node >=22.12（22需启用 `NODE_OPTIONS=--experimental-strip-types`）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
+2. 核对Node >=22.12（22需启用 `NODE_OPTIONS=--experimental-strip-types`）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
 3. 核对最终提交的Actions状态，区分研究push与手动标准。CI合入后39950006354及本批新run状态见#22；未触发/运行中/取消都不是通过。先核对现成证据再选择最小充分验证，文档修改不重复全量矩阵。
 4. 本次提交不要求马上接入READ01。若继续研究，先在目标浏览器复核桌面帧退化，使用报告的成对对照和短时观测命令；不要仅减弱已认可天气、移除断言或把减少模糊半径当修复。性能证据与负责人材质评审分别通过后，才决定实际接入范围。
 5. 完整游戏+ModLoader、多Mod/真实宿主、设备触控/软键盘/系统选择框、长期并窗性能仍未验证；G1/G2/G3正式裁决、其它窗口新天气/材质推广、main/Release及CJ-4规则另行决定。设备型号不等于实测viewport。

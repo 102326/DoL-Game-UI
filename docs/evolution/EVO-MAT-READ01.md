@@ -18,6 +18,8 @@
 - 桌面原速：[当前18.12秒](../media/evolution-acrylic-read01/current-desktop-1x.mp4)、[候选15.68秒](../media/evolution-acrylic-read01/candidate-desktop-1x.mp4)。操作顺序/等待计划相同，真实事件时间已记录；启动/编码/运行等待有差异，不是逐帧同步、等长剪辑或加速录像。
 - [8项性能观测](EVO-MAT-READ01-OBSERVATIONS.json)、[三个假设及复现方法](EVO-MAT-READ01-HYPOTHESES.json)随源码同步；临时原脚本、可见/隐藏标题见证截图及原始日志仅本机忽略目录，不假定另一设备可取。
 
+录制另需系统PATH中的FFmpeg，时长核对使用ffprobe；它们不随npm安装。没有这些工具可先看已提交媒体，不把录制未执行记为PASS。
+
 在仓库根目录按锁安装依赖、构建Framework后启动（Node >=22.12，22需启用strip-types；本机Node24无需额外参数）：
 
 ```sh
