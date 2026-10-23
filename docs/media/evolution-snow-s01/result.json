@@ -1,0 +1,189 @@
+{
+  "scope": "Current actual settings source and production CSS; first-party mock page, no game/save data. Both videos retain original speed and all waiting; not a frozen old/new visual comparison or real-device acceptance.",
+  "snow": true,
+  "inputHead": "7d531a0b09c89c3cfe59659437834f40d995f4d9",
+  "workingTree": true,
+  "sources": {
+    "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+    "src/theme/SettingsPanel.vue": "92024ad0eaf7fc02c9f105f0e1d1a497551284472975362a59eaeefb7f4d782e",
+    "src/theme/SettingsNavigation.vue": "b9971a5d7812d002b003c71feed0feac842221f48afdfe6779ad6830a6e5d522",
+    "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+    "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+    "src/theme/preferences.ts": "a8169ec051969fd3d4817256bf612d36037a522ff40c36ae4da7de7f48fb7b42",
+    "src/ui/SettingsToggle.vue": "f8e3626a8c495310b182d5f2b5fee4ee222d81b0eb60506f0dcd57012f34764d",
+    "src/ui/GameButton.vue": "ec3fb9866e83bdaf27be7245c4574b7a50931a6ac40b67ea510d721a4fac4bec",
+    "src/ui/source-motion.ts": "c26166d11f4547af4caaec5844e49d40e43c51dc825d9de02a06b53b5c3994db",
+    "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+    "scripts/preview-evolution-settings.mjs": "f22af126fc8d25d912d459227673c34b70308420ef8fd2906e1bfd3c1387377e",
+    "scripts/record-evolution-settings.cjs": "6a6e40f3a60579f78cd2977d0bd983ce4379796af631fdf927218b2c82ca7442",
+    "package-lock.json": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4",
+    "dist/framework/official-ui/style.css": "68eb1dfe1e075e9bcb8b853776d98fdb73341a88b2062a891c029fbd917c5f2c",
+    "framework/official-ui/weather.ts": "1f1d8681c06c8140e152f55b08ad3474e318905cfc5888996cec85b1877edab9",
+    "framework/official-ui/navigation.ts": "2c23118e017cd2d57bb9e235f195ae708e6fbe6f0367f05540c2dba0ab97edf6",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "2cc71805e9520f60933749597fb33982f6dc32a56020ef9cea0fa04c00d90c4c",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/surface.ts": "5d61766221293b7fde0599a76bda89ed1ffa1bebddff1db5cff77ecae6edcdf2",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "ff78f9cd06aeaa400026f178b6626d7440046577c99e7fb3e150226fcc97a428"
+  },
+  "runtime": {
+    "platform": "darwin",
+    "node": "v24.18.0",
+    "chromium": "153.0.8010.12"
+  },
+  "records": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "events": [
+        {
+          "label": "打开真实界面设置",
+          "actualMs": 830
+        },
+        {
+          "label": "Weather: feather snow",
+          "actualMs": 1534
+        },
+        {
+          "label": "修改舒适阅读",
+          "actualMs": 5210
+        },
+        {
+          "label": "分类：材质",
+          "actualMs": 5856
+        },
+        {
+          "label": "分类：入口",
+          "actualMs": 6626
+        },
+        {
+          "label": "分类：页面",
+          "actualMs": 7395
+        },
+        {
+          "label": "分类：阅读",
+          "actualMs": 8159
+        },
+        {
+          "label": "Weather: snow",
+          "actualMs": 8882
+        },
+        {
+          "label": "Weather: midway reversal",
+          "actualMs": 13490
+        },
+        {
+          "label": "关闭真实设置",
+          "actualMs": 17025
+        },
+        {
+          "label": "恢复正文操作",
+          "actualMs": 17854
+        },
+        {
+          "label": "再次打开",
+          "actualMs": 18525
+        },
+        {
+          "label": "快速切换分类",
+          "actualMs": 18923
+        },
+        {
+          "label": "Escape关闭",
+          "actualMs": 20173
+        }
+      ],
+      "final": {
+        "open": false,
+        "sections": 1,
+        "transition": false,
+        "native": "正文操作：1 次",
+        "proxies": 0
+      },
+      "errors": []
+    },
+    {
+      "name": "narrow",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "events": [
+        {
+          "label": "打开真实界面设置",
+          "actualMs": 803
+        },
+        {
+          "label": "Weather: feather snow",
+          "actualMs": 1505
+        },
+        {
+          "label": "修改舒适阅读",
+          "actualMs": 5113
+        },
+        {
+          "label": "分类：材质",
+          "actualMs": 5750
+        },
+        {
+          "label": "分类：入口",
+          "actualMs": 6517
+        },
+        {
+          "label": "分类：页面",
+          "actualMs": 7281
+        },
+        {
+          "label": "分类：阅读",
+          "actualMs": 8046
+        },
+        {
+          "label": "Weather: snow",
+          "actualMs": 8770
+        },
+        {
+          "label": "Weather: midway reversal",
+          "actualMs": 13378
+        },
+        {
+          "label": "关闭真实设置",
+          "actualMs": 16911
+        },
+        {
+          "label": "恢复正文操作",
+          "actualMs": 17741
+        },
+        {
+          "label": "再次打开",
+          "actualMs": 18412
+        },
+        {
+          "label": "快速切换分类",
+          "actualMs": 18991
+        },
+        {
+          "label": "Escape关闭",
+          "actualMs": 20177
+        }
+      ],
+      "final": {
+        "open": false,
+        "sections": 1,
+        "transition": false,
+        "native": "正文操作：1 次",
+        "proxies": 0
+      },
+      "errors": []
+    }
+  ]
+}

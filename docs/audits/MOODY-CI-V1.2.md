@@ -2,6 +2,8 @@
 
 2026-10-23；依据[负责人正式实施令](../references/MOODY_CI_TRUST_V1.2_ORIGINAL.md)。继续原PR #24，不重建CI平台。输入为0a9e628的Project/Build Identity能力，合入研发7d531a0后的工作基线2df0e3d；旧V1.1和旧CI证据保持原身份。最终候选SHA、实际Actions/Attempt与下载复验以[PR #24](https://github.com/102326/DoL-Game-UI/pull/24)、Issue #22专项记录和交付附件为准，本文不自行证明自身提交已通过。
 
+最终验证前又整合研发ef3c15c的SNOW01接线：保留其实际源码、原始媒体和W01新雪天断言，冲突合并保留双方身份/终止收据及文档；重新生成包含助手的父入口Hash。该产品变更来自已授权研发提交，本CI专项未另行设计雪效。
+
 ## 实施范围
 
 - 严格、原生可擦除TS负责合同/锁读取与生成、Standard/Research调度、案例记录、分片、研究族/依赖、实际图形上下文、上传分类和隔离构建。新增仅开发依赖`@types/node`；不引入TS运行加载器。Node22.12显式strip-types已验证，下载验收器不需npm。既有CJS兼容证据、CLI、Node preload/reporter及测试不机械迁移。
