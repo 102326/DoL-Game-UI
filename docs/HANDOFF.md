@@ -4,13 +4,15 @@
 
 ## Current — 当前做什么
 
-- 最新[EVO-A2/A3消费者迁移](evolution/EVO-A2-A3-CONSUMERS.md)，输入 `fbf0269`：按负责人步骤1、2推进设置/侧栏、原生窗口/天气/Hub、导航面板、商店/衣柜/战斗/存档和自有兼容装饰；旧帧、定时器与重复清理路径当批退出，保留六类明确原生/共用/退役调度入口。13个实际入口资源归零、旧衣柜排队帧反例和防回退检查通过；最终精确提交及CI见#22。未推进步骤3的原型接线，也未自判G1通过。
+- 最新 [EVO-INT-S01 设置 V2.3 研发接线](evolution/EVO-INT-SETTINGS01.md)，输入 `34f4217`：已认可100/80ms简单开关与620ms分类帧进入实际设置源码；退出旧开窗代理/独立材质层，修复反向透明度跳变、关闭时分类未取消、窗口重建后暂停动画未释放。当前5组受控检查通过，旧行为4拒绝/1通过（含1项尚未迁移的时序目标，不混称4个缺陷）。本机macOS/Node24.18/Chromium153；类型/合同、设置/历史/资源/动效、八包两轮构建及负例通过，命令和限制见报告。精确提交、同步与两套CI见#22和本机Git。设置已在研发实际入口Integrated；不是main/Release或全局G1/G2/G3通过。
+
+- 最新[EVO-A2/A3消费者迁移](evolution/EVO-A2-A3-CONSUMERS.md)，输入 `fbf0269`：按负责人步骤1、2推进设置/侧栏、原生窗口/天气/Hub、导航面板、商店/衣柜/战斗/存档和自有兼容装饰；旧帧、定时器与重复清理路径当批退出，保留六类明确原生/共用/退役调度入口。13个实际入口资源归零、旧衣柜排队帧反例和防回退检查通过；最终精确提交及CI见#22。该消费者批次尚未推进步骤3；设置首片接线现由顶部S01完成，仍未自判G1通过。
 - 本批标准CI首轮39834323662在兼容包构建被阻断：原type-only导入门槛拒绝了共用资源原语。构建器现只额外允许确切的visual-scope模块，所有其它直接/传递模块仍拒绝；新增Runtime/其它模块精确拒绝反例，八包本地构建及合同检查通过。该次汇总/gate失败是连锁结果，未执行的浏览器阶段不计通过；最终新CI见#22。
 - 已知旧问题：补充ui-runtime检查在运行时版本2.7.0／包版本3.0.4断言失败，输入提交已存在；本批未改src/main.ts或放宽断言，该补充套件不能记全通过。
 - 前批[EVO-A2共享动效与设置布局资源迁移](evolution/EVO-A2-SETTINGS-RESOURCES.md)，输入 `9893644`：sourceMotion滚动帧/观察器/监听和设置布局帧/观察器实际接入visualScope，当批删除对应重复清理路径。旧源码受控迟到回调产生额外轮询被精确拒绝；当前版本及设置卸载后资源归零通过。类型、UI/Host构建与受影响组件回归通过；精确提交和两套CI见#22。尚未正式接入已认可设置/天气/球体原型。
 - 前批 [EVO-A2 视觉资源作用域首批](evolution/EVO-A2-VISUAL-SCOPE.md)，输入 `9807e0b`：OrbitFocus和原生导航实际共用visualScope，合并帧任务/清理所有权；当批删除局部frame/dead及重复卸载路径。正常组件、原生导航、Framework Host及设置/选择/战斗受控回归通过，焦点卸载后观察器与帧计数为0。尚未覆盖其它消费者或正式游戏，精确提交与两套CI见#22。
 - 反例修复批次 `9807e0b` 的输入为 `d0e06e5`。输入的两套CI均因同一个历史反例生成器重复声明 `ticket` 而失败；后续汇总和gate为连锁失败，不是多个产品缺陷。修复仅去掉生成器重复声明，本地正常几何、缺样式及旧几何的精确拒绝均通过；完整CI结果见#22，未完成的后续检查不能沿用旧成功。
-- 共享导航已经实际接线：属性/社交共用adapter，adapter与通用面板overlay/passage共用navigationMount；OrbitFocus坐标及本批资源所有权已收敛，其余已批准呈现资源已由最新消费者批次迁移，原生/公共工厂例外见新报告。设置正式入口仍300/220ms及代理展开，正式天气仍旧paint，球体由原型注入；已认可原型尚未正式交付。
+- 共享导航已经实际接线：属性/社交共用adapter，adapter与通用面板overlay/passage共用navigationMount；OrbitFocus坐标及本批资源所有权已收敛，其余已批准呈现资源已由最新消费者批次迁移，原生/公共工厂例外见新报告。输入34f4217时设置仍300/220ms及代理展开；当前S01已替换为已认可100/80ms实际入口。正式天气仍旧paint，球体由原型注入；后两者尚未正式交付。
 - 每个消费者迁移并验证后立即退出对应重复路径；导航挂载批次已经退出部分独立claim/mount清理，A3不是尚未开始。每批进行针对性的真实宿主、输入与资源/性能验证，最后再做完整设备和多Mod回归。
 
 <details>
@@ -34,7 +36,7 @@
 
 ## Decided — 已经确定什么
 
-- 保留已认可设置V2.3：开100/关80ms简单透明度、正文立即可操作、V2.2分类；验收实现`6510a1d221f4f845cb766d03b71e2d48fedc0445`及[CI39578067270](https://github.com/102326/DoL-Game-UI/actions/runs/39578067270)。仍是隔离原型，尚未正式整合。保留已认可金属球、真实Hub工具/布局、3.x Acrylic及原生/第三方/存档边界。[V0摘要](evolution/EVO-V0-baselines.json)冻结输入。旧Hub整段禁用策略已由V2输入批次在隔离原型中退出；正式入口未启用该原型，生产接入仍需单独验证。
+- 保留已认可设置V2.3：开100/关80ms简单透明度、正文立即可操作、V2.2分类；验收实现`6510a1d221f4f845cb766d03b71e2d48fedc0445`及[CI39578067270](https://github.com/102326/DoL-Game-UI/actions/runs/39578067270)。该历史验收是隔离原型；当前S01已在研发分支接入真实设置入口，完整游戏和设备验收仍待完成。保留已认可金属球、真实Hub工具/布局、3.x Acrylic及原生/第三方/存档边界。[V0摘要](evolution/EVO-V0-baselines.json)冻结输入。旧Hub整段禁用策略已由V2输入批次在隔离原型中退出；正式入口未启用该原型，生产接入仍需单独验证。
 - A1两个生产入口已接同一内部`nativeOverlayNavigation`，共同租约/挂载/观察/取消/异常/坐标，保留独立组件与演出；旧重复基础逻辑已删除。[A1记录](evolution/EVO-A1.md)包含基线失败、两端测试和夹具纠正。未改Host公共API，不是万能窗口壳。
 - V1使用真实设置组件及权威天气分类，Canvas同表面湿润/霜纹/光照连续变化，未接正式天气层。[观看与启动说明](../prototypes/evolution-weather/README.md)、[原速录像](media/evolution-weather-r1/weather-original-speed.mp4)、[受控结果](media/evolution-weather-r1/result.json)、[源码与媒体摘要](media/evolution-weather-r1/manifest.json)。不宣称高保真目标已认可。
 - 本机macOS / Node24.18 / Chromium153：`npm run ci:check`、`node scripts/build-framework.mjs`、`node tests/evolution-navigation.cjs`、`node tests/header-weather.cjs`、`node tests/settings-ci.cjs`、`node --test tests/ci-evidence.test.cjs tests/test-workflow.test.cjs`通过；天气研究TypeScript及Vite构建通过，`EVO_WEATHER_ENDURANCE_MS=60000 node tests/evolution-weather.cjs --record`通过W1–W4四组受控检查。A1测试须先构建Framework生产CSS；天气须先`node scripts/prepare-settings-refraction.mjs`。本机工作树文件摘要见媒体manifest/result；最终提交CI身份另列#22。
@@ -46,7 +48,7 @@
 当前接续重点从天气调参转向架构迁移。天气原型保持已认可的自然湿痕、底边流出、四档雨量、稀疏独立斜雨及更快天气转场；历史候选和原速媒体沿用其原源码身份，记录见[R9](evolution/EVO-WEATHER-R9-REPORT.md)/[R10](evolution/EVO-WEATHER-R10-REPORT.md)。不再把当前原型写成“等待A/B二选一”或“提速待确认”。
 
 1. 步骤1、2的消费者资源迁移与重复路径退出已完成；先核对最新提交两套完整CI、覆盖与六项保留边界，进行G1技术复核。已知运行时版本诊断问题保留失败记录；不把旧CI或辅助套件的部分结果写成当前全部通过。G1/G2/G3尚未正式裁定。
-2. V2输入、Mac生命周期补强及最新240ms展开节奏已在真实Hub完成受控检查，展开速度已获负责人确认。接手先核对本次提交CI，再运行当前 `/hub.html`；[旧原速演示](media/evolution-hub-v2/hub-input-v2-desktop.mp4)不含生命周期补强和本次提速，不能作为最新节奏参考。本轮A2/A3已按覆盖表收敛；设置/天气/球体正式接线仍属下一步，当前不盲删CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
+2. V2输入、Mac生命周期补强及最新240ms展开节奏已在真实Hub完成受控检查，展开速度已获负责人确认。接手先核对本次提交CI，再运行当前 `/hub.html`；[旧原速演示](media/evolution-hub-v2/hub-input-v2-desktop.mp4)不含生命周期补强和本次提速，不能作为最新节奏参考。本轮A2/A3已按覆盖表收敛；设置首片接线已由S01完成，先核对其真实游戏输入/宿主及必要性能；天气/球体接线仍属下一步，不盲删其CSS/SVG。继续保留业务事件、所有权、取消/反向、隐藏/释放、Zoom等可靠性成果。
 3. 新设备先fetch并检查HEAD/dirty/unpushed，安装锁定依赖，获取设置研究固定源码，复建后核对证据摘要。仅文档改动不重复跑整轮，运行源码变更按风险重验。
 4. 真实宿主、输入、生命周期与必要性能检查贯穿每批迁移，不能全部留到最后。Windows、Android/iOS/WebView、真实游戏/ModLoader、多Mod、多表面长期性能及真机输入仍需相应证据，最后进行完整G3回归；已有设备型号不是实测viewport，不以60秒/DPR1/390px模拟代替。
 
