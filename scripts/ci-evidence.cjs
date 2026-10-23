@@ -66,11 +66,12 @@ function writeJson(file, data) {
   fs.renameSync(file + '.tmp', file);
 }
 
-function classify({ code, error, timedOut, cancelled, assertionFailed }) {
+function classify({ code, error, timedOut, cancelled, assertionFailed, terminalFailed }) {
   if (cancelled) return 'CANCELLED';
   if (timedOut || error) return 'ERROR';
-  if (code === 0) return 'PASS';
   if (assertionFailed) return 'FAIL';
+  if (terminalFailed) return 'ERROR';
+  if (code === 0) return 'PASS';
   return code == null ? 'UNVERIFIED' : 'ERROR';
 }
 function overall(statuses) {
@@ -124,10 +125,10 @@ function runCommand(command, args, { cwd = root, log, timeoutMs = 120000, signal
       clearTimeout(timer); clearTimeout(forceKill); signal?.removeEventListener('abort', abort);
       fs.mkdirSync(path.dirname(log), { recursive: true });
       fs.writeFileSync(log, tail);
-      let assertionFailed=false,naturalCompletion=false,terminalReceipt=null;const ownReceipt=receiptFile+'.'+child.pid+'.json';
-      try {const st=fs.lstatSync(ownReceipt);if(st.isFile()&&!st.isSymbolicLink()&&st.size<=8192){const receipt=JSON.parse(fs.readFileSync(ownReceipt));terminalReceipt=receipt;naturalCompletion=receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.naturalCompletion===true;assertionFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true&&receipt.kind==='assertion'&&receipt.code==='ERR_ASSERTION'&&receipt.name==='AssertionError';}} catch {}
-      const classified=classify({code,error:error||childSignal,timedOut,cancelled,assertionFailed:execution==='contract'&&assertionFailed}),status=classified==='PASS'&&command===process.execPath&&((execution==='contract'&&!naturalCompletion)||(requireAssertions&&!(terminalReceipt?.assertions>0||terminalReceipt?.nodeTests?.length>0)))?'UNVERIFIED':classified==='ERROR'&&terminalReceipt?.nodeCaseIssues?.length?'UNVERIFIED':classified;
-      resolve({status,nodeTests:terminalReceipt?.nodeTests,nodeCaseIssues:terminalReceipt?.nodeCaseIssues,assertions:terminalReceipt?.assertions??0,terminalReceipt,assertionResult:status==='PASS'?'PASS':status==='FAIL'?'FAIL':'UNKNOWN',reasonCode:cancelled?'RunCancelled':timedOut?'ProcessTimeout':error?'SpawnError':childSignal?'ProcessSignal':status==='FAIL'?'AssertionFailed':code===0?(status==='PASS'?'ExitZero':naturalCompletion?'NoAssertions':'EarlyExitWithoutCompletion'):'ProcessExitError',
+      let assertionFailed=false,terminalFailed=false,naturalCompletion=false,terminalReceipt=null;const ownReceipt=receiptFile+'.'+child.pid+'.json';
+      try {const st=fs.lstatSync(ownReceipt);if(st.isFile()&&!st.isSymbolicLink()&&st.size<=8192){const receipt=JSON.parse(fs.readFileSync(ownReceipt));terminalReceipt=receipt;terminalFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true;naturalCompletion=receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.naturalCompletion===true;assertionFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true&&receipt.kind==='assertion'&&receipt.code==='ERR_ASSERTION'&&receipt.name==='AssertionError';}} catch {}
+      const classified=classify({code,error:error||childSignal,timedOut,cancelled,assertionFailed:execution==='contract'&&assertionFailed,terminalFailed}),status=classified==='PASS'&&command===process.execPath&&((execution==='contract'&&!naturalCompletion)||(requireAssertions&&!(terminalReceipt?.assertions>0||terminalReceipt?.nodeTests?.length>0)))?'UNVERIFIED':classified==='ERROR'&&!terminalFailed&&terminalReceipt?.nodeCaseIssues?.length?'UNVERIFIED':classified;
+      resolve({status,execution,executionId,pid:child.pid,contradictions:terminalFailed&&code===0?['TerminalFailureWithExitZero']:[],nodeTests:terminalReceipt?.nodeTests,nodeCaseIssues:terminalReceipt?.nodeCaseIssues,assertions:terminalReceipt?.assertions??0,terminalReceipt,assertionResult:status==='PASS'?'PASS':status==='FAIL'?'FAIL':'UNKNOWN',reasonCode:cancelled?'RunCancelled':timedOut?'ProcessTimeout':error?'SpawnError':childSignal?'ProcessSignal':status==='FAIL'?'AssertionFailed':terminalFailed?'TerminalFailure':code===0?(status==='PASS'?'ExitZero':naturalCompletion?'NoAssertions':'EarlyExitWithoutCompletion'):'ProcessExitError',
         rawStatus: cancelled ? 'cancelled' : timedOut ? 'timeout' : error ? 'spawn-error' : childSignal ? 'signal' : code === 0 ? 'passed' : 'failed',
         exitCode: code, signal: childSignal, error: error || null, milliseconds: Date.now() - start,
         outputBytes: bytes, outputSha256: outputHash.digest('hex'), logTruncated: bytes > tail.length });
@@ -144,8 +145,15 @@ function readReport(ctx, file) {
   } catch { return null; }
 }
 
-function verifiedPass(result) {
-  return result?.status === 'PASS' && result.rawStatus === 'passed' && result.exitCode === 0 &&
+function resultStatus(result, execution=result?.execution||'contract') {
+  const receipt=result?.terminalReceipt;
+  if (!receipt?.terminal) return result?.status||'UNVERIFIED';
+  if (receipt.schema!==1 || !result.executionId || receipt.executionId!==result.executionId || !Number.isSafeInteger(result.pid) || receipt.pid!==result.pid) return 'UNVERIFIED';
+  const assertion=execution==='contract' && receipt.kind==='assertion' && receipt.code==='ERR_ASSERTION' && receipt.name==='AssertionError';
+  return overall([result.status||'UNVERIFIED', assertion?'FAIL':'ERROR']);
+}
+function verifiedPass(result, execution=result?.execution||'contract') {
+  return result?.status === 'PASS' && resultStatus(result,execution)==='PASS' && result.rawStatus === 'passed' && result.exitCode === 0 &&
     !result.signal && Number.isFinite(result.milliseconds) && result.milliseconds >= 0;
 }
 
@@ -204,13 +212,14 @@ function summarize(ctx, steps = {}) {
     if (raw === 'skipped') Object.assign(entry, { status: 'UNVERIFIED', reasonCode:'UnexpectedSkip',reason:'Workflow skipped this required stage' });
     else if (raw === 'cancelled') Object.assign(entry, { status: 'CANCELLED', reason: 'Workflow cancelled this required stage' });
     else if (result?.name === stage.id) {
-      Object.assign(entry,Object.fromEntries(['name','status','rawStatus','exitCode','signal','milliseconds','reasonCode','assertionResult','log'].filter(k=>Object.hasOwn(result,k)).map(k=>[k,result[k]])),{scope:stage.scope});
+      Object.assign(entry,Object.fromEntries(['name','status','rawStatus','exitCode','signal','milliseconds','reasonCode','assertionResult','log'].filter(k=>Object.hasOwn(result,k)).map(k=>[k,result[k]])),{scope:stage.scope,status:resultStatus(result,'tool')});
       entry.reason = result.status === 'PASS' ? 'Command completed with exit 0' : `Command outcome: ${result.rawStatus}; see bounded log`;
-      if (result.status === 'PASS' && !verifiedPass(result)) Object.assign(entry, { status: 'UNVERIFIED', reason: 'Incomplete success record' });
+      if (entry.status === 'PASS' && !verifiedPass(result,'tool')) Object.assign(entry, { status: 'UNVERIFIED', reason: 'Incomplete success record' });
       if (raw === 'failure' && entry.status === 'PASS') Object.assign(entry, { status: 'ERROR', reason: 'Workflow outcome contradicts success record' });
     }
     if (['unit', 'browser'].includes(stage.id)) {
       const suite = readReport(ctx, stage.id + '.json');
+      if(suite?.results?.length)entry.status=overall([entry.status,...suite.results.map(r=>resultStatus(r,'contract'))]);
       if (!suiteEvidence(ctx,stage.id)) {
         Object.assign(entry,{status:entry.status==='FAIL'?'FAIL':entry.status==='ERROR'?'ERROR':entry.status==='CANCELLED'?'CANCELLED':'UNVERIFIED',evidenceIntegrity:'INCOMPLETE',reason:'Required per-check evidence missing, incomplete or not passing'});
       }
@@ -287,7 +296,7 @@ function finalizeUpload(ctx,summary,options={}) {
  return delivery;
 }
 function verifyRemote(directory,expected) {
- const started=Date.now(),problems=[];let identity,delivery,summary;
+ const started=Date.now(),problems=[];let identity,delivery,summary,computed;
  try {
   identity=readJsonBounded(directory,'identity.json').identity;delivery=readJsonBounded(directory,'delivery.json');summary=readJsonBounded(directory,'summary.json');
   if(expected.source.head!==expected.checkoutSHA||!sameIdentity(identity.source,expected.source)||identity.source.dirty||!sameIdentity(identity.catalog,catalogIdentity(expected.profile,expected.depth||'standard'))||identity.profile!==expected.profile||identity.nonce!==expected.nonce)throw Error('Source/catalog/profile/nonce mismatch');
@@ -301,10 +310,10 @@ function verifyRemote(directory,expected) {
   function scan(dir,prefix=''){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const name=prefix+entry.name;if(entry.isSymbolicLink())throw Error('Downloaded symlink');if(entry.isDirectory())scan(path.join(dir,entry.name),name+'/');else{actual.push(name);total+=fs.statSync(path.join(dir,entry.name)).size;if(actual.length>2001||total>(expected.profile==='research'?160:16)*1048576)throw Error('Downloaded evidence budget exceeded')}}}scan(directory);
   if(!exactIds([...index.files.map(e=>e.file),'upload-index.json'],actual))problems.push({file:'upload-index.json',reason:'Actual downloaded set differs from manifest'});
   if(!sameIdentity(readJsonBounded(directory,'catalog.json').catalog,catalogFor(expected.profile,expected.depth||'standard')))problems.push({file:'catalog.json',reason:'Catalog snapshot mismatch'});
-  const computed=expected.profile==='research'?require('./ci-research.cjs').researchSummary(ctx):summarize(ctx,{checkout:{outcome:'success'},node:{outcome:'success'},python:{outcome:'success'}});
+  computed=expected.profile==='research'?require('./ci-research.cjs').researchSummary(ctx):summarize(ctx,{checkout:{outcome:'success'},node:{outcome:'success'},python:{outcome:'success'}});
   if(computed.status!=='PASS'||summary.status!=='PASS'||delivery.status!=='PASS')problems.push({file:'summary.json',reason:'Uploaded result does not establish complete PASS'});
  } catch(error){problems.push({file:'remote-artifact',reason:error.message})}
- const assertionResult=summary?.assertionResult||'UNKNOWN';return{schema:1,identity,...verdict(assertionResult,problems,problems.length?'UNVERIFIED':'PASS'),problems,remoteVerificationMs:Date.now()-started};
+ const assertionResult=computed?.assertionResult==='FAIL'?'FAIL':summary?.assertionResult||'UNKNOWN';return{schema:1,identity,...verdict(assertionResult,problems,problems.length?overall([computed?.status||'UNVERIFIED','UNVERIFIED']):'PASS'),problems,remoteVerificationMs:Date.now()-started};
 }
 function prepareUpload(ctx, { candidates: extra = [], totalLimit = 16 * 1024 * 1024, fileLimit, required=requiredEvidence(ctx.identity.profile), identityFiles=required } = {}) {
   const destination = path.join(ctx.dir, 'upload');
@@ -331,4 +340,4 @@ function prepareUpload(ctx, { candidates: extra = [], totalLimit = 16 * 1024 * 1
   return { files, bytes, omitted };
 }
 
-module.exports = {suiteEvidence, verifyRemote, safeFile, readJsonBounded, verdict, exactIds, checkpointEvidence, sourceIdentity, root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, finalizeUpload, validateUpload, requiredEvidence, layoutEvidence, packageEvidence, requiredPackages, readReport, verifiedPass, sameIdentity, hash };
+module.exports = {resultStatus,suiteEvidence, verifyRemote, safeFile, readJsonBounded, verdict, exactIds, checkpointEvidence, sourceIdentity, root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, finalizeUpload, validateUpload, requiredEvidence, layoutEvidence, packageEvidence, requiredPackages, readReport, verifiedPass, sameIdentity, hash };

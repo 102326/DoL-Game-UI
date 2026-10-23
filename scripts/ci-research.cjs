@@ -1,6 +1,6 @@
 // Research profile of the existing Moody runner. Baseline revisions stay in raw reports.
 const fs = require('node:fs'), path = require('node:path');
-const { writeJson, runCommand, overall, verifiedPass, sameIdentity, sourceIdentity, readReport, hash, finalizeUpload,verdict,suiteEvidence } = require('./ci-evidence.cjs');
+const { writeJson, runCommand, overall, verifiedPass, sameIdentity, sourceIdentity, readReport, hash, finalizeUpload,verdict,suiteEvidence,resultStatus } = require('./ci-evidence.cjs');
 const { researchPlan:plan,nodeCaseIds,commandCaseIds} = require('./ci-catalog.cjs');
 function safeSource(root, file) {
   const relative = path.relative(root, file);
@@ -94,6 +94,7 @@ async function runResearch(ctx, { signal, quiet = false, checks: selected = plan
 }
 function researchSummary(ctx, steps = {}) {
   const report = readReport(ctx, 'research.json'), results = [];
+  const observed=overall([report?.status||'UNVERIFIED',...(report?.results||[]).map(r=>resultStatus(r,plan.find(c=>c.id===r.name)?.execution||'tool'))]);
   for (const id of ['dependencies','browser-install']) {
     const r = readReport(ctx, `stage-${id}.json`);
     results.push({ name: id, status:verifiedPass(r)&&r.schema===1?'PASS':r?.status==='ERROR'?'ERROR':r?.status==='FAIL'?'FAIL':r?.status==='CANCELLED'?'CANCELLED':'UNVERIFIED' });
@@ -118,7 +119,7 @@ function researchSummary(ctx, steps = {}) {
       } else if (!sameIdentity(r.caseIds, commandCaseIds(check))) throw Error('Command case missing');
     }
     results.push({ name: 'research', status: report.status === 'PASS' ? 'PASS' : 'UNVERIFIED' });
-  } catch (error) { results.push({ name: 'research', status: ['FAIL','ERROR','CANCELLED'].includes(report?.status)?report.status:'UNVERIFIED',evidenceIntegrity:'INCOMPLETE',reason:error.message }); }
+  } catch (error) { results.push({ name: 'research', status: ['FAIL','ERROR','CANCELLED'].includes(observed)?observed:'UNVERIFIED',evidenceIntegrity:'INCOMPLETE',reason:error.message }); }
   for (const id of ['checkout','node','dependencies','browser-install','research']) {
     if (steps[id] && steps[id].outcome !== 'success') results.push({ name: id, status: steps[id].outcome==='cancelled'?'CANCELLED':steps[id].outcome==='skipped'?'UNVERIFIED':'ERROR' });
   }
