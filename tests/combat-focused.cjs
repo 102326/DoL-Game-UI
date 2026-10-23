@@ -36,6 +36,8 @@ const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'artifacts/mater
   assert.ok(Math.abs(geometry.dock.left-geometry.root.left)<2&&Math.abs(geometry.dock.right-geometry.root.right)<2,`Dock follows its native region at ${width}px / ${zoom} / focused=${focused}: ${JSON.stringify(geometry)}`);
   assert.ok(geometry.next.left>=geometry.dock.left-1&&geometry.next.right<=geometry.dock.right+1,'Continue stays inside dock');
   assert.ok(Math.abs(geometry.dock.bottom-geometry.height)<2,'Dock remains at viewport bottom');
+  const idleResizes=await p.evaluate(async()=>{let calls=0;const observer=new ResizeObserver(()=>calls++);observer.observe(document.querySelector('.dcu-footer'));const frames=n=>new Promise(resolve=>{const next=()=>--n?requestAnimationFrame(next):resolve();requestAnimationFrame(next)});try{await frames(3);const before=calls;await frames(8);return calls-before}finally{observer.disconnect()}});
+  assert.equal(idleResizes,0,'Settled dock must not keep resizing from rounded measurement feedback');
  }
  await p.evaluate(()=>{document.body.style.zoom='1';focusOn=true;DoLCombatUI.refresh()});
  await p.setViewportSize({width:844,height:500});await p.evaluate(()=>{document.querySelector('#leftaction').append(Object.assign(document.createElement('div'),{id:'long-fixture',textContent:'Original long action details'}));document.querySelector('#long-fixture').style.height='1400px'});await p.locator('[data-edit-group="0:leftaction"]').click();await p.evaluate(()=>window.scrollTo(0,0));

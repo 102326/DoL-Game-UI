@@ -93,7 +93,11 @@ function syncDock(s:Session){
  }
  const r=s.host.getBoundingClientRect();
  // Top-layer coordinates are viewport pixels, but the dock still inherits game zoom.
- const dockWidth=s.dock.getBoundingClientRect().width,scale=s.dock.offsetWidth&&dockWidth?dockWidth/s.dock.offsetWidth:1;
+ let scale=1;
+ for(let el:HTMLElement|null=s.dock;el;el=el.parentElement){
+  const zoom=Number.parseFloat(getComputedStyle(el).zoom);
+  if(Number.isFinite(zoom)&&zoom>0)scale*=zoom;
+ }
  const set=(key:string,value:string)=>{if(s.dock.style.getPropertyValue(key)!==value)s.dock.style.setProperty(key,value)};
  set('--dcu-left',`${r.left/scale}px`);set('--dcu-width',`${r.width/scale}px`);
  const viewport=window.visualViewport;

@@ -644,8 +644,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ebdada051cc7f49e70bd2aea56b64c4f5fda7182c6bd830d59e566ee48caa8e0",
-      "assertionSites": 109
+      "sourceSha256": "c919b7da998cde2cd77a55308f575a8522ea5fed5bf2ee20e15744fd33d4655d",
+      "assertionSites": 133
     },
     {
       "entry": "tests/combat-select.cjs",
