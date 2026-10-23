@@ -1,4 +1,4 @@
-"""Check/rebuild the two player and six maintained optional packages; never publish."""
+"""Check/rebuild the two player and seven maintained optional packages; never publish."""
 from pathlib import Path, PurePosixPath
 import hashlib
 import json
@@ -37,6 +37,7 @@ ADAPTERS = {
     'cheat-extended-soft-wet': ('CheatExtendedSoftWet', 'cheat extended', '>=1.20.3', 'cheat-extended-soft-wet'),
     'reoverfits-soft-wet': ('ReOverfitsSoftWet', 'ReOverfits', '>=4.1.1', 'reoverfits-soft-wet'),
     'mouth-compat-051213': ('LyraMouthCompat051213', 'Lyra', '=0.5.12.13-1.0.1a-1004.1-goose-ucb', 'mouth-compat'),
+    'smartphone-soft-wet': ('SmartPhoneSoftWet', 'SmartPhone Alpha', '>=0.3.91', 'smartphone-soft-wet'),
 }
 HOST_REQUIREMENT = '>=0.1.2-experimental && <0.2.0'
 PROTOCOL = '0.1-experimental'
@@ -120,7 +121,7 @@ def adapter_policy(directory):
     mouth = directory == 'mouth-compat-051213'
     deps = [{'modName': target, 'version': requirement}]
     if not mouth:
-        deps.append({'modName': 'DoLGameUI', 'version': '>=3.0.0'})
+        deps.append({'modName': 'DoLGameUI', 'version': '>=3.0.2' if directory == 'smartphone-soft-wet' else '>=3.0.0'})
     deps.append({'modName': 'GameVersion', 'version': '=0.5.12.13'})
     if mouth:
         deps.append({'modName': 'maplebirch', 'version': '>=5.2.3 <6.0.0'})
@@ -210,7 +211,7 @@ def build_packages():
                'runId': identity['run']['id'],
                'packages': [{key: item[key] for key in ['name', 'file', 'sha256']} for item in packages]}
     write_json(ROOT / 'dist/CJ3C_BUILD_RECEIPT.json', receipt)
-    print('PASS CJ3C build receipt: two players + six current optional packages; legacy Lyra excluded')
+    print('PASS CJ3C build receipt: two players + seven current optional packages; legacy Lyra excluded')
 
 
 def archive_snapshot(path):
@@ -323,7 +324,7 @@ def negative_tests():
                 yield test.id()
     plan = list(identifiers(suite))
     required = {'test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions',
-                'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations',
+                'test_rejects_mismatches_in_independent_sources', 'test_all_current_positive_and_precise_mutations',
                 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics',
                 'test_stale_incomplete_receipts_and_report_limit'}
     assert {name.rsplit('.', 1)[-1] for name in plan} >= required, 'CJ3C_MISSING_NEGATIVE_TESTS'
@@ -387,7 +388,7 @@ def main():
         (output / 'SHA256SUMS.txt').write_text(''.join(f'{digest(path.read_bytes())}  {path.name}\n' for path in payloads), encoding='utf-8')
         for package in packages:
             print(f"PASS {package['file']} {package['sha256']}")
-        print('PASS CJ3C independent versions, eight package contracts and two fresh builds (members/bytes/metadata/ZIP SHA)')
+        print('PASS CJ3C independent versions, nine package contracts and two fresh builds (members/bytes/metadata/ZIP SHA)')
     except Exception as error:
         report.update(status='FAIL' if isinstance(error, AssertionError) else 'ERROR', assertionResult='FAIL' if isinstance(error, AssertionError) else 'UNKNOWN', failure={'type': type(error).__name__, 'message': str(error)[:8000]})
         write_json(destination, report)

@@ -1,0 +1,16 @@
+{
+  "name": "SmartPhoneSoftWet",
+  "version": "1.1.1",
+  "description": "SmartPhone Alpha 0.3.91 / 0.3.91.1 的 Kraft Work 3.X 可选外观包。",
+  "styleFileList": ["smartphone-soft-wet.css"],
+  "scriptFileList": ["smartphone-soft-wet.js"],
+  "scriptFileList_inject_early": [],
+  "tweeFileList": [],
+  "imgFileList": [],
+  "additionFile": ["README.md", "LICENSE"],
+  "dependenceInfo": [
+    {"modName": "SmartPhone Alpha", "version": ">=0.3.91"},
+    {"modName": "DoLGameUI", "version": ">=3.0.2"},
+    {"modName": "GameVersion", "version": "=0.5.12.13"}
+  ]
+}

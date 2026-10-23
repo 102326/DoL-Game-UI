@@ -1678,6 +1678,22 @@
       "assertionSites": 17
     },
     {
+      "entry": "tests/smartphone-adapter.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "d0b2a135eb15b9e24ccc9fa5172fc9c630e213c77c5d4d477df4ce463799abe5",
+      "assertionSites": 17
+    },
+    {
       "entry": "tests/source-motion-lifecycle.cjs",
       "profiles": [
         "standard",

@@ -137,7 +137,7 @@ class SourceVersions(unittest.TestCase):
         }[name]
         text, count = re.subn(pattern, lambda match: match[1] + repr(version), self.originals[filename])
         self.assertEqual(count, 1, 'component version source must be unique')
-        (self.root / filename).write_text(text)
+        (self.root / filename).write_text(text, encoding='utf-8')
 
     def test_product_labels_are_not_a_frozen_ci_policy(self):
         project = json.loads(self.originals['project-identity.json'])['projectId']
@@ -145,7 +145,7 @@ class SourceVersions(unittest.TestCase):
             self.restore()
             data = json.loads(self.originals['package.json'])
             data['version'] = version
-            (self.root / 'package.json').write_text(json.dumps(data))
+            (self.root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
             self.write_component_version('core', '7.8.9')
             self.write_component_version('host', '0.1.9-experimental')
             with self.subTest(version=version):
@@ -163,15 +163,15 @@ class SourceVersions(unittest.TestCase):
                 self.restore()
                 if defect == 'root':
                     data = json.loads(self.originals['package.json']);data['version'] = '../outside'
-                    (self.root / 'package.json').write_text(json.dumps(data))
+                    (self.root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
                 if defect == 'runtime':
-                    (self.root / 'framework/official-ui/main.ts').write_text(self.originals['framework/official-ui/main.ts'].replace('visualVersion=productVersion', "visualVersion='controlled-wrong'"))
+                    (self.root / 'framework/official-ui/main.ts').write_text(self.originals['framework/official-ui/main.ts'].replace('visualVersion=productVersion', "visualVersion='controlled-wrong'"), encoding='utf-8')
                 if defect == 'host':
                     self.write_component_version('host', '3.5.0')
                 if defect == 'protocol':
-                    (self.root / 'framework/contracts.ts').write_text(self.originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"))
+                    (self.root / 'framework/contracts.ts').write_text(self.originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"), encoding='utf-8')
                 if defect == 'range':
-                    (self.root / 'scripts/package-framework.py').write_text(self.originals['scripts/package-framework.py'].replace("host_requirement = '>=0.1.2-experimental && <0.2.0'", "host_requirement = '*'"))
+                    (self.root / 'scripts/package-framework.py').write_text(self.originals['scripts/package-framework.py'].replace("host_requirement = '>=0.1.2-experimental && <0.2.0'", "host_requirement = '*'"), encoding='utf-8')
                 with self.assertRaisesRegex(AssertionError, reason):
                     checks.check_version_sources(self.root)
         for version, supported in [('0.1.1-experimental', False), ('0.1.2-alpha', False),
@@ -188,8 +188,8 @@ class SourceVersions(unittest.TestCase):
 
 
 class OptionalContracts(unittest.TestCase):
-    def test_all_six_positive_and_precise_mutations(self):
-        self.assertEqual(len(checks.ADAPTERS), 6)
+    def test_all_current_positive_and_precise_mutations(self):
+        self.assertEqual(len(checks.ADAPTERS), 7)
         self.assertNotIn('lyra-wardrobe-mouth-soft-wet', checks.ADAPTERS)
         for directory in checks.ADAPTERS:
             policy, filename = checks.adapter_policy(directory)
@@ -336,7 +336,7 @@ class BuildEvidence(unittest.TestCase):
             with patch.object(checks, 'ROOT', root), patch.object(checks, 'all_packages', return_value=packages), patch.object(checks, 'package_paths', return_value=paths):
                 checks.write_json(receipt_file, receipt)
                 observation, _ = checks.build_observation(identity, 'controlled-run')
-                self.assertEqual(len(observation['snapshots']), 8)
+                self.assertEqual(len(observation['snapshots']), 9)
                 for mutation, reason in [({'source': {'head': 'old'}}, 'CJ3C_STALE_BUILD_SOURCE'),
                                          ({'runId': 'other'}, 'CJ3C_STALE_BUILD_RUN'),
                                          ({'invocation': ''}, 'CJ3C_MISSING_BUILD_INVOCATION'),

@@ -12,7 +12,7 @@ declare const window: Window & {
  if (window.DolOptimizationSoftWet) return;
  const wardrobe=createOptimizationWardrobe(window);
  const spec: StyleAdapter = {
-  id: "DolOptimizationSoftWet", version: "1.0.1",
+  id: "DolOptimizationSoftWet", version: "1.0.2",
   target: {name: "原版优化", versions: [">=1.1.1.2"]},
   scope: ['#customOverlay'],
   fingerprint: {

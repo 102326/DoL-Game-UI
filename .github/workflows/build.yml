@@ -64,7 +64,7 @@ jobs:
         run: node scripts/test-ci.cjs stage unit
       - id: build
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' && steps.check.outcome == 'success' }}
-        name: Build Framework and eight current packages
+        name: Build Framework and nine current packages
         run: node scripts/test-ci.cjs stage build
       - id: packages
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
