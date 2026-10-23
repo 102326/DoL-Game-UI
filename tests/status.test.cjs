@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),path=require('node:path'),vm=require('node:vm'),{buildSync}=require('esbuild');
 const result=buildSync({entryPoints:[path.join(__dirname,'../src/runtime/status.ts')],bundle:true,write:false,format:'cjs',platform:'node'});const m={exports:{}};vm.runInNewContext(result.outputFiles[0].text,{module:m,exports:m.exports});const {createStatusService}=m.exports;
 let current={pain:0,tiredness:2,stress:3,trauma:4,control:5},next=0,queue=new Map();

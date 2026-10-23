@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"entry"}
 // C5 controlled addition: preserve C4 glass, compare the owned 3.x diagonal shower on/off.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),cp=require('node:child_process'),crypto=require('node:crypto'),{chromium}=require('playwright');
 const record=process.argv.includes('--record'),baseline=process.argv.includes('--baseline'),scatter=process.argv.includes('--scatter'),force=scatter||process.argv.includes('--force'),dist=path.resolve('tests/artifacts/evolution/weather-dist'),out=path.resolve('tests/artifacts/evolution/'+(scatter?'weather-r9-':force?'weather-r8-':'weather-r7-')+(baseline?'baseline-':'')+Date.now());fs.mkdirSync(out,{recursive:true});

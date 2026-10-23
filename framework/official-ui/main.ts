@@ -1,3 +1,4 @@
+import {version as productVersion} from '../../package.json';
 import {connectConsumer} from '../connect';
 import {startupNotice} from './startup-notice';
 import {startGameUI} from '../../src/main';
@@ -20,7 +21,7 @@ const disconnect=connectConsumer(host=>{
  let destroyUi:(()=>void)|undefined;
  let stopHub:(()=>void)|undefined;
  let stopMotion:(()=>void)|undefined;
- const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion='3.0.4';
+ const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion=productVersion;
  const release=()=>{try{stopMotion?.();stopHub?.();shelf.dispose();destroyUi?.()}finally{ui=undefined;destroyUi=undefined;stopHub=undefined;stopMotion=undefined;owner.dispose();if(html.getAttribute('data-stone-free')===visualVersion){if(previous===null)html.removeAttribute('data-stone-free');else html.setAttribute('data-stone-free',previous)}}};
  try{
   if(!owner.claim('region','soft-wet-official-ui')){release();return release}

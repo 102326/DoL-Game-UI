@@ -4,11 +4,11 @@
 
 ## 触发与环境
 
-- 发往 `main` 的 Pull Request。
-- 推送到 `main` 或 `ci/kraft-work-*` 分支。
+- 发往 `main` 或 `dev/evolution-4.0` 的 Pull Request。
+- 推送到 `main`、`ci/kraft-work-*` 或 `ci/moody-blues-*` 分支。
 - Actions 页手动运行。
 
-首轮采用一个 Ubuntu job、Node.js 22、Python 3.12 和 lockfile 对应的 Playwright Chromium。job 上限 15 分钟，同一 PR 或分支的新运行会取消旧运行。Actions 固定到提交 SHA，仓库权限为只读，不使用发布凭据。Windows 本地浏览器检查继续使用已安装的 Edge。
+标准验证采用 Ubuntu、Node.js 22、Python 3.12 和 lockfile 对应的 Playwright Chromium；验证job上限15分钟，下载复核与最终门禁独立运行。研究producer上限20分钟，保留其独立下载复核。PR与分支push按事件分别并发控制，main push不取消前序验证，手动运行以Run ID隔离。Actions固定到提交SHA，仓库权限为只读，不使用发布凭据。Windows本地浏览器检查继续使用已安装的Edge。
 
 不监听 Tag。暂不增加所有 Node 版本或平台矩阵；先根据每项耗时和实际失败调整范围。
 
@@ -28,6 +28,14 @@
 
 ## 本地执行
 
+### 项目、组件版本与构建身份
+
+当前 Moody Blues 身份规则见 [Project / Build Identity](audits/MOODY-PROJECT-BUILD-IDENTITY.md)。`project-identity.json` 中的 Project ID 只生成一次并永久保留；UI、Core、Host 各自读取实际来源，不要求同号，也不固定产品主版本。制品仍须与本次声明和构建输入一致，Host 协议及依赖兼容合同保留。
+
+GitHub 构建以 Project ID、Commit SHA、Run ID、Attempt 绑定证据，八包 SHA-256 通过 receipt、合同报告和上传索引溯源。本地独立执行下列 build / packages 命令时，检查器复用首轮 receipt 的本地 Run ID，并严格核对源码和完整身份；CI 不从旧 receipt 接管 Run ID。完整 stage runner 仍统一设置 `MOODY_EVIDENCE_ID`。
+
+Node 22.12需先设置 `NODE_OPTIONS=--experimental-strip-types`；工作流已设置。Node 22.18及本机24原生支持可擦除TS，`npm ci`不需要先构建CI工具。严格类型检查在依赖安装后执行。
+
 在仓库根目录运行：
 
 ```text
@@ -45,17 +53,29 @@ Linux 首次运行浏览器检查前执行 `npx playwright install --with-deps c
 
 全部检查通过后上传 `kraft-work-build-<SHA>`，保存 7 天，包含：
 
-- `DoLGameUI-3.0.1.mod.zip`
-- `StoneFreeHost-0.1.4-experimental.mod.zip`
+- `DoLGameUI-<package.json.version>.mod.zip`
+- `StoneFreeHost-<host_version>.mod.zip`
 - `PACKAGE_CHECKS.json`：实际提交、工作区状态、依赖和每个 ZIP 成员的 SHA-256。
 - `SHA256SUMS.txt`：上述三个负载的 SHA-256，校验清单自身除外。
 
 这些是当前提交的 CI 构建，不是已发布冻结包。文档或构建环境不同可能改变 ZIP 摘要，CI 不据此替换公开附件。
 
-无论成功或失败，已生成的受控测试日志会上传为 `kraft-work-checks-<SHA>`，保存 7 天。`tests/artifacts/ci/` 包含逐项日志、状态、耗时和平台，Actions summary 也显示耗时。测试不自动重试；一项失败后，其余同组用例标为 `not-run`。先诊断失败再修复，不通过删断言或反复重跑至绿来收口。
+无论成功或失败，已生成的受控测试日志会上传为 `kraft-work-checks-<SHA>`，保存7天。`tests/artifacts/ci/`包含逐项日志、状态、耗时和平台，Actions summary也显示耗时。测试不自动重试；独立Unit/Browser检查在整体预算内继续，有真实前置依赖才标BLOCKED。Unit预算180秒、Browser720秒、Research900秒；预算耗尽为NOT_RUN/UNVERIFIED，实际超时为ERROR。先诊断失败再修复，不通过删断言或反复重跑至绿来收口。
 
 ## 验证边界
 
 CI 不代表真实 DoL、Android WebView、物理触控或 Visual Gate 验收。真实回合结算、购买、存读档、社区组合、长期资源观察及真实设备检查沿用项目的独立验收流程。依赖外部游戏源码／Tweego 的历史夹具不纳入此 job。
 
 此配置不修改分支保护，也不自动合并 PR。是否设置必需检查，待首轮运行时间和稳定性确认后决定。
+
+## V1.2 用例与证据合同
+
+执行细则见[V1.2报告](audits/MOODY-CI-V1.2.md)。`@ci-contract`声明及实际测试标签是输入，`npm run ci:lock`生成`scripts/expected.lock.json`，提交时审查差异；`ci:check`重新生成并比较。不能通过手动编辑锁或删除断言取得通过。原三份人工案例JSON已在逐项相等比较后退出，124/241布局计划由实际profile/断点/扫描声明生成，独立验收器只读锁，不安装npm。
+
+可用`MOODY_ORDER_SEED=review-20261023 npm run ci:browser`执行可复现顺序检查；seed与实际顺序进入证据，默认不强制增加高成本矩阵。组合父入口仅记录声明作用域中的健康子案例，预期注入故障继续由父入口的精确断言证明拒绝。旧入口粒度尚未全部拆细，不能把一个entry称为全部内部场景。核心新逻辑见`scripts/ci/*.ts`，CJS保留既有CLI、Node preload/reporter与证据兼容桥。
+
+逐项明细写入必需`checks/<suite>/*.json`，suite只保留紧凑索引；任何必要分片、检查点、45张研究PNG或族报告缺失/超限/错身份/错Hash均拒绝PASS。Manifest记录期望锁Hash、最终源码指纹与SEALED；未完整封存只能诊断。实际upload outcome和上游job结论传给下载验收器；上传故障为ERROR/evidence_upload，已有产品FAIL保留并登记evidence_incomplete。上传后的旁路收据不冒充已包含在其描述的artifact中。
+
+第二构建使用独立Git目录、源覆盖、独立输出/编译缓存与npm缓存，改变TZ/Locale/Umask，保留同一锁定依赖；比较全部ZIP字节和成员元数据。Commit/Run/Attempt等易变身份留在旁路证据，不写入ZIP。
+
+构建和标准证据保留7天，研究证据/下载复核结果保留14天。需要长期保留的验收，应在到期前另存manifest、身份、实际job结论与所需原始附件并重算Hash；不将过期下载链接视为长期验收档案，不建立新归档服务。

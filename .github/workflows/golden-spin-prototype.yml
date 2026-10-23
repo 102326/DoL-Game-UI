@@ -8,16 +8,19 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: golden-spin-${{ github.ref }}
-  cancel-in-progress: true
+  group: golden-spin-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}-${{ github.event_name == 'workflow_dispatch' && github.run_id || 'shared' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref != 'refs/heads/main') }}
 defaults:
   run:
     shell: bash
+env:
+  NODE_OPTIONS: --experimental-strip-types
 jobs:
   prototype:
     outputs:
       manifest_sha256: ${{ steps.evidence.outputs.manifest_sha256 }}
       evidence_nonce: ${{ steps.evidence.outputs.evidence_nonce }}
+      evidence_upload: ${{ steps.evidence-upload.outcome }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -49,13 +52,20 @@ jobs:
         env:
           MOODY_STEPS: ${{ toJSON(steps) }}
         run: node scripts/test-ci.cjs research-summary
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      - id: evidence-upload
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
           name: golden-spin-prototype-${{ github.sha }}
           path: tests/artifacts/ci/${{ env.MOODY_EVIDENCE_ID }}/upload/
           if-no-files-found: error
           retention-days: 14
+
+      - name: Record actual evidence upload outcome
+        if: always()
+        env:
+          MOODY_UPLOAD_OUTCOME: ${{ steps.evidence-upload.outcome }}
+        run: node scripts/ci/upload-result.ts
 
   evidence-verify:
     needs: prototype
@@ -68,6 +78,8 @@ jobs:
       MOODY_EXPECTED_NONCE: ${{ needs.prototype.outputs.evidence_nonce }}
       MOODY_MANIFEST_SHA256: ${{ needs.prototype.outputs.manifest_sha256 }}
       MOODY_PRODUCER_JOB: prototype
+      MOODY_UPLOAD_OUTCOME: ${{ needs.prototype.outputs.evidence_upload }}
+      MOODY_PRODUCER_RESULT: ${{ needs.prototype.result }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -76,11 +88,15 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: '22'
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - id: evidence-download
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: golden-spin-prototype-${{ github.sha }}
           path: tests/artifacts/download-evidence
       - name: Verify actual downloaded evidence
+        if: always()
+        env:
+          MOODY_DOWNLOAD_OUTCOME: ${{ steps.evidence-download.outcome }}
         run: node scripts/ci-verify-remote.cjs tests/artifacts/download-evidence
       - name: Persist remote verification result
         if: always()

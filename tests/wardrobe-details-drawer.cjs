@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),path=require('node:path');
 const {chromium}=require('playwright'),{buildSync}=require('esbuild');
 const bundle=buildSync({entryPoints:[path.join(__dirname,'../src/wardrobe/extras.ts')],bundle:true,write:false,format:'iife',globalName:'WardrobeExtrasBundle',target:'es2022'}).outputFiles[0].text;

@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"entry"}
 // Actual sourceMotion with controlled frame delivery; game-first-motion checks real scrolling.
 const assert=require('node:assert/strict'),fs=require('node:fs'),{build}=require('esbuild'),{chromium}=require('playwright');
 (async()=>{

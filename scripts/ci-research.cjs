@@ -1,6 +1,10 @@
 // Research profile of the existing Moody runner. Baseline revisions stay in raw reports.
 const fs = require('node:fs'), path = require('node:path');
 const { writeJson, runCommand, overall, verifiedPass, sameIdentity, sourceIdentity, readReport, hash, finalizeUpload,verdict,suiteEvidence,resultStatus } = require('./ci-evidence.cjs');
+const {canSchedule}=require('./ci/contracts.ts');
+const {entryDeclaration,entryCaseProblems}=require('./ci/lock.ts');
+const {familyFor,maturityFor,dependenciesFor,researchFamilies,familyReports}=require('./ci/research-families.ts');
+const {writeSuite}=require('./ci/records.ts');
 const { researchPlan:plan,nodeCaseIds,commandCaseIds} = require('./ci-catalog.cjs');
 function safeSource(root, file) {
   const relative = path.relative(root, file);
@@ -69,29 +73,8 @@ function recordReport(ctx, check, before) {
   fs.mkdirSync(path.dirname(path.join(ctx.dir, file)), { recursive: true }); fs.copyFileSync(fresh[0], path.join(ctx.dir, file));
   return { caseIds: ids, artifacts: [{ file, sha256: hash(bytes), origin: path.relative(ctx.root, fresh[0]) }] };
 }
-async function runResearch(ctx, { signal, quiet = false, checks: selected = plan } = {}) {
-  const report = { schema: 1, identity: ctx.identity, suite: 'research', expected: selected.map(c=>c.id), status: 'UNVERIFIED', results: [] };
-  let blocked = false;
-  for (const check of selected) {
-    let result = { name: check.id, status: signal?.aborted?'CANCELLED':'UNVERIFIED', rawStatus: 'not-run', caseIds: [], artifacts: [] };
-    if (!blocked && !signal?.aborted) {
-      const before = new Map(reportsFor(ctx, check.report).map(f=>[f,stamp(f)]));
-      const env = { ...process.env, MOODY_CHECK_NAME: check.args[0]?.split('/').at(-1), MOODY_EVIDENCE_DIR: path.join(ctx.dir, 'fixtures', check.args[0]?.split('/').at(-1) || check.id) };
-      const outcome = await runCommand(check.command, check.args, { cwd: ctx.root, log: path.join(ctx.dir, 'research', check.id + '.log'), timeoutMs: 120000, signal, env, quiet, execution:check.execution||'tool',requireAssertions:check.execution==='contract' });
-      Object.assign(result, outcome);
-      if (verifiedPass(result)) {
-        try { Object.assign(result, recordReport(ctx, check, before)); }
-        catch (error) { Object.assign(result, { status: 'UNVERIFIED', reason: error.message }); }
-      }
-      blocked = result.status !== 'PASS';
-    }
-    report.results.push(result);
-    report.status = overall([...report.results.map(r=>r.status), ...(report.results.length < selected.length ? ['UNVERIFIED'] : [])]);
-    writeJson(path.join(ctx.dir, 'research.json'), report);
-    if (!quiet) console.log(`${result.status} ${check.id}`, result.reason || result.rawStatus);
-  }
-  return report;
-}
+// Existing CJS report/schema bridge; scheduling and family policy live in strict TS.
+const {runResearch}=require('./ci/research-runner.ts');
 function researchSummary(ctx, steps = {}) {
   const report = readReport(ctx, 'research.json'), results = [];
   const observed=overall([report?.status||'UNVERIFIED',...(report?.results||[]).map(r=>resultStatus(r,plan.find(c=>c.id===r.name)?.execution||'tool'))]);
@@ -102,10 +85,13 @@ function researchSummary(ctx, steps = {}) {
   }
   const unit=readReport(ctx,'unit.json'),unitStatus=overall([unit?.status||'UNVERIFIED',...(unit?.results||[]).map(r=>resultStatus(r,'contract'))]);results.push({name:'research-unit',status:suiteEvidence(ctx,'unit',require('./ci-catalog.cjs').researchUnitEntries)?'PASS':['FAIL','ERROR','CANCELLED'].includes(unitStatus)?unitStatus:'UNVERIFIED'});
   try {
+    if (!sameIdentity(report?.sourceAfter,ctx.identity.source))throw Error('SourceChangedDuringExecution');
+    for(const family of familyReports(ctx.identity,plan.map(c=>c.id),report.results,report.sourceAfter)){const actual=readReport(ctx,'families/'+family.family+'.json');if(!actual||!sameIdentity(actual,family))throw Error('Research family evidence mismatch: '+family.family);}
     if (report?.schema !== 1 || report.suite !== 'research' || !sameIdentity(report.expected, plan.map(c=>c.id)) || report.results?.length !== plan.length) throw Error('Missing/incomplete research plan');
     for (const [i, check] of plan.entries()) {
       const r = report.results[i];
       const nativeIds=nodeCaseIds(check.args);if(nativeIds.length&&(!Array.isArray(r.nodeTests)||!sameIdentity(r.nodeTests.map(c=>c.id).sort(),[...nativeIds].sort())||r.nodeTests.some(c=>c.status!=='PASS')||r.nodeCaseIssues?.length))throw Error('Missing/duplicate/unknown/skipped native research cases');
+      const entry=check.args.find(a=>/\.cjs$/.test(a)&&entryDeclaration(path.basename(a)));if(check.execution==='contract'&&entry&&entryCaseProblems(path.basename(entry),r).length)throw Error('Internal cases or renderer mismatch: '+check.id);
       if(check.execution==='contract'&&!(Number.isSafeInteger(r.assertions)&&r.assertions>0||nativeIds.length&&r.nodeTests?.length))throw Error('Required research contract has no valid assertions: '+check.id);
       if (r.name !== check.id || !verifiedPass(r,check.execution||'tool') || !Array.isArray(r.artifacts)) throw Error(`Required command incomplete: ${check.id}`);
       if (check.report) {

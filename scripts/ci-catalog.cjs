@@ -1,7 +1,11 @@
+const project=require('../project-identity.json'),{projectId}=project;
+if(project.schema!==1||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(projectId))throw Error('Invalid permanent Project ID');
 // Expected contracts are versioned source, never inferred from a run's result files.
 const crypto = require('node:crypto');
+const {expectedLock,expectedLockSha256,entryDeclaration}=require('./ci/lock.ts');
+const {familyFor,maturityFor,dependenciesFor}=require('./ci/research-families.ts');
 const suites = {
-  unit: ['ci-gate.test.cjs', 'shop-early-api.test.cjs', 'research-evidence.test.cjs', 'adapter-build-boundary.test.cjs', 'ci-evidence.test.cjs', 'visual-scope.test.cjs', 'evolution-resource-contract.test.cjs', 'device-profiles.test.cjs', 'floating-preferences.test.cjs', 'test-workflow.test.cjs', 'status.test.cjs', 'target-version.test.cjs', 'wardrobe-data.test.cjs', 'wardrobe-source-m2.test.cjs', 'wardrobe-slot-mappings.test.cjs', 'wardrobe-performance.test.cjs', 'wardrobe-operations.test.cjs', 'render-state.test.cjs', 'startup-cache.test.cjs', 'mouth-compat-adapter.cjs'],
+  unit: ['ci-v12.test.cjs', 'ci-gate.test.cjs', 'shop-early-api.test.cjs', 'research-evidence.test.cjs', 'adapter-build-boundary.test.cjs', 'ci-evidence.test.cjs', 'visual-scope.test.cjs', 'evolution-resource-contract.test.cjs', 'device-profiles.test.cjs', 'floating-preferences.test.cjs', 'test-workflow.test.cjs', 'status.test.cjs', 'target-version.test.cjs', 'wardrobe-data.test.cjs', 'wardrobe-source-m2.test.cjs', 'wardrobe-slot-mappings.test.cjs', 'wardrobe-performance.test.cjs', 'wardrobe-operations.test.cjs', 'render-state.test.cjs', 'startup-cache.test.cjs', 'mouth-compat-adapter.cjs'],
   browser: ['ui-runtime-identity.cjs', 'ui-runtime-inspector.cjs', 'ui-runtime-surfaces.cjs', 'ui-runtime-compat.cjs', 'ui-runtime-regressions.cjs', 'evolution-owner-resources.cjs', 'source-motion-lifecycle.cjs', 'game-first-motion.cjs', 'evolution-navigation.cjs', 'evolution-panels.cjs', 'evolution-orbit.cjs', 'panels-framework.cjs', 'framework.cjs', 'framework-connect.cjs', 'framework-startup.cjs', 'framework-commands.cjs', 'settings-ci.cjs', 'moody-historical-regressions.cjs', 'wardrobe-details-drawer.cjs', 'shop-source.test.cjs', 'save-transfer-lifecycle.cjs', 'header-weather.cjs', 'official-game-motion.cjs', 'kraft-work-adapters.cjs', 'optimization-wardrobe.cjs', 'wardrobe-wear-motion.cjs', 'selection-motion.cjs', 'shop-ripple-motion.cjs', 'official-defaults.cjs', 'combat-focused.cjs', 'combat-select.cjs', 'saves-viewport.cjs', 'adapter-materials.cjs', 'kraft-work-baseline.cjs', 'device-layouts.cjs', 'device-probe.cjs']
 };
 const stages = [
@@ -13,7 +17,7 @@ const stages = [
   { id: 'browser-install', scope: 'Lockfile-pinned Playwright Chromium installation', command: 'npx', args: ['playwright', 'install', '--with-deps', 'chromium'] },
   { id: 'browser', scope: 'Required controlled browser suite, including historical negatives', args: ['run', 'ci:browser'] }
 ];
-const cases = require('./research-cases.json');
+const cases = require('./expected.lock.json').researchCases;
 const node = (id, args, report, execution=args[0]?.startsWith('node_modules/')?'tool':'contract') => ({ id, command: process.execPath, args, report, execution });
 const npm = (id, name) => ({ id, command: 'npm', args: ['run', name] });
 const test = (name, report, flags = []) => node(name + flags.join(''), ['tests/' + name + '.cjs', ...flags], report);
@@ -53,12 +57,12 @@ const researchPlan = [
   ...[['','r7'],['--force','r8'],['--scatter','r9']].map(([flag, rev]) => test('evolution-weather-shower', { pattern: `evolution/weather-${rev}-[0-9]+/result.json`, shape: 'shower', count: flag ? 5 : 3, scatter: flag === '--scatter' }, flag ? [flag] : []))
 ];
 
-const nodeTestCases=require('./ci-node-test-cases.json').cases;
+const nodeTestCases=require('./expected.lock.json').nativeCases;
 const researchUnitEntries=['adapter-build-boundary.test.cjs','visual-scope.test.cjs','evolution-resource-contract.test.cjs'];
 const testArgs=name=>[...(nodeTestCases[name]?['--test']:[]),'tests/'+name];
 const nodeCaseIds=args=>args.filter(a=>nodeTestCases[require('node:path').basename(a)]).flatMap(file=>nodeTestCases[require('node:path').basename(file)].map(name=>require('node:path').basename(file)+'::'+name));
 const commandCaseIds=check=>check.id==='evolution-unit'?researchUnitEntries.map(n=>'unit:'+n):nodeCaseIds(check.args).length?nodeCaseIds(check.args):['command:'+check.id];
-const version='1.1.1';
+const version='1.3.0';
 // Same-run review frames are necessary where the research contract promises pixels.
 // Historical original-speed comparison builds remain T1, explicitly historical.
 const visualEvidence={
@@ -77,22 +81,16 @@ const visualEvidence={
  'evolution-weather-shower--force':['shower-after-light.png','shower-after-normal.png','shower-after-heavy.png','shower-after-severe.png','shower-after-snow.png'],
  'evolution-weather-shower--scatter':['shower-after-light.png','shower-after-normal.png','shower-after-heavy.png','shower-after-severe.png','shower-after-snow.png']
 };
-const checkpoints = {
- 'ui-runtime-identity.cjs':['core-identity'],
- 'shop-early-api.test.cjs': ['default-off','strict-boolean','repeat-identity','foreign-fields','reset'],
- 'ui-runtime-inspector.cjs': ['privacy','clipboard-export','bounded-stable-events','cleanup'],
- 'ui-runtime-surfaces.cjs': ['focus-escape','identity-detach-form','fallback-errors','idempotent-destroy'],
- 'ui-runtime-compat.cjs': ['before-core','unsupported-api','core-arrives','disable-restore','destroy-reinject','peer-preservation']
-};
+const checkpoints=Object.fromEntries(expectedLock.entries.filter(e=>e.evidence==='checkpoints').map(e=>[e.entry.split('/').at(-1),e.cases.map(c=>c.id)]));
 function deepFreeze(value){if(value&&typeof value==='object'){Object.freeze(value);for(const item of Object.values(value))deepFreeze(item)}return value}
 [suites,stages,researchPlan,checkpoints,visualEvidence,nodeTestCases,researchUnitEntries].forEach(deepFreeze);
 function catalogFor(profile='standard', depth='standard') {
  if (!['standard','research','release'].includes(profile) || !['standard','deep'].includes(depth)) throw Error('Unknown catalog profile/depth');
- const contracts = profile === 'research' ? researchPlan.map(c=>({id:'research.'+c.id, group:'research', profiles:['research'], necessity:'required', execution:c.execution||'tool', entry:[c.command === process.execPath ? 'node' : c.command,...c.args], result:'research.json#'+c.id, evidence:c.report ? [c.report.fixture ? 'fixtures/moody-historical-regressions.cjs/snapshot.json' : 'research/'+c.id+'/result.json'] : [], subEntries:c.id==='evolution-unit'?researchUnitEntries.map(name=>({id:'unit:'+name,entry:['node',...testArgs(name)],checkpoints:nodeTestCases[name]||[]})):[],checkpoints:c.report?.expected || (c.report?.fixture?['MOODY_ORBIT_NONFINITE']:c.report?.shape==='glass'?['material','glass']:c.report?.shape==='settings'?['settings-resources']:c.report?.shape==='inventory'?['inventory']:c.report?.shape==='shower'?(c.report.count===3?['0:rain:light','1:rain:severe','2:snow:']:['0:rain:light','1:rain:normal','2:rain:heavy','3:rain:severe','4:snow:']):commandCaseIds(c)), visualEvidence:(visualEvidence[c.id]||[]).map(f=>'review/'+c.id+'/'+f),negative:c.report?.fixture ? 'ERR_ASSERTION:MOODY_ORBIT_NONFINITE:' : null})) : [
+ const contracts = profile === 'research' ? researchPlan.map(c=>({id:'research.'+c.id, group:'research', family:familyFor(c.id),maturity:maturityFor(c.id),dependencies:dependenciesFor(c.id),profiles:['research'], necessity:'required', execution:c.execution||'tool', entry:[c.command === process.execPath ? 'node' : c.command,...c.args], result:'research.json#'+c.id, evidence:c.report ? [c.report.fixture ? 'fixtures/moody-historical-regressions.cjs/snapshot.json' : 'research/'+c.id+'/result.json'] : [], subEntries:c.id==='evolution-unit'?researchUnitEntries.map(name=>({id:'unit:'+name,entry:['node',...testArgs(name)],checkpoints:nodeTestCases[name]||[]})):[],checkpoints:c.report?.expected || (c.report?.fixture?['MOODY_ORBIT_NONFINITE']:c.report?.shape==='glass'?['material','glass']:c.report?.shape==='settings'?['settings-resources']:c.report?.shape==='inventory'?['inventory']:c.report?.shape==='shower'?(c.report.count===3?['0:rain:light','1:rain:severe','2:snow:']:['0:rain:light','1:rain:normal','2:rain:heavy','3:rain:severe','4:snow:']):commandCaseIds(c)), visualEvidence:(visualEvidence[c.id]||[]).map(f=>'review/'+c.id+'/'+f),negative:c.report?.fixture ? 'ERR_ASSERTION:MOODY_ORBIT_NONFINITE:' : null})) : [
   ...stages.map(s=>({id:'stage.'+s.id,group:'stage',profiles:['standard','release'],necessity:'required',entry:[s.command||'npm',...s.args],result:'stage-'+s.id+'.json',evidence:[],checkpoints:[]})),
-  ...Object.entries(suites).flatMap(([group,names])=>names.map(name=>({id:group+'.'+name,group,profiles:['standard','release'],necessity:'required',entry:['node',...testArgs(name)],result:group+'.json#'+name,evidence:checkpoints[name]?.length ? ['fixtures/'+name+'/checkpoints.json'] : [],checkpoints:name==='device-layouts.cjs'?require('../tests/device-case-plan.cjs').expectedCaseIds(depth):checkpoints[name]||nodeTestCases[name]||[]})))
+  ...Object.entries(suites).flatMap(([group,names])=>names.map(name=>({id:group+'.'+name,group,cases:entryDeclaration(name)?.cases,granularity:entryDeclaration(name)?.granularity,rendererContexts:entryDeclaration(name)?.rendererContexts,profiles:['standard','release'],necessity:'required',entry:['node',...testArgs(name)],result:group+'.json#'+name,evidence:checkpoints[name]?.length ? ['fixtures/'+name+'/checkpoints.json'] : [],checkpoints:name==='device-layouts.cjs'?require('../tests/device-case-plan.cjs').expectedCaseIds(depth):checkpoints[name]||nodeTestCases[name]||[]})))
  ];
- return {schema:1,version,profile,depth,automaticRelease:false,releaseAuthorization:profile==='release'?'owner approval required; design only':null,contracts};
+ return {schema:1,projectId,expectedLockSha256,version,profile,depth,automaticRelease:false,releaseAuthorization:profile==='release'?'owner approval required; design only':null,contracts};
 }
-function catalogIdentity(profile='standard',depth='standard') {const c=catalogFor(profile,depth);return{version,profile,depth,sha256:crypto.createHash('sha256').update(JSON.stringify(c)).digest('hex')}}
-module.exports={suites,stages,researchPlan,checkpoints,visualEvidence,nodeTestCases,researchUnitEntries,testArgs,nodeCaseIds,commandCaseIds,catalogFor,catalogIdentity};
+function catalogIdentity(profile='standard',depth='standard') {const c=catalogFor(profile,depth);return{version,profile,depth,expectedLockSha256,sha256:crypto.createHash('sha256').update(JSON.stringify(c)).digest('hex')}}
+module.exports={expectedLock,expectedLockSha256,entryDeclaration,projectId,suites,stages,researchPlan,checkpoints,visualEvidence,nodeTestCases,researchUnitEntries,testArgs,nodeCaseIds,commandCaseIds,catalogFor,catalogIdentity};

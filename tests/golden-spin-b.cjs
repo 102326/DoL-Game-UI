@@ -1,3 +1,5 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"named","caseSource":"check","rendererContexts":["sphere:2d"]}
+const {runCase}=require('../scripts/ci-cases.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'tests/artifacts/golden-spin-b/sphere-validation-'+Date.now());
@@ -6,7 +8,7 @@ fs.mkdirSync(out,{recursive:true});
  const {createServer}=await import('vite');const server=await createServer({configFile:path.join(root,'vite.golden-spin.config.ts'),server:{port:5182,strictPort:true}});await server.listen();
  const browser=await chromium.launch(process.platform==='win32'?{channel:'msedge',headless:true}:{headless:true});
  const checks=[],errors=[];let p;
- const check=async(name,fn)=>{await fn();checks.push(name);console.log('PASS',name)};
+ const check=async(name,fn)=>{await runCase(name,fn);checks.push(name);console.log('PASS',name)};
  try{
   p=await browser.newPage({viewport:{width:1280,height:960},hasTouch:true});p.on('pageerror',e=>errors.push(e.message));
   await p.goto('http://127.0.0.1:5182/');await p.waitForFunction(()=>window.goldenSphereLab);

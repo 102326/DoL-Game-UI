@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 // Prevent migrated presentation owners from reintroducing a private native scheduler.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const exceptions=new Map([

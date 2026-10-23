@@ -1,3 +1,5 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
+const {healthyCaseFields}=require('./ci-fixtures.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
@@ -18,7 +20,7 @@ const { root } = require('../scripts/ci-evidence.cjs');
   assert.equal(overall(['PASS', 'FAIL']), 'FAIL');
 
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'moody-evidence-'));
-  const ctx = { dir, root: dir, identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'fixture', contentSha256: 'fixture' }, run: { id: 'fixture', attempt: '1' } } };
+  const ctx = { dir, root: dir, identity: {projectId:require('../project-identity.json').projectId,profile:'standard',catalog:catalogIdentity(),source: { head: 'fixture', contentSha256: 'fixture' }, run: { id: 'fixture', attempt: '1' } } };
   try {
     writeJson(path.join(dir,'catalog.json'),{schema:1,identity:ctx.identity,catalog:catalogFor()});
     for(const [entry,reached]of Object.entries(checkpoints))writeJson(path.join(dir,'fixtures',entry,'checkpoints.json'),{schema:1,identity:ctx.identity,entry,reached});
@@ -43,9 +45,9 @@ const { root } = require('../scripts/ci-evidence.cjs');
     for (const [name, source] of Object.entries({ 'pass.cjs': 'require("node:assert/strict").equal(1,1);console.log("controlled pass")', 'fail.cjs': 'process.exit(7)', 'slow.cjs': 'setInterval(()=>{},1000)', 'blocked.cjs': 'throw Error("must never run")' })) fs.writeFileSync(path.join(dir, 'tests', name), source);
     const suite = await runSuite(ctx, 'unit', ['pass.cjs', 'fail.cjs', 'blocked.cjs'], { quiet: true });
     assert.equal(suite.status, 'ERROR');
-    assert.deepEqual(suite.results.map(r => r.status), ['PASS', 'ERROR', 'UNVERIFIED']);
-    assert.equal(suite.results[2].rawStatus, 'not-run');
-    assert.ok(!fs.existsSync(path.join(dir, 'unit/blocked.cjs.log')));
+    assert.deepEqual(suite.results.map(r => r.status), ['PASS', 'ERROR', 'ERROR']);
+    assert.equal(suite.results[2].rawStatus, 'failed');
+    assert.ok(fs.existsSync(path.join(dir, 'unit/blocked.cjs.log')));
     const abortSuite = new AbortController();
     const pendingSuite = runSuite(ctx, 'unit', ['slow.cjs', 'blocked.cjs'], { signal: abortSuite.signal, quiet: true });
     const checkpoint = JSON.parse(fs.readFileSync(path.join(dir, 'unit.json')));
@@ -57,6 +59,32 @@ const { root } = require('../scripts/ci-evidence.cjs');
     assert.equal(interruptedSuite.results[0].rawStatus, 'cancelled');
     assert.equal(interruptedSuite.results[1].status, 'CANCELLED');
 
+    const budgeted=await runSuite(ctx,'unit',['slow.cjs','pass.cjs'],{quiet:true,budgetMs:50});
+    assert.equal(budgeted.results[0].status,'ERROR');assert.equal(budgeted.results[0].rawStatus,'timeout');assert.equal(budgeted.results[1].status,'UNVERIFIED');assert.equal(budgeted.results[1].reasonCode,'SuiteBudgetExhausted');
+
+    // Real Git source mutation after a successful assertion must invalidate the suite.
+    const gitRoot=path.join(dir,'git-source');fs.mkdirSync(path.join(gitRoot,'tests'),{recursive:true});
+    fs.writeFileSync(path.join(gitRoot,'package-lock.json'),'{}');fs.writeFileSync(path.join(gitRoot,'tracked.txt'),'before');
+    fs.writeFileSync(path.join(gitRoot,'tests/change.cjs'),'require("node:assert/strict").ok(true);require("node:fs").appendFileSync("tracked.txt","changed")');
+    const git=(...args)=>require('node:child_process').execFileSync('git',['-c','user.name=102326','-c','user.email=100576628+102326@users.noreply.github.com','-c','commit.gpgsign=false','-c','core.hooksPath='+path.join(gitRoot,'empty-hooks'),...args],{cwd:gitRoot,stdio:'pipe'});
+    git('init','--quiet');git('add','.');git('commit','--quiet','-m','controlled source');
+    const changedContext={...ctx,root:gitRoot,dir:path.join(dir,'source-results'),identity:{...ctx.identity,source:require('../scripts/ci-evidence.cjs').sourceIdentity(gitRoot)}};
+    const changed=await runSuite(changedContext,'unit',['change.cjs'],{quiet:true});assert.equal(changed.results[0].status,'PASS');assert.equal(changed.status,'UNVERIFIED');assert.ok(changed.reasonCodes.includes('SourceChangedDuringExecution'));
+
+    // Finalization must report source drift while preserving an already confirmed FAIL.
+    const isolated=path.join(dir,'summary-source');fs.mkdirSync(path.join(isolated,'tests'),{recursive:true});
+    fs.cpSync(path.join(root,'scripts'),path.join(isolated,'scripts'),{recursive:true});
+    for(const file of ['package.json','package-lock.json','project-identity.json','.gitignore','tests/device-case-plan.cjs'])fs.copyFileSync(path.join(root,file),path.join(isolated,file));
+    const shell=require('node:child_process'),isolatedEnv={...process.env,MOODY_EVIDENCE_ID:'source-drift',MOODY_PROFILE:'standard',GITHUB_ACTIONS:'',GITHUB_EVENT_PATH:'',GITHUB_OUTPUT:'',GITHUB_STEP_SUMMARY:'',NODE_PATH:path.join(root,'node_modules')};
+    const localGit=(...args)=>shell.execFileSync('git',['-c','user.name=102326','-c','user.email=100576628+102326@users.noreply.github.com','-c','commit.gpgsign=false','-c','core.hooksPath='+path.join(isolated,'empty-hooks'),...args],{cwd:isolated,stdio:'pipe'});
+    localGit('init','--quiet');localGit('add','.');localGit('commit','--quiet','-m','controlled CI source');
+    const prepare=`const e=require('./scripts/ci-evidence.cjs'),p=require('node:path');(async()=>{const c=e.context(),r=await e.runCommand(process.execPath,['-e','require("node:assert/strict").fail("confirmed product failure")'],{log:p.join(c.dir,'failure.log'),quiet:true});e.writeJson(p.join(c.dir,'stage-unit.json'),{schema:1,identity:c.identity,name:'unit',...r});require('node:fs').appendFileSync('package.json','\\n');require('node:assert/strict').throws(()=>e.context(),/Run identity changed/);})().catch(e=>{console.error(e);process.exitCode=1})`;
+    const prepared=shell.spawnSync(process.execPath,['-e',prepare],{cwd:isolated,env:isolatedEnv,encoding:'utf8'});assert.equal(prepared.status,0,prepared.stderr);
+    const finalized=shell.spawnSync(process.execPath,['scripts/test-ci.cjs','summary'],{cwd:isolated,env:isolatedEnv,encoding:'utf8'});assert.equal(finalized.status,1,finalized.stderr);
+    const delivered=JSON.parse(fs.readFileSync(path.join(isolated,'tests/artifacts/ci/source-drift/upload/delivery.json'))),seal=JSON.parse(fs.readFileSync(path.join(isolated,'tests/artifacts/ci/source-drift/upload/upload-index.json'))).seal;
+    assert.equal(delivered.status,'FAIL');assert.equal(delivered.evidenceIntegrity,'INCOMPLETE');assert.ok(delivered.problems.some(p=>p.reason==='SourceChangedDuringExecution'));assert.equal(seal.state,'INCOMPLETE');
+    const sidecar=shell.spawnSync(process.execPath,['scripts/ci/upload-result.ts'],{cwd:isolated,env:{...isolatedEnv,MOODY_UPLOAD_OUTCOME:'failure'},encoding:'utf8'});assert.equal(sidecar.status,1,sidecar.stderr);const transported=JSON.parse(fs.readFileSync(path.join(isolated,'tests/artifacts/evidence-upload.json')));assert.equal(transported.status,'FAIL');assert.ok(transported.reasonCodes.includes('evidence_upload'));assert.ok(transported.reasonCodes.includes('evidence_incomplete'));
+
     // A green GitHub step without the matching result is not verification.
     let summary = summarize(ctx, Object.fromEntries(stages.map(s => [s.id, { outcome: 'success' }])));
     assert.notEqual(summary.status, 'PASS');
@@ -67,7 +95,7 @@ const { root } = require('../scripts/ci-evidence.cjs');
     summary = summarize(ctx, {});
     assert.notEqual(summary.status, 'PASS', 'missing required suite reports cannot pass');
     for (const suite of ['unit', 'browser']) {
-      writeJson(path.join(dir, `${suite}.json`), { schema: 1, identity: ctx.identity, suite, status: 'PASS', expected: suites[suite], results: suites[suite].map(name => ({name,nodeTests:nodeTestCases[name]?.map(n=>({id:name+'::'+n,status:'PASS'})),status:'PASS', rawStatus:'passed',assertions:1,exitCode:0, milliseconds: 1 })) });
+      writeJson(path.join(dir, `${suite}.json`), { schema: 1, identity: ctx.identity, suite,sourceAfter:ctx.identity.source, status: 'PASS', expected: suites[suite], results: suites[suite].map(name => ({name,...healthyCaseFields(name),nodeTests:nodeTestCases[name]?.map(n=>({id:name+'::'+n,status:'PASS'})),status:'PASS', rawStatus:'passed',assertions:1,exitCode:0, milliseconds: 1 })) });
     }
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED', 'device file exit 0 alone cannot establish coverage');
     const layoutPath = path.join(dir, 'fixtures/device-layouts.cjs/layout-report.json');
@@ -77,10 +105,11 @@ const { root } = require('../scripts/ci-evidence.cjs');
     const contracts = requiredPackages.map(name => ({ name, file: name + '.zip', sha256: 'a'.repeat(64), status: 'PASS', members: { 'LICENSE': 'b'.repeat(64), 'boot.json': 'c'.repeat(64) } }));
     const negativePlan = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'].map(name => 'controlled.' + name);
     const snapshots = contracts.map(p => ({ file: p.file, sha256: p.sha256, archiveComment: '', members: Object.entries(p.members).map(([name, sha256]) => ({ name, sha256, compressedSha256: 'd'.repeat(64), metadata: { date_time: [2026,1,1,0,0,0], compress_type: 8, create_system: 3, create_version: 20, extract_version: 20, flag_bits: 0, internal_attr: 0, external_attr: 0o600 << 16, file_size: 1, compress_size: 3, CRC: 1, header_offset: 0, extra: '', comment: '' } })) }));
-    const packageReport = { schema: 1, kind: 'package-contracts', identity: ctx.identity, status: 'PASS', versionSources: { status: 'PASS' },
+    const buildIdentity={projectId:ctx.identity.projectId,commit:ctx.identity.source.head,runId:ctx.identity.run.githubRunId||ctx.identity.run.id,attempt:ctx.identity.run.attempt};
+    const packageReport = { schema: 1, kind: 'package-contracts', identity: ctx.identity, status: 'PASS', buildIdentity, versionSources: { status: 'PASS', projectId:ctx.identity.projectId },
       expectedPackages: requiredPackages, contracts, reproducibility: { status: 'PASS', differences: [] },
       negativeTests: { status: 'PASS', plan: negativePlan, testsRun: negativePlan.length, failures: 0, errors: 0, skipped: 0, expectedFailures: 0, unexpectedSuccesses: 0 },
-      builds: ['first','second'].map(invocation => ({ receipt: { invocation, source: ctx.identity.source, runId: ctx.identity.run.id, packages: contracts }, snapshots })) };
+      builds: ['first','second'].map(invocation => ({ isolation:{workspace:'independent Git checkout and source overlay',compilerCache:'fresh isolated directory',environment:{TZ:'Pacific/Kiritimati',LC_ALL:'C'}},receipt: { invocation, buildIdentity, source: ctx.identity.source, runId: ctx.identity.run.id, packages: contracts }, snapshots })) };
     const packageFile = path.join(dir, 'package-contracts.json');
     writeJson(packageFile, packageReport);
     writeJson(packageFile, { ...packageReport, builds: packageReport.builds.slice(1) });
@@ -99,7 +128,7 @@ const { root } = require('../scripts/ci-evidence.cjs');
     }
     for (const malformed of [{ contracts: {} }, { contracts: [null] }, { builds: { length: 2 } },
       { builds: [null, null] }, { builds: [{ receipt: { invocation: 'bad', packages: [null] } }, null] },
-      { identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } } }]) {
+      { identity: {projectId:require('../project-identity.json').projectId,profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } } }]) {
       writeJson(packageFile, { ...packageReport, ...malformed });
       assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'malformed or stale package evidence cannot crash or pass');
     }
@@ -148,7 +177,7 @@ const { root } = require('../scripts/ci-evidence.cjs');
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED');
     writeJson(browserFile, fullBrowser);
     assert.equal(summarize(ctx, { browser: { outcome: 'cancelled' } }).results.find(r => r.name === 'browser').status, 'CANCELLED');
-    writeJson(path.join(dir, 'stage-check.json'), { identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } }, name: 'check', status: 'PASS', exitCode: 0 });
+    writeJson(path.join(dir, 'stage-check.json'), { identity: {projectId:require('../project-identity.json').projectId,profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } }, name: 'check', status: 'PASS', exitCode: 0 });
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'check').status, 'UNVERIFIED', 'stale report cannot pass');
     assert.equal(summarize(ctx, { build: { outcome: 'skipped' } }).results.find(r => r.name === 'build').status, 'UNVERIFIED');
 

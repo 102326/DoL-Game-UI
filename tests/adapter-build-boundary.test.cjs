@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"native"}
 const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),{spawnSync}=require('node:child_process'),{test}=require('node:test');
 const root=path.resolve(__dirname,'..'),builder=path.join(root,'scripts/build-adapters.cjs');
 test('standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules',()=>{

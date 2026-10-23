@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),path=require('node:path'),{spawnSync}=require('node:child_process');
 for(const [mutation,group,target]of[
  ['identity','identity','legacy Core identity; official wrapper is checked by framework-startup'],

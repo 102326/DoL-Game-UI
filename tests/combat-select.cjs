@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const {chromium}=require('playwright'),assert=require('node:assert/strict');
 (async()=>{
  const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;

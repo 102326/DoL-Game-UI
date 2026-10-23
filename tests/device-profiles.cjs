@@ -157,4 +157,7 @@ function scanWidths(depth = 'standard') {
   }
   return [...widths].sort((a,b)=>a-b);
 }
-module.exports = { catalog, requestedTargets, buildCases, scanWidths, cssBreakpoints };
+const negativeCodes={overflow:'DEVICE_ROOT_OVERFLOW',offscreen:'DEVICE_BOUNDS',nan:'DEVICE_NONFINITE',blockedClose:'DEVICE_HIT'};
+function orientationProfiles(depth){const cases=buildCases(depth);return ['phone','tablet'].map(category=>cases.find(p=>p.category===category&&p.orientation==='portrait'));}
+function declaredDeviceCases(depth='standard'){return [...buildCases(depth).map(p=>'profile:'+p.id),...orientationProfiles(depth).map(p=>'orientation:'+p.id),...scanWidths(depth).map(width=>'scan:'+width),...Object.keys(negativeCodes).map(name=>'negative:'+name)];}
+module.exports = { catalog, requestedTargets, buildCases, scanWidths, cssBreakpoints,orientationProfiles,negativeCodes,declaredDeviceCases };

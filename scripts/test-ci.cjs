@@ -3,34 +3,13 @@ const path = require('node:path');
 const {testArgs}=require('./ci-catalog.cjs');
 const { suites, stages, coverage, context, writeJson, overall, runCommand, summarize, finalizeUpload, layoutEvidence, checkpointEvidence } = require('./ci-evidence.cjs');
 
-async function runSuite(ctx, mode, tests = suites[mode], { signal, timeoutMs = 120000, quiet = false } = {}) {
-  const report = { schema: 1, identity: ctx.identity, suite: mode, coverage, expected: tests, status: 'UNVERIFIED',
-    results: tests.map(name => ({ name, scope: mode === 'unit' ? 'Unit/source contract' : 'Controlled browser fixture', status: 'UNVERIFIED', rawStatus: 'not-run', milliseconds: null, exitCode: null, signal: null })) };
-  const save = () => { report.status = overall(report.results.map(r => r.status)); writeJson(path.join(ctx.dir, mode + '.json'), report); };
-  save(); let blocked;
-  for (const check of report.results) {
-    if (blocked || signal?.aborted) { Object.assign(check, { status: signal?.aborted?'CANCELLED':'UNVERIFIED', reason: blocked || 'cancelled' }); save(); continue; }
-    Object.assign(check, { status: 'CANCELLED', rawStatus: 'running', startedAt: new Date().toISOString(), log: `${mode}/${check.name}.log`, evidence: [] }); save();
-    fs.rmSync(path.join(ctx.dir,'fixtures',check.name,'checkpoints.json'),{force:true});
-    const env = { ...process.env, MOODY_CHECK_NAME: check.name, MOODY_EVIDENCE_DIR: path.join(ctx.dir, 'fixtures', check.name) };
-    const checkTimeout = check.name === 'device-layouts.cjs' ? (process.env.MOODY_DEVICE_DEPTH === 'deep' ? 10 : 6) * 60 * 1000 : timeoutMs;
-    const result = await runCommand(process.execPath, testArgs(check.name).map(a=>a.startsWith('tests/')?path.join(ctx.root,a):a), { cwd: ctx.root, log: path.join(ctx.dir, check.log), env, timeoutMs:checkTimeout,signal,quiet,requireAssertions:true });
-    Object.assign(check, result);
-    if (check.name === 'device-layouts.cjs' && check.status === 'PASS' && !layoutEvidence(ctx)) {
-      Object.assign(check, { status: 'UNVERIFIED', reason: 'Required device coverage evidence missing or incomplete' });
-    }
-    if(check.status==='PASS'&&!checkpointEvidence(ctx,check.name))Object.assign(check,{status:'UNVERIFIED',reasonCode:'MissingCheckpoint'});
-    check.evidence = ['checkpoints.json','snapshot.json', 'viewport.jpg', 'layout-report.json'].map(file => `fixtures/${check.name}/${file}`).filter(file => fs.existsSync(path.join(ctx.dir, file)));
-    if (check.status !== 'PASS') blocked = `Fail-fast after ${check.name} (${check.rawStatus})`;
-    save(); if (!quiet) console.log(`${check.status} ${check.name} (${check.milliseconds}ms, exit=${check.exitCode}, signal=${check.signal})`);
-  }
-  return report;
-}
+// Existing CommonJS CLI bridge; substantive scheduling is strict erasable TS.
+const {runSuite}=require('./ci/runner.ts');
 
 async function main() {
   const mode = process.argv[2];
   if (!Object.hasOwn(suites, mode) && !['stage', 'summary', 'research', 'research-summary'].includes(mode)) throw Error('Expected unit, browser, research, research-summary, stage <id>, or summary');
-  const ctx = context(), controller = new AbortController();
+  const ctx = context({allowSourceDrift:['summary','research-summary'].includes(mode)}), controller = new AbortController();
   let interrupted;
   for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { interrupted = signal; controller.abort(); });
   writeJson(path.join(ctx.dir, 'identity.json'), { schema: 1, identity: ctx.identity, coverage });

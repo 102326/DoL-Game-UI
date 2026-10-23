@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright'),{buildSync}=require('esbuild');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'tests/artifacts/stone-free-reading','browser-'+Date.now());fs.mkdirSync(dir,{recursive:true});

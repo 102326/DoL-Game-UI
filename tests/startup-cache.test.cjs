@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 assert.equal(fs.existsSync(path.join(root,'startup-cache-experiment.ts')),false,'retired loader hook must not exist');

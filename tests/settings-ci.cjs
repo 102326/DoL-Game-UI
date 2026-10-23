@@ -1,7 +1,9 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"composed","includes":[{"prefix":"settings","source":"tests/evolution-settings-integration.cjs"},{"prefix":"weather","source":"tests/evolution-weather-integration.cjs"}],"rendererContexts":["weather:2d"]}
 // Actual settings controller/components in a first-party fixture, without game sources.
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
 const {waitSettings,waitSettingsClosed,settingsSnapshot}=require('./moody-oracles.cjs');
 const {captureFailure}=require('./moody-fixture-evidence.cjs');
+const {withCaseScope}=require('../scripts/ci-cases.cjs');
 (async()=>{
  const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;
  const server=await createServer({configFile:false,plugins:[vue(),{name:'settings-ci',configureServer(s){s.middlewares.use('/__settings_ci__',(_q,r)=>{r.setHeader('Content-Type','text/html');r.end('<!doctype html><html data-stone-free><body><main style="height:2500px"><button id="background">Original background action</button></main><script type="module">import {startTheme} from "/src/theme/controller.ts";startTheme();window.theme=window.DoLMidnightTheme;</script></body></html>')})}}],server:{host:'127.0.0.1',port:0},logLevel:'error'});
@@ -95,8 +97,8 @@ const {captureFailure}=require('./moody-fixture-evidence.cjs');
   assert.equal(await page.locator('.dmt-workspace').getAttribute('data-settings-layout'),'horizontal');
   assert.equal(await page.evaluate(()=>theme.getPreferences().comfortable),true,'persisted preference is read on remount');
   const teardown=await page.evaluate(()=>{const mounted=settingsResources.stats();settingsResources.deliver();const queued=settingsResources.stats();theme.destroy();const disposed=settingsResources.stats();settingsResources.deliver();return{mounted,queued,disposed,late:settingsResources.stats()}});
-  teardown.integration=await require('./evolution-settings-integration.cjs').verifySettingsIntegration(browser);
-  teardown.weather=await require('./evolution-weather-integration.cjs').verifyWeatherIntegration(browser);
+  teardown.integration=await withCaseScope('settings',()=>require('./evolution-settings-integration.cjs').verifySettingsIntegration(browser));
+  teardown.weather=await withCaseScope('weather',()=>require('./evolution-weather-integration.cjs').verifyWeatherIntegration(browser));
   await assert.rejects(require('./evolution-weather-integration.cjs').verifyWeatherIntegration(browser,{lateHost:true}),error=>/rain must not alter actual reading sample pixels/.test(error.message));
   console.log('PASS W01 controlled late material host is rejected by actual reading pixels');
   fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/settings-resources.json',JSON.stringify(teardown,null,2));

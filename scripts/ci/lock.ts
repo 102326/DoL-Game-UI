@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {rendererProblems} from './renderer.ts';
+import {digest,caseProblems} from './contracts.ts';
+import type {ExpectedLock,CaseResult,EntryDeclaration} from './contracts.ts';
+
+const file=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../expected.lock.json');
+export const expectedLock=JSON.parse(fs.readFileSync(file,'utf8')) as ExpectedLock;
+if(expectedLock.schema!==1||!expectedLock.entries.length||new Set(expectedLock.entries.map(e=>e.entry)).size!==expectedLock.entries.length||expectedLock.entries.some(e=>!e.cases.length))throw Error('Invalid/empty Expected Lock');
+export const expectedLockSha256=digest(fs.readFileSync(file));
+export function entryDeclaration(name:string):EntryDeclaration|undefined{return expectedLock.entries.find(e=>path.basename(e.entry)===name);}
+export function entryCaseProblems(name:string,result:{terminalReceipt?:{cases?:CaseResult[];graphics?:Parameters<typeof rendererProblems>[1]};nodeTests?:{id:string;status:string}[]}):string[]{
+ const declaration=entryDeclaration(name);if(!declaration)return ['UndeclaredEntry'];
+ if(declaration.granularity==='native')return [];// Existing native reporter verifies exact names and no skip/todo.
+ return [...caseProblems(declaration.cases,result.terminalReceipt?.cases),...rendererProblems(declaration.rendererContexts,result.terminalReceipt?.graphics)];
+}

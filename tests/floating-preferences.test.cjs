@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict'),vm=require('node:vm'),{buildSync}=require('esbuild');
 const m={exports:{}};vm.runInNewContext(buildSync({entryPoints:['src/floating/preferences.ts'],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text,{module:m,exports:m.exports});
 const {readFloatingPreferences:read,displayPosition:display,positionIntent:intent}=m.exports;

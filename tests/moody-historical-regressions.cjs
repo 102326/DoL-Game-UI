@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"entry"}
 // CI #78/#79 counterexamples use real production components in a controlled first-party fixture.
 const assert=require('node:assert/strict'),path=require('node:path'),{chromium}=require('playwright');
 const {settingsSnapshot,assertSettings,waitSettings,waitSettingsClosed,orbitSnapshot,assertOrbit,waitOrbit}=require('./moody-oracles.cjs');

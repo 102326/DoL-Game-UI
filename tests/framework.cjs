@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');

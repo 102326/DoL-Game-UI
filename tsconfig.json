@@ -14,7 +14,8 @@
     "types": [
       "vite/client"
     ],
-    "allowJs": true
+    "allowJs": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*.ts",

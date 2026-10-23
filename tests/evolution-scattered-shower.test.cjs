@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"native"}
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'evo-shower-'));require('esbuild').buildSync({entryPoints:['prototypes/evolution-weather/scattered-shower.ts'],outfile:path.join(dir,'shower.cjs'),bundle:true,platform:'node',format:'cjs'});const {scatteredShower}=require(path.join(dir,'shower.cjs'));fs.rmSync(dir,{recursive:true});
 test('seeded rain is reproducible, sparse and has independent motion rather than a common tile translation',()=>{

@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["research"],"classification":"contract","granularity":"native"}
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'evo-rain-'));
 try{require('esbuild').buildSync({entryPoints:['prototypes/evolution-weather/rain-model.ts'],outfile:path.join(dir,'model.cjs'),bundle:true,platform:'node',format:'cjs'});}catch(e){fs.rmSync(dir,{recursive:true});throw e}
