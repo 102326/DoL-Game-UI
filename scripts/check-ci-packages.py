@@ -253,6 +253,9 @@ def check_package(path, name):
         for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom', 'tailwindcss']:
             license_file = next((ROOT / 'node_modules' / module).glob('LICENSE*'))
             notices.append(module + '\n' + license_file.read_text(encoding='utf-8'))
+        gsap_notice = re.search(r'/\*!\s*\n \* GSAP 3\.15\.0\n.*?\*/', (ROOT / 'node_modules/gsap/gsap-core.js').read_text(encoding='utf-8'), re.S)
+        assert gsap_notice, 'Missing pinned GSAP source notice'
+        notices.append('gsap\n' + gsap_notice.group())
         assert files['THIRD-PARTY-NOTICES.txt'] == '\n\n'.join(notices).encode(), 'Dependency notices differ from installed inputs'
         params = [{'tip': tip, 'passage': 'Clothing Shop v2 Widgets', 'findString': find, 'replaceFile': file} for tip, find, file in shop_patches]
         assert boot['addonPlugin'] == [{'modName': 'TweeReplacer', 'addonName': 'TweeReplacerAddon', 'modVersion': '>=1.0.0', 'params': params}], 'Wrong shop patch metadata'
@@ -272,6 +275,8 @@ def check_package(path, name):
     assert set(files) == allowed, 'Missing or unexpected ZIP member'
     for filename, source in expected.items():
         assert files[filename] == source.read_bytes(), f'Member differs from build/source input: {filename}'
+    if name == 'DoLGameUI':
+        assert b'Copyright 2008-2026, GreenSock' in files['index.js'] and b'https://gsap.com/standard-license' in files['index.js'], 'GSAP bundled proprietary notice missing'
     check_zip_metadata(path)
     return {'status': 'PASS', 'file': path.name, 'name': name, 'version': version, 'dependencies': deps, 'sha256': digest(path.read_bytes()), 'members': {filename: digest(data) for filename, data in sorted(files.items())}}
 

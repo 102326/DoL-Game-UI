@@ -50,6 +50,9 @@ for directory, name in packages:
         licenses = []
         for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom'] + (['tailwindcss'] if directory == 'official-ui' else []):
             licenses.append(module + '\n' + next((root/'node_modules'/module).glob('LICENSE*')).read_text(encoding='utf-8'))
+        if directory == 'official-ui':
+            # GSAP ships its proprietary notice in source banners, not LICENSE*.
+            licenses.append('gsap\n/*!' + (root/'node_modules/gsap/gsap-core.js').read_text(encoding='utf-8').split('/*!', 1)[1].split('*/', 1)[0] + '*/')
         files['THIRD-PARTY-NOTICES.txt'] = '\n\n'.join(licenses).encode()
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()

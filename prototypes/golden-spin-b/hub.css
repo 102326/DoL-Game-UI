@@ -1,16 +1,2 @@
-/* Only the opt-in full Hub study uses this visual adapter. */
-html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-ball{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;overflow:visible}
-html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-ball>span{visibility:hidden}
-html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-ball::before,html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-ball::after{display:none}
-.spin-hub-canvas{position:absolute;width:175px;height:175px;left:50%;top:50%;transform:translate(-50%,-48%);pointer-events:none}
-.sf-motion-ball.is-docked .spin-hub-canvas{width:125px;height:125px}
-html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-orbit.is-grid{transform:none;clip-path:none;opacity:1;transition:none;overflow:visible;background:transparent;backdrop-filter:none;box-shadow:none;border-color:transparent;isolation:isolate}
-html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit::before{content:'';position:absolute;inset:0;z-index:-1;border:1px solid #ffffff16;border-radius:24px;background:linear-gradient(135deg,#ffffff08,transparent 65%),rgba(25,28,28,.72);box-shadow:0 18px 42px #0005;backdrop-filter:blur(24px);opacity:var(--spin-shell,0);pointer-events:none}
-html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub[data-spin-hub] .sf-motion-petal{transition:none!important;animation:none!important;transform-origin:center}
-html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-utilities{transition:none;transform:none;grid-column:1/-1}
-html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=moving] .sf-motion-petal{background:linear-gradient(135deg,#bda77615,transparent 75%),rgba(29,31,31,.75);border-color:#c8b28122;box-shadow:0 8px 20px #0003}
-html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=open] .sf-motion-orbit{overflow:auto}
+@import '../../src/ui/golden-spin/hub.css';
 .hub-preview-link{color:#c5ba96}.gs-lab-shell header a{display:inline-block;margin-top:14px}
-
-html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-ball{border-radius:50%!important;outline:none}
-html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-ball:focus-visible{outline:1px solid #c8b78599;outline-offset:4px}

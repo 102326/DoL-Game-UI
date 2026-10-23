@@ -1,3 +1,6 @@
+import {sphereHub} from '../../src/ui/golden-spin/hub-motion';
+import '../../src/ui/golden-spin/hub.css';
+import {isolate} from '../../src/runtime/presentation';
 import {visualScope} from '../../src/ui/visual-scope';
 import {mountVue} from '../vue';
 import type {Host,Participant,MountHandle} from '../contracts';
@@ -35,7 +38,7 @@ export function startOfficialHub(host:Host,owner:Participant){
   const p=root.DoLFloatingTools?.getPreferences();
   if(isMasterEnabled()&&p?.enabled&&!p.hidden){
    if(mode!==p.mode){mounted?.dispose();mounted=undefined;mode=p.mode}
-   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,preferredMode:p.mode,officialPreferences:true,directActions,dismiss:()=>root.DoLFloatingTools?.hide()}});
+   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement)=>{const visual=isolate('Hub visual',()=>sphereHub(root));return ()=>visual?.destroy()},dismiss:()=>root.DoLFloatingTools?.hide()}});
   }else{mounted?.dispose();mounted=undefined}
  }
  document.addEventListener('dol-floating-change',sync);document.addEventListener('dol-ui-master-change',sync);sync();
