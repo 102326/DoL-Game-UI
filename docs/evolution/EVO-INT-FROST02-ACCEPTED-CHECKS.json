@@ -1,0 +1,386 @@
+{
+  "scope": "Owner accepted settings edge frost opacity 0.56 at source 5a0f244; no other-window rollout, main or Release",
+  "inputHead": "5a0f2446ccfe117c77c61a3644b8ba4ce3bb40f0",
+  "workingTree": true,
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "chromium": "153.0.8010.12"
+  },
+  "edge": {
+    "status": "PASS",
+    "proof": {
+      "cases": [
+        {
+          "w": 360,
+          "h": 640,
+          "dpr": 1,
+          "snow": 0,
+          "changedPixels": 0,
+          "deposits": 0
+        },
+        {
+          "w": 360,
+          "h": 640,
+          "dpr": 1,
+          "snow": 0.25,
+          "changedPixels": 20118,
+          "deposits": 144
+        },
+        {
+          "w": 360,
+          "h": 640,
+          "dpr": 1,
+          "snow": 0.65,
+          "changedPixels": 35513,
+          "deposits": 144
+        },
+        {
+          "w": 360,
+          "h": 640,
+          "dpr": 1,
+          "snow": 1,
+          "changedPixels": 46719,
+          "deposits": 141
+        },
+        {
+          "w": 360,
+          "h": 640,
+          "dpr": 2,
+          "snow": 0,
+          "changedPixels": 0,
+          "deposits": 0
+        },
+        {
+          "w": 360,
+          "h": 640,
+          "dpr": 2,
+          "snow": 0.25,
+          "changedPixels": 80757,
+          "deposits": 144
+        },
+        {
+          "w": 360,
+          "h": 640,
+          "dpr": 2,
+          "snow": 0.65,
+          "changedPixels": 142042,
+          "deposits": 144
+        },
+        {
+          "w": 360,
+          "h": 640,
+          "dpr": 2,
+          "snow": 1,
+          "changedPixels": 186853,
+          "deposits": 141
+        },
+        {
+          "w": 940,
+          "h": 760,
+          "dpr": 1,
+          "snow": 0,
+          "changedPixels": 0,
+          "deposits": 0
+        },
+        {
+          "w": 940,
+          "h": 760,
+          "dpr": 1,
+          "snow": 0.25,
+          "changedPixels": 29048,
+          "deposits": 144
+        },
+        {
+          "w": 940,
+          "h": 760,
+          "dpr": 1,
+          "snow": 0.65,
+          "changedPixels": 51395,
+          "deposits": 144
+        },
+        {
+          "w": 940,
+          "h": 760,
+          "dpr": 1,
+          "snow": 1,
+          "changedPixels": 68702,
+          "deposits": 141
+        },
+        {
+          "w": 940,
+          "h": 760,
+          "dpr": 2,
+          "snow": 0,
+          "changedPixels": 0,
+          "deposits": 0
+        },
+        {
+          "w": 940,
+          "h": 760,
+          "dpr": 2,
+          "snow": 0.25,
+          "changedPixels": 116375,
+          "deposits": 144
+        },
+        {
+          "w": 940,
+          "h": 760,
+          "dpr": 2,
+          "snow": 0.65,
+          "changedPixels": 205503,
+          "deposits": 144
+        },
+        {
+          "w": 940,
+          "h": 760,
+          "dpr": 2,
+          "snow": 1,
+          "changedPixels": 274521,
+          "deposits": 141
+        }
+      ],
+      "fullyProtected": "PASS",
+      "timing": {
+        "feather": {
+          "meanMs": 0.33857142754963465,
+          "p95Ms": 0.6000000238418579
+        },
+        "frosted": {
+          "meanMs": 2.072857141494751,
+          "p95Ms": 2.5
+        }
+      }
+    }
+  },
+  "settingsChecks": [
+    {
+      "name": "S01 approved shell and page timing, real input and single material surface",
+      "status": "PASS",
+      "detail": {
+        "first": {
+          "duration": 100,
+          "easing": "linear",
+          "inert": false,
+          "updated": true,
+          "proxyCount": 0,
+          "transform": "none",
+          "backdrop": "none",
+          "alpha": 0.85
+        },
+        "category": [
+          {
+            "duration": 620,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+            "frames": [
+              {
+                "transform": "translate3d(0px, 0px, 0px) rotateY(0deg)",
+                "offset": null
+              },
+              {
+                "transform": "translate3d(-45px, 0px, -100px) rotateY(20deg)",
+                "offset": null
+              }
+            ]
+          },
+          {
+            "duration": 620,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+            "frames": [
+              {
+                "transform": "translate3d(80px, 16px, -100px) rotateY(-24deg) rotateX(7deg)",
+                "clipPath": "inset(0px 96% 0px 0px round 16px)",
+                "offset": null
+              },
+              {
+                "clipPath": "inset(0px 0%)",
+                "offset": 0.55
+              },
+              {
+                "transform": "translate3d(0px, 0px, 0px) rotateY(0deg) rotateX(0deg)",
+                "clipPath": "inset(0px 0%)",
+                "offset": 0.78
+              },
+              {
+                "transform": "translate3d(0px, 0px, 0px) rotateY(0deg) rotateX(0deg)",
+                "clipPath": "inset(0px 0%)",
+                "offset": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "S01 reversal samples current opacity before cancellation and latest open wins",
+      "status": "PASS",
+      "detail": {
+        "initial": 0.45,
+        "afterClose": 0.45,
+        "beforeOpen": 0.325,
+        "afterOpen": 0.325,
+        "transform": "none",
+        "inert": false
+      }
+    },
+    {
+      "name": "S01 closing and native close cancel category WAAPI and settle exactly one page",
+      "status": "PASS",
+      "detail": {
+        "animations": 0,
+        "transition": false,
+        "sections": 1
+      }
+    },
+    {
+      "name": "S01 cancellation, preferences, hidden/resize and teardown keep latest usable state",
+      "status": "PASS",
+      "detail": {
+        "retired": 18
+      }
+    },
+    {
+      "name": "S01 modeless fallback and replaced dialog cancel retired shell work",
+      "status": "PASS",
+      "detail": {
+        "fallback": true,
+        "retiredCancelled": true
+      }
+    }
+  ],
+  "weatherChecks": [
+    {
+      "name": "accepted actual entry, one renderer, no legacy layer or study controls",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous R10 and four levels",
+      "status": "PASS",
+      "detail": [
+        {
+          "level": "light",
+          "elapsedMs": 2134
+        },
+        {
+          "level": "normal",
+          "elapsedMs": 516
+        },
+        {
+          "level": "heavy",
+          "elapsedMs": 553
+        },
+        {
+          "level": "severe",
+          "elapsedMs": 614
+        }
+      ]
+    },
+    {
+      "name": "mid-snow reversal and throwing provider neutral fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "unchanged reading/close pixels, visible rain and real preference input",
+      "status": "PASS"
+    },
+    {
+      "name": "zoom, narrow rotation/resize and zero-size recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "motion off, hidden, close/reopen and dispose stop owned work",
+      "status": "PASS"
+    },
+    {
+      "name": "nativeNavigation uses new settings surface and removes it on close",
+      "status": "PASS"
+    },
+    {
+      "name": "partial material construction failure leaves usable static settings and no owned nodes",
+      "status": "PASS"
+    },
+    {
+      "name": "throwing cleanup remains observable while all surfaces and nodes retire",
+      "status": "PASS"
+    }
+  ],
+  "frozenFeatherRasters": 48,
+  "actualSurfaceChecks": [
+    {
+      "mode": "legacy",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "rain": "ab7c344b5b0f28d0e96763e763895bfcd836fc6d3fb0aa68bcd84e682de9a5ff",
+      "snow": "eca8d37efd2939ad1001ce415b57d6b30e16c6adedef937c040e0a1dd85a957e",
+      "reading": "d18bb1708d6e780dd6036ea12c2a0784f3aa2059d129e22ecf2ed64a1cda35cd",
+      "close": "09dbf902a80c5e212b63b334cfd0bf7bc1c1da5e0854c51bc19fe1d1f5fbc492"
+    },
+    {
+      "mode": "legacy",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 2
+      },
+      "rain": "e1cdc0bb1cce088e62dd191bbbf43debd82946c3b56ed6dcfba42698c081ca9a",
+      "snow": "36c62e14433b287e49fb6dcf570a0e80d9964bcf09967e3ace91abbd03e9e0aa",
+      "reading": "7689360958db5a49c5896ae56e20ecafd740d6acd748de03f5c363d551de6025",
+      "close": "2399c928d193a96fdc452b989cad903f49f19399f81df2acdd4a289440e786c2"
+    },
+    {
+      "mode": "feather",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "rain": "ab7c344b5b0f28d0e96763e763895bfcd836fc6d3fb0aa68bcd84e682de9a5ff",
+      "snow": "e4e641a3ce209d913510993c62b1c318e0dff6954a10e27349614e0206cf1139",
+      "reading": "d18bb1708d6e780dd6036ea12c2a0784f3aa2059d129e22ecf2ed64a1cda35cd",
+      "close": "09dbf902a80c5e212b63b334cfd0bf7bc1c1da5e0854c51bc19fe1d1f5fbc492"
+    },
+    {
+      "mode": "feather",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 2
+      },
+      "rain": "e1cdc0bb1cce088e62dd191bbbf43debd82946c3b56ed6dcfba42698c081ca9a",
+      "snow": "73a293fec5b6bfcb5051144bb6144ea683240288ce651a487e0517afd7134390",
+      "reading": "7689360958db5a49c5896ae56e20ecafd740d6acd748de03f5c363d551de6025",
+      "close": "2399c928d193a96fdc452b989cad903f49f19399f81df2acdd4a289440e786c2"
+    }
+  ],
+  "rawResultHashes": {
+    "weather-integration-1792755458358": "598cbd715adb5d07e57d363f5bef1c9db939454b00ca4028f99e7332a02db993",
+    "settings-integration-1792755454819": "b657b296726b07d1d9eeecf7341bc0a0934e2e1cc37dbc045d2ddcaa4306ceef",
+    "snow-integration-1792755476894": "ee7a95e0878d520927605a492a0d56a796d56d87e7503cfad1a8889e29ec2667",
+    "edge-frost-1792755165570": "0a5a91ec912bc4fb61ccf475881f7863409cae49f3777da8a84c1abc725120ce"
+  },
+  "mediaManifest": "../media/evolution-frost-s02-approved/manifest.json",
+  "mediaManifestSha256": "4cc5df947870c26a92bf23c021b4a8ce3a7a2240c00b485712e910a225139f20",
+  "sourceHashes": {
+    "framework/official-ui/navigation.ts": "2c23118e017cd2d57bb9e235f195ae708e6fbe6f0367f05540c2dba0ab97edf6",
+    "framework/official-ui/weather.ts": "1f1d8681c06c8140e152f55b08ad3474e318905cfc5888996cec85b1877edab9",
+    "src/theme/SettingsPanel.vue": "92024ad0eaf7fc02c9f105f0e1d1a497551284472975362a59eaeefb7f4d782e",
+    "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+    "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "5bcc6896be290bacb338a683d64080b172546e2137e4686ac9d1f249f694a0b7",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/surface.ts": "5d61766221293b7fde0599a76bda89ed1ffa1bebddff1db5cff77ecae6edcdf2",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "ff78f9cd06aeaa400026f178b6626d7440046577c99e7fb3e150226fcc97a428",
+    "tests/evolution-weather-integration.cjs": "9047989c4cbba47438508d92003d97b0dc8fb06c3aa7a60aa885fc5a4cb72b28"
+  },
+  "remoteEvidence": "See exact final commit and runs in Issue22; not prefilled from old runs"
+}

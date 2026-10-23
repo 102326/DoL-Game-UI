@@ -1,0 +1,31 @@
+{
+  "scope": "FROST02 minor opacity adjustment; actual live preview screenshot. Previous videos retain original opacity. Local only, no new remote Actions.",
+  "inputHead": "b91f04d8d9930f0a86c10879cc8da7782cc45d37",
+  "workingTree": true,
+  "opacityScale": 0.8,
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "chromium": "153.0.8010.12"
+  },
+  "checks": {
+    "command": "node tests/evolution-edge-frost.cjs",
+    "status": "PASS",
+    "rasterCases": 16,
+    "fullyProtected": "PASS",
+    "rawResultSha256": "eb54c1c1d44d68f900c3156d63acf8f98efab0b2db032a9cb21e84815cf44077",
+    "typecheck": "npx vue-tsc --noEmit -p tsconfig.evolution.json: PASS"
+  },
+  "sources": {
+    "src/ui/weather/edge-frost.ts": "e5fb146b7c1fc09b646464ab7197e0a24f4d2cf4591877342b2c7d20826b261a",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/settings.ts": "5bcc6896be290bacb338a683d64080b172546e2137e4686ac9d1f249f694a0b7",
+    "tests/evolution-edge-frost.cjs": "593ec0f3c966372d84e2a29591dfffbbf1637db1da7b2732d5aecd8ab6de27e2",
+    "package-lock.json": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4"
+  },
+  "screenshot": {
+    "bytes": 64376,
+    "sha256": "242bc71a39f86977d26c82ce0e6d49ea260a79fa4b7227666c5abc47f78db968"
+  },
+  "remoteActions": "NOT_RUN"
+}

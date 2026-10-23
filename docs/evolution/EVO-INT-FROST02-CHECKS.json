@@ -1,0 +1,304 @@
+{
+  "scope": "Local edge-frost candidate; visual acceptance and remote Actions pending",
+  "inputHead": "ef3c15c55252d58de1dac683bc955555a64ecdb2",
+  "workingTree": true,
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "chromium": "153.0.8010.12"
+  },
+  "edgeFrost": {
+    "cases": [
+      {
+        "w": 360,
+        "h": 640,
+        "dpr": 1,
+        "snow": 0,
+        "changedPixels": 0,
+        "deposits": 0
+      },
+      {
+        "w": 360,
+        "h": 640,
+        "dpr": 1,
+        "snow": 0.25,
+        "changedPixels": 20809,
+        "deposits": 144
+      },
+      {
+        "w": 360,
+        "h": 640,
+        "dpr": 1,
+        "snow": 0.65,
+        "changedPixels": 35960,
+        "deposits": 144
+      },
+      {
+        "w": 360,
+        "h": 640,
+        "dpr": 1,
+        "snow": 1,
+        "changedPixels": 47112,
+        "deposits": 141
+      },
+      {
+        "w": 360,
+        "h": 640,
+        "dpr": 2,
+        "snow": 0,
+        "changedPixels": 0,
+        "deposits": 0
+      },
+      {
+        "w": 360,
+        "h": 640,
+        "dpr": 2,
+        "snow": 0.25,
+        "changedPixels": 83354,
+        "deposits": 144
+      },
+      {
+        "w": 360,
+        "h": 640,
+        "dpr": 2,
+        "snow": 0.65,
+        "changedPixels": 143778,
+        "deposits": 144
+      },
+      {
+        "w": 360,
+        "h": 640,
+        "dpr": 2,
+        "snow": 1,
+        "changedPixels": 188251,
+        "deposits": 141
+      },
+      {
+        "w": 940,
+        "h": 760,
+        "dpr": 1,
+        "snow": 0,
+        "changedPixels": 0,
+        "deposits": 0
+      },
+      {
+        "w": 940,
+        "h": 760,
+        "dpr": 1,
+        "snow": 0.25,
+        "changedPixels": 30020,
+        "deposits": 144
+      },
+      {
+        "w": 940,
+        "h": 760,
+        "dpr": 1,
+        "snow": 0.65,
+        "changedPixels": 52066,
+        "deposits": 144
+      },
+      {
+        "w": 940,
+        "h": 760,
+        "dpr": 1,
+        "snow": 1,
+        "changedPixels": 69280,
+        "deposits": 141
+      },
+      {
+        "w": 940,
+        "h": 760,
+        "dpr": 2,
+        "snow": 0,
+        "changedPixels": 0,
+        "deposits": 0
+      },
+      {
+        "w": 940,
+        "h": 760,
+        "dpr": 2,
+        "snow": 0.25,
+        "changedPixels": 120314,
+        "deposits": 144
+      },
+      {
+        "w": 940,
+        "h": 760,
+        "dpr": 2,
+        "snow": 0.65,
+        "changedPixels": 208130,
+        "deposits": 144
+      },
+      {
+        "w": 940,
+        "h": 760,
+        "dpr": 2,
+        "snow": 1,
+        "changedPixels": 276683,
+        "deposits": 141
+      }
+    ],
+    "fullyProtected": "PASS",
+    "timing": {
+      "feather": {
+        "meanMs": 0.30428571360451834,
+        "p95Ms": 0.40000003576278687
+      },
+      "frosted": {
+        "meanMs": 1.831428576367242,
+        "p95Ms": 2.199999988079071
+      }
+    }
+  },
+  "frozenFeatherComparisons": 48,
+  "actualSnowSurfaces": [
+    {
+      "mode": "legacy",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "rain": "ab7c344b5b0f28d0e96763e763895bfcd836fc6d3fb0aa68bcd84e682de9a5ff",
+      "snow": "eca8d37efd2939ad1001ce415b57d6b30e16c6adedef937c040e0a1dd85a957e",
+      "reading": "d18bb1708d6e780dd6036ea12c2a0784f3aa2059d129e22ecf2ed64a1cda35cd",
+      "close": "09dbf902a80c5e212b63b334cfd0bf7bc1c1da5e0854c51bc19fe1d1f5fbc492"
+    },
+    {
+      "mode": "legacy",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 2
+      },
+      "rain": "e1cdc0bb1cce088e62dd191bbbf43debd82946c3b56ed6dcfba42698c081ca9a",
+      "snow": "36c62e14433b287e49fb6dcf570a0e80d9964bcf09967e3ace91abbd03e9e0aa",
+      "reading": "7689360958db5a49c5896ae56e20ecafd740d6acd748de03f5c363d551de6025",
+      "close": "2399c928d193a96fdc452b989cad903f49f19399f81df2acdd4a289440e786c2"
+    },
+    {
+      "mode": "feather",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "rain": "ab7c344b5b0f28d0e96763e763895bfcd836fc6d3fb0aa68bcd84e682de9a5ff",
+      "snow": "68621c6092c8116f052ba0f1eae18e95d368815072c1a408718c7e2e68c7728c",
+      "reading": "d18bb1708d6e780dd6036ea12c2a0784f3aa2059d129e22ecf2ed64a1cda35cd",
+      "close": "09dbf902a80c5e212b63b334cfd0bf7bc1c1da5e0854c51bc19fe1d1f5fbc492"
+    },
+    {
+      "mode": "feather",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 2
+      },
+      "rain": "e1cdc0bb1cce088e62dd191bbbf43debd82946c3b56ed6dcfba42698c081ca9a",
+      "snow": "c576d58895c0637060776135e32fbfa06f77d3e709c8fff261e9d385642a66de",
+      "reading": "7689360958db5a49c5896ae56e20ecafd740d6acd748de03f5c363d551de6025",
+      "close": "2399c928d193a96fdc452b989cad903f49f19399f81df2acdd4a289440e786c2"
+    }
+  ],
+  "actualWeatherChecks": [
+    {
+      "name": "accepted actual entry, one renderer, no legacy layer or study controls",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous R10 and four levels",
+      "status": "PASS",
+      "detail": [
+        {
+          "level": "light",
+          "elapsedMs": 2134
+        },
+        {
+          "level": "normal",
+          "elapsedMs": 516
+        },
+        {
+          "level": "heavy",
+          "elapsedMs": 551
+        },
+        {
+          "level": "severe",
+          "elapsedMs": 618
+        }
+      ]
+    },
+    {
+      "name": "mid-snow reversal and throwing provider neutral fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "unchanged reading/close pixels, visible rain and real preference input",
+      "status": "PASS"
+    },
+    {
+      "name": "zoom, narrow rotation/resize and zero-size recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "motion off, hidden, close/reopen and dispose stop owned work",
+      "status": "PASS"
+    },
+    {
+      "name": "nativeNavigation uses new settings surface and removes it on close",
+      "status": "PASS"
+    },
+    {
+      "name": "partial material construction failure leaves usable static settings and no owned nodes",
+      "status": "PASS"
+    },
+    {
+      "name": "throwing cleanup remains observable while all surfaces and nodes retire",
+      "status": "PASS"
+    }
+  ],
+  "rawResults": {
+    "edge-frost-1792752824400": "0ae79970d08b8f1c4692aba122d6c0b098b18b09d0e7b24845a104c66a516fb5",
+    "snow-integration-1792752826894": "22dbdf1444b030dfd11086bcb8f947bf0af50fcc3b35f721ce215ddf835c3ac4",
+    "weather-integration-1792752771414": "2d9fd9740ed80c64ff398666688ffd6fdf0d53786da696cea7f42d15e9d20507"
+  },
+  "media": {
+    "scope": "Current actual settings source and production CSS; first-party mock page, no game/save data. Both videos retain original speed and all waiting; not a frozen old/new visual comparison or real-device acceptance.",
+    "files": {
+      "desktop.png": {
+        "bytes": 436383,
+        "sha256": "ac98746287cae655efc27e0c2a37cdc74383024e34d8cb60dbdbcbe5c9a4a2e9"
+      },
+      "narrow.png": {
+        "bytes": 199333,
+        "sha256": "3b6c8654c7a4b7e849b0ef8f033a353edb43333f7f779d3e497527f7bef5a40b"
+      },
+      "desktop-1x.mp4": {
+        "bytes": 1703682,
+        "sha256": "92dcafb3810d77cf95e5273732f4f22dc30bc1f891ace8644956e74dd40a99bf"
+      },
+      "narrow-1x.mp4": {
+        "bytes": 909261,
+        "sha256": "fc40a4d2c6755e93a32b00247706a8deadcfc55b071bf54a603600567edb5d25"
+      },
+      "result.json": {
+        "bytes": 6441,
+        "sha256": "a18a87c50a5b03b8ec5510ef0f26658ed9e169a08b93d340dabe09935ea7ce6d"
+      }
+    }
+  },
+  "sources": {
+    "src/ui/weather/edge-frost.ts": "a9218ca68b29c3634aeeed9ccc4edd22fcf1840bf091539453eaf454ffa1a632",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/settings.ts": "5bcc6896be290bacb338a683d64080b172546e2137e4686ac9d1f249f694a0b7",
+    "tests/evolution-edge-frost.cjs": "593ec0f3c966372d84e2a29591dfffbbf1637db1da7b2732d5aecd8ab6de27e2",
+    "tests/evolution-weather-integration.cjs": "9047989c4cbba47438508d92003d97b0dc8fb06c3aa7a60aa885fc5a4cb72b28",
+    "tests/evolution-snow-integration.cjs": "bed903de340cfd22c2df81aaab74d71c12f466e24b2887d359ea5b3aac9849c4",
+    "scripts/record-evolution-settings.cjs": "e549397f1c990a9235c23ec506b6a21146d59c796033feccc674f78819ebebf6",
+    "scripts/preview-evolution-settings.mjs": "f22af126fc8d25d912d459227673c34b70308420ef8fd2906e1bfd3c1387377e",
+    "dist/framework/official-ui/style.css": "68eb1dfe1e075e9bcb8b853776d98fdb73341a88b2062a891c029fbd917c5f2c",
+    "package-lock.json": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4"
+  },
+  "remoteActions": "NOT_RUN",
+  "visualAcceptance": "PENDING"
+}

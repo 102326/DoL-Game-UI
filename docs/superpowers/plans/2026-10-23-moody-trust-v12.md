@@ -15,6 +15,8 @@ For each behavior: failing reproduction, implementation, scoped regression. Veri
 
 ## Evidence-led constraints
 
+- Owner subsequently authorized synchronization after completion and no blockers (2026-10-23). Align PR24 with accepted, pushed research d60ccc8, retain the W01 frost assertion, regenerate/review its composed lock and verify actual Standard/Research/download gates for the new combined source before marking ready and merging into dev/evolution-4.0. This supersedes the earlier Draft-only delivery boundary; main, Release and governance remain excluded. Preserve the other chat's uncommitted candidates.
+
 - Existing evidence omission failure-close and downloaded gate already work; reuse, do not rebuild a Judge runtime.
 - Native-case and research-case JSON lists currently duplicate source labels; replace with generated lock.
 - Most older scripts are entry contracts. Migrate actual named cases/loops incrementally; list remaining granularity openly.
