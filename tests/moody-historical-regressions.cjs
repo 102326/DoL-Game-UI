@@ -66,6 +66,9 @@ async function combatPage(browser,server,{missingCSS=false}={}){
   console.log(JSON.stringify({counterexample:'settings-premature-close-sample',rejected:true,open:oldClose.dialog.open}));
   await waitSettingsClosed(page);console.log(JSON.stringify({control:'settings-delayed-close-completion',passed:true,oldSampleMs:450}));
   await page.evaluate(()=>{moodyCloseMode='stuck';theme.openSettings()});await waitSettings(page);
+  // Category readiness does not imply the shell's opening fade has completed.
+  // Closing at opacity 0 creates a zero-duration animation, not a paused-close witness.
+  await page.waitForFunction(()=>{const shell=document.querySelector('.dmt-settings-shell');return shell&&Number(getComputedStyle(shell).opacity)===1&&!shell.getAnimations().some(a=>a.playState==='running'||a.pending)});
   await page.locator('.dmt-close').click();await page.waitForFunction(()=>document.querySelector('#dol-midnight-controls[data-sf-leaving]'));
   const stuckClose=await settingsSnapshot(page);assert.ok(stuckClose.closeAnimations.some(a=>a.state==='paused'),'controlled close animation must actually be paused');
   await assert.rejects(()=>waitSettingsClosed(page,{timeout:150}),e=>e.code==='ERR_ASSERTION'&&e.message.startsWith('MOODY_SETTINGS_CLOSE_PENDING:'));

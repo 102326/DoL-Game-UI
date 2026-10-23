@@ -50,6 +50,14 @@
 
 最终执行与Actions结果以#22更新为准；尚未完成的运行不能按已启动记PASS。早期包检查曾正确拒绝旧dist首轮与当前源码重建的差异；另一轮因checker源码变化拒绝过期receipt。已保留失败日志，之后从固定最终源码构建，不能复用旧receipt。新增横幅断言初放在成员存在检查前，使缺entry负例KeyError；现按先基础成员合同、再横幅检查顺序恢复原精确拒绝，未放宽负例。
 
+### 首轮研究CI的既有反例竞争
+
+`7a1ee5b` 的研究push [39905612387](https://github.com/102326/DoL-Game-UI/actions/runs/39905612387)在已有历史检查“controlled close animation must actually be paused”失败，后续消费者/天气研究阶段未执行，不能记通过。失败用例在输入d3f04ee与7a1ee5b完全相同。分类ready并不保证100ms开窗fade完成；透明度仍0时立即关闭可能生成零时长动画，构不成暂停关闭现场。
+
+独立CI分支 `b00226b` 已有同一前置条件修复；本分支仅同步其中三行条件等待：shell透明度为1且没有running/pending动画，再创建stuck关闭。保留暂停断言、150ms内必须拒绝未完成关闭及全部几何负例，不引入固定sleep、不更改产品时长。未同步该分支Runner/receipt/工作流等平台改动。本机完整 `moody-historical-regressions.cjs` 通过；最终精确提交两套CI仍按#22实际结果报告。
+
+本批运行源码仍为7a1ee5b；后续只改此测试前置条件和本段交接说明，原媒体与十组当前/两项精确反例摘要依其20项输入校验继续有效，不伪装成重新录制或设备验收。
+
 ## 4. 实际入口原速展示
 
 `node scripts/preview-evolution-hub.mjs`，默认5194。真实研发Hub、设置/天气和Host；无游戏或存档。运行 `node scripts/record-evolution-hub.cjs` 录制1280×900与390×844、DPR1，H1展开、H2收束、H3反向、实际设置及雨天、H4原生单次入口/左移/停靠/恢复。

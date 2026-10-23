@@ -40,6 +40,8 @@
 
 ## Decided — 已经确定什么
 
+- H01首轮研究CI39905612387因既有历史关闭反例的前置状态竞争失败：分类ready不等于开窗fade完成，零透明度立即关闭不能作为paused witness。仅同步独立CI分支b00226b中的三行条件等待，保留暂停/拒绝断言，不带入Runner或平台改动；本机历史套件通过。后续提交仅此测试及文档，运行源码和原速媒体维持7a1ee5b；最终CI另见#22，不把首轮失败覆盖为成功。
+
 - 保留已认可设置V2.3：开100/关80ms简单透明度、正文立即可操作、V2.2分类；验收实现`6510a1d221f4f845cb766d03b71e2d48fedc0445`及[CI39578067270](https://github.com/102326/DoL-Game-UI/actions/runs/39578067270)。该历史验收是隔离原型；当前S01已在研发分支接入真实设置入口，完整游戏和设备验收仍待完成。保留已认可金属球、真实Hub工具/布局、3.x Acrylic及原生/第三方/存档边界。[V0摘要](evolution/EVO-V0-baselines.json)冻结输入。旧Hub整段禁用策略已由V2输入批次在隔离原型中退出；正式入口未启用该原型，生产接入仍需单独验证。
 - A1两个生产入口已接同一内部`nativeOverlayNavigation`，共同租约/挂载/观察/取消/异常/坐标，保留独立组件与演出；旧重复基础逻辑已删除。[A1记录](evolution/EVO-A1.md)包含基线失败、两端测试和夹具纠正。未改Host公共API，不是万能窗口壳。
 - V1使用真实设置组件及权威天气分类，Canvas同表面湿润/霜纹/光照连续变化，未接正式天气层。[观看与启动说明](../prototypes/evolution-weather/README.md)、[原速录像](media/evolution-weather-r1/weather-original-speed.mp4)、[受控结果](media/evolution-weather-r1/result.json)、[源码与媒体摘要](media/evolution-weather-r1/manifest.json)。不宣称高保真目标已认可。
