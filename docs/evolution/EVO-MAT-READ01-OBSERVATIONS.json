@@ -1,0 +1,302 @@
+{
+  "status": "PASS",
+  "scope": "8 controlled observations, 6s each, sequential current/candidate, no video capture; rAF and JS call costs only. GPU completion, heap, physical devices and long-term performance unverified. Other host activity was not controlled.",
+  "inputHead": "d60ccc844942e950f41beb188a27dec5e11823fe",
+  "workingTree": true,
+  "runtime": {
+    "platform": "darwin",
+    "node": "v24.18.0",
+    "chromium": "153.0.8010.12"
+  },
+  "records": [
+    {
+      "mode": "current",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "weather": "heavy",
+      "elapsedMs": 6013.400000035763,
+      "samples": 360,
+      "rafMs": {
+        "median": 16.699999999999818,
+        "p95": 16.700000000000728,
+        "max": 16.80000000000109
+      },
+      "weatherJsMs": {
+        "median": 1.300000011920929,
+        "p95": 1.699999988079071
+      },
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "owner": {
+        "polls": 1,
+        "frames": 1,
+        "protectedOverlap": 0
+      }
+    },
+    {
+      "mode": "current",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "weather": "snow",
+      "elapsedMs": 6011.099999964237,
+      "samples": 360,
+      "rafMs": {
+        "median": 16.69999999999891,
+        "p95": 16.799999999999272,
+        "max": 16.80000000000109
+      },
+      "weatherJsMs": {
+        "median": 2.099999964237213,
+        "p95": 2.400000035762787
+      },
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "owner": {
+        "polls": 1,
+        "frames": 1,
+        "protectedOverlap": 0
+      }
+    },
+    {
+      "mode": "current",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "weather": "heavy",
+      "elapsedMs": 6013.399999976158,
+      "samples": 360,
+      "rafMs": {
+        "median": 16.699999999999818,
+        "p95": 16.799999999999272,
+        "max": 16.80000000000109
+      },
+      "weatherJsMs": {
+        "median": 1.5,
+        "p95": 2
+      },
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "owner": {
+        "polls": 1,
+        "frames": 1,
+        "protectedOverlap": 0
+      }
+    },
+    {
+      "mode": "current",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "weather": "snow",
+      "elapsedMs": 6013.5,
+      "samples": 352,
+      "rafMs": {
+        "median": 16.69999999999891,
+        "p95": 16.799999999999272,
+        "max": 116.70000000000073
+      },
+      "weatherJsMs": {
+        "median": 1.2999999523162842,
+        "p95": 3.199999988079071
+      },
+      "longTasks": {
+        "count": 1,
+        "maxMs": 104
+      },
+      "owner": {
+        "polls": 1,
+        "frames": 1,
+        "protectedOverlap": 0
+      }
+    },
+    {
+      "mode": "candidate",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "weather": "heavy",
+      "elapsedMs": 6024.599999964237,
+      "samples": 193,
+      "rafMs": {
+        "median": 33.30000000000018,
+        "p95": 50,
+        "max": 83.40000000000009
+      },
+      "weatherJsMs": {
+        "median": 1.100000023841858,
+        "p95": 1.7000000476837158
+      },
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "owner": {
+        "polls": 1,
+        "frames": 1,
+        "protectedOverlap": 0
+      }
+    },
+    {
+      "mode": "candidate",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "weather": "snow",
+      "elapsedMs": 6033.699999988079,
+      "samples": 232,
+      "rafMs": {
+        "median": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "max": 50
+      },
+      "weatherJsMs": {
+        "median": 2,
+        "p95": 3
+      },
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "owner": {
+        "polls": 1,
+        "frames": 1,
+        "protectedOverlap": 0
+      }
+    },
+    {
+      "mode": "candidate",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "weather": "heavy",
+      "elapsedMs": 6004.399999976158,
+      "samples": 358,
+      "rafMs": {
+        "median": 16.699999999999818,
+        "p95": 16.799999999999272,
+        "max": 33.399999999999636
+      },
+      "weatherJsMs": {
+        "median": 1.2000000476837158,
+        "p95": 2
+      },
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "owner": {
+        "polls": 1,
+        "frames": 1,
+        "protectedOverlap": 0
+      }
+    },
+    {
+      "mode": "candidate",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "weather": "snow",
+      "elapsedMs": 6013.899999976158,
+      "samples": 360,
+      "rafMs": {
+        "median": 16.69999999999891,
+        "p95": 16.799999999999272,
+        "max": 16.80000000000291
+      },
+      "weatherJsMs": {
+        "median": 1,
+        "p95": 1.2000000476837158
+      },
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "owner": {
+        "polls": 1,
+        "frames": 1,
+        "protectedOverlap": 0
+      }
+    }
+  ],
+  "errors": [],
+  "sources": {
+    "prototypes/settings-acrylic-v1/readability.css": "174369e09e395016c9b8ef08d2c72664f2b4fddf2cc7f99220ece6b56e3f5cb6",
+    "scripts/check-evolution-acrylic.cjs": "1794ac32e094ecb689b55ab0b096cf48ee28efdc8176ff887f05687b63877103",
+    "scripts/preview-evolution-acrylic.mjs": "360f8f2d286e41d2b77016ca0d75405d3d271d3a158bc13de0107827a6c338d3",
+    "framework/official-ui/README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+    "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
+    "framework/official-ui/main.ts": "72112d011ce8aa45f6ebc741a450c15f030010604a16b42f27f017ff7564c750",
+    "framework/official-ui/motion.ts": "6331487a96d23256c2330b21dcb2a1e4797f9f3858e02aa29ae3333ad70fcecc",
+    "framework/official-ui/navigation.ts": "2c23118e017cd2d57bb9e235f195ae708e6fbe6f0367f05540c2dba0ab97edf6",
+    "framework/official-ui/reference-shelf.ts": "bcc8c881ea21bc8c38c69b5bf78c6c9f5fd4a115ad0f29a958fdd81ca69a3117",
+    "framework/official-ui/startup-notice.ts": "88fd2ec3e340d8e131cb6fdc85e3e7b2d1182503b174cd49d859a1ce13939dcc",
+    "framework/official-ui/weather.ts": "1f1d8681c06c8140e152f55b08ad3474e318905cfc5888996cec85b1877edab9",
+    "package-lock.json": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4",
+    "scripts/preview-evolution-settings.mjs": "f22af126fc8d25d912d459227673c34b70308420ef8fd2906e1bfd3c1387377e",
+    "src/theme/SettingsNavigation.vue": "b9971a5d7812d002b003c71feed0feac842221f48afdfe6779ad6830a6e5d522",
+    "src/theme/SettingsPanel.vue": "92024ad0eaf7fc02c9f105f0e1d1a497551284472975362a59eaeefb7f4d782e",
+    "src/theme/SettingsPreview.vue": "f659043e62370fb718573b055db09cc11584e019080a2a5122e296bef08b1bf9",
+    "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+    "src/theme/controls.css": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+    "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+    "src/theme/drawer-corner.svg": "bd1da769f8c78bdaa768e70effec79334563eb53511e04623ca6612ca3892bbf",
+    "src/theme/kraft-work-motion.css": "5606dc48ff813db966ebbadfadfc5beb3699363df02cc3515e9dbcc1503f026e",
+    "src/theme/kraft-work-native.css": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa",
+    "src/theme/kraft-work-pages.css": "7cb5caf798ca15575a3415c1c271d5b7399b6bf02fec6e46514846999e07339f",
+    "src/theme/kraft-work-surfaces.css": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0",
+    "src/theme/kw-weather-condensation.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
+    "src/theme/kw-weather-mist.svg": "ca34fdd9a419a0ef046b05adcde47b23e87399dfd7181a6ffdbdd55b4a9990e9",
+    "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+    "src/theme/kw-weather-snow-far.svg": "599565b90efeb72292b7be34ede0442330c848f776eb806d1b6339e98d59f6cf",
+    "src/theme/kw-weather-snow-near.svg": "089055a38f1256bef1e0d7bea4b4a6f4031ab460add848bf4a263f80d2a3ad2e",
+    "src/theme/layout.css": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265",
+    "src/theme/layout.ts": "4a7779635d50ae0de3040effe6ed23ba32be22f21d7376654b7602bf9dcfc19f",
+    "src/theme/mobile.css": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1",
+    "src/theme/navigation-material.css": "6df318a851446678ad100e0069266fec6400c18eaf890f6109a94fe6acbad54a",
+    "src/theme/preferences.ts": "a8169ec051969fd3d4817256bf612d36037a522ff40c36ae4da7de7f48fb7b42",
+    "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+    "src/theme/sidebar-layout.ts": "76bc16439b994577538877852389a05e944adee0c265a441eb5a6585e5b180a0",
+    "src/theme/sidebar.css": "65926604dc7c2ba303ca45e704b8735d6b07927de3090b9e60a2433b5239a7b7",
+    "src/theme/stone-free.css": "3feacbac9933aab21a9eb0d1ff6b9a91e3dc47a57f0a8706971f4c870c908d17",
+    "src/theme/theme.ts": "223423adea451d4a7c25be98c3f102bc4de79d9bbd85b1a92e081a49bc42c92d",
+    "src/theme/visual.css": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "5bcc6896be290bacb338a683d64080b172546e2137e4686ac9d1f249f694a0b7",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/surface.ts": "5d61766221293b7fde0599a76bda89ed1ffa1bebddff1db5cff77ecae6edcdf2",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "ff78f9cd06aeaa400026f178b6626d7440046577c99e7fb3e150226fcc97a428",
+    "tests/evolution-weather-integration.cjs": "9047989c4cbba47438508d92003d97b0dc8fb06c3aa7a60aa885fc5a4cb72b28",
+    "dist/framework/official-ui/style.css": "68eb1dfe1e075e9bcb8b853776d98fdb73341a88b2062a891c029fbd917c5f2c",
+    "scripts/measure-evolution-acrylic.cjs": "abe2c7ce4a98d154029ec18b46e16e6c12f975e52ba62de4f887490dfd4fbecc"
+  }
+}

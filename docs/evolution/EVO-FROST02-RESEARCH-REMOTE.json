@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "identity": {
+    "source": {
+      "head": "d60ccc844942e950f41beb188a27dec5e11823fe",
+      "tree": "e7adc53288fdb7a68590faa5d7cd337c1e5977ab",
+      "dirty": false,
+      "contentSha256": "94c23209d38cc1ca0e913d6ccc111a4a35f770b14f1fa78e9db68534af3bba01",
+      "lockSha256": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4"
+    },
+    "run": {
+      "id": "39947630276-1-research",
+      "attempt": "1",
+      "githubRunId": "39947630276",
+      "repository": "102326/DoL-Game-UI",
+      "ref": "refs/heads/dev/evolution-4.0",
+      "event": "push",
+      "workflow": "Motion Evolution prototype",
+      "job": "prototype",
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/39947630276"
+    },
+    "nonce": "c2d6d2c0693162bf6b86bb84801aad8c",
+    "profile": "research",
+    "catalog": {
+      "version": "1.1.1",
+      "profile": "research",
+      "depth": "standard",
+      "sha256": "30ba1aa7375bd0597f181eef35ac825b269fae015071a3991f605f1b7bdf3b1a"
+    },
+    "pr": null,
+    "environment": {
+      "platform": "linux",
+      "arch": "x64",
+      "deviceDepth": "standard",
+      "node": "v22.23.3",
+      "npm": "10.9.9",
+      "python": "Python 3.14.4",
+      "playwright": "1.63.0",
+      "browser": "Pinned Playwright Chromium (browser suite)"
+    }
+  },
+  "status": "PASS",
+  "assertionResult": "PASS",
+  "evidenceIntegrity": "COMPLETE",
+  "reasonCodes": [],
+  "problems": [],
+  "remoteVerificationMs": 537
+}

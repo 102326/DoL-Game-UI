@@ -1,0 +1,6 @@
+/* Research only: one stationary backdrop plane; no changes to the accepted base,
+   weather geometry, controls, timing or nested panel surfaces. */
+html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls[open]>.dmt-settings-shell{
+ backdrop-filter:blur(24px) saturate(.9)!important;
+ -webkit-backdrop-filter:blur(24px) saturate(.9)!important;
+}
