@@ -77,7 +77,7 @@ async function runResearch(ctx, { signal, quiet = false, checks: selected = plan
     if (!blocked && !signal?.aborted) {
       const before = new Map(reportsFor(ctx, check.report).map(f=>[f,stamp(f)]));
       const env = { ...process.env, MOODY_CHECK_NAME: check.args[0]?.split('/').at(-1), MOODY_EVIDENCE_DIR: path.join(ctx.dir, 'fixtures', check.args[0]?.split('/').at(-1) || check.id) };
-      const outcome = await runCommand(check.command, check.args, { cwd: ctx.root, log: path.join(ctx.dir, 'research', check.id + '.log'), timeoutMs: 120000, signal, env, quiet, requireCompletion:check.execution!=='tool' });
+      const outcome = await runCommand(check.command, check.args, { cwd: ctx.root, log: path.join(ctx.dir, 'research', check.id + '.log'), timeoutMs: 120000, signal, env, quiet, execution:check.execution||'tool' });
       Object.assign(result, outcome);
       if (verifiedPass(result)) {
         try { Object.assign(result, recordReport(ctx, check, before)); }

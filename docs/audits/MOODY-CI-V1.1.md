@@ -150,7 +150,7 @@ invent a controlled cold/warm experiment or a representative p95 from one run.
 Actual Linux research execution caught vue-tsc CLI explicit process.exit(0) being
 incorrectly treated as an early contract exit. Catalog now distinguishes the
 reviewed node_modules compiler/build CLI tools from assertion contracts; only
-these tool entries permit explicit successful exit. Their nonzero exit remains
+these tool entries permit explicit successful exit. Their nonzero exit, including an internal compiler AssertionError, remains
 ERROR. G08 verifies both tool outcomes and keeps early contract exit rejected.
 Current dev W01 integration is merged into the CI branch; settings-ci retains
 its new nine groups and precise late-host negative alongside S01.

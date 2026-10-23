@@ -89,7 +89,7 @@ function checkpointEvidence(ctx, name) {
  const report=readReport(ctx,`fixtures/${name}/checkpoints.json`);
  return report?.schema===1&&report.entry===name&&exactIds(expected,report.reached)&&sameIdentity(expected,report.reached);
 }
-function runCommand(command, args, { cwd = root, log, timeoutMs = 120000, signal, env = process.env, quiet = false, requireAssertions=false, requireCompletion=true } = {}) {
+function runCommand(command, args, { cwd = root, log, timeoutMs = 120000, signal, env = process.env, quiet = false, requireAssertions=false, execution='contract' } = {}) {
   return new Promise(resolve => {
     const start = Date.now(), outputHash = crypto.createHash('sha256');
     let tail = Buffer.alloc(0), bytes = 0, error, timedOut = false, cancelled = false, forceKill;
@@ -126,7 +126,7 @@ function runCommand(command, args, { cwd = root, log, timeoutMs = 120000, signal
       fs.writeFileSync(log, tail);
       let assertionFailed=false,naturalCompletion=false,terminalReceipt=null;const ownReceipt=receiptFile+'.'+child.pid+'.json';
       try {const st=fs.lstatSync(ownReceipt);if(st.isFile()&&!st.isSymbolicLink()&&st.size<=8192){const receipt=JSON.parse(fs.readFileSync(ownReceipt));terminalReceipt=receipt;naturalCompletion=receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.naturalCompletion===true;assertionFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true&&receipt.kind==='assertion'&&receipt.code==='ERR_ASSERTION'&&receipt.name==='AssertionError';}} catch {}
-      const classified=classify({code,error:error||childSignal,timedOut,cancelled,assertionFailed}),status=classified==='PASS'&&command===process.execPath&&((requireCompletion&&!naturalCompletion)||(requireAssertions&&!(terminalReceipt?.assertions>0||terminalReceipt?.nodeTests?.length>0)))?'UNVERIFIED':classified==='ERROR'&&terminalReceipt?.nodeCaseIssues?.length?'UNVERIFIED':classified;
+      const classified=classify({code,error:error||childSignal,timedOut,cancelled,assertionFailed:execution==='contract'&&assertionFailed}),status=classified==='PASS'&&command===process.execPath&&((execution==='contract'&&!naturalCompletion)||(requireAssertions&&!(terminalReceipt?.assertions>0||terminalReceipt?.nodeTests?.length>0)))?'UNVERIFIED':classified==='ERROR'&&terminalReceipt?.nodeCaseIssues?.length?'UNVERIFIED':classified;
       resolve({status,nodeTests:terminalReceipt?.nodeTests,nodeCaseIssues:terminalReceipt?.nodeCaseIssues,assertions:terminalReceipt?.assertions??0,terminalReceipt,assertionResult:status==='PASS'?'PASS':status==='FAIL'?'FAIL':'UNKNOWN',reasonCode:cancelled?'RunCancelled':timedOut?'ProcessTimeout':error?'SpawnError':childSignal?'ProcessSignal':status==='FAIL'?'AssertionFailed':code===0?(status==='PASS'?'ExitZero':naturalCompletion?'NoAssertions':'EarlyExitWithoutCompletion'):'ProcessExitError',
         rawStatus: cancelled ? 'cancelled' : timedOut ? 'timeout' : error ? 'spawn-error' : childSignal ? 'signal' : code === 0 ? 'passed' : 'failed',
         exitCode: code, signal: childSignal, error: error || null, milliseconds: Date.now() - start,
