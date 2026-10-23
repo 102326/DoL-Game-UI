@@ -1,7 +1,7 @@
 name: Kraft Work CI
 on:
   pull_request:
-    branches: [main]
+    branches: [main, dev/evolution-4.0]
   push:
     branches: [main, 'ci/kraft-work-*', 'ci/moody-blues-*']
   workflow_dispatch:

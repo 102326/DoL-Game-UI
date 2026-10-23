@@ -1,15 +1,22 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const {chromium}=require('playwright'),{buildSync}=require('esbuild');
+const {chromium}=require('playwright'),{build}=require('esbuild');
 const root=path.resolve(__dirname,'..');
-const engine=buildSync({entryPoints:[path.join(root,'src/runtime/ui.ts')],bundle:true,write:false,format:'iife',globalName:'UiRuntimeModule'}).outputFiles[0].text;
-const read=name=>fs.readFileSync(path.join(root,name),'utf8');
-const compile=name=>buildSync({entryPoints:[path.join(root,name)],bundle:true,write:false,format:'iife',target:'es2022'}).outputFiles[0].text;
+const group=process.argv.find(a=>a.startsWith('--group='))?.split('=')[1]||'all';
+assert.ok(['all','inspector','surfaces','compat'].includes(group),'Unknown runtime group');
+require('node:child_process').execFileSync(process.execPath,[path.join(root,'node_modules/vite/bin/vite.js'),'build','--outDir','tests/artifacts/legacy-runtime'],{cwd:root,stdio:'inherit'});
+const {plugins,mutation}=require('./runtime-mutations.cjs');
+(async()=>{
+const engine=(await build({plugins,entryPoints:[path.join(root,'src/runtime/ui.ts')],bundle:true,write:false,format:'iife',globalName:'UiRuntimeModule'})).outputFiles[0].text;
+const read=name=>{let source=fs.readFileSync(path.join(root,name.startsWith('dist/game-ui.')?name.replace('dist/','tests/artifacts/legacy-runtime/'):name),'utf8');if(name==='dist/game-ui.js'&&mutation==='identity'){assert.equal(source.split('version:"2.7.0"').length,2,'Core mutation anchor');source=source.replace('version:"2.7.0"','version:"3.0.4"')}return source};
+const compile=async name=>(await build({plugins,entryPoints:[path.join(root,name)],bundle:true,write:false,format:'iife',target:'es2022'})).outputFiles[0].text;
 const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
-(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});try{
+const browser=await chromium.launch(require('./browser-options.cjs'));try{
  const errors=[];
  async function page(html){const p=await browser.newPage({viewport:{width:1280,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.route('http://ui-runtime.test/',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://ui-runtime.test/');return p}
  const settle=p=>p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
- let p=await page('<html data-dol-midnight data-dgu-visual="1" data-dgu-visualGlass data-dgu-visualMotion><body><main id="foreign-area"></main><div data-surface="test"><div id="toolbar"></div><input data-proof="native" value="untouched"><button id="action">native</button><span class="future" hidden>unknown</span></div></body></html>');
+ let p;
+ if(['all','inspector'].includes(group)){
+ p=await page('<html data-dol-midnight data-dgu-visual="1" data-dgu-visualGlass data-dgu-visualMotion><body><main id="foreign-area"></main><div data-surface="test"><div id="toolbar"></div><input data-proof="native" value="untouched"><button id="action">native</button><span class="future" hidden>unknown</span></div></body></html>');
  await p.evaluate(()=>{
   window.observed=[];const Original=MutationObserver;
   window.MutationObserver=class extends Original{observe(node,options){observed.push({node:node===document.body?'body':node.id||node.tagName,...options});super.observe(node,options)}};
@@ -28,7 +35,7 @@ const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
  await p.evaluate(()=>{window.StartConfig={version:'0.5.12.13'};window.SugarCube={State:{passage:'Test Page',get variables(){throw Error('Forbidden business read')}}};window.V={password:'private-game-secret'};native.value='private-input-secret';window.DoLGameUI={version:'2.1.0'};modUtils.version='2.101.1'});
  const diagnostics=await p.evaluate(()=>ui.getDiagnostics());
  assert.equal(diagnostics.gameVersion,'0.5.12.13');assert.equal(diagnostics.loaderVersion,'2.101.1');assert.equal(diagnostics.page.name,'Test Page');
- assert.equal(JSON.stringify(diagnostics).includes('private-'),false);assert.equal(JSON.stringify(diagnostics).includes('data-proof="native"'),false,'attribute values redacted from export');
+ assert.equal(JSON.stringify(diagnostics).includes('private-'),false);assert.equal(JSON.stringify(diagnostics).includes('data-proof='),false,'attribute values redacted from export');
  assert.equal(diagnostics.adapters[0].mappings.find(x=>x.role==='card').fallback,true);
  assert.equal(await p.evaluate(()=>{const d=ui.getDiagnostics();return Object.isFrozen(d)&&Object.isFrozen(d.events)&&Object.isFrozen(d.adapters[0].mappings[0].tags)&&Object.isFrozen(d.capabilities)}),true);
  await p.evaluate(()=>{window.inspector=ui.openInspector();window.sameInspector=ui.openInspector()});
@@ -41,8 +48,9 @@ const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
  assert.equal(download.suggestedFilename(),'soft-wet-ui-diagnostics.json');const exported=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert.equal(exported.page.name,'Test Page');
  await p.evaluate(()=>{navigator.clipboard.writeText=async()=>{throw Error('denied')}});await p.getByRole('button',{name:'复制诊断',exact:true}).click();await p.waitForFunction(()=>document.querySelector('.dgu-inspector [role=status]').textContent.includes('操作不可用'));
  await p.keyboard.press('Escape');assert.equal(await p.locator('.dgu-inspector').count(),0);
- await p.evaluate(()=>{for(let i=0;i<45;i++){versions.Target=i%2?'1.0':'unknown';handle.refresh()}versions.Target='1.0';handle.refresh();window.eventCount=ui.getDiagnostics().events.length;for(let i=0;i<5;i++)ui.rescan()});
+ await p.evaluate(()=>{for(let i=0;i<45;i++){versions.Target=i%2?'1.0':'unknown';handle.refresh()}versions.Target='1.0';handle.refresh();window.eventCount=ui.getDiagnostics().events.length;window.eventsBefore=JSON.stringify(ui.getDiagnostics().events);for(let i=0;i<5;i++)ui.rescan()});
  assert.equal(await p.evaluate(()=>ui.getDiagnostics().events.length),32,'event buffer bounded');assert.equal(await p.evaluate(()=>eventCount===ui.getDiagnostics().events.length),true,'stable rescan creates no duplicate events');
+ assert.equal(await p.evaluate(()=>eventsBefore===JSON.stringify(ui.getDiagnostics().events)),true,'stable rescan preserves the full event sequence even when buffer is full');
  assert.equal(await p.evaluate(()=>handle.getDiagnostics().selectors.filter(x=>x.fallback).length),3);
  assert.equal(await p.evaluate(()=>{const monitor=new MutationObserver(()=>{});monitor.observe(document.querySelector('[data-surface]'),{attributes:true,subtree:true});handle.refresh();const count=monitor.takeRecords().length;monitor.disconnect();return count}),0,'unchanged refresh must not rewrite style attributes');
  assert.equal(await p.evaluate(()=>observed.filter(x=>x.node==='body').every(x=>!x.subtree)),true,'no global body subtree observation');
@@ -70,6 +78,9 @@ const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
  await p.evaluate(()=>{runtime.destroy();runtime.destroy();document.querySelector('[data-surface]').append(document.createElement('button'))});await settle(p);
  assert.equal(await p.locator('[data-dgu-adapter],[data-dgu-role]').count(),0);assert.equal(await p.evaluate(()=>handle.getDiagnostics().status),'disposed');assert.equal(await p.evaluate(()=>ui.getAdapterDiagnostics().length),0);await p.close();
 
+ console.log('PASS UI Runtime Inspector: privacy, clipboard, export, deduplication, bounded events and rescan');
+ }
+ if(['all','surfaces'].includes(group)){
  // Request surfaces own only new content; native dialog owns focus and stacking.
  p=await page('<html data-dol-midnight data-dgu-visual="1" data-dgu-visualGlass data-dgu-visualMotion><body><button id="opener">open</button><div id="original"><input id="original-input" value="native"></div></body></html>');
  await p.addStyleTag({content:read('dist/game-ui.css')});await p.addScriptTag({content:engine});
@@ -111,19 +122,22 @@ const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
  assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'destroyed');assert.equal(await p.locator('.dgu-surface').count(),0);
  await p.close();
 
+ console.log('PASS UI Runtime Surface: native focus, Esc, form submit, detach, fallback and teardown');
+ }
+ if(['all','compat'].includes(group)){
  // Real adapter scripts bind before Core, then survive Core teardown/restart.
  const hub='<div id="customOverlay" data-overlay="modloader"><div id="customOverlayTitle"><div id="overlayTabs" class="modhub-modloader-tabs"><button>管理</button></div></div><div id="customOverlayContent"><div id="modHubModManageContainer" class="modhub-container"><div class="modhub-sticky-toolbar"><input id="setting" type="checkbox"></div><ul class="modhub-list"><li class="modhub-item"><button id="native-button">操作</button><span hidden>unknown</span></li></ul></div></div></div>';
  p=await page('<html><body><div id="passages"></div>'+hub+'</body></html>');
  await p.evaluate(()=>{window.versions={ModHub:'1.3.0',maplebirch:'5.2.3'};window.modUtils={getMod:name=>versions[name]?{version:versions[name]}:null,getSemVerTools:()=>({parseVersion:v=>({version:v}),parseRange:r=>r,satisfies:(v,r)=>r==='>=1.3.0'?['1.3.0','1.3.1','2.0.0'].includes(v):r==='>=5.2.3'&&['5.2.3','5.2.4','6.0.0'].includes(v)})};window.V={unchanged:'game'};window.beforeV=JSON.stringify(V);window.calls=0;window.nativeButton=document.querySelector('#native-button');nativeButton.onclick=()=>calls++;window.nativeSetting=document.querySelector('#setting');window.nativeParent=nativeButton.parentNode;window.nativeNext=nativeButton.nextSibling;window.changeCalls=0;nativeSetting.onchange=()=>changeCalls++});
- for(const mod of ['modhub','maplebirch']){await p.addStyleTag({content:read(`compat/${mod}-soft-wet/${mod}-soft-wet.css`)});await p.addScriptTag({content:adapter(mod)})}
+ for(const mod of ['modhub','maplebirch']){await p.addStyleTag({content:read(`compat/${mod}-soft-wet/${mod}-soft-wet.css`)});await p.addScriptTag({content:await adapter(mod)})}
  assert.equal(await p.locator('[data-dgu-adapter]').count(),0,'without Core, optional packages do nothing');
  await p.evaluate(()=>{window.DoLGameUI={ui:{apiVersion:1}};document.dispatchEvent(new Event('dol-ui-runtime-ready'))});assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().reason),'runtime-api-unsupported');
  await p.evaluate(()=>{window.DoLGameUI={ui:{apiVersion:1,getCapabilities:()=>({styleAdapters:false}),registerStyleAdapter:()=>{throw Error('must not register')}}};document.dispatchEvent(new Event('dol-ui-runtime-ready'))});assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().reason),'style-adapter-unavailable');
  await p.evaluate(()=>delete window.DoLGameUI);
  const inject=async()=>{await p.addStyleTag({content:read('dist/game-ui.css')});await p.addScriptTag({content:read('dist/game-ui.js')});await settle(p)};
- await inject();assert.equal(await p.evaluate(()=>DoLGameUI.version),JSON.parse(read('package.json')).version);assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
+ await inject();assert.equal(await p.evaluate(()=>DoLGameUI.version),'2.7.0','legacy Core identity; official wrapper is checked by framework-startup');assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
  assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().degraded),false,'absent optional marketplace role is not a downgrade of a full management-page match');
- await p.addStyleTag({content:read('examples/ui-surfaces/surface-demo.css')});await p.addScriptTag({content:compile('examples/ui-surfaces/surface-demo.ts')});
+ await p.addStyleTag({content:read('examples/ui-surfaces/surface-demo.css')});await p.addScriptTag({content:await compile('examples/ui-surfaces/surface-demo.ts')});
  await p.evaluate(()=>window.demo=SoftWetSurfaceDemo.openModal());await p.locator('[data-demo-control]').check();await p.keyboard.press('Escape');assert.equal(await p.evaluate(()=>SoftWetSurfaceDemo.getLastClose()),'escape');
  await p.evaluate(()=>window.demo=SoftWetSurfaceDemo.openDrawer());
  for(const width of [390,1280]){await p.setViewportSize({width,height:900});await settle(p);assert.equal(await p.locator('.dgu-surface').evaluate(d=>{const b=d.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth+1&&b.bottom<=innerHeight+1&&d.scrollWidth<=d.clientWidth+1}),true,'drawer stays readable within narrow/wide viewport')}
@@ -154,7 +168,10 @@ const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
  await p.evaluate(()=>{DoLGameUI.setPreference('enabled',true);document.querySelector('#dol-midnight-controls')?.close()});
  await p.evaluate(()=>DoLGameUI.destroy());await settle(p);assert.equal(await p.locator('[data-dgu-adapter],[data-dgu-role]').count(),0);await inject();
  assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().status),'active','independent package rebinds to new Core');
- await p.evaluate(()=>MapleBirchSoftWet.destroy());await settle(p);assert.equal(await p.locator('[data-dgu-adapter="MapleBirchSoftWet"]').count(),0);assert.equal(await p.evaluate(()=>DoLGameUI.ui.getAdapterDiagnostics().length),1);
+ const peerAdapters=await p.evaluate(()=>DoLGameUI.ui.getAdapterDiagnostics().filter(d=>d.id!=='MapleBirchSoftWet').map(d=>d.id).sort());
+ assert.deepEqual(peerAdapters,['ModHubSoftWet','ModHubSoftWetModal','ModHubSoftWetTools'],'ModHub owns management, tools and modal adapters');
+ await p.evaluate(()=>MapleBirchSoftWet.destroy());await settle(p);assert.equal(await p.locator('[data-dgu-adapter="MapleBirchSoftWet"]').count(),0);assert.deepEqual(await p.evaluate(()=>DoLGameUI.ui.getAdapterDiagnostics().map(d=>d.id).sort()),peerAdapters,'disposing MapleBirch removes only its adapter and preserves every peer');
  assert.equal(await p.evaluate(()=>JSON.stringify(V)===beforeV),true);assert.deepEqual(errors,[]);await p.close();
+ }
  console.log('PASS UI runtime: readonly Inspector/export/privacy/bounded events, native surfaces, scoped adapters/fallback/rollback/restart and unchanged native business state');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

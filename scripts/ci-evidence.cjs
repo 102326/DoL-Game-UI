@@ -5,8 +5,8 @@ const crypto = require('node:crypto');
 const { spawn, execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const suites = {
-  unit: ['adapter-build-boundary.test.cjs', 'ci-evidence.test.cjs', 'visual-scope.test.cjs', 'evolution-resource-contract.test.cjs', 'device-profiles.test.cjs', 'floating-preferences.test.cjs', 'test-workflow.test.cjs', 'status.test.cjs', 'target-version.test.cjs', 'wardrobe-data.test.cjs', 'wardrobe-source-m2.test.cjs', 'wardrobe-slot-mappings.test.cjs', 'wardrobe-performance.test.cjs', 'wardrobe-operations.test.cjs', 'render-state.test.cjs', 'startup-cache.test.cjs', 'mouth-compat-adapter.cjs'],
-  browser: ['evolution-owner-resources.cjs', 'source-motion-lifecycle.cjs', 'game-first-motion.cjs', 'evolution-navigation.cjs', 'evolution-panels.cjs', 'evolution-orbit.cjs', 'panels-framework.cjs', 'framework.cjs', 'framework-connect.cjs', 'framework-startup.cjs', 'framework-commands.cjs', 'settings-ci.cjs', 'moody-historical-regressions.cjs', 'wardrobe-details-drawer.cjs', 'shop-source.test.cjs', 'save-transfer-lifecycle.cjs', 'header-weather.cjs', 'official-game-motion.cjs', 'kraft-work-adapters.cjs', 'optimization-wardrobe.cjs', 'wardrobe-wear-motion.cjs', 'selection-motion.cjs', 'shop-ripple-motion.cjs', 'official-defaults.cjs', 'combat-focused.cjs', 'combat-select.cjs', 'saves-viewport.cjs', 'adapter-materials.cjs', 'kraft-work-baseline.cjs', 'device-layouts.cjs', 'device-probe.cjs']
+  unit: ['shop-early-api.test.cjs', 'research-evidence.test.cjs', 'adapter-build-boundary.test.cjs', 'ci-evidence.test.cjs', 'visual-scope.test.cjs', 'evolution-resource-contract.test.cjs', 'device-profiles.test.cjs', 'floating-preferences.test.cjs', 'test-workflow.test.cjs', 'status.test.cjs', 'target-version.test.cjs', 'wardrobe-data.test.cjs', 'wardrobe-source-m2.test.cjs', 'wardrobe-slot-mappings.test.cjs', 'wardrobe-performance.test.cjs', 'wardrobe-operations.test.cjs', 'render-state.test.cjs', 'startup-cache.test.cjs', 'mouth-compat-adapter.cjs'],
+  browser: ['ui-runtime-inspector.cjs', 'ui-runtime-surfaces.cjs', 'ui-runtime-compat.cjs', 'ui-runtime-regressions.cjs', 'evolution-owner-resources.cjs', 'source-motion-lifecycle.cjs', 'game-first-motion.cjs', 'evolution-navigation.cjs', 'evolution-panels.cjs', 'evolution-orbit.cjs', 'panels-framework.cjs', 'framework.cjs', 'framework-connect.cjs', 'framework-startup.cjs', 'framework-commands.cjs', 'settings-ci.cjs', 'moody-historical-regressions.cjs', 'wardrobe-details-drawer.cjs', 'shop-source.test.cjs', 'save-transfer-lifecycle.cjs', 'header-weather.cjs', 'official-game-motion.cjs', 'kraft-work-adapters.cjs', 'optimization-wardrobe.cjs', 'wardrobe-wear-motion.cjs', 'selection-motion.cjs', 'shop-ripple-motion.cjs', 'official-defaults.cjs', 'combat-focused.cjs', 'combat-select.cjs', 'saves-viewport.cjs', 'adapter-materials.cjs', 'kraft-work-baseline.cjs', 'device-layouts.cjs', 'device-probe.cjs']
 };
 const stages = [
   { id: 'dependencies', scope: 'Locked npm dependencies and install scripts', args: ['ci'] },
@@ -214,20 +214,73 @@ function summarize(ctx, steps = {}) {
     limitations: ['Hard runner termination can prevent final summary/upload; never infer PASS from absent artifacts.', 'Evidence upload happens after this summary; its final outcome is recorded by the GitHub job.', 'Windows and Android require their own environment-specific evidence.'] };
 }
 
-function prepareUpload(ctx) {
+function requiredEvidence() {
+  return ['identity.json', 'summary.json', 'unit.json', 'browser.json', 'package-contracts.json',
+    ...stages.map(s => `stage-${s.id}.json`), 'fixtures/device-layouts.cjs/layout-report.json'];
+}
+
+// Validate the actual delivered bytes, not merely the pre-upload check status.
+function validateUpload(ctx, required = requiredEvidence(), identityFiles = required) {
+  const destination = path.join(ctx.dir, 'upload'), problems = [];
+  let index;
+  try { index = JSON.parse(fs.readFileSync(path.join(destination, 'upload-index.json'))); }
+  catch { return [{ file: 'upload-index.json', reason: 'Missing or invalid index' }]; }
+  if (!sameIdentity(index.identity, ctx.identity) || !Array.isArray(index.files) || !index.files.every(f => typeof f?.file === 'string' && /^[a-f0-9]{64}$/.test(f.sha256)) || new Set(index.files.map(f => f.file)).size !== index.files.length) {
+    return [{ file: 'upload-index.json', reason: 'Stale identity or incomplete index' }];
+  }
+  for (const entry of index.files) {
+    try {
+      if (path.isAbsolute(entry.file) || entry.file.split(/[\\/]/).includes('..')) throw Error('Unsafe indexed path');
+      const target = path.join(destination, entry.file);
+      const relative = path.relative(fs.realpathSync(destination), fs.realpathSync(target));
+      if (!fs.lstatSync(target).isFile() || fs.lstatSync(target).isSymbolicLink() || relative.startsWith('..') || path.isAbsolute(relative)) throw Error('Unsafe indexed file');
+      if (hash(fs.readFileSync(target)) !== entry.sha256) throw Error('Indexed file hash mismatch');
+    } catch (error) { problems.push({ file: entry.file, reason: error.message }); }
+  }
+  for (const file of required) {
+    try {
+      const target = path.join(destination, file), entry = index.files.find(f => f.file === file);
+      const relative = path.relative(fs.realpathSync(destination), fs.realpathSync(target));
+      if (!entry || !fs.lstatSync(target).isFile() || fs.lstatSync(target).isSymbolicLink() || relative.startsWith('..') || path.isAbsolute(relative)) throw Error('Missing or unsafe required file');
+      const bytes = fs.readFileSync(target);
+      if (hash(bytes) !== entry.sha256 || hash(bytes) !== hash(fs.readFileSync(path.join(ctx.dir, file)))) throw Error('Required file hash mismatch');
+      if (!identityFiles.includes(file)) continue;
+      const report = JSON.parse(bytes);
+      if (report.schema !== 1 || !sameIdentity(report.identity, ctx.identity)) throw Error('Required file identity mismatch');
+    } catch (error) { problems.push({ file, reason: error.message }); }
+  }
+  return problems;
+}
+
+function finalizeUpload(ctx, summary, options = {}) {
+  writeJson(path.join(ctx.dir, 'summary.json'), summary);
+  const upload = prepareUpload(ctx, options), problems = validateUpload(ctx, options.required, options.identityFiles);
+  const delivery = { schema: 1, identity: ctx.identity, status: problems.length && summary.status === 'PASS' ? 'UNVERIFIED' : summary.status,
+    checkStatus: summary.status, problems, files: upload.files.length, bytes: upload.bytes, omitted: upload.omitted };
+  const destination = path.join(ctx.dir, 'upload');
+  writeJson(path.join(destination, 'delivery.json'), delivery);
+  const indexPath = path.join(destination, 'upload-index.json'), index = JSON.parse(fs.readFileSync(indexPath));
+  index.files.push({ file: 'delivery.json', sha256: hash(fs.readFileSync(path.join(destination, 'delivery.json'))) });
+  index.bytes += fs.statSync(path.join(destination, 'delivery.json')).size;
+  writeJson(indexPath, index);
+  return delivery;
+}
+
+function prepareUpload(ctx, { candidates: extra = [], totalLimit = 16 * 1024 * 1024, fileLimit } = {}) {
   const destination = path.join(ctx.dir, 'upload');
   if (fs.existsSync(destination)) throw Error('Upload directory already exists; use a fresh evidence ID');
   fs.mkdirSync(destination);
-  const candidates = ['identity.json', 'unit.json', 'browser.json', 'summary.json', 'package-contracts.json', ...stages.flatMap(s => [`stage-${s.id}.json`, `${s.id}.log`]),
+  const candidates = [...extra, 'identity.json', 'unit.json', 'browser.json', 'summary.json', 'package-contracts.json', ...stages.flatMap(s => [`stage-${s.id}.json`, `${s.id}.log`]),
     ...Object.entries(suites).flatMap(([suite, tests]) => tests.map(test => `${suite}/${test}.log`)),
     ...fixtureChecks.flatMap(test => [`fixtures/${test}/snapshot.json`, `fixtures/${test}/viewport.jpg`]), 'fixtures/device-layouts.cjs/layout-report.json'];
   const files = [], omitted = []; let bytes = 0;
-  for (const file of candidates) {
+  for (const file of [...new Set(candidates)]) {
+    if (path.isAbsolute(file) || file.split(/[\\/]/).includes('..')) throw Error('Unsafe evidence candidate');
     const source = path.join(ctx.dir, file);
     if (!fs.existsSync(source)) continue;
-    const stat = fs.lstatSync(source), limit = file.endsWith('.jpg') ? 524288 : file === 'fixtures/device-layouts.cjs/layout-report.json' ? 262144 : file.startsWith('fixtures/') ? 65536 : file.endsWith('.json') ? 262144 : 65536;
+    const stat = fs.lstatSync(source), limit = fileLimit?.(file) ?? (file.endsWith('.jpg') ? 524288 : file === 'fixtures/device-layouts.cjs/layout-report.json' ? 262144 : file.startsWith('fixtures/') ? 65536 : file.endsWith('.json') ? 262144 : 65536);
     const relativeReal = path.relative(fs.realpathSync(ctx.dir), fs.realpathSync(source));
-    if (!stat.isFile() || stat.isSymbolicLink() || relativeReal.startsWith('..') || path.isAbsolute(relativeReal) || stat.size > limit || bytes + stat.size > 16 * 1024 * 1024) {
+    if (!stat.isFile() || stat.isSymbolicLink() || relativeReal.startsWith('..') || path.isAbsolute(relativeReal) || stat.size > limit || bytes + stat.size > totalLimit) {
       omitted.push({ file, reason: 'Non-regular, outside run directory or evidence size limit' }); continue;
     }
     const target = path.join(destination, file);
@@ -238,4 +291,4 @@ function prepareUpload(ctx) {
   return { files, bytes, omitted };
 }
 
-module.exports = { sourceIdentity, root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, layoutEvidence, packageEvidence, requiredPackages };
+module.exports = { sourceIdentity, root, suites, stages, fixtureChecks, coverage, context, writeJson, classify, overall, runCommand, summarize, prepareUpload, finalizeUpload, validateUpload, requiredEvidence, layoutEvidence, packageEvidence, requiredPackages, readReport, verifiedPass, sameIdentity, hash };

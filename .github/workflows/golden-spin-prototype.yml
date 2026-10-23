@@ -1,7 +1,9 @@
 name: Motion Evolution prototype
 on:
   push:
-    branches: ['prototype/golden-spin-b', 'dev/evolution-4.0']
+    branches: ['prototype/golden-spin-b', 'dev/evolution-4.0', 'ci/moody-blues-*']
+  pull_request:
+    branches: [dev/evolution-4.0, main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -12,112 +14,34 @@ jobs:
   prototype:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      MOODY_EVIDENCE_ID: ${{ github.run_id }}-${{ github.run_attempt }}-research
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - id: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+      - id: node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: '22'
           cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm run prototype:golden-spin:check && npm run ci:check
-      - run: npm run prototype:golden-spin:build
-      - run: npm run prototype:golden-spin:test
-      - name: Isolated settings refraction study
-        run: |
-          git fetch --no-tags --depth=1 origin 915dcb9e85f3266a73a3e7ce38d769edd0c29ff4 b507f1a7d18d4d77067fa0c793aea44d7de96b57
-          node scripts/prepare-settings-refraction.mjs
-          npx vue-tsc --noEmit -p tsconfig.settings-refraction.json
-          npx vite build --config vite.settings-refraction.config.ts
-          node scripts/check-settings-refraction.cjs
-      - name: Settings and native presentation regressions
-        run: |
-          node scripts/build-framework.mjs
-          node tests/settings-ci.cjs
-          node tests/moody-historical-regressions.cjs
-          node tests/official-game-motion.cjs
-          node tests/source-motion-lifecycle.cjs
-          node tests/game-first-motion.cjs
-      - name: Evolution P0, shared navigation and weather research
-        run: |
-          node --test tests/adapter-build-boundary.test.cjs tests/visual-scope.test.cjs tests/evolution-resource-contract.test.cjs
-          node tests/evolution-owner-resources.cjs
-          node scripts/evolution-inventory.cjs
-          node tests/evolution-navigation.cjs
-          node tests/evolution-panels.cjs
-          node tests/evolution-orbit.cjs
-          node tests/panels-framework.cjs
-          npx vue-tsc --noEmit -p tsconfig.evolution.json
-          npx vite build --config vite.evolution-weather.config.ts
-          node tests/evolution-weather.cjs
-          node tests/evolution-weather-candidates.cjs
-          node --test tests/evolution-rain-model.test.cjs tests/evolution-scattered-shower.test.cjs
-          node tests/evolution-rain-glass.cjs
-          node tests/evolution-rain-glass.cjs --natural-trails
-          node tests/evolution-rain-glass.cjs --runoff
-          node tests/evolution-weather-levels.cjs
-          node tests/evolution-weather-shower.cjs
-          node tests/evolution-weather-shower.cjs --force
-          node tests/evolution-weather-shower.cjs --scatter
+      - id: dependencies
+        run: node scripts/test-ci.cjs stage dependencies
+      - id: browser-install
+        run: node scripts/test-ci.cjs stage browser-install
+      - id: research
+        name: Required controlled research contracts
+        run: node scripts/test-ci.cjs research
+      - name: Research whole-run evidence
+        if: always()
+        env:
+          MOODY_STEPS: ${{ toJSON(steps) }}
+        run: node scripts/test-ci.cjs research-summary
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
           name: golden-spin-prototype-${{ github.sha }}
-          path: |
-            tests/artifacts/evolution/inventory.json
-            tests/artifacts/evolution/owners.json
-            tests/artifacts/evolution/source-motion.json
-            tests/artifacts/evolution/settings-resources.json
-            tests/artifacts/evolution/navigation.json
-            tests/artifacts/evolution/panels.json
-            tests/artifacts/evolution/orbit*.json
-            tests/artifacts/evolution/weather-r2-*/result.json
-            tests/artifacts/evolution/weather-r2-*/failure.json
-            tests/artifacts/evolution/weather-r2-*/*.png
-            tests/artifacts/evolution/weather-r9-*/result.json
-            tests/artifacts/evolution/weather-r9-*/failure.json
-            tests/artifacts/evolution/weather-r9-*/*.png
-            tests/artifacts/evolution/weather-r8-*/result.json
-            tests/artifacts/evolution/weather-r8-*/failure.json
-            tests/artifacts/evolution/weather-r8-*/*.png
-            tests/artifacts/evolution/weather-r7-*/result.json
-            tests/artifacts/evolution/weather-r7-*/failure.json
-            tests/artifacts/evolution/weather-r7-*/*.png
-            tests/artifacts/evolution/weather-r6-*/result.json
-            tests/artifacts/evolution/weather-r6-*/failure.json
-            tests/artifacts/evolution/weather-r6-*/*.png
-            tests/artifacts/evolution/weather-r5-*/result.json
-            tests/artifacts/evolution/weather-r5-*/failure.json
-            tests/artifacts/evolution/weather-r5-*/*.png
-            tests/artifacts/evolution/weather-r4-*/result.json
-            tests/artifacts/evolution/weather-r4-*/failure.json
-            tests/artifacts/evolution/weather-r4-*/*.png
-            tests/artifacts/evolution/weather-r3-*/result.json
-            tests/artifacts/evolution/weather-r3-*/failure.json
-            tests/artifacts/evolution/weather-r3-*/*.png
-            tests/artifacts/evolution/weather-dist/**
-            tests/artifacts/evolution/weather-review-*/result.json
-            tests/artifacts/evolution/weather-review-*/failure.json
-            tests/artifacts/evolution/weather-review-*/*.png
-            tests/artifacts/golden-spin-b/dist/**
-            tests/artifacts/golden-spin-b/bundle-sizes.json
-            tests/artifacts/golden-spin-b/sphere-validation-*/result.json
-            tests/artifacts/golden-spin-b/sphere-validation-*/failure.json
-            tests/artifacts/golden-spin-b/sphere-validation-*/*.png
-            tests/artifacts/golden-spin-b/hub-validation-*/result.json
-            tests/artifacts/golden-spin-b/hub-validation-*/failure.json
-            tests/artifacts/golden-spin-b/hub-validation-*/*.png
-            tests/artifacts/golden-spin-b/windows-validation-*/result.json
-            tests/artifacts/golden-spin-b/windows-validation-*/failure.json
-            tests/artifacts/golden-spin-b/windows-validation-*/*.png
-            tests/artifacts/settings-refraction-v1/dist/**
-            tests/artifacts/settings-refraction-v1/provenance.json
-            tests/artifacts/settings-refraction-v1/review-*/result.json
-            tests/artifacts/settings-refraction-v1/review-*/failure.json
-            tests/artifacts/settings-refraction-v1/review-*/geometry-*.json
-            tests/artifacts/settings-refraction-v1/review-*/reversal-*.json
-            tests/artifacts/settings-refraction-v1/review-*/*.png
+          path: tests/artifacts/ci/${{ env.MOODY_EVIDENCE_ID }}/upload/
           if-no-files-found: error
           retention-days: 14

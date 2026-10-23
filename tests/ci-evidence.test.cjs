@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { classify, overall, runCommand, summarize, prepareUpload, writeJson, stages, suites, requiredPackages } = require('../scripts/ci-evidence.cjs');
+const { classify, overall, runCommand, summarize, prepareUpload, finalizeUpload, validateUpload, writeJson, stages, suites, requiredPackages } = require('../scripts/ci-evidence.cjs');
 const { runSuite } = require('../scripts/test-ci.cjs');
 const { captureFailure, writeLayoutReport } = require('./moody-fixture-evidence.cjs');
 const { root } = require('../scripts/ci-evidence.cjs');
@@ -59,22 +59,22 @@ const { root } = require('../scripts/ci-evidence.cjs');
     assert.notEqual(summary.status, 'PASS');
     assert.equal(summary.results.find(r => r.name === 'check').status, 'UNVERIFIED');
     for (const s of stages) {
-      writeJson(path.join(dir, `stage-${s.id}.json`), { identity: ctx.identity, name: s.id, status: 'PASS', rawStatus: 'passed', exitCode: 0, milliseconds: 1 });
+      writeJson(path.join(dir, `stage-${s.id}.json`), { schema: 1, identity: ctx.identity, name: s.id, status: 'PASS', rawStatus: 'passed', exitCode: 0, milliseconds: 1 });
     }
     summary = summarize(ctx, {});
     assert.notEqual(summary.status, 'PASS', 'missing required suite reports cannot pass');
     for (const suite of ['unit', 'browser']) {
-      writeJson(path.join(dir, `${suite}.json`), { identity: ctx.identity, suite, status: 'PASS', expected: suites[suite], results: suites[suite].map(name => ({ name, status: 'PASS', rawStatus: 'passed', exitCode: 0, milliseconds: 1 })) });
+      writeJson(path.join(dir, `${suite}.json`), { schema: 1, identity: ctx.identity, suite, status: 'PASS', expected: suites[suite], results: suites[suite].map(name => ({ name, status: 'PASS', rawStatus: 'passed', exitCode: 0, milliseconds: 1 })) });
     }
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED', 'device file exit 0 alone cannot establish coverage');
     const layoutPath = path.join(dir, 'fixtures/device-layouts.cjs/layout-report.json');
-    const layout = { identity: ctx.identity, status: 'PASS', depth: 'standard', results: require('./device-layouts.cjs').expectedCaseIds('standard').map(id => ({ id, status: 'PASS' })) };
+    const layout = { schema: 1, identity: ctx.identity, status: 'PASS', depth: 'standard', results: require('./device-layouts.cjs').expectedCaseIds('standard').map(id => ({ id, status: 'PASS' })) };
     writeJson(layoutPath, layout);
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'package command exit 0 alone cannot establish eight-package coverage');
     const contracts = requiredPackages.map(name => ({ name, file: name + '.zip', sha256: 'a'.repeat(64), status: 'PASS', members: { 'LICENSE': 'b'.repeat(64), 'boot.json': 'c'.repeat(64) } }));
     const negativePlan = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'].map(name => 'controlled.' + name);
     const snapshots = contracts.map(p => ({ file: p.file, sha256: p.sha256, archiveComment: '', members: Object.entries(p.members).map(([name, sha256]) => ({ name, sha256, compressedSha256: 'd'.repeat(64), metadata: { date_time: [2026,1,1,0,0,0], compress_type: 8, create_system: 3, create_version: 20, extract_version: 20, flag_bits: 0, internal_attr: 0, external_attr: 0o600 << 16, file_size: 1, compress_size: 3, CRC: 1, header_offset: 0, extra: '', comment: '' } })) }));
-    const packageReport = { kind: 'package-contracts', identity: ctx.identity, status: 'PASS', versionSources: { status: 'PASS' },
+    const packageReport = { schema: 1, kind: 'package-contracts', identity: ctx.identity, status: 'PASS', versionSources: { status: 'PASS' },
       expectedPackages: requiredPackages, contracts, reproducibility: { status: 'PASS', differences: [] },
       negativeTests: { status: 'PASS', plan: negativePlan, testsRun: negativePlan.length, failures: 0, errors: 0, skipped: 0, expectedFailures: 0, unexpectedSuccesses: 0 },
       builds: ['first','second'].map(invocation => ({ receipt: { invocation, source: ctx.identity.source, runId: ctx.identity.run.id, packages: contracts }, snapshots })) };
@@ -103,6 +103,36 @@ const { root } = require('../scripts/ci-evidence.cjs');
     writeJson(packageFile, packageReport);
     summary = summarize(ctx, { checkout: { outcome: 'success' }, node: { outcome: 'success' }, python: { outcome: 'success' } });
     assert.equal(summary.status, 'PASS');
+    // E2: individually valid stage files can produce an oversize whole summary.
+    const setup = { checkout: { outcome: 'success' }, node: { outcome: 'success' }, python: { outcome: 'success' } };
+    writeJson(path.join(dir, 'identity.json'), { schema: 1, identity: ctx.identity });
+    for (const stage of stages) {
+      const file = path.join(dir, `stage-${stage.id}.json`);
+      const record = JSON.parse(fs.readFileSync(file));
+      writeJson(file, { ...record, padding: 'x'.repeat(45000) });
+    }
+    const largeSummary = summarize(ctx, setup);
+    assert.equal(largeSummary.status, 'PASS', 'original checks really passed');
+    assert.ok(Buffer.byteLength(JSON.stringify(largeSummary)) > 262144);
+    writeJson(path.join(dir, 'summary.json'), largeSummary);
+    const originalUpload = prepareUpload(ctx);
+    assert.ok(originalUpload.omitted.some(p => p.file === 'summary.json'));
+    console.log('REPRO E2: summary=PASS, required summary.json omitted by original upload preparation');
+    fs.rmSync(path.join(dir, 'upload'), { recursive: true });
+    const delivery = finalizeUpload(ctx, largeSummary);
+    assert.equal(delivery.status, 'UNVERIFIED', 'omitted required summary cannot certify delivery');
+    assert.ok(delivery.problems.some(p => p.file === 'summary.json'));
+    for (const stage of stages) {
+      const file = path.join(dir, `stage-${stage.id}.json`);
+      const record = JSON.parse(fs.readFileSync(file)); delete record.padding; writeJson(file, record);
+    }
+    fs.rmSync(path.join(dir, 'upload'), { recursive: true });
+    const complete = finalizeUpload(ctx, summarize(ctx, setup));
+    assert.equal(complete.status, 'PASS');
+    const uploadedSummary = path.join(dir, 'upload/summary.json');
+    fs.appendFileSync(uploadedSummary, ' ');
+    assert.ok(validateUpload(ctx).some(p => p.file === 'summary.json' && /hash/.test(p.reason)));
+    fs.rmSync(path.join(dir, 'upload'), { recursive: true });
     writeJson(layoutPath, { ...layout, results: layout.results.slice(1) });
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED', 'missing device/scan case cannot pass');
     writeJson(layoutPath, { ...layout, depth: 'deep' });

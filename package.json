@@ -19,7 +19,7 @@
     "typecheck": "vue-tsc --noEmit && tsc -p tsconfig.adapters.json && tsc -p tsconfig.early.json",
     "build": "node scripts/render-state-fields.cjs --check && npm run typecheck && vite build && node scripts/build-early.cjs",
     "pretest": "npm run build",
-    "package": "npm run build && python scripts/package.py",
+    "package": "npm run ci:check && node scripts/build-framework.mjs && python scripts/package.py",
     "test": "node scripts/test-unit.cjs",
     "test:quick": "node scripts/test-workflow.cjs quick",
     "test:release": "node scripts/test-workflow.cjs release",

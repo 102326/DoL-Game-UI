@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { suites, stages, coverage, context, writeJson, overall, runCommand, summarize, prepareUpload, layoutEvidence } = require('./ci-evidence.cjs');
+const { suites, stages, coverage, context, writeJson, overall, runCommand, summarize, finalizeUpload, layoutEvidence } = require('./ci-evidence.cjs');
 
 async function runSuite(ctx, mode, tests = suites[mode], { signal, timeoutMs = 120000, quiet = false } = {}) {
   const report = { schema: 1, identity: ctx.identity, suite: mode, coverage, expected: tests, status: 'UNVERIFIED',
@@ -26,21 +26,37 @@ async function runSuite(ctx, mode, tests = suites[mode], { signal, timeoutMs = 1
 
 async function main() {
   const mode = process.argv[2];
-  if (!Object.hasOwn(suites, mode) && !['stage', 'summary'].includes(mode)) throw Error('Expected unit, browser, stage <id>, or summary');
+  if (!Object.hasOwn(suites, mode) && !['stage', 'summary', 'research', 'research-summary'].includes(mode)) throw Error('Expected unit, browser, research, research-summary, stage <id>, or summary');
   const ctx = context(), controller = new AbortController();
   let interrupted;
   for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { interrupted = signal; controller.abort(); });
   writeJson(path.join(ctx.dir, 'identity.json'), { schema: 1, identity: ctx.identity, coverage });
   const execute = (command, args, log, env, timeoutMs) => runCommand(command, args, { cwd: ctx.root, log: path.join(ctx.dir, log), env, timeoutMs, signal: controller.signal });
 
+  if (mode.startsWith('research')) {
+    const { runResearch, researchSummary, researchUpload } = require('./ci-research.cjs');
+    if (mode === 'research') {
+      const report = await runResearch(ctx, { signal: controller.signal });
+      process.exitCode = interrupted ? interrupted === 'SIGINT' ? 130 : 143 : report.status === 'PASS' ? 0 : 1;
+    } else {
+      const summary = researchSummary(ctx, JSON.parse(process.env.MOODY_STEPS || '{}'));
+      const delivery = researchUpload(ctx, summary);
+      const text = `Motion Evolution evidence: ${delivery.status}; source ${ctx.identity.source.head}; run ${ctx.identity.run.id}; ${delivery.files} files / ${delivery.bytes} bytes; ${delivery.omitted.length} optional omissions.\n${JSON.stringify({ results: summary.results, problems: delivery.problems }, null, 2)}\n`;
+      console.log(text);
+      if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, text);
+      process.exitCode = delivery.status === 'PASS' ? 0 : 1;
+    }
+    return;
+  }
+
   if (mode === 'summary') {
     const summary = summarize(ctx, JSON.parse(process.env.MOODY_STEPS || '{}'));
-    writeJson(path.join(ctx.dir, 'summary.json'), summary);
-    const upload = prepareUpload(ctx);
-    const text = `\n### Moody Blues: ${summary.status}\n\nSource: \`${ctx.identity.source.head}\` (${ctx.identity.source.dirty ? 'dirty' : 'clean'}); content SHA-256: \`${ctx.identity.source.contentSha256}\`.\n\n| Required stage | Status | Raw outcome | Reason |\n| --- | --- | --- | --- |\n${summary.results.map(r => `| ${r.name} | ${r.status} | ${r.rawStatus} | ${r.reason || 'See result and bounded log'} |`).join('\n')}\n\n${coverage}\n\nEvidence: \`kraft-work-checks-${process.env.GITHUB_SHA || ctx.identity.source.head}\`, ${upload.files.length} files / ${upload.bytes} bytes; omissions: ${upload.omitted.length}. Source/run identity and relative paths are in summary.json and upload-index.json.\n`;
+    const upload = finalizeUpload(ctx, summary);
+    const text = `\n### Moody Blues: ${upload.status}\n\nSource: \`${ctx.identity.source.head}\` (${ctx.identity.source.dirty ? 'dirty' : 'clean'}); content SHA-256: \`${ctx.identity.source.contentSha256}\`.\n\n| Required stage | Status | Raw outcome | Reason |\n| --- | --- | --- | --- |\n${summary.results.map(r => `| ${r.name} | ${r.status} | ${r.rawStatus} | ${r.reason || 'See result and bounded log'} |`).join('\n')}\n\n${coverage}\n\nEvidence: \`kraft-work-checks-${process.env.GITHUB_SHA || ctx.identity.source.head}\`, ${upload.files} files / ${upload.bytes} bytes; omissions: ${upload.omitted.length}. Source/run identity and relative paths are in summary.json and upload-index.json.\n`;
     console.log(text);
     if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, text);
-    process.exitCode = summary.status === 'PASS' ? 0 : 1;
+    console.log(`Evidence delivery: ${upload.status}`, upload.problems);
+    process.exitCode = upload.status === 'PASS' ? 0 : 1;
     return;
   }
 
