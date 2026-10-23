@@ -11,7 +11,7 @@ const layer = ref<HTMLElement>(), ball = ref<HTMLButtonElement>(), heading = ref
 let saved = initialPosition();
 try {saved = readPosition(localStorage.getItem(positionKey))} catch { /* Storage is optional. */ }
 const area = reactive({left: 0, top: 0, width: innerWidth, height: innerHeight});
-const point = reactive(locate(saved, area)), docked = ref(saved.docked), expanded = ref(false), dragging = ref(false);
+const point = reactive(locate(saved, area)), docked = ref(saved.docked), expanded = ref(false), dragging = ref(false), repositioning = ref(false);
 const selected = shallowRef<View>(), views = shallowRef(props.host.views()), message = ref('');
 let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string} | undefined;
 let suppressClick = false, sequence = 0, stopHint:(()=>void)|undefined, instance = ref('motion-view-0'), binding: Binding;
@@ -50,16 +50,24 @@ function cancel() {
  if (ball.value?.hasPointerCapture(id)) ball.value.releasePointerCapture(id);
 }
 function sync() {
+ if(!scope.active())return;
  cancel();
  const viewport = window.visualViewport, css = layer.value && getComputedStyle(layer.value);
  const inset = (name: string) => parseFloat(css?.getPropertyValue(name) || '') || 0;
  const left = inset('--safe-left'), right = inset('--safe-right'), top = inset('--safe-top'), bottom = inset('--safe-bottom');
  const rect=props.experimentalMotion?layer.value?.getBoundingClientRect():undefined;
- coordinateScale={x:rect?rect.width/Math.max(1,layer.value!.offsetWidth):1,y:rect?rect.height/Math.max(1,layer.value!.offsetHeight):1};
- Object.assign(area, {left: ((viewport?.offsetLeft || 0)-(rect?.left||0))/coordinateScale.x+left, top: ((viewport?.offsetTop || 0)-(rect?.top||0))/coordinateScale.y+top,
-  width: Math.max(80, (viewport?.width || innerWidth)/coordinateScale.x - left - right), height: Math.max(100, (viewport?.height || innerHeight)/coordinateScale.y - top - bottom)});
- Object.assign(point, locate(saved, area));
+ const scale={x:rect?rect.width/Math.max(1,layer.value!.offsetWidth):1,y:rect?rect.height/Math.max(1,layer.value!.offsetHeight):1};
+ // Hidden roots have no coordinate space. Keep the last valid geometry until visible.
+ if(!Number.isFinite(scale.x)||!Number.isFinite(scale.y)||scale.x<=0||scale.y<=0)return;
+ coordinateScale=scale;
+ const nextArea={left: ((viewport?.offsetLeft || 0)-(rect?.left||0))/coordinateScale.x+left, top: ((viewport?.offsetTop || 0)-(rect?.top||0))/coordinateScale.y+top,
+  width: Math.max(80, (viewport?.width || innerWidth)/coordinateScale.x - left - right), height: Math.max(100, (viewport?.height || innerHeight)/coordinateScale.y - top - bottom)};
+ const changed=Object.keys(nextArea).some(key=>nextArea[key as keyof typeof nextArea]!==area[key as keyof typeof area]);
+ if(changed)repositioning.value=true;
+ Object.assign(area,nextArea);Object.assign(point, locate(saved, area));
+ if(changed)void nextTick(()=>{if(!scope.active())return;ball.value?.getBoundingClientRect();scope.frame(settlePosition)});
 }
+function settlePosition(){repositioning.value=false}
 const viewportStamp = () => {const v = window.visualViewport; return [v?.width || innerWidth, v?.height || innerHeight, v?.offsetLeft || 0, v?.offsetTop || 0,props.experimentalMotion?getComputedStyle(document.body).zoom:''].join(':')};
 function schedule() {if(!scope.active())return;cancel();scope.frame(sync)}
 function toggle(event: MouseEvent) {
@@ -115,9 +123,10 @@ function interrupt() {cancel(); close(false)}
 function arm() {binding?.signal.removeEventListener('abort', interrupt); binding = props.hostContext.binding(); binding.signal.addEventListener('abort', interrupt, {once: true})}
 const stopScene = props.hostContext.onScene(arm);
 const stopViews = props.host.onViews(() => {views.value = props.host.views(); if (selected.value && !views.value.some(view => view.mount === selected.value?.mount)) close()});
-onMounted(() => {sync(); arm();if(props.experimentalMotion&&layer.value)stopExperimental=props.experimentalMotion(layer.value);if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
+onMounted(() => {sync(); arm();if(props.experimentalMotion&&layer.value)stopExperimental=props.experimentalMotion(layer.value);if(props.experimentalMotion&&layer.value){try{const resize=new ResizeObserver(sync);scope.own(()=>resize.disconnect());resize.observe(layer.value)}catch(error){console.warn('[MotionHub] geometry observer unavailable; viewport events remain active',error)}}if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
  window.visualViewport?.addEventListener('resize', schedule); window.visualViewport?.addEventListener('scroll', schedule); document.addEventListener('pointerdown', outside); document.addEventListener('focusin', outside)});
-scope.own(() => {stopExperimental?.();interrupt();document.removeEventListener('dol-floating-reset',reset); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
+scope.own(()=>stopExperimental?.());
+scope.own(() => {interrupt();document.removeEventListener('dol-floating-reset',reset); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
  window.removeEventListener('resize', schedule); window.removeEventListener('blur', interrupt); window.removeEventListener('pagehide', interrupt);
  window.visualViewport?.removeEventListener('resize', schedule); window.visualViewport?.removeEventListener('scroll', schedule); document.removeEventListener('pointerdown', outside); document.removeEventListener('focusin', outside)});
 onBeforeUnmount(scope.dispose);
@@ -147,7 +156,7 @@ onBeforeUnmount(scope.dispose);
    <footer><button type="button" @click="selected = undefined; expanded = true; ball?.focus({preventScroll: true})">返回工具</button><span>返回后继续游戏</span></footer>
   </section>
   <button ref="ball" type="button" class="sf-motion-ball" :class="{'is-dragging': dragging, 'is-docked': docked, 'is-open': expanded || !!selected}"
-   :aria-label="docked ? '恢复悬浮工具' : 'Kraft Work 自由工具'" title="点击展开；拖到边缘停靠；方向键移动，Escape 收起" :aria-expanded="expanded || !!selected" :style="{transform: `translate3d(${point.x}px, ${point.y}px, 0)`}"
+   :aria-label="docked ? '恢复悬浮工具' : 'Kraft Work 自由工具'" title="点击展开；拖到边缘停靠；方向键移动，Escape 收起" :aria-expanded="expanded || !!selected" :style="{transform: `translate3d(${point.x}px, ${point.y}px, 0)`, transition: repositioning ? 'none' : undefined}"
    @click="toggle" @pointerdown.stop="down" @pointermove.stop="move" @pointerup.stop="up" @pointercancel.stop="cancel" @lostpointercapture="cancel"
    @touchstart.stop @touchmove.stop @touchend.stop @touchcancel.stop><span aria-hidden="true"><svg v-if="officialPreferences" class="sf-motion-emblem" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 4 27 16 16 28 5 16 16 4Z"/><path d="m10 16 6-6 6 6-6 6-6-6Z"/><path d="M16 1v6m15 9h-6M16 31v-6M1 16h6"/></svg><template v-else>{{ docked ? '⋮' : '✦' }}</template></span></button>
   <p class="sf-motion-feedback" role="status" :style="{left: `${clamp(point.x - 100, area.left + 12, area.left + area.width - 212)}px`, top: `${clamp(point.y + 80, area.top + 12, area.top + area.height - 38)}px`}">{{ dragging ? (magnet ? '松手停靠' : '拖到边缘可停靠') : message }}</p>

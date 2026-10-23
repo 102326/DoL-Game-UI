@@ -1,0 +1,589 @@
+{
+  "scope": "First-party actual official Hub fixture; fault-injected FAIL records are expected exact refusals, not current product failures. No real game/save/device acceptance.",
+  "actualOwnerResources": [
+    {
+      "kind": "settings",
+      "mounted": {
+        "frames": 0,
+        "timers": 3,
+        "observers": 9,
+        "listeners": 32
+      },
+      "queued": {
+        "frames": 1,
+        "timers": 3,
+        "observers": 9,
+        "listeners": 32
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "layout",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 1,
+        "listeners": 3
+      },
+      "queued": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 1,
+        "listeners": 3
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "attributes",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "queued": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "social",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "queued": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "panels",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "queued": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "shop",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 9
+      },
+      "queued": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 9
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "wardrobe",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "queued": {
+        "frames": 1,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "saves",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 1,
+        "listeners": 0
+      },
+      "queued": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 1,
+        "listeners": 0
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "combat",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 1,
+        "listeners": 10
+      },
+      "queued": {
+        "frames": 1,
+        "timers": 0,
+        "observers": 1,
+        "listeners": 10
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "floating",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "queued": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 2,
+        "listeners": 5
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "official-motion",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 7,
+        "listeners": 29
+      },
+      "queued": {
+        "frames": 1,
+        "timers": 0,
+        "observers": 7,
+        "listeners": 29
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "weather",
+      "mounted": {
+        "frames": 1,
+        "timers": 1,
+        "observers": 6,
+        "listeners": 9
+      },
+      "queued": {
+        "frames": 1,
+        "timers": 1,
+        "observers": 6,
+        "listeners": 9
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    },
+    {
+      "kind": "hub",
+      "mounted": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 6,
+        "listeners": 18
+      },
+      "queued": {
+        "frames": 2,
+        "timers": 0,
+        "observers": 6,
+        "listeners": 18
+      },
+      "disposed": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "late": {
+        "frames": 0,
+        "timers": 0,
+        "observers": 0,
+        "listeners": 0
+      },
+      "timerDetails": []
+    }
+  ],
+  "hubIntegration": {
+    "checks": [
+      {
+        "name": "actual official registration",
+        "status": "PASS"
+      },
+      {
+        "name": "actual settings action once during movement and protected real settings",
+        "status": "PASS"
+      },
+      {
+        "name": "actual glass preference gates the new shell",
+        "status": "PASS"
+      },
+      {
+        "name": "native whitelist single action, unavailable fallback and third-party view",
+        "status": "PASS"
+      },
+      {
+        "name": "keyboard, latest intent, drag cancel and docking",
+        "status": "PASS"
+      },
+      {
+        "name": "zoom, rotation, finite geometry and reachable tools",
+        "status": "PASS"
+      },
+      {
+        "name": "hidden scene, zero-size, motion preference and owner release",
+        "status": "PASS"
+      },
+      {
+        "name": "partial visual construction failure preserves classic actual Hub",
+        "status": "PASS"
+      },
+      {
+        "name": "observer constructor failure leaves no appended canvas",
+        "status": "PASS"
+      },
+      {
+        "name": "peer clock survives Hub teardown and throwing cleanup retires every owned node",
+        "status": "PASS"
+      }
+    ],
+    "counterexamples": [
+      {
+        "kind": "constructor-outside-cleanup",
+        "status": "REJECTED",
+        "assertion": "constructor fallback must remove the already appended canvas\n\n1 !== 0\n",
+        "checks": [
+          {
+            "name": "actual official registration",
+            "status": "PASS"
+          },
+          {
+            "name": "constructor boundary counterexample",
+            "status": "FAIL",
+            "error": "constructor fallback must remove the already appended canvas\n\n1 !== 0\n"
+          }
+        ],
+        "executedOverrides": {
+          "src/ui/golden-spin/hub-motion.ts": "570456536d269d481220077f81e269bdfefe36c1d73739ddd69cc172003a6794"
+        }
+      },
+      {
+        "kind": "frozen-MotionHub-d3f04ee",
+        "status": "REJECTED",
+        "assertion": "restored Hub geometry must fit the resized hidden viewport",
+        "checks": [
+          {
+            "name": "actual official registration",
+            "status": "PASS"
+          },
+          {
+            "name": "frozen hidden geometry counterexample",
+            "status": "FAIL",
+            "error": "restored Hub geometry must fit the resized hidden viewport"
+          }
+        ],
+        "executedOverrides": {
+          "framework/motion-hub/MotionHub.vue": "7cafc9ef5c93caa53c4c3684757e163e48fcdc42a78f051fd039705e90c2b324"
+        }
+      }
+    ]
+  },
+  "runs": [
+    {
+      "kind": "frozen-MotionHub-d3f04ee",
+      "source": "d3f04ee4569082d22d30c43dc066a786de1c605d",
+      "workingTree": true,
+      "executedOverrides": {
+        "framework/motion-hub/MotionHub.vue": "7cafc9ef5c93caa53c4c3684757e163e48fcdc42a78f051fd039705e90c2b324"
+      },
+      "faultInjection": "frozen-MotionHub-d3f04ee",
+      "runtime": {
+        "platform": "darwin",
+        "node": "v24.18.0",
+        "chromium": "153.0.8010.12"
+      },
+      "checks": [
+        {
+          "name": "actual official registration",
+          "status": "PASS"
+        },
+        {
+          "name": "frozen hidden geometry counterexample",
+          "status": "FAIL",
+          "error": "restored Hub geometry must fit the resized hidden viewport"
+        }
+      ],
+      "errors": [],
+      "hashes": {
+        "scripts/preview-evolution-hub.mjs": "92913a1290aed283f0ce8216409359c5ba1f065f4e57b2ee69a2f190acaaa08e",
+        "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
+        "src/ui/golden-spin/hub.css": "d3b29d18941469c23e2dc59fdf9bb0ce5043017808858cbae6b3820d479d195c",
+        "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
+        "tests/evolution-hub-integration.cjs": "2dc1b76fe23340375ad4084f4427f5c2480d0bc38eb2a760a9914dcc050ea642",
+        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746"
+      }
+    },
+    {
+      "kind": "constructor-outside-cleanup",
+      "source": "d3f04ee4569082d22d30c43dc066a786de1c605d",
+      "workingTree": true,
+      "executedOverrides": {
+        "src/ui/golden-spin/hub-motion.ts": "570456536d269d481220077f81e269bdfefe36c1d73739ddd69cc172003a6794"
+      },
+      "faultInjection": "constructor-outside-cleanup",
+      "runtime": {
+        "platform": "darwin",
+        "node": "v24.18.0",
+        "chromium": "153.0.8010.12"
+      },
+      "checks": [
+        {
+          "name": "actual official registration",
+          "status": "PASS"
+        },
+        {
+          "name": "constructor boundary counterexample",
+          "status": "FAIL",
+          "error": "constructor fallback must remove the already appended canvas\n\n1 !== 0\n"
+        }
+      ],
+      "errors": [],
+      "hashes": {
+        "scripts/preview-evolution-hub.mjs": "92913a1290aed283f0ce8216409359c5ba1f065f4e57b2ee69a2f190acaaa08e",
+        "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
+        "src/ui/golden-spin/hub.css": "d3b29d18941469c23e2dc59fdf9bb0ce5043017808858cbae6b3820d479d195c",
+        "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
+        "tests/evolution-hub-integration.cjs": "2dc1b76fe23340375ad4084f4427f5c2480d0bc38eb2a760a9914dcc050ea642",
+        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746"
+      }
+    },
+    {
+      "kind": "current",
+      "source": "d3f04ee4569082d22d30c43dc066a786de1c605d",
+      "workingTree": true,
+      "executedOverrides": {},
+      "faultInjection": null,
+      "runtime": {
+        "platform": "darwin",
+        "node": "v24.18.0",
+        "chromium": "153.0.8010.12"
+      },
+      "checks": [
+        {
+          "name": "actual official registration",
+          "status": "PASS"
+        },
+        {
+          "name": "actual settings action once during movement and protected real settings",
+          "status": "PASS"
+        },
+        {
+          "name": "actual glass preference gates the new shell",
+          "status": "PASS"
+        },
+        {
+          "name": "native whitelist single action, unavailable fallback and third-party view",
+          "status": "PASS"
+        },
+        {
+          "name": "keyboard, latest intent, drag cancel and docking",
+          "status": "PASS"
+        },
+        {
+          "name": "zoom, rotation, finite geometry and reachable tools",
+          "status": "PASS"
+        },
+        {
+          "name": "hidden scene, zero-size, motion preference and owner release",
+          "status": "PASS"
+        },
+        {
+          "name": "partial visual construction failure preserves classic actual Hub",
+          "status": "PASS"
+        },
+        {
+          "name": "observer constructor failure leaves no appended canvas",
+          "status": "PASS"
+        },
+        {
+          "name": "peer clock survives Hub teardown and throwing cleanup retires every owned node",
+          "status": "PASS"
+        }
+      ],
+      "errors": [],
+      "hashes": {
+        "scripts/preview-evolution-hub.mjs": "92913a1290aed283f0ce8216409359c5ba1f065f4e57b2ee69a2f190acaaa08e",
+        "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
+        "src/ui/golden-spin/hub.css": "d3b29d18941469c23e2dc59fdf9bb0ce5043017808858cbae6b3820d479d195c",
+        "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
+        "tests/evolution-hub-integration.cjs": "2dc1b76fe23340375ad4084f4427f5c2480d0bc38eb2a760a9914dcc050ea642",
+        "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+        "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746"
+      }
+    }
+  ]
+}

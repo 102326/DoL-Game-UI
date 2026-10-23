@@ -1,7 +1,7 @@
 // Real owners and components; controlled resources, no game variables or player saves.
 const assert=require('node:assert/strict'),fs=require('node:fs'),{chromium}=require('playwright');
 (async()=>{
- const baseline=process.argv.includes('--baseline'),revision='fbf026997c73ac35b22e3a697a13d74e0686a065',results=[];
+ const baseline=process.argv.includes('--baseline'),revision='fbf026997c73ac35b22e3a697a13d74e0686a065',results=[],hubIntegration={checks:[],counterexamples:[]};
  const old=baseline?require('node:child_process').execFileSync('git',['show',revision+':src/wardrobe/main.ts'],{encoding:'utf8'}):null;
  const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;
  const server=await createServer({configFile:false,plugins:[...(baseline?[{name:'frozen-wardrobe-owner',enforce:'pre',load(id){if(id.replaceAll('\\','/').endsWith('/src/wardrobe/main.ts'))return old}}]:[]),vue(),{name:'owner-fixture',resolveId(id){if(id==='/__owner_vue__.js')return '\0owner-vue'},load(id){if(id==='\0owner-vue')return "export {createApp} from 'vue'"},configureServer(s){s.middlewares.use('/__owners__',(_q,r)=>{r.setHeader('Content-Type','text/html');r.end('<!doctype html><html data-stone-free data-dgu-visualmotion><body><div id="ui-bar"><button id="original">Original</button><div id="overlayButtons"></div></div><div id="passages"></div><header id="weather-heading">Weather</header></body></html>')})}}],server:{host:'127.0.0.1',port:0},logLevel:'error'});
@@ -47,5 +47,10 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),{chromium}=requ
    results.push({kind,...result});assert.ok(result.mounted.observers+result.mounted.listeners>0,kind+' must exercise real resources');assert.deepEqual(result.disposed,{frames:0,timers:0,observers:0,listeners:0},kind+' resources after dispose');assert.deepEqual(result.late,result.disposed,kind+' late callbacks cannot reacquire resources');
    await page.waitForTimeout(60);assert.deepEqual(errors,[],kind);console.log('PASS actual owner resources and late teardown:',kind);await page.close();
   }
- }finally{fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/owners'+(baseline?'-baseline':'')+'.json',JSON.stringify({baseline,revision,results},null,2));await browser?.close();await server.close()}
+  const {verifyHubIntegration}=require('./evolution-hub-integration.cjs');
+  hubIntegration.checks=await verifyHubIntegration(browser);
+  await assert.rejects(()=>verifyHubIntegration(browser,{unsafeConstruction:true}),error=>{if(error.code!=='ERR_ASSERTION'||!/constructor fallback must remove the already appended canvas/.test(error.message))return false;hubIntegration.counterexamples.push({kind:'constructor-outside-cleanup',status:'REJECTED',assertion:error.message,...error.hubIntegration});return true});
+  await assert.rejects(()=>verifyHubIntegration(browser,{oldGeometry:true}),error=>{if(error.code!=='ERR_ASSERTION'||!/restored Hub geometry must fit the resized hidden viewport|finite restored menu origin/.test(error.message))return false;hubIntegration.counterexamples.push({kind:'frozen-MotionHub-d3f04ee',status:'REJECTED',assertion:error.message,...error.hubIntegration});return true});
+  console.log('PASS H01 exact constructor and frozen-geometry counterexamples rejected');
+ }finally{fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/owners'+(baseline?'-baseline':'')+'.json',JSON.stringify({baseline,revision,results,hubIntegration},null,2));await browser?.close();await server.close()}
 })().catch(error=>{console.error(error);process.exitCode=1});
