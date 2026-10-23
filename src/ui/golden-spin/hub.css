@@ -17,3 +17,7 @@ html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin
 
 /* Respect the actual shared preference; opaque fallback keeps text readable. */
 html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-spin-hub] .sf-motion-orbit::before{background:#29292c;backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* Keep wheel, touch and keyboard scrolling without a visible scrollbar rail. */
+html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit{scrollbar-width:none}
+html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit::-webkit-scrollbar{width:0;height:0}

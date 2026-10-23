@@ -13,7 +13,7 @@ export function startFloatingTools(root:Root=window,renderSurface=true){
  if(root.DoLFloatingTools)return root.DoLFloatingTools;
  let p:FloatingPreferences;try{p=readFloatingPreferences(root.localStorage.getItem(floatingKey))}catch{p={...floatingDefaults,tools:[...toolIds]}}
  const state=reactive<FloatingState>({x:0,y:0,intentX:p.x,intentY:p.y,open:false,mode:p.mode,config:false,dragging:false,tools:[],fan:[],menuX:0,menuY:0,menuWidth:280,menuMaxHeight:600,message:''});
- const scope=visualScope();let liveScope=visualScope(),releaseLive=()=>{};
+ const scope=visualScope();let liveScope=scope,releaseLive=()=>{};
  let host:HTMLElement|undefined,app:App|undefined,observer:MutationObserver|undefined,sizeObserver:ResizeObserver|undefined,locked=false,blocked=false,outsideAttached=false,watching=false,masterListening=false;
  let menuPress:{id:number;target:HTMLElement}|undefined,menuSuppressClick=false;
  let gesture:{id:number;button:HTMLElement;startX:number;startY:number;x:number;y:number;timer:(()=>void)|undefined;drag:boolean;abandoned:boolean}|undefined,suppressClick=false;
