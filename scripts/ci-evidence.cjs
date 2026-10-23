@@ -181,7 +181,7 @@ function layoutEvidence(ctx) {
   } catch { return false; }
 }
 
-const requiredPackages = ['StoneFreeHost', 'DoLGameUI', 'ModHubSoftWet', 'MapleBirchSoftWet', 'DolOptimizationSoftWet', 'CheatExtendedSoftWet', 'ReOverfitsSoftWet', 'LyraMouthCompat051213'];
+const requiredPackages = ['StoneFreeHost', 'DoLGameUI', 'ModHubSoftWet', 'MapleBirchSoftWet', 'DolOptimizationSoftWet', 'CheatExtendedSoftWet', 'ReOverfitsSoftWet', 'LyraMouthCompat051213', 'SmartPhoneSoftWet'];
 function packageEvidence(ctx) {
   // Malformed or partial evidence must not prevent the whole-run summary/upload.
   try {
@@ -191,7 +191,7 @@ function packageEvidence(ctx) {
     const expectedBuild={projectId:ctx.identity.projectId,commit:ctx.identity.source.head,runId:ctx.identity.run.githubRunId||ctx.identity.run.id,attempt:ctx.identity.run.attempt};
     if(!sameIdentity(report.buildIdentity,expectedBuild))return false;
     const negatives = report.negativeTests;
-    const requiredNegatives = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'];
+    const requiredNegatives = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_current_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'];
     if (!Array.isArray(report.contracts) || !namesMatch(report.expectedPackages) || !namesMatch(report.contracts.map(p => p.name)) || !report.contracts.every(p => p.status === 'PASS' && /^[a-f0-9]{64}$/.test(p.sha256))) return false;
     if (negatives?.status !== 'PASS' || !Array.isArray(negatives.plan) || !requiredNegatives.every(name => negatives.plan.some(id => typeof id === 'string' && id.endsWith('.' + name))) || new Set(negatives.plan).size !== negatives.plan.length || negatives.testsRun !== negatives.plan.length || ['failures', 'errors', 'skipped', 'expectedFailures', 'unexpectedSuccesses'].some(field => negatives[field] !== 0)) return false;
     if (!Array.isArray(report.builds) || report.builds.length !== 2 || !report.builds.every(b => sameIdentity(b.receipt?.buildIdentity,expectedBuild) && typeof b.receipt?.invocation === 'string' && b.receipt.invocation && sameIdentity(b.receipt.source, ctx.identity.source) && b.receipt.runId === ctx.identity.run.id && Array.isArray(b.receipt.packages) && namesMatch(b.receipt.packages.map(p => p.name)) && Array.isArray(b.snapshots) && b.snapshots.length === requiredPackages.length && new Set(b.snapshots.map(s => s.file)).size === requiredPackages.length)) return false;
@@ -243,7 +243,7 @@ function summarize(ctx, steps = {}) {
     }
     if(stage.id==='packages'){const p=readReport(ctx,'package-contracts.json');if(p?.status==='FAIL'&&p.assertionResult==='FAIL'&&p.failure?.type==='AssertionError')Object.assign(entry,{status:'FAIL',assertionResult:'FAIL',evidenceIntegrity:'INCOMPLETE',reasonCode:'PackageAssertionFailed'});}
     if (stage.id === 'packages' && entry.status === 'PASS' && !packageEvidence(ctx)) {
-      Object.assign(entry, { status: 'UNVERIFIED', reason: 'Eight-package/version/negative/repeated-build evidence missing, stale or incomplete' });
+      Object.assign(entry, { status: 'UNVERIFIED', reason: 'Nine-package/version/negative/repeated-build evidence missing, stale or incomplete' });
     }
     results.push(entry);
   }

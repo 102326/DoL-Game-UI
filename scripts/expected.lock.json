@@ -597,8 +597,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b7f5845d295246a5938a12a5f55a1c29a7fbb81e21b4172d43e46bbfb463f85e",
-      "assertionSites": 84
+      "sourceSha256": "b7991fef98d2c46e9f1ba3c8cd0ccee1f18b871f71f9535e04f4b479b2600968",
+      "assertionSites": 85
     },
     {
       "entry": "tests/ci-gate.test.cjs",
