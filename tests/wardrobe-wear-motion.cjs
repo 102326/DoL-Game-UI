@@ -32,6 +32,25 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
    assert.equal(await page.locator('.kw-wardrobe-press').count(),1,'Repeated wear replaces only its own material');
    await page.evaluate(()=>testWardrobe.destroy());await page.waitForTimeout(30);assert.equal(await page.locator('.kw-wardrobe-press').count(),0);
   }
-  console.log('PASS actual wardrobe wear material follows inventory growth at 80/100/125% zoom; single native callback, repeated wear and teardown');
+  for(const stale of [false,true]){
+   await page.evaluate(async()=>{
+    document.body.style.zoom='1';document.body.innerHTML='<div id="passages"><div class="passage" data-passage="Wardrobe"><div id="wardrobeList"></div></div></div>';
+    const item={index:1,variable:'shirt',name:'shirt',name_cap:'Shirt',integrity:100,type:[]},naked={index:0,name:'naked'};
+    const variables={location:'home',lastWardrobeSlot:'upper',worn:{upper:item,head:naked},wardrobe:{space:20,upper:[],head:[]},wardrobeDefaults:{},options:{images:0}};
+    window.listRefreshes=0;
+    const root={State:{passage:'Wardrobe',variables},setup:{clothes:{upper:[naked,item],head:[naked]}},Wikifier:class{constructor(output,source){const slot=source.match(/\$lastWardrobeSlot="([a-z_]+)"/);if(slot)variables.lastWardrobeSlot=slot[1];if(source.includes('<<wardrobeContents>>'))listRefreshes++}}};
+    const host=(await import('/framework/host.ts')).createHost(window),owner=host.register('wardrobe-release');window.releaseTest={host,root,list:document.querySelector('#wardrobeList')};
+    window.testWardrobe=(await import('/src/wardrobe/main.ts')).startWardrobe(root,{host,owner});
+   });
+   await page.waitForSelector('.dgw-slots button');
+   await page.locator('.dgw-slots button').filter({hasText:'头饰'}).click();
+   assert.equal(await page.evaluate(()=>listRefreshes),0,'closed native category defers its list');
+   await page.evaluate(stale=>{if(stale)releaseTest.host.invalidateScene();else testWardrobe.setEnabled(false)},stale);
+   await page.waitForFunction(()=>!document.querySelector('.dgw-shell'));
+   assert.equal(await page.evaluate(()=>listRefreshes),stale?0:1,'scene abort must not execute native widgets after temporary State is reset; current-scene fallback must refresh');
+   assert.equal(await page.evaluate(()=>releaseTest.list===document.querySelector('#wardrobeList')),true,'both release paths restore the original node');
+   await page.evaluate(()=>{testWardrobe.destroy();releaseTest.host.dispose();localStorage.removeItem('DoLGameUI.wardrobe.v1')});
+  }
+  console.log('PASS actual wardrobe wear material at 80/100/125% zoom, native callback/teardown, and current versus stale-scene native-list release');
  }finally{await browser.close();await server.close()}
 })().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

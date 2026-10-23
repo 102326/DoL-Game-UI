@@ -32,7 +32,8 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
  const outfits=createOutfitLayout(),motion=sourceMotion();scope.own(()=>motion.dispose());
  function isCurrentPassage(s:Session){return s.passage.isConnected&&!s.passage.classList.contains('passage-out')&&s.passage.dataset.passage===(root.SugarCube?.State??root.State)?.passage&&document.querySelector('#passages .passage:not(.passage-out)')===s.passage}
  function flushNative(s:Session,force=false){
-  if(!s.nativeListDirty||!isCurrentPassage(s)||(!force&&!s.nativeOpen))return;
+  // Passage init can reset temporary State before the old DOM is removed.
+  if(!s.nativeListDirty||s.binding&&!s.binding.isCurrent()||!isCurrentPassage(s)||(!force&&!s.nativeOpen))return;
   if(!native.available()||!s.original.querySelector('#wardrobeList'))return;
   try{
    const output=native.refreshList();

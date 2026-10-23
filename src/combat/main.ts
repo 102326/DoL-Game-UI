@@ -92,10 +92,12 @@ function syncDock(s:Session){
   s.dock.querySelector('.dcu-dock-native')!.append(slot);slot.append(node);s.docked.push({node,anchor,slot});
  }
  const r=s.host.getBoundingClientRect();
+ // Top-layer coordinates are viewport pixels, but the dock still inherits game zoom.
+ const dockWidth=s.dock.getBoundingClientRect().width,scale=s.dock.offsetWidth&&dockWidth?dockWidth/s.dock.offsetWidth:1;
  const set=(key:string,value:string)=>{if(s.dock.style.getPropertyValue(key)!==value)s.dock.style.setProperty(key,value)};
- set('--dcu-left',`${r.left}px`);set('--dcu-width',`${r.width}px`);
+ set('--dcu-left',`${r.left/scale}px`);set('--dcu-width',`${r.width/scale}px`);
  const viewport=window.visualViewport;
- set('--dcu-bottom',`${viewport?Math.max(0,innerHeight-viewport.offsetTop-viewport.height):0}px`);
+ set('--dcu-bottom',`${viewport?Math.max(0,innerHeight-viewport.offsetTop-viewport.height)/scale:0}px`);
  const passage=s.list.closest('.passage');
  if(passage){if(!s.spacer){s.spacer=document.createElement('div');s.spacer.className='dcu-bottom-reserve';s.spacer.setAttribute('aria-hidden','true')}if(passage.lastElementChild!==s.spacer)passage.append(s.spacer);const reserve=`${s.dock.offsetHeight+16}px`;if(s.spacer.style.height!==reserve)s.spacer.style.height=reserve}
 }
