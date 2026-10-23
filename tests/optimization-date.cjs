@@ -33,7 +33,7 @@ const bad='(1/1/NaN aN:aN undefined)',good='(2022/9/4 07:00 星期日)';
    await page.addScriptTag({content:adapter});
    await page.waitForFunction(()=>DolOptimizationSoftWet.getDiagnostics().match==='full');
   }
-  const waitIdle=()=>page.waitForFunction(()=>DolOptimizationSoftWet.getDateDiagnostics().pending===0);
+  const waitIdle=()=>page.waitForFunction(()=>reads===1&&DolOptimizationSoftWet.getDateDiagnostics().pending===0);
   const settle=()=>page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await setup();await page.waitForFunction(expected=>dateNode.textContent===expected,good);
   assert.equal(await page.evaluate(()=>reads),1,'Only the malformed date reads its saved history');

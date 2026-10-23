@@ -3,10 +3,12 @@ import {sourceMotion} from '../../src/ui/source-motion';
 import {settingsWeather} from '../../src/ui/weather/settings';
 type WeatherKind='clear'|'cloud'|'rain'|'snow'|'storm'|'fog'|'unknown';
 type RainLevel='normal'|'light'|'heavy'|'severe';
-type GameWeather={name?:unknown;precipitation?:unknown;precipitationIntensity?:unknown;overcast?:unknown;fog?:unknown;enableLightning?:unknown;dayState?:unknown};
+export type WeatherSpecial='none'|'blood-moon'|'tentacle'|'heat'|'cold';
+type GameWeather={name?:unknown;precipitation?:unknown;precipitationIntensity?:unknown;overcast?:unknown;fog?:unknown;enableLightning?:unknown;dayState?:unknown;bloodMoon?:unknown;temperature?:unknown;Temperature?:{isExtreme?:()=>unknown}};
+type WeatherHost={Weather?:GameWeather;SugarCube?:{State?:{variables?:{location?:unknown}}}};
 
 // Read only DoL's public weather getters; missing/throwing providers remain neutral.
-export function readGameWeather(root:{Weather?:GameWeather}=window as Window & {Weather?:GameWeather}):{kind:WeatherKind;night:boolean;rain:RainLevel}{
+export function readGameWeather(root:WeatherHost=window as Window & WeatherHost):{kind:WeatherKind;night:boolean;rain:RainLevel;special?:WeatherSpecial}{
  try{
   const w=root.Weather;if(!w)return{kind:'unknown',night:false,rain:'normal'};
   const {name,precipitation,overcast,fog,enableLightning,dayState,precipitationIntensity:intensity}=w,night=dayState==='night';
@@ -19,7 +21,14 @@ export function readGameWeather(root:{Weather?:GameWeather}=window as Window & {
    else if(name==='heavyClouds'||typeof overcast==='number'&&Number.isFinite(overcast)&&overcast>.5)kind='cloud';
    else if(name==='clear'||name==='lightClouds')kind='clear';
   }
-  return{kind,night,rain};
+  let special:WeatherSpecial='none';
+  // Native special skies are independent of precipitation; a blood moon can still rain.
+  try{
+   if(root.SugarCube?.State?.variables?.location==='tentworld')special='tentacle';
+   else if(w.bloodMoon===true)special='blood-moon';
+   else if(kind!=='unknown'&&w.Temperature?.isExtreme?.()===true&&typeof w.temperature==='number'&&Number.isFinite(w.temperature))special=w.temperature<=-18?'cold':w.temperature>30?'heat':'none';
+  }catch{/* An unavailable special getter must not discard otherwise valid weather. */}
+  return{kind,night,rain,special};
  }catch{return{kind:'unknown',night:false,rain:'normal'}}
 }
 
@@ -32,8 +41,8 @@ export function headerWeather(){
  function clear(){clean([...surfaces.keys()].map(key=>()=>remove(key)))}
  const showing=(s:Surface)=>visible(s.header)&&(!s.renderer||s.parent.clientWidth>0&&s.parent.clientHeight>0);
  function paint(s:Surface,state:ReturnType<typeof readGameWeather>){
-  const key=state.kind+':'+state.night+':'+state.rain;if(s.key===key)return;s.key=key;const revision=++s.revision,opacity=parseFloat(getComputedStyle(s.node).opacity);motion.cancel(s.node);
-  const apply=()=>{if(!scope.active()||s.revision!==revision||!s.node.isConnected)return;s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.toggleAttribute('data-night',state.night);if(state.kind!=='unknown')motion.animate(s.node,[{opacity:0},{opacity:parseFloat(getComputedStyle(s.node).opacity)}],480)};
+  const key=state.kind+':'+state.night+':'+state.rain+':'+state.special;if(s.key===key)return;s.key=key;const revision=++s.revision,opacity=parseFloat(getComputedStyle(s.node).opacity);motion.cancel(s.node);
+  const apply=()=>{if(!scope.active()||s.revision!==revision||!s.node.isConnected)return;s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.dataset.special=state.special??'none';s.node.toggleAttribute('data-night',state.night);if(state.kind!=='unknown'||state.special&&state.special!=='none')motion.animate(s.node,[{opacity:0},{opacity:parseFloat(getComputedStyle(s.node).opacity)}],480)};
   // Retire the old paint before changing it; never keep two particle systems alive.
   const exit=s.node.dataset.weather&&s.node.dataset.weather!=='unknown'?motion.animate(s.node,[{opacity},{opacity:0}],180):undefined;
   if(exit)void exit.finished.then(apply,apply);else apply();
@@ -45,7 +54,7 @@ export function headerWeather(){
     // A still-open settings owner can regain geometry without a new navigation intent.
     if(s.renderer&&s.header.isConnected&&s.parent.isConnected&&!s.header.closest('[data-sf-leaving],dialog:not([open])')){if(!s.suspended){s.suspended=true;s.renderer.pause(true)}continue}
     remove(key);continue;
-   }if(s.renderer){if(s.suspended){s.suspended=false;s.renderer.pause(false)}s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.renderer.refresh()}else if(!s.static)paint(s,state)}
+   }if(s.renderer){if(s.suspended){s.suspended=false;s.renderer.pause(false)}s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.dataset.special=state.special??'none';s.renderer.refresh()}else if(!s.static)paint(s,state)}
   // One shared low-frequency read, only while an owned header and document are visible.
   if([...surfaces.values()].some(showing)&&!document.hidden)stopTimer=scope.timeout(refresh,[...surfaces.values()].some(s=>s.renderer)?500:2000);
  }
@@ -69,7 +78,7 @@ export function headerWeather(){
      catch(error){remove(key);throw error}
     }return;
    }
-   const node=document.createElement('span');node.className='kw-heading-weather';node.setAttribute('aria-hidden','true');const lightning=document.createElement('span');lightning.className='kw-weather-lightning';node.append(lightning);
+   const node=document.createElement('span');node.className='kw-heading-weather';node.setAttribute('aria-hidden','true');const lightning=document.createElement('span');lightning.className='kw-weather-lightning';const atmosphere=document.createElement('span');atmosphere.className='kw-weather-atmosphere';node.append(lightning,atmosphere);
    // Sample once per window: bounded, staggered droplets, with no per-frame game reads.
    for(let i=0;i<18;i++){
     const drop=document.createElement('i');drop.className='kw-glass-drop';

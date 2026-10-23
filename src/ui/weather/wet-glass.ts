@@ -5,8 +5,8 @@ import showerUrl from '../../theme/kw-weather-shower.svg';
 import forceUrl from './shower-force.svg';
 import {frostSurface} from './frost';
 import {scatteredShower} from './scattered-shower';
+import type {WeatherFrame as Frame} from './surface';
 type Box={x:number;y:number;width:number;height:number};
-type Frame={wet:number;snow:number;light:number;night:number;time:number;width:number;height:number;dpr:number;intensity:number;kind:string};
 type FrostFactory=(...args:Parameters<typeof frostSurface>)=>ReturnType<typeof frostSurface>;
 let instance=0;
 /** Native SVG displacement reads the browser's backdrop. No DOM capture or substitute texture. */
@@ -97,6 +97,17 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   const dt=Math.min(.05,Math.max(0,s.time-lastTime));lastTime=s.time;
   const humidity=s.wet*(1-s.snow*.8);rainEnergy=withForce?1.05+s.intensity*.85:1;rainAmount=climate?Math.min(2,s.intensity*(scatter?.8:withForce?1.4:1)):1;model.step(dt,humidity,rainAmount,rainEnergy);
   const state=model.snapshot();active=[];visibleFlow=0;ctx.clearRect(0,0,width,height);
+  const special=s.special??'none',amount=s.specialAmount??0;
+  if(special!=='none'&&amount>.002){
+   const color=({'blood-moon':'171,45,51',tentacle:'125,68,175',heat:'211,139,65',cold:'133,189,215'} as const)[special];
+   const x=width*(.76+Math.sin(s.time*.12)*.035),y=Math.min(90,height*.16),radius=Math.min(width*.3,height*.34);
+   const halo=ctx.createRadialGradient(x,y,0,x,y,radius);halo.addColorStop(0,`rgba(${color},${amount*.38})`);halo.addColorStop(.45,`rgba(${color},${amount*.16})`);halo.addColorStop(1,'transparent');ctx.fillStyle=halo;ctx.fillRect(0,0,width,height);
+   if(special==='blood-moon'){
+    const r=Math.min(28,width*.035),moon=ctx.createRadialGradient(x-r*.3,y-r*.3,1,x,y,r);moon.addColorStop(0,`rgba(224,132,118,${amount*.7})`);moon.addColorStop(.7,`rgba(140,40,47,${amount*.65})`);moon.addColorStop(1,`rgba(57,13,24,${amount*.25})`);ctx.fillStyle=moon;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+   }
+   const shadow=ctx.createRadialGradient(width*(.55+Math.sin(s.time*.17)*.12),height*.16,0,width*.55,height*.16,width*.48);shadow.addColorStop(0,`rgba(4,6,12,${amount*(.14+Math.sin(s.time*.3)*.05)})`);shadow.addColorStop(1,'transparent');ctx.fillStyle=shadow;ctx.fillRect(0,0,width,height*.7);
+   for(const p of frameProtection)ctx.clearRect(p.x-7,p.y-7,p.width+14,p.height+14);
+  }
   // Reuse the owned 3.x shower artwork and down-right tile motion. Draw first,
   // then erase the union of protected rectangles before painting the existing glass.
   // No second canvas, timer or RAF; pause/hidden/reduced motion share the original clock.

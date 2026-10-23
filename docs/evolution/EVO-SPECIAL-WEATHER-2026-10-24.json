@@ -1,0 +1,214 @@
+{
+  "scope": "Read-only native special weather and atmosphere; research only",
+  "package": {
+    "name": "DoLGameUI",
+    "version": "3.0.4",
+    "file": "DoLGameUI-3.0.4.mod.zip",
+    "sha256": "9e749b263cb6216cbcee942320c91c95c9047d7b05581dbcdbbdbd0a10a0956e",
+    "bytes": 279944,
+    "members": {
+      "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+      "README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+      "THIRD-PARTY-NOTICES.txt": "b59cbe1add88d81375c867e58b3a2af068adae49e3aecb241eb99ff422634ce3",
+      "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+      "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+      "boot.json": "74f40cfaa65dc641e3f87d1c381296df18f1b6c17010be37f55067b78f90c3f8",
+      "docs/OPTIONAL_ADAPTERS.md": "7ba3a90c029c5f41b5866f934c1fc70ebc8b87fa38b929d6614e1431759dbbc6",
+      "docs/RELEASE_3.0.4.md": "3e0d5eaa316a14bd39b55571b92300e7c92a534c3ce98067816befcec606f88f",
+      "docs/UI_SETTINGS.md": "aadfaa280925e245f0f0d19aeac2caeb3a205bd907f16a457d495d100f6e2d4f",
+      "index.js": "078ed640853a5ce76d0d57e608206a5733546eb8d59776a189c50b97d7b99a4e",
+      "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+      "style.css": "54bc0e2a2eac5a9dbdb42874527a15ddb8461efe9dddd315395e280c3c438b1e",
+      "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+      "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+      "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+      "twee/patch-resize.twee": "4d604afceeb23ee0d17733fe248f24736ed01b1284be467daab6039223305da3",
+      "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+      "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+    }
+  },
+  "game": {
+    "version": "0.5.12.13",
+    "nativeTypes": [
+      {
+        "name": "clear",
+        "precipitationIntensity": 0
+      },
+      {
+        "name": "lightClouds",
+        "precipitationIntensity": 0
+      },
+      {
+        "name": "heavyClouds",
+        "precipitationIntensity": 0
+      },
+      {
+        "name": "lightPrecipitation",
+        "precipitationIntensity": 1.3
+      },
+      {
+        "name": "heavyPrecipitation",
+        "precipitationIntensity": 1.6
+      },
+      {
+        "name": "storm",
+        "precipitationIntensity": 2
+      },
+      {
+        "name": "thunderstorm",
+        "precipitationIntensity": 3.5
+      }
+    ],
+    "exceptions": [
+      {
+        "weatherType": "heavyPrecipitation",
+        "temperature": -5
+      },
+      {
+        "weatherType": "clear"
+      }
+    ],
+    "detectedSpecials": [
+      "Weather.bloodMoon",
+      "location=tentworld",
+      "Temperature.isExtreme() and temperature>30 or <=-18"
+    ]
+  },
+  "device": {
+    "model": "M367FC",
+    "android": 17,
+    "webview": 155,
+    "cases": [
+      {
+        "kind": "blood-moon",
+        "special": "blood-moon",
+        "weather": "storm",
+        "canvasCount": 1,
+        "closeHit": true,
+        "pointer": "none",
+        "scrollable": true,
+        "errors": 0
+      },
+      {
+        "kind": "heat",
+        "special": "heat",
+        "weather": "storm",
+        "canvasCount": 1,
+        "closeHit": true,
+        "pointer": "none",
+        "scrollable": true,
+        "errors": 0
+      },
+      {
+        "kind": "cold",
+        "special": "cold",
+        "weather": "storm",
+        "canvasCount": 1,
+        "closeHit": true,
+        "pointer": "none",
+        "scrollable": true,
+        "errors": 0
+      }
+    ],
+    "weatherBindingRestored": true,
+    "liveStateAndPreferencesUnchanged": true,
+    "scope": "Controlled read-only weather binding for rendering; no forced date/time, location or save mutation. Tentworld is covered by controlled browser source only."
+  },
+  "browser": {
+    "platform": "win32",
+    "browser": "157.0.4341.10",
+    "states": [
+      {
+        "special": "blood-moon",
+        "target": {
+          "kind": "clear",
+          "night": true,
+          "rain": "normal",
+          "special": "blood-moon"
+        },
+        "specialAmount": 1,
+        "activeFrames": 0
+      },
+      {
+        "special": "tentacle",
+        "target": {
+          "kind": "clear",
+          "night": true,
+          "rain": "normal",
+          "special": "tentacle"
+        },
+        "specialAmount": 1,
+        "activeFrames": 0
+      },
+      {
+        "special": "heat",
+        "target": {
+          "kind": "clear",
+          "night": true,
+          "rain": "normal",
+          "special": "heat"
+        },
+        "specialAmount": 1,
+        "activeFrames": 0
+      },
+      {
+        "special": "cold",
+        "target": {
+          "kind": "clear",
+          "night": true,
+          "rain": "normal",
+          "special": "cold"
+        },
+        "specialAmount": 1,
+        "activeFrames": 0
+      }
+    ],
+    "errors": []
+  },
+  "localTimingComparison": {
+    "before": {
+      "before": true,
+      "pass": false,
+      "wallMs": 24135,
+      "state": {
+        "wet": 0.9999999999999948,
+        "intensity": 0.32000000000000073,
+        "time": 24.15359999999771,
+        "frames": 6712,
+        "paintMs": 1.2000000029802322,
+        "activeFrames": 1,
+        "target": {
+          "kind": "rain",
+          "night": false,
+          "rain": "light"
+        }
+      }
+    },
+    "after": {
+      "before": false,
+      "pass": false,
+      "wallMs": 23845,
+      "state": {
+        "wet": 0.9999999999999947,
+        "intensity": 0.3200000000000008,
+        "time": 23.871999999996323,
+        "frames": 6643,
+        "paintMs": 1.0999999977648258,
+        "activeFrames": 1,
+        "target": {
+          "kind": "rain",
+          "night": false,
+          "rain": "light",
+          "special": "none"
+        }
+      }
+    }
+  },
+  "notValidated": [
+    "Naturally reached special events on device",
+    "Tentworld event on device",
+    "Physical iOS/phone",
+    "New long-duration performance matrix"
+  ],
+  "publication": "No main, tag, release or public asset replacement"
+}

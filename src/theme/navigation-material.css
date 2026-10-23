@@ -57,6 +57,17 @@ html[data-stone-free][data-dol-midnight] .kw-heading-weather:not([data-weather=u
 .kw-heading-weather[data-weather=snow]::after{background:0 0/900px 520px repeat url('./kw-weather-snow-far.svg');--kw-rain-distance:520px;opacity:.6;animation:kw-weather-snow 21s linear infinite}
 .kw-heading-weather[data-weather=fog]::before{inset:8% -12% 25%;background:0 0/100% 100% no-repeat url('./kw-weather-mist.svg');opacity:.85;animation:kw-weather-fog 24s ease-in-out infinite alternate}
 .kw-heading-weather[data-weather=fog]::after{inset:22% -18% 6%;background:0 0/100% 100% no-repeat url('./kw-weather-mist.svg');opacity:.6;animation:kw-weather-fog 33s ease-in-out infinite alternate-reverse}
+.kw-weather-atmosphere{display:none;position:absolute;inset:0;--kw-atmosphere:171,45,51}
+html[data-stone-free][data-dol-midnight] .kw-heading-weather[data-special]:not([data-special=none]){display:block}
+.kw-heading-weather[data-special]:not([data-special=none])>.kw-weather-atmosphere{display:block}
+.kw-heading-weather[data-special=tentacle]>.kw-weather-atmosphere{--kw-atmosphere:125,68,175}
+.kw-heading-weather[data-special=heat]>.kw-weather-atmosphere{--kw-atmosphere:211,139,65}
+.kw-heading-weather[data-special=cold]>.kw-weather-atmosphere{--kw-atmosphere:133,189,215}
+.kw-weather-atmosphere::before,.kw-weather-atmosphere::after{content:'';position:absolute;inset:0;pointer-events:none}
+.kw-weather-atmosphere::before{background:radial-gradient(ellipse 36% 34% at 78% 16%,rgba(var(--kw-atmosphere),.4),rgba(var(--kw-atmosphere),.16) 46%,transparent 85%);animation:kw-weather-sun 18s ease-in-out infinite alternate}
+.kw-heading-weather[data-special=blood-moon]>.kw-weather-atmosphere::before{background:radial-gradient(circle at 78% 16%,#df847780 0 1.6%,#8c282f88 2.1%,#390d1840 2.5%,transparent 2.8%),radial-gradient(ellipse 36% 34% at 78% 16%,#ab2d3366,#ab2d3329 46%,transparent 85%)}
+.kw-heading-weather:is([data-special=blood-moon],[data-special=tentacle])[data-weather=clear]::before{background:none}
+.kw-weather-atmosphere::after{background:radial-gradient(ellipse 36% 28% at 56% 14%,#04060c66,transparent 80%);animation:kw-weather-cloud-shadow 17s ease-in-out infinite alternate}
 @keyframes kw-weather-shower{to{background-position:var(--kw-shower-width) calc(var(--kw-shower-height)*3),0 0}}
 @keyframes kw-weather-drop{0%{opacity:0;transform:translateY(0) scale(.4)}14%{opacity:.6;transform:translateY(0) scale(.7)}48%{opacity:.8;transform:translateY(0) scale(1)}58%{opacity:.9;transform:translateY(0) scale(1.12)}72%{opacity:.8;transform:translateY(calc(var(--kw-travel)*.18)) scale(.95,1.08)}91%{opacity:.45;transform:translateY(var(--kw-travel)) scale(.8,1.12)}100%{opacity:0;transform:translateY(var(--kw-travel)) scale(.7,1)}}
 @keyframes kw-weather-trace{0%,58%,100%{opacity:0;transform:scaleY(0)}72%{opacity:.45;transform:scaleY(.7)}85%{opacity:.3;transform:scaleY(1)}95%{opacity:0;transform:scaleY(1)}}
