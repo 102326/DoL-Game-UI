@@ -56,7 +56,7 @@ export function sphereHub(root:HTMLElement) {
   renders++;
   const moving=!!timeline,q=state.q;
   root.dataset.spinPhase=moving?'moving':q===1?'open':'closed';
-  set(orbit,'visibility',q>0||target===1?'visible':'hidden');
+  set(orbit,'visibility',q>0?'visible':'hidden');
   set(orbit,'--spin-shell',String(Math.max(0,(q-.25)/.75)));
   for(const [i,node]of nodes.entries()){
    const t=Math.max(0,Math.min(1,(q-i*.035)/(1-i*.035)));
@@ -90,7 +90,8 @@ export function sphereHub(root:HTMLElement) {
   if(next)sphere.play();else{press=undefined;sphere.recover()}
   if(!next&&orbit.contains(document.activeElement))ball.focus({preventScroll:true});
   timeline=gsap.timeline({onUpdate:render,onComplete(){timeline=undefined;state.q=next;render()}});
-  timeline.to(state,{q:next,duration:Math.max(.2,Math.abs(next-state.q)*(next?.24:.65)),ease:next?'power3.out':'power2.inOut'});
+  // A fresh opening leaves half a second for the sphere; reversals keep their current pose.
+  timeline.to(state,{q:next,duration:Math.max(.2,Math.abs(next-state.q)*(next?.24:.65)),ease:next?'power3.out':'power2.inOut'},next&&state.q===0?.5:0);
   render();holdInput();
  }
  function relayout(){frame=0;if(dead)return;measure();render();holdInput()}

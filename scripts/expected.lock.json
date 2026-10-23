@@ -435,7 +435,8 @@
       "H4 zero-root scene replacement retains finite geometry and restores native input"
     ],
     "golden-spin-hub": [
-      "real tools unfold immediately alongside sphere charge and remain hittable in their native layout",
+      "sphere charges for half a second before real tools unfold in their native layout",
+      "closing during charge cancels delayed reveal and leaves no visible menu",
       "real tool detail opens once and returns to the menu; Escape collects it",
       "rapid reversals retain the current menu progress and sphere angle",
       "left/right docking, narrow touch, resize and reduced motion preserve interaction",
@@ -763,6 +764,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "hub:menu background fades with its owned shell and disappears on close",
+          "minimumAssertions": 1
+        },
+        {
           "id": "hub:preview style isolation and scrollbar-free scrolling",
           "minimumAssertions": 1
         },
@@ -803,8 +808,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "0b19768a8c2b673ec2a35048f41d7e3d19e2e669304771035d4a06a0b3376183",
-      "assertionSites": 107,
+      "sourceSha256": "07636ce62d741bb8911c0ab0f57c36c766f979c8933d4ab2f97d8d201af7bff1",
+      "assertionSites": 115,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1238,7 +1243,11 @@
       "granularity": "named",
       "cases": [
         {
-          "id": "real tools unfold immediately alongside sphere charge and remain hittable in their native layout",
+          "id": "sphere charges for half a second before real tools unfold in their native layout",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "closing during charge cancels delayed reveal and leaves no visible menu",
           "minimumAssertions": 1
         },
         {
@@ -1262,8 +1271,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "f0a43ef9bbc177d8c6fd4c518d0eabf67d11e3422b1adc70865559e5d5250a47",
-      "assertionSites": 22,
+      "sourceSha256": "2593df47372538f0c29cb77c89f0111925e6247e64f7737e89cdea0e37ee8ba6",
+      "assertionSites": 26,
       "rendererContexts": [
         "sphere:2d"
       ]

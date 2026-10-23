@@ -16,12 +16,18 @@ const reverseHub=require('./hub-reversal-probe.cjs');
   const inspect=()=>p.evaluate(()=>goldenSpinLab.controller.inspect());
   const open=()=>p.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='open');
   const closed=()=>p.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='closed');
-  await check('real tools unfold immediately alongside sphere charge and remain hittable in their native layout',async()=>{
-   await ball.click();assert.equal(await ball.evaluate(n=>getComputedStyle(n).outlineStyle),'none','pointer activation must not show the old rectangular focus frame');await p.waitForTimeout(120);const charge=await inspect();assert.ok(charge.q>0,'menu must not wait for sphere charge');assert.ok(charge.sphere.speed>10);
-   assert.notEqual(await p.locator('.sf-motion-petal').first().evaluate(n=>getComputedStyle(n).pointerEvents),'none','visible tools must already accept input');
+  await check('sphere charges for half a second before real tools unfold in their native layout',async()=>{
+   await p.evaluate(()=>{window.chargeSamples=new Promise(resolve=>document.querySelector('.sf-motion-ball').addEventListener('click',async()=>{await new Promise(r=>setTimeout(r,120));const charge=goldenSpinLab.controller.inspect();await new Promise(r=>setTimeout(r,280));resolve({charge,beforeReveal:goldenSpinLab.controller.inspect(),pointer:getComputedStyle(document.querySelector('.sf-motion-petal')).pointerEvents})},{once:true}))});
+   await ball.click();assert.equal(await ball.evaluate(n=>getComputedStyle(n).outlineStyle),'none','pointer activation must not show the old rectangular focus frame');const samples=await p.evaluate(()=>chargeSamples);
+   assert.equal(samples.charge.q,0,'menu must leave time for the sphere effect');assert.ok(samples.charge.sphere.speed>10);assert.equal(samples.beforeReveal.q,0);assert.equal(samples.pointer,'none','waiting tools must not accept input');
    await open();assert.equal((await inspect()).nodes,5);assert.equal(await nav.getAttribute('aria-hidden'),'false');
    for(const node of await p.locator('.sf-motion-petal').all())assert.ok(await node.evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}));
    await p.screenshot({path:path.join(out,'desktop-open.png')});
+  });
+  await check('closing during charge cancels delayed reveal and leaves no visible menu',async()=>{
+   await ball.click();await closed();await ball.click();await p.waitForTimeout(100);await ball.click();await closed();await p.waitForTimeout(800);
+   assert.equal((await inspect()).q,0);assert.equal(await nav.evaluate(n=>getComputedStyle(n).visibility),'hidden');assert.equal(await nav.getAttribute('inert'),'');
+   await ball.click();await open();
   });
   await check('real tool detail opens once and returns to the menu; Escape collects it',async()=>{
    await p.locator('[data-motion-view$="interface-settings"]').click();await closed();
