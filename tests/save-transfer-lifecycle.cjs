@@ -10,4 +10,4 @@ const {chromium}=require('playwright'),{buildSync}=require('esbuild'),assert=req
  await p.evaluate(()=>{window.transfer=Transfer.createSaveTransfer();window.original=document.querySelector('#source').innerHTML;window.input=document.querySelector('#saveDataInput');input.value='export fixture';transfer.refresh(true)});
  assert.equal(await p.locator('.dgs-transfer').count(),1,'Original export overlay is recognised');await p.evaluate(()=>transfer.release());assert.equal(await p.locator('#source').innerHTML(),await p.evaluate(()=>original));assert.equal(await p.evaluate(()=>input.value),'export fixture');
  console.log('PASS transfer exact rollback, values, removed control stays removed, replaced overlay retained');
- }finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});
+ }finally{await b.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

@@ -50,4 +50,4 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  await p.evaluate(()=>{document.querySelector('#customOverlay').classList.add('hidden');document.querySelector('.passage').dataset.passage='Unknown Mod';scene()});await p.waitForTimeout(80);assert.equal(await p.locator('[data-kw-native]').count(),0);
  await p.evaluate(()=>stopMotion());assert.equal(await p.locator('.kw-window-stage,.kw-moving-focus,.kw-context-plane,[data-kw-native],[data-kw-entry],[data-kw-nav-control],.kw-native-orbit,.kw-heading-nav,.kw-heading-weather').count(),0);assert.deepEqual(errors,[]);
  console.log('PASS one native dispatch, reviewed Bedroom/sidebar ownership, center/rise stage candidates without source flight, original hitbox, cheats/options native forms and known wrapped tab, interrupted close, master/reduced gates and teardown');
-}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
+}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

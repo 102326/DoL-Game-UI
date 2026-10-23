@@ -70,4 +70,4 @@ const {chromium}=require('playwright'),{waitSettings,waitSettingsClosed}=require
   fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({checks,errors,scope:'Mac/CI Chromium controlled real settings; simulated native overlay; not game/device acceptance',visualAcceptance:'window batch pending; sphere accepted by owner'},null,2));
  }catch(e){if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:e.stack,checks,errors},null,2));throw e}
  finally{await browser.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

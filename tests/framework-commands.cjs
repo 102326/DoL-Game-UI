@@ -95,4 +95,4 @@ const checks=[],check=async(name,fn)=>{await fn();checks.push(name);console.log(
   });
   fs.writeFileSync(path.join(dir,'result.json'),JSON.stringify({status:'passed',checks,limits:['Browser fixture, not physical touch or native gameplay','Command returned means provider witness available, not universal business success']},null,2));console.log(dir);
  } finally {await browser.close()}
-})().catch(e=>{fs.writeFileSync(path.join(dir,'failure.json'),JSON.stringify({status:'failed',checks,error:e.message},null,2));console.error(e);process.exitCode=1});
+})().catch(e=>{fs.writeFileSync(path.join(dir,'failure.json'),JSON.stringify({status:'failed',checks,error:e.message},null,2));require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

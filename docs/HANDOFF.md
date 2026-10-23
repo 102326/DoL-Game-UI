@@ -6,15 +6,19 @@
 
 - **EVO-H01-PREVIEW / EVO-G1-COEX**：负责人复看修复后预览暂未发现问题，允许继续。基于afc78bb完成预览样式隔离、隐藏轨道且保留滚动，旧main反例进入现有owner入口。新增手动共存诊断：桌面/窄屏各12轮和15秒稳定雨天，隐藏恢复、经典Floating实际设置入口及最终所有作用域归零；去除Floating未挂载时的多余空作用域。13入口、11组当前、4项精确拒绝、类型/构建及手动检查范围见[报告](evolution/EVO-G1-COEX.md)。旧Edge/game夹具用例未执行；短时观测不是长期性能或G1/G2/G3通过。最终提交、同步状态和本批两套Actions见Git及#22；旧afc媒体不重标身份。
 
+- CI V1.1 独立验收整改见 [F1–F3记录](audits/MOODY-CI-V1.1-ACCEPTANCE.md)：终止收据优先级、研究合同有效断言及 Runtime 各分组 pageerror 均有精确反例与健康对照；保留 timeout/cancel 分类和原五类源码反例。Catalog 1.1.1，匿名提交；研发 H01 更新保留。最终新 SHA/两套实际 CI/附件复验见 PR #23 与 #22 专项记录；旧 bc7b35e 成功不能替代新候选。
+
 - 最新 [EVO-INT-H01](evolution/EVO-INT-HUB01.md)，输入 `d3f04ee`：实际官方Hub与原型共用认可球体/240ms展开/650ms收束及0.65倍球体；原研究实现退出为薄导出。新增十组实际入口检查和构造边界/旧几何/旧终态滚动三项精确拒绝，处理隐藏期间resize零尺寸/越界过渡、玻璃偏好、矮屏终态滚动和异常清理。无实机工程及剩余负责人/游戏/设备验收见[收口清单](evolution/EVO-NONDEVICE-CLOSEOUT.md)。本机macOS/Node24.18/Chromium153，显式python3；原124布局计划0失败、157.83秒，八包双轮及负例通过；最终提交、已推送状态和两套Actions见#22及本机Git。本文件不自行证明clean或CI通过，不合并/发布。
 
 - 最新 [EVO-INT-W01 设置天气接线](evolution/EVO-INT-WEATHER01.md)，输入 `6f7d4d9`：实际 nativeNavigation/headerWeather 设置入口启用 C5.2/R10；保留 S01 底材/开关/分类，旧设置天气层退出，原生窗口仍保留现行天气。共用模型/时钟由 visualScope 管理，只有一次共享天气轮询；无逐帧游戏读取。九组正例及精确初始化顺序反例通过，处理保护区首次测量错位、持续隐藏/inert恢复和异常清理隔离。类型/Framework、原生天气、13入口资源、C5.2/R10原型回归及八包两轮构建/负例通过。报告与实际源码原速媒体见链接；最终精确提交和两套CI见#22。本片不是完整游戏/设备或G1/G2/G3验收，未合并/发布。
+- CI 专项独立修复见 [Moody CI V1](audits/MOODY-CI-V1.md)：小鸥报告已核对；修复标准必要附件与最终状态断链、研究必需报告/身份/case校验、旧Core测试身份与公开打包入口。新增三组Runtime合同及精确反例；研究/标准实际PR触发保持原检查名。正式版本、Evolution主体及设备/G1/G2/G3状态不变。精确最终提交和CI/PR身份见专项交付及#22；此前34f4217的两次成功仍只证明原清单范围。
+- CI 专项已由另一聊天通过 [PR #23](https://github.com/102326/DoL-Game-UI/pull/23) 合入研发分支799b07d，本批安全整合并保留；后文e403e11为历史阶段。e403e11 的实际PR标准CI39892788494已成功，下载附件19 unit/35 browser与79项hash完整；研究首轮两项新validator字段误配已按真实报告纠正，不能把被阻断项记通过。后半22项在Mac分段验证，修复临时路径正例及runoff采样竞态，未修改天气呈现或放宽产品断言。最终候选的标准/研究/deep提交与触发身份另见PR/#22，旧结果不代替新提交验收。
 
 - 最新 [EVO-INT-S01 设置 V2.3 研发接线](evolution/EVO-INT-SETTINGS01.md)，输入 `34f4217`：已认可100/80ms简单开关与620ms分类帧进入实际设置源码；退出旧开窗代理/独立材质层，修复反向透明度跳变、关闭时分类未取消、窗口重建后暂停动画未释放。当前5组受控检查通过，旧行为4拒绝/1通过（含1项尚未迁移的时序目标，不混称4个缺陷）。本机macOS/Node24.18/Chromium153；类型/合同、设置/历史/资源/动效、八包两轮构建及负例通过，命令和限制见报告。精确提交、同步与两套CI见#22和本机Git。设置已在研发实际入口Integrated；不是main/Release或全局G1/G2/G3通过。
 
 - 最新[EVO-A2/A3消费者迁移](evolution/EVO-A2-A3-CONSUMERS.md)，输入 `fbf0269`：按负责人步骤1、2推进设置/侧栏、原生窗口/天气/Hub、导航面板、商店/衣柜/战斗/存档和自有兼容装饰；旧帧、定时器与重复清理路径当批退出，保留六类明确原生/共用/退役调度入口。13个实际入口资源归零、旧衣柜排队帧反例和防回退检查通过；最终精确提交及CI见#22。该消费者批次尚未推进步骤3；设置首片接线现由顶部S01完成，仍未自判G1通过。
 - 本批标准CI首轮39834323662在兼容包构建被阻断：原type-only导入门槛拒绝了共用资源原语。构建器现只额外允许确切的visual-scope模块，所有其它直接/传递模块仍拒绝；新增Runtime/其它模块精确拒绝反例，八包本地构建及合同检查通过。该次汇总/gate失败是连锁结果，未执行的浏览器阶段不计通过；最终新CI见#22。
-- 已知旧问题：补充ui-runtime检查在运行时版本2.7.0／包版本3.0.4断言失败，输入提交已存在；本批未改src/main.ts或放宽断言，该补充套件不能记全通过。
+- 输入34f4217的历史问题：补充ui-runtime曾在Core 2.7.0／正式包3.0.4身份断言失败；S01 UI批次未改该合同，CI专项现已按实际加载入口修正并执行后半检查。旧失败保留在专项报告，不再把它列为当前未解决版本缺陷。
 - 前批[EVO-A2共享动效与设置布局资源迁移](evolution/EVO-A2-SETTINGS-RESOURCES.md)，输入 `9893644`：sourceMotion滚动帧/观察器/监听和设置布局帧/观察器实际接入visualScope，当批删除对应重复清理路径。旧源码受控迟到回调产生额外轮询被精确拒绝；当前版本及设置卸载后资源归零通过。类型、UI/Host构建与受影响组件回归通过；精确提交和两套CI见#22。尚未正式接入已认可设置/天气/球体原型。
 - 前批 [EVO-A2 视觉资源作用域首批](evolution/EVO-A2-VISUAL-SCOPE.md)，输入 `9807e0b`：OrbitFocus和原生导航实际共用visualScope，合并帧任务/清理所有权；当批删除局部frame/dead及重复卸载路径。正常组件、原生导航、Framework Host及设置/选择/战斗受控回归通过，焦点卸载后观察器与帧计数为0。尚未覆盖其它消费者或正式游戏，精确提交与两套CI见#22。
 - 反例修复批次 `9807e0b` 的输入为 `d0e06e5`。输入的两套CI均因同一个历史反例生成器重复声明 `ticket` 而失败；后续汇总和gate为连锁失败，不是多个产品缺陷。修复仅去掉生成器重复声明，本地正常几何、缺样式及旧几何的精确拒绝均通过；完整CI结果见#22，未完成的后续检查不能沿用旧成功。
@@ -66,3 +70,5 @@
 
 
 本批Windows接续：球体/工具源码已实际在本机Edge运行；这不等于旧设置/天气原型或整个4.0已完成Windows/真实游戏验证。`node tests/golden-spin-hub-input.cjs` 为当前输入回归；全部原型检查仍用 `npm run prototype:golden-spin:test`。
+
+- Moody Blues V1.1 historical delivery through CI PR#23 (now merged into the research branch at799b07d) under the owner-approved differential scope: independent versioned catalog, five-state assertion/integrity verdict, explicit sequence/native-case proof and uploaded-artifact verification. [Engineering/batch record](audits/MOODY-CI-V1.1.md). Final commit, real PR run/attempt/checkout, test outcomes and remaining measurement scope are recorded in PR#23 and Issue#22; Integrated/ReleaseReady remain false. Existing Evolution/S01 authority above is unchanged.

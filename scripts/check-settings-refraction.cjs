@@ -142,4 +142,4 @@ const waitPage=(page,id)=>page.waitForFunction(id=>{const d=document.querySelect
   fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(result,null,2)+'\n');console.log('RESULT',output);
  }catch(error){if(page&&!page.isClosed())await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:error.stack,checks,errors},null,2));throw error}
  finally{await browser.close();await new Promise(resolve=>server.close(resolve))}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('./ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

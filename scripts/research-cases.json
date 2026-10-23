@@ -1,0 +1,61 @@
+{
+  "golden-spin-b": [
+    "ball-only stages accelerate, release an expanding spiral, then naturally settle",
+    "rapid restart and mid-flight collection retain angular continuity and release all motion",
+    "narrow screen and resize keep the ball hit target inside the stage",
+    "reduced motion renders a static response with keyboard-accessible controls",
+    "dispose cancels the timeline, frame, observers and responsive callbacks"
+  ],
+  "golden-spin-hub": [
+    "real tools unfold immediately alongside sphere charge and remain hittable in their native layout",
+    "real tool detail opens once and returns to the menu; Escape collects it",
+    "rapid reversals retain the current menu progress and sphere angle",
+    "left/right docking, narrow touch, resize and reduced motion preserve interaction",
+    "dynamic tools, zoom and scene invalidation keep the native Hub owner in control",
+    "unmount stops both controllers and removes the experimental canvas"
+  ],
+  "motion-workspace": [
+    "shared motion cancels hidden work and cannot restart after disposal",
+    "real settings keep stable hitboxes, directional category completion and modal boundaries",
+    "native-window material owns movement while original controls stay stationary and execute once",
+    "narrow zoomed settings, reduced motion and disabling during category motion settle",
+    "unmount during motion removes only owned presentation; remount preserves settings"
+  ],
+  "golden-spin-hub-input": [
+    "H3 visible moving tool accepts a real pointer once without moving beneath the press",
+    "H3 keyboard activation and cancel during opening retain native focus and single activation",
+    "H3 releasing a pointer outside cancels activation and resumes instead of pinning pointer focus",
+    "H1 H2 opening and closing reverse continuously, keep native terminal layout and settle resources",
+    "H3 H4 drag during opening closes safely, then dock and restore work during the next opening",
+    "H4 narrow touch and zoom preserve targets; active reduced/disabled motion settles immediately",
+    "H4 hidden view pauses both layers and resumes the latest intent",
+    "H4 scene exit, owner teardown and re-mount cannot replay activation or retain callbacks"
+  ],
+  "golden-spin-hub-lifecycle": [
+    "H3 release over native ball clears the pressed tool without replay",
+    "H4 hidden scene replacement freezes both new clocks until visible",
+    "H4 zero-root scene replacement retains finite geometry and restores native input"
+  ],
+  "check-settings-refraction": [
+    "frozen baseline source identity; only two generated candidate source files differ",
+    "V2.3 open, close and category settlement stay near the actual 3.0.4 baseline",
+    "category readable progress matches the old release, not only its final duration",
+    "1280: real modal, geometry, hit testing, actual preference input and keyboard close",
+    "1280: fast latest-intent category switching settles one accessible page",
+    "1280: short opacity-only open/close keeps latest intent and stationary hitboxes",
+    "1280: reduced motion, preference cancellation and hidden-page settlement",
+    "1280: unmount while moving removes owned nodes and remount preserves preference",
+    "390: real modal, geometry, hit testing, actual preference input and keyboard close",
+    "390: fast latest-intent category switching settles one accessible page",
+    "390: short opacity-only open/close keeps latest intent and stationary hitboxes",
+    "390: reduced motion, preference cancellation and hidden-page settlement",
+    "390: unmount while moving removes owned nodes and remount preserves preference",
+    "resize/rotation and 125% page zoom settle usable controls"
+  ],
+  "evolution-weather": [
+    "W1 actual approved settings component and clear Acrylic surface",
+    "W2 same-surface wetting, beads and tracks consume real weather classification",
+    "W3 mid-rain snow redirects continuous parameters with no state reset",
+    "W4 short controlled use: real category controls, hidden/resume, resize, reduced preference, close/reopen and release"
+  ]
+}

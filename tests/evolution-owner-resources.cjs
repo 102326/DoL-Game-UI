@@ -55,4 +55,4 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),{chromium}=requ
   await assert.rejects(()=>verifyHubIntegration(browser,{previewLayoutOnly:true,oldPreviewStyle:true}),error=>{if(error.code!=='ERR_ASSERTION'||!/preview styles must not collapse actual settings content/.test(error.message))return false;hubIntegration.counterexamples.push({kind:'old-preview-main-selector',status:'REJECTED',assertion:error.message,...error.hubIntegration});return true});
   console.log('PASS H01 exact constructor, frozen-geometry, short-scroll and preview-style counterexamples rejected');
  }finally{fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/owners'+(baseline?'-baseline':'')+'.json',JSON.stringify({baseline,revision,results,hubIntegration},null,2));await browser?.close();await server.close()}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

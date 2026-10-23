@@ -81,4 +81,4 @@ async function combatPage(browser,server,{missingCSS=false}={}){
   console.log('PASS Moody historical regressions: delayed completion accepted, cancelled final state, true residue rejected, healthy geometry, old positioning and missing production CSS rejected');
  }catch(error){try{if(page&&!page.isClosed()){const snapshot=kind==='settings'?await settingsSnapshot(page):await orbitSnapshot(page);await require('./moody-fixture-evidence.cjs').captureFailure(page,{kind,error,snapshot})}}catch{console.error('Moody fixture evidence unavailable; retaining original failure')}throw error}
  finally{await browser.close();await mutant?.close();await healthy?.close()}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

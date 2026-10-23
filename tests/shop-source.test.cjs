@@ -25,4 +25,4 @@ const code=buildSync({entryPoints:['src/shop/source.ts'],bundle:true,format:'iif
  assert.deepEqual(result.projection,[{key:'shop:1',title:'Coat',price:'£15',owned:'Coat'}]);assert.equal(result.selected.key,'shop:1');
  for(const k of ['staleMoney','stillStale','replay','changedDefinition','stalePage','disposed'])assert.equal(result[k],'stale',k);
  assert.equal(result.wrapperValid,'valid');assert.equal(result.wrapperReplay,'stale');assert.equal(result.valid,'valid');assert.equal(result.unknown,'native');assert.equal(result.footerOnly,true);console.log('PASS source display projection, stale quote/definition/page, no rebind/replay, unknown native control/footer, rapid unbound selection reconciled to actual definition without replay and ambiguity exits');
-}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
+}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});
