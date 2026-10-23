@@ -19,8 +19,8 @@ from shop_package import shop_patches
 
 ROOT = Path(__file__).resolve().parent.parent
 PACKAGES = {
-    'StoneFreeHost': ('0.1.5-experimental', 'host'),
-    'DoLGameUI': ('3.0.4', 'official-ui'),
+    'StoneFreeHost': 'host',
+    'DoLGameUI': 'official-ui',
 }
 
 
@@ -28,7 +28,7 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
-# Independent policies for the current 3.0.4 release line. Producers do not read them.
+# Compatibility and package structure policies are independent from product version labels.
 ADAPTERS = {
     'modhub-soft-wet': ('ModHubSoftWet', 'ModHub', '>=1.3.0', 'modhub-soft-wet'),
     'maplebirch-soft-wet': ('MapleBirchSoftWet', 'maplebirch', '>=5.2.3', 'maplebirch-soft-wet'),
@@ -49,25 +49,45 @@ def literal_assignment(file, name):
     raise AssertionError(f'CJ3C_VERSION_SOURCE: missing {name}')
 
 
+def checked_version(value):
+    assert isinstance(value, str) and re.fullmatch(r'[0-9A-Za-z][0-9A-Za-z.+_-]{0,99}', value), 'CJ3C_VERSION_FORMAT'
+    return value
+
+
+def component_version(name, root=None):
+    root = root or ROOT
+    value = json.loads((root / 'package.json').read_text(encoding='utf-8'))['version'] if name == 'DoLGameUI' else literal_assignment(root / 'scripts/package-framework.py', 'host_version')
+    return checked_version(value)
+
+
 def check_version_sources(root=None):
     root = root or ROOT
-    ui = PACKAGES['DoLGameUI'][0]
-    host = PACKAGES['StoneFreeHost'][0]
-    assert json.loads((root / 'package.json').read_text(encoding='utf-8'))['version'] == ui, 'CJ3C_VERSION_ROOT'
-    runtime = re.search(r"visualVersion\s*=\s*'([^']+)'", (root / 'framework/official-ui/main.ts').read_text(encoding='utf-8'))
-    assert runtime and runtime.group(1) == ui, 'CJ3C_VERSION_RUNTIME'
+    project = json.loads((root / 'project-identity.json').read_text(encoding='utf-8'))
+    assert project['schema'] == 1 and str(uuid.UUID(project['projectId'])) == project['projectId'], 'CJ3C_PROJECT_ID'
+    ui, host = component_version('DoLGameUI', root), component_version('StoneFreeHost', root)
+    core = re.search(r"runtime\.DoLGameUI\s*=\s*\{\s*version\s*:\s*['\"]([^'\"]+)", (root / 'src/main.ts').read_text(encoding='utf-8'))
+    assert core, 'CJ3C_CORE_VERSION_SOURCE'
+    core_version = checked_version(core.group(1))
+    runtime = (root / 'framework/official-ui/main.ts').read_text(encoding='utf-8')
+    assert re.search(r"import\s*\{\s*version\s+as\s+productVersion\s*\}\s*from\s*['\"]\.\./\.\./package\.json['\"]", runtime) and re.search(r'visualVersion\s*=\s*productVersion\b', runtime), 'CJ3C_VERSION_RUNTIME'
     producer = root / 'scripts/package-framework.py'
-    assert literal_assignment(producer, 'host_version') == host, 'CJ3C_VERSION_HOST'
     assert literal_assignment(producer, 'host_requirement') == HOST_REQUIREMENT, 'CJ3C_HOST_RANGE'
     protocol = re.search(r"export const PROTOCOL\s*=\s*'([^']+)'", (root / 'framework/contracts.ts').read_text(encoding='utf-8'))
     assert protocol and protocol.group(1) == PROTOCOL, 'CJ3C_HOST_PROTOCOL'
-    host_readme = (root / 'framework/host/README.md').read_text(encoding='utf-8')
-    ui_readme = (root / 'framework/official-ui/README.md').read_text(encoding='utf-8')
-    assert re.search(r'`' + re.escape(host) + r'`', host_readme), 'CJ3C_HOST_DOCUMENTED_VERSION'
-    assert f'DoLGameUI {ui}' in ui_readme and HOST_REQUIREMENT in ui_readme, 'CJ3C_UI_DOCUMENTED_VERSION'
-    return {'status': 'PASS', 'ui': ui, 'officialRuntime': runtime.group(1), 'hostPackage': host,
-            'hostProtocol': PROTOCOL, 'uiHostRequirement': HOST_REQUIREMENT,
-            'legacyCoreAndEarlyEntry': '2.7.0 is an internal legacy entry, not the official wrapper product version'}
+    # This is the existing >=0.1.2-experimental && <0.2.0 contract, not a product-version freeze.
+    compatible = re.fullmatch(r'0\.1\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?', host)
+    assert compatible, 'CJ3C_HOST_COMPATIBILITY'
+    patch_version, prerelease = int(compatible.group(1)), compatible.group(2)
+    identifiers = prerelease.split('.') if prerelease else []
+    assert all(not item.isdigit() or item == '0' or not item.startswith('0') for item in identifiers), 'CJ3C_HOST_COMPATIBILITY'
+    assert patch_version >= 2 and (patch_version > 2 or not identifiers or not identifiers[0].isdigit() and identifiers[0] >= 'experimental'), 'CJ3C_HOST_COMPATIBILITY'
+    return {'status': 'PASS', 'projectId': project['projectId'], 'ui': ui, 'officialRuntime': ui,
+            'core': core_version, 'hostPackage': host, 'hostProtocol': PROTOCOL, 'uiHostRequirement': HOST_REQUIREMENT}
+
+
+def build_identity(identity):
+    return {'projectId': identity['projectId'], 'commit': identity['source']['head'],
+            'runId': identity['run'].get('githubRunId') or identity['run']['id'], 'attempt': identity['run']['attempt']}
 
 
 def read_archive(path):
@@ -106,7 +126,7 @@ def adapter_policy(directory):
     lists = {field: [] for field in ENTRY_FIELDS}
     lists.update(scriptFileList=[stem + '.js'], styleFileList=[] if mouth else [stem + '.css'], additionFile=['README.md', 'LICENSE'])
     suffix = requirement.removeprefix('>=').removeprefix('=') + ('-plus' if requirement.startswith('>=') else '')
-    version = '1.0.1' if directory in ['dol-optimization-soft-wet', 'modhub-soft-wet'] else '1.0.0'
+    version = checked_version(json.loads((ROOT / 'compat' / directory / 'boot.json').read_text(encoding='utf-8'))['version'])
     return {'name': name, 'version': version, 'dependenceInfo': deps, **lists}, f'{name}-{target}-{suffix}-v{version}.mod.zip'
 
 
@@ -141,7 +161,7 @@ def check_adapter(path, directory):
 
 
 def package_paths():
-    return [(name, ROOT / 'dist/framework' / f'{name}-{version}.mod.zip', None) for name, (version, _) in PACKAGES.items()] + [
+    return [(name, ROOT / 'dist/framework' / f'{name}-{component_version(name)}.mod.zip', None) for name in PACKAGES] + [
         (ADAPTERS[directory][0], ROOT / 'compat' / directory / 'dist' / adapter_policy(directory)[1], directory) for directory in ADAPTERS]
 
 
@@ -149,7 +169,14 @@ def all_packages():
     return [check_adapter(path, directory) if directory else check_package(path, name) for name, path, directory in package_paths()]
 
 
-def observed_identity():
+def observed_identity(reuse_build=False):
+    # Independent local build/check commands share the producer's run. CI must
+    # always supply its own run identity; never adopt one from an old receipt.
+    if reuse_build and not os.environ.get('MOODY_EVIDENCE_ID') and os.environ.get('GITHUB_ACTIONS') != 'true':
+        receipt = json.loads((ROOT / 'dist/CJ3C_BUILD_RECEIPT.json').read_text(encoding='utf-8'))
+        run_id = receipt['runId']
+        assert isinstance(run_id, str) and re.fullmatch(r'[a-zA-Z0-9_-]{1,100}', run_id), 'Invalid build run ID'
+        os.environ['MOODY_EVIDENCE_ID'] = run_id
     return json.loads(subprocess.check_output(['node', '-e', "process.stdout.write(JSON.stringify(require('./scripts/ci-evidence.cjs').context().identity))"], cwd=ROOT, text=True))
 
 
@@ -167,7 +194,9 @@ def write_json(path, data, limit=262144):
 
 
 def build_packages():
-    before = observed_source()
+    identity = observed_identity()
+    os.environ['MOODY_EVIDENCE_ID'] = identity['run']['id']
+    before = identity['source']
     check_version_sources()
     for directory in ADAPTERS:
         check_adapter_manifest(json.loads((ROOT / 'compat' / directory / 'boot.json').read_text(encoding='utf-8')), directory)
@@ -176,8 +205,8 @@ def build_packages():
         subprocess.run([sys.executable, str(ROOT / 'scripts/package-adapter.py'), str(ROOT / 'compat' / directory)], cwd=ROOT, check=True)
     packages = all_packages()
     assert observed_source() == before, 'CJ3C_SOURCE_CHANGED_DURING_BUILD'
-    receipt = {'schema': 1, 'invocation': str(uuid.uuid4()), 'source': before,
-               'runId': os.environ.get('MOODY_EVIDENCE_ID'),
+    receipt = {'schema': 1, 'buildIdentity': build_identity(identity), 'invocation': str(uuid.uuid4()), 'source': before,
+               'runId': identity['run']['id'],
                'packages': [{key: item[key] for key in ['name', 'file', 'sha256']} for item in packages]}
     write_json(ROOT / 'dist/CJ3C_BUILD_RECEIPT.json', receipt)
     print('PASS CJ3C build receipt: two players + six current optional packages; legacy Lyra excluded')
@@ -220,6 +249,7 @@ def build_observation(identity, expected_run):
     receipt = json.loads((ROOT / 'dist/CJ3C_BUILD_RECEIPT.json').read_text(encoding='utf-8'))
     assert receipt['source'] == identity['source'], 'CJ3C_STALE_BUILD_SOURCE'
     assert not expected_run or receipt['runId'] == expected_run, 'CJ3C_STALE_BUILD_RUN'
+    assert receipt.get('buildIdentity') == build_identity(identity), 'CJ3C_STALE_BUILD_IDENTITY'
     assert isinstance(receipt.get('invocation'), str) and receipt['invocation'], 'CJ3C_MISSING_BUILD_INVOCATION'
     packages = all_packages()
     expected = [{key: item[key] for key in ['name', 'file', 'sha256']} for item in packages]
@@ -228,7 +258,7 @@ def build_observation(identity, expected_run):
 
 
 def check_package(path, name):
-    version, directory = PACKAGES[name]
+    version, directory = component_version(name), PACKAGES[name]
     files = read_archive(path)
     boot = json.loads(files['boot.json'])
     assert (boot['name'], boot['version']) == (name, version), 'Wrong Mod identity'
@@ -247,7 +277,8 @@ def check_package(path, name):
         expected['shop-page-experiment.js'] = ROOT / 'dist/shop-page-experiment.js'
         for filename in ['ui.d.ts', 'wardrobe.d.ts']:
             expected['types/' + filename] = ROOT / 'dist/types' / filename
-        for filename in ['docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', 'docs/RELEASE_3.0.4.md', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
+        release_notes = [f'docs/RELEASE_{version}.md'] if (ROOT / f'docs/RELEASE_{version}.md').is_file() else []
+        for filename in ['docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', *release_notes, 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
             expected[filename] = ROOT / filename
         notices = []
         for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom', 'tailwindcss']:
@@ -261,7 +292,7 @@ def check_package(path, name):
         assert boot['addonPlugin'] == [{'modName': 'TweeReplacer', 'addonName': 'TweeReplacerAddon', 'modVersion': '>=1.0.0', 'params': params}], 'Wrong shop patch metadata'
         for _, _, filename in shop_patches:
             expected[filename] = ROOT / filename
-        lists['additionFile'] += ['THIRD-PARTY-NOTICES.txt', 'docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', 'docs/RELEASE_3.0.4.md', 'types/ui.d.ts', 'types/wardrobe.d.ts', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']
+        lists['additionFile'] += ['THIRD-PARTY-NOTICES.txt', 'docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', *release_notes, 'types/ui.d.ts', 'types/wardrobe.d.ts', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']
     else:
         assert not boot.get('addonPlugin') and not boot.get('scriptFileList_inject_early'), 'Unexpected Host entry'
     assert boot['dependenceInfo'] == deps, 'Dependency policy drift'
@@ -304,11 +335,11 @@ def negative_tests():
 
 def main():
     requested_run = os.environ.get('MOODY_EVIDENCE_ID')
-    identity = observed_identity()
+    identity = observed_identity(reuse_build=True)
     os.environ['MOODY_EVIDENCE_ID'] = identity['run']['id']
     assert re.fullmatch(r'[a-zA-Z0-9_-]{1,100}', identity['run']['id']), 'Invalid evidence ID'
     destination = ROOT / 'tests/artifacts/ci' / identity['run']['id'] / 'package-contracts.json'
-    report = {'schema': 1, 'kind': 'package-contracts', 'identity': identity, 'status': 'PARTIAL',
+    report = {'schema': 1, 'kind': 'package-contracts', 'identity': identity, 'buildIdentity': build_identity(identity), 'status': 'PARTIAL',
               'scope': 'Same environment and source; not cross-OS/zlib or installed ModLoader/release proof',
               'runtime': {'python': platform.python_version(), 'zlibRuntime': zlib.ZLIB_RUNTIME_VERSION},
               'expectedPackages': [name for name, _, _ in package_paths()], 'builds': [],

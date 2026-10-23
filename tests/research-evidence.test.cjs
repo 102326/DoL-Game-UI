@@ -4,7 +4,7 @@ const {catalogFor,catalogIdentity,visualEvidence,researchUnitEntries,nodeTestCas
 const {writeJson,hash,runCommand,verifyRemote}=require('../scripts/ci-evidence.cjs');
 (async()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'moody-research-'));
- const ctx={root:dir,dir:path.join(dir,'evidence'),identity:{profile:'research',catalog:catalogIdentity('research'),source:{head:'controlled-head'},run:{id:'controlled-run',attempt:'2'}}};
+ const ctx={root:dir,dir:path.join(dir,'evidence'),identity:{projectId:require('../project-identity.json').projectId,profile:'research',catalog:catalogIdentity('research'),source:{head:'controlled-head'},run:{id:'controlled-run',attempt:'2'}}};
  fs.mkdirSync(ctx.dir,{recursive:true});
  const pass={status:'PASS',rawStatus:'passed',exitCode:0,milliseconds:1,assertions:1};
  const report={schema:1,identity:ctx.identity,suite:'research',expected:plan.map(c=>c.id),status:'PASS',results:[]};

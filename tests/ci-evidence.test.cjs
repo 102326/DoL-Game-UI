@@ -18,7 +18,7 @@ const { root } = require('../scripts/ci-evidence.cjs');
   assert.equal(overall(['PASS', 'FAIL']), 'FAIL');
 
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'moody-evidence-'));
-  const ctx = { dir, root: dir, identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'fixture', contentSha256: 'fixture' }, run: { id: 'fixture', attempt: '1' } } };
+  const ctx = { dir, root: dir, identity: {projectId:require('../project-identity.json').projectId,profile:'standard',catalog:catalogIdentity(),source: { head: 'fixture', contentSha256: 'fixture' }, run: { id: 'fixture', attempt: '1' } } };
   try {
     writeJson(path.join(dir,'catalog.json'),{schema:1,identity:ctx.identity,catalog:catalogFor()});
     for(const [entry,reached]of Object.entries(checkpoints))writeJson(path.join(dir,'fixtures',entry,'checkpoints.json'),{schema:1,identity:ctx.identity,entry,reached});
@@ -77,10 +77,11 @@ const { root } = require('../scripts/ci-evidence.cjs');
     const contracts = requiredPackages.map(name => ({ name, file: name + '.zip', sha256: 'a'.repeat(64), status: 'PASS', members: { 'LICENSE': 'b'.repeat(64), 'boot.json': 'c'.repeat(64) } }));
     const negativePlan = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'].map(name => 'controlled.' + name);
     const snapshots = contracts.map(p => ({ file: p.file, sha256: p.sha256, archiveComment: '', members: Object.entries(p.members).map(([name, sha256]) => ({ name, sha256, compressedSha256: 'd'.repeat(64), metadata: { date_time: [2026,1,1,0,0,0], compress_type: 8, create_system: 3, create_version: 20, extract_version: 20, flag_bits: 0, internal_attr: 0, external_attr: 0o600 << 16, file_size: 1, compress_size: 3, CRC: 1, header_offset: 0, extra: '', comment: '' } })) }));
-    const packageReport = { schema: 1, kind: 'package-contracts', identity: ctx.identity, status: 'PASS', versionSources: { status: 'PASS' },
+    const buildIdentity={projectId:ctx.identity.projectId,commit:ctx.identity.source.head,runId:ctx.identity.run.githubRunId||ctx.identity.run.id,attempt:ctx.identity.run.attempt};
+    const packageReport = { schema: 1, kind: 'package-contracts', identity: ctx.identity, status: 'PASS', buildIdentity, versionSources: { status: 'PASS', projectId:ctx.identity.projectId },
       expectedPackages: requiredPackages, contracts, reproducibility: { status: 'PASS', differences: [] },
       negativeTests: { status: 'PASS', plan: negativePlan, testsRun: negativePlan.length, failures: 0, errors: 0, skipped: 0, expectedFailures: 0, unexpectedSuccesses: 0 },
-      builds: ['first','second'].map(invocation => ({ receipt: { invocation, source: ctx.identity.source, runId: ctx.identity.run.id, packages: contracts }, snapshots })) };
+      builds: ['first','second'].map(invocation => ({ receipt: { invocation, buildIdentity, source: ctx.identity.source, runId: ctx.identity.run.id, packages: contracts }, snapshots })) };
     const packageFile = path.join(dir, 'package-contracts.json');
     writeJson(packageFile, packageReport);
     writeJson(packageFile, { ...packageReport, builds: packageReport.builds.slice(1) });
@@ -99,7 +100,7 @@ const { root } = require('../scripts/ci-evidence.cjs');
     }
     for (const malformed of [{ contracts: {} }, { contracts: [null] }, { builds: { length: 2 } },
       { builds: [null, null] }, { builds: [{ receipt: { invocation: 'bad', packages: [null] } }, null] },
-      { identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } } }]) {
+      { identity: {projectId:require('../project-identity.json').projectId,profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } } }]) {
       writeJson(packageFile, { ...packageReport, ...malformed });
       assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'malformed or stale package evidence cannot crash or pass');
     }
@@ -148,7 +149,7 @@ const { root } = require('../scripts/ci-evidence.cjs');
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED');
     writeJson(browserFile, fullBrowser);
     assert.equal(summarize(ctx, { browser: { outcome: 'cancelled' } }).results.find(r => r.name === 'browser').status, 'CANCELLED');
-    writeJson(path.join(dir, 'stage-check.json'), { identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } }, name: 'check', status: 'PASS', exitCode: 0 });
+    writeJson(path.join(dir, 'stage-check.json'), { identity: {projectId:require('../project-identity.json').projectId,profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } }, name: 'check', status: 'PASS', exitCode: 0 });
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'check').status, 'UNVERIFIED', 'stale report cannot pass');
     assert.equal(summarize(ctx, { build: { outcome: 'skipped' } }).results.find(r => r.name === 'build').status, 'UNVERIFIED');
 

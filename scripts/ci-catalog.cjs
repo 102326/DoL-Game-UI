@@ -1,3 +1,5 @@
+const project=require('../project-identity.json'),{projectId}=project;
+if(project.schema!==1||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(projectId))throw Error('Invalid permanent Project ID');
 // Expected contracts are versioned source, never inferred from a run's result files.
 const crypto = require('node:crypto');
 const suites = {
@@ -58,7 +60,7 @@ const researchUnitEntries=['adapter-build-boundary.test.cjs','visual-scope.test.
 const testArgs=name=>[...(nodeTestCases[name]?['--test']:[]),'tests/'+name];
 const nodeCaseIds=args=>args.filter(a=>nodeTestCases[require('node:path').basename(a)]).flatMap(file=>nodeTestCases[require('node:path').basename(file)].map(name=>require('node:path').basename(file)+'::'+name));
 const commandCaseIds=check=>check.id==='evolution-unit'?researchUnitEntries.map(n=>'unit:'+n):nodeCaseIds(check.args).length?nodeCaseIds(check.args):['command:'+check.id];
-const version='1.1.1';
+const version='1.2.0';
 // Same-run review frames are necessary where the research contract promises pixels.
 // Historical original-speed comparison builds remain T1, explicitly historical.
 const visualEvidence={
@@ -92,7 +94,7 @@ function catalogFor(profile='standard', depth='standard') {
   ...stages.map(s=>({id:'stage.'+s.id,group:'stage',profiles:['standard','release'],necessity:'required',entry:[s.command||'npm',...s.args],result:'stage-'+s.id+'.json',evidence:[],checkpoints:[]})),
   ...Object.entries(suites).flatMap(([group,names])=>names.map(name=>({id:group+'.'+name,group,profiles:['standard','release'],necessity:'required',entry:['node',...testArgs(name)],result:group+'.json#'+name,evidence:checkpoints[name]?.length ? ['fixtures/'+name+'/checkpoints.json'] : [],checkpoints:name==='device-layouts.cjs'?require('../tests/device-case-plan.cjs').expectedCaseIds(depth):checkpoints[name]||nodeTestCases[name]||[]})))
  ];
- return {schema:1,version,profile,depth,automaticRelease:false,releaseAuthorization:profile==='release'?'owner approval required; design only':null,contracts};
+ return {schema:1,projectId,version,profile,depth,automaticRelease:false,releaseAuthorization:profile==='release'?'owner approval required; design only':null,contracts};
 }
 function catalogIdentity(profile='standard',depth='standard') {const c=catalogFor(profile,depth);return{version,profile,depth,sha256:crypto.createHash('sha256').update(JSON.stringify(c)).digest('hex')}}
-module.exports={suites,stages,researchPlan,checkpoints,visualEvidence,nodeTestCases,researchUnitEntries,testArgs,nodeCaseIds,commandCaseIds,catalogFor,catalogIdentity};
+module.exports={projectId,suites,stages,researchPlan,checkpoints,visualEvidence,nodeTestCases,researchUnitEntries,testArgs,nodeCaseIds,commandCaseIds,catalogFor,catalogIdentity};

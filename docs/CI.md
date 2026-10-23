@@ -28,6 +28,12 @@
 
 ## 本地执行
 
+### 项目、组件版本与构建身份
+
+当前 Moody Blues 身份规则见 [Project / Build Identity](audits/MOODY-PROJECT-BUILD-IDENTITY.md)。`project-identity.json` 中的 Project ID 只生成一次并永久保留；UI、Core、Host 各自读取实际来源，不要求同号，也不固定产品主版本。制品仍须与本次声明和构建输入一致，Host 协议及依赖兼容合同保留。
+
+GitHub 构建以 Project ID、Commit SHA、Run ID、Attempt 绑定证据，八包 SHA-256 通过 receipt、合同报告和上传索引溯源。本地独立执行下列 build / packages 命令时，检查器复用首轮 receipt 的本地 Run ID，并严格核对源码和完整身份；CI 不从旧 receipt 接管 Run ID。完整 stage runner 仍统一设置 `MOODY_EVIDENCE_ID`。
+
 在仓库根目录运行：
 
 ```text
@@ -45,8 +51,8 @@ Linux 首次运行浏览器检查前执行 `npx playwright install --with-deps c
 
 全部检查通过后上传 `kraft-work-build-<SHA>`，保存 7 天，包含：
 
-- `DoLGameUI-3.0.1.mod.zip`
-- `StoneFreeHost-0.1.4-experimental.mod.zip`
+- `DoLGameUI-<package.json.version>.mod.zip`
+- `StoneFreeHost-<host_version>.mod.zip`
 - `PACKAGE_CHECKS.json`：实际提交、工作区状态、依赖和每个 ZIP 成员的 SHA-256。
 - `SHA256SUMS.txt`：上述三个负载的 SHA-256，校验清单自身除外。
 

@@ -2,6 +2,7 @@ const {checkpoint}=require('../scripts/ci-checkpoints.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require('playwright'),{build}=require('esbuild');
 const root=path.resolve(__dirname,'..');
+const coreVersion=fs.readFileSync(path.join(root,'src/main.ts'),'utf8').match(/runtime\.DoLGameUI\s*=\s*\{\s*version\s*:\s*['"]([^'"]+)/)?.[1];assert.ok(coreVersion,'Core version source');
 const group=process.argv.find(a=>a.startsWith('--group='))?.split('=')[1]||'all';
 assert.ok(['all','identity','inspector','surfaces','compat'].includes(group),'Unknown runtime group');
 const uncaughtPageError=process.argv.includes('--uncaught-page-error');
@@ -10,7 +11,7 @@ require('node:child_process').execFileSync(process.execPath,[path.join(root,'nod
 const {plugins,mutation}=require('./runtime-mutations.cjs');
 (async()=>{
 const engine=(await build({plugins,entryPoints:[path.join(root,'src/runtime/ui.ts')],bundle:true,write:false,format:'iife',globalName:'UiRuntimeModule'})).outputFiles[0].text;
-const read=name=>{let source=fs.readFileSync(path.join(root,name.startsWith('dist/game-ui.')?name.replace('dist/','tests/artifacts/legacy-runtime/'):name),'utf8');if(name==='dist/game-ui.js'&&mutation==='identity'){assert.equal(source.split('version:"2.7.0"').length,2,'Core mutation anchor');source=source.replace('version:"2.7.0"','version:"3.0.4"')}return source};
+const read=name=>{let source=fs.readFileSync(path.join(root,name.startsWith('dist/game-ui.')?name.replace('dist/','tests/artifacts/legacy-runtime/'):name),'utf8');if(name==='dist/game-ui.js'&&mutation==='identity'){const anchor='version:'+JSON.stringify(coreVersion);assert.equal(source.split(anchor).length,2,'Core mutation anchor');source=source.replace(anchor,'version:'+JSON.stringify(coreVersion+'-controlled-wrong'))}return source};
 const compile=async name=>(await build({plugins,entryPoints:[path.join(root,name)],bundle:true,write:false,format:'iife',target:'es2022'})).outputFiles[0].text;
 const adapter=mod=>compile(`compat/${mod}-soft-wet/${mod}-soft-wet.ts`);
 const browser=await chromium.launch(require('./browser-options.cjs'));try{
@@ -21,7 +22,7 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  if(group==='identity'){
   p=await page('<html><body><div id="passages"></div></body></html>');
   await p.addStyleTag({content:read('dist/game-ui.css')});await p.addScriptTag({content:read('dist/game-ui.js')});await settle(p);
-  assert.equal(await p.evaluate(()=>DoLGameUI.version),'2.7.0','legacy Core identity; official wrapper is checked by framework-startup');checkpoint('core-identity');
+  assert.equal(await p.evaluate(()=>DoLGameUI.version),coreVersion,'legacy Core identity; official wrapper is checked by framework-startup');checkpoint('core-identity');
   await p.evaluate(()=>DoLGameUI.destroy());assert.deepEqual(errors,[]);await p.close();
  }
 
@@ -145,7 +146,7 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  await p.evaluate(()=>{window.DoLGameUI={ui:{apiVersion:1,getCapabilities:()=>({styleAdapters:false}),registerStyleAdapter:()=>{throw Error('must not register')}}};document.dispatchEvent(new Event('dol-ui-runtime-ready'))});assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().reason),'style-adapter-unavailable');checkpoint('unsupported-api');
  await p.evaluate(()=>delete window.DoLGameUI);
  const inject=async()=>{await p.addStyleTag({content:read('dist/game-ui.css')});await p.addScriptTag({content:read('dist/game-ui.js')});await settle(p)};
- await inject();if(group==='all')assert.equal(await p.evaluate(()=>DoLGameUI.version),'2.7.0','legacy Core identity; official wrapper is checked by framework-startup');assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
+ await inject();if(group==='all')assert.equal(await p.evaluate(()=>DoLGameUI.version),coreVersion,'legacy Core identity; official wrapper is checked by framework-startup');assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
  assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().degraded),false,'absent optional marketplace role is not a downgrade of a full management-page match');checkpoint('core-arrives');
  await p.addStyleTag({content:read('examples/ui-surfaces/surface-demo.css')});await p.addScriptTag({content:await compile('examples/ui-surfaces/surface-demo.ts')});
  await p.evaluate(()=>window.demo=SoftWetSurfaceDemo.openModal());await p.locator('[data-demo-control]').check();await p.keyboard.press('Escape');assert.equal(await p.evaluate(()=>SoftWetSurfaceDemo.getLastClose()),'escape');

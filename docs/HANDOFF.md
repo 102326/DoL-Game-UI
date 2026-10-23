@@ -4,6 +4,8 @@
 
 ## Current — 当前做什么
 
+- CI 版本策略改为[固定 Project ID + 动态组件版本 + 唯一 Build Identity](audits/MOODY-PROJECT-BUILD-IDENTITY.md)，Catalog 1.2.0；UI/Core/Host 保持独立，产品 3.x→4.x 不因硬编码误报。Host 协议、依赖范围、制品字节及八包双轮合同保留。输入 f318241；精确提交、独立 PR 与标准/研究 Actions 见专项交付及 #22，本文不自行证明 CI 已通过。旧 Catalog 1.1.1 验收记录继续属于其原提交。
+
 - **EVO-H01-PREVIEW / EVO-G1-COEX**：负责人复看修复后预览暂未发现问题，允许继续。基于afc78bb完成预览样式隔离、隐藏轨道且保留滚动，旧main反例进入现有owner入口。新增手动共存诊断：桌面/窄屏各12轮和15秒稳定雨天，隐藏恢复、经典Floating实际设置入口及最终所有作用域归零；去除Floating未挂载时的多余空作用域。13入口、11组当前、4项精确拒绝、类型/构建及手动检查范围见[报告](evolution/EVO-G1-COEX.md)。旧Edge/game夹具用例未执行；短时观测不是长期性能或G1/G2/G3通过。最终提交、同步状态和本批两套Actions见Git及#22；旧afc媒体不重标身份。
 
 - CI V1.1 独立验收整改见 [F1–F3记录](audits/MOODY-CI-V1.1-ACCEPTANCE.md)：终止收据优先级、研究合同有效断言及 Runtime 各分组 pageerror 均有精确反例与健康对照；保留 timeout/cancel 分类和原五类源码反例。Catalog 1.1.1，匿名提交；研发 H01 更新保留。最终新 SHA/两套实际 CI/附件复验见 PR #23 与 #22 专项记录；旧 bc7b35e 成功不能替代新候选。

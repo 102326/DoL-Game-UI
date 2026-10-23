@@ -4,7 +4,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { spawn, execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
-const { suites, stages, catalogFor, catalogIdentity,checkpoints,nodeTestCases,researchUnitEntries } = require('./ci-catalog.cjs');
+const { suites, stages, catalogFor, catalogIdentity,checkpoints,nodeTestCases,researchUnitEntries,projectId } = require('./ci-catalog.cjs');
 const fixtureChecks = ['settings-ci.cjs', 'combat-focused.cjs', 'moody-historical-regressions.cjs', 'device-layouts.cjs'];
 const coverage = 'Controlled fixtures and source contracts only; not real DoL/ModLoader, Windows or Android acceptance.';
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
@@ -43,6 +43,7 @@ function context() {
   const priorFile=path.join(dir,'identity.json');let prior;
   if(fs.existsSync(priorFile)){if(fs.lstatSync(priorFile).isSymbolicLink()||fs.statSync(priorFile).size>262144)throw Error('Unsafe prior identity');prior=JSON.parse(fs.readFileSync(priorFile)).identity;}
   const identity = {
+    projectId,
     source: sourceIdentity(),
     run: { id, attempt: process.env.GITHUB_RUN_ATTEMPT || 'local', githubRunId: process.env.GITHUB_RUN_ID || null,
       repository: process.env.GITHUB_REPOSITORY || null, ref: process.env.GITHUB_REF || null,
@@ -177,13 +178,15 @@ function packageEvidence(ctx) {
   // Malformed or partial evidence must not prevent the whole-run summary/upload.
   try {
     const report = readReport(ctx, 'package-contracts.json');
-    if (!report || report.kind !== 'package-contracts' || report.status !== 'PASS' || report.versionSources?.status !== 'PASS' || report.reproducibility?.status !== 'PASS' || !Array.isArray(report.reproducibility.differences) || report.reproducibility.differences.length !== 0) return false;
+    if (!report || report.kind !== 'package-contracts' || report.status !== 'PASS' || (report.versionSources?.status !== 'PASS' || report.versionSources?.projectId!==ctx.identity.projectId) || report.reproducibility?.status !== 'PASS' || !Array.isArray(report.reproducibility.differences) || report.reproducibility.differences.length !== 0) return false;
     const namesMatch = values => Array.isArray(values) && values.length === requiredPackages.length && new Set(values).size === requiredPackages.length && values.every(name => requiredPackages.includes(name));
+    const expectedBuild={projectId:ctx.identity.projectId,commit:ctx.identity.source.head,runId:ctx.identity.run.githubRunId||ctx.identity.run.id,attempt:ctx.identity.run.attempt};
+    if(!sameIdentity(report.buildIdentity,expectedBuild))return false;
     const negatives = report.negativeTests;
     const requiredNegatives = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'];
     if (!Array.isArray(report.contracts) || !namesMatch(report.expectedPackages) || !namesMatch(report.contracts.map(p => p.name)) || !report.contracts.every(p => p.status === 'PASS' && /^[a-f0-9]{64}$/.test(p.sha256))) return false;
     if (negatives?.status !== 'PASS' || !Array.isArray(negatives.plan) || !requiredNegatives.every(name => negatives.plan.some(id => typeof id === 'string' && id.endsWith('.' + name))) || new Set(negatives.plan).size !== negatives.plan.length || negatives.testsRun !== negatives.plan.length || ['failures', 'errors', 'skipped', 'expectedFailures', 'unexpectedSuccesses'].some(field => negatives[field] !== 0)) return false;
-    if (!Array.isArray(report.builds) || report.builds.length !== 2 || !report.builds.every(b => typeof b.receipt?.invocation === 'string' && b.receipt.invocation && sameIdentity(b.receipt.source, ctx.identity.source) && b.receipt.runId === ctx.identity.run.id && Array.isArray(b.receipt.packages) && namesMatch(b.receipt.packages.map(p => p.name)) && Array.isArray(b.snapshots) && b.snapshots.length === requiredPackages.length && new Set(b.snapshots.map(s => s.file)).size === requiredPackages.length)) return false;
+    if (!Array.isArray(report.builds) || report.builds.length !== 2 || !report.builds.every(b => sameIdentity(b.receipt?.buildIdentity,expectedBuild) && typeof b.receipt?.invocation === 'string' && b.receipt.invocation && sameIdentity(b.receipt.source, ctx.identity.source) && b.receipt.runId === ctx.identity.run.id && Array.isArray(b.receipt.packages) && namesMatch(b.receipt.packages.map(p => p.name)) && Array.isArray(b.snapshots) && b.snapshots.length === requiredPackages.length && new Set(b.snapshots.map(s => s.file)).size === requiredPackages.length)) return false;
     if (report.builds[0].receipt.invocation === report.builds[1].receipt.invocation) return false;
     return report.builds.every(b => b.receipt.packages.every(p => {
       const expected = report.contracts.find(c => c.name === p.name), snapshot = b.snapshots.find(s => s.file === p.file);
@@ -300,7 +303,7 @@ function finalizeUpload(ctx,summary,options={}) {
 function verifyRemote(directory,expected) {
  const started=Date.now(),problems=[];let identity,delivery,summary,computed;
  try {
-  identity=readJsonBounded(directory,'identity.json').identity;delivery=readJsonBounded(directory,'delivery.json');summary=readJsonBounded(directory,'summary.json');
+  identity=readJsonBounded(directory,'identity.json').identity;if(identity.projectId!==projectId)throw Error('Project ID mismatch');delivery=readJsonBounded(directory,'delivery.json');summary=readJsonBounded(directory,'summary.json');
   if(expected.source.head!==expected.checkoutSHA||!sameIdentity(identity.source,expected.source)||identity.source.dirty||!sameIdentity(identity.catalog,catalogIdentity(expected.profile,expected.depth||'standard'))||identity.profile!==expected.profile||identity.nonce!==expected.nonce)throw Error('Source/catalog/profile/nonce mismatch');
   for(const key of ['githubRunId','attempt','repository','ref','workflow','event','job'])if(identity.run[key]!==expected.run[key])throw Error('Run identity mismatch: '+key);
   if(!sameIdentity(identity.pr,expected.pr))throw Error('PR head/base/merge mismatch');
