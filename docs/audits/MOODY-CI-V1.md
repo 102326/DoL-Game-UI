@@ -129,3 +129,15 @@ No main merge, release/CD, ruleset/protection/bypass, public UI/Host version,
 external AI or UI/Evolution feature changes. No player save was read or uploaded.
 CI success is controlled source/fixture proof; G1/G2/G3, physical devices,
 real DoL/ModLoader/multi-Mod and owner visual acceptance remain separate.
+
+## 6. Concurrent development base integration
+
+While final evidence was being reviewed, the development branch advanced from
+34f4217 to `6f7d4d91b515f67b334bbe4f9e84194397ff7c18` (accepted settings S01 integration).
+The CI repair branch merges that source without altering its implementation. The
+only merge conflict was HANDOFF prose: both CI and current S01 status are retained;
+current S01 integration supersedes old prototype-only wording. PR diff remains
+CI/tests/packaging/documentation relative to the new base. Old green runs and the
+f5afac3 deep sample are explicitly older-baseline evidence; the merged candidate
+requires new actual PR checks and identities. Earlier f587e1a UI ZIP byte equality
+also belongs to the old baseline, not the newly integrated settings source.

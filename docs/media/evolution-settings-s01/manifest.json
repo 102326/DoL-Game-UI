@@ -1,0 +1,25 @@
+{
+  "scope": "Current actual settings source and production CSS; first-party mock page, no game/save data. Both videos retain original speed and all waiting; not a frozen old/new visual comparison or real-device acceptance.",
+  "files": {
+    "desktop.png": {
+      "bytes": 314811,
+      "sha256": "5c3d19de0376d41444ae666338520c960302840c157a83ce0fd26627c923676c"
+    },
+    "narrow.png": {
+      "bytes": 155561,
+      "sha256": "44b7c44fd61c2158e31d3d652fafe10689deacf31fb66c19d69bf5fb8fb70a84"
+    },
+    "desktop-1x.mp4": {
+      "bytes": 1180825,
+      "sha256": "bd12c92b75c7b802ba5f59e2ac09760ffd9b0422bf69c37cc99c020b4ab21820"
+    },
+    "narrow-1x.mp4": {
+      "bytes": 683338,
+      "sha256": "147856f078bdd81eaf85e363ab2e4522a263f6ef03e8e79f8caea32f6fe2e720"
+    },
+    "result.json": {
+      "bytes": 4491,
+      "sha256": "79ccc58b7824eda67c3fe87c44708236dda208109667a90fe28c88a2388a885e"
+    }
+  }
+}

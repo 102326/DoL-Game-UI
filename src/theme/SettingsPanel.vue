@@ -37,13 +37,28 @@ onMounted(()=>{
  // Do not change the observed layout inside ResizeObserver delivery, or reflow a closed dialog.
  const measure=()=>{const width=workspace.value?.offsetWidth??0;if(dialog?.open&&!dialog.hasAttribute('data-sf-leaving')&&width>0)workspaceWidth.value=width},schedule=()=>scope.frame(measure);
  if(workspace.value&&typeof ResizeObserver==='function'){const resize=new ResizeObserver(schedule);scope.own(()=>resize.disconnect());resize.observe(workspace.value)}
- if(dialog){const visibility=new MutationObserver(()=>{if(!dialog.open||dialog.hasAttribute('data-sf-leaving')){layoutRevision++;layoutMotion.cancel()}else schedule()});scope.own(()=>visibility.disconnect());visibility.observe(dialog,{attributes:true,attributeFilter:['open','data-sf-leaving']})}schedule();
+ if(dialog){const visibility=new MutationObserver(()=>{if(!dialog.open||dialog.hasAttribute('data-sf-leaving')){layoutRevision++;layoutMotion.cancel();motion.cancel()}else schedule()});scope.own(()=>visibility.disconnect());visibility.observe(dialog,{attributes:true,attributeFilter:['open','data-sf-leaving']})}schedule();
 });
 const motion=sourceMotion(),activeTransitions=new Set<symbol>();scope.own(()=>motion.dispose());let direction=1;
 function selectCategory(id:string){const item=categories.find(item=>item.id===id);if(!item||item.id===category.value)return;const next=item.id;const from=categories.findIndex(item=>item.id===category.value),to=categories.findIndex(item=>item.id===next);direction=to>=from?1:-1;layoutRevision++;layoutMotion.cancel();motion.cancel();category.value=next}
-function transitionTask(element:Element,frames:Keyframe[],done:()=>void){const token=Symbol();activeTransitions.add(token);const dialog=document.getElementById('dol-midnight-controls');dialog?.setAttribute('data-workspace-transition','');let complete=false;const finish=()=>{if(complete)return;complete=true;activeTransitions.delete(token);if(!activeTransitions.size)dialog?.removeAttribute('data-workspace-transition');done()};const animation=motion.animate(element as HTMLElement,frames,360);if(animation)void animation.finished.then(finish,finish);else finish()}
-function enterTask(element:Element,done:()=>void){element.removeAttribute('inert');element.removeAttribute('aria-hidden');transitionTask(element,[{transform:`translate(${direction*32}px,8px)`,opacity:0},{transform:'translate(0,0)',opacity:1}],done)}
-function leaveTask(element:Element,done:()=>void){element.setAttribute('inert','');element.setAttribute('aria-hidden','true');transitionTask(element,[{transform:'translate(0,0)',opacity:1},{transform:`translate(${-direction*20}px,0)`,opacity:0}],done)}
+function transitionTask(element:Element,frames:Keyframe[],done:()=>void){const token=Symbol();activeTransitions.add(token);const dialog=document.getElementById('dol-midnight-controls');dialog?.setAttribute('data-workspace-transition','');let complete=false;const finish=()=>{if(complete)return;complete=true;activeTransitions.delete(token);if(!activeTransitions.size)dialog?.removeAttribute('data-workspace-transition');done()};const animation=motion.animate(element as HTMLElement,frames,620);if(animation)void animation.finished.then(finish,finish);else finish()}
+function enterTask(element:Element,done:()=>void){
+ element.removeAttribute('inert');element.removeAttribute('aria-hidden');const origin=direction>0?'0% 0%':'100% 0%';
+ transitionTask(element,[
+  {transformOrigin:origin,transform:`translate3d(${direction*80}px,16px,-100px) rotateY(${-direction*24}deg) rotateX(7deg)`,opacity:0,clipPath:direction>0?'inset(0 96% 0 0 round 16px)':'inset(0 0 0 96% round 16px)'},
+  {clipPath:'inset(0 0% 0 0% round 0px)',offset:.55},
+  {transformOrigin:origin,transform:'translate3d(0,0,0) rotateY(0deg) rotateX(0deg)',opacity:1,clipPath:'inset(0 0% 0 0% round 0px)',offset:.78},
+  {transformOrigin:origin,transform:'translate3d(0,0,0) rotateY(0deg) rotateX(0deg)',opacity:1,clipPath:'inset(0 0% 0 0% round 0px)'}
+ ],done);
+}
+function leaveTask(element:Element,done:()=>void){
+ element.setAttribute('inert','');element.setAttribute('aria-hidden','true');const origin=direction>0?'100% 0%':'0% 0%';
+ transitionTask(element,[
+  {transformOrigin:origin,transform:'translate3d(0,0,0) rotateY(0deg)',opacity:1,filter:'blur(0px)'},
+  {transformOrigin:origin,transform:`translate3d(${direction*-45}px,0,-100px) rotateY(${direction*20}deg)`,opacity:0,filter:'blur(3px)'}
+ ],done);
+}
+function cancelTask(element:Element){motion.cancel(element as HTMLElement)}
 scope.own(()=>{activeTransitions.clear();document.getElementById('dol-midnight-controls')?.removeAttribute('data-workspace-transition')});
 onBeforeUnmount(()=>{layoutRevision++;scope.dispose()});
 function wardrobeChange(event:Event){const input=event.target as HTMLSelectElement;props.onWardrobe(input.value==='new');input.value=props.state.wardrobe?'new':'original'}
@@ -56,7 +71,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
  <div v-if="official" ref="workspace" class="dmt-controls-content dmt-workspace" :data-settings-layout="effectiveLayout" :data-settings-layout-choice="savedLayout">
   <SettingsNavigation :items="categories" :active="category" :layout="effectiveLayout" @select="selectCategory"/>
   <main class="dmt-workspace-page" :aria-label="categories.find(item=>item.id===category)?.label">
-   <Transition :css="false" @enter="enterTask" @leave="leaveTask">
+   <Transition :css="false" @enter="enterTask" @leave="leaveTask" @enter-cancelled="cancelTask" @leave-cancelled="cancelTask">
    <section v-if="category==='reading'" class="dmt-workspace-section dmt-workspace-reading" aria-labelledby="dmt-reading-heading">
     <div class="dmt-workspace-intro"><p class="dmt-eyebrow">阅读</p><h3 id="dmt-reading-heading">按自己的节奏阅读</h3><p>调整正文密度与常用控件大小，改动会立即生效并自动保存。</p></div>
     <div class="dmt-setting-card dmt-control-sheet dmt-reading-controls">

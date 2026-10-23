@@ -5,9 +5,9 @@ export function sourceMotion(){
  const media=window.matchMedia?.('(prefers-reduced-motion: reduce)');
  const enabled=()=>scope.active()&&!document.hidden&&!!media&&!media.matches&&document.documentElement.hasAttribute('data-dgu-visualMotion');
  function removeGhost(node:HTMLElement){if(ghosts.delete(node)){node.remove();if(focusGhost===node)focusGhost=undefined}}
- function animate(node:HTMLElement,frames:Keyframe[],duration=420){
+ function animate(node:HTMLElement,frames:Keyframe[],duration=420,easing='cubic-bezier(.16,1,.3,1)'){
   animations.get(node)?.cancel();animations.delete(node);if(!enabled()||typeof node.animate!=='function'){removeGhost(node);return}
-  try{const a=node.animate(frames,{duration,easing:'cubic-bezier(.16,1,.3,1)'});animations.set(node,a);
+  try{const a=node.animate(frames,{duration,easing});animations.set(node,a);
    void a.finished.catch(()=>{}).finally(()=>{if(animations.get(node)!==a)return;animations.delete(node);removeGhost(node)});return a;
   }catch{return}
  }

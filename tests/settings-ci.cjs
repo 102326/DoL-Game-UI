@@ -68,9 +68,9 @@ const {captureFailure}=require('./moody-fixture-evidence.cjs');
    for(const zoom of [.8,1,1.25]){
     await page.evaluate(zoom=>document.body.style.zoom=String(zoom),zoom);
     await page.waitForTimeout(150);
-    const geometry=await page.evaluate(()=>{const rect=s=>document.querySelector(s).getBoundingClientRect().toJSON();return {mask:rect('#dol-midnight-controls'),shell:rect('.dmt-settings-shell'),glass:rect('.dmt-settings-material')}});
+    const geometry=await page.evaluate(()=>{const rect=s=>document.querySelector(s).getBoundingClientRect().toJSON();return {mask:rect('#dol-midnight-controls'),shell:rect('.dmt-settings-shell'),proxies:document.querySelectorAll('.dmt-settings-context,.dmt-settings-material,.dmt-open-material').length}});
     for(const [key,value]of Object.entries({x:0,y:0,width:viewport.width,height:viewport.height}))assert.ok(Math.abs(geometry.mask[key]-value)<1,`global zoom ${zoom}: input shield ${key} must cover viewport`);
-    for(const key of ['x','y','width','height'])assert.ok(Math.abs(geometry.shell[key]-geometry.glass[key])<1,`global zoom ${zoom}: glass ${key} must match live shell`);
+    assert.equal(geometry.proxies,0,'accepted real shell must not retain duplicate material layers');
     assert.ok(geometry.shell.x>=0&&geometry.shell.y>=0&&geometry.shell.right<=viewport.width+1&&geometry.shell.bottom<=viewport.height+1,'zoomed shell stays within viewport');
     assert.equal(await page.evaluate(()=>document.elementFromPoint(innerWidth-1,innerHeight/2)===document.querySelector('#dol-midnight-controls')),true,'zoomed shield still receives input at viewport edge');
     const workspace=page.locator('.dmt-workspace');
@@ -95,10 +95,11 @@ const {captureFailure}=require('./moody-fixture-evidence.cjs');
   assert.equal(await page.locator('.dmt-workspace').getAttribute('data-settings-layout'),'horizontal');
   assert.equal(await page.evaluate(()=>theme.getPreferences().comfortable),true,'persisted preference is read on remount');
   const teardown=await page.evaluate(()=>{const mounted=settingsResources.stats();settingsResources.deliver();const queued=settingsResources.stats();theme.destroy();const disposed=settingsResources.stats();settingsResources.deliver();return{mounted,queued,disposed,late:settingsResources.stats()}});
+  teardown.integration=await require('./evolution-settings-integration.cjs').verifySettingsIntegration(browser);
   fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/settings-resources.json',JSON.stringify(teardown,null,2));
   assert.equal(teardown.mounted.workspaces,1);assert.ok(teardown.queued.frames>0,'teardown exercises an actually queued workspace measurement');
   assert.deepEqual(teardown.disposed,{frames:0,workspaces:0});assert.deepEqual(teardown.late,teardown.disposed,'late workspace observer cannot schedule work after unmount');assert.deepEqual(errors,[]);
   console.log('PASS real settings controller: dual layouts, long scroll, modal input boundary, keyboard preference, category interruption, persistence and cleanup; controlled browser fixture only');
- }catch(error){try{if(page)await captureFailure(page,{kind:'settings',error,snapshot:await settingsSnapshot(page)})}catch{console.error('Settings fixture evidence unavailable; retaining original failure')}throw error}
+ }catch(error){try{if(page&&!error.settingsIntegrationEvidence)await captureFailure(page,{kind:'settings',error,snapshot:await settingsSnapshot(page)})}catch{console.error('Settings fixture evidence unavailable; retaining original failure')}throw error}
  finally{await browser?.close();await server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

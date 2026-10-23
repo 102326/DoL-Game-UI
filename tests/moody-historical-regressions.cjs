@@ -55,9 +55,10 @@ async function combatPage(browser,server,{missingCSS=false}={}){
   await assert.rejects(()=>waitSettings(page,undefined,{timeout:150}),e=>e.code==='ERR_ASSERTION'&&e.message.startsWith('MOODY_SETTINGS_RESIDUAL:'));
   console.log(JSON.stringify({counterexample:'MOODY_SETTINGS_RESIDUAL',rejected:true}));await page.locator('[data-moody-residual]').evaluate(n=>n.remove());await waitSettings(page);
   // main Run39243023242: 450ms is not a completed-close contract.
+  // Normalize the injected slow completion to880ms even when approved production pacing changes.
   await page.evaluate(()=>{
    const animate=Element.prototype.animate;window.moodyCloseMode='slow';
-   Element.prototype.animate=function(...args){const a=animate.apply(this,args);if(this.matches('.dmt-settings-shell')&&this.closest('[data-sf-leaving]')){window.moodyCloseStarted=performance.now();if(moodyCloseMode==='slow')a.updatePlaybackRate(.25);else if(moodyCloseMode==='stuck')a.pause()}return a};
+   Element.prototype.animate=function(...args){const a=animate.apply(this,args);if(this.matches('.dmt-settings-shell')&&this.closest('[data-sf-leaving]')){window.moodyCloseStarted=performance.now();if(moodyCloseMode==='slow')a.updatePlaybackRate(Number(a.effect.getTiming().duration)/880);else if(moodyCloseMode==='stuck')a.pause()}return a};
   });
   await page.locator('.dmt-close').click();
   await page.waitForFunction(()=>performance.now()-moodyCloseStarted>=450&&document.querySelector('#dol-midnight-controls')?.open&&document.querySelector('#dol-midnight-controls[data-sf-leaving]'));
