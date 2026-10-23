@@ -56,6 +56,8 @@ const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
    const data=JSON.parse(bytes);mutation(data);writeJson(rawFile,data);specimen.artifacts[0].sha256=hash(fs.readFileSync(rawFile));save();assert.notEqual(summary().status,'PASS','missing/duplicate cases rejected even with updated hash');
   }
   fs.writeFileSync(rawFile,bytes);specimen.artifacts[0].sha256=hash(bytes);save();assert.equal(summary().status,'PASS');
+  const hubSpec=plan.find(c=>c.id==='golden-spin-hub-input').report;
+  assert.deepEqual(caseIds(hubSpec,{checks:hubSpec.expected,errors:[],baseline:false,revision:'working tree'},ctx),hubSpec.expected,'existing Hub input schema does not require prose metadata');
   const source=path.join(dir,'tests/artifacts/golden-spin-b/sphere-validation-123/result.json');writeJson(source,JSON.parse(bytes));
   assert.throws(()=>recordReport(ctx,plan.find(c=>c.id==='golden-spin-b'),new Map([[source,stamp(source)]])),/fresh required report/,'stale source cannot be rebound as this run');
   // A dist file alone cannot substitute for any structured report.

@@ -37,6 +37,11 @@ and unsupported Core, actual Core arrival, master toggles, structure drift, dest
 reinjection and independent rebinding. Windows uses Edge; other platforms use pinned
 Chromium through browser-options.cjs.
 
+The mutation controls exposed two ineffective old checks: serialized JSON escapes
+quotes, so privacy now checks the unredacted `data-proof=` marker; a full 32-event
+buffer can hide replacement events behind an unchanged length, so stable rescan
+also compares the complete event sequence. Both checks retain their original intent.
+
 ## 3. Evidence and retention
 
 Standard: required identity, stages, unit/browser, layout coverage, package report and
@@ -71,6 +76,14 @@ removes the latter coupling.
 - Exact final commit, PR head/merge SHA, actual trigger, attempts, run URLs, timings,
   cold/deep scope and delivery-index checks are recorded with the final CI delivery.
   Never reuse this baseline's manual green to certify a later PR.
+- First research push [39892539509](https://github.com/102326/DoL-Game-UI/actions/runs/39892539509)
+  at b30cac9 rejected the existing Hub input report because the new validator
+  incorrectly required optional prose metadata. The repair keeps mandatory checks,
+  errors, source identity and hash; a regression covers the actual prose-free
+  Hub schema. Subsequent blocked checks in that run are not counted as passing.
+- The first local research trial was deliberately cancelled (143/PARTIAL) to fix
+  a reviewer-proven directory symlink escape before upload. Source and ancestor
+  symlinks are now rejected before copying; both precise escape controls pass.
 
 ## 5. Scope limits
 

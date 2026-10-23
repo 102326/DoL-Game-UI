@@ -63,7 +63,7 @@ function stamp(file) { const s = fs.statSync(file); return `${s.mtimeMs}:${s.cti
 function caseIds(spec, data, ctx) {
   if (data?.errors?.length || data?.baseline === true || data?.record === true) throw Error('Report contains errors or an unexpected baseline/record mode');
   if ((data.sourceHead && data.sourceHead !== ctx.identity.source.head) || (data.identity?.head && data.identity.head !== ctx.identity.source.head)) throw Error('Raw report source identity mismatch');
-  if (spec.field === 'checks' && (!Array.isArray(data.errors) || ![data.scope,data.coverage,data.stage].some(v=>typeof v === 'string' && v.length))) throw Error('Incomplete named-check report structure');
+  if (spec.field === 'checks' && !Array.isArray(data.errors)) throw Error('Incomplete named-check report structure');
   let ids;
   if (spec.shape === 'inventory') {
     if (data.schema !== 1 || data.sourceBase !== ctx.identity.source.head || !Array.isArray(data.consumers) || !data.consumers.length) throw Error('Incomplete inventory/source identity');
