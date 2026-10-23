@@ -42,4 +42,4 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),{build}=require
   assert.deepEqual(result.arrivals,['latest','peer','peer-again','other-node']);assert.deepEqual(result.final,{frames:0,observers:0,listeners:0});assert.deepEqual(errors,[]);
   console.log('PASS sourceMotion: cancelled and disposed deliveries stay dead, peer/node isolation, detached target, proxy/listener/observer/frame cleanup');
  }finally{await browser.close()}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

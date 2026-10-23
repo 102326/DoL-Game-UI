@@ -36,7 +36,7 @@ if(needsGame)required.push(path.join(workspace,variant==='lyra'?'upstream/game-0
 const steps=[{name:'build',command:process.execPath,args:[process.env.npm_execpath||path.join(path.dirname(process.execPath),'node_modules/npm/bin/npm-cli.js'),'run','build']}];
 steps.push({name:'unit',command:process.execPath,args:[path.join(root,'scripts/test-unit.cjs')]});
 steps.push(...tests.map(name=>({name,command:process.execPath,args:[path.join(root,'tests',name)]})));
-const plan={mode,variant,tests,steps:steps.map(s=>s.name),required,missing:required.filter(p=>!fs.existsSync(p)),scope:'Isolated desktop tests only; no ADB, user saves, install or publication'};
+const plan={mode,variant,tests,steps:steps.map(s=>s.name),required,missing:required.filter(p=>!fs.existsSync(p)),classification:'historical-specialized',scope:'Historical 2.7 / game 0.5.11.9 desktop matrix; not current official paired-package acceptance. No ADB, user saves, install or publication'};
 if(planOnly){console.log(JSON.stringify(plan,null,2));process.exit(0)}
 if(plan.missing.length)throw Error('Missing test resources (no tests started): '+plan.missing.join(', '));
 const out=path.join(root,'tests/artifacts');fs.mkdirSync(out,{recursive:true});

@@ -8,7 +8,7 @@ const packageResult = spawnSync('python', ['scripts/package.py'], { cwd: root, e
 if (packageResult.error) throw packageResult.error;
 if (packageResult.status !== 0) throw new Error(packageResult.stderr || 'integrated package generation failed');
 
-const packagePath = path.join(root, 'dist', `DoL-SoftWet-GameUI-${JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version}.mod.zip`);
+const packagePath = path.join(root, 'dist/framework', `DoLGameUI-${JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version}.mod.zip`);
 const inspector = String.raw`import json, pathlib, sys, zipfile
 root = pathlib.Path(sys.argv[1])
 package_path = pathlib.Path(sys.argv[2])
@@ -21,12 +21,12 @@ expected_files = [
 with zipfile.ZipFile(package_path) as archive:
     boot = json.loads(archive.read('boot.json'))
     assert boot['name'] == 'DoLGameUI', 'stable loader identity must not change'
-    assert boot['nickName'] == 'DoL Soft & Wet Game UI', 'display name missing'
+    assert boot['nickName'] == 'Soft & Wet 3.0 — Kraft Work', 'display name missing'
     assert not any(name.startswith('docs/audits/') for name in archive.namelist()), 'acceptance receipts belong in the repository'
     assert not {'docs/VALIDATION.md', 'docs/DEVELOPMENT.md', 'docs/TYPESCRIPT_2.2.md', 'docs/UI_INFRASTRUCTURE.md', 'docs/UI_RUNTIME.md'}.intersection(archive.namelist()), 'developer documents must not be bundled with the player package'
     integrated = next(item for item in boot['addonPlugin'] if item['modName'] == 'TweeReplacer')['params']
     assert boot['scriptFileList_inject_early'] == ['shop-page-experiment.js'], 'only the supported shop early script should be shipped'
-    assert 'game-ui.js' in boot['scriptFileList'], 'game UI runtime missing'
+    assert 'index.js' in boot['scriptFileList'], 'game UI runtime missing'
     assert any(item['modName'] == 'TweeReplacer' and item['version'] == '>=1.0.0' for item in boot['dependenceInfo']), 'TweeReplacer dependency missing'
     assert len(integrated) == 4, f'expected four integrated shop patches, got {len(integrated)}'
     assert [item['replaceFile'] for item in integrated] == expected_files, 'patch order or file list changed'

@@ -31,9 +31,12 @@ const server=http.createServer((q,r)=>{const p=new URL(q.url,'http://local').pat
   await at(14000,'steady rain',()=>page.screenshot({path:path.join(out,candidate+'-rain.png')}));const rain=await page.evaluate(()=>weatherStudy.snapshot());if(candidate!=='v1')assert.deepEqual(await page.locator('.dmt-reading-sample').screenshot(),reading);
   let bottomWitness=null;
   if(runoff&&!record){
-   await page.waitForFunction(()=>window.currentEdge!==null,null,{timeout:50000});await page.getByRole('button',{name:'静止观察',exact:true}).click();
-   bottomWitness=await page.evaluate(()=>({edge:currentEdge,drained:weatherStudy.snapshot().runoffDrained}));assert.ok(bottomWitness.edge);
+   // Freeze with the actual pause control in the same browser task that sees the
+   // crossing. A protocol round trip can otherwise let the drop leave the edge.
+   await page.waitForFunction(()=>{if(!window.currentEdge)return false;document.querySelector('[data-pause]').click();window.bottomWitness={edge:{...currentEdge},drained:weatherStudy.snapshot().runoffDrained};return weatherStudy.snapshot().paused},null,{timeout:50000});
+   bottomWitness=await page.evaluate(()=>window.bottomWitness);assert.ok(bottomWitness.edge);
    const selector=`.evo-glass-drop[data-drop-id="${bottomWitness.edge.id}"]`;
+   assert.equal(await page.locator(selector).evaluate(n=>{const r=n.getBoundingClientRect(),edge=document.querySelector('.evo-glass-layer').getBoundingClientRect();return weatherStudy.snapshot().paused&&r.top<edge.bottom-2&&r.bottom>edge.bottom+2}),true,'paused witness still crosses the actual bottom edge');
    const visible=await page.locator('.dmt-settings-shell').screenshot();await page.locator(selector).evaluate(n=>n.style.visibility='hidden');const hidden=await page.locator('.dmt-settings-shell').screenshot();assert.notDeepEqual(visible,hidden,'partially clipped drop must still change actual pixels at the bottom');await page.locator(selector).evaluate(n=>n.style.visibility='');fs.writeFileSync(path.join(out,'runoff-bottom-visible.png'),visible);fs.writeFileSync(path.join(out,'runoff-bottom-hidden.png'),hidden);
    await assertActualProtection(page);await page.getByRole('button',{name:'继续动态',exact:true}).click();
    await page.waitForFunction(({id,drained})=>!weatherStudy.snapshot().drops.some(d=>d.id===id)&&weatherStudy.snapshot().runoffDrained>drained,{id:bottomWitness.edge.id,drained:bottomWitness.drained},{timeout:10000});
@@ -65,4 +68,4 @@ const server=http.createServer((q,r)=>{const p=new URL(q.url,'http://local').pat
  const files=cp.execFileSync('git',['ls-files','--cached','--others','--exclude-standard','src/ui/weather','prototypes/evolution-weather','tests/evolution-rain-glass.cjs','tests/evolution-rain-model.test.cjs','vite.evolution-weather.config.ts'],{encoding:'utf8'}).trim().split('\n');
  fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({record,naturalTrails:natural,runoff,scope:'Controlled native SVG displacement / settings. Record compares identical fixture/viewport/operation at 1x; smoke uses quarter timeline. Visual acceptance belongs to owner; no physical optics claim.',runtime:{node:process.version,platform:process.platform,chromium:browser.version()},results,hashes:Object.fromEntries(files.map(f=>[f,crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex')]))},null,2));console.log('Evidence',out);
  }catch(e){try{await page?.screenshot({path:path.join(out,'failure.png')})}catch{}fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:e.stack,results},null,2));throw e}finally{await context?.close();await browser?.close();await new Promise(r=>server.close(r))}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

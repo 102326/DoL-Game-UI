@@ -105,4 +105,4 @@ const {captureFailure}=require('./moody-fixture-evidence.cjs');
   console.log('PASS real settings controller: dual layouts, long scroll, modal input boundary, keyboard preference, category interruption, persistence and cleanup; controlled browser fixture only');
  }catch(error){try{if(page&&!error.settingsIntegrationEvidence)await captureFailure(page,{kind:'settings',error,snapshot:await settingsSnapshot(page)})}catch{console.error('Settings fixture evidence unavailable; retaining original failure')}throw error}
  finally{await browser?.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

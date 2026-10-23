@@ -264,4 +264,4 @@ async function check(name, callback) {await callback();tests.push(name);console.
   assert.deepEqual(sampleErrors,[]);await p.close();
   fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'passed',environment:'Headless Chromium / browser fixture, not Android',tests},null,2));console.log('OUTPUT',output);
  } finally {await browser.close()}
-})().catch(e=>{fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({status:'failed',tests,error:e.message},null,2));console.error(e);process.exitCode=1});
+})().catch(e=>{fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({status:'failed',tests,error:e.message},null,2));require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

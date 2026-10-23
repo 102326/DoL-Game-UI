@@ -24,4 +24,4 @@ const server=http.createServer((q,r)=>{const url=new URL(q.url,'http://local'),f
  const hashes=Object.fromEntries(files.map(f=>[f,crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex')]));
  fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({scope:'Controlled actual settings component; first visual candidate, short W4 observation only, not long-term/device/game acceptance',checks,snapshots,errors,hashes,enduranceMs:Number(process.env.EVO_WEATHER_ENDURANCE_MS||1200),runtime:{platform:process.platform,node:process.version,chromium:browser.version()}},null,2));console.log('PASS EVO-V1',checks.length,'groups; evidence',out);
  }finally{await context?.close();await browser?.close();await new Promise(resolve=>server.close(resolve))}
-})().catch(e=>{console.error(e);fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:e.stack},null,2));process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:e.stack},null,2));process.exitCode=1});

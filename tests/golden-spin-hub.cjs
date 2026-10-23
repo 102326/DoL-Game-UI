@@ -58,4 +58,4 @@ const reverseHub=require('./hub-reversal-probe.cjs');
   assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({checks,errors,coverage:'standalone real MotionHub; simulated tool contents; controlled Edge/CI Chromium',visualAcceptance:'full Hub pending'},null,2));
  }catch(e){if(p)await p.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:e.stack,checks,errors,state:p?await p.evaluate(()=>window.goldenSpinLab?.controller?.inspect()).catch(()=>null):null},null,2));throw e}
  finally{await browser.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

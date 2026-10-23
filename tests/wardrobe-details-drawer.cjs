@@ -56,4 +56,4 @@ const bundle=buildSync({entryPoints:[path.join(__dirname,'../src/wardrobe/extras
   assert.equal(await page.locator('dialog[open]').count(),0);
   console.log('PASS drawer blocks background input, preserves native node/handler/open state across button, Escape, backdrop, signature refresh and teardown; unsupported dialog keeps native accordion behavior.');
  }finally{await browser.close()}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

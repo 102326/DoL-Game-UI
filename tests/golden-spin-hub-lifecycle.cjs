@@ -19,4 +19,4 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
  });
  const files=['src/ui/golden-spin/hub-motion.ts','src/ui/golden-spin/sphere.ts','src/ui/golden-spin/hub.css','prototypes/golden-spin-b/hub-motion.ts','prototypes/golden-spin-b/sphere.ts','framework/motion-hub/MotionHub.vue','tests/golden-spin-hub-lifecycle.cjs'];const identity={head:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),baseline:baseline?revision:null,workingTree:!baseline,runtime:{node:process.version,platform:process.platform,chromium:browser.version()},hashes:Object.fromEntries(files.map(f=>[f,crypto.createHash('sha256').update(baseline&&frozen[path.basename(f)]?frozen[path.basename(f)]:fs.readFileSync(f)).digest('hex')]))};fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({identity,results},null,2));console.log('Evidence',out);assert.ok(results.every(r=>r.status==='PASS'),'lifecycle checks failed');
  }finally{await browser.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

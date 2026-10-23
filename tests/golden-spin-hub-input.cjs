@@ -72,4 +72,4 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
   assert.deepEqual(evidence.errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(evidence,null,2));console.log('Evidence',out);
  }catch(e){evidence.failure=e.stack;evidence.state=p?await p.evaluate(()=>window.goldenSpinLab?.controller?.inspect()).catch(()=>null):null;if(p)await p.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify(evidence,null,2));console.error('Evidence',out);throw e}
  finally{await browser.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

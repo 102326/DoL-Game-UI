@@ -30,4 +30,4 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),http
   await page.evaluate(()=>StoneFree_official_ui.dispose());assert.equal(await page.locator('[data-sf-owner=SoftWetOfficialUI]').count(),0);assert.deepEqual(errors,[]);
   console.log('PASS built official package fresh defaults: visible Hub, animated flat combat, B focus off; persisted opt-outs and native restoration on restart; controlled fixture only');
  }finally{await browser?.close();await new Promise(resolve=>server.close(resolve))}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

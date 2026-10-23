@@ -2,32 +2,35 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { classify, overall, runCommand, summarize, prepareUpload, writeJson, stages, suites, requiredPackages } = require('../scripts/ci-evidence.cjs');
+const { classify, overall, runCommand, summarize, prepareUpload, finalizeUpload, validateUpload, writeJson, stages, suites, requiredPackages } = require('../scripts/ci-evidence.cjs');
 const { runSuite } = require('../scripts/test-ci.cjs');
 const { captureFailure, writeLayoutReport } = require('./moody-fixture-evidence.cjs');
+const {catalogFor,catalogIdentity,checkpoints,nodeTestCases}=require('../scripts/ci-catalog.cjs');
 const { root } = require('../scripts/ci-evidence.cjs');
 
 (async () => {
   assert.equal(classify({ code: 0 }), 'PASS');
   assert.equal(classify({ code: null }), 'UNVERIFIED');
-  assert.equal(classify({ code: 0, timedOut: true }), 'FAIL');
-  assert.equal(classify({ code: 0, cancelled: true }), 'PARTIAL');
+  assert.equal(classify({ code: 0, timedOut: true }), 'ERROR');
+  assert.equal(classify({ code: 0, cancelled: true }), 'CANCELLED');
   assert.equal(overall([]), 'UNVERIFIED');
-  assert.equal(overall(['PASS', 'BLOCKED']), 'PARTIAL');
+  assert.equal(overall(['PASS', 'UNVERIFIED']), 'UNVERIFIED');
   assert.equal(overall(['PASS', 'FAIL']), 'FAIL');
 
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'moody-evidence-'));
-  const ctx = { dir, root: dir, identity: { source: { head: 'fixture', contentSha256: 'fixture' }, run: { id: 'fixture', attempt: '1' } } };
+  const ctx = { dir, root: dir, identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'fixture', contentSha256: 'fixture' }, run: { id: 'fixture', attempt: '1' } } };
   try {
+    writeJson(path.join(dir,'catalog.json'),{schema:1,identity:ctx.identity,catalog:catalogFor()});
+    for(const [entry,reached]of Object.entries(checkpoints))writeJson(path.join(dir,'fixtures',entry,'checkpoints.json'),{schema:1,identity:ctx.identity,entry,reached});
     const execute = (code, extra = {}) => runCommand(process.execPath, ['-e', code], { cwd: dir, log: path.join(dir, 'process.log'), quiet: true, timeoutMs: 5000, ...extra });
     assert.equal((await execute('console.log("executed")')).status, 'PASS');
     const failed = await execute('console.error("controlled assertion");process.exit(7)');
-    assert.equal(failed.status, 'FAIL');
+    assert.equal(failed.status, 'ERROR');
     assert.equal(failed.exitCode, 7);
     assert.match(fs.readFileSync(path.join(dir, 'process.log'), 'utf8'), /controlled assertion/);
     const timeout = await execute('setInterval(()=>{},1000)', { timeoutMs: 100 });
     assert.equal(timeout.rawStatus, 'timeout');
-    assert.equal(timeout.status, 'FAIL');
+    assert.equal(timeout.status, 'ERROR');
     const controller = new AbortController();
     const cancelled = execute('setInterval(()=>{},1000)', { signal: controller.signal });
     setTimeout(() => controller.abort(), 100);
@@ -37,44 +40,44 @@ const { root } = require('../scripts/ci-evidence.cjs');
     assert.ok(fs.statSync(path.join(dir, 'process.log')).size <= 65536);
 
     fs.mkdirSync(path.join(dir, 'tests'));
-    for (const [name, source] of Object.entries({ 'pass.cjs': 'console.log("controlled pass")', 'fail.cjs': 'process.exit(7)', 'slow.cjs': 'setInterval(()=>{},1000)', 'blocked.cjs': 'throw Error("must never run")' })) fs.writeFileSync(path.join(dir, 'tests', name), source);
+    for (const [name, source] of Object.entries({ 'pass.cjs': 'require("node:assert/strict").equal(1,1);console.log("controlled pass")', 'fail.cjs': 'process.exit(7)', 'slow.cjs': 'setInterval(()=>{},1000)', 'blocked.cjs': 'throw Error("must never run")' })) fs.writeFileSync(path.join(dir, 'tests', name), source);
     const suite = await runSuite(ctx, 'unit', ['pass.cjs', 'fail.cjs', 'blocked.cjs'], { quiet: true });
-    assert.equal(suite.status, 'FAIL');
-    assert.deepEqual(suite.results.map(r => r.status), ['PASS', 'FAIL', 'BLOCKED']);
+    assert.equal(suite.status, 'ERROR');
+    assert.deepEqual(suite.results.map(r => r.status), ['PASS', 'ERROR', 'UNVERIFIED']);
     assert.equal(suite.results[2].rawStatus, 'not-run');
     assert.ok(!fs.existsSync(path.join(dir, 'unit/blocked.cjs.log')));
     const abortSuite = new AbortController();
     const pendingSuite = runSuite(ctx, 'unit', ['slow.cjs', 'blocked.cjs'], { signal: abortSuite.signal, quiet: true });
     const checkpoint = JSON.parse(fs.readFileSync(path.join(dir, 'unit.json')));
-    assert.equal(checkpoint.status, 'PARTIAL');
+    assert.equal(checkpoint.status, 'CANCELLED');
     assert.equal(checkpoint.results[0].rawStatus, 'running');
     abortSuite.abort();
     const interruptedSuite = await pendingSuite;
-    assert.equal(interruptedSuite.status, 'PARTIAL');
+    assert.equal(interruptedSuite.status, 'CANCELLED');
     assert.equal(interruptedSuite.results[0].rawStatus, 'cancelled');
-    assert.equal(interruptedSuite.results[1].status, 'BLOCKED');
+    assert.equal(interruptedSuite.results[1].status, 'CANCELLED');
 
     // A green GitHub step without the matching result is not verification.
     let summary = summarize(ctx, Object.fromEntries(stages.map(s => [s.id, { outcome: 'success' }])));
     assert.notEqual(summary.status, 'PASS');
     assert.equal(summary.results.find(r => r.name === 'check').status, 'UNVERIFIED');
     for (const s of stages) {
-      writeJson(path.join(dir, `stage-${s.id}.json`), { identity: ctx.identity, name: s.id, status: 'PASS', rawStatus: 'passed', exitCode: 0, milliseconds: 1 });
+      writeJson(path.join(dir, `stage-${s.id}.json`), { schema: 1, identity: ctx.identity, name: s.id, status: 'PASS', rawStatus:'passed',assertions:1,exitCode:0, milliseconds: 1 });
     }
     summary = summarize(ctx, {});
     assert.notEqual(summary.status, 'PASS', 'missing required suite reports cannot pass');
     for (const suite of ['unit', 'browser']) {
-      writeJson(path.join(dir, `${suite}.json`), { identity: ctx.identity, suite, status: 'PASS', expected: suites[suite], results: suites[suite].map(name => ({ name, status: 'PASS', rawStatus: 'passed', exitCode: 0, milliseconds: 1 })) });
+      writeJson(path.join(dir, `${suite}.json`), { schema: 1, identity: ctx.identity, suite, status: 'PASS', expected: suites[suite], results: suites[suite].map(name => ({name,nodeTests:nodeTestCases[name]?.map(n=>({id:name+'::'+n,status:'PASS'})),status:'PASS', rawStatus:'passed',assertions:1,exitCode:0, milliseconds: 1 })) });
     }
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED', 'device file exit 0 alone cannot establish coverage');
     const layoutPath = path.join(dir, 'fixtures/device-layouts.cjs/layout-report.json');
-    const layout = { identity: ctx.identity, status: 'PASS', depth: 'standard', results: require('./device-layouts.cjs').expectedCaseIds('standard').map(id => ({ id, status: 'PASS' })) };
+    const layout = { schema: 1, identity: ctx.identity, status: 'PASS', depth: 'standard', results: require('./device-layouts.cjs').expectedCaseIds('standard').map(id => ({ id, status: 'PASS' })) };
     writeJson(layoutPath, layout);
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'package command exit 0 alone cannot establish eight-package coverage');
     const contracts = requiredPackages.map(name => ({ name, file: name + '.zip', sha256: 'a'.repeat(64), status: 'PASS', members: { 'LICENSE': 'b'.repeat(64), 'boot.json': 'c'.repeat(64) } }));
     const negativePlan = ['test_rejects_broken_packages', 'test_ignores_source_mtime_and_permissions', 'test_rejects_mismatches_in_independent_sources', 'test_all_six_positive_and_precise_mutations', 'test_joint_manifest_corruption_and_incomplete_compilation', 'test_metadata_drift_and_comparison_diagnostics', 'test_stale_incomplete_receipts_and_report_limit'].map(name => 'controlled.' + name);
     const snapshots = contracts.map(p => ({ file: p.file, sha256: p.sha256, archiveComment: '', members: Object.entries(p.members).map(([name, sha256]) => ({ name, sha256, compressedSha256: 'd'.repeat(64), metadata: { date_time: [2026,1,1,0,0,0], compress_type: 8, create_system: 3, create_version: 20, extract_version: 20, flag_bits: 0, internal_attr: 0, external_attr: 0o600 << 16, file_size: 1, compress_size: 3, CRC: 1, header_offset: 0, extra: '', comment: '' } })) }));
-    const packageReport = { kind: 'package-contracts', identity: ctx.identity, status: 'PASS', versionSources: { status: 'PASS' },
+    const packageReport = { schema: 1, kind: 'package-contracts', identity: ctx.identity, status: 'PASS', versionSources: { status: 'PASS' },
       expectedPackages: requiredPackages, contracts, reproducibility: { status: 'PASS', differences: [] },
       negativeTests: { status: 'PASS', plan: negativePlan, testsRun: negativePlan.length, failures: 0, errors: 0, skipped: 0, expectedFailures: 0, unexpectedSuccesses: 0 },
       builds: ['first','second'].map(invocation => ({ receipt: { invocation, source: ctx.identity.source, runId: ctx.identity.run.id, packages: contracts }, snapshots })) };
@@ -96,13 +99,44 @@ const { root } = require('../scripts/ci-evidence.cjs');
     }
     for (const malformed of [{ contracts: {} }, { contracts: [null] }, { builds: { length: 2 } },
       { builds: [null, null] }, { builds: [{ receipt: { invocation: 'bad', packages: [null] } }, null] },
-      { identity: { source: { head: 'stale' } } }]) {
+      { identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } } }]) {
       writeJson(packageFile, { ...packageReport, ...malformed });
       assert.equal(summarize(ctx, {}).results.find(r => r.name === 'packages').status, 'UNVERIFIED', 'malformed or stale package evidence cannot crash or pass');
     }
     writeJson(packageFile, packageReport);
     summary = summarize(ctx, { checkout: { outcome: 'success' }, node: { outcome: 'success' }, python: { outcome: 'success' } });
     assert.equal(summary.status, 'PASS');
+    // E2: individually valid stage files can produce an oversize whole summary.
+    const setup = { checkout: { outcome: 'success' }, node: { outcome: 'success' }, python: { outcome: 'success' } };
+    writeJson(path.join(dir, 'identity.json'), { schema: 1, identity: ctx.identity });
+    for (const stage of stages) {
+      const file = path.join(dir, `stage-${stage.id}.json`);
+      const record = JSON.parse(fs.readFileSync(file));
+      writeJson(file, { ...record, padding: 'x'.repeat(45000) });
+    }
+    const compactSummary=summarize(ctx,setup);assert.ok(Buffer.byteLength(JSON.stringify(compactSummary))<32768,'summary stays compact despite stage detail growth');
+    const largeSummary={...compactSummary,padding:'x'.repeat(303061)};
+    assert.equal(largeSummary.status, 'PASS', 'original checks really passed');
+    assert.ok(Buffer.byteLength(JSON.stringify(largeSummary)) > 262144);
+    writeJson(path.join(dir, 'summary.json'), largeSummary);
+    const originalUpload = prepareUpload(ctx);
+    assert.ok(originalUpload.omitted.some(p => p.file === 'summary.json'));
+    console.log('REPRO E2: summary=PASS, required summary.json omitted by original upload preparation');
+    fs.rmSync(path.join(dir, 'upload'), { recursive: true });
+    const delivery = finalizeUpload(ctx, largeSummary);
+    assert.equal(delivery.status, 'UNVERIFIED', 'omitted required summary cannot certify delivery');
+    assert.ok(delivery.problems.some(p => p.file === 'summary.json'));
+    for (const stage of stages) {
+      const file = path.join(dir, `stage-${stage.id}.json`);
+      const record = JSON.parse(fs.readFileSync(file)); delete record.padding; writeJson(file, record);
+    }
+    fs.rmSync(path.join(dir, 'upload'), { recursive: true });
+    const complete = finalizeUpload(ctx, summarize(ctx, setup));
+    assert.equal(complete.status, 'PASS');
+    const uploadedSummary = path.join(dir, 'upload/summary.json');
+    fs.appendFileSync(uploadedSummary, ' ');
+    assert.ok(validateUpload(ctx).some(p => p.file === 'summary.json' && /hash/.test(p.reason)));
+    fs.rmSync(path.join(dir, 'upload'), { recursive: true });
     writeJson(layoutPath, { ...layout, results: layout.results.slice(1) });
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED', 'missing device/scan case cannot pass');
     writeJson(layoutPath, { ...layout, depth: 'deep' });
@@ -113,10 +147,10 @@ const { root } = require('../scripts/ci-evidence.cjs');
     writeJson(browserFile, { ...fullBrowser, results: fullBrowser.results.slice(1) });
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'browser').status, 'UNVERIFIED');
     writeJson(browserFile, fullBrowser);
-    assert.equal(summarize(ctx, { browser: { outcome: 'cancelled' } }).results.find(r => r.name === 'browser').status, 'PARTIAL');
-    writeJson(path.join(dir, 'stage-check.json'), { identity: { source: { head: 'stale' } }, name: 'check', status: 'PASS', exitCode: 0 });
+    assert.equal(summarize(ctx, { browser: { outcome: 'cancelled' } }).results.find(r => r.name === 'browser').status, 'CANCELLED');
+    writeJson(path.join(dir, 'stage-check.json'), { identity: {profile:'standard',catalog:catalogIdentity(),source: { head: 'stale' } }, name: 'check', status: 'PASS', exitCode: 0 });
     assert.equal(summarize(ctx, {}).results.find(r => r.name === 'check').status, 'UNVERIFIED', 'stale report cannot pass');
-    assert.equal(summarize(ctx, { build: { outcome: 'skipped' } }).results.find(r => r.name === 'build').status, 'BLOCKED');
+    assert.equal(summarize(ctx, { build: { outcome: 'skipped' } }).results.find(r => r.name === 'build').status, 'UNVERIFIED');
 
     // Artifact publishing never sweeps arbitrary fixture outputs, symlinks or saves.
     fs.writeFileSync(path.join(dir, 'private.save'), 'never upload');
@@ -167,4 +201,4 @@ const { root } = require('../scripts/ci-evidence.cjs');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
-})().catch(error => { console.error(error); process.exitCode = 1; });
+})().catch(error => { require('../scripts/ci-process-receipt.cjs').terminalFailure(error); process.exitCode = 1; });

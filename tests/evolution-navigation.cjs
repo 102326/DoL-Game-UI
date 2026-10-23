@@ -51,4 +51,4 @@ const {chromium}=require('playwright');
   assert.equal(r.shared.implementation,'native-overlay-navigation/v1');assert.equal(r.shared.mountContract,'navigation-mount/v1');assert.equal(r.finalNodes,0);assert.deepEqual(errors,[]);console.log('PASS EVO-A1',kind);await page.close();
  }
  }finally{await browser?.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});
