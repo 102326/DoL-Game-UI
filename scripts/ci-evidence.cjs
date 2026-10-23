@@ -149,6 +149,8 @@ function resultStatus(result, execution=result?.execution||'contract') {
   const receipt=result?.terminalReceipt;
   if (!receipt?.terminal) return result?.status||'UNVERIFIED';
   if (receipt.schema!==1 || !result.executionId || receipt.executionId!==result.executionId || !Number.isSafeInteger(result.pid) || receipt.pid!==result.pid) return 'UNVERIFIED';
+  if (result.rawStatus==='cancelled') return 'CANCELLED';
+  if (['timeout','spawn-error','signal'].includes(result.rawStatus)) return 'ERROR';
   const assertion=execution==='contract' && receipt.kind==='assertion' && receipt.code==='ERR_ASSERTION' && receipt.name==='AssertionError';
   return overall([result.status||'UNVERIFIED', assertion?'FAIL':'ERROR']);
 }

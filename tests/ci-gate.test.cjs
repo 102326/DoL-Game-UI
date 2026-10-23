@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const {fixture}=require('./ci-fixtures.cjs');
-const {summarize,finalizeUpload,verifyRemote,hash,writeJson,runCommand}=require('../scripts/ci-evidence.cjs');
+const {summarize,finalizeUpload,verifyRemote,hash,writeJson,runCommand,resultStatus}=require('../scripts/ci-evidence.cjs');
 const {catalogFor,suites}=require('../scripts/ci-catalog.cjs');
 const {forbiddenJs,forbiddenWorkflow,checkSourcePolicy}=require('../scripts/ci-source-policy.cjs');
 const setup={checkout:{outcome:'success'},node:{outcome:'success'},python:{outcome:'success'}};
@@ -29,7 +29,13 @@ const setup={checkout:{outcome:'success'},node:{outcome:'success'},python:{outco
   assert.equal(terminalInfra.exitCode,0);assert.equal(terminalInfra.status,'ERROR');
   const caught=await execute(`try{require('node:assert/strict').fail('expected caught assertion')}catch(e){console.error(e)}`);assert.equal(caught.status,'PASS');
   const toolTerminal=await runCommand(process.execPath,['-e',`try{require('node:assert/strict').fail('compiler internal assertion')}catch(e){require(${receiptHelper}).terminalFailure(e)}`],{cwd:dir,log:path.join(dir,'tool-terminal.log'),quiet:true,execution:'tool'});assert.equal(toolTerminal.status,'ERROR');assert.equal(toolTerminal.exitCode,0);
-  for(const [outcome,status]of [[terminalAssert,'FAIL'],[terminalInfra,'ERROR']]){
+  const lingering=`try{require('node:assert/strict').fail('terminal before interruption')}catch(e){require(${receiptHelper}).terminalFailure(e)}setInterval(()=>{},1000)`;
+  const timedTerminal=await runCommand(process.execPath,['-e',lingering],{cwd:dir,log:path.join(dir,'terminal-timeout.log'),quiet:true,timeoutMs:500});assert.equal(timedTerminal.terminalReceipt.terminal,true);assert.equal(timedTerminal.status,'ERROR');assert.equal(resultStatus(timedTerminal),'ERROR');
+  const controller=new AbortController(),cancelLog=path.join(dir,'terminal-cancel.log'),pendingTerminal=runCommand(process.execPath,['-e',lingering],{cwd:dir,log:cancelLog,quiet:true,signal:controller.signal});
+  for(let waited=0;waited<100&& !fs.readdirSync(dir).some(n=>n.startsWith('terminal-cancel.log.assertion.json.')&&n.endsWith('.json'));waited++)await new Promise(resolve=>setTimeout(resolve,20));
+  controller.abort();const cancelledTerminal=await pendingTerminal;assert.equal(cancelledTerminal.terminalReceipt.terminal,true);assert.equal(cancelledTerminal.status,'CANCELLED');assert.equal(resultStatus(cancelledTerminal),'CANCELLED');
+  for(const change of [r=>r.pid++,r=>r.executionId='other',r=>r.terminalReceipt.schema=99]){const invalid=structuredClone(terminalAssert);invalid.status='PASS';change(invalid);assert.equal(resultStatus(invalid),'UNVERIFIED','terminal failure must be bound to this execution');}
+  for(const [outcome,status]of [[terminalAssert,'FAIL'],[terminalInfra,'ERROR'],[timedTerminal,'ERROR'],[cancelledTerminal,'CANCELLED']]){
    reset();mutate('unit.json',r=>Object.assign(r.results[0],outcome,{status:'PASS',assertionResult:'PASS'}));
    const summary=summarize(ctx,setup);assert.equal(summary.status,status,'F1 aggregate must independently reject contradictory PASS');
    const delivery=finalizeUpload(ctx,summary);assert.equal(delivery.status,status);assert.equal(delivery.evidenceIntegrity,'INCOMPLETE');
