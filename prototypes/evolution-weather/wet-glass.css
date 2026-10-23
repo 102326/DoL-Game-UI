@@ -1,8 +1,1 @@
-.evo-glass-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.evo-glass-layer>svg{position:absolute;width:0;height:0;overflow:hidden}
-.evo-glass-drop{position:absolute;display:block;box-sizing:border-box;overflow:hidden;pointer-events:none;background:linear-gradient(140deg,#04161b2e,transparent 26%,transparent 65%,#d8eded1f);border:.45px solid #0a1c244d;border-bottom-color:#daf4f04a;box-shadow:inset .35px .45px .6px #0412168c,inset -.35px -.5px .7px #ffffff24}
-.evo-glass-drop::after{content:'';position:absolute;left:18%;right:53%;bottom:9%;height:5%;border-radius:50%;background:#cee2e170;opacity:var(--drop-light,.7);transform:rotate(-12deg)}
-.no-displacement .evo-glass-drop{backdrop-filter:none!important}
-
-.evo-wet-path{position:absolute;pointer-events:none;background:transparent;backdrop-filter:blur(.55px) contrast(1.045) saturate(1.025);mask-image:linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent),linear-gradient(transparent,#000 7px,#000 calc(100% - 9px),transparent);mask-composite:intersect}
-.no-wet-path .evo-wet-path{visibility:hidden!important}
+@import '../../src/ui/weather/wet-glass.css';
