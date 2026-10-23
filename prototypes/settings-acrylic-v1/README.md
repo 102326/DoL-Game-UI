@@ -2,6 +2,8 @@
 
 当前产品设置仍使用已认可的S01底材与FROST02雪天。候选只在专属预览服务器中向实际CSS追加单层 `backdrop-filter:blur(24px) saturate(.9)`；启用玻璃时生效。没有改默认入口、底色、布局、控件、天气几何或开关/分类时长。
 
+环境要求：按锁安装Node依赖、安装Playwright Chromium并先运行 `node scripts/build-framework.mjs`。录制检查另需系统PATH中可用的 **FFmpeg**（`ffmpeg -version`）；`ffprobe`用于核对视频时长。它们不是npm自动安装的依赖。端口5196/5197须空闲；不复制另一设备的node_modules或本机服务。
+
 在仓库根目录启动当前参考（5196若已有服务可复用）：
 
 ```sh

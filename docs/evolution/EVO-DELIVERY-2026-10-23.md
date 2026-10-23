@@ -15,8 +15,9 @@
 
 - **d60ccc8标准**：[39947630976](https://github.com/102326/DoL-Game-UI/actions/runs/39947630976)，手动Attempt1成功，validate409秒；Mac下载90项552,298B并核对集合/大小/SHA，独立nonce/manifest锚及同源码语义复放PASS/COMPLETE。
 - **d60ccc8研究**：[39947630276](https://github.com/102326/DoL-Game-UI/actions/runs/39947630276)，push Attempt1成功；prototype1050秒，其中浏览器安装618秒、研究检查405秒，下载验收21秒。[下载验收结果](EVO-FROST02-RESEARCH-REMOTE.json)PASS/COMPLETE且身份匹配；Mac只核对该结果，未全量下载122,982,504B研究Artifact，不宣称本地重算大媒体。
-- CI合入候选真实PR标准[39948602104](https://github.com/102326/DoL-Game-UI/actions/runs/39948602104)/研究[39948602156](https://github.com/102326/DoL-Game-UI/actions/runs/39948602156)，及候选push标准[39948596257](https://github.com/102326/DoL-Game-UI/actions/runs/39948596257)/研究[39948596263](https://github.com/102326/DoL-Game-UI/actions/runs/39948596263)由CI聊天交付；合入提交3e6e039与验收PR merge fbc6b49同树。合入后[39950006354](https://github.com/102326/DoL-Game-UI/actions/runs/39950006354)另核对最终状态，不以“正在运行”写通过。
-- 本批READ01/交接提交的新Actions身份和最终状态见Issue #22，研究push与标准手动分列；READ01本身未注册默认CI，已有CI绿色不代替其手动测试或性能问题。
+- CI合入候选真实PR标准[39948602104](https://github.com/102326/DoL-Game-UI/actions/runs/39948602104)/研究[39948602156](https://github.com/102326/DoL-Game-UI/actions/runs/39948602156)，及候选push标准[39948596257](https://github.com/102326/DoL-Game-UI/actions/runs/39948596257)/研究[39948596263](https://github.com/102326/DoL-Game-UI/actions/runs/39948596263)由CI聊天交付；合入提交3e6e039与验收PR merge fbc6b49同树。合入后[39950006354](https://github.com/102326/DoL-Game-UI/actions/runs/39950006354)现已核对整体SUCCESS/Attempt1，producer与独立下载验收均成功。
+- 本批实现提交 **9421d1d02409fa38fe5004f1e92296259d97cd50** 的[研究push39951290333](https://github.com/102326/DoL-Game-UI/actions/runs/39951290333)SUCCESS/Attempt1，producer458秒、evidence-verify32秒。[小型真实下载验收结果](EVO-READ01-RESEARCH-REMOTE.json)在Mac核对提交/tree/run/生成锁/catalog身份相符且PASS/COMPLETE；未本地全量下载研究大媒体。标准工作流不自动覆盖dev push，本批没有再手动执行整轮标准。
+- 9421之后只补文档环境前提/最终运行与小型证明，已测试的53项源码hash未变；最终文档提交及其自动run状态见#22。READ01未注册默认CI，已有CI绿色不代替其手动测试或性能问题。
 
 ## 下一设备优先事项
 
