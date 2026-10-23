@@ -169,12 +169,17 @@ function researchUpload(ctx, summary) {
   // Raw player data is never among these roots/extensions.
   const assets = [];
   for (const check of report?.results || []) for (const a of check.artifacts || []) {
-    if (!a.origin) continue;
+    // Flat Evolution reports have no per-case review directory. Never sweep
+    // their common parent, or every weather image is copied once per report.
+    if (!a.origin || path.basename(a.origin) !== 'result.json') continue;
     const spec = plan.find(c=>c.id === check.name)?.report;
     const normalized = path.relative(path.join(ctx.root,'tests/artifacts'), path.resolve(ctx.root,a.origin)).split(path.sep).join('/');
     if (!spec?.pattern || !new RegExp('^' + spec.pattern.replaceAll('.', '\\.') + '$').test(normalized)) continue;
     const sourceDir = path.dirname(path.join(ctx.root, a.origin));
-    for (const source of filesBelow(sourceDir, ctx.root).filter(f=>/\.(png|json)$/.test(f))) {
+    if (!safeSource(ctx.root, sourceDir) || !fs.statSync(sourceDir).isDirectory()) continue;
+    const siblings = fs.readdirSync(sourceDir, { withFileTypes: true }).filter(e=>e.isFile() && e.name !== 'result.json' && /\.(png|json)$/.test(e.name));
+    for (const entry of siblings) {
+      const source = path.join(sourceDir, entry.name);
       const relative = `review/${check.name}/${path.basename(source)}`;
       fs.mkdirSync(path.dirname(path.join(ctx.dir, relative)), { recursive: true }); fs.copyFileSync(source, path.join(ctx.dir, relative)); assets.push(relative);
     }

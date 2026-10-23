@@ -32,6 +32,18 @@ const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
   assert.equal(summary().status,'PASS');
   assert.equal(researchUpload(ctx,summary()).status,'PASS','complete required evidence; optional screenshots absent');
   fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});
+  const flat=report.results.find(r=>r.name==='evolution-owner-resources').artifacts[0],timed=report.results.find(r=>r.name==='golden-spin-b').artifacts[0];
+  flat.origin='tests/artifacts/evolution/owners.json';timed.origin='tests/artifacts/golden-spin-b/sphere-validation-456/result.json';
+  writeJson(path.join(dir,flat.origin),{});writeJson(path.join(dir,timed.origin),{});
+  const unrelated=path.join(dir,'tests/artifacts/evolution/weather-r9-456/unrelated.png');fs.mkdirSync(path.dirname(unrelated),{recursive:true});fs.writeFileSync(unrelated,'unrelated controlled pixels');
+  const timedDir=path.dirname(path.join(dir,timed.origin));fs.writeFileSync(path.join(timedDir,'wanted.png'),'controlled case pixels');writeJson(path.join(timedDir,'geometry.json'),{controlled:true});fs.symlinkSync(path.join(timedDir,'wanted.png'),path.join(timedDir,'linked.png'));fs.mkdirSync(path.join(timedDir,'nested'));fs.writeFileSync(path.join(timedDir,'nested/unrelated.png'),'nested controlled pixels');
+  save();researchUpload(ctx,summary());
+  assert.equal(fs.existsSync(path.join(ctx.dir,'upload/review/evolution-owner-resources/unrelated.png')),false,'flat report must not sweep sibling weather directories');
+  assert.equal(fs.existsSync(path.join(ctx.dir,'upload/review/golden-spin-b/wanted.png')),true,'keep same-case direct review images');
+  assert.equal(fs.existsSync(path.join(ctx.dir,'upload/review/golden-spin-b/geometry.json')),true,'keep same-case auxiliary geometry JSON');
+  assert.equal(fs.existsSync(path.join(ctx.dir,'upload/review/golden-spin-b/linked.png')),false,'direct review symlink must not be dereferenced');
+  assert.equal(fs.existsSync(path.join(ctx.dir,'upload/review/golden-spin-b/unrelated.png')),false,'review whitelist is direct-child only');
+  fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});fs.rmSync(path.join(dir,'tests'),{recursive:true});delete flat.origin;delete timed.origin;save();
   const external=fs.mkdtempSync(path.join(os.tmpdir(),'moody-outside-'));
   try {
    fs.writeFileSync(path.join(external,'private.html'),'must never upload');

@@ -109,6 +109,19 @@ removes the latter coupling.
   profile validation. This is segmented local evidence, not a fabricated whole
   research PASS. Final clean commit/PR and deep Actions results are linked in #22
   and PR #23, with original failures and cancelled runs retained.
+- f5afac3 standard PR [39894095301](https://github.com/102326/DoL-Game-UI/actions/runs/39894095301)
+  passed in 6m09s; research PR [39894095303](https://github.com/102326/DoL-Game-UI/actions/runs/39894095303)
+  and push [39894091147](https://github.com/102326/DoL-Game-UI/actions/runs/39894091147)
+  passed in 8m04s / 6m37s. Actual research ZIP size (164447169 bytes for PR)
+  revealed repeated images: flat reports recursively swept the common Evolution
+  parent into several review folders. A controlled original-failure test and
+  independent review confirm the duplication/basename-collision defect. Flat
+  reports now retain only their required raw result; timestamped review folders
+  copy direct PNG/auxiliary JSON siblings only. All three comparison build roots,
+  required proof, limits and retention stay intact. Same-case PNG/geometry remain;
+  nested/sibling files and symlinks are rejected. This upload-only follow-up does
+  not change the 241-case deep matrix; its f5afac3 budget sample is reported under
+  its own SHA, never mislabeled as a later commit's check.
 
 ## 5. Scope limits
 
