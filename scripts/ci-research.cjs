@@ -97,9 +97,10 @@ function researchSummary(ctx, steps = {}) {
   const observed=overall([report?.status||'UNVERIFIED',...(report?.results||[]).map(r=>resultStatus(r,plan.find(c=>c.id===r.name)?.execution||'tool'))]);
   for (const id of ['dependencies','browser-install']) {
     const r = readReport(ctx, `stage-${id}.json`);
-    results.push({ name: id, status:verifiedPass(r)&&r.schema===1?'PASS':r?.status==='ERROR'?'ERROR':r?.status==='FAIL'?'FAIL':r?.status==='CANCELLED'?'CANCELLED':'UNVERIFIED' });
+    const status=resultStatus(r,'tool');
+    results.push({ name: id, status:verifiedPass(r,'tool')&&r.schema===1?'PASS':['ERROR','FAIL','CANCELLED'].includes(status)?status:'UNVERIFIED' });
   }
-  const unit=readReport(ctx,'unit.json');results.push({name:'research-unit',status:suiteEvidence(ctx,'unit',require('./ci-catalog.cjs').researchUnitEntries)?'PASS':['FAIL','ERROR','CANCELLED'].includes(unit?.status)?unit.status:'UNVERIFIED'});
+  const unit=readReport(ctx,'unit.json'),unitStatus=overall([unit?.status||'UNVERIFIED',...(unit?.results||[]).map(r=>resultStatus(r,'contract'))]);results.push({name:'research-unit',status:suiteEvidence(ctx,'unit',require('./ci-catalog.cjs').researchUnitEntries)?'PASS':['FAIL','ERROR','CANCELLED'].includes(unitStatus)?unitStatus:'UNVERIFIED'});
   try {
     if (report?.schema !== 1 || report.suite !== 'research' || !sameIdentity(report.expected, plan.map(c=>c.id)) || report.results?.length !== plan.length) throw Error('Missing/incomplete research plan');
     for (const [i, check] of plan.entries()) {

@@ -45,6 +45,12 @@ const {writeJson,hash,runCommand,verifyRemote}=require('../scripts/ci-evidence.c
    const target=report.results.find(r=>r.name==='official-game-motion'),prior=structuredClone(target);Object.assign(target,actual,{status:'PASS',assertionResult:'PASS'});save();
    assert.equal(summary().status,status);assert.equal(researchUpload(ctx,summary()).status,status);assert.equal(verifyRemote(path.join(ctx.dir,'upload'),proofExpected()).status,status);fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});
    for(const key of Object.keys(target))delete target[key];Object.assign(target,prior);save();
+   for(const stage of ['dependencies','browser-install']){
+    const file=path.join(ctx.dir,`stage-${stage}.json`),original=JSON.parse(fs.readFileSync(file));writeJson(file,{...original,...actual,status:'PASS',assertionResult:'PASS'});
+    assert.equal(summary().status,'ERROR','F1 research tool stages retain terminal failure despite claimed PASS');writeJson(file,original);
+   }
+   const unitFile=path.join(ctx.dir,'unit.json'),unitOriginal=JSON.parse(fs.readFileSync(unitFile)),unitPoisoned=structuredClone(unitOriginal);Object.assign(unitPoisoned.results[0],actual,{status:'PASS',assertionResult:'PASS'});writeJson(unitFile,unitPoisoned);
+   assert.equal(summary().status,status,'F1 research required unit subentries retain terminal failure despite claimed PASS');writeJson(unitFile,unitOriginal);
   }
   for(const id of ['official-game-motion','game-first-motion','panels-framework']){
    const check=plan.find(c=>c.id===id),target=report.results.find(r=>r.name===id),prior=structuredClone(target);
