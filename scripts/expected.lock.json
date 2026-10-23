@@ -1424,6 +1424,22 @@
       "assertionSites": 96
     },
     {
+      "entry": "tests/optimization-date.cjs",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "201051060e08a2ed1b5d347db61567e4c42364133f99cdd58d68ca65088e1e06",
+      "assertionSites": 36
+    },
+    {
       "entry": "tests/optimization-wardrobe.cjs",
       "profiles": [
         "standard"

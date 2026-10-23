@@ -4,7 +4,7 @@ import type {UiApi, StyleAdapter, AdapterHandle, AdapterDiagnostics} from '../..
 
 declare const window: Window & {
  DoLGameUI?: {ui?: Partial<UiApi>; getPreferences?: () => {savesEnabled?: unknown}};
- DolOptimizationSoftWet?: Readonly<{getDiagnostics(): AdapterDiagnostics | Readonly<{status: 'inactive'; reason: string}>; getWardrobeDiagnostics(): Readonly<{status: string; reason: string}>; destroy(): void}>;
+ DolOptimizationSoftWet?: Readonly<{getDiagnostics(): AdapterDiagnostics | Readonly<{status: 'inactive'; reason: string}>; getWardrobeDiagnostics(): Readonly<{status: string; reason: string}>; getDateDiagnostics(): {pending:number;repaired:number;unavailable:number}; destroy(): void}>;
 };
 
 (function () {
@@ -12,7 +12,7 @@ declare const window: Window & {
  if (window.DolOptimizationSoftWet) return;
  const wardrobe=createOptimizationWardrobe(window);
  const spec: StyleAdapter = {
-  id: "DolOptimizationSoftWet", version: "1.0.2",
+  id: "DolOptimizationSoftWet", version: "1.0.3",
   target: {name: "原版优化", versions: [">=1.1.1.2"]},
   scope: ['#customOverlay'],
   fingerprint: {
@@ -30,6 +30,7 @@ declare const window: Window & {
  };
  let owner: Partial<UiApi> | null | undefined = null;
  let handle: Readonly<AdapterHandle> | null = null, reason = "runtime-unavailable";
+ const dates=createOptimizationDates(window,()=>handle?.getDiagnostics().match==='full');
  function attach() {
   const ui = window.DoLGameUI?.ui;
   if (owner === ui) return;
@@ -45,10 +46,75 @@ declare const window: Window & {
  window.DolOptimizationSoftWet = Object.freeze({
   getDiagnostics: () => handle?.getDiagnostics() ?? Object.freeze({status: "inactive", reason}),
   getWardrobeDiagnostics: wardrobe.getDiagnostics,
-  destroy() {wardrobe.destroy();document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); handle = null; owner = null; delete window.DolOptimizationSoftWet}
+  getDateDiagnostics: dates.getDiagnostics,
+  destroy() {dates.destroy();wardrobe.destroy();document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); handle = null; owner = null; delete window.DolOptimizationSoftWet}
  });
  attach();
 })();
+
+type SavedDate={year:number;month:number;day:number;hour:number;minute:number;weekDayName:string};
+type DateHost=Window & {
+ idb?:{getItem(slot:number):Promise<unknown>};
+ SugarCube?:{State?:{deltaDecode(delta:unknown[]):unknown}};
+ DateTime?:new(timestamp:number)=>SavedDate;
+ getTimeString?:(hour:number,minute:number)=>unknown;
+};
+
+/** Repair only a malformed target-owned date; never replace a valid upstream result. */
+function createOptimizationDates(root:DateHost,matched:()=>boolean){
+ const scope=visualScope();
+ type Binding={node:HTMLElement;overlay:HTMLElement;row:Element;stamp:HTMLElement;slot:number;realDate:string;text:ChildNode|null;original:string;replacement?:string;replacementText?:ChildNode|null;pending:boolean;unavailable:boolean};
+ const records=new Map<HTMLElement,Binding>();
+ const malformed=(text:string)=>/^\([^()]*\b(?:NaN|undefined|Infinity)\b[^()]*\)$/.test(text);
+ function active(){const overlay=document.querySelector<HTMLElement>('#customOverlay[data-overlay="saves"]');return matched()&&overlay?.getClientRects().length&&!overlay.closest('[hidden],.hidden,[aria-hidden="true"]')?overlay:null}
+ function binding(node:HTMLElement,overlay:HTMLElement){
+  const stamp=node.parentElement,row=node.closest('.savesListRow'),id=row?.querySelector('.saveId')?.textContent?.trim()??'';
+  if(!node.isConnected||node.children.length||!stamp?.matches('.datestamp')||stamp.children.length!==1||!row||!overlay.contains(row)||!row.closest('#saves-list-container')||!/^\d+$/.test(id))return null;
+  const slot=Number(id);if(!Number.isSafeInteger(slot)||slot<1)return null;
+  const realDate=[...stamp.childNodes].filter(n=>n!==node).map(n=>n.textContent).join('').trim();
+  return {node,overlay,row,stamp,slot,realDate,text:node.firstChild};
+ }
+ function same(record:Binding){const current=binding(record.node,record.overlay);return !!current&&current.row===record.row&&current.stamp===record.stamp&&current.slot===record.slot&&current.realDate===record.realDate}
+ function release(node:HTMLElement){const record=records.get(node);records.delete(node);if(record?.replacement!==undefined&&node.firstChild===record.replacementText&&!node.children.length&&node.textContent===record.replacement)node.textContent=record.original}
+ function clear(){for(const node of records.keys())release(node)}
+ async function repair(record:Binding){
+  try{
+   const api=root.idb,decode=root.SugarCube?.State?.deltaDecode,C=root.DateTime,time=root.getTimeString;
+   if(!api||typeof api.getItem!=='function'||typeof decode!=='function'||typeof C!=='function'||typeof time!=='function')throw Error('Date reader unavailable');
+   const item=await api.getItem(record.slot) as {slot?:unknown;data?:{index?:unknown;delta?:unknown}}|undefined;
+   if(!scope.active()||records.get(record.node)!==record||active()!==record.overlay||!same(record)||record.node.firstChild!==record.text||record.node.textContent!==record.original)return;
+   const data=item?.data,index=data?.index;
+   if(item?.slot!==record.slot||!Array.isArray(data?.delta)||typeof index!=='number'||!Number.isInteger(index)||index<0||index>=data.delta.length)throw Error('Unknown save history');
+   const history=decode(data.delta) as {variables?:{startDate?:unknown;timeStamp?:unknown}}[];
+   if(!Array.isArray(history)||index>=history.length)throw Error('Decoded history unavailable');
+   const vars=history[index]?.variables,start=vars?.startDate,elapsed=vars?.timeStamp;
+   if(typeof start!=='number'||typeof elapsed!=='number'||!Number.isFinite(start)||!Number.isFinite(elapsed)||!Number.isFinite(start+elapsed))throw Error('Saved time unavailable');
+   const date=new C(start+elapsed),clock=time(date.hour,date.minute);
+   if(![date.year,date.month,date.day,date.hour,date.minute].every(Number.isInteger)||date.month<1||date.month>12||date.day<1||date.day>31||date.hour<0||date.hour>23||date.minute<0||date.minute>59||typeof date.weekDayName!=='string'||!date.weekDayName.trim()||typeof clock!=='string'||!/^\d{1,2}:\d{2}$/.test(clock))throw Error('Formatted time unavailable');
+   record.replacement=`(${date.year}/${date.month}/${date.day} ${('0'+clock).slice(-5)} ${date.weekDayName})`;
+   record.node.textContent=record.replacement;
+   record.replacementText=record.node.firstChild;
+  }catch{record.unavailable=true}
+  finally{record.pending=false}
+ }
+ function refresh(){
+  const overlay=active();
+  for(const[node,record]of records)if(!overlay||record.overlay!==overlay||!same(record)||node.firstChild!==(record.replacementText??record.text)||node.textContent!==(record.replacement??record.original))release(node);
+  if(!overlay)return;
+  for(const node of overlay.querySelectorAll<HTMLElement>('#saves-list-container .datestamp > span.pink')){
+   if(records.has(node)||!malformed(node.textContent??''))continue;
+   const current=binding(node,overlay);if(!current)continue;
+   const record:Binding={...current,original:node.textContent??'',pending:true,unavailable:false};records.set(node,record);void repair(record);
+  }
+ }
+ function schedule(){scope.frame(refresh)}
+ const observer=new MutationObserver(changes=>{if(changes.some(change=>change.target===document.documentElement||(change.target instanceof Element?change.target:change.target.parentElement)?.closest('#customOverlay')||[...change.addedNodes,...change.removedNodes].some(n=>n instanceof Element&&(n.id==='customOverlay'||n.querySelector('#customOverlay')))))schedule()});
+ scope.own(clear);scope.own(()=>observer.disconnect());
+ observer.observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','hidden','aria-hidden','data-overlay','data-dol-midnight','data-dgu-adapter','data-dgu-adapter-match']});
+ for(const event of ['dol-ui-runtime-ready','dol-ui-saves-change']){document.addEventListener(event,schedule);scope.own(()=>document.removeEventListener(event,schedule))}
+ schedule();
+ return{getDiagnostics:()=>({pending:[...records.values()].filter(r=>r.pending).length,repaired:[...records.values()].filter(r=>r.replacement!==undefined).length,unavailable:[...records.values()].filter(r=>r.unavailable).length}),destroy:()=>scope.dispose()};
+}
 
 import type {VersionToolsHost} from '../../src/runtime/target-version';
 

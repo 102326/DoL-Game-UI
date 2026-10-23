@@ -1,0 +1,51 @@
+{
+  "scope": "Invalid optimization date text only; no save or business mutation",
+  "package": {
+    "name": "DolOptimizationSoftWet",
+    "version": "1.0.3",
+    "file": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip",
+    "sha256": "b5052daa9ab7267e50146018235211b1e4d5594721a6dea5b16df7ade5c8f029",
+    "bytes": 10914,
+    "members": {
+      "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+      "README.md": "2db5a8e87649d4abb4b0a5d9329f05993bb59849773d1358848c8e826a081545",
+      "boot.json": "7796f33edc7a21f58167f51bf511a02a5e2b1cf939d80aa5c41a447bfe73daa1",
+      "dol-optimization-soft-wet.css": "ee7d3433ffcf59fa7cca388813fa8dabb5a1cbfad89d551bbfb9a4fb4daffdee",
+      "dol-optimization-soft-wet.js": "3e30710d0def8ee557391aebd4ba55c1a70f67672e3f096a4b55a8dde4c0d9f7"
+    }
+  },
+  "upstream": {
+    "version": "1.1.2.1",
+    "scriptSha256": "59895a0b0ac972ee515a42311b20479b4c0ca3ac8220c986558f0bb9509407e0"
+  },
+  "device": {
+    "model": "M367FC",
+    "android": 17,
+    "webview": 155,
+    "app": "com.vrelnir.dol.lyra.uicompat051213"
+  },
+  "before": "(1/1/NaN aN:aN undefined)",
+  "after": "(2022/9/4 07:00 星期日)",
+  "ownSlotIntegrity": {
+    "slot": 4,
+    "dataSha256": "96d6feeb29ffbf372397c3d39d126ae0b7a5a22fe504e2a7f8625500509ef33c",
+    "detailsSha256": "e3021abade93f147f33a9531dd33130e1f0ee2ce549cea588cc1488039087f77",
+    "bothUnchanged": true
+  },
+  "checks": [
+    "ci:check",
+    "optimization-date.cjs",
+    "optimization-wardrobe.cjs",
+    "adapter-materials.cjs",
+    "evolution-resource-contract.test.cjs",
+    "actual Loader restart/version/all ZIP members",
+    "actual preference off/on and restored original key",
+    "own slot data and details unchanged"
+  ],
+  "notValidated": [
+    "All historical saves and future target versions",
+    "Physical iOS/phone",
+    "Full native game save/load business rerun for this display patch"
+  ],
+  "publication": "Research candidate only; no main/tag/release"
+}
