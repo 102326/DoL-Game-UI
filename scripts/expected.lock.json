@@ -628,8 +628,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "305a37046cb2a06622d6f15ae4c2bee180578c87ef35d0004fd0c0a1670d6264",
-      "assertionSites": 26
+      "sourceSha256": "980dfd57e042bda0dda0e13c575d15f2fd2e718a2af93f6b2522f4bce0d0b5c0",
+      "assertionSites": 32
     },
     {
       "entry": "tests/combat-focused.cjs",

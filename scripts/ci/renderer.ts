@@ -7,7 +7,7 @@ interface Chromium {launch:(...args:unknown[])=>Promise<Browser>}
 const graphics:Graphics={pages:0,contexts:{},failedContexts:{},webgl:[],css:{backdrop:false,filter:false},errors:[]};
 const installed=new WeakSet<object>(),attached=new WeakSet<object>();
 export function graphicsSnapshot():Graphics{return structuredClone(graphics);}
-export function rendererProblems(expected:string[]|undefined,actual:Graphics|undefined):string[]{return (expected||[]).filter(kind=>!actual||!(actual.contexts[kind]>0)).map(kind=>'RendererPathMismatch:'+kind);}
+export function rendererProblems(expected:string[]|undefined,actual:Graphics|undefined):string[]{return (expected||[]).filter(kind=>{const count=actual?.contexts?.[kind];return !actual?.contexts||typeof actual.contexts!=='object'||Array.isArray(actual.contexts)||typeof count!=='number'||!Number.isSafeInteger(count)||count<=0;}).map(kind=>'RendererPathMismatch:'+kind);}
 export function instrumentChromium(chromium:Chromium):void{
  if(installed.has(chromium))return;installed.add(chromium);
  const launch=chromium.launch;

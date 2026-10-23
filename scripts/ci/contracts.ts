@@ -18,6 +18,7 @@ export function reconcileIdentity<T extends {source:unknown}>(prior:T,current:T,
 }
 export function caseProblems(expected:CaseDeclaration[],actual:CaseResult[]|undefined):string[]{
  if(!expected.length||!Array.isArray(actual))return ['MissingExpectedCases'];
+ if(actual.some(c=>!c||typeof c!=='object'||typeof c.id!=='string'||typeof c.path!=='string'||!c.path.length))return ['InvalidCaseResult'];
  const problems:string[]=[];
  if(actual.length!==expected.length||new Set(actual.map(c=>c.id)).size!==actual.length||actual.some(c=>!expected.some(e=>e.id===c.id)))problems.push('CasePlanMismatch');
  for(const e of expected){const c=actual.find(c=>c.id===e.id);if(!c||c.status!=='PASS'||!Number.isFinite(c.milliseconds)||c.milliseconds<0||!Number.isSafeInteger(c.assertions)||c.assertions<e.minimumAssertions)problems.push('IncompleteCase:'+e.id);if(e.renderer&&c?.path!==e.renderer)problems.push('RendererPathMismatch:'+e.id);}
