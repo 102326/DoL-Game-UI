@@ -210,5 +210,28 @@
     "Physical iOS/phone",
     "New long-duration performance matrix"
   ],
-  "publication": "No main, tag, release or public asset replacement"
+  "publication": "No main, tag, release or public asset replacement",
+  "finalImplementation": "c2152391224879fcf0f0d09dc344b7224af14fc2",
+  "ci": {
+    "source": "c2152391224879fcf0f0d09dc344b7224af14fc2",
+    "standard": {
+      "run": 40018291181,
+      "status": "success",
+      "independentEvidence": "success",
+      "gate": "success"
+    },
+    "research": {
+      "run": 40018289042,
+      "status": "success",
+      "independentEvidence": "success"
+    }
+  },
+  "ciBuildComparison": {
+    "source": "c2152391224879fcf0f0d09dc344b7224af14fc2",
+    "run": 40018291181,
+    "localZipSha256": "9e749b263cb6216cbcee942320c91c95c9047d7b05581dbcdbbdbd0a10a0956e",
+    "ciZipSha256": "0241665433d741cd159002b9aaff764711d253931952953ff9ce2641a732be4e",
+    "allLoadedUiMembersEqualCiBuild": true
+  },
+  "screenshotNote": "Android CDP crop had readback stripes. Independent Android system screenshot confirmed actual moon/rain presentation; raw screen contains private save text and is not published."
 }

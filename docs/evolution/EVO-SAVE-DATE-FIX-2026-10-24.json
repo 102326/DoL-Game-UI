@@ -62,5 +62,29 @@
       "dol-optimization-soft-wet.css": "ee7d3433ffcf59fa7cca388813fa8dabb5a1cbfad89d551bbfb9a4fb4daffdee",
       "dol-optimization-soft-wet.js": "3e30710d0def8ee557391aebd4ba55c1a70f67672e3f096a4b55a8dde4c0d9f7"
     }
-  }
+  },
+  "finalImplementation": "c2152391224879fcf0f0d09dc344b7224af14fc2",
+  "ci": {
+    "source": "c2152391224879fcf0f0d09dc344b7224af14fc2",
+    "standard": {
+      "run": 40018291181,
+      "status": "success",
+      "independentEvidence": "success",
+      "gate": "success"
+    },
+    "research": {
+      "run": 40018289042,
+      "status": "success",
+      "independentEvidence": "success"
+    }
+  },
+  "ciBuildComparison": {
+    "source": "c2152391224879fcf0f0d09dc344b7224af14fc2",
+    "run": 40018291181,
+    "manifestEntriesVerified": 10,
+    "localZipSha256": "fedfd86879870a79381dfea07a614bbc423683ff0a6c81d1c6ef83778d7c2191",
+    "ciZipSha256": "81a80ee0f0a5fa62a44f49bcf055a970324e2573f1df95985d0f9bca7edaf155",
+    "allLoadedAdapterMembersEqualCiBuild": true
+  },
+  "finalDevice": "Persistently reinstalled final fence revision; restarted, all members matched, actual opt-out/restoration passed; original own-slot data and details hashes still unchanged."
 }
