@@ -4,4 +4,4 @@ for(const mode of ['resize','off','reduced']){await p.evaluate(()=>{document.doc
 // Let the emulated baseline reach rendering before the next preference change.
 // Without this, Chromium can coalesce overrides: matches changes but no MQL event arrives.
 await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))))}
-await p.evaluate(()=>motion.dispose());assert.equal(await p.locator('.kw-object-relay').count(),0);console.log('PASS noninteractive material relay, original node/dispatch, latest real scroll arrival only, resize/motion/reduced/teardown cleanup');}finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});
+await p.evaluate(()=>motion.dispose());assert.equal(await p.locator('.kw-object-relay').count(),0);console.log('PASS noninteractive material relay, original node/dispatch, latest real scroll arrival only, resize/motion/reduced/teardown cleanup');}finally{await b.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

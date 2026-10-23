@@ -47,4 +47,4 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
  resources=await p.evaluate(()=>orbitResources.stats());assert.deepEqual(resources,{resize:0,mutation:0,frames:0});
  console.log('PASS orbit scroll, native clicks, reduced motion, hidden/zero-size recovery and pending unmount');
  }finally{fs.writeFileSync('tests/artifacts/evolution/orbit'+(baseline?'-baseline':'')+'.json',JSON.stringify({baseline,revision,results,resources},null,2));await browser?.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

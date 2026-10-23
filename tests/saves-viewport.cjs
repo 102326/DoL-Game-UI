@@ -35,4 +35,4 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   assert.deepEqual(errors,[]);
   console.log('PASS save drawer/non-drawer, 2K/tablet/narrow viewports at 100%, bottom native hitbox and persisted mode after fixture reload; not physical iPad or real save/load proof');
  }finally{await browser?.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

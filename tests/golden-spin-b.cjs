@@ -62,4 +62,4 @@ fs.mkdirSync(out,{recursive:true});
   assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({stage:'ball-only Prototype A',checks,errors,visualAcceptance:'pending',coverage:'controlled desktop Edge or CI Chromium; no game integration'},null,2));
  }catch(error){const state=p?await p.evaluate(()=>({state:window.goldenSphereLab?.inspect(),visibility:document.visibilityState})).catch(()=>null):null;fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({message:error.stack,checks,errors,state},null,2));console.error('failure state',state);throw error}
  finally{await browser.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

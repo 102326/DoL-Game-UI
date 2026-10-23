@@ -75,4 +75,4 @@ const baseline=process.argv.includes('--baseline'),baselineSource=baseline?cp.ex
   }
 
  }finally{await browser.close();await vite.close()}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

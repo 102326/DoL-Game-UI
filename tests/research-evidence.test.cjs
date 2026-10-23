@@ -1,15 +1,20 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const {plan,caseIds,recordReport,researchSummary,researchUpload,stamp,runResearch}=require('../scripts/ci-research.cjs');
+const {catalogFor,catalogIdentity,visualEvidence,researchUnitEntries,nodeTestCases,nodeCaseIds,commandCaseIds}=require('../scripts/ci-catalog.cjs');
 const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
 (async()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'moody-research-'));
- const ctx={root:dir,dir:path.join(dir,'evidence'),identity:{source:{head:'controlled-head'},run:{id:'controlled-run',attempt:'2'}}};
+ const ctx={root:dir,dir:path.join(dir,'evidence'),identity:{profile:'research',catalog:catalogIdentity('research'),source:{head:'controlled-head'},run:{id:'controlled-run',attempt:'2'}}};
  fs.mkdirSync(ctx.dir,{recursive:true});
  const pass={status:'PASS',rawStatus:'passed',exitCode:0,milliseconds:1};
  const report={schema:1,identity:ctx.identity,suite:'research',expected:plan.map(c=>c.id),status:'PASS',results:[]};
  try{
+  writeJson(path.join(ctx.dir,'unit.json'),{schema:1,identity:ctx.identity,status:'PASS',suite:'unit',expected:researchUnitEntries,results:researchUnitEntries.map(name=>({name,...pass,assertions:1,nodeTests:nodeTestCases[name]?.map(n=>({id:name+'::'+n,status:'PASS'}))}))});
+  writeJson(path.join(ctx.dir,'catalog.json'),{schema:1,identity:ctx.identity,catalog:catalogFor('research')});
+  const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=','base64');
+  for(const [id,files]of Object.entries(visualEvidence))for(const file of files){const target=path.join(ctx.dir,'review',id,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,png)}
   for(const check of plan){
-   const spec=check.report;let data,ids=['command:'+check.id],file;
+   const spec=check.report;let data,ids=commandCaseIds(check),file;
    if(spec){
     if(spec.fixture){data={identity:ctx.identity,assertion:{code:'ERR_ASSERTION',message:'MOODY_ORBIT_NONFINITE: controlled geometry'},snapshot:{expectedCounterexample:true}};ids=['MOODY_ORBIT_NONFINITE'];file='fixtures/moody-historical-regressions.cjs/snapshot.json'}
     else{
@@ -23,15 +28,16 @@ const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
     }
     writeJson(path.join(ctx.dir,file),data);
    }
-   report.results.push({name:check.id,...pass,caseIds:ids,artifacts:spec?[{file,sha256:hash(fs.readFileSync(path.join(ctx.dir,file)))}]:[]});
+   report.results.push({name:check.id,nodeTests:nodeCaseIds(check.args).length?nodeCaseIds(check.args).map(id=>({id,status:'PASS'})):undefined,...pass,caseIds:ids,artifacts:spec?[{file,sha256:hash(fs.readFileSync(path.join(ctx.dir,file)))}]:[]});
   }
   const save=()=>writeJson(path.join(ctx.dir,'research.json'),report);
   const summary=()=>researchSummary(ctx);
   save();for(const id of ['dependencies','browser-install'])writeJson(path.join(ctx.dir,`stage-${id}.json`),{schema:1,identity:ctx.identity,...pass});
   writeJson(path.join(ctx.dir,'identity.json'),{schema:1,identity:ctx.identity});
   assert.equal(summary().status,'PASS');
-  assert.equal(researchUpload(ctx,summary()).status,'PASS','complete required evidence; optional screenshots absent');
+  assert.equal(researchUpload(ctx,summary()).status,'PASS','complete required evidence; all declared T1 frames present; optional diagnostics absent');
   fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});
+  const visual=path.join(ctx.dir,'review/golden-spin-b/charge.png');fs.unlinkSync(visual);assert.equal(researchUpload(ctx,summary()).status,'UNVERIFIED','missing required T1 frame cannot pass');fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});fs.writeFileSync(visual,png);
   const flat=report.results.find(r=>r.name==='evolution-owner-resources').artifacts[0],timed=report.results.find(r=>r.name==='golden-spin-b').artifacts[0];
   flat.origin='tests/artifacts/evolution/owners.json';timed.origin='tests/artifacts/golden-spin-b/sphere-validation-456/result.json';
   writeJson(path.join(dir,flat.origin),{});writeJson(path.join(dir,timed.origin),{});
@@ -69,7 +75,7 @@ const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
   for(const mutate of [r=>r.schema=99,r=>r.identity.run.attempt='1',r=>r.identity.source.head='old',r=>r.results.pop(),r=>r.expected.pop(),r=>r.results[0].status='FAIL',r=>r.results[0].rawStatus='cancelled',r=>r.results[0].caseIds=[]]){
    const original=structuredClone(report);mutate(report);save();assert.notEqual(summary().status,'PASS','schema/source/attempt/plan/failure/cancel/case mutation rejected');Object.assign(report,original);
   }
-  save();
+  save();const native=report.results.find(r=>r.name==='weather-unit');for(const change of [r=>r.nodeTests.pop(),r=>r.nodeTests.push(r.nodeTests[0]),r=>r.nodeTests[0].id='unknown',r=>r.nodeTests[0].status='SKIP',r=>delete r.nodeTests]){const prior=structuredClone(native);change(native);save();assert.notEqual(summary().status,'PASS','native weather cases cannot be missing/duplicated/unknown/skipped');Object.assign(native,prior)}save();
   const historicFile=path.join(ctx.dir,'fixtures/moody-historical-regressions.cjs/snapshot.json'),historic=JSON.parse(fs.readFileSync(historicFile));
   const historicCheck=plan.find(c=>c.id==='moody-historical-regressions');
   assert.deepEqual(recordReport(ctx,historicCheck,new Map()).caseIds,['MOODY_ORBIT_NONFINITE']);
@@ -93,7 +99,7 @@ const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
   assert.throws(()=>recordReport(ctx,plan.find(c=>c.id==='golden-spin-b'),new Map()),/fresh required report/);
   assert.notEqual(researchSummary(ctx,{research:{outcome:'cancelled'}}).status,'PASS');
   const result=await runResearch(ctx,{quiet:true,checks:[{id:'fails',command:process.execPath,args:['-e','process.exit(7)']},{id:'blocked',command:process.execPath,args:['-e','throw Error("must not execute")']}]});
-  assert.deepEqual(result.results.map(r=>r.status),['FAIL','BLOCKED']);
+  assert.deepEqual(result.results.map(r=>r.status),['ERROR','UNVERIFIED']);
   console.log('PASS research evidence: full profile, source/run/attempt/schema, missing/stale/dist-only/hash/case negatives, command failure and fail-fast');
  }finally{fs.rmSync(dir,{recursive:true,force:true})}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

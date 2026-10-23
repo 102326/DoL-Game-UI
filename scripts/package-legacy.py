@@ -1,4 +1,6 @@
 # Historical 2.7 monolithic package; not the current paired player delivery.
+if __name__ == "__main__":
+    raise SystemExit("Retired legacy single-package entry. Use npm run package for the supported Host/UI pair; historical 2.7 source remains below for comparison.")
 from pathlib import Path
 import json,zipfile,hashlib,os,re,subprocess
 root=Path(__file__).resolve().parent.parent

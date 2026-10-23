@@ -57,4 +57,4 @@ const {chromium}=require('playwright');
   assert.equal(await page.evaluate(()=>window.__probeForbiddenReads),0);assert.deepEqual(errors,[]);
   console.log('PASS offline device probe: portrait/landscape observed metrics, UNKNOWN defaults, user-only physical confirmation, privacy, export/copy/clear; controlled Chromium fixture only');
  }finally{await browser.close()}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

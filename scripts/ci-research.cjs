@@ -1,45 +1,7 @@
 // Research profile of the existing Moody runner. Baseline revisions stay in raw reports.
 const fs = require('node:fs'), path = require('node:path');
-const { writeJson, runCommand, overall, verifiedPass, sameIdentity, sourceIdentity, readReport, hash, finalizeUpload } = require('./ci-evidence.cjs');
-const cases = require('./research-cases.json');
-const node = (id, args, report) => ({ id, command: process.execPath, args, report });
-const npm = (id, name) => ({ id, command: 'npm', args: ['run', name] });
-const test = (name, report, flags = []) => node(name + flags.join(''), ['tests/' + name + '.cjs', ...flags], report);
-const checks = (name, pattern, field = 'checks', key) => ({ pattern, field, key, expected: cases[name] });
-const list = (pattern, field, key, expected) => ({ pattern, field, key, expected });
-const plan = [
-  npm('prototype-check', 'prototype:golden-spin:check'), npm('source-check', 'ci:check'), npm('prototype-build', 'prototype:golden-spin:build'),
-  test('golden-spin-b', checks('golden-spin-b', 'golden-spin-b/sphere-validation-[0-9]+/result.json')),
-  test('golden-spin-hub', checks('golden-spin-hub', 'golden-spin-b/hub-validation-[0-9]+/result.json')),
-  test('motion-workspace', checks('motion-workspace', 'golden-spin-b/windows-validation-[0-9]+/result.json')),
-  test('golden-spin-hub-input', checks('golden-spin-hub-input', 'golden-spin-b/hub-validation-input-[0-9]+/result.json')),
-  test('golden-spin-hub-lifecycle', checks('golden-spin-hub-lifecycle', 'golden-spin-b/hub-validation-lifecycle-[0-9]+/result.json', 'results', 'name')),
-  { id: 'settings-baselines', command: 'git', args: ['fetch', '--no-tags', '--depth=1', 'origin', '915dcb9e85f3266a73a3e7ce38d769edd0c29ff4', 'b507f1a7d18d4d77067fa0c793aea44d7de96b57'] },
-  node('settings-prepare', ['scripts/prepare-settings-refraction.mjs']),
-  node('settings-types', ['node_modules/vue-tsc/bin/vue-tsc.js', '--noEmit', '-p', 'tsconfig.settings-refraction.json']),
-  node('settings-build', ['node_modules/vite/bin/vite.js', 'build', '--config', 'vite.settings-refraction.config.ts']),
-  node('settings-study', ['scripts/check-settings-refraction.cjs'], checks('check-settings-refraction', 'settings-refraction-v1/review-[0-9]+/result.json')),
-  node('framework-build', ['scripts/build-framework.mjs']),
-  test('settings-ci', { pattern: 'evolution/settings-resources.json', shape: 'settings' }),
-  test('moody-historical-regressions', { fixture: true }),
-  test('official-game-motion'),
-  test('source-motion-lifecycle', list('evolution/source-motion.json', 'result.arrivals', null, ['latest','peer','peer-again','other-node'])),
-  test('game-first-motion'),
-  node('evolution-unit', ['--test', 'tests/adapter-build-boundary.test.cjs', 'tests/visual-scope.test.cjs', 'tests/evolution-resource-contract.test.cjs']),
-  test('evolution-owner-resources', list('evolution/owners.json', 'results', 'kind', ['settings','layout','attributes','social','panels','shop','wardrobe','saves','combat','floating','official-motion','weather','hub'])),
-  node('inventory', ['scripts/evolution-inventory.cjs'], { pattern: 'evolution/inventory.json', shape: 'inventory' }),
-  test('evolution-navigation', list('evolution/navigation.json', 'results', 'kind', ['characteristics','social'])),
-  test('evolution-panels', list('evolution/panels.json', '', 'kind', ['journal','traits','statistics','feats','cheats','options'])),
-  test('evolution-orbit', list('evolution/orbit.json', 'results', 'zoom', [1,1.25,.85])), test('panels-framework'),
-  node('weather-types', ['node_modules/vue-tsc/bin/vue-tsc.js', '--noEmit', '-p', 'tsconfig.evolution.json']),
-  node('weather-build', ['node_modules/vite/bin/vite.js', 'build', '--config', 'vite.evolution-weather.config.ts']),
-  test('evolution-weather', checks('evolution-weather', 'evolution/weather-review-[0-9]+/result.json')),
-  test('evolution-weather-candidates', list('evolution/weather-r2-[0-9]+/result.json', 'results', 'candidate', ['v1','beads','film'])),
-  node('weather-unit', ['--test', 'tests/evolution-rain-model.test.cjs', 'tests/evolution-scattered-shower.test.cjs']),
-  ...[['', 'r3'], ['--natural-trails','r4'], ['--runoff','r5']].map(([flag, rev]) => test('evolution-rain-glass', { pattern: `evolution/weather-${rev}-[0-9]+/result.json`, shape: 'glass' }, flag ? [flag] : [])),
-  test('evolution-weather-levels', list('evolution/weather-r6-[0-9]+/result.json', 'results', 'level', ['light','normal','heavy','severe','snow'])),
-  ...[['','r7'],['--force','r8'],['--scatter','r9']].map(([flag, rev]) => test('evolution-weather-shower', { pattern: `evolution/weather-${rev}-[0-9]+/result.json`, shape: 'shower', count: flag ? 5 : 3, scatter: flag === '--scatter' }, flag ? [flag] : []))
-];
+const { writeJson, runCommand, overall, verifiedPass, sameIdentity, sourceIdentity, readReport, hash, finalizeUpload,verdict,suiteEvidence } = require('./ci-evidence.cjs');
+const { researchPlan:plan,nodeCaseIds,commandCaseIds} = require('./ci-catalog.cjs');
 function safeSource(root, file) {
   const relative = path.relative(root, file);
   if (relative.startsWith('..') || path.isAbsolute(relative)) return false;
@@ -90,7 +52,7 @@ function caseIds(spec, data, ctx) {
 }
 function recordReport(ctx, check, before) {
   const spec = check.report;
-  if (!spec) return { caseIds: ['command:' + check.id], artifacts: [] };
+  if (!spec) return {caseIds:commandCaseIds(check),artifacts:[]};
   if (spec.fixture) {
     const relative = 'fixtures/moody-historical-regressions.cjs/snapshot.json', file = path.join(ctx.dir, relative);
     const data = JSON.parse(fs.readFileSync(file));
@@ -111,7 +73,7 @@ async function runResearch(ctx, { signal, quiet = false, checks: selected = plan
   const report = { schema: 1, identity: ctx.identity, suite: 'research', expected: selected.map(c=>c.id), status: 'UNVERIFIED', results: [] };
   let blocked = false;
   for (const check of selected) {
-    let result = { name: check.id, status: 'BLOCKED', rawStatus: 'not-run', caseIds: [], artifacts: [] };
+    let result = { name: check.id, status: signal?.aborted?'CANCELLED':'UNVERIFIED', rawStatus: 'not-run', caseIds: [], artifacts: [] };
     if (!blocked && !signal?.aborted) {
       const before = new Map(reportsFor(ctx, check.report).map(f=>[f,stamp(f)]));
       const env = { ...process.env, MOODY_CHECK_NAME: check.args[0]?.split('/').at(-1), MOODY_EVIDENCE_DIR: path.join(ctx.dir, 'fixtures', check.args[0]?.split('/').at(-1) || check.id) };
@@ -134,12 +96,14 @@ function researchSummary(ctx, steps = {}) {
   const report = readReport(ctx, 'research.json'), results = [];
   for (const id of ['dependencies','browser-install']) {
     const r = readReport(ctx, `stage-${id}.json`);
-    results.push({ name: id, status: verifiedPass(r) && r.schema === 1 ? 'PASS' : 'UNVERIFIED' });
+    results.push({ name: id, status:verifiedPass(r)&&r.schema===1?'PASS':r?.status==='ERROR'?'ERROR':r?.status==='FAIL'?'FAIL':r?.status==='CANCELLED'?'CANCELLED':'UNVERIFIED' });
   }
+  const unit=readReport(ctx,'unit.json');results.push({name:'research-unit',status:suiteEvidence(ctx,'unit',require('./ci-catalog.cjs').researchUnitEntries)?'PASS':['FAIL','ERROR','CANCELLED'].includes(unit?.status)?unit.status:'UNVERIFIED'});
   try {
     if (report?.schema !== 1 || report.suite !== 'research' || !sameIdentity(report.expected, plan.map(c=>c.id)) || report.results?.length !== plan.length) throw Error('Missing/incomplete research plan');
     for (const [i, check] of plan.entries()) {
       const r = report.results[i];
+      const nativeIds=nodeCaseIds(check.args);if(nativeIds.length&&(!Array.isArray(r.nodeTests)||!sameIdentity(r.nodeTests.map(c=>c.id).sort(),[...nativeIds].sort())||r.nodeTests.some(c=>c.status!=='PASS')||r.nodeCaseIssues?.length))throw Error('Missing/duplicate/unknown/skipped native research cases');
       if (r.name !== check.id || !verifiedPass(r) || !Array.isArray(r.artifacts)) throw Error(`Required command incomplete: ${check.id}`);
       if (check.report) {
         if (r.artifacts.length !== 1) throw Error('Required report missing');
@@ -151,19 +115,20 @@ function researchSummary(ctx, steps = {}) {
         const raw = JSON.parse(bytes);
         const ids = check.report.fixture ? recordReport(ctx, check, new Map()).caseIds : caseIds(check.report, raw, ctx);
         if (!sameIdentity(r.caseIds, ids)) throw Error('Research case envelope mismatch');
-      } else if (!sameIdentity(r.caseIds, ['command:' + check.id])) throw Error('Command case missing');
+      } else if (!sameIdentity(r.caseIds, commandCaseIds(check))) throw Error('Command case missing');
     }
     results.push({ name: 'research', status: report.status === 'PASS' ? 'PASS' : 'UNVERIFIED' });
-  } catch (error) { results.push({ name: 'research', status: report?.status === 'FAIL' ? 'FAIL' : 'UNVERIFIED', reason: error.message }); }
+  } catch (error) { results.push({ name: 'research', status: ['FAIL','ERROR','CANCELLED'].includes(report?.status)?report.status:'UNVERIFIED',evidenceIntegrity:'INCOMPLETE',reason:error.message }); }
   for (const id of ['checkout','node','dependencies','browser-install','research']) {
-    if (steps[id] && steps[id].outcome !== 'success') results.push({ name: id, status: steps[id].outcome === 'cancelled' ? 'PARTIAL' : 'FAIL' });
+    if (steps[id] && steps[id].outcome !== 'success') results.push({ name: id, status: steps[id].outcome==='cancelled'?'CANCELLED':steps[id].outcome==='skipped'?'UNVERIFIED':'ERROR' });
   }
-  return { schema: 1, identity: ctx.identity, status: overall(results.map(r=>r.status)), results, coverage: 'Controlled research contracts; no visual acceptance, game or physical-device claim.' };
+  const {catalogFor,catalogIdentity}=require('./ci-catalog.cjs'),catalog=readReport(ctx,'catalog.json');if(!catalog||!sameIdentity(catalog.catalog,catalogFor('research',ctx.identity.environment?.deviceDepth||'standard'))||!sameIdentity(ctx.identity.catalog,catalogIdentity('research',ctx.identity.environment?.deviceDepth||'standard')))results.push({name:'catalog',status:'UNVERIFIED',reasonCode:'CatalogMismatch'});
+  const status=overall(results.map(r=>r.status));return { schema:1,identity:ctx.identity,...verdict(results.some(r=>r.status==='FAIL')?'FAIL':status==='PASS'?'PASS':'UNKNOWN',results.filter(r=>r.status==='UNVERIFIED'||r.evidenceIntegrity==='INCOMPLETE'),status),results, coverage: 'Controlled research contracts; no visual acceptance, game or physical-device claim.' };
 }
 function researchUpload(ctx, summary) {
   const report = readReport(ctx, 'research.json');
   const rawFiles = plan.filter(c=>c.report).map(c=>c.report.fixture ? 'fixtures/moody-historical-regressions.cjs/snapshot.json' : `research/${c.id}/result.json`);
-  const required = ['identity.json','summary.json','research.json','stage-dependencies.json','stage-browser-install.json', ...rawFiles];
+  const required = ['catalog.json','identity.json','summary.json','research.json','stage-dependencies.json','stage-browser-install.json', ...rawFiles];
   const optional = plan.map(c=>`research/${c.id}.log`);
   // Keep controlled comparison builds/CSS and newly generated review pixels in a separate bounded layer.
   // Raw player data is never among these roots/extensions.
@@ -177,7 +142,7 @@ function researchUpload(ctx, summary) {
     if (!spec?.pattern || !new RegExp('^' + spec.pattern.replaceAll('.', '\\.') + '$').test(normalized)) continue;
     const sourceDir = path.dirname(path.join(ctx.root, a.origin));
     if (!safeSource(ctx.root, sourceDir) || !fs.statSync(sourceDir).isDirectory()) continue;
-    const siblings = fs.readdirSync(sourceDir, { withFileTypes: true }).filter(e=>e.isFile() && e.name !== 'result.json' && /\.(png|json)$/.test(e.name));
+    const siblings = fs.readdirSync(sourceDir, { withFileTypes: true }).filter(e=>e.isFile() && e.name !== 'result.json' && /\.(png|json|mp4|webm)$/.test(e.name));
     for (const entry of siblings) {
       const source = path.join(sourceDir, entry.name);
       const relative = `review/${check.name}/${path.basename(source)}`;
@@ -197,6 +162,6 @@ function researchUpload(ctx, summary) {
     fs.mkdirSync(path.dirname(path.join(ctx.dir, relative)), { recursive: true }); fs.copyFileSync(source, path.join(ctx.dir, relative)); assets.push(relative);
   }
   return finalizeUpload(ctx, summary, { required, identityFiles: required.filter(f=>!rawFiles.includes(f)), candidates: [...required,...optional,...assets], totalLimit: 160 * 1024 * 1024,
-    fileLimit: file => file.startsWith('review/') ? (file.endsWith('.png') ? 8 : 2) * 1024 * 1024 : file.startsWith('builds/') ? 8 * 1024 * 1024 : file.startsWith('research/') && file.endsWith('.json') ? 2 * 1024 * 1024 : undefined });
+    fileLimit: file => file.startsWith('review/') ? (/\.(png|mp4|webm)$/.test(file) ? 8 : 2) * 1024 * 1024 : file.startsWith('builds/') ? 8 * 1024 * 1024 : file.startsWith('research/') && file.endsWith('.json') ? 2 * 1024 * 1024 : undefined });
 }
 module.exports = { plan, caseIds, recordReport, runResearch, researchSummary, researchUpload, reportsFor, stamp };

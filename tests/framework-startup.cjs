@@ -36,4 +36,4 @@ const root=path.resolve(__dirname,'..');
   const first=new AbortController(),second=new AbortController();first.abort('first');second.abort('second');assert.equal(mod.exports.combineSignals([first.signal,second.signal]).signal.reason,'first');const a=new AbortController(),b=new AbortController(),disposed=mod.exports.combineSignals([a.signal,b.signal]);disposed.dispose();a.abort('ignored');assert.equal(disposed.signal.aborted,false);
   console.log('PASS built player startup: missing any without global polyfill, owner/scene cancellation, saved opt-out, late Host, visible/dismissible diagnosis and cleanup; controlled fixture only');
  }finally{await browser.close();await new Promise(r=>server.close(r))}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

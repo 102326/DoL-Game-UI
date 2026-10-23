@@ -38,4 +38,4 @@ const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'artifacts/mater
  console.log('PASS focused groups/native radio+target+continue, default vs edit, hidden/disabled guards, unknown content, widths, reduced motion and release');
  }catch(error){try{if(p)await captureFailure(p,{kind:'combat',error,snapshot:await orbitSnapshot(p)})}catch{console.error('Combat fixture evidence unavailable; retaining original failure')}throw error}
  finally{await browser.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

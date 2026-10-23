@@ -10,22 +10,32 @@ permissions:
 concurrency:
   group: golden-spin-${{ github.ref }}
   cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
 jobs:
   prototype:
+    outputs:
+      manifest_sha256: ${{ steps.evidence.outputs.manifest_sha256 }}
+      evidence_nonce: ${{ steps.evidence.outputs.evidence_nonce }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
+      MOODY_PROFILE: research
       MOODY_EVIDENCE_ID: ${{ github.run_id }}-${{ github.run_attempt }}-research
     steps:
       - id: checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
       - id: node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: '22'
           cache: npm
+      - name: Record cache observation
+        run: echo 'MOODY_NPM_CACHE_HIT=${{ steps.node.outputs.cache-hit || 'false' }}' >> "$GITHUB_ENV"
       - id: dependencies
         run: node scripts/test-ci.cjs stage dependencies
       - id: browser-install
@@ -33,7 +43,8 @@ jobs:
       - id: research
         name: Required controlled research contracts
         run: node scripts/test-ci.cjs research
-      - name: Research whole-run evidence
+      - id: evidence
+        name: Research whole-run evidence
         if: always()
         env:
           MOODY_STEPS: ${{ toJSON(steps) }}
@@ -43,5 +54,39 @@ jobs:
         with:
           name: golden-spin-prototype-${{ github.sha }}
           path: tests/artifacts/ci/${{ env.MOODY_EVIDENCE_ID }}/upload/
+          if-no-files-found: error
+          retention-days: 14
+
+  evidence-verify:
+    needs: prototype
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      MOODY_PROFILE: research
+      MOODY_DEVICE_DEPTH: ${{ inputs.device_depth || 'standard' }}
+      MOODY_EXPECTED_NONCE: ${{ needs.prototype.outputs.evidence_nonce }}
+      MOODY_MANIFEST_SHA256: ${{ needs.prototype.outputs.manifest_sha256 }}
+      MOODY_PRODUCER_JOB: prototype
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: golden-spin-prototype-${{ github.sha }}
+          path: tests/artifacts/download-evidence
+      - name: Verify actual downloaded evidence
+        run: node scripts/ci-verify-remote.cjs tests/artifacts/download-evidence
+      - name: Persist remote verification result
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: moody-remote-research-${{ github.run_id }}-${{ github.run_attempt }}
+          path: tests/artifacts/remote-verification.json
           if-no-files-found: error
           retention-days: 14

@@ -16,4 +16,4 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   },kind);results.push(result);fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/panels.json',JSON.stringify(results,null,2));for(const g of result.results)assert.ok(Math.abs(g.gap-g.expected)<3,kind+' zoom '+JSON.stringify(g));assert.equal(result.nativePreserved,true);assert.equal(result.remaining,0);console.log('PASS EVO-A2 coordinates',kind);await page.close();
  }
  }finally{await browser?.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

@@ -48,4 +48,4 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),{chromium}=requ
    await page.waitForTimeout(60);assert.deepEqual(errors,[],kind);console.log('PASS actual owner resources and late teardown:',kind);await page.close();
   }
  }finally{fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/owners'+(baseline?'-baseline':'')+'.json',JSON.stringify({baseline,revision,results},null,2));await browser?.close();await server.close()}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

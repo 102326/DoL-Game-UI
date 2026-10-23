@@ -45,4 +45,4 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   assert.equal(await page.locator('.dcu-footer,.dcu-bottom-reserve').count(),0);assert.deepEqual(errors,[]);
   console.log('PASS original select identity/input/change, no duplicate dispatch, disabled options/groups, native keyboard/Escape/outside, dynamic options, narrow scroll, reduced motion, original Continue and Passage cleanup; controlled fixture only');
  }finally{await browser?.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

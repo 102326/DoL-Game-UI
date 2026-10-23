@@ -33,4 +33,4 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
   }
   console.log('PASS actual wardrobe wear material follows inventory growth at 80/100/125% zoom; single native callback, repeated wear and teardown');
  }finally{await browser.close();await server.close()}
-})().catch(error=>{console.error(error);process.exitCode=1});
+})().catch(error=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(error);process.exitCode=1});

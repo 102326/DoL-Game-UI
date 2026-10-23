@@ -36,4 +36,4 @@ buildSync({entryPoints:[path.join(root,'framework/host.ts')],bundle:true,format:
   assert.equal(result.count,1);assert.equal(result.cleanupCount,1);assert.ok(result.events.includes('half-init'));assert.deepEqual(result.owners,[]);assert.equal(result.dom,false);assert.equal(result.listenerCount,0);assert.ok(!errors.length,errors.join('\n'));
   await page.close();fs.writeFileSync(path.join(dir,'result.json'),JSON.stringify({status:'passed',result},null,2));console.log(dir);
  }finally{await browser.close()}
-})().catch(e=>{fs.writeFileSync(path.join(dir,'failure.json'),JSON.stringify({status:'failed',error:e.message},null,2));console.error(e);process.exitCode=1});
+})().catch(e=>{fs.writeFileSync(path.join(dir,'failure.json'),JSON.stringify({status:'failed',error:e.message},null,2));require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

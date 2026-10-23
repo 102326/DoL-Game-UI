@@ -346,7 +346,7 @@ def main():
             print(f"PASS {package['file']} {package['sha256']}")
         print('PASS CJ3C independent versions, eight package contracts and two fresh builds (members/bytes/metadata/ZIP SHA)')
     except Exception as error:
-        report.update(status='FAIL', failure={'type': type(error).__name__, 'message': str(error)[:8000]})
+        report.update(status='FAIL' if isinstance(error, AssertionError) else 'ERROR', assertionResult='FAIL' if isinstance(error, AssertionError) else 'UNKNOWN', failure={'type': type(error).__name__, 'message': str(error)[:8000]})
         write_json(destination, report)
         raise
 

@@ -76,4 +76,4 @@ const cases=[
    assert.deepEqual(errors,[]);await page.close();console.log('PASS '+item.id+' 3.x material, native events/input, 44px controls, narrow width and structure fallback');
   }
  }finally{await browser?.close();await server.close()}
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

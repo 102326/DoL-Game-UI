@@ -1,8 +1,9 @@
+const {checkpoint}=require('../scripts/ci-checkpoints.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require('playwright'),{build}=require('esbuild');
 const root=path.resolve(__dirname,'..');
 const group=process.argv.find(a=>a.startsWith('--group='))?.split('=')[1]||'all';
-assert.ok(['all','inspector','surfaces','compat'].includes(group),'Unknown runtime group');
+assert.ok(['all','identity','inspector','surfaces','compat'].includes(group),'Unknown runtime group');
 require('node:child_process').execFileSync(process.execPath,[path.join(root,'node_modules/vite/bin/vite.js'),'build','--outDir','tests/artifacts/legacy-runtime'],{cwd:root,stdio:'inherit'});
 const {plugins,mutation}=require('./runtime-mutations.cjs');
 (async()=>{
@@ -15,6 +16,13 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  async function page(html){const p=await browser.newPage({viewport:{width:1280,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.route('http://ui-runtime.test/',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://ui-runtime.test/');return p}
  const settle=p=>p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  let p;
+ if(group==='identity'){
+  p=await page('<html><body><div id="passages"></div></body></html>');
+  await p.addStyleTag({content:read('dist/game-ui.css')});await p.addScriptTag({content:read('dist/game-ui.js')});await settle(p);
+  assert.equal(await p.evaluate(()=>DoLGameUI.version),'2.7.0','legacy Core identity; official wrapper is checked by framework-startup');checkpoint('core-identity');
+  await p.evaluate(()=>DoLGameUI.destroy());assert.deepEqual(errors,[]);await p.close();
+ }
+
  if(['all','inspector'].includes(group)){
  p=await page('<html data-dol-midnight data-dgu-visual="1" data-dgu-visualGlass data-dgu-visualMotion><body><main id="foreign-area"></main><div data-surface="test"><div id="toolbar"></div><input data-proof="native" value="untouched"><button id="action">native</button><span class="future" hidden>unknown</span></div></body></html>');
  await p.evaluate(()=>{
@@ -36,7 +44,7 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  const diagnostics=await p.evaluate(()=>ui.getDiagnostics());
  assert.equal(diagnostics.gameVersion,'0.5.12.13');assert.equal(diagnostics.loaderVersion,'2.101.1');assert.equal(diagnostics.page.name,'Test Page');
  assert.equal(JSON.stringify(diagnostics).includes('private-'),false);assert.equal(JSON.stringify(diagnostics).includes('data-proof='),false,'attribute values redacted from export');
- assert.equal(diagnostics.adapters[0].mappings.find(x=>x.role==='card').fallback,true);
+ assert.equal(diagnostics.adapters[0].mappings.find(x=>x.role==='card').fallback,true);checkpoint('privacy');
  assert.equal(await p.evaluate(()=>{const d=ui.getDiagnostics();return Object.isFrozen(d)&&Object.isFrozen(d.events)&&Object.isFrozen(d.adapters[0].mappings[0].tags)&&Object.isFrozen(d.capabilities)}),true);
  await p.evaluate(()=>{window.inspector=ui.openInspector();window.sameInspector=ui.openInspector()});
  assert.equal(await p.evaluate(()=>inspector===sameInspector),true);assert.equal(await p.locator('.dgu-inspector').count(),1);
@@ -47,10 +55,10 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  const downloadPromise=p.waitForEvent('download');await p.getByRole('button',{name:'导出 JSON',exact:true}).click();const download=await downloadPromise;
  assert.equal(download.suggestedFilename(),'soft-wet-ui-diagnostics.json');const exported=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert.equal(exported.page.name,'Test Page');
  await p.evaluate(()=>{navigator.clipboard.writeText=async()=>{throw Error('denied')}});await p.getByRole('button',{name:'复制诊断',exact:true}).click();await p.waitForFunction(()=>document.querySelector('.dgu-inspector [role=status]').textContent.includes('操作不可用'));
- await p.keyboard.press('Escape');assert.equal(await p.locator('.dgu-inspector').count(),0);
+ await p.keyboard.press('Escape');assert.equal(await p.locator('.dgu-inspector').count(),0);checkpoint('clipboard-export');
  await p.evaluate(()=>{for(let i=0;i<45;i++){versions.Target=i%2?'1.0':'unknown';handle.refresh()}versions.Target='1.0';handle.refresh();window.eventCount=ui.getDiagnostics().events.length;window.eventsBefore=JSON.stringify(ui.getDiagnostics().events);for(let i=0;i<5;i++)ui.rescan()});
  assert.equal(await p.evaluate(()=>ui.getDiagnostics().events.length),32,'event buffer bounded');assert.equal(await p.evaluate(()=>eventCount===ui.getDiagnostics().events.length),true,'stable rescan creates no duplicate events');
- assert.equal(await p.evaluate(()=>eventsBefore===JSON.stringify(ui.getDiagnostics().events)),true,'stable rescan preserves the full event sequence even when buffer is full');
+ assert.equal(await p.evaluate(()=>eventsBefore===JSON.stringify(ui.getDiagnostics().events)),true,'stable rescan preserves the full event sequence even when buffer is full');checkpoint('bounded-stable-events');
  assert.equal(await p.evaluate(()=>handle.getDiagnostics().selectors.filter(x=>x.fallback).length),3);
  assert.equal(await p.evaluate(()=>{const monitor=new MutationObserver(()=>{});monitor.observe(document.querySelector('[data-surface]'),{attributes:true,subtree:true});handle.refresh();const count=monitor.takeRecords().length;monitor.disconnect();return count}),0,'unchanged refresh must not rewrite style attributes');
  assert.equal(await p.evaluate(()=>observed.filter(x=>x.node==='body').every(x=>!x.subtree)),true,'no global body subtree observation');
@@ -78,7 +86,7 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  await p.evaluate(()=>{runtime.destroy();runtime.destroy();document.querySelector('[data-surface]').append(document.createElement('button'))});await settle(p);
  assert.equal(await p.locator('[data-dgu-adapter],[data-dgu-role]').count(),0);assert.equal(await p.evaluate(()=>handle.getDiagnostics().status),'disposed');assert.equal(await p.evaluate(()=>ui.getAdapterDiagnostics().length),0);await p.close();
 
- console.log('PASS UI Runtime Inspector: privacy, clipboard, export, deduplication, bounded events and rescan');
+ console.log('PASS UI Runtime Inspector: privacy, clipboard, export, deduplication, bounded events and rescan');checkpoint('cleanup');
  }
  if(['all','surfaces'].includes(group)){
  // Request surfaces own only new content; native dialog owns focus and stacking.
@@ -100,14 +108,14 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  assert.equal(await p.evaluate(()=>handle.isOpen()&&!child.isOpen()),true,'Escape closes only upper surface');
  await p.evaluate(()=>{handle.close();handle.close()});
  assert.equal(await p.evaluate(()=>document.activeElement.id),'opener');assert.equal(await p.locator('.dgu-surface').count(),0);
- assert.deepEqual(await p.evaluate(()=>closeReasons),['escape','api']);assert.equal(await p.evaluate(()=>options.content.parentNode===null&&newInput.value==='edited'),true,'caller content detached intact');
+ assert.deepEqual(await p.evaluate(()=>closeReasons),['escape','api']);checkpoint('focus-escape');assert.equal(await p.evaluate(()=>options.content.parentNode===null&&newInput.value==='edited'),true,'caller content detached intact');
  await p.evaluate(()=>{window.handle=ui.openModal(request())});await p.keyboard.press('Escape');assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'escape');
  await p.evaluate(()=>{window.handle=ui.openModal(request())});await p.getByRole('button',{name:'关闭浮层',exact:true}).click();assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'button');
  await p.evaluate(()=>{window.handle=ui.openModal(request())});
  const box=await p.locator('.dgu-surface').boundingBox();await p.mouse.move(box.x+box.width/2,box.y+box.height/2);await p.mouse.down();await p.mouse.move(2,2);await p.mouse.up();assert.equal(await p.evaluate(()=>handle.isOpen()),true,'dragging from inside is not a backdrop click');
  await p.mouse.click(2,2);assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'backdrop');
  await p.evaluate(()=>{const form=document.createElement('form');form.method='dialog';const button=document.createElement('button');button.textContent='Native submit';form.append(button);window.submits=0;form.addEventListener('submit',()=>submits++);window.handle=ui.openModal({...request(),content:form})});
- await p.getByRole('button',{name:'Native submit',exact:true}).click();assert.equal(await p.evaluate(()=>submits),1);await p.waitForFunction(()=>document.querySelectorAll('.dgu-surface').length===0);assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'native','native submit behavior is not proxied');
+ await p.getByRole('button',{name:'Native submit',exact:true}).click();assert.equal(await p.evaluate(()=>submits),1);checkpoint('identity-detach-form');await p.waitForFunction(()=>document.querySelectorAll('.dgu-surface').length===0);assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'native','native submit behavior is not proxied');
  await p.evaluate(()=>{window.disableOptions=request();window.handle=ui.openModal(disableOptions);document.documentElement.removeAttribute('data-dol-midnight')});
  assert.equal(await p.evaluate(()=>ui.openModal(disableOptions)),null,'disabled theme cannot reuse a still-open handle');await settle(p);
  assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'disabled');assert.equal(await p.evaluate(()=>ui.openModal(request())),null);assert.equal(await p.locator('.dgu-surface').count(),0);
@@ -117,9 +125,9 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  await p.evaluate(()=>{window.showModal=HTMLDialogElement.prototype.showModal;HTMLDialogElement.prototype.showModal=()=>{throw Error('unavailable')}});
  assert.equal(await p.evaluate(()=>ui.openModal(request())),null);assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'failed');assert.equal(await p.locator('.dgu-surface').count(),0);
  await p.evaluate(()=>{HTMLDialogElement.prototype.showModal=undefined});assert.equal(await p.evaluate(()=>ui.getCapabilities().surfaces),false);assert.equal(await p.evaluate(()=>ui.openDrawer(request())),null);
- await p.evaluate(()=>{HTMLDialogElement.prototype.showModal=showModal});
+ await p.evaluate(()=>{HTMLDialogElement.prototype.showModal=showModal});checkpoint('fallback-errors');
  await p.evaluate(()=>{window.handle=ui.openDrawer({...request(),onClose:()=>{throw Error('caller close failed')}});handle.close();window.handle=ui.openModal(request());runtime.destroy();runtime.destroy()});
- assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'destroyed');assert.equal(await p.locator('.dgu-surface').count(),0);
+ assert.equal(await p.evaluate(()=>closeReasons.at(-1)),'destroyed');assert.equal(await p.locator('.dgu-surface').count(),0);checkpoint('idempotent-destroy');
  await p.close();
 
  console.log('PASS UI Runtime Surface: native focus, Esc, form submit, detach, fallback and teardown');
@@ -130,13 +138,13 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  p=await page('<html><body><div id="passages"></div>'+hub+'</body></html>');
  await p.evaluate(()=>{window.versions={ModHub:'1.3.0',maplebirch:'5.2.3'};window.modUtils={getMod:name=>versions[name]?{version:versions[name]}:null,getSemVerTools:()=>({parseVersion:v=>({version:v}),parseRange:r=>r,satisfies:(v,r)=>r==='>=1.3.0'?['1.3.0','1.3.1','2.0.0'].includes(v):r==='>=5.2.3'&&['5.2.3','5.2.4','6.0.0'].includes(v)})};window.V={unchanged:'game'};window.beforeV=JSON.stringify(V);window.calls=0;window.nativeButton=document.querySelector('#native-button');nativeButton.onclick=()=>calls++;window.nativeSetting=document.querySelector('#setting');window.nativeParent=nativeButton.parentNode;window.nativeNext=nativeButton.nextSibling;window.changeCalls=0;nativeSetting.onchange=()=>changeCalls++});
  for(const mod of ['modhub','maplebirch']){await p.addStyleTag({content:read(`compat/${mod}-soft-wet/${mod}-soft-wet.css`)});await p.addScriptTag({content:await adapter(mod)})}
- assert.equal(await p.locator('[data-dgu-adapter]').count(),0,'without Core, optional packages do nothing');
+ assert.equal(await p.locator('[data-dgu-adapter]').count(),0,'without Core, optional packages do nothing');checkpoint('before-core');
  await p.evaluate(()=>{window.DoLGameUI={ui:{apiVersion:1}};document.dispatchEvent(new Event('dol-ui-runtime-ready'))});assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().reason),'runtime-api-unsupported');
- await p.evaluate(()=>{window.DoLGameUI={ui:{apiVersion:1,getCapabilities:()=>({styleAdapters:false}),registerStyleAdapter:()=>{throw Error('must not register')}}};document.dispatchEvent(new Event('dol-ui-runtime-ready'))});assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().reason),'style-adapter-unavailable');
+ await p.evaluate(()=>{window.DoLGameUI={ui:{apiVersion:1,getCapabilities:()=>({styleAdapters:false}),registerStyleAdapter:()=>{throw Error('must not register')}}};document.dispatchEvent(new Event('dol-ui-runtime-ready'))});assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().reason),'style-adapter-unavailable');checkpoint('unsupported-api');
  await p.evaluate(()=>delete window.DoLGameUI);
  const inject=async()=>{await p.addStyleTag({content:read('dist/game-ui.css')});await p.addScriptTag({content:read('dist/game-ui.js')});await settle(p)};
- await inject();assert.equal(await p.evaluate(()=>DoLGameUI.version),'2.7.0','legacy Core identity; official wrapper is checked by framework-startup');assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
- assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().degraded),false,'absent optional marketplace role is not a downgrade of a full management-page match');
+ await inject();if(group==='all')assert.equal(await p.evaluate(()=>DoLGameUI.version),'2.7.0','legacy Core identity; official wrapper is checked by framework-startup');assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
+ assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().degraded),false,'absent optional marketplace role is not a downgrade of a full management-page match');checkpoint('core-arrives');
  await p.addStyleTag({content:read('examples/ui-surfaces/surface-demo.css')});await p.addScriptTag({content:await compile('examples/ui-surfaces/surface-demo.ts')});
  await p.evaluate(()=>window.demo=SoftWetSurfaceDemo.openModal());await p.locator('[data-demo-control]').check();await p.keyboard.press('Escape');assert.equal(await p.evaluate(()=>SoftWetSurfaceDemo.getLastClose()),'escape');
  await p.evaluate(()=>window.demo=SoftWetSurfaceDemo.openDrawer());
@@ -150,7 +158,7 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  await p.evaluate(()=>DoLGameUI.setPreference('enabled',false));await settle(p);assert.equal(await p.locator('[data-dgu-adapter]').count(),0);
  assert.equal(await p.evaluate(()=>SoftWetSurfaceDemo.openModal()),null);
  assert.equal(await p.evaluate(()=>nativeButton.isConnected&&nativeButton.parentNode===nativeParent&&nativeButton.nextSibling===nativeNext&&nativeSetting.checked),true);
- await p.evaluate(()=>DoLGameUI.setPreference('enabled',true));await settle(p);assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');
+ await p.evaluate(()=>DoLGameUI.setPreference('enabled',true));await settle(p);assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'active');checkpoint('disable-restore');
  await p.evaluate(()=>{document.querySelector('#customOverlayContent').insertAdjacentHTML('beforeend','<p id="mod-unknown">new extension</p>');document.querySelector('#modHubModManageContainer').classList.remove('modhub-container')});await settle(p);
  assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().status),'partial');assert.equal(await p.locator('.modhub-item[data-dgu-role]').count(),0);assert.equal(await p.locator('#mod-unknown').isVisible(),true);
  assert.equal(await p.evaluate(()=>ModHubSoftWet.getDiagnostics().degraded),true);
@@ -167,11 +175,11 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  await p.evaluate(()=>DoLGameUI.setPreference('enabled',false));await settle(p);assert.equal(await p.locator('.dgu-inspector').count(),0);assert.equal(await p.evaluate(()=>DoLGameUI.ui.openInspector()),null);
  await p.evaluate(()=>{DoLGameUI.setPreference('enabled',true);document.querySelector('#dol-midnight-controls')?.close()});
  await p.evaluate(()=>DoLGameUI.destroy());await settle(p);assert.equal(await p.locator('[data-dgu-adapter],[data-dgu-role]').count(),0);await inject();
- assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().status),'active','independent package rebinds to new Core');
+ assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().status),'active','independent package rebinds to new Core');checkpoint('destroy-reinject');
  const peerAdapters=await p.evaluate(()=>DoLGameUI.ui.getAdapterDiagnostics().filter(d=>d.id!=='MapleBirchSoftWet').map(d=>d.id).sort());
  assert.deepEqual(peerAdapters,['ModHubSoftWet','ModHubSoftWetModal','ModHubSoftWetTools'],'ModHub owns management, tools and modal adapters');
  await p.evaluate(()=>MapleBirchSoftWet.destroy());await settle(p);assert.equal(await p.locator('[data-dgu-adapter="MapleBirchSoftWet"]').count(),0);assert.deepEqual(await p.evaluate(()=>DoLGameUI.ui.getAdapterDiagnostics().map(d=>d.id).sort()),peerAdapters,'disposing MapleBirch removes only its adapter and preserves every peer');
- assert.equal(await p.evaluate(()=>JSON.stringify(V)===beforeV),true);assert.deepEqual(errors,[]);await p.close();
+ assert.equal(await p.evaluate(()=>JSON.stringify(V)===beforeV),true);checkpoint('peer-preservation');assert.deepEqual(errors,[]);await p.close();
  }
  console.log('PASS UI runtime: readonly Inspector/export/privacy/bounded events, native surfaces, scoped adapters/fallback/rollback/restart and unchanged native business state');
-}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
+}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

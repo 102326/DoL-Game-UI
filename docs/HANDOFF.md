@@ -61,3 +61,5 @@
 
 
 本批Windows接续：球体/工具源码已实际在本机Edge运行；这不等于旧设置/天气原型或整个4.0已完成Windows/真实游戏验证。`node tests/golden-spin-hub-input.cjs` 为当前输入回归；全部原型检查仍用 `npm run prototype:golden-spin:test`。
+
+- Moody Blues V1.1 continues unmerged CI PR#23 under the owner-approved differential scope: independent versioned catalog, five-state assertion/integrity verdict, explicit sequence/native-case proof and uploaded-artifact verification. [Engineering/batch record](audits/MOODY-CI-V1.1.md). Final commit, real PR run/attempt/checkout, test outcomes and remaining measurement scope are recorded in PR#23 and Issue#22; Integrated/ReleaseReady remain false. Existing Evolution/S01 authority above is unchanged.
