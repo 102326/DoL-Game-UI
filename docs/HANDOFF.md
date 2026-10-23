@@ -4,6 +4,8 @@
 
 ## Current — 当前做什么
 
+- CI V1.1 独立验收整改见 [F1–F3记录](audits/MOODY-CI-V1.1-ACCEPTANCE.md)：终止收据优先级、研究合同有效断言及 Runtime 各分组 pageerror 均有精确反例与健康对照；保留 timeout/cancel 分类和原五类源码反例。Catalog 1.1.1，匿名提交；研发 H01 更新保留。最终新 SHA/两套实际 CI/附件复验见 Draft PR #23 与 #22 专项记录；旧 bc7b35e 成功不能替代新候选。
+
 - 最新 [EVO-INT-H01](evolution/EVO-INT-HUB01.md)，输入 `d3f04ee`：实际官方Hub与原型共用认可球体/240ms展开/650ms收束及0.65倍球体；原研究实现退出为薄导出。新增十组实际入口检查和构造边界/旧几何/旧终态滚动三项精确拒绝，处理隐藏期间resize零尺寸/越界过渡、玻璃偏好、矮屏终态滚动和异常清理。无实机工程及剩余负责人/游戏/设备验收见[收口清单](evolution/EVO-NONDEVICE-CLOSEOUT.md)。本机macOS/Node24.18/Chromium153，显式python3；原124布局计划0失败、157.83秒，八包双轮及负例通过；最终提交、已推送状态和两套Actions见#22及本机Git。本文件不自行证明clean或CI通过，不合并/发布。
 
 - 最新 [EVO-INT-W01 设置天气接线](evolution/EVO-INT-WEATHER01.md)，输入 `6f7d4d9`：实际 nativeNavigation/headerWeather 设置入口启用 C5.2/R10；保留 S01 底材/开关/分类，旧设置天气层退出，原生窗口仍保留现行天气。共用模型/时钟由 visualScope 管理，只有一次共享天气轮询；无逐帧游戏读取。九组正例及精确初始化顺序反例通过，处理保护区首次测量错位、持续隐藏/inert恢复和异常清理隔离。类型/Framework、原生天气、13入口资源、C5.2/R10原型回归及八包两轮构建/负例通过。报告与实际源码原速媒体见链接；最终精确提交和两套CI见#22。本片不是完整游戏/设备或G1/G2/G3验收，未合并/发布。
