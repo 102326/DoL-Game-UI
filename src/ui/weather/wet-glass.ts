@@ -7,9 +7,10 @@ import {frostSurface} from './frost';
 import {scatteredShower} from './scattered-shower';
 type Box={x:number;y:number;width:number;height:number};
 type Frame={wet:number;snow:number;light:number;night:number;time:number;width:number;height:number;dpr:number;intensity:number;kind:string};
+type FrostFactory=(...args:Parameters<typeof frostSurface>)=>ReturnType<typeof frostSurface>;
 let instance=0;
 /** Native SVG displacement reads the browser's backdrop. No DOM capture or substitute texture. */
-export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false,climate=false,withShower=false,withForce:boolean|'scatter'=false){
+export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false,climate=false,withShower=false,withForce:boolean|'scatter'=false,makeFrost:FrostFactory=frostSurface){
  const scope=visualScope();
  try{
  const scatter=withForce==='scatter',field=scatter?scatteredShower():undefined;let showerGeometry:ReturnType<ReturnType<typeof scatteredShower>['step']>['streaks']=[];
@@ -37,7 +38,7 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
  const nodes=Array.from({length:90},()=>{const n=document.createElement('i');n.className='evo-glass-drop';n.style.display='none';layer.append(n);return n});
  let seed=18972;const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)/4294967296};
  const micro=Array.from({length:scatter?380:withForce?912:climate?570:380},()=>({x:random(),y:random(),r:.22+Math.pow(random(),3)*.65,a:.25+random()*.75}));
- let rainEnergy=1,rainAmount=1,showerDensity=0,showerSpeed=0,microVisible=0;const frost=climate?frostSurface(ctx,safe):undefined;
+ let rainEnergy=1,rainAmount=1,showerDensity=0,showerSpeed=0,microVisible=0;const frost=climate?makeFrost(ctx,safe):undefined;
  let protectedBoxes:Box[]=[],frameProtection:Box[]=[],active:Box[]=[],dirty=true,width=0,height=0,lastTime=0,visibleFlow=0,wasMoving=false;
  let layoutAnimations:Animation[]=[];
  const mark=()=>{if(!scope.active())return;dirty=true;invalidate()};const observer=new MutationObserver(mark);scope.own(()=>observer.disconnect());observer.observe(shell,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-workspace-transition','data-settings-layout','open']});shell.addEventListener('scroll',mark,true);scope.own(()=>shell.removeEventListener('scroll',mark,true));
