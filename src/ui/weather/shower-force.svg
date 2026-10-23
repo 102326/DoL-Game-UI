@@ -1,0 +1,32 @@
+<!-- Research derivative of src/theme/kw-weather-shower.svg: stronger elongated strokes; original untouched. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320"><defs><linearGradient id="rain" x2="0" y2="1"><stop stop-color="#a6c0cd" stop-opacity=".16"/><stop offset=".7" stop-color="#c7dce4" stop-opacity=".78"/><stop offset="1" stop-color="#d9e7eb" stop-opacity=".95"/></linearGradient></defs>
+<ellipse cx="9" cy="4" transform="rotate(-30 9 4)" rx="0.845" ry="5.460" fill="url(#rain)"/>
+<ellipse cx="146" cy="101" transform="rotate(-30 146 101)" rx="1.118" ry="7.072" fill="url(#rain)"/>
+<ellipse cx="283" cy="198" transform="rotate(-30 283 198)" rx="1.391" ry="8.684" fill="url(#rain)"/>
+<ellipse cx="420" cy="295" transform="rotate(-30 420 295)" rx="1.664" ry="10.296" fill="url(#rain)"/>
+<ellipse cx="16" cy="93" transform="rotate(-30 16 93)" rx="0.845" ry="11.908" fill="url(#rain)"/>
+<ellipse cx="153" cy="190" transform="rotate(-30 153 190)" rx="1.118" ry="5.460" fill="url(#rain)"/>
+<ellipse cx="290" cy="287" transform="rotate(-30 290 287)" rx="1.391" ry="7.072" fill="url(#rain)"/>
+<ellipse cx="427" cy="85" transform="rotate(-30 427 85)" rx="1.664" ry="8.684" fill="url(#rain)"/>
+<ellipse cx="23" cy="182" transform="rotate(-30 23 182)" rx="0.845" ry="10.296" fill="url(#rain)"/>
+<ellipse cx="160" cy="279" transform="rotate(-30 160 279)" rx="1.118" ry="11.908" fill="url(#rain)"/>
+<ellipse cx="297" cy="77" transform="rotate(-30 297 77)" rx="1.391" ry="5.460" fill="url(#rain)"/>
+<ellipse cx="434" cy="174" transform="rotate(-30 434 174)" rx="1.664" ry="7.072" fill="url(#rain)"/>
+<ellipse cx="30" cy="271" transform="rotate(-30 30 271)" rx="0.845" ry="8.684" fill="url(#rain)"/>
+<ellipse cx="167" cy="69" transform="rotate(-30 167 69)" rx="1.118" ry="10.296" fill="url(#rain)"/>
+<ellipse cx="304" cy="166" transform="rotate(-30 304 166)" rx="1.391" ry="11.908" fill="url(#rain)"/>
+<ellipse cx="441" cy="263" transform="rotate(-30 441 263)" rx="1.664" ry="5.460" fill="url(#rain)"/>
+<ellipse cx="37" cy="61" transform="rotate(-30 37 61)" rx="0.845" ry="7.072" fill="url(#rain)"/>
+<ellipse cx="174" cy="158" transform="rotate(-30 174 158)" rx="1.118" ry="8.684" fill="url(#rain)"/>
+<ellipse cx="311" cy="255" transform="rotate(-30 311 255)" rx="1.391" ry="10.296" fill="url(#rain)"/>
+<ellipse cx="448" cy="53" transform="rotate(-30 448 53)" rx="1.664" ry="11.908" fill="url(#rain)"/>
+<ellipse cx="44" cy="150" transform="rotate(-30 44 150)" rx="0.845" ry="5.460" fill="url(#rain)"/>
+<ellipse cx="181" cy="247" transform="rotate(-30 181 247)" rx="1.118" ry="7.072" fill="url(#rain)"/>
+<ellipse cx="318" cy="45" transform="rotate(-30 318 45)" rx="1.391" ry="8.684" fill="url(#rain)"/>
+<ellipse cx="455" cy="142" transform="rotate(-30 455 142)" rx="1.664" ry="10.296" fill="url(#rain)"/>
+<ellipse cx="51" cy="239" transform="rotate(-30 51 239)" rx="0.845" ry="11.908" fill="url(#rain)"/>
+<ellipse cx="188" cy="37" transform="rotate(-30 188 37)" rx="1.118" ry="5.460" fill="url(#rain)"/>
+<ellipse cx="325" cy="134" transform="rotate(-30 325 134)" rx="1.391" ry="7.072" fill="url(#rain)"/>
+<ellipse cx="462" cy="231" transform="rotate(-30 462 231)" rx="1.664" ry="8.684" fill="url(#rain)"/>
+<ellipse cx="58" cy="29" transform="rotate(-30 58 29)" rx="0.845" ry="10.296" fill="url(#rain)"/>
+</svg>

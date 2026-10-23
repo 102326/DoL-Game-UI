@@ -37,7 +37,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),{chromium}=requ
     if(kind==='combat'){m('/src/combat/main.ts').startCombat();owner=DoLCombatUI}
     if(kind==='floating')owner=m('/src/floating/main.ts').startFloatingTools();
     if(kind==='official-motion')owner={destroy:m('/framework/official-ui/motion.ts').startOfficialMotion()};
-    if(kind==='weather'){const weather=m('/framework/official-ui/weather.ts').headerWeather();weather.set('owned',document.getElementById('weather-heading'),document.body);weather.refresh();owner={destroy:weather.dispose}}
+    if(kind==='weather'){const weather=m('/framework/official-ui/weather.ts').headerWeather();weather.set('owned',document.getElementById('weather-heading'),document.body);const shell=document.createElement('section');shell.style.cssText='position:relative;width:640px;height:480px';shell.innerHTML='<header>Settings owner</header><button>Original input</button>';document.body.append(shell);window.Weather={name:'rain',precipitation:'rain'};weather.set('settings',shell.firstElementChild,shell);weather.refresh();owner={destroy:weather.dispose}}
     if(kind==='hub'){const host=m('/framework/host.ts').createHost(window),participant=host.register('owner-fixture');window.DoLFloatingTools={getPreferences:()=>({enabled:true,hidden:false,mode:'grid'})};const stop=m('/framework/official-ui/hub.ts').startOfficialHub(host,participant);owner={destroy(){stop();participant.dispose();host.dispose();delete window.DoLFloatingTools}}}
     window.ownerProbe={owner,stats:()=>({frames:frames.size,timers:timers.size,observers:observers.size,listeners:listeners.length}),late:()=>late.forEach(callback=>callback()),timerDetails:()=>[...timers.values()]};
    },kind);

@@ -1,6 +1,10 @@
-# Evolution / 雨天 Acrylic 第二轮研究
+# Evolution / 已认可 C5.2/R10 与历史天气研究
 
-2026-10-22。负责人首轮裁决：**Architecture Continue / Weather Visual Reject**。原V1雨天视觉已否决；连续参数、状态中断、释放与原证据保留。A/B未获认可，当前新候选C仍待评审，**不是Visually Accepted、正式Integrated或Release Ready**。
+当前（2026-10-23）：C5.2/R10已获负责人认可，现由[EVO-INT-W01](../../docs/evolution/EVO-INT-WEATHER01.md)接入研发实际设置入口。原型仍保留全部历史候选与参数；模型/材质/时钟迁入src/ui/weather共用，薄导出不改写旧媒体来源。生产设置保留S01底材，研究专用半透明背景和工具条不移入；其它窗口、真实游戏/设备和G1/G2/G3另行验证。
+
+以下为历史第二轮起点与各轮记录，最新状态以上方及R10结尾为准。
+
+2026-10-22历史首轮裁决：**Architecture Continue / Weather Visual Reject**。原V1雨天视觉已否决；连续参数、状态中断、释放与原证据保留。A/B未获认可，当前新候选C仍待评审，**不是Visually Accepted、正式Integrated或Release Ready**。
 
 最新反馈：负责人认为A/B都有问题，先要求研究真实雨窗图片/视频，后已授权按研究方向制作下一版。C「湿玻璃」已实现，仍待视觉评审；A/B保留为未获认可的历史候选。[实拍研究](../../docs/evolution/EVO-WEATHER-REFERENCE-STUDY.md)与[C报告](../../docs/evolution/EVO-WEATHER-R3-REPORT.md)分别记录参考和施工结果。
 
