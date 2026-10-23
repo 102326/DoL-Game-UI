@@ -11,7 +11,7 @@ const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
   for(const check of plan){
    const spec=check.report;let data,ids=['command:'+check.id],file;
    if(spec){
-    if(spec.fixture){data={identity:ctx.identity,assertion:{code:'MOODY_ORBIT_NONFINITE'},snapshot:{expectedCounterexample:true}};ids=['MOODY_ORBIT_NONFINITE'];file='fixtures/moody-historical-regressions.cjs/snapshot.json'}
+    if(spec.fixture){data={identity:ctx.identity,assertion:{code:'ERR_ASSERTION',message:'MOODY_ORBIT_NONFINITE: controlled geometry'},snapshot:{expectedCounterexample:true}};ids=['MOODY_ORBIT_NONFINITE'];file='fixtures/moody-historical-regressions.cjs/snapshot.json'}
     else{
      if(spec.shape==='inventory')data={schema:1,sourceBase:ctx.identity.source.head,consumers:[{file:'controlled.ts'}]};
      else if(spec.shape==='settings')data={mounted:{workspaces:1},queued:{frames:1},disposed:{frames:0,workspaces:0},late:{frames:0,workspaces:0}};
@@ -49,6 +49,13 @@ const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
    const original=structuredClone(report);mutate(report);save();assert.notEqual(summary().status,'PASS','schema/source/attempt/plan/failure/cancel/case mutation rejected');Object.assign(report,original);
   }
   save();
+  const historicFile=path.join(ctx.dir,'fixtures/moody-historical-regressions.cjs/snapshot.json'),historic=JSON.parse(fs.readFileSync(historicFile));
+  const historicCheck=plan.find(c=>c.id==='moody-historical-regressions');
+  assert.deepEqual(recordReport(ctx,historicCheck,new Map()).caseIds,['MOODY_ORBIT_NONFINITE']);
+  for(const assertion of [{code:'ERR_ASSERTION',message:'MOODY_ORBIT_POSITION: different error'},{code:'SyntaxError',message:'MOODY_ORBIT_NONFINITE: fake'}]){
+   writeJson(historicFile,{...historic,assertion});assert.throws(()=>recordReport(ctx,historicCheck,new Map()),/wrong failure/);
+  }
+  writeJson(historicFile,historic);
   const specimen=report.results.find(r=>r.name==='golden-spin-b'),rawFile=path.join(ctx.dir,specimen.artifacts[0].file),bytes=fs.readFileSync(rawFile);
   fs.unlinkSync(rawFile);assert.notEqual(summary().status,'PASS','missing required report');fs.writeFileSync(rawFile,bytes);
   fs.appendFileSync(rawFile,' ');assert.notEqual(summary().status,'PASS','invalid raw hash');fs.writeFileSync(rawFile,bytes);

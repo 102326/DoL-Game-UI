@@ -84,6 +84,31 @@ removes the latter coupling.
 - The first local research trial was deliberately cancelled (143/PARTIAL) to fix
   a reviewer-proven directory symlink escape before upload. Source and ancestor
   symlinks are now rejected before copying; both precise escape controls pass.
+- Research push [39892784339](https://github.com/102326/DoL-Game-UI/actions/runs/39892784339)
+  at e403e11 passed the first 15 commands but the validator expected the target
+  name in AssertionError.code. The actual snapshot has code ERR_ASSERTION and
+  the exact MOODY_ORBIT_NONFINITE message prefix; both are now checked. The
+  downloaded real snapshot has matching source/run identity and verifies the fix.
+- The previously blocked Mac research tail exposed a fixture-path mismatch:
+  esbuild canonicalizes /var temporary paths to /private. Only the test fixture's
+  directory is canonicalized; allowed and forbidden import assertions are intact.
+- The runoff observer had a check/click race: the drop could leave the edge
+  during the protocol round trip before pausing. The test now invokes its actual
+  pause button in the same browser task that detects the crossing and additionally
+  checks the paused DOM still crosses the bottom. Original pixel, protection,
+  drainage and 50-second assertions remain; no product rendering was modified.
+- Standard e403e11 PR [39892788494](https://github.com/102326/DoL-Game-UI/actions/runs/39892788494)
+  passed in 5m56s at actual merge source 836dc05; its downloaded evidence has
+  19 unit/35 browser results, 79 matching indexed hashes, no omissions/truncation.
+  Its research PR browser installation took 301 seconds (success), separately from
+  the subsequent report-validator failure. This is a measured dependency delay,
+  not a product assertion failure or a controlled cold-cache benchmark.
+- The previously blocked 22-command research tail was exercised locally in
+  bounded segments. After the two fixture corrections above, all remaining
+  consumer, inventory, weather, glass/runoff and C5/C5.1/C5.2 reports passed their
+  profile validation. This is segmented local evidence, not a fabricated whole
+  research PASS. Final clean commit/PR and deep Actions results are linked in #22
+  and PR #23, with original failures and cancelled runs retained.
 
 ## 5. Scope limits
 

@@ -94,7 +94,7 @@ function recordReport(ctx, check, before) {
   if (spec.fixture) {
     const relative = 'fixtures/moody-historical-regressions.cjs/snapshot.json', file = path.join(ctx.dir, relative);
     const data = JSON.parse(fs.readFileSync(file));
-    if (!sameIdentity(data.identity, ctx.identity) || data.assertion?.code !== 'MOODY_ORBIT_NONFINITE' || !data.snapshot?.expectedCounterexample) throw Error('Historical target snapshot missing/stale/wrong failure');
+    if (!sameIdentity(data.identity, ctx.identity) || data.assertion?.code !== 'ERR_ASSERTION' || !data.assertion.message?.startsWith('MOODY_ORBIT_NONFINITE:') || !data.snapshot?.expectedCounterexample) throw Error('Historical target snapshot missing/stale/wrong failure');
     return { caseIds: ['MOODY_ORBIT_NONFINITE'], artifacts: [{ file: relative, sha256: hash(fs.readFileSync(file)) }] };
   }
   const fresh = reportsFor(ctx, spec).filter(f=>before.get(f) !== stamp(f));
