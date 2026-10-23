@@ -4,14 +4,14 @@
     "name": "DolOptimizationSoftWet",
     "version": "1.0.3",
     "file": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip",
-    "sha256": "b5052daa9ab7267e50146018235211b1e4d5594721a6dea5b16df7ade5c8f029",
-    "bytes": 10914,
+    "sha256": "fedfd86879870a79381dfea07a614bbc423683ff0a6c81d1c6ef83778d7c2191",
+    "bytes": 10920,
     "members": {
       "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
       "README.md": "2db5a8e87649d4abb4b0a5d9329f05993bb59849773d1358848c8e826a081545",
       "boot.json": "7796f33edc7a21f58167f51bf511a02a5e2b1cf939d80aa5c41a447bfe73daa1",
       "dol-optimization-soft-wet.css": "ee7d3433ffcf59fa7cca388813fa8dabb5a1cbfad89d551bbfb9a4fb4daffdee",
-      "dol-optimization-soft-wet.js": "3e30710d0def8ee557391aebd4ba55c1a70f67672e3f096a4b55a8dde4c0d9f7"
+      "dol-optimization-soft-wet.js": "961854e14b37a86fbe5e3a18f1ce4809831738bec164180058c8d59b3d77f0d5"
     }
   },
   "upstream": {
@@ -40,12 +40,27 @@
     "evolution-resource-contract.test.cjs",
     "actual Loader restart/version/all ZIP members",
     "actual preference off/on and restored original key",
-    "own slot data and details unchanged"
+    "own slot data and details unchanged",
+    "Immediate preference/master-off fence before adapter rescan frame; old implementation rejected by the new assertion"
   ],
   "notValidated": [
     "All historical saves and future target versions",
     "Physical iOS/phone",
     "Full native game save/load business rerun for this display patch"
   ],
-  "publication": "Research candidate only; no main/tag/release"
+  "publication": "Research candidate only; no main/tag/release",
+  "initialPackage": {
+    "name": "DolOptimizationSoftWet",
+    "version": "1.0.3",
+    "file": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip",
+    "sha256": "b5052daa9ab7267e50146018235211b1e4d5594721a6dea5b16df7ade5c8f029",
+    "bytes": 10914,
+    "members": {
+      "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+      "README.md": "2db5a8e87649d4abb4b0a5d9329f05993bb59849773d1358848c8e826a081545",
+      "boot.json": "7796f33edc7a21f58167f51bf511a02a5e2b1cf939d80aa5c41a447bfe73daa1",
+      "dol-optimization-soft-wet.css": "ee7d3433ffcf59fa7cca388813fa8dabb5a1cbfad89d551bbfb9a4fb4daffdee",
+      "dol-optimization-soft-wet.js": "3e30710d0def8ee557391aebd4ba55c1a70f67672e3f096a4b55a8dde4c0d9f7"
+    }
+  }
 }

@@ -72,6 +72,16 @@ const bad='(1/1/NaN aN:aN undefined)',good='(2022/9/4 07:00 星期日)';
    if(change==='destroy'){await page.evaluate(()=>document.querySelector('#saveList').append(document.createElement('p')));await settle();assert.equal(await page.evaluate(()=>reads),1,'Disposed observer cannot start another request')}
   }
 
+  for(const change of ['preference-off','master-off']){
+   await setup({mode:'deferred'});await page.waitForFunction(()=>reads===1);
+   const immediate=await page.evaluate(async change=>{
+    if(change==='preference-off'){enabled=false;document.dispatchEvent(new Event('dol-ui-saves-change'))}
+    else document.documentElement.removeAttribute('data-dol-midnight');
+    pending.shift()(item);await Promise.resolve();return dateNode.textContent;
+   },change);
+   assert.equal(immediate,bad,change+' blocks async text writes before the adapter rescan frame');
+  }
+
   await setup();await page.waitForFunction(expected=>dateNode.textContent===expected,good);
   await page.evaluate(()=>{dateNode.textContent='(2022/9/7 10:00 星期三)';DolOptimizationSoftWet.destroy()});
   assert.equal(await page.evaluate(()=>dateNode.textContent),'(2022/9/7 10:00 星期三)','Cleanup preserves a newer upstream result');

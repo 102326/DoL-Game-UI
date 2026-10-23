@@ -30,7 +30,7 @@ declare const window: Window & {
  };
  let owner: Partial<UiApi> | null | undefined = null;
  let handle: Readonly<AdapterHandle> | null = null, reason = "runtime-unavailable";
- const dates=createOptimizationDates(window,()=>handle?.getDiagnostics().match==='full');
+ const dates=createOptimizationDates(window,()=>window.DoLGameUI?.getPreferences?.().savesEnabled===true&&window.DoLGameUI?.ui?.getCapabilities?.().enabled===true&&handle?.getDiagnostics().match==='full');
  function attach() {
   const ui = window.DoLGameUI?.ui;
   if (owner === ui) return;

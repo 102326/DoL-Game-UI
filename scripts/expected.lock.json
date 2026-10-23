@@ -1436,8 +1436,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "61a19153c4a19b43597f6af234d181e4d4b4d3d6c50c7564241c4d59a9a550ee",
-      "assertionSites": 36
+      "sourceSha256": "c0820e199427d67251a19d697b36b5eba64cdf88e311cad63eef1c73f80d730b",
+      "assertionSites": 38
     },
     {
       "entry": "tests/optimization-wardrobe.cjs",
