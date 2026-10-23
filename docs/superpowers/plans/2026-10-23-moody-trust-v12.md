@@ -2,6 +2,10 @@
 
 Authority: owner-pasted V1.2 Approved for Implementation, 2026-10-23. Continue PR24 from 0a9e628; preserve latest dev7d531a0 snow study via merge2df0e3d. No main merge, Release, protection/required-check/bypass change, product visual/Host API change. Keep existing permanent Project ID and independent versions; optional does not require removing an already authorized identity.
 
+## Completion record
+
+Implemented and integrated through PR24 into development at3e6e039; actual PR/push Standard and Research, downloaded artifacts and post-merge Research39950006354 passed. The owner then requested portable documentation and device handoff; see [current handoff](../../audits/MOODY-CI-V1.2-HANDOFF.md). This plan remains the implementation history, not a request to repeat completed work. Main/release/governance and device/overall visual acceptance remain excluded.
+
 ## Deliverables and order
 
 1. **P0 typed contracts / expected lock / seal.** Add strict, erasable TypeScript for new management logic. Node22 native type stripping (explicit flag where needed) keeps the downloaded verifier dependency-free; tsc validates after dependency installation. Generate a reviewed expected lock from source test declarations/native tests, not a second handwritten case registry. Record lock hash, explicit final seal and terminal source fingerprint in existing evidence/index. Retain exact required-file checks and G01–G12/F1–F3; upload failure is ERROR/evidence_upload, confirmed FAIL remains primary with evidence_incomplete.

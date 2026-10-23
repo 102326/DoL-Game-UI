@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "sourceContentSha256": "8ee67a7c0f397bc71b0367d5282d0a01f2519c83868e2828315f64b832e50580",
+  "scope": "Isolated actual builds, ZIP contracts and controlled Chromium; not game/device acceptance",
+  "observations": [
+    {
+      "version": "3.5.0",
+      "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+      "components": {
+        "status": "PASS",
+        "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+        "ui": "3.5.0",
+        "officialRuntime": "3.5.0",
+        "core": "7.8.9",
+        "hostPackage": "0.1.9-experimental",
+        "hostProtocol": "0.1-experimental",
+        "uiHostRequirement": ">=0.1.2-experimental && <0.2.0"
+      },
+      "packages": [
+        {
+          "name": "StoneFreeHost",
+          "file": "StoneFreeHost-0.1.9-experimental.mod.zip",
+          "sha256": "1b9cd76ceaec0798f484369c980fb18889b7f83a27e3d3a6dcf0e3dc7b9cdc30"
+        },
+        {
+          "name": "DoLGameUI",
+          "file": "DoLGameUI-3.5.0.mod.zip",
+          "sha256": "4ea286c953c35a9c3838ecc743f43a404b2e25e5ceaadd7cdaaeb0c7bcc89188"
+        }
+      ],
+      "releaseNotesPresent": false,
+      "browser": {
+        "startup": "PASS",
+        "officialDefaults": "PASS"
+      }
+    },
+    {
+      "version": "4.0.0",
+      "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+      "components": {
+        "status": "PASS",
+        "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+        "ui": "4.0.0",
+        "officialRuntime": "4.0.0",
+        "core": "7.8.9",
+        "hostPackage": "0.1.9-experimental",
+        "hostProtocol": "0.1-experimental",
+        "uiHostRequirement": ">=0.1.2-experimental && <0.2.0"
+      },
+      "packages": [
+        {
+          "name": "StoneFreeHost",
+          "file": "StoneFreeHost-0.1.9-experimental.mod.zip",
+          "sha256": "1b9cd76ceaec0798f484369c980fb18889b7f83a27e3d3a6dcf0e3dc7b9cdc30"
+        },
+        {
+          "name": "DoLGameUI",
+          "file": "DoLGameUI-4.0.0.mod.zip",
+          "sha256": "bc624853440ffd82d22d2ac3869fc66e124ebac3fd63ade0eb579d0dd37d1d29"
+        }
+      ],
+      "releaseNotesPresent": false,
+      "browser": {
+        "startup": "PASS",
+        "officialDefaults": "PASS"
+      }
+    }
+  ]
+}

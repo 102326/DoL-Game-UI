@@ -2,6 +2,8 @@
 
 `Kraft Work CI` 检查当前源码、构建独立的官方 UI 与 Framework Host，并保留短期构建产物。它没有发布步骤，不创建 Tag，不更新公开 Release。
 
+当前已完成的CI整改及跨设备入口见 [Moody Blues V1.2交接](audits/MOODY-CI-V1.2-HANDOFF.md)。PR #24已合入研发3e6e039；本文描述运行合同，具体通过结论仍须匹配实际Commit/Run/Attempt。
+
 ## 触发与环境
 
 - 发往 `main` 或 `dev/evolution-4.0` 的 Pull Request。
@@ -16,10 +18,10 @@
 
 | 入口 | 检查范围 |
 | --- | --- |
-| `npm run ci:check` | render-state 字段、UI／Adapter／early TypeScript 与 Framework 合同类型 |
+| `npm run ci:check` | 严格CI TypeScript、源码声明生成锁的一致性、render-state字段、UI／Adapter／early TypeScript与Framework合同类型 |
 | `npm run ci:unit` | 偏好、版本边界、衣柜投影／槽位／容量／原生操作参数、渲染状态、嘴部资源门槛与已退役实验入口 |
-| `npm run ci:build` | 复用 Framework 构建，包括合同测试所需样例；只打包玩家需要的 UI 与 Host ZIP |
-| `npm run ci:packages` | ZIP 成员与路径、CRC、Mod 身份、加载入口、依赖、Twee 替换声明、源码／构建成员一致性、许可证与依赖 NOTICE；损坏包负例 |
+| `npm run ci:build` | 构建Framework及必要合同样例，生成当前UI、Host与六个可选兼容包的八包receipt；此入口本身不等于双构建验收 |
+| `npm run ci:packages` | ZIP 成员与路径、CRC、Mod 身份、加载入口、依赖、Twee 替换声明、源码／构建成员一致性、许可证与依赖NOTICE；独立第二工作目录双构建/严格ZIP字节比较、9个Python合同测试及损坏包反例 |
 | `npm run ci:browser` | Host／消费者独立性与释放、真实设置组件的双布局／滚动／输入阻挡、衣柜详情抽屉、商店事件、存档传输恢复、天气／页面动效、CE 原作者与 rebuild.30 的受控兼容合同；并包含官方默认值、原生选择器、存档视口、三页页头与四个外观包材质回归，以及唯一 3.x 视觉基线检查 |
 
 浏览器用例运行仓库自有夹具和实际模块，不下载游戏或社区 Mod，不读取 `tests/fixture.html`、私人存档或设备数据。CE 版本由夹具提供，不能据此宣称在真实 ModLoader 中完成了该组合验收。设置用例直接运行实际 controller 和 Vue 组件；它不替代真实游戏中的业务检查。
@@ -55,8 +57,9 @@ Linux 首次运行浏览器检查前执行 `npx playwright install --with-deps c
 
 - `DoLGameUI-<package.json.version>.mod.zip`
 - `StoneFreeHost-<host_version>.mod.zip`
+- 六个当前可选包：ModHub、MapleBirch、原版优化、Cheat Extended、ReOverfits、Lyra嘴部兼容，文件名/版本读取各自Manifest；旧Lyra整合包不在此集合。
 - `PACKAGE_CHECKS.json`：实际提交、工作区状态、依赖和每个 ZIP 成员的 SHA-256。
-- `SHA256SUMS.txt`：上述三个负载的 SHA-256，校验清单自身除外。
+- `SHA256SUMS.txt`：八个ZIP与PACKAGE_CHECKS共九个负载的SHA-256，校验清单自身除外。
 
 这些是当前提交的 CI 构建，不是已发布冻结包。文档或构建环境不同可能改变 ZIP 摘要，CI 不据此替换公开附件。
 
@@ -66,7 +69,7 @@ Linux 首次运行浏览器检查前执行 `npx playwright install --with-deps c
 
 CI 不代表真实 DoL、Android WebView、物理触控或 Visual Gate 验收。真实回合结算、购买、存读档、社区组合、长期资源观察及真实设备检查沿用项目的独立验收流程。依赖外部游戏源码／Tweego 的历史夹具不纳入此 job。
 
-此配置不修改分支保护，也不自动合并 PR。是否设置必需检查，待首轮运行时间和稳定性确认后决定。
+此配置不修改分支保护，也不自动合并PR。保留现有job/check名称和治理设置；是否调整required checks或bypass，必须由负责人另行决定。
 
 ## V1.2 用例与证据合同
 

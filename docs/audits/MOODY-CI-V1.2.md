@@ -6,6 +6,10 @@
 
 后续同步授权：负责人已明确要求完成且无问题后进入同步流程。PR #24据此继续对齐已推送研发`d60ccc8`（获认可0.56浓度边霜及最终证据），保留W01新增存在断言并重新生成父入口锁；组合源码必须取得新的标准/研究及独立下载验收，旧`28314e0`的四次成功保留历史身份。通过后授权转Ready并合入研发，仍不合main或发布；实际合入提交与状态以PR #24及远端研发HEAD为准，不预填自身提交Hash。
 
+## 最终验收和跨设备接续
+
+PR #24已于2026-10-23 19:59:33 +08:00合入研发`3e6e0396f70dacf5dc6c730fec8fb73cfd7360c2`。新候选实际PR Standard39948602104、Research39948602156、push Standard39948596257、Research39948596263及实际合入后的Research39950006354均整体SUCCESS/Attempt1，实际上传和独立下载验收成功。精确Head/Base/受测merge/Tree/Hash、范围、历史版本实测与接手步骤统一见[CI跨设备交接](MOODY-CI-V1.2-HANDOFF.md)，小型摘要随Git保存，完整原档另附离线包。旧28314e0的证据继续保留原身份。
+
 ## 实施范围
 
 - 严格、原生可擦除TS负责合同/锁读取与生成、Standard/Research调度、案例记录、分片、研究族/依赖、实际图形上下文、上传分类和隔离构建。新增仅开发依赖`@types/node`；不引入TS运行加载器。Node22.12显式strip-types已验证，下载验收器不需npm。既有CJS兼容证据、CLI、Node preload/reporter及测试不机械迁移。
@@ -43,8 +47,8 @@
 本轮已执行的定向记录含原生Node22.12无npm下载验收、21 Unit初轮、实际组合15/12案例、独立二次八包构建/9个Python合同测试。后续整轮及远端验收结果必须绑定最终源码并记录于PR和交付，不能用这些中间结果替代最终GitHub上传/下载验证。
 
 - Implemented：本报告所列代码和渐进粒度已落地。
-- Tested：仅以对应实际命令/源码/Actions及下载记录支持；本报告不预填尚未完成的最终运行。
-- Integrated：初次交付为Draft；后续研发同步已获授权，实际完成状态以PR #24的merged记录及研发分支为准。main仍未授权合入。
+- Tested：最终组合候选的实际Standard/Research及下载复验已完成，实际研发合入后Research也成功；范围和精确身份见上方交接，不代表设备或视觉验收。
+- Integrated：已由PR #24合入研发3e6e039，初次Draft状态属于历史；main仍未授权合入。
 - Release Ready：否；无正式游戏/ModLoader、Windows/Android/iOS真机或视觉总体验收。本轮不改视觉、Host API、分支保护、required checks或bypass，不发布。
 
 构建/标准证据7天、研究/远端结果14天；长期验收需到期前导出并重验Hash的原始附件、Manifest和实际job结论。不建新归档服务；取消/未封存残片仅用于诊断。
