@@ -14,7 +14,7 @@ const stages = [
   { id: 'browser', scope: 'Required controlled browser suite, including historical negatives', args: ['run', 'ci:browser'] }
 ];
 const cases = require('./research-cases.json');
-const node = (id, args, report) => ({ id, command: process.execPath, args, report, execution: args[0]?.startsWith('node_modules/') ? 'tool' : 'contract' });
+const node = (id, args, report, execution=args[0]?.startsWith('node_modules/')?'tool':'contract') => ({ id, command: process.execPath, args, report, execution });
 const npm = (id, name) => ({ id, command: 'npm', args: ['run', name] });
 const test = (name, report, flags = []) => node(name + flags.join(''), ['tests/' + name + '.cjs', ...flags], report);
 const checks = (name, pattern, field = 'checks', key) => ({ pattern, field, key, expected: cases[name] });
@@ -27,19 +27,19 @@ const researchPlan = [
   test('golden-spin-hub-input', checks('golden-spin-hub-input', 'golden-spin-b/hub-validation-input-[0-9]+/result.json')),
   test('golden-spin-hub-lifecycle', checks('golden-spin-hub-lifecycle', 'golden-spin-b/hub-validation-lifecycle-[0-9]+/result.json', 'results', 'name')),
   { id: 'settings-baselines', command: 'git', args: ['fetch', '--no-tags', '--depth=1', 'origin', '915dcb9e85f3266a73a3e7ce38d769edd0c29ff4', 'b507f1a7d18d4d77067fa0c793aea44d7de96b57'] },
-  node('settings-prepare', ['scripts/prepare-settings-refraction.mjs']),
+  node('settings-prepare', ['scripts/prepare-settings-refraction.mjs'], undefined, 'tool'),
   node('settings-types', ['node_modules/vue-tsc/bin/vue-tsc.js', '--noEmit', '-p', 'tsconfig.settings-refraction.json']),
   node('settings-build', ['node_modules/vite/bin/vite.js', 'build', '--config', 'vite.settings-refraction.config.ts']),
   node('settings-study', ['scripts/check-settings-refraction.cjs'], checks('check-settings-refraction', 'settings-refraction-v1/review-[0-9]+/result.json')),
-  node('framework-build', ['scripts/build-framework.mjs']),
+  node('framework-build', ['scripts/build-framework.mjs'], undefined, 'tool'),
   test('settings-ci', { pattern: 'evolution/settings-resources.json', shape: 'settings' }),
   test('moody-historical-regressions', { fixture: true }),
   test('official-game-motion'),
   test('source-motion-lifecycle', list('evolution/source-motion.json', 'result.arrivals', null, ['latest','peer','peer-again','other-node'])),
   test('game-first-motion'),
-  node('evolution-unit',['scripts/ci-research-unit.cjs']),
+  node('evolution-unit',['scripts/ci-research-unit.cjs'], undefined, 'tool'),
   test('evolution-owner-resources', list('evolution/owners.json', 'results', 'kind', ['settings','layout','attributes','social','panels','shop','wardrobe','saves','combat','floating','official-motion','weather','hub'])),
-  node('inventory', ['scripts/evolution-inventory.cjs'], { pattern: 'evolution/inventory.json', shape: 'inventory' }),
+  node('inventory', ['scripts/evolution-inventory.cjs'], { pattern: 'evolution/inventory.json', shape: 'inventory' }, 'tool'),
   test('evolution-navigation', list('evolution/navigation.json', 'results', 'kind', ['characteristics','social'])),
   test('evolution-panels', list('evolution/panels.json', '', 'kind', ['journal','traits','statistics','feats','cheats','options'])),
   test('evolution-orbit', list('evolution/orbit.json', 'results', 'zoom', [1,1.25,.85])), test('panels-framework'),
@@ -58,7 +58,7 @@ const researchUnitEntries=['adapter-build-boundary.test.cjs','visual-scope.test.
 const testArgs=name=>[...(nodeTestCases[name]?['--test']:[]),'tests/'+name];
 const nodeCaseIds=args=>args.filter(a=>nodeTestCases[require('node:path').basename(a)]).flatMap(file=>nodeTestCases[require('node:path').basename(file)].map(name=>require('node:path').basename(file)+'::'+name));
 const commandCaseIds=check=>check.id==='evolution-unit'?researchUnitEntries.map(n=>'unit:'+n):nodeCaseIds(check.args).length?nodeCaseIds(check.args):['command:'+check.id];
-const version='1.1.0';
+const version='1.1.1';
 // Same-run review frames are necessary where the research contract promises pixels.
 // Historical original-speed comparison builds remain T1, explicitly historical.
 const visualEvidence={

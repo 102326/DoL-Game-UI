@@ -1,12 +1,12 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const {plan,caseIds,recordReport,researchSummary,researchUpload,stamp,runResearch}=require('../scripts/ci-research.cjs');
 const {catalogFor,catalogIdentity,visualEvidence,researchUnitEntries,nodeTestCases,nodeCaseIds,commandCaseIds}=require('../scripts/ci-catalog.cjs');
-const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
+const {writeJson,hash,runCommand,verifyRemote}=require('../scripts/ci-evidence.cjs');
 (async()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'moody-research-'));
  const ctx={root:dir,dir:path.join(dir,'evidence'),identity:{profile:'research',catalog:catalogIdentity('research'),source:{head:'controlled-head'},run:{id:'controlled-run',attempt:'2'}}};
  fs.mkdirSync(ctx.dir,{recursive:true});
- const pass={status:'PASS',rawStatus:'passed',exitCode:0,milliseconds:1};
+ const pass={status:'PASS',rawStatus:'passed',exitCode:0,milliseconds:1,assertions:1};
  const report={schema:1,identity:ctx.identity,suite:'research',expected:plan.map(c=>c.id),status:'PASS',results:[]};
  try{
   writeJson(path.join(ctx.dir,'unit.json'),{schema:1,identity:ctx.identity,status:'PASS',suite:'unit',expected:researchUnitEntries,results:researchUnitEntries.map(name=>({name,...pass,assertions:1,nodeTests:nodeTestCases[name]?.map(n=>({id:name+'::'+n,status:'PASS'}))}))});
@@ -38,6 +38,26 @@ const {writeJson,hash}=require('../scripts/ci-evidence.cjs');
   assert.equal(researchUpload(ctx,summary()).status,'PASS','complete required evidence; all declared T1 frames present; optional diagnostics absent');
   fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});
   const visual=path.join(ctx.dir,'review/golden-spin-b/charge.png');fs.unlinkSync(visual);assert.equal(researchUpload(ctx,summary()).status,'UNVERIFIED','missing required T1 frame cannot pass');fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});fs.writeFileSync(visual,png);
+  const proofExpected=()=>({checkoutSHA:ctx.identity.source.head,source:ctx.identity.source,profile:'research',nonce:ctx.identity.nonce,run:ctx.identity.run,pr:ctx.identity.pr,manifestSha256:hash(fs.readFileSync(path.join(ctx.dir,'upload/upload-index.json')))});
+  const helper=JSON.stringify(path.resolve(__dirname,'../scripts/ci-process-receipt.cjs'));
+  for(const [code,status]of [[`try{require('node:assert/strict').fail('F1 research terminal assertion')}catch(e){require(${helper}).terminalFailure(e)}`,'FAIL'],[`require(${helper}).terminalFailure(new TypeError('F1 research terminal infrastructure'))`,'ERROR']]){
+   const actual=await runCommand(process.execPath,['-e',code],{cwd:dir,log:path.join(dir,'terminal.log'),quiet:true});assert.equal(actual.exitCode,0);
+   const target=report.results.find(r=>r.name==='official-game-motion'),prior=structuredClone(target);Object.assign(target,actual,{status:'PASS',assertionResult:'PASS'});save();
+   assert.equal(summary().status,status);assert.equal(researchUpload(ctx,summary()).status,status);assert.equal(verifyRemote(path.join(ctx.dir,'upload'),proofExpected()).status,status);fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});
+   for(const key of Object.keys(target))delete target[key];Object.assign(target,prior);save();
+  }
+  for(const id of ['official-game-motion','game-first-motion','panels-framework']){
+   const check=plan.find(c=>c.id===id),target=report.results.find(r=>r.name===id),prior=structuredClone(target);
+   const isolated={...ctx,dir:path.join(dir,'empty-'+id)};
+   const empty=await runResearch(isolated,{checks:[{...check,args:['-e','console.log("controlled empty research contract")']}],quiet:true});
+   assert.equal(empty.status,'UNVERIFIED','F2 execution rejects '+id+' with zero assertions');
+   target.assertions=0;delete target.nodeTests;save();assert.equal(summary().status,'UNVERIFIED','F2 summary rejects empty '+id);
+   assert.equal(researchUpload(ctx,summary()).status,'UNVERIFIED');assert.equal(verifyRemote(path.join(ctx.dir,'upload'),proofExpected()).status,'UNVERIFIED','F2 downloaded re-evaluation rejects empty contract');fs.rmSync(path.join(ctx.dir,'upload'),{recursive:true});
+   Object.assign(target,prior);save();
+   const healthy=await runResearch({...ctx,dir:path.join(dir,'healthy-'+id)},{checks:[{...check,args:['-e','require("node:assert/strict").ok(true)']}],quiet:true});assert.equal(healthy.status,'PASS');
+  }
+  const compiler=plan.find(c=>c.id==='settings-types');const tool=await runResearch({...ctx,dir:path.join(dir,'zero-assert-tool')},{checks:[{...compiler,args:['-e','process.exit(0)']}],quiet:true});assert.equal(tool.status,'PASS','F2 legitimate compiler tool needs no product assertion');
+  assert.equal(summary().status,'PASS');console.log('PASS F1/F2 research execution, summary and downloaded evidence controls');
   const flat=report.results.find(r=>r.name==='evolution-owner-resources').artifacts[0],timed=report.results.find(r=>r.name==='golden-spin-b').artifacts[0];
   flat.origin='tests/artifacts/evolution/owners.json';timed.origin='tests/artifacts/golden-spin-b/sphere-validation-456/result.json';
   writeJson(path.join(dir,flat.origin),{});writeJson(path.join(dir,timed.origin),{});

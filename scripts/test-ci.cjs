@@ -34,7 +34,7 @@ async function main() {
   let interrupted;
   for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { interrupted = signal; controller.abort(); });
   writeJson(path.join(ctx.dir, 'identity.json'), { schema: 1, identity: ctx.identity, coverage });
-  const execute = (command, args, log, env, timeoutMs) => runCommand(command, args, { cwd: ctx.root, log: path.join(ctx.dir, log), env, timeoutMs, signal: controller.signal });
+  const execute = (command, args, log, env, timeoutMs) => runCommand(command, args, { cwd: ctx.root, log: path.join(ctx.dir, log), env, timeoutMs, signal: controller.signal, execution:'tool' });
 
   if (mode.startsWith('research')) {
     const { runResearch, researchSummary, researchUpload } = require('./ci-research.cjs');
