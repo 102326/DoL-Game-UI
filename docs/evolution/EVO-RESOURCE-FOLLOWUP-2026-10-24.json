@@ -1,0 +1,435 @@
+{
+  "schema": 1,
+  "date": "2026-10-24",
+  "implementation": "37da59637e42e53bc0ccc73973c87fe39b3231e3",
+  "documentationBase": "534c9cc3ed2cf44062820156ddbb8b0cceed1877",
+  "environment": {
+    "device": "M367FC",
+    "android": 17,
+    "webview": 155,
+    "game": "0.5.12.13",
+    "modLoader": "2.101.1",
+    "scene": "Bedroom",
+    "sameMainAndAssociatedPidAtObservedCheckpoints": true,
+    "processGenerationProven": false
+  },
+  "scope": "99 native window/Hub open-close cycles and bounded natural-idle observation; no product or preference change",
+  "cycles": {
+    "total": 99,
+    "batches": 3,
+    "each": 33,
+    "nativeOperationsUnchanged": true,
+    "finalErrors": 0
+  },
+  "samples": [
+    {
+      "name": "baseline",
+      "capturedAt": "2026-10-23T18:04:14.744Z",
+      "appPssKiB": [
+        511703,
+        512604
+      ],
+      "jsHeapBytes": [
+        247660396,
+        255300692
+      ],
+      "nodes": [
+        80589,
+        81205
+      ],
+      "listeners": [
+        541,
+        541
+      ],
+      "documents": [
+        4,
+        4
+      ],
+      "validGfxFrames": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "after1",
+      "capturedAt": "2026-10-23T18:06:01.747Z",
+      "appPssKiB": [
+        645418,
+        652616
+      ],
+      "jsHeapBytes": [
+        248693772,
+        257563020
+      ],
+      "nodes": [
+        97829,
+        98427
+      ],
+      "listeners": [
+        1899,
+        1899
+      ],
+      "documents": [
+        5,
+        5
+      ],
+      "validGfxFrames": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "after2",
+      "capturedAt": "2026-10-23T18:07:49.918Z",
+      "appPssKiB": [
+        691852,
+        693819
+      ],
+      "jsHeapBytes": [
+        271904276,
+        282395252
+      ],
+      "nodes": [
+        98707,
+        99280
+      ],
+      "listeners": [
+        1899,
+        1899
+      ],
+      "documents": [
+        5,
+        5
+      ],
+      "validGfxFrames": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "quiet2",
+      "capturedAt": "2026-10-23T18:08:59.595Z",
+      "appPssKiB": [
+        589400,
+        590284
+      ],
+      "jsHeapBytes": [
+        252507128,
+        259376304
+      ],
+      "nodes": [
+        88074,
+        88698
+      ],
+      "listeners": [
+        1386,
+        1386
+      ],
+      "documents": [
+        5,
+        5
+      ],
+      "validGfxFrames": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "after3",
+      "capturedAt": "2026-10-23T18:10:55.221Z",
+      "appPssKiB": [
+        659126,
+        662736
+      ],
+      "jsHeapBytes": [
+        272708316,
+        278817800
+      ],
+      "nodes": [
+        98340,
+        98980
+      ],
+      "listeners": [
+        1899,
+        1899
+      ],
+      "documents": [
+        5,
+        5
+      ],
+      "validGfxFrames": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "quiet3",
+      "capturedAt": "2026-10-23T18:12:30.786Z",
+      "appPssKiB": [
+        586398,
+        587357
+      ],
+      "jsHeapBytes": [
+        244437308,
+        251346308
+      ],
+      "nodes": [
+        88313,
+        88944
+      ],
+      "listeners": [
+        1386,
+        1386
+      ],
+      "documents": [
+        5,
+        5
+      ],
+      "validGfxFrames": [
+        0,
+        0
+      ]
+    }
+  ],
+  "appSummaries": [
+    {
+      "name": "after2",
+      "capturedAt": "2026-10-23T18:07:42.728Z",
+      "metrics": {
+        "Java Heap": 20264,
+        "Native Heap": 76760,
+        "Code": 17848,
+        "Stack": 3476,
+        "Graphics": 556628,
+        "Private Other": 94620,
+        "System": 59863,
+        "TOTAL PSS": 829459,
+        "TOTAL RSS": 1059004,
+        "TOTAL SWAP PSS": 58
+      },
+      "unit": "KiB"
+    },
+    {
+      "name": "quiet2",
+      "capturedAt": "2026-10-23T18:08:54.227Z",
+      "metrics": {
+        "Java Heap": 21160,
+        "Native Heap": 75924,
+        "Code": 17848,
+        "Stack": 3476,
+        "Graphics": 346800,
+        "Private Other": 73436,
+        "System": 60008,
+        "TOTAL PSS": 598652,
+        "TOTAL RSS": 828052,
+        "TOTAL SWAP PSS": 58
+      },
+      "unit": "KiB"
+    },
+    {
+      "name": "after3",
+      "capturedAt": "2026-10-23T18:10:47.499Z",
+      "metrics": {
+        "Java Heap": 25568,
+        "Native Heap": 76872,
+        "Code": 17716,
+        "Stack": 3476,
+        "Graphics": 490496,
+        "Private Other": 93852,
+        "System": 59648,
+        "TOTAL PSS": 767628,
+        "TOTAL RSS": 996740,
+        "TOTAL SWAP PSS": 58
+      },
+      "unit": "KiB"
+    },
+    {
+      "name": "quiet3",
+      "capturedAt": "2026-10-23T18:12:23.336Z",
+      "metrics": {
+        "Java Heap": 24668,
+        "Native Heap": 75892,
+        "Code": 17716,
+        "Stack": 3476,
+        "Graphics": 345368,
+        "Private Other": 73548,
+        "System": 59793,
+        "TOTAL PSS": 600461,
+        "TOTAL RSS": 829428,
+        "TOTAL SWAP PSS": 58
+      },
+      "unit": "KiB"
+    }
+  ],
+  "quietDelaySeconds": {
+    "batch2": 71.499,
+    "batch3": 95.837
+  },
+  "processes": [
+    {
+      "name": "baseline",
+      "processes": [
+        {
+          "role": "verified App PID",
+          "isolated": false,
+          "pssKiB": 512097,
+          "rssKiB": 740116
+        },
+        {
+          "role": "associated process; purpose unverified",
+          "isolated": true,
+          "pssKiB": 2034011,
+          "rssKiB": 2193416
+        }
+      ]
+    },
+    {
+      "name": "after1",
+      "processes": [
+        {
+          "role": "verified App PID",
+          "isolated": false,
+          "pssKiB": 683278,
+          "rssKiB": 913540
+        },
+        {
+          "role": "associated process; purpose unverified",
+          "isolated": true,
+          "pssKiB": 2052794,
+          "rssKiB": 2222612
+        }
+      ]
+    },
+    {
+      "name": "after2",
+      "processes": [
+        {
+          "role": "verified App PID",
+          "isolated": false,
+          "pssKiB": 758943,
+          "rssKiB": 988488
+        },
+        {
+          "role": "associated process; purpose unverified",
+          "isolated": true,
+          "pssKiB": 2097898,
+          "rssKiB": 2268264
+        }
+      ]
+    },
+    {
+      "name": "after3",
+      "processes": [
+        {
+          "role": "verified App PID",
+          "isolated": false,
+          "pssKiB": 686120,
+          "rssKiB": 915232
+        },
+        {
+          "role": "associated process; purpose unverified",
+          "isolated": true,
+          "pssKiB": 2103785,
+          "rssKiB": 2273824
+        }
+      ]
+    },
+    {
+      "name": "quiet3",
+      "processes": [
+        {
+          "role": "verified App PID",
+          "isolated": false,
+          "pssKiB": 586841,
+          "rssKiB": 815808
+        },
+        {
+          "role": "associated process; purpose unverified",
+          "isolated": true,
+          "pssKiB": 2082399,
+          "rssKiB": 2252452
+        }
+      ]
+    }
+  ],
+  "gfxCache": {
+    "capturedAt": "2026-10-23T18:13:09.568Z",
+    "pipeline": "Skia (Vulkan)",
+    "totalGpuCacheBytes": 154859520,
+    "scratch": [
+      {
+        "amount": 147.69,
+        "unit": "MB",
+        "entries": 5
+      }
+    ],
+    "scope": "App gfxinfo Skia caches; not all graphics allocations and no FPS claim"
+  },
+  "conclusion": "Graphics and PSS peaks decline naturally; settled batch-2 and batch-3 observations are similar. No continuously rising short-run settled baseline demonstrated. Long-term and retained-owner attribution remain unverified.",
+  "notPerformed": [
+    "forced GC",
+    "heap snapshot or retainers",
+    "Perfetto tracing",
+    "Mod isolation or UI toggling",
+    "FPS validation",
+    "private save or cloud changes"
+  ],
+  "inputs": [
+    {
+      "artifact": "perf-baseline/performance-series.json",
+      "sha256": "ad2e4b40ef7dea6543d66b5523f52fbb19ac2fef2e36c6e619e0b62e33d16291"
+    },
+    {
+      "artifact": "perf-after1/performance-series.json",
+      "sha256": "aef27ec423f96e10aa2ed92a0b7a9ca25420c649ffd4052c91d126f1061811f3"
+    },
+    {
+      "artifact": "perf-after2/performance-series.json",
+      "sha256": "1ff4721fc8c1b1b52c9d5294286baf0f03218babdb5f1da408d5fb39b93ecdf0"
+    },
+    {
+      "artifact": "perf-quiet2/performance-series.json",
+      "sha256": "b03cd27178181a2392b5940da331a8e3d997328a61d029acd6c5481a8207cd70"
+    },
+    {
+      "artifact": "perf-after3/performance-series.json",
+      "sha256": "7ab560394edb3d1acea1a0ce5187ebd215d9d695ccbaad74f17bcf23c657752b"
+    },
+    {
+      "artifact": "perf-quiet3/performance-series.json",
+      "sha256": "3db3176f3944d8f416a2ddb026adc424365161d9ee84162bd3c84cf1cf5bdf2a"
+    },
+    {
+      "artifact": "cycles-1.json",
+      "sha256": "97dd8ac0195555d250779a0ea55a5fe451ebe73d46818a9488063b8eee0c24b5"
+    },
+    {
+      "artifact": "cycles-2.json",
+      "sha256": "35a696d3636b1342d7e668f2ecd91c8844adfc7465797d36cf428eb6c901e1bd"
+    },
+    {
+      "artifact": "cycles-3.json",
+      "sha256": "ae1f4e7c227235acb8cb2409168874f78d8a4c676f0a6df27fdf2f5e6c9c2261"
+    },
+    {
+      "artifact": "summary-after2.json",
+      "sha256": "d82a86e68a54e3e51c2dea07b87ca4ff44983ac4cf0c50c0d2a54a8282c91cfc"
+    },
+    {
+      "artifact": "summary-quiet2.json",
+      "sha256": "19d80f437b2ff9316b5e20a70e75e47c2964c968d5a0b682ad0edabbee391a73"
+    },
+    {
+      "artifact": "summary-after3.json",
+      "sha256": "762cb4da1f30f2e00aef7a6ed2754356067caea382f425417bb1f0cd7b0df36a"
+    },
+    {
+      "artifact": "summary-quiet3.json",
+      "sha256": "8678f6befaa2dffc8114906fa9daa1ddbed7e2a434dffd893149930479669f3d"
+    },
+    {
+      "artifact": "gfx-quiet3.json",
+      "sha256": "974153f14e1bf26a94559d4dd418342250e2bd6746921460424e6089676c7f60"
+    }
+  ]
+}

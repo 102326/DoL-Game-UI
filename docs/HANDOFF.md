@@ -4,6 +4,8 @@
 
 ## Current — 当前做什么
 
+- **资源复测补充**：[99次开关与空闲回落](evolution/EVO-RESOURCE-FOLLOWUP-2026-10-24.md)基于未改的37da596候选。Graphics峰值会延迟回落，第二/第三批空闲PSS与监听器接近，未见短时静息基线继续明显抬升；首次访问后的残余占用及长期保留来源仍未归因。没有改产品、偏好、存档或构建，不把此结果当长期无泄漏/FPS证明。最终仍停在本轮测试进度Bedroom。
+
 - **发布前工程与Mod更新收口**：[完整报告](evolution/EVO-PRERELEASE-2026-10-24.md)、[九包冻结身份](evolution/EVO-PRERELEASE-PACKAGES-2026-10-24.json)、[安装/回退](INSTALL_EVOLUTION_CANDIDATE.md)、[玩家发布草稿](RELEASE_EVOLUTION_DRAFT.md)。受验实现37da596，保留cea3bf7的Hub背景退出、500ms蓄势、战斗缩放及衣柜修复。按测试App ModHub清单更新四个目标及兼容包，CE保留rebuild.30，银商启动不另行查找。Android实际八个适用自有包全部成员与下载候选一致、顺序和禁用列表不变；Windows实际Loader/新目标组合代表界面通过。新建槽4、存档码、Android文件导出/Windows载入、九次原生战斗推进及结束、一次实际购买/试穿/退出、两件叠穿/原顺序调整/卸下、33次开关和后台返回均已记录。最终App恢复本轮测试槽的Bedroom及原偏好，原槽1–3未覆盖。
 - **精确源码CI**：37da596的[标准39992958236](https://github.com/102326/DoL-Game-UI/actions/runs/39992958236)和[研究39992955737](https://github.com/102326/DoL-Game-UI/actions/runs/39992955737)含独立下载验收均success；标准moody-gate成功。42aefd6遗漏九包最终校验、8b49b50精确源码锁的CRLF/LF差异均有失败记录，37da596已修正，未缩减断言。Windows本地全量unit与旧采样反例仍有失败，不能冒称本机全量CI通过。资源短时节点/监听器回落，PSS仍偏高且gfxinfo有效帧为0，不宣称泄漏或FPS已验收。G1/G2/G3负责人裁决、正式版本/Tag/main/发布仍Pending；READ01保持隔离，不作为本轮未实现任务。
 - **首批Android设置 / Hub验证**：[实际安装与触控记录](evolution/EVO-ANDROID-SMOKE-2026-10-23.md)。受测源码56ffb00，M367FC / Android17 / WebView155，独立测试App持久安装后重启，加载成员与候选一致；设置双布局/真实触控、150%字体滚动、实际Hub工具与快速反向通过。晴天映射及临时诊断输入的雨雪呈现分别记录，原偏好与天气绑定恢复；首批未测游戏业务 / 自然天气转换或长期性能，后续现场已由上方cea3bf7候选接续，原始设备材料不公开。
