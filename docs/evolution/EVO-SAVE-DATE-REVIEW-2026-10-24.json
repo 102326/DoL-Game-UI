@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "date": "2026-10-24",
+  "status": "cause identified in target date display; no product fix installed; G3 pending owner decision",
+  "researchImplementation": "37da59637e42e53bc0ccc73973c87fe39b3231e3",
+  "documentationInput": "8ada8483d0e5b341f6dab06f6429c763b4435a75",
+  "target": {
+    "name": "原版优化",
+    "version": "1.1.2.1",
+    "zipSha256": "2f5c0aeaffa109ca9cee412fadf10ed182997537dfa02dce8d84443db3fc3e8a",
+    "authorCommit": "587247648c526194049b1e25dceb709dd18c2df2",
+    "authorSha256": "59895a0b0ac972ee515a42311b20479b4c0ca3ac8220c986558f0bb9509407e0",
+    "zipScriptSha256": "59895a0b0ac972ee515a42311b20479b4c0ca3ac8220c986558f0bb9509407e0",
+    "loadedScriptSha256": "59895a0b0ac972ee515a42311b20479b4c0ca3ac8220c986558f0bb9509407e0",
+    "authorMatchesZipIgnoringLineEndings": true,
+    "loadedMatchesZip": true
+  },
+  "environment": {
+    "device": "M367FC",
+    "android": 17,
+    "webview": 155,
+    "game": "0.5.12.13",
+    "modLoader": "2.101.1"
+  },
+  "originalRecord": {
+    "kind": "native DOM text",
+    "nativeRealDate": "2026/10/24 00:43:53",
+    "appendedGameDate": "(1/1/NaN aN:aN undefined)",
+    "element": ".datestamp > span.pink",
+    "observedRow": {
+      "tag": "DIV",
+      "id": "latestSaveRow",
+      "cls": "savesListRow"
+    },
+    "adapterMatch": "full"
+  },
+  "timeFields": {
+    "savedRealDate": {
+      "type": "number",
+      "finite": true,
+      "value": 1792773833795
+    },
+    "rawFirstFrame": {
+      "startDate": {
+        "present": true,
+        "type": "number",
+        "finite": true,
+        "value": 63797871600
+      },
+      "timeStamp": {
+        "present": true,
+        "type": "undefined",
+        "value": "undefined"
+      }
+    },
+    "historyDeltaLength": 4,
+    "activeDecoded": {
+      "index": 3,
+      "fields": {
+        "startDate": {
+          "present": true,
+          "type": "number",
+          "finite": true,
+          "value": 63797871600
+        },
+        "timeStamp": {
+          "present": true,
+          "type": "number",
+          "finite": true,
+          "value": 0
+        }
+      },
+      "saveName": "",
+      "formatted": "(2022/9/4 07:00 星期日)"
+    },
+    "uiMetadataGameTime": {
+      "type": "string",
+      "value": "2022/9/4 07:00"
+    }
+  },
+  "isolation": {
+    "saveUiDisabled": true,
+    "adapterMatch": "none",
+    "ownUiHosts": 0,
+    "appendedDateUnchanged": true,
+    "scope": "Only save presentation and its adapter disabled; complete UI/Host not uninstalled; target Mod and other combo retained"
+  },
+  "dataIntegrity": {
+    "savedDataBeforeSha256": "96d6feeb29ffbf372397c3d39d126ae0b7a5a22fe504e2a7f8625500509ef33c",
+    "savedDataAfterSha256": "96d6feeb29ffbf372397c3d39d126ae0b7a5a22fe504e2a7f8625500509ef33c",
+    "detailsBeforeSha256": "e3021abade93f147f33a9531dd33130e1f0ee2ce549cea588cc1488039087f77",
+    "detailsAfterSha256": "e3021abade93f147f33a9531dd33130e1f0ee2ce549cea588cc1488039087f77",
+    "uiPreferenceRestored": true,
+    "optimizationSettingsUnchanged": true,
+    "saveLoadDeleteInvoked": false,
+    "otherSlotsWritten": false
+  },
+  "assertions": [
+    "exact existing malformed date reproduced by raw first-frame source path",
+    "same save correctly decoded active date with actual live DateTime/getTimeString",
+    "source/ZIP/loaded script bytes equal",
+    "fresh native save page remains malformed with own save UI/adapter disabled",
+    "own slot raw payload and metadata hash unchanged",
+    "preferences and scene restored"
+  ],
+  "limitations": [
+    "No fresh save or transfer performed in this diagnostic",
+    "No target Mod removal or full UI uninstall",
+    "No installed patch or before/after patch validation",
+    "No claim that all save metadata or historical dates are correct",
+    "Existing general CI does not establish date semantics; no CI rules changed"
+  ]
+}

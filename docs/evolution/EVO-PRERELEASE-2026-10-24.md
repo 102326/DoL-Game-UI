@@ -87,4 +87,4 @@ PSS 仍高于基线，来源未归因；这些采样不证明长期泄漏已解�
 | Owner Acceptance | G1 / G2 / G3 的负责人最终裁决仍 Pending，局部历史认可照旧保留 |
 | Release Authorization | 本轮只到发布前；未授权 main / Tag / 正式发布或代签 Visual Gate |
 
-本轮没有剩余范围内产品修复。安装 / 回退见[候选指南](../INSTALL_EVOLUTION_CANDIDATE.md)，面向使用者的描述见[发布草稿](../RELEASE_EVOLUTION_DRAFT.md)。公开版本、最终媒体与发布决定由负责人确认；READ01 和其它未批准视觉研究不进入候选。
+日期异常后续核查已定位原版优化附加显示的首帧取值问题，见[专项归因](EVO-SAVE-DATE-REVIEW-2026-10-24.md)。当前组合尚未安装日期修复，是否需追加产品适配仍待决定；不能据此前工程收口表述认定没有待修行为。安装 / 回退见[候选指南](../INSTALL_EVOLUTION_CANDIDATE.md)，面向使用者的描述见[发布草稿](../RELEASE_EVOLUTION_DRAFT.md)。公开版本、最终媒体与发布决定由负责人确认；READ01 和其它未批准视觉研究不进入候选。
