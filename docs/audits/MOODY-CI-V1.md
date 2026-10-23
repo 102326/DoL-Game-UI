@@ -161,3 +161,13 @@ the 100 ms opening fade. Closing at zero opacity yields zero duration and no
 paused-animation witness. The fixture now waits for the actual shell opening
 completion before injecting a stuck close. The paused witness, exact
 MOODY_SETTINGS_CLOSE_PENDING rejection and positive delayed-close control remain.
+
+PR run 39896439311 then exposed a separate emulated-media fixture race in
+game-first-motion (same-source push 39896433725 passed). A local reproduction
+instrumenting only the existing production MQL callback recorded zero change
+deliveries despite matches=true, enabled=false and one paused relay. The test
+now lets the no-preference baseline reach two real rendering frames before the
+next override. It does not dispatch synthetic media events or change production
+cleanup. All original checks and the 1 s cleanup budget remain. The healthy
+fixture passes; deleting the real media listener yields the exact AssertionError
+"reduced must remove paused relay". Both original failure and mutation are kept.
