@@ -86,3 +86,7 @@ node scripts/measure-evolution-acrylic.cjs
 | main、正式版本、Host API、保护/bypass、Tag/Release或正式ZIP | 未修改 |
 
 本批 Implemented=隔离候选，Tested=表列受控范围，Visually Accepted=false，Integrated=false，Release Ready=false。结霜认可不自动扩展为材质或全局G2/G3认可。下一设备按[当前交接](../HANDOFF.md)检查身份/环境和现存CI，再决定是否继续此方向。
+
+## 实际研发同步与远端检查
+
+实现提交 `9421d1d02409fa38fe5004f1e92296259d97cd50` 已推送；[研究push39951290333](https://github.com/102326/DoL-Game-UI/actions/runs/39951290333)为SUCCESS/Attempt1，producer与独立下载验收均成功。[小型验收证明](EVO-READ01-RESEARCH-REMOTE.json)已本地核对source/tree/run/生成锁/catalog身份及PASS/COMPLETE；未本地全量下载研究大媒体。该CI没有注册READ01入口，不能替代上述手动检查或性能结论。标准整轮本批未额外手动重跑。其后纯文档/证明补充不改变53项已测试源码hash；最终交付文档SHA及后续自动run状态见#22。
