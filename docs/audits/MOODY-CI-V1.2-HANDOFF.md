@@ -18,7 +18,7 @@
 | Expected Lock SHA256 | `dfb57c2e92f984c51b13ab828ea07913552e024ca934a79fdcf5c4b2d1984846`，Catalog 1.3.0 |
 | 永久Project ID | `005d5d5f-6a83-42bb-a5e4-211033e5f03c` |
 
-这些是CI实现的历史验收锚，后续文档/产品提交有自己的Commit和Tree。不要把新HEAD写成已由旧Run验证；也不要只凭Tree忽略Workflow、工具链、依赖、Catalog及Run/Attempt。已有后续研发 `9421d1d` 保留READ01隔离研究与性能未解决结论；本轮不重新设计或集成该候选。
+这些是CI实现的历史验收锚，后续文档/产品提交有自己的Commit和Tree。不要把新HEAD写成已由旧Run验证；也不要只凭Tree忽略Workflow、工具链、依赖、Catalog及Run/Attempt。已有后续研发 `9421d1d` 保留READ01隔离研究与性能未解决结论，研究39951290333随后成功；本次文档整理又保留其最终纯文档输入`a394894cd305e823028ff4a8819a092d3b176572`，包括FFmpeg/ffprobe前提和READ01未接入/性能退化说明。本轮不重新设计或集成该候选。
 
 ## 实际验证与覆盖
 
