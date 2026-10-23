@@ -154,3 +154,9 @@ these tool entries permit explicit successful exit. Their nonzero exit, includin
 ERROR. G08 verifies both tool outcomes and keeps early contract exit rejected.
 Current dev W01 integration is merged into the CI branch; settings-ci retains
 its new nine groups and precise late-host negative alongside S01.
+
+Actual PR research39901544656 exposed native multi-file reporter timing: all
+nine weather assertions passed, but the first per-file summary was compared
+with the complete nine-case catalog and left a nonzero exit. Plan comparison
+now runs only after the native event stream completes; skip/empty/cancel checks
+remain required. G08 executes the actual two-file nine-case healthy control.
