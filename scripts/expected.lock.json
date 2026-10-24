@@ -518,6 +518,7 @@
   "entries": [
     {
       "entry": "scripts/check-settings-refraction.cjs",
+      "sourceEntry": "scripts/check-settings-refraction.cts",
       "profiles": [
         "research"
       ],
@@ -581,8 +582,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a23e4487d5e31335356ec0461d734f8d2947a48abe6b5a927ef3f6d84083f0b1",
-      "assertionSites": 80
+      "sourceSha256": "02c84934afe75d8a970d14f802af5dfb810c5ca7ba1af728e93eeb4ba6ab4a6b",
+      "assertionSites": 81
     },
     {
       "entry": "scripts/ci-research-unit.cjs",

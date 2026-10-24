@@ -1,5 +1,6 @@
 // @ci-contract {"profiles":["research"],"classification":"contract","granularity":"named","caseSource":"check"}
-const runCase:(name:string,fn:()=>Promise<void>)=>Promise<unknown>=require('./ci-cases.cjs').runCase;
+import cases = require('./ci-cases.cjs');
+const {runCase}=cases;
 // Run against the actual static build. Evidence/recording stays first-party and local.
 import assert = require('node:assert/strict');
 import fs = require('node:fs');

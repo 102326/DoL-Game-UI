@@ -341,3 +341,10 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 - 保留失败：native-small-surfaces新旧脚本均在关闭hover颜色等待超时；wardrobe-wear-motion本机新旧脚本均在90ms后的动效父节点断言失败，工作者此前通过，需继续排查时序/环境，不能宣称本机通过。shop-ripple记录console 404但未定位URL。coexistence --teardown-only新旧均未完成，失败阶段不同，不宣称同一原因或长期性能通过。Windows符号链接EPERM仍保留。
 - 114项1ac1c2344fa970703ad972e6a8a147d142ad339d：标准40120958746、研究40120957637成功，独立下载证据准确HEAD/PASS/COMPLETE、problems=[]；十摘要、九ZIP CRC、双构建PASS/differences=[]。这些结果不自动验证115–145的新源码。
 - 本机原始日志在忽略的tests/artifacts/ts-*、ci-readback-114及weather-texture-parity.json。Android仍为受验100项包，105全部成员已证明相同；本批尚未安装，不能借旧装机宣称本批实机通过。未发布、未改版本或main。
+
+
+### 146–147：最后两项独立研究脚本
+
+- check-settings-refraction与check-evolution-acrylic改为严格CTS，冻结来源JSON按unknown验证，真实浏览器/动画/几何字段明确类型。累计147/243，冻结独立脚本已全部接入TS，仍有96项测试，既有TS边界继续检查。
+- 隔离工作区复制327个准确静态研究输入，构建通过；设置研究默认检查完整通过，未录制或覆盖已认可媒体。Acrylic脚本仅严格编译与node --check；其默认会覆盖旧READ01研究结果，故未重跑，也未声称性能改善。
+- 新暴露的研究renderer既有snapshot单一类型错误已改为实际两种材质快照的union，固定水珠/薄膜索引增加明确检查；不改有效天气映射或材质参数，待对应实际研究天气用例复验。

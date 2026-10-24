@@ -182,3 +182,6 @@ docs/HANDOFF.local.md
 /tests/evolution-owner-resources.cjs
 /tests/shop-pagination-package.test.cjs
 /tests/settings-lifecycle.test.cjs
+
+/scripts/check-evolution-acrylic.cjs
+/scripts/check-settings-refraction.cjs
