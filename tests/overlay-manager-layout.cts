@@ -1,5 +1,6 @@
-const { chromium } = require('playwright');
-const assert = require('node:assert/strict');
+import playwright = require('playwright');
+const {chromium}=playwright;
+import assert = require('node:assert/strict');
 (async () => {
  const browser = await chromium.launch({channel:'msedge',headless:true});
  try {
@@ -8,9 +9,9 @@ const assert = require('node:assert/strict');
    .customOverlayContainer{position:fixed;left:281.6px;right:0;top:0;bottom:0}
    .customOverlay{position:absolute;left:-281.6px;right:10px;top:10px;height:780px}
   </style><div class="customOverlayContainer"><div id="customOverlay" class="customOverlay" data-overlay="modloader"><button>Manager</button></div></div></html>`);
-  const read = () => document.querySelector('.customOverlay').getBoundingClientRect().toJSON();
+  const read = () => {const n=document.querySelector('.customOverlay');if(!n)throw Error('Missing overlay fixture');const r=n.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,x:r.x,y:r.y}};
   const native = await page.evaluate(read);
-  const control = () => {const s=getComputedStyle(document.querySelector('button'));return [s.fontSize,s.padding,s.minHeight]};
+  const control = () => {const n=document.querySelector('button');if(!n)throw Error('Missing manager button');const s=getComputedStyle(n);return [s.fontSize,s.padding,s.minHeight]};
   const controlBefore=await page.evaluate(control);
   await page.addStyleTag({path:'src/theme/layout.css'});
   assert.deepEqual(await page.evaluate(read),native,'Manager retains native positioning');
@@ -42,7 +43,7 @@ const assert = require('node:assert/strict');
   await page.addStyleTag({path:'src/theme/kraft-work-native.css'});
   assert.deepEqual(await page.evaluate(debugGeometry),nativeDebug,'debugger grid keeps native label and checkbox geometry');
   assert.equal(await page.locator('#customOverlayContent').evaluate(n=>getComputedStyle(n).overflowWrap),'normal');
-  await page.locator('#customOverlay').evaluate(n=>n.dataset.overlay='saves');
+  await page.locator('#customOverlay').evaluate(n=>n.setAttribute('data-overlay','saves'));
   assert.equal(await page.locator('#customOverlayContent').evaluate(n=>getComputedStyle(n).overflowWrap),'anywhere','ordinary overlays retain long-text wrapping');
   console.log('PASS manager native geometry, game overlay layout and native renderer grid');
  } finally { await browser.close(); }
