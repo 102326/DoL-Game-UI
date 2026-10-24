@@ -11,16 +11,16 @@ export function startStoryActions(root:Root=window){
  let scope:HTMLElement|null=null,dock:HTMLElement|undefined,reserve:HTMLElement|undefined,bindings:Binding[]=[];
  const observer=new MutationObserver(schedule);
  const visible=(n:Element)=>n.getClientRects().length>0&&getComputedStyle(n).visibility!=='hidden'&&!n.closest('[hidden],[inert]');
- function current(){const pages=document.querySelectorAll<HTMLElement>('#passages .passage:not(.passage-out)');return pages.length===1?pages[0]:null}
+ function current(){const pages=document.querySelectorAll<HTMLElement>('#passages .passage:not(.passage-out)');return pages.length===1?(pages[0]??null):null}
  function modal(){return [...document.querySelectorAll('dialog[open],#customOverlay,#ui-dialog')].some(visible)}
  function read(p:HTMLElement):Binding[]{
   if(root.SugarCube?.State?.passage!=='Bedroom'||p.querySelector('#listContainer,.dcu-root,#masturbationButtons'))return [];
   const contents=p.querySelectorAll<HTMLElement>('[id="passage-content"]');if(contents.length!==1)return [];
-  const content=contents[0];if(content.parentElement!==p)return [];
+  const content=contents[0];if(!content||content.parentElement!==p)return [];
   return targets.flatMap(target=>{
    const matches=content.querySelectorAll<HTMLAnchorElement>(`a.link-internal.macro-link[data-passage="${target}"]`);
    if(matches.length!==1)return [];
-   const node=matches[0],label=node.textContent?.trim()??'';
+   const node=matches[0];if(!node)return [];const label=node.textContent?.trim()??'';
    if(node.parentElement!==content||!visible(node)||node.matches('[aria-disabled="true"]')||getComputedStyle(node).pointerEvents==='none'||!label||label.length>100)return [];
    return [{node,target,label}];
   });
@@ -52,7 +52,7 @@ export function startStoryActions(root:Root=window){
   const p=current();if(locked&&locked!==p)locked=null;
   const next=enabled&&isMasterEnabled()&&p&&!modal()?read(p):[];
   if(!p||!next.length){clear();return}
-  const same=page===p&&dock?.isConnected&&reserve?.isConnected&&bindings.length===next.length&&bindings.every((b,i)=>b.node===next[i].node&&b.target===next[i].target&&b.label===next[i].label);
+  const same=page===p&&dock?.isConnected&&reserve?.isConnected&&bindings.length===next.length&&bindings.every((b,i)=>{const candidate=next[i];return !!candidate&&b.node===candidate.node&&b.target===candidate.target&&b.label===candidate.label});
   if(!same){
    clear();page=p;bindings=next;
    dock=document.createElement('nav');dock.id='dol-story-actions';dock.className='no-numberify';dock.setAttribute('aria-label','原版常用动作');
