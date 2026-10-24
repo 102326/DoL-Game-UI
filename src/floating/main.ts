@@ -7,7 +7,8 @@ import {mountUI,unmountUI} from '../runtime/presentation';
 import './style.css';
 type Tool={id:ToolId;name:string;icon:string;description:string;reason:string};
 export type FloatingState={x:number;y:number;intentX:number;intentY:number;open:boolean;mode:'fan'|'grid';config:boolean;dragging:boolean;tools:Tool[];fan:{x:number;y:number}[];menuX:number;menuY:number;menuWidth:number;menuMaxHeight:number;message:string};
-export type FloatingApi={getPreferences():FloatingPreferences;setPreference(key:keyof FloatingPreferences,value:unknown):void;show():void;hide():void;resetPosition():void;refresh():void;destroy():void};
+import type {FloatingApi} from './preferences';
+export type {FloatingApi} from './preferences';
 type Root=Window & {DoLFloatingTools?:FloatingApi;DoLMidnightTheme?:{openSettings():void};DoLGameUI?:{openSettings():void;ui?:{openInspector?:()=>unknown}}};
 export function startFloatingTools(root:Root=window,renderSurface=true){
  if(root.DoLFloatingTools)return root.DoLFloatingTools;

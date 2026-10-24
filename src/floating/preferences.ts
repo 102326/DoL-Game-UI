@@ -1,6 +1,7 @@
 export const toolIds=['settings','inspector','move'] as const;
 export type ToolId=typeof toolIds[number];
 export type FloatingPreferences={enabled:boolean;hidden:boolean;mode:'fan'|'grid';x:number;y:number;tools:ToolId[]};
+export type FloatingApi={getPreferences():FloatingPreferences;setPreference(key:keyof FloatingPreferences,value:unknown):void;show():void;hide():void;resetPosition():void;refresh():void;destroy():void};
 export const floatingKey='DoLGameUI.stoneFree.floating.v1';
 export const floatingDefaults:FloatingPreferences={enabled:true,hidden:false,mode:'fan',x:.88,y:.45,tools:[...toolIds]};
 const record=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
