@@ -2,7 +2,10 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import {parseExpectedLock,parseCasePlan} from '../scripts/ci/contracts.ts';
+import {declarationSource} from '../scripts/ci/generate-lock.ts';
 
 test('expected lock validates the real file and preserves unknown metadata',()=>{
   const value:unknown=JSON.parse(fs.readFileSync(new URL('../scripts/expected.lock.json',import.meta.url),'utf8'));
@@ -24,4 +27,12 @@ test('case environment plans validate counts and keep empty or opaque valid data
   assert.deepEqual(parseCasePlan([]),[]);
   const plan=[{id:'entry',minimumAssertions:1,future:{preserve:true}}];assert.equal(parseCasePlan(plan),plan);
   for(const value of [null,{},[null],[{id:'entry',minimumAssertions:NaN}],[{id:'entry',minimumAssertions:0}]])assert.throws(()=>parseCasePlan(value),/Invalid case plan/);
+});
+test('typed declaration hashes require repository LF instead of silently normalizing input',t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'sw-lock-eol-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ for(const extension of ['ts','cts','mts']){
+  const file=path.join(dir,'owned.'+extension),lf='// exact input\nexport {};\n',crlf=lf.replaceAll('\n','\r\n');
+  fs.writeFileSync(file,lf);assert.equal(declarationSource(file),lf);
+  fs.writeFileSync(file,crlf);assert.throws(()=>declarationSource(file),/ExpectedLockSourceEol/);assert.equal(fs.readFileSync(file,'utf8'),crlf,'rejected source bytes must remain untouched');
+ }
 });

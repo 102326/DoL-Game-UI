@@ -399,7 +399,8 @@
     "expected-lock-boundary.test.mts": [
       "expected lock validates the real file and preserves unknown metadata",
       "expected lock rejects wrong maps, discriminator values and invalid numeric declarations",
-      "case environment plans validate counts and keep empty or opaque valid data"
+      "case environment plans validate counts and keep empty or opaque valid data",
+      "typed declaration hashes require repository LF instead of silently normalizing input"
     ],
     "isolation-inputs.test.mts": [
       "independent checkout keeps exact CRLF input without staging or hiding real edits"
@@ -595,7 +596,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "f05423c5999628fc122a223f51a872e640636fcb26634445601525a863512642",
+      "sourceSha256": "e6dd19ad7af981671cbc3a03ade143c57e3a56559524d9e906a2b5a0b68f5b2e",
       "assertionSites": 0
     },
     {
@@ -797,7 +798,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b065cf6e99880e71ca61d45153084dc2fc86fcd88d8e99d639ba77a974a28999",
+      "sourceSha256": "4e8b2c32b28c1796822450d61c8511183c1005b7390bf0b638a0cf712dc77842",
       "assertionSites": 83
     },
     {
@@ -973,7 +974,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "dbac9e1c304677c35f82f834c3b2db53f6aa6e60e7d9bb4f29955b2337479b06",
+      "sourceSha256": "31502e08ac19d04642d9340913b6de5d93ef67e8a5a6fec17243d4ae5f57a5a0",
       "assertionSites": 45
     },
     {
@@ -990,7 +991,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "039258ab5a474e67d0fef681cd72bb7315e996a98b270f291fa21e3840f961e8",
+      "sourceSha256": "1850ab32acc5fd925ab731e0e93c1fb50482f758cfcde0063f8a21f6f0fde4f2",
       "assertionSites": 5
     },
     {
@@ -1011,7 +1012,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6c1ce5bef2e8763bb1bc02bbbf1e87102a58d4577719a0ccc3a79810f9c3704d",
+      "sourceSha256": "c868ae6674e9084fe4797c76c19492cab51f5146045b89efc0f85c172ca7907b",
       "assertionSites": 22
     },
     {
@@ -1112,10 +1113,14 @@
         {
           "id": "case environment plans validate counts and keep empty or opaque valid data",
           "minimumAssertions": 1
+        },
+        {
+          "id": "typed declaration hashes require repository LF instead of silently normalizing input",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "33abb2911b5db8a81f793e6a2af599b1205c692e3193ee4f509209cb76f193ae",
-      "assertionSites": 8
+      "sourceSha256": "9397afb6ef1c77edbf05f4fbd206f9c7ed5d151e596594ed4f1910bdf56ad949",
+      "assertionSites": 17
     },
     {
       "entry": "tests/floating-preferences.test.cjs",
@@ -1710,7 +1715,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "68de0b8fecf8005b8d5cb9e49c2f59a85361a20b720154cdc01c6f5abef58e49",
+      "sourceSha256": "3f9463530af1c897b744f24a158ac102b265b7f0f554df2691d3cb2b37e39845",
       "assertionSites": 17
     },
     {
@@ -1903,7 +1908,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "5967086d202aa7c6fb248eb4b69c5bf4abfd3d6e7d75556a36dadb9b8a2c778e",
+      "sourceSha256": "bad770b9915b19188e4972d2d90a4aef69344c159c79574011f1d655a8709d7d",
       "assertionSites": 8,
       "evidence": "checkpoints"
     },
@@ -2073,7 +2078,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "f529e30bb5029aec5dbc1a756e0cddc5c9cf64d01b3a092239a372fa33a2cf5b",
+      "sourceSha256": "7ca760a8d6befb0736179fa2411a124e1c043b145103ca6bd16e1c97281f57d9",
       "assertionSites": 38
     },
     {
@@ -2218,7 +2223,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "59ea448de00e5fe61821ed9dd085ea80903f58e30dcd5cd66b33a56e9037cdb5",
+      "sourceSha256": "bb24406dea85c454b19d75be0a13850f0e12b9588695b968d5e38dcab2887b3a",
       "assertionSites": 33
     },
     {
@@ -2235,7 +2240,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "2d37e2b4a94a09df10b9db4aab9ba02006c40ba879b003dec6ae252348508385",
+      "sourceSha256": "be260eee8d2c7ce37eafd85c7c2eb7fbe04cfe653fca516f76bb4f95a6a266d6",
       "assertionSites": 32
     },
     {
@@ -2284,7 +2289,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "df0c8f248cb73952619f7b8d9422689b2c0ce76739f008a84b69916dbfe96595",
+      "sourceSha256": "c5bb8ad7402c277dfe78ced63a380a0adcb2d812bae523f175ab80b4f2a6aa2a",
       "assertionSites": 15
     },
     {
@@ -2301,7 +2306,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4faf57628b2f3728f57025ea13b950457bbd104f4dc49d3525b8e78dc4e9311e",
+      "sourceSha256": "dd052e4aa143f591ee87b2d56f83bdf712c34c4df4d11afb6672c6947ede8e77",
       "assertionSites": 40
     },
     {
@@ -2318,7 +2323,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "05233c6c0ee0429b6a25e0ebcc9274d286545ecad9e97f1722270f2594e24626",
+      "sourceSha256": "cc56c64881f6b3f586960a320c787129a346778cbbcc6d7e49e3eaa65c72fedc",
       "assertionSites": 79
     },
     {
