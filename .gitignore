@@ -122,3 +122,5 @@ docs/HANDOFF.local.md
 /tests/overlay-back-order.cjs
 /tests/sidebar-preview-lifecycle.cjs
 /tests/sidebar-preview-recovery.cjs
+
+/tests/framework-reference-shelf.cjs
