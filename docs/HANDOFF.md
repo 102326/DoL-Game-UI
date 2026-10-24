@@ -6,7 +6,7 @@
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
-- **TS First首批代码已推进**：0290718为当前实现；累计17/243个独立JS来源转为CTS/MTS，剩余226项及内联/既有TS边界仍在方案一内。已补六个TS脚本/五个Vite配置检查、真实CTS导出类型反例、TS来源生成锁、元数据unknown校验，并分别提交迁移与修复。本机严格检查、传统unit、H01、存档M4-B及九包构建通过；Windows完整unit有两项文件symlink受EPERM限制，反例保留待Linux CI。新源码未装Android、未发布；当前CI结果见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)，不得套用RC2绿灯。
+- **TS First持续推进，Node基线已升26**：34ab9ed包含当前Node基线；累计25/243个独立JS来源转为CTS/MTS，剩余218项及内联/既有TS边界仍在方案一内。新增严格工具/原生TS检查、真实导出反例、TS来源生成锁及JSON边界校验。官方Node26.0.0通过无npm启动、原生case/receipt、G01–G12、类型检查和九包构建；旧Node22/24仅作历史。首批2149391两套Actions成功，本批须新跑CI，不套用旧绿灯。已有Vite开发依赖安全告警待独立收尾；Windows无Ruby，Ruby gate由Actions验证。新源码未装Android、未发布，详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
 
 - **发行前1–5已完成，当前RC2**：[技术报告](evolution/EVO-RC2-VALIDATION-2026-10-24.md)、[冻结九包](evolution/EVO-RC2-PACKAGES-2026-10-24.json)、[雨幕归因与修复](evolution/EVO-MODHUB-RAIN-PERF-2026-10-24.md)。受验源码8033b7f已推送；标准40075729443、研究40075728194及独立证据均success。4.0.0-rc.2取代RC1，拟正式4.0.0。ModHub自然雷雨的共享旧雨幕改为独立纹理transform，保持原雨滴/速度/材质；平板配对rAF中位约33.4→8.3ms，不是完整FPS。最终CI包原生重启后8个适用包全部成员、顺序/禁用列表、150%设置滚动和阻挡通过；Windows实际Loader复验通过。候选、安装、玩家草稿和媒体来源已整理；未合入main、Tag、发布或改公开Assets。整体G1/G2/G3和正式授权待负责人。目标Mod若确认有缺陷，可作可停用/回退的针对兼容修复；不改变其业务和存档所有权。
 

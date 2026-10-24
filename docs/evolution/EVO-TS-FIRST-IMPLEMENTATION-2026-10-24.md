@@ -73,3 +73,20 @@
 完整Windows unit初次未通过：盘符reporter未转file URL、Unix路径夹具各导致失败；42a3e1b分别修复后V1.2和G01–G12等完整关卡脚本通过。`research-evidence.test.cjs`和`ci-evidence.test.cjs`创建文件符号链接仍受本机EPERM限制，保留原反例，需Linux Actions实跑；没有删除/跳过或替换为更弱断言。初次失败记录保留在本机制品目录。
 
 当前不更改4.0.0-rc.2版本、冻结RC2目录、main、Tag、Release或公开Assets。新源码Android、整套CI与最终制品复验尚不能继承RC2；本批Actions状态需按新提交另记。
+
+
+### T2 后续批次与 Node 26 基线（34ab9ed）
+
+累计25/243个独立JS来源迁移，剩余218项及内联/既有TS边界仍在方案一内。PNG、CI目录、设备用例计划、原生case桥、检查点、源码策略、失败收据和Node reporter已转CTS。真实导出被消费者使用，CI配置新增严格索引访问检查；编译仅生成明确CTS/MTS根，避免把有状态的原生TS模块再生成一份JS。各生成路径的保留理由见[工具说明](../../scripts/TOOLING.md)。
+
+类型迁移之外，24ac334独立增加Expected Lock和环境case计划结构校验；检查点文件拒绝畸形列表、过期身份和错误目录，保留有效原数据及未知字段。源码策略解析真实TS导入形式；package命令先验证字符串。Node reporter使用官方事件类型，并拒绝畸形期望计划。正例及历史反例均保留。
+
+首批2149391的标准[40089274930](https://github.com/102326/DoL-Game-UI/actions/runs/40089274930)和研究[40089274298](https://github.com/102326/DoL-Game-UI/actions/runs/40089274298)均成功，包含此前Windows受限的文件symlink反例。它们不覆盖后续本批源码或Node26配置。
+
+负责人先要求最低24，再要求验证26后直接升级。实际分别取得官方24.0.0、26.0.0二进制并按SHASUMS256核对，仅放本机测试制品，未替换系统Node26.12.1。26.0.0通过无npm依赖的真实context/冻结目录启动、完整五个CJS/MTS原生case和receipt、8项新增边界用例、G01–G12/F1及独立无npm下载验证、ci:check、UI/Host与九包构建。两版构建的九ZIP摘要逐一相同，包括主UI f86648df24f1d4bffaa058233aa2eefe5bb0732b00e895f4c4cedb80200d2a20 和Host acced8a6c23309977d39a4993c83cd05c5a8c1fdcc8df5a62a634473ea770bcc；不是最终发行冻结。
+
+最低要求现为 `>=26.0.0`，两套Actions使用26.x，锁定@types/node 26.6.5。新声明发现源码索引私有哈希函数BinaryLike过宽（包括Hash.update不接受的裸ArrayBuffer），已按实际string/Buffer输入收紧，不使用断言或扩大运行行为。此前22/24结果保留为历史，不改写为26证据。[Node原生TS语义](https://nodejs.org/download/release/v26.0.0/docs/api/typescript.html)不等于类型检查，CTS编译路径继续保留。
+
+中间失败没有删除：旧Node22探针未向子进程继承strip标记导致语法失败，按工作流环境复验通过；新增Node reporter测试最初继承父node:test内部worker环境而没有输出，隔离该环境后真实子runner正反例通过。不是降低断言或flaky重跑。Node26声明引出的编译失败已按上文修正。Windows本机无Ruby，工作流Ruby gate留待当前Actions执行。
+
+依赖安装同时报告既有Vite7.3.6开发服务器依赖安全告警；Node类型升级仅改@types/node及undici-types，没有把该告警静默修掉或声称已消除。后续工具链收尾需要单独修复及回归，不能据当前候选宣布可发布。本批仍未装Android、未合main、未改正式版本或发布。
