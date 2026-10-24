@@ -93,3 +93,8 @@ docs/HANDOFF.local.md
 /tests/moody-fixture-evidence.cjs
 
 /compat/reoverfits-soft-wet/check.cjs
+
+/scripts/record-motion-workspace.cjs
+
+/scripts/record-golden-sphere.cjs
+/scripts/record-golden-hub.cjs

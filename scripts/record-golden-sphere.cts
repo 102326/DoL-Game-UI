@@ -1,4 +1,11 @@
-const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process'),assert=require('node:assert/strict');
+import playwright = require('playwright');
+import fs = require('node:fs');
+import path = require('node:path');
+import cp = require('node:child_process');
+import assert = require('node:assert/strict');
+const {chromium}=playwright,{execFileSync}=cp;
+import type {createSphere} from '../src/ui/golden-spin/sphere.ts';
+declare const goldenSphereLab:ReturnType<typeof createSphere>;
 // Run against the standalone prototype server; never connects to a game or device.
 (async()=>{
  const dir=path.resolve('tests/artifacts/golden-spin-b/sphere-showcase-'+Date.now());fs.mkdirSync(dir,{recursive:true});
@@ -6,9 +13,9 @@ const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:
  const b=await chromium.launch(process.platform==='win32'?{channel:'msedge',headless:true}:{headless:true});
  const outputs=[];
  try{
-  for(const [name,size]of [['sphere-metal-desktop',{width:1280,height:960}],['sphere-metal-narrow',{width:390,height:844}]]){
+  for(const [name,size]of [['sphere-metal-desktop',{width:1280,height:960}],['sphere-metal-narrow',{width:390,height:844}]] as const){
    const context=await b.newContext({viewport:size,recordVideo:{dir:path.join(dir,name),size},hasTouch:true});
-   const p=await context.newPage();await p.goto('http://127.0.0.1:5181/');await p.waitForFunction(()=>window.goldenSphereLab);
+   const p=await context.newPage();await p.goto('http://127.0.0.1:5181/');await p.waitForFunction(()=>!!Reflect.get(window,'goldenSphereLab'));
    if(name.endsWith('desktop'))await p.screenshot({path:path.join(publicDir,'sphere-metal-idle.png')});
    const play=()=>p.getByRole('button',{name:'启动球体回旋',exact:true}).click(),idle=()=>p.waitForFunction(()=>goldenSphereLab.inspect().phase==='idle');
    await p.waitForTimeout(650);await play();
@@ -17,7 +24,7 @@ const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:
    await p.screenshot({path:path.join(publicDir,name+'.png')});await idle();await p.waitForTimeout(550);
    await play();await p.waitForTimeout(1750);await p.getByRole('button',{name:'收束 / 中断',exact:true}).click();await idle();
    await p.waitForTimeout(450);await play();await p.waitForTimeout(850);await play();await idle();await p.waitForTimeout(650);
-   const video=p.video();await context.close();const source=await video.path(),output=path.join(publicDir,name+'.mp4');
+   const video=p.video();assert.ok(video,'configured recording must provide a video');await context.close();const source=await video.path(),output=path.join(publicDir,name+'.mp4');
    execFileSync('ffmpeg',['-y','-i',source,'-c:v','libx264','-crf','20','-preset','medium','-pix_fmt','yuv420p','-movflags','+faststart',output],{stdio:'pipe'});
    outputs.push({name,source,output,bytes:fs.statSync(output).size});
   }
