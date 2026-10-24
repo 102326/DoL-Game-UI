@@ -138,7 +138,7 @@ function update(){
  }
  if(!active){
   const regions=lists.map(list=>{const anchor=document.createComment('DoLCombatUI original list position');list.before(anchor);return{list,anchor}});
-  const {list,anchor}=regions[0];const toggle=document.createElement('button');toggle.type='button';toggle.className='dcu-toggle';toggle.hidden=enabled;toggle.textContent='启用新版战斗面板';toggle.onclick=()=>setEnabled(!enabled);anchor.parentNode!.insertBefore(toggle,anchor);
+  const first=regions[0];if(!first)throw Error('Missing combat region');const {list,anchor}=first;const toggle=document.createElement('button');toggle.type='button';toggle.className='dcu-toggle';toggle.hidden=enabled;toggle.textContent='启用新版战斗面板';toggle.onclick=()=>setEnabled(!enabled);anchor.parentNode!.insertBefore(toggle,anchor);
   const source=createCombatSource(lists,()=>scope.active()&&isMasterEnabled()&&(!framework||!!active?.binding?.isCurrent())&&list.isConnected&&list.closest('.passage')===document.querySelector('#passages .passage:not(.passage-out)'));
   active={regions,list,anchor,toggle,host:document.createElement('div'),source,model:reactive({groups:[],unknown:0,selectedGroups:0,availableActions:0,phase:'selecting',message:''}),groups:new Map(),decorated:new Set(),separators:new Map(),dock:document.createElement('div'),docked:[],edited:new Set(),positions:new Map()};if(enabled)mount(active)
  }

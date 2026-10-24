@@ -56,8 +56,8 @@ export function startShop(root:Runtime,framework?:ShopFramework){
    while(next?.nodeType===Node.TEXT_NODE&&!next.textContent?.trim())next=next.nextSibling;
    if(next instanceof HTMLAnchorElement&&next.matches('.link-internal'))pairs.push([icon,next]);
   }
-  if(!pairs.length)return;
-  entry=box('dgshop-entry-categories',shop);pairs[0][0].before(entry);shop.classList.add('dgshop-entry');
+  const first=pairs[0];if(!first)return;
+  entry=box('dgshop-entry-categories',shop);first[0].before(entry);shop.classList.add('dgshop-entry');
   let gap=shop.querySelector(':scope > #warmth-description')?.nextSibling;
   while(gap&&(gap instanceof HTMLBRElement||(gap.nodeType===Node.TEXT_NODE&&!gap.textContent?.trim()))){
    if(gap instanceof HTMLBRElement){gap.classList.add('dgshop-entry-gap');entryBreaks.add(gap)}gap=gap.nextSibling;

@@ -186,12 +186,13 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
      if(JSON.stringify(targetData)!==plan.targetFingerprint){reason='目标衣柜发生变化，剩余操作已停止';break}
      const problem=transferProblem(current,[e],plan.target);if(problem){reason=problem;break}
     }
+    const currentIncludes=(piece:Pick<Entry,'slot'|'raw'>)=>{const list=current.inventory[piece.slot];if(!Array.isArray(list))throw Error('Missing current inventory slot');return list.includes(piece.raw)};
     const affected=pieces(current,e),before=count(current.inventory),beforeItem=JSON.stringify(e.raw),output=native.action(plan.mode,e.slot,index,plan.target);
     const after=count(current.inventory);removed+=Math.max(0,before-after);
     const success=plan.mode==='repair'?affected.every(p=>{
       const max=typeof root.clothingData==='function'?root.clothingData(p.slot,p.raw,'integrity_max'):descriptor(current,p.slot,p.raw)?.integrity_max;
       return Number.isFinite(max)&&p.raw.integrity===max;
-     }):plan.mode==='transfer'?affected.every(p=>!(current.inventory as ClothingSlots)[p.slot].includes(p.raw)&&(targetData as ClothingSlots|undefined)?.[p.slot]?.includes(p.raw)):plan.mode==='separateOutfits'?e.raw.one_piece==='split'&&JSON.stringify(e.raw)!==beforeItem:!(current.inventory as ClothingSlots)[e.slot].includes(e.raw);
+     }):plan.mode==='transfer'?affected.every(p=>!currentIncludes(p)&&(targetData as ClothingSlots|undefined)?.[p.slot]?.includes(p.raw)):plan.mode==='separateOutfits'?e.raw.one_piece==='split'&&JSON.stringify(e.raw)!==beforeItem:!currentIncludes(e);
     if(success)done++;else {skipped++;skippedReasons.push(`${e.name}：${native.message(s.original)||'游戏未允许本次操作'}`)}
     if(output.querySelector('.error')||s.passage.querySelector('.error')){reason='原版处理报错，剩余操作已停止';break}
     if(!success&&JSON.stringify(current.inventory)!==expected){reason='原版操作结果不明确，剩余操作已停止';break}

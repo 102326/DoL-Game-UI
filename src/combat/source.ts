@@ -24,7 +24,7 @@ export function createCombatSource(lists:HTMLElement[],current:()=>boolean){
    const selections=native.flatMap(control=>control instanceof HTMLSelectElement?[...control.selectedOptions].map(o=>o.textContent?.trim()||''):control.checked?[(control.labels?.[0]?.textContent||control.getAttribute('aria-label')||control.value).replace(/\s+/g,' ').trim()]:[]);
    const count=native.reduce((n,c)=>n+(c instanceof HTMLSelectElement?c.options.length:1),0);
    const available=native.reduce((n,c)=>n+(usable(c)?c instanceof HTMLSelectElement?[...c.options].filter(o=>!o.disabled&&!o.parentElement?.matches('optgroup:disabled')).length:1:0),0);
-   projection.push({key,title:known?titles[actionKey]:'附加原生选项 '+(projection.length+1),selected:[...new Set(selections)].join(' · '),count,available,known});
+   projection.push({key,title:known?(titles[actionKey]??'附加原生选项 '+(projection.length+1)):'附加原生选项 '+(projection.length+1),selected:[...new Set(selections)].join(' · '),count,available,known});
   }));
   return {groups:projection,unknown};
  }

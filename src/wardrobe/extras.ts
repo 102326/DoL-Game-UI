@@ -42,8 +42,8 @@ export function createWardrobeExtras(root:WardrobeDataHost){
     const value=JSON.stringify(slot);
     macros.push(`<details class="dgw-item-details"${v.wardrobeDefaults?.extraInfo?' open':''}><summary>衣物详情与特质</summary><<set _temp_choice=$worn[${value}]>><<shoptraits>></details>`);
     if(typeof root.isConnectedToHood==='function'&&root.isConnectedToHood(slot))macros.push('<<toggleHoodLink>>');
-    if(slot==='upper'&&w.lower?.name!=='naked'&&!d.notuck&&w.upper.outfitPrimary===undefined)macros.push('<<toggleUpperTuck>>');
-    if(slot==='lower'&&w.feet?.name!=='naked'&&!d.notuck&&!descriptor(s,'feet',w.feet)?.notuck)macros.push('<<toggleLowerTuck>>');
+    if(slot==='upper'&&w.lower?.name!=='naked'&&!d.notuck&&item.outfitPrimary===undefined)macros.push('<<toggleUpperTuck>>');
+    if(slot==='lower'&&w.feet?.name!=='naked'&&!d.notuck&&!(w.feet?descriptor(s,'feet',w.feet)?.notuck:undefined))macros.push('<<toggleLowerTuck>>');
     if(slot==='lower'&&v.player?.bodyshape==='soft'&&(!d.outfitSecondary||d.outfitSecondary[1]!==w.upper?.name))macros.push('<<toggleBellyTuck>>');
     if(slot==='upper'&&d.altsleeve)macros.push('<div class="toggleAltSleeve"><<toggleAltSleeve>></div>');
     macros.push(`<div class="toggleAltLink"><<toggleAltLink ${value} "wardrobe">></div>`);

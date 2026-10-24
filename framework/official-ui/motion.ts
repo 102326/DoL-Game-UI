@@ -59,14 +59,14 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function bedroom(){
   clearMarks();if(!live())return;sidebar();
   const pages=document.querySelectorAll<HTMLElement>('#passages>.passage:not(.passage-out)');
-  if(pages.length!==1||pages[0].dataset.passage!=='Bedroom')return;
-  const page=pages[0],contents=page.querySelectorAll<HTMLElement>(':scope>[id="passage-content"]');
-  if(contents.length!==1||page.querySelector('#listContainer,.dcu-root,#masturbationButtons'))return;
+  const page=pages[0];if(pages.length!==1||!page||page.dataset.passage!=='Bedroom')return;
+  const contents=page.querySelectorAll<HTMLElement>(':scope>[id="passage-content"]');
+  const content=contents[0];if(contents.length!==1||!content||page.querySelector('#listContainer,.dcu-root,#masturbationButtons'))return;
   // shortcut: only the reviewed direct Bedroom navigation contract; unknown/wrapped links stay native.
   for(const target of ['Wardrobe','Mirror','Bathroom','Kitchen','Orphanage','Domus Street','Settings','Attitudes']){
-   const links=contents[0].querySelectorAll<HTMLAnchorElement>(`a.link-internal.macro-link[data-passage="${target}"]`);
-   if(links.length!==1||links[0].parentElement!==contents[0]||!visible(links[0]))continue;
-   marked.set(links[0],links[0].getAttribute('data-kw-native'));links[0].setAttribute('data-kw-native',target);
+   const links:NodeListOf<HTMLAnchorElement>=content.querySelectorAll<HTMLAnchorElement>(`a.link-internal.macro-link[data-passage="${target}"]`);
+   const link:HTMLAnchorElement|undefined=links[0];if(links.length!==1||!link||link.parentElement!==content||!visible(link))continue;
+   marked.set(link,link.getAttribute('data-kw-native'));link.setAttribute('data-kw-native',target);
   }
  }
  function scrim(open:boolean){
