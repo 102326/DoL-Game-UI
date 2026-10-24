@@ -380,6 +380,10 @@
       "checkpoint writer preserves identity and appends only in its declared directory",
       "checkpoint writer rejects stale identities and malformed reports without overwriting them"
     ],
+    "context-boundary.test.mts": [
+      "run context validates prior JSON, keeps the nonce and bounds the finalization exception",
+      "tool version input is checked without asserting a package-lock interface"
+    ],
     "device-plan-boundary.test.mts": [
       "device plans retain exact string IDs, copy outputs and reject malformed lock projections"
     ],
@@ -576,6 +580,7 @@
     },
     {
       "entry": "scripts/ci-research-unit.cjs",
+      "sourceEntry": "scripts/ci-research-unit.cts",
       "profiles": [
         "research"
       ],
@@ -587,7 +592,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "13f576a7e8b562a76222fa42b576383bb032f4d85a0fc2aaf17f6a5a446629a4",
+      "sourceSha256": "d087968d390a79aec4c3e62ef2a7c00f11d2f57cc1d4dd444ca5b4cdb6fac88c",
       "assertionSites": 0
     },
     {
@@ -693,7 +698,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c58a14ff4c6927f7a07c658e9693b765d2dd30d9141f9784aa202ceb65dfe964",
+      "sourceSha256": "e5c83472293211ab718f335bcf4ae50e86c1f4fa2665a2849c405a6d5845fa81",
       "assertionSites": 81
     },
     {
@@ -743,6 +748,26 @@
       ],
       "sourceSha256": "506da1e15e75c34e30f0b36bb053586f0423c847da1332e5b0d6f99091b94524",
       "assertionSites": 23
+    },
+    {
+      "entry": "tests/context-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "run context validates prior JSON, keeps the nonce and bounds the finalization exception",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "tool version input is checked without asserting a package-lock interface",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "b26663948ff52e4b3b9f538363f98b6ec04f2c8730a30e176da85d28b1174755",
+      "assertionSites": 11
     },
     {
       "entry": "tests/device-layouts.cjs",

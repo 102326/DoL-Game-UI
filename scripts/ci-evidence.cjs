@@ -3,10 +3,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const {pathToFileURL}=require('node:url');
-const {sealProblems,reconcileIdentity,classify,overall,verdict,exactIds,sameIdentity}=require('./ci/contracts.ts');
-const {writeSuite,hydrateSuite}=require('./ci/records.ts');
+const {sealProblems,classify,overall,verdict,exactIds,sameIdentity}=require('./ci/contracts.ts');
+const {writeSuite,hydrateSuite,writeJson}=require('./ci/records.ts');
 const {entryDeclaration,entryCaseProblems,expectedLockSha256}=require('./ci/lock.ts');
-const { spawn, execFileSync } = require('node:child_process');
+const { spawn } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const { suites, stages, catalogFor, catalogIdentity,checkpoints,nodeTestCases,researchUnitEntries,projectId } = require('./ci-catalog.cjs');
 const fixtureChecks = ['settings-ci.cjs', 'combat-focused.cjs', 'moody-historical-regressions.cjs', 'device-layouts.cjs'];
@@ -15,42 +15,7 @@ const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 
 const {sourceIdentity,observeSource}=require('./ci/source.ts');
 
-function context({allowSourceDrift=false}={}) {
-  const started=Date.now();
-  const id = process.env.MOODY_EVIDENCE_ID || `local-${Date.now()}-${process.pid}`;
-  if (!/^[a-zA-Z0-9_-]{1,100}$/.test(id)) throw Error('Invalid MOODY_EVIDENCE_ID');
-  process.env.MOODY_EVIDENCE_ID = id;
-  const dir = path.join(root, 'tests/artifacts/ci', id);
-  fs.mkdirSync(dir, { recursive: true });
-  const version = command => { try { return execFileSync(command, ['--version'], { encoding: 'utf8', timeout: 5000, stdio: ['ignore', 'pipe', 'pipe'] }).trim(); } catch { return null; } };
-  const profile=process.env.MOODY_PROFILE||'standard', depth=process.env.MOODY_DEVICE_DEPTH||'standard';
-  let event={};if(process.env.GITHUB_EVENT_PATH)event=JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH));
-  const priorFile=path.join(dir,'identity.json');let prior;
-  if(fs.existsSync(priorFile)){if(fs.lstatSync(priorFile).isSymbolicLink()||fs.statSync(priorFile).size>262144)throw Error('Unsafe prior identity');prior=JSON.parse(fs.readFileSync(priorFile)).identity;}
-  let identity = {
-    projectId,
-    source: sourceIdentity(),
-    run: { id, attempt: process.env.GITHUB_RUN_ATTEMPT || 'local', githubRunId: process.env.GITHUB_RUN_ID || null,
-      repository: process.env.GITHUB_REPOSITORY || null, ref: process.env.GITHUB_REF || null,
-      event:process.env.GITHUB_EVENT_NAME||'local', workflow: process.env.GITHUB_WORKFLOW || null, job: process.env.GITHUB_JOB || null,
-      url: process.env.GITHUB_RUN_ID ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null },
-    nonce:prior?.nonce||crypto.randomBytes(16).toString('hex'), profile, catalog:catalogIdentity(profile,depth),
-    pr:event.pull_request?{head:event.pull_request.head.sha,base:event.pull_request.base.sha,merge:process.env.GITHUB_SHA}:null,
-    environment: { orderSeed:process.env.MOODY_ORDER_SEED||null,runnerImage:process.env.ImageOS||null,runnerImageVersion:process.env.ImageVersion||null,platform: process.platform, arch: process.arch, deviceDepth: process.env.MOODY_DEVICE_DEPTH || 'standard', node: process.version, npm: version('npm'), python: version('python'),
-      playwright: require('../package-lock.json').packages['node_modules/playwright'].version,
-      browser: process.platform === 'win32' ? 'Microsoft Edge (browser suite)' : 'Pinned Playwright Chromium (browser suite)' }
-  };
-  if(prior)identity=reconcileIdentity(prior,identity,allowSourceDrift);
-  if(process.env.GITHUB_ACTIONS==='true'&&identity.source.head!==process.env.GITHUB_SHA)throw Error('Checkout differs from workflow SHA');
-  if(!prior){writeJson(priorFile,{schema:1,identity});writeJson(path.join(dir,'catalog.json'),{schema:1,identity,catalog:catalogFor(profile,depth)});}
-  return {root,dir,identity,preparationMs:Date.now()-started};
-}
-
-function writeJson(file, data) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file + '.tmp', JSON.stringify(data, null, 2) + '\n');
-  fs.renameSync(file + '.tmp', file);
-}
+const {context}=require('./ci/context.ts');
 
 function checkpointEvidence(ctx, name) {
  const expected=checkpoints[name];if(!expected) return true;

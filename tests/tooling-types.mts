@@ -1,3 +1,4 @@
+import {context as evidenceContext} from '../scripts/ci/context.ts';
 import * as verdictTools from '../scripts/ci/contracts.ts';
 import renderer from '../scripts/render-state-fields.cjs';
 import producer from '../component-lab/source-index.cjs';
@@ -65,3 +66,15 @@ function ciVerdictContract(){
  return {status,verdictStatus,integrity,combined,assertion,typed};
 }
 void ciVerdictContract;
+
+
+function contextContract(){
+ const ctx=evidenceContext();
+ const nonce:string=ctx.identity.nonce,head:string=ctx.identity.source.head,version:string=ctx.identity.environment.playwright;
+ const profile:import('../scripts/ci/contracts.ts').Profile=ctx.identity.profile;
+ const typed:0 extends (1&typeof ctx.identity.source)?true:false=false;
+ // @ts-expect-error The finalization exception is a boolean, not a truthy flag.
+ evidenceContext({allowSourceDrift:'yes'});
+ return {nonce,head,version,profile,typed};
+}
+void contextContract;

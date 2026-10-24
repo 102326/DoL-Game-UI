@@ -85,3 +85,4 @@ docs/HANDOFF.local.md
 /tests/kraft-work-baseline.cjs
 /tests/native-action-style.cjs
 /tests/sidebar-surface.cjs
+/scripts/ci-research-unit.cjs

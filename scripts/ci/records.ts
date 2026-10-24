@@ -6,15 +6,15 @@ interface Result {name:string;status:string;rawStatus?:string;milliseconds?:numb
 interface Report {suite:string;results:Result[];kind?:string}
 const record=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
 function result(value:unknown):value is Result{return record(value)&&typeof value.name==='string'&&typeof value.status==='string'&&(value.rawStatus===undefined||typeof value.rawStatus==='string')&&(value.milliseconds==null||typeof value.milliseconds==='number'&&Number.isFinite(value.milliseconds)&&value.milliseconds>=0);}
-function write(file:string,value:unknown):void{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file+'.tmp',JSON.stringify(value,null,2)+'\n');fs.renameSync(file+'.tmp',file);}
+export function writeJson(file:string,value:unknown):void{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file+'.tmp',JSON.stringify(value,null,2)+'\n');fs.renameSync(file+'.tmp',file);}
 export function writeSuite(ctx:Context,report:Report):void{
  const results=report.results.map(result=>{
   if(!/^[\w.-]+$/.test(result.name))throw Error('Unsafe result name');
   const resultFile=`checks/${report.suite}/${result.name}.json`;
-  write(path.join(ctx.dir,resultFile),{schema:1,identity:ctx.identity,suite:report.suite,result});
+  writeJson(path.join(ctx.dir,resultFile),{schema:1,identity:ctx.identity,suite:report.suite,result});
   return {name:result.name,status:result.status,rawStatus:result.rawStatus,milliseconds:result.milliseconds,resultFile};
  });
- write(path.join(ctx.dir,report.suite+'.json'),{...report,kind:'suite-index',results});
+ writeJson(path.join(ctx.dir,report.suite+'.json'),{...report,kind:'suite-index',results});
 }
 export function hydrateSuite(ctx:Context,report:Report):Report{
  if(report.kind!=='suite-index')return report;
