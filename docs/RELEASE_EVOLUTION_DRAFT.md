@@ -1,6 +1,6 @@
 # Soft & Wet 4.0 — Evolution
 
-> 面向玩家的发布草稿。内部候选4.0.0-rc.1准备中，未正式发布；仅最终验收后替换为正式版本与真实下载入口。
+> 面向玩家的发布草稿。内部候选4.0.0-rc.1已完成技术准备，拟正式4.0.0，未正式发布；仅最终验收后替换为正式版本与真实下载入口。
 
 Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口、焦点和悬浮工具的动态表现，并整理它们在缩放、滚动和快速切换时的行为。
 
@@ -47,3 +47,13 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 当前候选身份与验收状态见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)，业务回归见[技术报告](evolution/EVO-PRERELEASE-2026-10-24.md)。最终页面使用最终候选的真实截图与视频；血雨等已停用实验不作为发行宣传。媒体展示在正文，不作为 Assets。下载区只保留实际分发的主 UI、Host、适用兼容包和校验清单，技术报告留在仓库。
 
 作者、贡献者与第三方许可沿用仓库 Credits、LICENSE 和包内 notices；Framework Host 的历史技术名仍为 StoneFreeHost，公共合同保持不变。
+
+## 画面与动态预览
+
+![实际Android设置：血月环境，普通雨保留](https://raw.githubusercontent.com/102326/DoL-Game-UI/dev/evolution-4.0/docs/media/evolution-rc1-game/android-blood-moon.png)
+
+- [设置与特殊天气原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/desktop-1x.mp4)
+- [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
+- [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
+
+截图来自实际测试App；视频为当前真实组件的受控原速演示，不标为自然天气事件或真机录屏。天气及Hub绘制与候选一致，来源见[技术验证](evolution/EVO-RC1-VALIDATION-2026-10-24.md)。媒体在正文展示，不放入Assets。

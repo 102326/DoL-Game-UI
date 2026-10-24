@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Latest owner authorization (2026-10-24): complete pre-release steps 1–5, including source commit/push, both CI workflows, exact package checks, representative Windows/Android installation and player documentation. Internal candidate is 4.0.0-rc.1; planned stable is 4.0.0, pending owner decision. Accepted B01/S01 uses actual settings only; ordinary rain retained. See docs/evolution/EVO-RC1-VALIDATION-2026-10-24.md. This supersedes prototype-only and research-version-label limits for candidate preparation, not main merge, Tag, Release, public Assets or overall owner G1/G2/G3 approval.
+
 - CI专项当前授权（2026-10-23）：[Moody Blues可信度实施令V1.2](docs/references/MOODY_CI_TRUST_V1.2_ORIGINAL.md)。在现有CI专项分支继续，TypeScript First/JS by exception；生成Expected Lock、实际用例/渲染路径、独立研究依赖、封存和下载复核，保留V1.1合同。不得通过缩减有效断言/覆盖取得绿色，不自动合并main、发布或更改保护/required checks/bypass、产品视觉/Host API。范围与局限见[专项报告](docs/audits/MOODY-CI-V1.2.md)。
 
 - 最新CI同步授权（2026-10-23）：负责人在CI聊天明确要求“任务完成且没有问题后可以同步，进入同步流程”。允许PR #24对齐最新已推送研发成果，更新生成锁并通过组合源码的实际标准/研究及下载验收后，转Ready、合入`dev/evolution-4.0`并同步。此前“只询问Draft原因、未批准合入”的说明为历史状态，本条替代其同步限制；仍不涉及main、Release、保护或bypass，也不授权覆盖其它聊天未提交的产品研究。

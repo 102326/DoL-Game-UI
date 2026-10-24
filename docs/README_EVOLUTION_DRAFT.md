@@ -1,6 +1,6 @@
 # Soft & Wet 4.0 — Evolution
 
-> 首页替换稿，尚未启用。对应内部候选4.0.0-rc.1，正式版本与下载入口待负责人最终确认。
+> 首页替换稿，尚未启用。对应已完成技术准备的内部候选4.0.0-rc.1，拟正式4.0.0；正式发布与下载入口待负责人最终确认。
 
 Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、服装店、角色信息和常用窗口。Evolution 延续3.X视觉基线，更新悬浮工具与设置的动态表现，并改进窗口在滚动、缩放和快速切换时的行为。
 
@@ -86,3 +86,13 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 - [许可证](../LICENSE)与包内第三方声明；作者及贡献者署名保留
 
 本稿暂不嵌入早期或被否决媒体。正式页面只展示最终候选的合格截图和视频，媒体不放入玩家Assets。
+
+## 画面与动态预览
+
+![实际Android设置：血月环境，普通雨保留](https://raw.githubusercontent.com/102326/DoL-Game-UI/dev/evolution-4.0/docs/media/evolution-rc1-game/android-blood-moon.png)
+
+- [设置与特殊天气原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/desktop-1x.mp4)
+- [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
+- [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
+
+截图来自实际测试App；视频为当前真实组件的受控原速演示，不标为自然天气事件或真机录屏。天气及Hub绘制与候选一致，来源见[技术验证](evolution/EVO-RC1-VALIDATION-2026-10-24.md)。媒体在正文展示，不放入Assets。

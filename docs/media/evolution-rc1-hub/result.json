@@ -1,0 +1,152 @@
+{
+  "scope": "Actual official Hub and settings/weather owners with first-party native-entry stand-ins. Original speed, all waits retained. Inspector is a mock notification. Not full game, physical touch, frozen old/new comparison or owner G2 approval.",
+  "inputHead": "78430e6df124f9d9dd3a9b32fc3e8bc35602878d",
+  "workingTree": true,
+  "sources": {
+    "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
+    "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+    "framework/motion-hub/geometry.ts": "179e09aa237f99a4874d3d062d25ba542d9cd9d0f756ff1b3e50f78cde4680f0",
+    "src/ui/visual-scope.ts": "3c1762e43e05bc51d27e85c9d813322d27a1af64acaf58c6b761a16906515ec1",
+    "scripts/preview-evolution-hub.mjs": "974d7e1ea01a1c1e9bf30ea6a0b8e8db4f01d28140f647f2570f4b452a42e2b8",
+    "scripts/record-evolution-hub.cjs": "26e4538ff18870f61e43439a46a24195c4b2e99daee6ddab7a59c26a2231c096",
+    "package-lock.json": "7091d9d5c2385372f948081092892f8c23deaf397b0ae2dbc2977ba03745e3b0",
+    "dist/framework/official-ui/style.css": "54bc0e2a2eac5a9dbdb42874527a15ddb8461efe9dddd315395e280c3c438b1e",
+    "src/ui/golden-spin/hub-motion.ts": "620a7757a495693e4a3727838c6818ad071f0556cb270a99ad7917eb0d3283c5",
+    "src/ui/golden-spin/hub.css": "99a8d5888176e7ba7120af0b2fb41be14acfd14654a9d68ede4b03deac8e11b3",
+    "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
+    "src/ui/weather/blood-moon.ts": "a5d06e51b5e619d58fc65b54aa5819310b1bf00f6f472fa0907884288a25ab88",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/special-atmosphere.ts": "84ca650b7baa985443d51d7ab875c5f7104d51343b5876a754687e791e32637f",
+    "src/ui/weather/surface.ts": "372e683b9ea88fa37cb18ee532592f148ee1403be788cf2357db5db77b58aa41",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "dd85eb0f0e19996f2f3b9d4786062ba0931c8c6df0b43aece8a50b696896f831"
+  },
+  "runtime": {
+    "platform": "win32",
+    "node": "v26.12.1",
+    "chromium": "157.0.4341.16"
+  },
+  "records": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "events": [
+        {
+          "label": "H1 实际工具并行展开",
+          "actualMs": 522
+        },
+        {
+          "label": "H2 Escape收束",
+          "actualMs": 26225
+        },
+        {
+          "label": "H3 中途反向",
+          "actualMs": 32768
+        },
+        {
+          "label": "实际设置单次激活",
+          "actualMs": 33600
+        },
+        {
+          "label": "设置分类",
+          "actualMs": 36066
+        },
+        {
+          "label": "关闭设置",
+          "actualMs": 36850
+        },
+        {
+          "label": "H4 原生社交入口一次",
+          "actualMs": 38520
+        },
+        {
+          "label": "左侧移动与停靠",
+          "actualMs": 41086
+        },
+        {
+          "label": "恢复球体与展开",
+          "actualMs": 43000
+        }
+      ],
+      "final": {
+        "counts": {
+          "native": 1,
+          "settings": 1,
+          "inspector": 0
+        },
+        "open": "true",
+        "canvases": 1,
+        "gameData": false
+      },
+      "errors": []
+    },
+    {
+      "name": "narrow",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "events": [
+        {
+          "label": "H1 实际工具并行展开",
+          "actualMs": 525
+        },
+        {
+          "label": "H2 Escape收束",
+          "actualMs": 2018
+        },
+        {
+          "label": "H3 中途反向",
+          "actualMs": 3835
+        },
+        {
+          "label": "实际设置单次激活",
+          "actualMs": 4648
+        },
+        {
+          "label": "设置分类",
+          "actualMs": 7104
+        },
+        {
+          "label": "关闭设置",
+          "actualMs": 7889
+        },
+        {
+          "label": "H4 原生社交入口一次",
+          "actualMs": 9553
+        },
+        {
+          "label": "左侧移动与停靠",
+          "actualMs": 12110
+        },
+        {
+          "label": "恢复球体与展开",
+          "actualMs": 14014
+        }
+      ],
+      "final": {
+        "counts": {
+          "native": 1,
+          "settings": 1,
+          "inspector": 0
+        },
+        "open": "true",
+        "canvases": 1,
+        "gameData": false
+      },
+      "errors": []
+    }
+  ]
+}

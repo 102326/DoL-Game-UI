@@ -1,0 +1,22 @@
+{
+  "source": "78430e6df124f9d9dd3a9b32fc3e8bc35602878d",
+  "scope": "Real Windows Loader / Android test app. Controlled Weather only; local executable members equal CI. Private raw logs and saves excluded. Android views precede docs-only canonical replacement; final loaded member check separately passed.",
+  "files": {
+    "android-blood-moon.png": {
+      "sha256": "345f1a77fe0bd97d225517b9b13d030c86bb8ae5ee20bb53f7bbf2a44c734f7e",
+      "bytes": 692753
+    },
+    "android-blood-rain.png": {
+      "sha256": "eff438cae91f20eeb50a461bef85fee2f081ad30ec97b5913aabf6e4472285e2",
+      "bytes": 709031
+    },
+    "desktop-blood-moon.png": {
+      "sha256": "6d4222b3569c69d246150e775de5d7c07a302000cee5378c349d6b1b1509305c",
+      "bytes": 535529
+    },
+    "desktop-narrow.png": {
+      "sha256": "103f25c24463a0cb43158cb171a196db4bacbac86ea6aae9f09089fa7bf694d4",
+      "bytes": 158866
+    }
+  }
+}

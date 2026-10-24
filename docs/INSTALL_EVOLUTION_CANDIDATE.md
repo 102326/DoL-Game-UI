@@ -1,6 +1,6 @@
 # Evolution 候选：安装、升级与回退
 
-本指南用于 Soft & Wet 4.0 — Evolution 内部候选 `4.0.0-rc.1`，尚未正式发布。Host沿用0.1.5-experimental；按本轮冻结清单及ZIP核对身份。特殊天气已获本批视觉认可并接入设置，最终装机与发布裁决单列于[关卡报告](evolution/EVO-RELEASE-GATE-2026-10-24.md)。
+本指南用于 Soft & Wet 4.0 — Evolution 内部候选 `4.0.0-rc.1`，尚未正式发布。Host沿用0.1.5-experimental；按本轮冻结清单及ZIP核对身份。特殊天气已获本批视觉认可并接入设置，最终候选装机已完成，技术结果与发布裁决单列于[关卡报告](evolution/EVO-RELEASE-GATE-2026-10-24.md)。
 
 ## 安装
 
@@ -23,14 +23,14 @@
 | 包 | 作用与当前核对范围 |
 | --- | --- |
 | ModHubSoftWet | 管理器、市场、说明、日志、帮助及已识别工具浮层；本轮 1.8.3 |
-| MapleBirchSoftWet | 云存档页面外观；本轮 5.5.4，云端业务仍由原 Mod 管理 |
+| MapleBirchSoftWet | 云存档页面外观；前批5.5.4，当前平板5.5.5；云端业务由原Mod管理，本轮未执行云端写入 |
 | DolOptimizationSoftWet | 存档与原叠穿管理；当前兼容候选1.0.3，目标原版优化1.1.2.1 |
 | SmartPhoneSoftWet | 原 SmartPhone Alpha 外壳和已识别组件；接受 0.3.91 / 0.3.91.1，不适用于 Omega |
 | CheatExtendedSoftWet | 原作者 CE 与已单列支持的 rebuild.30 外观；当前设备保留 rebuild.30，二者只能启用一个 |
 | ReOverfitsSoftWet | 额外衣槽；本轮未安装目标，未作新实机声明 |
 | LyraMouthCompat051213 | 指定 Lyra 0.5.12.13 嘴部资源适配，须核对资源环境与 MapleBirch 范围 |
 
-具体候选版本和依赖以最新九包清单及 ZIP 的 boot.json 为准。旧37da596九包清单保留为历史记录，其中原版优化兼容包1.0.2不能替代当前1.0.3。除嘴部资源包外，通常还需要 UI；SmartPhone 要求 UI >=3.0.2，其它外观包沿用已有最低合同。没有目标 Mod 就不安装对应包；主 Mod 与 PhotoPack 另行获取，本候选不打包第三方主 Mod。
+具体候选版本和依赖见[RC1九包清单](evolution/EVO-RC1-PACKAGES-2026-10-24.json)及ZIP的boot.json。旧37da596九包清单保留为历史记录，其中原版优化兼容包1.0.2不能替代当前1.0.3。除嘴部资源包外，通常还需要 UI；SmartPhone 要求 UI >=3.0.2，其它外观包沿用已有最低合同。没有目标 Mod 就不安装对应包；主 Mod 与 PhotoPack 另行获取，本候选不打包第三方主 Mod。
 
 原版优化叠穿是否开启由其原设置决定，兼容包不强制开启。已识别的叠穿项目、顺序和卸下操作使用作者原逻辑。
 
