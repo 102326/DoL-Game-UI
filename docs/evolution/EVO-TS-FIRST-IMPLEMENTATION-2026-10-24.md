@@ -239,3 +239,20 @@ a65d465收窄共享球体的纹理/粒子索引：纬度与原4/7/9/7/4纹理数
 5a23d7d把save-transfer-lifecycle转CTS，浏览器IIFE导出签名取自实际createSaveTransfer，探针持有实际textarea与原节点。原转移控件的精确回退、值保持、已删除按钮不复活、第三方替换节点保留和export overlay识别均在Windows Edge通过。未读取、写入或导入真实存档，未修改产品存档模块。原断言与CLI路径保留，Expected Lock跟随作者CTS。
 
 冻结清单当前79/243，剩余164项（10个工具、154个测试），另有Twee及既有TS边界。当前源码完整检查和新双CI应单独记录；71项旧成功不能代替本批。正式版本、Host合同、main和公开发行均未改动。
+
+
+### 2026-10-25：79项远端验收与88项接续
+
+79项5798d854a700d2a7e38af41e6ee3816e356b22d6的标准40111940612、研究40111938675均success。两份独立下载报告PASS / COMPLETE，准确HEAD、clean源及Node26.12.1一致；九ZIP CRC、十项SHA、九项制品反例、独立双构建全部通过。下载材料保留于本机ci-readback-79，不把此结果覆盖到后续源码。
+
+6c7bcc1/f5454ac继续拆出严格CI报告读取、checkpoint及研究文件发现函数。读取值为unknown并校验身份、分片和路径；研究runner直接使用真实catalog plan和Report类型，移除手写数组断言。独立无npm验证器包含实际依赖，原符号链接断言仍保留。7项record边界、G01–G12/F1和研究unit3项本地通过；Windows符号链接EPERM仍需新源码Linux CI验证，不能用旧成功代替。
+
+8762872至ecb72b8将球体、Hub、状态退休、偏好保留与原生行动面板测试迁为CTS，实际Windows Edge原5项球体/7项Hub及状态/偏好/行动检查通过。GameUiControls、PanelKind与CombatControls从实际定义提取为纯类型，旧导出保留；新增编译消费者正反例，不创建虚假any接口。状态、偏好与行动使用现有历史中性SugarCube夹具，并非当前设备/ModLoader全业务验收。84项完整ci:check、record7项和研究unit3项通过。
+
+47d8de5将窗口返回顺序、sidebar-preview生命周期和延迟恢复迁为CTS。调用mirrorSidebar的旧测试漏传恢复回调，现显式断言该场景不应发生意外恢复；取消、源canvas保留、更新/停止和恢复次数断言不变。返回测试连接真实startLayout签名后，严格索引检查发现sidebar-layout的平行数组关系未表达；d894cf6单独将节点/锚点成对存储，保留原插入顺序及失去锚点时的回退。原sidebar-layout真实浏览器检查验证准确原HTML、原事件、动态重画、后插第三方节点和锚点移除。窗口Escape/backbutton及destroy检查以新编译CTS通过；首次类型失败时运行的是原CJS，日志另存，不算CTS验证。
+
+6c784a8将Framework公开参考视图测试连接实际Host和referenceShelf类型。补足真实ReferenceItem的只读展示字段，校验可能拒绝的mount返回值；当前/过期来源、独立清除及释放全部在Windows Edge通过。没有修改Host公开合同、动作、视觉时序或存档。
+
+本批累计88/243，剩余155项（10个工具、145个测试），另有Twee与既有TS边界。严格检查失败、修正及浏览器结果保留在本机ts-86/87/88制品；没有删除有效断言。当前CI应绑定新提交另行执行。版本仍4.0.0-rc.2，未合入main、Tag、Release或公开Assets。
+
+设备已重新确认独立测试App前台、唯一运行进程及WebView。只读Doctor/Evidence完整完成请求采集，StartConfig为0.5.12.13、Loader2.101.1；GameVersion来源unknown，DOM有max-depth截断，转发已清理。本批未装新包、未写存档；这只是可用于后续对照的现场基线，不能证明88项源码已实机通过。
