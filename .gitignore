@@ -98,3 +98,10 @@ docs/HANDOFF.local.md
 
 /scripts/record-golden-sphere.cjs
 /scripts/record-golden-hub.cjs
+
+/tests/hub-reversal-probe.cjs
+
+/tests/combat-illustration-layout.cjs
+
+/tests/kitchen-layout.cjs
+/tests/cheat-console-layout.cjs
