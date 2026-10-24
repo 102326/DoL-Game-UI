@@ -1083,6 +1083,7 @@
     },
     {
       "entry": "tests/evolution-weather-candidates.cjs",
+      "sourceEntry": "tests/evolution-weather-candidates.cts",
       "profiles": [
         "research"
       ],
@@ -1094,11 +1095,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "322a57064ac0f3d5cf660c016a44a27543df3ac8be6ff3291c82187c2fd386ed",
-      "assertionSites": 22
+      "sourceSha256": "4406123c7ac0295bb6bb2de052c6234385fc1701a73b61e0a7a3236bfe3b0f37",
+      "assertionSites": 23
     },
     {
       "entry": "tests/evolution-weather-levels.cjs",
+      "sourceEntry": "tests/evolution-weather-levels.cts",
       "profiles": [
         "research"
       ],
@@ -1110,8 +1112,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "bf58454d029591be69ee029a24093ee81d97a73a58b512e6652dcaacd4b93b54",
-      "assertionSites": 20
+      "sourceSha256": "9edde813ae9bd06ced0ee8172a20d4c0ecfffcdd1a6298df64a8372e34ace551",
+      "assertionSites": 21
     },
     {
       "entry": "tests/evolution-weather-shower.cjs",
@@ -1366,6 +1368,7 @@
     },
     {
       "entry": "tests/golden-spin-hub-input.cjs",
+      "sourceEntry": "tests/golden-spin-hub-input.cts",
       "profiles": [
         "research"
       ],
@@ -1405,7 +1408,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fa09f335c5e1c5888cbcc075efe3eae2d4b7f14a1402911d9849cd454df2c28",
+      "sourceSha256": "793eed5ef3668b1c9bd76058964d5ddafade8724befae52e82ab9299680e5fec",
       "assertionSites": 35
     },
     {

@@ -357,3 +357,14 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 - CI gate完整正例/反例通过。ci-evidence与research-evidence仍分别在原Windows symlink EPERM终止（此前E2、F1/F2完成）；未删断言或反复重跑至绿。Hub生命周期、原V1天气、C5斜雨/像素与C5.2四档连续转场在隔离工作区通过，原静态研究输入已重新构建。
 - owner资源测试已退出泛型exportFunction<T>强转，预载实际类型模块并按明确键调用。严格图暴露的原导航/战斗/存档/商店固定索引补了检查；私有预览生成模块仍属固定第三方生成JS，其准确边界声明返回unknown，适配器检查模型尺寸、compile接口及编译layers数组后使用，未改存档或原版业务。
 - 私有预览晒痕/绘图回归1013项通过，painted/unchanged/same均true。新增owner真实API测试随后exit 0：13类owner、H01实际集成和四个历史反例均通过。此后仍待本批精确CI和最终代表性装机。147项ee68d20的标准40123691561、研究40123691058已启动，尚未结束，不可预报通过。
+
+
+### 156–167：原版隔离游戏、天气输入与Framework消费者
+
+- 累计167/243，剩余76项测试。属性、衣柜分页、跨类搜索、悬浮工具、天气levels/candidates、Hub输入、边霜/缩放以及Framework reference/factory/历史版本检查CTS化。mobile-density工作者误重复交付，主线程只采用其它两项，未重复计数或覆盖已有成果。
+- 原版0.5.11.9隔离游戏：属性原DOM/状态/导航/回退与手机平板通过；分页300→40、跨页搜索/真实穿戴/缩减回退通过；跨类同名选择、旧索引拒绝、原生穿戴及宽窄宽切换通过。后两项不宣称实际当前Loader或多Mod组合已验证。
+- 两个历史夹具单独纠正：分页在浏览模式仍寻找“搜索当前分类”，已按真实WardrobePanel改为“搜索所有分类”，分页/状态断言不变；浮球仍断言新装默认隐藏，旧脚本实跑1!==0，8c2d8e9改为负责人已认可的默认显示，旧JS完整流程随后通过，再做CTS迁移。迁移后真实工具/拖动/取消/停靠/六视口/原节点事件/主开关/重复销毁完整通过。
+- 天气级别、候选光学、Hub八项输入和边霜16组像素保护测试在隔离工作区通过。display-scale新旧脚本在同一首条背景rgba断言失败，保留原失败，不宣称当前显示缩放测试通过。Framework reference/factory实际浏览器通过；历史Host 0.1.0–0.1.3 ZIP本机缺失，运行未验证；现有SDK历史合同仍在factory测试内通过。
+- Framework workspace原JS缺少场景ready且无jQuery桥，第二个article等待失败；56940bc在每次安装Host后显式sceneReady，原13具名断言一次通过。WorkspacePanel的失效排序目标index<0原可写入undefined，ceff3e8已拒绝该目标，合法交换保持；CTS及针对验证由对应批次接续。
+- 147项ee68d20ee10b18c50b2178341f98b16d23c3807e：标准40123691561、研究40123691058均success。下载实际remote-verification准确HEAD/dirty=false/PASS/COMPLETE、problems=[]；两份summary PASS，10个摘要、9个ZIP CRC与双构建PASS/differences=[]。148–167及后续运行边界改动不借用该结果。
+- 新增原型/CI结果及失败在tests/artifacts/ts-*、ci-readback-147，均为本机忽略文件。当前167项严格工具编译通过；未发布、未改4.0.0-rc.2、main或玩家端浏览器目标。

@@ -199,3 +199,14 @@ docs/HANDOFF.local.md
 
 /tests/characteristics.test.cjs
 /tests/experiments.test.cjs
+
+/tests/wardrobe-search.test.cjs
+/tests/floating-tools.test.cjs
+/tests/framework-reference.cjs
+/tests/framework-factory.cjs
+/tests/framework-host-versions.cjs
+/tests/evolution-weather-levels.cjs
+/tests/evolution-weather-candidates.cjs
+/tests/golden-spin-hub-input.cjs
+/tests/evolution-edge-frost.cjs
+/tests/display-scale.cjs

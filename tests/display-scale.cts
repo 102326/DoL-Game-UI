@@ -1,4 +1,10 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path'),{pathToFileURL}=require('node:url');
+import playwright = require('playwright');
+import assert = require('node:assert/strict');
+import path = require('node:path');
+import url = require('node:url');
+import type {GameUiControls} from '../src/runtime/game-controls';
+const {chromium}=playwright,{pathToFileURL}=url;
+declare const DoLGameUI:GameUiControls;
 (async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{const p=await b.newPage({viewport:{width:390,height:844}});await p.goto(pathToFileURL(path.join(__dirname,'fixture.html')).href);await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});await p.evaluate(()=>DoLGameUI.openSettings());
 assert.equal(await p.locator('#dol-midnight-controls').evaluate(e=>getComputedStyle(e).backgroundColor),'rgba(36, 38, 42, 0.78)');
 assert.equal(await p.locator('.dmt-setting-card').first().evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(41, 43, 48)');
@@ -14,7 +20,7 @@ await p.evaluate(()=>DoLGameUI.setPreference('fontScale',NaN));assert.equal(awai
 await p.evaluate(()=>DoLGameUI.setPreference('fontScale',-1));assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),50);
 assert.equal(await size(),before*.5);assert.deepEqual(await sidebarSize(),sidebarBefore);
 await p.evaluate(()=>DoLGameUI.setPreference('fontScale',250));assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),150);
-assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('DoLMidnightTheme.preferences.v1')).buttonScale),150);
+assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('DoLMidnightTheme.preferences.v1')??'null').buttonScale),150);
 await p.evaluate(()=>DoLGameUI.destroy());await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});await p.evaluate(()=>DoLGameUI.openSettings());assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),150);
 assert.equal(await p.getByRole('slider',{name:'字体大小',exact:true}).getAttribute('max'),'150');
 await p.setViewportSize({width:844,height:390});await p.waitForTimeout(150);
@@ -23,7 +29,7 @@ await p.setViewportSize({width:1200,height:900});await p.waitForFunction(()=>doc
 assert.equal(await p.getByRole('slider',{name:'字体大小',exact:true}).getAttribute('max'),'150');
 await p.evaluate(()=>{DoLGameUI.setPreference('fontScale',150);DoLGameUI.setPreference('buttonScale',150)});assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),150);assert.equal(await size(),before*1.5);assert.deepEqual(await sidebarSize(),sidebarBefore);
 await p.setViewportSize({width:390,height:844});await p.waitForFunction(()=>document.documentElement.style.getPropertyValue('--dgu-font-scale')==='1.5');
-assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),150);assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('DoLMidnightTheme.preferences.v1')).buttonScale),150,'resize preserves requested values');
+assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().fontScale),150);assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('DoLMidnightTheme.preferences.v1')??'null').buttonScale),150,'resize preserves requested values');
 await p.evaluate(()=>localStorage.setItem('DoLMidnightTheme.preferences.v1',JSON.stringify({...DoLGameUI.getPreferences(),fontScale:150,buttonScale:150,_scaleBaseline26:true})));
 await p.evaluate(()=>DoLGameUI.destroy());await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});await p.evaluate(()=>DoLGameUI.openSettings());
 assert.deepEqual(await p.evaluate(()=>[DoLGameUI.getPreferences().fontScale,DoLGameUI.getPreferences().buttonScale]),[150,150],'legacy requested scale preserved on phone load');
