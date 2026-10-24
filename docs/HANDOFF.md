@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **TS First当前批次477ec23：47/243，尚余196项。** 新增17个独立CTS来源，退出重复JS；测试Bundler与工具NodeNext均严格检查，运行CJS身份不变。衣柜只读Host/投影边界、CI分片JSON/Seal及统计输入各自提交，未改变游戏业务或认可视觉。Vite最低/锁文件和作者配方更新7.3.7，当前npm审计0告警；UI/Host构建、独立作者包4项、本批专项、原unit CLI和ci:check通过。新标准/研究CI尚需按本批记录；Windows Edge H01在无并发构建时仍有关闭后locator超时，不能写成已解决。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。本批尚未Android装机，不合main或发布。
+- **当前TS First：53/243，剩余190项；12个维护HTML内联程序已完成。** 当前实现656865e，后续文档提交不冒充重新受验。11个天气页转TS并保留页面样式，离线测量页由TS＋模板生成单HTML；严格检查、11页浏览器、离线隐私/导出与源漂移反例通过。原生衣柜、Runtime反例和嘴部适配测试继续迁移，真实事件/身份/拒绝行为保留。Vite7.3.7审计0告警，H01仍Unknown。47项的标准40101935855曾因本地CRLF与Git LF导致ExpectedLockDrift失败；4005b87仅修正源码字节与锁，新增拒绝错误EOL反例，48项[标准40102278149](https://github.com/102326/DoL-Game-UI/actions/runs/40102278149)/[研究40102274913](https://github.com/102326/DoL-Game-UI/actions/runs/40102274913)及独立验证全部success。53项和内联后续尚需新CI，不能套用这两个Run。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。未本批Android装机，不合main或发布。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
@@ -47,7 +47,7 @@
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
-3. 先按TS First方案一继续T1/T2/T3：当前47项已迁移，196项和维护中的内联/既有TS边界仍在范围内；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
+3. 先按TS First方案一继续T1/T2/T3：当前53项已迁移，190项及既有TS边界仍在范围内；12个维护HTML内联程序已收敛，Twee仍待处理；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
 4. 保留Windows Edge H01原始超时，继续有依据地归因；带记录的诊断通过不能抹去失败。Vite7.3.7已单独修补，旧审计为历史。每批做受影响验证，最终迁移源码再做两套CI、九包与代表Windows/Android实际宿主回归。旧RC2/8033b7f只能复用未改行为的有效证据，不替代新候选。
 5. TS First完成后更新候选冻结、依赖/许可/摘要与玩家材料，再提交负责人验收。4.0.0-rc.2保持内部版本；未授权正式版本变更、main、Tag、Release或公开Assets。READ01仍隔离，不主动新增视觉研究；额外设备及全Mod穷举不自动成为阻塞项。
 
