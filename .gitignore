@@ -114,3 +114,5 @@ docs/HANDOFF.local.md
 
 /tests/status-browser.test.cjs
 /tests/game-controls-types.cjs
+
+/tests/preferences-preservation.cjs
