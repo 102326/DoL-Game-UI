@@ -1,0 +1,10 @@
+import playwright = require('playwright');
+import esbuild = require('esbuild');
+import assert = require('node:assert/strict');
+const {chromium}=playwright;
+declare const startLayout:typeof import('../src/theme/layout').startLayout;
+type LayoutRoot=NonNullable<Parameters<typeof startLayout>[0]>;
+declare const DMTLayout:NonNullable<LayoutRoot['DMTLayout']>;
+declare const calls:string[];
+const bundle=esbuild.buildSync({entryPoints:['src/theme/layout.ts'],bundle:true,write:false,format:'iife',globalName:'LayoutTest'}).outputFiles[0]?.text;if(!bundle)throw Error('Missing layout bundle');
+(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{const p=await b.newPage();await p.setContent('<div id="customOverlay"><button class="customOverlayClose">Close</button></div><div id="ui-dialog">Confirmation</div>');await p.addScriptTag({content:bundle+';window.startLayout=LayoutTest.startLayout;'});await p.evaluate(()=>{const root:LayoutRoot=window;Object.assign(window,{calls:[]});root.closeOverlay=()=>calls.push('parent');root.SugarCube={Dialog:{close:()=>{calls.push('child');const dialog=document.querySelector('#ui-dialog');if(!(dialog instanceof HTMLElement))throw Error('Missing child dialog');dialog.style.display='none'}}};startLayout();DMTLayout.sync({enabled:true,layout:true})});await p.keyboard.press('Escape');assert.deepEqual(await p.evaluate(()=>calls),['child'],'Confirmation closes before its parent overlay');await p.keyboard.press('Escape');assert.deepEqual(await p.evaluate(()=>calls),['child','parent']);await p.evaluate(()=>{calls.length=0;const dialog=document.querySelector('#ui-dialog');if(!(dialog instanceof HTMLElement))throw Error('Missing child dialog');dialog.style.display='block';window.dispatchEvent(new Event('backbutton',{cancelable:true}))});assert.deepEqual(await p.evaluate(()=>calls),['child']);await p.evaluate(()=>{DMTLayout.destroy();window.dispatchEvent(new Event('backbutton'))});assert.deepEqual(await p.evaluate(()=>calls),['child']);console.log('PASS child dialog before parent and destroy');}finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});

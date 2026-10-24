@@ -118,3 +118,7 @@ docs/HANDOFF.local.md
 /tests/preferences-preservation.cjs
 
 /tests/native-action-panel.cjs
+
+/tests/overlay-back-order.cjs
+/tests/sidebar-preview-lifecycle.cjs
+/tests/sidebar-preview-recovery.cjs
