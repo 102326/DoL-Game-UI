@@ -11,7 +11,8 @@ import {unmountUI} from '../runtime/presentation';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant} from '../../framework/contracts';
 import './style.css';
-export type PanelKind='journal'|'traits'|'statistics'|'feats'|'cheats'|'attitudes'|'settings';
+import type {PanelKind} from './types';
+export type {PanelKind} from './types';
 export interface NavigationState{title:string;sections:string[]}
 const titles:Record<PanelKind,string>={journal:'日志',traits:'特质',statistics:'统计',feats:'成就',cheats:'作弊',attitudes:'态度',settings:'游戏设置'};
 const panelKeys:Record<string,PanelKind>={options:'settings',cheats:'cheats',journal:'journal',journalNotes:'journal',traits:'traits',statistics:'statistics',gameFeats:'feats',startFeats:'feats'};

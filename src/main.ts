@@ -1,3 +1,4 @@
+import type {GameUiControls} from './runtime/game-controls';
 import {startFloatingTools} from './floating/main';
 import {isolate} from './runtime/presentation';
 import {createUiRuntime} from './runtime/ui';
@@ -7,10 +8,8 @@ import {startPanels,type PanelKind} from './panels/main';
 import {startSocial} from './social/main';
 import {startCharacteristics} from './characteristics/main';
 import {startWardrobe,type WardrobeFramework} from './wardrobe/main';
-import type {WardrobeApi} from './public/wardrobe';
 import {startCombat,type CombatControls} from './combat/main';
-import type {Preferences,PreferenceKey} from './theme/preferences';
-import type {UiApi} from './public/ui';
+import type {PreferenceKey} from './theme/preferences';
 import {startLayout} from './theme/layout';
 import {startTheme} from './theme/controller';
 import {initMaster,isMasterEnabled,setMasterEnabled} from './runtime/master';
@@ -31,7 +30,6 @@ type StartedApis={
  DoLCombatUI?:CombatControls;DMTLayout?:NonNullable<Parameters<typeof startLayout>[0]>['DMTLayout'];
  DoLMidnightTheme?:NonNullable<Parameters<typeof startTheme>[0]>['DoLMidnightTheme'];
 };
-interface GameUiControls {version:string;openSettings:()=>void;getPreferences:()=>Partial<Preferences> & Record<string,unknown>;setPreference:(key:string,value:boolean|number)=>void;destroy:()=>void;ui?:UiApi;wardrobe?:Readonly<WardrobeApi>}
 type Runtime=Parameters<typeof startWardrobe>[0] & Parameters<typeof startShop>[0] & Parameters<typeof startSaves>[0]
  & NonNullable<Parameters<typeof startTheme>[0]> & NonNullable<Parameters<typeof startLayout>[0]>
  & Parameters<typeof createUiRuntime>[0] & StartedApis & {DoLGameUI?:GameUiControls};
