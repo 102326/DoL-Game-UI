@@ -1738,6 +1738,7 @@
     },
     {
       "entry": "tests/optimization-wardrobe.cjs",
+      "sourceEntry": "tests/optimization-wardrobe.cts",
       "profiles": [
         "standard"
       ],
@@ -1749,8 +1750,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "269af16d2d294ab60fb78ee80fcd333ecff136ef653fe394370af2fb3c1b595e",
-      "assertionSites": 8
+      "sourceSha256": "c7b6f184a2a3912ac9a4fc039f822d3be79ae1348f8a825547a97b27b688cab9",
+      "assertionSites": 9
     },
     {
       "entry": "tests/panels-framework.cjs",
