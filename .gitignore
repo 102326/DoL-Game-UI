@@ -196,3 +196,6 @@ docs/HANDOFF.local.md
 /tests/golden-spin-hub-lifecycle.cjs
 /tests/evolution-weather.cjs
 /tests/evolution-weather-shower.cjs
+
+/tests/characteristics.test.cjs
+/tests/experiments.test.cjs

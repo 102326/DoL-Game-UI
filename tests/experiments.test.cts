@@ -1,17 +1,30 @@
-const {chromium}=require('playwright'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+import playwright = require('playwright');
+import fs = require('node:fs');
+import path = require('node:path');
+import http = require('node:http');
+import assert = require('node:assert/strict');
+import type {Clothing,WardrobeVariables} from '../src/wardrobe/host';
+import type {GameUiControls} from '../src/runtime/game-controls';
+const {chromium}=playwright;
+type FixtureClothing=Clothing&{type:string[];colour_options?:(string|number)[];accessory_colour_options?:(string|number)[]};
+declare const V:WardrobeVariables&{wardrobe:{upper:FixtureClothing[]};worn:{upper:FixtureClothing}},setup:{clothes:{upper:FixtureClothing[]}};
+declare const SugarCube:{State:{variables:unknown};Engine:{play(passage:string):unknown}};
+declare const DoLGameUI:GameUiControls,DoLWardrobeUI:{refresh():void};
+declare const must:<T>(value:T|null|undefined)=>T;
+
 
 const project=path.resolve(process.env.DOL_TEST_WORKSPACE||path.resolve(__dirname,'../../..'));
 const server=http.createServer((req,res)=>{
- const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
+ const pathname=decodeURIComponent(new URL(req.url??'/','http://localhost').pathname);
  const file=pathname==='/game'?path.join(project,process.env.DOL_WARDROBE_INTEGRATED?'upstream/game-0.5.11.9/Degrees of Lewdity.html':'releases/source-baseline-0.5.11.9/vanilla.html'):path.join(project,'upstream/game-0.5.11.9',pathname);
  if(!file.startsWith(project)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);res.end();return}
  res.setHeader('Content-Type',file.endsWith('.png')?'image/png':'text/html; charset=utf-8');fs.createReadStream(file).pipe(res);
 });
 
-(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true});try{
- const p=await browser.newPage({viewport:{width:390,height:844}}),errors=[];p.on('pageerror',e=>errors.push(e.stack));
- await p.addInitScript(()=>localStorage.setItem('verifiedAge','true'));
- await p.goto(`http://127.0.0.1:${server.address().port}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>window.SugarCube?.State?.variables?.options,{timeout:60000});await p.waitForLoadState('networkidle');
+(async()=>{await new Promise<void>(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true});try{
+ const p=await browser.newPage({viewport:{width:390,height:844}}),errors:string[]=[];p.on('pageerror',e=>errors.push(e.stack??e.message));
+ await p.addInitScript(()=>{localStorage.setItem('verifiedAge','true');Object.assign(window,{must:<T,>(value:T|null|undefined)=>{if(value==null)throw Error('Missing paging fixture');return value}})});
+ await p.goto(`http://127.0.0.1:${(()=>{const a=server.address();assert.ok(a&&typeof a!=='string');return a.port})()}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>typeof SugarCube!=='undefined'&&SugarCube.State.variables&&typeof SugarCube.State.variables==='object'&&'options' in SugarCube.State.variables,{timeout:60000});await p.waitForLoadState('networkidle');
  await p.evaluate(()=>SugarCube.Engine.play('Start2'));await p.waitForLoadState('networkidle');
  await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});
 
@@ -19,7 +32,7 @@ const server=http.createServer((req,res)=>{
  await p.evaluate(()=>{
   V.location='home';V.wardrobe_location='wardrobe';V.lastWardrobeSlot='upper';
   const d=setup.clothes.upper.find(d=>d.name!=='naked'&&!d.outfitPrimary&&!d.outfitSecondary&&!d.type.includes('cursed'));
-  V.wardrobe.upper=Array.from({length:300},(_,i)=>{const item=structuredClone(d);item.cn_name_cap='分页测试'+String(i).padStart(3,'0');item.colour=item.colour_options?.[0]??0;item.accessory_colour=item.accessory_colour_options?.[0]??0;return item});
+  V.wardrobe.upper=Array.from({length:300},(_,i)=>{const item=structuredClone(must(d));item.cn_name_cap='分页测试'+String(i).padStart(3,'0');item.colour=item.colour_options?.[0]??0;item.accessory_colour=item.accessory_colour_options?.[0]??0;return item});
   SugarCube.Engine.play('Wardrobe');
  });
  await p.waitForSelector('.dgw-shell');await p.waitForFunction(()=>document.querySelector('.dgw-preview')?.getAttribute('aria-busy')==='false');
@@ -47,7 +60,7 @@ const server=http.createServer((req,res)=>{
  assert.equal(await p.locator('.dgw-item').count(),3);assert.equal(await p.getByRole('navigation',{name:'衣物分页',exact:true}).count(),0);
  const variant=process.env.DOL_WARDROBE_INTEGRATED?'lyra':'vanilla';
  await p.evaluate(()=>DoLGameUI.setPreference('wardrobePaged',true));
- for(const [width,height] of [[1704,1136],[390,844]]){await p.setViewportSize({width,height});await p.getByRole('navigation',{name:'衣物分页',exact:true}).scrollIntoViewIfNeeded();const r=await p.getByRole('navigation',{name:'衣物分页',exact:true}).boundingBox();assert.ok(r.x>=0&&r.x+r.width<=width+1);await p.screenshot({path:path.join(__dirname,'artifacts',`experiments-${variant}-${width}.png`)})}
+ for(const [width,height] of [[1704,1136],[390,844]] as const){await p.setViewportSize({width,height});await p.getByRole('navigation',{name:'衣物分页',exact:true}).scrollIntoViewIfNeeded();const r=await p.getByRole('navigation',{name:'衣物分页',exact:true}).boundingBox();assert.ok(r);assert.ok(r.x>=0&&r.x+r.width<=width+1);await p.screenshot({path:path.join(__dirname,'artifacts',`experiments-${variant}-${width}.png`)})}
  const unexpected=errors.filter(e=>!e.includes('bannerFallbackImage.onload')||!e.includes('skybox'));assert.deepEqual(unexpected,[]);
  fs.writeFileSync(path.join(__dirname,'artifacts',`experiments-${variant}.json`),JSON.stringify({fullRows:full,pagedRows:40,gameStateUnchanged:true,selectAllAcrossPages:true,searchAcrossPages:true,android:false},null,2));
  console.log('PASS wardrobe experiments',variant,'300 -> 40 rows, unchanged game state, paging, search, all-selection, shrink and fallback');
