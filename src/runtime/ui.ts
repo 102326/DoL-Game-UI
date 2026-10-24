@@ -115,7 +115,7 @@ export function createUiRuntime(root: Runtime, preferences: () => {visualTier?: 
     diagnostic.targetVersion = typeof mod?.version === 'string' ? mod.version.slice(0, 64) : '';
     const trace = (role: string, candidates: Candidates, all = false, blocked = '') => {
      const hit = blocked ? {nodes: [] as Element[], selector: '', fallback: false, reason: blocked} : find(role === 'scope' ? doc : scope!, candidates, all);
-     diagnostic.mappings.push({role, primary: candidates[0], matched: hit.selector, fallback: hit.fallback, count: hit.nodes.length, reason: hit.reason, tags: [...new Set(hit.nodes.map(node => node.tagName.toLowerCase()))]});
+     diagnostic.mappings.push({role, primary: candidates[0]??'', matched: hit.selector, fallback: hit.fallback, count: hit.nodes.length, reason: hit.reason, tags: [...new Set(hit.nodes.map(node => node.tagName.toLowerCase()))]});
      return hit;
     };
     const located = trace('scope', spec.scope);
