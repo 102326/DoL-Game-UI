@@ -1,3 +1,4 @@
+import * as verdictTools from '../scripts/ci/contracts.ts';
 import renderer from '../scripts/render-state-fields.cjs';
 import producer from '../component-lab/source-index.cjs';
 import catalog from '../scripts/ci-catalog.cjs';
@@ -47,3 +48,20 @@ function metricsContract(){
   return {wrong,typed};
 }
 void metricsContract;
+
+
+function ciVerdictContract(){
+ const status:import('../scripts/ci/contracts.ts').Status=verdictTools.classify({code:0});
+ const verdictStatus:import('../scripts/ci/contracts.ts').Status=verdictTools.verdict('PASS').status;
+ const integrity:'COMPLETE'|'INCOMPLETE'=verdictTools.verdict('PASS').evidenceIntegrity;
+ const combined:import('../scripts/ci/contracts.ts').Status=verdictTools.overall(['PASS',undefined]);
+ // @ts-expect-error Raw process exit codes are numeric or null.
+ verdictTools.classify({code:'0'});
+ // @ts-expect-error A verdict cannot declare an arbitrary success status.
+ verdictTools.verdict('PASS',[],'finished');
+ // @ts-expect-error An external assertion outcome remains opaque until validated.
+ const assertion:string=verdictTools.verdict({untrusted:true}).assertionResult;
+ const typed:0 extends (1&typeof status)?true:false=false;
+ return {status,verdictStatus,integrity,combined,assertion,typed};
+}
+void ciVerdictContract;

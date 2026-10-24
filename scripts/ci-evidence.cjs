@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const {pathToFileURL}=require('node:url');
-const {sealProblems,reconcileIdentity}=require('./ci/contracts.ts');
+const {sealProblems,reconcileIdentity,classify,overall,verdict,exactIds,sameIdentity}=require('./ci/contracts.ts');
 const {writeSuite,hydrateSuite}=require('./ci/records.ts');
 const {entryDeclaration,entryCaseProblems,expectedLockSha256}=require('./ci/lock.ts');
 const { spawn, execFileSync } = require('node:child_process');
@@ -12,30 +12,8 @@ const { suites, stages, catalogFor, catalogIdentity,checkpoints,nodeTestCases,re
 const fixtureChecks = ['settings-ci.cjs', 'combat-focused.cjs', 'moody-historical-regressions.cjs', 'device-layouts.cjs'];
 const coverage = 'Controlled fixtures and source contracts only; not real DoL/ModLoader, Windows or Android acceptance.';
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
-const sameIdentity = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
-function sourceIdentity(checkout = root) {
-  const git = (...args) => execFileSync('git', args, { cwd: checkout, maxBuffer: 16 * 1024 * 1024 });
-  const files = [...new Set(git('ls-files', '--cached', '--others', '--exclude-standard', '-z').toString().split('\0').filter(Boolean))].sort();
-  const content = crypto.createHash('sha256');
-  for (const file of files) {
-    const absolute = path.join(checkout, file);
-    const stat = fs.existsSync(absolute) ? fs.lstatSync(absolute) : null;
-    content.update(file + '\0');
-    content.update(stat?.isFile() ? fs.readFileSync(absolute) : stat?.isSymbolicLink() ? fs.readlinkSync(absolute) : '<missing>');
-    content.update('\0');
-  }
-  return {
-    head: git('rev-parse', 'HEAD').toString().trim(),
-    tree: git('rev-parse', 'HEAD^{tree}').toString().trim(),
-    dirty: Boolean(git('status', '--porcelain', '--untracked-files=normal').length),
-    contentSha256: content.digest('hex'),
-    lockSha256: hash(fs.readFileSync(path.join(checkout, 'package-lock.json')))
-  };
-}
-
-// Structural source-less contexts are isolated gate fixtures; real identities always have a tree.
-function observeSource(ctx){if(!ctx.identity.source?.tree)return ctx.identity.source;try{return sourceIdentity(ctx.root)}catch(error){return {error:'SourceUnavailable',message:String(error.message).slice(0,200)}}}
+const {sourceIdentity,observeSource}=require('./ci/source.ts');
 
 function context({allowSourceDrift=false}={}) {
   const started=Date.now();
@@ -74,25 +52,6 @@ function writeJson(file, data) {
   fs.renameSync(file + '.tmp', file);
 }
 
-function classify({ code, error, timedOut, cancelled, assertionFailed, terminalFailed }) {
-  if (cancelled) return 'CANCELLED';
-  if (timedOut || error) return 'ERROR';
-  if (assertionFailed) return 'FAIL';
-  if (terminalFailed) return 'ERROR';
-  if (code === 0) return 'PASS';
-  return code == null ? 'UNVERIFIED' : 'ERROR';
-}
-function overall(statuses) {
-  if (!statuses.length) return 'UNVERIFIED';
-  for (const status of ['FAIL','ERROR','CANCELLED','UNVERIFIED']) if (statuses.includes(status)) return status;
-  return statuses.every(s=>s==='PASS') ? 'PASS' : 'UNVERIFIED';
-}
-function verdict(assertionResult, problems=[], status='PASS') {
-  const evidenceIntegrity=problems.length ? 'INCOMPLETE' : 'COMPLETE';
-  return {status:assertionResult==='FAIL' ? 'FAIL' : status==='PASS'&&problems.length ? 'UNVERIFIED' : status,
-    assertionResult,evidenceIntegrity,reasonCodes:[...({ERROR:['InfrastructureError'],CANCELLED:['RunCancelled'],UNVERIFIED:['UnverifiedChecks']}[status]||[]),...(assertionResult==='FAIL'?['AssertionFailed']:[]),...(problems.length?['EvidenceIncomplete']:[])]};
-}
-function exactIds(expected, actual) {return expected.length>0&&Array.isArray(actual)&&expected.length===actual.length&&new Set(actual).size===actual.length&&expected.every(id=>actual.includes(id))}
 function checkpointEvidence(ctx, name) {
  const expected=checkpoints[name];if(!expected) return true;
  const report=readReport(ctx,`fixtures/${name}/checkpoints.json`);

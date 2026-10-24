@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {createRequire} from 'node:module';
+import {sourceIdentity} from './source.ts';
 
 const [source,destination,python]=process.argv.slice(2);
 if(!source||!destination||!python||fs.readdirSync(destination).length)throw Error('Expected source and an empty independent build directory');
@@ -26,7 +26,6 @@ for(const entry of fs.readdirSync(path.join(source,'node_modules'),{withFileType
  const input=path.join(source,'node_modules',entry.name),output=path.join(dependencies,entry.name);
  if(entry.isDirectory())fs.symlinkSync(input,output,process.platform==='win32'?'junction':'dir');else fs.copyFileSync(input,output);
 }
-const sourceIdentity=createRequire(import.meta.url)('../ci-evidence.cjs').sourceIdentity;
 const expected=sourceIdentity(source);
 let actual=sourceIdentity(destination);
 // Copying CRLF over an LF checkout can leave stale Git stat sizes on Windows.

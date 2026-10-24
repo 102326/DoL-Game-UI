@@ -5,6 +5,7 @@ import {orderEntries} from './contracts.ts';
 import type {Status} from './contracts.ts';
 import {entryDeclaration,entryCaseProblems} from './lock.ts';
 import {writeSuite} from './records.ts';
+import {observeSource} from './source.ts';
 
 const require=createRequire(import.meta.url);
 interface Context {dir:string;root:string;identity:{source:unknown;[key:string]:unknown}}
@@ -32,7 +33,7 @@ export async function runSuite(ctx:Context,mode:string,tests?:readonly string[],
   check.evidence=['checkpoints.json','snapshot.json','viewport.jpg','layout-report.json'].map(file=>`fixtures/${name}/${file}`).filter(file=>fs.existsSync(path.join(ctx.dir,file)));
   save();if(!quiet)console.log(`${check.status} ${name} (${check.milliseconds}ms, exit=${check.exitCode}, signal=${check.signal})`);
  }
- report.sourceAfter=e.observeSource(ctx);
+ report.sourceAfter=observeSource(ctx);
  if(JSON.stringify(report.sourceAfter)!==JSON.stringify(ctx.identity.source))report.reasonCodes.push('SourceChangedDuringExecution');
  save();return report;
 }

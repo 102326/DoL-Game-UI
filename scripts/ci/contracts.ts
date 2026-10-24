@@ -67,3 +67,25 @@ export function orderEntries<T>(entries:readonly T[],seed?:string):T[]{
  return result;
 }
 export function canSchedule(dependencies:string[],statuses:Record<string,string>):boolean{return dependencies.every(id=>statuses[id]==='PASS');}
+
+export const sameIdentity=(a:unknown,b:unknown):boolean=>JSON.stringify(a)===JSON.stringify(b);
+export function classify({ code, error, timedOut, cancelled, assertionFailed, terminalFailed }:{code?:number|null;error?:unknown;timedOut?:boolean;cancelled?:boolean;assertionFailed?:boolean;terminalFailed?:boolean}):Status {
+  if (cancelled) return 'CANCELLED';
+  if (timedOut || error) return 'ERROR';
+  if (assertionFailed) return 'FAIL';
+  if (terminalFailed) return 'ERROR';
+  if (code === 0) return 'PASS';
+  return code == null ? 'UNVERIFIED' : 'ERROR';
+}
+export function overall(statuses:readonly unknown[]):Status {
+  if (!statuses.length) return 'UNVERIFIED';
+  for (const status of ['FAIL','ERROR','CANCELLED','UNVERIFIED'] as const) if (statuses.includes(status)) return status;
+  return statuses.every(s=>s==='PASS') ? 'PASS' : 'UNVERIFIED';
+}
+export interface Verdict<T=unknown> {status:Status;assertionResult:T;evidenceIntegrity:'INCOMPLETE'|'COMPLETE';reasonCodes:string[]}
+export function verdict<T>(assertionResult:T, problems:readonly unknown[]=[], status:Status='PASS'):Verdict<T> {
+  const evidenceIntegrity=problems.length ? 'INCOMPLETE' : 'COMPLETE';
+  return {status:assertionResult==='FAIL' ? 'FAIL' : status==='PASS'&&problems.length ? 'UNVERIFIED' : status,
+    assertionResult,evidenceIntegrity,reasonCodes:[...(status==='ERROR'?['InfrastructureError']:status==='CANCELLED'?['RunCancelled']:status==='UNVERIFIED'?['UnverifiedChecks']:[]),...(assertionResult==='FAIL'?['AssertionFailed']:[]),...(problems.length?['EvidenceIncomplete']:[])]};
+}
+export function exactIds(expected:readonly unknown[], actual:unknown):boolean {return expected.length>0&&Array.isArray(actual)&&expected.length===actual.length&&new Set(actual).size===actual.length&&expected.every(id=>actual.includes(id))}

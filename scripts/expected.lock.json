@@ -431,6 +431,10 @@
       "save metadata skips malformed rows without changing native data or writing storage",
       "NaN dates remain invalid numbers and unknown legacy shapes fail closed"
     ],
+    "source-identity-boundary.test.mts": [
+      "source identity retains raw byte drift even when Git normalizes a clean file",
+      "source-less structural fixtures remain opaque and unavailable real source cannot become PASS"
+    ],
     "source-link.test.mts": [
       "lab accepts source-index fields without dropping the full producer response"
     ],
@@ -689,7 +693,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "fe011de32cddd3feb52dbeb418bab29b9503893aa66e62320fa498b5b89d3bdb",
+      "sourceSha256": "c58a14ff4c6927f7a07c658e9693b765d2dd30d9141f9784aa202ceb65dfe964",
       "assertionSites": 81
     },
     {
@@ -2021,6 +2025,26 @@
       ],
       "sourceSha256": "d0b2a135eb15b9e24ccc9fa5172fc9c630e213c77c5d4d477df4ce463799abe5",
       "assertionSites": 17
+    },
+    {
+      "entry": "tests/source-identity-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "source identity retains raw byte drift even when Git normalizes a clean file",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "source-less structural fixtures remain opaque and unavailable real source cannot become PASS",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "c0364cd23868df06e5da25e741e9efb3ffb1016e6aa63b6f3a14c7a658f450c3",
+      "assertionSites": 22
     },
     {
       "entry": "tests/source-link.test.mts",
