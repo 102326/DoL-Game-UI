@@ -86,3 +86,4 @@ docs/HANDOFF.local.md
 /tests/native-action-style.cjs
 /tests/sidebar-surface.cjs
 /scripts/ci-research-unit.cjs
+/tests/ci-fixtures.cjs

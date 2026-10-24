@@ -4,7 +4,7 @@ import {test} from 'node:test';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {writeSuite,hydrateSuite} from '../scripts/ci/records.ts';
+import {writeSuite,hydrateSuite,safeFile,readJsonBounded} from '../scripts/ci/records.ts';
 import {sealProblems} from '../scripts/ci/contracts.ts';
 
 test('result shards restore original extra data and reject malformed or contradictory used fields',t=>{
@@ -25,4 +25,16 @@ test('seal checks reject non-record input without treating a type assertion as v
  for(const value of [null,[],false,'SEALED',5])assert.deepEqual(sealProblems(value,'lock',{head:'source'}),['EvidenceUnsealed','ExpectedLockMismatch','SourceChangedDuringExecution']);
  assert.deepEqual(sealProblems({state:'SEALED',expectedLockSha256:'lock',sourceAfter:{head:'source'}},'lock',{head:'source'}),[]);
  assert.deepEqual(sealProblems({state:'SEALED',expectedLockSha256:'lock',sourceAfter:{head:'other'}},'lock',{head:'source'}),['SourceChangedDuringExecution']);
+});
+
+
+test('bounded evidence reads preserve JSON fields and reject unsafe paths or sizes',t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'sw-evidence-read-'));
+ t.after(()=>{if(path.dirname(path.resolve(dir))!==path.resolve(os.tmpdir())||!path.basename(dir).startsWith('sw-evidence-read-'))throw Error('Unexpected read fixture cleanup');fs.rmSync(dir,{recursive:true,force:true})});
+ const file=path.join(dir,'data.json'),value={schema:1,future:{keep:['opaque',3]}};fs.writeFileSync(file,JSON.stringify(value));
+ assert.equal(safeFile(dir,'data.json'),file);assert.deepEqual(readJsonBounded(dir,'data.json'),value);
+ const before=fs.readFileSync(file);assert.throws(()=>readJsonBounded(dir,'data.json',3),/Evidence size limit/);assert.deepEqual(fs.readFileSync(file),before);
+ for(const unsafe of [null,undefined,4,[],{},'', '../escape','nested/../escape','nested\\escape','/absolute'])assert.throws(()=>safeFile(dir,unsafe),/Unsafe evidence path/);
+ fs.mkdirSync(path.join(dir,'nested'));assert.throws(()=>safeFile(dir,'nested'),/Unsafe evidence file/);
+ fs.writeFileSync(file,'{');assert.throws(()=>readJsonBounded(dir,'data.json'),SyntaxError);assert.equal(fs.readFileSync(file,'utf8'),'{');
 });

@@ -429,7 +429,8 @@
     ],
     "record-boundary.test.mts": [
       "result shards restore original extra data and reject malformed or contradictory used fields",
-      "seal checks reject non-record input without treating a type assertion as validation"
+      "seal checks reject non-record input without treating a type assertion as validation",
+      "bounded evidence reads preserve JSON fields and reject unsafe paths or sizes"
     ],
     "save-metadata-boundary.test.mts": [
       "save metadata skips malformed rows without changing native data or writing storage",
@@ -1786,10 +1787,14 @@
         {
           "id": "seal checks reject non-record input without treating a type assertion as validation",
           "minimumAssertions": 1
+        },
+        {
+          "id": "bounded evidence reads preserve JSON fields and reject unsafe paths or sizes",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b85b681ea26702aa98161badf19ea65045638911b5580f969824b77a3da94031",
-      "assertionSites": 8
+      "sourceSha256": "ec39c5b0926a5341f26f5ac8a694e60ccd5040aad89313e144d10c1504f7fba1",
+      "assertionSites": 16
     },
     {
       "entry": "tests/render-state.test.cjs",

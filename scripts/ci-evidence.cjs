@@ -3,8 +3,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const {pathToFileURL}=require('node:url');
-const {sealProblems,classify,overall,verdict,exactIds,sameIdentity}=require('./ci/contracts.ts');
-const {writeSuite,hydrateSuite,writeJson}=require('./ci/records.ts');
+const {sealProblems,classify,overall,verdict,exactIds,sameIdentity,requiredPackages}=require('./ci/contracts.ts');
+const {writeSuite,hydrateSuite,writeJson,safeFile,readJsonBounded,captureMeta,evidenceMeta}=require('./ci/records.ts');
 const {entryDeclaration,entryCaseProblems,expectedLockSha256}=require('./ci/lock.ts');
 const { spawn } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
@@ -106,7 +106,7 @@ function layoutEvidence(ctx) {
   } catch { return false; }
 }
 
-const requiredPackages = ['StoneFreeHost', 'DoLGameUI', 'ModHubSoftWet', 'MapleBirchSoftWet', 'DolOptimizationSoftWet', 'CheatExtendedSoftWet', 'ReOverfitsSoftWet', 'LyraMouthCompat051213', 'SmartPhoneSoftWet'];
+
 function packageEvidence(ctx) {
   // Malformed or partial evidence must not prevent the whole-run summary/upload.
   try {
@@ -190,16 +190,6 @@ function requiredEvidence(profile='standard') {
   if(profile==='research')return [...require('./ci/research-families.ts').researchFamilies.map(f=>'families/'+f+'.json'),...shards,'unit.json','metrics.json','catalog.json','identity.json','summary.json','research.json','stage-dependencies.json','stage-browser-install.json',...catalogFor('research').contracts.flatMap(c=>[...c.evidence,...c.visualEvidence])];
   return [...shards,'metrics.json','catalog.json', ...Object.keys(checkpoints).map(name=>`fixtures/${name}/checkpoints.json`), 'identity.json', 'summary.json', 'unit.json', 'browser.json', 'package-contracts.json', ...stages.map(s=>`stage-${s.id}.json`),'fixtures/device-layouts.cjs/layout-report.json'];
 }
-function safeFile(base,file) {
- if(typeof file!=='string'||!file||file.includes('\\')||path.isAbsolute(file)||file.split('/').some(p=>!p||p==='.'||p==='..'))throw Error('Unsafe evidence path');
- let target=base;
- for(const part of ['',...file.split('/')]){target=path.join(target,part);if(fs.lstatSync(target).isSymbolicLink())throw Error('Evidence symlink');}
- if(!fs.lstatSync(target).isFile()||!fs.realpathSync(target).startsWith(fs.realpathSync(base)+path.sep))throw Error('Unsafe evidence file');
- return target;
-}
-function readJsonBounded(base,file,limit=262144){const target=safeFile(base,file);if(fs.statSync(target).size>limit)throw Error('Evidence size limit');return JSON.parse(fs.readFileSync(target));}
-function captureMeta(base,file,identity){if(!file.startsWith('review/')||!file.endsWith('.png'))return null;const bytes=fs.readFileSync(path.join(base,file)),valid=bytes.length>=24&&bytes.subarray(0,8).toString('hex')==='89504e470d0a1a0a';return {format:'PNG',width:valid?bytes.readUInt32BE(16):null,height:valid?bytes.readUInt32BE(20):null,scale:'image-pixels',environment:identity.environment||null,source:identity.source.head,run:identity.run.id}}
-function evidenceMeta(file,required,identityFiles) {return {required:required.includes(file),role:file.startsWith('review/')||file.startsWith('builds/')||file.startsWith('build-metadata/')?'T1':required.includes(file)?'T0':'T2',schema:file.endsWith('.json')?(identityFiles.includes(file)?'moody-envelope/v1':required.includes(file)?'research-raw/v1':'historical-json'):'binary',provenance:file.startsWith('builds/')||file.startsWith('build-metadata/')?'historical-comparison':'current-run'};}
 function validateUpload(ctx, required=requiredEvidence(ctx.identity.profile), identityFiles=required, options={}) {
  const destination=options.destination||path.join(ctx.dir,'upload'),problems=[];let index;
  if(fs.existsSync(path.join(destination,'delivery.json'))&&!required.includes('delivery.json')){required=[...required,'delivery.json'];identityFiles=[...identityFiles,'delivery.json'];}

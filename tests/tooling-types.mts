@@ -1,3 +1,5 @@
+import gateFixture from './ci-fixtures.cjs';
+import {readJsonBounded,evidenceMeta} from '../scripts/ci/records.ts';
 import {context as evidenceContext} from '../scripts/ci/context.ts';
 import * as verdictTools from '../scripts/ci/contracts.ts';
 import renderer from '../scripts/render-state-fields.cjs';
@@ -78,3 +80,26 @@ function contextContract(){
  return {nonce,head,version,profile,typed};
 }
 void contextContract;
+
+
+function boundedReadContract(){
+ const raw:unknown=readJsonBounded('evidence','data.json');
+ // @ts-expect-error Disk JSON has no trusted status without validation.
+ const status:string=readJsonBounded('evidence','data.json').status;
+ const role:'T0'|'T1'|'T2'=evidenceMeta('data.json',['data.json'],[]).role;
+ return {raw,status,role};
+}
+void boundedReadContract;
+
+
+function fixtureContract(){
+ const fields=gateFixture.healthyCaseFields('controlled.cjs');
+ const id:string|undefined=fields.terminalReceipt.cases[0]?.id;
+ const typed:0 extends (1&typeof fields.terminalReceipt.cases[number]['id'])?true:false=false;
+ // @ts-expect-error Native case identifiers are strings.
+ const invalid:number|undefined=fields.terminalReceipt.cases[0]?.id;
+ // @ts-expect-error A fixture directory is a path string.
+ gateFixture.fixture(1);
+ return {id,typed,invalid};
+}
+void fixtureContract;

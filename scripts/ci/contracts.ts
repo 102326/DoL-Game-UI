@@ -89,3 +89,5 @@ export function verdict<T>(assertionResult:T, problems:readonly unknown[]=[], st
     assertionResult,evidenceIntegrity,reasonCodes:[...(status==='ERROR'?['InfrastructureError']:status==='CANCELLED'?['RunCancelled']:status==='UNVERIFIED'?['UnverifiedChecks']:[]),...(assertionResult==='FAIL'?['AssertionFailed']:[]),...(problems.length?['EvidenceIncomplete']:[])]};
 }
 export function exactIds(expected:readonly unknown[], actual:unknown):boolean {return expected.length>0&&Array.isArray(actual)&&expected.length===actual.length&&new Set(actual).size===actual.length&&expected.every(id=>actual.includes(id))}
+
+export const requiredPackages:readonly string[] = ['StoneFreeHost', 'DoLGameUI', 'ModHubSoftWet', 'MapleBirchSoftWet', 'DolOptimizationSoftWet', 'CheatExtendedSoftWet', 'ReOverfitsSoftWet', 'LyraMouthCompat051213', 'SmartPhoneSoftWet'];
