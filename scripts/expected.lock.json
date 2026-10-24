@@ -1217,6 +1217,7 @@
     },
     {
       "entry": "tests/framework-connect.cjs",
+      "sourceEntry": "tests/framework-connect.cts",
       "profiles": [
         "standard"
       ],
@@ -1228,7 +1229,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a60700582dc4f7ef7570a00fb744533bc1ef14b2ebb268f2e66c8e841503fb6f",
+      "sourceSha256": "1a25ce4406727ca9310cf7485fc961312444d83e8717d3636367e3ebe9c9a6c9",
       "assertionSites": 8
     },
     {
