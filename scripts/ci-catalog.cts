@@ -9,7 +9,7 @@ const projectId=project.projectId;
 // Expected contracts are versioned source, never inferred from a run's result files.
 const {expectedLock,expectedLockSha256,entryDeclaration}:typeof import('./ci/lock.ts')=require('./ci/lock.ts');
 const {familyFor,maturityFor,dependenciesFor}:typeof import('./ci/research-families.ts')=require('./ci/research-families.ts');
-interface Report {readonly pattern?:string;readonly field?:string;readonly key?:string|null;readonly expected?:readonly(string|number)[];readonly fixture?:boolean;readonly shape?:string;readonly count?:number;readonly scatter?:boolean}
+interface Report {readonly pattern?:string;readonly field?:string;readonly key?:string|null;readonly expected?:readonly(string|number)[];readonly fixture?:boolean;readonly shape?:'inventory'|'settings'|'glass'|'shower';readonly count?:number;readonly scatter?:boolean}
 interface ResearchCheck {readonly id:string;readonly command:string;readonly args:readonly string[];readonly report?:Report;readonly execution?:'tool'|'contract'}
 interface Stage {readonly id:string;readonly scope:string;readonly args:readonly string[];readonly command?:string}
 const suites:{readonly unit:readonly string[];readonly browser:readonly string[]} = {

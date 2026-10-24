@@ -17,7 +17,7 @@ export function playwrightVersion(value:unknown):string{
  if(!record(value)||!record(value.packages)||!record(value.packages['node_modules/playwright'])||typeof value.packages['node_modules/playwright'].version!=='string')throw Error('Invalid Playwright lock version');
  return value.packages['node_modules/playwright'].version;
 }
-function pullRequest(value:unknown){
+export function pullRequest(value:unknown){
  if(!record(value))throw Error('Invalid workflow event');
  const pr=value.pull_request;if(!pr)return null;
  if(!record(pr)||!record(pr.head)||!record(pr.base)||typeof pr.head.sha!=='string'||typeof pr.base.sha!=='string')throw Error('Invalid pull request event');

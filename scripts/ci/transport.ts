@@ -1,6 +1,6 @@
 import type {Status} from './contracts.ts';
 
-interface Verdict {status:Status;assertionResult?:string;evidenceIntegrity?:string;reasonCodes?:string[];problems?:{file:string;reason:string}[]}
+interface Verdict {status:Status;assertionResult?:unknown;evidenceIntegrity?:string;reasonCodes?:string[];problems?:{file:unknown;reason:string}[]}
 export function transportVerdict<T extends Verdict>(result:T,outcomes:{upload?:string;download?:string;producer?:string}):Omit<T,keyof Verdict>&Verdict{
  const errors:string[]=[];
  if(outcomes.upload!==undefined&&outcomes.upload!=='success')errors.push('evidence_upload');

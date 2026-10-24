@@ -22,7 +22,7 @@ export function dependenciesFor(id:string):string[]{
  if(familyFor(id)==='production'&&!['source-check','framework-build','inventory','evolution-unit'].includes(id))return ['framework-build'];
  return [];
 }
-interface Result {name:string;status:Status;rawStatus?:string;caseIds?:string[];[key:string]:unknown}
+interface Result {name:string;status:Status;rawStatus?:string;caseIds?:(string|number)[];[key:string]:unknown}
 export function familyReports(identity:unknown,expected:string[],results:Result[],sourceAfter:unknown):{family:ResearchFamily;maturity:Maturity;expected:string[];results:Result[];status:Status;sourceAfter:unknown;seal:{state:string};schema:1;identity:unknown}[]{
  return researchFamilies.map(family=>{
   const names=expected.filter(id=>familyFor(id)===family),entries=results.filter(r=>familyFor(r.name)===family);

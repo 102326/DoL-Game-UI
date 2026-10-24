@@ -68,3 +68,21 @@ function deviceContract(){
   return {width,wrong,typed};
 }
 void deviceContract;
+
+
+import evidence = require('../scripts/ci-evidence.cjs');
+import researchEvidence = require('../scripts/ci-research.cjs');
+function evidenceContract(ctx:Parameters<typeof evidence.summarize>[0],expected:Parameters<typeof evidence.verifyRemote>[1]){
+ const ready:boolean=evidence.packageEvidence(ctx),status:import('../scripts/ci/contracts').Status=evidence.summarize(ctx).status;
+ const bytes:number=evidence.prepareUpload(ctx).bytes;
+ // @ts-expect-error Evidence contexts require source/run identity and an actual directory.
+ evidence.summarize({});
+ // @ts-expect-error The downloaded directory must be a path, never a number.
+ evidence.verifyRemote(26,expected);
+ // @ts-expect-error Upload byte counts retain their numeric result type across CommonJS.
+ const wrong:string=bytes;
+ // @ts-expect-error Research report checks use the actual catalog specification.
+ researchEvidence.caseIds({shape:'made-up'},null,ctx);
+ return {ready,status,wrong};
+}
+void evidenceContract;
