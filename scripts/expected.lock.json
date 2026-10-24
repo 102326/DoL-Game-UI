@@ -376,6 +376,10 @@
       "standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules",
       "adapter build rejects malformed script lists before emitting code"
     ],
+    "checkpoint-boundary.test.mts": [
+      "checkpoint writer preserves identity and appends only in its declared directory",
+      "checkpoint writer rejects stale identities and malformed reports without overwriting them"
+    ],
     "device-plan-boundary.test.mts": [
       "device plans retain exact string IDs, copy outputs and reject malformed lock projections"
     ],
@@ -607,6 +611,26 @@
       ],
       "sourceSha256": "72547aac5054e9078e10548341cf9fda0550cffab736bec96fa6185a8e312c26",
       "assertionSites": 170
+    },
+    {
+      "entry": "tests/checkpoint-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "checkpoint writer preserves identity and appends only in its declared directory",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "checkpoint writer rejects stale identities and malformed reports without overwriting them",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "6cb162afd8789f76e9e7f4c7f5d68a31609b3d059f0eba1d227ecdc35cde821d",
+      "assertionSites": 13
     },
     {
       "entry": "tests/ci-evidence.test.cjs",
