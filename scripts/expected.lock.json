@@ -960,6 +960,7 @@
     },
     {
       "entry": "tests/evolution-panels.cjs",
+      "sourceEntry": "tests/evolution-panels.cts",
       "profiles": [
         "standard",
         "research"
@@ -972,7 +973,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "d706de9a410307c0b637bee012a2e49ce3fb938c3cd0a8697bec1cacdcc05e70",
+      "sourceSha256": "005b50b4a86c84d27bc189ca1f074463a4139306e0185883191834581ef94641",
       "assertionSites": 18
     },
     {
@@ -1296,6 +1297,7 @@
     },
     {
       "entry": "tests/game-first-motion.cjs",
+      "sourceEntry": "tests/game-first-motion.cts",
       "profiles": [
         "standard",
         "research"
@@ -1308,7 +1310,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "871f06c2f240e184701f103bb467c667d80941a0b5307ce08858523db550cea6",
+      "sourceSha256": "d14fb99c79768677476cf041064a4139cb127ab759d2a5b843e039200cc3510c",
       "assertionSites": 15
     },
     {

@@ -124,3 +124,12 @@ docs/HANDOFF.local.md
 /tests/sidebar-preview-recovery.cjs
 
 /tests/framework-reference-shelf.cjs
+
+/tests/framework-bridge.cjs
+/tests/settings-official-init.cjs
+/tests/game-first-motion.cjs
+
+/tests/evolution-panels.cjs
+
+/tests/settings-orbit.cjs
+/tests/settings-input-boundary.cjs
