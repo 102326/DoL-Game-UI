@@ -7,9 +7,10 @@ import './style.css';
 import {createSaveMetadata,type SaveMetadataHost} from './metadata';
 import {isMasterEnabled} from '../runtime/master';
 import {createSaveSource,type SaveEntry} from './source';
+import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 export type {SaveEntry} from './source';
-export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Participant}){
+export function startSaves(root:SaveMetadataHost&Pick<NativeEventsHost,'jQuery'>,framework?:{host:Host;owner:Participant}){
  const transfer=createSaveTransfer();
  let metadata:ReturnType<typeof createSaveMetadata>|undefined;
  let enabled=true;try{enabled=root.localStorage.getItem('DoLGameUI.saves.enabled')!=='false'}catch{}
