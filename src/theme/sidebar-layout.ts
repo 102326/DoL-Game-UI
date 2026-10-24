@@ -1,13 +1,13 @@
 /* Move only confirmed native regions; unknown Mod output stays in place. */
 export function createSidebarLayout(){
  const titles=new Set<HTMLElement>();
- const regions=new Map<HTMLElement,{nodes:Node[];anchors:Comment[];wrappers:Element[]}>();
+ const regions=new Map<HTMLElement,{placements:{node:Node;anchor:Comment}[];wrappers:Element[]}>();
  function restore(){
   for(const title of titles)title.remove();titles.clear();
-  for(const [host,{nodes,anchors,wrappers}] of regions){
-   nodes.forEach((node,i)=>{
-    if(host.isConnected&&host.contains(node)){if(anchors[i].isConnected)anchors[i].replaceWith(node);else host.before(node)}
-    anchors[i].remove();
+  for(const [host,{placements,wrappers}] of regions){
+   placements.forEach(({node,anchor})=>{
+    if(host.isConnected&&host.contains(node)){if(anchor.isConnected)anchor.replaceWith(node);else host.before(node)}
+    anchor.remove();
    });
    // Unwrap only our shells; preserve late Mod children, identity and handlers.
    if(host.isConnected){for(const wrapper of wrappers)if(host.contains(wrapper))wrapper.replaceWith(...wrapper.childNodes);host.replaceWith(...host.childNodes)}
@@ -16,12 +16,13 @@ export function createSidebarLayout(){
   regions.clear();
  }
  function move(host:HTMLElement,nodes:Node[],target:HTMLElement){
-  const anchors=nodes.map(node=>{const a=document.createComment('DoL UI sidebar original position');node.parentNode!.insertBefore(a,node);return a});
-  anchors[0].before(host);nodes.forEach(node=>target.append(node));regions.set(host,{nodes,anchors,wrappers:[...host.children]});
+  const placements=nodes.map(node=>{const anchor=document.createComment('DoL UI sidebar original position');node.parentNode!.insertBefore(anchor,node);return {node,anchor}});
+  const first=placements[0];if(!first)return;
+  first.anchor.before(host);nodes.forEach(node=>target.append(node));regions.set(host,{placements,wrappers:[...host.children]});
  }
  function sync(active:boolean){
   if(!active){restore();return}
-  for(const [host,{anchors}] of regions)if(!host.isConnected){for(const anchor of anchors)anchor.remove();regions.delete(host)}
+  for(const [host,{placements}] of regions)if(!host.isConnected){for(const {anchor} of placements)anchor.remove();regions.delete(host)}
   for(const title of titles)if(!title.isConnected)titles.delete(title);
   const start=document.querySelector('#startCaption>button.link-internal');
   if(start&&!start.previousElementSibling?.classList.contains('dmt-start-tools')){
