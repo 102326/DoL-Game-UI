@@ -2392,6 +2392,7 @@
     },
     {
       "entry": "tests/wardrobe-operations.test.cjs",
+      "sourceEntry": "tests/wardrobe-operations.test.cts",
       "profiles": [
         "standard"
       ],
@@ -2403,8 +2404,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "e88a066814a95093cb1857f3498968ae9460422cf2e9c432c300d19efd5a0feb",
-      "assertionSites": 21
+      "sourceSha256": "35bd533bda0c6c3e5c541abc6d619c4073220bc7024ab36c0fe3574c60a586b0",
+      "assertionSites": 29
     },
     {
       "entry": "tests/wardrobe-performance.test.cjs",

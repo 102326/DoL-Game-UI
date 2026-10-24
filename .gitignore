@@ -87,3 +87,5 @@ docs/HANDOFF.local.md
 /tests/sidebar-surface.cjs
 /scripts/ci-research-unit.cjs
 /tests/ci-fixtures.cjs
+
+/tests/wardrobe-operations.test.cjs
