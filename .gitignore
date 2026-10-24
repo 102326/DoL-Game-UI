@@ -144,3 +144,5 @@ docs/HANDOFF.local.md
 /tests/framework-startup.cjs
 /tests/framework-commands.cjs
 /tests/framework-motion-gate.cjs
+/tests/saves-demo.cjs
+/tests/refraction-demo.cjs
