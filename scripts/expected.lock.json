@@ -832,6 +832,7 @@
     },
     {
       "entry": "tests/device-probe.cjs",
+      "sourceEntry": "tests/device-probe.cts",
       "profiles": [
         "standard"
       ],
@@ -843,8 +844,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "0fa232f9c04b22534239f0802a92d4436341c1affedcc21905cd0f390bebfe3d",
-      "assertionSites": 39
+      "sourceSha256": "0f0d92b3657601b1794321fcd61eae3396d4ea465d3eb976f200beb6ad06b441",
+      "assertionSites": 44
     },
     {
       "entry": "tests/device-profiles.test.cjs",
@@ -2060,10 +2061,18 @@
         {
           "id": "reset",
           "minimumAssertions": 1
+        },
+        {
+          "id": "typed-twee-resize",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "typed-twee-drift",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "bad770b9915b19188e4972d2d90a4aef69344c159c79574011f1d655a8709d7d",
-      "assertionSites": 8,
+      "sourceSha256": "564965556e7097a7cd5d1f9cbefb1d9d77faa60b9721f8c96bc4ced09436ac46",
+      "assertionSites": 15,
       "evidence": "checkpoints"
     },
     {

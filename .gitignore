@@ -232,3 +232,14 @@ docs/HANDOFF.local.md
 /tests/combat-stone-free.cjs
 /tests/combat-m4a.cjs
 /tests/framework-reference-android.cjs
+
+/tests/framework-android.cjs
+/tests/framework-motion-android.cjs
+/tests/framework-reading-android.cjs
+/tests/preview-hook-runtime.cjs
+/tests/render-state-runtime.cjs
+/tests/sidebar-preview-runtime.cjs
+/tests/tanning-runtime.cjs
+/tests/social.test.cjs
+/tests/panels.test.cjs
+/tests/device-probe.cjs
