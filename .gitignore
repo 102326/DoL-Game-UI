@@ -111,3 +111,6 @@ docs/HANDOFF.local.md
 /tests/golden-spin-b.cjs
 
 /tests/golden-spin-hub.cjs
+
+/tests/status-browser.test.cjs
+/tests/game-controls-types.cjs
