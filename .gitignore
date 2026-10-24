@@ -159,3 +159,5 @@ docs/HANDOFF.local.md
 /tests/source-motion-lifecycle.cjs
 /tests/official-defaults.cjs
 /tests/official-game-motion.cjs
+/scripts/record-evolution-hub.cjs
+/scripts/record-evolution-settings.cjs
