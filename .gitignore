@@ -34,3 +34,5 @@ docs/HANDOFF.local.md
 /scripts/test-unit.cjs
 /scripts/test-workflow.cjs
 /scripts/vendor-wardrobe.cjs
+/scripts/build-tooling.mjs
+/scripts/check-native-tooling.mjs

@@ -389,6 +389,9 @@
       "seeded rain is reproducible, sparse and has independent motion rather than a common tile translation",
       "rain levels increase budget/speed while renewal remains finite, bounded and staggered"
     ],
+    "native-tooling.test.mts": [
+      "native erasure check rejects an extra enum fixture while retaining the normal roots"
+    ],
     "save-metadata-boundary.test.mts": [
       "save metadata skips malformed rows without changing native data or writing storage",
       "NaN dates remain invalid numbers and unknown legacy shapes fail closed"
@@ -1402,6 +1405,22 @@
       ],
       "sourceSha256": "a24dd17951b28212fc26cbb69380c5fc924cf3b52098b96a1e9eb49840257b37",
       "assertionSites": 24
+    },
+    {
+      "entry": "tests/native-tooling.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "native erasure check rejects an extra enum fixture while retaining the normal roots",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "2fde6bb8a9e73d0f713d02821ff5af5ee99627cc5db12eaf0db681a1065e06a3",
+      "assertionSites": 3
     },
     {
       "entry": "tests/official-defaults.cjs",
