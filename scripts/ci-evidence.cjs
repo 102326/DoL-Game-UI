@@ -2,6 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const {pathToFileURL}=require('node:url');
 const {sealProblems,reconcileIdentity}=require('./ci/contracts.ts');
 const {writeSuite,hydrateSuite}=require('./ci/records.ts');
 const {entryDeclaration,entryCaseProblems,expectedLockSha256}=require('./ci/lock.ts');
@@ -109,7 +110,7 @@ function runCommand(command, args, { cwd = root, log, timeoutMs = 120000, signal
     let nativeSource=false;if(command===process.execPath&&!args.includes('--test')){const source=args[0]==='-e'?args[1]:args.find(a=>/\.(cjs|mjs|js)$/.test(a)&&fs.existsSync(a));if(source)nativeSource=require('./ci-source-policy.cjs').usesNodeTest(args[0]==='-e'?source:fs.readFileSync(source,'utf8'));}
     if(nativeSource&&args[0]==='-e'){const inline=path.join(path.dirname(log),'inline-'+executionId+'.test.cjs');fs.mkdirSync(path.dirname(inline),{recursive:true});fs.writeFileSync(inline,args[1]);args=['--test',inline];}
     const nativeFiles=args.filter(a=>nodeTestCases[path.basename(a)]),expectedNodeIds=nativeFiles.flatMap(file=>nodeTestCases[path.basename(file)].map(name=>path.basename(file)+'::'+name));childEnv.MOODY_EXPECTED_NODE_CASES=JSON.stringify(expectedNodeIds);if(command===process.execPath&&(nativeFiles.length||nativeSource)&&!args.includes('--test'))args=['--test',...args];
-    if (command===process.execPath&&args.includes('--test')) args=[`--test-reporter=${path.join(root,'scripts/ci-test-reporter.cjs')}`,...args];
+    if (command===process.execPath&&args.includes('--test')) args=[`--test-reporter=${pathToFileURL(path.join(root,'scripts/ci-test-reporter.cjs')).href}`,...args];
     const child = spawn(command, args, { cwd, env:childEnv, stdio: ['ignore', 'pipe', 'pipe'],
       detached: process.platform !== 'win32', shell: process.platform === 'win32' && ['npm', 'npx'].includes(command) });
     const stop = () => {

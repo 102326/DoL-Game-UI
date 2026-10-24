@@ -1,5 +1,6 @@
 // @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
 const assert=require('node:assert/strict');
+const path=require('node:path');
 const {transportVerdict}=require('../scripts/ci/transport.ts');
 const {rendererProblems}=require('../scripts/ci/renderer.ts');
 const {familyReports,dependenciesFor,familyFor,maturityFor}=require('../scripts/ci/research-families.ts');
@@ -7,9 +8,9 @@ const {caseProblems,sealProblems,orderEntries,canSchedule,reconcileIdentity}=req
 (async()=>{
  const {spawnSync}=require('node:child_process');
  for(const composed of [false,true]){
-  const plan=[{id:'entry',minimumAssertions:1},...(composed?[{id:'healthy:child',minimumAssertions:1}]:[])];
-  const script=`process.argv[1]='/ci-parent.cjs';const assert=require('node:assert/strict'),c=require(${JSON.stringify(require.resolve('../scripts/ci/cases.ts'))});let count=0;c.setAssertionCounter(()=>count);(async()=>{await c.runCase('foreign',()=>{count++;});await assert.rejects(c.runCase('expected-failure',()=>{count++;throw Error('controlled')}));if(${composed})await c.withCaseScope('healthy',()=>c.runCase('child',()=>{count++;}));const receipt=c.finishCases();assert.deepEqual(receipt.caseIssues,[]);assert.deepEqual(receipt.cases.map(r=>r.id).sort(),${JSON.stringify(plan.map(c=>c.id).sort())});})().catch(e=>{console.error(e);process.exitCode=1})`;
-  const child=spawnSync(process.execPath,['-e',script],{encoding:'utf8',env:{...process.env,NODE_OPTIONS:'--experimental-strip-types',MOODY_PROCESS_RECEIPT:'',MOODY_CASE_ENTRY:'/ci-parent.cjs',MOODY_CASE_PLAN:JSON.stringify(plan),MOODY_CASE_GRANULARITY:composed?'composed':'entry'}});
+  const plan=[{id:'entry',minimumAssertions:1},...(composed?[{id:'healthy:child',minimumAssertions:1}]:[])],entry=path.resolve('/ci-parent.cjs');
+  const script=`process.argv[1]=${JSON.stringify(entry)};const assert=require('node:assert/strict'),c=require(${JSON.stringify(require.resolve('../scripts/ci/cases.ts'))});let count=0;c.setAssertionCounter(()=>count);(async()=>{await c.runCase('foreign',()=>{count++;});await assert.rejects(c.runCase('expected-failure',()=>{count++;throw Error('controlled')}));if(${composed})await c.withCaseScope('healthy',()=>c.runCase('child',()=>{count++;}));const receipt=c.finishCases();assert.deepEqual(receipt.caseIssues,[]);assert.deepEqual(receipt.cases.map(r=>r.id).sort(),${JSON.stringify(plan.map(c=>c.id).sort())});})().catch(e=>{console.error(e);process.exitCode=1})`;
+  const child=spawnSync(process.execPath,['-e',script],{encoding:'utf8',env:{...process.env,NODE_OPTIONS:'--experimental-strip-types',MOODY_PROCESS_RECEIPT:'',MOODY_CASE_ENTRY:entry,MOODY_CASE_PLAN:JSON.stringify(plan),MOODY_CASE_GRANULARITY:composed?'composed':'entry'}});
   assert.equal(child.status,0,child.stderr);
  }
  const expected=[{id:'a',minimumAssertions:1},{id:'b',minimumAssertions:1}];
