@@ -49,3 +49,6 @@ el('export').addEventListener('click',()=>{
 el('clear').addEventListener('click',()=>{samples.length=0;render();el('status').textContent='记录已清空；未保存到浏览器存储。';});
 render();
 export {};
+
+export type DeviceProbeSample=ReturnType<typeof observe>;
+export type DeviceProbePayload=ReturnType<typeof payload>;
