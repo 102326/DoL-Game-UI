@@ -146,3 +146,5 @@ docs/HANDOFF.local.md
 /tests/framework-motion-gate.cjs
 /tests/saves-demo.cjs
 /tests/refraction-demo.cjs
+/tests/acrylic-demo.cjs
+/tests/button-depth-demo.cjs

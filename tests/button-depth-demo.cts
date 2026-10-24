@@ -1,4 +1,9 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs'),{pathToFileURL}=require('node:url');
+import playwright = require('playwright');
+import assert = require('node:assert/strict');
+import path = require('node:path');
+import fs = require('node:fs');
+import url = require('node:url');
+const {chromium}=playwright,{pathToFileURL}=url;
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true});
  try{
@@ -11,15 +16,15 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
    assert.ok(await page.locator('main button').evaluateAll(es=>es.every(e=>e.getBoundingClientRect().height>=44)));
    assert.equal(await page.locator('main').innerText(),original);
    const contrast=await page.locator('main button:not(:disabled),.note').evaluateAll(es=>{
-    const rgb=s=>s.match(/[\d.]+/g).map(Number),lum=c=>c.slice(0,3).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4}).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
-    return es.map(e=>{let parent=e;while(rgb(getComputedStyle(parent).backgroundColor)[3]===0)parent=parent.parentElement;const a=lum(rgb(getComputedStyle(e).color)),b=lum(rgb(getComputedStyle(parent).backgroundColor));return(Math.max(a,b)+.05)/(Math.min(a,b)+.05)});
+    const rgb=(s:string)=>{const matches=s.match(/[\d.]+/g);if(!matches)throw Error('Invalid color '+s);return matches.map(Number)},lum=(c:number[])=>c.slice(0,3).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4}).reduce((a,v,i)=>{const weight=[.2126,.7152,.0722][i];if(weight===undefined)throw Error('Invalid color channel');return a+v*weight},0);
+    return es.map(e=>{let parent=e;while(rgb(getComputedStyle(parent).backgroundColor)[3]===0){const next=parent.parentElement;if(!next)throw Error('No opaque ancestor');parent=next};const a=lum(rgb(getComputedStyle(e).color)),b=lum(rgb(getComputedStyle(parent).backgroundColor));return(Math.max(a,b)+.05)/(Math.min(a,b)+.05)});
    });assert.ok(contrast.every(v=>v>=4.5),`contrast ${contrast}`);
   }
   await page.setViewportSize({width:1363,height:900});await page.locator('#scale').selectOption('100');await page.locator('#background').selectOption('neutral');
   assert.equal((await edge()).opacity,0);assert.equal((await edge()).pointer,'none');assert.equal((await edge()).filter,'none');
   const before=await button.boundingBox();await button.focus();await page.waitForTimeout(200);assert.equal((await edge()).opacity,.65);
-  await page.keyboard.press('Enter');assert.match(await page.locator('output').textContent(),/B .*已响应/);
-  const rect=await button.boundingBox();await page.mouse.move(rect.x+rect.width/2,rect.y+rect.height/2);await page.mouse.down();await page.waitForTimeout(150);assert.equal((await edge()).opacity,1);
+  await page.keyboard.press('Enter');assert.match(await page.locator('output').textContent()??'',/B .*已响应/);
+  const rect=await button.boundingBox();assert.ok(rect);await page.mouse.move(rect.x+rect.width/2,rect.y+rect.height/2);await page.mouse.down();await page.waitForTimeout(150);assert.equal((await edge()).opacity,1);
   assert.deepEqual(await button.boundingBox(),before);
   fs.mkdirSync(path.join(__dirname,'artifacts'),{recursive:true});await page.screenshot({path:path.join(__dirname,'artifacts/eyes-button-depth-pressed.png'),fullPage:true});
   await page.mouse.up();await page.locator('#scale').focus();await page.waitForTimeout(220);assert.equal((await edge()).opacity,0);assert.equal(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0);
