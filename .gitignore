@@ -136,3 +136,4 @@ docs/HANDOFF.local.md
 /tests/floating-boundaries.test.cjs
 /tests/overlay-manager-layout.cjs
 /tests/layering-regression.cjs
+/tests/sidebar-layout.cjs

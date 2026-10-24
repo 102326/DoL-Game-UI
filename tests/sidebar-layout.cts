@@ -1,17 +1,27 @@
-const {chromium}=require('playwright'),assert=require('assert/strict'),{buildSync}=require('esbuild');
+import playwright = require('playwright');
+import assert = require('node:assert/strict');
+import esbuild = require('esbuild');
+import type {startLayout} from '../src/theme/layout';
+const {chromium}=playwright,{buildSync}=esbuild;
+declare const LayoutTest:{startLayout:typeof startLayout};
+declare const DMTLayout:NonNullable<NonNullable<Parameters<typeof startLayout>[0]>['DMTLayout']>;
+declare const nodes:Element[];
+declare let clicks:number,entryMoves:number;
+declare const entryOwner:MutationObserver,foreign:HTMLButtonElement,tipLabel:HTMLElement;
+function required(selector:string):HTMLElement{const n=document.querySelector(selector);if(!(n instanceof HTMLElement))throw Error('Missing fixture '+selector);return n}
 (async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{
  const p=await b.newPage({viewport:{width:390,height:500}});
  const caption='<div id="statmeters">Status</div><br><span class="gold">小贴士：</span>A quiet tip.<br><br><span id="alert">Immediate warning</span><div id="overlayButtons"><button id="save">Save</button><button id="foreign">Mod</button><button id="dmc-sidebar-button">Center</button><button id="dol-midnight-sidebar-button">Settings</button></div>';
  await p.setContent('<div id="ui-bar"><div id="storyCaptionContent">'+caption+'</div></div>');
- const html=await p.locator('#ui-bar').innerHTML();
- await p.evaluate(()=>{window.nodes=[...document.querySelectorAll('#ui-bar *')];window.clicks=0;document.getElementById('dmc-sidebar-button').onclick=()=>clicks++});
- await p.evaluate(()=>{window.entryMoves=0;window.entryOwner=new MutationObserver(()=>{const parent=document.getElementById('overlayButtons');for(const id of ['dmc-sidebar-button','dol-midnight-sidebar-button']){const button=document.getElementById(id);if(button.parentElement!==parent){entryMoves++;parent.append(button)}}});entryOwner.observe(document.getElementById('overlayButtons'),{childList:true,subtree:true})});
- await p.addScriptTag({content:buildSync({entryPoints:['src/theme/layout.ts'],bundle:true,write:false,format:'iife',globalName:'LayoutTest'}).outputFiles[0].text});
+ await p.addScriptTag({content:required.toString()});const html=await p.locator('#ui-bar').innerHTML();
+ await p.evaluate(()=>{Object.assign(window,{nodes:[...document.querySelectorAll('#ui-bar *')],clicks:0});required('#dmc-sidebar-button').onclick=()=>clicks++});
+ await p.evaluate(()=>{Object.assign(window,{entryMoves:0,entryOwner:new MutationObserver(()=>{const parent=required('#overlayButtons');for(const id of ['dmc-sidebar-button','dol-midnight-sidebar-button']){const button=required('#'+id);if(button.parentElement!==parent){entryMoves++;parent.append(button)}}})});entryOwner.observe(required('#overlayButtons'),{childList:true,subtree:true})});
+ await p.addScriptTag({content:buildSync({entryPoints:['src/theme/layout.ts'],bundle:true,write:false,format:'iife',globalName:'LayoutTest'}).outputFiles?.[0]?.text??(()=>{throw Error('Missing layout bundle')})()});
  await p.evaluate(()=>{LayoutTest.startLayout();DMTLayout.sync({enabled:true,layout:true})});
  await p.waitForTimeout(200);assert.equal(await p.evaluate(()=>entryMoves),0,'entry maintenance must not compete with sidebar layout');assert.equal(await p.locator('.dmt-system-tools').count(),1);
  assert.equal(await p.locator('#overlayButtons>#dmc-sidebar-button').count(),1,'entry owner direct-parent contract');assert.equal(await p.locator('#overlayButtons>#dol-midnight-sidebar-button').count(),1);
  assert.equal(await p.locator('.dmt-sidebar-tip').count(),1);assert.equal(await p.locator('#alert').isVisible(),true);
- assert.equal(await p.locator('.dmt-sidebar-tip').evaluate(e=>e.open),false);
+ assert.equal(await p.locator('.dmt-sidebar-tip').evaluate(e=>e instanceof HTMLDetailsElement&&e.open),false);
  await p.locator('.dmt-sidebar-tip>summary').click();assert.equal(await p.locator('.dmt-sidebar-tip>div').textContent(),'A quiet tip.');
  await p.locator('#dmc-sidebar-button').click();assert.equal(await p.evaluate(()=>clicks),1);
  assert.equal(await p.locator('#save').isVisible(),true);assert.equal(await p.locator('#foreign').isVisible(),true);
@@ -26,11 +36,11 @@ const {chromium}=require('playwright'),assert=require('assert/strict'),{buildSyn
  // A third-party node inserted after acquisition must survive fallback and destroy.
  await p.locator('#storyCaptionContent').evaluate((e,caption)=>e.innerHTML=caption,caption);
  await p.evaluate(()=>DMTLayout.sync({enabled:true,layout:true}));
- await p.evaluate(()=>{window.foreign=document.createElement('button');foreign.id='late-foreign';foreign.textContent='Late Mod';foreign.onclick=()=>clicks++;document.querySelector('.dmt-sidebar-tip>div').append(foreign)});
+ await p.evaluate(()=>{Object.assign(window,{foreign:document.createElement('button')});foreign.id='late-foreign';foreign.textContent='Late Mod';foreign.onclick=()=>clicks++;required('.dmt-sidebar-tip>div').append(foreign)});
  await p.evaluate(()=>DMTLayout.sync({enabled:true,layout:false}));
  assert.equal(await p.evaluate(()=>foreign.isConnected),true,'late third-party content survives host cleanup');
  assert.equal(await p.evaluate(()=>document.getElementById('late-foreign')===foreign),true);await p.locator('#late-foreign').click();
- await p.evaluate(()=>{foreign.remove();DMTLayout.sync({enabled:true,layout:true});window.tipLabel=document.querySelector('.dmt-sidebar-tip>summary>span');document.querySelector('.dmt-sidebar-tip').append(foreign);for(const n of [...document.getElementById('storyCaptionContent').childNodes])if(n.nodeType===Node.COMMENT_NODE)n.remove()});
+ await p.evaluate(()=>{foreign.remove();DMTLayout.sync({enabled:true,layout:true});Object.assign(window,{tipLabel:required('.dmt-sidebar-tip>summary>span')});required('.dmt-sidebar-tip').append(foreign);for(const n of [...required('#storyCaptionContent').childNodes])if(n.nodeType===Node.COMMENT_NODE)n.remove()});
  await p.evaluate(()=>DMTLayout.destroy());
  assert.equal(await p.evaluate(()=>foreign.isConnected&&tipLabel.isConnected),true,'missing anchors retain live content');
  assert.equal(await p.locator('.dmt-sidebar-tip').count(),0);
