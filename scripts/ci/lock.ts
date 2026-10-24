@@ -9,6 +9,11 @@ const file=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../expecte
 export const expectedLock=JSON.parse(fs.readFileSync(file,'utf8')) as ExpectedLock;
 if(expectedLock.schema!==1||!expectedLock.entries.length||new Set(expectedLock.entries.map(e=>e.entry)).size!==expectedLock.entries.length||expectedLock.entries.some(e=>!e.cases.length))throw Error('Invalid/empty Expected Lock');
 export const expectedLockSha256=digest(fs.readFileSync(file));
+// Runtime paths stay stable; the declaration hash must follow authored TS.
+export function entrySource(root:string,entry:string):string{
+ const source=entry.replace(/\.cjs$/,'.cts').replace(/\.mjs$/,'.mts');
+ return fs.existsSync(path.join(root,source))?source:entry;
+}
 export function entryDeclaration(name:string):EntryDeclaration|undefined{return expectedLock.entries.find(e=>path.basename(e.entry)===name);}
 export function entryCaseProblems(name:string,result:{terminalReceipt?:{cases?:CaseResult[];graphics?:Parameters<typeof rendererProblems>[1]};nodeTests?:{id:string;status:string}[]}):string[]{
  const declaration=entryDeclaration(name);if(!declaration)return ['UndeclaredEntry'];

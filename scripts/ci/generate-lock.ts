@@ -4,6 +4,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
 import {digest} from './contracts.ts';
+import {entrySource} from './lock.ts';
 import type {EntryDeclaration,ExpectedLock,Profile} from './contracts.ts';
 
 const require=createRequire(import.meta.url),root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
@@ -23,7 +24,7 @@ function literal(node:ts.Node|undefined,env:Map<string,Literal>):Literal|undefin
  return undefined;
 }
 function namesFrom(source:string,callee:string,group?:string):{names:string[];assertionSites:number}{
- const tree=ts.createSourceFile('contract.cjs',source,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS),names=new Set<string>();let assertionSites=0;
+ const tree=ts.createSourceFile('contract.ts',source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TS),names=new Set<string>();let assertionSites=0;
  function visit(node:ts.Node,env:Map<string,Literal>):void{
   if(ts.isIfStatement(node)&&group){const expression=node.expression.getText(tree);if((expression.includes('.includes(group)')||/^group===/.test(expression))&&/['"](?:identity|inspector|surfaces|compat|all)['"]/.test(expression)){const values=[...expression.matchAll(/['"]([^'"]+)['"]/g)].map(m=>m[1]);if(values.includes(group)){visit(node.thenStatement,new Map(env));}else if(node.elseStatement)visit(node.elseStatement,new Map(env));return;}}
   if(ts.isForOfStatement(node)){const values=literal(node.expression,env);const declaration=ts.isVariableDeclarationList(node.initializer)?node.initializer.declarations[0]:undefined;
@@ -40,7 +41,7 @@ export function generateLock():ExpectedLock{
  const files=new Set([...Object.values(catalog.suites).flat().map(n=>'tests/'+n),...catalog.researchPlan.flatMap(c=>c.args.filter(a=>/^(tests|scripts)\/.*\.cjs$/.test(a)))]);
  const entries:EntryDeclaration[]=[],nativeCases:Record<string,string[]>={},researchCases:Record<string,string[]>={};
  for(const entry of [...files].sort()){
-  const text=fs.readFileSync(path.join(root,entry),'utf8'),match=text.match(/^\/\/ @ci-contract (.+)$/m);if(!match)throw Error('Missing declaration: '+entry);
+  const sourceEntry=entrySource(root,entry),text=fs.readFileSync(path.join(root,sourceEntry),'utf8'),match=text.match(/^\/\/ @ci-contract (.+)$/m);if(!match)throw Error('Missing declaration: '+entry);
   const declaration=JSON.parse(match[1]) as Declaration,source=declaration.source?fs.readFileSync(path.join(root,declaration.source),'utf8'):text;
   const callee=declaration.granularity==='native'?'test':declaration.caseSource;
   const parsed=namesFrom(source,callee||'__no_cases__',declaration.group),names=callee?parsed.names:['entry'];
@@ -55,7 +56,7 @@ export function generateLock():ExpectedLock{
   if(!names.length||new Set(names).size!==names.length)throw Error('Empty/duplicate declaration: '+entry);
   if(declaration.granularity==='native')nativeCases[path.basename(entry)]=names;
   const check=catalog.researchPlan.find(c=>c.args.includes(entry)&&['checks','results'].includes(c.report?.field||''));if(check&&callee)researchCases[path.basename(entry,'.cjs')]=names;
-  entries.push({entry,profiles:declaration.profiles,classification:declaration.classification,granularity:declaration.granularity,cases:names.map(id=>({id,minimumAssertions:1})),sourceSha256:digest(sourceInput),assertionSites:parsed.assertionSites,...(declaration.evidence?{evidence:declaration.evidence}:{}),...(declaration.rendererContexts?{rendererContexts:declaration.rendererContexts}:{})});
+  entries.push({entry,...(sourceEntry!==entry?{sourceEntry}:{}),profiles:declaration.profiles,classification:declaration.classification,granularity:declaration.granularity,cases:names.map(id=>({id,minimumAssertions:1})),sourceSha256:digest(sourceInput),assertionSites:parsed.assertionSites,...(declaration.evidence?{evidence:declaration.evidence}:{}),...(declaration.rendererContexts?{rendererContexts:declaration.rendererContexts}:{})});
  }
  const {declaredDeviceCases}=require('../../tests/device-profiles.cjs') as {declaredDeviceCases:(depth:string)=>string[]};
  const devicePlans=Object.fromEntries(['standard','deep'].map(depth=>[depth,declaredDeviceCases(depth)]));

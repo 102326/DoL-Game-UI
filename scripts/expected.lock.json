@@ -373,7 +373,8 @@
   },
   "nativeCases": {
     "adapter-build-boundary.test.cjs": [
-      "standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules"
+      "standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules",
+      "adapter build rejects malformed script lists before emitting code"
     ],
     "evolution-rain-model.test.cjs": [
       "seeded attached drops grow, coalesce and drain with finite bounded geometry",
@@ -554,6 +555,7 @@
     },
     {
       "entry": "tests/adapter-build-boundary.test.cjs",
+      "sourceEntry": "tests/adapter-build-boundary.test.cts",
       "profiles": [
         "standard"
       ],
@@ -563,10 +565,14 @@
         {
           "id": "standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules",
           "minimumAssertions": 1
+        },
+        {
+          "id": "adapter build rejects malformed script lists before emitting code",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "44c58035c05359d7482f7fec1ea088f2d83593590e909ee6402e87a797938625",
-      "assertionSites": 5
+      "sourceSha256": "79ddf2c795f52bb293df9244a8d7d510f2b2fad80fca9b94d16788701b61155a",
+      "assertionSites": 8
     },
     {
       "entry": "tests/adapter-materials.cjs",

@@ -5,7 +5,7 @@ export type CaseStatus = Status|'SKIP'|'BLOCKED'|'NOT_RUN'|'RUNNING';
 export type Profile = 'standard'|'research'|'release';
 export interface CaseDeclaration {id:string;minimumAssertions:number;renderer?:string}
 export interface CaseResult {id:string;status:CaseStatus;milliseconds:number;assertions:number;path:string;failureSignature?:string;checkpoints?:string[]}
-export interface EntryDeclaration {entry:string;profiles:Profile[];classification:'contract'|'candidate'|'exploratory';granularity:'entry'|'named'|'checkpoint'|'native'|'composed';cases:CaseDeclaration[];sourceSha256:string;assertionSites:number;evidence?:string;rendererContexts?:string[]}
+export interface EntryDeclaration {entry:string;sourceEntry?:string;profiles:Profile[];classification:'contract'|'candidate'|'exploratory';granularity:'entry'|'named'|'checkpoint'|'native'|'composed';cases:CaseDeclaration[];sourceSha256:string;assertionSites:number;evidence?:string;rendererContexts?:string[]}
 export interface ExpectedLock {schema:1;devicePlans:Record<string,string[]>;nativeCases:Record<string,string[]>;researchCases:Record<string,string[]>;entries:EntryDeclaration[]}
 export interface Seal {state:'SEALED';expectedLockSha256:string;sourceAfter:unknown}
 export const digest=(value:string|Buffer):string=>createHash('sha256').update(value).digest('hex');
