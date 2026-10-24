@@ -7,6 +7,7 @@ global.document={body:{},addEventListener(){},removeEventListener(){},querySelec
 global.getComputedStyle=node=>({visibility:node.visible?'visible':'hidden',pointerEvents:node.pointerEvents??'auto'});
 const moduleUnderTest={exports:{}};
 new Function('require','module','exports',output)((name)=>{
+ if(name==='../../src/ui/visual-scope')return require('../src/ui/visual-scope.ts');
  if(name==='../vue')return {mountVue:(_owner,options)=>{actions=options.props.directActions;return {dispose(){}}}};
  if(name==='../../src/runtime/master')return {isMasterEnabled:()=>true};
  if(name.endsWith('.css')||name.endsWith('.vue'))return {};
