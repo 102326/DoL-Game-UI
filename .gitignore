@@ -148,3 +148,4 @@ docs/HANDOFF.local.md
 /tests/refraction-demo.cjs
 /tests/acrylic-demo.cjs
 /tests/button-depth-demo.cjs
+/tests/lyra-preview-adapter.cjs
