@@ -8,7 +8,7 @@ import {test} from 'node:test';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {writeSuite,hydrateSuite,safeFile,readJsonBounded} from '../scripts/ci/records.ts';
+import {writeSuite,hydrateSuite,safeFile,readJsonBounded,readReport} from '../scripts/ci/records.ts';
 import {caseProblems,sealProblems} from '../scripts/ci/contracts.ts';
 import {rendererProblems} from '../scripts/ci/renderer.ts';
 
@@ -71,4 +71,16 @@ test('fixture capture keeps size and path limits without replacing the original 
  assert.throws(()=>fixtureEvidence.writeLayoutReport({padding:'x'.repeat(262144)}),/256 KiB/);
  assert.equal(fixtureEvidence.writeLayoutReport({status:'FAIL',depth:'standard',results:[]}),true);
  process.env.MOODY_EVIDENCE_DIR=path.join(dir,'outside');assert.equal(fixtureEvidence.writeLayoutReport({status:'PASS'}),false);assert.equal(fs.existsSync(process.env.MOODY_EVIDENCE_DIR),false);
+});
+
+
+test('report loading validates JSON identity and reconstructs checked suite indexes',t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'sw-report-'));
+ t.after(()=>{if(path.dirname(path.resolve(dir))!==path.resolve(os.tmpdir())||!path.basename(dir).startsWith('sw-report-'))throw Error('Unexpected report cleanup');fs.rmSync(dir,{recursive:true,force:true})});
+ const ctx={dir,identity:{source:'current'}},file=path.join(dir,'raw.json'),plain={identity:ctx.identity,future:{preserved:[1,'opaque']}};
+ fs.writeFileSync(file,JSON.stringify(plain));assert.deepEqual(readReport(ctx,'raw.json'),plain);
+ for(const invalid of [null,[],{...plain,identity:{source:'old'}},{...plain,kind:'suite-index',suite:'unit',results:[null]}]){fs.writeFileSync(file,JSON.stringify(invalid));assert.equal(readReport(ctx,'raw.json'),null)}
+ fs.writeFileSync(file,'{');assert.equal(readReport(ctx,'raw.json'),null);fs.writeFileSync(file,' '.repeat(262145));assert.equal(readReport(ctx,'raw.json'),null);
+ const check={name:'actual.cjs',status:'PASS',rawStatus:'passed',milliseconds:1,extra:{keep:true}},suite={identity:ctx.identity,suite:'unit',results:[check]};writeSuite(ctx,suite);
+ assert.deepEqual(readReport(ctx,'unit.json')?.results,[check]);fs.writeFileSync(path.join(dir,'checks/unit/actual.cjs.json'),JSON.stringify({identity:{source:'stale'},suite:'unit',result:check}));assert.equal(readReport(ctx,'unit.json'),null);
 });

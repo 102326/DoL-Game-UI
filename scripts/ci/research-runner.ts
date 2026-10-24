@@ -1,11 +1,12 @@
 import {runCommand} from './process.ts';
 import path from 'node:path';
 import {createRequire} from 'node:module';
-import {canSchedule} from './contracts.ts';
+import {canSchedule,overall} from './contracts.ts';
+import {observeSource} from './source.ts';
 import type {Status} from './contracts.ts';
 import {entryDeclaration,entryCaseProblems} from './lock.ts';
 import {familyFor,maturityFor,dependenciesFor,familyReports} from './research-families.ts';
-import {writeSuite} from './records.ts';
+import {writeSuite,writeJson} from './records.ts';
 
 const require=createRequire(import.meta.url);
 interface Context {root:string;dir:string;identity:{source:unknown;[key:string]:unknown}}
@@ -34,12 +35,12 @@ export async function runResearch(ctx:Context,{signal,quiet=false,checks}:{signa
   }
   if(result.rawStatus==='not-run')Object.assign(result,{rawStatus:signal?.aborted?'cancelled':Date.now()>=deadline?'not-run':'blocked',reasonCode:signal?.aborted?'RunCancelled':Date.now()>=deadline?'ResearchBudgetExhausted':'PrerequisiteFailed',caseStatus:'NOT_RUN'});
   statuses[check.id]=result.status;report.results.push(result);
-  report.status=e.overall([...report.results.map(r=>r.status),...(report.results.length<selected.length?['UNVERIFIED']:[])]);
+  report.status=overall([...report.results.map(r=>r.status),...(report.results.length<selected.length?['UNVERIFIED']:[])]);
   writeSuite(ctx,report);if(!quiet)console.log(`${result.status} ${check.id}`,result.reason||result.rawStatus);
  }
- report.sourceAfter=e.observeSource(ctx);
- if(JSON.stringify(report.sourceAfter)!==JSON.stringify(ctx.identity.source)){report.status=e.overall([report.status,'UNVERIFIED']);report.reasonCode='SourceChangedDuringExecution';}
+ report.sourceAfter=observeSource(ctx);
+ if(JSON.stringify(report.sourceAfter)!==JSON.stringify(ctx.identity.source)){report.status=overall([report.status,'UNVERIFIED']);report.reasonCode='SourceChangedDuringExecution';}
  writeSuite(ctx,report);
- for(const family of familyReports(ctx.identity,report.expected,report.results,report.sourceAfter))e.writeJson(path.join(ctx.dir,'families',family.family+'.json'),family);
+ for(const family of familyReports(ctx.identity,report.expected,report.results,report.sourceAfter))writeJson(path.join(ctx.dir,'families',family.family+'.json'),family);
  return report;
 }

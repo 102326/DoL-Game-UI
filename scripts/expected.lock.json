@@ -433,7 +433,8 @@
       "seal checks reject non-record input without treating a type assertion as validation",
       "bounded evidence reads preserve JSON fields and reject unsafe paths or sizes",
       "untrusted case and graphics receipts are checked without declaring disk data trusted",
-      "fixture capture keeps size and path limits without replacing the original error"
+      "fixture capture keeps size and path limits without replacing the original error",
+      "report loading validates JSON identity and reconstructs checked suite indexes"
     ],
     "save-metadata-boundary.test.mts": [
       "save metadata skips malformed rows without changing native data or writing storage",
@@ -1806,10 +1807,14 @@
         {
           "id": "fixture capture keeps size and path limits without replacing the original error",
           "minimumAssertions": 1
+        },
+        {
+          "id": "report loading validates JSON identity and reconstructs checked suite indexes",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ab04a60294f1ea093494e5669d476e30afc0dcf68b88410e25fd9696b76f4aa8",
-      "assertionSites": 33
+      "sourceSha256": "3ff74dd79e5b6de63fbe40c9c82729977f36efd435e80cc07cfee41c6c4baff4",
+      "assertionSites": 39
     },
     {
       "entry": "tests/render-state.test.cjs",

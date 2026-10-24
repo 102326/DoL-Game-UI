@@ -1,7 +1,7 @@
 import fixtureEvidence from './moody-fixture-evidence.cjs';
 import {runCommand} from '../scripts/ci/process.ts';
 import gateFixture from './ci-fixtures.cjs';
-import {readJsonBounded,evidenceMeta} from '../scripts/ci/records.ts';
+import {readJsonBounded,evidenceMeta,readReport,checkpointEvidence} from '../scripts/ci/records.ts';
 import {context as evidenceContext} from '../scripts/ci/context.ts';
 import * as verdictTools from '../scripts/ci/contracts.ts';
 import renderer from '../scripts/render-state-fields.cjs';
@@ -133,3 +133,13 @@ function fixtureEvidenceContract(){
  return {written,capture};
 }
 void fixtureEvidenceContract;
+
+
+function reportReadContract(){
+ const value=readReport({dir:'evidence',identity:{}},'report.json');
+ const checkpoint:boolean=checkpointEvidence({dir:'evidence',identity:{}},'actual.cjs');
+ // @ts-expect-error An envelope identity does not validate arbitrary nested report fields.
+ const status:string=value?.status;
+ return {value,checkpoint,status};
+}
+void reportReadContract;

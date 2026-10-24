@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const {sealProblems,classify,overall,verdict,exactIds,sameIdentity,requiredPackages}=require('./ci/contracts.ts');
-const {writeSuite,hydrateSuite,writeJson,safeFile,readJsonBounded,captureMeta,evidenceMeta,fixtureChecks}=require('./ci/records.ts');
+const {writeSuite,hydrateSuite,writeJson,safeFile,readJsonBounded,captureMeta,evidenceMeta,fixtureChecks,readReport,checkpointEvidence}=require('./ci/records.ts');
 const {entryDeclaration,entryCaseProblems,expectedLockSha256}=require('./ci/lock.ts');
 const root = path.resolve(__dirname, '..');
 const { suites, stages, catalogFor, catalogIdentity,checkpoints,nodeTestCases,researchUnitEntries,projectId } = require('./ci-catalog.cjs');
@@ -14,21 +14,7 @@ const {sourceIdentity,observeSource}=require('./ci/source.ts');
 
 const {context}=require('./ci/context.ts');
 
-function checkpointEvidence(ctx, name) {
- const expected=checkpoints[name];if(!expected) return true;
- const report=readReport(ctx,`fixtures/${name}/checkpoints.json`);
- return report?.schema===1&&report.entry===name&&exactIds(expected,report.reached)&&sameIdentity(expected,report.reached);
-}
 const {runCommand}=require('./ci/process.ts');
-
-function readReport(ctx, file) {
-  try {
-    const p = path.join(ctx.dir, file);
-    if (fs.lstatSync(p).isSymbolicLink() || fs.statSync(p).size > 262144) return null;
-    const result = JSON.parse(fs.readFileSync(p, 'utf8'));
-    return sameIdentity(result.identity, ctx.identity) ? (result.kind==='suite-index'?hydrateSuite(ctx,result):result) : null;
-  } catch { return null; }
-}
 
 function resultStatus(result, execution=result?.execution||'contract') {
   const receipt=result?.terminalReceipt;

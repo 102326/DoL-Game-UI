@@ -1,5 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {createRequire} from 'node:module';
+import {sameIdentity,exactIds} from './contracts.ts';
+const require=createRequire(import.meta.url);
 
 interface Context {dir:string;identity:unknown}
 interface Result {name:string;status:string;rawStatus?:string;milliseconds?:number|null;[key:string]:unknown}
@@ -40,3 +43,22 @@ export function captureMeta(base:string,file:string,identity:{environment?:unkno
 export function evidenceMeta(file:string,required:readonly string[],identityFiles:readonly string[]):EvidenceMeta {return {required:required.includes(file),role:file.startsWith('review/')||file.startsWith('builds/')||file.startsWith('build-metadata/')?'T1':required.includes(file)?'T0':'T2',schema:file.endsWith('.json')?(identityFiles.includes(file)?'moody-envelope/v1':required.includes(file)?'research-raw/v1':'historical-json'):'binary',provenance:file.startsWith('builds/')||file.startsWith('build-metadata/')?'historical-comparison':'current-run'};}
 
 export const fixtureChecks:readonly string[]=['settings-ci.cjs','combat-focused.cjs','moody-historical-regressions.cjs','device-layouts.cjs'];
+
+
+export function readReport(ctx:Context,file:string):Record<string,unknown>|null{
+ try{
+  const target=path.join(ctx.dir,file);if(fs.lstatSync(target).isSymbolicLink()||fs.statSync(target).size>262144)return null;
+  const value:unknown=JSON.parse(fs.readFileSync(target,'utf8'));
+  if(!record(value)||!sameIdentity(value.identity,ctx.identity))return null;
+  if(value.kind!=='suite-index')return value;
+  if(typeof value.suite!=='string'||!Array.isArray(value.results))return null;
+  const results:unknown[]=value.results;if(!results.every(result))return null;
+  return {...hydrateSuite(ctx,{...value,suite:value.suite,results,kind:'suite-index'})};
+ }catch{return null}
+}
+export function checkpointEvidence(ctx:Context,name:string):boolean{
+ const {checkpoints}:typeof import('../ci-catalog.cjs')=require('../ci-catalog.cjs');
+ const expected=checkpoints[name];if(!expected)return true;
+ const report=readReport(ctx,`fixtures/${name}/checkpoints.json`);
+ return report?.schema===1&&report.entry===name&&exactIds(expected,report.reached)&&sameIdentity(expected,report.reached);
+}
