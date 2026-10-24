@@ -1,13 +1,16 @@
 // @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
-const assert = require('node:assert/strict');
-const crypto = require('node:crypto');
-const { devices } = require('playwright');
-const { catalog, requestedTargets, buildCases, scanWidths, cssBreakpoints } = require('./device-profiles.cjs');
+import assert = require('node:assert/strict');
+import crypto = require('node:crypto');
+import playwright = require('playwright');
+const {devices}=playwright;
+import profiles = require('./device-profiles.cjs');
+const { catalog, requestedTargets, buildCases, scanWidths, cssBreakpoints } = profiles;
 
 // Review descriptor changes deliberately when upgrading the pinned browser dependency.
-assert.equal(require('../package-lock.json').packages['node_modules/playwright-core'].version, '1.63.0');
-assert.equal(require('playwright-core/package.json').version, '1.63.0');
-const named = catalog.filter(p => p.descriptor);
+function field(value:unknown,...keys:string[]):unknown {for(const key of keys){if(!value||typeof value!=='object')return undefined;value=Reflect.get(value,key);}return value;}
+assert.equal(field(require('../package-lock.json'),'packages','node_modules/playwright-core','version'), '1.63.0');
+assert.equal(field(require('playwright-core/package.json'),'version'), '1.63.0');
+const named = catalog.filter((p):p is Extract<typeof p,{descriptor:string}>=>!!p.descriptor);
 const descriptors = Object.fromEntries(named.flatMap(p => [p.descriptor, p.descriptor + ' landscape']).map(name => [name, devices[name]]));
 assert.equal(crypto.createHash('sha256').update(JSON.stringify(descriptors)).digest('hex'), '4db61cca69ed71fa65114005c1cf22b1fd3b3ae73e5bdb82410f8bdd433ffefa', 'review viewport, screen, DPR, UA and orientation descriptor drift');
 const standard = buildCases(), deep = buildCases('deep');
@@ -22,7 +25,7 @@ for (const target of requestedTargets) {
   assert.ok(target.officialModelStatus && target.provenance.includes('proxy'));
   assert.ok(target.matrixProxyIDs.length > 0 && target.matrixProxyIDs.every(id => standard.some(c => c.id === id)));
 }
-assert.equal(requestedTargets.find(t => t.id === 'requested-xiaomi-pad9-pro-max').officialModelStatus, 'user-reported-name-pending-confirmation');
+assert.equal(requestedTargets.find(t => t.id === 'requested-xiaomi-pad9-pro-max')?.officialModelStatus, 'user-reported-name-pending-confirmation');
 assert.ok(!Object.keys(devices).some(name => /iPhone 18/.test(name)), 'review registry mapping when a future lock supplies native descriptors');
 assert.ok(standard.length >= 40 && standard.length <= 60, 'standard contexts remain bounded');
 assert.equal(new Set(deep.map(c => c.id)).size, deep.length);
@@ -30,14 +33,14 @@ for (const c of deep) {
   assert.equal(c.measured, false, 'no user device measurements have been supplied');
   assert.ok(['playwright-descriptor', 'synthetic', 'layout-equivalent-zoom'].includes(c.simulation));
   assert.ok(c.provenance.length > 20 && c.sources.every(url => /^https:\/\//.test(url)));
-  for (const n of [c.viewport.width, c.viewport.height, c.deviceScaleFactor, c.zoom]) assert.ok(Number.isFinite(n) && n > 0);
+  for (const n of [c.viewport.width, c.viewport.height, c.deviceScaleFactor, c.zoom]) assert.ok(typeof n==='number' && Number.isFinite(n) && n > 0);
   assert.deepEqual(c.contextOptions.viewport, c.viewport);
   assert.equal(c.contextOptions.deviceScaleFactor, c.deviceScaleFactor);
   assert.equal(typeof c.isMobile, 'boolean'); assert.equal(typeof c.hasTouch, 'boolean');
   assert.deepEqual(Object.keys(c.safeArea).sort(), ['bottom', 'left', 'right', 'top']);
   assert.ok(Object.values(c.safeArea).every(n => Number.isInteger(n) && n >= 0));
   if (c.descriptorName) {
-    const { defaultBrowserType, ...actual } = devices[c.descriptorName];
+    const descriptor=devices[c.descriptorName];assert.ok(descriptor);const { defaultBrowserType, ...actual } = descriptor;
     assert.deepEqual(c.contextOptions, actual, 'named cases preserve installed viewport and screen rather than deriving them from panel pixels');
     assert.equal(c.zoom, 1);
   }

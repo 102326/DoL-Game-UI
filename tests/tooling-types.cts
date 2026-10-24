@@ -4,6 +4,7 @@ import cases = require('../scripts/ci-cases.cjs');
 import policy = require('../scripts/ci-source-policy.cjs');
 import receipt = require('../scripts/ci-process-receipt.cjs');
 import reporter = require('../scripts/ci-test-reporter.cjs');
+import profiles = require('./device-profiles.cjs');
 
 // These rejected calls prove CJS consumers see the implementation's real types.
 function rendererContract() {
@@ -56,3 +57,14 @@ function receiptContract(){
   reporter([]);
 }
 void receiptContract;
+
+function deviceContract(){
+  const width:number|undefined=profiles.buildCases()[0]?.viewport.width;
+  // @ts-expect-error Depth is text and is validated at runtime.
+  profiles.buildCases(42);
+  // @ts-expect-error The device viewport width is numeric.
+  const wrong:string=profiles.buildCases()[0]?.viewport.width;
+  const typed:0 extends (1&ReturnType<typeof profiles.buildCases>[number]['viewport']['width'])?true:false=false;
+  return {width,wrong,typed};
+}
+void deviceContract;

@@ -1,16 +1,26 @@
 // Device descriptors are emulation inputs. Panel specifications never determine CSS viewports.
-const fs = require('node:fs');
-const path = require('node:path');
-const { devices } = require('playwright');
+import fs = require('node:fs');
+import path = require('node:path');
+import playwright = require('playwright');
+const {devices}=playwright;
+type Size={width:number;height:number};
+type Category='phone'|'tablet'|'foldable'|'desktop';
+type Orientation='portrait'|'landscape';
+interface BaseProfile {id:string;name:string;category:Category;screenClass:string;physicalResolution:Size|null;sources:string[]}
+interface NamedProfile extends BaseProfile {descriptor:string}
+interface SyntheticProfile extends BaseProfile {descriptor?:undefined;viewport:Size;deviceScaleFactor:number}
+type Profile=NamedProfile|SyntheticProfile;
+interface CaseOverride {id?:string;safeArea?:ReturnType<typeof zeroInsets>;orientation?:Orientation;zoom?:number;simulation?:string;provenance?:string}
+
 const root = path.resolve(__dirname, '..');
 const descriptorSource = 'https://github.com/microsoft/playwright/blob/v1.63.0/packages/playwright-core/src/server/deviceDescriptorsSource.json';
 const emulationSource = 'https://playwright.dev/docs/emulation';
-const size = (width, height) => ({ width, height });
+const size = (width:number, height:number) => ({ width, height });
 const zeroInsets = () => ({ top: 0, right: 0, bottom: 0, left: 0 });
-const named = (id, descriptor, category, screenClass, physicalResolution, source) => ({ id, descriptor, name: descriptor, category, screenClass, physicalResolution, sources: [descriptorSource, ...(source ? [source] : [])] });
-const synthetic = (id, name, category, screenClass, viewport, deviceScaleFactor, physicalResolution = null, source) => ({ id, name, category, screenClass, viewport, deviceScaleFactor, physicalResolution, sources: [emulationSource, ...(source ? [source] : [])] });
+const named = (id:string, descriptor:string, category:Category, screenClass:string, physicalResolution:Size|null, source?:string):NamedProfile => ({ id, descriptor, name: descriptor, category, screenClass, physicalResolution, sources: [descriptorSource, ...(source ? [source] : [])] });
+const synthetic = (id:string, name:string, category:Category, screenClass:string, viewport:Size, deviceScaleFactor:number, physicalResolution:Size|null = null, source?:string):SyntheticProfile => ({ id, name, category, screenClass, viewport, deviceScaleFactor, physicalResolution, sources: [emulationSource, ...(source ? [source] : [])] });
 
-const catalog = [
+const catalog:Profile[] = [
   named('iphone-16e', 'iPhone 16e', 'phone', '6.1-inch', size(1170,2532), 'https://support.apple.com/en-us/122208'),
   named('iphone-17-pro', 'iPhone 17 Pro', 'phone', '6.3-inch', size(1206,2622), 'https://support.apple.com/en-us/125090'),
   named('iphone-air', 'iPhone Air', 'phone', '6.5-inch', size(1260,2736), 'https://images.apple.com/at/iphone-air/specs/'),
@@ -56,19 +66,19 @@ const requestedTargets = [
     matrixProxyIDs:['android-tablet-3k-portrait','android-tablet-3k-landscape','android-tablet-3-2k-portrait','android-tablet-3-2k-landscape'],
     provenance:'Owner-reported name retained verbatim; the official Pad 9 family page lists Pad 9 Pro, but correspondence to the reported Pro Max name remains pending About-device model text. Synthetic Android tablet proxy coverage does not identify this device.'
   },
-  ...[
+  ...([
     ['requested-ipad-air','iPad Air','iPad Air'],
     ['requested-ipad-pro','iPadPro','iPad Pro'],
     ['requested-ipad-mini','iPad mini','iPad mini']
-  ].map(([id,requestedLabel,name]) => ({
+  ] as const).map(([id,requestedLabel,name]) => ({
     id, requestedLabel, name, owned:false, officialModelStatus:'family-exact-generation-and-size-pending', officialURL:null,
     matrixProxyIDs:['ipad-pro-11-portrait','ipad-pro-11-landscape'],
     provenance:'Requested iPad family without an exact generation, display size or SKU. Existing iPad Pro 11 descriptor is a representative tablet proxy, not evidence for this family or its current models.'
   })),
-  ...[
+  ...([
     ['requested-iphone18-pro','iPhone18pro','iPhone 18 Pro','iphone-17-pro'],
     ['requested-iphone18-pro-max','iphone18promax','iPhone 18 Pro Max','iphone-17-pro-max']
-  ].map(([id,requestedLabel,name,proxy]) => ({
+  ] as const).map(([id,requestedLabel,name,proxy]) => ({
     id, requestedLabel, name, owned:false, officialModelStatus:'official-spec-page-found-exact-viewport-pending',
     officialURL:'https://www.apple.com/iphone-18-pro/specs/', matrixProxyIDs:[proxy+'-portrait',proxy+'-landscape'],
     provenance:'Official iPhone 18 Pro specification page is available; locked Playwright 1.63.0 has no iPhone 18 descriptors. Existing iPhone 17 descriptor proxy coverage does not establish an iPhone 18 CSS viewport or browser setting.'
@@ -78,18 +88,20 @@ const requestedTargets = [
   viewport:null, DPR:null, deviceScaleFactor:null, physicalResolution:null
 }));
 
-function depthMode(depth) {
+function depthMode(depth:string) {
   if (!['standard', 'deep'].includes(depth)) throw Error('Expected standard or deep device depth');
   return depth;
 }
-function profileCase(profile, orientation, overrides = {}) {
+function profileCase(profile:Profile, orientation:Orientation, overrides:CaseOverride = {}) {
   const descriptorName = profile.descriptor ? profile.descriptor + (orientation === 'landscape' ? ' landscape' : '') : null;
-  let contextOptions;
+  let contextOptions:Pick<(typeof devices)[string],'viewport'|'deviceScaleFactor'|'isMobile'|'hasTouch'>&Partial<Omit<(typeof devices)[string],'defaultBrowserType'>>;
   if (descriptorName) {
     if (!devices[descriptorName]) throw Error(`Missing pinned device descriptor: ${descriptorName}`);
-    const { defaultBrowserType, ...options } = devices[descriptorName];
+    const descriptor=devices[descriptorName];if(!descriptor)throw Error(`Missing pinned device descriptor: ${descriptorName}`);
+    const { defaultBrowserType, ...options } = descriptor;
     contextOptions = structuredClone(options);
   } else {
+    if(profile.descriptor!==undefined)throw Error('Expected a synthetic device profile');
     const swap = (orientation === 'landscape') !== (profile.viewport.width > profile.viewport.height);
     const viewport = swap ? size(profile.viewport.height, profile.viewport.width) : { ...profile.viewport };
     contextOptions = { viewport, deviceScaleFactor: profile.deviceScaleFactor, isMobile: profile.category !== 'desktop', hasTouch: profile.category !== 'desktop' };
@@ -108,19 +120,21 @@ function profileCase(profile, orientation, overrides = {}) {
 }
 function buildCases(depth = 'standard') {
   depthMode(depth);
-  const cases = catalog.flatMap(p => p.descriptor || ['tablet','foldable'].includes(p.category) || p.id === 'phone-approx-7'
-    ? [profileCase(p, 'portrait'), profileCase(p, 'landscape')]
-    : [profileCase(p, p.viewport.width > p.viewport.height ? 'landscape' : 'portrait')]);
+  const cases = catalog.flatMap(p => {
+    if(p.descriptor || ['tablet','foldable'].includes(p.category) || p.id === 'phone-approx-7')return [profileCase(p, 'portrait'), profileCase(p, 'landscape')];
+    if(p.descriptor!==undefined)throw Error('Missing named device descriptor');
+    return [profileCase(p, p.viewport.width > p.viewport.height ? 'landscape' : 'portrait')];
+  });
   // Explicit assumed insets exercise env(safe-area-inset-*), not a real handset's notch dimensions.
   for (const [orientation, viewport, safeArea] of [
     ['portrait',size(390,844),{top:44,right:0,bottom:34,left:0}],
     ['landscape',size(844,390),{top:0,right:44,bottom:21,left:44}]
-  ]) {
+  ] as const) {
     const p = synthetic(`safe-area-${orientation}`, 'Assumed safe-area stress case', 'phone', 'safe-area-assumption', viewport, 3);
     cases.push(profileCase(p, orientation, { id: p.id, safeArea,
       provenance: 'Synthetic CSS viewport, DPR and safe-area insets chosen for controlled stress tests; 44/34 portrait and 44/21 landscape are assumptions, not measured notch or browser values.' }));
   }
-  const base = catalog.find(p => p.id === 'desktop-1440');
+  const base = catalog.find(p => p.id === 'desktop-1440');if(!base||base.descriptor!==undefined)throw Error('Missing synthetic desktop baseline');
   for (const zoom of [1.25,1.5,2]) {
     const viewport = size(Math.round(base.viewport.width/zoom),Math.round(base.viewport.height/zoom));
     cases.push(profileCase({ ...base, viewport }, 'landscape', { id: `desktop-1440-layout-zoom-${zoom}`, orientation:'landscape', zoom,
@@ -128,22 +142,24 @@ function buildCases(depth = 'standard') {
       provenance: `Synthetic layout-equivalent viewport for nominal ${zoom*100}% zoom; not actual browser UI zoom. DPR stays independent; browser visualViewport.scale and OS scaling require separate observation.` }));
   }
   if (depth === 'deep') {
-    for (const p of catalog.filter(p => p.category === 'desktop')) for (const dpr of [1.25,2])
-      cases.push(profileCase({ ...p, deviceScaleFactor:dpr }, 'landscape', { id:`${p.id}-dpr-${dpr}`, orientation:'landscape' }));
+    for (const p of catalog.filter(p => p.category === 'desktop')) {
+      if(p.descriptor!==undefined)throw Error('DPR stress requires a synthetic desktop');
+      for (const dpr of [1.25,2])cases.push(profileCase({ ...p, deviceScaleFactor:dpr }, 'landscape', { id:`${p.id}-dpr-${dpr}`, orientation:'landscape' }));
+    }
     for (const viewport of [size(800,600),size(1024,768)]) cases.push(profileCase(synthetic(`window-${viewport.width}x${viewport.height}`, 'Deep window boundary', 'desktop', 'windowed', viewport, 1), 'landscape'));
   }
   return cases;
 }
 
 function cssBreakpoints() {
-  const widths = new Set();
+  const widths = new Set<number>();
   // Include container widths as scan candidates, while the harness records actual container geometry separately.
   for (const directory of ['src/floating','src/theme','src/saves','src/combat','framework/motion-hub','framework/workspace']) {
     for (const entry of fs.readdirSync(path.join(root,directory), {withFileTypes:true})) {
       if (!entry.isFile() || !/\.(css|vue)$/.test(entry.name)) continue;
       const source = fs.readFileSync(path.join(root,directory,entry.name),'utf8').replace(/\/\*[\s\S]*?\*\//g,'');
       for (const query of source.matchAll(/@(?:media|container)\b([^{}]*)\{/g))
-        for (const match of query[1].matchAll(/(?:min|max)-width\s*:\s*(\d+(?:\.\d+)?)px/g)) widths.add(Number(match[1]));
+        for (const match of (query[1]??'').matchAll(/(?:min|max)-width\s*:\s*(\d+(?:\.\d+)?)px/g)) widths.add(Number(match[1]));
     }
   }
   return [...widths].sort((a,b)=>a-b);
@@ -158,6 +174,6 @@ function scanWidths(depth = 'standard') {
   return [...widths].sort((a,b)=>a-b);
 }
 const negativeCodes={overflow:'DEVICE_ROOT_OVERFLOW',offscreen:'DEVICE_BOUNDS',nan:'DEVICE_NONFINITE',blockedClose:'DEVICE_HIT'};
-function orientationProfiles(depth){const cases=buildCases(depth);return ['phone','tablet'].map(category=>cases.find(p=>p.category===category&&p.orientation==='portrait'));}
+function orientationProfiles(depth:string){const cases=buildCases(depth);return ['phone','tablet'].map(category=>{const profile=cases.find(p=>p.category===category&&p.orientation==='portrait');if(!profile)throw Error('Missing orientation category: '+category);return profile;});}
 function declaredDeviceCases(depth='standard'){return [...buildCases(depth).map(p=>'profile:'+p.id),...orientationProfiles(depth).map(p=>'orientation:'+p.id),...scanWidths(depth).map(width=>'scan:'+width),...Object.keys(negativeCodes).map(name=>'negative:'+name)];}
-module.exports = { catalog, requestedTargets, buildCases, scanWidths, cssBreakpoints,orientationProfiles,negativeCodes,declaredDeviceCases };
+export = { catalog, requestedTargets, buildCases, scanWidths, cssBreakpoints,orientationProfiles,negativeCodes,declaredDeviceCases };

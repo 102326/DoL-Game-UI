@@ -59,3 +59,5 @@ docs/HANDOFF.local.md
 /scripts/ci-metrics.cjs
 /tests/wardrobe-data.test.cjs
 /tests/wardrobe-source-m2.test.cjs
+/tests/device-profiles.cjs
+/tests/device-profiles.test.cjs

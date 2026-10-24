@@ -784,6 +784,7 @@
     },
     {
       "entry": "tests/device-profiles.test.cjs",
+      "sourceEntry": "tests/device-profiles.test.cts",
       "profiles": [
         "standard"
       ],
@@ -795,8 +796,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "85b4112629ec96b7e24ba56869b4992474bb8d8656c5b046066f63d4e033abfa",
-      "assertionSites": 82
+      "sourceSha256": "b065cf6e99880e71ca61d45153084dc2fc86fcd88d8e99d639ba77a974a28999",
+      "assertionSites": 83
     },
     {
       "entry": "tests/evolution-navigation.cjs",

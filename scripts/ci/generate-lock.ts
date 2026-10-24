@@ -58,7 +58,7 @@ export function generateLock():ExpectedLock{
   const check=catalog.researchPlan.find(c=>c.args.includes(entry)&&['checks','results'].includes(c.report?.field||''));if(check&&callee)researchCases[path.basename(entry,'.cjs')]=names;
   entries.push({entry,...(sourceEntry!==entry?{sourceEntry}:{}),profiles:declaration.profiles,classification:declaration.classification,granularity:declaration.granularity,cases:names.map(id=>({id,minimumAssertions:1})),sourceSha256:digest(sourceInput),assertionSites:parsed.assertionSites,...(declaration.evidence?{evidence:declaration.evidence}:{}),...(declaration.rendererContexts?{rendererContexts:declaration.rendererContexts}:{})});
  }
- const {declaredDeviceCases}=require('../../tests/device-profiles.cjs') as {declaredDeviceCases:(depth:string)=>string[]};
+ const {declaredDeviceCases}:typeof import('../../tests/device-profiles.cjs')=require('../../tests/device-profiles.cjs');
  const devicePlans=Object.fromEntries(['standard','deep'].map(depth=>[depth,declaredDeviceCases(depth)]));
  return {schema:1,devicePlans,nativeCases,researchCases,entries};
 }
