@@ -6,7 +6,7 @@ const {entryDeclaration,entryCaseProblems}=require('./ci/lock.ts');
 const {familyFor,maturityFor,dependenciesFor,researchFamilies,familyReports}=require('./ci/research-families.ts');
 const {writeSuite}=require('./ci/records.ts');
 const { researchPlan:plan,nodeCaseIds,commandCaseIds} = require('./ci-catalog.cjs');
-const {safeSource,reportsFor,stamp}=require('./ci/research-files.ts');
+const {safeSource,filesBelow,reportsFor,stamp}=require('./ci/research-files.ts');
 function caseIds(spec, data, ctx) {
   if (data?.errors?.length || data?.baseline === true || data?.record === true) throw Error('Report contains errors or an unexpected baseline/record mode');
   if ((data.sourceHead && data.sourceHead !== ctx.identity.source.head) || (data.identity?.head && data.identity.head !== ctx.identity.source.head)) throw Error('Raw report source identity mismatch');
