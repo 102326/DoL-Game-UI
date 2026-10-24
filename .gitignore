@@ -82,3 +82,6 @@ docs/HANDOFF.local.md
 /tests/integration-preview-pages.cjs
 /tests/moody-oracles.cjs
 /tests/moody-oracles.test.cjs
+/tests/kraft-work-baseline.cjs
+/tests/native-action-style.cjs
+/tests/sidebar-surface.cjs

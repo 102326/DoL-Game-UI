@@ -1489,6 +1489,7 @@
     },
     {
       "entry": "tests/kraft-work-baseline.cjs",
+      "sourceEntry": "tests/kraft-work-baseline.cts",
       "profiles": [
         "standard"
       ],
@@ -1500,7 +1501,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c9ac265a69cdcbefcee6f57b7543b06be81ec0463358558385337f09715cbb32",
+      "sourceSha256": "75a5548be24101c9e223b0fec96b44be2ec342469513c1e69f1f993ca3e913a1",
       "assertionSites": 21
     },
     {
