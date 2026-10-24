@@ -153,3 +153,4 @@ docs/HANDOFF.local.md
 /tests/settings-modal-scroll.cjs
 /tests/master-toggle.cjs
 /tests/mobile-density.cjs
+/tests/settings-workspace.cjs

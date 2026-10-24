@@ -1,9 +1,11 @@
-const {chromium}=require('playwright');
-const assert=require('node:assert/strict');
-const path=require('node:path');
-const {pathToFileURL}=require('node:url');
-
-async function waitForSettled(page){
+import playwright = require('playwright');
+import assert = require('node:assert/strict');
+import path = require('node:path');
+import url = require('node:url');
+import type {GameUiControls} from '../src/runtime/game-controls';
+declare const DoLGameUI:GameUiControls;
+const {chromium}=playwright,{pathToFileURL}=url;
+async function waitForSettled(page:playwright.Page){
  await page.waitForFunction(()=>{
   const active=document.querySelectorAll('.dmt-workspace-section:not([aria-hidden="true"])');
   return active.length===1&&!document.querySelector('#dol-midnight-controls')?.hasAttribute('data-workspace-transition');
@@ -13,14 +15,14 @@ async function waitForSettled(page){
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true});
  try{
-  const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];
+  const page=await browser.newPage({viewport:{width:1280,height:900}}),errors:string[]=[];
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto(pathToFileURL(path.join(__dirname,'fixture.html')).href);
   await page.waitForSelector('#listContainer');
   await page.addStyleTag({path:path.join(__dirname,'../dist/framework/official-ui/style.css')});
   await page.addScriptTag({path:path.join(__dirname,'../dist/framework/host/index.js')});
   await page.addScriptTag({path:path.join(__dirname,'../dist/framework/official-ui/index.js')});
-  await page.waitForFunction(()=>!!window.DoLGameUI);
+  await page.waitForFunction(()=>typeof DoLGameUI!=='undefined'&&!!DoLGameUI);
   await page.evaluate(()=>DoLGameUI.openSettings());
 
   assert.equal(await page.locator('.dmt-workspace-nav button').count(),5);
@@ -28,7 +30,7 @@ async function waitForSettled(page){
   assert.equal(await page.locator('.dmt-workspace-section:not([aria-hidden="true"])').count(),1);
   assert.equal(await page.getByLabel('启用 Soft & Wet 界面',{exact:true}).isVisible(),true);
   const initialFont=await page.locator('.dmt-reading-sample p').evaluate(element=>getComputedStyle(element).fontSize);
-  await page.getByLabel('字体大小').evaluate(element=>{element.value='125';element.dispatchEvent(new Event('input',{bubbles:true}))});
+  await page.getByLabel('字体大小').evaluate(element=>{if(!(element instanceof HTMLInputElement))throw Error('Not a scale input');element.value='125';element.dispatchEvent(new Event('input',{bubbles:true}))});
   assert.equal(await page.evaluate(()=>DoLGameUI.getPreferences().fontScale),125);
   assert.notEqual(await page.locator('.dmt-reading-sample p').evaluate(element=>getComputedStyle(element).fontSize),initialFont);
 
@@ -70,7 +72,7 @@ async function waitForSettled(page){
   await waitForSettled(page);
   assert.equal(await page.locator('#dol-midnight-controls').getAttribute('data-workspace-transition'),null);
 
-  for(const [width,height] of [[390,844],[844,390],[1280,900]]){
+  for(const [width,height] of [[390,844],[844,390],[1280,900]] as const){
    await page.setViewportSize({width,height});
    const box=await page.locator('#dol-midnight-controls').evaluate(element=>{const rect=element.getBoundingClientRect();return{left:rect.left,right:rect.right,scroll:element.scrollWidth>element.clientWidth+1}});
    assert.ok(box.left>=0&&box.right<=width+1,JSON.stringify({width,box}));
