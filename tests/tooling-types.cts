@@ -1,5 +1,6 @@
 import renderer = require('../scripts/render-state-fields.cjs');
 import png = require('../scripts/ci-png.cjs');
+import cases = require('../scripts/ci-cases.cjs');
 
 // These rejected calls prove CJS consumers see the implementation's real types.
 function rendererContract() {
@@ -23,3 +24,13 @@ function pngContract(){
   return {width,wrong};
 }
 void pngContract;
+
+async function caseContract(){
+  const value:number=await cases.runCase('typed',()=>42);
+  // @ts-expect-error Counters return numbers.
+  cases.setAssertionCounter(()=> 'wrong');
+  // @ts-expect-error Generic case results retain their actual type.
+  const wrong:string=await cases.runCase('typed',()=>42);
+  return {value,wrong};
+}
+void caseContract;
