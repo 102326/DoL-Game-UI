@@ -1,12 +1,15 @@
 // Regenerate the isolated rendering capsule from the pinned, local upstream.
-const fs=require('node:fs'),path=require('node:path'),ts=require('typescript');
+import fs = require('node:fs');
+import path = require('node:path');
+import ts = require('typescript');
+import child = require('node:child_process');
 const base=path.resolve(process.env.DOL_UPSTREAM_SOURCE||path.resolve(__dirname,'../../../upstream/vanilla-0.5.11.9-source'));
 const game=path.join(base,'game');
-const commit=require('node:child_process').execFileSync('git',['-C',base,'rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const commit=child.execFileSync('git',['-C',base,'rev-parse','HEAD'],{encoding:'utf8'}).trim();
 if(commit!=='41993d3f32476f0b1c8db730c159a50ffcdc2a65')throw Error('Unexpected upstream revision');
-function read(p){return fs.readFileSync(path.join(game,p),'utf8').replaceAll('\r\n','\n')}
-function functions(p,names){const source=read(p),ast=ts.createSourceFile(p,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);return names.map(name=>{const n=ast.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name.text===name);if(!n)throw Error(name);return n.getText(ast)}).join('\n')}
-function assignedFunctions(p,names){const source=read(p),ast=ts.createSourceFile(p,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);return names.map(name=>{const n=ast.statements.find(n=>ts.isExpressionStatement(n)&&ts.isBinaryExpression(n.expression)&&n.expression.left.getText(ast)==='window.'+name);if(!n)throw Error(name);return 'const '+name+' = '+n.expression.right.getText(ast)+';'}).join('\n')}
+function read(p:string){return fs.readFileSync(path.join(game,p),'utf8').replaceAll('\r\n','\n')}
+function functions(p:string,names:string[]){const source=read(p),ast=ts.createSourceFile(p,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);return names.map(name=>{const n=ast.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text===name);if(!n)throw Error(name);return n.getText(ast)}).join('\n')}
+function assignedFunctions(p:string,names:string[]){const source=read(p),ast=ts.createSourceFile(p,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);return names.map(name=>{const n=ast.statements.find(n=>ts.isExpressionStatement(n)&&ts.isBinaryExpression(n.expression)&&n.expression.left.getText(ast)==='window.'+name);if(!n||!ts.isExpressionStatement(n)||!ts.isBinaryExpression(n.expression))throw Error(name);return 'const '+name+' = '+n.expression.right.getText(ast)+';'}).join('\n')}
 const parts=[
  functions('03-JavaScript/base-clothing.js',['playerChastity','getClothingOptionsItem','getClothingOptions']),
  functions('03-JavaScript/base.js',['integrityKeyword']),
@@ -20,8 +23,8 @@ const parts=[
 parts.push(functions('03-JavaScript/colour-namer.js',['clamp255','applySepiaFilter','applySaturateFilter','applyHueRotateFilter','applyBrightnessFilter','contrast','applyContrastFilter']),assignedFunctions('03-JavaScript/colour-namer.js',['getCustomColourRGB','parseCSSFilter','getCustomClothesColourCanvasFilter']));
 // Upstream silently swallows layer failures. A preview must fail visibly instead.
 const guard='if (layer.show) {\n\t\t\t\t\t\tconsole.error';
-if(!parts[7].includes(guard))throw Error('Upstream layer guard changed');
-parts[7]=parts[7].replace(guard, 'if (layer.show) {\n\t\t\t\t\t\tthrow e;\n\t\t\t\t\t\tconsole.error');
+const layer=parts[7];if(!layer||!layer.includes(guard))throw Error('Upstream layer guard changed');
+parts[7]=layer.replace(guard, 'if (layer.show) {\n\t\t\t\t\t\tthrow e;\n\t\t\t\t\t\tconsole.error');
 const header=`/* Derived from Degrees of Lewdity, commit 41993d3f32476f0b1c8db730c159a50ffcdc2a65.
  * CC BY-NC-SA 4.0; see UPSTREAM-RENDERER-LICENSE. Generated; do not edit.
  * All stateful free variables below belong to the caller's private snapshot.
@@ -43,7 +46,7 @@ const tinycolor=rgb=>({toHexString:()=>'#'+[rgb.r,rgb.g,rgb.b].map(n=>Math.round
 const coloursSource=read('04-Variables/colours.js');
 const coloursAst=ts.createSourceFile('colours.js',coloursSource,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);
 const gradients=coloursAst.statements.find(n=>ts.isExpressionStatement(n)&&ts.isBinaryExpression(n.expression)&&n.expression.left.getText(coloursAst)==='setup.colours.hairgradients_prototypes');
-if(!gradients)throw Error('Missing pinned gradient definitions');
+if(!gradients||!ts.isExpressionStatement(gradients)||!ts.isBinaryExpression(gradients.expression))throw Error('Missing pinned gradient definitions');
 parts.push('const gradientDefaults = '+gradients.expression.right.getText(coloursAst)+';'+`
 // Restore trusted pure callbacks stripped from the private data copy. Keep live
 // numeric/colour definitions; do not execute callbacks supplied by other mods.

@@ -1,3 +1,4 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"native"}
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {isSourceLink} from '../component-lab/source-link.ts';

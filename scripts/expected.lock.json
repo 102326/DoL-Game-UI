@@ -388,6 +388,13 @@
     "evolution-scattered-shower.test.cjs": [
       "seeded rain is reproducible, sparse and has independent motion rather than a common tile translation",
       "rain levels increase budget/speed while renewal remains finite, bounded and staggered"
+    ],
+    "save-metadata-boundary.test.mts": [
+      "save metadata skips malformed rows without changing native data or writing storage",
+      "NaN dates remain invalid numbers and unknown legacy shapes fail closed"
+    ],
+    "source-link.test.mts": [
+      "lab accepts source-index fields without dropping the full producer response"
     ]
   },
   "researchCases": {
@@ -1511,6 +1518,26 @@
       "assertionSites": 56
     },
     {
+      "entry": "tests/save-metadata-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "save metadata skips malformed rows without changing native data or writing storage",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "NaN dates remain invalid numbers and unknown legacy shapes fail closed",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "27556118f7316e64a27ccc22022fa52c6ba01f6ec3d9998c666bd7dac4ddcdcc",
+      "assertionSites": 11
+    },
+    {
       "entry": "tests/save-transfer-lifecycle.cjs",
       "profiles": [
         "standard"
@@ -1714,6 +1741,22 @@
       ],
       "sourceSha256": "d0b2a135eb15b9e24ccc9fa5172fc9c630e213c77c5d4d477df4ce463799abe5",
       "assertionSites": 17
+    },
+    {
+      "entry": "tests/source-link.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "lab accepts source-index fields without dropping the full producer response",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "0092cb59ecd343d1d3266a175efa91fdcd52bcea67eca82a2ac4b2ab9fa08bed",
+      "assertionSites": 3
     },
     {
       "entry": "tests/source-motion-lifecycle.cjs",

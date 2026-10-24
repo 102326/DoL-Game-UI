@@ -31,3 +31,6 @@ docs/HANDOFF.local.md
 /scripts/build-adapters.cjs
 /tests/adapter-build-boundary.test.cjs
 /framework/factory/vite.config.mjs
+/scripts/test-unit.cjs
+/scripts/test-workflow.cjs
+/scripts/vendor-wardrobe.cjs
