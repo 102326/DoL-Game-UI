@@ -105,3 +105,5 @@ docs/HANDOFF.local.md
 
 /tests/kitchen-layout.cjs
 /tests/cheat-console-layout.cjs
+
+/tests/save-transfer-lifecycle.cjs
