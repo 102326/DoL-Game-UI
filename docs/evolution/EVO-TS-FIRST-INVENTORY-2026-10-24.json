@@ -1,0 +1,3545 @@
+{
+  "schema": 1,
+  "date": "2026-10-24",
+  "source": "ff7942dc78fed54b5451d7cdcdf6c454a83caf01",
+  "kind": "read-only-assessment-not-migration-approval",
+  "metric": "Tracked files and nonblank physical lines; strings and minified/long lines are not semantic LOC",
+  "summary": {
+    "compat-runtime .ts": {
+      "files": 8,
+      "nonblank": 505
+    },
+    "compat-test .cjs": {
+      "files": 1,
+      "nonblank": 15
+    },
+    "component-lab .vue": {
+      "files": 1,
+      "nonblank": 45
+    },
+    "component-lab .ts": {
+      "files": 1,
+      "nonblank": 14
+    },
+    "component-lab .cjs": {
+      "files": 1,
+      "nonblank": 26
+    },
+    "root-and-examples .ts": {
+      "files": 7,
+      "nonblank": 105
+    },
+    "host-contracts .ts": {
+      "files": 4,
+      "nonblank": 415
+    },
+    "framework-other .ts": {
+      "files": 17,
+      "nonblank": 302
+    },
+    "framework-other .vue": {
+      "files": 10,
+      "nonblank": 492
+    },
+    "framework-other .py": {
+      "files": 1,
+      "nonblank": 24
+    },
+    "framework-other .mjs": {
+      "files": 1,
+      "nonblank": 6
+    },
+    "official-ui-hub .vue": {
+      "files": 1,
+      "nonblank": 162
+    },
+    "official-ui-hub .ts": {
+      "files": 9,
+      "nonblank": 484
+    },
+    "prototypes .ts": {
+      "files": 31,
+      "nonblank": 634
+    },
+    "prototypes .vue": {
+      "files": 3,
+      "nonblank": 126
+    },
+    "tool-scripts .ts": {
+      "files": 6,
+      "nonblank": 243
+    },
+    "tool-scripts .cjs": {
+      "files": 29,
+      "nonblank": 1398
+    },
+    "tool-scripts .py": {
+      "files": 8,
+      "nonblank": 617
+    },
+    "tool-scripts .mjs": {
+      "files": 8,
+      "nonblank": 207
+    },
+    "tool-scripts .rb": {
+      "files": 2,
+      "nonblank": 130
+    },
+    "typed-ci .ts": {
+      "files": 12,
+      "nonblank": 389
+    },
+    "product-core .vue": {
+      "files": 19,
+      "nonblank": 799
+    },
+    "product-core .ts": {
+      "files": 70,
+      "nonblank": 4525
+    },
+    "upstream-generated-model .js": {
+      "files": 1,
+      "nonblank": 6651
+    },
+    "tests .cjs": {
+      "files": 203,
+      "nonblank": 11047
+    },
+    "tests .vue": {
+      "files": 1,
+      "nonblank": 153
+    },
+    "tests .ts": {
+      "files": 1,
+      "nonblank": 17
+    },
+    "tests .js": {
+      "files": 1,
+      "nonblank": 4
+    },
+    "tests .py": {
+      "files": 1,
+      "nonblank": 336
+    }
+  },
+  "counts": {
+    "trackedJsFamilyFiles": 245,
+    "upstreamGeneratedJs": 1,
+    "ownedJsFamilyFiles": 244,
+    "proposedJsMigrations": 243,
+    "pre4ProposedJsFiles": 125,
+    "laterTests": 118,
+    "explicitJsFixtureExceptions": 1,
+    "vueFiles": 35,
+    "vueFilesUsingTs": 35,
+    "inlineHtmlPagesOutsideArchivedDocs": 12
+  },
+  "methodology": {
+    "ciTestClosure": "Current standard suites + direct researchPlan arguments + static literal require/import; dynamic/process/HTML loads require explicit review, absence is not retirement proof",
+    "currentCatalogDirectTestEntries": 72,
+    "currentStaticTestClosure": 85,
+    "notes": [
+      "Static closure is a source-derived inventory, not a claim of full dynamic test execution. Proposed completion anchors all current standard/research declared entries and their real helper closure.",
+      "Inline browser code, SugarCube fragments and generated outputs are accounted separately; suffix count alone is insufficient.",
+      "Nonblank lines do not measure semantic complexity; many files contain long embedded fixture programs."
+    ]
+  },
+  "configs": {
+    "tsconfig.adapters.json": {
+      "options": {
+        "strict": true,
+        "allowJs": false,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "vite/client"
+        ]
+      },
+      "include": [
+        "compat/**/*.ts",
+        "examples/**/*.ts",
+        "tests/public-types.test.ts"
+      ],
+      "rootFileCount": 10
+    },
+    "tsconfig.ci.json": {
+      "options": {
+        "strict": true,
+        "allowJs": false,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "node"
+        ]
+      },
+      "include": [
+        "scripts/ci/**/*.ts"
+      ],
+      "rootFileCount": 12
+    },
+    "tsconfig.early.json": {
+      "options": {
+        "strict": true,
+        "allowJs": false,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "vite/client"
+        ]
+      },
+      "include": [
+        "shop-page-experiment.ts"
+      ],
+      "rootFileCount": 1
+    },
+    "tsconfig.evolution.json": {
+      "options": {
+        "strict": true,
+        "allowJs": true,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "vite/client"
+        ]
+      },
+      "include": [
+        "src/**/*.ts",
+        "src/**/*.vue",
+        "src/**/*.js",
+        "prototypes/evolution-weather/**/*.ts"
+      ],
+      "rootFileCount": 84
+    },
+    "tsconfig.framework.json": {
+      "options": {
+        "strict": true,
+        "allowJs": true,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "vite/client"
+        ]
+      },
+      "include": [
+        "framework/**/*.ts",
+        "framework/**/*.vue"
+      ],
+      "rootFileCount": 30
+    },
+    "tsconfig.golden-spin.json": {
+      "options": {
+        "strict": true,
+        "allowJs": true,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "vite/client"
+        ]
+      },
+      "include": [
+        "framework/**/*.ts",
+        "framework/**/*.vue",
+        "prototypes/golden-spin-b/**/*.ts",
+        "prototypes/golden-spin-b/**/*.vue"
+      ],
+      "rootFileCount": 42
+    },
+    "tsconfig.json": {
+      "options": {
+        "strict": true,
+        "allowJs": true,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "vite/client"
+        ]
+      },
+      "include": [
+        "src/**/*.ts",
+        "src/**/*.vue",
+        "src/**/*.js"
+      ],
+      "rootFileCount": 71
+    },
+    "tsconfig.lab.json": {
+      "options": {
+        "strict": true,
+        "allowJs": true,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "vite/client"
+        ]
+      },
+      "include": [
+        "component-lab/**/*.ts",
+        "component-lab/**/*.vue",
+        "src/shop/Toolbar.vue",
+        "src/ui/GameButton.vue",
+        "src/floating/FloatingTools.vue"
+      ],
+      "rootFileCount": 1
+    },
+    "tsconfig.public.json": {
+      "options": {
+        "strict": true,
+        "allowJs": false,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": []
+      },
+      "include": [
+        "src/public/**/*.ts"
+      ],
+      "rootFileCount": 2
+    },
+    "tsconfig.settings-refraction.json": {
+      "options": {
+        "strict": true,
+        "allowJs": true,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": false,
+        "exactOptionalPropertyTypes": false,
+        "strictFunctionTypes": true,
+        "types": [
+          "vite/client"
+        ]
+      },
+      "include": [
+        "prototypes/settings-refraction-v1/**/*.ts",
+        "tests/artifacts/settings-refraction-v1/old/src/**/*.ts",
+        "tests/artifacts/settings-refraction-v1/old/src/**/*.vue",
+        "tests/artifacts/settings-refraction-v1/new/src/**/*.ts",
+        "tests/artifacts/settings-refraction-v1/new/src/**/*.vue"
+      ],
+      "rootFileCount": 6
+    }
+  },
+  "typedHotspots": [
+    {
+      "file": "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.ts",
+      "group": "compat-runtime",
+      "extension": ".ts",
+      "nonblank": 199,
+      "syntax": {
+        "any": 0,
+        "assertions": 2,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "compat/lyra-wardrobe-mouth-soft-wet/lyra-wardrobe-mouth.ts",
+      "group": "compat-runtime",
+      "extension": ".ts",
+      "nonblank": 27,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "compat/reoverfits-soft-wet/reoverfits-soft-wet.ts",
+      "group": "compat-runtime",
+      "extension": ".ts",
+      "nonblank": 83,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/contracts.ts",
+      "group": "host-contracts",
+      "extension": ".ts",
+      "nonblank": 104,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/examples/ComparisonInline.vue",
+      "group": "framework-other",
+      "extension": ".vue",
+      "nonblank": 19,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/examples/ComparisonPanel.vue",
+      "group": "framework-other",
+      "extension": ".vue",
+      "nonblank": 55,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/examples/StatusPanel.vue",
+      "group": "framework-other",
+      "extension": ".vue",
+      "nonblank": 63,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/examples/SurfacePanel.vue",
+      "group": "framework-other",
+      "extension": ".vue",
+      "nonblank": 59,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/examples/native-reading.ts",
+      "group": "framework-other",
+      "extension": ".ts",
+      "nonblank": 34,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/host.ts",
+      "group": "host-contracts",
+      "extension": ".ts",
+      "nonblank": 251,
+      "syntax": {
+        "any": 0,
+        "assertions": 3,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/motion-hub/MotionHub.vue",
+      "group": "official-ui-hub",
+      "extension": ".vue",
+      "nonblank": 162,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 4,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 2,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/motion-hub/main.ts",
+      "group": "official-ui-hub",
+      "extension": ".ts",
+      "nonblank": 27,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/official-ui/hub.ts",
+      "group": "official-ui-hub",
+      "extension": ".ts",
+      "nonblank": 46,
+      "syntax": {
+        "any": 0,
+        "assertions": 3,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/official-ui/main.ts",
+      "group": "official-ui-hub",
+      "extension": ".ts",
+      "nonblank": 31,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/official-ui/motion.ts",
+      "group": "official-ui-hub",
+      "extension": ".ts",
+      "nonblank": 164,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/official-ui/navigation.ts",
+      "group": "official-ui-hub",
+      "extension": ".ts",
+      "nonblank": 50,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/official-ui/weather.ts",
+      "group": "official-ui-hub",
+      "extension": ".ts",
+      "nonblank": 91,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/wardrobe-reference/ReferenceSpace.vue",
+      "group": "framework-other",
+      "extension": ".vue",
+      "nonblank": 98,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 3,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/wardrobe-reference/source.ts",
+      "group": "framework-other",
+      "extension": ".ts",
+      "nonblank": 36,
+      "syntax": {
+        "any": 0,
+        "assertions": 2,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 4,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "framework/workspace/WorkspacePanel.vue",
+      "group": "framework-other",
+      "extension": ".vue",
+      "nonblank": 112,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 2,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/cases.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 26,
+      "syntax": {
+        "any": 0,
+        "assertions": 2,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/contracts.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 36,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/generate-lock.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 68,
+      "syntax": {
+        "any": 0,
+        "assertions": 5,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/lock.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 16,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/records.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 25,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/renderer.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 40,
+      "syntax": {
+        "any": 0,
+        "assertions": 6,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/research-families.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 32,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/research-runner.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 43,
+      "syntax": {
+        "any": 0,
+        "assertions": 3,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "scripts/ci/runner.ts",
+      "group": "typed-ci",
+      "extension": ".ts",
+      "nonblank": 36,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/combat/main.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 163,
+      "syntax": {
+        "any": 0,
+        "assertions": 8,
+        "doubleUnknownAssertions": 1,
+        "nonNullAssertions": 2,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/combat/native-actions.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 21,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/floating/Settings.vue",
+      "group": "product-core",
+      "extension": ".vue",
+      "nonblank": 17,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/floating/main.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 108,
+      "syntax": {
+        "any": 0,
+        "assertions": 5,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/floating/preferences.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 19,
+      "syntax": {
+        "any": 0,
+        "assertions": 5,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/main.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 67,
+      "syntax": {
+        "any": 0,
+        "assertions": 16,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/panels/Navigation.vue",
+      "group": "product-core",
+      "extension": ".vue",
+      "nonblank": 16,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/panels/main.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 157,
+      "syntax": {
+        "any": 0,
+        "assertions": 3,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 3,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/panels/presentation.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 39,
+      "syntax": {
+        "any": 0,
+        "assertions": 2,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/public/ui.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 107,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/runtime/status.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 65,
+      "syntax": {
+        "any": 0,
+        "assertions": 3,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/runtime/surfaces.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 59,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/runtime/ui.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 217,
+      "syntax": {
+        "any": 0,
+        "assertions": 8,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 4,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/saves/main.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 141,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 6,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/saves/metadata.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 67,
+      "syntax": {
+        "any": 0,
+        "assertions": 5,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 2,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/saves/source.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 46,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 2,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/saves/transfer.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 39,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 2,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/shop/ShopReference.vue",
+      "group": "product-core",
+      "extension": ".vue",
+      "nonblank": 55,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 4,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/shop/main.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 239,
+      "syntax": {
+        "any": 0,
+        "assertions": 15,
+        "doubleUnknownAssertions": 2,
+        "nonNullAssertions": 19,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/shop/source.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 93,
+      "syntax": {
+        "any": 0,
+        "assertions": 3,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/story-actions/main.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 70,
+      "syntax": {
+        "any": 0,
+        "assertions": 2,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/theme/SettingsPanel.vue",
+      "group": "product-core",
+      "extension": ".vue",
+      "nonblank": 200,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 5,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/theme/controller.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 181,
+      "syntax": {
+        "any": 0,
+        "assertions": 7,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 4,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/theme/layout.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 88,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 4,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/theme/sidebar-layout.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 47,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/ui/golden-spin/hub-motion.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 133,
+      "syntax": {
+        "any": 0,
+        "assertions": 3,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 4,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/ui/native-overlay-navigation.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 76,
+      "syntax": {
+        "any": 0,
+        "assertions": 2,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/ui/weather/blood-moon.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 109,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 5,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/ui/weather/rain-model.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 66,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/ui/weather/snow-material.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 47,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/ui/weather/special-atmosphere.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 80,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 5,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/ui/weather/surface.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 40,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 3,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/ui/weather/wet-glass.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 170,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 8,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/ClothingIcon.vue",
+      "group": "product-core",
+      "extension": ".vue",
+      "nonblank": 14,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/ClothingTraits.vue",
+      "group": "product-core",
+      "extension": ".vue",
+      "nonblank": 22,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/ReferenceDock.vue",
+      "group": "product-core",
+      "extension": ".vue",
+      "nonblank": 88,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 3,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/WardrobePanel.vue",
+      "group": "product-core",
+      "extension": ".vue",
+      "nonblank": 96,
+      "vueLang": [
+        "ts"
+      ],
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/data.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 72,
+      "syntax": {
+        "any": 0,
+        "assertions": 4,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 7,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/extras.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 83,
+      "syntax": {
+        "any": 0,
+        "assertions": 3,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/main.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 276,
+      "syntax": {
+        "any": 0,
+        "assertions": 7,
+        "doubleUnknownAssertions": 1,
+        "nonNullAssertions": 26,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/operations.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 28,
+      "syntax": {
+        "any": 0,
+        "assertions": 4,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 3,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/outfit-layout.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 37,
+      "syntax": {
+        "any": 0,
+        "assertions": 0,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 4,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/reference.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 14,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/render-state-fields.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 91,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/render-state.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 10,
+      "syntax": {
+        "any": 0,
+        "assertions": 1,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 0,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/render.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 76,
+      "syntax": {
+        "any": 0,
+        "assertions": 5,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    },
+    {
+      "file": "src/wardrobe/source.ts",
+      "group": "product-core",
+      "extension": ".ts",
+      "nonblank": 39,
+      "syntax": {
+        "any": 0,
+        "assertions": 4,
+        "doubleUnknownAssertions": 0,
+        "nonNullAssertions": 1,
+        "ignore": 0,
+        "nocheck": 0,
+        "expectError": 0
+      }
+    }
+  ],
+  "compilerTypeProbes": [
+    {
+      "config": "tsconfig.ci.json",
+      "file": "scripts/ci/runner.ts",
+      "line": 15,
+      "name": "e",
+      "type": "any"
+    },
+    {
+      "config": "tsconfig.ci.json",
+      "file": "scripts/ci/research-runner.ts",
+      "line": 15,
+      "name": "e",
+      "type": "any"
+    },
+    {
+      "config": "tsconfig.ci.json",
+      "file": "scripts/ci/research-runner.ts",
+      "line": 15,
+      "name": "r",
+      "type": "any"
+    },
+    {
+      "config": "tsconfig.ci.json",
+      "file": "scripts/ci/generate-lock.ts",
+      "line": 10,
+      "name": "catalog",
+      "type": "{ suites: Record<string, string[]>; researchPlan: { id: string; args: string[]; report?: { field?: string | undefined; expected?: string[] | undefined; } | undefined; }[]; }"
+    },
+    {
+      "config": "tsconfig.json",
+      "file": "src/saves/metadata.ts",
+      "line": 28,
+      "name": "detailsFor",
+      "type": "(idb: boolean) => Promise<any>",
+      "returnType": "Promise<any>"
+    },
+    {
+      "config": "tsconfig.json",
+      "file": "src/saves/metadata.ts",
+      "line": 29,
+      "name": "value",
+      "type": "any"
+    },
+    {
+      "config": "tsconfig.json",
+      "file": "src/saves/metadata.ts",
+      "line": 43,
+      "name": "aliases",
+      "type": "Record<string, unknown>"
+    },
+    {
+      "config": "tsconfig.json",
+      "file": "src/saves/metadata.ts",
+      "line": 60,
+      "name": "value",
+      "type": "string"
+    },
+    {
+      "config": "tsconfig.json",
+      "file": "src/saves/metadata.ts",
+      "line": 61,
+      "name": "aliases",
+      "type": "Record<string, unknown> | null"
+    }
+  ],
+  "inlineSurfaces": [
+    {
+      "file": "docs/EYES_ACRYLIC.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 10,
+      "scriptCharacters": 1032,
+      "sugarCubeRun": 0,
+      "eventAttributes": 6
+    },
+    {
+      "file": "docs/EYES_BUTTON_DEPTH.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 4,
+      "scriptCharacters": 642,
+      "sugarCubeRun": 0,
+      "eventAttributes": 0
+    },
+    {
+      "file": "docs/EYES_FOUR_PAGES_DEMO.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 43,
+      "scriptCharacters": 13259,
+      "sugarCubeRun": 0,
+      "eventAttributes": 2
+    },
+    {
+      "file": "docs/EYES_REFRACTION.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 4,
+      "scriptCharacters": 641,
+      "sugarCubeRun": 0,
+      "eventAttributes": 0
+    },
+    {
+      "file": "docs/EYES_SAVE_DEMO.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 12,
+      "scriptCharacters": 4170,
+      "sugarCubeRun": 0,
+      "eventAttributes": 11
+    },
+    {
+      "file": "prototypes/evolution-weather/climate-review.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 351,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/compare.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 346,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/glass-optics.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 7,
+      "scriptCharacters": 1553,
+      "sugarCubeRun": 0,
+      "eventAttributes": 4
+    },
+    {
+      "file": "prototypes/evolution-weather/optics.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 339,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/rain-force-review.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 339,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/rain-review.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 346,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/runoff-review.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 365,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/scatter-review.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 339,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/shower-review.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 339,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/snow-review.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 338,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "prototypes/evolution-weather/trail-review.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 1,
+      "scriptCharacters": 365,
+      "sugarCubeRun": 0,
+      "eventAttributes": 1
+    },
+    {
+      "file": "tests/story/fixture.twee",
+      "inlineScripts": 0,
+      "scriptNonblank": 0,
+      "scriptCharacters": 0,
+      "sugarCubeRun": 0,
+      "eventAttributes": 2
+    },
+    {
+      "file": "tools/device-probe.html",
+      "inlineScripts": 1,
+      "scriptNonblank": 44,
+      "scriptCharacters": 3547,
+      "sugarCubeRun": 0,
+      "eventAttributes": 0
+    },
+    {
+      "file": "twee/patch-page-change.twee",
+      "inlineScripts": 0,
+      "scriptNonblank": 0,
+      "scriptCharacters": 0,
+      "sugarCubeRun": 5,
+      "eventAttributes": 0
+    },
+    {
+      "file": "twee/patch-resize.twee",
+      "inlineScripts": 0,
+      "scriptNonblank": 0,
+      "scriptCharacters": 0,
+      "sugarCubeRun": 3,
+      "eventAttributes": 0
+    }
+  ],
+  "standaloneJsInventory": [
+    {
+      "file": "compat/reoverfits-soft-wet/check.cjs",
+      "role": "compat-test",
+      "nonblank": 15,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "component-lab/source-index.cjs",
+      "role": "component-lab",
+      "nonblank": 26,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "framework/factory/vite.config.mjs",
+      "role": "framework-other",
+      "nonblank": 6,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/build-adapters.cjs",
+      "role": "tool-scripts",
+      "nonblank": 16,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/build-early.cjs",
+      "role": "tool-scripts",
+      "nonblank": 10,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/build-framework-vue-comparison.mjs",
+      "role": "tool-scripts",
+      "nonblank": 27,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/build-framework.mjs",
+      "role": "tool-scripts",
+      "nonblank": 17,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/build-golden-spin.mjs",
+      "role": "tool-scripts",
+      "nonblank": 17,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/check-evolution-acrylic.cjs",
+      "role": "tool-scripts",
+      "nonblank": 71,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/check-evolution-coexistence.cjs",
+      "role": "tool-scripts",
+      "nonblank": 50,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/check-settings-refraction.cjs",
+      "role": "tool-scripts",
+      "nonblank": 147,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-cases.cjs",
+      "role": "tool-scripts",
+      "nonblank": 2,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-catalog.cjs",
+      "role": "tool-scripts",
+      "nonblank": 95,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-checkpoints.cjs",
+      "role": "tool-scripts",
+      "nonblank": 15,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-evidence.cjs",
+      "role": "tool-scripts",
+      "nonblank": 350,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-metrics.cjs",
+      "role": "tool-scripts",
+      "nonblank": 7,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-png.cjs",
+      "role": "tool-scripts",
+      "nonblank": 23,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-process-receipt.cjs",
+      "role": "tool-scripts",
+      "nonblank": 21,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-research-unit.cjs",
+      "role": "tool-scripts",
+      "nonblank": 4,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-research.cjs",
+      "role": "tool-scripts",
+      "nonblank": 156,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-source-policy.cjs",
+      "role": "tool-scripts",
+      "nonblank": 22,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-test-reporter.cjs",
+      "role": "tool-scripts",
+      "nonblank": 14,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/ci-verify-remote.cjs",
+      "role": "tool-scripts",
+      "nonblank": 11,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/evolution-inventory.cjs",
+      "role": "tool-scripts",
+      "nonblank": 10,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/framework-factory.mjs",
+      "role": "tool-scripts",
+      "nonblank": 45,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/measure-evolution-acrylic.cjs",
+      "role": "tool-scripts",
+      "nonblank": 30,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/prepare-settings-refraction.mjs",
+      "role": "tool-scripts",
+      "nonblank": 52,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/preview-evolution-acrylic.mjs",
+      "role": "tool-scripts",
+      "nonblank": 22,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/preview-evolution-hub.mjs",
+      "role": "tool-scripts",
+      "nonblank": 13,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/preview-evolution-settings.mjs",
+      "role": "tool-scripts",
+      "nonblank": 14,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".mts"
+    },
+    {
+      "file": "scripts/record-evolution-hub.cjs",
+      "role": "tool-scripts",
+      "nonblank": 20,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/record-evolution-settings.cjs",
+      "role": "tool-scripts",
+      "nonblank": 26,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/record-golden-hub.cjs",
+      "role": "tool-scripts",
+      "nonblank": 31,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/record-golden-sphere.cjs",
+      "role": "tool-scripts",
+      "nonblank": 26,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/record-motion-workspace.cjs",
+      "role": "tool-scripts",
+      "nonblank": 21,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/render-state-fields.cjs",
+      "role": "tool-scripts",
+      "nonblank": 32,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/test-ci.cjs",
+      "role": "tool-scripts",
+      "nonblank": 59,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/test-unit.cjs",
+      "role": "tool-scripts",
+      "nonblank": 8,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/test-workflow.cjs",
+      "role": "tool-scripts",
+      "nonblank": 55,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "scripts/vendor-wardrobe.cjs",
+      "role": "tool-scripts",
+      "nonblank": 66,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/acceptance.cjs",
+      "role": "tests",
+      "nonblank": 45,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/acrylic-demo.cjs",
+      "role": "tests",
+      "nonblank": 41,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/adapter-build-boundary.test.cjs",
+      "role": "tests",
+      "nonblank": 22,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/adapter-materials.cjs",
+      "role": "tests",
+      "nonblank": 80,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/browser-options.cjs",
+      "role": "tests",
+      "nonblank": 2,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/button-depth-demo.cjs",
+      "role": "tests",
+      "nonblank": 33,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/characteristics-framework.cjs",
+      "role": "tests",
+      "nonblank": 31,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/characteristics.test.cjs",
+      "role": "tests",
+      "nonblank": 73,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/cheat-console-layout.cjs",
+      "role": "tests",
+      "nonblank": 6,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ci-evidence.test.cjs",
+      "role": "tests",
+      "nonblank": 226,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ci-fixtures.cjs",
+      "role": "tests",
+      "nonblank": 23,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ci-gate.test.cjs",
+      "role": "tests",
+      "nonblank": 76,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ci-v12.test.cjs",
+      "role": "tests",
+      "nonblank": 38,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/combat-focused.cjs",
+      "role": "tests",
+      "nonblank": 53,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/combat-illustration-layout.cjs",
+      "role": "tests",
+      "nonblank": 17,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/combat-m4a.cjs",
+      "role": "tests",
+      "nonblank": 42,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/combat-resize.test.cjs",
+      "role": "tests",
+      "nonblank": 114,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/combat-select.cjs",
+      "role": "tests",
+      "nonblank": 49,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/combat-stone-free.cjs",
+      "role": "tests",
+      "nonblank": 45,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/component-lab-source-index.test.cjs",
+      "role": "tests",
+      "nonblank": 15,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/device-case-plan.cjs",
+      "role": "tests",
+      "nonblank": 5,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/device-layout-oracles.cjs",
+      "role": "tests",
+      "nonblank": 33,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/device-layouts.cjs",
+      "role": "tests",
+      "nonblank": 71,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/device-probe.cjs",
+      "role": "tests",
+      "nonblank": 61,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/device-profiles.cjs",
+      "role": "tests",
+      "nonblank": 158,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/device-profiles.test.cjs",
+      "role": "tests",
+      "nonblank": 61,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/display-scale.cjs",
+      "role": "tests",
+      "nonblank": 31,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-edge-frost.cjs",
+      "role": "tests",
+      "nonblank": 48,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-hub-integration.cjs",
+      "role": "tests",
+      "nonblank": 81,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-navigation.cjs",
+      "role": "tests",
+      "nonblank": 55,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-orbit.cjs",
+      "role": "tests",
+      "nonblank": 51,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-owner-resources.cjs",
+      "role": "tests",
+      "nonblank": 60,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-panels.cjs",
+      "role": "tests",
+      "nonblank": 20,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-rain-glass.cjs",
+      "role": "tests",
+      "nonblank": 72,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-rain-model.test.cjs",
+      "role": "tests",
+      "nonblank": 52,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-resource-contract.test.cjs",
+      "role": "tests",
+      "nonblank": 16,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-scattered-shower.test.cjs",
+      "role": "tests",
+      "nonblank": 13,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-settings-integration.cjs",
+      "role": "tests",
+      "nonblank": 47,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-snow-integration.cjs",
+      "role": "tests",
+      "nonblank": 30,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-snow-study.cjs",
+      "role": "tests",
+      "nonblank": 46,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-weather-candidates.cjs",
+      "role": "tests",
+      "nonblank": 44,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-weather-integration.cjs",
+      "role": "tests",
+      "nonblank": 39,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-weather-levels.cjs",
+      "role": "tests",
+      "nonblank": 49,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-weather-shower.cjs",
+      "role": "tests",
+      "nonblank": 34,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/evolution-weather.cjs",
+      "role": "tests",
+      "nonblank": 29,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/experiments.test.cjs",
+      "role": "tests",
+      "nonblank": 51,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/floating-boundaries.test.cjs",
+      "role": "tests",
+      "nonblank": 11,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/floating-preferences.test.cjs",
+      "role": "tests",
+      "nonblank": 11,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/floating-tools.test.cjs",
+      "role": "tests",
+      "nonblank": 44,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-android.cjs",
+      "role": "tests",
+      "nonblank": 110,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-author-kit.cjs",
+      "role": "tests",
+      "nonblank": 52,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-bridge.cjs",
+      "role": "tests",
+      "nonblank": 11,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-commands.cjs",
+      "role": "tests",
+      "nonblank": 99,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-connect.cjs",
+      "role": "tests",
+      "nonblank": 40,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-distribution.cjs",
+      "role": "tests",
+      "nonblank": 119,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-ecosystem-r16.cjs",
+      "role": "tests",
+      "nonblank": 71,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-factory.cjs",
+      "role": "tests",
+      "nonblank": 104,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-game.cjs",
+      "role": "tests",
+      "nonblank": 70,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-host-versions.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-motion-android.cjs",
+      "role": "tests",
+      "nonblank": 79,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-motion-gate.cjs",
+      "role": "tests",
+      "nonblank": 29,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-motion.cjs",
+      "role": "tests",
+      "nonblank": 102,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-official-integration.cjs",
+      "role": "tests",
+      "nonblank": 82,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-official-r11.cjs",
+      "role": "tests",
+      "nonblank": 92,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-official-r12.cjs",
+      "role": "tests",
+      "nonblank": 94,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-official-r13.cjs",
+      "role": "tests",
+      "nonblank": 123,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-official-r14.cjs",
+      "role": "tests",
+      "nonblank": 143,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-official-r15.cjs",
+      "role": "tests",
+      "nonblank": 68,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-reading-android.cjs",
+      "role": "tests",
+      "nonblank": 84,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-reference-android.cjs",
+      "role": "tests",
+      "nonblank": 46,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-reference-game.cjs",
+      "role": "tests",
+      "nonblank": 127,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-reference-shelf.cjs",
+      "role": "tests",
+      "nonblank": 2,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-reference.cjs",
+      "role": "tests",
+      "nonblank": 56,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-startup.cjs",
+      "role": "tests",
+      "nonblank": 42,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-upgrade-r17.cjs",
+      "role": "tests",
+      "nonblank": 49,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-vue-comparison.cjs",
+      "role": "tests",
+      "nonblank": 76,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework-workspace.cjs",
+      "role": "tests",
+      "nonblank": 144,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/framework.cjs",
+      "role": "tests",
+      "nonblank": 267,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/game-first-motion.cjs",
+      "role": "tests",
+      "nonblank": 8,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/golden-spin-b.cjs",
+      "role": "tests",
+      "nonblank": 67,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/golden-spin-hub-input.cjs",
+      "role": "tests",
+      "nonblank": 77,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/golden-spin-hub-lifecycle.cjs",
+      "role": "tests",
+      "nonblank": 24,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/golden-spin-hub.cjs",
+      "role": "tests",
+      "nonblank": 69,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/golden-spin-menu-study.cjs",
+      "role": "tests",
+      "nonblank": 100,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/header-weather.cjs",
+      "role": "tests",
+      "nonblank": 38,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/hub-reversal-probe.cjs",
+      "role": "tests",
+      "nonblank": 17,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/internal-components-compatibility.cjs",
+      "role": "tests",
+      "nonblank": 163,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/kitchen-layout.cjs",
+      "role": "tests",
+      "nonblank": 5,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/kraft-work-adapters.cjs",
+      "role": "tests",
+      "nonblank": 6,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/kraft-work-baseline.cjs",
+      "role": "tests",
+      "nonblank": 3,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/kraft-work-collections.cjs",
+      "role": "tests",
+      "nonblank": 27,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/kraft-work-materials.cjs",
+      "role": "tests",
+      "nonblank": 28,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/kraft-work-product.cjs",
+      "role": "tests",
+      "nonblank": 23,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/layering-regression.cjs",
+      "role": "tests",
+      "nonblank": 13,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/lyra-preview-adapter.cjs",
+      "role": "tests",
+      "nonblank": 21,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/master-native.cjs",
+      "role": "tests",
+      "nonblank": 52,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/master-toggle.cjs",
+      "role": "tests",
+      "nonblank": 46,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/mobile-density.cjs",
+      "role": "tests",
+      "nonblank": 45,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/moody-fixture-evidence.cjs",
+      "role": "tests",
+      "nonblank": 44,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/moody-historical-regressions.cjs",
+      "role": "tests",
+      "nonblank": 85,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/moody-oracles.cjs",
+      "role": "tests",
+      "nonblank": 53,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/motion-workspace.cjs",
+      "role": "tests",
+      "nonblank": 75,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/mouth-compat-adapter.cjs",
+      "role": "tests",
+      "nonblank": 28,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/multi-region.test.cjs",
+      "role": "tests",
+      "nonblank": 178,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/native-action-panel.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/native-action-style.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/native-small-surfaces.cjs",
+      "role": "tests",
+      "nonblank": 47,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/official-defaults.cjs",
+      "role": "tests",
+      "nonblank": 35,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/official-game-motion.cjs",
+      "role": "tests",
+      "nonblank": 53,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/optimization-adapter.cjs",
+      "role": "tests",
+      "nonblank": 90,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/optimization-date.cjs",
+      "role": "tests",
+      "nonblank": 88,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/optimization-wardrobe.cjs",
+      "role": "tests",
+      "nonblank": 50,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/overlay-back-order.cjs",
+      "role": "tests",
+      "nonblank": 2,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/overlay-manager-layout.cjs",
+      "role": "tests",
+      "nonblank": 49,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/panels-framework.cjs",
+      "role": "tests",
+      "nonblank": 78,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/panels.test.cjs",
+      "role": "tests",
+      "nonblank": 159,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/preferences-preservation.cjs",
+      "role": "tests",
+      "nonblank": 40,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/preview-hook-runtime.cjs",
+      "role": "tests",
+      "nonblank": 29,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/refraction-demo.cjs",
+      "role": "tests",
+      "nonblank": 31,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/release-27-settings.cjs",
+      "role": "tests",
+      "nonblank": 32,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/release-screenshots.cjs",
+      "role": "tests",
+      "nonblank": 25,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/render-state-runtime.cjs",
+      "role": "tests",
+      "nonblank": 49,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/render-state.test.cjs",
+      "role": "tests",
+      "nonblank": 17,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/research-evidence.test.cjs",
+      "role": "tests",
+      "nonblank": 134,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/resilience.cjs",
+      "role": "tests",
+      "nonblank": 31,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/runtime-mutations.cjs",
+      "role": "tests",
+      "nonblank": 14,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/save-compatibility.cjs",
+      "role": "tests",
+      "nonblank": 35,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/save-transfer-lifecycle.cjs",
+      "role": "tests",
+      "nonblank": 14,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/saves-demo.cjs",
+      "role": "tests",
+      "nonblank": 9,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/saves-framework.cjs",
+      "role": "tests",
+      "nonblank": 9,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/saves-header-lifecycle.cjs",
+      "role": "tests",
+      "nonblank": 67,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/saves-native-tools.cjs",
+      "role": "tests",
+      "nonblank": 35,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/saves-runtime.cjs",
+      "role": "tests",
+      "nonblank": 165,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/saves-source-m4b.cjs",
+      "role": "tests",
+      "nonblank": 51,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/saves-viewport.cjs",
+      "role": "tests",
+      "nonblank": 39,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/selection-motion.cjs",
+      "role": "tests",
+      "nonblank": 7,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-acrylic.cjs",
+      "role": "tests",
+      "nonblank": 131,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-ci.cjs",
+      "role": "tests",
+      "nonblank": 110,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-dual.cjs",
+      "role": "tests",
+      "nonblank": 28,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-input-boundary.cjs",
+      "role": "tests",
+      "nonblank": 8,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-lifecycle.test.cjs",
+      "role": "tests",
+      "nonblank": 38,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-modal-scroll.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-official-init.cjs",
+      "role": "tests",
+      "nonblank": 2,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-orbit.cjs",
+      "role": "tests",
+      "nonblank": 10,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/settings-workspace.cjs",
+      "role": "tests",
+      "nonblank": 86,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-current-baseline.cjs",
+      "role": "tests",
+      "nonblank": 184,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-early-api.test.cjs",
+      "role": "tests",
+      "nonblank": 14,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-pagination-package.test.cjs",
+      "role": "tests",
+      "nonblank": 69,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-quantity-source.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-ripple-motion.cjs",
+      "role": "tests",
+      "nonblank": 6,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-source.test.cjs",
+      "role": "tests",
+      "nonblank": 29,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-stone-free.cjs",
+      "role": "tests",
+      "nonblank": 62,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-transaction-lifecycle.cjs",
+      "role": "tests",
+      "nonblank": 64,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop-transaction.cjs",
+      "role": "tests",
+      "nonblank": 10,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/shop.test.cjs",
+      "role": "tests",
+      "nonblank": 318,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/sidebar-layout.cjs",
+      "role": "tests",
+      "nonblank": 39,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/sidebar-preview-lifecycle.cjs",
+      "role": "tests",
+      "nonblank": 17,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/sidebar-preview-recovery.cjs",
+      "role": "tests",
+      "nonblank": 2,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/sidebar-preview-runtime.cjs",
+      "role": "tests",
+      "nonblank": 55,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/sidebar-surface.cjs",
+      "role": "tests",
+      "nonblank": 1,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/smartphone-adapter.cjs",
+      "role": "tests",
+      "nonblank": 40,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/social.test.cjs",
+      "role": "tests",
+      "nonblank": 122,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/source-motion-lifecycle.cjs",
+      "role": "tests",
+      "nonblank": 46,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/startup-cache.test.cjs",
+      "role": "tests",
+      "nonblank": 7,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/status-browser.test.cjs",
+      "role": "tests",
+      "nonblank": 13,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/status.test.cjs",
+      "role": "tests",
+      "nonblank": 14,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/stone-free-lab.cjs",
+      "role": "tests",
+      "nonblank": 25,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/stone-free-player-shells.cjs",
+      "role": "tests",
+      "nonblank": 32,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/story-actions.test.cjs",
+      "role": "tests",
+      "nonblank": 30,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/story/helpers.js",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "retain-js-fixture-data",
+      "suggestedSource": "JS fixture data"
+    },
+    {
+      "file": "tests/tanning-runtime.cjs",
+      "role": "tests",
+      "nonblank": 26,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/target-version.test.cjs",
+      "role": "tests",
+      "nonblank": 15,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/test-workflow.test.cjs",
+      "role": "tests",
+      "nonblank": 20,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/theme-meters.cjs",
+      "role": "tests",
+      "nonblank": 13,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ui-runtime-compat.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ui-runtime-identity.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ui-runtime-inspector.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ui-runtime-regressions.cjs",
+      "role": "tests",
+      "nonblank": 20,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ui-runtime-surfaces.cjs",
+      "role": "tests",
+      "nonblank": 4,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/ui-runtime.cjs",
+      "role": "tests",
+      "nonblank": 186,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/unified.test.cjs",
+      "role": "tests",
+      "nonblank": 31,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/visual-effects.cjs",
+      "role": "tests",
+      "nonblank": 160,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/visual-scope.test.cjs",
+      "role": "tests",
+      "nonblank": 22,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-current-baseline.cjs",
+      "role": "tests",
+      "nonblank": 84,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-data.test.cjs",
+      "role": "tests",
+      "nonblank": 25,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-details-drawer.cjs",
+      "role": "tests",
+      "nonblank": 54,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-features.test.cjs",
+      "role": "tests",
+      "nonblank": 111,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-hidden-list.cjs",
+      "role": "tests",
+      "nonblank": 320,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-icons.test.cjs",
+      "role": "tests",
+      "nonblank": 14,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-layout.test.cjs",
+      "role": "tests",
+      "nonblank": 96,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-m2.cjs",
+      "role": "tests",
+      "nonblank": 52,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-mode-cleanup.cjs",
+      "role": "tests",
+      "nonblank": 23,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-native-link.cjs",
+      "role": "tests",
+      "nonblank": 8,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-operations.test.cjs",
+      "role": "tests",
+      "nonblank": 22,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-perf.cjs",
+      "role": "tests",
+      "nonblank": 117,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-performance.test.cjs",
+      "role": "tests",
+      "nonblank": 12,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-reference-panel.cjs",
+      "role": "tests",
+      "nonblank": 29,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-reference.test.cjs",
+      "role": "tests",
+      "nonblank": 12,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-runtime.cjs",
+      "role": "tests",
+      "nonblank": 173,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-search.test.cjs",
+      "role": "tests",
+      "nonblank": 43,
+      "proposal": "later-test-migration",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-slot-mappings.test.cjs",
+      "role": "tests",
+      "nonblank": 43,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-source-m2.test.cjs",
+      "role": "tests",
+      "nonblank": 40,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/wardrobe-wear-motion.cjs",
+      "role": "tests",
+      "nonblank": 56,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    },
+    {
+      "file": "tests/weather-special.cjs",
+      "role": "tests",
+      "nonblank": 58,
+      "proposal": "pre-4.0-proposed",
+      "suggestedSource": ".cts"
+    }
+  ],
+  "uncheckedTypedToolFiles": [
+    "scripts/assert-accepted-weather.ts",
+    "scripts/check-evolution-rain-rollback.ts",
+    "scripts/preview-evolution-blood-moon.ts",
+    "scripts/record-evolution-blood-moon.ts",
+    "scripts/record-evolution-blood-rain.ts",
+    "scripts/record-evolution-special-weather.ts"
+  ],
+  "runtimeValidationProbe": {
+    "source": "src/saves/metadata.ts",
+    "scope": "Isolated existing module with synthetic objects, no game/real save read or write",
+    "validCase": "PASS",
+    "malformedIndexedRow": {
+      "name": "TypeError",
+      "message": "Cannot read properties of null (reading 'slot')"
+    },
+    "interpretation": "Confirms insufficient shape narrowing at an existing TS boundary; not a reproduction or cause attribution of the reported save-date anomaly"
+  },
+  "ctsRouteProbe": {
+    "scope": "Isolated synthetic probes only; no project source migration",
+    "node": "v26.12.1",
+    "typescript": "5.9.3",
+    "compiledCommonJs": [
+      {
+        "file": "positive.cjs",
+        "exit": 0,
+        "stdout": "PASS"
+      },
+      {
+        "file": "positive.mjs",
+        "exit": 0,
+        "stdout": "PASS"
+      }
+    ],
+    "negativeDiagnostics": [
+      {
+        "code": 2345,
+        "message": "Argument of type 'string' is not assignable to parameter of type 'number'."
+      },
+      {
+        "code": 2322,
+        "message": "Type 'string' is not assignable to type 'number'.   Type 'string' is not assignable to type 'number'."
+      },
+      {
+        "code": 2339,
+        "message": "Property 'missing' does not exist on type '{ receipt: (exitCode: number) => Receipt; }'."
+      }
+    ],
+    "rawRenameStillAny": "any",
+    "rawDeclaration": "export {};\n",
+    "typedDeclaration": "interface Receipt {\n    status: 'PASS' | 'FAIL';\n    elapsedMs: number;\n}\ndeclare function receipt(exitCode: number): Receipt;\ndeclare const _default: {\n    receipt: typeof receipt;\n};\nexport = _default;\n",
+    "existingErasableSettingRejectsExportAssignment": [
+      1294
+    ],
+    "nativeCli": {
+      "exit": 0,
+      "stdout": "READY"
+    },
+    "nativeTypedExport": {
+      "exit": 1,
+      "code": "ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX"
+    },
+    "node22Minimum": "Documentation checked, not executed locally; exact minimum and clean-install CI remain migration acceptance"
+  },
+  "baselineTypecheck": "npm run ci:check PASS at unchanged source",
+  "optionalStricterCiProbe": {
+    "flags": [
+      "noUncheckedIndexedAccess",
+      "exactOptionalPropertyTypes"
+    ],
+    "exitCode": 2,
+    "diagnosticCount": 5,
+    "applied": false
+  }
+}
