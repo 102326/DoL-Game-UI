@@ -1,6 +1,9 @@
 // @ci-contract {"profiles":["research"],"classification":"contract","granularity":"entry"}
 // Lexical census is an audit aid, never a claim of semantic 100% ownership.
-const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
+import fs = require('node:fs');
+import path = require('node:path');
+import cp = require('node:child_process');
+import crypto = require('node:crypto');
 const roots=['src/','framework/official-ui/','framework/motion-hub/','compat/','prototypes/golden-spin-b/','prototypes/settings-refraction-v1/'];
 const base=process.argv[3]||cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const files=cp.execFileSync('git',['ls-tree','-r','--name-only',base],{encoding:'utf8'}).trim().split('\n').filter(f=>roots.some(r=>f.startsWith(r))&&/\.(ts|vue|css|js)$/.test(f));

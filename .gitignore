@@ -61,3 +61,4 @@ docs/HANDOFF.local.md
 /tests/wardrobe-source-m2.test.cjs
 /tests/device-profiles.cjs
 /tests/device-profiles.test.cjs
+/scripts/evolution-inventory.cjs

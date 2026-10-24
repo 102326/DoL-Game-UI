@@ -583,6 +583,7 @@
     },
     {
       "entry": "scripts/evolution-inventory.cjs",
+      "sourceEntry": "scripts/evolution-inventory.cts",
       "profiles": [
         "research"
       ],
@@ -594,7 +595,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8590d06f4053d68cd8eb7009e345935388ad7f970878c964844153a061e3e881",
+      "sourceSha256": "f05423c5999628fc122a223f51a872e640636fcb26634445601525a863512642",
       "assertionSites": 0
     },
     {
