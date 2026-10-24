@@ -12,6 +12,7 @@ const check=async(name,fn)=>{await fn();tests.push(name);console.log('PASS',name
   for(const name of ['host','native-status','comparison','workspace','alternate-workspace']){
    if(name!=='host')await p.addStyleTag({content:read(`dist/framework/${name}/style.css`)});
    await p.addScriptTag({content:read(`dist/framework/${name}/index.js`)});
+   if(name==='host')await p.evaluate(()=>DoLUiHost.sceneReady());
   }
   const alpha=p.locator('[data-sf-owner="StoneFreeWorkspace"]'),beta=p.locator('[data-sf-owner="AlternateWorkspace"]');
   const dialog=alpha.locator('dialog');
@@ -80,7 +81,7 @@ const check=async(name,fn)=>{await fn();tests.push(name);console.log('PASS',name
   });
   await check('layout survives a new Host generation; async view withdrawal cannot resurrect content',async()=>{
    await p.evaluate(()=>{DoLUiHost.dispose()});
-   await p.addScriptTag({content:read('dist/framework/host/index.js')});await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
+   await p.addScriptTag({content:read('dist/framework/host/index.js')});await p.evaluate(()=>DoLUiHost.sceneReady());await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
    assert.equal(await dialog.locator('article').first().getAttribute('data-view'),'StatusComparison:comparison');assert.equal(await dialog.getByRole('combobox',{name:'密度',exact:true}).inputValue(),'compact');
    await p.evaluate(()=>{
     window.pendingOwner=DoLUiHost.register('AsyncAuthor');window.returnCleanup=null;window.cleaned=0;
@@ -100,7 +101,7 @@ const check=async(name,fn)=>{await fn();tests.push(name);console.log('PASS',name
    const r=await p.evaluate(()=>({own:JSON.parse(localStorage.getItem('StoneFreeWorkspace.StoneFreeWorkspace.v1')),peer:JSON.parse(localStorage.getItem('StoneFreeWorkspace.AlternateWorkspace.v1')),foreign:localStorage.getItem(foreignKey),pain:State.variables.pain}));
    assert.deepEqual(r,{own:{order:[],hidden:[],density:'comfortable'},peer:{order:[],hidden:['FutureMod:future'],density:'compact'},foreign:'untouched',pain:7});
    await dialog.getByRole('button',{name:'完成编辑',exact:true}).click();await p.keyboard.press('Escape');
-   await p.evaluate(()=>DoLUiHost.dispose());await p.addScriptTag({content:read('dist/framework/host/index.js')});await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
+   await p.evaluate(()=>DoLUiHost.dispose());await p.addScriptTag({content:read('dist/framework/host/index.js')});await p.evaluate(()=>DoLUiHost.sceneReady());await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
    assert.equal(await dialog.getByRole('combobox',{name:'密度',exact:true}).inputValue(),'comfortable');assert.equal(await dialog.locator('article').count(),2);await p.keyboard.press('Escape');
   });
   await check('reset remains usable with denied storage and reports its persistence limit',async()=>{
