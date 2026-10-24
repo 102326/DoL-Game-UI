@@ -1,7 +1,7 @@
 import type {Status} from './contracts.ts';
 
 interface Verdict {status:Status;assertionResult?:string;evidenceIntegrity?:string;reasonCodes?:string[];problems?:{file:string;reason:string}[]}
-export function transportVerdict<T extends Verdict>(result:T,outcomes:{upload?:string;download?:string;producer?:string}):T{
+export function transportVerdict<T extends Verdict>(result:T,outcomes:{upload?:string;download?:string;producer?:string}):Omit<T,keyof Verdict>&Verdict{
  const errors:string[]=[];
  if(outcomes.upload!==undefined&&outcomes.upload!=='success')errors.push('evidence_upload');
  if(outcomes.download!==undefined&&outcomes.download!=='success')errors.push('evidence_download');
