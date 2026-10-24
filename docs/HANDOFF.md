@@ -6,7 +6,7 @@
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
-- **TS First持续推进，最终采用Node26 Only**：最低26.12.1且<27，两套Actions读取`.node-version`，preinstall/工具/CI引导检查实际版本；Node24及早期26.0不在当前支持范围。累计30/243个独立JS来源迁移，剩余213项及内联/既有TS边界仍在方案一内。41dd945标准40095257284、研究40095256166均成功，最终Node Only与后续迁移须重新完整跑CI。实际安装、原生/编译互操作和反例已验证；本地H01有hidden导航locator超时仍在诊断，不记通过。已有Vite开发依赖告警待收尾。新源码未装Android、未发布；[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)保留分批证据及失败。
+- **TS First持续推进，最终采用Node26 Only**：最低26.12.1且<27，两套Actions读取`.node-version`，preinstall/工具/CI引导检查实际版本；7c61002补Windows Git stat严格验证后的刷新，本机九包双构建/9项制品反例已通过；Node24及早期26.0不在当前支持范围。累计30/243个独立JS来源迁移，剩余213项及内联/既有TS边界仍在方案一内。41dd945标准40095257284、研究40095256166均成功，最终Node Only与后续迁移须重新完整跑CI。实际安装、原生/编译互操作和反例已验证；本地H01有hidden导航locator超时仍在诊断，不记通过。已有Vite开发依赖告警待收尾。新源码未装Android、未发布；[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)保留分批证据及失败。
 
 - **发行前1–5已完成，当前RC2**：[技术报告](evolution/EVO-RC2-VALIDATION-2026-10-24.md)、[冻结九包](evolution/EVO-RC2-PACKAGES-2026-10-24.json)、[雨幕归因与修复](evolution/EVO-MODHUB-RAIN-PERF-2026-10-24.md)。受验源码8033b7f已推送；标准40075729443、研究40075728194及独立证据均success。4.0.0-rc.2取代RC1，拟正式4.0.0。ModHub自然雷雨的共享旧雨幕改为独立纹理transform，保持原雨滴/速度/材质；平板配对rAF中位约33.4→8.3ms，不是完整FPS。最终CI包原生重启后8个适用包全部成员、顺序/禁用列表、150%设置滚动和阻挡通过；Windows实际Loader复验通过。候选、安装、玩家草稿和媒体来源已整理；未合入main、Tag、发布或改公开Assets。整体G1/G2/G3和正式授权待负责人。目标Mod若确认有缺陷，可作可停用/回退的针对兼容修复；不改变其业务和存档所有权。
 
