@@ -9,10 +9,16 @@ import {bloodMoonSky} from './blood-moon';
 import {specialAtmosphere} from './special-atmosphere';
 import type {WeatherFrame as Frame} from './surface';
 type Box={x:number;y:number;width:number;height:number};
-type FrostFactory=(...args:Parameters<typeof frostSurface>)=>ReturnType<typeof frostSurface>;
+type Frost=ReturnType<typeof frostSurface>;
+type FrostFactory<T extends Frost=Frost>=(...args:Parameters<typeof frostSurface>)=>T;
 let instance=0;
 /** Native SVG displacement reads the browser's backdrop. No DOM capture or substitute texture. */
+export function wetGlass<T extends Frost>(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails:boolean,runoff:boolean,climate:boolean,withShower:boolean,withForce:boolean|'scatter',makeFrost:FrostFactory<T>,specialSkies?:boolean):ReturnType<typeof createWetGlass<T>>;
+export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails?:boolean,runoff?:boolean,climate?:boolean,withShower?:boolean,withForce?:boolean|'scatter',makeFrost?:FrostFactory,specialSkies?:boolean):ReturnType<typeof createWetGlass<Frost>>;
 export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false,climate=false,withShower=false,withForce:boolean|'scatter'=false,makeFrost:FrostFactory=frostSurface,specialSkies=false){
+ return createWetGlass(canvas,invalidate,naturalTrails,runoff,climate,withShower,withForce,makeFrost,specialSkies);
+}
+function createWetGlass<T extends Frost>(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails:boolean,runoff:boolean,climate:boolean,withShower:boolean,withForce:boolean|'scatter',makeFrost:FrostFactory<T>,specialSkies:boolean){
  const scope=visualScope();
  try{
  const scatter=withForce==='scatter',field=scatter?scatteredShower():undefined;let showerGeometry:ReturnType<ReturnType<typeof scatteredShower>['step']>['streaks']=[];
