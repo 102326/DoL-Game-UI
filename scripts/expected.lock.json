@@ -432,7 +432,8 @@
       "result shards restore original extra data and reject malformed or contradictory used fields",
       "seal checks reject non-record input without treating a type assertion as validation",
       "bounded evidence reads preserve JSON fields and reject unsafe paths or sizes",
-      "untrusted case and graphics receipts are checked without declaring disk data trusted"
+      "untrusted case and graphics receipts are checked without declaring disk data trusted",
+      "fixture capture keeps size and path limits without replacing the original error"
     ],
     "save-metadata-boundary.test.mts": [
       "save metadata skips malformed rows without changing native data or writing storage",
@@ -1801,10 +1802,14 @@
         {
           "id": "untrusted case and graphics receipts are checked without declaring disk data trusted",
           "minimumAssertions": 1
+        },
+        {
+          "id": "fixture capture keeps size and path limits without replacing the original error",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "e80f49b395bb0b23b96f9cd674374c7cde1b652e5e8a4821e86e815f418a7a23",
-      "assertionSites": 22
+      "sourceSha256": "ab04a60294f1ea093494e5669d476e30afc0dcf68b88410e25fd9696b76f4aa8",
+      "assertionSites": 33
     },
     {
       "entry": "tests/render-state.test.cjs",

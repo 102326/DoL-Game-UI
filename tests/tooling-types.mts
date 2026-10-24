@@ -1,3 +1,4 @@
+import fixtureEvidence from './moody-fixture-evidence.cjs';
 import {runCommand} from '../scripts/ci/process.ts';
 import gateFixture from './ci-fixtures.cjs';
 import {readJsonBounded,evidenceMeta} from '../scripts/ci/records.ts';
@@ -120,3 +121,15 @@ async function processContract(){
  return {status,typed,receipt,count};
 }
 void processContract;
+
+
+function fixtureEvidenceContract(){
+ const written:boolean=fixtureEvidence.writeLayoutReport({status:'PASS',future:[]});
+ const capture:Promise<void>=fixtureEvidence.captureFailure(null,{kind:'settings',error:'opaque error',snapshot:{future:[]}});
+ // @ts-expect-error A layout report is a record, not a JSON string.
+ fixtureEvidence.writeLayoutReport('report');
+ // @ts-expect-error A page must provide the actual capture operations.
+ fixtureEvidence.captureFailure({},{kind:'settings',error:null,snapshot:null});
+ return {written,capture};
+}
+void fixtureEvidenceContract;

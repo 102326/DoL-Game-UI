@@ -89,3 +89,5 @@ docs/HANDOFF.local.md
 /tests/ci-fixtures.cjs
 
 /tests/wardrobe-operations.test.cjs
+
+/tests/moody-fixture-evidence.cjs

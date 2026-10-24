@@ -3,11 +3,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const {sealProblems,classify,overall,verdict,exactIds,sameIdentity,requiredPackages}=require('./ci/contracts.ts');
-const {writeSuite,hydrateSuite,writeJson,safeFile,readJsonBounded,captureMeta,evidenceMeta}=require('./ci/records.ts');
+const {writeSuite,hydrateSuite,writeJson,safeFile,readJsonBounded,captureMeta,evidenceMeta,fixtureChecks}=require('./ci/records.ts');
 const {entryDeclaration,entryCaseProblems,expectedLockSha256}=require('./ci/lock.ts');
 const root = path.resolve(__dirname, '..');
 const { suites, stages, catalogFor, catalogIdentity,checkpoints,nodeTestCases,researchUnitEntries,projectId } = require('./ci-catalog.cjs');
-const fixtureChecks = ['settings-ci.cjs', 'combat-focused.cjs', 'moody-historical-regressions.cjs', 'device-layouts.cjs'];
 const coverage = 'Controlled fixtures and source contracts only; not real DoL/ModLoader, Windows or Android acceptance.';
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 
