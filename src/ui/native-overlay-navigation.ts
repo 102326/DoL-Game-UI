@@ -7,7 +7,7 @@ import {sourceMotion} from './source-motion';
 import {navigationScrollTop} from './navigation-geometry';
 import {navigationMount} from './navigation-mount';
 
-type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:string[][];component:Component;
+type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:readonly (readonly [string,string])[];component:Component;
  navigate:(context:{target:HTMLElement;group:HTMLElement|null;content:HTMLElement;origin:DOMRect|undefined;motion:ReturnType<typeof sourceMotion>;scroll:(after?:()=>void)=>void;relay:(from:DOMRect,to:DOMRect)=>Animation|undefined;current:()=>boolean})=>void};
 /** Internal adapter for this reviewed native family; never owns/rebuilds native content. */
 export function nativeOverlayNavigation(root:Window,options:Options,framework?:{host:Host;owner:Participant}){
