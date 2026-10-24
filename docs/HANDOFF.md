@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **当前TS First：66/243，剩余177项。** 当前实现e7bd110；12个原清单HTML程序及另补三个生成预览页已转TS。62项c218a86的[标准40104574743](https://github.com/102326/DoL-Game-UI/actions/runs/40104574743)/[研究40104572617](https://github.com/102326/DoL-Game-UI/actions/runs/40104572617)与下载验证全部success，9ZIP CRC/10项SHA、双构建/9项制品反例已回读，含五种实际预览。后续共享观察器和原生样式测试已转CTS；历史700/450ms反例改为同一浏览器任务采样，确定性微任务回归及真实历史完整专项通过，不暂停动画、不改时限/原断言。717d38e原始Windows H01无诊断包装12项通过，旧间歇超时仍未因果归因。66项需新远端CI；无本批Android、main合入或发布。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
+- **当前TS First：68/243，剩余175项。** 当前实现e6d20e5。CI源码身份、context、判定与有界读取已进入严格TS，研究unit入口和共享夹具转CTS，真实CLI及G01–G12/F1、无npm验证通过。旧新18份夹具报告逐字相同，JSON边界与消费者类型反例保留。66项9c43cf6的[标准40105789722](https://github.com/102326/DoL-Game-UI/actions/runs/40105789722)/[研究40105787662](https://github.com/102326/DoL-Game-UI/actions/runs/40105787662)与下载验证全部success，9ZIP CRC/10项SHA、双构建/9项反例已回读；后续68项和CI拆分需新CI。Windows ci-evidence的原符号链接用例仍受EPERM限制，不跳过，交Linux新候选验证。H01原始12项已通过但旧间歇超时未因果归因。无本批Android、main合入或发布。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 

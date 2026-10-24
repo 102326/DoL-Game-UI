@@ -24,3 +24,10 @@
 ### Generated preview pages
 
 The settings, official Hub and special-weather preview servers reference browser TypeScript in `prototypes/evolution-integration/`. `npm run typecheck` checks these entries with `vue-tsc -p tsconfig.preview-pages.json`; typing a server's template string alone does not check the code inside it. Research CI runs `integration-preview-pages` after `framework-build` against the real local servers. The test waits for asynchronous preview initialization before exercising native controls; it does not access game saves or validate physical devices.
+
+
+### CI modules before dependency installation
+
+`ci/source.ts`, `ci/context.ts`, `ci/contracts.ts` and `ci/records.ts` run through Node26's native type erasure. They use Node built-ins and the existing checked-in catalog bootstrap. Keep their files in the independent verifier copy list. The research unit CLI remains CommonJS: edit `ci-research-unit.cts`, then use `npm run tooling:build` to generate its original `.cjs` path.
+
+The context reader validates persisted identity fields against the current typed producer. Only explicit finalization may retain a different source observation; it still requires matching run, profile, catalog and environment anchors. Invalid prior files remain unchanged. Bounded disk JSON returns `unknown`; validate the fields a consumer uses instead of declaring an unchecked report interface.

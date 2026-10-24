@@ -183,3 +183,20 @@ Windows Edge H01仍未归因：7.3.7下原脚本在关闭后locator.evaluate处�
 诊断期间的暂停动画方案未采用：虽然留住了样本，恢复后另出现3秒等待失败；rAF/定时器对照也都超时，不能归因为单独rAF问题。限定Vite扫描范围的尝试仍复现原采样失败，也未作为修复提交。尝试代码/日志仅留本机制品；最终提交只包含原子取样和确定性回归，不把尝试中的通过说成原因已解决。该专项修复与H01旧间歇超时分别记录，后者仍未完成因果归因。
 
 当前完整ci:check和本批专项通过；最终66项远端结果另按准确提交更新。未做本批Android装机、正式版本修改、main合入、Tag或发布。
+
+
+### 66项流水线确认与CI核心类型边界（e6d20e5）
+
+66项受验9c43cf6e38e4acff71d20b448616b5f857ff62fe的[标准40105789722](https://github.com/102326/DoL-Game-UI/actions/runs/40105789722)和[研究40105787662](https://github.com/102326/DoL-Game-UI/actions/runs/40105787662)均success。两份独立下载报告PASS / COMPLETE，准确HEAD、clean源及v26.12.1一致；九ZIP CRC、10项UTF-8 SHA、9项制品反例与独立双构建回读通过。这个结果覆盖原子采样修复及66项源码，不覆盖以下后续CI模块调整。
+
+8f23e04将源码身份与判定函数迁入严格检查的source.ts和既有contracts.ts。原始内容哈希、Git状态、优先级和JSON输出保持；旧新实际仓库身份逐字段相同，128种过程结果组合、聚合和verdict输出对照相同。独立构建直接取得真实TS函数类型，不再从未检查CJS取得any。CLI仍保留原CommonJS路径；依赖安装前需要的模块沿用既有原生TS路线，Node26直接擦除类型，无需先安装编译器。没有将全部工具改为ESM。
+
+e217e5f将context迁入TS，按实际JSON合同校验旧身份、nonce、源摘要、PR和锁文件版本。旧身份中除源观察外的全部字段必须与当前构造值完全一致；allowSourceDrift只能供收尾保留已验证的旧源，不能豁免run/profile/environment差异。损坏记录被拒绝且原字节不被覆盖。正常旧新context的完整身份、持久nonce及路径相同。这里包含主动的运行时边界修复，不能仅归功于文件后缀。研究unit入口转CTS并从真实context/runner/receipt导出取得类型；原三项真实CLI通过。
+
+cb92d14把路径和有界JSON读取、证据角色与PNG元数据纳入既有records.ts，返回的磁盘JSON为unknown，消费者不能不验证就读取status。危险路径、目录、大小限制和坏JSON仍拒绝。共享CI夹具转CTS，使用实际catalog、case及writeJson导出；旧新生成的18份完整报告逐字相同，包括9包合同、用例与检查点。requiredPackages只转为有类型的原数组，没有新增包或更改运行时冻结行为。
+
+本机Node26.12.1通过：完整ci:check、源码/上下文/分片7项原生边界、真实独立构建输入、研究unit三项，以及G01–G12/F1、PNG损坏、下载信任反例、永久身份、封存、字节篡改和无npm验证路径。TS消费者反例确认context、verdict、夹具与unknown JSON的真实类型。新增源码测试最初假定CRLF改写后Git立即clean而失败；夹具现在先证明规范化blob与索引相同，才刷新该相同索引，且断言无stage变化。原始字节始终不同，未归一化源码哈希。独立验证首轮遗漏新source.ts产生MODULE_NOT_FOUND，已补全实际复制清单，保留无npm断言。
+
+本机ci-evidence.test仍在原有符号链接用例因Windows EPERM中止，日志保留；没有跳过该用例、改权限或认定全部通过。当前新源码的该分支等待Linux标准CI，66项旧成功只作历史依据。所有新边界与旧H01间歇超时分开报告，后者仍未因果归因。
+
+原清单累计68/243，剩余175项：13个scripts、161个tests、1个兼容专项。source/context/records等模块的实际JS迁移另属原CI脚本的分批拆出，不能把仍保留JS的ci-evidence宣布完成。进程/receipt、整套汇总与研究调度、其它测试、Twee及剩余既有TS边界仍在方案一内。新两套CI须以本批准确提交验证。未改产品版本、Host合同、游戏行为或存档，未装本批Android、合main、Tag或发布。
