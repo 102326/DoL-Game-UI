@@ -5,7 +5,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),path
  await p.goto(pathToFileURL(path.join(__dirname,'fixture.html')).href);await p.waitForSelector('#listContainer');
  await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});
  await p.addScriptTag({path:process.env.DOL_FLOATING_BASELINE||path.join(__dirname,'../dist/game-ui.js')});
- assert.equal(await p.locator('#dol-stone-free-floating').count(),0,'new installation keeps optional tools off');await p.evaluate(()=>DoLFloatingTools.setPreference('enabled',true));
+ assert.equal(await p.locator('#dol-stone-free-floating').count(),1,'new installation shows optional tools by default');await p.evaluate(()=>DoLFloatingTools.setPreference('enabled',true));
  const ball=p.getByRole('button',{name:'自由悬浮球',exact:true});await ball.waitFor({timeout:3000});assert.equal(await ball.count(),1);const outsideBase=await p.evaluate(()=>floatingListeners().outside);
  const prefs=()=>p.evaluate(()=>DoLFloatingTools.getPreferences());
  const box=()=>ball.boundingBox();const settle=()=>p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
