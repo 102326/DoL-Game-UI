@@ -143,3 +143,4 @@ docs/HANDOFF.local.md
 /tests/ci-v12.test.cjs
 /tests/framework-startup.cjs
 /tests/framework-commands.cjs
+/tests/framework-motion-gate.cjs
