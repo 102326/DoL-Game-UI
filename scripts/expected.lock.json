@@ -1290,8 +1290,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "695d82b2bc2c99bbc0fb73ff2b4e7371961ee8bd92367c29583c99288b07b9bd",
-      "assertionSites": 59
+      "sourceSha256": "b2ed09dfb2808c60635009a1d99ab3b3d2585ae7f4c493fe93cec4e3fb25df77",
+      "assertionSites": 61
     },
     {
       "entry": "tests/kraft-work-adapters.cjs",

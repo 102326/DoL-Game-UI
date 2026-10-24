@@ -78,7 +78,7 @@ export function headerWeather(){
      catch(error){remove(key);throw error}
     }return;
    }
-   const node=document.createElement('span');node.className='kw-heading-weather';node.setAttribute('aria-hidden','true');const lightning=document.createElement('span');lightning.className='kw-weather-lightning';const atmosphere=document.createElement('span');atmosphere.className='kw-weather-atmosphere';node.append(lightning,atmosphere);
+   const node=document.createElement('span');node.className='kw-heading-weather';node.setAttribute('aria-hidden','true');const lightning=document.createElement('span');lightning.className='kw-weather-lightning';const atmosphere=document.createElement('span');atmosphere.className='kw-weather-atmosphere';const shower=document.createElement('span');shower.className='kw-weather-shower';node.append(shower,lightning,atmosphere);
    // Sample once per window: bounded, staggered droplets, with no per-frame game reads.
    for(let i=0;i<18;i++){
     const drop=document.createElement('i');drop.className='kw-glass-drop';
