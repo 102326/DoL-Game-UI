@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **当前 TS First：114/243，剩余129项。** 最新批次将CI证据/研究/下载验证/主CLI转为严格CTS及实际TS模块，跟踪生成CJS以保留安装前和无npm验收入口；原断言、封存和反例保留。本机ci:check、workflow和V1.2通过，ci-gate原用例通过；Windows符号链接EPERM仍保留，待Linux本批CI。上批105项96d2c90的标准40119446132、研究40119419411均success且独立下载PASS/COMPLETE/准确HEAD；十摘要/九ZIP/双构建通过。105项UI/Host全部成员与实机受验100项相同，复用其包加载、设置阻挡、150%触控滚动和偏好恢复证据。111–114工具源码需另批CI，不借旧结果宣称通过。6脚本/123测试及既有TS边界继续推进；未发布。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
+- **当前 TS First：145/243，剩余98项。** 已接入设置/动效/Adapter/资源owner测试及录制/观测工具；严格浏览器工具使用vue-tsc真实SFC检查。114项1ac1c23的标准40120958746、研究40120957637成功，下载准确HEAD/PASS/COMPLETE、十摘要/九ZIP/双构建通过。145批严格工具与代表性浏览器/包合同检查通过，但保留衣柜90ms父节点、native-small-surfaces颜色超时、共存观测超时及console404 Unknown；原始/迁移对照与环境范围见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。当前批尚未推送CI或新装机，Android旧100项证据不自动覆盖。继续全部冻结项和既有TS边界，不发布。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
@@ -47,7 +47,7 @@
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
-3. 先按TS First方案一继续T1/T2/T3：当前94项已迁移，149项及既有TS边界仍在范围内；12个维护HTML内联程序已收敛，Twee仍待处理；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
+3. 先按TS First方案一继续T1/T2/T3：当前145项已迁移，98项及既有TS边界仍在范围内；12个维护HTML内联程序已收敛，Twee仍待处理；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
 4. 保留Windows Edge H01原始超时，继续有依据地归因；带记录的诊断通过不能抹去失败。Vite7.3.7已单独修补，旧审计为历史。每批做受影响验证，最终迁移源码再做两套CI、九包与代表Windows/Android实际宿主回归。旧RC2/8033b7f只能复用未改行为的有效证据，不替代新候选。
 5. TS First完成后更新候选冻结、依赖/许可/摘要与玩家材料，再提交负责人验收。4.0.0-rc.2保持内部版本；未授权正式版本变更、main、Tag、Release或公开Assets。READ01仍隔离，不主动新增视觉研究；额外设备及全Mod穷举不自动成为阻塞项。
 

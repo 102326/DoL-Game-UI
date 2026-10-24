@@ -727,6 +727,7 @@
     },
     {
       "entry": "tests/combat-focused.cjs",
+      "sourceEntry": "tests/combat-focused.cts",
       "profiles": [
         "standard"
       ],
@@ -738,11 +739,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c919b7da998cde2cd77a55308f575a8522ea5fed5bf2ee20e15744fd33d4655d",
-      "assertionSites": 133
+      "sourceSha256": "7edcfe2a1fa0b120d8f041c2cf4dc0cad22a25806d596c719ba93b96d99280ff",
+      "assertionSites": 134
     },
     {
       "entry": "tests/combat-select.cjs",
+      "sourceEntry": "tests/combat-select.cts",
       "profiles": [
         "standard"
       ],
@@ -754,8 +756,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "506da1e15e75c34e30f0b36bb053586f0423c847da1332e5b0d6f99091b94524",
-      "assertionSites": 23
+      "sourceSha256": "deeb77d63efdacab3c11282a25e486faee6903ac3b51a1733464962b33cb743a",
+      "assertionSites": 24
     },
     {
       "entry": "tests/context-boundary.test.mts",
@@ -860,6 +862,7 @@
     },
     {
       "entry": "tests/evolution-navigation.cjs",
+      "sourceEntry": "tests/evolution-navigation.cts",
       "profiles": [
         "standard",
         "research"
@@ -872,11 +875,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "14121e0301a9b31ce62e3013fa279f25620f518fabd8858e68af300ac3621644",
-      "assertionSites": 38
+      "sourceSha256": "038b6d703f2b76cedc9a325a3ad38a26d1ea949496c7d62f27b96654b99f546d",
+      "assertionSites": 39
     },
     {
       "entry": "tests/evolution-orbit.cjs",
+      "sourceEntry": "tests/evolution-orbit.cts",
       "profiles": [
         "standard",
         "research"
@@ -889,11 +893,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "42552c1f8b28379c311e9b2c11e414442a081cca34c1ce1cb02ee0d590c9f923",
-      "assertionSites": 17
+      "sourceSha256": "7b9c10b3e8f271dfb5b724325741198e3efa09f0970fc1a08644d93c05b0a0e1",
+      "assertionSites": 18
     },
     {
       "entry": "tests/evolution-owner-resources.cjs",
+      "sourceEntry": "tests/evolution-owner-resources.cts",
       "profiles": [
         "standard",
         "research"
@@ -954,8 +959,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "07636ce62d741bb8911c0ab0f57c36c766f979c8933d4ab2f97d8d201af7bff1",
-      "assertionSites": 115,
+      "sourceSha256": "02b1222e3d9551db95e6d7064e738f0c94a2e8aa05fb176dde4919938e82f706",
+      "assertionSites": 117,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1468,6 +1473,7 @@
     },
     {
       "entry": "tests/header-weather.cjs",
+      "sourceEntry": "tests/header-weather.cts",
       "profiles": [
         "standard"
       ],
@@ -1479,7 +1485,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4829a4a63057ab7cf4541a6852eacf7b22e07a71980f8bcaf8d9ebd7c8fa0eb6",
+      "sourceSha256": "b67a6b5f65ae627314c7b138df82287d066fb3fc38189d901376ad16cc8e6cd8",
       "assertionSites": 61
     },
     {
@@ -1760,6 +1766,7 @@
     },
     {
       "entry": "tests/panels-framework.cjs",
+      "sourceEntry": "tests/panels-framework.cts",
       "profiles": [
         "standard",
         "research"
@@ -1772,8 +1779,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ce191d80015e88b38885274aa7fd08b822670462666ad42d0dac70fe703958ca",
-      "assertionSites": 15
+      "sourceSha256": "00c3ba74fdd997f002e2d61d78e209feb83b784f535cf8438c2d809a350338c3",
+      "assertionSites": 16
     },
     {
       "entry": "tests/receipt-boundary.test.mts",
@@ -1923,6 +1930,7 @@
     },
     {
       "entry": "tests/selection-motion.cjs",
+      "sourceEntry": "tests/selection-motion.cts",
       "profiles": [
         "standard"
       ],
@@ -1934,8 +1942,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "f4130ba36a223361c85f2e992f380ea8536a27abc24927a2513104b0317c19d0",
-      "assertionSites": 13
+      "sourceSha256": "ac23bfad8553eb9a08bbc9176a165384450f8b3d99394db990b186f0634f3645",
+      "assertionSites": 14
     },
     {
       "entry": "tests/settings-ci.cjs",
@@ -2049,6 +2057,7 @@
     },
     {
       "entry": "tests/shop-ripple-motion.cjs",
+      "sourceEntry": "tests/shop-ripple-motion.cts",
       "profiles": [
         "standard"
       ],
@@ -2060,8 +2069,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "baa4425f423a4abb39e1a0a0633f30cc305127b5773282624fd091f1a0754358",
-      "assertionSites": 19
+      "sourceSha256": "b6cb1d0a17883c77ab4b77648e0a97a0557886940da3311d2927421ee7fe308d",
+      "assertionSites": 20
     },
     {
       "entry": "tests/shop-source.test.cjs",
@@ -2407,6 +2416,7 @@
     },
     {
       "entry": "tests/wardrobe-details-drawer.cjs",
+      "sourceEntry": "tests/wardrobe-details-drawer.cts",
       "profiles": [
         "standard"
       ],
@@ -2418,8 +2428,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a541ccedb95730dbccfbccb5601885116e163c0e4872e8187d01748c4cd45482",
-      "assertionSites": 11
+      "sourceSha256": "9ea467f137897482e7733cbf95e1d02026e0eb16e7f0fe76057404a5b8c0096b",
+      "assertionSites": 12
     },
     {
       "entry": "tests/wardrobe-operations.test.cjs",
@@ -2491,6 +2501,7 @@
     },
     {
       "entry": "tests/wardrobe-wear-motion.cjs",
+      "sourceEntry": "tests/wardrobe-wear-motion.cts",
       "profiles": [
         "standard"
       ],
@@ -2502,8 +2513,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "0afb20e21a7578de05b569bf3dd79d27451c7f51324350bf05bfe72da4bc93a1",
-      "assertionSites": 39
+      "sourceSha256": "db124313ec98ac0bd33086978bee3b191490f992ab3c0c262726938eef55c347",
+      "assertionSites": 43
     },
     {
       "entry": "tests/weather-review-pages.cjs",
@@ -2524,6 +2535,7 @@
     },
     {
       "entry": "tests/weather-special.cjs",
+      "sourceEntry": "tests/weather-special.cts",
       "profiles": [
         "standard"
       ],
@@ -2535,8 +2547,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "cfe85d58183167d57c22f0621ab14e2d98538ea69c8579e0dcd349a1dda36609",
-      "assertionSites": 53,
+      "sourceSha256": "b6f0393494de442b4806a7726664c435502b14830c8471e25be3e9d9423f8f12",
+      "assertionSites": 54,
       "rendererContexts": [
         "weather:2d"
       ]

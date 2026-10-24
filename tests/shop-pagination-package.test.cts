@@ -1,14 +1,18 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const { spawnSync } = require('node:child_process');
-const assert=require('node:assert/strict'),vm=require('node:vm');
+import fs = require('node:fs');
+import path = require('node:path');
+import child = require('node:child_process');
+const {spawnSync}=child;
+import assert = require('node:assert/strict');
+import vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const packageResult = spawnSync('python', ['scripts/package.py'], { cwd: root, encoding: 'utf8' });
 if (packageResult.error) throw packageResult.error;
 if (packageResult.status !== 0) throw new Error(packageResult.stderr || 'integrated package generation failed');
 
-const packagePath = path.join(root, 'dist/framework', `DoLGameUI-${JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version}.mod.zip`);
+const metadata:unknown=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
+assert.ok(metadata&&typeof metadata==='object'&&'version' in metadata&&typeof metadata.version==='string');
+const packagePath=path.join(root,'dist/framework',`DoLGameUI-${metadata.version}.mod.zip`);
 const inspector = String.raw`import json, pathlib, sys, zipfile
 root = pathlib.Path(sys.argv[1])
 package_path = pathlib.Path(sys.argv[2])
@@ -62,8 +66,10 @@ if (result.status !== 0) throw new Error(result.stderr || 'integrated package in
 console.log(result.stdout.trim());
 // Exercise the compiled early global, including repeat loading and foreign fields.
 const source=fs.readFileSync(path.join(root,'dist/shop-page-experiment.js'),'utf8');
-const window={};vm.runInNewContext(source,{window});
-const api=window.DoLShopPageExperiment;
+const window:Record<string,unknown>={};vm.runInNewContext(source,{window});
+interface EarlyApi {enabled:boolean;setEnabled(value:unknown):boolean;reset():boolean;foreign?:string}
+function isApi(value:unknown):value is EarlyApi{return !!value&&typeof value==='object'&&'enabled' in value&&typeof value.enabled==='boolean'&&'setEnabled' in value&&typeof value.setEnabled==='function'&&'reset' in value&&typeof value.reset==='function';}
+const api=window.DoLShopPageExperiment;assert.ok(isApi(api));
 assert.equal(api.enabled,false);assert.equal(api.setEnabled(true),true);
 assert.equal(api.setEnabled('true'),false);api.setEnabled(true);api.foreign='kept';
 vm.runInNewContext(source,{window});assert.equal(window.DoLShopPageExperiment,api);

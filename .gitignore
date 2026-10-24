@@ -166,3 +166,19 @@ docs/HANDOFF.local.md
 /tests/adapter-materials.cjs
 /tests/kraft-work-adapters.cjs
 /tests/native-small-surfaces.cjs
+
+# Generated from maintained strict TypeScript tests.
+/tests/selection-motion.cjs
+/tests/wardrobe-wear-motion.cjs
+/tests/combat-select.cjs
+/tests/combat-focused.cjs
+/tests/shop-ripple-motion.cjs
+/tests/wardrobe-details-drawer.cjs
+/tests/panels-framework.cjs
+/tests/evolution-navigation.cjs
+/tests/evolution-orbit.cjs
+/tests/header-weather.cjs
+/tests/weather-special.cjs
+/tests/evolution-owner-resources.cjs
+/tests/shop-pagination-package.test.cjs
+/tests/settings-lifecycle.test.cjs
