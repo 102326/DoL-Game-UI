@@ -1,0 +1,21 @@
+{
+  "scope": "Blood-rain BR02 dense sliding blood, short residual film; isolated actual settings; no production/save changes",
+  "files": {
+    "blood-rain-1x.mp4": {
+      "bytes": 1027943,
+      "sha256": "ab446b4d738a8cba53ba54a011cecc43a337a059f1896792d5d8de997525d04d"
+    },
+    "blood-rain.png": {
+      "bytes": 509782,
+      "sha256": "f2612f5c8589381cb29f544dc4fa903244047decf27bc0d9083ce79afc97e6e4"
+    },
+    "narrow.png": {
+      "bytes": 174642,
+      "sha256": "34cbdd8a09cca13e306c57723c6c8dce116c3f0e2973ad6b1e158e80525e6149"
+    },
+    "result.json": {
+      "bytes": 2824,
+      "sha256": "c44ecdfccc2dbcaefc9aef9dbf987cb46a7bf3a3957111d13461d0afd57715b8"
+    }
+  }
+}

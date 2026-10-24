@@ -2059,8 +2059,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ec67ee8c90c05616c32fdd4edb03af9abcb22a58320fccf559612df4e236fc52",
-      "assertionSites": 43,
+      "sourceSha256": "cfe85d58183167d57c22f0621ab14e2d98538ea69c8579e0dcd349a1dda36609",
+      "assertionSites": 53,
       "rendererContexts": [
         "weather:2d"
       ]

@@ -1,0 +1,29 @@
+{
+  "scope": "Isolated blood-moon study on actual settings; controlled input, original speed, no game/save data or production integration",
+  "files": {
+    "desktop-1x.mp4": {
+      "bytes": 1587967,
+      "sha256": "1b775997c8a91c214b569abc56e4e43ffcc116db8b95e09a118009136515bb50"
+    },
+    "desktop.png": {
+      "bytes": 490154,
+      "sha256": "5fea6201a549f1d5dc0fcf4ff1652e4936d8fae9c63c0d8200f4baa1beab8732"
+    },
+    "narrow-1x.mp4": {
+      "bytes": 430911,
+      "sha256": "f53647e80320a90b5f9f0889ef9e59a626300075a8ca8e60037607d9335c20d1"
+    },
+    "narrow.png": {
+      "bytes": 180842,
+      "sha256": "40d8920a0698f596e711c76de8fb5cdc68e97bb463d9641c3cf6c17ee00ccb7c"
+    },
+    "rain.png": {
+      "bytes": 528940,
+      "sha256": "deaf21a542f7bcf187889c10b66bcb0cfbfb9d3622ee14396e73211b28189d39"
+    },
+    "result.json": {
+      "bytes": 3010,
+      "sha256": "e75defa97e63c325cca22ed2a8b153e01a697dcc0efdb1c680afef50d0fb7067"
+    }
+  }
+}

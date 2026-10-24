@@ -1,5 +1,7 @@
 # Evolution / 已认可 C5.2/R10 与历史天气研究
 
+2026-10-24：[血月B01](../../docs/evolution/EVO-BLOOD-MOON-B01.md)及[特殊环境S01](../../docs/evolution/EVO-SPECIAL-ATMOSPHERE-S01.md)已获负责人本批视觉认可，雨中血月恢复原普通雨。BR01/BR02血色雨和滑落血滴已停用，相关源码/录制脚本仅作历史研究，不适用于当前回退预览。[I01](../../docs/evolution/EVO-SPECIAL-INTEGRATION-I01.md)现已迁入src并接入实际设置，原型文件保留薄导出；本地构建与针对性回归通过，未提交/推送、未装入Android或发布。当前预览无源码注入，原媒体身份不变。血月入口：`node scripts/preview-evolution-blood-moon.ts`；完整特殊环境入口：同命令加 `--special`，使用5196端口。
+
 当前（2026-10-23）：C5.2/R10已获负责人认可，现由[EVO-INT-W01](../../docs/evolution/EVO-INT-WEATHER01.md)接入研发实际设置入口。原型仍保留全部历史候选与参数；模型/材质/时钟迁入src/ui/weather共用，薄导出不改写旧媒体来源。生产设置保留S01底材，研究专用半透明背景和工具条不移入；其它窗口、真实游戏/设备和G1/G2/G3另行验证。
 
 以下为历史第二轮起点与各轮记录，最新状态以上方及R10结尾为准。

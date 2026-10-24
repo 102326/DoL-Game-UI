@@ -1,0 +1,104 @@
+{
+  "scope": "Isolated blood-moon study on actual settings; controlled input, original speed, no game/save data or production integration",
+  "sourceHead": "3aea28ae61711b4cc0651299f71379af5ee467ff",
+  "workingTree": true,
+  "sources": {
+    "prototypes/evolution-weather/blood-moon.ts": "9bea6270a0fc55acb08a599e8651fcefcdef32d40af709f0b0d12234d08a1168",
+    "scripts/preview-evolution-blood-moon.ts": "7c06e15c719a09c76c36eaacea69a2904bcce4bbe3a496ce4af578b9ea076c51",
+    "scripts/record-evolution-blood-moon.ts": "96f6979214b3efed342973b994a0ab1b77be35a267bada540e94358ddadc9ca2",
+    "src/ui/weather/wet-glass.ts": "389d4f5fdaf4df03eccd1f8b6557c02547f8847e25486b57d39cd3e3d2536f03",
+    "src/ui/weather/surface.ts": "372e683b9ea88fa37cb18ee532592f148ee1403be788cf2357db5db77b58aa41",
+    "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+    "dist/framework/official-ui/style.css": "54bc0e2a2eac5a9dbdb42874527a15ddb8461efe9dddd315395e280c3c438b1e"
+  },
+  "browser": "157.0.4341.16",
+  "checks": [
+    "Real paragraph and close control pixel protection",
+    "Reduced motion is static",
+    "Actual cloud pixels animate on the existing clock",
+    "Lower atmosphere remains painted throughout all category transitions",
+    "Real setting control remains operable",
+    "Both layout controls operate on the actual settings component",
+    "Rain coexistence retains protection",
+    "390px shell stays in viewport",
+    "Animation preference stops the shared clock",
+    "Close and disposal remove owned surfaces"
+  ],
+  "errors": [],
+  "records": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "events": [
+        {
+          "label": "夜间 → 血月",
+          "ms": 1606
+        },
+        {
+          "label": "切换左右布局",
+          "ms": 18635
+        },
+        {
+          "label": "真实设置切换",
+          "ms": 24155
+        },
+        {
+          "label": "血月 → 雨中血月",
+          "ms": 25367
+        },
+        {
+          "label": "关闭",
+          "ms": 39421
+        },
+        {
+          "label": "再次打开",
+          "ms": 40281
+        },
+        {
+          "label": "退回普通夜间",
+          "ms": 45290
+        },
+        {
+          "label": "Escape关闭",
+          "ms": 48496
+        }
+      ]
+    },
+    {
+      "name": "narrow",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "events": [
+        {
+          "label": "夜间 → 血月",
+          "ms": 1620
+        },
+        {
+          "label": "血月 → 雨中血月",
+          "ms": 10125
+        },
+        {
+          "label": "关闭",
+          "ms": 18665
+        },
+        {
+          "label": "再次打开",
+          "ms": 19533
+        },
+        {
+          "label": "退回普通夜间",
+          "ms": 21548
+        },
+        {
+          "label": "Escape关闭",
+          "ms": 24759
+        }
+      ]
+    }
+  ]
+}

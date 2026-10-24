@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "scope": "Integrated owner-approved special weather with ordinary rain; no release",
+  "browser": "157.0.4341.16",
+  "sources": {
+    "src/ui/weather/blood-moon.ts": "a5d06e51b5e619d58fc65b54aa5819310b1bf00f6f472fa0907884288a25ab88",
+    "src/ui/weather/special-atmosphere.ts": "84ca650b7baa985443d51d7ab875c5f7104d51343b5876a754687e791e32637f",
+    "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+    "src/ui/weather/wet-glass.ts": "dd85eb0f0e19996f2f3b9d4786062ba0931c8c6df0b43aece8a50b696896f831",
+    "src/ui/weather/surface.ts": "372e683b9ea88fa37cb18ee532592f148ee1403be788cf2357db5db77b58aa41",
+    "scripts/assert-accepted-weather.ts": "a6def482ba6313602ab1b1753a1d1f033d599947425b57d212201622731ee924",
+    "scripts/preview-evolution-blood-moon.ts": "71447dee7234c49765b40e1d52f359ac0e5001f13554e2938a58ecc9da9c50e4",
+    "scripts/check-evolution-rain-rollback.ts": "a99ab9e8d20f5c4c089552036f0530b1e9cf4d993d79eef3853dc67c17214408"
+  },
+  "checks": [
+    "Accepted blood-moon and three atmosphere drawings unchanged",
+    "Blood-rain imports absent",
+    "Ordinary and blood-moon rain body/refraction exactly identical",
+    "Frozen rain geometry unchanged and protected",
+    "Reading pixels unchanged",
+    "Surfaces released"
+  ],
+  "screenshotSHA256": "84a4ca07af31d76da94278625211c0e8c6431a3ca57b30bb7bdcd3f94bbc634b",
+  "errors": []
+}

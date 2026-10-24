@@ -1,0 +1,34 @@
+{
+  "scope": "Blood-rain BR01 isolated actual settings; controlled input; no production/save changes",
+  "browser": "157.0.4341.16",
+  "sources": {
+    "prototypes/evolution-weather/blood-rain.ts": "0a8496982a640b392e063dcb0f23c63fe3e8ce3cbe62517423f29bcbcb5173b8",
+    "prototypes/evolution-weather/blood-rain.css": "7e82694ee5615a587d67e09788e70be4c671c005f0370aa51761ccc8aea125e6",
+    "prototypes/evolution-weather/blood-moon.ts": "9bea6270a0fc55acb08a599e8651fcefcdef32d40af709f0b0d12234d08a1168",
+    "scripts/preview-evolution-blood-moon.ts": "280389a25392164b337c5263dfd41f66ed4ed66fd15731d04f660acd37d18844",
+    "scripts/record-evolution-blood-rain.ts": "ac3575def1ceefb1b27793d627df00552a3aba1657236c8499b61d770051c475",
+    "src/ui/weather/wet-glass.ts": "389d4f5fdaf4df03eccd1f8b6557c02547f8847e25486b57d39cd3e3d2536f03",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/surface.ts": "372e683b9ea88fa37cb18ee532592f148ee1403be788cf2357db5db77b58aa41"
+  },
+  "checks": [
+    "Neutral palette exactly preserves all original canvas colors; input clamping",
+    "Actual reading and close pixels stay unchanged",
+    "Actual drops gain red tint while native backdrop refraction remains",
+    "Tint keeps frozen rain trajectories, bounds and protection",
+    "Leaving blood moon restores original ordinary-rain style",
+    "390px blood-rain preview stays in viewport",
+    "Close and dispose release decorated surfaces"
+  ],
+  "normal": {
+    "background": "linear-gradient(140deg, rgba(4, 22, 27, 0.18), rgba(0, 0, 0, 0) 26%, rgba(0, 0, 0, 0) 65%, rgba(216, 237, 237, 0.12))",
+    "border": "rgba(218, 244, 240, 0.29)",
+    "filter": "url(\"#evo-rain-1-0\")"
+  },
+  "red": {
+    "background": "linear-gradient(140deg, color(srgb 0.298039 0.0235294 0.117647 / 0.321569), rgba(0, 0, 0, 0) 26%, rgba(0, 0, 0, 0) 65%, color(srgb 0.831373 0.356863 0.411765 / 0.239216))",
+    "border": "color(srgb 0.87451 0.415686 0.47451 / 0.4)",
+    "filter": "url(\"#evo-rain-1-0\")"
+  },
+  "errors": []
+}

@@ -5,17 +5,22 @@ import showerUrl from '../../theme/kw-weather-shower.svg';
 import forceUrl from './shower-force.svg';
 import {frostSurface} from './frost';
 import {scatteredShower} from './scattered-shower';
+import {bloodMoonSky} from './blood-moon';
+import {specialAtmosphere} from './special-atmosphere';
 import type {WeatherFrame as Frame} from './surface';
 type Box={x:number;y:number;width:number;height:number};
 type FrostFactory=(...args:Parameters<typeof frostSurface>)=>ReturnType<typeof frostSurface>;
 let instance=0;
 /** Native SVG displacement reads the browser's backdrop. No DOM capture or substitute texture. */
-export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false,climate=false,withShower=false,withForce:boolean|'scatter'=false,makeFrost:FrostFactory=frostSurface){
+export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails=false,runoff=false,climate=false,withShower=false,withForce:boolean|'scatter'=false,makeFrost:FrostFactory=frostSurface,specialSkies=false){
  const scope=visualScope();
  try{
  const scatter=withForce==='scatter',field=scatter?scatteredShower():undefined;let showerGeometry:ReturnType<ReturnType<typeof scatteredShower>['step']>['streaks']=[];
  let showerEnabled=withShower,showerPhase=0;const showerImage=withShower&&!scatter?new Image():undefined;if(showerImage){showerImage.onload=()=>invalidate();showerImage.src=withForce?forceUrl:showerUrl;scope.own(()=>{showerImage.onload=null})}
  const shell=canvas.parentElement!,ctx=canvas.getContext('2d')!,model=rainModel(0x27fa29,naturalTrails,runoff);
+ // Build special textures only when first needed; ordinary settings open without this work.
+ let blood:ReturnType<typeof bloodMoonSky>|undefined,atmosphere:ReturnType<typeof specialAtmosphere>|undefined;
+ scope.own(()=>blood?.dispose());scope.own(()=>atmosphere?.dispose());
  const layer=document.createElement('div');layer.className='evo-material-layer evo-glass-layer';layer.setAttribute('aria-hidden','true');
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('width','0');svg.setAttribute('height','0');
  const prefix='evo-rain-'+(++instance),ids:string[]=[];
@@ -89,7 +94,7 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   // conservatively, then remeasure its final text/controls after cancellation or finish.
   if(dirty)layoutAnimations=shell.getAnimations({subtree:true}).filter(a=>a.effect instanceof KeyframeEffect&&a.effect.target instanceof Element&&a.effect.target.matches('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab,.dmt-workspace-section'));
   const movingLayout=layoutAnimations.some(a=>a.playState==='running');
-  if(dirty||s.width!==width||s.height!==height||wasMoving&&!movingLayout)layout(s.width,s.height);
+  if(dirty||specialSkies&&movingLayout||s.width!==width||s.height!==height||wasMoving&&!movingLayout)layout(s.width,s.height);
   frameProtection=protectedBoxes;
   const workspace=shell.querySelector('.dmt-workspace');
   if(movingLayout&&workspace){const r=workspace.getBoundingClientRect(),base=canvas.getBoundingClientRect(),scale=base.width/s.width||1;frameProtection=[...protectedBoxes,{x:(r.x-base.x)/scale-96,y:(r.y-base.y)/scale-48,width:r.width/scale+192,height:r.height/scale+96}]}
@@ -98,7 +103,11 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   const humidity=s.wet*(1-s.snow*.8);rainEnergy=withForce?1.05+s.intensity*.85:1;rainAmount=climate?Math.min(2,s.intensity*(scatter?.8:withForce?1.4:1)):1;model.step(dt,humidity,rainAmount,rainEnergy);
   const state=model.snapshot();active=[];visibleFlow=0;ctx.clearRect(0,0,width,height);
   const special=s.special??'none',amount=s.specialAmount??0;
-  if(special!=='none'&&amount>.002){
+  if(specialSkies&&special==='blood-moon'&&amount>.002){
+   blood??=bloodMoonSky();blood.draw(ctx,s,protectedBoxes);
+  }else if(specialSkies&&['tentacle','heat','cold'].includes(special)&&amount>.002){
+   atmosphere??=specialAtmosphere();atmosphere.draw(ctx,s,protectedBoxes);
+  }else if(special!=='none'&&amount>.002){
    const color=({'blood-moon':'171,45,51',tentacle:'125,68,175',heat:'211,139,65',cold:'133,189,215'} as const)[special];
    const x=width*(.76+Math.sin(s.time*.12)*.035),y=Math.min(90,height*.16),radius=Math.min(width*.3,height*.34);
    const halo=ctx.createRadialGradient(x,y,0,x,y,radius);halo.addColorStop(0,`rgba(${color},${amount*.38})`);halo.addColorStop(.45,`rgba(${color},${amount*.16})`);halo.addColorStop(1,'transparent');ctx.fillStyle=halo;ctx.fillRect(0,0,width,height);
@@ -156,6 +165,6 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   if(frost)frost.draw(s.snow,s.time,width,height);
   else if(s.snow>.01){ctx.strokeStyle=`rgba(207,230,238,${s.snow*.4})`;ctx.lineWidth=.5;for(let i=0;i<50;i++){const y=i*height/50,edge=i%2?width-2:2,sign=i%2?-1:1,len=(4+(i*19%17))*s.snow;ctx.beginPath();ctx.moveTo(edge,y);ctx.lineTo(edge+sign*len,y-len*.5);ctx.lineTo(edge+sign*len*.65,y-len*.8);ctx.stroke()}}
  }
- return{draw,shower(value:boolean){showerEnabled=withShower&&value},count:nodes.length,layoutMoving:()=>wasMoving,snapshot:()=>{const s=model.snapshot(),cold=frost?.snapshot();return{material:'glass',forceEnabled:!!withForce,scatterEnabled:scatter,showerPattern:scatter?'independent-streaks':'tiled-svg',showerGeometry,rainEnergy,rainAmount,showerDensity,showerSpeed,showerEnabled,showerReady:scatter||!!(showerImage?.complete&&showerImage.naturalWidth),showerPhase,climateEnabled:climate,microVisible,...cold,runoffEnabled:runoff,runoffBorn:s.runoffBorn,runoffDrained:s.runoffDrained,trailMode:naturalTrails?'natural-footprint':'linear-stroke',wetBounds,wetPaths:wetBounds.length,activeDrops:active.length,moving:visibleFlow,attached:active.length-visibleFlow,merges:s.merges,slides:s.slides,drained:s.drained,trailSegments:s.trails.length,protected:frameProtection,dropBounds:active,protectedOverlap:[...active,...wetBounds,...(cold?.iceBounds??[]),...(cold?.flakeBounds??[])].filter(b=>frameProtection.some(q=>intersects(b,q))).length,backdropSupported:CSS.supports('backdrop-filter',`url(#${ids[0]})`),optics:'Native SVG backdrop displacement; approximate normal field, not a physical refraction solver',drops:s.drops}},dispose(){if(showerImage)showerImage.onload=null;scope.dispose();layer.remove()}};
+ return{draw,shower(value:boolean){showerEnabled=withShower&&value},count:nodes.length,layoutMoving:()=>wasMoving,snapshot:()=>{const s=model.snapshot(),cold=frost?.snapshot();return{material:'glass',specialSkiesEnabled:specialSkies,specialSkyModels:[blood?.snapshot(),atmosphere?.snapshot()].filter(Boolean),forceEnabled:!!withForce,scatterEnabled:scatter,showerPattern:scatter?'independent-streaks':'tiled-svg',showerGeometry,rainEnergy,rainAmount,showerDensity,showerSpeed,showerEnabled,showerReady:scatter||!!(showerImage?.complete&&showerImage.naturalWidth),showerPhase,climateEnabled:climate,microVisible,...cold,runoffEnabled:runoff,runoffBorn:s.runoffBorn,runoffDrained:s.runoffDrained,trailMode:naturalTrails?'natural-footprint':'linear-stroke',wetBounds,wetPaths:wetBounds.length,activeDrops:active.length,moving:visibleFlow,attached:active.length-visibleFlow,merges:s.merges,slides:s.slides,drained:s.drained,trailSegments:s.trails.length,protected:frameProtection,dropBounds:active,protectedOverlap:[...active,...wetBounds,...(cold?.iceBounds??[]),...(cold?.flakeBounds??[])].filter(b=>frameProtection.some(q=>intersects(b,q))).length,backdropSupported:CSS.supports('backdrop-filter',`url(#${ids[0]})`),optics:'Native SVG backdrop displacement; approximate normal field, not a physical refraction solver',drops:s.drops}},dispose(){if(showerImage)showerImage.onload=null;scope.dispose();layer.remove()}};
  }catch(error){scope.dispose();throw error}
 }
