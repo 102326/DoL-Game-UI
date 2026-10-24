@@ -116,3 +116,5 @@ docs/HANDOFF.local.md
 /tests/game-controls-types.cjs
 
 /tests/preferences-preservation.cjs
+
+/tests/native-action-panel.cjs
