@@ -17,7 +17,7 @@ export function readWardrobe(root: Window): WardrobeCatalog | null {
   const state: Snapshot | null = snapshot(host);
   if (!state) return {passageId:id, categories: [], unknownSlots: [], unavailable: 'unsupported'};
   const slots = Object.keys(state.inventory).filter(key => Array.isArray((state.inventory as Record<string, unknown>)[key]));
-  const categories = slots.filter(key => key in LABELS).map(key => ({key, label: LABELS[key], items: entries(state, key).map((entry: Entry) => project(state, entry))}));
+  const categories = slots.filter(key => key in LABELS).map(key => ({key, label: LABELS[key] ?? key, items: entries(state, key).map((entry: Entry) => project(state, entry))}));
   const unknownSlots=slots.filter(key => !(key in LABELS));
   return {passageId:id, categories, unknownSlots, unavailable: !unknownSlots.length && categories.every(category => !category.items.length) ? 'no-inventory' : undefined};
  } catch {return null}
