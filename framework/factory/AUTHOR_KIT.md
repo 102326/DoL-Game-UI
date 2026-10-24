@@ -8,7 +8,7 @@
 node scripts/framework-factory.mjs create E:/my-mods/ReadingNotes ReadingNotes
 ```
 
-目标目录必须不存在，技术名由作者选择。进入生成的项目，安装其声明的依赖并保留自己的锁文件。需要 Node 22.12+、Python 3.10+；本源码包不包含 Node、Python、Vue 或 node_modules。
+目标目录必须不存在，技术名由作者选择。进入生成的项目，安装其声明的依赖并保留自己的锁文件。需要 Node 26+、Python 3.10+；本源码包不包含 Node、Python、Vue 或 node_modules。
 
 生成器来源为 `scripts/framework-factory.mts`，随包的 `.mjs` 是预编译入口，解压后可直接运行。新项目的 Vite 配置为 `vite.config.mts`，由 Vite 加载；SDK 更新不会改写已有作者项目的配置格式。
 

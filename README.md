@@ -138,7 +138,7 @@ Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、�
 <details>
 <summary>3.0 源码构建</summary>
 
-需要 Node.js 22.12+、npm 和 Python 3.10+。以下为 Framework／官方 UI 双包入口：
+需要 Node.js 26+、npm 和 Python 3.10+。以下为 Framework／官方 UI 双包入口：
 
 ```text
 npm ci

@@ -10,7 +10,7 @@
 - 推送到 `main`、`ci/kraft-work-*` 或 `ci/moody-blues-*` 分支。
 - Actions 页手动运行。
 
-标准验证采用 Ubuntu、Node.js 22、Python 3.12 和 lockfile 对应的 Playwright Chromium；验证job上限15分钟，下载复核与最终门禁独立运行。研究producer上限20分钟，保留其独立下载复核。PR与分支push按事件分别并发控制，main push不取消前序验证，手动运行以Run ID隔离。Actions固定到提交SHA，仓库权限为只读，不使用发布凭据。Windows本地浏览器检查继续使用已安装的Edge。
+标准验证采用 Ubuntu、Node.js 26、Python 3.12 和 lockfile 对应的 Playwright Chromium；标准与研究producer的具体超时以当前工作流配置为准，下载复核与最终门禁独立运行。PR与分支push按事件分别并发控制，main push不取消前序验证，手动运行以Run ID隔离。Actions固定到提交SHA，仓库权限为只读，不使用发布凭据。Windows本地浏览器检查继续使用已安装的Edge。
 
 不监听 Tag。暂不增加所有 Node 版本或平台矩阵；先根据每项耗时和实际失败调整范围。
 
@@ -36,7 +36,7 @@
 
 GitHub 构建以 Project ID、Commit SHA、Run ID、Attempt 绑定证据，八包 SHA-256 通过 receipt、合同报告和上传索引溯源。本地独立执行下列 build / packages 命令时，检查器复用首轮 receipt 的本地 Run ID，并严格核对源码和完整身份；CI 不从旧 receipt 接管 Run ID。完整 stage runner 仍统一设置 `MOODY_EVIDENCE_ID`。
 
-Node 22.12需先设置 `NODE_OPTIONS=--experimental-strip-types`；工作流已设置。Node 22.18及本机24原生支持可擦除TS，`npm ci`不需要先构建CI工具。严格类型检查在依赖安装后执行。
+当前最低 Node.js 为26.0.0，两套工作流使用26.x。该版本默认支持可擦除TS；工作流保留显式 `NODE_OPTIONS=--experimental-strip-types`。`npm ci`不需要先构建CI工具，严格类型检查在依赖安装后执行。旧Node22结果仅为历史证据，不代表当前支持范围。
 
 在仓库根目录运行：
 

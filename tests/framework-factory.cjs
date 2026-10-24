@@ -14,6 +14,7 @@ function command(executable,args,cwd=root,expected=0){
  command(process.execPath,[factory,'create',target,'AuthorNotes'],root,1);
  fs.symlinkSync(path.join(root,'node_modules'),path.join(target,'node_modules'),'junction');
  const authorPaths=['src/main.ts','src/preview.ts','index.html','vite.config.mts','package.json'];
+ assert.equal(JSON.parse(fs.readFileSync(path.join(target,'package.json'),'utf8')).engines.node,'>=26.0.0');
  const authorFiles=Object.fromEntries(authorPaths.map(p=>[p,fs.readFileSync(path.join(target,p),'utf8')]));
  const source=path.join(target,'src/Panel.vue'),edited=fs.readFileSync(source,'utf8').replaceAll('界面便笺','作者定制的便笺');
  fs.writeFileSync(source,edited);

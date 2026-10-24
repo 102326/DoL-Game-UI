@@ -2,7 +2,9 @@
 # Execute the actual workflow gate shell, so skipping/failing validate cannot look green.
 require 'yaml'
 require 'open3'
+require 'json'
 root = File.expand_path('..', __dir__)
+raise 'Node baseline must be 26+' unless JSON.parse(File.read(File.join(root,'package.json'))).dig('engines','node') == '>=26.0.0'
 workflow = YAML.safe_load(File.read(File.join(root, '.github/workflows/build.yml')), permitted_classes: [], aliases: false)
 gate = workflow.fetch('jobs').fetch('moody-gate')
 raise 'gate must always run after validate' unless gate['needs'] == ['validate','evidence-verify'] && gate['if'] == '${{ always() }}'
@@ -18,6 +20,8 @@ end
 end
 %w[build.yml golden-spin-prototype.yml].each do |file|
  w=YAML.safe_load(File.read(File.join(root,'.github/workflows',file)), permitted_classes: [], aliases: false)
+ node_steps=w.fetch('jobs').values.flat_map{|j|j.fetch('steps',[])}.select{|s|s['uses'].to_s.start_with?('actions/setup-node@')}
+ raise "Node26 setup missing or inconsistent: #{file}" unless node_steps.length==2 && node_steps.all?{|s|s.dig('with','node-version')=='26'}
  producer=file=='build.yml' ? 'validate' : 'prototype'
  concurrency=w.fetch('concurrency')
  raise "event/manual concurrency collision: #{file}" unless concurrency['group'].include?('github.event_name') && concurrency['group'].include?('github.run_id')

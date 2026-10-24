@@ -44,7 +44,7 @@
 ## Next — 接手顺序
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
-2. 核对Node >=22.12（22需启用 `NODE_OPTIONS=--experimental-strip-types`）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
+2. 核对Node >=26.0.0（两套Actions使用26.x）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
 3. 当前受验实现8033b7f，核对RC2报告、标准40075729443/研究40075728194成功CI、九包JSON及Android最终8包成员。RC1在雨幕反馈后已被替代；旧c215239/37da596/I01为历史，不替代新源码。仅文档/媒体的后续提交不能冒称重跑CI；实际产品输入变化才重新构建与验证。
 4. 本次提交不要求马上接入READ01。若继续研究，先在目标浏览器复核桌面帧退化，使用报告的成对对照和短时观测命令；不要仅减弱已认可天气、移除断言或把减少模糊半径当修复。性能证据与负责人材质评审分别通过后，才决定实际接入范围。
 5. 发布前1–5已完成，当前内部4.0.0-rc.2，按关卡报告等待负责人整体验收及正式授权。当前候选不是公开发行，不合入main、不创建Tag/Release。拟正式4.0.0的最终版本标记重建及最小安装复验留在授权后的发行步骤。其它窗口推广、实体手机/iOS、全部Mod与长期性能不自动追加。

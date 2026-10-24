@@ -6,7 +6,7 @@ import child = require('node:child_process');
 const {createHash}=crypto,{execFileSync}=child;
 const root=fs.realpathSync(path.resolve(__dirname,'..'));
 const shopInputs=['src/shop/Toolbar.vue','src/ui/GameButton.vue','src/shop/style.css','src/tokens.css','src/theme/midnight.css','src/theme/controls.css','src/shop/main.ts','src/runtime/ui.ts','src/public/ui.ts','component-lab/App.vue','component-lab/main.ts','component-lab/lab.css','component-lab/source-index.cts','component-lab/source-link.ts','scripts/build-tooling.mts','tsconfig.tools.json','vite.lab.config.ts','tsconfig.lab.json','package.json','package-lock.json'];
-const sha=(b:crypto.BinaryLike)=>createHash('sha256').update(b).digest('hex');
+const sha=(b:string|Buffer)=>createHash('sha256').update(b).digest('hex');
 const floatingInputs=shopInputs.filter(p=>!p.startsWith('src/shop/')).concat(['src/floating/FloatingTools.vue','src/floating/main.ts','src/floating/preferences.ts','src/floating/style.css','src/theme/visual.css','src/theme/eyes.css','src/theme/layout.css','src/theme/mobile.css']);
 const inputs=[...new Set([...shopInputs,...floatingInputs])];
 function sourceIndex(componentId='shop.toolbar'){
