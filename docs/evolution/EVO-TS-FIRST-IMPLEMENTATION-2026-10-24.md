@@ -287,3 +287,18 @@ kraft-work-product 严格编译通过但运行失败：280×320的球体中心�
 独立Android测试App在Start安装该准确CI的UI及Host（其余Mod不变），保留原包备份，原生重启成功。两包全部成员与CI逐一一致；设置modal/背景阻挡、150%字体触控滚动0→62.8、关闭及偏好恢复通过；加载顺序/禁用列表未改，无存档业务写入。首轮居中手势后buttonScale由100变为120，保留探针/失败；恢复原值并改用明确排除input/button/label等控件的起点后通过，不将首次失败记为通过或宣称已归因产品缺陷。自有CDP资源清理完成。
 
 d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用区域，不抬高层级盖住原控件；复用现有ResizeObserver/visualScope，处理底栏尺寸/显隐及场景改变，清理新增监听。原完整kraft-work-product测试通过；新增原生底栏停用/恢复后球体回位且存储位置不变断言通过。100项严格ci:check通过；该最新产品修复尚待本批CI及代表性实机，不借用94项结果。未发布。
+
+
+## 2026-10-25：101–105项与100项候选验收
+
+- 累计105/243，剩余138（10个脚本、128个测试）；仍包含既有TS边界和内联程序的独立范围，不是整体完成百分比。
+- 101：Host连接根对象改为实际消费的document/DoLUiHost结构；连接拒绝与清理测试CTS化，原失败案例保留。
+- 102：CI transportVerdict原先错误承诺返回原泛型T，但会改变status及reasonCodes；返回类型改为实际可返回的Verdict字段加原扩展字段。运行判定未改；CI完整性与传输失败测试CTS化并通过。
+- 103：实际构建启动与信号生命周期CTS化；迟到Host、错误Host、保存禁用、失败提示、AbortSignal.any缺失、监听清理及取消原因断言保留。动态构建导出及返回值按unknown验证，未伪装完整宿主。
+- 104：命令/独立消费者CTS化，使用真实Host/Command合同；Json结果验证后才读取见证。并发busy、旧句柄、失效unknown、不重放、原控件身份、遮挡/禁用、模态和窄屏清理原用例全部通过。
+- 105：Hub原生快捷入口CTS化，隔离运行上下文不再写Node全局。原JS夹具也因遗漏visualScope报错；100428d单独接入实际visualScope，随后9887a24做迁移。所有原始点击/拒绝断言保留。迁移过程曾出现CJS exports名称冲突，已修复，失败日志保留。
+- 本机Node26.12.1；ts-103-check、ts-104-check完整ci:check通过，105严格工具编译和快捷入口检查通过；Windows Edge启动、命令和Host连接代表性集成通过。
+- 100项源码d512b93b5136c7337e1ae0f5016dbcf7ddf9c14d：标准40118218837、研究40118217070全部success；各自下载remote-verification均PASS/COMPLETE、problems为空、准确HEAD、dirty=false、Node26.12.1。10个SHA256、9个ZIP CRC及package-contracts双构建PASS/differences=[]。
+- Android 0509B830099C3540 / com.vrelnir.dol.lyra.uicompat051213：新doctor complete；捕获新安装前顺序/禁用/偏好并备份原UI与Host包，安装准确100项CI包后原生重启。全部加载成员匹配；设置模态/背景阻挡、150%字号触控向下滚动、关闭、偏好恢复通过，停在Start。未操作存档、未更新其它Mod。
+- 范围：Android证明100项候选的上述闭环，不自动覆盖Windows280×320战斗底栏场景，也不覆盖尚未推送的101–105项CI；当前产品运行代码仅Host连接参数类型进一步收紧，其他为测试和CI合同。未发布、未改版本、未合main。
+- 私有证据：tests/artifacts/ci-readback-100/、ts-100-device-loaded.json、ts-100-install.json、ts-100-restart/、ts-101-*至ts-105-*。原始设备数据及安装备份不入Git。
