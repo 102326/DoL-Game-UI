@@ -215,3 +215,16 @@ docs/HANDOFF.local.md
 /tests/unified.test.cjs
 /tests/wardrobe-features.test.cjs
 /tests/wardrobe-layout.test.cjs
+
+/tests/framework-workspace.cjs
+/tests/framework-author-kit.cjs
+/tests/framework-motion.cjs
+/tests/framework-vue-comparison.cjs
+/tests/framework-game.cjs
+/tests/framework-reference-game.cjs
+/tests/release-27-settings.cjs
+/tests/saves-framework.cjs
+/tests/saves-viewport.cjs
+/tests/kraft-work-collections.cjs
+/tests/characteristics-framework.cjs
+/tests/stone-free-player-shells.cjs
