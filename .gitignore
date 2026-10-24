@@ -107,3 +107,7 @@ docs/HANDOFF.local.md
 /tests/cheat-console-layout.cjs
 
 /tests/save-transfer-lifecycle.cjs
+
+/tests/golden-spin-b.cjs
+
+/tests/golden-spin-hub.cjs

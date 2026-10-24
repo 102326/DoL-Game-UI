@@ -1313,6 +1313,7 @@
     },
     {
       "entry": "tests/golden-spin-b.cjs",
+      "sourceEntry": "tests/golden-spin-b.cts",
       "profiles": [
         "research"
       ],
@@ -1340,8 +1341,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "61139b80109b96f39b3792adaa8e93091fcd3d43733ff51b373e1f3f9f0f99e8",
-      "assertionSites": 26,
+      "sourceSha256": "18618e1692e258f9a5490de55973f1c31fb74ac2fefa50c8d8423f4304dfa0fe",
+      "assertionSites": 27,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1416,6 +1417,7 @@
     },
     {
       "entry": "tests/golden-spin-hub.cjs",
+      "sourceEntry": "tests/golden-spin-hub.cts",
       "profiles": [
         "research"
       ],
@@ -1451,8 +1453,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "2593df47372538f0c29cb77c89f0111925e6247e64f7737e89cdea0e37ee8ba6",
-      "assertionSites": 26,
+      "sourceSha256": "2fb9bf0195ffca8ddac8055af461e731bd72cab2cb2872b3a24377750b5a4919",
+      "assertionSites": 28,
       "rendererContexts": [
         "sphere:2d"
       ]
