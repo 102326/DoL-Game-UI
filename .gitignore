@@ -69,3 +69,11 @@ docs/HANDOFF.local.md
 /tests/theme-meters.cjs
 /tests/wardrobe-mode-cleanup.cjs
 /tests/wardrobe-native-link.cjs
+/tests/shop-transaction.cjs
+/tests/shop-quantity-source.cjs
+/tests/shop-source.test.cjs
+/tests/ui-runtime-regressions.cjs
+/tests/ui-runtime-identity.cjs
+/tests/ui-runtime-compat.cjs
+/tests/ui-runtime-surfaces.cjs
+/tests/ui-runtime-inspector.cjs

@@ -403,7 +403,8 @@
       "expected lock validates the real file and preserves unknown metadata",
       "expected lock rejects wrong maps, discriminator values and invalid numeric declarations",
       "case environment plans validate counts and keep empty or opaque valid data",
-      "typed declaration hashes require repository LF instead of silently normalizing input"
+      "typed declaration hashes require repository LF instead of silently normalizing input",
+      "typed literal wrappers preserve expanded assertion sites and named cases"
     ],
     "isolation-inputs.test.mts": [
       "independent checkout keeps exact CRLF input without staging or hiding real edits"
@@ -1136,10 +1137,14 @@
         {
           "id": "typed declaration hashes require repository LF instead of silently normalizing input",
           "minimumAssertions": 1
+        },
+        {
+          "id": "typed literal wrappers preserve expanded assertion sites and named cases",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9397afb6ef1c77edbf05f4fbd206f9c7ed5d151e596594ed4f1910bdf56ad949",
-      "assertionSites": 17
+      "sourceSha256": "8a14b924620351af58cd3a31b100197549f0df38504119b8044e213023139dc8",
+      "assertionSites": 23
     },
     {
       "entry": "tests/floating-preferences.test.cjs",
@@ -1950,6 +1955,7 @@
     },
     {
       "entry": "tests/shop-source.test.cjs",
+      "sourceEntry": "tests/shop-source.test.cts",
       "profiles": [
         "standard"
       ],
@@ -1961,8 +1967,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "f7cbedb83be38ff0f1201b05c030315fab0effcdd099cd18b0f4497f5a52d806",
-      "assertionSites": 17
+      "sourceSha256": "b7ac5ac8767a021467a0812e677402eedc54d28eea4ce65ba7140628e91e70fe",
+      "assertionSites": 19
     },
     {
       "entry": "tests/smartphone-adapter.cjs",
@@ -2103,6 +2109,7 @@
     },
     {
       "entry": "tests/ui-runtime-compat.cjs",
+      "sourceEntry": "tests/ui-runtime-compat.cts",
       "profiles": [
         "standard"
       ],
@@ -2140,6 +2147,7 @@
     },
     {
       "entry": "tests/ui-runtime-identity.cjs",
+      "sourceEntry": "tests/ui-runtime-identity.cts",
       "profiles": [
         "standard"
       ],
@@ -2157,6 +2165,7 @@
     },
     {
       "entry": "tests/ui-runtime-inspector.cjs",
+      "sourceEntry": "tests/ui-runtime-inspector.cts",
       "profiles": [
         "standard"
       ],
@@ -2186,6 +2195,7 @@
     },
     {
       "entry": "tests/ui-runtime-regressions.cjs",
+      "sourceEntry": "tests/ui-runtime-regressions.cts",
       "profiles": [
         "standard"
       ],
@@ -2197,11 +2207,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "178bb0437fd518e1e53428114f26351afd3f73d2a9f4b4da939789295c92bc27",
+      "sourceSha256": "7f63a7caa15a5aae9a44d4d1bee07ad69c5df39004e4fe440c8b68ba3d2b10e6",
       "assertionSites": 19
     },
     {
       "entry": "tests/ui-runtime-surfaces.cjs",
+      "sourceEntry": "tests/ui-runtime-surfaces.cts",
       "profiles": [
         "standard"
       ],
