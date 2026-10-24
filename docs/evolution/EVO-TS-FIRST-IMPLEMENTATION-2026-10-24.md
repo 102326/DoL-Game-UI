@@ -200,3 +200,18 @@ cb92d14把路径和有界JSON读取、证据角色与PNG元数据纳入既有rec
 本机ci-evidence.test仍在原有符号链接用例因Windows EPERM中止，日志保留；没有跳过该用例、改权限或认定全部通过。当前新源码的该分支等待Linux标准CI，66项旧成功只作历史依据。所有新边界与旧H01间歇超时分开报告，后者仍未因果归因。
 
 原清单累计68/243，剩余175项：13个scripts、161个tests、1个兼容专项。source/context/records等模块的实际JS迁移另属原CI脚本的分批拆出，不能把仍保留JS的ci-evidence宣布完成。进程/receipt、整套汇总与研究调度、其它测试、Twee及剩余既有TS边界仍在方案一内。新两套CI须以本批准确提交验证。未改产品版本、Host合同、游戏行为或存档，未装本批Android、合main、Tag或发布。
+
+
+### 2026-10-25：68项CI复核与71项边界迁移（e398e5c）
+
+68项受验源码7fccaf3c843bc52e839bac9dca38d03304f9bff7的标准40109136339、研究40109133881均success。两份独立下载报告PASS / COMPLETE，准确HEAD、clean source及Node v26.12.1一致；标准制品九个ZIP逐个CRC通过、十项UTF-8 SHA-256匹配。制品报告九项反例无失败/错误/跳过，独立双构建PASS且差异为空。该证据包括原ci-evidence符号链接反例在Linux的实际执行，Windows本机EPERM限制仍照实保留。
+
+f67d3e1单独修复运行时证据边界：字符串断言计数、字符串/伪length测试列表不能满足required assertions；磁盘case和graphics作为unknown逐字段检查。新增真实子进程反例均为UNVERIFIED，未降低原退出码、终止、取消或断言错误的判定要求。fd31196再将runCommand迁到原生ci/process.ts，标准和研究runner直接导入取得真实Status、参数及返回类型；断言计数/回执内容仍为unknown，不能用TS声明冒充已验证数据。原CommonJS入口、执行路径、退出语义、终止回执绑定、64KiB尾日志、完整输出摘要及无npm独立验证保持。process.ts已加入独立复制清单，源码策略仍按需加载，不给依赖安装前的验证器引入TypeScript运行时依赖。
+
+cfeb426在既有衣柜operations中收窄关联衣物与目标槽位/容量读取，去除容量路径的非空断言，不修改穿戴或存档规则。051f6bb将对应操作测试转CTS，使用实际Snapshot、Entry、Clothing与原生工厂签名；仍执行真实esbuild模块。全部旧断言保留，并增加不合法容量、缺失槽位的拒绝检查。aac1c76把moody-fixture-evidence转CTS，保留原有快照/图片大小、目录白名单、非有限裁剪坐标处理及原错误优先级。fixtureChecks常量沿用原值并复用既有records模块；错误与快照保持unknown，真实Page方法与有限测试替身使用同一签名。新用例直接验证原来在Windows符号链接反例后无法到达的截图分支，并不删除或绕过原完整测试。
+
+e398e5c将ReOverfits专项检查转CTS，加入既有test-tools编译范围；仍生成并执行同路径check.cjs。槽位注册使用实际公开WardrobeSlotMapping类型，运行时诊断作为unknown验证。真实Windows Edge通过注册/撤销、版本与主题门限、原按钮身份/点击、Vue保持及重复销毁检查。兼容包运行代码、版本和业务未改。
+
+本机Node26.12.1已通过完整ci:check、7项进程/记录原生检查、衣柜操作/宏专项、原三项研究unit及G01–G12/F1、下载身份、封存、字节篡改与无npm验证。ReOverfits构建和实际浏览器检查另通过。TS消费者反例保证process参数/Status、未信任回执和捕获接口不会被any穿透。当前最终71项仍需新两套CI；68项旧成功不得覆盖本批源码。
+
+冻结清单累计71/243，剩余172项（13个工具脚本、159个测试）；清单原later-test-migration是评估历史提案，在负责人方案一下同样属于发布前范围。Twee及既有TS边界继续纳入，不以文件数宣称完成百分比。部分拆出的CI模块没有把仍存JS的ci-evidence/research/CLI算作迁移完成。无本批Android、Mac或iOS验证，H01旧间歇超时仍Unknown；没有正式版本修改、main合入、Tag、Release或公开Assets。

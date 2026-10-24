@@ -31,3 +31,6 @@ The settings, official Hub and special-weather preview servers reference browser
 `ci/source.ts`, `ci/context.ts`, `ci/contracts.ts` and `ci/records.ts` run through Node26's native type erasure. They use Node built-ins and the existing checked-in catalog bootstrap. Keep their files in the independent verifier copy list. The research unit CLI remains CommonJS: edit `ci-research-unit.cts`, then use `npm run tooling:build` to generate its original `.cjs` path.
 
 The context reader validates persisted identity fields against the current typed producer. Only explicit finalization may retain a different source observation; it still requires matching run, profile, catalog and environment anchors. Invalid prior files remain unchanged. Bounded disk JSON returns `unknown`; validate the fields a consumer uses instead of declaring an unchecked report interface.
+
+
+`ci/process.ts` is also native erasable TypeScript. Both runners import its real process result type; receipt data stays `unknown` until checked. Keep it in the independent verifier copy list. `tests/moody-fixture-evidence.cts` and `compat/reoverfits-soft-wet/check.cts` are checked and compiled by the existing test-tools configuration. Their generated `.cjs` paths remain unchanged and are ignored; run `npm run tooling:build` first.

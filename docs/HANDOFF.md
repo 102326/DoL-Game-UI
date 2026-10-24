@@ -1,10 +1,10 @@
 # Soft & Wet 4.0 — 跨设备当前交接
 
-更新：2026-10-24。分支 `dev/evolution-4.0`。本快照包含Android游戏内回归及修复；精确提交以 Git / Issue #22 为准，不能用文档自证工作区或 CI 通过。旧累计记录已移到[历史快照](HANDOFF-2026-10-23-history.md)。
+更新：2026-10-25。分支 `dev/evolution-4.0`。本快照包含Android游戏内回归及修复；精确提交以 Git / Issue #22 为准，不能用文档自证工作区或 CI 通过。旧累计记录已移到[历史快照](HANDOFF-2026-10-23-history.md)。
 
 ## Current — 当前做什么
 
-- **当前TS First：68/243，剩余175项。** 当前实现e6d20e5。CI源码身份、context、判定与有界读取已进入严格TS，研究unit入口和共享夹具转CTS，真实CLI及G01–G12/F1、无npm验证通过。旧新18份夹具报告逐字相同，JSON边界与消费者类型反例保留。66项9c43cf6的[标准40105789722](https://github.com/102326/DoL-Game-UI/actions/runs/40105789722)/[研究40105787662](https://github.com/102326/DoL-Game-UI/actions/runs/40105787662)与下载验证全部success，9ZIP CRC/10项SHA、双构建/9项反例已回读；后续68项和CI拆分需新CI。Windows ci-evidence的原符号链接用例仍受EPERM限制，不跳过，交Linux新候选验证。H01原始12项已通过但旧间歇超时未因果归因。无本批Android、main合入或发布。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
+- **当前TS First：71/243，剩余172项。** 当前实现e398e5c；CI子进程执行层进入严格TS，两套runner直接导入。畸形断言计数的边界修复与迁移分开提交；原取消/终止/G01–G12/F1及无npm验证保留。衣柜操作与截图证据辅助器、ReOverfits专项转CTS，后者已在Windows Edge真实浏览器通过。68项7fccaf3的[标准40109136339](https://github.com/102326/DoL-Game-UI/actions/runs/40109136339)/[研究40109133881](https://github.com/102326/DoL-Game-UI/actions/runs/40109133881)和下载验证全部success：准确HEAD、clean源、Node26.12.1、9ZIP CRC/10项SHA、双构建/9项反例均回读通过；不覆盖后续71项改动。Windows原符号链接用例受EPERM限制仍保留，68项Linux已通过；新批次等待准确源码CI。H01旧间歇超时仍未因果归因。无本批Android、main合入或发布。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
@@ -47,7 +47,7 @@
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
-3. 先按TS First方案一继续T1/T2/T3：当前53项已迁移，190项及既有TS边界仍在范围内；12个维护HTML内联程序已收敛，Twee仍待处理；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
+3. 先按TS First方案一继续T1/T2/T3：当前71项已迁移，172项及既有TS边界仍在范围内；12个维护HTML内联程序已收敛，Twee仍待处理；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
 4. 保留Windows Edge H01原始超时，继续有依据地归因；带记录的诊断通过不能抹去失败。Vite7.3.7已单独修补，旧审计为历史。每批做受影响验证，最终迁移源码再做两套CI、九包与代表Windows/Android实际宿主回归。旧RC2/8033b7f只能复用未改行为的有效证据，不替代新候选。
 5. TS First完成后更新候选冻结、依赖/许可/摘要与玩家材料，再提交负责人验收。4.0.0-rc.2保持内部版本；未授权正式版本变更、main、Tag、Release或公开Assets。READ01仍隔离，不主动新增视觉研究；额外设备及全Mod穷举不自动成为阻塞项。
 
