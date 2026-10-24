@@ -25,3 +25,18 @@ function combatContract(api:CombatControls){
  return {enabled,wrong};
 }
 void combatContract;
+
+
+function panelContract(api:import('../src/panels/types').PanelControls){
+ const enabled:boolean=api.getEnabled('journal');
+ const count:number=api.getLifecycleCounts().mounts;
+ api.setEnabled('settings',false);
+ // @ts-expect-error Unknown panel names are not part of the native adapter contract.
+ api.setEnabled('third-party-panel',true);
+ // @ts-expect-error Display enablement accepts booleans, not numbers.
+ api.setEnabled('journal',1);
+ // @ts-expect-error Diagnostics retain numeric counts.
+ const wrong:string=api.getLifecycleCounts().failures;
+ return {enabled,count,wrong};
+}
+void panelContract;

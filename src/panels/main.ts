@@ -11,7 +11,7 @@ import {unmountUI} from '../runtime/presentation';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant} from '../../framework/contracts';
 import './style.css';
-import type {PanelKind} from './types';
+import type {PanelKind,PanelControls} from './types';
 export type {PanelKind} from './types';
 export interface NavigationState{title:string;sections:string[]}
 const titles:Record<PanelKind,string>={journal:'日志',traits:'特质',statistics:'统计',feats:'成就',cheats:'作弊',attitudes:'态度',settings:'游戏设置'};
@@ -25,7 +25,7 @@ const selectors:Record<PanelKind,string>={
  feats:'#featTypes,#featsList'
 };
 const fixedLabels:Record<string,string>={journalNotesTextarea:'笔记编辑',moneyButton:'详细统计',spoilerWarning:'额外统计提示',featTypes:'筛选与排序',featsList:'成就列表'};
-export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Participant}){
+export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Participant}):PanelControls{
  const preferences:Record<PanelKind,boolean>={journal:true,traits:true,statistics:true,feats:true,cheats:true,attitudes:true,settings:true};
  for(const kind of Object.keys(preferences) as PanelKind[])try{preferences[kind]=root.localStorage.getItem(`DoLGameUI.${kind}.enabled`)!=='false'}catch{/* Session fallback. */}
  let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined;const scope=visualScope();
@@ -48,7 +48,7 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   if(!content||overlayLife&&!overlayLife.current())return;
   const target=targets[index];
   if(index!==-1&&(!target||!content.contains(target)||!visible(target)))return;
-  const top=index<0?0:navigationScrollTop(content,target,12);
+  const top=index<0?0:target?navigationScrollTop(content,target,12):undefined;
   if(top===undefined)return;
   if(document.documentElement.hasAttribute('data-stone-free')){motion.scroll(content,top);if(target)motion.animate(target,[{boxShadow:'inset 3px 0 #a79ab380',backgroundColor:'#a79ab318'},{boxShadow:getComputedStyle(target).boxShadow,backgroundColor:getComputedStyle(target).backgroundColor}],900)}else content.scrollTo({top,behavior:'auto'});
  }
