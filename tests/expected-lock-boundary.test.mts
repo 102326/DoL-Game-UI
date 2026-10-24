@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {parseExpectedLock,parseCasePlan} from '../scripts/ci/contracts.ts';
-import {declarationSource} from '../scripts/ci/generate-lock.ts';
+import {declarationSource,namesFrom} from '../scripts/ci/generate-lock.ts';
 
 test('expected lock validates the real file and preserves unknown metadata',()=>{
   const value:unknown=JSON.parse(fs.readFileSync(new URL('../scripts/expected.lock.json',import.meta.url),'utf8'));
@@ -35,4 +35,15 @@ test('typed declaration hashes require repository LF instead of silently normali
   fs.writeFileSync(file,lf);assert.equal(declarationSource(file),lf);
   fs.writeFileSync(file,crlf);assert.throws(()=>declarationSource(file),/ExpectedLockSourceEol/);assert.equal(fs.readFileSync(file,'utf8'),crlf,'rejected source bytes must remain untouched');
  }
+});
+
+
+test('typed literal wrappers preserve expanded assertion sites and named cases',()=>{
+ const body=`for(const key of keys){checkpoint(key);assert.equal(actual[key],expected[key]);}`;
+ const plain=namesFrom(`const keys=['first','second'];${body}`,'checkpoint');
+ assert.deepEqual(plain,{names:['first','second'],assertionSites:2});
+ for(const initializer of ["(['first','second'])","['first','second'] as const","(['first','second'] as const) satisfies readonly string[]","<readonly string[]>['first','second']"]){
+  assert.deepEqual(namesFrom(`const keys=${initializer};${body}`,'checkpoint'),plain);
+ }
+ assert.throws(()=>namesFrom('checkpoint(dynamicName())','checkpoint'),/Unresolved case declaration/,'type wrappers must not permit unresolved runtime names');
 });

@@ -18,6 +18,7 @@ export function declarationSource(file:string):string{
 }
 function literal(node:ts.Node|undefined,env:Map<string,Literal>):Literal|undefined{
  if(!node)return undefined;
+ if(ts.isAsExpression(node)||ts.isSatisfiesExpression(node)||ts.isParenthesizedExpression(node)||ts.isTypeAssertionExpression(node))return literal(node.expression,env);
  if(ts.isStringLiteralLike(node))return node.text;if(ts.isNumericLiteral(node))return Number(node.text);
  if(node.kind===ts.SyntaxKind.TrueKeyword)return true;if(node.kind===ts.SyntaxKind.FalseKeyword)return false;
  if(ts.isIdentifier(node))return env.get(node.text);
@@ -28,7 +29,7 @@ function literal(node:ts.Node|undefined,env:Map<string,Literal>):Literal|undefin
  if(ts.isTemplateExpression(node)){let value=node.head.text;for(const span of node.templateSpans){const part=literal(span.expression,env);if(part===undefined)return;value+=String(part)+span.literal.text;}return value;}
  return undefined;
 }
-function namesFrom(source:string,callee:string,group?:string):{names:string[];assertionSites:number}{
+export function namesFrom(source:string,callee:string,group?:string):{names:string[];assertionSites:number}{
  const tree=ts.createSourceFile('contract.ts',source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TS),names=new Set<string>();let assertionSites=0;
  function visit(node:ts.Node,env:Map<string,Literal>):void{
   if(ts.isIfStatement(node)&&group){const expression=node.expression.getText(tree);if((expression.includes('.includes(group)')||/^group===/.test(expression))&&/['"](?:identity|inspector|surfaces|compat|all)['"]/.test(expression)){const values=[...expression.matchAll(/['"]([^'"]+)['"]/g)].map(m=>m[1]);if(values.includes(group)){visit(node.thenStatement,new Map(env));}else if(node.elseStatement)visit(node.elseStatement,new Map(env));return;}}
