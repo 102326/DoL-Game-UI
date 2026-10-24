@@ -4,6 +4,8 @@ import path from 'node:path';
 interface Context {dir:string;identity:unknown}
 interface Result {name:string;status:string;rawStatus?:string;milliseconds?:number|null;[key:string]:unknown}
 interface Report {suite:string;results:Result[];kind?:string}
+const record=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
+function result(value:unknown):value is Result{return record(value)&&typeof value.name==='string'&&typeof value.status==='string'&&(value.rawStatus===undefined||typeof value.rawStatus==='string')&&(value.milliseconds==null||typeof value.milliseconds==='number'&&Number.isFinite(value.milliseconds)&&value.milliseconds>=0);}
 function write(file:string,value:unknown):void{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file+'.tmp',JSON.stringify(value,null,2)+'\n');fs.renameSync(file+'.tmp',file);}
 export function writeSuite(ctx:Context,report:Report):void{
  const results=report.results.map(result=>{
@@ -19,8 +21,8 @@ export function hydrateSuite(ctx:Context,report:Report):Report{
  return {...report,results:report.results.map(ref=>{
   const relative=`checks/${report.suite}/${ref.name}.json`;if(ref.resultFile!==relative||!/^[\w.-]+$/.test(ref.name)||Object.keys(ref).some(key=>!['name','status','rawStatus','milliseconds','resultFile'].includes(key)))throw Error('Result index path/schema mismatch');
   const file=path.join(ctx.dir,relative),stat=fs.lstatSync(file);if(!stat.isFile()||stat.isSymbolicLink()||stat.size>262144)throw Error('Unsafe/oversized result shard');
-  const data=JSON.parse(fs.readFileSync(file,'utf8')) as {schema:number;identity:unknown;suite:string;result:Result};
-  if(data.schema!==1||JSON.stringify(data.identity)!==JSON.stringify(ctx.identity)||data.suite!==report.suite||data.result.name!==ref.name||data.result.status!==ref.status||data.result.rawStatus!==ref.rawStatus)throw Error('Stale/contradictory result shard');
+  const data:unknown=JSON.parse(fs.readFileSync(file,'utf8'));
+  if(!record(data)||data.schema!==1||JSON.stringify(data.identity)!==JSON.stringify(ctx.identity)||data.suite!==report.suite||!result(data.result)||data.result.name!==ref.name||data.result.status!==ref.status||data.result.rawStatus!==ref.rawStatus)throw Error('Stale/contradictory result shard');
   return data.result;
  })};
 }

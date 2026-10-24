@@ -56,7 +56,7 @@ export function caseProblems(expected:CaseDeclaration[],actual:CaseResult[]|unde
  return problems;
 }
 export function sealProblems(value:unknown,expectedLockSha256:string,source:unknown):string[]{
- const seal=value as Partial<Seal>|null;
+ const seal=record(value)?value:null;
  return [...(!seal||seal.state!=='SEALED'?['EvidenceUnsealed']:[]),...(seal?.expectedLockSha256!==expectedLockSha256?['ExpectedLockMismatch']:[]),...(JSON.stringify(seal?.sourceAfter)!==JSON.stringify(source)?['SourceChangedDuringExecution']:[])];
 }
 export function orderEntries<T>(entries:readonly T[],seed?:string):T[]{
