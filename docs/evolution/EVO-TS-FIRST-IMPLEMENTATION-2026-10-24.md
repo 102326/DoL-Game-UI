@@ -256,3 +256,14 @@ a65d465收窄共享球体的纹理/粒子索引：纬度与原4/7/9/7/4纹理数
 本批累计88/243，剩余155项（10个工具、145个测试），另有Twee与既有TS边界。严格检查失败、修正及浏览器结果保留在本机ts-86/87/88制品；没有删除有效断言。当前CI应绑定新提交另行执行。版本仍4.0.0-rc.2，未合入main、Tag、Release或公开Assets。
 
 设备已重新确认独立测试App前台、唯一运行进程及WebView。只读Doctor/Evidence完整完成请求采集，StartConfig为0.5.12.13、Loader2.101.1；GameVersion来源unknown，DOM有max-depth截断，转发已清理。本批未装新包、未写存档；这只是可用于后续对照的现场基线，不能证明88项源码已实机通过。
+
+
+### 2026-10-25：94项，Host桥接与设置/面板真实交互检查
+
+4a8593b新增6个CTS来源：framework-bridge、settings-official-init、game-first-motion、evolution-panels、settings-orbit、settings-input-boundary。使用实际Host、GameUiControls、sourceMotion及PanelControls类型；Node26编译为原CJS路径，Expected Lock保留原断言数并追踪作者CTS。947e078定义现有面板控制返回合同并用于实际实现，导航目标在使用前收窄；没有改视觉参数、原动作或Host公共API。编译正反例约束真实PanelKind、boolean开关及数值诊断。Vite测试通过实际模块挂载，避免动态import返回any穿透测试。
+
+重新构建实际Host/official-ui后，Windows Edge通过迟到jQuery、订阅失败回滚/重试、解绑失败关闭、场景失效和persistent同伴；实际设置首次挂载、偏好、关闭/重开与无动画清理；材质代理不命中、原生节点/点击、最新滚动回调、resize/motion/reduced/dispose清理；六类官方面板在100%/125%/85%缩放下定位、原生点击与释放。完整ci:check通过，相关媒体未重新录制。
+
+旧设置测试出现两处夹具问题，迁移版与未修改原JS均复现：全局.dmt-orbit-focus先选到已存在的战斗焦点，产生约51px/190px偏差；body末尾的测试背景按钮处于原生战斗底栏之下，真实点击被底栏挡住。77eab92独立修正测试：焦点几何/运动只选择设置导航内对象（销毁后全局零残留断言保留）；背景测试按钮固定在视口左上，不增加z-index，不移除产品底栏，不使用force点击。原JS修正版和最终CTS都通过；原失败日志保留。未增加等待、放宽几何阈值或改产品点击层级。
+
+94项最终完整ci:check及上述本地浏览器检查通过；88项118b803e150bce947af4a8196106ee7afd9619cc已经推送，标准40114928222/研究40114927005启动，当前仍运行。后续94项本地提交尚未推送，不将88项进行中或79项成功写成94项远端通过。冻结清单剩余149项（10工具、139测试），Twee与既有TS边界仍在范围内。实机材料仍是本节上方只读基线，未安装94项源码；未合入main或发布。
