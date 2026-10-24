@@ -16,6 +16,7 @@ const selected = shallowRef<View>(), views = shallowRef(props.host.views()), mes
 let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string} | undefined;
 let suppressClick = false, sequence = 0, stopHint:(()=>void)|undefined, instance = ref('motion-view-0'), binding: Binding;
 let stopExperimental:(()=>void)|undefined,coordinateScale={x:1,y:1};
+let geometryObserver:ResizeObserver|undefined,observedDock:HTMLElement|undefined;
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
 const menu = computed(() => {
  const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
@@ -62,6 +63,14 @@ function sync() {
  coordinateScale=scale;
  const nextArea={left: ((viewport?.offsetLeft || 0)-(rect?.left||0))/coordinateScale.x+left, top: ((viewport?.offsetTop || 0)-(rect?.top||0))/coordinateScale.y+top,
   width: Math.max(80, (viewport?.width || innerWidth)/coordinateScale.x - left - right), height: Math.max(100, (viewport?.height || innerHeight)/coordinateScale.y - top - bottom)};
+ // Native combat controls use the top layer; reserve their visible bottom region.
+ const dock=props.officialPreferences?document.querySelector<HTMLElement>('.dcu-footer'):null;
+ if(observedDock!==dock){if(observedDock)geometryObserver?.unobserve(observedDock);observedDock=dock??undefined;if(observedDock)geometryObserver?.observe(observedDock)}
+ const dockRect=dock?.getBoundingClientRect(),viewBottom=(viewport?.offsetTop||0)+(viewport?.height||innerHeight);
+ if(dock&&dockRect&&dockRect.height>0&&dockRect.bottom>=viewBottom-2&&getComputedStyle(dock).visibility!=='hidden'){
+  const top=(dockRect.top-(rect?.top||0))/coordinateScale.y;
+  if(top>nextArea.top+100)nextArea.height=Math.min(nextArea.height,top-nextArea.top-12);
+ }
  const changed=Object.keys(nextArea).some(key=>nextArea[key as keyof typeof nextArea]!==area[key as keyof typeof area]);
  if(changed)repositioning.value=true;
  Object.assign(area,nextArea);Object.assign(point, locate(saved, area));
@@ -121,14 +130,15 @@ function key(event: KeyboardEvent) {
 function outside(event: Event) {if (!layer.value?.contains(event.target as Node)) interrupt()}
 function interrupt() {cancel(); close(false)}
 function arm() {binding?.signal.removeEventListener('abort', interrupt); binding = props.hostContext.binding(); binding.signal.addEventListener('abort', interrupt, {once: true})}
-const stopScene = props.hostContext.onScene(arm);
+const stopScene = props.hostContext.onScene(()=>{arm();schedule()});
+function dockToggle(event:Event){if(event.target instanceof Element&&event.target.matches('.dcu-footer'))schedule()}
 const stopViews = props.host.onViews(() => {views.value = props.host.views(); if (selected.value && !views.value.some(view => view.mount === selected.value?.mount)) close()});
-onMounted(() => {sync(); arm();if(props.experimentalMotion&&layer.value)stopExperimental=props.experimentalMotion(layer.value);if(props.experimentalMotion&&layer.value){try{const resize=new ResizeObserver(sync);scope.own(()=>resize.disconnect());resize.observe(layer.value)}catch(error){console.warn('[MotionHub] geometry observer unavailable; viewport events remain active',error)}}if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
- window.visualViewport?.addEventListener('resize', schedule); window.visualViewport?.addEventListener('scroll', schedule); document.addEventListener('pointerdown', outside); document.addEventListener('focusin', outside)});
+onMounted(() => {sync(); arm();if(props.experimentalMotion&&layer.value)stopExperimental=props.experimentalMotion(layer.value);if(props.experimentalMotion&&layer.value){try{const resize=geometryObserver=new ResizeObserver(schedule);scope.own(()=>resize.disconnect());resize.observe(layer.value);if(observedDock)resize.observe(observedDock)}catch(error){console.warn('[MotionHub] geometry observer unavailable; viewport events remain active',error)}}if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
+ document.addEventListener('toggle',dockToggle,true);window.visualViewport?.addEventListener('resize', schedule); window.visualViewport?.addEventListener('scroll', schedule); document.addEventListener('pointerdown', outside); document.addEventListener('focusin', outside)});
 scope.own(()=>stopExperimental?.());
 scope.own(() => {interrupt();document.removeEventListener('dol-floating-reset',reset); binding?.signal.removeEventListener('abort', interrupt); stopScene(); stopViews();
  window.removeEventListener('resize', schedule); window.removeEventListener('blur', interrupt); window.removeEventListener('pagehide', interrupt);
- window.visualViewport?.removeEventListener('resize', schedule); window.visualViewport?.removeEventListener('scroll', schedule); document.removeEventListener('pointerdown', outside); document.removeEventListener('focusin', outside)});
+ document.removeEventListener('toggle',dockToggle,true);window.visualViewport?.removeEventListener('resize', schedule); window.visualViewport?.removeEventListener('scroll', schedule); document.removeEventListener('pointerdown', outside); document.removeEventListener('focusin', outside)});
 onBeforeUnmount(scope.dispose);
 </script>
 

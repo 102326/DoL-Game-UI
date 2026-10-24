@@ -18,6 +18,13 @@ declare const DoLGameUI:GameUiControls;
    assert.equal(r.inside,true,JSON.stringify({design,width,r}));assert.equal(r.overlap,false);assert.equal(r.controls,true);if(width===1280)assert.equal(r.cols.split(' ').length,2);await p.locator('.sf-motion-ball').press('Escape');
   }
  }
+ const storedPosition=await p.evaluate(()=>localStorage.getItem('StoneFreeMotionHub.position.v1'));
+ const reserved=await p.locator('.sf-motion-ball').boundingBox();assert.ok(reserved);
+ await p.evaluate(()=>DoLGameUI.setPreference('combatEnabled',false));await p.waitForFunction(()=>!document.querySelector('.dcu-footer'));
+ await p.waitForFunction(y=>{const r=document.querySelector('.sf-motion-ball')?.getBoundingClientRect();return !!r&&r.top>y},reserved.y);
+ await p.evaluate(()=>DoLGameUI.setPreference('combatEnabled',true));await p.waitForSelector('.dcu-footer');
+ await p.waitForFunction(()=>{const ball=document.querySelector('.sf-motion-ball')?.getBoundingClientRect(),dock=document.querySelector('.dcu-footer')?.getBoundingClientRect();return !!ball&&!!dock&&ball.bottom<dock.top});
+ assert.equal(await p.evaluate(()=>localStorage.getItem('StoneFreeMotionHub.position.v1')),storedPosition,'transient combat obstruction does not rewrite user position');
  assert.equal(await p.locator('.sf-motion-tool-label').count(),5,'one official constellation with readable labels');
  await p.setViewportSize({width:1280,height:900});await p.evaluate(()=>DoLGameUI.openSettings());await p.waitForTimeout(700);
  const nav=await p.locator('.dmt-workspace-nav button').evaluateAll(ns=>ns.map(n=>n.getBoundingClientRect().top));const first=nav[0];assert.notEqual(first,undefined);assert.ok(nav.every(y=>first!==undefined&&Math.abs(y-first)<1),'wide settings navigation forms a shared top rail');
