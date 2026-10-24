@@ -641,6 +641,7 @@
     },
     {
       "entry": "tests/adapter-materials.cjs",
+      "sourceEntry": "tests/adapter-materials.cts",
       "profiles": [
         "standard"
       ],
@@ -652,8 +653,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "72547aac5054e9078e10548341cf9fda0550cffab736bec96fa6185a8e312c26",
-      "assertionSites": 170
+      "sourceSha256": "6fd56c19d3bbbdca6f165dadb77f09ff90cae7efcf528d723c80c202b23f8cfb",
+      "assertionSites": 176
     },
     {
       "entry": "tests/checkpoint-boundary.test.mts",
@@ -1516,6 +1517,7 @@
     },
     {
       "entry": "tests/kraft-work-adapters.cjs",
+      "sourceEntry": "tests/kraft-work-adapters.cts",
       "profiles": [
         "standard"
       ],
@@ -1527,8 +1529,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a45d851cd1c9790dbfe3b4f8c23141357cfcc7c0225de240cf924225a92aceb8",
-      "assertionSites": 15
+      "sourceSha256": "efba34bdc21770d601fd60979579c1812900f87bb9230be97d2ca33647faaddd",
+      "assertionSites": 16
     },
     {
       "entry": "tests/kraft-work-baseline.cjs",

@@ -11,7 +11,15 @@
     "types": [
       "node",
       "vite/client"
-    ]
+    ],
+    "paths": {
+      "/src/*": [
+        "./src/*"
+      ],
+      "/framework/*": [
+        "./framework/*"
+      ]
+    }
   },
   "include": [
     "tests/*.cts",
