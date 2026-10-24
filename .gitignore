@@ -162,3 +162,4 @@ docs/HANDOFF.local.md
 /scripts/record-evolution-hub.cjs
 /scripts/record-evolution-settings.cjs
 /scripts/measure-evolution-acrylic.cjs
+/scripts/check-evolution-coexistence.cjs
