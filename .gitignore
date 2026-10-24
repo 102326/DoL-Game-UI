@@ -210,3 +210,8 @@ docs/HANDOFF.local.md
 /tests/golden-spin-hub-input.cjs
 /tests/evolution-edge-frost.cjs
 /tests/display-scale.cjs
+
+/tests/combat-resize.test.cjs
+/tests/unified.test.cjs
+/tests/wardrobe-features.test.cjs
+/tests/wardrobe-layout.test.cjs
