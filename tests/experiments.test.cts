@@ -48,11 +48,11 @@ const server=http.createServer((req,res)=>{
  await p.getByRole('button',{name:'全选当前筛选',exact:true}).click();
  assert.match(await p.locator('.dgw-selection-bar').innerText(),/300 件已选择/,'select all spans unrendered pages');
  await p.getByRole('button',{name:'退出整理',exact:true}).click();
- await p.getByRole('searchbox',{name:'搜索当前分类'}).fill('分页测试299');await p.waitForTimeout(100);
+ await p.getByRole('searchbox',{name:'搜索所有分类'}).fill('分页测试299');await p.waitForTimeout(100);
  assert.equal(await p.locator('.dgw-item').count(),1,'search reaches items outside rendered page');
  await p.locator('.dgw-item').click();await p.waitForFunction(()=>V.worn.upper.cn_name_cap==='分页测试299');
  assert.equal(await p.evaluate(()=>V.worn.upper.cn_name_cap),'分页测试299','filtered paged item wears correct inventory entry');
- await p.getByRole('searchbox',{name:'搜索当前分类'}).fill('');
+ await p.getByRole('searchbox',{name:'搜索所有分类'}).fill('');
  await p.getByRole('navigation',{name:'衣物分页',exact:true}).getByRole('button',{name:'下一页',exact:true}).click();
  await p.evaluate(()=>{V.wardrobe.upper.splice(3);DoLWardrobeUI.refresh()});await p.waitForTimeout(150);
  assert.equal(await p.locator('.dgw-item').count(),3,'page clamps after inventory shrinks');
