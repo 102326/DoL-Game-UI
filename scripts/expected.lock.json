@@ -404,6 +404,10 @@
     "isolation-inputs.test.mts": [
       "independent checkout keeps exact CRLF input without staging or hiding real edits"
     ],
+    "metrics-boundary.test.mts": [
+      "saved run metrics retain failures, metadata grouping and qualified percentile samples",
+      "malformed saved metrics are rejected and the real CJS CLI reads UTF-8 JSON"
+    ],
     "native-tooling.test.mts": [
       "native erasure check rejects an extra enum fixture while retaining the normal roots"
     ],
@@ -1446,6 +1450,26 @@
       ],
       "sourceSha256": "c9ac265a69cdcbefcee6f57b7543b06be81ec0463358558385337f09715cbb32",
       "assertionSites": 21
+    },
+    {
+      "entry": "tests/metrics-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "saved run metrics retain failures, metadata grouping and qualified percentile samples",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "malformed saved metrics are rejected and the real CJS CLI reads UTF-8 JSON",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a8fe61bf646603a3627b2f6f022879256e88eaa957d4ebe57ef049bb9d69dfbc",
+      "assertionSites": 13
     },
     {
       "entry": "tests/moody-historical-regressions.cjs",

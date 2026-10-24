@@ -1,6 +1,7 @@
 import renderer from '../scripts/render-state-fields.cjs';
 import producer from '../component-lab/source-index.cjs';
 import catalog from '../scripts/ci-catalog.cjs';
+import metrics from '../scripts/ci-metrics.cjs';
 
 function esmContract() {
   const fields:string[]=renderer.fields('');
@@ -35,3 +36,14 @@ function catalogContract(){
   return {digest,profile,checkpointsAreTyped};
 }
 void catalogContract;
+
+function metricsContract(){
+  const rows=metrics.measure([metrics.parseRun({})]).rows;
+  // @ts-expect-error The runner cannot pass untyped string input as a list of runs.
+  metrics.measure('runs');
+  // @ts-expect-error Elapsed milliseconds remain numeric or null.
+  const wrong:string=rows[0]?.jobMs;
+  const typed:0 extends (1&typeof rows[number]['jobMs'])?true:false=false;
+  return {wrong,typed};
+}
+void metricsContract;
