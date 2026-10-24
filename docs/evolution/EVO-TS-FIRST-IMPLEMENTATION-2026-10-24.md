@@ -317,3 +317,15 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 - 累计110/243，剩余133（10脚本、123测试）。历史0.5.11.9适配测试改为CTS；静态boot元数据实际导入，事件参数沿用EventTarget参数类型，VM注入API按unknown检查后调用。
 - 原版号、已知/未知嘴型、私有模型与实时状态隔离、重复加载和销毁回退全部通过。仅冻结历史输入回归，不重新分发旧包，不改变3.X/4.0设计基线，也不扩大当前兼容声明。
 - ts-110-tooling-final.txt、ts-110-lyra.txt为本机证据；严格工具检查及原断言通过。
+
+
+## 2026-10-25：111–114，CI证据链的真实类型迁移
+
+- 累计114/243，剩余129（6脚本、123测试）。ci-evidence、ci-verify-remote、ci-research、test-ci改为CTS源码；为npm安装前的stage和安装依赖已移除后的下载验收，继续跟踪由CTS生成的同名CJS入口。需要CommonJS不等于保留JS源码。
+- 包证据、进程终止、套件/布局、上传/封存、下载验证、研究原始报告/汇总/媒体复制拆为对应职责的严格TS模块。JSON按unknown进入，字段/数组/路径/身份有真实检查；未引入any或关闭严格检查。
+- 标准和研究TS runner直接使用已类型化模块，退出动态CJS any依赖。研究caseIds实际支持string/number，修正其返回/家庭汇总合同；catalog只声明真实支持的四种特殊shape。
+- 远端CLI复用现有PR事件解析；workflow步骤在真实输入点检查。transportVerdict只比较assertionResult，不假称其已经是受信string；不把不可信问题路径伪装为string。保留失败判定，CJS调用者获得实际参数/返回类型。
+- tooling-types中添加误用必须报错的编译反例。post-upload无npm测试的隔离输入清单补入新增模块，保留其独立运行与所有原有负例。
+- 本机完整ci:check、类型负例、V1.2、workflow选择通过。ci-gate的原正例及反例通过；ci-evidence与research-evidence仍分别到原Windows符号链接EPERM，失败保留，未删用例；研究F1/F2在权限失败前通过。Linux完整复验待本批推送。
+- 105项96d2c907cf29cacf68fc6b3bd1428131ff6079e2：标准40119446132、研究40119419411均success，下载证据准确HEAD/PASS/COMPLETE；十摘要/九ZIP与双构建通过。105项UI及Host的所有包成员与已装Android的100项逐项相同，故复用该实际装机/设置触控证据；不扩展为未测业务覆盖。
+- 本批仅开发/CI工具，未改游戏视觉、业务、存档或公开版本。新源码不由105项结果自动覆盖，需独立CI。

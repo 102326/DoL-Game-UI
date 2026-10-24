@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **当前 TS First：110/243，剩余133项。** 本地实现7fc2f50；101–105项覆盖Host连接、CI失败判定、实际构建启动/信号、独立消费者命令和Hub原生快捷入口。严格类型检查及Windows代表性检查通过；修正CI传输返回类型，保留失败断言；旧Hub测试遗漏visualScope依赖已独立修复，迁移前同样失败。当前已完整验收的远端源码为d512b93（100项）：标准40118218837、研究40118217070均success，独立下载证据准确HEAD/PASS/COMPLETE，Node26.12.1，10摘要/9ZIP及双构建无差异。Android已安装该准确CI的UI+Host并原生重启，全部包成员核对、设置阻挡、150%字号实际触控滚动及偏好恢复通过；其余Mod、顺序和禁用列表保持，停在Start。新Host底栏避让有Windows280×320交互/退出恢复证据，未冒充真实手机战斗验证。105项已推送96d2c90，标准40119446132、研究40119419411运行中；106–110项为历史独立演示与冻结Lyra预览测试，严格编译及Windows演示回归通过，不能代替当前产品验收；剩余133项及内联/既有TS边界仍在方案一范围。历史88项CI失败、Windows符号链接EPERM和H01间歇原因记录继续保留，不用后续通过覆盖。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
+- **当前 TS First：114/243，剩余129项。** 最新批次将CI证据/研究/下载验证/主CLI转为严格CTS及实际TS模块，跟踪生成CJS以保留安装前和无npm验收入口；原断言、封存和反例保留。本机ci:check、workflow和V1.2通过，ci-gate原用例通过；Windows符号链接EPERM仍保留，待Linux本批CI。上批105项96d2c90的标准40119446132、研究40119419411均success且独立下载PASS/COMPLETE/准确HEAD；十摘要/九ZIP/双构建通过。105项UI/Host全部成员与实机受验100项相同，复用其包加载、设置阻挡、150%触控滚动和偏好恢复证据。111–114工具源码需另批CI，不借旧结果宣称通过。6脚本/123测试及既有TS边界继续推进；未发布。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
