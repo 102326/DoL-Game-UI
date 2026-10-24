@@ -1587,6 +1587,7 @@
     },
     {
       "entry": "tests/moody-historical-regressions.cjs",
+      "sourceEntry": "tests/moody-historical-regressions.cts",
       "profiles": [
         "standard",
         "research"
@@ -1599,8 +1600,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "afe9365bfb0e1f228ef3b45387761994341db1bef222fe21302f0aaad2d75c51",
-      "assertionSites": 15
+      "sourceSha256": "fa1be3c81bf4fad25e754d9de5ba2aca68e4a7aa5ec608ff2e62f6adbd084a70",
+      "assertionSites": 17
     },
     {
       "entry": "tests/moody-oracles.test.cjs",
@@ -2027,7 +2028,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "01d9a7d41abfc7b5d38ae4551fd6ce68e58777905595d25da070e12922c5d8e7",
+      "sourceSha256": "1aaca991783d4639562d084f053676a3d326d7179f880d999c2c1dcaf40400c9",
       "assertionSites": 160,
       "rendererContexts": [
         "weather:2d"
@@ -2111,6 +2112,7 @@
     },
     {
       "entry": "tests/smartphone-adapter.cjs",
+      "sourceEntry": "tests/smartphone-adapter.cts",
       "profiles": [
         "standard"
       ],
@@ -2122,8 +2124,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "d0b2a135eb15b9e24ccc9fa5172fc9c630e213c77c5d4d477df4ce463799abe5",
-      "assertionSites": 17
+      "sourceSha256": "254b2bfad659bd3eb565262b4be1932989df321a17ee394cd66dc4054a2f764f",
+      "assertionSites": 21
     },
     {
       "entry": "tests/source-identity-boundary.test.mts",
