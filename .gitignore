@@ -149,3 +149,5 @@ docs/HANDOFF.local.md
 /tests/acrylic-demo.cjs
 /tests/button-depth-demo.cjs
 /tests/lyra-preview-adapter.cjs
+/tests/settings-dual.cjs
+/tests/settings-modal-scroll.cjs
