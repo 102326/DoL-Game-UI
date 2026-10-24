@@ -1,0 +1,2 @@
+for(const button of document.querySelectorAll<HTMLButtonElement>('[data-pair]'))button.onclick=async()=>{const videos=[...document.querySelectorAll<HTMLVideoElement>('#'+button.dataset.pair+' video')];videos.forEach(v=>{v.pause();v.currentTime=0;v.playbackRate=1});const r=await Promise.allSettled(videos.map(v=>v.play()));button.textContent=r.every(x=>x.status==='fulfilled')?'两段正在1×播放':'请分别点击播放器播放'};
+export {};

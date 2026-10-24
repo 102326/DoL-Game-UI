@@ -7,4 +7,4 @@
 <h2>稳定雪天 · 旧新版</h2><div class="pair"><article><h2>C3</h2><img src="./climate-baseline/climate-snow.png" alt="原雪天细边缘霜线"></article><article><h2>C4</h2><img src="./climate-review/climate-snow.png" alt="新版雪晶、边缘霜化与少量飘雪"></article></div>
 <details><summary>新版附着雪晶 · 日光与夜灯材质近景</summary><div class="pair"><article><img src="./climate-review/climate-material-day.png" alt="日光背景下的雪天材质近景"></article><article><img src="./climate-review/climate-material-night.png" alt="夜灯背景下的雪天材质近景"></article></div><p>近景无正文，不能代替真实窗口的可读性验收。日光与夜灯是受控 CSS 背景，不是实拍。</p></details>
 <footer>隔离研究，未正式整合、合并 main 或发布。技术检查不代表画质通过；Chromium 模拟不代表 Safari、WebView 或真机兼容。</footer>
-<script type="module">document.querySelector('[data-pair]').onclick=async()=>{const videos=[...document.querySelectorAll('video')];videos.forEach(v=>{v.pause();v.currentTime=0;v.playbackRate=1});const result=await Promise.allSettled(videos.map(v=>v.play()));document.querySelector('[data-pair]').textContent=result.every(r=>r.status==='fulfilled')?'两段正在1×播放':'请分别点击播放器播放'};</script></body></html>
+<script type="module" src="./climate-review.ts"></script></body></html>

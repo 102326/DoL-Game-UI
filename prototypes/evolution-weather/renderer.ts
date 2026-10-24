@@ -3,7 +3,7 @@ import {wetGlass} from './wet-glass';
 import {featherSnow,powderSnow} from './snow-material';
 import {readGameWeather} from '../../framework/official-ui/weather';
 import {weatherSurface as ownedSurface} from '../../src/ui/weather/surface';
-type Weather=ReturnType<typeof readGameWeather>;
+export type Weather=ReturnType<typeof readGameWeather>;
 /** Historical study candidates keep their original material flags and pace. */
 export function weatherSurface(canvas:HTMLCanvasElement,read:()=>Weather=readGameWeather,kind:MaterialKind|'glass'|'glass-natural'|'glass-runoff'|'glass-weather'|'glass-shower'|'glass-force'|'glass-scatter'|'glass-feather'|'glass-powder'='beads'){
  const study=kind==='glass-feather'||kind==='glass-powder';

@@ -1,0 +1,6 @@
+const play=document.querySelector<HTMLButtonElement>('#play');
+if(!play)throw Error('Missing review playback control');
+const status=document.querySelector('#status');
+if(!status)throw Error('Missing review playback status');
+play.onclick=async()=>{const videos=[...document.querySelectorAll<HTMLVideoElement>('.pair video')];videos.forEach(v=>{v.pause();v.currentTime=0;v.playbackRate=1});const r=await Promise.allSettled(videos.map(v=>v.play()));status.textContent=r.every(x=>x.status==='fulfilled')?'四段1×播放中；不宣称帧级同步':'请分别点击播放器开始播放'};
+export {};

@@ -57,6 +57,7 @@ const researchPlan:readonly ResearchCheck[] = [
   test('evolution-orbit', list('evolution/orbit.json', 'results', 'zoom', [1,1.25,.85])), test('panels-framework'),
   node('weather-types', ['node_modules/vue-tsc/bin/vue-tsc.js', '--noEmit', '-p', 'tsconfig.evolution.json']),
   node('weather-build', ['node_modules/vite/bin/vite.js', 'build', '--config', 'vite.evolution-weather.config.ts']),
+  test('weather-review-pages'),
   test('evolution-weather', checks('evolution-weather', 'evolution/weather-review-[0-9]+/result.json')),
   test('evolution-weather-candidates', list('evolution/weather-r2-[0-9]+/result.json', 'results', 'candidate', ['v1','beads','film'])),
   node('weather-unit', ['--test', 'tests/evolution-rain-model.test.cjs', 'tests/evolution-scattered-shower.test.cjs']),

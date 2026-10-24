@@ -2,7 +2,8 @@
   "extends": "./tsconfig.tools.json",
   "compilerOptions": {
     "module": "Preserve",
-    "moduleResolution": "Bundler"
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
   "include": ["tests/*.cts"]
 }

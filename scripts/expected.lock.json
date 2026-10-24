@@ -2343,6 +2343,23 @@
       "assertionSites": 39
     },
     {
+      "entry": "tests/weather-review-pages.cjs",
+      "sourceEntry": "tests/weather-review-pages.cts",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "c5e623d298d9817bc55910c735567fa17d88dc38c47d5c3239ee3efb6a22fed3",
+      "assertionSites": 92
+    },
+    {
       "entry": "tests/weather-special.cjs",
       "profiles": [
         "standard"

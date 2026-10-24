@@ -17,6 +17,7 @@ export function dependenciesFor(id:string):string[]{
  if(id==='settings-study')return ['settings-build'];
  if(id==='framework-build')return ['source-check'];
  if(id==='weather-build')return ['weather-types'];
+ if(id==='weather-review-pages')return ['weather-build'];
  if(familyFor(id)==='weather'&&id!=='weather-unit'&&!id.startsWith('weather-'))return ['weather-build'];
  if(familyFor(id)==='production'&&!['source-check','framework-build','inventory','evolution-unit'].includes(id))return ['framework-build'];
  return [];

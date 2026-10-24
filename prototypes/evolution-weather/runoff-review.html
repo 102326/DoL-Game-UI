@@ -10,4 +10,4 @@
 <article><h2>C3</h2><video controls preload="metadata" src="./runoff-review/contact-1x.mp4" poster="./runoff-review/wet-trail.png"></video></article></div>
 <details><summary>静止近景</summary><div class="pair"><article><img src="./runoff-baseline/wet-trail.png" alt="C2 附着滑移16秒后的湿痕"></article><article><img src="./runoff-review/wet-trail.png" alt="C3 附着滑移16秒后的湿痕"></article></div></details>
 <footer>隔离研究，未整合、未合并 main、未发布。原生背景滤镜＋有边界的水滴近似模型，不是实拍或物理流体。Chromium 检查不代表 Safari、Android WebView 或真机通过。画质由负责人评审。</footer>
-<script type="module">for(const button of document.querySelectorAll('[data-pair]'))button.onclick=async()=>{const videos=[...document.querySelectorAll('#'+button.dataset.pair+' video')];videos.forEach(v=>{v.pause();v.currentTime=0;v.playbackRate=1});const r=await Promise.allSettled(videos.map(v=>v.play()));button.textContent=r.every(x=>x.status==='fulfilled')?'两段正在1×播放':'请分别点击播放器播放'};</script></body></html>
+<script type="module" src="./runoff-review.ts"></script></body></html>

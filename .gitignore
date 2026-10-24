@@ -62,3 +62,4 @@ docs/HANDOFF.local.md
 /tests/device-profiles.cjs
 /tests/device-profiles.test.cjs
 /scripts/evolution-inventory.cjs
+/tests/weather-review-pages.cjs
