@@ -2,6 +2,8 @@ import renderer = require('../scripts/render-state-fields.cjs');
 import png = require('../scripts/ci-png.cjs');
 import cases = require('../scripts/ci-cases.cjs');
 import policy = require('../scripts/ci-source-policy.cjs');
+import receipt = require('../scripts/ci-process-receipt.cjs');
+import reporter = require('../scripts/ci-test-reporter.cjs');
 
 // These rejected calls prove CJS consumers see the implementation's real types.
 function rendererContract() {
@@ -45,3 +47,12 @@ function policyContract(){
   return {problems,wrong};
 }
 void policyContract;
+
+function receiptContract(){
+  receipt.recordFailure(null);
+  // @ts-expect-error Case issue names are strings.
+  receipt.recordNodeCases([],[1]);
+  // @ts-expect-error Reporter consumes the real asynchronous Node event stream.
+  reporter([]);
+}
+void receiptContract;

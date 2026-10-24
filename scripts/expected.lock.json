@@ -404,6 +404,9 @@
     "native-tooling.test.mts": [
       "native erasure check rejects an extra enum fixture while retaining the normal roots"
     ],
+    "receipt-boundary.test.mts": [
+      "real native reporter rejects malformed expected plans instead of reporting success"
+    ],
     "save-metadata-boundary.test.mts": [
       "save metadata skips malformed rows without changing native data or writing storage",
       "NaN dates remain invalid numbers and unknown legacy shapes fail closed"
@@ -1579,6 +1582,22 @@
       ],
       "sourceSha256": "ce191d80015e88b38885274aa7fd08b822670462666ad42d0dac70fe703958ca",
       "assertionSites": 15
+    },
+    {
+      "entry": "tests/receipt-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "real native reporter rejects malformed expected plans instead of reporting success",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "8bf8cb81612b3d85e5683adac2ff34d378d1f6f31887708e738dc58e2b6905c3",
+      "assertionSites": 8
     },
     {
       "entry": "tests/render-state.test.cjs",
