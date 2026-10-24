@@ -91,3 +91,5 @@ docs/HANDOFF.local.md
 /tests/wardrobe-operations.test.cjs
 
 /tests/moody-fixture-evidence.cjs
+
+/compat/reoverfits-soft-wet/check.cjs
