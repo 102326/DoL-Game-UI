@@ -2,7 +2,8 @@ import {visualScope} from '../ui/visual-scope';
 import {isolate,unmountUI,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
 import CombatPanel from './CombatPanel.vue';
-import type {CombatModel} from './types';
+import type {CombatModel,CombatControls} from './types';
+export type {CombatControls} from './types';
 import {createCombatSource,visible} from './source';
 import './style.css';
 import './select.css';
@@ -11,7 +12,6 @@ import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 export interface CombatFramework {host:Host;owner:Participant}
-export interface CombatControls {version:string;getEnabled:()=>boolean;refresh:()=>void;setEnabled:(value:boolean)=>void;destroy:()=>void}
 
 export function startCombat(framework?:CombatFramework){
 const KEY='DoLCombatUI.enabled.v1';

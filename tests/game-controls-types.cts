@@ -1,3 +1,4 @@
+import type {CombatControls} from '../src/combat/types';
 import type {GameUiControls} from '../src/runtime/game-controls';
 
 function controlContract(api:GameUiControls){
@@ -13,3 +14,14 @@ function controlContract(api:GameUiControls){
  return {flag,typed,wrong,external};
 }
 void controlContract;
+
+
+function combatContract(api:CombatControls){
+ const enabled:boolean=api.getEnabled();api.setEnabled(true);
+ // @ts-expect-error The actual combat controller accepts a boolean.
+ api.setEnabled(1);
+ // @ts-expect-error Enabled state is not a string.
+ const wrong:string=api.getEnabled();
+ return {enabled,wrong};
+}
+void combatContract;
