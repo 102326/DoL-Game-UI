@@ -1689,6 +1689,7 @@
     },
     {
       "entry": "tests/official-defaults.cjs",
+      "sourceEntry": "tests/official-defaults.cts",
       "profiles": [
         "standard"
       ],
@@ -1700,11 +1701,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "63fdee20e96ab197c283287a503667b9ffdd38fb3ed1edb9c50d5d218e8cace1",
-      "assertionSites": 22
+      "sourceSha256": "5dc63b00c8016757424ddef807b9da97b98f6d0040e087b423bf64c70f66720c",
+      "assertionSites": 23
     },
     {
       "entry": "tests/official-game-motion.cjs",
+      "sourceEntry": "tests/official-game-motion.cts",
       "profiles": [
         "standard",
         "research"
@@ -1717,7 +1719,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "032e3c00971d7f3cefaa9755abb646d762611761ddbd12bb181708bbb99433d1",
+      "sourceSha256": "b53ab139a3ebefe29d0e430e8e2dc6852d5ef6d697f55a18817850a7e5c9f0e5",
       "assertionSites": 96
     },
     {
@@ -2130,6 +2132,7 @@
     },
     {
       "entry": "tests/source-motion-lifecycle.cjs",
+      "sourceEntry": "tests/source-motion-lifecycle.cts",
       "profiles": [
         "standard",
         "research"
@@ -2142,8 +2145,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "528f6feb7f184bc608f4a6df768020947c9d513bb53f5a1ae6d58cb2e54df5d0",
-      "assertionSites": 11
+      "sourceSha256": "d4086b3ba24853c6109a25a973e24741d6efd8a1ddf7fc2bd6d088f766767ff4",
+      "assertionSites": 12
     },
     {
       "entry": "tests/source-policy-boundary.test.mts",

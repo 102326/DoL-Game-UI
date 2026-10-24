@@ -156,3 +156,6 @@ docs/HANDOFF.local.md
 /tests/settings-workspace.cjs
 /tests/optimization-wardrobe.cjs
 /tests/optimization-date.cjs
+/tests/source-motion-lifecycle.cjs
+/tests/official-defaults.cjs
+/tests/official-game-motion.cjs

@@ -29,7 +29,7 @@ const {build}=esbuild,{chromium}=playwright;
    tracking=true;const owner=createSourceMotion(),peer=createSourceMotion();tracking=false;
    const initial={observers:observers.size,listeners:listenerCount()},one=document.getElementById('one'),two=document.getElementById('two'),arrivals:string[]=[];
    if(!one||!two)throw Error('Missing scroll fixtures');
-   for(const node of [one,two])node.scrollTo=((options:ScrollToOptions)=>{node.scrollTop=options.top??node.scrollTop}) as typeof node.scrollTo;
+   for(const node of [one,two])node.scrollTo=(options?:ScrollToOptions|number,y?:number)=>{node.scrollTop=typeof options==='number'?y??node.scrollTop:options?.top??node.scrollTop};
    owner.scroll(one,200,()=>arrivals.push('old'));const late=[...pending.values()][0];
    owner.scroll(one,300,()=>arrivals.push('latest'));peer.scroll(two,400,()=>arrivals.push('peer'));
    if(!late)throw Error('Missing cancelled frame');late(0);const afterCancelledDelivery=pending.size;
