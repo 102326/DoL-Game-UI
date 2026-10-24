@@ -1552,6 +1552,7 @@
     },
     {
       "entry": "tests/mouth-compat-adapter.cjs",
+      "sourceEntry": "tests/mouth-compat-adapter.cts",
       "profiles": [
         "standard"
       ],
@@ -1563,8 +1564,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a24dd17951b28212fc26cbb69380c5fc924cf3b52098b96a1e9eb49840257b37",
-      "assertionSites": 24
+      "sourceSha256": "811ec999270355b624570697ef130160b8a404b7596d7c6b848adbe9ef7407b9",
+      "assertionSites": 26
     },
     {
       "entry": "tests/native-tooling.test.mts",

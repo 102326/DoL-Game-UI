@@ -64,3 +64,5 @@ docs/HANDOFF.local.md
 /scripts/evolution-inventory.cjs
 /tests/weather-review-pages.cjs
 /scripts/build-device-probe.mjs
+/tests/runtime-mutations.cjs
+/tests/mouth-compat-adapter.cjs
