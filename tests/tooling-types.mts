@@ -1,3 +1,4 @@
+import {runCommand} from '../scripts/ci/process.ts';
 import gateFixture from './ci-fixtures.cjs';
 import {readJsonBounded,evidenceMeta} from '../scripts/ci/records.ts';
 import {context as evidenceContext} from '../scripts/ci/context.ts';
@@ -103,3 +104,19 @@ function fixtureContract(){
  return {id,typed,invalid};
 }
 void fixtureContract;
+
+
+async function processContract(){
+ const result=await runCommand('node',[],{log:'process.log',execution:'tool'});
+ const status:import('../scripts/ci/contracts.ts').Status=result.status;
+ const typed:0 extends (1&typeof result.status)?true:false=false;
+ const receipt:unknown=result.terminalReceipt;
+ // @ts-expect-error The command is text, not an executable object.
+ runCommand(1,[],{log:'process.log'});
+ // @ts-expect-error Disk receipt assertions are untrusted, not a proven numeric count.
+ const count:number=result.assertions;
+ // @ts-expect-error Execution semantics must be tool or contract.
+ runCommand('node',[],{log:'process.log',execution:'arbitrary'});
+ return {status,typed,receipt,count};
+}
+void processContract;

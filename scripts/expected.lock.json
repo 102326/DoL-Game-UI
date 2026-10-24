@@ -425,7 +425,8 @@
       "native TS and MTS plus compiled CTS interoperate in an independent Node process"
     ],
     "receipt-boundary.test.mts": [
-      "real native reporter rejects malformed expected plans instead of reporting success"
+      "real native reporter rejects malformed expected plans instead of reporting success",
+      "typed process execution retains bounded logs, full-byte digests and original error outcomes"
     ],
     "record-boundary.test.mts": [
       "result shards restore original extra data and reject malformed or contradictory used fields",
@@ -700,7 +701,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6409a083b2c131a0ad2d4e158091aefd39c58fafe01c172a997137ae7b0558c7",
+      "sourceSha256": "122af1177b28f7d6ac0b4c24cb9ca3cf2eb569e9799791784ce7b28501c148f6",
       "assertionSites": 87
     },
     {
@@ -1768,10 +1769,14 @@
         {
           "id": "real native reporter rejects malformed expected plans instead of reporting success",
           "minimumAssertions": 1
+        },
+        {
+          "id": "typed process execution retains bounded logs, full-byte digests and original error outcomes",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8bf8cb81612b3d85e5683adac2ff34d378d1f6f31887708e738dc58e2b6905c3",
-      "assertionSites": 8
+      "sourceSha256": "2b1d5dec0f54a9fa330e1532bbcc326eb5d8a6e4cec290f1248140c3856c5d93",
+      "assertionSites": 21
     },
     {
       "entry": "tests/record-boundary.test.mts",

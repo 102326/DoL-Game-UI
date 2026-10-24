@@ -2,11 +2,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const {pathToFileURL}=require('node:url');
 const {sealProblems,classify,overall,verdict,exactIds,sameIdentity,requiredPackages}=require('./ci/contracts.ts');
 const {writeSuite,hydrateSuite,writeJson,safeFile,readJsonBounded,captureMeta,evidenceMeta}=require('./ci/records.ts');
 const {entryDeclaration,entryCaseProblems,expectedLockSha256}=require('./ci/lock.ts');
-const { spawn } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const { suites, stages, catalogFor, catalogIdentity,checkpoints,nodeTestCases,researchUnitEntries,projectId } = require('./ci-catalog.cjs');
 const fixtureChecks = ['settings-ci.cjs', 'combat-focused.cjs', 'moody-historical-regressions.cjs', 'device-layouts.cjs'];
@@ -22,53 +20,7 @@ function checkpointEvidence(ctx, name) {
  const report=readReport(ctx,`fixtures/${name}/checkpoints.json`);
  return report?.schema===1&&report.entry===name&&exactIds(expected,report.reached)&&sameIdentity(expected,report.reached);
 }
-function runCommand(command, args, { cwd = root, log, timeoutMs = 120000, signal, env = process.env, quiet = false, requireAssertions=false, execution='contract' } = {}) {
-  return new Promise(resolve => {
-    const start = Date.now(), outputHash = crypto.createHash('sha256');
-    let tail = Buffer.alloc(0), bytes = 0, error, timedOut = false, cancelled = false, forceKill;
-    const executionId = crypto.randomBytes(16).toString('hex'), receiptFile=log+'.assertion.json';
-    fs.rmSync(receiptFile,{force:true});
-    const childEnv={...env,MOODY_CASE_PLAN:'[]',MOODY_CASE_GRANULARITY:'',MOODY_CASE_ENTRY:'',MOODY_PROCESS_RECEIPT:receiptFile,MOODY_EXECUTION_ID:executionId,NODE_OPTIONS:[env.NODE_OPTIONS,`--require=${path.join(root,'scripts/ci-process-receipt.cjs')}`].filter(Boolean).join(' ')};
-    const caseEntry=execution==='contract'?args.find(a=>/\.[cm]?js$/.test(a)&&entryDeclaration(path.basename(a))):null;
-    if(caseEntry){const declaration=entryDeclaration(path.basename(caseEntry));if(declaration.granularity!=='native'){childEnv.MOODY_CASE_PLAN=JSON.stringify(declaration.cases);childEnv.MOODY_CASE_GRANULARITY=declaration.granularity;childEnv.MOODY_CASE_ENTRY=path.resolve(cwd,caseEntry);}}
-    let nativeSource=false;if(command===process.execPath&&!args.includes('--test')){const source=args[0]==='-e'?args[1]:args.find(a=>/\.(cjs|mjs|js)$/.test(a)&&fs.existsSync(a));if(source)nativeSource=require('./ci-source-policy.cjs').usesNodeTest(args[0]==='-e'?source:fs.readFileSync(source,'utf8'));}
-    if(nativeSource&&args[0]==='-e'){const inline=path.join(path.dirname(log),'inline-'+executionId+'.test.cjs');fs.mkdirSync(path.dirname(inline),{recursive:true});fs.writeFileSync(inline,args[1]);args=['--test',inline];}
-    const nativeFiles=args.filter(a=>nodeTestCases[path.basename(a)]),expectedNodeIds=nativeFiles.flatMap(file=>nodeTestCases[path.basename(file)].map(name=>path.basename(file)+'::'+name));childEnv.MOODY_EXPECTED_NODE_CASES=JSON.stringify(expectedNodeIds);if(command===process.execPath&&(nativeFiles.length||nativeSource)&&!args.includes('--test'))args=['--test',...args];
-    if (command===process.execPath&&args.includes('--test')) args=[`--test-reporter=${pathToFileURL(path.join(root,'scripts/ci-test-reporter.cjs')).href}`,...args];
-    const child = spawn(command, args, { cwd, env:childEnv, stdio: ['ignore', 'pipe', 'pipe'],
-      detached: process.platform !== 'win32', shell: process.platform === 'win32' && ['npm', 'npx'].includes(command) });
-    const stop = () => {
-      try { process.platform === 'win32' ? child.kill('SIGTERM') : process.kill(-child.pid, 'SIGTERM'); } catch {}
-      forceKill = setTimeout(() => { try { process.platform === 'win32' ? child.kill('SIGKILL') : process.kill(-child.pid, 'SIGKILL'); } catch {} }, 1000);
-      forceKill.unref();
-    };
-    const abort = () => { cancelled = true; stop(); };
-    const timer = setTimeout(() => { timedOut = true; stop(); }, timeoutMs);
-    const collect = (chunk, stream) => {
-      bytes += chunk.length; outputHash.update(chunk);
-      tail = Buffer.concat([tail, chunk]);
-      if (tail.length > 65536) tail = tail.subarray(tail.length - 65536);
-      if (!quiet) stream.write(chunk);
-    };
-    child.stdout.on('data', chunk => collect(chunk, process.stdout));
-    child.stderr.on('data', chunk => collect(chunk, process.stderr));
-    child.on('error', e => { error = e.code || e.message; });
-    signal?.addEventListener('abort', abort, { once: true });
-    if (signal?.aborted) abort();
-    child.on('close', (code, childSignal) => {
-      clearTimeout(timer); clearTimeout(forceKill); signal?.removeEventListener('abort', abort);
-      fs.mkdirSync(path.dirname(log), { recursive: true });
-      fs.writeFileSync(log, tail);
-      let assertionFailed=false,terminalFailed=false,naturalCompletion=false,terminalReceipt=null;const ownReceipt=receiptFile+'.'+child.pid+'.json';
-      try {const st=fs.lstatSync(ownReceipt);if(st.isFile()&&!st.isSymbolicLink()&&st.size<=65536){const receipt=JSON.parse(fs.readFileSync(ownReceipt));if(!receipt||typeof receipt!=='object'||Array.isArray(receipt))throw Error('Invalid process receipt');terminalReceipt=receipt;terminalFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true;naturalCompletion=receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.naturalCompletion===true;assertionFailed=receipt.schema===1&&receipt.executionId===executionId&&receipt.pid===child.pid&&receipt.terminal===true&&receipt.kind==='assertion'&&receipt.code==='ERR_ASSERTION'&&receipt.name==='AssertionError';}} catch {}
-      const classified=classify({code,error:error||childSignal,timedOut,cancelled,assertionFailed:execution==='contract'&&assertionFailed,terminalFailed}),status=classified==='PASS'&&command===process.execPath&&((execution==='contract'&&!naturalCompletion)||(requireAssertions&&!(typeof terminalReceipt?.assertions==='number'&&Number.isSafeInteger(terminalReceipt.assertions)&&terminalReceipt.assertions>0||Array.isArray(terminalReceipt?.nodeTests)&&terminalReceipt.nodeTests.length>0)))?'UNVERIFIED':classified==='ERROR'&&!terminalFailed&&Array.isArray(terminalReceipt?.nodeCaseIssues)&&terminalReceipt.nodeCaseIssues.length?'UNVERIFIED':classified;
-      resolve({status,execution,executionId,pid:child.pid,contradictions:terminalFailed&&code===0?['TerminalFailureWithExitZero']:[],nodeTests:terminalReceipt?.nodeTests,nodeCaseIssues:terminalReceipt?.nodeCaseIssues,assertions:terminalReceipt?.assertions??0,terminalReceipt,assertionResult:status==='PASS'?'PASS':status==='FAIL'?'FAIL':'UNKNOWN',reasonCode:cancelled?'RunCancelled':timedOut?'ProcessTimeout':error?'SpawnError':childSignal?'ProcessSignal':status==='FAIL'?'AssertionFailed':terminalFailed?'TerminalFailure':code===0?(status==='PASS'?'ExitZero':naturalCompletion?'NoAssertions':'EarlyExitWithoutCompletion'):'ProcessExitError',
-        rawStatus: cancelled ? 'cancelled' : timedOut ? 'timeout' : error ? 'spawn-error' : childSignal ? 'signal' : code === 0 ? 'passed' : 'failed',
-        exitCode: code, signal: childSignal, error: error || null, milliseconds: Date.now() - start,
-        outputBytes: bytes, outputSha256: outputHash.digest('hex'), logTruncated: bytes > tail.length });
-    });
-  });
-}
+const {runCommand}=require('./ci/process.ts');
 
 function readReport(ctx, file) {
   try {

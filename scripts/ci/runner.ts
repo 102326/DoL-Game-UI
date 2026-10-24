@@ -1,3 +1,4 @@
+import {runCommand} from './process.ts';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
@@ -26,7 +27,7 @@ export async function runSuite(ctx:Context,mode:string,tests?:readonly string[],
   fs.rmSync(path.join(ctx.dir,'fixtures',name,'checkpoints.json'),{force:true});
   const env={...process.env,MOODY_CHECK_NAME:name,MOODY_EVIDENCE_DIR:path.join(ctx.dir,'fixtures',name)};
   const checkTimeout=name==='device-layouts.cjs'?(process.env.MOODY_DEVICE_DEPTH==='deep'?10:6)*60000:timeoutMs;
-  const result=await e.runCommand(process.execPath,testArgs(name).map(arg=>arg.startsWith('tests/')?path.join(ctx.root,arg):arg),{cwd:ctx.root,log:path.join(ctx.dir,String(check.log)),env,timeoutMs:Math.min(checkTimeout,Math.max(1,deadline-Date.now())),signal,quiet,requireAssertions:true});
+  const result=await runCommand(process.execPath,testArgs(name).map(arg=>arg.startsWith('tests/')?path.join(ctx.root,arg):arg),{cwd:ctx.root,log:path.join(ctx.dir,String(check.log)),env,timeoutMs:Math.min(checkTimeout,Math.max(1,deadline-Date.now())),signal,quiet,requireAssertions:true});
   Object.assign(check,result);
   if(name==='device-layouts.cjs'&&check.status==='PASS'&&!e.layoutEvidence(ctx))Object.assign(check,{status:'UNVERIFIED',reasonCode:'MissingLayoutCoverage'});
   if(check.status==='PASS'&&(!e.checkpointEvidence(ctx,name)||entryDeclaration(name)&&entryCaseProblems(name,result).length))Object.assign(check,{status:'UNVERIFIED',reasonCode:'MissingCheckpointOrCase',caseIssues:entryCaseProblems(name,result)});

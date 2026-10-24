@@ -1,3 +1,4 @@
+import {runCommand} from './process.ts';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {canSchedule} from './contracts.ts';
@@ -23,7 +24,7 @@ export async function runResearch(ctx:Context,{signal,quiet=false,checks}:{signa
   if(!signal?.aborted&&Date.now()<deadline&&canSchedule(dependencies,statuses)){
    const before=new Map((r.reportsFor(ctx,check.report) as string[]).map(file=>[file,r.stamp(file)]));
    const env={...process.env,MOODY_CHECK_NAME:check.args[0]?.split('/').at(-1),MOODY_EVIDENCE_DIR:path.join(ctx.dir,'fixtures',check.args[0]?.split('/').at(-1)||check.id)};
-   const outcome=await e.runCommand(check.command,check.args,{cwd:ctx.root,log:path.join(ctx.dir,'research',check.id+'.log'),timeoutMs:Math.min(120000,Math.max(1,deadline-Date.now())),signal,env,quiet,execution:check.execution||'tool',requireAssertions:check.execution==='contract'});
+   const outcome=await runCommand(check.command,check.args,{cwd:ctx.root,log:path.join(ctx.dir,'research',check.id+'.log'),timeoutMs:Math.min(120000,Math.max(1,deadline-Date.now())),signal,env,quiet,execution:check.execution||'tool',requireAssertions:check.execution==='contract'});
    Object.assign(result,outcome);
    if(e.verifiedPass(result))try{
     const entry=check.args.find(a=>/\.cjs$/.test(a)&&entryDeclaration(path.basename(a)));
