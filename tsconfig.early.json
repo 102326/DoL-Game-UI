@@ -1,5 +1,5 @@
 {
  "extends":"./tsconfig.json",
- "compilerOptions":{"allowJs":false},
- "include":["shop-page-experiment.ts"]
+ "compilerOptions":{"allowJs":false,"noUncheckedIndexedAccess":true},
+ "include":["shop-page-experiment.ts","src/early/shop-resize.ts"]
 }
