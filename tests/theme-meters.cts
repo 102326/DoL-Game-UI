@@ -1,4 +1,6 @@
-const {chromium}=require('playwright'),assert=require('node:assert/strict');
+import playwright = require('playwright');
+import assert = require('node:assert/strict');
+const {chromium}=playwright;
 (async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});try{
  const page=await browser.newPage();
  await page.setContent('<style>body{background:#181818}.meter{position:relative;height:4px;background:#777;z-index:-10}.meter>div{position:absolute;height:100%;width:50%;background:gold}</style><div class="passage"><div class="meter"><div></div></div><div id="oxygencaption"><div class="meter"><div></div></div></div></div>');

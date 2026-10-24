@@ -1,14 +1,17 @@
-const assert=require('node:assert/strict');
-const path=require('node:path');
-const vm=require('node:vm');
-const {buildSync}=require('esbuild');
+import assert = require('node:assert/strict');
+import path = require('node:path');
+import vm = require('node:vm');
+import esbuild = require('esbuild');
+const {buildSync}=esbuild;
 
 const built=buildSync({
  entryPoints:[path.join(__dirname,'../src/wardrobe/native.ts')],
  bundle:true,write:false,format:'cjs',platform:'node'
 });
-const bundledModule={exports:{}};
-vm.runInNewContext(built.outputFiles[0].text,{module:bundledModule,exports:bundledModule.exports,document:{createElement(){return {}}}});
+const bundledModule:{exports:unknown}={exports:{}};
+vm.runInNewContext(built.outputFiles[0]?.text ?? assert.fail('missing native output'),{module:bundledModule,exports:bundledModule.exports,document:{createElement(){return {}}}});
+function nativeExports(value:unknown):value is Pick<typeof import('../src/wardrobe/native.ts'),'createNativeWardrobe'>{return !!value&&typeof value==='object'&&'createNativeWardrobe' in value&&typeof value.createNativeWardrobe==='function';}
+assert.ok(nativeExports(bundledModule.exports));
 const native=bundledModule.exports.createNativeWardrobe({}, {measure:(_phase,run)=>run()});
 
 const active={wardrobeOption:'delete'};

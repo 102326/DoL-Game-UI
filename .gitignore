@@ -66,3 +66,6 @@ docs/HANDOFF.local.md
 /scripts/build-device-probe.mjs
 /tests/runtime-mutations.cjs
 /tests/mouth-compat-adapter.cjs
+/tests/theme-meters.cjs
+/tests/wardrobe-mode-cleanup.cjs
+/tests/wardrobe-native-link.cjs
