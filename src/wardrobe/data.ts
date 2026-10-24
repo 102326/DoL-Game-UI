@@ -1,11 +1,11 @@
-import type {Clothing,ClothingSlots,Inventory,Worn,WardrobeVariables,WardrobeSetup,WardrobeDataHost} from './host';
+import type {Clothing,ClothingSlots,Inventory,Worn,WardrobeVariables,WardrobeSetup,WardrobeReadHost} from './host';
 import {clothingIconLayers} from './icons';
 import type {Item} from './types';
 export const LABELS:Record<string,string>={head:'头饰',face:'面饰',neck:'颈部',upper:'上装',lower:'下装',under_upper:'内搭上装',under_lower:'内搭下装',hands:'手饰',handheld:'手持物',legs:'腿饰',feet:'鞋子'};
-export interface Snapshot {root?:WardrobeDataHost;variables:WardrobeVariables;setup:WardrobeSetup;location:string;inventory:Inventory;worn:Worn}
+export interface Snapshot {root?:WardrobeReadHost;variables:WardrobeVariables;setup:WardrobeSetup;location:string;inventory:Inventory;worn:Worn}
 export interface Entry extends Item {slot:string;index:number;raw:Clothing;descriptor:Clothing|undefined}
 export function copy<T>(value:T):T {return structuredClone(value)}
-export function snapshot(root:WardrobeDataHost):Snapshot|null {
+export function snapshot(root:WardrobeReadHost):Snapshot|null {
  const variables=root.SugarCube?.State?.variables??root.State?.variables??root.V;
  const setup=root.SugarCube?.setup??root.setup;
  if(!variables?.worn||!variables.wardrobe||!setup?.clothes)return null;

@@ -47,3 +47,4 @@ export type WardrobeDataHost=NativeWidgetHost & NativeEventsHost & {
  Transformations?:{defaults?:{demon?:{colour?:unknown}}};
  C?:{tiredness?:{max?:number}};ZIndices?:unknown;
 };
+export type WardrobeReadHost=Pick<WardrobeDataHost,'SugarCube'|'State'|'V'|'setup'|'getCustomColourName'|'getTrueWarmth'|'normaliseFileName'>;
