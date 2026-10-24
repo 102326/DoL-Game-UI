@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **当前TS First：62/243，剩余181项。** 当前源码717d38e；12个原清单HTML程序及另补三个生成预览页字符串程序已转TS，五种实际预览/九种特殊天气输入通过。商店真实报价/交易、Runtime反例驱动及设备布局辅助已迁CTS；类型包装的循环断言计数修复保留所有旧断言，完整ci:check通过。受验53项2c9f475的[标准40103339471](https://github.com/102326/DoL-Game-UI/actions/runs/40103339471)/[研究40103337140](https://github.com/102326/DoL-Game-UI/actions/runs/40103337140)与独立下载验证全部success，9ZIP CRC/10项SHA及双构建/9项制品反例已回读；后续62项需新CI。717d38e原始Windows H01无诊断包装12项通过，旧间歇性超时尚未因果归因，保留Unknown。详细失败与边界见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。无本批Android装机、main合入或发布。
+- **当前TS First：66/243，剩余177项。** 当前实现e7bd110；12个原清单HTML程序及另补三个生成预览页已转TS。62项c218a86的[标准40104574743](https://github.com/102326/DoL-Game-UI/actions/runs/40104574743)/[研究40104572617](https://github.com/102326/DoL-Game-UI/actions/runs/40104572617)与下载验证全部success，9ZIP CRC/10项SHA、双构建/9项制品反例已回读，含五种实际预览。后续共享观察器和原生样式测试已转CTS；历史700/450ms反例改为同一浏览器任务采样，确定性微任务回归及真实历史完整专项通过，不暂停动画、不改时限/原断言。717d38e原始Windows H01无诊断包装12项通过，旧间歇超时仍未因果归因。66项需新远端CI；无本批Android、main合入或发布。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
