@@ -11,7 +11,7 @@ test('run context validates prior JSON, keeps the nonce and bounds the finalizat
  t.after(()=>{for(const [key,value]of saved){if(value===undefined)delete process.env[key];else process.env[key]=value}});
  const id='ts-context-'+randomUUID();process.env.MOODY_EVIDENCE_ID=id;process.env.MOODY_PROFILE='standard';process.env.MOODY_DEVICE_DEPTH='standard';delete process.env.GITHUB_EVENT_PATH;delete process.env.GITHUB_ACTIONS;
  const initial=context(),dir=initial.dir,file=path.join(dir,'identity.json');
- t.after(()=>{if(path.basename(dir)!==id||path.basename(path.dirname(dir))!=='ci'||path.basename(path.dirname(path.dirname(dir)))!=='artifacts')throw Error('Unexpected context fixture cleanup');fs.rmSync(dir,{recursive:true,force:true})});
+ t.after(()=>{if(path.resolve(dir)!==path.join(initial.root,'tests/artifacts/ci',id)||path.basename(dir)!==id)throw Error('Unexpected context fixture cleanup');fs.rmSync(dir,{recursive:true,force:true})});
  assert.deepEqual(context().identity,initial.identity);assert.match(initial.identity.nonce,/^[a-f0-9]{32}$/);
  const envelope={schema:1,identity:initial.identity};
  const event=path.join(dir,'event.json');process.env.GITHUB_EVENT_PATH=event;
