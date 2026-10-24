@@ -1,5 +1,13 @@
 {
   "scope": "Read-only native special weather and atmosphere; research only",
+  "ownerReview": {
+    "date": "2026-10-24",
+    "status": "Rejected",
+    "scope": "New special-weather visuals: blood moon, tentworld, extreme heat and cold",
+    "feedback": "Owner judged current visuals poor and requested external visual references. Effect decisions are paused while release preparation proceeds.",
+    "existingAcceptedVisualsPreserved": true,
+    "releaseGate": "G2 Blocked"
+  },
   "package": {
     "name": "DoLGameUI",
     "version": "3.0.4",
