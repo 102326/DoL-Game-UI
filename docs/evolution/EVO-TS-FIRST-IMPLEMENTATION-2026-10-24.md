@@ -368,3 +368,18 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 - Framework workspace原JS缺少场景ready且无jQuery桥，第二个article等待失败；56940bc在每次安装Host后显式sceneReady，原13具名断言一次通过。WorkspacePanel的失效排序目标index<0原可写入undefined，ceff3e8已拒绝该目标，合法交换保持；CTS及针对验证由对应批次接续。
 - 147项ee68d20ee10b18c50b2178341f98b16d23c3807e：标准40123691561、研究40123691058均success。下载实际remote-verification准确HEAD/dirty=false/PASS/COMPLETE、problems=[]；两份summary PASS，10个摘要、9个ZIP CRC与双构建PASS/differences=[]。148–167及后续运行边界改动不借用该结果。
 - 新增原型/CI结果及失败在tests/artifacts/ts-*、ci-readback-147，均为本机忽略文件。当前167项严格工具编译通过；未发布、未改4.0.0-rc.2、main或玩家端浏览器目标。
+
+
+## 2026-10-25 阶段检查点：186/243
+
+按负责人要求，先收束本批再汇报。冻结独立来源累计186/243，剩余57项，均为测试；这不是产品发布完成度。工作者已停止新增批次，无遗留未提交迁移WIP。
+
+- 168–186包括战斗缩放/宿主/真实行动、统一设置、衣柜布局与修理转移、Framework工作区/作者工具/动效/Vue和历史游戏/Android入口，以及存档Host/视口、集合和原生壳体测试。生成CJS退出手工跟踪，对应CTS成为单一来源；公共命令与CommonJS运行形式保留。
+- 严格工具检查通过；原版隔离游戏的修理/转移、关联容量/旧目标拒绝、忙碌阻止切换、实际预览和五种视口布局通过。统一设置的偏好、五视口、重载/重复注入与历史模块接续通过。Framework workspace13项、author-kit4项、motion8项及战斗原节点/回合/重入用例通过。存档2K/平板/窄屏12组和原生集合控件通过。
+- combat-resize新旧脚本同在首个背景颜色断言失败（当前32/32/34，旧预期28/29/32），原失败保留。release-27-settings在当前构建的新旧脚本同因浮球默认true而失败；未改其历史断言或恢复2.X设计。display-scale同失败、Windows symlink EPERM和先前采样Unknown仍保留。
+- 历史Host ZIP、game.html未在本机具备，不虚构运行：host-versions、game/reference-game、Android reference只有严格编译/语法覆盖。Vue对照九项具名浏览器检查通过，但最终comparison.json依赖缺失冻结ZIP，报告生成失败保留，不宣称完整通过。未使用私人长期存档。
+- 后续顺序：完成57项测试迁移；复查Twee回调及已有TS边界/JS例外；以最终源码跑标准与研究CI、独立下载和九包合同；按最终包做代表性Windows/Android回归；更新冻结/交接材料后交负责人裁决。不能以186文件数、旧RC2或隔离原型认可替代这些检查。
+- 147项远端证据已完整核对，186项的新远端结果需单独记录。保持Node26 Only、4.0.0-rc.2、Host+UI双包；未合main、Tag、发布或更新公开Assets。
+
+
+检查点补充：186项完整ci:check、UI实际Vite构建和Framework实际构建均exit 0。重建后衣柜features复验在“修改描述后点击确认修理”出现一次按钮脱离DOM超时；准确旧JS使用同一新构建的一次对照通过。先前CTS使用旧构建曾通过，不能冒称最新构建该项通过，也不能据此认定产品回归或TS原因；原日志保留，后续先检查这段注入/点击之间的时序，并保留无写入与过期拒绝断言。本阶段不启动新迁移批次，先向负责人汇报186/243及57项后续工作。

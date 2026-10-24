@@ -228,3 +228,7 @@ docs/HANDOFF.local.md
 /tests/kraft-work-collections.cjs
 /tests/characteristics-framework.cjs
 /tests/stone-free-player-shells.cjs
+
+/tests/combat-stone-free.cjs
+/tests/combat-m4a.cjs
+/tests/framework-reference-android.cjs

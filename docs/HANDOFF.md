@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **当前 TS First：167/243，剩余76项测试。** 独立脚本全部接入TS，继续剩余测试与既有TS边界。147项ee68d20的标准40123691561、研究40123691058成功，下载准确HEAD/PASS/COMPLETE、10摘要/9ZIP/双构建通过。后续真实owner API图暴露的运行索引和私有模型边界已修正；13类owner及H01四反例、私有绘图1013项通过，尚待新批CI和最终装机。保留衣柜90ms采样、native-small-surfaces颜色超时、display-scale背景断言新旧同失败、共存观测失败及console404 Unknown，详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。Android旧100项证据不自动覆盖本批；继续全部冻结项，不发布。
+- **当前 TS First：186/243，剩余57项测试。** 独立脚本全部接入TS，本批按负责人要求先收束汇报；后续继续剩余测试、Twee与既有TS边界。147项ee68d20的标准40123691561、研究40123691058成功，下载准确HEAD/PASS/COMPLETE、10摘要/9ZIP/双构建通过。后续真实owner API图暴露的运行索引和私有模型边界已修正；13类owner及H01四反例、私有绘图1013项通过；186项ci:check和UI/Host实际构建通过。新构建features一次确认按钮脱离DOM超时、旧JS对照通过，时序待查，不能记为最新该项通过。尚待新批CI和最终装机。保留衣柜90ms采样、native-small-surfaces颜色超时、display-scale背景断言新旧同失败、共存观测失败及console404 Unknown，详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。Android旧100项证据不自动覆盖本批；继续全部冻结项，不发布。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
@@ -47,7 +47,7 @@
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
-3. 先按TS First方案一继续T1/T2/T3：当前167项已迁移，76项及既有TS边界仍在范围内；12个维护HTML内联程序已收敛，Twee仍待处理；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
+3. 先按TS First方案一继续T1/T2/T3：当前186项已迁移，57项及既有TS边界仍在范围内；12个维护HTML内联程序已收敛，Twee仍待处理；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
 4. 保留Windows Edge H01原始超时，继续有依据地归因；带记录的诊断通过不能抹去失败。Vite7.3.7已单独修补，旧审计为历史。每批做受影响验证，最终迁移源码再做两套CI、九包与代表Windows/Android实际宿主回归。旧RC2/8033b7f只能复用未改行为的有效证据，不替代新候选。
 5. TS First完成后更新候选冻结、依赖/许可/摘要与玩家材料，再提交负责人验收。4.0.0-rc.2保持内部版本；未授权正式版本变更、main、Tag、Release或公开Assets。READ01仍隔离，不主动新增视觉研究；额外设备及全Mod穷举不自动成为阻塞项。
 
