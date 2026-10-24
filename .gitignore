@@ -151,3 +151,5 @@ docs/HANDOFF.local.md
 /tests/lyra-preview-adapter.cjs
 /tests/settings-dual.cjs
 /tests/settings-modal-scroll.cjs
+/tests/master-toggle.cjs
+/tests/mobile-density.cjs
