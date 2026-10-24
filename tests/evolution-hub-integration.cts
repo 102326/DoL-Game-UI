@@ -10,14 +10,14 @@ import crypto = require('node:crypto');
 import playwright = require('playwright');
 import type {Plugin,ViteDevServer} from 'vite';
 import type {sphereHub} from '../src/ui/golden-spin/hub-motion';
-import type {createHost} from '../framework/host';
+import type {hubPreview as preview} from '../prototypes/evolution-integration/hub-preview';
+import type {startTheme} from '../src/theme/controller';
 import type {createSphere} from '../src/ui/golden-spin/sphere';
 type HubVisual=ReturnType<typeof sphereHub>;
 type PeerSphere=ReturnType<typeof createSphere>;
-type HubPeer=ReturnType<ReturnType<typeof createHost>['register']>;
-type HubPreview={host:ReturnType<typeof createHost>;stop():void;remount():void;dispose():void;counts():{native:number;settings:number;inspector:number}};
-declare const hubPreview:HubPreview,testHubVisual:HubVisual,retiredHub:HubVisual,peer:HubPeer,shortPeer:HubPeer,peerCleaned:boolean,peerSphere:PeerSphere,peerCanvas:HTMLCanvasElement,nativeResizeObserver:typeof ResizeObserver,restoreObserve:()=>void;
-declare const DoLMidnightTheme:NonNullable<Window['DoLMidnightTheme']>;
+type HubPeer=ReturnType<typeof preview.host.register>;
+declare const hubPreview:typeof preview,testHubVisual:HubVisual,retiredHub:HubVisual,peer:HubPeer,shortPeer:HubPeer,peerCleaned:boolean,peerSphere:PeerSphere,peerCanvas:HTMLCanvasElement,nativeResizeObserver:typeof ResizeObserver,restoreObserve:()=>void;
+declare const DoLMidnightTheme:NonNullable<NonNullable<Parameters<typeof startTheme>[0]>['DoLMidnightTheme']>;
 function must<T>(value:T|null|undefined):T{if(value===null||value===undefined)throw Error('Missing Hub fixture value');return value}
 type HubCheck={name:string;status:'PASS'|'FAIL';error?:string};
 async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstruction=false,oldGeometry=false,oldScroll=false,previewLayoutOnly=false,oldPreviewStyle=false}:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean}={}){
