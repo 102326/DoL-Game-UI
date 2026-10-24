@@ -7,13 +7,19 @@ import cp = require('node:child_process');
 import browserOptions = require('./browser-options.cjs');
 import receipt = require('../scripts/ci-process-receipt.cjs');
 import cases = require('../scripts/ci-cases.cjs');
-import type {Host,Participant} from '../framework/contracts';
-import type {headerWeather} from '../framework/official-ui/weather';
-import type {createHost} from '../framework/host';
 const {chromium}=playwright,{withCaseScope}=cases;
 type ResourceOwner={refresh?():void;destroy():void};
 type Probe={owner:ResourceOwner;stats():{frames:number;timers:number;observers:number;listeners:number};late():void;timerDetails():Array<{delay:number|undefined;stack:string|undefined}>};
-declare const ownerModules:Record<string,unknown>;
+type OwnerModules={
+ theme:typeof import('../src/theme/controller.ts');layout:typeof import('../src/theme/layout.ts');
+ attributes:typeof import('../src/characteristics/main.ts');social:typeof import('../src/social/main.ts');
+ panels:typeof import('../src/panels/main.ts');shop:typeof import('../src/shop/main.ts');
+ wardrobe:typeof import('../src/wardrobe/main.ts');saves:typeof import('../src/saves/main.ts');
+ combat:typeof import('../src/combat/main.ts');floating:typeof import('../src/floating/main.ts');
+ motion:typeof import('../framework/official-ui/motion.ts');weather:typeof import('../framework/official-ui/weather.ts');
+ hub:typeof import('../framework/official-ui/hub.ts');host:typeof import('../framework/host.ts');
+};
+declare const ownerModules:OwnerModules;
 declare const ownerProbe:Probe;
 declare const DoLMidnightTheme:ResourceOwner&{openSettings():void};
 declare const DMTLayout:ResourceOwner&{sync(input:{enabled:boolean;layout:boolean}):void};
@@ -36,8 +42,14 @@ type Counterexample={kind:string;status:'REJECTED';assertion:string;checks?:unkn
    const page=await browser.newPage(),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:'+port+'/__owners__');await page.evaluate(()=>Object.assign(window,{must:<T,>(value:T|null|undefined)=>{if(value===null||value===undefined)throw Error('Missing owner fixture');return value}}));
    await page.addStyleTag({path:'dist/framework/official-ui/style.css'});
    await page.evaluate(async()=>{
-    const paths=['/src/theme/controller.ts','/src/theme/layout.ts','/src/characteristics/main.ts','/src/social/main.ts','/src/panels/main.ts','/src/shop/main.ts','/src/wardrobe/main.ts','/src/saves/main.ts','/src/combat/main.ts','/src/floating/main.ts','/framework/official-ui/motion.ts','/framework/official-ui/weather.ts','/framework/official-ui/hub.ts','/framework/host.ts'];
-    Object.assign(window,{ownerModules:Object.fromEntries(await Promise.all(paths.map(async path=>[path,await import(path)])))});
+    // Import every first-party owner before resource hooks observe allocations.
+    const [theme,layout,attributes,social,panels,shop,wardrobe,saves,combat,floating,motion,weather,hub,host]=await Promise.all([
+     import('../src/theme/controller.ts'),import('../src/theme/layout.ts'),import('../src/characteristics/main.ts'),import('../src/social/main.ts'),
+     import('../src/panels/main.ts'),import('../src/shop/main.ts'),import('../src/wardrobe/main.ts'),import('../src/saves/main.ts'),
+     import('../src/combat/main.ts'),import('../src/floating/main.ts'),import('../framework/official-ui/motion.ts'),import('../framework/official-ui/weather.ts'),
+     import('../framework/official-ui/hub.ts'),import('../framework/host.ts')
+    ]);
+    Object.assign(window,{ownerModules:{theme,layout,attributes,social,panels,shop,wardrobe,saves,combat,floating,motion,weather,hub,host} satisfies OwnerModules});
     const vuePath='/__owner_vue__.js',module:unknown=await import(vuePath);if(!module||typeof module!=='object'||!('createApp' in module)||typeof module.createApp!=='function')throw Error('Missing Vue createApp');const createApp=module.createApp as typeof import('vue')['createApp'];const mount=document.createElement('div');document.body.append(mount);const warmup=createApp({render:()=>null});warmup.mount(mount);warmup.unmount();mount.remove();
    });
    await page.evaluate(kind=>{
@@ -51,23 +63,20 @@ type Counterexample={kind:string;status:'REJECTED';assertion:string;checks?:unkn
     const globalTarget=(target:EventTarget)=>target===window||target===document||target===visualViewport||target instanceof MediaQueryList,capture=(options:boolean|AddEventListenerOptions|EventListenerOptions|undefined)=>typeof options==='boolean'?options:!!options?.capture;
     EventTarget.prototype.addEventListener=function(type,callback,options){if(globalTarget(this)&&!listeners.some(x=>x.target===this&&x.type===type&&x.callback===callback&&x.capture===capture(options)))listeners.push({target:this,type,callback,capture:capture(options)});return add.call(this,type,callback,options)};
     EventTarget.prototype.removeEventListener=function(type,callback,options){const i=listeners.findIndex(x=>x.target===this&&x.type===type&&x.callback===callback&&x.capture===capture(options));if(i>=0)listeners.splice(i,1);return remove.call(this,type,callback,options)};
-    function exportFunction<T extends Function>(path:string,name:string):T{const module=ownerModules[path];if(!module||typeof module!=='object')throw Error('Missing owner module '+path);const exports=module as Record<string,unknown>,value=exports[name];if(typeof value!=='function')throw Error('Missing owner export '+path+'#'+name);return value as T}
-    const startOwner=(path:string,name:string)=>exportFunction<(root:Window)=>unknown>(path,name);
-    const checkedOwner=(value:unknown):ResourceOwner=>{if(!value||typeof value!=='object'||!('destroy' in value)||typeof value.destroy!=='function')throw Error('Missing owner destroy');return value as ResourceOwner};
     let owner:ResourceOwner|undefined;
-    if(kind==='settings'){exportFunction<()=>void>('/src/theme/controller.ts','startTheme')();owner=DoLMidnightTheme;DoLMidnightTheme.openSettings()}
-    if(kind==='layout'){exportFunction<()=>void>('/src/theme/layout.ts','startLayout')();owner=DMTLayout;DMTLayout.sync({enabled:true,layout:true})}
-    if(kind==='attributes')owner=checkedOwner(startOwner('/src/characteristics/main.ts','startCharacteristics')(window));
-    if(kind==='social')owner=checkedOwner(startOwner('/src/social/main.ts','startSocial')(window));
-    if(kind==='panels')owner=checkedOwner(startOwner('/src/panels/main.ts','startPanels')(window));
-    if(kind==='shop')owner=checkedOwner(startOwner('/src/shop/main.ts','startShop')(window));
-    if(kind==='wardrobe')owner=checkedOwner(startOwner('/src/wardrobe/main.ts','startWardrobe')(window));
-    if(kind==='saves')owner=checkedOwner(startOwner('/src/saves/main.ts','startSaves')(window));
-    if(kind==='combat'){exportFunction<()=>void>('/src/combat/main.ts','startCombat')();owner=DoLCombatUI}
-    if(kind==='floating')owner=checkedOwner(startOwner('/src/floating/main.ts','startFloatingTools')(window));
-    if(kind==='official-motion')owner={destroy:exportFunction<()=>()=>void>('/framework/official-ui/motion.ts','startOfficialMotion')()};
-    if(kind==='weather'){const weather=exportFunction<typeof headerWeather>('/framework/official-ui/weather.ts','headerWeather')();weather.set('owned',must(document.getElementById('weather-heading')),document.body);const shell=document.createElement('section');shell.style.cssText='position:relative;width:640px;height:480px';shell.innerHTML='<header>Settings owner</header><button>Original input</button>';document.body.append(shell);Weather={name:'rain',precipitation:'rain'};const heading=must(shell.firstElementChild);if(!(heading instanceof HTMLElement))throw Error('Missing settings heading');weather.set('settings',heading,shell);weather.refresh();owner={destroy:weather.dispose}}
-    if(kind==='hub'){const host=exportFunction<typeof createHost>('/framework/host.ts','createHost')(window),participant=host.register('owner-fixture');Object.assign(window,{DoLFloatingTools:{getPreferences:()=>({enabled:true,hidden:false,mode:'grid'})}});const stop=exportFunction<(host:Host,owner:Participant)=>()=>void>('/framework/official-ui/hub.ts','startOfficialHub')(host,participant);owner={destroy(){stop();participant.dispose();host.dispose();Reflect.deleteProperty(window,'DoLFloatingTools')}}}
+    if(kind==='settings'){ownerModules.theme.startTheme();owner=DoLMidnightTheme;DoLMidnightTheme.openSettings()}
+    if(kind==='layout'){ownerModules.layout.startLayout();owner=DMTLayout;DMTLayout.sync({enabled:true,layout:true})}
+    if(kind==='attributes')owner=ownerModules.attributes.startCharacteristics(window);
+    if(kind==='social')owner=ownerModules.social.startSocial(window);
+    if(kind==='panels')owner=ownerModules.panels.startPanels(window);
+    if(kind==='shop')owner=ownerModules.shop.startShop(window);
+    if(kind==='wardrobe')owner=ownerModules.wardrobe.startWardrobe(window);
+    if(kind==='saves')owner=ownerModules.saves.startSaves(window);
+    if(kind==='combat'){ownerModules.combat.startCombat();owner=DoLCombatUI}
+    if(kind==='floating')owner=ownerModules.floating.startFloatingTools();
+    if(kind==='official-motion')owner={destroy:ownerModules.motion.startOfficialMotion()};
+    if(kind==='weather'){const weather=ownerModules.weather.headerWeather();weather.set('owned',must(document.getElementById('weather-heading')),document.body);const shell=document.createElement('section');shell.style.cssText='position:relative;width:640px;height:480px';shell.innerHTML='<header>Settings owner</header><button>Original input</button>';document.body.append(shell);Weather={name:'rain',precipitation:'rain'};const heading=must(shell.firstElementChild);if(!(heading instanceof HTMLElement))throw Error('Missing settings heading');weather.set('settings',heading,shell);weather.refresh();owner={destroy:weather.dispose}}
+    if(kind==='hub'){const host=ownerModules.host.createHost(window),participant=host.register('owner-fixture');Object.assign(window,{DoLFloatingTools:{getPreferences:()=>({enabled:true,hidden:false,mode:'grid'})}});const stop=ownerModules.hub.startOfficialHub(host,participant);owner={destroy(){stop();participant.dispose();host.dispose();Reflect.deleteProperty(window,'DoLFloatingTools')}}}
     if(!owner)throw Error('Unknown owner kind '+kind);Object.assign(window,{ownerProbe:{owner,stats:()=>({frames:frames.size,timers:timers.size,observers:observers.size,listeners:listeners.length}),late:()=>late.forEach(callback=>callback()),timerDetails:()=>[...timers.values()]} satisfies Probe});
    },kind);
    if(kind==='hub')await page.waitForSelector('.sf-motion-hub');
