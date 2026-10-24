@@ -7,6 +7,36 @@ export interface CaseDeclaration {id:string;minimumAssertions:number;renderer?:s
 export interface CaseResult {id:string;status:CaseStatus;milliseconds:number;assertions:number;path:string;failureSignature?:string;checkpoints?:string[]}
 export interface EntryDeclaration {entry:string;sourceEntry?:string;profiles:Profile[];classification:'contract'|'candidate'|'exploratory';granularity:'entry'|'named'|'checkpoint'|'native'|'composed';cases:CaseDeclaration[];sourceSha256:string;assertionSites:number;evidence?:string;rendererContexts?:string[]}
 export interface ExpectedLock {schema:1;devicePlans:Record<string,string[]>;nativeCases:Record<string,string[]>;researchCases:Record<string,string[]>;entries:EntryDeclaration[]}
+const record=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
+const strings=(value:unknown):value is string[]=>Array.isArray(value)&&value.every((item:unknown)=>typeof item==='string');
+const stringMap=(value:unknown):value is Record<string,string[]>=>record(value)&&Object.values(value).every(strings);
+const profile=(value:unknown):value is Profile=>value==='standard'||value==='research'||value==='release';
+function caseDeclaration(value:unknown):value is CaseDeclaration{
+ return record(value)&&typeof value.id==='string'&&typeof value.minimumAssertions==='number'
+  &&Number.isSafeInteger(value.minimumAssertions)&&value.minimumAssertions>=1
+  &&(value.renderer===undefined||typeof value.renderer==='string');
+}
+export function parseCasePlan(value:unknown):CaseDeclaration[]{
+ if(!Array.isArray(value)||!value.every(caseDeclaration))throw Error('Invalid case plan');
+ return value;
+}
+function entry(value:unknown):value is EntryDeclaration{
+ return record(value)&&typeof value.entry==='string'&&(value.sourceEntry===undefined||typeof value.sourceEntry==='string')
+  &&Array.isArray(value.profiles)&&value.profiles.every(profile)
+  &&typeof value.classification==='string'&&['contract','candidate','exploratory'].includes(value.classification)
+  &&typeof value.granularity==='string'&&['entry','named','checkpoint','native','composed'].includes(value.granularity)
+  &&Array.isArray(value.cases)&&value.cases.every(caseDeclaration)&&typeof value.sourceSha256==='string'
+  &&typeof value.assertionSites==='number'&&Number.isSafeInteger(value.assertionSites)&&value.assertionSites>=0
+  &&(value.evidence===undefined||typeof value.evidence==='string')
+  &&(value.rendererContexts===undefined||strings(value.rendererContexts));
+}
+function expectedLock(value:unknown):value is ExpectedLock{
+ return record(value)&&value.schema===1&&stringMap(value.devicePlans)&&stringMap(value.nativeCases)&&stringMap(value.researchCases)&&Array.isArray(value.entries)&&value.entries.every(entry);
+}
+export function parseExpectedLock(value:unknown):ExpectedLock{
+ if(!expectedLock(value))throw Error('Invalid Expected Lock schema');
+ return value;
+}
 export interface Seal {state:'SEALED';expectedLockSha256:string;sourceAfter:unknown}
 export const digest=(value:string|Buffer):string=>createHash('sha256').update(value).digest('hex');
 // Only finalization may retain the original source identity to report its drift.

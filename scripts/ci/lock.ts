@@ -2,11 +2,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {rendererProblems} from './renderer.ts';
-import {digest,caseProblems} from './contracts.ts';
-import type {ExpectedLock,CaseResult,EntryDeclaration} from './contracts.ts';
+import {digest,caseProblems,parseExpectedLock} from './contracts.ts';
+import type {CaseResult,EntryDeclaration} from './contracts.ts';
 
 const file=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../expected.lock.json');
-export const expectedLock=JSON.parse(fs.readFileSync(file,'utf8')) as ExpectedLock;
+export const expectedLock=parseExpectedLock(JSON.parse(fs.readFileSync(file,'utf8')));
 if(expectedLock.schema!==1||!expectedLock.entries.length||new Set(expectedLock.entries.map(e=>e.entry)).size!==expectedLock.entries.length||expectedLock.entries.some(e=>!e.cases.length))throw Error('Invalid/empty Expected Lock');
 export const expectedLockSha256=digest(fs.readFileSync(file));
 // Runtime paths stay stable; the declaration hash must follow authored TS.

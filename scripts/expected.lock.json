@@ -392,6 +392,11 @@
       "seeded rain is reproducible, sparse and has independent motion rather than a common tile translation",
       "rain levels increase budget/speed while renewal remains finite, bounded and staggered"
     ],
+    "expected-lock-boundary.test.mts": [
+      "expected lock validates the real file and preserves unknown metadata",
+      "expected lock rejects wrong maps, discriminator values and invalid numeric declarations",
+      "case environment plans validate counts and keep empty or opaque valid data"
+    ],
     "native-tooling.test.mts": [
       "native erasure check rejects an extra enum fixture while retaining the normal roots"
     ],
@@ -1036,6 +1041,30 @@
       "rendererContexts": [
         "weather:2d"
       ]
+    },
+    {
+      "entry": "tests/expected-lock-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "expected lock validates the real file and preserves unknown metadata",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "expected lock rejects wrong maps, discriminator values and invalid numeric declarations",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "case environment plans validate counts and keep empty or opaque valid data",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "33abb2911b5db8a81f793e6a2af599b1205c692e3193ee4f509209cb76f193ae",
+      "assertionSites": 8
     },
     {
       "entry": "tests/floating-preferences.test.cjs",
