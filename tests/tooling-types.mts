@@ -1,3 +1,4 @@
+import {reportsFor} from '../scripts/ci/research-files.ts';
 import fixtureEvidence from './moody-fixture-evidence.cjs';
 import {runCommand} from '../scripts/ci/process.ts';
 import gateFixture from './ci-fixtures.cjs';
@@ -143,3 +144,14 @@ function reportReadContract(){
  return {value,checkpoint,status};
 }
 void reportReadContract;
+
+
+function researchDiscoveryContract(){
+ const paths:string[]=reportsFor({root:'.'},{pattern:'review/result.json'});
+ // @ts-expect-error The discovery pattern follows the catalog string contract.
+ reportsFor({root:'.'},{pattern:1});
+ // @ts-expect-error File discovery returns paths, not arbitrary report objects.
+ const invalid:{status:string}[]=reportsFor({root:'.'},undefined);
+ return {paths,invalid};
+}
+void researchDiscoveryContract;

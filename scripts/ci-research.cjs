@@ -6,26 +6,7 @@ const {entryDeclaration,entryCaseProblems}=require('./ci/lock.ts');
 const {familyFor,maturityFor,dependenciesFor,researchFamilies,familyReports}=require('./ci/research-families.ts');
 const {writeSuite}=require('./ci/records.ts');
 const { researchPlan:plan,nodeCaseIds,commandCaseIds} = require('./ci-catalog.cjs');
-function safeSource(root, file) {
-  const relative = path.relative(root, file);
-  if (relative.startsWith('..') || path.isAbsolute(relative)) return false;
-  let current = root;
-  for (const part of ['', ...relative.split(path.sep)]) {
-    current = path.join(current, part);
-    if (!fs.existsSync(current) || fs.lstatSync(current).isSymbolicLink()) return false;
-  }
-  return fs.realpathSync(file) === path.join(fs.realpathSync(root), relative);
-}
-function filesBelow(dir, root) {
-  if (!safeSource(root, dir)) return [];
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory() ? filesBelow(path.join(dir, e.name), root) : e.isFile() ? [path.join(dir, e.name)] : []);
-}
-function reportsFor(ctx, spec) {
-  if (!spec?.pattern) return [];
-  const base = path.join(ctx.root, 'tests/artifacts'), regex = new RegExp('^' + spec.pattern.replaceAll('.', '\\.') + '$');
-  return filesBelow(base, ctx.root).filter(f => regex.test(path.relative(base, f).split(path.sep).join('/')));
-}
-function stamp(file) { const s = fs.statSync(file); return `${s.mtimeMs}:${s.ctimeMs}:${s.size}:${hash(fs.readFileSync(file))}`; }
+const {safeSource,reportsFor,stamp}=require('./ci/research-files.ts');
 function caseIds(spec, data, ctx) {
   if (data?.errors?.length || data?.baseline === true || data?.record === true) throw Error('Report contains errors or an unexpected baseline/record mode');
   if ((data.sourceHead && data.sourceHead !== ctx.identity.source.head) || (data.identity?.head && data.identity.head !== ctx.identity.source.head)) throw Error('Raw report source identity mismatch');

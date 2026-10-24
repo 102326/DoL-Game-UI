@@ -434,7 +434,8 @@
       "bounded evidence reads preserve JSON fields and reject unsafe paths or sizes",
       "untrusted case and graphics receipts are checked without declaring disk data trusted",
       "fixture capture keeps size and path limits without replacing the original error",
-      "report loading validates JSON identity and reconstructs checked suite indexes"
+      "report loading validates JSON identity and reconstructs checked suite indexes",
+      "research discovery stays within its source tree and stamps actual report bytes"
     ],
     "save-metadata-boundary.test.mts": [
       "save metadata skips malformed rows without changing native data or writing storage",
@@ -703,7 +704,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "122af1177b28f7d6ac0b4c24cb9ca3cf2eb569e9799791784ce7b28501c148f6",
+      "sourceSha256": "48967dffc1a0ddb2e21f0b3c818aec1e35a91bae51cecca8c090e57cc55fa3a8",
       "assertionSites": 87
     },
     {
@@ -1811,10 +1812,14 @@
         {
           "id": "report loading validates JSON identity and reconstructs checked suite indexes",
           "minimumAssertions": 1
+        },
+        {
+          "id": "research discovery stays within its source tree and stamps actual report bytes",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "3ff74dd79e5b6de63fbe40c9c82729977f36efd435e80cc07cfee41c6c4baff4",
-      "assertionSites": 39
+      "sourceSha256": "31ec6a446553d14f2810a47c092df17cf42aeb3c8f1e8e76a06eb134367d67fa",
+      "assertionSites": 48
     },
     {
       "entry": "tests/render-state.test.cjs",

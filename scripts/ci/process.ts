@@ -18,7 +18,7 @@ interface ProcessResult {
  assertionResult:'PASS'|'FAIL'|'UNKNOWN';reasonCode:string;rawStatus:string;exitCode:number|null;signal:NodeJS.Signals|null;
  error:string|null;milliseconds:number;outputBytes:number;outputSha256:string;logTruncated:boolean;
 }
-export function runCommand(command:string, args:string[], { cwd = root, log, timeoutMs = 120000, signal, env = process.env, quiet = false, requireAssertions=false, execution='contract' }:Options):Promise<ProcessResult> {
+export function runCommand(command:string, args:readonly string[], { cwd = root, log, timeoutMs = 120000, signal, env = process.env, quiet = false, requireAssertions=false, execution='contract' }:Options):Promise<ProcessResult> {
   return new Promise(resolve => {
     const start = Date.now(), outputHash = crypto.createHash('sha256');
     let tail:Buffer = Buffer.alloc(0), bytes = 0, error:string|undefined, timedOut = false, cancelled = false, forceKill:NodeJS.Timeout|undefined;

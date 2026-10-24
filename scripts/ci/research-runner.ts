@@ -1,3 +1,4 @@
+import {reportsFor,stamp} from './research-files.ts';
 import {runCommand} from './process.ts';
 import path from 'node:path';
 import {createRequire} from 'node:module';
@@ -10,11 +11,12 @@ import {writeSuite,writeJson} from './records.ts';
 
 const require=createRequire(import.meta.url);
 interface Context {root:string;dir:string;identity:{source:unknown;[key:string]:unknown}}
-interface Check {id:string;command:string;args:string[];execution?:'tool'|'contract';report?:unknown}
+type Check=typeof import('../ci-catalog.cjs').researchPlan[number];
 interface Result {name:string;status:Status;rawStatus:string;caseIds:string[];artifacts:unknown[];[key:string]:unknown}
 interface Report {schema:1;identity:Context['identity'];suite:string;expected:string[];status:Status;sourceAfter:unknown;scope:string;results:Result[];reasonCode?:string}
-export async function runResearch(ctx:Context,{signal,quiet=false,checks}:{signal?:AbortSignal;quiet?:boolean;checks?:Check[]}={}):Promise<Report>{
- const e=require('../ci-evidence.cjs'),r=require('../ci-research.cjs'),plan=r.plan as Check[],selected=checks||plan;
+export async function runResearch(ctx:Context,{signal,quiet=false,checks}:{signal?:AbortSignal;quiet?:boolean;checks?:readonly Check[]}={}):Promise<Report>{
+ const e=require('../ci-evidence.cjs'),r=require('../ci-research.cjs');
+ const {researchPlan:plan}:typeof import('../ci-catalog.cjs')=require('../ci-catalog.cjs'),selected=checks||plan;
  if(!selected.length)throw Error('Empty research selection');
  const budget=Number(process.env.MOODY_RESEARCH_BUDGET_MS||15*60000);if(!Number.isFinite(budget)||budget<=0)throw Error('Invalid research budget');
  const report:Report={schema:1,identity:ctx.identity,suite:'research',expected:selected.map(c=>c.id),status:'UNVERIFIED',sourceAfter:ctx.identity.source,scope:selected===plan?'complete-profile':'selected-contract-only',results:[]};
@@ -23,7 +25,7 @@ export async function runResearch(ctx:Context,{signal,quiet=false,checks}:{signa
   const dependencies=dependenciesFor(check.id).filter(id=>selectedIds.has(id));
   const result:Result={name:check.id,family:familyFor(check.id),maturity:maturityFor(check.id),dependencies,status:signal?.aborted?'CANCELLED':'UNVERIFIED',rawStatus:'not-run',caseIds:[],artifacts:[]};
   if(!signal?.aborted&&Date.now()<deadline&&canSchedule(dependencies,statuses)){
-   const before=new Map((r.reportsFor(ctx,check.report) as string[]).map(file=>[file,r.stamp(file)]));
+   const before=new Map(reportsFor(ctx,check.report).map(file=>[file,stamp(file)] as const));
    const env={...process.env,MOODY_CHECK_NAME:check.args[0]?.split('/').at(-1),MOODY_EVIDENCE_DIR:path.join(ctx.dir,'fixtures',check.args[0]?.split('/').at(-1)||check.id)};
    const outcome=await runCommand(check.command,check.args,{cwd:ctx.root,log:path.join(ctx.dir,'research',check.id+'.log'),timeoutMs:Math.min(120000,Math.max(1,deadline-Date.now())),signal,env,quiet,execution:check.execution||'tool',requireAssertions:check.execution==='contract'});
    Object.assign(result,outcome);

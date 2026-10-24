@@ -1,6 +1,7 @@
+import {safeSource,filesBelow,reportsFor,stamp} from '../scripts/ci/research-files.ts';
 import fixtureEvidence from './moody-fixture-evidence.cjs';
 import type {Page} from 'playwright';
-import {randomUUID} from 'node:crypto';
+import {randomUUID,createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 // @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"native"}
 import assert from 'node:assert/strict';
@@ -83,4 +84,14 @@ test('report loading validates JSON identity and reconstructs checked suite inde
  fs.writeFileSync(file,'{');assert.equal(readReport(ctx,'raw.json'),null);fs.writeFileSync(file,' '.repeat(262145));assert.equal(readReport(ctx,'raw.json'),null);
  const check={name:'actual.cjs',status:'PASS',rawStatus:'passed',milliseconds:1,extra:{keep:true}},suite={identity:ctx.identity,suite:'unit',results:[check]};writeSuite(ctx,suite);
  assert.deepEqual(readReport(ctx,'unit.json')?.results,[check]);fs.writeFileSync(path.join(dir,'checks/unit/actual.cjs.json'),JSON.stringify({identity:{source:'stale'},suite:'unit',result:check}));assert.equal(readReport(ctx,'unit.json'),null);
+});
+
+
+test('research discovery stays within its source tree and stamps actual report bytes',t=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'sw-research-files-'));
+ t.after(()=>{if(path.dirname(path.resolve(root))!==path.resolve(os.tmpdir())||!path.basename(root).startsWith('sw-research-files-'))throw Error('Unexpected research file cleanup');fs.rmSync(root,{recursive:true,force:true})});
+ const dir=path.join(root,'tests/artifacts/review'),file=path.join(dir,'result.json');fs.mkdirSync(dir,{recursive:true});fs.writeFileSync(file,'{"one":1}');fs.writeFileSync(path.join(dir,'resultXjson'),'decoy');
+ assert.equal(safeSource(root,file),true);assert.equal(safeSource(root,path.dirname(root)),false);assert.equal(safeSource(root,path.join(dir,'missing')),false);assert.deepEqual(filesBelow(path.join(root,'absent'),root),[]);
+ assert.equal(filesBelow(dir,root).length,2);assert.deepEqual(reportsFor({root},{pattern:'review/result.json'}),[file]);assert.deepEqual(reportsFor({root},undefined),[]);
+ const before=stamp(file);fs.writeFileSync(file,'{"one":2}');assert.notEqual(stamp(file),before);assert.ok(stamp(file).endsWith(createHash('sha256').update(fs.readFileSync(file)).digest('hex')));
 });
