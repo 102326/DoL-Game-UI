@@ -79,3 +79,4 @@ docs/HANDOFF.local.md
 /tests/ui-runtime-inspector.cjs
 /tests/device-layout-oracles.cjs
 /tests/device-layout-types.cjs
+/tests/integration-preview-pages.cjs

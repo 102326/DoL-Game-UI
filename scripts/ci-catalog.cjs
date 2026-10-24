@@ -41,6 +41,7 @@ const researchPlan = [
     node('settings-build', ['node_modules/vite/bin/vite.js', 'build', '--config', 'vite.settings-refraction.config.ts']),
     node('settings-study', ['scripts/check-settings-refraction.cjs'], checks('check-settings-refraction', 'settings-refraction-v1/review-[0-9]+/result.json')),
     node('framework-build', ['scripts/build-framework.mjs'], undefined, 'tool'),
+    test('integration-preview-pages'),
     test('settings-ci', { pattern: 'evolution/settings-resources.json', shape: 'settings' }),
     test('moody-historical-regressions', { fixture: true }),
     test('official-game-motion'),

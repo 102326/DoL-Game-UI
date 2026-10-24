@@ -1439,6 +1439,23 @@
       "assertionSites": 61
     },
     {
+      "entry": "tests/integration-preview-pages.cjs",
+      "sourceEntry": "tests/integration-preview-pages.cts",
+      "profiles": [
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "4f79265d3b397556978861b4cb0dc497c19aab59c76c6c9d5ce10dbe1faa9288",
+      "assertionSites": 45
+    },
+    {
       "entry": "tests/isolation-inputs.test.mts",
       "profiles": [
         "standard"

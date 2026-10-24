@@ -16,7 +16,7 @@
     "framework:reference:test": "node tests/framework-reference.cjs",
     "framework:vue:build": "npm run framework:build && node scripts/build-framework-vue-comparison.mjs && python scripts/package-framework-vue-comparison.py",
     "framework:vue:test": "node tests/framework-vue-comparison.cjs",
-    "typecheck": "vue-tsc --noEmit && tsc -p tsconfig.adapters.json && tsc -p tsconfig.early.json",
+    "typecheck": "vue-tsc --noEmit && vue-tsc --noEmit -p tsconfig.preview-pages.json && tsc -p tsconfig.adapters.json && tsc -p tsconfig.early.json",
     "build": "npm run tooling:build && node scripts/render-state-fields.cjs --check && npm run typecheck && vite build && node scripts/build-early.cjs",
     "pretest": "npm run build",
     "package": "npm run ci:check && node scripts/build-framework.mjs && python scripts/package.py",
