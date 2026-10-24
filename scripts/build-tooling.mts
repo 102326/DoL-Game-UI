@@ -8,7 +8,7 @@ import ts from 'typescript';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 // Check the whole dependency graph, then emit only explicit tooling roots.
 const configs=['tsconfig.tools.json','tsconfig.test-tools.json','tsconfig.device-probe.json'];
-for(const config of configs)execFileSync(process.execPath,[path.join(root,'node_modules/typescript/bin/tsc'),'-p',config],{cwd:root,stdio:'inherit'});
+for(const config of configs)execFileSync(process.execPath,[path.join(root,config==='tsconfig.test-tools.json'?'node_modules/vue-tsc/bin/vue-tsc.js':'node_modules/typescript/bin/tsc'),'-p',config],{cwd:root,stdio:'inherit'});
 const emitted=new Set<string>();
 for(const name of configs){
 const configFile=path.join(root,name);
