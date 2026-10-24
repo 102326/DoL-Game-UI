@@ -4,11 +4,13 @@
 
 ## Current — 当前做什么
 
+- **TS First当前批次477ec23：47/243，尚余196项。** 新增17个独立CTS来源，退出重复JS；测试Bundler与工具NodeNext均严格检查，运行CJS身份不变。衣柜只读Host/投影边界、CI分片JSON/Seal及统计输入各自提交，未改变游戏业务或认可视觉。Vite最低/锁文件和作者配方更新7.3.7，当前npm审计0告警；UI/Host构建、独立作者包4项、本批专项、原unit CLI和ci:check通过。新标准/研究CI尚需按本批记录；Windows Edge H01在无并发构建时仍有关闭后locator超时，不能写成已解决。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。本批尚未Android装机，不合main或发布。
+
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
-- **TS First持续推进，最终采用Node26 Only**：最低26.12.1且<27，两套Actions读取`.node-version`，preinstall/工具/CI引导检查实际版本；7c61002补Windows Git stat严格验证后的刷新，本机九包双构建/9项制品反例已通过；Node24及早期26.0不在当前支持范围。累计30/243个独立JS来源迁移，剩余213项及内联/既有TS边界仍在方案一内。受验52f4179的标准40097525373、研究40097524269及各自独立证据复核全部成功，实际Node26.12.1；9ZIP/10项摘要已回读。该结果覆盖Node Only及30项迁移，后续代码继续分批验证。实际安装、原生/编译互操作和反例已验证；本地H01有hidden导航locator超时仍在诊断，不记通过。已有Vite开发依赖告警待收尾。新源码未装Android、未发布；[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)保留分批证据及失败，[Node专项报告](evolution/EVO-NODE26-ONLY-2026-10-24.md)区分当前完成与整体剩余范围。
+- **TS First持续推进，最终采用Node26 Only**：最低26.12.1且<27，两套Actions读取`.node-version`，preinstall/工具/CI引导检查实际版本；7c61002补Windows Git stat严格验证后的刷新，本机九包双构建/9项制品反例已通过；Node24及早期26.0不在当前支持范围。累计30/243个独立JS来源迁移，剩余213项及内联/既有TS边界仍在方案一内。受验52f4179的标准40097525373、研究40097524269及各自独立证据复核全部成功，实际Node26.12.1；9ZIP/10项摘要已回读。该结果覆盖Node Only及30项迁移，后续代码继续分批验证。实际安装、原生/编译互操作和反例已验证；本地H01有hidden导航locator超时仍在诊断，不记通过。该历史批次尚有Vite开发依赖告警；最新修复见上方477ec23批次。新源码未装Android、未发布；[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)保留分批证据及失败，[Node专项报告](evolution/EVO-NODE26-ONLY-2026-10-24.md)区分当前完成与整体剩余范围。
 
-- **发行前1–5已完成，当前RC2**：[技术报告](evolution/EVO-RC2-VALIDATION-2026-10-24.md)、[冻结九包](evolution/EVO-RC2-PACKAGES-2026-10-24.json)、[雨幕归因与修复](evolution/EVO-MODHUB-RAIN-PERF-2026-10-24.md)。受验源码8033b7f已推送；标准40075729443、研究40075728194及独立证据均success。4.0.0-rc.2取代RC1，拟正式4.0.0。ModHub自然雷雨的共享旧雨幕改为独立纹理transform，保持原雨滴/速度/材质；平板配对rAF中位约33.4→8.3ms，不是完整FPS。最终CI包原生重启后8个适用包全部成员、顺序/禁用列表、150%设置滚动和阻挡通过；Windows实际Loader复验通过。候选、安装、玩家草稿和媒体来源已整理；未合入main、Tag、发布或改公开Assets。整体G1/G2/G3和正式授权待负责人。目标Mod若确认有缺陷，可作可停用/回退的针对兼容修复；不改变其业务和存档所有权。
+- **TS First决策前的RC2验收记录**：[技术报告](evolution/EVO-RC2-VALIDATION-2026-10-24.md)、[冻结九包](evolution/EVO-RC2-PACKAGES-2026-10-24.json)、[雨幕归因与修复](evolution/EVO-MODHUB-RAIN-PERF-2026-10-24.md)。受验源码8033b7f已推送；标准40075729443、研究40075728194及独立证据均success。4.0.0-rc.2取代RC1，拟正式4.0.0。ModHub自然雷雨的共享旧雨幕改为独立纹理transform，保持原雨滴/速度/材质；平板配对rAF中位约33.4→8.3ms，不是完整FPS。最终CI包原生重启后8个适用包全部成员、顺序/禁用列表、150%设置滚动和阻挡通过；Windows实际Loader复验通过。候选、安装、玩家草稿和媒体来源已整理；未合入main、Tag、发布或改公开Assets。整体G1/G2/G3和正式授权待负责人。目标Mod若确认有缺陷，可作可停用/回退的针对兼容修复；不改变其业务和存档所有权。
 
 - **本批特殊天气原型已获负责人视觉认可，普通雨已恢复。** 负责人明确要求撤回血色雨与滑落血滴，退回原普通雨后本批通过。当前5196页移除BR01/BR02全部调色、滴体和血痕注入，Alt+3为血月＋普通雨；血月泛光及S01三种环境绘制保持。血雨代码/媒体仅保留为已停用研究，不进入当前预览。
 
@@ -45,8 +47,8 @@
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
-3. 当前受验实现8033b7f，核对RC2报告、标准40075729443/研究40075728194成功CI、九包JSON及Android最终8包成员。RC1在雨幕反馈后已被替代；旧c215239/37da596/I01为历史，不替代新源码。仅文档/媒体的后续提交不能冒称重跑CI；实际产品输入变化才重新构建与验证。
-4. 本次提交不要求马上接入READ01。若继续研究，先在目标浏览器复核桌面帧退化，使用报告的成对对照和短时观测命令；不要仅减弱已认可天气、移除断言或把减少模糊半径当修复。性能证据与负责人材质评审分别通过后，才决定实际接入范围。
-5. 发布前1–5已完成，当前内部4.0.0-rc.2，按关卡报告等待负责人整体验收及正式授权。当前候选不是公开发行，不合入main、不创建Tag/Release。拟正式4.0.0的最终版本标记重建及最小安装复验留在授权后的发行步骤。其它窗口推广、实体手机/iOS、全部Mod与长期性能不自动追加。
+3. 先按TS First方案一继续T1/T2/T3：当前47项已迁移，196项和维护中的内联/既有TS边界仍在范围内；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
+4. 保留Windows Edge H01原始超时，继续有依据地归因；带记录的诊断通过不能抹去失败。Vite7.3.7已单独修补，旧审计为历史。每批做受影响验证，最终迁移源码再做两套CI、九包与代表Windows/Android实际宿主回归。旧RC2/8033b7f只能复用未改行为的有效证据，不替代新候选。
+5. TS First完成后更新候选冻结、依赖/许可/摘要与玩家材料，再提交负责人验收。4.0.0-rc.2保持内部版本；未授权正式版本变更、main、Tag、Release或公开Assets。READ01仍隔离，不主动新增视觉研究；额外设备及全Mod穷举不自动成为阻塞项。
 
 交接更新约定：每批主要任务更新 Current / Decided / Next，记录实际输入SHA、命令/环境/范围、CI链接和未同步内容。绝对路径、服务会话、临时文件仅放Git忽略的 `docs/HANDOFF.local.md`；本文件保持一至两页，历史细节链接到专题报告。

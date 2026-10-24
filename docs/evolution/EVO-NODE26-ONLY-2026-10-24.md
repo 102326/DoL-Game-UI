@@ -50,3 +50,6 @@
 - TS First累计30/243个独立JS来源迁移，尚余213项及内联/已有TS边界工作。本专项完成不代表全量迁移、整体Visual Gate或Release Ready。
 
 下一批继续处理维护中的CI证据/调度、测试工具及产品输入边界；正式版本保持4.0.0-rc.2，不合并main、Tag或发布。
+
+
+后续更新：上述30项是本Node专项受验52f4179的范围。477ec23批次已累计47项，另将Vite单独补至7.3.7并通过当前npm审计；新验证见[TS First执行记录](EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)，不改写本报告旧Run的受验身份。Windows H01仍未归因。
