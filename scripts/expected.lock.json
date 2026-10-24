@@ -430,7 +430,8 @@
     "record-boundary.test.mts": [
       "result shards restore original extra data and reject malformed or contradictory used fields",
       "seal checks reject non-record input without treating a type assertion as validation",
-      "bounded evidence reads preserve JSON fields and reject unsafe paths or sizes"
+      "bounded evidence reads preserve JSON fields and reject unsafe paths or sizes",
+      "untrusted case and graphics receipts are checked without declaring disk data trusted"
     ],
     "save-metadata-boundary.test.mts": [
       "save metadata skips malformed rows without changing native data or writing storage",
@@ -699,8 +700,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "e5c83472293211ab718f335bcf4ae50e86c1f4fa2665a2849c405a6d5845fa81",
-      "assertionSites": 81
+      "sourceSha256": "6409a083b2c131a0ad2d4e158091aefd39c58fafe01c172a997137ae7b0558c7",
+      "assertionSites": 87
     },
     {
       "entry": "tests/ci-v12.test.cjs",
@@ -1791,10 +1792,14 @@
         {
           "id": "bounded evidence reads preserve JSON fields and reject unsafe paths or sizes",
           "minimumAssertions": 1
+        },
+        {
+          "id": "untrusted case and graphics receipts are checked without declaring disk data trusted",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ec39c5b0926a5341f26f5ac8a694e60ccd5040aad89313e144d10c1504f7fba1",
-      "assertionSites": 16
+      "sourceSha256": "e80f49b395bb0b23b96f9cd674374c7cde1b652e5e8a4821e86e815f418a7a23",
+      "assertionSites": 22
     },
     {
       "entry": "tests/render-state.test.cjs",

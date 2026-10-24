@@ -43,6 +43,13 @@ const setup={checkout:{outcome:'success'},node:{outcome:'success'},python:{outco
    assert.equal(verifyRemote(path.join(dir,'upload'),expected()).status,status,'F1 downloaded evidence must keep the same failure classification');
   }
   console.log('PASS F1 terminal receipts override exit zero in execution, summary and downloaded evidence');
+  for(const fields of [{assertions:'1',nodeTests:[]},{assertions:0,nodeTests:'not a test list'},{assertions:0,nodeTests:{length:1}}]){
+   const code=`process.on('beforeExit',()=>{const f=require('node:fs'),p=process.env.MOODY_PROCESS_RECEIPT+'.'+process.pid+'.json',r=JSON.parse(f.readFileSync(p,'utf8'));f.writeFileSync(p,JSON.stringify({...r,...${JSON.stringify(fields)}}))})`;
+   const malformed=await runCommand(process.execPath,['-e',code],{cwd:dir,log:path.join(dir,'malformed-count.log'),quiet:true,requireAssertions:true});
+   assert.equal(malformed.rawStatus,'passed');assert.equal(malformed.status,'UNVERIFIED','malformed receipt fields cannot prove assertions');
+  }
+  console.log('PASS malformed process counts cannot satisfy required assertion evidence');
+
   const failed=await execute('require("node:assert/strict").equal(1,2,"controlled contract")');assert.equal(failed.status,'FAIL');
   test('G09',()=>{reset();mutate('stage-unit.json',r=>Object.assign(r,failed));fs.unlinkSync(path.join(dir,'package-contracts.json'));const d=finalizeUpload(ctx,summarize(ctx,setup));assert.equal(d.status,'FAIL');assert.equal(d.assertionResult,'FAIL');assert.equal(d.evidenceIntegrity,'INCOMPLETE');assert.ok(d.reasonCodes.includes('EvidenceIncomplete'))});
   test('G10',()=>{reset();const f=path.join(dir,'fixtures/settings-ci.cjs/viewport.jpg');fs.mkdirSync(path.dirname(f),{recursive:true});fs.writeFileSync(f,Buffer.alloc(524289));const d=finalizeUpload(ctx,summarize(ctx,setup));assert.equal(d.status,'PASS');assert.ok(d.omitted.some(e=>e.file.endsWith('viewport.jpg')))});

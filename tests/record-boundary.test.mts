@@ -5,7 +5,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {writeSuite,hydrateSuite,safeFile,readJsonBounded} from '../scripts/ci/records.ts';
-import {sealProblems} from '../scripts/ci/contracts.ts';
+import {caseProblems,sealProblems} from '../scripts/ci/contracts.ts';
+import {rendererProblems} from '../scripts/ci/renderer.ts';
 
 test('result shards restore original extra data and reject malformed or contradictory used fields',t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'sw-records-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
@@ -37,4 +38,15 @@ test('bounded evidence reads preserve JSON fields and reject unsafe paths or siz
  for(const unsafe of [null,undefined,4,[],{},'', '../escape','nested/../escape','nested\\escape','/absolute'])assert.throws(()=>safeFile(dir,unsafe),/Unsafe evidence path/);
  fs.mkdirSync(path.join(dir,'nested'));assert.throws(()=>safeFile(dir,'nested'),/Unsafe evidence file/);
  fs.writeFileSync(file,'{');assert.throws(()=>readJsonBounded(dir,'data.json'),SyntaxError);assert.equal(fs.readFileSync(file,'utf8'),'{');
+});
+
+
+test('untrusted case and graphics receipts are checked without declaring disk data trusted',()=>{
+ const expected=[{id:'case',minimumAssertions:1}],valid={id:'case',status:'PASS',path:'controlled',milliseconds:0,assertions:1};
+ assert.deepEqual(caseProblems(expected,[valid]),[]);
+ for(const invalid of [null,{},'case'])assert.deepEqual(caseProblems(expected,invalid),['MissingExpectedCases']);
+ for(const invalid of [null,[],{}, {...valid,id:1},{...valid,path:''}])assert.deepEqual(caseProblems(expected,[invalid]),['InvalidCaseResult']);
+ for(const invalid of [{...valid,milliseconds:'0'},{...valid,assertions:'1'},{...valid,assertions:NaN},{...valid,milliseconds:Infinity}])assert.deepEqual(caseProblems(expected,[invalid]),['IncompleteCase:case']);
+ assert.deepEqual(rendererProblems(['weather:2d'],{contexts:{'weather:2d':1}}),[]);
+ for(const invalid of [null,[],{contexts:[]},{contexts:{'weather:2d':'1'}},{contexts:{'weather:2d':0}},{contexts:{'weather:2d':NaN}}])assert.deepEqual(rendererProblems(['weather:2d'],invalid),['RendererPathMismatch:weather:2d']);
 });

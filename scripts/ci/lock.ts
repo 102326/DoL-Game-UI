@@ -3,7 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {rendererProblems} from './renderer.ts';
 import {digest,caseProblems,parseExpectedLock} from './contracts.ts';
-import type {CaseResult,EntryDeclaration} from './contracts.ts';
+import type {EntryDeclaration} from './contracts.ts';
 
 const file=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../expected.lock.json');
 export const expectedLock=parseExpectedLock(JSON.parse(fs.readFileSync(file,'utf8')));
@@ -15,8 +15,10 @@ export function entrySource(root:string,entry:string):string{
  return fs.existsSync(path.join(root,source))?source:entry;
 }
 export function entryDeclaration(name:string):EntryDeclaration|undefined{return expectedLock.entries.find(e=>path.basename(e.entry)===name);}
-export function entryCaseProblems(name:string,result:{terminalReceipt?:{cases?:CaseResult[];graphics?:Parameters<typeof rendererProblems>[1]};nodeTests?:{id:string;status:string}[]}):string[]{
+export function entryCaseProblems(name:string,result:unknown):string[]{
  const declaration=entryDeclaration(name);if(!declaration)return ['UndeclaredEntry'];
  if(declaration.granularity==='native')return [];// Existing native reporter verifies exact names and no skip/todo.
- return [...caseProblems(declaration.cases,result.terminalReceipt?.cases),...rendererProblems(declaration.rendererContexts,result.terminalReceipt?.graphics)];
+ const record=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
+ const receipt=record(result)&&record(result.terminalReceipt)?result.terminalReceipt:undefined;
+ return [...caseProblems(declaration.cases,receipt?.cases),...rendererProblems(declaration.rendererContexts,receipt?.graphics)];
 }

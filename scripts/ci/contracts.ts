@@ -47,12 +47,13 @@ export function reconcileIdentity<T extends {source:unknown}>(prior:T,current:T,
  if(allowSourceDrift&&JSON.stringify(prior)===JSON.stringify({...current,source:prior.source}))return prior;
  throw Error('Run identity changed; fresh run directory required');
 }
-export function caseProblems(expected:CaseDeclaration[],actual:CaseResult[]|undefined):string[]{
+export function caseProblems(expected:CaseDeclaration[],actual:unknown):string[]{
  if(!expected.length||!Array.isArray(actual))return ['MissingExpectedCases'];
- if(actual.some(c=>!c||typeof c!=='object'||typeof c.id!=='string'||typeof c.path!=='string'||!c.path.length))return ['InvalidCaseResult'];
+ const cases:unknown[]=actual;
+ if(!cases.every((c):c is Record<string,unknown>=>record(c)&&typeof c.id==='string'&&typeof c.path==='string'&&c.path.length>0))return ['InvalidCaseResult'];
  const problems:string[]=[];
- if(actual.length!==expected.length||new Set(actual.map(c=>c.id)).size!==actual.length||actual.some(c=>!expected.some(e=>e.id===c.id)))problems.push('CasePlanMismatch');
- for(const e of expected){const c=actual.find(c=>c.id===e.id);if(!c||c.status!=='PASS'||!Number.isFinite(c.milliseconds)||c.milliseconds<0||!Number.isSafeInteger(c.assertions)||c.assertions<e.minimumAssertions)problems.push('IncompleteCase:'+e.id);if(e.renderer&&c?.path!==e.renderer)problems.push('RendererPathMismatch:'+e.id);}
+ if(cases.length!==expected.length||new Set(cases.map(c=>c.id)).size!==cases.length||cases.some(c=>!expected.some(e=>e.id===c.id)))problems.push('CasePlanMismatch');
+ for(const e of expected){const c=cases.find(c=>c.id===e.id);if(!c||c.status!=='PASS'||typeof c.milliseconds!=='number'||!Number.isFinite(c.milliseconds)||c.milliseconds<0||typeof c.assertions!=='number'||!Number.isSafeInteger(c.assertions)||c.assertions<e.minimumAssertions)problems.push('IncompleteCase:'+e.id);if(e.renderer&&c?.path!==e.renderer)problems.push('RendererPathMismatch:'+e.id);}
  return problems;
 }
 export function sealProblems(value:unknown,expectedLockSha256:string,source:unknown):string[]{
