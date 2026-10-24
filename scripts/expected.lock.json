@@ -1537,8 +1537,26 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9ec1fe65fcb705cbe6ebbe2f68d241584764c94d4a8eaabad5c50f015c32157b",
+      "sourceSha256": "afe9365bfb0e1f228ef3b45387761994341db1bef222fe21302f0aaad2d75c51",
       "assertionSites": 15
+    },
+    {
+      "entry": "tests/moody-oracles.test.cjs",
+      "sourceEntry": "tests/moody-oracles.test.cts",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "98c16667c42f23b5288ca69feec5bd35507a571a7cb5ab45b16121b684493f2c",
+      "assertionSites": 7
     },
     {
       "entry": "tests/motion-workspace.cjs",

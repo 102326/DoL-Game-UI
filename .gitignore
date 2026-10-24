@@ -81,3 +81,4 @@ docs/HANDOFF.local.md
 /tests/device-layout-types.cjs
 /tests/integration-preview-pages.cjs
 /tests/moody-oracles.cjs
+/tests/moody-oracles.test.cjs

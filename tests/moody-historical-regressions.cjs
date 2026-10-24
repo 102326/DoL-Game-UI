@@ -1,7 +1,7 @@
 // @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"entry"}
 // CI #78/#79 counterexamples use real production components in a controlled first-party fixture.
 const assert=require('node:assert/strict'),path=require('node:path'),{chromium}=require('playwright');
-const {settingsSnapshot,assertSettings,waitSettings,waitSettingsClosed,orbitSnapshot,assertOrbit,waitOrbit}=require('./moody-oracles.cjs');
+const {settingsSnapshot,settingsSample,assertSettings,waitSettings,waitSettingsClosed,orbitSnapshot,assertOrbit,waitOrbit}=require('./moody-oracles.cjs');
 const root=path.resolve(__dirname,'..');
 const combatBody='<div id="story"><div id="passages"><div class="passage"><div id="listContainer"><div id="leftaction"><label><input type="radio" name="leftaction" value="rest" checked>Rest</label><label><input type="radio" name="leftaction" value="guard">Guard</label></div><div id="rightaction"><label><input type="radio" name="rightaction" value="rest" checked>Rest</label><label><input type="radio" name="rightaction" value="guard">Guard</label></div></div><div id="next"><a href="#">Continue</a></div></div></div></div>';
 function rejectPrecisely(run,code){let rejection;assert.throws(run,error=>{if(error.code!=='ERR_ASSERTION'||!error.message.startsWith(code+':'))return false;rejection=error;return true});console.log(JSON.stringify({counterexample:code,rejected:true}));return rejection;}
@@ -46,8 +46,7 @@ async function combatPage(browser,server,{missingCSS=false}={}){
   });
   await page.getByRole('button',{name:'材质',exact:true}).click();
   // Reproduce the historical 700ms sampling point; the acceptance wait itself is condition based.
-  await page.waitForFunction(()=>performance.now()-moodyStarted>=700&&document.querySelector('#dol-midnight-controls[data-workspace-transition]'));
-  const delayed=await settingsSnapshot(page);assert.throws(()=>assert.equal(delayed.sections.filter(s=>s.inert).length,0),{name:'AssertionError',actual:1,expected:0,operator:'strictEqual'});console.log(JSON.stringify({counterexample:'ci78-premature-inert-sample',rejected:true,inertSections:1}));rejectPrecisely(()=>assertSettings(delayed,'dmt-material-heading'),'MOODY_SETTINGS_PENDING');
+  const delayed=await settingsSample(page,()=>performance.now()-moodyStarted>=700&&!!document.querySelector('#dol-midnight-controls[data-workspace-transition]'));assert.throws(()=>assert.equal(delayed.sections.filter(s=>s.inert).length,0),{name:'AssertionError',actual:1,expected:0,operator:'strictEqual'});console.log(JSON.stringify({counterexample:'ci78-premature-inert-sample',rejected:true,inertSections:1}));rejectPrecisely(()=>assertSettings(delayed,'dmt-material-heading'),'MOODY_SETTINGS_PENDING');
   await waitSettings(page,'dmt-material-heading');console.log(JSON.stringify({control:'settings-delayed-completion',passed:true,oldSampleMs:700}));
   await page.evaluate(()=>{moodySlow=false});
   for(const name of ['入口','页面','阅读']){await page.getByRole('button',{name,exact:true}).click();await page.waitForFunction(()=>document.querySelector('#dol-midnight-controls[data-workspace-transition]'))}
@@ -62,8 +61,7 @@ async function combatPage(browser,server,{missingCSS=false}={}){
    Element.prototype.animate=function(...args){const a=animate.apply(this,args);if(this.matches('.dmt-settings-shell')&&this.closest('[data-sf-leaving]')){window.moodyCloseStarted=performance.now();if(moodyCloseMode==='slow')a.updatePlaybackRate(Number(a.effect.getTiming().duration)/880);else if(moodyCloseMode==='stuck')a.pause()}return a};
   });
   await page.locator('.dmt-close').click();
-  await page.waitForFunction(()=>performance.now()-moodyCloseStarted>=450&&document.querySelector('#dol-midnight-controls')?.open&&document.querySelector('#dol-midnight-controls[data-sf-leaving]'));
-  const oldClose=await settingsSnapshot(page);assert.throws(()=>assert.equal(oldClose.dialog.open,false),{name:'AssertionError',actual:true,expected:false,operator:'strictEqual'});
+  const oldClose=await settingsSample(page,()=>performance.now()-moodyCloseStarted>=450&&!!document.querySelector('#dol-midnight-controls')?.open&&!!document.querySelector('#dol-midnight-controls[data-sf-leaving]'));assert.throws(()=>assert.equal(oldClose.dialog.open,false),{name:'AssertionError',actual:true,expected:false,operator:'strictEqual'});
   console.log(JSON.stringify({counterexample:'settings-premature-close-sample',rejected:true,open:oldClose.dialog.open}));
   await waitSettingsClosed(page);console.log(JSON.stringify({control:'settings-delayed-close-completion',passed:true,oldSampleMs:450}));
   await page.evaluate(()=>{moodyCloseMode='stuck';theme.openSettings()});await waitSettings(page);

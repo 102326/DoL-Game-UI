@@ -2,7 +2,7 @@
 import assert = require('node:assert/strict');
 import type {Page} from 'playwright';
 function check(ok:unknown,code:string,snapshot:unknown):asserts ok{assert.ok(ok,`${code}: ${JSON.stringify(snapshot)}`)}
-async function settingsSnapshot(page:Page){return page.evaluate(()=>({
+function readSettingsSnapshot(){return {
  dialog:(()=>{const d=document.querySelector<HTMLDialogElement>('#dol-midnight-controls');return{present:!!d,open:!!d?.open,modal:!!d?.matches(':modal'),leaving:!!d?.hasAttribute('data-sf-leaving')}})(),
  settingsOpen:document.documentElement.hasAttribute('data-dgu-settings-open'),
  materialCount:document.querySelectorAll('.dmt-settings-context,.dmt-settings-material').length,
@@ -11,7 +11,13 @@ async function settingsSnapshot(page:Page){return page.evaluate(()=>({
  sections:[...document.querySelectorAll('.dmt-workspace-section')].map(n=>({heading:n.getAttribute('aria-labelledby'),inert:n.hasAttribute('inert'),hidden:n.getAttribute('aria-hidden')==='true'})),
  readingEnabled:!!document.querySelector('[aria-label="舒适阅读间距"]:enabled'),
  animations:document.querySelectorAll('.dmt-workspace-section').length?[...document.querySelectorAll('.dmt-workspace-section')].flatMap(n=>n.getAnimations().map(a=>({state:a.playState,time:a.currentTime,duration:a.effect?.getTiming().duration}))):[]
- }))}
+ }}
+async function settingsSnapshot(page:Page){return page.evaluate(readSettingsSnapshot)}
+async function settingsSample(page:Page,condition:()=>boolean){
+ // Both callbacks are trusted, closure-free browser code; capture in the predicate task, before driver latency can advance the animation.
+ const handle=await page.waitForFunction<ReturnType<typeof readSettingsSnapshot>>(`(()=>{if(!(${condition.toString()})())return false;return (${readSettingsSnapshot.toString()})();})()`);
+ try{return await handle.jsonValue()}finally{await handle.dispose()}
+}
 function assertSettings(snapshot:Awaited<ReturnType<typeof settingsSnapshot>>,heading='dmt-reading-heading'){
  check(!snapshot.transition,'MOODY_SETTINGS_PENDING',snapshot);
  check(snapshot.sections.length===1,'MOODY_SETTINGS_RESIDUAL',snapshot);
@@ -53,4 +59,4 @@ async function waitOrbit(page:Page,{timeout=3000}={}){
  do{snapshot=await orbitSnapshot(page);try{assertOrbit(snapshot);return snapshot}catch(error){if(!(error instanceof Error)||!('code' in error)||error.code!=='ERR_ASSERTION')throw error}if(Date.now()>=until)break;await page.evaluate(()=>new Promise(requestAnimationFrame))}while(true);
  assertOrbit(snapshot);
 }
-export = {settingsSnapshot,assertSettings,waitSettings,assertSettingsClosed,waitSettingsClosed,orbitSnapshot,assertOrbit,waitOrbit};
+export = {settingsSnapshot,settingsSample,assertSettings,waitSettings,assertSettingsClosed,waitSettingsClosed,orbitSnapshot,assertOrbit,waitOrbit};
