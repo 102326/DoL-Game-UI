@@ -10,10 +10,27 @@
     "noUncheckedIndexedAccess": true,
     "noEmitOnError": true,
     "verbatimModuleSyntax": true,
-    "types": ["node"],
-    "lib": ["ES2022", "DOM"],
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "skipLibCheck": true
   },
-  "include": ["scripts/*.cts", "scripts/*.mts", "component-lab/*.cts", "framework/factory/*.mts", "tests/tooling-types.cts", "tests/tooling-types.mts"],
-  "exclude": ["scripts/record-*.cts"]
+  "include": [
+    "scripts/*.cts",
+    "scripts/*.mts",
+    "component-lab/*.cts",
+    "framework/factory/*.mts",
+    "tests/tooling-types.cts",
+    "tests/tooling-types.mts"
+  ],
+  "exclude": [
+    "scripts/record-*.cts",
+    "scripts/check-evolution-*.cts",
+    "scripts/check-settings-refraction.cts",
+    "scripts/measure-evolution-*.cts"
+  ]
 }
