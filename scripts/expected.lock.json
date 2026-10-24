@@ -410,6 +410,10 @@
     ],
     "source-link.test.mts": [
       "lab accepts source-index fields without dropping the full producer response"
+    ],
+    "source-policy-boundary.test.mts": [
+      "source policy reads TS import forms and retains selection and workflow negatives",
+      "source policy validates package commands before checking masked CI exits"
     ]
   },
   "researchCases": {
@@ -1865,6 +1869,26 @@
       ],
       "sourceSha256": "528f6feb7f184bc608f4a6df768020947c9d513bb53f5a1ae6d58cb2e54df5d0",
       "assertionSites": 11
+    },
+    {
+      "entry": "tests/source-policy-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "source policy reads TS import forms and retains selection and workflow negatives",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "source policy validates package commands before checking masked CI exits",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "95021ef8ad6abdbdac078d40dc5a66a8c0a51bb467d6ac2489f1f23734826f4e",
+      "assertionSites": 14
     },
     {
       "entry": "tests/startup-cache.test.cjs",

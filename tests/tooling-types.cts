@@ -1,6 +1,7 @@
 import renderer = require('../scripts/render-state-fields.cjs');
 import png = require('../scripts/ci-png.cjs');
 import cases = require('../scripts/ci-cases.cjs');
+import policy = require('../scripts/ci-source-policy.cjs');
 
 // These rejected calls prove CJS consumers see the implementation's real types.
 function rendererContract() {
@@ -34,3 +35,13 @@ async function caseContract(){
   return {value,wrong};
 }
 void caseContract;
+
+function policyContract(){
+  const problems:{file:string;reason:string}[]=policy.checkSourcePolicy('.');
+  // @ts-expect-error Policy source must be text.
+  policy.forbiddenJs(null);
+  // @ts-expect-error A source policy result is not numeric.
+  const wrong:number=policy.usesNodeTest('');
+  return {problems,wrong};
+}
+void policyContract;

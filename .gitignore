@@ -37,3 +37,4 @@ docs/HANDOFF.local.md
 /scripts/build-tooling.mjs
 /scripts/check-native-tooling.mjs
 /scripts/ci-checkpoints.cjs
+/scripts/ci-source-policy.cjs
