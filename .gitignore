@@ -187,3 +187,6 @@ docs/HANDOFF.local.md
 /scripts/check-settings-refraction.cjs
 
 /tests/story-actions.test.cjs
+
+/tests/multi-region.test.cjs
+/tests/ci-gate.test.cjs

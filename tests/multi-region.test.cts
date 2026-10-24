@@ -1,24 +1,32 @@
-const { chromium } = require('playwright');
-const assert = require('node:assert/strict');
-const path = require('node:path');
-const fs = require('node:fs');
-const { pathToFileURL } = require('node:url');
+import playwright = require('playwright');
+const {chromium}=playwright;
+import assert = require('node:assert/strict');
+import path = require('node:path');
+import fs = require('node:fs');
+import url = require('node:url');
+const {pathToFileURL}=url;
+import type {GameUiControls} from '../src/runtime/game-controls';
+declare const DoLGameUI:GameUiControls;
+type Multi={primary:HTMLElement;paragraph:HTMLElement;secondary:HTMLElement;paragraphParent:ParentNode|null;originalOrder:string[];changes:number;extraChanges:number;replacement?:HTMLElement;nested?:HTMLElement};
+declare global {interface Window {multi:Multi}}
+declare const multi:Multi;
+declare const must:<T>(value:T|null|undefined)=>T;
 
 const root = __dirname;
-const artifact = name => path.join(root, 'artifacts', `multi-${name}`);
+const artifact = (name:string) => path.join(root, 'artifacts', `multi-${name}`);
 
 async function main() {
   const browser = await chromium.launch({ channel: 'msedge', headless: true });
-  const errors = [];
+  const errors:string[] = [];
   try {
     const page = await browser.newPage({ viewport: { width: 1704, height: 1136 } });
     page.on('pageerror', error => errors.push(error.message));
     page.setDefaultTimeout(10000);
     await page.goto(pathToFileURL(path.join(root, 'fixture.html')).href);
-    await page.waitForSelector('#listContainer');
+    await page.waitForSelector('#listContainer');await page.evaluate(()=>Object.assign(window,{must:<T,>(value:T|null|undefined)=>{if(value==null)throw Error('Missing multi-region fixture');return value}}));
 
     await page.evaluate(() => {
-      const primary = document.querySelector('#listContainer');
+      const primary = must(document.querySelector<HTMLElement>('#listContainer'));
       const paragraph = document.createElement('p');
       paragraph.id = 'multi-intervening-copy';
       paragraph.textContent = 'intervening story text remains in place';
@@ -31,7 +39,7 @@ async function main() {
         paragraph,
         secondary,
         paragraphParent: paragraph.parentNode,
-        originalOrder: [...primary.parentNode.children].map(node => node.id || node.tagName),
+        originalOrder: [...must(primary.parentElement).children].map(node => node.id || node.tagName),
         changes: 0,
         extraChanges: 0,
       };
@@ -45,25 +53,25 @@ async function main() {
 
     const state = () => page.evaluate(() => {
       const lists = [...document.querySelectorAll('[id="listContainer"]')];
-      const footer = document.querySelector('.dcu-footer');
+      const footer=document.querySelector<HTMLElement>('.dcu-footer');
       return {
         lists: lists.length,
-        primaryInNative: !!document.querySelector('.dcu-root:not(.dcu-extension) .dcu-native #listContainer'),
-        secondaryInExtension: !!document.querySelector('.dcu-extension .dcu-native #listContainer'),
+        primaryInNative: !!document.querySelector<HTMLElement>('.dcu-root:not(.dcu-extension) .dcu-native #listContainer'),
+        secondaryInExtension: !!document.querySelector<HTMLElement>('.dcu-extension .dcu-native #listContainer'),
         nextCount: document.querySelectorAll('#next').length,
         footers: document.querySelectorAll('.dcu-footer').length,
         summaryGroups: document.querySelector('.dcu-summary')?.textContent || '',
-        paragraphIndex: [...document.querySelector('#multi-intervening-copy').parentNode.children].indexOf(document.querySelector('#multi-intervening-copy')),
-        paragraphPreserved: document.querySelector('#multi-intervening-copy').parentNode === window.multi.paragraphParent,
-        secondaryIndex: [...lists[1].parentNode.children].indexOf(lists[1]),
-        nestedVisible: (() => { const node = document.querySelector('.unsupported-nested-list'); const r = node?.getBoundingClientRect(); return !!node && getComputedStyle(node).display !== 'none' && !!r && r.width > 0 && r.height > 0; })(),
+        paragraphIndex: [...must(must(document.querySelector<HTMLElement>('#multi-intervening-copy')).parentElement).children].indexOf(must(document.querySelector<HTMLElement>('#multi-intervening-copy'))),
+        paragraphPreserved: must(document.querySelector<HTMLElement>('#multi-intervening-copy')).parentNode === window.multi.paragraphParent,
+        secondaryIndex: [...must(must(lists[1]).parentElement).children].indexOf(must(lists[1])),
+        nestedVisible: (() => { const node=document.querySelector<HTMLElement>('.unsupported-nested-list'); const r = node?.getBoundingClientRect(); return !!node && getComputedStyle(node).display !== 'none' && !!r && r.width > 0 && r.height > 0; })(),
         footerWidth: footer?.getBoundingClientRect().width || 0,
         viewportWidth: innerWidth,
       };
     });
     let s = await state();
     assert.equal(s.lists, 2, 'both combat regions remain present');
-    assert.ok(await page.evaluate(()=>document.querySelector('.dcu-native [id="listContainer"]')===multi.primary && document.querySelector('.dcu-extension [id="listContainer"]')===multi.secondary), 'native node identity preserved');
+    assert.ok(await page.evaluate(()=>must(document.querySelector<HTMLElement>('.dcu-native [id="listContainer"]'))===multi.primary && must(document.querySelector<HTMLElement>('.dcu-extension [id="listContainer"]'))===multi.secondary), 'native node identity preserved');
     assert.ok(await page.evaluate(()=>!!(multi.primary.compareDocumentPosition(multi.paragraph)&Node.DOCUMENT_POSITION_FOLLOWING)&&!!(multi.paragraph.compareDocumentPosition(multi.secondary)&Node.DOCUMENT_POSITION_FOLLOWING)), 'narrative order preserved');
     assert.equal(s.primaryInNative, true, 'primary region is mounted in native host');
     assert.equal(s.secondaryInExtension, true, 'secondary region is mounted in extension host');
@@ -91,7 +99,7 @@ async function main() {
       const old = window.multi.secondary;
       old.remove();
     });
-    await page.waitForFunction(() => document.querySelectorAll('[id="listContainer"]').length === 1 && !document.querySelector('.dcu-extension'));
+    await page.waitForFunction(() => document.querySelectorAll('[id="listContainer"]').length === 1 && !document.querySelector<HTMLElement>('.dcu-extension'));
     assert.equal(await page.evaluate(()=>multi.secondary.isConnected),false);
     await page.evaluate(() => {
       const replacement = document.createElement('div');
@@ -100,7 +108,7 @@ async function main() {
       window.multi.replacement = replacement;
       window.multi.paragraph.after(replacement);
     });
-    await page.waitForFunction(() => document.querySelectorAll('[id="listContainer"]').length === 2 && !!document.querySelector('.dcu-extension #replacementaction'));
+    await page.waitForFunction(() => document.querySelectorAll('[id="listContainer"]').length === 2 && !!document.querySelector<HTMLElement>('.dcu-extension #replacementaction'));
     s = await state();
     assert.equal(s.secondaryInExtension, true, 'replacement secondary region is mounted dynamically');
     assert.equal(s.nextCount, 1, 'dynamic replacement keeps one continue control');
@@ -114,57 +122,57 @@ async function main() {
     await page.waitForFunction(() => document.querySelector('.dcu-summary')?.textContent.includes('反击'));
 
     await page.evaluate(() => {
-      const old = window.multi.replacement;
+      const old = must(window.multi.replacement);
       old.remove();
     });
-    await page.waitForFunction(() => document.querySelectorAll('[id="listContainer"]').length === 1 && !document.querySelector('.dcu-extension'));
-    assert.equal(await page.evaluate(()=>multi.replacement.isConnected),false);
+    await page.waitForFunction(() => document.querySelectorAll('[id="listContainer"]').length === 1 && !document.querySelector<HTMLElement>('.dcu-extension'));
+    assert.equal(await page.evaluate(()=>must(multi.replacement).isConnected),false);
     await page.evaluate(() => {
       window.multi.secondary = document.createElement('div');
       window.multi.secondary.id = 'listContainer';
       window.multi.secondary.innerHTML = '<div id="readdedaction"><label><input type="radio" name="readdedaction" value="guard">再加入</label></div>';
       window.multi.paragraph.after(window.multi.secondary);
     });
-    await page.waitForFunction(() => !!document.querySelector('.dcu-extension #readdedaction'));
+    await page.waitForFunction(() => !!document.querySelector<HTMLElement>('.dcu-extension #readdedaction'));
     assert.equal(await page.locator('#readdedaction input').count(), 1, 'new secondary region is observed after remove/add');
 
     // Nested action containers are deliberately unsupported; native controls stay visible.
     await page.evaluate(()=>{const nested=document.createElement('div');nested.id='listContainer';nested.innerHTML='<label><input id="nested-native" type="radio">嵌套原生选项</label>';multi.secondary.append(nested);multi.nested=nested});
-    await page.waitForFunction(()=>!document.querySelector('.dcu-shell'));
+    await page.waitForFunction(()=>!document.querySelector<HTMLElement>('.dcu-shell'));
     assert.ok(await page.locator('#nested-native').isVisible());
     await page.locator('#nested-native').check();
     assert.ok(await page.locator('#nested-native').isChecked());
-    await page.evaluate(()=>multi.nested.remove());
+    await page.evaluate(()=>must(multi.nested).remove());
     await page.waitForSelector('.dcu-dock-native #next a');
     fs.mkdirSync(path.join(root, 'artifacts'), { recursive: true });
-    for (const [name, width, height] of [['tablet', 1704, 1136], ['phone', 390, 844]]) {
+    for (const [name, width, height] of [['tablet', 1704, 1136], ['phone', 390, 844]] as const) {
       await page.setViewportSize({ width, height });
       await page.emulateMedia({reducedMotion:"reduce"});
       await page.evaluate(()=>scrollTo(0,0));
-      await page.waitForFunction(() => document.querySelector('.dcu-footer')?.getBoundingClientRect().right <= innerWidth + 1);
+      await page.waitForFunction(() => {const r=document.querySelector('.dcu-footer')?.getBoundingClientRect();return !!r&&r.right<=innerWidth+1});
       assert.ok(await page.evaluate(()=>[...document.querySelectorAll('.dcu-root')].every(e=>e.scrollWidth<=e.clientWidth+2)),name+' no horizontal overflow');
       await page.screenshot({ animations:"disabled", path: artifact(`${name}.png`), fullPage: true });
     }
 
     await page.evaluate(() => DoLGameUI.setPreference('combatEnabled', false));
-    await page.waitForFunction(() => !document.querySelector('.dcu-shell'));
+    await page.waitForFunction(() => !document.querySelector<HTMLElement>('.dcu-shell'));
     s = await state();
     assert.equal(s.nextCount, 1, 'disable leaves one original continue control');
-    assert.equal(await page.evaluate(() => window.multi.primary.parentNode?.classList.contains('dcu-native')), false, 'disable restores primary parent');
-    assert.equal(await page.evaluate(() => window.multi.secondary.parentNode?.classList.contains('dcu-native')), false, 'disable restores secondary parent');
+    assert.equal(await page.evaluate(() => window.multi.primary.parentElement?.classList.contains('dcu-native')), false, 'disable restores primary parent');
+    assert.equal(await page.evaluate(() => window.multi.secondary.parentElement?.classList.contains('dcu-native')), false, 'disable restores secondary parent');
     assert.equal(s.paragraphPreserved, true, 'disable preserves intervening paragraph parent');
 
     await page.evaluate(() => DoLGameUI.setPreference('combatEnabled', true));
     await page.waitForSelector('.dcu-dock-native #next a');
     assert.equal((await state()).secondaryInExtension, true, 'reenable remounts secondary region');
     await page.evaluate(() => DoLGameUI.destroy());
-    await page.waitForFunction(() => !document.querySelector('.dcu-shell'));
+    await page.waitForFunction(() => !document.querySelector<HTMLElement>('.dcu-shell'));
     const destroyed = await page.evaluate(() => ({
       roots: document.querySelectorAll('.dcu-root').length,
       footer: document.querySelectorAll('.dcu-footer').length,
-      primaryParent: window.multi.primary.parentNode?.className || '',
-      secondaryParent: window.multi.secondary.parentNode?.className || '',
-      order: [...window.multi.paragraph.parentNode.children].map(node => node.id || node.tagName),
+      primaryParent: window.multi.primary.parentElement?.className || '',
+      secondaryParent: window.multi.secondary.parentElement?.className || '',
+      order: [...must(window.multi.paragraph.parentElement).children].map(node => node.id || node.tagName),
       nextCount: document.querySelectorAll('#next').length,
     }));
     assert.equal(destroyed.roots, 0, 'destroy removes all UI roots');

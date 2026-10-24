@@ -695,6 +695,7 @@
     },
     {
       "entry": "tests/ci-gate.test.cjs",
+      "sourceEntry": "tests/ci-gate.test.cts",
       "profiles": [
         "standard"
       ],
@@ -706,8 +707,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "e2065b60ec701ab30ae875aef5801ba17abac95972886952a2647f9fe8deee46",
-      "assertionSites": 87
+      "sourceSha256": "f731023e274693d5887e5b7e5446d83dd1af46021de44b1d64122c362d6f70f5",
+      "assertionSites": 89
     },
     {
       "entry": "tests/ci-v12.test.cjs",
