@@ -7,7 +7,7 @@ const purchaseSelector='.buy-buttons a.link-internal,.buy-buttons button.link-in
 export function purchaseControl(target:Element):Element|null{
  const direct=target.closest(purchaseSelector);if(direct)return direct;
  const carrier=target.closest('.buy-button-inner.div-link');if(!carrier||!carrier.closest('.buy-buttons,.try-buttons'))return null;
- const links=carrier.querySelectorAll('a.link-internal');return links.length===1&&links[0].matches(purchaseSelector)?links[0]:null;
+ const links=carrier.querySelectorAll('a.link-internal'),link=links[0];return links.length===1&&link?.matches(purchaseSelector)?link:null;
 }
 const text=(node:Element|null)=>node?.textContent?.replace(/^\s*\([^)]*\)\s*/,'').trim()??'';
 
@@ -49,12 +49,12 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
    // Native selection can rebuild the catalog. Reassociate only an unambiguous display;
    // this highlight is never used to identify a purchase or dispatch business.
    const matches=[...shop.querySelectorAll('.clothing-item')].filter(n=>displayIdentity(n)===selectedDisplay);
-   selected=matches.length===1?matches[0].querySelector('.clothing-name a'):null;
+   selected=matches.length===1?matches[0]?.querySelector('.clothing-name a')??null:null;
   }
   const items=[...shop.querySelectorAll<HTMLElement>('.clothing-item')].flatMap(item=>{
-   const links=item.querySelectorAll('a.link-internal');
-   if(links.length!==1)return [];
-   return [Object.freeze({key:key(links[0]),title:text(links[0]),price:text(item.querySelector('.clothing-price')),owned:text(item.querySelector('.clothing-name'))})];
+   const links=item.querySelectorAll('a.link-internal'),link=links[0];
+   if(links.length!==1||!link)return [];
+   return [Object.freeze({key:key(link),title:text(link),price:text(item.querySelector('.clothing-price')),owned:text(item.querySelector('.clothing-name'))})];
   });
   const selectedKey=selected?.isConnected&&shop.contains(selected)?key(selected):'';
   const body=native.details?.querySelector('.dgshop-detail-body')??native.details;
@@ -62,7 +62,7 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
   const hasDetails=[body,footer].some(node=>!!node&&(!!node.textContent?.trim()||!!node.querySelector('input,select,button,a,img,canvas')));
   return {...native,items,selected:items.find(item=>item.key===selectedKey)??null,hasDetails};
  }
- function select(item:HTMLElement){const links=item.querySelectorAll('a.link-internal');selected=links.length===1?links[0]:null;selectedDisplay=displayIdentity(item);return selectedDisplay}
+ function select(item:HTMLElement){const links=item.querySelectorAll('a.link-internal');selected=links.length===1?links[0]??null:null;selectedDisplay=displayIdentity(item);return selectedDisplay}
  /** Native linkify can rebuild rows before their ready callbacks attach handlers. A click is not an outcome. */
  function reconcileSelection(){
   if(disposed||!selected||!current())return;
@@ -70,9 +70,10 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
   const d=definition as Record<string,unknown>,names=['cn_name_cap','cn_name','name_cap','name'].map(k=>d[k]).filter((n):n is string=>typeof n==='string'&&!!n);
   if(!names.length)return;
   if(names.includes(text(selected)))return;
-  const matches=[...shop.querySelectorAll<HTMLElement>('.clothing-item')].filter(n=>{const links=n.querySelectorAll('a.link-internal');return links.length===1&&names.includes(text(links[0]))});
-  selected=matches.length===1?matches[0].querySelector('a.link-internal'):null;
-  selectedDisplay=selected?displayIdentity(matches[0]):'';
+  const matches=[...shop.querySelectorAll<HTMLElement>('.clothing-item')].filter(n=>{const links=n.querySelectorAll('a.link-internal');return links.length===1&&names.includes(text(links[0]??null))});
+  const match=matches.length===1?matches[0]:undefined;
+  selected=match?.querySelector('a.link-internal')??null;
+  selectedDisplay=selected&&match?displayIdentity(match):'';
  }
  function selectedItem(item:HTMLElement){return selected!==null&&item.contains(selected)}
  function guard(target:Element):'native'|'valid'|'stale'{
