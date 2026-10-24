@@ -376,6 +376,9 @@
       "standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules",
       "adapter build rejects malformed script lists before emitting code"
     ],
+    "device-plan-boundary.test.mts": [
+      "device plans retain exact string IDs, copy outputs and reject malformed lock projections"
+    ],
     "evolution-rain-model.test.cjs": [
       "seeded attached drops grow, coalesce and drain with finite bounded geometry",
       "same simulation step history reproduces drop identities and trajectories",
@@ -695,6 +698,22 @@
       ],
       "sourceSha256": "8dc72d5ac8ba99f62e635de494e110de84ae27a9e8dee55ea1c0d0f520891469",
       "assertionSites": 13
+    },
+    {
+      "entry": "tests/device-plan-boundary.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "device plans retain exact string IDs, copy outputs and reject malformed lock projections",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "12e720ea8ed116e4cfce25cd6b87de459be17b255e3d420b8ab377abaa7a17df",
+      "assertionSites": 8
     },
     {
       "entry": "tests/device-probe.cjs",

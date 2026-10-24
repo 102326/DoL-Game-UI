@@ -28,10 +28,11 @@ export function sealProblems(value:unknown,expectedLockSha256:string,source:unkn
  const seal=value as Partial<Seal>|null;
  return [...(!seal||seal.state!=='SEALED'?['EvidenceUnsealed']:[]),...(seal?.expectedLockSha256!==expectedLockSha256?['ExpectedLockMismatch']:[]),...(JSON.stringify(seal?.sourceAfter)!==JSON.stringify(source)?['SourceChangedDuringExecution']:[])];
 }
-export function orderEntries<T>(entries:T[],seed?:string):T[]{
+export function orderEntries<T>(entries:readonly T[],seed?:string):T[]{
  if(!seed)return [...entries];
  let state=parseInt(digest(seed).slice(0,8),16);const result=[...entries];
- for(let i=result.length-1;i>0;i--){state=(Math.imul(state,1664525)+1013904223)>>>0;const j=state%(i+1);[result[i],result[j]]=[result[j],result[i]];}
+ // Both indices stay within this private copy's length.
+ for(let i=result.length-1;i>0;i--){state=(Math.imul(state,1664525)+1013904223)>>>0;const j=state%(i+1);[result[i],result[j]]=[result[j]!,result[i]!];}
  return result;
 }
 export function canSchedule(dependencies:string[],statuses:Record<string,string>):boolean{return dependencies.every(id=>statuses[id]==='PASS');}

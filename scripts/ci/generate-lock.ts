@@ -8,7 +8,7 @@ import {entrySource} from './lock.ts';
 import type {EntryDeclaration,ExpectedLock,Profile} from './contracts.ts';
 
 const require=createRequire(import.meta.url),root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
-const catalog=require('../ci-catalog.cjs') as {suites:Record<string,string[]>;researchPlan:{id:string;args:string[];report?:{field?:string;expected?:string[]}}[]};
+const catalog:typeof import('../ci-catalog.cjs')=require('../ci-catalog.cjs');
 type Literal=string|number|boolean|null|Literal[]|{[name:string]:Literal};
 interface Declaration {profiles:Profile[];classification:EntryDeclaration['classification'];granularity:EntryDeclaration['granularity'];caseSource?:string;source?:string;group?:string;evidence?:string;rendererContexts?:string[];includes?:{prefix:string;source:string}[]}
 function literal(node:ts.Node|undefined,env:Map<string,Literal>):Literal|undefined{
@@ -41,15 +41,15 @@ export function generateLock():ExpectedLock{
  const files=new Set([...Object.values(catalog.suites).flat().map(n=>'tests/'+n),...catalog.researchPlan.flatMap(c=>c.args.filter(a=>/^(tests|scripts)\/.*\.cjs$/.test(a)))]);
  const entries:EntryDeclaration[]=[],nativeCases:Record<string,string[]>={},researchCases:Record<string,string[]>={};
  for(const entry of [...files].sort()){
-  const sourceEntry=entrySource(root,entry),text=fs.readFileSync(path.join(root,sourceEntry),'utf8'),match=text.match(/^\/\/ @ci-contract (.+)$/m);if(!match)throw Error('Missing declaration: '+entry);
-  const declaration=JSON.parse(match[1]) as Declaration,source=declaration.source?fs.readFileSync(path.join(root,declaration.source),'utf8'):text;
+  const sourceEntry=entrySource(root,entry),text=fs.readFileSync(path.join(root,sourceEntry),'utf8'),metadata=text.match(/^\/\/ @ci-contract (.+)$/m)?.[1];if(!metadata)throw Error('Missing declaration: '+entry);
+  const declaration=JSON.parse(metadata) as Declaration,source=declaration.source?fs.readFileSync(path.join(root,declaration.source),'utf8'):text;
   const callee=declaration.granularity==='native'?'test':declaration.caseSource;
   const parsed=namesFrom(source,callee||'__no_cases__',declaration.group),names=callee?parsed.names:['entry'];
   let sourceInput=source;
   for(const include of declaration.includes||[]){
-   const included=fs.readFileSync(path.join(root,include.source),'utf8'),metadata=included.match(/^\/\/ @ci-contract (.+)$/m);
+   const included=fs.readFileSync(path.join(root,include.source),'utf8'),metadata=included.match(/^\/\/ @ci-contract (.+)$/m)?.[1];
    if(!metadata)throw Error('Missing included declaration: '+include.source);
-   const child=JSON.parse(metadata[1]) as Declaration;if(!child.caseSource)throw Error('Included contract needs named cases: '+include.source);
+   const child=JSON.parse(metadata) as Declaration;if(!child.caseSource)throw Error('Included contract needs named cases: '+include.source);
    const cases=namesFrom(included,child.caseSource);if(!cases.names.length)throw Error('Empty included contract: '+include.source);
    names.push(...cases.names.map(id=>include.prefix+':'+id));parsed.assertionSites+=cases.assertionSites;sourceInput+='\n'+include.source+'\n'+included;
   }
