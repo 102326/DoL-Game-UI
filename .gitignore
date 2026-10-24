@@ -77,3 +77,5 @@ docs/HANDOFF.local.md
 /tests/ui-runtime-compat.cjs
 /tests/ui-runtime-surfaces.cjs
 /tests/ui-runtime-inspector.cjs
+/tests/device-layout-oracles.cjs
+/tests/device-layout-types.cjs
