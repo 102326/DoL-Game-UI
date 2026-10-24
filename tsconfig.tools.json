@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmitOnError": true,
+    "verbatimModuleSyntax": true,
+    "types": ["node"],
+    "lib": ["ES2022", "DOM"],
+    "skipLibCheck": true
+  },
+  "include": ["scripts/*.cts", "scripts/*.mts", "tests/tooling-types.cts", "tests/tooling-types.mts"]
+}

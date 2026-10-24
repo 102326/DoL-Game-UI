@@ -13,3 +13,12 @@ __pycache__/
 
 # Cross-device handoff supplement: local paths and artifacts stay on this machine.
 docs/HANDOFF.local.md
+
+# TypeScript tooling outputs; these paths have CTS/MTS sources.
+/scripts/build-early.cjs
+/scripts/render-state-fields.cjs
+/scripts/build-framework.mjs
+/scripts/build-golden-spin.mjs
+/scripts/build-framework-vue-comparison.mjs
+/tests/tooling-types.cjs
+/tests/tooling-types.mjs

@@ -36,6 +36,7 @@ if(process.argv.includes('--check-inputs')){console.log('PASS isolated source in
 const oldMask=process.platform==='win32'?null:process.umask(0o027);
 const env={...process.env,TZ:'Pacific/Kiritimati',LC_ALL:'C',PYTHONUTF8:'1',PYTHONDONTWRITEBYTECODE:'1',MOODY_BUILD_CACHE:path.join(destination,'tests/artifacts/compiler-cache'),npm_config_cache:path.join(destination,'tests/artifacts/npm-cache')};
 try{
+ execFileSync(process.execPath,['node_modules/typescript/bin/tsc','-p','tsconfig.tools.json'],{cwd:destination,env,stdio:'inherit'});
  execFileSync(process.execPath,['scripts/build-framework.mjs'],{cwd:destination,env,stdio:'inherit'});
  execFileSync(python,['scripts/check-ci-packages.py','build'],{cwd:destination,env,stdio:'inherit'});
  fs.writeFileSync(path.join(destination,'dist/CJ3C_ISOLATION.json'),JSON.stringify({workspace:'independent Git checkout and source overlay',outputs:'fresh; no first-build outputs copied',compilerCache:'fresh isolated directory',dependencies:'same lockfile and installed dependency tree',environment:{TZ:env.TZ,LC_ALL:env.LC_ALL,umask:oldMask===null?'unsupported':'0027'}},null,2)+'\n');

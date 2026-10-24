@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "framework:check": "vue-tsc --noEmit -p tsconfig.framework.json",
-    "framework:build": "npm run framework:check && node scripts/build-framework.mjs && python scripts/package-framework.py",
+    "framework:build": "npm run tooling:build && npm run framework:check && node scripts/build-framework.mjs && python scripts/package-framework.py",
     "framework:test": "node tests/framework.cjs",
     "framework:factory:test": "node tests/framework-factory.cjs",
     "framework:author-kit:test": "node tests/framework-author-kit.cjs",
@@ -17,7 +17,7 @@
     "framework:vue:build": "npm run framework:build && node scripts/build-framework-vue-comparison.mjs && python scripts/package-framework-vue-comparison.py",
     "framework:vue:test": "node tests/framework-vue-comparison.cjs",
     "typecheck": "vue-tsc --noEmit && tsc -p tsconfig.adapters.json && tsc -p tsconfig.early.json",
-    "build": "node scripts/render-state-fields.cjs --check && npm run typecheck && vite build && node scripts/build-early.cjs",
+    "build": "npm run tooling:build && node scripts/render-state-fields.cjs --check && npm run typecheck && vite build && node scripts/build-early.cjs",
     "pretest": "npm run build",
     "package": "npm run ci:check && node scripts/build-framework.mjs && python scripts/package.py",
     "test": "node scripts/test-unit.cjs",
@@ -30,16 +30,18 @@
     "lab:check": "vue-tsc --noEmit -p tsconfig.lab.json",
     "lab:index": "node component-lab/source-index.cjs",
     "lab:test": "node tests/stone-free-lab.cjs",
-    "ci:check": "tsc -p tsconfig.ci.json && node scripts/ci/generate-lock.ts && node scripts/render-state-fields.cjs --check && npm run typecheck && npm run framework:check",
+    "ci:check": "npm run tooling:build && tsc -p tsconfig.ci.json && node scripts/ci/generate-lock.ts && node scripts/render-state-fields.cjs --check && npm run typecheck && npm run framework:check",
     "ci:unit": "node scripts/test-ci.cjs unit",
     "ci:browser": "node scripts/test-ci.cjs browser",
-    "ci:build": "node scripts/build-framework.mjs && python scripts/check-ci-packages.py build",
+    "ci:build": "npm run tooling:build && node scripts/build-framework.mjs && python scripts/check-ci-packages.py build",
     "ci:packages": "python scripts/check-ci-packages.py",
     "prototype:golden-spin": "vite --config vite.golden-spin.config.ts",
     "prototype:golden-spin:check": "vue-tsc --noEmit -p tsconfig.golden-spin.json",
-    "prototype:golden-spin:build": "node scripts/build-golden-spin.mjs",
+    "prototype:golden-spin:build": "npm run tooling:build && node scripts/build-golden-spin.mjs",
     "prototype:golden-spin:test": "node tests/golden-spin-b.cjs && node tests/golden-spin-hub.cjs && node tests/motion-workspace.cjs && node tests/golden-spin-hub-input.cjs && node tests/golden-spin-hub-lifecycle.cjs",
-    "ci:lock": "node scripts/ci/generate-lock.ts --update"
+    "ci:lock": "node scripts/ci/generate-lock.ts --update",
+    "tooling:build": "tsc -p tsconfig.tools.json",
+    "tooling:check": "tsc -p tsconfig.tools.json --noEmit"
   },
   "dependencies": {
     "vue": "^3.5.0"
