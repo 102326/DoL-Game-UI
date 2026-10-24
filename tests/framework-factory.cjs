@@ -72,7 +72,10 @@ function command(executable,args,cwd=root,expected=0){
   const page=await browser.newPage({viewport:{width:390,height:844}});page.setDefaultTimeout(5000);
   await page.route('http://author.test/',r=>r.fulfill({contentType:'text/html',body:'<main id="passages"></main>'}));await page.goto('http://author.test/');
   await page.addStyleTag({path:path.join(target,'dist/style.css')});
-  await page.addScriptTag({path:path.join(root,'dist/framework/host/index.js')});await page.addScriptTag({path:path.join(target,'dist/index.js')});
+  await page.addScriptTag({path:path.join(root,'dist/framework/host/index.js')});
+  // This fixture has no SugarCube events to finish the native scene bridge.
+  await page.evaluate(()=>DoLUiHost.sceneReady());
+  await page.addScriptTag({path:path.join(target,'dist/index.js')});
   assert.equal(await page.evaluate(()=>!!window.DoLGameUI),false);
   await page.getByRole('button',{name:'作者定制的便笺',exact:true}).click();await page.getByRole('textbox',{name:'作者定制的便笺',exact:true}).fill('作者拥有源码');
   assert.equal(await page.locator('textarea').inputValue(),'作者拥有源码');assert.equal(await page.locator('textarea').getAttribute('maxlength'),'120');
@@ -89,9 +92,16 @@ function command(executable,args,cwd=root,expected=0){
   finally {await preview.close()}
   extra.push('Generated ordinary Vite preview uses the author SFC without a game, mock Host or official UI');
   const oldHost=buildSync({entryPoints:[path.join(seed,'framework/boot.ts')],bundle:true,write:false,format:'iife',globalName:'LegacyHost'}).outputFiles[0].text;
-  const fallback=await browser.newPage();await fallback.setContent('<main id="passages"></main>');await fallback.addStyleTag({path:path.join(target,'dist/style.css')});await fallback.addScriptTag({content:oldHost});await fallback.addScriptTag({path:path.join(target,'dist/index.js')});
-  await fallback.getByRole('button',{name:'作者定制的便笺',exact:true}).click();await fallback.getByRole('textbox',{name:'作者定制的便笺',exact:true}).fill('旧 Host 入口');assert.equal(await fallback.evaluate(()=>typeof DoLUiHost.getCapabilities),'undefined');await fallback.evaluate(()=>{StoneFreeAuthor_AuthorNotes.dispose();DoLUiHost.dispose()});assert.equal(await fallback.locator('[data-sf-owner]').count(),0);await fallback.close();
-  extra.push('New author recipe keeps its independent entry on the actual historical Host without views capability');
+  const fallback=await browser.newPage();await fallback.setContent('<main id="passages"></main>');await fallback.addStyleTag({path:path.join(legacy,'dist/style.css')});await fallback.addScriptTag({content:oldHost});
+  // This actual 0.1.0 Host predates the documented >=0.1.2 SDK contract.
+  assert.equal(await fallback.evaluate(()=>typeof DoLUiHost.getCapabilities),'undefined');
+  await fallback.addScriptTag({path:path.join(target,'dist/index.js')});
+  assert.equal(await fallback.locator('[data-sf-owner]').count(),0,'Current SDK must reject an unsupported historical Host');
+  await fallback.evaluate(()=>StoneFreeAuthor_AuthorNotes.dispose());
+  await fallback.addScriptTag({content:oldBytes});
+  await fallback.getByRole('button',{name:'历史作者便笺',exact:true}).click();await fallback.getByRole('textbox',{name:'历史作者便笺',exact:true}).fill('旧 Host 入口');
+  await fallback.evaluate(()=>{AuthorMod.dispose();DoLUiHost.dispose()});assert.equal(await fallback.locator('[data-sf-owner]').count(),0);await fallback.close();
+  extra.push('Historical SDK still runs on its actual 0.1.0 Host; current SDK safely rejects this pre-minimum contract');
   const outcomes=[];
   for(const bytes of [oldBytes,upgradedBytes]){const p=await browser.newPage();await p.setContent('<main id="passages"></main>');await p.addStyleTag({path:path.join(legacy,'dist/style.css')});await p.addScriptTag({path:path.join(root,'dist/framework/host/index.js')});await p.addScriptTag({content:bytes});await p.getByRole('button',{name:'历史作者便笺',exact:true}).click();await p.getByRole('textbox',{name:'历史作者便笺',exact:true}).fill('历史作者内容');const value=await p.locator('textarea').inputValue();await p.evaluate(()=>{AuthorMod.dispose();DoLUiHost.dispose()});outcomes.push({value,roots:await p.locator('[data-sf-owner]').count()});await p.close();}
   assert.deepEqual(outcomes[0],outcomes[1]);assert.deepEqual(outcomes[0],{value:'历史作者内容',roots:0});extra.push('Actual old and upgraded SDK builds preserve the same legacy note interaction and teardown outcome');
