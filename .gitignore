@@ -185,3 +185,5 @@ docs/HANDOFF.local.md
 
 /scripts/check-evolution-acrylic.cjs
 /scripts/check-settings-refraction.cjs
+
+/tests/story-actions.test.cjs
