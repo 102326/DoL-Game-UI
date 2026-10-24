@@ -13,8 +13,8 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  const c = ctx;
  const media = matchMedia('(prefers-reduced-motion: reduce)');
  const state = {speed: .3, charge: 0, energy: 0, spread: 0, pressure: 0};
- const marks=[-1.05,-.55,0,.55,1.05].flatMap((latitude,row)=>
-  Array.from({length:[4,7,9,7,4][row]},(_,i)=>({latitude,longitude:i*TAU/[4,7,9,7,4][row]+row*.31}))
+ const marks=([[-1.05,4],[-.55,7],[0,9],[.55,7],[1.05,4]] as const).flatMap(([latitude,count],row)=>
+  Array.from({length:count},(_,i)=>({latitude,longitude:i*TAU/count+row*.31}))
  );
  const normalAt=(latitude:number,longitude:number)=>({x:Math.cos(latitude)*Math.sin(longitude),y:Math.sin(latitude),z:Math.cos(latitude)*Math.cos(longitude)});
  const rotateNormal=(p:{x:number;y:number;z:number},angle:number)=>{
@@ -216,7 +216,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  }
  function stepMeteors(dt:number) {
   for(let i=meteors.length-1;i>=0;i--) {
-   const m=meteors[i];m.age+=dt;
+   const m=meteors[i];if(!m)continue;m.age+=dt;
    if(m.age>=m.life){meteors.splice(i,1);continue}
    if(phase==='return'){m.vx+=(-m.x*18-m.vx*5)*dt;m.vy+=(-m.y*18-m.vy*5)*dt}
    m.x+=m.vx*dt;m.y+=m.vy*dt;
@@ -227,7 +227,8 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
    emission--;
    const visible=marks.filter(mark=>rotateNormal(normalAt(mark.latitude,mark.longitude),angle).z>.15);
    if(!visible.length)break;
-   const mark=visible[emitted%visible.length],p=rotateNormal(normalAt(mark.latitude,mark.longitude),angle);
+   const mark=visible[emitted%visible.length];if(!mark)break;
+   const p=rotateNormal(normalAt(mark.latitude,mark.longitude),angle);
    const next=rotateNormal(normalAt(mark.latitude,mark.longitude),angle+.015);
    const dx=next.x-p.x,dy=next.y-p.y,length=Math.hypot(dx,dy)||1,speed=2.8+state.speed*.045;
    meteors.push({x:p.x,y:p.y,vx:dx/length*speed+p.x*.85,vy:dy/length*speed+p.y*1.9,age:0,life:.4+(emitted%4)*.07,tail:.42+(emitted%3)*.16});emitted++;
