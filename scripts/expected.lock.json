@@ -404,6 +404,10 @@
     "native-tooling.test.mts": [
       "native erasure check rejects an extra enum fixture while retaining the normal roots"
     ],
+    "node-baseline.test.mts": [
+      "Node 26 Only accepts the patch baseline and rejects other majors or prereleases",
+      "native TS and MTS plus compiled CTS interoperate in an independent Node process"
+    ],
     "receipt-boundary.test.mts": [
       "real native reporter rejects malformed expected plans instead of reporting success"
     ],
@@ -652,7 +656,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a06c571db5dcd269afe95f4da14d95190d6ebde9ce4893f91ff806e13f7f6e0e",
+      "sourceSha256": "65cf9b5253d5f3172dd5569ec955edcec52d3a21e9b5c1e1e39317559342d063",
       "assertionSites": 85
     },
     {
@@ -668,7 +672,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "bc71a2b94f3159f06efb5443fb55d6c2f2e51b83902d019224696dd532d01dbf",
+      "sourceSha256": "fe011de32cddd3feb52dbeb418bab29b9503893aa66e62320fa498b5b89d3bdb",
       "assertionSites": 81
     },
     {
@@ -1501,6 +1505,26 @@
       ],
       "sourceSha256": "2fde6bb8a9e73d0f713d02821ff5af5ee99627cc5db12eaf0db681a1065e06a3",
       "assertionSites": 3
+    },
+    {
+      "entry": "tests/node-baseline.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "Node 26 Only accepts the patch baseline and rejects other majors or prereleases",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "native TS and MTS plus compiled CTS interoperate in an independent Node process",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "20975301a23102782c7aaa6ce31613f3fd3d50e1df0b5b2f89d5aa774c85f64c",
+      "assertionSites": 15
     },
     {
       "entry": "tests/official-defaults.cjs",

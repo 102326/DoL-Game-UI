@@ -74,7 +74,7 @@ const { root } = require('../scripts/ci-evidence.cjs');
     // Finalization must report source drift while preserving an already confirmed FAIL.
     const isolated=path.join(dir,'summary-source');fs.mkdirSync(path.join(isolated,'tests'),{recursive:true});
     fs.cpSync(path.join(root,'scripts'),path.join(isolated,'scripts'),{recursive:true});
-    for(const file of ['package.json','package-lock.json','project-identity.json','.gitignore','tests/device-case-plan.cjs'])fs.copyFileSync(path.join(root,file),path.join(isolated,file));
+    for(const file of ['.node-version','.npmrc','package.json','package-lock.json','project-identity.json','.gitignore','tests/device-case-plan.cjs'])fs.copyFileSync(path.join(root,file),path.join(isolated,file));
     const shell=require('node:child_process'),isolatedEnv={...process.env,MOODY_EVIDENCE_ID:'source-drift',MOODY_PROFILE:'standard',GITHUB_ACTIONS:'',GITHUB_EVENT_PATH:'',GITHUB_OUTPUT:'',GITHUB_STEP_SUMMARY:'',NODE_PATH:path.join(root,'node_modules')};
     const localGit=(...args)=>shell.execFileSync('git',['-c','user.name=102326','-c','user.email=100576628+102326@users.noreply.github.com','-c','commit.gpgsign=false','-c','core.hooksPath='+path.join(isolated,'empty-hooks'),...args],{cwd:isolated,stdio:'pipe'});
     localGit('init','--quiet');localGit('add','.');localGit('commit','--quiet','-m','controlled CI source');

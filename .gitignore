@@ -43,3 +43,4 @@ docs/HANDOFF.local.md
 /tests/target-version.test.cjs
 /tests/floating-preferences.test.cjs
 /tests/startup-cache.test.cjs
+/scripts/check-node.mjs

@@ -36,7 +36,7 @@
 
 GitHub 构建以 Project ID、Commit SHA、Run ID、Attempt 绑定证据，八包 SHA-256 通过 receipt、合同报告和上传索引溯源。本地独立执行下列 build / packages 命令时，检查器复用首轮 receipt 的本地 Run ID，并严格核对源码和完整身份；CI 不从旧 receipt 接管 Run ID。完整 stage runner 仍统一设置 `MOODY_EVIDENCE_ID`。
 
-当前最低 Node.js 为26.0.0，两套工作流使用26.x。该版本默认支持可擦除TS；工作流保留显式 `NODE_OPTIONS=--experimental-strip-types`。`npm ci`不需要先构建CI工具，严格类型检查在依赖安装后执行。旧Node22结果仅为历史证据，不代表当前支持范围。
+当前采用Node 26 Only，最低26.12.1且<27；两套工作流读取 `.node-version`，当前固定26.12.1。该版本默认支持可擦除TS；工作流保留显式 `NODE_OPTIONS=--experimental-strip-types`。`npm ci`不需要先构建CI工具，严格类型检查在依赖安装后执行。旧Node22/24及26.0结果仅为历史证据，不代表当前支持范围。
 
 在仓库根目录运行：
 

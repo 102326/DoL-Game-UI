@@ -6,7 +6,7 @@
 
 ## 独立构建
 
-Node.js 26+、Python 3.10+。运行 `npm ci`。`npm run build` 生成 legacy Core JS/CSS 与 early 入口；`npm test` 执行其独立构建和快速单元合同。`npm run package` 则检查当前源码、构建 Framework 并复用正式双包生产器，输出 `dist/framework/StoneFreeHost-0.1.5-experimental.mod.zip` 与 `dist/framework/DoLGameUI-3.0.4.mod.zip`，无需父工程；`scripts/package-legacy.py` 仅保留历史单包。`private: true` 仅禁止误发 npm，不构成发布授权。
+Node.js 26.12.1+（仅26.x）、Python 3.10+。运行 `npm ci`。`npm run build` 生成 legacy Core JS/CSS 与 early 入口；`npm test` 执行其独立构建和快速单元合同。`npm run package` 则检查当前源码、构建 Framework 并复用正式双包生产器，输出 `dist/framework/StoneFreeHost-0.1.5-experimental.mod.zip` 与 `dist/framework/DoLGameUI-3.0.4.mod.zip`，无需父工程；`scripts/package-legacy.py` 仅保留历史单包。`private: true` 仅禁止误发 npm，不构成发布授权。
 
 `npm test` 运行不需要游戏资源的状态接口、衣柜数据、性能采样器、绘图状态复制及 early API 行为检查；正式 ZIP 四补丁逐字节检查由 `tests/shop-pagination-package.test.cjs` 与标准包合同保留。当前标准入口是 `ci:check / ci:unit / ci:build / ci:packages / ci:browser`，研究流程是 `node scripts/test-ci.cjs research`；工作流负责共享 evidence ID、依赖与最终汇总。CI 不等于完整游戏回归。
 

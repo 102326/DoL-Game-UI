@@ -1,6 +1,6 @@
 # DoL UI project rules
 
-- Current tooling baseline: Node >=26.0.0; both CI workflows use26.x and @types/node26. Earlier22/24 evidence remains historical. This changes development tooling, not browser/WebView targets.
+- Current tooling baseline: Node26 Only (>=26.12.1 <27); both CI workflows read .node-version (26.12.1) and @types/node26. Earlier22/24 evidence remains historical. This changes development tooling, not browser/WebView targets.
 
 - Latest owner direction (2026-10-24): execute TS First option 1 before 4.0 release. Include all maintained self-owned JS, embedded logic and existing TS boundary gaps; CommonJS may use CTS without an ESM rewrite. Preserve runtime contracts, accepted visuals and negative tests. Separate type migration, behavior fixes and cleanup commits. Assessment baseline is ff7942d / 4.0.0-rc.2; the earlier option-2 recommendation is historical, not the selected scope. See docs/evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md. Formal-version edits, main merge, Tag and Release remain unauthorized; old RC2 evidence does not validate migrated code.
 

@@ -8,8 +8,8 @@
 
 原有六个根目录 TS 研究脚本和五个 Vite 配置另由 `tsconfig.research-tools.json` 检查。配置使用 Preserve/Bundler，因为 Vite 配置会通过真实导出取得已编译 CTS 的类型；它不要求把 CJS 模块变成 ESM。依赖前原生 CI 的 erasable 检查仍独立保留。
 
-`ci:check` 另检查18个真正以原生 TS 执行的入口是否只使用可擦除语法；附加反例证明 enum 会被拒绝。这是严格类型检查之外的语言特性检查，不取代它。Vite/CTS/MTS编译路径不被错误要求只能使用原生可擦除语法。
+`ci:check` 另检查19个真正以原生 TS 执行的入口是否只使用可擦除语法；附加反例证明 enum 会被拒绝。这是严格类型检查之外的语言特性检查，不取代它。Vite/CTS/MTS编译路径不被错误要求只能使用原生可擦除语法。
 
-当前最低Node为26.0.0，两套Actions使用26.x，类型声明与锁文件同步为Node26。Node26原生擦除用于既有CI TS模块；编译型CTS中的 `export =`、`import = require`仍由锁定编译器生成CJS，不能直接交给原生擦除执行。依赖安装前路径使用已提交的生成CJS，不能依赖尚未安装的编译器启动自身。
+当前采用Node 26 Only（>=26.12.1 <27），两套Actions读取 `.node-version` 固定26.12.1，类型声明与锁文件同步为Node26。`.npmrc`启用engine-strict；preinstall及工具/CI引导还会检查实际Node，不能把npm警告当成版本限制。Node26原生擦除用于既有CI TS模块；编译型CTS中的 `export =`、`import = require`仍由锁定编译器生成CJS，不能直接交给原生擦除执行。依赖安装前路径使用已提交的生成CJS，不能依赖尚未安装的编译器启动自身。
 
 `tests/tooling-types.cts/.mts` 是只供类型检查的正反合同；无效调用不会运行。它们验证两种消费者均取得真实 CJS 导出、参数和返回类型，而非裸 `require` 的 `any`。

@@ -1,3 +1,4 @@
+import '../check-node.mts';
 import {createHash} from 'node:crypto';
 
 export type Status = 'PASS'|'FAIL'|'ERROR'|'UNVERIFIED'|'CANCELLED';
