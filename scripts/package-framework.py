@@ -77,9 +77,9 @@ for directory, name in packages:
 # Development sources only: no runtime boot.json, UI sources, dependencies or test evidence.
 if args.players_only:
     raise SystemExit(0)
-kit_paths = ['LICENSE', 'scripts/framework-factory.mjs', 'framework/contracts.ts', 'framework/vue.ts', 'framework/connect.ts',
+kit_paths = ['LICENSE', 'scripts/framework-factory.mts', 'scripts/framework-factory.mjs', 'framework/contracts.ts', 'framework/vue.ts', 'framework/connect.ts',
              'framework/factory/Panel.vue', 'framework/factory/preview.ts', 'framework/factory/index.html',
-             'framework/factory/vite.config.mjs', 'framework/factory/package.py']
+             'framework/factory/vite.config.mts', 'framework/factory/package.py']
 files = {name: (root/name).read_bytes() for name in kit_paths}
 files['README.md'] = (root/'framework/factory/AUTHOR_KIT.md').read_bytes()
 manifest = dict(kind='source-kit', version=version, sdkProtocol='0.1-experimental',

@@ -22,3 +22,12 @@ docs/HANDOFF.local.md
 /scripts/build-framework-vue-comparison.mjs
 /tests/tooling-types.cjs
 /tests/tooling-types.mjs
+/scripts/framework-factory.mjs
+/scripts/preview-evolution-settings.mjs
+/scripts/preview-evolution-hub.mjs
+/scripts/preview-evolution-acrylic.mjs
+/scripts/prepare-settings-refraction.mjs
+/component-lab/source-index.cjs
+/scripts/build-adapters.cjs
+/tests/adapter-build-boundary.test.cjs
+/framework/factory/vite.config.mjs

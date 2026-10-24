@@ -13,7 +13,7 @@ function command(executable,args,cwd=root,expected=0){
  command(process.execPath,[factory,'create',target,'AuthorNotes']);
  command(process.execPath,[factory,'create',target,'AuthorNotes'],root,1);
  fs.symlinkSync(path.join(root,'node_modules'),path.join(target,'node_modules'),'junction');
- const authorPaths=['src/main.ts','src/preview.ts','index.html','vite.config.mjs','package.json'];
+ const authorPaths=['src/main.ts','src/preview.ts','index.html','vite.config.mts','package.json'];
  const authorFiles=Object.fromEntries(authorPaths.map(p=>[p,fs.readFileSync(path.join(target,p),'utf8')]));
  const source=path.join(target,'src/Panel.vue'),edited=fs.readFileSync(source,'utf8').replaceAll('界面便笺','作者定制的便笺');
  fs.writeFileSync(source,edited);
@@ -87,7 +87,7 @@ function command(executable,args,cwd=root,expected=0){
   await workspace.getByRole('button',{name:'信息工作台',exact:true}).click();assert.equal(await inline.locator('textarea').inputValue(),'');await workspace.locator('dialog').getByRole('button',{name:'关闭',exact:true}).click();
   await page.evaluate(()=>{StoneFree_workspace.dispose();StoneFreeAuthor_AuthorNotes.dispose();const probe=StoneFree_host.installHost();if(probe)probe.dispose()});
   assert.equal(await page.locator('[data-sf-owner]').count(),0);extra.push('Generated public view composes without moving native DOM; per-view notes and close cleanup stay independent');await page.close();
-  const {createServer}=await import('vite');const preview=await createServer({root:target,cacheDir:path.join(base,'preview-cache'),configFile:path.join(target,'vite.config.mjs'),server:{host:'127.0.0.1',port:0,hmr:false}});
+  const {createServer}=await import('vite');const preview=await createServer({root:target,cacheDir:path.join(base,'preview-cache'),configFile:path.join(target,'vite.config.mts'),server:{host:'127.0.0.1',port:0,hmr:false}});
   try {await preview.listen();const p=await browser.newPage({viewport:{width:390,height:844}});await p.goto(preview.resolvedUrls.local[0]);const note=p.getByRole('textbox',{name:'作者定制的便笺',exact:true});await note.fill('真实 SFC 预览');assert.equal(await note.inputValue(),'真实 SFC 预览');assert.deepEqual(await p.evaluate(()=>({host:!!window.DoLUiHost,game:!!window.SugarCube})),{host:false,game:false});await p.screenshot({path:path.join(base,'component-preview.png')});await p.close();}
   finally {await preview.close()}
   extra.push('Generated ordinary Vite preview uses the author SFC without a game, mock Host or official UI');

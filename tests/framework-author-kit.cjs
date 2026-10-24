@@ -10,14 +10,14 @@ function run(command,args,cwd=root){try {const stdout=execFileSync(command,args,
  const inventory=JSON.parse(run('python',['-c',`import json,zipfile,hashlib,sys
 from pathlib import Path
 z=zipfile.ZipFile(sys.argv[1]); names=z.namelist()
-expected={'LICENSE','README.md','stone-free-author-kit.json','scripts/framework-factory.mjs','framework/contracts.ts','framework/vue.ts','framework/connect.ts','framework/factory/Panel.vue','framework/factory/index.html','framework/factory/preview.ts','framework/factory/vite.config.mjs','framework/factory/package.py'}
+expected={'LICENSE','README.md','stone-free-author-kit.json','scripts/framework-factory.mts','scripts/framework-factory.mjs','framework/contracts.ts','framework/vue.ts','framework/connect.ts','framework/factory/Panel.vue','framework/factory/index.html','framework/factory/preview.ts','framework/factory/vite.config.mts','framework/factory/package.py'}
 assert len(names)==len(expected) and set(names)==expected and z.testzip() is None
 m=json.loads(z.read('stone-free-author-kit.json')); assert m['kind']=='source-kit' and m['sdkProtocol']=='0.1-experimental' and m['version']=='0.1.4-experimental'
 assert set(m['files'])==expected-{'stone-free-author-kit.json'}
 assert all(hashlib.sha256(z.read(n)).hexdigest()==h for n,h in m['files'].items())
 p=Path(sys.argv[2]); p.mkdir(); z.extractall(p)
 print(json.dumps(m))`,archive,kit]));
- checks.push('Export has exactly the documented 12 files and matching digests; no UI implementation, runtime boot, dependencies or evidence');
+ checks.push('Export has exactly the documented 13 files and matching digests; no UI implementation, runtime boot, dependencies or evidence');
  for(const match of fs.readFileSync(path.join(kit,'README.md'),'utf8').matchAll(/\]\(([^)]+)\)/g))assert.ok(fs.existsSync(path.join(kit,match[1])),`Offline guide target missing: ${match[1]}`);
  const factory=path.join(kit,'scripts/framework-factory.mjs');run(process.execPath,[factory,'create',project,'KitAuthor'],kit);
  fs.symlinkSync(path.join(root,'node_modules'),path.join(project,'node_modules'),'junction');

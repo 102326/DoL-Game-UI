@@ -2,7 +2,7 @@ import {defineConfig, type Plugin} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 import {createRequire} from 'node:module';
-const {sourceIndex,inputs,root}=createRequire(import.meta.url)('./component-lab/source-index.cjs');
+const {sourceIndex,inputs,root}:typeof import('./component-lab/source-index.cjs')=createRequire(import.meta.url)('./component-lab/source-index.cjs');
 function sourceLink():Plugin{return {name:'lab-source-link',configureServer(server){
  server.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/__lab/source-index')return next();
   if(req.method!=='GET'){res.statusCode=405;return res.end()}

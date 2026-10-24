@@ -10,6 +10,8 @@ node scripts/framework-factory.mjs create E:/my-mods/ReadingNotes ReadingNotes
 
 目标目录必须不存在，技术名由作者选择。进入生成的项目，安装其声明的依赖并保留自己的锁文件。需要 Node 22.12+、Python 3.10+；本源码包不包含 Node、Python、Vue 或 node_modules。
 
+生成器来源为 `scripts/framework-factory.mts`，随包的 `.mjs` 是预编译入口，解压后可直接运行。新项目的 Vite 配置为 `vite.config.mts`，由 Vite 加载；SDK 更新不会改写已有作者项目的配置格式。
+
 `npm run dev` 启动普通 Vite 组件预览。结束预览后，用 `npm run check` 检查类型，`npm run package` 构建 `dist/ReadingNotes-0.1.0.mod.zip`。预览不含游戏或模拟 Host，不能代替实际游戏检查。
 
 生成的游戏 Mod 依赖 `StoneFreeHost >=0.1.2-experimental && <0.2.0`，由单独的 Host `.mod.zip` 提供运行能力，不依赖完整官方 UI 或共享 Vue 包。安装到测试游戏时不要解压 `.mod.zip`。源码包本身不提供或下载游戏、ModLoader、APK 和存档。

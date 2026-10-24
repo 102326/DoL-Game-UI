@@ -1,8 +1,12 @@
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),{createHash}=require('node:crypto'),{execFileSync}=require('node:child_process');
+import fs = require('node:fs');
+import path = require('node:path');
+import crypto = require('node:crypto');
+import child = require('node:child_process');
+const {createHash}=crypto,{execFileSync}=child;
 const root=fs.realpathSync(path.resolve(__dirname,'..'));
-const shopInputs=['src/shop/Toolbar.vue','src/ui/GameButton.vue','src/shop/style.css','src/tokens.css','src/theme/midnight.css','src/theme/controls.css','src/shop/main.ts','src/runtime/ui.ts','src/public/ui.ts','component-lab/App.vue','component-lab/main.ts','component-lab/lab.css','component-lab/source-index.cjs','vite.lab.config.ts','tsconfig.lab.json','package.json','package-lock.json'];
-const sha=b=>createHash('sha256').update(b).digest('hex');
+const shopInputs=['src/shop/Toolbar.vue','src/ui/GameButton.vue','src/shop/style.css','src/tokens.css','src/theme/midnight.css','src/theme/controls.css','src/shop/main.ts','src/runtime/ui.ts','src/public/ui.ts','component-lab/App.vue','component-lab/main.ts','component-lab/lab.css','component-lab/source-index.cts','component-lab/source-link.ts','vite.lab.config.ts','tsconfig.lab.json','package.json','package-lock.json'];
+const sha=(b:crypto.BinaryLike)=>createHash('sha256').update(b).digest('hex');
 const floatingInputs=shopInputs.filter(p=>!p.startsWith('src/shop/')).concat(['src/floating/FloatingTools.vue','src/floating/main.ts','src/floating/preferences.ts','src/floating/style.css','src/theme/visual.css','src/theme/eyes.css','src/theme/layout.css','src/theme/mobile.css']);
 const inputs=[...new Set([...shopInputs,...floatingInputs])];
 function sourceIndex(componentId='shop.toolbar'){
@@ -22,5 +26,7 @@ function sourceIndex(componentId='shop.toolbar'){
 }
 if(require.main===module){
  const args=process.argv.slice(2);if(![2,4].includes(args.length)||args[0]!=='--out'||(args.length===4&&args[2]!=='--component'))throw Error('Use --out NEW_JSON [--component shop.toolbar|floating.tools]');
- fs.writeFileSync(path.resolve(args[1]),JSON.stringify(sourceIndex(args[3]),null,2)+'\n',{flag:'wx'});
-}else module.exports={sourceIndex,inputs,root};
+ const target=args[1];if(!target)throw Error('Missing output path');
+ fs.writeFileSync(path.resolve(target),JSON.stringify(sourceIndex(args[3]),null,2)+'\n',{flag:'wx'});
+}
+export = {sourceIndex,inputs,root};

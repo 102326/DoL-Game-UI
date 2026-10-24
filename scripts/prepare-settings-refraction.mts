@@ -5,8 +5,8 @@ import {createHash} from 'node:crypto';
 import path from 'node:path';
 const root=path.resolve('tests/artifacts/settings-refraction-v1');
 const refs={old:'915dcb9e85f3266a73a3e7ce38d769edd0c29ff4',new:'b507f1a7d18d4d77067fa0c793aea44d7de96b57'};
-const sha=data=>createHash('sha256').update(data).digest('hex');
-const manifest={scope:'Source reconstruction, not packaged game execution',refs,files:{}};
+const sha=(data:string|Buffer)=>createHash('sha256').update(data).digest('hex');
+const manifest:{scope:string;refs:typeof refs;files:Record<string,Record<string,string>>;patched?:{controller:string;panel:string}}={scope:'Source reconstruction, not packaged game execution',refs,files:{}};
 for(const [variant,ref]of Object.entries(refs)){
  const out=path.join(root,variant);mkdirSync(out,{recursive:true});
  const archive=execFileSync('git',['archive',ref,'src','framework'],{maxBuffer:30*1024*1024});
@@ -17,7 +17,7 @@ for(const [variant,ref]of Object.entries(refs)){
 const candidate=path.join(root,'new/src/theme');
 const adapter=path.relative(candidate,path.resolve('prototypes/settings-refraction-v1/refraction')).split(path.sep).join('/');
 let controller=readFileSync(path.join(candidate,'controller.ts'),'utf8');
-const swap=(text,from,to)=>{if(text.split(from).length!==2)throw Error('Prototype source anchor changed: '+from.slice(0,80));return text.replace(from,to)};
+const swap=(text:string,from:string,to:string)=>{if(text.split(from).length!==2)throw Error('Prototype source anchor changed: '+from.slice(0,80));return text.replace(from,to)};
 controller=`import {createSettingsRefraction} from '${adapter}';\n`+controller;
 controller=swap(controller,' const motion=sourceMotion();let transition=0,stage:HTMLElement|undefined;',' const refraction=createSettingsRefraction();\n const motion=sourceMotion();let transition=0,stage:HTMLElement|undefined;');
 const begin=controller.indexOf(' function closeSettings(){'),end=controller.indexOf(' function nativeSettings(){');

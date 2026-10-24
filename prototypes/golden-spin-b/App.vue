@@ -34,7 +34,7 @@ function setZoom(value:number){zoom.value=value;document.body.style.zoom=String(
 function settleScene(){host.invalidateScene();host.sceneReady();message.value='已模拟场景失效与重新就绪'}
 function changeSample(){document.documentElement.dataset.gsSample=sample.value;controller?.relayout()}
 onMounted(mount);
-onBeforeUnmount(()=>{unmount();owner.dispose();host.dispose();document.body.style.removeProperty('zoom');delete (window as any).goldenSpinLab});
+onBeforeUnmount(()=>{unmount();owner.dispose();host.dispose();document.body.style.removeProperty('zoom');Reflect.deleteProperty(window,'goldenSpinLab')});
 </script>
 <template>
  <main class="gs-lab-shell">
