@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {buildSync} from 'esbuild';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),source=path.join(root,'tools/device-probe.ts'),target=path.join(root,'tools/device-probe.html');
+const args=process.argv.slice(2);if(args.length!==1||!['--check','--write'].includes(args[0]??''))throw Error('Use --check or --write');
+const result=buildSync({absWorkingDir:root,entryPoints:[source],bundle:true,write:false,format:'iife',platform:'browser',target:'es2022',metafile:true});
+if(Object.keys(result.metafile.inputs).some(input=>path.resolve(root,input)!==source))throw Error('Offline device probe must remain standalone');
+const code=result.outputFiles[0];if(!code)throw Error('Missing device probe output');
+const template=fs.readFileSync(path.join(root,'tools/device-probe.template.html'),'utf8'),marker='/*__DEVICE_PROBE_SCRIPT__*/';
+if(template.split(marker).length!==2)throw Error('Expected one device probe script marker');
+const html=template.replace(marker,code.text.replace(/<\/script/gi,'<\\/script'));
+if(args[0]==='--write')fs.writeFileSync(target,html);
+else if(fs.readFileSync(target,'utf8')!==html)throw Error('Device probe output differs from its TypeScript source');
+console.log('PASS standalone device probe '+args[0]);

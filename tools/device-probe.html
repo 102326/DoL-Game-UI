@@ -29,49 +29,101 @@
 </main>
 <div id="insets" aria-hidden="true"></div>
 <script>
-'use strict';
-const samples=[];
-const el=id=>document.getElementById(id);
-const manual=id=>el(id).value.trim()||'UNKNOWN';
-const number=value=>Number.isFinite(value)?value:null;
-function browserFamily(){
-  // Parse coarse family/version only; never retain or export the full UA string.
-  const ua=navigator.userAgent;
-  for(const [family,pattern] of [['Edge',/(?:Edg|EdgiOS|EdgA)\/([\d.]+)/],['Firefox',/(?:Firefox|FxiOS)\/([\d.]+)/],['Chrome',/(?:Chrome|CriOS)\/([\d.]+)/],['Safari',/Version\/([\d.]+).*Safari/]]){
-    const match=ua.match(pattern);if(match)return{family,version:match[1].split('.').slice(0,2).join('.')};
-  }
-  return{family:'UNKNOWN',version:'UNKNOWN'};
-}
-function payload(){return{schemaVersion:1,scope:'Browser runtime observations; physical-device confirmation is user assertion only; no hardware validation',samples};}
-function render(){el('output').value=JSON.stringify(payload(),null,2);}
-el('record').addEventListener('click',()=>{
-  const style=getComputedStyle(el('insets')),vv=window.visualViewport,orientation=screen.orientation;
-  const sample={
-    type:'browser-runtime-observation',observed:true,observedAt:new Date().toISOString(),
-    model:manual('model'),actualBrowser:manual('browser'),gameHost:manual('host'),
-    manualSystemDisplayScale:manual('displayScale'),manualBrowserZoom:manual('browserZoom'),
-    physicalDeviceConfirmed:el('physical').checked,physicalConfirmationSource:'user-assertion-only',
-    measuredOnPhysicalDevice:el('physical').checked,
-    innerWidth:number(innerWidth),innerHeight:number(innerHeight),devicePixelRatio:number(devicePixelRatio),
-    screenCSS:{width:number(screen.width),height:number(screen.height),availWidth:number(screen.availWidth),availHeight:number(screen.availHeight)},
-    screenOrientation:orientation?{type:orientation.type||'UNKNOWN',angle:number(orientation.angle)}:null,
-    viewportOrientation:innerWidth===innerHeight?'square':innerWidth>innerHeight?'landscape':'portrait',
-    visualViewport:vv?{width:number(vv.width),height:number(vv.height),scale:number(vv.scale),offsetLeft:number(vv.offsetLeft),offsetTop:number(vv.offsetTop)}:null,
-    safeArea:{top:parseFloat(style.paddingTop)||0,right:parseFloat(style.paddingRight)||0,bottom:parseFloat(style.paddingBottom)||0,left:parseFloat(style.paddingLeft)||0},
-    maxTouchPoints:number(navigator.maxTouchPoints),pointerCoarse:matchMedia('(pointer: coarse)').matches,hoverNone:matchMedia('(hover: none)').matches,
-    browser:browserFamily()
+"use strict";
+(() => {
+  // tools/device-probe.ts
+  var samples = [];
+  var el = (id) => {
+    const node = document.getElementById(id);
+    if (!node) throw Error("Missing device probe control: " + id);
+    return node;
   };
-  samples.push(sample);render();el('status').textContent=`已记录 ${samples.length} 次；本次视口 ${sample.innerWidth} × ${sample.innerHeight}（${sample.viewportOrientation==='portrait'?'竖屏':sample.viewportOrientation==='landscape'?'横屏':'方形'}）。请记录另一方向后导出。`;
-});
-el('copy').addEventListener('click',async()=>{
-  try{if(!navigator.clipboard?.writeText)throw Error('unavailable');await navigator.clipboard.writeText(el('output').value);el('status').textContent='JSON 已复制。';}
-  catch{el('output').focus();el('output').select();el('status').textContent='此浏览器不允许直接复制，已选中 JSON，请手动复制。';}
-});
-el('export').addEventListener('click',()=>{
-  const url=URL.createObjectURL(new Blob([el('output').value],{type:'application/json'})),link=document.createElement('a');
-  link.href=url;link.download='device-measurements.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);el('status').textContent='已请求导出 device-measurements.json；请检查浏览器下载。';
-});
-el('clear').addEventListener('click',()=>{samples.length=0;render();el('status').textContent='记录已清空；未保存到浏览器存储。';});
-render();
+  var outputNode = el("output");
+  var physicalNode = el("physical");
+  if (!(outputNode instanceof HTMLTextAreaElement) || !(physicalNode instanceof HTMLInputElement)) throw Error("Invalid device probe controls");
+  var output = outputNode;
+  var physical = physicalNode;
+  var manual = (id) => {
+    const node = el(id);
+    if (!(node instanceof HTMLInputElement)) throw Error("Invalid manual input: " + id);
+    return node.value.trim() || "UNKNOWN";
+  };
+  var number = (value) => Number.isFinite(value) ? value : null;
+  function browserFamily() {
+    const ua = navigator.userAgent;
+    for (const [family, pattern] of [["Edge", /(?:Edg|EdgiOS|EdgA)\/([\d.]+)/], ["Firefox", /(?:Firefox|FxiOS)\/([\d.]+)/], ["Chrome", /(?:Chrome|CriOS)\/([\d.]+)/], ["Safari", /Version\/([\d.]+).*Safari/]]) {
+      const match = ua.match(pattern);
+      if (match?.[1]) return { family, version: match[1].split(".").slice(0, 2).join(".") };
+    }
+    return { family: "UNKNOWN", version: "UNKNOWN" };
+  }
+  function payload() {
+    return { schemaVersion: 1, scope: "Browser runtime observations; physical-device confirmation is user assertion only; no hardware validation", samples };
+  }
+  function render() {
+    output.value = JSON.stringify(payload(), null, 2);
+  }
+  function observe() {
+    const style = getComputedStyle(el("insets")), vv = window.visualViewport, orientation = screen.orientation;
+    const sample = {
+      type: "browser-runtime-observation",
+      observed: true,
+      observedAt: (/* @__PURE__ */ new Date()).toISOString(),
+      model: manual("model"),
+      actualBrowser: manual("browser"),
+      gameHost: manual("host"),
+      manualSystemDisplayScale: manual("displayScale"),
+      manualBrowserZoom: manual("browserZoom"),
+      physicalDeviceConfirmed: physical.checked,
+      physicalConfirmationSource: "user-assertion-only",
+      measuredOnPhysicalDevice: physical.checked,
+      innerWidth: number(innerWidth),
+      innerHeight: number(innerHeight),
+      devicePixelRatio: number(devicePixelRatio),
+      screenCSS: { width: number(screen.width), height: number(screen.height), availWidth: number(screen.availWidth), availHeight: number(screen.availHeight) },
+      screenOrientation: orientation ? { type: orientation.type || "UNKNOWN", angle: number(orientation.angle) } : null,
+      viewportOrientation: innerWidth === innerHeight ? "square" : innerWidth > innerHeight ? "landscape" : "portrait",
+      visualViewport: vv ? { width: number(vv.width), height: number(vv.height), scale: number(vv.scale), offsetLeft: number(vv.offsetLeft), offsetTop: number(vv.offsetTop) } : null,
+      safeArea: { top: parseFloat(style.paddingTop) || 0, right: parseFloat(style.paddingRight) || 0, bottom: parseFloat(style.paddingBottom) || 0, left: parseFloat(style.paddingLeft) || 0 },
+      maxTouchPoints: number(navigator.maxTouchPoints),
+      pointerCoarse: matchMedia("(pointer: coarse)").matches,
+      hoverNone: matchMedia("(hover: none)").matches,
+      browser: browserFamily()
+    };
+    return sample;
+  }
+  el("record").addEventListener("click", () => {
+    const sample = observe();
+    samples.push(sample);
+    render();
+    el("status").textContent = `\u5DF2\u8BB0\u5F55 ${samples.length} \u6B21\uFF1B\u672C\u6B21\u89C6\u53E3 ${sample.innerWidth} \xD7 ${sample.innerHeight}\uFF08${sample.viewportOrientation === "portrait" ? "\u7AD6\u5C4F" : sample.viewportOrientation === "landscape" ? "\u6A2A\u5C4F" : "\u65B9\u5F62"}\uFF09\u3002\u8BF7\u8BB0\u5F55\u53E6\u4E00\u65B9\u5411\u540E\u5BFC\u51FA\u3002`;
+  });
+  el("copy").addEventListener("click", async () => {
+    try {
+      if (!navigator.clipboard?.writeText) throw Error("unavailable");
+      await navigator.clipboard.writeText(output.value);
+      el("status").textContent = "JSON \u5DF2\u590D\u5236\u3002";
+    } catch {
+      output.focus();
+      output.select();
+      el("status").textContent = "\u6B64\u6D4F\u89C8\u5668\u4E0D\u5141\u8BB8\u76F4\u63A5\u590D\u5236\uFF0C\u5DF2\u9009\u4E2D JSON\uFF0C\u8BF7\u624B\u52A8\u590D\u5236\u3002";
+    }
+  });
+  el("export").addEventListener("click", () => {
+    const url = URL.createObjectURL(new Blob([output.value], { type: "application/json" })), link = document.createElement("a");
+    link.href = url;
+    link.download = "device-measurements.json";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1e3);
+    el("status").textContent = "\u5DF2\u8BF7\u6C42\u5BFC\u51FA device-measurements.json\uFF1B\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u4E0B\u8F7D\u3002";
+  });
+  el("clear").addEventListener("click", () => {
+    samples.length = 0;
+    render();
+    el("status").textContent = "\u8BB0\u5F55\u5DF2\u6E05\u7A7A\uFF1B\u672A\u4FDD\u5B58\u5230\u6D4F\u89C8\u5668\u5B58\u50A8\u3002";
+  });
+  render();
+})();
+
 </script>
 </html>

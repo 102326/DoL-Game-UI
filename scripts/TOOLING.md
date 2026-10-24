@@ -16,3 +16,6 @@
 
 
 2026-10-24 工具链修补：Vite最低提高到7.3.7，锁文件实际为7.3.7；作者配方使用同一安全最低版本。此补丁针对开发服务器的编辑器调用、路径及中间件安全公告，不改变玩家浏览器目标，也不代表所有依赖永远无漏洞。原始7.3.6审计保留在历史证据中。
+
+
+设备测量页保持单个离线HTML：维护 `tools/device-probe.ts` 与 `tools/device-probe.template.html`，先 `npm run tooling:build`，再 `node scripts/build-device-probe.mjs --write` 更新生成页。`ci:check`使用 `--check` 拒绝未同步输出，不修改源码或生成页；专用严格配置启用noUncheckedIndexedAccess。生成HTML仍可直接file打开，没有外部脚本请求，不读取Cookie/存储或游戏数据。
