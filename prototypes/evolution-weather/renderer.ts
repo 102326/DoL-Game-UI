@@ -8,5 +8,6 @@ export type Weather=ReturnType<typeof readGameWeather>;
 export function weatherSurface(canvas:HTMLCanvasElement,read:()=>Weather=readGameWeather,kind:MaterialKind|'glass'|'glass-natural'|'glass-runoff'|'glass-weather'|'glass-shower'|'glass-force'|'glass-scatter'|'glass-feather'|'glass-powder'='beads'){
  const study=kind==='glass-feather'||kind==='glass-powder';
  const climate=study||kind==='glass-weather'||kind==='glass-shower'||kind==='glass-force'||kind==='glass-scatter';
- return ownedSurface(canvas,read,invalidate=>kind.startsWith('glass')?wetGlass(canvas,invalidate,kind!=='glass',kind==='glass-runoff'||climate,climate,kind==='glass-shower'||kind==='glass-force'||kind==='glass-scatter'||study,kind==='glass-scatter'||study?'scatter':kind==='glass-force',kind==='glass-feather'?featherSnow:kind==='glass-powder'?powderSnow:undefined):rainMaterial(canvas,kind as MaterialKind),{pace:(kind==='glass-scatter'||study)?.25:1,climate});
+ type Snapshot=ReturnType<ReturnType<typeof wetGlass>['snapshot']>|ReturnType<ReturnType<typeof rainMaterial>['snapshot']>;
+ return ownedSurface<Snapshot>(canvas,read,invalidate=>kind.startsWith('glass')?wetGlass(canvas,invalidate,kind!=='glass',kind==='glass-runoff'||climate,climate,kind==='glass-shower'||kind==='glass-force'||kind==='glass-scatter'||study,kind==='glass-scatter'||study?'scatter':kind==='glass-force',kind==='glass-feather'?featherSnow:kind==='glass-powder'?powderSnow:undefined):rainMaterial(canvas,kind==='film'?'film':'beads'),{pace:(kind==='glass-scatter'||study)?.25:1,climate});
 }

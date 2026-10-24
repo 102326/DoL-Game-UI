@@ -14,7 +14,8 @@ export function rainMaterial(canvas:HTMLCanvasElement,kind:MaterialKind){
   return{node,zone:i%3===0?'edge':i%7===0?'top':'band',x:random(),y:random(),r:1.6+Math.pow(random(),2.3)*12.8,birth:i<14?-5:random()*20,pin:8+random()*18,speed:6+random()*12,curve:random()*5-2.5,aspect:.88+random()*.6};
  });
  // One composed contact bead makes the slow adhesion-to-drainage transition inspectable in both studies.
- Object.assign(drops[4],{zone:'band',x:.34,y:.28,r:10.5,birth:-4,pin:8,speed:1.5,aspect:1.1});
+ const contact= drops[4];if(!contact)throw Error('Missing contact bead');
+ Object.assign(contact,{zone:'band',x:.34,y:.28,r:10.5,birth:-4,pin:8,speed:1.5,aspect:1.1});
  const grains=Array.from({length:190},()=>({x:random(),y:random(),a:random(),r:.5+random()*1.2}));
  let boxes:Box[]=[],band:Box|undefined,dirty=true,oldW=0,oldH=0,active:Box[]=[],moving=0,attached=0;
  const dirtyLayout=()=>{dirty=true};
@@ -30,7 +31,7 @@ export function rainMaterial(canvas:HTMLCanvasElement,kind:MaterialKind){
   const channels=band&&kind==='film'?[.17,.43,.81].map((f,i)=>{const x=band!.x+band!.width*f;return`<path d="M${x} ${band!.y-14+i*8} c${-12+i*9} 28 ${10-i*3} 41 ${4-i*5} 58 q${-9+i*8} 27 ${2-i*3} 48" fill="none" stroke="black" stroke-opacity="${.32+i*.12}" stroke-width="${5+i*4}" filter="url(#feather)"/>`}).join(''):'';
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><filter id="feather"><feGaussianBlur stdDeviation="5"/></filter><filter id="fog"><feTurbulence baseFrequency=".009 .026" numOctaves="3" seed="17"/><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .2126 .7152 .0722 0 0"/><feComponentTransfer><feFuncA type="linear" slope="1.2" intercept=".12"/></feComponentTransfer></filter><linearGradient id="soft" x2="0" y2="1"><stop stop-color="white" stop-opacity="0"/><stop offset=".25" stop-color="white" stop-opacity=".8"/><stop offset=".75" stop-color="white" stop-opacity=".8"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient><mask id="fade"><rect x="${band?.x||0}" y="${band?.y||0}" width="${band?.width||0}" height="${band?.height||0}" fill="url(#soft)"/></mask><mask id="cut" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="${w}" height="${h}" rx="22" fill="none" stroke="white" stroke-width="18" filter="url(#feather)"/>${mist}${channels}${safe}</mask></defs><rect width="100%" height="100%" fill="white" mask="url(#cut)"/></svg>`;
   const regions:Box[]=[{x:0,y:0,width:w,height:24},{x:0,y:h-24,width:w,height:24},{x:0,y:24,width:28,height:h-48},{x:w-28,y:24,width:28,height:h-48},band||{x:0,y:24,width:0,height:0}];
-  regions.forEach((r,i)=>{const position={left:r.x+'px',top:r.y+'px',width:r.width+'px',height:r.height+'px'};Object.assign(films[i].style,position,{maskImage:`url("data:image/svg+xml,${encodeURIComponent(svg)}")`,maskSize:`${w}px ${h}px`,maskPosition:`${-r.x}px ${-r.y}px`,maskMode:'alpha'});});
+  regions.forEach((r,i)=>{const position={left:r.x+'px',top:r.y+'px',width:r.width+'px',height:r.height+'px'};const film=films[i];if(!film)throw Error('Missing wet film');Object.assign(film.style,position,{maskImage:`url("data:image/svg+xml,${encodeURIComponent(svg)}")`,maskSize:`${w}px ${h}px`,maskPosition:`${-r.x}px ${-r.y}px`,maskMode:'alpha'});});
   dirty=false;oldW=w;oldH=h;
  }
  const intersects=(a:Box,b:Box)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
