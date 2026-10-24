@@ -33,7 +33,8 @@ export function itemView(s:Snapshot,slot:string,raw:Clothing,key:string):Item {
  return {traits:s.variables.wardrobeDefaults?.showTraits&&Array.isArray(raw.type)?raw.type.map(String):[],lewd:Number.isFinite(raw.reveal)?raw.reveal!:null,outfit:raw.outfitPrimary?'套装':raw.outfitSecondary?'套装部件':'单件',key,name:itemName(s,slot,raw,d),colour:itemColour(s,raw),warmth:itemWarmth(s,raw,d),durability:Number.isFinite(raw.integrity)&&max!>0?Math.round(raw.integrity!/max!*100):null,detail:d?String(d.cn_description??d.description??''):'缺少服装定义，请使用原版衣柜',icons:s.variables.options?.images===0?[]:clothingIconLayers(raw,d,normalise),splittable:!!raw.outfitPrimary&&Object.values(raw.outfitPrimary).some(name=>typeof name==='string'&&!['broken','split'].includes(name))};
 }
 export function entries(s:Snapshot,slot:string):Entry[]{
- return (Array.isArray((s.inventory as ClothingSlots)[slot])?(s.inventory as ClothingSlots)[slot]:[]).flatMap((raw:Clothing,index:number)=>{
+ const inventory=(s.inventory as ClothingSlots)[slot];
+ return (Array.isArray(inventory)?inventory:[]).flatMap((raw:Clothing,index:number)=>{
   if(raw.outfitSecondary&&!['broken','split'].includes(raw.outfitSecondary[1]))return [];
   const d=descriptor(s,slot,raw);
   return [{...itemView(s,slot,raw,slot+':'+index),slot,index,raw,descriptor:d}];

@@ -1,6 +1,7 @@
 import type {WardrobeSlotMapping, WardrobeSlotMappingHandle,WardrobeSlotSupport} from '../public/wardrobe';
 import {LABELS, type Snapshot} from './data';
 import {isMinimumVersion, matchesTargetVersion, type VersionToolsHost} from '../runtime/target-version';
+type SlotSnapshot=Pick<Snapshot,'inventory'|'worn'|'setup'>&{variables:Record<string,unknown>};
 
 export function createSlotMappings(targetVersion: (name: string) => unknown, versionTools?: VersionToolsHost) {
  const mappings = new Map<string, WardrobeSlotMapping>();
@@ -17,7 +18,7 @@ export function createSlotMappings(targetVersion: (name: string) => unknown, ver
   mappings.set(saved.id, saved);
   return Object.freeze({destroy() {if (mappings.get(saved.id) === saved) mappings.delete(saved.id)}});
  }
- function labels(s: Snapshot): Record<string, string> {
+ function labels(s: SlotSnapshot): Record<string, string> {
   const labels: Record<string, string> = {...LABELS, ...(s.variables.debug ? {over_head:'外层头饰', over_upper:'外套', over_lower:'外层下装'} : {})};
   for (const mapping of mappings.values()) {
    if (!matchesTargetVersion(targetVersion(mapping.target.name), mapping.target.versions, versionTools)) continue;
@@ -27,7 +28,7 @@ export function createSlotMappings(targetVersion: (name: string) => unknown, ver
   }
   return labels;
  }
- function support(s:Snapshot|null):readonly Readonly<WardrobeSlotSupport>[] {
+ function support(s:SlotSnapshot|null):readonly Readonly<WardrobeSlotSupport>[] {
   if(disposed)return Object.freeze([]);
   const result=new Map<string,Readonly<WardrobeSlotSupport>>();
   const add=(slot:string,label:string,mapping:string|null,canDisplay:boolean,operationContract:WardrobeSlotSupport['operationContract'],reason:WardrobeSlotSupport['reason'])=>result.set(slot,Object.freeze({slot,label,mapping,canDisplay,operationContract,reason}));
