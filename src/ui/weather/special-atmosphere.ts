@@ -1,6 +1,7 @@
 import type {WeatherFrame} from './surface';
 
 type Box={x:number;y:number;width:number;height:number};
+const sample=(buffer:Float32Array,index:number)=>{const value=buffer[index];if(value===undefined)throw Error('Weather texture index out of bounds');return value};
 const clamp=(v:number)=>Math.max(0,Math.min(1,v));
 const smooth=(a:number,b:number,v:number)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t)};
 
@@ -11,7 +12,7 @@ export function specialAtmosphere(){
  const grid=Float32Array.from({length:64*64},random);
  function noise(x:number,y:number,period:number){
   const ix=Math.floor(x),iy=Math.floor(y),u=smooth(0,1,x-ix),v=smooth(0,1,y-iy);
-  const at=(a:number,b:number)=>grid[((b%period+period)%period)*64+(a%period+period)%period];
+  const at=(a:number,b:number)=>sample(grid,((b%period+period)%period)*64+(a%period+period)%period);
   return(at(ix,iy)*(1-u)+at(ix+1,iy)*u)*(1-v)+(at(ix,iy+1)*(1-u)+at(ix+1,iy+1)*u)*v;
  }
  function field(x:number,y:number){let sum=0,weight=0,a=1,p=4;for(let i=0;i<5;i++){sum+=noise(x,y,p)*a;weight+=a;x*=2;y*=2;p*=2;a*=.5}return sum/weight}

@@ -2,10 +2,10 @@ import {visualScope} from '../visual-scope';
 import type {readGameWeather,WeatherSpecial} from '../../../framework/official-ui/weather';
 type Weather=ReturnType<typeof readGameWeather>;
 export type WeatherFrame={wet:number;snow:number;light:number;night:number;time:number;width:number;height:number;dpr:number;intensity:number;kind:string;special?:WeatherSpecial;specialAmount?:number};
-type Material={draw:(s:WeatherFrame)=>void;count:number;snapshot:()=>object;dispose:()=>void;layoutMoving?:()=>boolean;shower?:(value:boolean)=>void};
+type Material<Snapshot extends object>={draw:(s:WeatherFrame)=>void;count:number;snapshot:()=>Snapshot;dispose:()=>void;layoutMoving?:()=>boolean;shower?:(value:boolean)=>void};
 
 /** Shared owned clock. Production can supply the owner's shared polling source. */
-export function weatherSurface<M extends Material>(canvas:HTMLCanvasElement,read:()=>Weather,makeMaterial:(invalidate:()=>void)=>M,{pace=1,climate=false,managedPoll=false,respectMotion=false}={}){
+export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement,read:()=>Weather,makeMaterial:(invalidate:()=>void)=>Material<Snapshot>,{pace=1,climate=false,managedPoll=false,respectMotion=false}={}){
  const context=canvas.getContext('2d');if(!context)throw Error('Canvas unavailable; static Acrylic remains usable');
  const scope=visualScope(),reduced=matchMedia('(prefers-reduced-motion: reduce)'),parent=canvas.parentElement!;
  let frame=false,stopPoll:(()=>void)|undefined,last=0,time=0,reads=0,width=0,height=0,dpr=1,frames=0,paused=false,paintMs=0;

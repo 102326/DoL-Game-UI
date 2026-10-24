@@ -77,10 +77,10 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
   const visible=groups.filter(g=>g.length>=3).slice(-wetNodes.length);
   wetNodes.forEach((node,i)=>{
    const g=visible[i];if(!g||humidity<.015){node.style.display='none';return}
-   const banks=(side:number)=>g.flatMap((t,j)=>{
+   const banks=(side:number):[number,number][]=>g.flatMap((t,j):[number,number][]=>{
     const dx=t.endX-t.x,dy=t.endY-t.y,len=Math.hypot(dx,dy)||1;
     const radius=t.width*(.22+.78*t.life)*(.8+side*.12);
-    return [[t.x-side*dy/len*radius,t.y+side*dx/len*radius],...(j===g.length-1?[[t.endX-side*dy/len*radius*.7,t.endY+side*dx/len*radius*.7]]:[])];
+    const start:[number,number]=[t.x-side*dy/len*radius,t.y+side*dx/len*radius];return j===g.length-1?[start,[t.endX-side*dy/len*radius*.7,t.endY+side*dx/len*radius*.7]]:[start];
    });
    const points=[...banks(1),...banks(-1).reverse()],xs=points.map(p=>p[0]),ys=points.map(p=>p[1]),x=Math.min(...xs),y=Math.min(...ys),w=Math.max(...xs)-x,h=Math.max(...ys)-y;
    const bounds={x,y,width:w,height:h};

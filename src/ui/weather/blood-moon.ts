@@ -1,6 +1,7 @@
 import type {WeatherFrame} from './surface';
 
 type Box={x:number;y:number;width:number;height:number};
+const sample=(buffer:Float32Array,index:number)=>{const value=buffer[index];if(value===undefined)throw Error('Weather texture index out of bounds');return value};
 const clamp=(v:number)=>Math.max(0,Math.min(1,v));
 const smooth=(a:number,b:number,x:number)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
 
@@ -11,7 +12,7 @@ export function bloodMoonSky(){
  const grid=Float32Array.from({length:128*128},random);
  function noise(x:number,y:number,period=128){
   const ix=Math.floor(x),iy=Math.floor(y),u=smooth(0,1,x-ix),v=smooth(0,1,y-iy);
-  const at=(a:number,b:number)=>grid[((b%period+period)%period)*128+(a%period+period)%period];
+  const at=(a:number,b:number)=>sample(grid,((b%period+period)%period)*128+(a%period+period)%period);
   return(at(ix,iy)*(1-u)+at(ix+1,iy)*u)*(1-v)+(at(ix,iy+1)*(1-u)+at(ix+1,iy+1)*u)*v;
  }
  function fbm(x:number,y:number,octaves=5,period=4){
@@ -27,25 +28,25 @@ export function bloodMoonSky(){
   height[i]=fbm(u*12,v*12,4,16)*.15;
   const sea=fbm(u*4+1.7,v*4+.8,5,8);
   albedo[i]=.33+.48*smooth(.33,.66,sea)+.18*(noise(u*100,v*100)-.5);
-  for(const[cx,cy,rx,ry]of[[.42,.35,.19,.16],[.61,.41,.14,.18],[.34,.62,.16,.11],[.65,.68,.11,.13]]){
+  for(const[cx,cy,rx,ry]of[[.42,.35,.19,.16],[.61,.41,.14,.18],[.34,.62,.16,.11],[.65,.68,.11,.13]] satisfies [number,number,number,number][]){
    const q=Math.hypot((u-cx)/rx,(v-cy)/ry)+(noise(u*14,v*14)-.5)*.4;
-   albedo[i]*=1-.38*(1-smooth(.45,1.2,q));
+   albedo[i]=sample(albedo,i)*(1-.38*(1-smooth(.45,1.2,q)));
   }
  }
  for(let i=0;i<240;i++){
   const cx=12+random()*(size-24),cy=12+random()*(size-24),r=1.2+Math.pow(random(),4)*18;
   for(let y=Math.max(0,Math.floor(cy-r*1.6));y<Math.min(size,Math.ceil(cy+r*1.6));y++)for(let x=Math.max(0,Math.floor(cx-r*1.6));x<Math.min(size,Math.ceil(cx+r*1.6));x++){
    const q=Math.hypot(x-cx,y-cy)/r;if(q>1.6)continue;const k=y*size+x;
-   height[k]+=.035*Math.exp(-(((q-1)*8)**2))-.018*Math.exp(-((q*1.5)**4));
-   albedo[k]*=1-.1*Math.exp(-((q*1.5)**4));
+   height[k]=sample(height,k)+(.035*Math.exp(-(((q-1)*8)**2))-.018*Math.exp(-((q*1.5)**4)));
+   albedo[k]=sample(albedo,k)*(1-.1*Math.exp(-((q*1.5)**4)));
   }
  }
  const mc=moon.getContext('2d')!,mp=mc.createImageData(size,size),radius=size/2-2;
  for(let y=1;y<size-1;y++)for(let x=1;x<size-1;x++){
   const nx=(x-size/2)/radius,ny=(y-size/2)/radius,rr=nx*nx+ny*ny;if(rr>=1)continue;
-  const i=y*size+x,z=Math.sqrt(1-rr),dx=(height[i+1]-height[i-1])*5,dy=(height[i+size]-height[i-size])*5;
+  const i=y*size+x,z=Math.sqrt(1-rr),dx=(sample(height,i+1)-sample(height,i-1))*5,dy=(sample(height,i+size)-sample(height,i-size))*5;
   const illumination=clamp(.67+.22*z-.16*nx-.18*ny-dx*.8-dy*.7);
-  const value=clamp(albedo[i]*illumination),shadow=.7+.3*smooth(-.9,.7,nx-ny*.2),p=i*4;
+  const value=clamp(sample(albedo,i)*illumination),shadow=.7+.3*smooth(-.9,.7,nx-ny*.2),p=i*4;
   mp.data[p]=Math.min(255,(28+value*182)*shadow);mp.data[p+1]=(10+value*61)*shadow;mp.data[p+2]=(16+value*51)*shadow;
   mp.data[p+3]=255*smooth(0,.035,1-Math.sqrt(rr));
  }
@@ -62,7 +63,7 @@ export function bloodMoonSky(){
   }
   const bc=body.getContext('2d')!,rc=rim.getContext('2d')!,bp=bc.createImageData(cloudWidth,cloudHeight),rp=rc.createImageData(cloudWidth,cloudHeight);
   for(let y=0;y<cloudHeight;y++)for(let x=0;x<cloudWidth;x++){
-   const i=y*cloudWidth+x,d=density[i],upper=density[Math.max(0,y-4)*cloudWidth+x],edge=clamp((d-upper)*4+.11*d*(1-d)),p=i*4;
+   const i=y*cloudWidth+x,d=sample(density,i),upper=sample(density,Math.max(0,y-4)*cloudWidth+x),edge=clamp((d-upper)*4+.11*d*(1-d)),p=i*4;
    bp.data[p]=16+d*19;bp.data[p+1]=18+d*17;bp.data[p+2]=27+d*21;bp.data[p+3]=255*d*.92;
    rp.data[p]=132;rp.data[p+1]=57;rp.data[p+2]=53;rp.data[p+3]=255*edge*.65;
   }
