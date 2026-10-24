@@ -679,6 +679,7 @@
     },
     {
       "entry": "tests/ci-evidence.test.cjs",
+      "sourceEntry": "tests/ci-evidence.test.cts",
       "profiles": [
         "standard"
       ],
@@ -690,8 +691,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "65cf9b5253d5f3172dd5569ec955edcec52d3a21e9b5c1e1e39317559342d063",
-      "assertionSites": 85
+      "sourceSha256": "384c8784b65e1d9f76a38ecbf3a7b87055b53646ac2331f697ce70dd4eaca8f7",
+      "assertionSites": 87
     },
     {
       "entry": "tests/ci-gate.test.cjs",
@@ -961,7 +962,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "02b1222e3d9551db95e6d7064e738f0c94a2e8aa05fb176dde4919938e82f706",
+      "sourceSha256": "b553715be09046e2d81ec61799457f1880e8e85d748e01d918d4a29f05e11fae",
       "assertionSites": 117,
       "rendererContexts": [
         "sphere:2d"
@@ -1114,6 +1115,7 @@
     },
     {
       "entry": "tests/evolution-weather-shower.cjs",
+      "sourceEntry": "tests/evolution-weather-shower.cts",
       "profiles": [
         "research"
       ],
@@ -1125,11 +1127,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "67a09d024a3a8b64b4c35f1d18c50a175358a4ed692e8be72c0b886d3ee0f80c",
-      "assertionSites": 26
+      "sourceSha256": "96d78ff59bb56ab6a636a9296415a451413685d9ec5b283b6c7d75443d0c74b6",
+      "assertionSites": 27
     },
     {
       "entry": "tests/evolution-weather.cjs",
+      "sourceEntry": "tests/evolution-weather.cts",
       "profiles": [
         "research"
       ],
@@ -1153,8 +1156,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ffea0e76b96dc7a6b4d8660155995d9caff27922d84ed5d518370c1dd851a379",
-      "assertionSites": 18,
+      "sourceSha256": "067d590f1fd5d544958040a10be7249e82f14f87772b38d69e190d9aeabc0eff",
+      "assertionSites": 19,
       "rendererContexts": [
         "weather:2d"
       ]
@@ -1407,6 +1410,7 @@
     },
     {
       "entry": "tests/golden-spin-hub-lifecycle.cjs",
+      "sourceEntry": "tests/golden-spin-hub-lifecycle.cts",
       "profiles": [
         "research"
       ],
@@ -1426,7 +1430,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a50dd68160b1fa0a348f445de8c19aaa3b8024f665926f8aba8eb24f832dc656",
+      "sourceSha256": "f88ae2e2d3d8cef8db3ad9082c493acdd2e39edd58c73096bbcfe51ebf0d0ff6",
       "assertionSites": 18
     },
     {
@@ -1863,6 +1867,7 @@
     },
     {
       "entry": "tests/research-evidence.test.cjs",
+      "sourceEntry": "tests/research-evidence.test.cts",
       "profiles": [
         "standard"
       ],
@@ -1874,8 +1879,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "cb1f66e60349b8a6e5f99bcad9a82b94355ef5871485cc4c801f4e0501fbdda1",
-      "assertionSites": 56
+      "sourceSha256": "9feff147e4b9fd7ef7a4773fe97fcdb29ae7343452d4d527aca555575a0231d1",
+      "assertionSites": 58
     },
     {
       "entry": "tests/save-metadata-boundary.test.mts",

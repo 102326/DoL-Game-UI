@@ -190,3 +190,9 @@ docs/HANDOFF.local.md
 
 /tests/multi-region.test.cjs
 /tests/ci-gate.test.cjs
+
+/tests/ci-evidence.test.cjs
+/tests/research-evidence.test.cjs
+/tests/golden-spin-hub-lifecycle.cjs
+/tests/evolution-weather.cjs
+/tests/evolution-weather-shower.cjs
