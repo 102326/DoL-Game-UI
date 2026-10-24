@@ -1,4 +1,5 @@
 import renderer = require('../scripts/render-state-fields.cjs');
+import png = require('../scripts/ci-png.cjs');
 
 // These rejected calls prove CJS consumers see the implementation's real types.
 function rendererContract() {
@@ -12,3 +13,13 @@ function rendererContract() {
   return {fields,wrong};
 }
 void rendererContract;
+
+function pngContract(){
+  const width:number=png.verifyPng(Buffer.alloc(0)).width;
+  // @ts-expect-error The verifier consumes binary data.
+  png.verifyPng('not a buffer');
+  // @ts-expect-error Width is numeric.
+  const wrong:string=png.verifyPng(Buffer.alloc(0)).width;
+  return {width,wrong};
+}
+void pngContract;
