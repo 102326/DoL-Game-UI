@@ -135,3 +135,4 @@ docs/HANDOFF.local.md
 /tests/settings-input-boundary.cjs
 /tests/floating-boundaries.test.cjs
 /tests/overlay-manager-layout.cjs
+/tests/layering-regression.cjs
