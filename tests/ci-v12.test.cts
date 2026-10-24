@@ -1,12 +1,17 @@
 // @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
-const assert=require('node:assert/strict');
-const path=require('node:path');
-const {transportVerdict}=require('../scripts/ci/transport.ts');
-const {rendererProblems}=require('../scripts/ci/renderer.ts');
-const {familyReports,dependenciesFor,familyFor,maturityFor}=require('../scripts/ci/research-families.ts');
-const {caseProblems,sealProblems,orderEntries,canSchedule,reconcileIdentity}=require('../scripts/ci/contracts.ts');
+import assert = require('node:assert/strict');
+import childProcess = require('node:child_process');
+import path = require('node:path');
+import dependency1 = require('../scripts/ci/transport.ts');
+const {transportVerdict}=dependency1;
+import dependency2 = require('../scripts/ci/renderer.ts');
+const {rendererProblems}=dependency2;
+import dependency3 = require('../scripts/ci/research-families.ts');
+const {familyReports,dependenciesFor,familyFor,maturityFor}=dependency3;
+import dependency4 = require('../scripts/ci/contracts.ts');
+const {caseProblems,sealProblems,orderEntries,canSchedule,reconcileIdentity}=dependency4;
 (async()=>{
- const {spawnSync}=require('node:child_process');
+ const {spawnSync}=childProcess;
  for(const composed of [false,true]){
   const plan=[{id:'entry',minimumAssertions:1},...(composed?[{id:'healthy:child',minimumAssertions:1}]:[])],entry=path.resolve('/ci-parent.cjs');
   const script=`process.argv[1]=${JSON.stringify(entry)};const assert=require('node:assert/strict'),c=require(${JSON.stringify(require.resolve('../scripts/ci/cases.ts'))});let count=0;c.setAssertionCounter(()=>count);(async()=>{await c.runCase('foreign',()=>{count++;});await assert.rejects(c.runCase('expected-failure',()=>{count++;throw Error('controlled')}));if(${composed})await c.withCaseScope('healthy',()=>c.runCase('child',()=>{count++;}));const receipt=c.finishCases();assert.deepEqual(receipt.caseIssues,[]);assert.deepEqual(receipt.cases.map(r=>r.id).sort(),${JSON.stringify(plan.map(c=>c.id).sort())});})().catch(e=>{console.error(e);process.exitCode=1})`;
@@ -33,7 +38,7 @@ const {caseProblems,sealProblems,orderEntries,canSchedule,reconcileIdentity}=req
  assert.deepEqual(dependenciesFor('golden-spin-hub'),[]);assert.deepEqual(dependenciesFor('evolution-weather-levels'),['weather-build']);assert.equal(familyFor('settings-ci'),'production');assert.equal(maturityFor('settings-ci'),'Contract');
  const families=familyReports({},['golden-spin-hub','settings-build','settings-ci','weather-unit'],[{name:'golden-spin-hub',status:'ERROR'},{name:'settings-build',status:'PASS'},{name:'settings-ci',status:'PASS'},{name:'weather-unit',status:'PASS'}],{});
  assert.deepEqual(families.map(f=>f.status),['ERROR','PASS','PASS','PASS']);assert.ok(familyReports({},[],[],{}).every(f=>f.status==='UNVERIFIED'&&f.seal.state==='INCOMPLETE'));
- assert.equal(transportVerdict({status:'PASS'},{upload:'failure'}).status,'ERROR');assert.equal(transportVerdict({status:'FAIL',assertionResult:'FAIL'},{upload:'failure'}).status,'FAIL');assert.ok(transportVerdict({status:'PASS'},{download:'failure'}).reasonCodes.includes('evidence_download'));
- const timed=transportVerdict({status:'ERROR',reasonCodes:['ProcessTimeout']},{producer:'cancelled'});assert.equal(timed.status,'ERROR');assert.ok(timed.reasonCodes.includes('ProcessTimeout'));
+ assert.equal(transportVerdict({status:'PASS'},{upload:'failure'}).status,'ERROR');assert.equal(transportVerdict({status:'FAIL',assertionResult:'FAIL'},{upload:'failure'}).status,'FAIL');assert.ok(transportVerdict({status:'PASS'},{download:'failure'}).reasonCodes?.includes('evidence_download'));
+ const timed=transportVerdict({status:'ERROR',reasonCodes:['ProcessTimeout']},{producer:'cancelled'});assert.equal(timed.status,'ERROR');assert.ok(timed.reasonCodes?.includes('ProcessTimeout'));
  console.log('PASS V1.2 exact cases, assertions, renderer, seal, source, lock and independent dependencies');
 })().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

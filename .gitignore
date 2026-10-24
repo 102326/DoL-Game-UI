@@ -140,3 +140,4 @@ docs/HANDOFF.local.md
 /tests/kraft-work-materials.cjs
 /tests/kraft-work-product.cjs
 /tests/framework-connect.cjs
+/tests/ci-v12.test.cjs

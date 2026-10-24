@@ -709,6 +709,7 @@
     },
     {
       "entry": "tests/ci-v12.test.cjs",
+      "sourceEntry": "tests/ci-v12.test.cts",
       "profiles": [
         "standard"
       ],
@@ -720,7 +721,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "85647f25b79820b4ce4341d8d1b20ebea1f95bd691cb09f37eee0a75c460b9af",
+      "sourceSha256": "ac2234cebe3899a07bd2891b458195719736922575cfc800a78f198d5ecd9906",
       "assertionSites": 32
     },
     {
