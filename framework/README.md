@@ -95,7 +95,7 @@ Host 退出时，仍然安装的消费者可以等待新 Host，这是预期行�
 
 源码仓库的[作者指南](../docs/STONE_FREE_3.0_AUTHOR_GUIDE.md)说明完整流程。`framework:build` 还生成 `StoneFreeAuthorKit-0.1.4-experimental.source.zip`：只含配方、SDK、模板及许可证，解压后可在完整 UI 仓库之外创建作者项目。它不是 Mod，不要导入 ModLoader；运行中的 Host 由单独的 `.mod.zip` 提供。
 
-运行 `node scripts/framework-factory.mjs create NEW_DIRECTORY ModId`，生成由作者拥有的 Vue/TS 项目、独立 ZIP 打包脚本和实验 SDK 快照。已有目录会拒绝，不覆盖作者文件。自行安装声明的依赖并保存自己的锁文件后，使用生成项目的 `npm run package`。
+仓库内先安装锁定依赖并运行 `npm run tooling:build`，再运行 `node scripts/framework-factory.mjs create NEW_DIRECTORY ModId`，生成由作者拥有的 Vue/TS 项目、独立 ZIP 打包脚本和实验 SDK 快照。生成器来源为 `.mts`；作者源码 ZIP 已携带可直接运行的生成 `.mjs`。已有目录会拒绝，不覆盖作者文件。自行安装声明的依赖并保存自己的锁文件后，使用生成项目的 `npm run package`。
 
 作者可直接修改 `src/Panel.vue` 和 `src/main.ts`。同一 SFC 用于独立浮动入口、可选工作台视图和本地 `npm run dev` 预览，实例之间不共享便笺。预览使用普通 Vite，不连接游戏或模拟 Host；预览正常不能代替游戏检查。旧 Host 缺少 `views` 时保留独立入口。
 

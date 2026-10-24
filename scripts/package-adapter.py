@@ -28,6 +28,8 @@ if compiled:
     # Invalidate only these generated entries; preserve all unrelated builds/logs.
     for name in compiled:
         (dist / 'scripts' / name).unlink(missing_ok=True)
+    repository = Path(__file__).resolve().parent.parent
+    subprocess.run(['node', str(repository / 'node_modules/typescript/bin/tsc'), '-p', str(repository / 'tsconfig.tools.json')], check=True, cwd=repository)
     subprocess.run(['node', str(Path(__file__).with_name('build-adapters.cjs')), str(root)], check=True)
     assert all((dist / 'scripts' / name).is_file() and not (dist / 'scripts' / name).is_symlink() for name in compiled), 'CJ3C_MISSING_COMPILED_ADAPTER'
 
