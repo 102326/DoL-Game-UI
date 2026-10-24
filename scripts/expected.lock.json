@@ -1099,6 +1099,7 @@
     },
     {
       "entry": "tests/floating-preferences.test.cjs",
+      "sourceEntry": "tests/floating-preferences.test.cts",
       "profiles": [
         "standard"
       ],
@@ -1110,8 +1111,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b105350d62ca1eaf1c62f08cf3c89c4490d7c69baf93c066c1f4b1a2e9e81b78",
-      "assertionSites": 12
+      "sourceSha256": "90c0639864baa479a05fd8ef1318ee7110c6c763bfb46eb1f732fba02377e8bb",
+      "assertionSites": 14
     },
     {
       "entry": "tests/framework-commands.cjs",
@@ -1911,6 +1912,7 @@
     },
     {
       "entry": "tests/startup-cache.test.cjs",
+      "sourceEntry": "tests/startup-cache.test.cts",
       "profiles": [
         "standard"
       ],
@@ -1922,11 +1924,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "2de4701c9b1b63f7f3309294f4470911f52aa089c29e4459891c22e5ca43143c",
+      "sourceSha256": "8c732737015d05d049444fea99caa40f28f736e979fe227fa56ca3d9162d25b3",
       "assertionSites": 5
     },
     {
       "entry": "tests/status.test.cjs",
+      "sourceEntry": "tests/status.test.cts",
       "profiles": [
         "standard"
       ],
@@ -1938,11 +1941,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4eeb64a278c137ea6cda75fbe3a95860895199c1bbc626a1fd2d2cb960e3b7d9",
-      "assertionSites": 27
+      "sourceSha256": "f5ac02bb5f8d7a1a8b1ae046529b5f675e17f3566813800bceb9780a6b3d70e5",
+      "assertionSites": 30
     },
     {
       "entry": "tests/target-version.test.cjs",
+      "sourceEntry": "tests/target-version.test.cts",
       "profiles": [
         "standard"
       ],
@@ -1954,8 +1958,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "e8b6b85ca6542f4b0939a6e9c40d2041c0725b8297fae970ed73e88c6b7c0a56",
-      "assertionSites": 17
+      "sourceSha256": "54022188a35c2fa9e9c77a3e2bdd55b5d9e699c0984744eeb3288879197e1d5c",
+      "assertionSites": 21
     },
     {
       "entry": "tests/test-workflow.test.cjs",

@@ -38,3 +38,8 @@ docs/HANDOFF.local.md
 /scripts/check-native-tooling.mjs
 /scripts/ci-checkpoints.cjs
 /scripts/ci-source-policy.cjs
+/tests/browser-options.cjs
+/tests/status.test.cjs
+/tests/target-version.test.cjs
+/tests/floating-preferences.test.cjs
+/tests/startup-cache.test.cjs

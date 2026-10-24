@@ -1,5 +1,7 @@
 // @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+import assert = require('node:assert/strict');
+import fs = require('node:fs');
+import path = require('node:path');
 const root=path.resolve(__dirname,'..');
 assert.equal(fs.existsSync(path.join(root,'startup-cache-experiment.ts')),false,'retired loader hook must not exist');
 for(const name of ['scripts/build-early.cjs','scripts/package.py','tsconfig.early.json'])assert.equal(fs.readFileSync(path.join(root,name),'utf8').includes('startup-cache-experiment'),false,'retired hook must not be built or shipped: '+name);
