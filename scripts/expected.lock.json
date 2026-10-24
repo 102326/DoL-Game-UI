@@ -1111,8 +1111,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "90c0639864baa479a05fd8ef1318ee7110c6c763bfb46eb1f732fba02377e8bb",
-      "assertionSites": 14
+      "sourceSha256": "90934909f0f514d1560a19591d7c16ceead8acc08defe8144be11b19e89ca30e",
+      "assertionSites": 16
     },
     {
       "entry": "tests/framework-commands.cjs",
