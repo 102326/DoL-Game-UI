@@ -155,3 +155,4 @@ docs/HANDOFF.local.md
 /tests/mobile-density.cjs
 /tests/settings-workspace.cjs
 /tests/optimization-wardrobe.cjs
+/tests/optimization-date.cjs

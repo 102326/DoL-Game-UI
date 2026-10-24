@@ -1722,6 +1722,7 @@
     },
     {
       "entry": "tests/optimization-date.cjs",
+      "sourceEntry": "tests/optimization-date.cts",
       "profiles": [
         "standard"
       ],
@@ -1733,8 +1734,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c0820e199427d67251a19d697b36b5eba64cdf88e311cad63eef1c73f80d730b",
-      "assertionSites": 38
+      "sourceSha256": "88f148ba55147457ca0f39909a6c0388f458d040f0eefb80e027cdcc0bb08096",
+      "assertionSites": 40
     },
     {
       "entry": "tests/optimization-wardrobe.cjs",
