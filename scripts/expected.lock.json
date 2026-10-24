@@ -401,6 +401,9 @@
       "expected lock rejects wrong maps, discriminator values and invalid numeric declarations",
       "case environment plans validate counts and keep empty or opaque valid data"
     ],
+    "isolation-inputs.test.mts": [
+      "independent checkout keeps exact CRLF input without staging or hiding real edits"
+    ],
     "native-tooling.test.mts": [
       "native erasure check rejects an extra enum fixture while retaining the normal roots"
     ],
@@ -1392,6 +1395,22 @@
       ],
       "sourceSha256": "4829a4a63057ab7cf4541a6852eacf7b22e07a71980f8bcaf8d9ebd7c8fa0eb6",
       "assertionSites": 61
+    },
+    {
+      "entry": "tests/isolation-inputs.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "independent checkout keeps exact CRLF input without staging or hiding real edits",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "bb820e706f33629c8306a296e7ad3f3209efc90be86b28da6cfcc5f3ab112d2c",
+      "assertionSites": 15
     },
     {
       "entry": "tests/kraft-work-adapters.cjs",

@@ -27,7 +27,23 @@ for(const entry of fs.readdirSync(path.join(source,'node_modules'),{withFileType
  if(entry.isDirectory())fs.symlinkSync(input,output,process.platform==='win32'?'junction':'dir');else fs.copyFileSync(input,output);
 }
 const sourceIdentity=createRequire(import.meta.url)('../ci-evidence.cjs').sourceIdentity;
-const expected=sourceIdentity(source),actual=sourceIdentity(destination);
+const expected=sourceIdentity(source);
+let actual=sourceIdentity(destination);
+// Copying CRLF over an LF checkout can leave stale Git stat sizes on Windows.
+// Refresh only identical indexed blobs, after exact raw-input identity is proven.
+if(!expected.dirty&&actual.dirty&&expected.head===actual.head&&expected.tree===actual.tree&&expected.contentSha256===actual.contentSha256&&expected.lockSha256===actual.lockSha256){
+ const isolatedGit=(...args:string[])=>execFileSync('git',args,{cwd:destination,maxBuffer:64*1024*1024,stdio:['ignore','pipe','pipe']});
+ const staged=isolatedGit('diff','--cached','--name-only','-z').toString();
+ const changed=isolatedGit('diff-files','--name-only','-z').toString().split('\0').filter(Boolean);
+ for(const file of changed){
+  const input=path.join(destination,file);if(!fs.lstatSync(input,{throwIfNoEntry:false})?.isFile())continue;
+  const indexed=isolatedGit('rev-parse',':'+file).toString().trim();
+  const working=isolatedGit('hash-object','--path='+file,'--',file).toString().trim();
+  if(indexed===working)isolatedGit('update-index','--',file);
+ }
+ if(staged!==isolatedGit('diff','--cached','--name-only','-z').toString())throw Error('IndexRefreshChangedContent');
+ actual=sourceIdentity(destination);
+}
 if(JSON.stringify(expected)!==JSON.stringify(actual)){
  const copied=execFileSync('git',['ls-files','--cached','--others','--exclude-standard','-z'],{cwd:destination}).toString().split('\0').filter(Boolean);
  throw Error('IsolatedSourceMismatch: '+JSON.stringify({expected,actual,missing:files.filter(f=>!copied.includes(f)),extra:copied.filter(f=>!files.includes(f))}));
