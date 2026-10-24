@@ -19,3 +19,8 @@
 
 
 设备测量页保持单个离线HTML：维护 `tools/device-probe.ts` 与 `tools/device-probe.template.html`，先 `npm run tooling:build`，再 `node scripts/build-device-probe.mjs --write` 更新生成页。`ci:check`使用 `--check` 拒绝未同步输出，不修改源码或生成页；专用严格配置启用noUncheckedIndexedAccess。生成HTML仍可直接file打开，没有外部脚本请求，不读取Cookie/存储或游戏数据。
+
+
+### Generated preview pages
+
+The settings, official Hub and special-weather preview servers reference browser TypeScript in `prototypes/evolution-integration/`. `npm run typecheck` checks these entries with `vue-tsc -p tsconfig.preview-pages.json`; typing a server's template string alone does not check the code inside it. Research CI runs `integration-preview-pages` after `framework-build` against the real local servers. The test waits for asynchronous preview initialization before exercising native controls; it does not access game saves or validate physical devices.

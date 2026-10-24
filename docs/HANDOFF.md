@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **当前TS First：53/243，剩余190项；12个维护HTML内联程序已完成。** 当前实现656865e，后续文档提交不冒充重新受验。11个天气页转TS并保留页面样式，离线测量页由TS＋模板生成单HTML；严格检查、11页浏览器、离线隐私/导出与源漂移反例通过。原生衣柜、Runtime反例和嘴部适配测试继续迁移，真实事件/身份/拒绝行为保留。Vite7.3.7审计0告警，H01仍Unknown。47项的标准40101935855曾因本地CRLF与Git LF导致ExpectedLockDrift失败；4005b87仅修正源码字节与锁，新增拒绝错误EOL反例，48项[标准40102278149](https://github.com/102326/DoL-Game-UI/actions/runs/40102278149)/[研究40102274913](https://github.com/102326/DoL-Game-UI/actions/runs/40102274913)及独立验证全部success。53项和内联后续尚需新CI，不能套用这两个Run。详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。未本批Android装机，不合main或发布。
+- **当前TS First：62/243，剩余181项。** 当前源码717d38e；12个原清单HTML程序及另补三个生成预览页字符串程序已转TS，五种实际预览/九种特殊天气输入通过。商店真实报价/交易、Runtime反例驱动及设备布局辅助已迁CTS；类型包装的循环断言计数修复保留所有旧断言，完整ci:check通过。受验53项2c9f475的[标准40103339471](https://github.com/102326/DoL-Game-UI/actions/runs/40103339471)/[研究40103337140](https://github.com/102326/DoL-Game-UI/actions/runs/40103337140)与独立下载验证全部success，9ZIP CRC/10项SHA及双构建/9项制品反例已回读；后续62项需新CI。717d38e原始Windows H01无诊断包装12项通过，旧间歇性超时尚未因果归因，保留Unknown。详细失败与边界见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。无本批Android装机、main合入或发布。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
