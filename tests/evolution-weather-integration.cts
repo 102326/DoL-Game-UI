@@ -56,11 +56,3 @@ async function verifyWeatherIntegration(browser:playwright.Browser,{baseline=fal
 }
 module.exports={verifyWeatherIntegration};
 if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifyWeatherIntegration(browser,{baseline:process.argv.includes('--baseline'),lateHost:process.argv.includes('--late-host'),legacySnow:process.argv.includes('--legacy-snow')})}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});
-
-
-
-
-
-
-
-
