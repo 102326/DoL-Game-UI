@@ -1235,6 +1235,7 @@
     },
     {
       "entry": "tests/framework-startup.cjs",
+      "sourceEntry": "tests/framework-startup.cts",
       "profiles": [
         "standard"
       ],
@@ -1278,8 +1279,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "884b1de361c96557cb5984d7f8263a15ccbde8b762673dab4501114799c5363e",
-      "assertionSites": 154
+      "sourceSha256": "ce56ff40ce01e511dcda05017817722706d87230ff3fe2f0a73d2c8ad76c427a",
+      "assertionSites": 158
     },
     {
       "entry": "tests/framework.cjs",
