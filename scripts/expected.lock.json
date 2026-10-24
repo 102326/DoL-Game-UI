@@ -2221,6 +2221,7 @@
     },
     {
       "entry": "tests/wardrobe-data.test.cjs",
+      "sourceEntry": "tests/wardrobe-data.test.cts",
       "profiles": [
         "standard"
       ],
@@ -2232,8 +2233,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8ad12b86e6f3657e7f0967033b7ff816f0e4012b49675d08a9a9286e0e7bd7ba",
-      "assertionSites": 20
+      "sourceSha256": "2d37e2b4a94a09df10b9db4aab9ba02006c40ba879b003dec6ae252348508385",
+      "assertionSites": 32
     },
     {
       "entry": "tests/wardrobe-details-drawer.cjs",
@@ -2303,6 +2304,7 @@
     },
     {
       "entry": "tests/wardrobe-source-m2.test.cjs",
+      "sourceEntry": "tests/wardrobe-source-m2.test.cts",
       "profiles": [
         "standard"
       ],
@@ -2314,8 +2316,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "bba9b23b9c967771f17d049440ae151e3eaaf473c5e5709231bba61c9fee5998",
-      "assertionSites": 43
+      "sourceSha256": "05233c6c0ee0429b6a25e0ebcc9274d286545ecad9e97f1722270f2594e24626",
+      "assertionSites": 79
     },
     {
       "entry": "tests/wardrobe-wear-motion.cjs",

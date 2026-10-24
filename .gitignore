@@ -57,3 +57,5 @@ docs/HANDOFF.local.md
 /tests/visual-scope.test.cjs
 /tests/wardrobe-slot-mappings.test.cjs
 /scripts/ci-metrics.cjs
+/tests/wardrobe-data.test.cjs
+/tests/wardrobe-source-m2.test.cjs
