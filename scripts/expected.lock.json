@@ -1202,6 +1202,7 @@
     },
     {
       "entry": "tests/framework-commands.cjs",
+      "sourceEntry": "tests/framework-commands.cts",
       "profiles": [
         "standard"
       ],
@@ -1213,8 +1214,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "089c262451059d3ea37ff09fdacca6c0ac4e48224fd6a0f6e4da2dae6c4e592d",
-      "assertionSites": 49
+      "sourceSha256": "63eede3f405d9ca8c5050007a4afe7f950597f82527180de3be1d5c700b0adbd",
+      "assertionSites": 51
     },
     {
       "entry": "tests/framework-connect.cjs",

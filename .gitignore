@@ -142,3 +142,4 @@ docs/HANDOFF.local.md
 /tests/framework-connect.cjs
 /tests/ci-v12.test.cjs
 /tests/framework-startup.cjs
+/tests/framework-commands.cjs
