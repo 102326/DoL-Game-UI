@@ -271,3 +271,11 @@ a65d465收窄共享球体的纹理/粒子索引：纬度与原4/7/9/7/4纹理数
 ### 88项远端失败复核与上传修复
 
 标准40114928222的下载原始unit日志定位到 `research-evidence.test.cjs:41`：`filesBelow is not defined`。提取 research-files.ts 时漏掉 CJS 消费者导入；现补回，不更改发现范围和安全验证。原测试本机已通过 F1/F2 上传/汇总/下载证据控制，随后仍因 Windows symlink EPERM 停止，完整反例交由 Linux CI，不能报告本机全通过。研究40114927005缺少生产上传证据，根因尚未独立证明。79项成功仅作历史记录。
+
+### 95–100项：悬浮球与材质、布局边界（2026-10-25）
+
+六项CTS：floating-boundaries、overlay-manager-layout、layering-regression、sidebar-layout、kraft-work-materials、kraft-work-product。FloatingApi从Vue入口移至已有纯偏好模块并原路径重新导出，成员合同不变；测试引用实际产品类型，DOM节点/边界/输出使用真实存在性检查，无any或关闭严格检查。前五项Windows Edge通过：四项悬浮球边界、原生管理器几何、战斗继续节点/事件与top-layer、侧栏精确恢复/后插节点、材质保持与抽屉命中。
+
+kraft-work-product 严格编译通过但运行失败：280×320的球体中心被 `.cbtToggle` 命中，原JS同源码构建对照也失败。独立诊断记录原生战斗底栏top-layer与Hub普通层重叠；尚未作产品修复，不用force click、不提高超时、不移除原控件。其余尺寸在诊断中已通过球体点击，但整体检查仍失败。日志ts-98-product、ts-98-product-original、ts-98-hit-diagnostic保留在忽略的本机制品。
+
+累计100/243，仅表示类型迁移数量，不是全部功能验收。94项上传修复d1ff5d8的标准40116943879、研究40116942898仍在运行，完整回读待完成。本机Node26.12.1；Android Doctor再次确认显式测试包与在线设备，但未安装100项源码，不能宣称该批实机通过。产品版本不变，未合main、Tag、Release。
