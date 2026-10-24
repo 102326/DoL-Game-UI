@@ -14,5 +14,5 @@
     "lib": ["ES2022", "DOM"],
     "skipLibCheck": true
   },
-  "include": ["scripts/*.cts", "scripts/*.mts", "component-lab/*.cts", "framework/factory/*.mts", "tests/*.cts", "tests/tooling-types.mts"]
+  "include": ["scripts/*.cts", "scripts/*.mts", "component-lab/*.cts", "framework/factory/*.mts", "tests/tooling-types.cts", "tests/tooling-types.mts"]
 }

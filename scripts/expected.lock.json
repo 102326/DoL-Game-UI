@@ -927,6 +927,7 @@
     },
     {
       "entry": "tests/evolution-rain-model.test.cjs",
+      "sourceEntry": "tests/evolution-rain-model.test.cts",
       "profiles": [
         "research"
       ],
@@ -962,11 +963,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "7c1358b6476ebfff0f3d04575986816a9746483b8ae6d1cc8af6b7868e879c43",
-      "assertionSites": 40
+      "sourceSha256": "dbac9e1c304677c35f82f834c3b2db53f6aa6e60e7d9bb4f29955b2337479b06",
+      "assertionSites": 45
     },
     {
       "entry": "tests/evolution-resource-contract.test.cjs",
+      "sourceEntry": "tests/evolution-resource-contract.test.cts",
       "profiles": [
         "standard"
       ],
@@ -978,11 +980,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "be91bcf51e3affeee797c255ae84d1254799862e3ce39cfaf13397233413ffa3",
-      "assertionSites": 4
+      "sourceSha256": "039258ab5a474e67d0fef681cd72bb7315e996a98b270f291fa21e3840f961e8",
+      "assertionSites": 5
     },
     {
       "entry": "tests/evolution-scattered-shower.test.cjs",
+      "sourceEntry": "tests/evolution-scattered-shower.test.cts",
       "profiles": [
         "research"
       ],
@@ -998,8 +1001,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a3e2cfaa9250b2267bb6c4272654da614216f8203ca5a648a7cfa9420ee8a7d4",
-      "assertionSites": 17
+      "sourceSha256": "6c1ce5bef2e8763bb1bc02bbbf1e87102a58d4577719a0ccc3a79810f9c3704d",
+      "assertionSites": 22
     },
     {
       "entry": "tests/evolution-weather-candidates.cjs",
@@ -1645,6 +1648,7 @@
     },
     {
       "entry": "tests/render-state.test.cjs",
+      "sourceEntry": "tests/render-state.test.cts",
       "profiles": [
         "standard"
       ],
@@ -1656,8 +1660,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8bed27c098fe5d0624f5ea837237d8c448966576e09d23a3be440cefe7730a96",
-      "assertionSites": 14
+      "sourceSha256": "68de0b8fecf8005b8d5cb9e49c2f59a85361a20b720154cdc01c6f5abef58e49",
+      "assertionSites": 17
     },
     {
       "entry": "tests/research-evidence.test.cjs",
@@ -1821,6 +1825,7 @@
     },
     {
       "entry": "tests/shop-early-api.test.cjs",
+      "sourceEntry": "tests/shop-early-api.test.cts",
       "profiles": [
         "standard"
       ],
@@ -1848,8 +1853,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "f68c2a5c680c7a440e54f30423baa480304e3fb1449abed3b53f37589de76eb1",
-      "assertionSites": 7,
+      "sourceSha256": "5967086d202aa7c6fb248eb4b69c5bf4abfd3d6e7d75556a36dadb9b8a2c778e",
+      "assertionSites": 8,
       "evidence": "checkpoints"
     },
     {
@@ -2006,6 +2011,7 @@
     },
     {
       "entry": "tests/test-workflow.test.cjs",
+      "sourceEntry": "tests/test-workflow.test.cts",
       "profiles": [
         "standard"
       ],
@@ -2017,8 +2023,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "dc924dfeb44a942cebc0dfc0cb8ca1b7216d63f31d193094a9ebdc72ce903d2c",
-      "assertionSites": 35
+      "sourceSha256": "f529e30bb5029aec5dbc1a756e0cddc5c9cf64d01b3a092239a372fa33a2cf5b",
+      "assertionSites": 38
     },
     {
       "entry": "tests/ui-runtime-compat.cjs",
@@ -2150,6 +2156,7 @@
     },
     {
       "entry": "tests/visual-scope.test.cjs",
+      "sourceEntry": "tests/visual-scope.test.cts",
       "profiles": [
         "standard"
       ],
@@ -2161,8 +2168,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "3ed8ef0ce1aa8f4d993667dff4bf09839640da03581b4d5453be5008908bc009",
-      "assertionSites": 23
+      "sourceSha256": "59ea448de00e5fe61821ed9dd085ea80903f58e30dcd5cd66b33a56e9037cdb5",
+      "assertionSites": 33
     },
     {
       "entry": "tests/wardrobe-data.test.cjs",
@@ -2214,6 +2221,7 @@
     },
     {
       "entry": "tests/wardrobe-performance.test.cjs",
+      "sourceEntry": "tests/wardrobe-performance.test.cts",
       "profiles": [
         "standard"
       ],
@@ -2225,11 +2233,12 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "0bf90b26aa1beb879664e6bbe8f51ec1577d8a54642669e764fa60418d6308f5",
-      "assertionSites": 8
+      "sourceSha256": "df0c8f248cb73952619f7b8d9422689b2c0ce76739f008a84b69916dbfe96595",
+      "assertionSites": 15
     },
     {
       "entry": "tests/wardrobe-slot-mappings.test.cjs",
+      "sourceEntry": "tests/wardrobe-slot-mappings.test.cts",
       "profiles": [
         "standard"
       ],
@@ -2241,8 +2250,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "62615b89a1bd47f3abe52a03ef1ece74a3bf1177eb71453d37d970d8b4c7e9a1",
-      "assertionSites": 32
+      "sourceSha256": "4faf57628b2f3728f57025ea13b950457bbd104f4dc49d3525b8e78dc4e9311e",
+      "assertionSites": 40
     },
     {
       "entry": "tests/wardrobe-source-m2.test.cjs",

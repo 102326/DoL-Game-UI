@@ -44,3 +44,15 @@ docs/HANDOFF.local.md
 /tests/floating-preferences.test.cjs
 /tests/startup-cache.test.cjs
 /scripts/check-node.mjs
+/tests/wardrobe-reference.test.cjs
+/tests/wardrobe-performance.test.cjs
+/tests/wardrobe-icons.test.cjs
+/tests/render-state.test.cjs
+/tests/shop-early-api.test.cjs
+/tests/evolution-resource-contract.test.cjs
+/tests/evolution-scattered-shower.test.cjs
+/tests/evolution-rain-model.test.cjs
+/tests/test-workflow.test.cjs
+/tests/component-lab-source-index.test.cjs
+/tests/visual-scope.test.cjs
+/tests/wardrobe-slot-mappings.test.cjs
