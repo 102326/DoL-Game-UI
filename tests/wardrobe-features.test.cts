@@ -62,8 +62,8 @@ const server=http.createServer((req,res)=>{
  assert.match((await p.locator('.dgw-confirm').textContent())??'',/确认修理/);assert.match((await p.locator('.dgw-confirm').textContent())??'',/10 分钟/);
  assert.deepEqual(await p.evaluate(()=>repairItems.map(item=>item.integrity)),beforeRepair,'repair review performs no write');
  // Definitions can change without replacing inventory. A reviewed operation must refuse stale semantics.
- await p.evaluate(()=>{Object.assign(window,{changedDefinition:setup.clothes.upper.find(d=>d.variable===must(repairItems[0]).variable&&d.modder===must(repairItems[0]).modder)});Object.assign(window,{originalDescription:changedDefinition.description});changedDefinition.description='M2 external descriptor change'});
- await p.getByRole('button',{name:'确认修理',exact:true}).click();
+ // Exercise stale confirmation before the normal items watcher dismisses that review.
+ await p.evaluate(()=>{const confirm=[...document.querySelectorAll<HTMLButtonElement>('.dgw-confirm button')].find(button=>button.textContent?.trim()==='确认修理');if(!confirm||confirm.disabled)throw Error('Missing enabled repair confirmation');Object.assign(window,{changedDefinition:must(setup.clothes.upper.find(d=>d.variable===must(repairItems[0]).variable&&d.modder===must(repairItems[0]).modder))});Object.assign(window,{originalDescription:changedDefinition.description});changedDefinition.description='M2 external descriptor change';confirm.click()});
  assert.deepEqual(await p.evaluate(()=>repairItems.map(item=>item.integrity)),beforeRepair,'stale definition prevents every native repair');assert.equal(await p.evaluate(()=>V.timeStamp),beforeRepairTime);
  await p.evaluate(()=>{changedDefinition.description=originalDescription;DoLWardrobeUI.refresh()});
  for(const key of await p.evaluate(()=>repairItems.map(item=>[...document.querySelectorAll<HTMLElement>('.dgw-item')].find(n=>Number(must(n.dataset.key).split(':')[1])===V.wardrobe.upper.indexOf(item))?.dataset.key)))await p.locator(`.dgw-item[data-key="${key}"]`).click();
