@@ -20,7 +20,7 @@ export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTra
  return createWetGlass(canvas,invalidate,naturalTrails,runoff,climate,withShower,withForce,makeFrost,specialSkies);
 }
 function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails:boolean,runoff:boolean,climate:boolean,withShower:boolean,withForce:boolean|'scatter',makeFrost:FrostFactory<T>,specialSkies:boolean){
- const scope=visualScope();
+ const scope=visualScope(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
  try{
  const scatter=withForce==='scatter',field=scatter?scatteredShower():undefined;let showerGeometry:ReturnType<ReturnType<typeof scatteredShower>['step']>['streaks']=[];
  let showerEnabled=withShower,showerPhase=0;const showerImage=withShower&&!scatter?new Image():undefined;if(showerImage){showerImage.onload=()=>invalidate();showerImage.src=withForce?forceUrl:showerUrl;scope.own(()=>{showerImage.onload=null})}
@@ -110,6 +110,8 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   });
  }
  function draw(s:Frame){
+  // Sample ambient rain at most 60Hz; keep its real-time clock and immediate layout/motion invalidations.
+  if(shell.hasAttribute('data-sf-weather-material')&&document.documentElement.hasAttribute('data-dgu-visualmotion')&&!reduced.matches&&s.wet>.002&&s.snow<=.002&&(s.specialAmount??0)<=.002&&!dirty&&!wasMoving&&s.width===width&&s.height===height&&s.time>lastTime&&Math.floor(s.time*60)===Math.floor(lastTime*60))return;
   // WAAPI geometry changes do not emit mutations. Protect the moving workspace
   // conservatively, then remeasure its final text/controls after cancellation or finish.
   if(dirty)layoutAnimations=shell.getAnimations({subtree:true}).filter(a=>a.effect instanceof KeyframeEffect&&a.effect.target instanceof Element&&a.effect.target.matches('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab,.dmt-workspace-section'));

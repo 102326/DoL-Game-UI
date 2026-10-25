@@ -2742,12 +2742,16 @@
           "minimumAssertions": 1
         },
         {
+          "id": "official rain coalesces sub-frame paints but immediately updates geometry",
+          "minimumAssertions": 1
+        },
+        {
           "id": "dry repeated frame is quiet and material releases",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c87695ede84567b85e6d8a1f93c68062ad145924d59a11ef72796dcbdcd0b581",
-      "assertionSites": 32
+      "sourceSha256": "46a57c79b82b999518d5922363b532f453126e92e2693610c9099f8e9fd02a17",
+      "assertionSites": 38
     },
     {
       "entry": "tests/weather-review-pages.cjs",
