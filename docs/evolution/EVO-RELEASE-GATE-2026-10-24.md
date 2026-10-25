@@ -35,6 +35,8 @@ Android独立测试App已仅替换准确CI UI，原生重启后八个适用包�
 
 [安装说明](../INSTALL_EVOLUTION_CANDIDATE.md)、[Release正文草稿](../RELEASE_EVOLUTION_DRAFT.md)、[首页替换稿](../README_EVOLUTION_DRAFT.md)与实际4.0.0文件一致。媒体保留拍摄来源；正式4.0.0仅版本字符串变化的复用关系单列，不冒称重录。公开首页仍未替换，公开下载链接尚未建立。
 
+本轮又完成[公开发行前核对与执行顺序](EVO-PUBLISH-CHECKLIST-2026-10-25.md)：main／Tag／Release冲突预检、面向玩家正文、首页根路径预览及许可说明。九包输入和摘要保持不变，未重跑不相关验收。
+
 ## 当前状态与剩余步骤
 
 | 状态 | 结论 |

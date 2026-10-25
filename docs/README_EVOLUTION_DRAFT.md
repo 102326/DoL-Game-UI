@@ -6,6 +6,8 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 
 购买、穿戴、战斗结算、角色数值和存档继续由原游戏及对应Mod处理。安装包不包含游戏本体、APK或第三方主Mod。
 
+[版本与下载](https://github.com/102326/DoL-Game-UI/releases) · [安装与回退](INSTALL_EVOLUTION_CANDIDATE.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+
 ## 核心界面
 
 ### Floating Hub
@@ -71,11 +73,11 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 | LyraMouthCompat051213 | 指定Lyra环境的嘴部资源适配 |
 | SmartPhoneSoftWet | 万能手机Alpha及已识别组件外观 |
 
-没有目标Mod就不安装对应包。CE原作者版与独立维护的rebuild.30只能启用一个；万能手机包不适用于Omega。具体分发版本与支持范围在正式发布页维护，首页不固定每个兼容包的更新号。
+没有目标Mod就不安装对应包。CE原作者版与独立维护的rebuild.30只能启用一个；万能手机包不适用于Omega。具体版本与支持范围见发布页。
 
 ## 兼容、限制与回退
 
-部分Android环境的复杂天气下仍可能有偶发慢帧，当前方案已获接受。未知第三方页面可能保留原外观。尚未穷举所有WebView、衣物、商品、战斗和Mod组合；当前没有完整FPS或长期无泄漏结论。ModHub所有安装／更新场景的卡顿、闪烁，以及全部历史衣柜同名异常不作根治承诺。
+部分Android环境的复杂天气下仍可能有偶发慢帧。未知第三方页面可能保留原外观。尚未穷举所有WebView、衣物、商品、战斗和Mod组合；当前没有完整FPS或长期无泄漏结论。ModHub所有安装／更新场景的卡顿、闪烁，以及全部历史衣柜同名异常不作根治承诺。
 
 各专用界面可以独立关闭。需要回退时停用当前UI及只适用于它的兼容包，恢复保留的原包和顺序，再重启；其它Mod仍使用Host时保留Host。不要清空存档或整个App数据。
 
@@ -85,13 +87,32 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 
 - [验证范围与发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)
 - [持续集成](CI.md)、[UI Runtime API](UI_RUNTIME.md)、[兼容适配](OPTIONAL_ADAPTERS.md)
-- [许可证](../LICENSE)与包内第三方声明；作者及贡献者署名保留
+- [UI接入示例](../examples/ui-surfaces/README.md)
 
-本稿暂不嵌入早期或被否决媒体。正式页面只展示最终候选的合格截图和视频，媒体不放入玩家Assets。
+<details>
+<summary>源码检查与构建</summary>
+
+开发工具使用Node.js 26.12.1+（仅26.x），需要npm和Python；CI使用Python 3.12。玩家无需安装这些工具。
+
+```text
+npm ci
+npm run ci:check
+npm run ci:build
+```
+
+该入口检查类型并构建主UI、Host及七个兼容包；主UI／Host输出到`dist/framework/`，兼容包输出到各自的`compat/*/dist/`。需要执行包合同、反例和双构建校验时，运行`npm run ci:packages`。不同系统的压缩容器摘要可能不同，不能据此覆盖已发布附件。
+
+</details>
+
+## 反馈与许可
+
+通过[GitHub Issues](https://github.com/102326/DoL-Game-UI/issues)提供游戏、Loader、UI／Host及相关Mod版本，说明设备、复现步骤和实际表现。截图、日志与存档可选；公开反馈中不要包含账号凭据、敏感数据或无权分发的Mod包。
+
+项目原创代码使用[MIT](../LICENSE)，版权署名为DoLWorkbench contributors。衣柜衍生渲染及四项游戏Twee替换来自Vrelnir及Degrees of Lewdity贡献者，适用**CC BY-NC-SA 4.0**；见[来源与修改说明](../UPSTREAM-RENDERER-NOTICE.md)及[完整许可](../UPSTREAM-RENDERER-LICENSE)。MIT不替代这些衍生代码的原许可。Vue、Tailwind CSS与GSAP等依赖的声明随包保留。
 
 ## 画面与动态预览
 
-[本轮24秒Android原速顶栏雨效录屏](media/evolution-rain-header/android-settings-rain.mp4)。来源、运行成员等价及性能限制见[本轮复验](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)。
+[Android设置原速顶栏雨效录屏（24秒）](media/evolution-rain-header/android-settings-rain.mp4)。来源、运行成员等价及性能限制见[本轮复验](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)。
 
 ![本轮Android设置：上下布局](media/evolution-rain-header/android-horizontal.png)
 
@@ -101,4 +122,4 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 - [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
 - [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
 
-上方早期血月截图来自实际测试App；其后三段旧视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称本轮CI ZIP的重新录制。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
+血月截图来自Android测试App；后三段视频为真实组件演示，非同次实机录屏。媒体采集早于正式包，复用关系见[媒体记录](media/evolution-rain-header/provenance.json)和[验证范围](evolution/EVO-RELEASE-GATE-2026-10-24.md)。

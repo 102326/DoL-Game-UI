@@ -42,16 +42,16 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 
 ## 已知限制
 
-- 部分Android环境的复杂天气下仍可能出现偶发慢帧；当前顶栏收敛方案已获接受，不承诺所有设备都持续满帧。
+- 部分Android环境的复杂天气下仍可能出现偶发慢帧。
 - 未知第三方页面可能保留原外观，未知结构会退让。
 - ModHub 所有安装／更新场景的卡顿与闪烁尚未作完全解决的承诺。
 - 已修复的衣柜路径不代表全部历史同名异常都已归因。
 - 长时间、多 Mod 资源变化仍需持续观察；当前短时结果不作为完整 FPS 或无泄漏证明。
 - 物理手机、iOS、所有 WebView、商品和战斗场景未全部覆盖。
 
-当前候选身份与验收状态见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)，业务回归见[技术报告](evolution/EVO-PRERELEASE-2026-10-24.md)。最终页面使用最终候选的真实截图与视频；血雨等已停用实验不作为发行宣传。媒体展示在正文，不作为 Assets。下载区只保留实际分发的主 UI、Host、适用兼容包和校验清单，技术报告留在仓库。
+[验证范围与已知限制](evolution/EVO-RELEASE-GATE-2026-10-24.md)保留在仓库，便于核对具体测试环境与未覆盖内容。
 
-作者、贡献者与第三方许可沿用仓库 Credits、LICENSE 和包内 notices；Framework Host 的历史技术名仍为 StoneFreeHost，公共合同保持不变。
+Framework Host继续使用`StoneFreeHost`技术名，公共合同保持不变。
 
 ## 分发文件
 
@@ -70,11 +70,11 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 | `SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.1.mod.zip` | 万能手机Alpha外观，选装 |
 | `SHA256SUMS.txt` | 九个Mod ZIP的SHA-256 |
 
-安装说明、技术报告、截图和视频在页面与仓库中提供，不放入Assets。
+安装说明、截图和视频在页面与仓库中提供。
 
 ## 画面与动态预览
 
-[本轮24秒Android顶栏雨效原速录屏](media/evolution-rain-header/android-settings-rain.mp4)，覆盖双布局、分类、实际控件和开关。它来自先前受验包，与冻结RC2全部运行成员相同；正式4.0.0运行成员仅替换产品版本字符串，包内说明和元数据同步更新，并非重新录制；来源见[媒体记录](media/evolution-rain-header/provenance.json)。
+[Android设置原速录屏（24秒）](media/evolution-rain-header/android-settings-rain.mp4)，展示双布局、分类、控件和开关。视频采集早于正式包，运行成员的复用关系见[媒体记录](media/evolution-rain-header/provenance.json)。
 
 ![当前Android设置：上下布局](media/evolution-rain-header/android-horizontal.png)
 
@@ -84,4 +84,10 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 - [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
 - [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
 
-早期血月截图来自实际测试App；其后三段旧视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称本轮CI ZIP的重新录制。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
+血月截图来自Android测试App；后三段视频为真实组件的受控原速演示。它们录制于TS First最终候选之前，展示效果保留，不是正式4.0.0包的重新录制。完整来源见[媒体与版本记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)。
+
+## 许可与署名
+
+项目原创代码使用[MIT](../LICENSE)，版权署名为DoLWorkbench contributors。衣柜衍生渲染及四项游戏Twee替换来自Vrelnir及Degrees of Lewdity贡献者，适用**CC BY-NC-SA 4.0**；见[来源与修改说明](../UPSTREAM-RENDERER-NOTICE.md)及[完整许可](../UPSTREAM-RENDERER-LICENSE)。MIT不替代这些代码的原许可。Vue、Tailwind CSS与GSAP等第三方声明随包保留。
+
+如遇问题，请在[GitHub Issues](https://github.com/102326/DoL-Game-UI/issues)附上版本、平台和复现步骤；不要公开账号凭据或敏感数据。
