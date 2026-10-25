@@ -421,3 +421,12 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 4f95f78标准40170321234、3386714研究40170838148的首个实际失败均为settings-ci生成入口的Node端must未定义：原CTS只声明该函数并在浏览器注入，但新增Node boundingBox读取及集成调用也使用它。补上同语义实际函数，不改变产品、断言、等待或集合。此前设置专项没有走完整，不能沿用为通过。
 
 修正后Windows本地实际settings-ci完整通过：双布局/长内容滚动、模态输入、键盘与分类中断、偏好持久、S01五项、W01九项、真实正文像素及受控晚宿主反例均执行。原始失败及完整输出保留ts243-standard-job.log、ts243-research-second-job.log、ts243-settings-runtime.txt。4f95f78的Linux设备布局夹具124项、4类反例已全部通过；本地新旧各4超时仍保留为原环境记录，不能改写历史失败。3386714研究其余原型/天气检查全部通过，但整个run仍失败；新准确提交两套CI须重新完成。
+
+
+### 分组计划与TS单一来源修正
+
+8021362的研究40171690075及独立复核完整success，已下载123101388字节原始证据并校验CRC、准确HEAD与summary PASS/COMPLETE。标准40171699037全部行为脚本exit=0，含设置专项与124布局/4反例，但Inspector/Surface/Compat三项收据为UNVERIFIED：计划误带只属于identity组的core-identity。原产物ci-failed-243/standard-802及完整日志保留，不能报告整套标准通过。
+
+根因是generate-lock读取metadata.source指向的生成CJS，且分组过滤依赖无空格的group===字串；TS输出的group ===条件未被正确识别。修正为按AST识别严格相等、括号及字面量includes，并将直接source和composed includes统一解析到实际CTS单一来源。没有改caseProblems、缺项拒绝、最小断言数或业务检查。core-identity仍只由独立identity入口验证，其错误身份反例继续拒绝。
+
+新增TS/有空格CJS/反向相等/typed literal的组计划单元检查，六项通过；实际Moody runner运行四个UI Runtime分组及完整五类业务突变、两类未捕获pageerror反例全部PASS，终端收据无CasePlanMismatch，记录ts243-group-receipts-result.json；严格CI类型图通过。新准确提交再执行两套完整CI，不复跑同一失败碰运气。

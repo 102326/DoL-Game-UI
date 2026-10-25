@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {parseExpectedLock,parseCasePlan} from '../scripts/ci/contracts.ts';
-import {declarationSource,namesFrom} from '../scripts/ci/generate-lock.ts';
+import {declarationSource,namesFrom,generateLock} from '../scripts/ci/generate-lock.ts';
 
 test('expected lock validates the real file and preserves unknown metadata',()=>{
   const value:unknown=JSON.parse(fs.readFileSync(new URL('../scripts/expected.lock.json',import.meta.url),'utf8'));
@@ -46,4 +46,21 @@ test('typed literal wrappers preserve expanded assertion sites and named cases',
   assert.deepEqual(namesFrom(`const keys=${initializer};${body}`,'checkpoint'),plain);
  }
  assert.throws(()=>namesFrom('checkpoint(dynamicName())','checkpoint'),/Unresolved case declaration/,'type wrappers must not permit unresolved runtime names');
+});
+
+test('group plans follow AST conditions in both authored TS and spaced CJS output',()=>{
+ for(const identity of ["group==='identity'","group === 'identity'","('identity' === group)"]){
+  for(const inspector of ["['all','inspector'].includes(group)","(['all', 'inspector'] as const).includes(group)"]){
+   const source=`if(${identity}){checkpoint('core-identity');assert.ok(identity)} if(${inspector}){checkpoint('privacy');assert.ok(privacy)}`;
+   assert.deepEqual(namesFrom(source,'checkpoint','identity'),{names:['core-identity'],assertionSites:1});
+   assert.deepEqual(namesFrom(source,'checkpoint','inspector'),{names:['privacy'],assertionSites:1});
+  }
+ }
+ const lock=generateLock();
+ for(const group of ['identity','inspector','surfaces','compat']){
+  const entry=lock.entries.find(e=>e.entry===`tests/ui-runtime-${group}.cjs`);assert.ok(entry);
+  const ownSource=fs.readFileSync('tests/ui-runtime.cts','utf8');
+  assert.deepEqual(entry.cases.map(c=>c.id),namesFrom(ownSource,'checkpoint',group).names);
+  assert.equal(entry.cases.some(c=>c.id==='core-identity'),group==='identity');
+ }
 });

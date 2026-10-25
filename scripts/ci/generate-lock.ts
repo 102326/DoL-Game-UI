@@ -31,8 +31,21 @@ function literal(node:ts.Node|undefined,env:Map<string,Literal>):Literal|undefin
 }
 export function namesFrom(source:string,callee:string,group?:string):{names:string[];assertionSites:number}{
  const tree=ts.createSourceFile('contract.ts',source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TS),names=new Set<string>();let assertionSites=0;
+ function selectedGroups(expression:ts.Expression,env:Map<string,Literal>):string[]|undefined{
+  if(ts.isParenthesizedExpression(expression))return selectedGroups(expression.expression,env);
+  const isGroup=(node:ts.Node|undefined)=>!!node&&ts.isIdentifier(node)&&node.text==='group';
+  if(ts.isBinaryExpression(expression)&&expression.operatorToken.kind===ts.SyntaxKind.EqualsEqualsEqualsToken){
+   const value=isGroup(expression.left)?literal(expression.right,env):isGroup(expression.right)?literal(expression.left,env):undefined;
+   if(typeof value==='string')return [value];
+  }
+  if(ts.isCallExpression(expression)&&ts.isPropertyAccessExpression(expression.expression)&&expression.expression.name.text==='includes'&&expression.arguments.length===1&&isGroup(expression.arguments[0])){
+   const values=literal(expression.expression.expression,env);
+   if(Array.isArray(values)&&values.every((value):value is string=>typeof value==='string'))return values;
+  }
+  return undefined;
+ }
  function visit(node:ts.Node,env:Map<string,Literal>):void{
-  if(ts.isIfStatement(node)&&group){const expression=node.expression.getText(tree);if((expression.includes('.includes(group)')||/^group===/.test(expression))&&/['"](?:identity|inspector|surfaces|compat|all)['"]/.test(expression)){const values=[...expression.matchAll(/['"]([^'"]+)['"]/g)].map(m=>m[1]);if(values.includes(group)){visit(node.thenStatement,new Map(env));}else if(node.elseStatement)visit(node.elseStatement,new Map(env));return;}}
+  if(ts.isIfStatement(node)&&group){const values=selectedGroups(node.expression,env);if(values){if(values.includes(group)){visit(node.thenStatement,new Map(env));}else if(node.elseStatement)visit(node.elseStatement,new Map(env));return;}}
   if(ts.isForOfStatement(node)){const values=literal(node.expression,env);const declaration=ts.isVariableDeclarationList(node.initializer)?node.initializer.declarations[0]:undefined;
    if(Array.isArray(values)&&declaration&&ts.isIdentifier(declaration.name)){for(const value of values){const nested=new Map(env);nested.set(declaration.name.text,value);visit(node.statement,nested);}return;}}
   if(ts.isVariableDeclaration(node)&&ts.isIdentifier(node.name)){const value=literal(node.initializer,env);if(value!==undefined)env.set(node.name.text,value);}
@@ -48,12 +61,12 @@ export function generateLock():ExpectedLock{
  const entries:EntryDeclaration[]=[],nativeCases:Record<string,string[]>={},researchCases:Record<string,string[]>={};
  for(const entry of [...files].sort()){
   const sourceEntry=entrySource(root,entry),text=declarationSource(path.join(root,sourceEntry)),metadata=text.match(/^\/\/ @ci-contract (.+)$/m)?.[1];if(!metadata)throw Error('Missing declaration: '+entry);
-  const declaration=JSON.parse(metadata) as Declaration,source=declaration.source?declarationSource(path.join(root,declaration.source)):text;
+  const declaration=JSON.parse(metadata) as Declaration,source=declaration.source?declarationSource(path.join(root,entrySource(root,declaration.source))):text;
   const callee=declaration.granularity==='native'?'test':declaration.caseSource;
   const parsed=namesFrom(source,callee||'__no_cases__',declaration.group),names=callee?parsed.names:['entry'];
   let sourceInput=source;
   for(const include of declaration.includes||[]){
-   const included=declarationSource(path.join(root,include.source)),metadata=included.match(/^\/\/ @ci-contract (.+)$/m)?.[1];
+   const included=declarationSource(path.join(root,entrySource(root,include.source))),metadata=included.match(/^\/\/ @ci-contract (.+)$/m)?.[1];
    if(!metadata)throw Error('Missing included declaration: '+include.source);
    const child=JSON.parse(metadata) as Declaration;if(!child.caseSource)throw Error('Included contract needs named cases: '+include.source);
    const cases=namesFrom(included,child.caseSource);if(!cases.names.length)throw Error('Empty included contract: '+include.source);

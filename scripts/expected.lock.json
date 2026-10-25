@@ -408,7 +408,8 @@
       "expected lock rejects wrong maps, discriminator values and invalid numeric declarations",
       "case environment plans validate counts and keep empty or opaque valid data",
       "typed declaration hashes require repository LF instead of silently normalizing input",
-      "typed literal wrappers preserve expanded assertion sites and named cases"
+      "typed literal wrappers preserve expanded assertion sites and named cases",
+      "group plans follow AST conditions in both authored TS and spaced CJS output"
     ],
     "isolation-inputs.test.mts": [
       "independent checkout keeps exact CRLF input without staging or hiding real edits"
@@ -965,7 +966,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c39aeba91bb9497dc2445c39743a3409207318c0c59a1876559ca5ed22e6682b",
+      "sourceSha256": "9c5cb300a163fc4c8a54d3d58be20deebddd7ace4bbb6983979c1b76208a40aa",
       "assertionSites": 117,
       "rendererContexts": [
         "sphere:2d"
@@ -1195,10 +1196,14 @@
         {
           "id": "typed literal wrappers preserve expanded assertion sites and named cases",
           "minimumAssertions": 1
+        },
+        {
+          "id": "group plans follow AST conditions in both authored TS and spaced CJS output",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8a14b924620351af58cd3a31b100197549f0df38504119b8044e213023139dc8",
-      "assertionSites": 23
+      "sourceSha256": "6afc3871b5889d798cd2685f07d6dfde34a385897b3c1af1434bdf83bcc9f84b",
+      "assertionSites": 47
     },
     {
       "entry": "tests/floating-preferences.test.cjs",
@@ -2034,7 +2039,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8f0c94a3dbf5cf3bd29a661af60a6aedd7afcf070ef978950b8f740b53669660",
+      "sourceSha256": "c9d92b678ae3268c8eb348b0ca1d2405d27d2be4ff8310a35756efb4ddd13c35",
       "assertionSites": 178,
       "rendererContexts": [
         "weather:2d"
@@ -2289,10 +2294,6 @@
       "granularity": "checkpoint",
       "cases": [
         {
-          "id": "core-identity",
-          "minimumAssertions": 1
-        },
-        {
           "id": "before-core",
           "minimumAssertions": 1
         },
@@ -2317,8 +2318,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "64992f3f7d024f15a66eeb1aeb7c254b20217fc599ecd9edceaa234c43e90f3a",
-      "assertionSites": 50,
+      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "assertionSites": 47,
       "evidence": "checkpoints"
     },
     {
@@ -2335,7 +2336,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "64992f3f7d024f15a66eeb1aeb7c254b20217fc599ecd9edceaa234c43e90f3a",
+      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
       "assertionSites": 9,
       "evidence": "checkpoints"
     },
@@ -2348,10 +2349,6 @@
       "classification": "contract",
       "granularity": "checkpoint",
       "cases": [
-        {
-          "id": "core-identity",
-          "minimumAssertions": 1
-        },
         {
           "id": "privacy",
           "minimumAssertions": 1
@@ -2369,8 +2366,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "64992f3f7d024f15a66eeb1aeb7c254b20217fc599ecd9edceaa234c43e90f3a",
-      "assertionSites": 53,
+      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "assertionSites": 51,
       "evidence": "checkpoints"
     },
     {
@@ -2400,10 +2397,6 @@
       "granularity": "checkpoint",
       "cases": [
         {
-          "id": "core-identity",
-          "minimumAssertions": 1
-        },
-        {
           "id": "focus-escape",
           "minimumAssertions": 1
         },
@@ -2420,8 +2413,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "64992f3f7d024f15a66eeb1aeb7c254b20217fc599ecd9edceaa234c43e90f3a",
-      "assertionSites": 44,
+      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "assertionSites": 42,
       "evidence": "checkpoints"
     },
     {
