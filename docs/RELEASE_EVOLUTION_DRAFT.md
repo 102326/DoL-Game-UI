@@ -63,14 +63,14 @@ Framework Host继续使用`StoneFreeHost`技术名，公共合同保持不变。
 | `DoLGameUI-4.0.0.mod.zip` | 主UI，必装 |
 | `ModHubSoftWet-ModHub-1.3.0-plus-v1.0.2.mod.zip` | ModHub外观，选装 |
 | `MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip` | MapleBirch云存档外观，选装 |
-| `DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip` | 原版优化存档与叠穿兼容，选装 |
-| `CheatExtendedSoftWet-cheat extended-1.20.3-plus-v1.0.0.mod.zip` | Cheat Extended外观，选装；原作者／rebuild.30二选一 |
+| `DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.3.mod.zip` | 原版优化存档与叠穿兼容，选装 |
+| `CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.0.mod.zip` | Cheat Extended外观，选装；原作者／rebuild.30二选一 |
 | `ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip` | 额外衣槽接入，选装 |
 | `LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip` | 指定Lyra嘴部资源，选装 |
-| `SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.1.mod.zip` | 万能手机Alpha外观，选装 |
+| `SmartPhoneSoftWet-SmartPhoneAlpha-0.3.91-plus-v1.1.1.mod.zip` | 万能手机Alpha外观，选装 |
 | `SHA256SUMS.txt` | 九个Mod ZIP的SHA-256 |
 
-安装说明、截图和视频在页面与仓库中提供。
+安装说明、截图和视频在页面与仓库中提供。附件采用ASCII发布命名，Mod ZIP内容与受验包一致；校验时使用本页提供的SHA256SUMS。
 
 ## 画面与动态预览
 
