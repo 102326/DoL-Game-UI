@@ -11,7 +11,7 @@ export function sourceMotion(){
    void a.finished.catch(()=>{}).finally(()=>{if(animations.get(node)!==a)return;animations.delete(node);removeGhost(node)});return a;
   }catch{return}
  }
- function cancel(node?:HTMLElement){for(const [n,task]of scrollFrames)if(!node||n===node){scope.cancelFrame(task);scrollFrames.delete(n)}for(const n of scrolling)if(!node||n===node){n.scrollTo({top:n.scrollTop,behavior:'instant'});scrolling.delete(n)}if(node){animations.get(node)?.cancel();animations.delete(node);removeGhost(node)}else{for(const a of animations.values())a.cancel();animations.clear();for(const n of ghosts)n.remove();ghosts.clear();focusGhost=undefined}}
+ function cancel(node?:HTMLElement,preserveOpening?:HTMLElement){for(const [n,task]of scrollFrames)if(!node||n===node){scope.cancelFrame(task);scrollFrames.delete(n)}for(const n of scrolling)if(!node||n===node){n.scrollTo({top:n.scrollTop,behavior:'instant'});scrolling.delete(n)}if(node){animations.get(node)?.cancel();animations.delete(node);removeGhost(node)}else{for(const [n,a]of animations)if(n!==preserveOpening){a.cancel();animations.delete(n)}for(const n of ghosts)n.remove();ghosts.clear();focusGhost=undefined}}
  function scroll(node:HTMLElement,top:number,arrived?:()=>void){
   if(!scope.active())return;
   cancel(node);scrolling.add(node);node.scrollTo({top,behavior:enabled()?'smooth':'instant'});

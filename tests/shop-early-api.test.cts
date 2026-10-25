@@ -38,12 +38,15 @@ function resizeEffects(text:string,input:ResizeInput){
   for(const name of ['#shop-pagination','.shop-pages','.btn-pagination','.shop-pages-number'])queries.set(name,make(name));
   const testWindow={},windowQuery=make('window');
   const query=(target:unknown)=>{if(target===testWindow)return windowQuery;if(typeof target==='string'){const result=queries.get(target);if(result)return result}else{const result=[...queries.values()].find(value=>value===target);if(result)return result}throw Error('Unknown query target')};
-  vm.runInNewContext(block,{window:testWindow,$:query});for(const handler of handlers)handler();return effects;
+  vm.runInNewContext(block.replace(/\s+/g,' '),{window:testWindow,$:query});for(const handler of handlers)handler();return effects;
  });
 }
 for(const input of [{width:300,buttonWidth:32,count:4},{width:100,buttonWidth:32,count:4},{width:undefined,buttonWidth:32,count:4},{width:300,buttonWidth:undefined,count:4},{width:300,buttonWidth:32,count:0},{width:10,buttonWidth:32,count:0},{width:NaN,buttonWidth:32,count:4},{width:Infinity,buttonWidth:32,count:4}])assert.deepEqual(resizeEffects(newResize,input),resizeEffects(oldResize,input));
 checkpoint('typed-twee-resize');
-console.log('PASS generated Twee callbacks preserve both native/experimental events and eight width/empty cases');
+console.log('PASS generated Twee callbacks survive Widget whitespace folding and preserve both native/experimental events and eight width/empty cases');
+const commented=newResize.replaceAll('"use strict";','\n// src/early/shop-resize.ts\n"use strict";');
+assert.notEqual(commented,newResize);assert.throws(()=>resizeEffects(commented,{width:300,buttonWidth:32,count:4}),/Unexpected end of input/);
+checkpoint('widget-line-comment-rejected');
 
 const generatedTwee=path.join(root,'twee/patch-resize.twee'),saved=fs.readFileSync(generatedTwee);
 try{const drift=Buffer.concat([saved,Buffer.from('\n<!-- controlled output drift -->\n')]);fs.writeFileSync(generatedTwee,drift);const result=child.spawnSync(process.execPath,[path.join(root,'scripts/build-early.cjs'),'--check-twee'],{cwd:root,encoding:'utf8'});assert.notEqual(result.status,0);assert.match(result.stderr,/Twee resize output drifted/);assert.deepEqual(fs.readFileSync(generatedTwee),drift,'check must not rewrite a drifted output')}finally{fs.writeFileSync(generatedTwee,saved)}

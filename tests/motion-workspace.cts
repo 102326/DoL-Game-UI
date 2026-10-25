@@ -48,17 +48,16 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing w
    await page.locator('.dmt-close').click();await page.evaluate(()=>motionWorkspace.open());await page.waitForFunction(()=>!document.querySelector('#dol-midnight-controls[data-sf-leaving]'));
    assert.equal(await dialog.evaluate(n=>n instanceof HTMLDialogElement&&n.open),true);await page.keyboard.press('Escape');await waitSettingsClosed(page);
   });
-  await check('native-window material owns movement while original controls stay stationary and execute once',async()=>{
+  await check('native windows share the settings short fade while original controls stay stationary and execute once',async()=>{
    const overlay=page.locator('#customOverlay');
-   for(const mode of ['center','rise'])for(const zoom of [.8,1,1.25]){
+   for(const zoom of [.8,1,1.25]){
     await page.selectOption('#zoom',zoom===.8?'.8':String(zoom));
-    await page.selectOption('#window-style',mode);await page.getByRole('button',{name:'打开模拟原生面板',exact:true}).click();
-    await page.waitForSelector('.kw-window-stage');
-    if(mode==='center'){const geometry=await page.evaluate(()=>{const box=(selector:string)=>{const r=must(document.querySelector(selector)).getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}};return {stage:box('.kw-window-stage'),overlay:box('#customOverlay')}});for(const key of ['x','y','width','height'] as const)assert.ok(Math.abs(geometry.stage[key]-geometry.overlay[key])<1,`zoom ${zoom}: material must share final window ${key}`)}
-    const snapshot=await overlay.evaluate(n=>{const button=must(n.querySelector('#native-action')),r=button.getBoundingClientRect();return{hit:button.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),frames:n.getAnimations().flatMap(a=>a.effect instanceof KeyframeEffect?a.effect.getKeyframes():[]),decorative:[...document.querySelectorAll('.kw-window-stage,.kw-context-plane')].every(n=>getComputedStyle(n).pointerEvents==='none')}});
-    assert.ok(snapshot.hit&&snapshot.decorative);assert.ok(snapshot.frames.length>0);assert.ok(snapshot.frames.every(f=>!('top'in f||'transform'in f||'filter'in f||'clipPath'in f)),'live window must not move or establish a new fixed-descendant container');
+    const opening=await page.evaluate(()=>new Promise<{duration:unknown;frames:Keyframe[]}>(resolve=>{const root=document.querySelector<HTMLElement>('#customOverlay'),button=document.getElementById('show-native');if(!root||!button)throw Error('Missing native window');const animate=root.animate;root.animate=function(frames,options){root.animate=animate;resolve({duration:typeof options==='object'?options?.duration:options,frames:Array.isArray(frames)?frames:[]});return animate.call(root,frames,options)};button.click()}));
+    assert.equal(opening.duration,100);assert.deepEqual(opening.frames.map(f=>Number(f.opacity)),[0,1]);
+    const snapshot=await overlay.evaluate(n=>{const button=must(n.querySelector('#native-action')),r=button.getBoundingClientRect();return{hit:button.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),decorative:[...document.querySelectorAll('.kw-context-plane')].every(n=>getComputedStyle(n).pointerEvents==='none')}});
+    assert.ok(snapshot.hit&&snapshot.decorative);assert.ok(opening.frames.every(f=>!('top'in f||'transform'in f||'filter'in f||'clipPath'in f)),'live window must not move or establish a new fixed-descendant container');assert.equal(await page.locator('.kw-window-stage').count(),0,'old long material stage is retired');
     const calls=await page.evaluate(()=>motionWorkspace.calls());await page.locator('#native-action').click();assert.equal(await page.evaluate(()=>motionWorkspace.calls()),calls+1);
-    await page.screenshot({path:path.join(out,'native-'+mode+'.png')});await page.locator('#close-native').click();
+    await page.screenshot({path:path.join(out,'native-'+zoom+'.png')});await page.locator('#close-native').click();
     await page.waitForFunction(()=>!document.querySelector('.kw-window-stage,.kw-context-plane'));
    }
   });

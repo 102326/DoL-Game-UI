@@ -2,7 +2,7 @@
 
 本指南适用于Soft & Wet 4.0 — Evolution。主UI与Framework Host分别安装；原有存档格式和已保存偏好保持。实际分发文件与下载入口见[发布页](https://github.com/102326/DoL-Game-UI/releases)。
 
-运行实现及代表性验证以受验4ebe0bb为基线；后续发行提交保留相同运行字节（产品版本标记除外），具体身份见[九包冻结清单](evolution/EVO-4.0.0-PACKAGES-2026-10-25.json)与[发行关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。最终Tag／Release及实际下载文件名以发布页为准。
+4.0.1 在已发布 4.0.0 上修复服装店脚本、开窗演出和悬浮工具布局／清理。已安装 4.0.0 的玩家只替换主 UI 即可，Host 与七个兼容包不变。当前变更及验证范围见[修复记录](evolution/EVO-4.0.1-WINDOW-FIX-2026-10-26.md)，分发摘要以发布页 SHA256SUMS 为准。
 
 ## 安装
 
@@ -26,13 +26,13 @@
 | --- | --- |
 | ModHubSoftWet | 管理器、市场、说明、日志、帮助及已识别工具浮层；本轮 1.8.3 |
 | MapleBirchSoftWet | 云存档页面外观；前批5.5.4，当前平板5.5.5；云端业务由原Mod管理，本轮未执行云端写入 |
-| DolOptimizationSoftWet | 存档与原叠穿管理；当前兼容候选1.0.3，目标原版优化1.1.2.1 |
+| DolOptimizationSoftWet | 存档与原叠穿管理；兼容包1.0.3，目标原版优化1.1.2.1 |
 | SmartPhoneSoftWet | 原 SmartPhone Alpha 外壳和已识别组件；接受 0.3.91 / 0.3.91.1，不适用于 Omega |
 | CheatExtendedSoftWet | 原作者 CE 与已单列支持的 rebuild.30 外观；当前设备保留 rebuild.30，二者只能启用一个 |
 | ReOverfitsSoftWet | 额外衣槽；本轮未安装目标，未作新实机声明 |
 | LyraMouthCompat051213 | 指定 Lyra 0.5.12.13 嘴部资源适配，须核对资源环境与 MapleBirch 范围 |
 
-具体包版本和依赖见[最新九包清单](evolution/EVO-4.0.0-PACKAGES-2026-10-25.json)及ZIP的boot.json。早期RC2、TS迁移前及局部修复前的清单只作历史；当前UI ZIP SHA-256为`191dbd2b06a45b2e194999a1fed7178346a44b53bac5f4626fffd8f05a04f738`。分发集合只含九个Mod ZIP和对应SHA256SUMS，不含内部检查报告。除嘴部资源包外，通常还需要 UI；SmartPhone 要求 UI >=3.0.2，其它外观包沿用已有最低合同。没有目标 Mod 就不安装对应包；主 Mod 与 PhotoPack 另行获取，本版不打包第三方主 Mod。
+具体包版本和依赖见发布页及 ZIP 的 boot.json。4.0.0 的[九包冻结清单](evolution/EVO-4.0.0-PACKAGES-2026-10-25.json)保留为基线，不能替代 4.0.1 新主 UI 的身份。分发集合只含九个Mod ZIP和对应SHA256SUMS，不含内部检查报告。除嘴部资源包外，通常还需要 UI；SmartPhone 要求 UI >=3.0.2，其它外观包沿用已有最低合同。没有目标 Mod 就不安装对应包；主 Mod 与 PhotoPack 另行获取，本版不打包第三方主 Mod。
 
 原版优化叠穿是否开启由其原设置决定，兼容包不强制开启。已识别的叠穿项目、顺序和卸下操作使用作者原逻辑。
 
@@ -48,4 +48,4 @@ Node26仅为开发/构建工具要求，玩家浏览器或Android App无需安�
 
 更新UI时先核对目标发行版本，保留需要回退的原包，不要让一键更新全部覆盖需要保留的组合。
 
-发布附件只包含主UI、Host、选装兼容包和实际下载名对应的SHA256SUMS。部分文件使用ASCII发布名，ZIP内容摘要不变；[命名映射与分发校验](releases/4.0.0/README.md)保留原CI文件名。技术报告留在仓库，截图与视频在页面展示。
+发布附件只包含主UI、Host、选装兼容包和实际下载名对应的SHA256SUMS。部分文件使用ASCII发布名，ZIP内容摘要不变；[命名映射与分发校验](releases/4.0.1/README.md)保留原CI文件名。技术报告留在仓库，截图与视频在页面展示。

@@ -6,13 +6,14 @@ import {headerWeather} from './weather';
 import {visualScope} from '../../src/ui/visual-scope';
 
 export const adaptedOverlaySelector='#customOverlay[data-dgu-adapter-match=full]:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet])';
+export const nativeEntryKinds:Readonly<Record<string,string>>={属性:'characteristics',Attributes:'characteristics',社交:'social',Social:'social',特质:'traits',Traits:'traits',日志:'journal',Journal:'journal',统计:'statistics',Statistics:'statistics',成就:'gameFeats',Feats:'gameFeats',选项:'options',Options:'options',存档:'saves',Saves:'saves',作弊:'cheats',Cheats:'cheats'};
 
 // Decoration for reviewed native navigation only; native nodes and handlers stay in place.
 export function nativeNavigation(){
  type Group={node:HTMLElement;host?:HTMLElement;app?:App;state:{active:string};attrs:Map<HTMLElement,[string|null,string|null]>;className:string;hadClass:boolean;observer:MutationObserver};
  const groups=new Map<'sidebar'|'tabs'|'ce-inline',Group>(),weather=headerWeather(),scope=visualScope();
  scope.own(()=>weather.dispose());for(const key of ['ce-inline','sidebar','tabs'] as const)scope.own(()=>release(key));
- const labels:Record<string,string>={属性:'characteristics',Attributes:'characteristics',社交:'social',Social:'social',特质:'traits',Traits:'traits',日志:'journal',Journal:'journal',统计:'statistics',Statistics:'statistics',成就:'gameFeats',Feats:'gameFeats',选项:'options',Options:'options',存档:'saves',Saves:'saves',作弊:'cheats',Cheats:'cheats'};
+ const labels=nativeEntryKinds;
  const tabNames=new Set(['社交','特征','特质','成就','日志','笔记','统计','额外统计 (包含剧透)','模组统计','作弊','选项','游戏设置','Social','Characteristics','Traits','Feats','Journal','Notes','Statistics','Extra Statistics (Spoilers)','Mod Statistics','Cheats','Options']);
  const formTabs:Record<string,Set<string>>={
   journal:new Set(['可用物品','Available Items']),
@@ -31,7 +32,7 @@ export function nativeNavigation(){
   if(key==='sidebar'){const host=document.createElement('span');host.className='kw-native-orbit';host.setAttribute('aria-hidden','true');const app=createApp({render:()=>h(OrbitFocus,{container:node,selector:'[data-kw-selected=true]',active:state.active})});g.host=host;g.app=app;node.append(host);mountUI(app,host,()=>release(key))}
   if(groups.get(key)!==g)return;g.observer.observe(node,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});return groups.get(key);
  }
- function mark(g:Group,n:HTMLElement,role:string,selected:boolean){if(!g.attrs.has(n))g.attrs.set(n,[n.getAttribute('data-kw-nav-control'),n.getAttribute('data-kw-selected')]);n.setAttribute('data-kw-nav-control',role);if(selected)n.setAttribute('data-kw-selected','true');else n.removeAttribute('data-kw-selected')}
+ function mark(g:Group,n:HTMLElement,role:string,selected:boolean){if(!g.attrs.has(n))g.attrs.set(n,[n.getAttribute('data-kw-nav-control'),n.getAttribute('data-kw-selected')]);if(n.getAttribute('data-kw-nav-control')!==role)n.setAttribute('data-kw-nav-control',role);if(selected){if(n.getAttribute('data-kw-selected')!=='true')n.setAttribute('data-kw-selected','true')}else if(n.hasAttribute('data-kw-selected'))n.removeAttribute('data-kw-selected')}
  function refresh(){
   if(!scope.active())return;if(!isMasterEnabled()){release('tabs');release('sidebar');release('ce-inline');weather.clear();return}
   const overlay=document.querySelector<HTMLElement>('#customOverlay:not(.hidden):is(.dgs-overlay,.dgc-overlay,.dgp-overlay,.dgs-native-tools),'+adaptedOverlaySelector+':not(.hidden)'),kind=overlay?.dataset.overlay;

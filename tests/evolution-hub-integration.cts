@@ -25,7 +25,13 @@ async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstructi
  const overrides:Record<string,string>={};
  const oldPreviewCSS='main{max-width:760px;margin:auto;padding:40px 24px}';
  if(oldPreviewStyle)overrides['preview/injected-style']=crypto.createHash('sha256').update(oldPreviewCSS).digest('hex');
- function oldScrollCSS(code:string,file:string){const old=code.replace('html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub][data-spin-phase=open] .sf-motion-orbit.is-grid{overflow:auto}','html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=open] .sf-motion-orbit{overflow:auto}');assert.notEqual(old,code,'old scroll selector injection');overrides[file]=crypto.createHash('sha256').update(old).digest('hex');return old}
+ function oldScrollCSS(code:string,file:string){
+  // Recreate both sides of the historical specificity conflict; the current base now also covers fan mode.
+  const base='html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-orbit{transform:none',scroll='html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub][data-spin-phase=open] .sf-motion-orbit.is-grid{overflow:auto}';
+  assert.equal(code.split(base).length,2,'historical scroll base injection');assert.equal(code.split(scroll).length,2,'historical scroll override injection');
+  const old=code.replace(base,base.replace('.sf-motion-orbit{','.sf-motion-orbit.is-grid{')).replace(scroll,'html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=open] .sf-motion-orbit{overflow:auto}');
+  overrides[file]=crypto.createHash('sha256').update(old).digest('hex');return old;
+ }
  const server:ViteDevServer=await createHubPreviewServer(0,[{name:'observe-actual-visual',enforce:'pre',transform(code:string,id:string){
   const file=id.replaceAll('\\','/');
   if(oldScroll&&file.endsWith('/src/ui/golden-spin/hub.css'))return oldScrollCSS(code,'src/ui/golden-spin/hub.css');

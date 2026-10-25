@@ -508,12 +508,13 @@
       "rapid reversals retain the current menu progress and sphere angle",
       "left/right docking, narrow touch, resize and reduced motion preserve interaction",
       "dynamic tools, zoom and scene invalidation keep the native Hub owner in control",
+      "explicit fan remains curved and reachable with five real tools; closed shells leave no backing box",
       "unmount stops both controllers and removes the experimental canvas"
     ],
     "motion-workspace": [
       "shared motion cancels hidden work and cannot restart after disposal",
       "real settings keep stable hitboxes, directional category completion and modal boundaries",
-      "native-window material owns movement while original controls stay stationary and execute once",
+      "native windows share the settings short fade while original controls stay stationary and execute once",
       "narrow zoomed settings, reduced motion and disabling during category motion settle",
       "unmount during motion removes only owned presentation; remount preserves settings"
     ]
@@ -967,8 +968,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9c5cb300a163fc4c8a54d3d58be20deebddd7ace4bbb6983979c1b76208a40aa",
-      "assertionSites": 117,
+      "sourceSha256": "b004dcdf35e87338e9e29927e1129af9c626e46941b9ee962eeeb165595c443f",
+      "assertionSites": 118,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1481,12 +1482,16 @@
           "minimumAssertions": 1
         },
         {
+          "id": "explicit fan remains curved and reachable with five real tools; closed shells leave no backing box",
+          "minimumAssertions": 1
+        },
+        {
           "id": "unmount stops both controllers and removes the experimental canvas",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "2fb9bf0195ffca8ddac8055af461e731bd72cab2cb2872b3a24377750b5a4919",
-      "assertionSites": 28,
+      "sourceSha256": "346182e92977603a4daf9351d07fa2b1b690db4513595ec2ed5cd52163003170",
+      "assertionSites": 40,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1505,8 +1510,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b67a6b5f65ae627314c7b138df82287d066fb3fc38189d901376ad16cc8e6cd8",
-      "assertionSites": 61
+      "sourceSha256": "60957c4449f7daa1d3ce5deee76128f224f3e4f1a367574d5cf4f49aceee8656",
+      "assertionSites": 64
     },
     {
       "entry": "tests/integration-preview-pages.cjs",
@@ -1649,7 +1654,7 @@
           "minimumAssertions": 1
         },
         {
-          "id": "native-window material owns movement while original controls stay stationary and execute once",
+          "id": "native windows share the settings short fade while original controls stay stationary and execute once",
           "minimumAssertions": 1
         },
         {
@@ -1661,8 +1666,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "dedab513cb0648d9c676e035273bb4d1a321baf5262265af1c53d1119342ebf5",
-      "assertionSites": 69
+      "sourceSha256": "bd8b5607a3da9eb57b7e24fa3d7cd96baf11cf0d564108afba281b540697967c",
+      "assertionSites": 39
     },
     {
       "entry": "tests/mouth-compat-adapter.cjs",
@@ -1749,8 +1754,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b53ab139a3ebefe29d0e430e8e2dc6852d5ef6d697f55a18817850a7e5c9f0e5",
-      "assertionSites": 96
+      "sourceSha256": "4a77f95565758ad55f5277d97cb3a92381a4c469a39d6875c403c0f8125db467",
+      "assertionSites": 98
     },
     {
       "entry": "tests/optimization-date.cjs",
@@ -2225,12 +2230,16 @@
           "minimumAssertions": 1
         },
         {
+          "id": "widget-line-comment-rejected",
+          "minimumAssertions": 1
+        },
+        {
           "id": "typed-twee-drift",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "564965556e7097a7cd5d1f9cbefb1d9d77faa60b9721f8c96bc4ced09436ac46",
-      "assertionSites": 15,
+      "sourceSha256": "1af98bf8e1bea31bcc3a1b86913331cf881c2226607cac8870ac201995d26204",
+      "assertionSites": 17,
       "evidence": "checkpoints"
     },
     {

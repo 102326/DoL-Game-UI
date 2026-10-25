@@ -21,9 +21,15 @@ const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'rig
 const menu = computed(() => {
  const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
  const rows=Math.ceil((count-(hasSettings?1:0))/2),officialHeight=24+(hasSettings?58:0)+rows*66+(rows+(hasSettings?1:0))*6+57;
- return menuLayout(point,area,count,props.preferredMode==='grid'||count>3,docked.value?38:56,props.officialPreferences?officialHeight:undefined);
+ const fan=props.officialPreferences&&props.preferredMode==='fan';
+ return menuLayout(point,area,count,props.preferredMode==='grid'||count>3&&!fan,docked.value?38:56,props.officialPreferences?officialHeight:undefined,fan);
 });
 const grid = computed(() => menu.value.grid);
+function petalOffset(index:number){
+ if(!props.officialPreferences||grid.value)return{x:menu.value.petalX,y:index*66};
+ const curve=Math.cos((index/Math.max(1,views.value.length-1)-.5)*Math.PI);
+ return{x:menu.value.petalX===0?28+64*curve:92-64*curve,y:8+index*76};
+}
 function clearHint(){stopHint?.();stopHint=undefined;message.value=''}
 function hint(text:string){clearHint();message.value=text;stopHint=scope.timeout(clearHint,2200)}
 const panel = computed(() => {
@@ -148,7 +154,7 @@ onBeforeUnmount(scope.dispose);
   <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
   :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
    <button v-for="(view, index) in views" :key="`${view.owner}:${view.id}`" type="button" class="sf-motion-petal" :data-motion-view="`${view.owner}:${view.id}`"
-    :style="{'--i': index, '--x': `${menu.petalX}px`, '--y': `${index * 66}px`}" @click="choose(view)">
+    :style="{'--i': index, '--x': `${petalOffset(index).x}px`, '--y': `${petalOffset(index).y}px`}" @click="choose(view)">
     <svg v-if="officialPreferences" class="sf-motion-tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
      <path v-if="view.id==='interface-settings'" d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6m-6 0v6"/>
      <path v-else-if="view.id==='native-saves'" d="M5 3h12l3 3v15H4V3h1Zm3 0v7h8V3M8 21v-7h8v7"/>

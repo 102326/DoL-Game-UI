@@ -1,6 +1,6 @@
 # Soft & Wet 4.0 — Evolution
 
-`DoLGameUI 4.0.0` 是 Evolution 的正式版本构建。修复ModHub等已适配窗口旧雨幕的重复重绘，保留原雨量、速度和外观。更新悬浮球回旋、设置转场与玻璃天气，保留3.X黑灰Acrylic、真实游戏操作、UI API v1及独立Framework Host。
+`DoLGameUI 4.0.1` 是 Evolution 的正式版本构建。修复ModHub等已适配窗口旧雨幕的重复重绘，保留原雨量、速度和外观。更新悬浮球回旋、设置转场与玻璃天气，保留3.X黑灰Acrylic、真实游戏操作、UI API v1及独立Framework Host。
 
 普通雨珠集中覆盖设置标题、布局切换及横向分类区，并在下缘柔化衔接；保留原水珠尺寸、流速与真实背景折射。雪与特殊天气继续使用各自的表现范围。
 
@@ -41,3 +41,5 @@ Host 0.1.5 修复缺少 AbortSignal.any 时不启动的问题；历史0.1.4包�
 设置与可选包见 `docs/UI_SETTINGS.md`、`docs/OPTIONAL_ADAPTERS.md`，本版变化见包内与当前版本对应的 `docs/RELEASE_*.md`。许可证见 LICENSE、THIRD-PARTY-NOTICES.txt 及 UPSTREAM-RENDERER 文件。
 
 反馈入口：https://github.com/102326/DoL-Game-UI/issues 。请附 DoL/Lyra、Loader、Host/UI、相关 Mod 版本、平台/WebView、复现步骤及实际与期望表现。不要公开上传私人存档、账号、敏感数据或未获授权的第三方 Mod 包。
+
+4.0.1 修复侧栏及已适配窗口的重复入场、天气绘制范围、悬浮工具扇形与关闭底板。Host 和兼容包沿用原包。

@@ -5,7 +5,10 @@ html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-ball::before,html
 .spin-hub-canvas{position:absolute;width:175px;height:175px;left:50%;top:50%;transform:translate(-50%,-48%);pointer-events:none}
 .sf-motion-ball.is-docked .spin-hub-canvas{width:125px;height:125px}
 /* Only the owned pseudo-layer draws the shell, including the no-glass fallback. */
-html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-orbit.is-grid{transform:none;clip-path:none;opacity:1;transition:none;overflow:visible;background:transparent!important;backdrop-filter:none!important;box-shadow:none!important;border-color:transparent!important;isolation:isolate}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-orbit{transform:none;clip-path:none;opacity:1;transition:none;overflow:visible;background:transparent!important;backdrop-filter:none!important;box-shadow:none!important;border-color:transparent!important;isolation:isolate}
+html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-petal{left:var(--x);top:var(--y);transform:none;width:136px;min-height:58px}
+html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities{top:auto;bottom:0;left:0;right:0;justify-content:center}
+html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=closed] :is(.sf-motion-orbit,.sf-motion-sheet)[aria-hidden=true]{display:none!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit::before{content:'';position:absolute;inset:0;z-index:-1;border:1px solid #ffffff16;border-radius:24px;background:linear-gradient(135deg,#ffffff08,transparent 65%),rgba(25,28,28,.72);box-shadow:0 18px 42px #0005;backdrop-filter:blur(24px);opacity:var(--spin-shell,0);pointer-events:none}
 html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub[data-spin-hub] .sf-motion-petal{transition:none!important;animation:none!important;transform-origin:center}
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-utilities{transition:none;transform:none;grid-column:1/-1}

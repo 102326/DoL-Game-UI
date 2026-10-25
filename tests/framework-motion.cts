@@ -33,6 +33,17 @@ for(const size of [{width:390,height:844},{width:844,height:390},{width:390,heig
   for(let i=1;i<cards.length;i++)assert.ok(must(cards[i-1]).bottom<must(cards[i]).y);
  }
 }
+// Explicit official fan choice supports all five tools when their real footprint fits.
+for(const size of [{width:1363,height:876},{width:390,height:844}])for(const side of ['left','right'] as const)for(const y of [0,1]){
+ const area={left:0,top:0,...size},point=locate({side,y,docked:false},area),fan=menuLayout(point,area,5,false,56,400,true);
+ assert.equal(fan.grid,false,'five tools preserve the explicit fan choice');
+ const cards=Array.from({length:5},(_,i)=>{const curve=Math.cos((i/4-.5)*Math.PI),x=fan.petalX===0?28+64*curve:92-64*curve;return{x:fan.x+x,y:fan.y+8+i*76,right:fan.x+x+136,bottom:fan.y+8+i*76+58}});
+ for(const card of cards)assert.ok(card.x>=12&&card.y>=12&&card.right<=size.width-12&&card.bottom<=size.height-12&&(card.right<=point.x||card.x>=point.x+56||card.bottom<=point.y||card.y>=point.y+56));
+ for(let i=1;i<cards.length;i++)assert.ok(must(cards[i-1]).bottom<must(cards[i]).y,'fan controls never overlap');
+ assert.ok(new Set(cards.map(card=>Math.round(card.x))).size>1,'fan is a visible arc, not a vertical grid');
+ assert.equal(menuLayout(point,area,5,true,56,400,true).grid,true,'explicit grid remains grid');
+}
+assert.equal(menuLayout({x:212,y:20},{left:0,top:0,width:280,height:260},5,false,56,400,true).grid,true,'small viewport falls back without losing tools');
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true});
  try {

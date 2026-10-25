@@ -1,15 +1,16 @@
 import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
+import {fadeWindow} from '../../src/ui/window-fade';
 import {isMasterEnabled} from '../../src/runtime/master';
 import type {NativeEventsHost} from '../../src/runtime/sugarcube';
-import {nativeNavigation,adaptedOverlaySelector} from './navigation';
+import {nativeNavigation,adaptedOverlaySelector,nativeEntryKinds} from './navigation';
 
 /** Presentation only: never cancel an event, dispatch an action or read game variables. */
 export function startOfficialMotion(root:NativeEventsHost=window){
  const scope=visualScope(),motion=sourceMotion(),navigation=nativeNavigation(),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
- let overlay:HTMLElement|null=null,active:HTMLElement|null=null,activeKind='',plane:HTMLElement|undefined;
+ let overlay:HTMLElement|null=null,active:HTMLElement|null=null,presented:HTMLElement|null=null,activeKind='',plane:HTMLElement|undefined;
  scope.own(()=>motion.dispose());scope.own(()=>navigation.dispose());
- let origin:{rect:DOMRect;node:HTMLElement;time:number;hub:boolean;bedroom:boolean}|undefined,returnTo:HTMLElement|null=null,activeRect:DOMRect|undefined;
+ let origin:{rect:DOMRect;node:HTMLElement;time:number;hub:boolean;bedroom:boolean;expected?:string}|undefined,returnTo:HTMLElement|null=null;
  let previousPetal:DOMRect|undefined;
  let sidebarRoots:HTMLElement[]=[];
  let pressed:{node:HTMLElement;pointer:number;before:string|null}|undefined;
@@ -17,33 +18,18 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  const pressSelector=formButtons+','+'.dgw-exits a.link-internal,[data-kw-entry],[data-kw-nav-control],.sf-motion-hub[data-official] button,#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab';
  function clearPress(event?:PointerEvent){if(!pressed||event&&event.pointerId!==pressed.pointer)return;const {node,pointer,before}=pressed;if(node.getAttribute('data-kw-press')===String(pointer)){if(before===null)node.removeAttribute('data-kw-press');else node.setAttribute('data-kw-press',before)}pressed=undefined}
  function press(event:PointerEvent){if(!live()||!event.isPrimary||event.button!==0||!(event.target instanceof Element))return;const node=event.target.closest<HTMLElement>(pressSelector);if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;clearPress();pressed={node,pointer:event.pointerId,before:node.getAttribute('data-kw-press')};node.setAttribute('data-kw-press',String(event.pointerId))}
- let study:'center'|'rise'='center',shell:HTMLElement|undefined;
  const live=()=>scope.active()&&isMasterEnabled()&&document.documentElement.hasAttribute('data-stone-free');
  const visible=(n:HTMLElement)=>!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert]');
  function later(callback:()=>void){scope.frame(()=>{if(live())callback()})}
  function settle(callback:()=>void){later(()=>later(callback))}
  const clearFrames=scope.cancelFrames;
- function cancelPresentation(){clearPress();motion.cancel();shell?.remove();shell=undefined}
- // The plane shares the final stage, never a button's origin. Native controls are not cloned.
- function windowStage(rect:DOMRect,mode:'center'|'rise',closing=false){
-  shell?.remove();shell=undefined;if(!motion.enabled()||!rect.width||!rect.height)return;
-  const n=document.createElement('div');n.className='kw-window-stage';n.dataset.motion=mode;n.setAttribute('aria-hidden','true');
-  // getBoundingClientRect already includes body zoom; calibrate this fixed layer's CSS basis.
-  Object.assign(n.style,{left:'0px',top:'0px',width:'100px',height:'100px'});document.body.append(n);
-  const basis=n.getBoundingClientRect(),x=basis.width/100,y=basis.height/100;
-  if(!Number.isFinite(x)||!Number.isFinite(y)||x<=0||y<=0){n.remove();return}
-  Object.assign(n.style,{left:(rect.left-basis.left)/x+'px',top:(rect.top-basis.top)/y+'px',width:rect.width/x+'px',height:rect.height/y+'px'});shell=n;
-  const open:Keyframe[]=mode==='center'?[{clipPath:'inset(22% 26% round 40px)',opacity:.8},{clipPath:'inset(0 round 22px)',opacity:.6,offset:.65},{clipPath:'inset(0 round 22px)',opacity:0}]:[{transform:'translateY(28px) scale(.98)',opacity:.4},{transform:'none',opacity:.55,offset:.65},{transform:'none',opacity:0}];
-  const close:Keyframe[]=mode==='center'?[{clipPath:'inset(0 round 22px)',opacity:.55},{clipPath:'inset(18% 22% round 36px)',opacity:0}]:[{transform:'none',opacity:.5},{transform:'translateY(20px) scale(.985)',opacity:0}];
-  const a=motion.animate(n,closing?close:open,closing?240:420);
-  const remove=()=>{n.remove();if(shell===n)shell=undefined};if(a)void a.finished.then(remove,remove);else remove();
- }
+ function cancelPresentation(preserveOpening?:HTMLElement){clearPress();motion.cancel(undefined,preserveOpening)}
  function clearMarks(){for(const [nodes,attribute]of [[marked,'data-kw-native'],[entries,'data-kw-entry']] as const){for(const [node,value]of nodes)if(value===null)node.removeAttribute(attribute);else node.setAttribute(attribute,value);nodes.clear()}}
  function sidebar(){
   const roots=[...document.querySelectorAll<HTMLElement>('#ui-bar #overlayButtons,#ui-bar #startCaption')];
   if(roots.length!==sidebarRoots.length||roots.some((node,i)=>node!==sidebarRoots[i])){sidebarObserver.disconnect();sidebarRoots=roots;for(const node of roots)sidebarObserver.observe(node,{childList:true,subtree:true})}
   if(!live())return;
-  const mark=(node:HTMLElement,owner:string)=>{if(!entries.has(node))entries.set(node,node.getAttribute('data-kw-entry'));node.setAttribute('data-kw-entry',owner)};
+  const mark=(node:HTMLElement,owner:string)=>{if(!entries.has(node))entries.set(node,node.getAttribute('data-kw-entry'));if(node.getAttribute('data-kw-entry')!==owner)node.setAttribute('data-kw-entry',owner)};
   // Reviewed StoryCaption/startCaption macro buttons; nested Mod markup is not a native entry.
   const names=['属性','社交','特质','日志','统计','成就','选项','存档','作弊','Attributes','Social','Traits','Journal','Statistics','Feats','Options','Saves','Cheats'];
   for(const parent of roots){
@@ -69,47 +55,49 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    marked.set(link,link.getAttribute('data-kw-native'));link.setAttribute('data-kw-native',target);
   }
  }
- function scrim(open:boolean){
+ function scrim(open:boolean,enter=true,initial=0){
   if(open){
    if(!plane){plane=document.createElement('div');plane.className='kw-context-plane';plane.setAttribute('aria-hidden','true');document.body.append(plane)}
-   motion.animate(plane,[{opacity:0},{opacity:1}],300);document.documentElement.setAttribute('data-kw-character-layer','');
+   if(enter)fadeWindow(motion,plane,1,initial);else motion.cancel(plane);
+   document.documentElement.setAttribute('data-kw-character-layer','');
   }else{
    document.documentElement.removeAttribute('data-kw-character-layer');const old=plane;if(!old)return;
-   const animation=motion.animate(old,[{opacity:1},{opacity:0}],280);
+   const animation=fadeWindow(motion,old,0,initial);
    const remove=()=>{if(!active&&plane===old){old.remove();plane=undefined}};
    if(animation)void animation.finished.then(remove,remove);else remove();
   }
  }
  function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
+ function beginExpected(){
+  if(!live()||!origin?.expected||performance.now()-origin.time>=1000)return;
+  const node=document.getElementById('customOverlay');
+  if(!node||node===presented||node.hidden||node.classList.contains('hidden')||node.dataset.overlay!==origin.expected)return;
+  // Start before the first paint; a late adapter match must never fade an already visible window again.
+  presented=node;fadeWindow(motion,node,1,0);
+ }
  function syncOverlay(){
   if(!scope.active())return;
   const next=document.getElementById('customOverlay');
-  if(next!==overlay){observer.disconnect();overlay=next;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
+  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
+  const shown=live()&&overlay&&visible(overlay);if(!shown)presented=null;
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
   navigation.refresh();
-  const kind=nextActive?`${nextActive.dataset.overlay??''}:${nextActive.dataset.dgpPanel??''}`:'';if(nextActive===active&&kind===activeKind)return;
-  const old=active,oldStudy=study;active=nextActive;activeKind=kind;cancelPresentation();
+  const kind=nextActive?.dataset.overlay??'';if(nextActive===active&&kind===activeKind)return;
+  const old=active,adopting=!active&&!!nextActive&&presented===nextActive,opacity=plane?Number(getComputedStyle(plane).opacity):0;active=nextActive;activeKind=kind;cancelPresentation(adopting?nextActive??undefined:undefined);
   if(active){
-   scrim(true);const from=origin&&performance.now()-origin.time<1000?origin:undefined;
-   returnTo=from?.hub?document.querySelector<HTMLElement>('.sf-motion-ball'):from?.node??null;
-   // Local review choice only: a fixed candidate per opening, no random page assignments.
-   study=document.documentElement.getAttribute('data-kw-window-study')==='rise'?'rise':'center';
-   activeRect=active.getBoundingClientRect();windowStage(activeRect,study);
-   // Material owns movement. Live controls and fixed descendants keep their final coordinates.
-   motion.animate(active,[{opacity:.18},{opacity:1}],300);
-   const nav=active.querySelector<HTMLElement>('.dgc-host,.dgs-host,.dgp-host');
-   if(nav)motion.animate(nav,[{opacity:.45},{opacity:1}],300);
-   const body=active.querySelector<HTMLElement>('#customOverlayContent');
-   if(body)motion.animate(body,[{opacity:.35},{opacity:1}],360);
+   const entering=presented!==active;presented=active;scrim(true,entering,opacity);const from=origin&&performance.now()-origin.time<1000?origin:undefined;
+   if(entering||adopting)returnTo=from?.hub?document.querySelector<HTMLElement>('.sf-motion-ball'):from?.node??null;
+   if(entering)fadeWindow(motion,active,1,0);
    const focus=active.querySelector<HTMLElement>('.dgc-host button,.dgs-host button,.dgp-host button');
    if(focus&&!active.contains(document.activeElement))focus.focus({preventScroll:true});
   }else{
-   if(old){motion.cancel(old);if(activeRect)windowStage(activeRect,oldStudy,true);const target=returnTo;if(target?.isConnected&&visible(target)){if(document.activeElement===document.body||old.contains(document.activeElement))target.focus({preventScroll:true})}}
-   scrim(false);returnTo=null;activeRect=undefined;
+   if(old&&!shown){motion.cancel(old);const target=returnTo;if(target?.isConnected&&visible(target)){if(document.activeElement===document.body||old.contains(document.activeElement))target.focus({preventScroll:true})}}
+   scrim(false,true,opacity);if(!shown)returnTo=null;
   }
  }
  function stamp(node:HTMLElement){
-  if(!origin?.hub||performance.now()-origin.time>100)origin={rect:node.getBoundingClientRect(),node,time:performance.now(),hub:!!node.closest('.sf-motion-petal'),bedroom:node.hasAttribute('data-kw-native')};
+  const expected=node.dataset.kwEntry==='modhub-entry'?'modloader':node.dataset.kwEntry==='native-caption'?nativeEntryKinds[node.textContent?.trim()??'']:undefined;
+  if(!origin?.hub||performance.now()-origin.time>100)origin={rect:node.getBoundingClientRect(),node,time:performance.now(),hub:!!node.closest('.sf-motion-petal'),bedroom:node.hasAttribute('data-kw-native'),expected};else if(expected)origin.expected=expected;
  }
  function response(node:HTMLElement){if(node.dataset.kwNavControl==='tab'){motion.animate(node,[{'--kw-heading-wave':-1,'--kw-heading-wave-opacity':0},{'--kw-heading-wave':-.2,'--kw-heading-wave-opacity':.8,offset:.35},{'--kw-heading-wave':1,'--kw-heading-wave-opacity':0}],720);return}motion.animate(node,[{boxShadow:'inset 0 0 0 1px #8cb3a666',backgroundColor:'#8cb3a617'},{boxShadow:getComputedStyle(node).boxShadow,backgroundColor:getComputedStyle(node).backgroundColor}],360)}
  function click(event:MouseEvent){
@@ -118,7 +106,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(detail&&visible(detail))response(detail);
   const node=event.target.closest<HTMLElement>(formButtons+',.dgw-exits a.link-internal,.sf-motion-petal,.sf-motion-ball,.dgw-slots button,.dgw-item,.dgshop-content .category-tab,.dgshop-content .clothing-item,.dcu-arrangement button,[data-kw-native],[data-kw-entry],[data-kw-nav-control],.dgp-navigation button');
   if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;
-  stamp(node);response(node);
+  stamp(node);response(node);queueMicrotask(beginExpected);
   const nav=node.closest<HTMLElement>('#shopCategories');
   const before=nav?.querySelector<HTMLElement>('[aria-pressed=true],.category-tab.active,[aria-current]')?.getBoundingClientRect();
   const passage=node.closest('.passage');
@@ -148,9 +136,9 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    if(header&&origin?.bedroom&&performance.now()-origin.time<1000)motion.focus(origin.rect,header.getBoundingClientRect());
   });
  }
- function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=null;activeKind='';study='center';origin=undefined;returnTo=null;activeRect=undefined;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
- function resize(){cancelPresentation();if(active&&visible(active))activeRect=active.getBoundingClientRect()}
- const observer=new MutationObserver(()=>later(syncOverlay));scope.own(()=>observer.disconnect());
+ function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=presented=null;activeKind='';origin=undefined;returnTo=null;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
+ function resize(){cancelPresentation()}
+ const observer=new MutationObserver(()=>{beginExpected();later(syncOverlay)});scope.own(()=>observer.disconnect());
  const sidebarObserver=new MutationObserver(()=>later(sidebar));scope.own(()=>sidebarObserver.disconnect());
  const blur=()=>clearPress();
  const parent=document.getElementById('customOverlay')?.parentElement;
