@@ -16,7 +16,7 @@ type ResourceStats={frames:number;workspaces:number};
 type Theme={openSettings():void;setPreference(key:'fontScale',value:number):void;getPreferences():{comfortable:boolean;fontScale:number};destroy():void};
 declare const theme:Theme,settingsResources:{stats():ResourceStats;deliver():void},leaked:string[];
 declare let calls:number;
-declare const must:<T>(value:T|null|undefined)=>T;
+function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing settings fixture value');return value}
 function portOf(server:ViteDevServer){const address=server.httpServer?.address();if(address==null||typeof address==='string')throw Error('Missing Vite TCP port');return address.port}
 (async()=>{
  const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;

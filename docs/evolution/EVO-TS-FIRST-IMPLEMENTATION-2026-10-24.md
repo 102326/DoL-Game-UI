@@ -414,3 +414,10 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 - 当前原型修正实际根节点/视口/三色通道读取；新增prototype-core严格检查，直接继承当前root strict、noUncheckedIndexedAccess=true、allowJs=false，并接入ci:check。
 - 冻结对照专用tsconfig.historical-settings.json精确保留b507时compilerOptions（strict=true、allowJs=true、当时未开启checked indexing）。只用于需要真实历史设置源码的对照图，不修改冻结源码或其身份断言；不恢复历史产品路径。当前产品、Host、兼容包和可独立检查的原型内核仍用当前严格配置。
 - source-policy-boundary新增配置边界检查，锁定当前strict/indexing/禁JS与历史编译合同的区别，防止用历史例外覆盖当前代码。实际三个配置类型检查通过，完整ci:check及新准确提交两套CI另行记录。
+
+
+### 设置夹具Node/browser边界修正
+
+4f95f78标准40170321234、3386714研究40170838148的首个实际失败均为settings-ci生成入口的Node端must未定义：原CTS只声明该函数并在浏览器注入，但新增Node boundingBox读取及集成调用也使用它。补上同语义实际函数，不改变产品、断言、等待或集合。此前设置专项没有走完整，不能沿用为通过。
+
+修正后Windows本地实际settings-ci完整通过：双布局/长内容滚动、模态输入、键盘与分类中断、偏好持久、S01五项、W01九项、真实正文像素及受控晚宿主反例均执行。原始失败及完整输出保留ts243-standard-job.log、ts243-research-second-job.log、ts243-settings-runtime.txt。4f95f78的Linux设备布局夹具124项、4类反例已全部通过；本地新旧各4超时仍保留为原环境记录，不能改写历史失败。3386714研究其余原型/天气检查全部通过，但整个run仍失败；新准确提交两套CI须重新完成。
