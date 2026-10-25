@@ -17,7 +17,8 @@ for(const name of checkTwee?[]:['shop-page-experiment']){
 }
 
 const resizeSource=path.join(root,'src/early/shop-resize.ts');
-const resize=buildSync({entryPoints:[resizeSource],absWorkingDir:root,bundle:true,write:false,format:'iife',target:'es2022',metafile:true});
+// SugarCube folds <<run>> line breaks into spaces; generated // comments would eat the rest.
+const resize=buildSync({entryPoints:[resizeSource],absWorkingDir:root,bundle:true,write:false,format:'iife',target:'es2022',metafile:true,minifyWhitespace:true,legalComments:'none'});
 if(Object.keys(resize.metafile.inputs).some(input=>path.resolve(root,input)!==resizeSource))throw Error('Resize body must remain standalone');
 const file=resize.outputFiles[0];if(!file)throw Error('Resize body produced no output');
 const template=fs.readFileSync(path.join(root,'twee/patch-resize.twee.in'),'utf8');

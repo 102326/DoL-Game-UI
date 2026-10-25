@@ -17,7 +17,7 @@ async function mount(){
  const ticket=++generation;
  host.sceneReady();
  releases=names.map(([id,title])=>owner.provideView({id,title,setup(c){record(id);c.element.textContent=title+' · 演示内容，不执行游戏业务'}}));
- const current=mountVue(owner,{id:'golden-spin-lab',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,officialPreferences:true,preferredMode:'grid',dismiss:()=>unmount(),experimentalMotion:(root:HTMLElement)=>{const instance=sphereHub(root);controller=instance;return instance.destroy}}});
+ const current=mountVue(owner,{id:'golden-spin-lab',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,officialPreferences:true,preferredMode:new URLSearchParams(location.search).get('mode')==='fan'?'fan':'grid',dismiss:()=>unmount(),experimentalMotion:(root:HTMLElement)=>{const instance=sphereHub(root);controller=instance;return instance.destroy}}});
  handle=current;await current.ready;await nextTick();if(ticket!==generation)return;
  const root=document.querySelector<HTMLElement>('.sf-motion-hub[data-official]');
  if(root){mounted.value=true;Object.assign(window,{goldenSpinLab:{controller,host,recorded:calls,unmount,remount,mountExtra,setZoom,settleScene}})}

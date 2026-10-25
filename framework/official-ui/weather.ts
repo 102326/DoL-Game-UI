@@ -33,13 +33,21 @@ export function readGameWeather(root:WeatherHost=window as Window & WeatherHost)
 }
 
 export function headerWeather(){
- type Surface={header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void};
+ type Surface={header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
  const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=sourceMotion();scope.own(()=>motion.dispose());let stopTimer:(()=>void)|undefined,state=readGameWeather();
  const visible=(n:HTMLElement)=>n.isConnected&&!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert],[data-sf-leaving]');
  function clean(tasks:Array<()=>void>){const errors:unknown[]=[];for(const task of tasks)try{task()}catch(error){errors.push(error)}if(errors.length)throw new AggregateError(errors,'Weather cleanup failed')}
  function remove(key:string){const s=surfaces.get(key);if(!s)return;surfaces.delete(key);s.revision++;clean([()=>motion.cancel(s.node),()=>s.renderer?.dispose(),()=>s.stopWatch?.(),()=>s.node.remove(),()=>{if(s.materialAttribute!==undefined){if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');else s.parent.setAttribute('data-sf-weather-material',s.materialAttribute)}},()=>{if(!surfaces.size){const stop=stopTimer;stopTimer=undefined;stop?.()}}])}
  function clear(){clean([...surfaces.keys()].map(key=>()=>remove(key)))}
  const showing=(s:Surface)=>visible(s.header)&&(!s.renderer||s.parent.clientWidth>0&&s.parent.clientHeight>0);
+ const headerRegions=':scope>.dgc-host,:scope>.dgs-host,:scope>.dgp-host,.modhub-sticky-toolbar,.CE-category-bar,.CE-subtab-bar';
+ function fitHeader(s:Surface){
+  if(s.renderer||s.static)return;
+  const base=s.parent.getBoundingClientRect(),scale=base.height/s.parent.offsetHeight;if(!Number.isFinite(scale)||scale<=0)return;
+  const regions=[s.header,...s.parent.querySelectorAll(headerRegions)].filter(n=>n.getClientRects().length);
+  const height=Math.min(s.parent.clientHeight,Math.max(...regions.map(n=>(n.getBoundingClientRect().bottom-base.top)/scale-s.parent.clientTop))+48),value=height+'px';
+  if(s.node.style.height!==value)s.node.style.height=value;
+ }
  function paint(s:Surface,state:ReturnType<typeof readGameWeather>){
   const key=state.kind+':'+state.night+':'+state.rain+':'+state.special;if(s.key===key)return;s.key=key;const revision=++s.revision,opacity=parseFloat(getComputedStyle(s.node).opacity);motion.cancel(s.node);
   const apply=()=>{if(!scope.active()||s.revision!==revision||!s.node.isConnected)return;s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.dataset.special=state.special??'none';s.node.toggleAttribute('data-night',state.night);if(state.kind!=='unknown'||state.special&&state.special!=='none')motion.animate(s.node,[{opacity:0},{opacity:parseFloat(getComputedStyle(s.node).opacity)}],480)};
@@ -85,8 +93,13 @@ export function headerWeather(){
     for(const[key,value]of Object.entries({'--kw-x':(3+i*37%91+Math.random()*3)+'%','--kw-y':(3+i*13%35+Math.random()*7)+'%','--kw-size':(3.5+i%4*.9+Math.random()*.7)+'px','--kw-travel':(70+Math.random()*110)+'px','--kw-trail':(18+Math.random()*24)+'px','--kw-duration':(7+Math.random()*9)+'s','--kw-delay':(-Math.random()*16)+'s'}))drop.style.setProperty(key,value);
     node.append(drop);
    }
-   parent.append(node);surfaces.set(key,{header,parent,node,key:'',revision:0});
+   node.style.height='0px';parent.append(node);const s:Surface={header,parent,node,key:'',revision:0};surfaces.set(key,s);
+   // Measure after native layout, and only when the actual header regions change.
+   const fit=()=>{if(scope.active()&&surfaces.get(key)===s)fitHeader(s)},resize=new ResizeObserver(()=>scope.frame(fit));let regions:Element[]=[];
+   s.syncHeader=()=>{const next=[header,...parent.querySelectorAll(headerRegions)];if(next.length===regions.length&&next.every((n,i)=>n===regions[i]))return;resize.disconnect();resize.observe(parent);for(const n of next)resize.observe(n);regions=next;scope.frame(fit)};
+   s.stopWatch=()=>{scope.cancelFrame(fit);resize.disconnect()};
   }
+  surfaces.get(key)?.syncHeader?.();
  }
  document.addEventListener('visibilitychange',refresh);scope.own(()=>document.removeEventListener('visibilitychange',refresh));
  return{set,refresh,snapshot:()=>({activePolls:stopTimer?1:0,surfaces:[...surfaces].map(([id,s])=>({id,material:s.renderer?'glass-scatter':s.static?'static':'legacy',state:s.renderer?.snapshot()}))}),clear,dispose(){clean([()=>scope.dispose(),clear])}};

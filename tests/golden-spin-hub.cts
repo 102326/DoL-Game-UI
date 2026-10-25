@@ -72,6 +72,23 @@ import reverseHub = require('./hub-reversal-probe.cjs');
    await page.evaluate(()=>goldenSpinLab.settleScene());await closed();assert.equal(await nav.getAttribute('aria-hidden'),'true');
    await page.evaluate(()=>goldenSpinLab.setZoom(100));await page.waitForTimeout(100);
   });
+  await check('explicit fan remains curved and reachable with five real tools; closed shells leave no backing box',async()=>{
+   const fanPage=await browser.newPage({viewport:{width:390,height:844}});
+   try{
+    await fanPage.goto('http://127.0.0.1:5183/hub.html?mode=fan');
+    await fanPage.waitForFunction(()=>!!goldenSpinLab.controller);
+    for(const side of ['ArrowLeft','ArrowRight']){
+     const fanBall=fanPage.locator('.sf-motion-ball');await fanBall.press(side);await fanBall.click();
+     await fanPage.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='open');
+     assert.equal(await fanPage.locator('.sf-motion-orbit').evaluate(n=>n.classList.contains('is-grid')),false);
+     const boxes=await fanPage.locator('.sf-motion-petal').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return{x:r.x,y:r.y,w:r.width,h:r.height,hit:n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}}));
+     assert.equal(boxes.length,5);assert.ok(new Set(boxes.map(r=>Math.round(r.x))).size>1);
+     for(const r of boxes)assert.ok(r.hit&&r.x>=0&&r.y>=0&&r.x+r.w<=390&&r.y+r.h<=844,JSON.stringify(r));
+     await fanBall.press('Escape');await fanPage.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='closed');
+     for(const selector of ['.sf-motion-orbit','.sf-motion-sheet'])assert.equal(await fanPage.locator(selector).evaluate(n=>getComputedStyle(n).display),'none');
+    }
+   }finally{await fanPage.close()}
+  });
   await check('unmount stops both controllers and removes the experimental canvas',async()=>{
    await page.emulateMedia({reducedMotion:'no-preference'});await ball.click();await page.evaluate(()=>{window.retired=goldenSpinLab.controller;goldenSpinLab.unmount()});
    const state=await page.evaluate(()=>{if(!window.retired)throw Error('Missing retired controller');return window.retired.inspect()});assert.ok(state.dead&&state.sphere.dead&&!state.moving&&!state.sphere.running);assert.equal(await page.locator('.spin-hub-canvas').count(),0);

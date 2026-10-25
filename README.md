@@ -8,9 +8,11 @@ Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景�
 
 Evolution 加入金属球回旋驱动的悬浮工具、新的玻璃天气与更连贯的设置转场，也修整了窗口在滚动、缩放和快速开合时的表现。购买、穿戴、战斗结算、角色数值和存档继续由原游戏及对应 Mod 处理。
 
-[下载 4.0](https://github.com/102326/DoL-Game-UI/releases/tag/v4.0.0) · [安装与升级](#安装与升级) · [动态预览](#画面与动态预览) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+[下载 4.0.1](https://github.com/102326/DoL-Game-UI/releases/tag/v4.0.1) · [安装与升级](#安装与升级) · [动态预览](#画面与动态预览) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 > 普通玩家需要 **主 UI + Framework Host** 两个 ZIP。兼容包按已安装的 Mod 选用，所有安装包均无需解压。
+
+**4.0.1 修复**：服装店分页报错、侧栏与兼容窗口重复入场、悬浮工具扇形与关闭黑底。已安装 4.0.0 的玩家只需更新主 UI；Host 和兼容包继续沿用。
 
 ![Android 实机：黑灰 Acrylic 与设置上下布局](docs/media/evolution-rain-header/android-horizontal.png)
 
@@ -71,7 +73,7 @@ Evolution 加入金属球回旋驱动的悬浮工具、新的玻璃天气与更�
 
 </details>
 
-截图与第一段视频来自 Android 测试 App，其余视频为真实组件的受控原速演示。素材采集早于正式包，展示效果保留；不是正式 4.0.0 包的新录屏。来源与复用范围见[媒体记录](docs/media/evolution-rain-header/provenance.json)和[验证范围](docs/evolution/EVO-RELEASE-GATE-2026-10-24.md)。
+截图与第一段视频来自 Android 测试 App，其余视频为真实组件的受控原速演示。素材采集早于正式包，展示效果保留；不是本次正式包的新录屏。来源与复用范围见[媒体记录](docs/media/evolution-rain-header/provenance.json)和[验证范围](docs/evolution/EVO-RELEASE-GATE-2026-10-24.md)。
 
 ## 安装与升级
 
@@ -87,7 +89,7 @@ Evolution 加入金属球回旋驱动的悬浮工具、新的玻璃天气与更�
 
 1. 备份需要保留的存档，保存原包与加载顺序以便回退。
 2. 停用旧的 `DoLGameUI`，每个技术身份只启用一个版本。
-3. 从 [4.0 发布页](https://github.com/102326/DoL-Game-UI/releases/tag/v4.0.0)导入 **Framework Host** 和 **主 UI**，不要解压 ZIP。
+3. 从 [4.0 发布页](https://github.com/102326/DoL-Game-UI/releases/tag/v4.0.1)导入 **Framework Host** 和 **主 UI**，不要解压 ZIP。
 4. Host 排在 UI 前；可选兼容包排在对应目标 Mod 和 UI 之后。
 5. 重启游戏，检查版本、入口和设置，再载入自己的进度。
 
@@ -105,7 +107,7 @@ Evolution 加入金属球回旋驱动的悬浮工具、新的玻璃天气与更�
 | LyraMouthCompat051213 | 指定 Lyra 环境的嘴部资源适配 |
 | SmartPhoneSoftWet | 万能手机 Alpha 及已识别组件外观 |
 
-没有目标 Mod 就不安装相应兼容包。CE 原作者版与独立维护的 rebuild.30 只能启用一个；万能手机包不适用于 Omega。具体包版本、依赖与已验证范围统一见[发布页](https://github.com/102326/DoL-Game-UI/releases/tag/v4.0.0)。
+没有目标 Mod 就不安装相应兼容包。CE 原作者版与独立维护的 rebuild.30 只能启用一个；万能手机包不适用于 Omega。具体包版本、依赖与已验证范围统一见[发布页](https://github.com/102326/DoL-Game-UI/releases/tag/v4.0.1)。
 
 原版优化日期修复仅在附加日期无效、且能确认存档时间时修改显示文字；正常日期保留，上游修复后自动让位，不改存档数据。
 
@@ -128,8 +130,8 @@ Evolution 加入金属球回旋驱动的悬浮工具、新的玻璃天气与更�
 独立 Framework Host 提供公共 UI 能力，官方 UI API 保持 v1，Host 公共协议仍为实验性协议。维护中的自有代码和工具已按 TS First 整理，CommonJS 运行形式按需保留；玩家不需要安装 Node。
 
 - [UI Runtime API](docs/UI_RUNTIME.md)与[接入示例](examples/ui-surfaces/README.md)
-- [持续集成](docs/CI.md)、[兼容适配](docs/OPTIONAL_ADAPTERS.md)、[发布说明](docs/RELEASE_4.0.0.md)
-- [发行校验清单](docs/releases/4.0.0/SHA256SUMS.txt)
+- [持续集成](docs/CI.md)、[兼容适配](docs/OPTIONAL_ADAPTERS.md)、[发布说明](docs/RELEASE_4.0.1.md)
+- [发行校验清单](https://github.com/102326/DoL-Game-UI/releases/download/v4.0.1/SHA256SUMS.txt)
 
 <details>
 <summary>源码检查与构建</summary>

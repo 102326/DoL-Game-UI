@@ -1,6 +1,7 @@
 import {visualScope} from '../ui/visual-scope';
 import {isolate,mountUI,unmountUI,supportsDialog} from '../runtime/presentation';
 import {sourceMotion} from '../ui/source-motion';
+import {fadeWindow} from '../ui/window-fade';
 import {experiments} from '../runtime/experiments';
 import type {PanelKind} from '../panels/main';
 import {createApp,reactive,type App} from 'vue';
@@ -118,9 +119,7 @@ export function startTheme(root:Runtime=window as Runtime){
  }
  function fadeSettings(target:0|1,initial?:number){
   const panel=settingsPanel();if(!official||!panel)return;
-  // Read the currently displayed value before replacing the owned animation.
-  const opacity=initial??Number(getComputedStyle(panel).opacity),from=Number.isFinite(opacity)?Math.max(0,Math.min(1,opacity)):1;
-  return motion.animate(panel,[{opacity:from},{opacity:target}],(target?100:80)*Math.abs(target-from),'linear');
+  return fadeWindow(motion,panel,target,initial);
  }
  function closeSettings(){
   if(!controls?.open||controls.hasAttribute('data-sf-leaving'))return;

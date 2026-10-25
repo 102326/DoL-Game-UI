@@ -347,7 +347,7 @@ html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]
 html[data-dol-midnight][data-dgu-visualGlass] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-host button:not(:disabled):active {background:rgba(255,255,255,.075)}
 html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) :is(button,input) {transition:background-color 140ms ease,box-shadow 140ms ease,transform 100ms ease}
 /* Native list refreshes replace the projection; they must not replay the shell fade. */
-html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:not(.hidden) {animation:dgu-save-shell-in 160ms ease-out}
+html[data-dol-midnight][data-dgu-visualMotion]:not([data-stone-free]) #customOverlay[data-overlay=saves]:not(.hidden) {animation:dgu-save-shell-in 160ms ease-out}
 html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-detail[open]:not(.dgs-inline-detail) {animation:dgu-save-drawer-in 180ms ease-out}
 html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-inline-detail[open] {animation:none}
 html[data-dol-midnight][data-dgu-visualMotion] #customOverlay[data-overlay=saves]:has(#saveList>.dgs-host) .dgs-feedback-saved {animation:dgu-save-confirmed 300ms ease-out}
