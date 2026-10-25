@@ -6,6 +6,7 @@
 
 ## 当前依据
 
+- [供小鸥独立复核的交接报告](EVO-PRERELEASE-REVIEW-HANDOFF-2026-10-25.md)
 - [候选准备身份与九包摘要](EVO-RELEASE-PREP-2026-10-25.json)
 - [顶栏雨效、负责人接受与性能归因边界](EVO-RAIN-HEADER-PERF-2026-10-25.md)
 - [此前完整九包成员／依赖／摘要](EVO-RAIN-HEADER-PACKAGES-2026-10-25.json)：历史身份文件保持原字节，接受状态以当前准备记录为准
