@@ -57,10 +57,11 @@ import type {VersionToolsHost} from '../../src/runtime/target-version';
   else for (const img of document.querySelectorAll<HTMLImageElement>('.passage:not(.passage-out) #clothingShop-div img')) {
    const match = /^img\/ui\/clothes\/categories\/(overhead|overupper|overlower)\.png$/.exec(img.getAttribute('ml-src') ?? img.getAttribute('src') ?? '');
    if (!match) continue;
+   const label=match[1]?icons[match[1]]:undefined;if(!label)continue;
    const tab = img.closest('.category-tab'), link = tab?.querySelector('a.link-internal');
    if (tab && link && !link.textContent?.trim()) {
-    attribute(tab, 'data-reoverfits-category', icons[match[1]]);
-    attribute(link, 'aria-label', icons[match[1]]); attribute(tab, 'title', icons[match[1]]);
+    attribute(tab, 'data-reoverfits-category', label);
+    attribute(link, 'aria-label', label); attribute(tab, 'title', label);
    } else if (img.nextElementSibling?.matches('a.link-internal')) {
     attribute(img, 'data-reoverfits-entry-icon', '');
     attribute(img.nextElementSibling, 'data-reoverfits-entry', '');

@@ -14,12 +14,12 @@
     "types": [
       "vite/client"
     ],
-    "allowJs": true,
-    "resolveJsonModule": true
+    "allowJs": false,
+    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.vue",
-    "src/**/*.js"
+    "src/**/*.vue"
   ]
 }

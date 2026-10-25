@@ -139,7 +139,7 @@ function stackingSource(text: string): string | null {
   if(source.includes('<<widget ')||!source.includes('叠加装备:')||!source.includes('DolOptimization.wornStackingRemove(')||!source.includes('DolOptimization.wornStackingMove('))continue;
   matches.push(source);
  }
- return matches.length===1?matches[0]:null;
+ return matches.length===1?matches[0]??null:null;
 }
 
 function createOptimizationWardrobe(root: Host){
@@ -158,7 +158,7 @@ function createOptimizationWardrobe(root: Host){
   if(typeof mod?.data?.WornStacking!=='boolean'||typeof mod.wornStackingRemove!=='function'||typeof mod.wornStackingMove!=='function'||typeof root.selectWardrobe!=='function')return null;
   if(!variables||!slot||!/^[a-z_]+$/.test(slot)||!variables.worn?.[slot])return null;
   const passages=document.querySelectorAll('#passages .passage:not(.passage-out)');if(passages.length!==1)return null;
-  const passage=passages[0], equipment=passage.querySelector<HTMLElement>('.dgw-shell .dgw-equipment');
+  const passage=passages[0];if(!passage)return null;const equipment=passage.querySelector<HTMLElement>('.dgw-shell .dgw-equipment');
   if(!equipment||equipment.inert||passage.querySelectorAll('.dgw-equipment').length!==1)return null;
   const key=JSON.stringify([slot,variables.worn[slot],variables.wornStacking?.[slot],variables.wardrobeDefaults,mod.data.WornStacking]);
   return {passage,equipment,variables,inventory:root.selectWardrobe(),slot,key};
