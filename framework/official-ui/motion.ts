@@ -86,7 +86,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   const old=active,adopting=!active&&!!nextActive&&presented===nextActive,opacity=plane?Number(getComputedStyle(plane).opacity):0;active=nextActive;activeKind=kind;cancelPresentation(adopting?nextActive??undefined:undefined);
   if(active){
    const entering=presented!==active;presented=active;scrim(true,entering,opacity);const from=origin&&performance.now()-origin.time<1000?origin:undefined;
-   if(entering)returnTo=from?.hub?document.querySelector<HTMLElement>('.sf-motion-ball'):from?.node??null;
+   if(entering||adopting)returnTo=from?.hub?document.querySelector<HTMLElement>('.sf-motion-ball'):from?.node??null;
    if(entering)fadeWindow(motion,active,1,0);
    const focus=active.querySelector<HTMLElement>('.dgc-host button,.dgs-host button,.dgp-host button');
    if(focus&&!active.contains(document.activeElement))focus.focus({preventScroll:true});

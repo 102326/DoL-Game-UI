@@ -1754,8 +1754,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9c4f1951e0e6e5043c0665a2d59897ba07996bccf22721eb23af4bf58a492e18",
-      "assertionSites": 96
+      "sourceSha256": "4a77f95565758ad55f5277d97cb3a92381a4c469a39d6875c403c0f8125db467",
+      "assertionSites": 98
     },
     {
       "entry": "tests/optimization-date.cjs",
