@@ -4,6 +4,8 @@
 
 ## Current — 当前做什么
 
+- **负责人已授权确认无误后正式发布4.0.0，当前正在执行。** 之前Pending属于准备快照。已准备根README和公开校验清单；下一步同步main并等待最终准确源码CI，核对九包与已受验集合相同后Tag／Release／附件读回。运行代码与原包保持，若实质性差异则暂停公开。最终发布结果以Issue #22回执及实际Release为准。
+
 - **公开发行材料已补齐，尚未发布。** [核对清单](evolution/EVO-PUBLISH-CHECKLIST-2026-10-25.md)记录main祖先关系、未发现v4.0.0 Tag／Release、九包与文案边界。Release及首页稿补齐MIT／CC BY-NC-SA 4.0和上游署名，内部验收说明移至技术入口；本地生成可直接使用的正文及首页预览，引用固定提交，发布时再接真实下载链接。运行源码仍4ebe0bb、九包SHA不变；本轮仅文档准备，复用既有CI／装机证据，不构成公开发行授权。
 
 - **4.0.0正式版本准备已完成，公开发行仍Pending。** 源码`4ebe0bb9f543e53849604f17555ae2523f423c7f`已固化；[标准40198610876](https://github.com/102326/DoL-Game-UI/actions/runs/40198610876)、[研究40198608411](https://github.com/102326/DoL-Game-UI/actions/runs/40198608411)完整success，下载摘要、192／478份索引及独立验收已核对。UI运行成员仅一处产品版本字符串改变，其它八ZIP与受验RC2完全相同；准确CI UI已在独立Android App重启，八包成员、实际4.0.0、偏好／顺序、真实触控、雨效范围和关闭清理通过，游戏／存档元数据保持。[正式九包身份](evolution/EVO-4.0.0-PACKAGES-2026-10-25.json)、[关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)和[给小鸥的性能小型证据包](evolution/EVO-PERF-SMALL-BUNDLE-2026-10-25.md)为当前入口。没有新性能采样，没有停用UI／最小Mod对照，原版归因仍Unknown。旧RC2报告和失败证据保留；新文档HEAD不冒称CI受验源码。尚未合main、Tag、更新公开首页／Assets或发布。

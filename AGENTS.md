@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Publication authorization (2026-10-25): the owner explicitly approved release after final checks. Execute the prepared 4.0.0 publication, including main synchronization, the real final-source CI, Tag, nine verified Mod ZIPs plus SHA256SUMS and player-facing homepage/Release text. Preserve the accepted runtime and licenses. A material source/package/dependency/digest discrepancy stops public release for review; do not silently replace validated payloads. This supersedes earlier publication-pending statements, not the product or compatibility scope.
+
 - Current continuation (2026-10-25): after accepting the header candidate and reviewing the completed pre-release handoff, the owner requested the next step. Proceed with the planned 4.0.0 source version, a real rebuild, both exact-source CI workflows, package/member comparison and affected installation smoke. Preserve the accepted runtime and the immutable RC2 evidence. This authorizes formal-version preparation on this research branch; main merge, Tag, public Release and Assets remain pending explicit publication approval.
 
 - Current tooling baseline: Node26 Only (>=26.12.1 <27); both CI workflows read .node-version (26.12.1) and @types/node26. Earlier22/24 evidence remains historical. This changes development tooling, not browser/WebView targets.
