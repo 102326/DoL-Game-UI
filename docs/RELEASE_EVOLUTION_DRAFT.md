@@ -1,6 +1,6 @@
 # Soft & Wet 4.0 — Evolution
 
-> 面向玩家的发布草稿，更新2026-10-25。内部候选4.0.0-rc.2已完成TS First、存档P2修复及独立复核；当前受验代码178f8b2，拟正式4.0.0，未正式发布。最终验收后再替换正式版本与真实下载入口。
+> 面向玩家的发布草稿，更新2026-10-25。内部候选4.0.0-rc.2已完成TS First、存档P2修复及独立复核；当前受验代码35a5bb5，拟正式4.0.0，未正式发布。最终验收后再替换正式版本与真实下载入口。
 
 Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口、焦点和悬浮工具的动态表现，并整理它们在缩放、滚动和快速切换时的行为。
 
@@ -60,4 +60,4 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 - [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
 - [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
 
-截图来自实际测试App；视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称178f8b2安装包的新录屏。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
+截图来自实际测试App；视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称35a5bb5安装包的新录屏。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
