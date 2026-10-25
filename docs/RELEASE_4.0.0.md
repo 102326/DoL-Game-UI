@@ -4,7 +4,7 @@
 
 Evolution 为 Soft & Wet 带来回旋驱动的悬浮工具、更细致的玻璃天气和连贯的窗口转场。衣柜、服装店与常用菜单继续保持统一的材质与操作反馈，游戏原有的购买、穿戴、战斗结算和存档规则保持。
 
-[下载与选装包](#下载文件) · [安装与升级](#安装与升级) · [动态预览](#画面与动态预览) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+[下载主 UI](https://github.com/102326/DoL-Game-UI/releases/download/v4.0.0/DoLGameUI-4.0.0.mod.zip) · [下载 Framework Host](https://github.com/102326/DoL-Game-UI/releases/download/v4.0.0/StoneFreeHost-0.1.5-experimental.mod.zip) · [安装说明](https://github.com/102326/DoL-Game-UI/blob/v4.0.0/docs/INSTALL_EVOLUTION_CANDIDATE.md) · [动态预览](https://github.com/102326/DoL-Game-UI/blob/v4.0.0/docs/media/evolution-rain-header/android-settings-rain.mp4) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 > 普通玩家需要 **主 UI + Framework Host** 两个 ZIP。对应兼容包按自己安装的 Mod 选用，均无需解压。
 
