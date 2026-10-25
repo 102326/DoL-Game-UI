@@ -10,5 +10,17 @@
   },
   "canonicalCiUiSha256": "e4a37ca448272308351f35fe1a5bded4bc64a24e4361528922d33e0e49eb5a17",
   "runtimeMemberEquivalence": "PASS - all runtime members byte-identical; only README and version notes differ",
-  "canonicalRestartAllEightMembers": "PASS"
+  "canonicalRestartAllEightMembers": "PASS",
+  "ownerAcceptance": {
+    "date": "2026-10-25",
+    "scope": "Current header rain result and disclosed residual performance tail accepted; original pending note describes capture time, not current gate"
+  },
+  "formalVersionReuse": {
+    "sourceCommit": "4ebe0bb9f543e53849604f17555ae2523f423c7f",
+    "uiVersion": "4.0.0",
+    "uiSha256": "191dbd2b06a45b2e194999a1fed7178346a44b53bac5f4626fffd8f05a04f738",
+    "runtimeDelta": "index.js replaces the product version string once; all other runtime bytes unchanged from canonical RC2",
+    "proof": "../../evolution/EVO-4.0.0-PACKAGES-2026-10-25.json",
+    "newRecording": false
+  }
 }

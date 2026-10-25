@@ -1,8 +1,6 @@
 # Soft & Wet 4.0 — Evolution
 
-> 当前顶栏方案与已披露的残余慢帧已获负责人接受，发布前准备继续；偶发卡顿保留为已知限制，根因未定。当前仍为未公开的 `4.0.0-rc.2`，候选身份见[准备清单](evolution/EVO-RELEASE-PREP-2026-10-25.json)。
-
-> 面向玩家的发布草稿，更新2026-10-25。内部候选4.0.0-rc.2已完成TS First、存档P2修复及独立复核；当前受验代码1c0cade、两套CI与制品合同通过，本轮性能尾帧已由负责人接受，拟正式4.0.0，未正式发布。最终验收后再替换正式版本与真实下载入口。
+> 发布正文草稿，更新2026-10-25。正式版本文件4.0.0已从源码4ebe0bb实际构建，两套CI、下载制品核对及Android最小装机复验通过，尚未公开发行。当前顶栏方案与披露的性能尾帧已获接受；最终九包见[正式版本准备清单](evolution/EVO-4.0.0-PACKAGES-2026-10-25.json)。
 
 Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口、焦点和悬浮工具的动态表现，并整理它们在缩放、滚动和快速切换时的行为。
 
@@ -55,9 +53,28 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 
 作者、贡献者与第三方许可沿用仓库 Credits、LICENSE 和包内 notices；Framework Host 的历史技术名仍为 StoneFreeHost，公共合同保持不变。
 
+## 分发文件
+
+正式文件已经准备，公开下载入口尚未建立；以下文件名与实际分发目录一致。
+
+| 文件 | 用途 |
+| --- | --- |
+| `StoneFreeHost-0.1.5-experimental.mod.zip` | Framework Host，必装 |
+| `DoLGameUI-4.0.0.mod.zip` | 主UI，必装 |
+| `ModHubSoftWet-ModHub-1.3.0-plus-v1.0.2.mod.zip` | ModHub外观，选装 |
+| `MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip` | MapleBirch云存档外观，选装 |
+| `DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip` | 原版优化存档与叠穿兼容，选装 |
+| `CheatExtendedSoftWet-cheat extended-1.20.3-plus-v1.0.0.mod.zip` | Cheat Extended外观，选装；原作者／rebuild.30二选一 |
+| `ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip` | 额外衣槽接入，选装 |
+| `LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip` | 指定Lyra嘴部资源，选装 |
+| `SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.1.mod.zip` | 万能手机Alpha外观，选装 |
+| `SHA256SUMS.txt` | 九个Mod ZIP的SHA-256 |
+
+安装说明、技术报告、截图和视频在页面与仓库中提供，不放入Assets。
+
 ## 画面与动态预览
 
-[本轮24秒Android顶栏雨效原速录屏](media/evolution-rain-header/android-settings-rain.mp4)，覆盖双布局、分类、实际控件和开关。它来自与当前CI全部运行成员相同的受验包，只有两份包内说明不同；来源见[媒体记录](media/evolution-rain-header/provenance.json)。
+[本轮24秒Android顶栏雨效原速录屏](media/evolution-rain-header/android-settings-rain.mp4)，覆盖双布局、分类、实际控件和开关。它来自先前受验包，与冻结RC2全部运行成员相同；正式4.0.0运行成员仅替换产品版本字符串，包内说明和元数据同步更新，并非重新录制；来源见[媒体记录](media/evolution-rain-header/provenance.json)。
 
 ![当前Android设置：上下布局](media/evolution-rain-header/android-horizontal.png)
 

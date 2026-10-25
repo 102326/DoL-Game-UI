@@ -4,7 +4,9 @@
 
 ## Current — 当前做什么
 
-- **2026-10-25负责人接受当前顶栏方案及披露的残余慢帧，GB40-PERF-F1解除本轮发布准备阻塞。** 负责人怀疑原版游戏可能参与卡顿，已记录为待归因假设，不能写成原版根因已证明。运行源码仍 `1c0cade`；[接受与性能记录](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)、[当前候选准备／九包摘要](evolution/EVO-RELEASE-PREP-2026-10-25.json)为入口。两套源码CI及准确包／装机证据复用，ZIP字节不变；本轮只整理接受状态、候选目录和玩家文档。内部4.0.0-rc.2保持，拟正式4.0.0；正式重标、main、Tag和公开Release尚未授权。整体发行审查为下一步，不再因同一已接受尾帧反复阻塞或扩大视觉研发。[小鸥复核交接稿](evolution/EVO-PRERELEASE-REVIEW-HANDOFF-2026-10-25.md)已整理；独立复核尚未因写稿而自动完成。
+- **4.0.0正式版本准备已完成，公开发行仍Pending。** 源码`4ebe0bb9f543e53849604f17555ae2523f423c7f`已固化；[标准40198610876](https://github.com/102326/DoL-Game-UI/actions/runs/40198610876)、[研究40198608411](https://github.com/102326/DoL-Game-UI/actions/runs/40198608411)完整success，下载摘要、192／478份索引及独立验收已核对。UI运行成员仅一处产品版本字符串改变，其它八ZIP与受验RC2完全相同；准确CI UI已在独立Android App重启，八包成员、实际4.0.0、偏好／顺序、真实触控、雨效范围和关闭清理通过，游戏／存档元数据保持。[正式九包身份](evolution/EVO-4.0.0-PACKAGES-2026-10-25.json)、[关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)和[给小鸥的性能小型证据包](evolution/EVO-PERF-SMALL-BUNDLE-2026-10-25.md)为当前入口。没有新性能采样，没有停用UI／最小Mod对照，原版归因仍Unknown。旧RC2报告和失败证据保留；新文档HEAD不冒称CI受验源码。尚未合main、Tag、更新公开首页／Assets或发布。
+
+- **上一批RC2准备（历史）：2026-10-25负责人接受当前顶栏方案及披露的残余慢帧，GB40-PERF-F1解除本轮发布准备阻塞。** 负责人怀疑原版游戏可能参与卡顿，已记录为待归因假设，不能写成原版根因已证明。运行源码仍 `1c0cade`；[接受与性能记录](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)、[当前候选准备／九包摘要](evolution/EVO-RELEASE-PREP-2026-10-25.json)为入口。两套源码CI及准确包／装机证据复用，ZIP字节不变；本轮只整理接受状态、候选目录和玩家文档。内部4.0.0-rc.2保持，拟正式4.0.0；正式重标、main、Tag和公开Release尚未授权。整体发行审查为下一步，不再因同一已接受尾帧反复阻塞或扩大视觉研发。[小鸥复核交接稿](evolution/EVO-PRERELEASE-REVIEW-HANDOFF-2026-10-25.md)已整理；独立复核尚未因写稿而自动完成。
 
 - **TS First本轮技术范围Completed；GB40-TS-F1独立复核Accept并关闭。** 2026-10-25负责人转述小鸥复核：32项正常/异常/零写入、标准190项及研究478项证据、九包摘要与新旧包差异均已独立核对。受验代码`178f8b2b5b1828038b7c3ec304e8995bbe99ee38`；标准40175814517、研究40175811238完整success。仅UI/index.js改变，其余八ZIP字节不变；Android重启八个适用包成员/顺序/偏好及Windows/Android只读存档页通过。见[局部修复与接受记录](evolution/EVO-SAVE-REVISION-P2-2026-10-25.md)、[P2阶段九包冻结](evolution/EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json)。243/243迁移已完成，不再继续历史186/243批次。下一步已进入[最终候选验收与发布准备](evolution/EVO-RELEASE-GATE-2026-10-24.md)：同步最新安装、玩家文案与候选集合；整体G1/G2/G3及发行授权由负责人决定。Node26.12.1 Only、4.0.0-rc.2、未合main/未Tag/未发布不变；文档后续提交不冒称受验代码HEAD。
 
@@ -43,7 +45,7 @@
 - CI PR #24 已由CI聊天依据其独立负责人授权合入研发（3e6e039）；真实PR两套检查/同树关系及后续运行见[专项交付](audits/MOODY-CI-V1.2.md)、PR24和#22。本聊天只安全同步，没有改 required checks / bypass。旧Catalog1.1.1证据仍只证明旧提交。
 - **CI跨设备入口**：[Moody Blues V1.2交接](audits/MOODY-CI-V1.2-HANDOFF.md)统一记录实际合入3e6e039、五次成功运行、105声明案例/124布局和研究四族、匿名身份、新机准备及已知风险；[小型证明](audits/moody-v12-evidence/README.md)随Git同步。完整研究原档另已全量保存/校验，临时链接和本机日志目录不作为跨设备依赖。本轮追加仅文档与历史收据，新的文档HEAD不冒称旧Run已验证。
 - READ01只复用实际设置与W01九组健康检查，覆盖1280×900 /390×844、DPR1、晴雨雪、控件、玻璃关闭像素同一性、布局和关闭后原动作；不是默认S01无blur合同或整个设备矩阵。检查PASS只表示这些断言完成。证据来源、脚本/源码hash及新旧帧数据见[报告](evolution/EVO-MAT-READ01.md)。macOS / Node24.18 / Playwright Chromium153；不代表Windows、Android/iOS或WebView。
-- 未修改main、发行版本、Host API、Tag/Release或正式ZIP。未读取玩家存档；主动授权的存档可隔离复现，不自动公开进Artifact。
+- 正式4.0.0版本文件已重新构建并验证；未修改main、Host API、Tag／Release或公开Assets。未读取长期玩家存档；主动授权的测试数据不自动公开进Artifact。
 
 ## Next — 接手顺序
 
@@ -51,7 +53,7 @@
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
 3. TS First方案一243/243与GB40-TS-F1独立复核均已完成。TS First独立接受的受验代码为178f8b2，后续性能补丁包括35a5bb5、37d1baf及1c0cade，两套最新CI与九包身份见当前入口；旧186/243、Twee待迁移及旧“独立复审Pending”仅属历史状态，不再启动重复迁移。
 4. 当前顶栏方案与已披露尾帧已获负责人接受，F1不再阻塞本轮准备；原版可能参与卡顿仅为假设。保留全部测量、失败、原生回退和长期资源Unknown，不把接受改写为根因修复或全设备性能通过。
-5. 候选分发目录按当前九个准确CI包整理，附件仅九ZIP与SHA；安装、Release与首页稿放附件之外。本轮没有改运行代码，不为文档重跑游戏全量回归；版本或运行文件改变时再按影响重验。
-6. 等待负责人正式版本与总体发行授权，再核对实际正式构建／SHA及加载身份、首页和Release下载链接后执行main／Tag／Release。不能把rc.2文件直接改名，也不能默认发布授权已经获得。
+5. 正式4.0.0集合按当前九个准确CI包整理，附件仅九ZIP与SHA；安装、Release与首页稿在附件之外。当前版本重标及最小装机复验已完成，文档后续不自动扩大为全量回归；其它运行文件改变时再按影响重验。
+6. 等待负责人总体公开发行授权，再核对拟合入main的真实树、最终SHA、首页和Release下载链接，执行main／Tag／Release并下载读回。正式版本准备完成不等于公开授权；没有停用UI／最小Mod的性能对照，不扩写原版归因。
 
 交接更新约定：每批主要任务更新 Current / Decided / Next，记录实际输入SHA、命令/环境/范围、CI链接和未同步内容。绝对路径、服务会话、临时文件仅放Git忽略的 `docs/HANDOFF.local.md`；本文件保持一至两页，历史细节链接到专题报告。
