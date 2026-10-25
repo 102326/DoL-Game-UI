@@ -8,14 +8,14 @@ import type {Preferences,PreferenceKey} from '../src/theme/preferences';
 import type {startSaves} from '../src/saves/main';
 const {chromium}=playwright;
 type Theme={openSettings():void;setPreference(key:PreferenceKey,value:boolean|number):void;getPreferences():Preferences};
-declare const theme:Theme,businessCalls:number;
-declare global {interface Window {businessCalls:number;saves:ReturnType<typeof startSaves>;DoLSavesUI:ReturnType<typeof startSaves>;DoLMidnightTheme?:Theme;theme:Theme}}
+declare const theme:Theme,saves:ReturnType<typeof startSaves>;
+declare let businessCalls:number;
 async function setupFixture(){
  const [{startSaves},{startTheme}]=await Promise.all([import('../src/saves/main.ts'),import('../src/theme/controller.ts')]);
- window.businessCalls=0;
- document.querySelectorAll<HTMLButtonElement>('#saveList button').forEach(n=>n.onclick=()=>window.businessCalls++);
- window.saves=startSaves(window);window.DoLSavesUI=window.saves;startTheme();
- const activeTheme=window.DoLMidnightTheme;if(!activeTheme)throw Error('Missing theme fixture API');window.theme=activeTheme;
+ Object.assign(window,{businessCalls:0});
+ document.querySelectorAll<HTMLButtonElement>('#saveList button').forEach(n=>n.onclick=()=>businessCalls++);
+ const created=startSaves(window);Object.assign(window,{saves:created,DoLSavesUI:created});startTheme();
+ const activeTheme:unknown=Reflect.get(window,'DoLMidnightTheme');if(!activeTheme||typeof activeTheme!=='object'||!('openSettings' in activeTheme)||typeof activeTheme.openSettings!=='function'||!('setPreference' in activeTheme)||typeof activeTheme.setPreference!=='function'||!('getPreferences' in activeTheme)||typeof activeTheme.getPreferences!=='function')throw Error('Missing theme fixture API');Object.assign(window,{theme:activeTheme});
 }
 (async()=>{
  const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;

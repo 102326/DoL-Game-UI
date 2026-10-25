@@ -44,7 +44,7 @@ const server=http.createServer((req,res)=>{
 });
 function pass(name:string,value:unknown){assert.ok(value,name);report.passes.push(name)}
 (async()=>{await new Promise<void>(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true});try{
-  async function boot(){const p=await browser.newPage({viewport:{width:1704,height:1136}});await p.addInitScript(()=>{localStorage.setItem('verifiedAge','true');Reflect.set(window,'must',(value:unknown)=>{if(value===null||value===undefined)throw Error('Missing audited DOM node');return value})});await p.goto(`http://127.0.0.1:${portOf(server)}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>Reflect.get(window,'SugarCube')?.State?.variables?.options,{timeout:60000});await p.waitForLoadState('networkidle');await p.evaluate(()=>SugarCube.Engine.play('Start2'));await p.waitForLoadState('networkidle');return p}
+  async function boot(){const p=await browser.newPage({viewport:{width:1704,height:1136}});await p.addInitScript(()=>{localStorage.setItem('verifiedAge','true');Reflect.set(window,'must',(value:unknown)=>{if(value===null||value===undefined)throw Error('Missing audited DOM node');return value})});await p.goto(`http://127.0.0.1:${portOf(server)}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>(typeof SugarCube==='undefined'?undefined:SugarCube)?.State?.variables?.options,{timeout:60000});await p.waitForLoadState('networkidle');await p.evaluate(()=>SugarCube.Engine.play('Start2'));await p.waitForLoadState('networkidle');return p}
  const p=await boot();await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});
   async function open(key:string){await p.evaluate(key=>{if(!must(document.querySelector('#customOverlay')).classList.contains('hidden'))closeOverlay();new SugarCube.Wikifier(null,`<<overlayReplace "${key}">>`)},key);await p.waitForSelector('.dgp-navigation')}
  await open('options');await p.evaluate(()=>DoLPanelsUI.setEnabled('settings',false));
@@ -164,7 +164,7 @@ function pass(name:string,value:unknown){assert.ok(value,name);report.passes.pus
  pass('Navigation goes to the original target after sibling insertion',await p.evaluate(()=>auditScrollTarget===auditTarget));
  // Native options also survive serialization and a fresh runtime without the UI.
  await p.evaluate(()=>SugarCube.Engine.play('Bedroom'));const expected=await p.evaluate(()=>({neverNudeMenus:V.options.neverNudeMenus,dateFormat:V.options.dateFormat,listboxOutfitsEnabled:V.options.listboxOutfitsEnabled}));
-  const serialized=await p.evaluate(()=>SugarCube.Save.serialize());await p.reload({waitUntil:'load'});await p.waitForFunction(()=>Reflect.get(window,'SugarCube')?.State?.variables?.options);await p.evaluate(data=>SugarCube.Save.deserialize(data),serialized);
+  const serialized=await p.evaluate(()=>SugarCube.Save.serialize());await p.reload({waitUntil:'load'});await p.waitForFunction(()=>(typeof SugarCube==='undefined'?undefined:SugarCube)?.State?.variables?.options);await p.evaluate(data=>SugarCube.Save.deserialize(data),serialized);
  assert.deepEqual(await p.evaluate(()=>({neverNudeMenus:V.options.neverNudeMenus,dateFormat:V.options.dateFormat,listboxOutfitsEnabled:V.options.listboxOutfitsEnabled})),expected);report.passes.push('Modified options serialize/load in fresh native runtime without UI');
  report.recovery={};
  for(const stage of ['insert','vue','index']){
