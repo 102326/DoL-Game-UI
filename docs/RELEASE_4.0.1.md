@@ -95,7 +95,7 @@ Evolution 为 Soft & Wet 带来回旋驱动的悬浮工具、更细致的玻璃�
 
 | 下载 | 用途 |
 | --- | --- |
-| [主 UI · 4.0.0](https://github.com/102326/DoL-Game-UI/releases/download/v4.0.1/DoLGameUI-4.0.1.mod.zip) | 必装 |
+| [主 UI · 4.0.1](https://github.com/102326/DoL-Game-UI/releases/download/v4.0.1/DoLGameUI-4.0.1.mod.zip) | 必装 |
 | [Framework Host · 0.1.5-experimental](https://github.com/102326/DoL-Game-UI/releases/download/v4.0.1/StoneFreeHost-0.1.5-experimental.mod.zip) | 必装，排在 UI 前 |
 | [ModHubSoftWet · 1.0.2](https://github.com/102326/DoL-Game-UI/releases/download/v4.0.1/ModHubSoftWet-ModHub-1.3.0-plus-v1.0.2.mod.zip) | ModHub 管理器、市场、帮助与已识别浮层 |
 | [MapleBirchSoftWet · 1.0.1](https://github.com/102326/DoL-Game-UI/releases/download/v4.0.1/MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip) | MapleBirch 云存档页面外观 |
