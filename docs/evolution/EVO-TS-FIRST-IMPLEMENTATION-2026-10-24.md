@@ -430,3 +430,14 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 根因是generate-lock读取metadata.source指向的生成CJS，且分组过滤依赖无空格的group===字串；TS输出的group ===条件未被正确识别。修正为按AST识别严格相等、括号及字面量includes，并将直接source和composed includes统一解析到实际CTS单一来源。没有改caseProblems、缺项拒绝、最小断言数或业务检查。core-identity仍只由独立identity入口验证，其错误身份反例继续拒绝。
 
 新增TS/有空格CJS/反向相等/typed literal的组计划单元检查，六项通过；实际Moody runner运行四个UI Runtime分组及完整五类业务突变、两类未捕获pageerror反例全部PASS，终端收据无CasePlanMismatch，记录ts243-group-receipts-result.json；严格CI类型图通过。新准确提交再执行两套完整CI，不复跑同一失败碰运气。
+
+
+## 2026-10-25 最终收束：243/243与本轮技术验收完成
+
+受验准确代码d8430a8274282528a68a7a737b37c970dfae7020。标准40172977229（validate、evidence-verify、moody-gate）和研究40172975815均完整success。两份独立remote-verification与summary重新下载，确认同一HEAD/dirty=false/Node26.12.1/PASS/COMPLETE、无problems；123098798字节研究原始包及标准证据原包CRC通过。10项下载摘要、9ZIP合同/许可/依赖/成员和双构建PASS/differences=[]。原始材料ci-readback-243-final，未公开设备原始数据。
+
+实机预检先使用4f95f78包并保留其来源：Windows Edge157/实际0.5.12.13 Loader的八包成员、设置双布局/输入/受控特殊天气/390px/关闭清理通过；Android原生重启后八包成员与偏好/顺序/禁用列表、150%触控滚动/输入阻挡、两种布局、Hub开闭与快速反向/关闭背景、ModHub原管理/帮助标签与自然severe雷雨/单一天气层/关闭释放通过。最终d8430a8八个适用ZIP容器和全部成员与预检负载逐项完全相同；再次新连接读取Android Loader逐成员核对最终CI，标题页与原偏好保留，设置/Hub均关闭、天气层归零。记录ts243-final-payload-equivalence.json与ts243-final-device-readback.json，不改写任何预检source字段。ReOverfits无当前设备目标，未安装。未改变私有存档。
+
+单独保留两类自编现场检查器失误：450ms采样早于原620ms分类结束，改用既有3秒完整状态判据；ModHub误用.active和DOM消失，现场核对其原tab-selected和父容器display:none（保留DOM、天气释放）后复验。未为这些错误改产品。标准124布局/四类反例完整通过；本地先前超时及其它历史失败仍作为历史事实保留。
+
+最终范围与有限例外见[EVO-TS-FIRST-VALIDATION-2026-10-25.md](EVO-TS-FIRST-VALIDATION-2026-10-25.md)及[EVO-TS-FIRST-PACKAGES-2026-10-25.json](EVO-TS-FIRST-PACKAGES-2026-10-25.json)。当前代码任务Completed；负责人G1/G2/G3整体裁决与Release Authorization继续Pending。内部4.0.0-rc.2、Host+UI合同和既有视觉/业务不变，没有合main、Tag、Release或更新公开Assets。后续提交只整理这些文档，不冒充两套CI测试了后来的文档HEAD。
