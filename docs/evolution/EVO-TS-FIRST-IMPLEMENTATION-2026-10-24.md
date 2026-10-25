@@ -405,3 +405,12 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 3. 冻结反例/原始回调夹具是数据；原游戏、第三方源码、归档制品和SugarCube必需宏胶水不属于可继续运行的1.X/2.X自有样式。测试内受控HTML的原生脚本与待测试反例仍需原样执行，不能无故重写其语义。
 
 接下来的本轮必需项：以最后冻结源码跑两套完整CI、下载回读与九包合同；新包代表性Windows/Android复验与加载成员核对；更新本记录/交接并保留未覆盖与真实限制。Node26 Only与4.0.0-rc.2不变；不合main、不Tag、不发布，不改玩家浏览器目标或私人长期存档。
+
+
+### 最终CI首次失败的修正
+
+4f95f78研究40170320782未通过：当前prototype live/compare/blood-rain存在checked-indexing错误；设置/天气对照把915dcb9、b507冻结源码纳入当前root配置，错误继承了新增索引检查和关闭allowJs。缺失的后续研究文件是上游编译中断的连锁结果，不算多个产品Bug。保留原日志tests/artifacts/ts243-research-failed.txt及下载原证据ci-failed-243，不重跑同一失败碰运气。
+
+- 当前原型修正实际根节点/视口/三色通道读取；新增prototype-core严格检查，直接继承当前root strict、noUncheckedIndexedAccess=true、allowJs=false，并接入ci:check。
+- 冻结对照专用tsconfig.historical-settings.json精确保留b507时compilerOptions（strict=true、allowJs=true、当时未开启checked indexing）。只用于需要真实历史设置源码的对照图，不修改冻结源码或其身份断言；不恢复历史产品路径。当前产品、Host、兼容包和可独立检查的原型内核仍用当前严格配置。
+- source-policy-boundary新增配置边界检查，锁定当前strict/indexing/禁JS与历史编译合同的区别，防止用历史例外覆盖当前代码。实际三个配置类型检查通过，完整ci:check及新准确提交两套CI另行记录。

@@ -7,6 +7,18 @@ import os from 'node:os';
 import policy from '../scripts/ci-source-policy.cjs';
 import catalog from '../scripts/ci-catalog.cjs';
 
+test('current sources keep checked indexing while frozen settings use their original strict compiler contract',()=>{
+  const read=(name:string)=>JSON.parse(fs.readFileSync(name,'utf8'));
+  const current=read('tsconfig.json'),historical=read('tsconfig.historical-settings.json');
+  assert.equal(current.compilerOptions.strict,true);
+  assert.equal(current.compilerOptions.noUncheckedIndexedAccess,true);
+  assert.equal(current.compilerOptions.allowJs,false);
+  assert.deepEqual(historical.compilerOptions,{target:'ES2022',module:'ESNext',moduleResolution:'Bundler',strict:true,lib:['ES2022','DOM','DOM.Iterable'],skipLibCheck:true,noEmit:true,types:['vite/client'],allowJs:true});
+  assert.equal(read('tsconfig.prototype-core.json').extends,'./tsconfig.json');
+  assert.ok(read('package.json').scripts['ci:check'].includes('-p tsconfig.prototype-core.json'));
+  for(const name of ['tsconfig.settings-refraction.json','tsconfig.evolution.json'])assert.equal(read(name).extends,'./tsconfig.historical-settings.json');
+});
+
 test('source policy reads TS import forms and retains selection and workflow negatives',()=>{
   for(const text of ["import {test} from 'node:test';", "import test = require('node:test');", "const test=require('node:test');"])assert.equal(policy.usesNodeTest(text),true);
   assert.equal(policy.usesNodeTest("import './other';"),false);

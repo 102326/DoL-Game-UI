@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "prototypes/golden-spin-b/**/*.ts",
+    "prototypes/golden-spin-b/**/*.vue",
+    "prototypes/settings-refraction-v1/compare.ts",
+    "prototypes/settings-refraction-v1/refraction.ts",
+    "prototypes/settings-refraction-v1/sequence.ts",
+    "prototypes/evolution-weather/**/*.ts"
+  ],
+  "exclude": [
+    "prototypes/evolution-weather/main.ts"
+  ]
+}

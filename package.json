@@ -30,7 +30,7 @@
     "lab:check": "vue-tsc --noEmit -p tsconfig.lab.json",
     "lab:index": "npm run tooling:build && node component-lab/source-index.cjs",
     "lab:test": "node tests/stone-free-lab.cjs",
-    "ci:check": "npm run tooling:build && node --experimental-strip-types scripts/check-native-tooling.mts && tsc -p tsconfig.research-tools.json && tsc -p tsconfig.ci.json && node scripts/build-device-probe.mjs --check && node scripts/build-early.cjs --check-twee && node scripts/ci/generate-lock.ts && node scripts/render-state-fields.cjs --check && npm run typecheck && npm run framework:check",
+    "ci:check": "npm run tooling:build && node --experimental-strip-types scripts/check-native-tooling.mts && tsc -p tsconfig.research-tools.json && vue-tsc --noEmit -p tsconfig.prototype-core.json && tsc -p tsconfig.ci.json && node scripts/build-device-probe.mjs --check && node scripts/build-early.cjs --check-twee && node scripts/ci/generate-lock.ts && node scripts/render-state-fields.cjs --check && npm run typecheck && npm run framework:check",
     "ci:unit": "node scripts/test-ci.cjs unit",
     "ci:browser": "node scripts/test-ci.cjs browser",
     "ci:build": "npm run tooling:build && node scripts/build-framework.mjs && python scripts/check-ci-packages.py build",

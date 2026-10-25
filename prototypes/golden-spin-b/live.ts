@@ -6,8 +6,9 @@ let controls:HTMLElement|undefined;
 export function start(options:Partial<Options>={}) {
  if(active)throw Error('Stop the prototype before starting another instance');
  const roots=[...document.querySelectorAll<HTMLElement>('.sf-motion-hub[data-official]')];
- if(roots.length!==1||!roots[0].querySelector('.sf-motion-orbit.is-grid'))throw Error('Expected one current official grid Hub');
- active=goldenSpin(roots[0],options);return active;
+ const root=roots[0];
+ if(roots.length!==1||!root?.querySelector('.sf-motion-orbit.is-grid'))throw Error('Expected one current official grid Hub');
+ active=goldenSpin(root,options);return active;
 }
 export function stop(){active?.destroy();active=undefined}
 export const inspect=()=>active?.inspect()??null;

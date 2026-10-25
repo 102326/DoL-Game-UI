@@ -449,6 +449,7 @@
       "lab accepts source-index fields without dropping the full producer response"
     ],
     "source-policy-boundary.test.mts": [
+      "current sources keep checked indexing while frozen settings use their original strict compiler contract",
       "source policy reads TS import forms and retains selection and workflow negatives",
       "source policy validates package commands before checking masked CI exits"
     ]
@@ -2195,6 +2196,10 @@
       "granularity": "native",
       "cases": [
         {
+          "id": "current sources keep checked indexing while frozen settings use their original strict compiler contract",
+          "minimumAssertions": 1
+        },
+        {
           "id": "source policy reads TS import forms and retains selection and workflow negatives",
           "minimumAssertions": 1
         },
@@ -2203,8 +2208,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "95021ef8ad6abdbdac078d40dc5a66a8c0a51bb467d6ac2489f1f23734826f4e",
-      "assertionSites": 14
+      "sourceSha256": "531dca2861ac6a0ca4800926144d6bdf2f8b83d6c97d7cec73852ebe1b2baa66",
+      "assertionSites": 22
     },
     {
       "entry": "tests/startup-cache.test.cjs",
