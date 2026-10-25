@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **GB40-PERF-F1：顶部方案已实现，性能明显改善但仍 Open，暂不封正式发布包。** 负责人允许优先覆盖顶栏；当前运行修复 `1c0cade` 将普通雨珠／湿痕及实际 Canvas 收敛到标题、布局选择和横向分类区，并合并不足一帧的重复绘制。原雨滴尺寸、流速、原生背景折射和雪／特殊天气保持。Android drawVk 中位约11ms，早期整窗约50ms；仍有95–101ms长尾，不宣称性能通过。六项材料合同、严格像素、Windows 实际 Loader 与 Android 双布局／触控／滚动／清理通过，游戏与存档摘要保持。标准40193163247、研究40193150652均完整success，192／478份索引逐项核对，九包及准确CI UI重启八包成员通过。评审输入身份见[本轮九包](evolution/EVO-RAIN-HEADER-PACKAGES-2026-10-25.json)，不是性能已放行的封包。见[本轮实现、媒体与风险](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)；旧整窗报告和失败实验保留为历史。TS First243/243、P2独立Accept不变，main／Tag／Release未授权。
+- **2026-10-25负责人接受当前顶栏方案及披露的残余慢帧，GB40-PERF-F1解除本轮发布准备阻塞。** 负责人怀疑原版游戏可能参与卡顿，已记录为待归因假设，不能写成原版根因已证明。运行源码仍 `1c0cade`；[接受与性能记录](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)、[当前候选准备／九包摘要](evolution/EVO-RELEASE-PREP-2026-10-25.json)为入口。两套源码CI及准确包／装机证据复用，ZIP字节不变；本轮只整理接受状态、候选目录和玩家文档。内部4.0.0-rc.2保持，拟正式4.0.0；正式重标、main、Tag和公开Release尚未授权。整体发行审查为下一步，不再因同一已接受尾帧反复阻塞或扩大视觉研发。
 
 - **TS First本轮技术范围Completed；GB40-TS-F1独立复核Accept并关闭。** 2026-10-25负责人转述小鸥复核：32项正常/异常/零写入、标准190项及研究478项证据、九包摘要与新旧包差异均已独立核对。受验代码`178f8b2b5b1828038b7c3ec304e8995bbe99ee38`；标准40175814517、研究40175811238完整success。仅UI/index.js改变，其余八ZIP字节不变；Android重启八个适用包成员/顺序/偏好及Windows/Android只读存档页通过。见[局部修复与接受记录](evolution/EVO-SAVE-REVISION-P2-2026-10-25.md)、[P2阶段九包冻结](evolution/EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json)。243/243迁移已完成，不再继续历史186/243批次。下一步已进入[最终候选验收与发布准备](evolution/EVO-RELEASE-GATE-2026-10-24.md)：同步最新安装、玩家文案与候选集合；整体G1/G2/G3及发行授权由负责人决定。Node26.12.1 Only、4.0.0-rc.2、未合main/未Tag/未发布不变；文档后续提交不冒称受验代码HEAD。
 
@@ -50,7 +50,8 @@
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
 3. TS First方案一243/243与GB40-TS-F1独立复核均已完成。TS First独立接受的受验代码为178f8b2，后续性能补丁包括35a5bb5、37d1baf及1c0cade，两套最新CI与九包身份见当前入口；旧186/243、Twee待迁移及旧“独立复审Pending”仅属历史状态，不再启动重复迁移。
-4. GB40-PERF-F1已有顶栏、实际Canvas和普通雨60Hz取样方案，技术CI／实机及制品身份已核对；仍有慢帧，先由负责人审看当前原速录屏与受验输入，决定是否接受或进一步修复，不能自动解除性能关卡。装机与业务仅复用各自适用范围的有效证据；本轮P2的新Windows/Android场景为只读存档页，不冒称全量业务重跑。保留历史失败、原生回退及日期/长期资源Unknown；READ01继续隔离，不新增视觉研究或全Mod穷举。
-5. 2026-10-25负责人已允许性能与实机无问题后封包准备发布；当前性能条件未满足，4.0.0-rc.2保持。F1解除后核对版本、最终摘要/加载身份及受影响场景，再按公开发行的明确授权合main/Tag/Release；公开首页/Assets仍不替换。
+4. 当前顶栏方案与已披露尾帧已获负责人接受，F1不再阻塞本轮准备；原版可能参与卡顿仅为假设。保留全部测量、失败、原生回退和长期资源Unknown，不把接受改写为根因修复或全设备性能通过。
+5. 候选分发目录按当前九个准确CI包整理，附件仅九ZIP与SHA；安装、Release与首页稿放附件之外。本轮没有改运行代码，不为文档重跑游戏全量回归；版本或运行文件改变时再按影响重验。
+6. 等待负责人正式版本与总体发行授权，再核对实际正式构建／SHA及加载身份、首页和Release下载链接后执行main／Tag／Release。不能把rc.2文件直接改名，也不能默认发布授权已经获得。
 
 交接更新约定：每批主要任务更新 Current / Decided / Next，记录实际输入SHA、命令/环境/范围、CI链接和未同步内容。绝对路径、服务会话、临时文件仅放Git忽略的 `docs/HANDOFF.local.md`；本文件保持一至两页，历史细节链接到专题报告。

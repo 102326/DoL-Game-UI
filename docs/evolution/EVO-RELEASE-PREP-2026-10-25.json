@@ -1,0 +1,143 @@
+{
+  "kind": "pre-release-candidate-preparation",
+  "date": "2026-10-25",
+  "status": "Prepared candidate; public release not authorized",
+  "sourceCommit": "1c0cade49c198b5e705337f7e9a1b683f7312dcb",
+  "candidateVersion": "4.0.0-rc.2",
+  "plannedStableVersion": "4.0.0",
+  "hostVersion": "0.1.5-experimental",
+  "node": "26.12.1",
+  "ownerDecision": {
+    "status": "Accepted for current header rain and disclosed performance tail",
+    "date": "2026-10-25",
+    "scope": "Current candidate header coverage, visual result and remaining short frame tail; proceed with pre-release preparation",
+    "performanceBlocker": "Cleared by owner acceptance, not a root-cause resolution",
+    "originalGameContribution": "Owner hypothesis; Unknown, not demonstrated",
+    "overallReleaseDecision": "Pending",
+    "publicReleaseAuthorization": false
+  },
+  "inheritedVerification": {
+    "manifest": "EVO-RAIN-HEADER-PACKAGES-2026-10-25.json",
+    "sha256": "bf7daee6cdd9b56e3a916247c97f31405320d61478b141d03fbae5f108a05e5a",
+    "ci": {
+      "standard": {
+        "id": 40193163247,
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40193163247",
+        "status": "success",
+        "indexedFiles": 192
+      },
+      "research": {
+        "id": 40193150652,
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40193150652",
+        "status": "success",
+        "indexedFiles": 478
+      }
+    },
+    "checks": {
+      "zipCrcMembersMetadataDependenciesLicenses": "PASS",
+      "twoFreshBuilds": "PASS",
+      "negativePackageCases": "PASS",
+      "allIndexedFiles": "PASS",
+      "downloadedArtifacts": "PASS",
+      "androidEightApplicablePackages": "PASS",
+      "canonicalRestartSmoke": "PASS"
+    },
+    "runtimeEquivalence": {
+      "trialUiSha256": "ecca6ddfdfd4f658ba7baca4284decb38e5306aefd0993a4478837351ab3dc17",
+      "canonicalUiSha256": "e4a37ca448272308351f35fe1a5bded4bc64a24e4361528922d33e0e49eb5a17",
+      "allRuntimeMembers": "byte-identical",
+      "changedDocuments": [
+        "README.md",
+        "docs/RELEASE_4.0.0-rc.2.md"
+      ],
+      "otherEightZipFiles": "unchanged from35a5bb5"
+    },
+    "reuseReason": "Only owner acceptance, release documents and preparation state changed; runtime and all nine package bytes remain unchanged."
+  },
+  "distributionPolicy": {
+    "modPackages": 9,
+    "checksumEntries": 9,
+    "attachmentFiles": 10,
+    "attachments": "Nine Mod ZIPs and SHA256SUMS.txt only",
+    "outsideAttachments": [
+      "Release body",
+      "Installation guide",
+      "Homepage draft",
+      "Technical records",
+      "Screenshots and video"
+    ],
+    "formalVersionRebuilt": false,
+    "publicReleaseCreated": false
+  },
+  "knownLimitations": [
+    "Occasional Android rain frame tail remains; owner accepted current candidate.",
+    "Contribution from original game, UI and graphics scheduling remains unassigned.",
+    "Other devices, long-run resources and all Mod/game combinations not exhaustively covered."
+  ],
+  "packages": [
+    {
+      "file": "StoneFreeHost-0.1.5-experimental.mod.zip",
+      "name": "StoneFreeHost",
+      "version": "0.1.5-experimental",
+      "sha256": "6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8"
+    },
+    {
+      "file": "DoLGameUI-4.0.0-rc.2.mod.zip",
+      "name": "DoLGameUI",
+      "version": "4.0.0-rc.2",
+      "sha256": "e4a37ca448272308351f35fe1a5bded4bc64a24e4361528922d33e0e49eb5a17"
+    },
+    {
+      "file": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.2.mod.zip",
+      "name": "ModHubSoftWet",
+      "version": "1.0.2",
+      "sha256": "6fc7893961d9f9ad6d1ecb90d039406c1b5f7061ece8f61b6300d37a65e01214"
+    },
+    {
+      "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip",
+      "name": "MapleBirchSoftWet",
+      "version": "1.0.1",
+      "sha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00"
+    },
+    {
+      "file": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip",
+      "name": "DolOptimizationSoftWet",
+      "version": "1.0.3",
+      "sha256": "f1120c18c8e058b0647d84676b217d278557b66c3611d9643f8ebf3213510f1f"
+    },
+    {
+      "file": "CheatExtendedSoftWet-cheat extended-1.20.3-plus-v1.0.0.mod.zip",
+      "name": "CheatExtendedSoftWet",
+      "version": "1.0.0",
+      "sha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d"
+    },
+    {
+      "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip",
+      "name": "ReOverfitsSoftWet",
+      "version": "1.0.0",
+      "sha256": "09ef4b7f8a253486726a88d475c92cfb0ce1de05f0e9324141f4a81965fc413f"
+    },
+    {
+      "file": "LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip",
+      "name": "LyraMouthCompat051213",
+      "version": "1.0.0",
+      "sha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827"
+    },
+    {
+      "file": "SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.1.mod.zip",
+      "name": "SmartPhoneSoftWet",
+      "version": "1.1.1",
+      "sha256": "43dd325355754f36c38b7336e135964cd0e181744cdcb344eeca79ce9d63c1d8"
+    }
+  ],
+  "staging": {
+    "directory": "dist/release-prep-4.0.0-rc.2-1c0cade",
+    "payloadDirectory": "attachments",
+    "fileCount": 10,
+    "modZipCount": 9,
+    "checksumSha256": "340d86244bdab9f798ee1f082a9fb207d706a06a7ee9f3c5c3574c02e3c884e0",
+    "payloadReadback": "PASS - all CRC, boot names/versions and SHA equal frozen CI originals",
+    "payloadRebuilt": false,
+    "publicUploaded": false
+  }
+}

@@ -1,10 +1,8 @@
 # Soft & Wet 4.0 — Evolution
 
-> 顶部雨效修复 `1c0cade` 已进入复验，原尺寸、流速和折射保留，F1仍Open，尚未封正式发布包。当前进度与原速录屏见[顶部雨效报告](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)；当前九包与摘要见[评审输入清单](evolution/EVO-RAIN-HEADER-PACKAGES-2026-10-25.json)，仅供验收。
+> 当前顶栏方案与已披露的残余慢帧已获负责人接受，发布前准备继续；偶发卡顿保留为已知限制，根因未定。当前仍为未公开的 `4.0.0-rc.2`，候选身份见[准备清单](evolution/EVO-RELEASE-PREP-2026-10-25.json)。
 
-> 当前候选存在[Android暴雨设置性能阻塞](evolution/EVO-ANDROID-GLASS-PERF-F1-2026-10-25.md)，尚未满足发布封包条件。
-
-> 面向玩家的发布草稿，更新2026-10-25。内部候选4.0.0-rc.2已完成TS First、存档P2修复及独立复核；当前受验代码1c0cade、两套CI与制品合同通过，性能尾帧仍待验收，拟正式4.0.0，未正式发布。最终验收后再替换正式版本与真实下载入口。
+> 面向玩家的发布草稿，更新2026-10-25。内部候选4.0.0-rc.2已完成TS First、存档P2修复及独立复核；当前受验代码1c0cade、两套CI与制品合同通过，本轮性能尾帧已由负责人接受，拟正式4.0.0，未正式发布。最终验收后再替换正式版本与真实下载入口。
 
 Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口、焦点和悬浮工具的动态表现，并整理它们在缩放、滚动和快速切换时的行为。
 
@@ -46,6 +44,7 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 
 ## 已知限制
 
+- 部分Android环境的复杂天气下仍可能出现偶发慢帧；当前顶栏收敛方案已获接受，不承诺所有设备都持续满帧。
 - 未知第三方页面可能保留原外观，未知结构会退让。
 - ModHub 所有安装／更新场景的卡顿与闪烁尚未作完全解决的承诺。
 - 已修复的衣柜路径不代表全部历史同名异常都已归因。
@@ -58,10 +57,14 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 
 ## 画面与动态预览
 
+[本轮24秒Android顶栏雨效原速录屏](media/evolution-rain-header/android-settings-rain.mp4)，覆盖双布局、分类、实际控件和开关。它来自与当前CI全部运行成员相同的受验包，只有两份包内说明不同；来源见[媒体记录](media/evolution-rain-header/provenance.json)。
+
+![当前Android设置：上下布局](media/evolution-rain-header/android-horizontal.png)
+
 ![实际Android设置：血月环境，普通雨保留](https://raw.githubusercontent.com/102326/DoL-Game-UI/dev/evolution-4.0/docs/media/evolution-rc1-game/android-blood-moon.png)
 
 - [设置与特殊天气原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/desktop-1x.mp4)
 - [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
 - [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
 
-截图来自实际测试App；视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称35a5bb5安装包的新录屏。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
+早期血月截图来自实际测试App；其后三段旧视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称本轮CI ZIP的重新录制。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
