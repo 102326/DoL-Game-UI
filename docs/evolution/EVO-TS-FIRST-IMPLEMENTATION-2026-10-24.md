@@ -391,7 +391,7 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 
 - 186项准确提交b7260aaf432c25f4f3200d0779b74695a656b186：标准40125602117、研究40125601288均success。两份独立remote-verification及summary回读确认准确HEAD、dirty=false、Node26.12.1、PASS/COMPLETE、problems=[]；下载10摘要、9ZIP CRC和双构建PASS/differences=[]。不把它自动覆盖后续源码。
 - 两处Twee自有resize回调已提取到src/early/shop-resize.ts；模板生成保持原宏和事件路径，原始冻结回调8类输入逐项等价，生成漂移反例通过。原SugarCube宏表达式与包装保留原格式。
-- 产品、Host、Vue、兼容包关闭allowJs并启用noUncheckedIndexedAccess；工具和研究图继续strict/checked indexing。工厂返回值传递、原型测量目标与兼容包正则/数组边界按实际类型修正，没有用any或忽略检查代替。设置与存档测试的局部Theme不再全局增补Window而污染其它消费者。
+- 产品、Host、Vue、兼容包关闭allowJs并启用noUncheckedIndexedAccess；工具和研究入口保留各自严格检查；research-tools图为strict，但未开启noUncheckedIndexedAccess，不能泛称全部研究图都有索引检查。工厂返回值传递、原型测量目标与兼容包正则/数组边界按实际类型修正，没有用any或忽略检查代替。设置与存档测试的局部Theme不再全局增补Window而污染其它消费者。
 - 最后一批Windows实际浏览器：UI Runtime全流程通过，含Inspector、隐私/导出、原生浮层、兼容包重绑定和销毁；历史反例的正常迟完成、真正残余、缺CSS和错误定位仍被精确区分。中转工作区5项、历史菜单原型10项、手机兼容、Framework根合同32项、天气W01九项和雨幕普通/径流用例通过。原生战斗隔离夹具5视口完整通过；这些不代替当前Android游戏结果。
 - 历史0.5.11.9游戏测试中，社交/面板/衣柜features遇到bannerFallbackImage.onload的skybox异步错误；无UI对照未复现，保留Unknown，不排除后记PASS。features中描述失效与点击确认之间的夹具竞态另行用同一页任务操作真实按钮修正，过期/无写入断言保留。
 - 本机device-layouts新CTS与准确旧CJS在同一当前源码下各有4个超时，均执行124条计划并准确拒绝4类错误反例；具体超时包含冷加载、可见/稳定等待，不能写为Windows该矩阵通过，也不放宽2500ms断言。完整Linux CI待最终精确提交。迁移中两次误改夹具脚本的失败保留，HTML内容已经恢复原JS，不把编译成功当渲染证明。
@@ -441,3 +441,14 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 单独保留两类自编现场检查器失误：450ms采样早于原620ms分类结束，改用既有3秒完整状态判据；ModHub误用.active和DOM消失，现场核对其原tab-selected和父容器display:none（保留DOM、天气释放）后复验。未为这些错误改产品。标准124布局/四类反例完整通过；本地先前超时及其它历史失败仍作为历史事实保留。
 
 最终范围与有限例外见[EVO-TS-FIRST-VALIDATION-2026-10-25.md](EVO-TS-FIRST-VALIDATION-2026-10-25.md)及[EVO-TS-FIRST-PACKAGES-2026-10-25.json](EVO-TS-FIRST-PACKAGES-2026-10-25.json)。当前代码任务Completed；负责人G1/G2/G3整体裁决与Release Authorization继续Pending。内部4.0.0-rc.2、Host+UI合同和既有视觉/业务不变，没有合main、Tag、Release或更新公开Assets。后续提交只整理这些文档，不冒充两套CI测试了后来的文档HEAD。
+
+
+## 2026-10-25 独立终审新增P2与局部复验
+
+负责人提供独立终审报告，指出GB40-TS-F1：目标槽字符串/数组被detailFor归为空槽，导致封存后未知状态变化仍能调用原handler。直接复核源码，并在Node26.12.1/Edge真实DOM联合原始metadata与source复现；不把报告中的Node24合成结果冒充本机或真实存档事故。存档元数据读取与转发没有真实存储写入，本轮没有存档损坏证据。
+
+局部修复只在metadata边界区分nullish缺失、record及畸形值；畸形目标read不封存、不生成空槽日期，revision抛错使现有source拒绝，正常同批槽继续工作。legacy畸形slots容器同样拒绝；source.ts及其原DOM/control/onclick/disabled/revision守卫保持原字节。新增标准browser联合合同32场景，保持原native回调并检查写入0、输入不变、合法空/occupied可达与封存后的改变拒绝。生成CJS不手工维护。
+
+本机原始模块对照：ff7942的32场景在新更严验收下30通过/2拒绝不足（原有occupied malformed放行，不归为本次新回归）；d8430相同矩阵16通过/16失败；补丁32通过。报告列出的空槽→畸形与初始空行畸形差异均复现。新metadata三项单元、原source M4-B二十项、实际Moody单项终端收据、完整ci:check均通过，原失败和两版blob/输入摘要保留在review-p2-*及save-revision-source-*。待新准确提交两套CI、制品身份与代表性目标场景核验，不能沿用d8430的通过结论。
+
+终审同时确认243项与CI/制品信任层基本接受。历史报告“全部研究图都带索引检查”的泛化表述已纠正：research-tools strict=true但没有noUncheckedIndexedAccess，产品与原型内核另外检查。整体技术状态因本项P2重新打开；G1/G2/G3及发布授权依然独立。

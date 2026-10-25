@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **TS First方案一已完成：243/243，当前技术验收已收束。** 受验代码`d8430a8274282528a68a7a737b37c970dfae7020`；标准40172977229、研究40172975815及独立证据均success/PASS/COMPLETE，10摘要/9ZIP/双构建一致。最终八个适用包与实际重启Windows/Android预检负载容器及成员完全相同，Android新连接再次逐成员核对；设置触控滚动/阻挡、双布局、Hub开闭/反向/背景清理及ModHub管理/帮助/自然雷雨通过。Node26.12.1 Only，内部仍4.0.0-rc.2；后续文档提交不冒充新运行代码验收。见[最终技术报告](evolution/EVO-TS-FIRST-VALIDATION-2026-10-25.md)、[九包冻结](evolution/EVO-TS-FIRST-PACKAGES-2026-10-25.json)、[分批与失败记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。历史脚本、缺失输入、banner/资源Unknown及Mac/iOS等覆盖边界继续保留。下一步是负责人整体体验/发行裁决；正式版本、main、Tag与发布未授权。
+- **独立终审发现GB40-TS-F1，局部修复复验中。** 243/243迁移与d8430原CI证据保留，但目标槽畸形metadata被归为空槽的P2需新验收；原“整体技术已收束”已重新打开。metadata改为畸形目标不封存、revision拒绝，source原守卫不变；32项IDB/legacy真实DOM联合合同、原20项source、单元与ci:check已通过，已接入标准CI。下一步针对新准确提交运行两套CI、核对新包并做代表性只读存档界面复验。见[专项记录](evolution/EVO-SAVE-REVISION-P2-2026-10-25.md)。Node26.12.1 Only、4.0.0-rc.2及未发布边界不变。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 

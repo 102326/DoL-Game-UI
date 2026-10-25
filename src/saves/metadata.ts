@@ -35,7 +35,12 @@ export function createSaveMetadata(root:SaveMetadataHost){
   if(idb){
    const row=Array.isArray(details)?details.find((value:unknown)=>record(value)&&value.slot===(entry.auto?0:Number(entry.slot))):undefined;
    detail=record(row)?row.data:undefined;
-  }else if(record(details))detail=entry.auto?details.autosave:Array.isArray(details.slots)?details.slots[Number(entry.slot)-1]:undefined;
+  }else if(record(details)){
+   if(entry.auto)detail=details.autosave;
+   else{const slots=details.slots;if(slots!=null&&!Array.isArray(slots))throw new Error('Unknown save slots');detail=Array.isArray(slots)?slots[Number(entry.slot)-1]:undefined}
+  }
+  // Unknown target data must never acquire the same trusted revision as an empty slot.
+  if(detail!=null&&!record(detail))throw new Error('Unknown save detail');
   return record(detail)?detail:undefined;
  }
  function stamp(details:unknown,entry:SaveEntry,idb:boolean){return JSON.stringify([idb?'idb':'legacy',entry.slot,detailFor(details,entry,idb)??null])}
@@ -47,7 +52,7 @@ export function createSaveMetadata(root:SaveMetadataHost){
   let aliases:RecordValue={};try{const value:unknown=JSON.parse(root.localStorage.getItem(KEY)||'{}');if(record(value))aliases=value}catch{}
   const persisted=new Map<string,number>(),revisions=new Map<number,string>();
   for(const entry of entries){
-   const d=detailFor(details,entry,idb);
+   let d:RecordValue|undefined;try{d=detailFor(details,entry,idb)}catch{continue}
    // A stale native empty row must not overwrite an occupied slot without its confirmation.
    if(entry.empty===!d)revisions.set(entry.key,stamp(details,entry,idb));
    const date=typeof d?.date==='number'&&Number.isFinite(d.date)?d.date:undefined;

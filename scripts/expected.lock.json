@@ -440,7 +440,8 @@
     ],
     "save-metadata-boundary.test.mts": [
       "save metadata skips malformed rows without changing native data or writing storage",
-      "NaN dates remain invalid numbers and unknown legacy shapes fail closed"
+      "NaN dates remain invalid numbers and unknown legacy shapes fail closed",
+      "malformed target is not sealed or reported as empty while a healthy peer remains usable"
     ],
     "source-identity-boundary.test.mts": [
       "source identity retains raw byte drift even when Git normalizes a clean file",
@@ -1912,10 +1913,155 @@
         {
           "id": "NaN dates remain invalid numbers and unknown legacy shapes fail closed",
           "minimumAssertions": 1
+        },
+        {
+          "id": "malformed target is not sealed or reported as empty while a healthy peer remains usable",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "27556118f7316e64a27ccc22022fa52c6ba01f6ec3d9998c666bd7dac4ddcdcc",
-      "assertionSites": 11
+      "sourceSha256": "f537c1d43581e0c980d82a7338bcb1596f648f3c725e8935bed01506b5b3b26c",
+      "assertionSites": 17
+    },
+    {
+      "entry": "tests/save-revision-source.cjs",
+      "sourceEntry": "tests/save-revision-source.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "named",
+      "cases": [
+        {
+          "id": "idb: empty stable",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: null empty stable",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: occupied stable",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: occupied changed",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: empty to occupied",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: empty to string",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: empty to array",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: initial string",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: initial array",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: string to array",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: array to string",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: malformed to empty",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: other slot malformed",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: container becomes malformed",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: initial malformed container",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "idb: occupied malformed",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: empty stable",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: null empty stable",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: occupied stable",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: occupied changed",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: empty to occupied",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: empty to string",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: empty to array",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: initial string",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: initial array",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: string to array",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: array to string",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: malformed to empty",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: other slot malformed",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: container becomes malformed",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: initial malformed container",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "legacy: occupied malformed",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "22ded6eee0df10d40e946bab7baddaf3c97c89a280ca1ae9a98e776d55439191",
+      "assertionSites": 259
     },
     {
       "entry": "tests/save-transfer-lifecycle.cjs",

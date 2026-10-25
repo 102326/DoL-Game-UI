@@ -25,3 +25,16 @@ test('NaN dates remain invalid numbers and unknown legacy shapes fail closed',as
     assert.equal(await metadata.read([value],false),undefined);await assert.rejects(metadata.revision(value,false),/Unknown save details/);
   }finally{metadata.destroy()}
 });
+
+test('malformed target is not sealed or reported as empty while a healthy peer remains usable',async()=>{
+ let writes=0;
+ const metadata=createSaveMetadata({localStorage:{getItem:()=>null,setItem:()=>{writes++}},idb:{getSaveDetails:async()=>[{slot:1,data:'invalid'},{slot:2,data:{date:123,id:'native'}}]}});
+ const bad={...entry('1'),empty:true},healthy={...entry('2'),key:2};
+ try{
+  const result=await metadata.read([bad,healthy],true);
+  assert.equal(result?.revisions.has(bad.key),false);assert.equal(result?.dates.has('idb:1'),false);
+  await assert.rejects(metadata.revision(bad,true),/Unknown save detail/);
+  assert.equal(result?.revisions.has(healthy.key),true);assert.equal(result?.dates.get('idb:2'),123);
+  assert.equal(writes,0);
+ }finally{metadata.destroy()}
+});
