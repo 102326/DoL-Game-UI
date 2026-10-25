@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **整体验收技术巡检与冗余写入修复完成，整体裁决Pending。** 35a5bb5只为雨滴三个data标记增加条件写入，未改几何、材质、雨量和速度。四项新真实DOM合同通过，旧固定帧2736次重复写入被准确拒绝，新实现为0。标准40180281867、研究40180280556均success并回读全部索引文件与九包；新[冻结清单](evolution/EVO-FINAL-REVIEW-PACKAGES-2026-10-25.json)与178历史包分开。仅UI/index.js与README变，其余八ZIP不变；准确CI UI已在Android原生重启，八包全部实际成员、原顺序/禁用列表/偏好、关闭清理核对。Windows实际Loader、设置双布局/控件及390px边界通过；本地受验包仅两份Markdown换行不同，运行成员与CI逐项等价。设置雨效单次回调中位33.4ms、p95约50.1ms，仍不宣称卡顿已解决或实际FPS通过。见[性能巡检与边界](evolution/EVO-FINAL-REVIEW-PERF-2026-10-25.md)。存档P2独立Accept及243/243保持；剩负责人G1/G2/G3及正式版本/发布授权，未合main、未Tag、未发布。
+- **GB40-PERF-F1：Android暴雨设置性能Blocked，暂不封发布包。** 负责人已授权性能与实机同步、无问题后封包准备发布；本轮原生Perfetto确认真实呈现延迟，不再只是rAF Unknown。35a5bb5的准确八包加载、15次设置/5次Hub开闭、真实触控和150%长页滚动通过，游戏/存档摘要保持、天气层0；但动态`drawVk`平均48.49ms、两次click duration240/312ms（静态40/32）。临时隐藏玻璃DOM层时drawVk中位降至4.38ms，Canvas移除未改善。具体GPU/驱动/多滤镜机制未完全归因；contain/will-change及1/64几何实验均未解除阻塞，已撤回并恢复准确CI UI。见[当前缺陷、数据边界与修复终点](evolution/EVO-ANDROID-GLASS-PERF-F1-2026-10-25.md)。源码仍35a5bb5、TS First243/243及存档P2独立Accept保持；此前两套CI成功只覆盖其合同，不替代本次性能关卡。下一步先修玻璃合成路径并做同场景原生帧/触控复验，再按条件封包；不静默减特效，不合main、不Tag、不发布。
 
 - **TS First本轮技术范围Completed；GB40-TS-F1独立复核Accept并关闭。** 2026-10-25负责人转述小鸥复核：32项正常/异常/零写入、标准190项及研究478项证据、九包摘要与新旧包差异均已独立核对。受验代码`178f8b2b5b1828038b7c3ec304e8995bbe99ee38`；标准40175814517、研究40175811238完整success。仅UI/index.js改变，其余八ZIP字节不变；Android重启八个适用包成员/顺序/偏好及Windows/Android只读存档页通过。见[局部修复与接受记录](evolution/EVO-SAVE-REVISION-P2-2026-10-25.md)、[P2阶段九包冻结](evolution/EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json)。243/243迁移已完成，不再继续历史186/243批次。下一步已进入[最终候选验收与发布准备](evolution/EVO-RELEASE-GATE-2026-10-24.md)：同步最新安装、玩家文案与候选集合；整体G1/G2/G3及发行授权由负责人决定。Node26.12.1 Only、4.0.0-rc.2、未合main/未Tag/未发布不变；文档后续提交不冒称受验代码HEAD。
 
@@ -50,7 +50,7 @@
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
 3. TS First方案一243/243与GB40-TS-F1独立复核均已完成。TS First独立接受的受验代码为178f8b2，后续性能补丁为35a5bb5，两套CI与新九包身份见当前入口；旧186/243、Twee待迁移及旧“独立复审Pending”仅属历史状态，不再启动重复迁移。
-4. 使用最新冻结九包及安装/Release/首页草稿提交负责人整体验收。装机与业务仅复用各自适用范围的有效证据；本轮P2的新Windows/Android场景为只读存档页，不冒称全量业务重跑。保留历史失败、原生回退及日期/长期资源Unknown；READ01继续隔离，不新增视觉研究或全Mod穷举。
-5. 负责人确认G1/G2/G3、正式版本和发行授权后，才进行正式标记重建、最终摘要/加载身份及受影响场景复验，再按明确授权合main/Tag/Release。当前只准备材料，4.0.0-rc.2不改，公开首页/Assets不替换。
+4. 优先修复GB40-PERF-F1玻璃合成负担，以同场景原生帧和真实触控复验；通过后再用最新九包及安装/Release/首页稿提交整体验收。装机与业务仅复用各自适用范围的有效证据；本轮P2的新Windows/Android场景为只读存档页，不冒称全量业务重跑。保留历史失败、原生回退及日期/长期资源Unknown；READ01继续隔离，不新增视觉研究或全Mod穷举。
+5. 2026-10-25负责人已允许性能与实机无问题后封包准备发布；当前性能条件未满足，4.0.0-rc.2保持。F1解除后核对版本、最终摘要/加载身份及受影响场景，再按公开发行的明确授权合main/Tag/Release；公开首页/Assets仍不替换。
 
 交接更新约定：每批主要任务更新 Current / Decided / Next，记录实际输入SHA、命令/环境/范围、CI链接和未同步内容。绝对路径、服务会话、临时文件仅放Git忽略的 `docs/HANDOFF.local.md`；本文件保持一至两页，历史细节链接到专题报告。

@@ -1,5 +1,7 @@
 # Soft & Wet 4.0 — Evolution
 
+> 当前候选存在[Android暴雨设置性能阻塞](evolution/EVO-ANDROID-GLASS-PERF-F1-2026-10-25.md)，尚未满足发布封包条件。
+
 > 首页替换稿，尚未启用。更新2026-10-25，对应已完成TS First及存档P2独立复核的内部候选4.0.0-rc.2（受验代码35a5bb5），拟正式4.0.0；正式发布与下载入口待负责人最终确认。
 
 Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、服装店、角色信息和常用窗口。Evolution 延续3.X视觉基线，更新悬浮工具与设置的动态表现，并改进窗口在滚动、缩放和快速切换时的行为。

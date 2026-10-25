@@ -1,5 +1,7 @@
 # Evolution 候选：安装、升级与回退
 
+> 当前候选存在[Android暴雨设置性能阻塞](evolution/EVO-ANDROID-GLASS-PERF-F1-2026-10-25.md)，尚未满足发布封包条件。
+
 本指南用于 Soft & Wet 4.0 — Evolution 内部候选 `4.0.0-rc.2`，尚未正式发布。当前包来自完成TS First、存档P2独立复核及本轮冗余写入修复的源码`35a5bb5`，Host沿用0.1.5-experimental；相同rc.2版本标签不代表包字节相同，请核对[最新冻结清单](evolution/EVO-FINAL-REVIEW-PACKAGES-2026-10-25.json)。整体体验和发布裁决见[关卡报告](evolution/EVO-RELEASE-GATE-2026-10-24.md)。
 
 ## 安装
