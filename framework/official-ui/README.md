@@ -1,6 +1,6 @@
 # Soft & Wet 4.0 — Evolution
 
-`DoLGameUI 4.0.0-rc.2` 是 Evolution 的内部发行候选，尚未正式发布。修复ModHub等已适配窗口旧雨幕的重复重绘，保留原雨量、速度和外观。更新悬浮球回旋、设置转场与玻璃天气，保留3.X黑灰Acrylic、真实游戏操作、UI API v1及独立Framework Host。
+`DoLGameUI 4.0.0` 是 Evolution 的正式版本构建。修复ModHub等已适配窗口旧雨幕的重复重绘，保留原雨量、速度和外观。更新悬浮球回旋、设置转场与玻璃天气，保留3.X黑灰Acrylic、真实游戏操作、UI API v1及独立Framework Host。
 
 普通雨珠集中覆盖设置标题、布局切换及横向分类区，并在下缘柔化衔接；保留原水珠尺寸、流速与真实背景折射。雪与特殊天气继续使用各自的表现范围。
 

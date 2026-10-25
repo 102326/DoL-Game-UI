@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Current continuation (2026-10-25): after accepting the header candidate and reviewing the completed pre-release handoff, the owner requested the next step. Proceed with the planned 4.0.0 source version, a real rebuild, both exact-source CI workflows, package/member comparison and affected installation smoke. Preserve the accepted runtime and the immutable RC2 evidence. This authorizes formal-version preparation on this research branch; main merge, Tag, public Release and Assets remain pending explicit publication approval.
+
 - Current tooling baseline: Node26 Only (>=26.12.1 <27); both CI workflows read .node-version (26.12.1) and @types/node26. Earlier22/24 evidence remains historical. This changes development tooling, not browser/WebView targets.
 
 - Latest owner direction (2026-10-24): execute TS First option 1 before 4.0 release. Include all maintained self-owned JS, embedded logic and existing TS boundary gaps; CommonJS may use CTS without an ESM rewrite. Preserve runtime contracts, accepted visuals and negative tests. Separate type migration, behavior fixes and cleanup commits. Assessment baseline is ff7942d / 4.0.0-rc.2; the earlier option-2 recommendation is historical, not the selected scope. See docs/evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md. Formal-version edits, main merge, Tag and Release remain unauthorized; old RC2 evidence does not validate migrated code.
