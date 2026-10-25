@@ -1,8 +1,10 @@
 # Evolution 候选：安装、升级与回退
 
+> 顶部雨效修复 `1c0cade` 已进入复验，原尺寸、流速和折射保留，F1仍Open，尚未封正式发布包。当前进度与原速录屏见[顶部雨效报告](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)；当前九包与摘要见[评审输入清单](evolution/EVO-RAIN-HEADER-PACKAGES-2026-10-25.json)，仅供验收。
+
 > 当前候选存在[Android暴雨设置性能阻塞](evolution/EVO-ANDROID-GLASS-PERF-F1-2026-10-25.md)，尚未满足发布封包条件。
 
-本指南用于 Soft & Wet 4.0 — Evolution 内部候选 `4.0.0-rc.2`，尚未正式发布。当前包来自完成TS First、存档P2独立复核及本轮冗余写入修复的源码`35a5bb5`，Host沿用0.1.5-experimental；相同rc.2版本标签不代表包字节相同，请核对[最新冻结清单](evolution/EVO-FINAL-REVIEW-PACKAGES-2026-10-25.json)。整体体验和发布裁决见[关卡报告](evolution/EVO-RELEASE-GATE-2026-10-24.md)。
+本指南用于 Soft & Wet 4.0 — Evolution 内部候选 `4.0.0-rc.2`，尚未正式发布。当前包来自完成TS First、存档P2独立复核及顶部雨效收敛修复的源码`1c0cade`，Host沿用0.1.5-experimental；相同rc.2版本标签不代表包字节相同，请核对[最新冻结清单](evolution/EVO-RAIN-HEADER-PACKAGES-2026-10-25.json)。整体体验和发布裁决见[关卡报告](evolution/EVO-RELEASE-GATE-2026-10-24.md)。
 
 ## 安装
 
@@ -32,7 +34,7 @@
 | ReOverfitsSoftWet | 额外衣槽；本轮未安装目标，未作新实机声明 |
 | LyraMouthCompat051213 | 指定 Lyra 0.5.12.13 嘴部资源适配，须核对资源环境与 MapleBirch 范围 |
 
-具体候选版本和依赖见[最新九包清单](evolution/EVO-FINAL-REVIEW-PACKAGES-2026-10-25.json)及ZIP的boot.json。早期RC2、TS迁移前及局部修复前的清单只作历史；当前UI ZIP SHA-256为`08d0bf77903099638aef501cd80bbd9e35480b910707b79ed53441fd73069986`。本轮候选集合只含九个Mod ZIP和对应SHA256SUMS，不含内部检查报告。除嘴部资源包外，通常还需要 UI；SmartPhone 要求 UI >=3.0.2，其它外观包沿用已有最低合同。没有目标 Mod 就不安装对应包；主 Mod 与 PhotoPack 另行获取，本候选不打包第三方主 Mod。
+具体候选版本和依赖见[最新九包清单](evolution/EVO-RAIN-HEADER-PACKAGES-2026-10-25.json)及ZIP的boot.json。早期RC2、TS迁移前及局部修复前的清单只作历史；当前UI ZIP SHA-256为`e4a37ca448272308351f35fe1a5bded4bc64a24e4361528922d33e0e49eb5a17`。本轮候选集合只含九个Mod ZIP和对应SHA256SUMS，不含内部检查报告。除嘴部资源包外，通常还需要 UI；SmartPhone 要求 UI >=3.0.2，其它外观包沿用已有最低合同。没有目标 Mod 就不安装对应包；主 Mod 与 PhotoPack 另行获取，本候选不打包第三方主 Mod。
 
 原版优化叠穿是否开启由其原设置决定，兼容包不强制开启。已识别的叠穿项目、顺序和卸下操作使用作者原逻辑。
 

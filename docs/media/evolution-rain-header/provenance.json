@@ -1,0 +1,14 @@
+{
+  "sourceCommit": "1c0cade49c198b5e705337f7e9a1b683f7312dcb",
+  "kind": "native Android test App, natural storm/severe; 24.11 seconds original speed; no audio",
+  "provisionalUiSha256": "ecca6ddfdfd4f658ba7baca4284decb38e5306aefd0993a4478837351ab3dc17",
+  "note": "Runtime identical to committed source; package documentation subsequently updated. Not a final CI package recording, owner visual acceptance pending. Recording performed separately from performance traces.",
+  "files": {
+    "android-horizontal.png": "98c38c7c7e3355f3deaa24ea03204918c3aace39b647457ffd910c40ea48233c",
+    "android-settings-rain.mp4": "f7b2d1976d041464a84efceba084421c9755877a722911d075ab4bce7b116cd5",
+    "android-vertical.png": "3b0ffc61b34d30a0a4b3375283bc3daa87dc5be7e8f1ad3f844d4c2445cad682"
+  },
+  "canonicalCiUiSha256": "e4a37ca448272308351f35fe1a5bded4bc64a24e4361528922d33e0e49eb5a17",
+  "runtimeMemberEquivalence": "PASS - all runtime members byte-identical; only README and version notes differ",
+  "canonicalRestartAllEightMembers": "PASS"
+}

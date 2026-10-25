@@ -1,8 +1,10 @@
 # Soft & Wet 4.0 — Evolution
 
+> 顶部雨效修复 `1c0cade` 已进入复验，原尺寸、流速和折射保留，F1仍Open，尚未封正式发布包。当前进度与原速录屏见[顶部雨效报告](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)；当前九包与摘要见[评审输入清单](evolution/EVO-RAIN-HEADER-PACKAGES-2026-10-25.json)，仅供验收。
+
 > 当前候选存在[Android暴雨设置性能阻塞](evolution/EVO-ANDROID-GLASS-PERF-F1-2026-10-25.md)，尚未满足发布封包条件。
 
-> 首页替换稿，尚未启用。更新2026-10-25，对应已完成TS First及存档P2独立复核的内部候选4.0.0-rc.2（受验代码35a5bb5），拟正式4.0.0；正式发布与下载入口待负责人最终确认。
+> 首页替换稿，尚未启用。更新2026-10-25，对应已完成TS First及存档P2独立复核的内部候选4.0.0-rc.2（受验代码1c0cade），拟正式4.0.0；正式发布与下载入口待负责人最终确认。
 
 Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、服装店、角色信息和常用窗口。Evolution 延续3.X视觉基线，更新悬浮工具与设置的动态表现，并改进窗口在滚动、缩放和快速切换时的行为。
 
@@ -93,10 +95,14 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 
 ## 画面与动态预览
 
+[本轮24秒Android原速顶栏雨效录屏](media/evolution-rain-header/android-settings-rain.mp4)。来源、运行成员等价及性能限制见[本轮复验](evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)。
+
+![本轮Android设置：上下布局](media/evolution-rain-header/android-horizontal.png)
+
 ![实际Android设置：血月环境，普通雨保留](https://raw.githubusercontent.com/102326/DoL-Game-UI/dev/evolution-4.0/docs/media/evolution-rc1-game/android-blood-moon.png)
 
 - [设置与特殊天气原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/desktop-1x.mp4)
 - [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
 - [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
 
-截图来自实际测试App；视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称35a5bb5安装包的新录屏。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
+上方早期血月截图来自实际测试App；其后三段旧视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称本轮CI ZIP的重新录制。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
