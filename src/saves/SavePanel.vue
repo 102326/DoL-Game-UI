@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import {computed,ref,toRef,onMounted,onBeforeUnmount,watch} from 'vue';
 import type {SaveEntry} from './source';
+import {visualScope} from '../ui/visual-scope';
+const scope=visualScope();
 const props=defineProps<{state:{entries:SaveEntry[];v2:boolean;query:string;selectedSlot:string;pending:boolean;message:string;unknown:number};headerTarget?:HTMLElement;fallback:()=>void;act:(key:number,index:number)=>void|Promise<void>;rename:(key:number,name:string)=>string}>();
 const query=toRef(props.state,'query'),selected=ref<number|null>((props.state.entries.find(e=>e.slot===props.state.selectedSlot)||props.state.entries.find(e=>!e.empty))?.key??null),drawer=ref<HTMLDialogElement|null>(null);
 const layout=ref<HTMLElement|null>(null),wide=ref(false);
 const inline=computed(()=>props.state.v2&&wide.value);
-let observer:ResizeObserver|undefined,resizeFrame=0;
-function resized(){const next=(layout.value?.parentElement?.getBoundingClientRect().width??0)>=760;if(next===wide.value)return;cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;wide.value=next})}
+let observer:ResizeObserver|undefined;
+function measure(){wide.value=(layout.value?.parentElement?.getBoundingClientRect().width??0)>=760}
+function resized(){scope.frame(measure)}
 onMounted(()=>{if(typeof ResizeObserver==='function'){observer=new ResizeObserver(resized);if(layout.value?.parentElement)observer.observe(layout.value.parentElement)}else window.addEventListener('resize',resized);resized()});
-onBeforeUnmount(()=>{observer?.disconnect();window.removeEventListener('resize',resized);cancelAnimationFrame(resizeFrame)});
+scope.own(()=>{observer?.disconnect();window.removeEventListener('resize',resized)});onBeforeUnmount(scope.dispose);
 watch(inline,()=>{if(drawer.value?.matches(':modal'))drawer.value.close()});
 const draftName=ref(''),nameMessage=ref('');
 function saveName(){if(current.value)nameMessage.value=props.rename(current.value.key,draftName.value)}

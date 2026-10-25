@@ -30,8 +30,9 @@ function persist() {message.value = storage && saveLayout(storage, storageKey, p
 function reset() {preferences.value = defaultLayout(); persist()}
 function move(view: View, direction: number) {
  const order = ordered.value.map(key), index = order.indexOf(key(view)), next = index + direction;
- if (next < 0 || next >= order.length) return;
- [order[index], order[next]] = [order[next], order[index]];
+ const current=order[index], adjacent=order[next];
+ if (index < 0 || next < 0 || next >= order.length || current===undefined || adjacent===undefined) return;
+ [order[index], order[next]] = [adjacent, current];
  // Retain preferences for temporarily absent providers.
  preferences.value.order = [...order, ...preferences.value.order.filter(id => !order.includes(id))].slice(0, 100); persist();
 }

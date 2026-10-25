@@ -1,0 +1,464 @@
+# TS First：方案一执行记录
+
+2026-10-24。负责人选择“方案一，开始推进”，替代仅评估的限制。先完成 TS First，再提交 4.0 发布验收；不修改正式版本，不合并 main、Tag 或发布。
+
+## 范围与终点
+
+以 ff7942d 的[逐文件清单](EVO-TS-FIRST-INVENTORY-2026-10-24.json)为基线，包含全部仍维护的自有代码：243 个独立 JS 候选、仍维护的 HTML 内联程序、自有 Twee 回调，以及已有 TS 的检查遗漏和数据边界。不能把只完成当前 CI 可达的 125 项宣布为全部完成。[评估](EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)曾推荐方案二；本次选定方案一，保留原评估结论作为决策依据。
+
+完成条件：维护中的自有运行和工具源码使用 TS；必要 JS 仅限有依据的生成输出、第三方来源及测试输入；严格检查覆盖实际执行源码和导出；关键入口有与所用数据合同相称的运行时校验；原有正例和历史反例均保留；新代码的构建、包身份及受影响的代表性宿主回归完成。测试/性能/视觉证据分开记录。
+
+不迁移 Python/Ruby，不改游戏或存档业务，不以迁移恢复已否决的视觉实验。历史测试是否封存必须逐项确认用途，不能因未被当前 CI 引用就删除。第三方 renderer 保留来源、许可及生成方式，通过自有类型边界使用。
+
+## 执行批次
+
+| 批次 | 交付 | 必需验证 | 状态 |
+| --- | --- | --- | --- |
+| T0 | TS 工具编译/执行合同、CJS/ESM 导出类型、干净安装前启动路径 | 正/反类型用例、实际 CLI、路径及 Node 最低版本 | 进行中 |
+| T1 | 构建、打包辅助、源码索引、配置及现有 TS 检查遗漏 | 严格检查、实际构建、受影响结构测试 | 进行中，首批工具已落地 |
+| T2 | CI 调度、证据、锁生成及全部维护中测试/辅助 | 两套 CI、反例仍拒绝、实际源码/执行身份一致 | 进行中，先接入 TS 来源锁与原生用例 |
+| T3 | 产品/Host/兼容边界、Vue 暴露与内联程序 | 专项正反用例、业务事件及生命周期回归 | 已先修确认的存档/索引输入缺口，其余待迁移 |
+| T4 | 清点例外、制品与代表性实际宿主复验 | 新源码 CI、九包合同/摘要、Windows/Android 受影响场景 | 待开始 |
+
+每批迁移并验证后立即退出对应重复 JS 源路径。纯迁移与改变错误输入处理的修复分开提交。若脚本调用、测试源码读取、路径、生成锁受影响，必须同步调整，不放宽断言。
+
+## 工具路线
+
+继续保持现有模块运行形式：CJS 源码优先 `.cts`，已有 ESM 使用 `.mts`；浏览器/Vite 源码使用 `.ts`。不要求同步改成 ESM。工具使用独立严格 NodeNext 配置，编译器可转换 `export =` 等合法 CJS TS 写法；现有依赖前原生擦除路径不能误认为能执行这些语法。
+
+优先保留原运行路径与 `__dirname`，输出为同目录 `.cjs/.mjs`，生成项逐项排除，不能用全局忽略 `.cjs` 隐藏遗留源码。导出由实际实现推导，消费者使用 TS 导入；不以裸 `require` 的 `any` 代替类型合同。依赖安装前的 CI 入口需单独验证，编译器尚未安装时不能依赖编译器启动自身；若保留生成 JS 引导，须有单一 TS 来源和可复现一致性检查。
+
+## 证据与剩余工作
+
+原 RC2 的功能、设备和雨幕记录只作为未改行为的基线。当前迁移尚未完成，不继承其 CI/装机通过状态。每批实际命令、失败、修复与未覆盖项在此追加；不把全部额外设备/Mod 穷举作为本轮无限终点。
+
+### T0 首批落地（9273858）
+
+已迁移五项构建/源码生成工具（两个 CTS、三个 MTS），加入独立严格 NodeNext 编译、逐项忽略生成路径及 CJS/ESM 消费者类型反例。保留现有运行路径，独立第二次构建会先从 TS 编译工具。[操作说明](../../scripts/TOOLING.md)。未引入依赖，未改变产品版本、视觉或业务。
+
+已通过 `tooling:build`、`ci:check`、三个原有专项（render-state、shop-early-api、startup-cache），实际 Framework 全部构建、共享 Vue 对照构建和球体原型构建。与 RC2 冻结包对比，Host 全成员相同，主 UI 的运行成员相同；仅 README/候选说明与旧冻结文档不同，当前构建不是新的发行冻结。CI/其余源码迁移尚未完成。
+
+
+### 最低 Node 与旧测试夹具
+
+已从 Node 官方分发取得并按官方 SHASUMS256 核对 Node 22.12.0，只放在忽略的测试制品目录，未替换系统 Node。该版本通过工具编译、三个原有专项，以及无 node_modules 的隔离目录 CI 模块启动；依赖安装本身未在该探针中执行。初次直接调用旧专项遗漏 `--experimental-strip-types`，shop-early-api 因原有原生 TS 导入失败；按原工作流的 NODE_OPTIONS 启动后三项通过，不是重跑掩盖 flaky。
+
+`framework-factory.cjs` 的扩大覆盖发现两个旧夹具问题，独立于纯类型迁移处理：
+
+- 无 SugarCube 的空白页面没有发出场景就绪，真实 Host 正确拒绝打开工作台。夹具现在显式调用 `sceneReady()`，没有放宽当前绑定检查。
+- 历史 d666095 的实际 Host 是 0.1.0-experimental，缺少当前 SDK 必需接口，而当前声明最低 0.1.2。原测试混用了当前 SDK 与这份过早 Host。现在保留真实历史正例（历史 SDK＋历史 Host，含内容交互及清理），增加当前 SDK 对不支持 Host 的拒绝断言；当前支持范围的工作台组合和旧/升级 SDK 行为对照均保留。没有为早期 Host 新增产品兼容假接口。原失败及诊断保留在本机测试制品，原断言在 Git 历史可追溯。
+
+修正后该脚本18组检查通过，包括作者源码保护、SDK升级拒绝、390px组件、真实预览、历史/当前合同及释放。T1仍进行中，不能视为全仓迁移通过。
+
+
+### T1 工具与检查覆盖
+
+累计12个清单内独立工具/配置转为 CTS/MTS：新增五个 ESM 预览/配方工具、CJS源码索引和作者模板 Vite 配置。新作者项目使用 MTS 配置，SDK升级仍不重写历史作者文件；源码包同时携带生成器 TS 来源和可直接执行的生成 MJS。旧命令路径保留，未追加依赖。
+
+原先未覆盖的六个 TS 研究脚本与五个 Vite 配置进入严格检查；实验室索引消费者取得真实 CTS 导出类型，并对 JSON 所用字段进行校验。三个 Vue 显式 any 已清除，不能据此声称其余 JSON/外部接口已全部约束。
+
+已通过：tooling检查、lab检查、球体原型检查、源码索引三项专项、source-link无效JSON反例、18组配方全流程、新源码包准确文件/摘要及独立创建/构建/打包、H01真实研发Hub接线12项（含输入、反向、背景清理、缩放、生命周期和故障回退）。均为本机Windows/受控浏览器证据，不是新Android或完整4.0验收。其它维护中工具、CI证据模块、测试和产品边界仍在计划内。
+
+
+### 当前批次：702e1bc / 独立打包入口补齐0290718
+
+清单中已有17/243个独立JS来源转为TS，剩余226项（23个scripts、202个测试、1个兼容专项检查）仍属原方案一范围；另有内联HTML/Twee及已有TS边界待处理。不能将本批当作全仓完成。全部八个原MJS脚本已转MTS，未强制改变CJS运行形式。
+
+新增的适配器构建/测试使用CTS，保留原禁止第二份Runtime的反例，并增加错误脚本列表拒绝。Expected Lock增加`sourceEntry`，锁定实际TS输入；执行仍为原CJS路径。CTS import-equals也接受同样的测试选择策略检查。两个新MTS边界测试已进入标准unit目录和生成锁；Node22.12下实际CJS/MTS五个原生用例、完整用例计划与receipt通过，原有断言没有删减。
+
+存档元数据修复（f2c470b）独立提交：输入为unknown，逐行检查record，元数据只取实际所用字段；正常原生对象及未知字段保留，revision仍包含完整原行。Null行不再造成属性访问异常，NaN日期仍无效；未修改原生存档、交易、加载/保存语义，也不把历史日期异常归因为JS。新增无写入/异常输入反例与原M4-B二十项通过。索引JSON检查和其他纯迁移也分开提交。
+
+已完成本机`ci:check`、源码策略、传统unit CLI、九包构建。独立适配器Python打包会自行编译TS工具，删除生成builder后仍能直接构建；ModHub包摘要保持d6d7078b2e0475be46b2ff1971292cd9c562a512748b2aca04dc534d5ca076cb。生成器从既定本地41993d3上游重建renderer，运行JS逐字节不变；上游LICENSE的CRLF复制触发字节差异，规范化内容完全相同，保留前后证据并恢复仓库LF文件，未改变许可。
+
+完整Windows unit初次未通过：盘符reporter未转file URL、Unix路径夹具各导致失败；42a3e1b分别修复后V1.2和G01–G12等完整关卡脚本通过。`research-evidence.test.cjs`和`ci-evidence.test.cjs`创建文件符号链接仍受本机EPERM限制，保留原反例，需Linux Actions实跑；没有删除/跳过或替换为更弱断言。初次失败记录保留在本机制品目录。
+
+当前不更改4.0.0-rc.2版本、冻结RC2目录、main、Tag、Release或公开Assets。新源码Android、整套CI与最终制品复验尚不能继承RC2；本批Actions状态需按新提交另记。
+
+
+### T2 后续批次与 Node 26 基线（34ab9ed）
+
+累计25/243个独立JS来源迁移，剩余218项及内联/既有TS边界仍在方案一内。PNG、CI目录、设备用例计划、原生case桥、检查点、源码策略、失败收据和Node reporter已转CTS。真实导出被消费者使用，CI配置新增严格索引访问检查；编译仅生成明确CTS/MTS根，避免把有状态的原生TS模块再生成一份JS。各生成路径的保留理由见[工具说明](../../scripts/TOOLING.md)。
+
+类型迁移之外，24ac334独立增加Expected Lock和环境case计划结构校验；检查点文件拒绝畸形列表、过期身份和错误目录，保留有效原数据及未知字段。源码策略解析真实TS导入形式；package命令先验证字符串。Node reporter使用官方事件类型，并拒绝畸形期望计划。正例及历史反例均保留。
+
+首批2149391的标准[40089274930](https://github.com/102326/DoL-Game-UI/actions/runs/40089274930)和研究[40089274298](https://github.com/102326/DoL-Game-UI/actions/runs/40089274298)均成功，包含此前Windows受限的文件symlink反例。它们不覆盖后续本批源码或Node26配置。
+
+负责人先要求最低24，再要求验证26后直接升级。实际分别取得官方24.0.0、26.0.0二进制并按SHASUMS256核对，仅放本机测试制品，未替换系统Node26.12.1。26.0.0通过无npm依赖的真实context/冻结目录启动、完整五个CJS/MTS原生case和receipt、8项新增边界用例、G01–G12/F1及独立无npm下载验证、ci:check、UI/Host与九包构建。两版构建的九ZIP摘要逐一相同，包括主UI f86648df24f1d4bffaa058233aa2eefe5bb0732b00e895f4c4cedb80200d2a20 和Host acced8a6c23309977d39a4993c83cd05c5a8c1fdcc8df5a62a634473ea770bcc；不是最终发行冻结。
+
+最低要求现为 `>=26.0.0`，两套Actions使用26.x，锁定@types/node 26.6.5。新声明发现源码索引私有哈希函数BinaryLike过宽（包括Hash.update不接受的裸ArrayBuffer），已按实际string/Buffer输入收紧，不使用断言或扩大运行行为。此前22/24结果保留为历史，不改写为26证据。[Node原生TS语义](https://nodejs.org/download/release/v26.0.0/docs/api/typescript.html)不等于类型检查，CTS编译路径继续保留。
+
+中间失败没有删除：旧Node22探针未向子进程继承strip标记导致语法失败，按工作流环境复验通过；新增Node reporter测试最初继承父node:test内部worker环境而没有输出，隔离该环境后真实子runner正反例通过。不是降低断言或flaky重跑。Node26声明引出的编译失败已按上文修正。Windows本机无Ruby，工作流Ruby gate留待当前Actions执行。
+
+依赖安装同时报告既有Vite7.3.6开发服务器依赖安全告警；Node类型升级仅改@types/node及undici-types，没有把该告警静默修掉或声称已消除。后续工具链收尾需要单独修复及回归，不能据当前候选宣布可发布。本批仍未装Android、未合main、未改正式版本或发布。
+
+
+### Node 26 Only 最终决议与继续迁移
+
+负责人最终要求取代之前26.0/24的临时范围：仅支持Node26，当前最低补丁为26.12.1，范围 `>=26.12.1 <27`。系统26.12.1二进制SHA256与官方win-x64分发一致（1c63f1417e2e26d83ca9a9ec1d548524ab1305bc7209d90ebca56257ff0d84ed）；没有替换系统安装。`.node-version`为两套Actions共同的准确版本来源；engine-strict、原生preinstall和工具/CI引导检查实际运行版本。原生入口特性检查增加该MTS引导，严格类型检查继续保留，编译型CTS仍生成CJS。
+
+新增Node正反用例拒绝24、25、27、低于最低补丁的26及预发布格式，并验证实际原生TS、原生MTS和编译CTS的同进程互操作。独立无npm目录需同时携带Node版本文件和无依赖引导，测试复制清单已同步；不删除独立下载验证。干净npm ci最初因两个此前血月预览的esbuild服务锁住Windows二进制而失败；核对进程、父进程与工作区后停止这两个研发预览，重新安装和preinstall通过，失败日志保留。不是修改文件权限或跳过安装脚本。
+
+41dd945的标准[40095257284](https://github.com/102326/DoL-Game-UI/actions/runs/40095257284)与研究[40095256166](https://github.com/102326/DoL-Game-UI/actions/runs/40095256166)均成功，覆盖25个独立JS迁移批次及原26.x工作流；最终补丁固定、Node Only限制和后续迁移仍需新一轮完整验证，不能套用这一结果。
+
+711fcef另完成状态、版本、悬浮偏好、已退役入口测试及浏览器启动选项5项迁移，累计30/243，剩余213项及内联/已有TS边界仍在范围内。测试保留实际esbuild产物与VM隔离，导出使用源码的真实类型并检查执行得到的导出，不把exports保留为any。4464883独立将悬浮偏好JSON改为unknown并移除两处类型断言；无效类型、工具列表去重、默认开关与视口行为专项通过。维护中测试与工具尚未全部迁完，不能宣布TS First完成。
+
+本地H01原始5秒加载失败已留证。对比诊断发现Hub预览默认扫描全仓HTML（包括历史页面），冷启动5.109秒；限定到相同预览实际导入入口时2.817秒，55个完成请求和页面错误数一致。后续正式专项另有闭合后的hidden导航locator超时，仍在诊断；不增大测试时限、不删材质/背景清理断言，也不将该次失败算通过。Node工具升级不改变浏览器或WebView支持边界。
+
+
+### 固定26.12.1后的本地收敛（7c61002）
+
+原生MTS版本检查、原生TS合同、已编译CTS共同运行通过；真实Node24.0及26.0执行引导被明确拒绝，26.12.1通过。干净npm ci及preinstall通过；没有保留Node24兼容要求。严格类型/19项原生擦除检查、UI/Host与九包构建通过。
+
+Windows独立复制的首轮失败已确定为Git stat尺寸：原工作区CRLF与索引LF经Git过滤后blob相同，但复制覆盖的工作文件尺寸与新checkout缓存不符，导致dirty位不同，原始SHA相同。7c61002先证明head/tree/原始内容/锁摘要全同，才刷新与原索引blob完全相同的文件；前后不得新增staged变化，最后仍逐字段严格比较完整身份。新增受控正反例证明CRLF原字节不变、无stage，真实编辑仍dirty且保留diff。没有归一化历史文件、忽略dirty或降低身份合同。
+
+随后独立第二次构建及9项Python制品测试通过，但导出阶段仍拒绝dist中遗留的3.0.4 CI附件。按原要求将该旧输出整体移入本机忽略的历史制品目录，保留旧报告和当前receipt；没有改允许清单。清空输出来源后，完整ci:packages通过，九包成员、字节、ZIP元数据与SHA逐一相同。该轮主UI为f9bbdff26cd9cd29f64ca73979790c461e1edb1b1e98a53ce0437b935181c397，含4464883偏好输入收紧，不能与更早f86648构建混同；Host及七兼容包摘要未变。制品不上传公开Assets。
+
+H01限定实际预览入口的修复为abd1d85，减少无关HTML预扫描。原始Windows Edge hidden-nav locator超时仍留为未归因测试风险；带调用记录的诊断执行12项全部通过，不用该复验抹去原失败。未改对应断言、5秒要求或正式交互。最终标准/研究CI须覆盖上述源码，状态以准确Run/Commit记录。
+
+
+### 最终Node专项验证已完成
+
+[Node 26 Only报告](EVO-NODE26-ONLY-2026-10-24.md)：受验52f4179的标准40097525373、研究40097524269和各自独立证据验证全部success，回读两份报告确认实际v26.12.1及准确源码；9ZIP CRC、10项SHA及双构建/9项制品反例通过。当前Node专项完成，方案一全量迁移仍为30/243，继续推进；未合main或发布。此处后续提交只记录结果，不将文档提交冒称为新运行代码验证。
+
+
+### 测试迁移、真实边界和安全补丁（477ec23）
+
+累计47/243个独立JS来源已迁移，尚余196项及内联/既有TS边界，方案一仍进行中。本批新增14个衣柜/回归/资源/天气测试、设备描述器与其检查、CI统计工具共17项；生成CJS保持原命令、严格模式和单一TS来源，退出对应手写JS。此处是文件进度，不是项目完成百分比。
+
+测试按实际esbuild/Vite解析语义使用独立Bundler严格检查配置，Node工具保留NodeNext。二者都启用strict/noUncheckedIndexedAccess；统一在检查成功后按NodeNext生成CTS/MTS明确根，未新增传递JS副本。VM和动态require先将导出视为unknown，验证实际函数后取得源码导出类型；CI统计及设备模块增加真实导出类型反例，JSON版本字段不再直接透传any。Expected Lock保留相同案例、设备ID/顺序及历史反例，记录实际CTS来源；原断言未删，额外检查提高缺项诊断。
+
+产品类型/边界调整与测试迁移分开提交：478e014约束槽位映射实际所用字段，显式检查有界雨滴对，缓存已验证库存数组；146f3df把衣柜只读投影限制到所用Host能力，移除resolveMany的强制Entry[]和非空断言，保留身份/上下文变更时的整批拒绝。没有修改穿戴、交易、存档或已认可视觉。旧/新雨模型在三档雨量、相同种子及1600步的完整几何/计数逐字相同；不能据此宣称新增设备性能验收。
+
+916cef8迁移CI统计并检查JSON所用层级；a02fd1a将结果分片读入unknown后检查实际字段，移除强制结构断言，Seal检查不再依赖Partial断言。新增4个原生用例保留失败样本、足量且同条件时才给P95，拒绝畸形/矛盾分片、错误路径和来源；CLI以真实UTF-8文件实跑。统计CLI初版新测试把带undefined的内存对象与JSON反序列化对象直接比较而失败，现按CLI原有JSON序列化合同精确比较完整输出；没有改变聚合或隐藏失败结果。
+
+57279f1单独把Vite最低及锁文件改为7.3.7，作者配方同步，不升级到新主版本。核对[官方补丁](https://github.com/vitejs/vite/releases/tag/v7.3.7)及[Windows编辑器调用公告](https://github.com/advisories/GHSA-587h-7wmj-h5pm)，npm audit当前0告警；历史7.3.6审计继续保留。实际UI/Host构建和独立作者包4项流程通过，含解包、作者改动保留、类型、构建、ZIP及390px受控运行。补丁只涉及开发工具，不改变浏览器/WebView支持要求；零告警不是永久安全保证。
+
+本机Node26.12.1下：完整ci:check、tooling:check、原unit CLI、本批14专项、设备48/62例和70/173扫描宽度、新增4个边界用例通过。原设备计划及上游descriptor摘要未变。两套Actions及最终九包复验须以本批准确提交另记，不能套用52f4179结果。
+
+Windows Edge H01仍未归因：7.3.7下原脚本在关闭后locator.evaluate处超时，另有仅捕获失败的诊断在ball.click处超时；静止源码、无并发构建条件也复现关闭后超时。开启调用日志/CPU采样的诊断12项通过，采样结果因页面释放未取到，不能当归因成功。原日志/截图/报告保留；未增加5秒时限、删断言、关闭材质或修改交互掩盖。Linux流水线与Windows原始失败分列。
+
+当前未修改正式版本、main、Tag、Release、公开Assets或私人存档。没有新的Android装机证据；旧RC2仅作为未改行为基线。
+
+
+### 48项流水线修复与后续53项／内联收敛
+
+标准40101935855在ExpectedLockDrift处失败；其它缺失证据、独立验证及moody-gate失败是该前置失败的连锁结果。检查发现本机新写CTS含CRLF，Git按现有`.gitattributes`保存为LF，锁却记录了本机原字节摘要。4005b87没有归一化哈希或放松比对：只把本轮维护源码的工作文件还原到已提交LF字节，再重建锁；生成器现在拒绝带CRLF的TS/CTS/MTS输入，反例同时确认不静默改写被拒绝文件。Git stat仅在working blob与index blob完全相同且无新增stage后刷新。原失败保留。
+
+受验4005b876f50d5c0bc40cc483fb460facd4b23c08（48个基线JS候选）的标准[40102278149](https://github.com/102326/DoL-Game-UI/actions/runs/40102278149)与研究[40102274913](https://github.com/102326/DoL-Game-UI/actions/runs/40102274913)全部success，含独立验证和标准moody-gate；这里先记录运行结果，未冒称后续53项与内联改动已被这两个Run覆盖。
+
+后续源码656865e累计53/243，剩余190项：新增词法清单、Runtime反例插件、嘴部适配测试、原生穿戴/模式恢复和meter专项。词法报告同一Git输入下逐字相同；5种真实反例源码编译通过，编译失败不计为成功拒绝。嘴部层类型导出不产生运行代码，旧/新实际适配器JS逐字相同。原生衣柜接口按实际所用能力收紧，保留唯一原生链接、错误/多链接拒绝、事件一次、旧变量对象和新操作模式保护；原操作专项通过。纯类型/回归与产品边界仍分开提交。
+
+另一个独立类别已完成：11个仍维护天气HTML内联程序提取为各自TS模块，原HTML/CSS/文案/控件顺序不改，退出手写JS。严格天气检查、完整天气构建及新11页浏览器专项通过，覆盖原速播放的成功/拒绝、每个视频仅一次pause/play、1x重置、背景/暂停/位移及天气控件；接入研究weather-build之后，保留其前置依赖，不作为视觉验收或实际设备证明。
+
+设备离线测量页也改为TS来源＋HTML模板生成，保留可直接file打开的单HTML文件，内联JS仅是生成输出。独立严格配置含noUncheckedIndexedAccess，ci:check拒绝未同步生成页。原离线专项确认竖/横屏、UNKNOWN、人工确认、无Cookie/存储读取、复制/导出/清理全部保持；新增源/输出检查反例验证不改写漂移文件、显式重建恢复同字节、错误参数拒绝。新反例首次发现构建器把不同cwd下的metafile相对路径按调用目录解析，已按生成器root修复；未削弱单输入合同。12个维护HTML内联程序全部纳入真实TS检查，HTML保留原交付形式。
+
+以上53项和12个内联程序的最终两套CI、制品身份及下载复核另记。Windows Edge H01仍Unknown；保留无并发构建下的失败，不把带诊断通过当根因解决。尚未本批Android装机或正式冻结发行候选；未合main、Tag、Release或更新公开Assets。
+
+
+### 53项准确流水线回读与62项继续迁移（717d38e）
+
+受验2c9f47526352008e057973b58ff17c41b81eb7bb的[标准40103339471](https://github.com/102326/DoL-Game-UI/actions/runs/40103339471)和[研究40103337140](https://github.com/102326/DoL-Game-UI/actions/runs/40103337140)均success；各自下载验证报告为PASS / COMPLETE，准确head、dirty=false和实际v26.12.1一致。重新下载九ZIP：全部CRC正常、10项UTF-8清单摘要相符；PACKAGE_CHECKS为PASS，9项制品反例无失败/跳过，独立双构建无差异。本机首次读取清单遗漏encoding而按Windows本地编码解析中文文件名，造成查找失败；按文件明确UTF-8重读及直接读取原下载ZIP均通过，没有改名、替换或重新构建远端制品。
+
+后续9个原清单来源转CTS：三项商店观察/报价/批量交易检查、四个Runtime分组入口及其反例驱动、设备布局断言辅助，累计62/243，剩余181项（14个scripts、166个tests、1个兼容专项）。原清单另有1个明确保留JS的夹具数据，不算迁移候选；计数是文件清单进度，不是工程完成百分比。真实源码导出类型进入浏览器测试，缺失节点、nullable witness与投影明确检查；4de82c9单独把商品唯一节点查找改为有界读取，未改购买或游戏事件。
+
+021fac4修复Expected Lock对TypeScript类型包装的识别：原有六项循环断言迁为as const后，旧计数器只计一次。现在解析器递归解开as、satisfies、括号及尖括号类型包装，保留原循环展开；新增正例证明普通/类型包装生成完全相同的案例与断言数，动态未解析名称仍拒绝。本轮商店源测试断言数17→19，原断言未删。不能把这种计数修复说成放宽覆盖。
+
+本地Node26.12.1：tooling与完整ci:check、三项商店专项、Runtime五种真实历史反例及两个未捕获浏览器错误反例全部通过。新旧设备布局辅助在同一390px受控浏览器的完整快照逐字段相同；越界、溢出、NaN、命中、业务调用五种拒绝码保持，缺失表面仍拒绝。TS消费者负例检查Page、selector和完整快照，数值返回没有any穿透。
+
+还补齐了原清单HTML之外的三个字符串程序：设置、实际Hub、血月/特殊天气预览服务器改为引用独立TS浏览器入口，退出字符串内手写逻辑；新增严格vue-tsc检查接入typecheck，保留原页面布局、文案、实际组件和天气参数。不能将只检查服务器MTS等同于检查其HTML内嵌程序。五种实际预览入口专项（设置、带天气设置、Hub、血月、特殊天气）通过，含实际控件、原生单次调用和九种特殊天气输入；接入研究CI并依赖现有framework-build。新专项首次在异步模块完成初始化前点击正文，保留0次失败；测试现等待真实handler安装后再交互，不加超时、不删除正文恢复断言。
+
+717d38e下未加诊断包装的原Windows H01执行12项通过，包含关闭背景、输入、反向、缩放、短窗滚动、隐藏恢复、故障回退和同伴时钟。旧hidden-nav/ball超时仍未完成因果归因，不用本轮通过抹去历史失败或声称根因修复；Linux与Windows结果分别记录。62项及三个新预览模块的最新完整远端流水线仍需准确提交另记，不能直接复用53项结果。当前未装本批Android、改正式版本、合main或发布。
+
+
+### 62项流水线回读、66项与历史采样竞态修复（e7bd110）
+
+受验c218a8699f76ab2f44a6d628ed4bbc1142add649的[标准40104574743](https://github.com/102326/DoL-Game-UI/actions/runs/40104574743)和[研究40104572617](https://github.com/102326/DoL-Game-UI/actions/runs/40104572617)均success，独立下载报告PASS / COMPLETE，准确源码、dirty=false及v26.12.1已核对。九ZIP CRC、10项UTF-8 SHA清单、9项制品反例和独立双构建再次回读通过。新五页预览专项已由该研究流水线执行，不再只依赖本机结果。
+
+后续迁移共享设置/Orbit观察器及三项原生样式保护检查，累计66/243，剩余177项（14个scripts、162个tests、1个兼容专项）。设置/Orbit旧新完整快照相同，九种错误签名保持，实际等待器通过；3.x基线、原生单次事件/节点身份、语义颜色、50%/200%窄宽屏、隐藏meter、未知Mod样式与主题退出专项通过。测试自己的浏览器夹具由实际安装函数返回类型约束，没有伪造完整游戏Window接口。仍不能据文件数量宣布整体TS First完成。
+
+本批真实发现并修复一个历史反例的采样竞态：原脚本先在浏览器确认700ms过渡仍在，再通过下一次调用取快照；在Windows实际运行时，动画可能在两次调用之间结束，导致Missing expected exception。共享观察器迁移没有改变快照内容，旧新完整结果已经对照；问题属于采样时机，不能算产品残留或通过改断言解决。
+
+3c37e95把700ms过渡与450ms关闭样本的条件、完整快照收集放到同一浏览器任务；仍调用相同纯DOM收集函数，不暂停、seek、修改真实动画，也不加长等待时限。新增可重复的微任务反例：旧两任务读取必然丢失pending见证，新采样保留当时的完整值，同时页面自然完成；两套CI都纳入该反例。原真实历史专项随后完整通过：delayed completion、快速取消、真实残留、慢关闭、卡住关闭、当前几何、缺生产CSS及旧几何NaN全部保持正反判定。原断言未删，原失败日志保留。
+
+诊断期间的暂停动画方案未采用：虽然留住了样本，恢复后另出现3秒等待失败；rAF/定时器对照也都超时，不能归因为单独rAF问题。限定Vite扫描范围的尝试仍复现原采样失败，也未作为修复提交。尝试代码/日志仅留本机制品；最终提交只包含原子取样和确定性回归，不把尝试中的通过说成原因已解决。该专项修复与H01旧间歇超时分别记录，后者仍未完成因果归因。
+
+当前完整ci:check和本批专项通过；最终66项远端结果另按准确提交更新。未做本批Android装机、正式版本修改、main合入、Tag或发布。
+
+
+### 66项流水线确认与CI核心类型边界（e6d20e5）
+
+66项受验9c43cf6e38e4acff71d20b448616b5f857ff62fe的[标准40105789722](https://github.com/102326/DoL-Game-UI/actions/runs/40105789722)和[研究40105787662](https://github.com/102326/DoL-Game-UI/actions/runs/40105787662)均success。两份独立下载报告PASS / COMPLETE，准确HEAD、clean源及v26.12.1一致；九ZIP CRC、10项UTF-8 SHA、9项制品反例与独立双构建回读通过。这个结果覆盖原子采样修复及66项源码，不覆盖以下后续CI模块调整。
+
+8f23e04将源码身份与判定函数迁入严格检查的source.ts和既有contracts.ts。原始内容哈希、Git状态、优先级和JSON输出保持；旧新实际仓库身份逐字段相同，128种过程结果组合、聚合和verdict输出对照相同。独立构建直接取得真实TS函数类型，不再从未检查CJS取得any。CLI仍保留原CommonJS路径；依赖安装前需要的模块沿用既有原生TS路线，Node26直接擦除类型，无需先安装编译器。没有将全部工具改为ESM。
+
+e217e5f将context迁入TS，按实际JSON合同校验旧身份、nonce、源摘要、PR和锁文件版本。旧身份中除源观察外的全部字段必须与当前构造值完全一致；allowSourceDrift只能供收尾保留已验证的旧源，不能豁免run/profile/environment差异。损坏记录被拒绝且原字节不被覆盖。正常旧新context的完整身份、持久nonce及路径相同。这里包含主动的运行时边界修复，不能仅归功于文件后缀。研究unit入口转CTS并从真实context/runner/receipt导出取得类型；原三项真实CLI通过。
+
+cb92d14把路径和有界JSON读取、证据角色与PNG元数据纳入既有records.ts，返回的磁盘JSON为unknown，消费者不能不验证就读取status。危险路径、目录、大小限制和坏JSON仍拒绝。共享CI夹具转CTS，使用实际catalog、case及writeJson导出；旧新生成的18份完整报告逐字相同，包括9包合同、用例与检查点。requiredPackages只转为有类型的原数组，没有新增包或更改运行时冻结行为。
+
+本机Node26.12.1通过：完整ci:check、源码/上下文/分片7项原生边界、真实独立构建输入、研究unit三项，以及G01–G12/F1、PNG损坏、下载信任反例、永久身份、封存、字节篡改和无npm验证路径。TS消费者反例确认context、verdict、夹具与unknown JSON的真实类型。新增源码测试最初假定CRLF改写后Git立即clean而失败；夹具现在先证明规范化blob与索引相同，才刷新该相同索引，且断言无stage变化。原始字节始终不同，未归一化源码哈希。独立验证首轮遗漏新source.ts产生MODULE_NOT_FOUND，已补全实际复制清单，保留无npm断言。
+
+本机ci-evidence.test仍在原有符号链接用例因Windows EPERM中止，日志保留；没有跳过该用例、改权限或认定全部通过。当前新源码的该分支等待Linux标准CI，66项旧成功只作历史依据。所有新边界与旧H01间歇超时分开报告，后者仍未因果归因。
+
+原清单累计68/243，剩余175项：13个scripts、161个tests、1个兼容专项。source/context/records等模块的实际JS迁移另属原CI脚本的分批拆出，不能把仍保留JS的ci-evidence宣布完成。进程/receipt、整套汇总与研究调度、其它测试、Twee及剩余既有TS边界仍在方案一内。新两套CI须以本批准确提交验证。未改产品版本、Host合同、游戏行为或存档，未装本批Android、合main、Tag或发布。
+
+
+### 2026-10-25：68项CI复核与71项边界迁移（e398e5c）
+
+68项受验源码7fccaf3c843bc52e839bac9dca38d03304f9bff7的标准40109136339、研究40109133881均success。两份独立下载报告PASS / COMPLETE，准确HEAD、clean source及Node v26.12.1一致；标准制品九个ZIP逐个CRC通过、十项UTF-8 SHA-256匹配。制品报告九项反例无失败/错误/跳过，独立双构建PASS且差异为空。该证据包括原ci-evidence符号链接反例在Linux的实际执行，Windows本机EPERM限制仍照实保留。
+
+f67d3e1单独修复运行时证据边界：字符串断言计数、字符串/伪length测试列表不能满足required assertions；磁盘case和graphics作为unknown逐字段检查。新增真实子进程反例均为UNVERIFIED，未降低原退出码、终止、取消或断言错误的判定要求。fd31196再将runCommand迁到原生ci/process.ts，标准和研究runner直接导入取得真实Status、参数及返回类型；断言计数/回执内容仍为unknown，不能用TS声明冒充已验证数据。原CommonJS入口、执行路径、退出语义、终止回执绑定、64KiB尾日志、完整输出摘要及无npm独立验证保持。process.ts已加入独立复制清单，源码策略仍按需加载，不给依赖安装前的验证器引入TypeScript运行时依赖。
+
+cfeb426在既有衣柜operations中收窄关联衣物与目标槽位/容量读取，去除容量路径的非空断言，不修改穿戴或存档规则。051f6bb将对应操作测试转CTS，使用实际Snapshot、Entry、Clothing与原生工厂签名；仍执行真实esbuild模块。全部旧断言保留，并增加不合法容量、缺失槽位的拒绝检查。aac1c76把moody-fixture-evidence转CTS，保留原有快照/图片大小、目录白名单、非有限裁剪坐标处理及原错误优先级。fixtureChecks常量沿用原值并复用既有records模块；错误与快照保持unknown，真实Page方法与有限测试替身使用同一签名。新用例直接验证原来在Windows符号链接反例后无法到达的截图分支，并不删除或绕过原完整测试。
+
+e398e5c将ReOverfits专项检查转CTS，加入既有test-tools编译范围；仍生成并执行同路径check.cjs。槽位注册使用实际公开WardrobeSlotMapping类型，运行时诊断作为unknown验证。真实Windows Edge通过注册/撤销、版本与主题门限、原按钮身份/点击、Vue保持及重复销毁检查。兼容包运行代码、版本和业务未改。
+
+本机Node26.12.1已通过完整ci:check、7项进程/记录原生检查、衣柜操作/宏专项、原三项研究unit及G01–G12/F1、下载身份、封存、字节篡改与无npm验证。ReOverfits构建和实际浏览器检查另通过。TS消费者反例保证process参数/Status、未信任回执和捕获接口不会被any穿透。当前最终71项仍需新两套CI；68项旧成功不得覆盖本批源码。
+
+冻结清单累计71/243，剩余172项（13个工具脚本、159个测试）；清单原later-test-migration是评估历史提案，在负责人方案一下同样属于发布前范围。Twee及既有TS边界继续纳入，不以文件数宣称完成百分比。部分拆出的CI模块没有把仍存JS的ci-evidence/research/CLI算作迁移完成。无本批Android、Mac或iOS验证，H01旧间歇超时仍Unknown；没有正式版本修改、main合入、Tag、Release或公开Assets。
+
+
+### 2026-10-25：录制与布局测试迁移至78项（0e9f036）
+
+381f3f8将record-golden-sphere、record-golden-hub和record-motion-workspace迁为CTS，仍生成同路径CJS。录制脚本使用实际createSphere/sphereHub返回类型和既有moody-oracles签名，视频与控件边界显式检查，不声明假的any API。浏览器录制程序归入现有test-tools的严格Bundler/DOM图；普通工具仍在原NodeNext图，两个图都在发射前完整检查，编译CJS不变。没有修改展开速度、等待时长、FFmpeg参数或已认可媒体。
+
+a65d465收窄共享球体的纹理/粒子索引：纬度与原4/7/9/7/4纹理数量放在同一常量元组中，选取前有存在性检查，所有坐标公式、时间轴和粒子参数保持。实际Windows Edge原球体5项通过，包括核心像素变化而非仅看phase字幕、快速中断、窄屏、reduced motion和资源释放；原Hub7项通过，包括0.5秒蓄势、关闭、中途反向、真实工具、左右停靠与原生所有权。此次没有重新录制/转码展示媒体，不能把这些测试称为新的完整视频交付。
+
+0e9f036将Hub反向采样辅助器与战斗插图、厨房、作弊输入布局检查转CTS。反向仍在同一浏览器任务中采集原生点击及class观察，不增加等待或改变动画；类型来自真实sphereHub.inspect。布局探针的数据和DOM身份均由实际安装函数推导，缺失节点失败，不用宽泛全局any。原战斗窄屏/图层/回退、厨房100%/200%文字及原输入、作弊输入布局/原节点/零执行业务全部在Windows Edge通过。
+
+迁移途中作弊布局的精确颜色断言失败：新旧程序都得到rgba(29,30,34,.72)，原期望仍为#25262a。用未迁移的HEAD原JS、同一CSS和同一浏览器复现相同失败；核对src/tokens.css的--kw-island及kraft-work-surfaces的--dgu-panel后，4054cab单独将精确断言对齐已认可3.x材质。没有修改产品CSS、删除断言或改成“任意颜色均通过”。原/迁移失败及修正后日志都保留在本机制品。
+
+本批严格工具构建、实际脚本编译与相关浏览器检查通过；完整ci:check与G01–G12/F1最终记录在tests/artifacts/ts-78-*。三份录制脚本只验证类型/编译和对应实际组件交互，没有覆盖新视频编码输出。冻结清单当前78/243，剩余165项（10个工具脚本、155个测试），另有Twee及既有TS边界；整体TS First尚未完成。
+
+71项4e5208c68a46e65060515bc024c7dd77a869a402的标准40110772664、研究40110770220已启动，结果须按实际源码另行回读。78项后续源码不能被其覆盖。正式版本仍为4.0.0-rc.2；main、Tag、Release、公开Assets及本批真机装机未进行。
+
+
+### 71项CI独立复核与存档转移测试（79项）
+
+71项受验4e5208c68a46e65060515bc024c7dd77a869a402的标准40110772664、研究40110770220均success。两份独立下载报告PASS / COMPLETE，准确HEAD、clean源及Node26.12.1一致；九ZIP逐一CRC和十项SHA核对通过。制品报告九项反例无失败/错误/跳过，独立双构建PASS且无差异。它验证了进程执行层拆分、畸形计数拒绝、截图证据、衣柜类型收窄及该71项源码，不覆盖后续录制/球体和布局调整。
+
+5a23d7d把save-transfer-lifecycle转CTS，浏览器IIFE导出签名取自实际createSaveTransfer，探针持有实际textarea与原节点。原转移控件的精确回退、值保持、已删除按钮不复活、第三方替换节点保留和export overlay识别均在Windows Edge通过。未读取、写入或导入真实存档，未修改产品存档模块。原断言与CLI路径保留，Expected Lock跟随作者CTS。
+
+冻结清单当前79/243，剩余164项（10个工具、154个测试），另有Twee及既有TS边界。当前源码完整检查和新双CI应单独记录；71项旧成功不能代替本批。正式版本、Host合同、main和公开发行均未改动。
+
+
+### 2026-10-25：79项远端验收与88项接续
+
+79项5798d854a700d2a7e38af41e6ee3816e356b22d6的标准40111940612、研究40111938675均success。两份独立下载报告PASS / COMPLETE，准确HEAD、clean源及Node26.12.1一致；九ZIP CRC、十项SHA、九项制品反例、独立双构建全部通过。下载材料保留于本机ci-readback-79，不把此结果覆盖到后续源码。
+
+6c7bcc1/f5454ac继续拆出严格CI报告读取、checkpoint及研究文件发现函数。读取值为unknown并校验身份、分片和路径；研究runner直接使用真实catalog plan和Report类型，移除手写数组断言。独立无npm验证器包含实际依赖，原符号链接断言仍保留。7项record边界、G01–G12/F1和研究unit3项本地通过；Windows符号链接EPERM仍需新源码Linux CI验证，不能用旧成功代替。
+
+8762872至ecb72b8将球体、Hub、状态退休、偏好保留与原生行动面板测试迁为CTS，实际Windows Edge原5项球体/7项Hub及状态/偏好/行动检查通过。GameUiControls、PanelKind与CombatControls从实际定义提取为纯类型，旧导出保留；新增编译消费者正反例，不创建虚假any接口。状态、偏好与行动使用现有历史中性SugarCube夹具，并非当前设备/ModLoader全业务验收。84项完整ci:check、record7项和研究unit3项通过。
+
+47d8de5将窗口返回顺序、sidebar-preview生命周期和延迟恢复迁为CTS。调用mirrorSidebar的旧测试漏传恢复回调，现显式断言该场景不应发生意外恢复；取消、源canvas保留、更新/停止和恢复次数断言不变。返回测试连接真实startLayout签名后，严格索引检查发现sidebar-layout的平行数组关系未表达；d894cf6单独将节点/锚点成对存储，保留原插入顺序及失去锚点时的回退。原sidebar-layout真实浏览器检查验证准确原HTML、原事件、动态重画、后插第三方节点和锚点移除。窗口Escape/backbutton及destroy检查以新编译CTS通过；首次类型失败时运行的是原CJS，日志另存，不算CTS验证。
+
+6c784a8将Framework公开参考视图测试连接实际Host和referenceShelf类型。补足真实ReferenceItem的只读展示字段，校验可能拒绝的mount返回值；当前/过期来源、独立清除及释放全部在Windows Edge通过。没有修改Host公开合同、动作、视觉时序或存档。
+
+本批累计88/243，剩余155项（10个工具、145个测试），另有Twee与既有TS边界。严格检查失败、修正及浏览器结果保留在本机ts-86/87/88制品；没有删除有效断言。当前CI应绑定新提交另行执行。版本仍4.0.0-rc.2，未合入main、Tag、Release或公开Assets。
+
+设备已重新确认独立测试App前台、唯一运行进程及WebView。只读Doctor/Evidence完整完成请求采集，StartConfig为0.5.12.13、Loader2.101.1；GameVersion来源unknown，DOM有max-depth截断，转发已清理。本批未装新包、未写存档；这只是可用于后续对照的现场基线，不能证明88项源码已实机通过。
+
+
+### 2026-10-25：94项，Host桥接与设置/面板真实交互检查
+
+4a8593b新增6个CTS来源：framework-bridge、settings-official-init、game-first-motion、evolution-panels、settings-orbit、settings-input-boundary。使用实际Host、GameUiControls、sourceMotion及PanelControls类型；Node26编译为原CJS路径，Expected Lock保留原断言数并追踪作者CTS。947e078定义现有面板控制返回合同并用于实际实现，导航目标在使用前收窄；没有改视觉参数、原动作或Host公共API。编译正反例约束真实PanelKind、boolean开关及数值诊断。Vite测试通过实际模块挂载，避免动态import返回any穿透测试。
+
+重新构建实际Host/official-ui后，Windows Edge通过迟到jQuery、订阅失败回滚/重试、解绑失败关闭、场景失效和persistent同伴；实际设置首次挂载、偏好、关闭/重开与无动画清理；材质代理不命中、原生节点/点击、最新滚动回调、resize/motion/reduced/dispose清理；六类官方面板在100%/125%/85%缩放下定位、原生点击与释放。完整ci:check通过，相关媒体未重新录制。
+
+旧设置测试出现两处夹具问题，迁移版与未修改原JS均复现：全局.dmt-orbit-focus先选到已存在的战斗焦点，产生约51px/190px偏差；body末尾的测试背景按钮处于原生战斗底栏之下，真实点击被底栏挡住。77eab92独立修正测试：焦点几何/运动只选择设置导航内对象（销毁后全局零残留断言保留）；背景测试按钮固定在视口左上，不增加z-index，不移除产品底栏，不使用force点击。原JS修正版和最终CTS都通过；原失败日志保留。未增加等待、放宽几何阈值或改产品点击层级。
+
+94项最终完整ci:check及上述本地浏览器检查通过；88项118b803e150bce947af4a8196106ee7afd9619cc已经推送，标准40114928222/研究40114927005启动，当前仍运行。后续94项本地提交尚未推送，不将88项进行中或79项成功写成94项远端通过。冻结清单剩余149项（10工具、139测试），Twee与既有TS边界仍在范围内。实机材料仍是本节上方只读基线，未安装94项源码；未合入main或发布。
+
+### 88项远端失败复核与上传修复
+
+标准40114928222的下载原始unit日志定位到 `research-evidence.test.cjs:41`：`filesBelow is not defined`。提取 research-files.ts 时漏掉 CJS 消费者导入；现补回，不更改发现范围和安全验证。原测试本机已通过 F1/F2 上传/汇总/下载证据控制，随后仍因 Windows symlink EPERM 停止，完整反例交由 Linux CI，不能报告本机全通过。研究40114927005缺少生产上传证据，根因尚未独立证明。79项成功仅作历史记录。
+
+### 95–100项：悬浮球与材质、布局边界（2026-10-25）
+
+六项CTS：floating-boundaries、overlay-manager-layout、layering-regression、sidebar-layout、kraft-work-materials、kraft-work-product。FloatingApi从Vue入口移至已有纯偏好模块并原路径重新导出，成员合同不变；测试引用实际产品类型，DOM节点/边界/输出使用真实存在性检查，无any或关闭严格检查。前五项Windows Edge通过：四项悬浮球边界、原生管理器几何、战斗继续节点/事件与top-layer、侧栏精确恢复/后插节点、材质保持与抽屉命中。
+
+kraft-work-product 严格编译通过但运行失败：280×320的球体中心被 `.cbtToggle` 命中，原JS同源码构建对照也失败。独立诊断记录原生战斗底栏top-layer与Hub普通层重叠；尚未作产品修复，不用force click、不提高超时、不移除原控件。其余尺寸在诊断中已通过球体点击，但整体检查仍失败。日志ts-98-product、ts-98-product-original、ts-98-hit-diagnostic保留在忽略的本机制品。
+
+累计100/243，仅表示类型迁移数量，不是全部功能验收。94项上传修复d1ff5d8的标准40116943879、研究40116942898仍在运行，完整回读待完成。本机Node26.12.1；Android Doctor再次确认显式测试包与在线设备，但未安装100项源码，不能宣称该批实机通过。产品版本不变，未合main、Tag、Release。
+
+### 94项远端闭环、实机与100项附带缺陷修复
+
+标准40116943879及研究40116942898均success，下载两个独立remote-verification均准确d1ff5d8333d222729e0a6af5b1bc8790c291b5fa、Node26.12.1、PASS/COMPLETE、无problems。标准9 ZIP CRC、10 SHA256、双构建无差异；最初本机checksum读取误用Windows默认编码导致中文路径查找失败，明确UTF-8后全通过，未修改清单/文件。
+
+独立Android测试App在Start安装该准确CI的UI及Host（其余Mod不变），保留原包备份，原生重启成功。两包全部成员与CI逐一一致；设置modal/背景阻挡、150%字体触控滚动0→62.8、关闭及偏好恢复通过；加载顺序/禁用列表未改，无存档业务写入。首轮居中手势后buttonScale由100变为120，保留探针/失败；恢复原值并改用明确排除input/button/label等控件的起点后通过，不将首次失败记为通过或宣称已归因产品缺陷。自有CDP资源清理完成。
+
+d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用区域，不抬高层级盖住原控件；复用现有ResizeObserver/visualScope，处理底栏尺寸/显隐及场景改变，清理新增监听。原完整kraft-work-product测试通过；新增原生底栏停用/恢复后球体回位且存储位置不变断言通过。100项严格ci:check通过；该最新产品修复尚待本批CI及代表性实机，不借用94项结果。未发布。
+
+
+## 2026-10-25：101–105项与100项候选验收
+
+- 累计105/243，剩余138（10个脚本、128个测试）；仍包含既有TS边界和内联程序的独立范围，不是整体完成百分比。
+- 101：Host连接根对象改为实际消费的document/DoLUiHost结构；连接拒绝与清理测试CTS化，原失败案例保留。
+- 102：CI transportVerdict原先错误承诺返回原泛型T，但会改变status及reasonCodes；返回类型改为实际可返回的Verdict字段加原扩展字段。运行判定未改；CI完整性与传输失败测试CTS化并通过。
+- 103：实际构建启动与信号生命周期CTS化；迟到Host、错误Host、保存禁用、失败提示、AbortSignal.any缺失、监听清理及取消原因断言保留。动态构建导出及返回值按unknown验证，未伪装完整宿主。
+- 104：命令/独立消费者CTS化，使用真实Host/Command合同；Json结果验证后才读取见证。并发busy、旧句柄、失效unknown、不重放、原控件身份、遮挡/禁用、模态和窄屏清理原用例全部通过。
+- 105：Hub原生快捷入口CTS化，隔离运行上下文不再写Node全局。原JS夹具也因遗漏visualScope报错；100428d单独接入实际visualScope，随后9887a24做迁移。所有原始点击/拒绝断言保留。迁移过程曾出现CJS exports名称冲突，已修复，失败日志保留。
+- 本机Node26.12.1；ts-103-check、ts-104-check完整ci:check通过，105严格工具编译和快捷入口检查通过；Windows Edge启动、命令和Host连接代表性集成通过。
+- 100项源码d512b93b5136c7337e1ae0f5016dbcf7ddf9c14d：标准40118218837、研究40118217070全部success；各自下载remote-verification均PASS/COMPLETE、problems为空、准确HEAD、dirty=false、Node26.12.1。10个SHA256、9个ZIP CRC及package-contracts双构建PASS/differences=[]。
+- Android 0509B830099C3540 / com.vrelnir.dol.lyra.uicompat051213：新doctor complete；捕获新安装前顺序/禁用/偏好并备份原UI与Host包，安装准确100项CI包后原生重启。全部加载成员匹配；设置模态/背景阻挡、150%字号触控向下滚动、关闭、偏好恢复通过，停在Start。未操作存档、未更新其它Mod。
+- 范围：Android证明100项候选的上述闭环，不自动覆盖Windows280×320战斗底栏场景，也不覆盖尚未推送的101–105项CI；当前产品运行代码仅Host连接参数类型进一步收紧，其他为测试和CI合同。未发布、未改版本、未合main。
+- 私有证据：tests/artifacts/ci-readback-100/、ts-100-device-loaded.json、ts-100-install.json、ts-100-restart/、ts-101-*至ts-105-*。原始设备数据及安装备份不入Git。
+
+
+## 2026-10-25：106–109项历史演示测试
+
+- 累计109/243，剩余134（10脚本、124测试）。迁移独立存档演示、玻璃边缘、按钮深度和Acrylic历史参考测试；只维护测试源码，不恢复旧版产品风格。
+- Windows Edge：内存演示存取/删除/焦点/重载清空及无HTTP请求通过；玻璃边缘18组、按钮深度18组、Acrylic72组布局/缩放/背景组合通过。保留原对比度、44px命中、键盘、禁用、关闭和reduced-motion断言。所有演示结论仅限独立HTML，无当前游戏/GPU性能证明。
+- 严格工具编译通过；实际元素、颜色解析、父节点及包围盒检查替代隐式any。零新增依赖。
+- 105项已作为96d2c907cf29cacf68fc6b3bd1428131ff6079e2推送研究分支；标准40119446132和研究40119419411当前运行中，尚不能宣布通过。106–109项暂留本地，避免中断在途研究CI。
+
+
+### 110：冻结Lyra嘴部适配测试
+
+- 累计110/243，剩余133（10脚本、123测试）。历史0.5.11.9适配测试改为CTS；静态boot元数据实际导入，事件参数沿用EventTarget参数类型，VM注入API按unknown检查后调用。
+- 原版号、已知/未知嘴型、私有模型与实时状态隔离、重复加载和销毁回退全部通过。仅冻结历史输入回归，不重新分发旧包，不改变3.X/4.0设计基线，也不扩大当前兼容声明。
+- ts-110-tooling-final.txt、ts-110-lyra.txt为本机证据；严格工具检查及原断言通过。
+
+
+## 2026-10-25：111–114，CI证据链的真实类型迁移
+
+- 累计114/243，剩余129（6脚本、123测试）。ci-evidence、ci-verify-remote、ci-research、test-ci改为CTS源码；为npm安装前的stage和安装依赖已移除后的下载验收，继续跟踪由CTS生成的同名CJS入口。需要CommonJS不等于保留JS源码。
+- 包证据、进程终止、套件/布局、上传/封存、下载验证、研究原始报告/汇总/媒体复制拆为对应职责的严格TS模块。JSON按unknown进入，字段/数组/路径/身份有真实检查；未引入any或关闭严格检查。
+- 标准和研究TS runner直接使用已类型化模块，退出动态CJS any依赖。研究caseIds实际支持string/number，修正其返回/家庭汇总合同；catalog只声明真实支持的四种特殊shape。
+- 远端CLI复用现有PR事件解析；workflow步骤在真实输入点检查。transportVerdict只比较assertionResult，不假称其已经是受信string；不把不可信问题路径伪装为string。保留失败判定，CJS调用者获得实际参数/返回类型。
+- tooling-types中添加误用必须报错的编译反例。post-upload无npm测试的隔离输入清单补入新增模块，保留其独立运行与所有原有负例。
+- 本机完整ci:check、类型负例、V1.2、workflow选择通过。ci-gate的原正例及反例通过；ci-evidence与research-evidence仍分别到原Windows符号链接EPERM，失败保留，未删用例；研究F1/F2在权限失败前通过。Linux完整复验待本批推送。
+- 105项96d2c907cf29cacf68fc6b3bd1428131ff6079e2：标准40119446132、研究40119419411均success，下载证据准确HEAD/PASS/COMPLETE；十摘要/九ZIP与双构建通过。105项UI及Host的所有包成员与已装Android的100项逐项相同，故复用该实际装机/设置触控证据；不扩展为未测业务覆盖。
+- 本批仅开发/CI工具，未改游戏视觉、业务、存档或公开版本。新源码不由105项结果自动覆盖，需独立CI。
+
+
+## 2026-10-25：115–145，设置、实际动效与研究观测工具
+
+- 已接入145/243。115–121为设置双布局/滚动、总开关、密度、设置工作区、优化衣柜和日期测试；122–124为源动效生命周期、官方默认与游戏动效；125–127为两项录制工具及Acrylic测量工具；128–145覆盖Adapter、共存观测、选择与衣柜动效、战斗选择/聚焦、商店波纹、衣物详情抽屉、共享导航/Orbit/面板、天气/资源owner、旧打包和设置生命周期测试。计数只表示冻结独立源码迁移，不代表产品完成率。
+- 115的旧JS也会误选战斗导航的Orbit。8d159d1先把查询限定设置导航，再迁移；145前另以76370db修正旧打包测试的3.0显示名断言为当前4.0，完整原JS包检验通过。未削弱业务/命中/反例断言。
+- 调用采用实际API和DOM元素类型。共享导航固定二元组代替string[][]；浏览器测试工具改用vue-tsc，保留strict/noUncheckedIndexedAccess并检查真实Vue组件。录制工具只验证编译，没有重录或覆盖已认可媒体。
+- 天气表面快照保留实际泛型字段；纹理缓冲区做索引检查、坐标声明为固定tuple。原始与当前Canvas2D渲染器在血月/触手/冷热、0/.5/3秒共12组逐像素一致。迁移期间发现复合算术改写丢失括号，已在提交前修正，未以新画面替换原断言。
+- 严格工具构建、上述设置/Adapter/动效代表性浏览器测试通过。实际面板十场景生命周期、属性/社交共享导航和选择动效复验通过。打包测试完整ZIP/原早期API和设置历史/当前生命周期测试通过（旧20次侧栏文本变更调用20次sync，当前0次）。
+- 保留失败：native-small-surfaces新旧脚本均在关闭hover颜色等待超时；wardrobe-wear-motion本机新旧脚本均在90ms后的动效父节点断言失败，工作者此前通过，需继续排查时序/环境，不能宣称本机通过。shop-ripple记录console 404但未定位URL。coexistence --teardown-only新旧均未完成，失败阶段不同，不宣称同一原因或长期性能通过。Windows符号链接EPERM仍保留。
+- 114项1ac1c2344fa970703ad972e6a8a147d142ad339d：标准40120958746、研究40120957637成功，独立下载证据准确HEAD/PASS/COMPLETE、problems=[]；十摘要、九ZIP CRC、双构建PASS/differences=[]。这些结果不自动验证115–145的新源码。
+- 本机原始日志在忽略的tests/artifacts/ts-*、ci-readback-114及weather-texture-parity.json。Android仍为受验100项包，105全部成员已证明相同；本批尚未安装，不能借旧装机宣称本批实机通过。未发布、未改版本或main。
+
+
+### 146–147：最后两项独立研究脚本
+
+- check-settings-refraction与check-evolution-acrylic改为严格CTS，冻结来源JSON按unknown验证，真实浏览器/动画/几何字段明确类型。累计147/243，冻结独立脚本已全部接入TS，仍有96项测试，既有TS边界继续检查。
+- 隔离工作区复制327个准确静态研究输入，构建通过；设置研究默认检查完整通过，未录制或覆盖已认可媒体。Acrylic脚本仅严格编译与node --check；其默认会覆盖旧READ01研究结果，故未重跑，也未声称性能改善。
+- 新暴露的研究renderer既有snapshot单一类型错误已改为实际两种材质快照的union，固定水珠/薄膜索引增加明确检查；不改有效天气映射或材质参数，待对应实际研究天气用例复验。
+
+
+### 148–155：原生动作、CI反例与研究生命周期
+
+- 累计155/243，剩余88项测试。原正文动作、多战斗区域、三项CI证据/封存测试、Hub生命周期及两项研究天气检查接入CTS。原断言和历史错误反例保留；具名路径和封存源码继续受Expected Lock约束。
+- 正文动作测试通过，真实一次点击、未知/重复/失效目标拒绝、模态、视口和销毁原用例不变；多战斗区域原节点/事件、替换/回退/清理、手机/平板截图通过。迁移时误给允许为空的观测/等待节点加must导致失败，已恢复原可空语义并保留日志。
+- CI gate完整正例/反例通过。ci-evidence与research-evidence仍分别在原Windows symlink EPERM终止（此前E2、F1/F2完成）；未删断言或反复重跑至绿。Hub生命周期、原V1天气、C5斜雨/像素与C5.2四档连续转场在隔离工作区通过，原静态研究输入已重新构建。
+- owner资源测试已退出泛型exportFunction<T>强转，预载实际类型模块并按明确键调用。严格图暴露的原导航/战斗/存档/商店固定索引补了检查；私有预览生成模块仍属固定第三方生成JS，其准确边界声明返回unknown，适配器检查模型尺寸、compile接口及编译layers数组后使用，未改存档或原版业务。
+- 私有预览晒痕/绘图回归1013项通过，painted/unchanged/same均true。新增owner真实API测试随后exit 0：13类owner、H01实际集成和四个历史反例均通过。此后仍待本批精确CI和最终代表性装机。147项ee68d20的标准40123691561、研究40123691058已启动，尚未结束，不可预报通过。
+
+
+### 156–167：原版隔离游戏、天气输入与Framework消费者
+
+- 累计167/243，剩余76项测试。属性、衣柜分页、跨类搜索、悬浮工具、天气levels/candidates、Hub输入、边霜/缩放以及Framework reference/factory/历史版本检查CTS化。mobile-density工作者误重复交付，主线程只采用其它两项，未重复计数或覆盖已有成果。
+- 原版0.5.11.9隔离游戏：属性原DOM/状态/导航/回退与手机平板通过；分页300→40、跨页搜索/真实穿戴/缩减回退通过；跨类同名选择、旧索引拒绝、原生穿戴及宽窄宽切换通过。后两项不宣称实际当前Loader或多Mod组合已验证。
+- 两个历史夹具单独纠正：分页在浏览模式仍寻找“搜索当前分类”，已按真实WardrobePanel改为“搜索所有分类”，分页/状态断言不变；浮球仍断言新装默认隐藏，旧脚本实跑1!==0，8c2d8e9改为负责人已认可的默认显示，旧JS完整流程随后通过，再做CTS迁移。迁移后真实工具/拖动/取消/停靠/六视口/原节点事件/主开关/重复销毁完整通过。
+- 天气级别、候选光学、Hub八项输入和边霜16组像素保护测试在隔离工作区通过。display-scale新旧脚本在同一首条背景rgba断言失败，保留原失败，不宣称当前显示缩放测试通过。Framework reference/factory实际浏览器通过；历史Host 0.1.0–0.1.3 ZIP本机缺失，运行未验证；现有SDK历史合同仍在factory测试内通过。
+- Framework workspace原JS缺少场景ready且无jQuery桥，第二个article等待失败；56940bc在每次安装Host后显式sceneReady，原13具名断言一次通过。WorkspacePanel的失效排序目标index<0原可写入undefined，ceff3e8已拒绝该目标，合法交换保持；CTS及针对验证由对应批次接续。
+- 147项ee68d20ee10b18c50b2178341f98b16d23c3807e：标准40123691561、研究40123691058均success。下载实际remote-verification准确HEAD/dirty=false/PASS/COMPLETE、problems=[]；两份summary PASS，10个摘要、9个ZIP CRC与双构建PASS/differences=[]。148–167及后续运行边界改动不借用该结果。
+- 新增原型/CI结果及失败在tests/artifacts/ts-*、ci-readback-147，均为本机忽略文件。当前167项严格工具编译通过；未发布、未改4.0.0-rc.2、main或玩家端浏览器目标。
+
+
+## 2026-10-25 阶段检查点：186/243
+
+按负责人要求，先收束本批再汇报。冻结独立来源累计186/243，剩余57项，均为测试；这不是产品发布完成度。工作者已停止新增批次，无遗留未提交迁移WIP。
+
+- 168–186包括战斗缩放/宿主/真实行动、统一设置、衣柜布局与修理转移、Framework工作区/作者工具/动效/Vue和历史游戏/Android入口，以及存档Host/视口、集合和原生壳体测试。生成CJS退出手工跟踪，对应CTS成为单一来源；公共命令与CommonJS运行形式保留。
+- 严格工具检查通过；原版隔离游戏的修理/转移、关联容量/旧目标拒绝、忙碌阻止切换、实际预览和五种视口布局通过。统一设置的偏好、五视口、重载/重复注入与历史模块接续通过。Framework workspace13项、author-kit4项、motion8项及战斗原节点/回合/重入用例通过。存档2K/平板/窄屏12组和原生集合控件通过。
+- combat-resize新旧脚本同在首个背景颜色断言失败（当前32/32/34，旧预期28/29/32），原失败保留。release-27-settings在当前构建的新旧脚本同因浮球默认true而失败；未改其历史断言或恢复2.X设计。display-scale同失败、Windows symlink EPERM和先前采样Unknown仍保留。
+- 历史Host ZIP、game.html未在本机具备，不虚构运行：host-versions、game/reference-game、Android reference只有严格编译/语法覆盖。Vue对照九项具名浏览器检查通过，但最终comparison.json依赖缺失冻结ZIP，报告生成失败保留，不宣称完整通过。未使用私人长期存档。
+- 后续顺序：完成57项测试迁移；复查Twee回调及已有TS边界/JS例外；以最终源码跑标准与研究CI、独立下载和九包合同；按最终包做代表性Windows/Android回归；更新冻结/交接材料后交负责人裁决。不能以186文件数、旧RC2或隔离原型认可替代这些检查。
+- 147项远端证据已完整核对，186项的新远端结果需单独记录。保持Node26 Only、4.0.0-rc.2、Host+UI双包；未合main、Tag、发布或更新公开Assets。
+
+
+检查点补充：186项完整ci:check、UI实际Vite构建和Framework实际构建均exit 0。重建后衣柜features复验在“修改描述后点击确认修理”出现一次按钮脱离DOM超时；准确旧JS使用同一新构建的一次对照通过。先前CTS使用旧构建曾通过，不能冒称最新构建该项通过，也不能据此认定产品回归或TS原因；原日志保留，后续先检查这段注入/点击之间的时序，并保留无写入与过期拒绝断言。本阶段不启动新迁移批次，先向负责人汇报186/243及57项后续工作。
+
+
+## 2026-10-25 收束批次：243/243 源码已迁移，最终验证进行中
+
+负责人恢复并授权完成剩余全部任务。冻结清单的243个维护中独立JS来源现均有TS源码，最后57项已经逐项接入严格工具图；生成CJS/MJS继续保持原命令、路径及模块运行形式。此处的243/243是源码清单完成，不代表最终CI、装机或发布通过。
+
+- 186项准确提交b7260aaf432c25f4f3200d0779b74695a656b186：标准40125602117、研究40125601288均success。两份独立remote-verification及summary回读确认准确HEAD、dirty=false、Node26.12.1、PASS/COMPLETE、problems=[]；下载10摘要、9ZIP CRC和双构建PASS/differences=[]。不把它自动覆盖后续源码。
+- 两处Twee自有resize回调已提取到src/early/shop-resize.ts；模板生成保持原宏和事件路径，原始冻结回调8类输入逐项等价，生成漂移反例通过。原SugarCube宏表达式与包装保留原格式。
+- 产品、Host、Vue、兼容包关闭allowJs并启用noUncheckedIndexedAccess；工具和研究入口保留各自严格检查；research-tools图为strict，但未开启noUncheckedIndexedAccess，不能泛称全部研究图都有索引检查。工厂返回值传递、原型测量目标与兼容包正则/数组边界按实际类型修正，没有用any或忽略检查代替。设置与存档测试的局部Theme不再全局增补Window而污染其它消费者。
+- 最后一批Windows实际浏览器：UI Runtime全流程通过，含Inspector、隐私/导出、原生浮层、兼容包重绑定和销毁；历史反例的正常迟完成、真正残余、缺CSS和错误定位仍被精确区分。中转工作区5项、历史菜单原型10项、手机兼容、Framework根合同32项、天气W01九项和雨幕普通/径流用例通过。原生战斗隔离夹具5视口完整通过；这些不代替当前Android游戏结果。
+- 历史0.5.11.9游戏测试中，社交/面板/衣柜features遇到bannerFallbackImage.onload的skybox异步错误；无UI对照未复现，保留Unknown，不排除后记PASS。features中描述失效与点击确认之间的夹具竞态另行用同一页任务操作真实按钮修正，过期/无写入断言保留。
+- 本机device-layouts新CTS与准确旧CJS在同一当前源码下各有4个超时，均执行124条计划并准确拒绝4类错误反例；具体超时包含冷加载、可见/稳定等待，不能写为Windows该矩阵通过，也不放宽2500ms断言。完整Linux CI待最终精确提交。迁移中两次误改夹具脚本的失败保留，HTML内容已经恢复原JS，不把编译成功当渲染证明。
+- 历史resilience新旧同在旧Core身份等待超时；visual-effects新旧同在旧偏好“不重写原字节”断言失败；settings-acrylic新旧首条背景透明断言不符；saves-native-tools新旧文件选择器背景断言不符；雪集成48项冻结像素一致后第一项实际正文截图新旧不同。均保留原断言与失败，不将历史期望改回旧主题，不宣称这些完整通过。缺历史ZIP/game.html/外部旧Lab工具的脚本仅编译，长基线测量未重跑。
+- 衣柜私有预览去掉空对象冒充完整setup的断言，先检查复制后的colours/skin_options，按实际读取的肤色项校验gradient；异常沿已有预览错误/原生路径处理，不改存档。新增缺失/畸形定义反例及无写入断言通过，真实preview-hook原用例通过。CI上传sidecar改为校验schema、当前run identity及状态一致性，假PASS、陈旧身份和不完整证据反例通过，独立远端验收仍保留。
+
+### 仍保留的JS：有限例外
+
+1. 固定第三方生成src/wardrobe/vendor/isolated-model.js：保留源码与生成身份，.d.ts输出unknown，消费端检查模型/尺寸/compile及layers；不将第三方源码换后缀冒充维护迁移。
+2. 10个提交内生成CommonJS入口：scripts/ci-cases、ci-catalog、ci-evidence、ci-png、ci-process-receipt、ci-research、ci-test-reporter、ci-verify-remote、test-ci，以及tests/device-case-plan。均有严格CTS单一来源；保留是为了npm安装前与下载后独立证据检查，不是保留手写JS。其余相同路径的CJS/MJS由tooling:build生成且不手工维护。
+3. 冻结反例/原始回调夹具是数据；原游戏、第三方源码、归档制品和SugarCube必需宏胶水不属于可继续运行的1.X/2.X自有样式。测试内受控HTML的原生脚本与待测试反例仍需原样执行，不能无故重写其语义。
+
+接下来的本轮必需项：以最后冻结源码跑两套完整CI、下载回读与九包合同；新包代表性Windows/Android复验与加载成员核对；更新本记录/交接并保留未覆盖与真实限制。Node26 Only与4.0.0-rc.2不变；不合main、不Tag、不发布，不改玩家浏览器目标或私人长期存档。
+
+
+### 最终CI首次失败的修正
+
+4f95f78研究40170320782未通过：当前prototype live/compare/blood-rain存在checked-indexing错误；设置/天气对照把915dcb9、b507冻结源码纳入当前root配置，错误继承了新增索引检查和关闭allowJs。缺失的后续研究文件是上游编译中断的连锁结果，不算多个产品Bug。保留原日志tests/artifacts/ts243-research-failed.txt及下载原证据ci-failed-243，不重跑同一失败碰运气。
+
+- 当前原型修正实际根节点/视口/三色通道读取；新增prototype-core严格检查，直接继承当前root strict、noUncheckedIndexedAccess=true、allowJs=false，并接入ci:check。
+- 冻结对照专用tsconfig.historical-settings.json精确保留b507时compilerOptions（strict=true、allowJs=true、当时未开启checked indexing）。只用于需要真实历史设置源码的对照图，不修改冻结源码或其身份断言；不恢复历史产品路径。当前产品、Host、兼容包和可独立检查的原型内核仍用当前严格配置。
+- source-policy-boundary新增配置边界检查，锁定当前strict/indexing/禁JS与历史编译合同的区别，防止用历史例外覆盖当前代码。实际三个配置类型检查通过，完整ci:check及新准确提交两套CI另行记录。
+
+
+### 设置夹具Node/browser边界修正
+
+4f95f78标准40170321234、3386714研究40170838148的首个实际失败均为settings-ci生成入口的Node端must未定义：原CTS只声明该函数并在浏览器注入，但新增Node boundingBox读取及集成调用也使用它。补上同语义实际函数，不改变产品、断言、等待或集合。此前设置专项没有走完整，不能沿用为通过。
+
+修正后Windows本地实际settings-ci完整通过：双布局/长内容滚动、模态输入、键盘与分类中断、偏好持久、S01五项、W01九项、真实正文像素及受控晚宿主反例均执行。原始失败及完整输出保留ts243-standard-job.log、ts243-research-second-job.log、ts243-settings-runtime.txt。4f95f78的Linux设备布局夹具124项、4类反例已全部通过；本地新旧各4超时仍保留为原环境记录，不能改写历史失败。3386714研究其余原型/天气检查全部通过，但整个run仍失败；新准确提交两套CI须重新完成。
+
+
+### 分组计划与TS单一来源修正
+
+8021362的研究40171690075及独立复核完整success，已下载123101388字节原始证据并校验CRC、准确HEAD与summary PASS/COMPLETE。标准40171699037全部行为脚本exit=0，含设置专项与124布局/4反例，但Inspector/Surface/Compat三项收据为UNVERIFIED：计划误带只属于identity组的core-identity。原产物ci-failed-243/standard-802及完整日志保留，不能报告整套标准通过。
+
+根因是generate-lock读取metadata.source指向的生成CJS，且分组过滤依赖无空格的group===字串；TS输出的group ===条件未被正确识别。修正为按AST识别严格相等、括号及字面量includes，并将直接source和composed includes统一解析到实际CTS单一来源。没有改caseProblems、缺项拒绝、最小断言数或业务检查。core-identity仍只由独立identity入口验证，其错误身份反例继续拒绝。
+
+新增TS/有空格CJS/反向相等/typed literal的组计划单元检查，六项通过；实际Moody runner运行四个UI Runtime分组及完整五类业务突变、两类未捕获pageerror反例全部PASS，终端收据无CasePlanMismatch，记录ts243-group-receipts-result.json；严格CI类型图通过。新准确提交再执行两套完整CI，不复跑同一失败碰运气。
+
+
+## 2026-10-25 最终收束：243/243与本轮技术验收完成
+
+受验准确代码d8430a8274282528a68a7a737b37c970dfae7020。标准40172977229（validate、evidence-verify、moody-gate）和研究40172975815均完整success。两份独立remote-verification与summary重新下载，确认同一HEAD/dirty=false/Node26.12.1/PASS/COMPLETE、无problems；123098798字节研究原始包及标准证据原包CRC通过。10项下载摘要、9ZIP合同/许可/依赖/成员和双构建PASS/differences=[]。原始材料ci-readback-243-final，未公开设备原始数据。
+
+实机预检先使用4f95f78包并保留其来源：Windows Edge157/实际0.5.12.13 Loader的八包成员、设置双布局/输入/受控特殊天气/390px/关闭清理通过；Android原生重启后八包成员与偏好/顺序/禁用列表、150%触控滚动/输入阻挡、两种布局、Hub开闭与快速反向/关闭背景、ModHub原管理/帮助标签与自然severe雷雨/单一天气层/关闭释放通过。最终d8430a8八个适用ZIP容器和全部成员与预检负载逐项完全相同；再次新连接读取Android Loader逐成员核对最终CI，标题页与原偏好保留，设置/Hub均关闭、天气层归零。记录ts243-final-payload-equivalence.json与ts243-final-device-readback.json，不改写任何预检source字段。ReOverfits无当前设备目标，未安装。未改变私有存档。
+
+单独保留两类自编现场检查器失误：450ms采样早于原620ms分类结束，改用既有3秒完整状态判据；ModHub误用.active和DOM消失，现场核对其原tab-selected和父容器display:none（保留DOM、天气释放）后复验。未为这些错误改产品。标准124布局/四类反例完整通过；本地先前超时及其它历史失败仍作为历史事实保留。
+
+最终范围与有限例外见[EVO-TS-FIRST-VALIDATION-2026-10-25.md](EVO-TS-FIRST-VALIDATION-2026-10-25.md)及[EVO-TS-FIRST-PACKAGES-2026-10-25.json](EVO-TS-FIRST-PACKAGES-2026-10-25.json)。当前代码任务Completed；负责人G1/G2/G3整体裁决与Release Authorization继续Pending。内部4.0.0-rc.2、Host+UI合同和既有视觉/业务不变，没有合main、Tag、Release或更新公开Assets。后续提交只整理这些文档，不冒充两套CI测试了后来的文档HEAD。
+
+
+## 2026-10-25 独立终审新增P2与局部复验
+
+负责人提供独立终审报告，指出GB40-TS-F1：目标槽字符串/数组被detailFor归为空槽，导致封存后未知状态变化仍能调用原handler。直接复核源码，并在Node26.12.1/Edge真实DOM联合原始metadata与source复现；不把报告中的Node24合成结果冒充本机或真实存档事故。存档元数据读取与转发没有真实存储写入，本轮没有存档损坏证据。
+
+局部修复只在metadata边界区分nullish缺失、record及畸形值；畸形目标read不封存、不生成空槽日期，revision抛错使现有source拒绝，正常同批槽继续工作。legacy畸形slots容器同样拒绝；source.ts及其原DOM/control/onclick/disabled/revision守卫保持原字节。新增标准browser联合合同32场景，保持原native回调并检查写入0、输入不变、合法空/occupied可达与封存后的改变拒绝。生成CJS不手工维护。
+
+本机原始模块对照：ff7942的32场景在新更严验收下30通过/2拒绝不足（原有occupied malformed放行，不归为本次新回归）；d8430相同矩阵16通过/16失败；补丁32通过。报告列出的空槽→畸形与初始空行畸形差异均复现。新metadata三项单元、原source M4-B二十项、实际Moody单项终端收据、完整ci:check均通过，原失败和两版blob/输入摘要保留在review-p2-*及save-revision-source-*。待新准确提交两套CI、制品身份与代表性目标场景核验，不能沿用d8430的通过结论。
+
+终审同时确认243项与CI/制品信任层基本接受。历史报告“全部研究图都带索引检查”的泛化表述已纠正：research-tools strict=true但没有noUncheckedIndexedAccess，产品与原型内核另外检查。整体技术状态因本项P2重新打开；G1/G2/G3及发布授权依然独立。
+
+### 独立终审P2的新候选复验
+
+受验代码178f8b2b5b1828038b7c3ec304e8995bbe99ee38。标准40175814517、研究40175811238含独立下载均success；两份summary/remote准确身份、PASS/COMPLETE，9ZIP/10摘要、合同/CRC/双构建一致性通过。仅UI/index.js与d8430不同，其余八包字节完全相同。Android仅替换UI并原生重启，八个适用包成员及偏好/顺序保持；Windows真实Loader与Android只读存档页开关/读取通过，存档摘要哈希不变。Android额外摘要槽按原合同保留原生行，检查脚本误以为必须有occupied UI卡片的失败已诊断记录，未改source或缩减正式断言。完整结果及未测边界见EVO-SAVE-REVISION-P2-2026-10-25.md；新制品见EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json。本轮修复技术范围完成，独立复审/负责人关卡仍Pending。后续文档提交不冒称受验代码HEAD，未合main/Tag/发布。
+
+### 2026-10-25 负责人确认独立复核Accept
+
+负责人转述小鸥已独立复核178f8b2：正常空槽与畸形目标正确区分，原source.ts守卫不变；32场景正常/异常/零写入、标准190项与研究478项证据及九包摘要核对完成。实际下载新旧包确认仅UI/index.js变化，GB40-TS-F1／P2准予关闭，恢复“TS First本轮技术范围Completed”，无新增阻断项。此为负责人明确传达的外部复核结论，不由Codex代签。
+
+随后按既定顺序整理最终候选验收材料：当前发布关卡、安装、玩家Release/首页草稿改为178f8b2及最新九包，交接Next移除剩余57项等过期迁移任务；保留旧报告和失败。候选直接复制准确CI负载，未重建，仅整理9个Mod ZIP与9项SHA清单；本机路径单列HANDOFF.local。运行代码/冻结ZIP/版本标记未改；包README遗留更新说明路径已在源文修正，正式获批重建时拾取，不静默改写178f8b2包。沿用178f8b2的CI及实机证据；本批只做文档链接、媒体来源和候选复制完整性检查，不另跑无关业务。整体G1/G2/G3、正式版本及main/Tag/Release授权仍待负责人。

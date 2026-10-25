@@ -1,0 +1,7 @@
+{
+  "base": "98c32bc18a7537e0abf8577ec83cee087be0c35f",
+  "source": "src/panels/main.ts",
+  "sourceSha256": "913c1e8f3d50f283d191215095897a4291392d20ec04162869c8cf3776538b30",
+  "observedAssertion": "AssertionError [ERR_ASSERTION]: journal zoom {\"zoom\":1.25,\"gap\":-172.5,\"expected\":15}",
+  "note": "Journal real entry at 1.25 zoom. Initial feats fixture key was corrected later; journal red path unchanged. Not a separate negative execution for every kind."
+}

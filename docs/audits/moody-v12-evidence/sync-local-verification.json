@@ -1,0 +1,59 @@
+{
+  "candidate": {
+    "head": "c1f18cc565a3e5c27d7c98a8f802b474c8dfc316",
+    "tree": "5cfade70cf6012824bb75ef992e0037468daac97",
+    "dirty": false,
+    "contentSha256": "fae70d0ff711665d05348cc4139969e7ad00e95d952eed0e1abae558d3f3bc0e",
+    "lockSha256": "e0313e47f5f2c8939839120f2da0bf5a142582578f8ef4cb89a8c6bc265f61a6"
+  },
+  "base": "d60ccc844942e950f41beb188a27dec5e11823fe",
+  "testedMerge": "fbc6b49c7af87f4a6a138be0bf8fe6bb95e46a6d",
+  "tree": "5cfade70cf6012824bb75ef992e0037468daac97",
+  "review": {
+    "status": "NO_BLOCKER",
+    "scope": "Readonly d60 product preservation; generated composed lock +1 assertion; CI/workflows/privacy unchanged from28314; no uncommitted product candidate included"
+  },
+  "ciCheck": {
+    "status": "PASS",
+    "log": "sync-ci-check.log"
+  },
+  "ciBuild": {
+    "status": "PASS",
+    "log": "sync-ci-build.log"
+  },
+  "initialBrowserAttempt": {
+    "status": "ERROR",
+    "reason": "Sandbox EPERM listen 127.0.0.1:5173",
+    "log": "sync-browser-focused.log"
+  },
+  "browserRerun": {
+    "status": "PASS",
+    "sourceAfter": {
+      "head": "c1f18cc565a3e5c27d7c98a8f802b474c8dfc316",
+      "tree": "5cfade70cf6012824bb75ef992e0037468daac97",
+      "dirty": false,
+      "contentSha256": "fae70d0ff711665d05348cc4139969e7ad00e95d952eed0e1abae558d3f3bc0e",
+      "lockSha256": "e0313e47f5f2c8939839120f2da0bf5a142582578f8ef4cb89a8c6bc265f61a6"
+    },
+    "entries": [
+      {
+        "name": "settings-ci.cjs",
+        "status": "PASS",
+        "caseCount": 15,
+        "assertions": 375
+      },
+      {
+        "name": "evolution-owner-resources.cjs",
+        "status": "PASS",
+        "caseCount": 12,
+        "assertions": 140
+      }
+    ],
+    "log": "sync-browser-focused-permitted.log"
+  },
+  "edgeFrost": {
+    "status": "PASS",
+    "rasterChecks": 16,
+    "log": "sync-edge-frost-permitted.log"
+  }
+}

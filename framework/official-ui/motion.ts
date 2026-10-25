@@ -1,3 +1,4 @@
+import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {isMasterEnabled} from '../../src/runtime/master';
 import type {NativeEventsHost} from '../../src/runtime/sugarcube';
@@ -5,8 +6,9 @@ import {nativeNavigation,adaptedOverlaySelector} from './navigation';
 
 /** Presentation only: never cancel an event, dispatch an action or read game variables. */
 export function startOfficialMotion(root:NativeEventsHost=window){
- const motion=sourceMotion(),navigation=nativeNavigation(),frames=new Set<number>(),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
- let overlay:HTMLElement|null=null,active:HTMLElement|null=null,activeKind='',plane:HTMLElement|undefined,dead=false;
+ const scope=visualScope(),motion=sourceMotion(),navigation=nativeNavigation(),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
+ let overlay:HTMLElement|null=null,active:HTMLElement|null=null,activeKind='',plane:HTMLElement|undefined;
+ scope.own(()=>motion.dispose());scope.own(()=>navigation.dispose());
  let origin:{rect:DOMRect;node:HTMLElement;time:number;hub:boolean;bedroom:boolean}|undefined,returnTo:HTMLElement|null=null,activeRect:DOMRect|undefined;
  let previousPetal:DOMRect|undefined;
  let sidebarRoots:HTMLElement[]=[];
@@ -16,20 +18,24 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function clearPress(event?:PointerEvent){if(!pressed||event&&event.pointerId!==pressed.pointer)return;const {node,pointer,before}=pressed;if(node.getAttribute('data-kw-press')===String(pointer)){if(before===null)node.removeAttribute('data-kw-press');else node.setAttribute('data-kw-press',before)}pressed=undefined}
  function press(event:PointerEvent){if(!live()||!event.isPrimary||event.button!==0||!(event.target instanceof Element))return;const node=event.target.closest<HTMLElement>(pressSelector);if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;clearPress();pressed={node,pointer:event.pointerId,before:node.getAttribute('data-kw-press')};node.setAttribute('data-kw-press',String(event.pointerId))}
  let study:'center'|'rise'='center',shell:HTMLElement|undefined;
- const live=()=>!dead&&isMasterEnabled()&&document.documentElement.hasAttribute('data-stone-free');
+ const live=()=>scope.active()&&isMasterEnabled()&&document.documentElement.hasAttribute('data-stone-free');
  const visible=(n:HTMLElement)=>!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert]');
- function later(callback:()=>void){const id=requestAnimationFrame(()=>{frames.delete(id);if(live())callback()});frames.add(id)}
+ function later(callback:()=>void){scope.frame(()=>{if(live())callback()})}
  function settle(callback:()=>void){later(()=>later(callback))}
- function clearFrames(){for(const id of frames)cancelAnimationFrame(id);frames.clear()}
+ const clearFrames=scope.cancelFrames;
  function cancelPresentation(){clearPress();motion.cancel();shell?.remove();shell=undefined}
  // The plane shares the final stage, never a button's origin. Native controls are not cloned.
  function windowStage(rect:DOMRect,mode:'center'|'rise',closing=false){
   shell?.remove();shell=undefined;if(!motion.enabled()||!rect.width||!rect.height)return;
   const n=document.createElement('div');n.className='kw-window-stage';n.dataset.motion=mode;n.setAttribute('aria-hidden','true');
-  Object.assign(n.style,{left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px'});document.body.append(n);shell=n;
-  const open:Keyframe[]=mode==='center'?[{clipPath:'inset(36% 38% round 64px)',opacity:.88},{clipPath:'inset(0 round 22px)',opacity:.72,offset:.72},{clipPath:'inset(0 round 22px)',opacity:0}]:[{transform:'translateY(140px)',opacity:.35},{transform:'translateY(-5px)',opacity:.55,offset:.72},{transform:'none',opacity:0}];
-  const close:Keyframe[]=mode==='center'?[{clipPath:'inset(0 round 22px)',opacity:.65},{clipPath:'inset(30% 34% round 54px)',opacity:0}]:[{transform:'none',opacity:.55},{transform:'translateY(110px)',opacity:0}];
-  const a=motion.animate(n,closing?close:open,closing?360:760);
+  // getBoundingClientRect already includes body zoom; calibrate this fixed layer's CSS basis.
+  Object.assign(n.style,{left:'0px',top:'0px',width:'100px',height:'100px'});document.body.append(n);
+  const basis=n.getBoundingClientRect(),x=basis.width/100,y=basis.height/100;
+  if(!Number.isFinite(x)||!Number.isFinite(y)||x<=0||y<=0){n.remove();return}
+  Object.assign(n.style,{left:(rect.left-basis.left)/x+'px',top:(rect.top-basis.top)/y+'px',width:rect.width/x+'px',height:rect.height/y+'px'});shell=n;
+  const open:Keyframe[]=mode==='center'?[{clipPath:'inset(22% 26% round 40px)',opacity:.8},{clipPath:'inset(0 round 22px)',opacity:.6,offset:.65},{clipPath:'inset(0 round 22px)',opacity:0}]:[{transform:'translateY(28px) scale(.98)',opacity:.4},{transform:'none',opacity:.55,offset:.65},{transform:'none',opacity:0}];
+  const close:Keyframe[]=mode==='center'?[{clipPath:'inset(0 round 22px)',opacity:.55},{clipPath:'inset(18% 22% round 36px)',opacity:0}]:[{transform:'none',opacity:.5},{transform:'translateY(20px) scale(.985)',opacity:0}];
+  const a=motion.animate(n,closing?close:open,closing?240:420);
   const remove=()=>{n.remove();if(shell===n)shell=undefined};if(a)void a.finished.then(remove,remove);else remove();
  }
  function clearMarks(){for(const [nodes,attribute]of [[marked,'data-kw-native'],[entries,'data-kw-entry']] as const){for(const [node,value]of nodes)if(value===null)node.removeAttribute(attribute);else node.setAttribute(attribute,value);nodes.clear()}}
@@ -53,14 +59,14 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function bedroom(){
   clearMarks();if(!live())return;sidebar();
   const pages=document.querySelectorAll<HTMLElement>('#passages>.passage:not(.passage-out)');
-  if(pages.length!==1||pages[0].dataset.passage!=='Bedroom')return;
-  const page=pages[0],contents=page.querySelectorAll<HTMLElement>(':scope>[id="passage-content"]');
-  if(contents.length!==1||page.querySelector('#listContainer,.dcu-root,#masturbationButtons'))return;
+  const page=pages[0];if(pages.length!==1||!page||page.dataset.passage!=='Bedroom')return;
+  const contents=page.querySelectorAll<HTMLElement>(':scope>[id="passage-content"]');
+  const content=contents[0];if(contents.length!==1||!content||page.querySelector('#listContainer,.dcu-root,#masturbationButtons'))return;
   // shortcut: only the reviewed direct Bedroom navigation contract; unknown/wrapped links stay native.
   for(const target of ['Wardrobe','Mirror','Bathroom','Kitchen','Orphanage','Domus Street','Settings','Attitudes']){
-   const links=contents[0].querySelectorAll<HTMLAnchorElement>(`a.link-internal.macro-link[data-passage="${target}"]`);
-   if(links.length!==1||links[0].parentElement!==contents[0]||!visible(links[0]))continue;
-   marked.set(links[0],links[0].getAttribute('data-kw-native'));links[0].setAttribute('data-kw-native',target);
+   const links:NodeListOf<HTMLAnchorElement>=content.querySelectorAll<HTMLAnchorElement>(`a.link-internal.macro-link[data-passage="${target}"]`);
+   const link:HTMLAnchorElement|undefined=links[0];if(links.length!==1||!link||link.parentElement!==content||!visible(link))continue;
+   marked.set(link,link.getAttribute('data-kw-native'));link.setAttribute('data-kw-native',target);
   }
  }
  function scrim(open:boolean){
@@ -76,7 +82,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
  function syncOverlay(){
-  if(dead)return;
+  if(!scope.active())return;
   const next=document.getElementById('customOverlay');
   if(next!==overlay){observer.disconnect();overlay=next;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
@@ -89,14 +95,12 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    // Local review choice only: a fixed candidate per opening, no random page assignments.
    study=document.documentElement.getAttribute('data-kw-window-study')==='rise'?'rise':'center';
    activeRect=active.getBoundingClientRect();windowStage(activeRect,study);
-   const style=getComputedStyle(active),top=Number.parseFloat(style.top);
-   const frames:Keyframe[]=study==='rise'&&style.position!=='static'&&Number.isFinite(top)?[{top:(top+140)+'px',opacity:.12},{top:(top-4)+'px',opacity:1,offset:.76},{top:style.top,opacity:1}]:[{opacity:.12},{opacity:.7,offset:.5},{opacity:1}];
-   // Top/opacity preserve the existing fixed-descendant coordinate contract; no root transform/filter/clip.
-   motion.animate(active,frames,760);
+   // Material owns movement. Live controls and fixed descendants keep their final coordinates.
+   motion.animate(active,[{opacity:.18},{opacity:1}],300);
    const nav=active.querySelector<HTMLElement>('.dgc-host,.dgs-host,.dgp-host');
-   if(nav)motion.animate(nav,[{opacity:.2,transform:study==='center'?'translateY(18px)':'translateY(34px)'},{opacity:1,transform:'none'}],650);
+   if(nav)motion.animate(nav,[{opacity:.45},{opacity:1}],300);
    const body=active.querySelector<HTMLElement>('#customOverlayContent');
-   if(body)motion.animate(body,[{opacity:.18},{opacity:.6,offset:.38},{opacity:1}],760);
+   if(body)motion.animate(body,[{opacity:.35},{opacity:1}],360);
    const focus=active.querySelector<HTMLElement>('.dgc-host button,.dgs-host button,.dgp-host button');
    if(focus&&!active.contains(document.activeElement))focus.focus({preventScroll:true});
   }else{
@@ -146,16 +150,17 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=null;activeKind='';study='center';origin=undefined;returnTo=null;activeRect=undefined;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
  function resize(){cancelPresentation();if(active&&visible(active))activeRect=active.getBoundingClientRect()}
- const observer=new MutationObserver(()=>later(syncOverlay));
- const sidebarObserver=new MutationObserver(()=>later(sidebar));
+ const observer=new MutationObserver(()=>later(syncOverlay));scope.own(()=>observer.disconnect());
+ const sidebarObserver=new MutationObserver(()=>later(sidebar));scope.own(()=>sidebarObserver.disconnect());
  const blur=()=>clearPress();
  const parent=document.getElementById('customOverlay')?.parentElement;
- const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay)later(syncOverlay)});
+ const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay)later(syncOverlay)});scope.own(()=>discovery.disconnect());
  if(parent)discovery.observe(parent,{childList:true});
  root.jQuery?.(document).on(':passageend.kwOfficialMotion',scene);
  document.addEventListener('click',click,true);document.addEventListener('change',collectionChange,true);document.addEventListener('pointerover',hover,true);document.addEventListener('focusin',hover,true);document.addEventListener('dol-ui-master-change',enabled);
  document.addEventListener('pointerdown',press,true);document.addEventListener('pointerup',clearPress,true);document.addEventListener('pointercancel',clearPress,true);document.addEventListener('lostpointercapture',clearPress,true);window.addEventListener('blur',blur);
  window.addEventListener('resize',resize);window.visualViewport?.addEventListener('resize',resize);
  bedroom();syncOverlay();
- return()=>{dead=true;navigation.dispose();clearFrames();cancelPresentation();observer.disconnect();sidebarObserver.disconnect();sidebarRoots=[];discovery.disconnect();root.jQuery?.(document).off('.kwOfficialMotion');document.removeEventListener('click',click,true);document.removeEventListener('change',collectionChange,true);document.removeEventListener('pointerover',hover,true);document.removeEventListener('focusin',hover,true);document.removeEventListener('dol-ui-master-change',enabled);document.removeEventListener('pointerdown',press,true);document.removeEventListener('pointerup',clearPress,true);document.removeEventListener('pointercancel',clearPress,true);document.removeEventListener('lostpointercapture',clearPress,true);window.removeEventListener('blur',blur);window.removeEventListener('resize',resize);window.visualViewport?.removeEventListener('resize',resize);motion.dispose();clearMarks();plane?.remove();document.documentElement.removeAttribute('data-kw-character-layer')};
+ scope.own(()=>{cancelPresentation();sidebarRoots=[];root.jQuery?.(document).off('.kwOfficialMotion');document.removeEventListener('click',click,true);document.removeEventListener('change',collectionChange,true);document.removeEventListener('pointerover',hover,true);document.removeEventListener('focusin',hover,true);document.removeEventListener('dol-ui-master-change',enabled);document.removeEventListener('pointerdown',press,true);document.removeEventListener('pointerup',clearPress,true);document.removeEventListener('pointercancel',clearPress,true);document.removeEventListener('lostpointercapture',clearPress,true);window.removeEventListener('blur',blur);window.removeEventListener('resize',resize);window.visualViewport?.removeEventListener('resize',resize);clearMarks();plane?.remove();document.documentElement.removeAttribute('data-kw-character-layer')});
+ return scope.dispose;
 }

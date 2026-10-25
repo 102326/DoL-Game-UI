@@ -9,6 +9,8 @@ import tempfile
 import unittest
 import warnings
 import runpy
+import re
+import os
 from unittest.mock import patch
 import zipfile
 
@@ -46,15 +48,20 @@ def contents(path):
 
 class PackageChecks(unittest.TestCase):
     def test_rejects_broken_packages(self):
-        for name, (version, _) in checks.PACKAGES.items():
-            original = ROOT / 'dist/framework' / f'{name}-{version}.mod.zip'
+        for name, original, directory in checks.package_paths():
+            if directory is not None:
+                continue
             checks.check_package(original, name)
             with zipfile.ZipFile(original) as archive:
                 clean = {key: archive.read(key) for key in archive.namelist()}
-            for defect in ['license', 'dependency', 'entry', 'payload', 'unsafe', 'extra', 'duplicate']:
+            for defect in ['version', 'license', 'dependency', 'entry', 'payload', 'unsafe', 'extra', 'duplicate']:
                 with self.subTest(package=name, defect=defect), tempfile.TemporaryDirectory() as tmp:
                     files = dict(clean)
-                    if defect == 'license':
+                    if defect == 'version':
+                        boot = json.loads(files['boot.json'])
+                        boot['version'] = 'controlled-wrong-version'
+                        files['boot.json'] = json.dumps(boot).encode()
+                    elif defect == 'license':
                         del files['LICENSE']
                     elif defect == 'dependency':
                         boot = json.loads(files['boot.json'])
@@ -70,7 +77,7 @@ class PackageChecks(unittest.TestCase):
                         files['private.save'] = b'not for distribution'
                     target = Path(tmp) / original.name
                     rewrite_zip(target, original, files, duplicate='index.js' if defect == 'duplicate' else None)
-                    reason = {'license': 'Missing referenced member', 'dependency': 'Dependency policy drift',
+                    reason = {'version': 'Wrong Mod identity', 'license': 'Missing referenced member', 'dependency': 'Dependency policy drift',
                               'entry': 'Missing referenced member', 'payload': 'Member differs from build/source input',
                               'unsafe': 'Unsafe ZIP path', 'extra': 'Missing or unexpected ZIP member',
                               'duplicate': 'Duplicate ZIP member'}[defect]
@@ -109,45 +116,80 @@ class AdapterDeterminism(unittest.TestCase):
 
 
 class SourceVersions(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.originals = {name: (ROOT / name).read_text(encoding='utf-8') for name in [
+            'project-identity.json', 'package.json', 'src/main.ts', 'framework/official-ui/main.ts',
+            'scripts/package-framework.py', 'framework/contracts.ts']}
+        self.restore()
+
+    def restore(self):
+        for name, text in self.originals.items():
+            (self.root / name).parent.mkdir(parents=True, exist_ok=True)
+            (self.root / name).write_text(text, encoding='utf-8')
+
+    def write_component_version(self, name, version):
+        filename, pattern = {
+            'core': ('src/main.ts', r"(runtime\.DoLGameUI\s*=\s*\{\s*version\s*:\s*)['\"][^'\"]+['\"]"),
+            'host': ('scripts/package-framework.py', r"(?m)^(host_version\s*=\s*)['\"][^'\"]+['\"]"),
+        }[name]
+        text, count = re.subn(pattern, lambda match: match[1] + repr(version), self.originals[filename])
+        self.assertEqual(count, 1, 'component version source must be unique')
+        (self.root / filename).write_text(text, encoding='utf-8')
+
+    def test_product_labels_are_not_a_frozen_ci_policy(self):
+        project = json.loads(self.originals['project-identity.json'])['projectId']
+        for version in ['3.0.4', '3.5.0', '4.0.0']:
+            self.restore()
+            data = json.loads(self.originals['package.json'])
+            data['version'] = version
+            (self.root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
+            self.write_component_version('core', '7.8.9')
+            self.write_component_version('host', '0.1.9-experimental')
+            with self.subTest(version=version):
+                result = checks.check_version_sources(self.root)
+                self.assertEqual((result['ui'], result['core'], result['hostPackage']), (version, '7.8.9', '0.1.9-experimental'))
+                self.assertEqual(result['projectId'], project)
+                self.assertEqual(result['officialRuntime'], version)
+        # No README or version-named release file was copied into this fixture.
+
     def test_rejects_mismatches_in_independent_sources(self):
-        files = ['package.json', 'framework/official-ui/main.ts', 'scripts/package-framework.py',
-                 'framework/contracts.ts', 'framework/host/README.md', 'framework/official-ui/README.md']
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            originals = {name: (ROOT / name).read_text(encoding='utf-8') for name in files}
-            def restore():
-                for name, text in originals.items():
-                    (root / name).parent.mkdir(parents=True, exist_ok=True)
-                    (root / name).write_text(text, encoding='utf-8')
-            restore()
-            self.assertEqual(checks.check_version_sources(root)['status'], 'PASS')
-            for defect, reason in [('root', 'CJ3C_VERSION_ROOT'), ('joint-ui', 'CJ3C_VERSION_ROOT'),
-                                   ('runtime', 'CJ3C_VERSION_RUNTIME'), ('host', 'CJ3C_VERSION_HOST'),
-                                   ('protocol', 'CJ3C_HOST_PROTOCOL'), ('range', 'CJ3C_HOST_RANGE')]:
-                with self.subTest(defect=defect):
-                    restore()
-                    if defect in ['root', 'joint-ui']:
-                        data = json.loads((root / 'package.json').read_text(encoding='utf-8'))
-                        data['version'] = '99.0.0'
-                        (root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
-                    if defect in ['runtime', 'joint-ui']:
-                        (root / 'framework/official-ui/main.ts').write_text(originals['framework/official-ui/main.ts'].replace("visualVersion='3.0.4'", "visualVersion='99.0.0'"), encoding='utf-8')
-                    if defect == 'joint-ui':
-                        # Producer follows the wrong root version too: independent policy must still refuse it.
-                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("official_version if directory", "'99.0.0' if directory"), encoding='utf-8')
-                    if defect == 'host':
-                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_version = '0.1.5-experimental'", "host_version = '3.0.1'"), encoding='utf-8')
-                    if defect == 'protocol':
-                        (root / 'framework/contracts.ts').write_text(originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"), encoding='utf-8')
-                    if defect == 'range':
-                        (root / 'scripts/package-framework.py').write_text(originals['scripts/package-framework.py'].replace("host_requirement = '>=0.1.2-experimental && <0.2.0'", "host_requirement = '*'"), encoding='utf-8')
-                    with self.assertRaisesRegex(AssertionError, reason):
-                        checks.check_version_sources(root)
+        for defect, reason in [('root', 'CJ3C_VERSION_FORMAT'), ('runtime', 'CJ3C_VERSION_RUNTIME'),
+                               ('host', 'CJ3C_HOST_COMPATIBILITY'), ('protocol', 'CJ3C_HOST_PROTOCOL'),
+                               ('range', 'CJ3C_HOST_RANGE')]:
+            with self.subTest(defect=defect):
+                self.restore()
+                if defect == 'root':
+                    data = json.loads(self.originals['package.json']);data['version'] = '../outside'
+                    (self.root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
+                if defect == 'runtime':
+                    (self.root / 'framework/official-ui/main.ts').write_text(self.originals['framework/official-ui/main.ts'].replace('visualVersion=productVersion', "visualVersion='controlled-wrong'"), encoding='utf-8')
+                if defect == 'host':
+                    self.write_component_version('host', '3.5.0')
+                if defect == 'protocol':
+                    (self.root / 'framework/contracts.ts').write_text(self.originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"), encoding='utf-8')
+                if defect == 'range':
+                    (self.root / 'scripts/package-framework.py').write_text(self.originals['scripts/package-framework.py'].replace("host_requirement = '>=0.1.2-experimental && <0.2.0'", "host_requirement = '*'"), encoding='utf-8')
+                with self.assertRaisesRegex(AssertionError, reason):
+                    checks.check_version_sources(self.root)
+        for version, supported in [('0.1.1-experimental', False), ('0.1.2-alpha', False),
+                                    ('0.1.2-experimental', True), ('0.1.2', True),
+                                    ('0.1.10-experimental', True), ('0.2.0', False),
+                                    ('0.1.2-experimental.0+build.01', True),
+                                    ('0.1.9-experimental.01', False), ('0.1.9+bad..metadata', False)]:
+            self.restore()
+            self.write_component_version('host', version)
+            with self.subTest(host=version):
+                if supported:self.assertEqual(checks.check_version_sources(self.root)['hostPackage'], version)
+                else:
+                    with self.assertRaisesRegex(AssertionError, 'CJ3C_HOST_COMPATIBILITY'):checks.check_version_sources(self.root)
 
 
 class OptionalContracts(unittest.TestCase):
-    def test_all_six_positive_and_precise_mutations(self):
-        self.assertEqual(len(checks.ADAPTERS), 6)
+    def test_all_current_positive_and_precise_mutations(self):
+        self.assertEqual(len(checks.ADAPTERS), 7)
         self.assertNotIn('lyra-wardrobe-mouth-soft-wet', checks.ADAPTERS)
         for directory in checks.ADAPTERS:
             policy, filename = checks.adapter_policy(directory)
@@ -232,7 +274,7 @@ class OptionalContracts(unittest.TestCase):
 
 class ZipMetadata(unittest.TestCase):
     def test_metadata_drift_and_comparison_diagnostics(self):
-        original = ROOT / 'dist/framework/StoneFreeHost-0.1.5-experimental.mod.zip'
+        original = next(path for name, path, _ in checks.package_paths() if name == 'StoneFreeHost')
         checks.check_package(original, 'StoneFreeHost')
         clean = contents(original)
         mutations = {
@@ -267,20 +309,34 @@ class ZipMetadata(unittest.TestCase):
 
 
 class BuildEvidence(unittest.TestCase):
+    def test_independent_local_commands_reuse_the_build_run_only_locally(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            checks.write_json(root / 'dist/CJ3C_BUILD_RECEIPT.json', {'runId': 'local-producer'})
+            for env, expected in [({}, 'local-producer'), ({'MOODY_EVIDENCE_ID': 'explicit'}, 'explicit'),
+                                  ({'GITHUB_ACTIONS': 'true'}, None)]:
+                with self.subTest(env=env), patch.dict(os.environ, env, clear=True), patch.object(checks, 'ROOT', root):
+                    def observe(*args, **kwargs):
+                        self.assertEqual(os.environ.get('MOODY_EVIDENCE_ID'), expected)
+                        return '{}'
+                    with patch.object(checks.subprocess, 'check_output', side_effect=observe):
+                        checks.observed_identity(reuse_build=True)
+
     def test_stale_incomplete_receipts_and_report_limit(self):
         # Receipts are mutated in an isolated directory; contract readers remain real.
         packages = checks.all_packages()
         records = [{key: item[key] for key in ['name', 'file', 'sha256']} for item in packages]
         paths = checks.package_paths()
         source = {'head': 'controlled', 'contentSha256': 'controlled'}
-        receipt = {'source': source, 'runId': 'controlled-run', 'invocation': 'first', 'packages': records}
+        identity = {'projectId': json.loads((ROOT / 'project-identity.json').read_text())['projectId'], 'source': source, 'run': {'id': 'controlled-run', 'githubRunId': 'controlled-github-run', 'attempt': '2'}}
+        receipt = {'source': source, 'buildIdentity': checks.build_identity(identity), 'runId': 'controlled-run', 'invocation': 'first', 'packages': records}
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             receipt_file = root / 'dist/CJ3C_BUILD_RECEIPT.json'
             with patch.object(checks, 'ROOT', root), patch.object(checks, 'all_packages', return_value=packages), patch.object(checks, 'package_paths', return_value=paths):
                 checks.write_json(receipt_file, receipt)
-                observation, _ = checks.build_observation({'source': source}, 'controlled-run')
-                self.assertEqual(len(observation['snapshots']), 8)
+                observation, _ = checks.build_observation(identity, 'controlled-run')
+                self.assertEqual(len(observation['snapshots']), 9)
                 for mutation, reason in [({'source': {'head': 'old'}}, 'CJ3C_STALE_BUILD_SOURCE'),
                                          ({'runId': 'other'}, 'CJ3C_STALE_BUILD_RUN'),
                                          ({'invocation': ''}, 'CJ3C_MISSING_BUILD_INVOCATION'),
@@ -289,7 +345,11 @@ class BuildEvidence(unittest.TestCase):
                     with self.subTest(reason=reason):
                         checks.write_json(receipt_file, dict(receipt, **mutation))
                         with self.assertRaisesRegex(AssertionError, reason):
-                            checks.build_observation({'source': source}, 'controlled-run')
+                            checks.build_observation(identity, 'controlled-run')
+                for key in ['projectId', 'commit', 'runId', 'attempt']:
+                    checks.write_json(receipt_file, dict(receipt, buildIdentity=dict(receipt['buildIdentity'], **{key: 'other'})))
+                    with self.assertRaisesRegex(AssertionError, 'CJ3C_STALE_BUILD_IDENTITY'):
+                        checks.build_observation(identity, 'controlled-run')
                 bounded = root / 'bounded.json'
                 checks.write_json(bounded, {'status': 'PARTIAL'})
                 original = bounded.read_bytes()

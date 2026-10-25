@@ -1,0 +1,25 @@
+{
+  "scope": "Actual official Hub and settings/weather owners with first-party native-entry stand-ins. Original speed, all waits retained. Inspector is a mock notification. Not full game, physical touch, frozen old/new comparison or owner G2 approval.",
+  "files": {
+    "desktop.png": {
+      "bytes": 68843,
+      "sha256": "5ba68b7742161686a7705c9f285666f62d53f38ae754b1c7ed9a3fb9411b1ed5"
+    },
+    "narrow.png": {
+      "bytes": 72024,
+      "sha256": "a8e0464b6e00d08825b2740a62d958a2b67ed940d962d2b5919c21278709b156"
+    },
+    "desktop-1x.mp4": {
+      "bytes": 939706,
+      "sha256": "6b2ef274f7cd4da7c8b6fc5a96d15d2e75fc201fb583afcb9f2c341a24ab048b"
+    },
+    "narrow-1x.mp4": {
+      "bytes": 655549,
+      "sha256": "59767885cf3063f2e23556bc6b3ea42f8b27187d5f96344304847819f1a377a2"
+    },
+    "result.json": {
+      "bytes": 5379,
+      "sha256": "33edaca68c4f913383e78bb5f87cfb375a2bf8d7648c9a499c70fa197923c112"
+    }
+  }
+}

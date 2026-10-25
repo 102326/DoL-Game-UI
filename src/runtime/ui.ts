@@ -29,7 +29,7 @@ export function createUiRuntime(root: Runtime, preferences: () => {visualTier?: 
  const supports = (property: string, value?: string) => {try {return value === undefined ? !!root.CSS?.supports?.(property) : !!root.CSS?.supports?.(property, value)} catch {return false}};
  const media = (query: string) => {try {return !!root.matchMedia?.(query).matches} catch {return false}};
  const prefs = () => {try {return preferences()} catch {return {}}};
- const getVisualTier = (): VisualTier => {if(doc.documentElement.hasAttribute('data-stone-free'))return 'Fancy'; const tier = prefs().visualTier; return (['Smooth', 'Balanced', 'Fancy'] as const)[[0, 1, 2].includes(tier!) ? tier! : 0]};
+ const getVisualTier = (): VisualTier => {if(doc.documentElement.hasAttribute('data-stone-free'))return 'Fancy'; const tier = prefs().visualTier; return tier===2?'Fancy':tier===1?'Balanced':'Smooth'};
  function getCapabilities(): UiCapabilities {
   const html = doc.documentElement;
   const enabled = !destroyed && html.hasAttribute('data-dol-midnight');
@@ -115,7 +115,7 @@ export function createUiRuntime(root: Runtime, preferences: () => {visualTier?: 
     diagnostic.targetVersion = typeof mod?.version === 'string' ? mod.version.slice(0, 64) : '';
     const trace = (role: string, candidates: Candidates, all = false, blocked = '') => {
      const hit = blocked ? {nodes: [] as Element[], selector: '', fallback: false, reason: blocked} : find(role === 'scope' ? doc : scope!, candidates, all);
-     diagnostic.mappings.push({role, primary: candidates[0], matched: hit.selector, fallback: hit.fallback, count: hit.nodes.length, reason: hit.reason, tags: [...new Set(hit.nodes.map(node => node.tagName.toLowerCase()))]});
+     diagnostic.mappings.push({role, primary: candidates[0]??'', matched: hit.selector, fallback: hit.fallback, count: hit.nodes.length, reason: hit.reason, tags: [...new Set(hit.nodes.map(node => node.tagName.toLowerCase()))]});
      return hit;
     };
     const located = trace('scope', spec.scope);

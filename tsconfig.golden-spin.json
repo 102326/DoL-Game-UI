@@ -1,0 +1,1 @@
+{"extends":"./tsconfig.framework.json","include":["framework/**/*.ts","framework/**/*.vue","prototypes/golden-spin-b/**/*.ts","prototypes/golden-spin-b/**/*.vue"]}

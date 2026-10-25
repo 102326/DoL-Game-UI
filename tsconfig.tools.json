@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "newLine": "lf",
+    "noUncheckedIndexedAccess": true,
+    "noEmitOnError": true,
+    "verbatimModuleSyntax": true,
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "skipLibCheck": true
+  },
+  "include": [
+    "scripts/*.cts",
+    "scripts/*.mts",
+    "component-lab/*.cts",
+    "framework/factory/*.mts",
+    "tests/tooling-types.cts",
+    "tests/tooling-types.mts"
+  ],
+  "exclude": [
+    "scripts/record-*.cts",
+    "scripts/check-evolution-*.cts",
+    "scripts/check-settings-refraction.cts",
+    "scripts/measure-evolution-*.cts"
+  ]
+}

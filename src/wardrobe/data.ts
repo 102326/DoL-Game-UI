@@ -1,11 +1,11 @@
-import type {Clothing,ClothingSlots,Inventory,Worn,WardrobeVariables,WardrobeSetup,WardrobeDataHost} from './host';
+import type {Clothing,ClothingSlots,Inventory,Worn,WardrobeVariables,WardrobeSetup,WardrobeReadHost} from './host';
 import {clothingIconLayers} from './icons';
 import type {Item} from './types';
 export const LABELS:Record<string,string>={head:'头饰',face:'面饰',neck:'颈部',upper:'上装',lower:'下装',under_upper:'内搭上装',under_lower:'内搭下装',hands:'手饰',handheld:'手持物',legs:'腿饰',feet:'鞋子'};
-export interface Snapshot {root?:WardrobeDataHost;variables:WardrobeVariables;setup:WardrobeSetup;location:string;inventory:Inventory;worn:Worn}
+export interface Snapshot {root?:WardrobeReadHost;variables:WardrobeVariables;setup:WardrobeSetup;location:string;inventory:Inventory;worn:Worn}
 export interface Entry extends Item {slot:string;index:number;raw:Clothing;descriptor:Clothing|undefined}
 export function copy<T>(value:T):T {return structuredClone(value)}
-export function snapshot(root:WardrobeDataHost):Snapshot|null {
+export function snapshot(root:WardrobeReadHost):Snapshot|null {
  const variables=root.SugarCube?.State?.variables??root.State?.variables??root.V;
  const setup=root.SugarCube?.setup??root.setup;
  if(!variables?.worn||!variables.wardrobe||!setup?.clothes)return null;
@@ -33,7 +33,8 @@ export function itemView(s:Snapshot,slot:string,raw:Clothing,key:string):Item {
  return {traits:s.variables.wardrobeDefaults?.showTraits&&Array.isArray(raw.type)?raw.type.map(String):[],lewd:Number.isFinite(raw.reveal)?raw.reveal!:null,outfit:raw.outfitPrimary?'套装':raw.outfitSecondary?'套装部件':'单件',key,name:itemName(s,slot,raw,d),colour:itemColour(s,raw),warmth:itemWarmth(s,raw,d),durability:Number.isFinite(raw.integrity)&&max!>0?Math.round(raw.integrity!/max!*100):null,detail:d?String(d.cn_description??d.description??''):'缺少服装定义，请使用原版衣柜',icons:s.variables.options?.images===0?[]:clothingIconLayers(raw,d,normalise),splittable:!!raw.outfitPrimary&&Object.values(raw.outfitPrimary).some(name=>typeof name==='string'&&!['broken','split'].includes(name))};
 }
 export function entries(s:Snapshot,slot:string):Entry[]{
- return (Array.isArray((s.inventory as ClothingSlots)[slot])?(s.inventory as ClothingSlots)[slot]:[]).flatMap((raw:Clothing,index:number)=>{
+ const inventory=(s.inventory as ClothingSlots)[slot];
+ return (Array.isArray(inventory)?inventory:[]).flatMap((raw:Clothing,index:number)=>{
   if(raw.outfitSecondary&&!['broken','split'].includes(raw.outfitSecondary[1]))return [];
   const d=descriptor(s,slot,raw);
   return [{...itemView(s,slot,raw,slot+':'+index),slot,index,raw,descriptor:d}];

@@ -1,0 +1,6 @@
+.dmt-settings-shell[data-sf-weather-material]{isolation:isolate}
+.dmt-settings-shell[data-sf-weather-material]>:not(.sf-weather-canvas):not(.evo-material-layer){position:relative;z-index:1}
+.dmt-settings-shell[data-sf-weather-material]>.sf-weather-canvas{position:absolute!important;inset:0;width:100%;height:100%;z-index:0;pointer-events:none!important;border-radius:22px}
+.dmt-settings-shell[data-sf-weather-material]>.evo-material-layer{position:absolute!important;inset:0;overflow:hidden;border-radius:22px;z-index:0!important;pointer-events:none!important;contain:layout style}
+.dmt-settings-shell[data-sf-weather-material]>.evo-material-layer *{pointer-events:none!important}
+/* Preserve the accepted settings V2.3 base; the study's translucent backdrop is fixture-only. */

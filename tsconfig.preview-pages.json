@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "prototypes/evolution-integration/**/*.ts"
+  ],
+  "compilerOptions": {
+    "allowJs": false
+  }
+}

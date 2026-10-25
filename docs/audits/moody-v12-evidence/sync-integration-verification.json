@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "pr": 24,
+  "url": "https://github.com/102326/DoL-Game-UI/pull/24",
+  "mergedAt": "2026-10-23T11:59:33Z",
+  "developmentHead": "3e6e0396f70dacf5dc6c730fec8fb73cfd7360c2",
+  "tree": "5cfade70cf6012824bb75ef992e0037468daac97",
+  "testedPrMerge": "fbc6b49c7af87f4a6a138be0bf8fe6bb95e46a6d",
+  "testedCandidate": "c1f18cc565a3e5c27d7c98a8f802b474c8dfc316",
+  "sourceContentSha256": "fae70d0ff711665d05348cc4139969e7ad00e95d952eed0e1abae558d3f3bc0e",
+  "treeMatchesTestedCandidate": true,
+  "parents": [
+    "d60ccc844942e950f41beb188a27dec5e11823fe",
+    "c1f18cc565a3e5c27d7c98a8f802b474c8dfc316"
+  ],
+  "author": "102326 <100576628+102326@users.noreply.github.com>",
+  "committer": "GitHub <noreply@github.com>",
+  "postMergeResearch": {
+    "id": 39950006354,
+    "attempt": 1,
+    "status": "SUCCESS",
+    "jobs": [
+      {
+        "name": "prototype",
+        "conclusion": "success"
+      },
+      {
+        "name": "evidence-verify",
+        "conclusion": "success"
+      }
+    ],
+    "evidence": "sync-postmerge-research-verification.json"
+  },
+  "scope": "Authorized development merge only; no main/release/governance changes; other chat working tree untouched"
+}

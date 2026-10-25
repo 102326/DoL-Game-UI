@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "scope": "Owner-approved special-weather preview after ordinary-rain rollback; no package/release change",
+  "browser": "157.0.4341.16",
+  "sources": {
+    "prototypes/evolution-weather/blood-moon.ts": "9bea6270a0fc55acb08a599e8651fcefcdef32d40af709f0b0d12234d08a1168",
+    "prototypes/evolution-weather/special-atmosphere.ts": "fe1b3ca67cc1c8d058d38e0166817a304306baa317bbe37edbb9f3ae4a56086e",
+    "src/ui/weather/wet-glass.ts": "389d4f5fdaf4df03eccd1f8b6557c02547f8847e25486b57d39cd3e3d2536f03",
+    "src/ui/weather/surface.ts": "372e683b9ea88fa37cb18ee532592f148ee1403be788cf2357db5db77b58aa41",
+    "scripts/preview-evolution-blood-moon.ts": "9852fc51293834d26d974e75ef51cbb67c5669c3fe0a66423a7ed4e589ed6b0b",
+    "scripts/check-evolution-rain-rollback.ts": "7f84ff9d62f9e1b11adab426a73dd3edd12f6412a676dc7fcc7e105d690f8269"
+  },
+  "checks": [
+    "Accepted blood-moon and three atmosphere drawings unchanged",
+    "Blood-rain imports absent",
+    "Ordinary and blood-moon rain body/refraction exactly identical",
+    "Frozen rain geometry unchanged and protected",
+    "Reading pixels unchanged",
+    "Surfaces released"
+  ],
+  "screenshotSHA256": "b39b9a660c8b99df0acf73baa04394116b66ad8b374d282b4d87e18434813e57",
+  "errors": []
+}

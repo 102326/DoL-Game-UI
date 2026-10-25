@@ -1,0 +1,333 @@
+{
+  "status": "PASS",
+  "scope": "Isolated CSS research only; default accepted settings remains unchanged. Background edge metric is not a visual acceptance or GPU/device result.",
+  "inputHead": "3e6e0396f70dacf5dc6c730fec8fb73cfd7360c2",
+  "workingTree": true,
+  "runtime": {
+    "platform": "darwin",
+    "node": "v24.18.0",
+    "chromium": "153.0.8010.12"
+  },
+  "records": [
+    {
+      "mode": "current",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "state": {
+        "filter": "none",
+        "background": "rgba(36, 38, 42, 0.85)",
+        "rect": {
+          "x": 140,
+          "y": 12,
+          "width": 1000,
+          "height": 876,
+          "top": 12,
+          "right": 1140,
+          "bottom": 888,
+          "left": 140
+        }
+      },
+      "witness": {
+        "highFrequencyEnergy": 73212,
+        "absoluteDifference": 128215
+      },
+      "glassOff": "2c10d2c3b94ddbd4b2005d3bb82b599d8fa376ca9eaa936c2ca4da4edb2f6978",
+      "protectedOverlap": 0,
+      "nativeAction": "PASS"
+    },
+    {
+      "mode": "current",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "state": {
+        "filter": "none",
+        "background": "rgba(36, 38, 42, 0.85)",
+        "rect": {
+          "x": 12,
+          "y": 12,
+          "width": 366,
+          "height": 820,
+          "top": 12,
+          "right": 378,
+          "bottom": 832,
+          "left": 12
+        }
+      },
+      "witness": {
+        "highFrequencyEnergy": 74178,
+        "absoluteDifference": 129900
+      },
+      "glassOff": "245c57d8391f4623a4faff64a9f80858fd85b0ad718d80c8f871656886a38771",
+      "protectedOverlap": 0,
+      "nativeAction": "PASS"
+    },
+    {
+      "mode": "current",
+      "recording": "1280x900 DPR1 original speed; same schedule, actual event times retained",
+      "events": [
+        {
+          "label": "Open settings",
+          "actualMs": 605
+        },
+        {
+          "label": "Rain",
+          "actualMs": 1562
+        },
+        {
+          "label": "Material category",
+          "actualMs": 5483
+        },
+        {
+          "label": "Reading category",
+          "actualMs": 6649
+        },
+        {
+          "label": "Snow",
+          "actualMs": 8448
+        },
+        {
+          "label": "Reverse toward rain",
+          "actualMs": 12241
+        },
+        {
+          "label": "Return to snow",
+          "actualMs": 13048
+        },
+        {
+          "label": "Close settings",
+          "actualMs": 15977
+        },
+        {
+          "label": "Native action",
+          "actualMs": 16598
+        }
+      ],
+      "finalSnow": {
+        "snow": 0.979113797055851,
+        "protectedOverlap": 0
+      }
+    },
+    {
+      "mode": "candidate",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "state": {
+        "filter": "blur(24px) saturate(0.9)",
+        "background": "rgba(36, 38, 42, 0.85)",
+        "rect": {
+          "x": 140,
+          "y": 12,
+          "width": 1000,
+          "height": 876,
+          "top": 12,
+          "right": 1140,
+          "bottom": 888,
+          "left": 140
+        }
+      },
+      "witness": {
+        "highFrequencyEnergy": 10047.121981978416,
+        "absoluteDifference": 123909.04432469606
+      },
+      "glassOff": "2c10d2c3b94ddbd4b2005d3bb82b599d8fa376ca9eaa936c2ca4da4edb2f6978",
+      "protectedOverlap": 0,
+      "nativeAction": "PASS"
+    },
+    {
+      "mode": "candidate",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "state": {
+        "filter": "blur(24px) saturate(0.9)",
+        "background": "rgba(36, 38, 42, 0.85)",
+        "rect": {
+          "x": 12,
+          "y": 12,
+          "width": 366,
+          "height": 820,
+          "top": 12,
+          "right": 378,
+          "bottom": 832,
+          "left": 12
+        }
+      },
+      "witness": {
+        "highFrequencyEnergy": 11171.937782526016,
+        "absoluteDifference": 124783.8113604784
+      },
+      "glassOff": "245c57d8391f4623a4faff64a9f80858fd85b0ad718d80c8f871656886a38771",
+      "protectedOverlap": 0,
+      "nativeAction": "PASS"
+    },
+    {
+      "mode": "candidate",
+      "recording": "1280x900 DPR1 original speed; same schedule, actual event times retained",
+      "events": [
+        {
+          "label": "Open settings",
+          "actualMs": 672
+        },
+        {
+          "label": "Rain",
+          "actualMs": 1576
+        },
+        {
+          "label": "Material category",
+          "actualMs": 5146
+        },
+        {
+          "label": "Reading category",
+          "actualMs": 6093
+        },
+        {
+          "label": "Snow",
+          "actualMs": 6817
+        },
+        {
+          "label": "Reverse toward rain",
+          "actualMs": 10322
+        },
+        {
+          "label": "Return to snow",
+          "actualMs": 10976
+        },
+        {
+          "label": "Close settings",
+          "actualMs": 13588
+        },
+        {
+          "label": "Native action",
+          "actualMs": 14275
+        }
+      ],
+      "finalSnow": {
+        "snow": 0.9772760961446205,
+        "protectedOverlap": 0
+      }
+    }
+  ],
+  "weatherChecks": [
+    {
+      "name": "accepted actual entry, one renderer, no legacy layer or study controls",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous R10 and four levels",
+      "status": "PASS",
+      "detail": [
+        {
+          "level": "light",
+          "elapsedMs": 2176
+        },
+        {
+          "level": "normal",
+          "elapsedMs": 532
+        },
+        {
+          "level": "heavy",
+          "elapsedMs": 542
+        },
+        {
+          "level": "severe",
+          "elapsedMs": 630
+        }
+      ]
+    },
+    {
+      "name": "mid-snow reversal and throwing provider neutral fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "unchanged reading/close pixels, visible rain and real preference input",
+      "status": "PASS"
+    },
+    {
+      "name": "zoom, narrow rotation/resize and zero-size recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "motion off, hidden, close/reopen and dispose stop owned work",
+      "status": "PASS"
+    },
+    {
+      "name": "nativeNavigation uses new settings surface and removes it on close",
+      "status": "PASS"
+    },
+    {
+      "name": "partial material construction failure leaves usable static settings and no owned nodes",
+      "status": "PASS"
+    },
+    {
+      "name": "throwing cleanup remains observable while all surfaces and nodes retire",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "sources": {
+    "prototypes/settings-acrylic-v1/readability.css": "174369e09e395016c9b8ef08d2c72664f2b4fddf2cc7f99220ece6b56e3f5cb6",
+    "scripts/check-evolution-acrylic.cjs": "61c2e788fdc0c1be43b4f39f49f36de6acaca8c36d6f469b7e7ebcc81fa36c3c",
+    "scripts/preview-evolution-acrylic.mjs": "360f8f2d286e41d2b77016ca0d75405d3d271d3a158bc13de0107827a6c338d3",
+    "framework/official-ui/README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+    "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
+    "framework/official-ui/main.ts": "37f89c48ec9ac639810bfc5770285558643cfe1e6d0aa665c289b30c748664d2",
+    "framework/official-ui/motion.ts": "6331487a96d23256c2330b21dcb2a1e4797f9f3858e02aa29ae3333ad70fcecc",
+    "framework/official-ui/navigation.ts": "2c23118e017cd2d57bb9e235f195ae708e6fbe6f0367f05540c2dba0ab97edf6",
+    "framework/official-ui/reference-shelf.ts": "bcc8c881ea21bc8c38c69b5bf78c6c9f5fd4a115ad0f29a958fdd81ca69a3117",
+    "framework/official-ui/startup-notice.ts": "88fd2ec3e340d8e131cb6fdc85e3e7b2d1182503b174cd49d859a1ce13939dcc",
+    "framework/official-ui/weather.ts": "1f1d8681c06c8140e152f55b08ad3474e318905cfc5888996cec85b1877edab9",
+    "package-lock.json": "e0313e47f5f2c8939839120f2da0bf5a142582578f8ef4cb89a8c6bc265f61a6",
+    "scripts/preview-evolution-settings.mjs": "f22af126fc8d25d912d459227673c34b70308420ef8fd2906e1bfd3c1387377e",
+    "src/theme/SettingsNavigation.vue": "b9971a5d7812d002b003c71feed0feac842221f48afdfe6779ad6830a6e5d522",
+    "src/theme/SettingsPanel.vue": "92024ad0eaf7fc02c9f105f0e1d1a497551284472975362a59eaeefb7f4d782e",
+    "src/theme/SettingsPreview.vue": "f659043e62370fb718573b055db09cc11584e019080a2a5122e296bef08b1bf9",
+    "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+    "src/theme/controls.css": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+    "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+    "src/theme/drawer-corner.svg": "bd1da769f8c78bdaa768e70effec79334563eb53511e04623ca6612ca3892bbf",
+    "src/theme/kraft-work-motion.css": "5606dc48ff813db966ebbadfadfc5beb3699363df02cc3515e9dbcc1503f026e",
+    "src/theme/kraft-work-native.css": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa",
+    "src/theme/kraft-work-pages.css": "7cb5caf798ca15575a3415c1c271d5b7399b6bf02fec6e46514846999e07339f",
+    "src/theme/kraft-work-surfaces.css": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0",
+    "src/theme/kw-weather-condensation.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
+    "src/theme/kw-weather-mist.svg": "ca34fdd9a419a0ef046b05adcde47b23e87399dfd7181a6ffdbdd55b4a9990e9",
+    "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+    "src/theme/kw-weather-snow-far.svg": "599565b90efeb72292b7be34ede0442330c848f776eb806d1b6339e98d59f6cf",
+    "src/theme/kw-weather-snow-near.svg": "089055a38f1256bef1e0d7bea4b4a6f4031ab460add848bf4a263f80d2a3ad2e",
+    "src/theme/layout.css": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265",
+    "src/theme/layout.ts": "4a7779635d50ae0de3040effe6ed23ba32be22f21d7376654b7602bf9dcfc19f",
+    "src/theme/mobile.css": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1",
+    "src/theme/navigation-material.css": "6df318a851446678ad100e0069266fec6400c18eaf890f6109a94fe6acbad54a",
+    "src/theme/preferences.ts": "a8169ec051969fd3d4817256bf612d36037a522ff40c36ae4da7de7f48fb7b42",
+    "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+    "src/theme/sidebar-layout.ts": "76bc16439b994577538877852389a05e944adee0c265a441eb5a6585e5b180a0",
+    "src/theme/sidebar.css": "65926604dc7c2ba303ca45e704b8735d6b07927de3090b9e60a2433b5239a7b7",
+    "src/theme/stone-free.css": "3feacbac9933aab21a9eb0d1ff6b9a91e3dc47a57f0a8706971f4c870c908d17",
+    "src/theme/theme.ts": "223423adea451d4a7c25be98c3f102bc4de79d9bbd85b1a92e081a49bc42c92d",
+    "src/theme/visual.css": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "5bcc6896be290bacb338a683d64080b172546e2137e4686ac9d1f249f694a0b7",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/surface.ts": "5d61766221293b7fde0599a76bda89ed1ffa1bebddff1db5cff77ecae6edcdf2",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "ff78f9cd06aeaa400026f178b6626d7440046577c99e7fb3e150226fcc97a428",
+    "tests/evolution-weather-integration.cjs": "9314c6c7117a73d23ec2f6c4a8be91b6d9c293987a25406833c06e9fe3185573",
+    "dist/framework/official-ui/style.css": "68eb1dfe1e075e9bcb8b853776d98fdb73341a88b2062a891c029fbd917c5f2c"
+  }
+}

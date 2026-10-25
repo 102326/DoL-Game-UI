@@ -1,0 +1,174 @@
+{
+  "scope": "Frozen 34f4217 TS/Vue behavior against current production CSS; source regression evidence, not full frozen visual comparison. Current actual settings source in first-party fixture.",
+  "current": {
+    "baseline": false,
+    "source": "34f4217e8e3278b44623bf20e9df692a771f6f90",
+    "workingTree": true,
+    "hashes": {
+      "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+      "src/theme/SettingsPanel.vue": "92024ad0eaf7fc02c9f105f0e1d1a497551284472975362a59eaeefb7f4d782e",
+      "src/ui/source-motion.ts": "c26166d11f4547af4caaec5844e49d40e43c51dc825d9de02a06b53b5c3994db",
+      "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+      "tests/evolution-settings-integration.cjs": "7d6411813329467f6c475e3253119daa84a5d49e1a1cf7802c079c818e50b524"
+    },
+    "css": {
+      "source": "current production build; baseline freezes TS/Vue behavior only",
+      "sha256": "9c707a365336069316bc94da0695131f47f42c1db2c205ba38bcf22c1a4fe11b"
+    },
+    "runtime": {
+      "platform": "darwin",
+      "node": "v24.18.0",
+      "chromium": "153.0.8010.12"
+    },
+    "checks": [
+      {
+        "name": "S01 approved shell and page timing, real input and single material surface",
+        "status": "PASS",
+        "detail": {
+          "first": {
+            "duration": 100,
+            "easing": "linear",
+            "inert": false,
+            "updated": true,
+            "proxyCount": 0,
+            "transform": "none",
+            "backdrop": "none",
+            "alpha": 0.85
+          },
+          "category": [
+            {
+              "duration": 620,
+              "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+              "frames": [
+                {
+                  "transform": "translate3d(0px, 0px, 0px) rotateY(0deg)",
+                  "offset": null
+                },
+                {
+                  "transform": "translate3d(-45px, 0px, -100px) rotateY(20deg)",
+                  "offset": null
+                }
+              ]
+            },
+            {
+              "duration": 620,
+              "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+              "frames": [
+                {
+                  "transform": "translate3d(80px, 16px, -100px) rotateY(-24deg) rotateX(7deg)",
+                  "clipPath": "inset(0px 96% 0px 0px round 16px)",
+                  "offset": null
+                },
+                {
+                  "clipPath": "inset(0px 0%)",
+                  "offset": 0.55
+                },
+                {
+                  "transform": "translate3d(0px, 0px, 0px) rotateY(0deg) rotateX(0deg)",
+                  "clipPath": "inset(0px 0%)",
+                  "offset": 0.78
+                },
+                {
+                  "transform": "translate3d(0px, 0px, 0px) rotateY(0deg) rotateX(0deg)",
+                  "clipPath": "inset(0px 0%)",
+                  "offset": null
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "S01 reversal samples current opacity before cancellation and latest open wins",
+        "status": "PASS",
+        "detail": {
+          "initial": 0.45,
+          "afterClose": 0.45,
+          "beforeOpen": 0.325,
+          "afterOpen": 0.325,
+          "transform": "none",
+          "inert": false
+        }
+      },
+      {
+        "name": "S01 closing and native close cancel category WAAPI and settle exactly one page",
+        "status": "PASS",
+        "detail": {
+          "animations": 0,
+          "transition": false,
+          "sections": 1
+        }
+      },
+      {
+        "name": "S01 cancellation, preferences, hidden/resize and teardown keep latest usable state",
+        "status": "PASS",
+        "detail": {
+          "retired": 18
+        }
+      },
+      {
+        "name": "S01 modeless fallback and replaced dialog cancel retired shell work",
+        "status": "PASS",
+        "detail": {
+          "fallback": true,
+          "retiredCancelled": true
+        }
+      }
+    ]
+  },
+  "baseline": {
+    "baseline": true,
+    "source": "34f4217e8e3278b44623bf20e9df692a771f6f90",
+    "workingTree": false,
+    "hashes": {
+      "src/theme/controller.ts": "7129e66d84e3ed70e74f606ebfd8bd0fa09765590c5d57cf32ee7b0a932e43d1",
+      "src/theme/SettingsPanel.vue": "541b2a327a9f868d05574d2094f3be88e188671385f4afd844a89c4c18a542a8",
+      "src/ui/source-motion.ts": "f42034f6b4cac97a6c9614317257051c7bb59ef873b0ed716cfa843faf608b7f",
+      "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+      "tests/evolution-settings-integration.cjs": "7d6411813329467f6c475e3253119daa84a5d49e1a1cf7802c079c818e50b524"
+    },
+    "css": {
+      "source": "current production build; baseline freezes TS/Vue behavior only",
+      "sha256": "9c707a365336069316bc94da0695131f47f42c1db2c205ba38bcf22c1a4fe11b"
+    },
+    "runtime": {
+      "platform": "darwin",
+      "node": "v24.18.0",
+      "chromium": "153.0.8010.12"
+    },
+    "checks": [
+      {
+        "name": "S01 approved shell and page timing, real input and single material surface",
+        "status": "FAIL",
+        "error": "Expected values to be strictly equal:\n\n300 !== 100\n",
+        "errors": []
+      },
+      {
+        "name": "S01 reversal samples current opacity before cancellation and latest open wins",
+        "status": "FAIL",
+        "error": "open-to-close opacity must not jump",
+        "errors": []
+      },
+      {
+        "name": "S01 closing and native close cancel category WAAPI and settle exactly one page",
+        "status": "FAIL",
+        "error": "Expected values to be strictly equal:\n\n'' !== null\n",
+        "errors": []
+      },
+      {
+        "name": "S01 cancellation, preferences, hidden/resize and teardown keep latest usable state",
+        "status": "PASS",
+        "detail": {
+          "retired": 18
+        }
+      },
+      {
+        "name": "S01 modeless fallback and replaced dialog cancel retired shell work",
+        "status": "FAIL",
+        "error": "replacement must cancel retired shell animation\n\n'paused' !== 'idle'\n",
+        "errors": []
+      }
+    ]
+  },
+  "interpretation": "Baseline 4 FAIL / 1 PASS: one not-yet-migrated timing target and three lifecycle defects; current 5 PASS. No real game or device acceptance."
+}

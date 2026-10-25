@@ -1,161 +1,123 @@
-# Soft & Wet 3.0.4 — Kraft Work
+# Soft & Wet 4.0 — Evolution
 
-[![Release](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest)
-![Game](https://img.shields.io/badge/DoL-0.5.12.13-blue)
+Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、服装店、角色信息和常用窗口。Evolution 延续3.X视觉基线，更新悬浮工具与设置的动态表现，并改进窗口在滚动、缩放和快速切换时的行为。
 
-**Soft & Wet UI** 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，重新组织衣柜、服装店、角色信息和常用窗口。半透明材质让游戏背景自然参与画面，导航焦点、按钮反馈与空间转场让操作更连贯。
+购买、穿戴、战斗结算、角色数值和存档继续由原游戏及对应Mod处理。安装包不包含游戏本体、APK或第三方主Mod。
 
-Kraft Work 加入游戏天气响应、设置双布局与可选 Floating Hub。购买、穿戴、角色数值和存档仍由原游戏及对应 Mod 处理。当前版本包含 ModHub 管理器／帮助中心、存档三页与默认兼容外观；3.0.4 修复部分环境缺少 AbortSignal.any 时 Host 无法启动的问题，并增加可见启动诊断；保留3.0.3衣柜波纹修正。所有现行 UI 设计统一采用 3.X，1.X／2.X 设计封存，不再使用。
-
-[下载 3.0.4](https://github.com/102326/DoL-Game-UI/releases/tag/v3.0.4) · [安装步骤](#安装与升级) · [完整更新说明](docs/RELEASE_3.0.4.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
-
-**ModHub 兼容包已更新至 1.0.1**：收紧手机 Mod 列表和更新提示，优化安装／更新时的加载动画。已安装 3.0.4 的玩家只需更新该兼容包；下载见同一发布页。
-
-普通玩家需要 **主 UI + Framework Host 两个 ZIP**，使用相应第三方 Mod 时再选装兼容包。**不要解压**，导入后重启游戏。安装包不包含游戏本体、APK 或第三方原 Mod。
-
-![Kraft Work 设置界面：上下布局](docs/media/3.0.0/KraftWork-3.0-settings-horizontal.png)
-
-以上为3.0系列既有运行包在Android测试环境中的画面，不代表3.0.4热修复已实机验收。视口、背景、偏好与 Mod 组合会影响实际效果。
+[版本与下载](https://github.com/102326/DoL-Game-UI/releases) · [安装与回退](docs/INSTALL_EVOLUTION_CANDIDATE.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 ## 核心界面
 
-### 衣柜
+### Floating Hub
 
-- 按分类或跨已支持分类搜索，查看衣物状态、已穿戴标记与保暖情况。
-- 点选衣物仍直接穿戴，保留原穿戴限制和已验证的第三方叠穿行为。
-- 查看当前完整穿搭，暂存参照并比较；“衣物详情与特质”使用独立抽屉。
-- 整理模式保留原有丢弃、套装处理、修理与转移入口，具体操作依原游戏条件执行。
+金属球体通过回旋纹理、光照和残影带出真实工具菜单。点击后球体立即响应，菜单留出蓄势时间再展开；关闭时工具与背景一起收束。
 
-### 服装店
+保留拖动、侧边停靠、工具调用、键盘和快速反向。新安装默认显示，已有隐藏偏好保留；可在界面设置中关闭，经典入口继续作为回退路径。
 
-- 分类、搜索、配色与购买区域集中组织，可保存进店默认服装类型。
-- 商品选中波纹、详情过渡与信息比较帮助查看当前选择；窄屏使用详情抽屉。
-- 保留原报价、购买与试穿路径，视觉展示不改写交易规则。
+### 设置与天气
+
+设置支持上下、左右两种布局，共用真实控件、偏好与实时预览。开关采用短过渡，分类切换保留连续动态；修改自动保存，长内容可滚动，窗口打开时阻挡背后的游戏输入。
+
+设置玻璃响应游戏内降雨、降雪及血月、异世界、极热和严寒，呈现水珠、雨丝、霜羽、月面云影与环境雾光。雨中血月使用普通雨滴。其它已适配窗口保留各自现有天气表现，修复共享雨幕在ModHub等窗口中的持续重绘卡顿。天气来自DoL，不调用现实天气服务；装饰层不接收点击，关闭动画或减少动态时采用静态表现。
 
 ### 角色信息与常用窗口
 
-属性、社交、特质、成就、日志和统计等已适配窗口使用协调的 Acrylic 外壳、导航与内容层次。保留原游戏的语义颜色，以及原有按钮、链接与表单操作。
+属性、社交、特质、成就、日志和统计等已匹配窗口使用协调的外壳、导航与内容层次。保留原语义颜色、链接和表单操作，导航焦点适应滚动与缩放。
 
-<details>
-<summary>查看角色信息画面</summary>
+### 衣柜与服装店
 
-![Kraft Work 角色信息](docs/media/3.0.0/KraftWork-3.0-character.png)
+- 衣柜支持分类、搜索、当前穿搭、预览、参照比较和衣物详情抽屉；点选衣物仍执行原穿戴操作。
+- 已识别的原版优化叠穿项目可以显示多件，保留原顺序调整和卸下入口。
+- 商店集中展示分类、配色、商品选择、报价和购买区域，保留原购买、试穿与退出路径。
+- 动态选择反馈和详情过渡帮助辨识当前物品，不改写交易或穿戴规则。
 
-</details>
+### 战斗与存档
 
-### 战斗
+新安装默认开启动画、平铺全部战斗选项；聚焦编辑可选，已有偏好保留。修复缩放后的战斗底栏偏移及一条衣柜离开时的失效刷新路径。
 
-默认开启战斗界面与动画，原生动作控件**全部展开、平铺显示**，保留原动作、判定与结算。聚焦编辑仍为可选模式；模式选择会保存，聚焦时也能上下滚动。已有关闭偏好继续生效。
+存档、导出／载入与已适配云存档共用管理页头。原版优化附加日期无效时，兼容包仅在能确定存档时间的情况下修正文字；正常上游日期保留，存档数据不变。
 
-## 材质、天气与交互
-
-黑色与深灰色为主体，半透明、柔和模糊与分层材质共同承载内容。窗口展开与退场、动态导航焦点、按钮按压和不同场景的过渡使用适合各自用途的动画。材质与动画可以关闭，系统减少动态效果时自动退化。
-
-窗口响应 **DoL 游戏内部天气**，无需现实天气服务：晴天暖光、多云明暗漂移、雨天细雨与玻璃水珠、雷雨局部照明，以及雾、雪的环境表现。雨量影响动态节奏，装饰层不接收点击。
-
-![Kraft Work 天气响应](docs/media/3.0.0/KraftWork-3.0-weather.png)
-
-[观看 Android 原速天气视频（约 12 秒）](docs/media/3.0.0/KraftWork-3.0-weather-android.mp4)。演示通过游戏原有天气接口准备雷雨，不代表帧率性能测量。
-
-## 设置双布局与 Floating Hub
-
-设置支持**上下布局**和**左右布局**，共享同一套真实控件、偏好与预览；修改后自动保存。打开设置时阻挡背后游戏输入，长内容可以滚动。
-
-Floating Hub 提供可选悬浮快捷入口，支持展开、收起、拖动、侧边停靠和已支持窗口的工具交接。**新安装默认显示**，在“界面设置 → 入口 → 高级快捷工具”可调整或关闭。已有隐藏偏好保留。点击展开，拖动移动，也可使用键盘方向键调整。
-
-<details>
-<summary>查看左右设置布局与 Floating Hub</summary>
-
-![Kraft Work 设置界面：左右布局](docs/media/3.0.0/KraftWork-3.0-settings-vertical.png)
-
-![Kraft Work Floating Hub](docs/media/3.0.0/KraftWork-3.0-floating-hub.png)
-
-</details>
-
-## 其它界面与功能
-
-| 界面 | 主要内容 |
-| --- | --- |
-| 存档管理 | 存档、导出／载入与已适配云存档共用页头；列表、详情及底部操作可滚动触达 |
-| 游戏选项与作弊 | 原生控件外观和响应式布局，生效规则由游戏或目标 Mod 负责 |
-| 阅读与界面设置 | 字号、按钮大小、阅读宽度、间距、材质、动效与独立页面开关 |
-| 进阶选项 | 衣柜分页和按需启用的兼容／性能实验；不以减少 DOM 工作量代替整体性能承诺 |
-
-本版不包含 Widget、自由布局编辑器或全局动作底栏。
-
-![Kraft Work 存档管理与导出／载入](docs/media/3.0.1/KraftWork-3.0.1-transfer.png)
+存档按钮转发前区分正常空槽和异常数据，无法确认时停止该次转发并保留原版入口；未知扩展行继续使用原生控件，不自动修复存档内容。
 
 ## 安装与升级
 
-| 项目 | 要求 |
+普通玩家需要主UI与Framework Host两个独立ZIP；使用相应第三方Mod时再选装兼容包。无需解压。
+
+| 项目 | 范围 |
 | --- | --- |
-| DoL | 当前适配与主要验收版本为 **0.5.12.13** |
-| ModLoader | **>=2.100.0**，实测 2.101.1 |
-| TweeReplacer | **>=1.0.0** |
-| Framework Host | **>=0.1.2-experimental 且 <0.2.0**；推荐并实测 **0.1.5-experimental** |
+| DoL | 当前适配与代表性验收基线为0.5.12.13 |
+| ModLoader | 最低>=2.100.0，本轮使用2.101.1 |
+| TweeReplacer | 最低>=1.0.0，本轮使用1.7.0 |
+| Framework Host | >=0.1.2-experimental且<0.2.0，本轮使用0.1.5-experimental |
+| 平台 | Android平板WebView与Windows Edge代表性验证；其它环境见验证范围 |
 
-最低要求、推荐版本与实测组合分别说明；满足最低要求不代表所有后续版本或整合包均已验证。Host 的公共协议仍为实验性协议。
+1. 备份存档，保留原包和顺序以便回退。
+2. 停用旧同名UI，确保每个技术身份只启用一个版本。
+3. 导入Framework Host和主UI，Host排在UI前。
+4. 按目标Mod选装兼容包，放在目标Mod和UI之后。
+5. 重启，确认入口与版本，再读取自己的进度。
 
-1. 备份存档，保留原 UI 和对应兼容包以便回退。
-2. 停用原 `DoLGameUI`，每个技术身份只启用一个版本。
-3. 从 [最新 Release](https://github.com/102326/DoL-Game-UI/releases/latest) 下载并导入 `StoneFreeHost-0.1.5-experimental.mod.zip` 与 `DoLGameUI-3.0.4.mod.zip`，不要解压。
-4. Host 排在 UI 前。可选兼容包排在对应目标 Mod 和 UI 之后；没有目标 Mod 就不安装相应兼容包。
-5. 重启游戏，检查界面与版本，再载入自己的进度。显示偏好保存在当前浏览器或应用中，与游戏存档分离。
-
-`StoneFreeHost` 是 Framework Host 保留的技术包名；对外版本代号为 **Kraft Work**。开发样例、Factory 和 Author Kit 不是玩家必装项。详细说明见 [安装与回退](docs/INSTALL_3.0.4.md)。
+最低依赖、已验证版本与结构识别共同决定兼容范围，不保证所有未来版本或整合包均已验证。详细步骤见[安装、升级与回退](docs/INSTALL_EVOLUTION_CANDIDATE.md)。
 
 ## 可选兼容包
 
-| 包 | 作用与范围 |
+| 包 | 用途 |
 | --- | --- |
-| ModHubSoftWet | ModHub 管理器外观 |
-| MapleBirchSoftWet | MapleBirch 云存档页面外观，不接管云端业务 |
-| DolOptimizationSoftWet | 原版优化的存档外观与衣柜叠穿管理，保留原描述编辑、槽位和叠穿操作 |
-| CheatExtendedSoftWet | Cheat Extended 外观，适配原作者版及已支持的独立维护版 |
-| ReOverfitsSoftWet | ReOverfits 额外服装槽位接入 |
-| LyraMouthCompat051213 | 指定 Lyra 环境的嘴部资源适配 |
-| SmartPhoneSoftWet | 万能手机 Alpha 的手机与 debug 外观，保留原手机形态和业务 |
+| ModHubSoftWet | 管理器、市场、帮助及已识别工具浮层外观 |
+| MapleBirchSoftWet | 云存档页面外观，保留原云端业务 |
+| DolOptimizationSoftWet | 存档外观、条件日期显示修复与原叠穿列表 |
+| CheatExtendedSoftWet | 原作者CE及已支持独立维护版的外观 |
+| ReOverfitsSoftWet | 额外服装槽位接入 |
+| LyraMouthCompat051213 | 指定Lyra环境的嘴部资源适配 |
+| SmartPhoneSoftWet | 万能手机Alpha及已识别组件外观 |
 
-按自己安装的 Mod 选用相应兼容包；Cheat Extended 的不同发行版不要同时启用。具体版本、依赖要求、安装顺序和已验证范围以[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)为准，后续更新统一在那里说明。
+没有目标Mod就不安装对应包。CE原作者版与独立维护的rebuild.30只能启用一个；万能手机包不适用于Omega。具体版本与支持范围见发布页。
 
-万能手机兼容不适用于 Omega；当前新衣柜会连同原版内容隐藏手机与 debug 入口，返回卧室后可使用。
+## 兼容、限制与回退
 
-## 设置、兼容与回退
+部分Android环境的复杂天气下仍可能有偶发慢帧。未知第三方页面可能保留原外观。尚未穷举所有WebView、衣物、商品、战斗和Mod组合；当前没有完整FPS或长期无泄漏结论。ModHub所有安装／更新场景的卡顿、闪烁，以及全部历史衣柜同名异常不作根治承诺。
 
-各专用界面可独立关闭；关闭“启用 Soft & Wet 界面”可恢复原版显示。衣柜操作进行时应先等待操作结束。若设置也无法打开，可在 Loader 中停用 UI 并重启。
+各专用界面可以独立关闭。需要回退时停用当前UI及只适用于它的兼容包，恢复保留的原包和顺序，再重启；其它Mod仍使用Host时保留Host。不要清空存档或整个App数据。
 
-需要回退时，停用当前 UI 与只适用于当前 UI 的兼容包，恢复保留的原包后重启。其它 Mod 仍使用 Host 时应保留 Host。不要清空整个游戏数据，不依赖整包热卸载。
+## 开发者与许可
 
-## Mod 作者与开发者
+维护中的自有界面、Host、兼容逻辑及测试/构建工具已按TS First整理，CommonJS运行形式按需保留。开发工具使用Node26；玩家无需安装Node。对外UI API保持v1，Host保留`StoneFreeHost`技术名，公共协议不因视觉或类型迁移改变。
 
-技术栈为 Vue 3、TypeScript、Vite 与 Tailwind CSS。独立 Framework Host 提供公共 UI 能力，作者可只安装 Host，不依赖官方 UI；公共协议当前为 `0.1-experimental`，官方 UI API 为 v1。
-
-- [UI Runtime API](docs/UI_RUNTIME.md) 与 [接入示例](examples/ui-surfaces/README.md)
-- [持续集成：检查范围与本地运行](docs/CI.md)
-- [基础设施与所有权边界](docs/UI_INFRASTRUCTURE.md)、[独立 Adapter](docs/OPTIONAL_ADAPTERS.md)
-- [发行验证记录](docs/KRAFT_WORK_3.0.4_VALIDATION.md)、[下载校验清单](docs/releases/3.0.4/SHA256SUMS.txt)
+- [验证范围与发布关卡](docs/evolution/EVO-RELEASE-GATE-2026-10-24.md)
+- [持续集成](docs/CI.md)、[UI Runtime API](docs/UI_RUNTIME.md)、[兼容适配](docs/OPTIONAL_ADAPTERS.md)
+- [UI接入示例](examples/ui-surfaces/README.md)
 
 <details>
-<summary>3.0 源码构建</summary>
+<summary>源码检查与构建</summary>
 
-需要 Node.js 22.12+、npm 和 Python 3.10+。以下为 Framework／官方 UI 双包入口：
+开发工具使用Node.js 26.12.1+（仅26.x），需要npm和Python；CI使用Python 3.12。玩家无需安装这些工具。
 
 ```text
 npm ci
-npm run typecheck
-npm run framework:check
-node scripts/build-framework.mjs
-python scripts/package-framework.py --players-only
+npm run ci:check
+npm run ci:build
 ```
 
-构建结果位于 `dist/framework/`。仓库另有经典构建入口，不应替代上述 3.0 构建。公开 Host 使用冻结原包；重新构建的文档或 ZIP 元数据可能不同，应核对运行成员，不自动覆盖公开附件。
+该入口检查类型并构建主UI、Host及七个兼容包；主UI／Host输出到`dist/framework/`，兼容包输出到各自的`compat/*/dist/`。需要执行包合同、反例和双构建校验时，运行`npm run ci:packages`。不同系统的压缩容器摘要可能不同，不能据此覆盖已发布附件。
 
 </details>
 
-## 反馈
+## 反馈与许可
 
-通过 [GitHub Issues](https://github.com/102326/DoL-Game-UI/issues) 提供 DoL／Lyra、Loader、Host／UI、相关 Mod 版本，以及设备、浏览器或 WebView、复现步骤、实际和期望表现。适用时附日志片段或截图；截图、日志和存档均可选；可主动提供并明确授权使用有助于复现的存档，公开 Issue 附件可能被他人访问。开发侧在源码树外隔离复现，不自动纳入公开 CI Artifact；不要提交账号凭据、敏感数据或未获授权分发的 Mod 包。
+通过[GitHub Issues](https://github.com/102326/DoL-Game-UI/issues)提供游戏、Loader、UI／Host及相关Mod版本，说明设备、复现步骤和实际表现。截图、日志与存档可选；公开反馈中不要包含账号凭据、敏感数据或无权分发的Mod包。
 
-## 许可与来源
+项目原创代码使用[MIT](LICENSE)，版权署名为DoLWorkbench contributors。衣柜衍生渲染及四项游戏Twee替换来自Vrelnir及Degrees of Lewdity贡献者，适用**CC BY-NC-SA 4.0**；见[来源与修改说明](UPSTREAM-RENDERER-NOTICE.md)及[完整许可](UPSTREAM-RENDERER-LICENSE)。MIT不替代这些衍生代码的原许可。Vue、Tailwind CSS与GSAP等依赖的声明随包保留。
 
-项目原创代码使用 [MIT](LICENSE)。衣柜衍生渲染及四项游戏 Twee 替换适用 **CC BY-NC-SA 4.0**，见 [来源与修改说明](UPSTREAM-RENDERER-NOTICE.md) 和 [完整许可](UPSTREAM-RENDERER-LICENSE)。MIT 不替代这些代码的原许可；第三方依赖声明随运行包保留。展示截图与录像的来源见 [素材说明](docs/media/3.0.0/README.md)。
+## 画面与动态预览
+
+[Android设置原速顶栏雨效录屏（24秒）](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rain-header/android-settings-rain.mp4)。来源、运行成员等价及性能限制见[本轮复验](docs/evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)。
+
+![本轮Android设置：上下布局](https://raw.githubusercontent.com/102326/DoL-Game-UI/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rain-header/android-horizontal.png)
+
+![实际Android设置：血月环境，普通雨保留](https://raw.githubusercontent.com/102326/DoL-Game-UI/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rc1-game/android-blood-moon.png)
+
+- [设置与特殊天气原速预览](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-special-integrated/desktop-1x.mp4)
+- [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rc1-hub/desktop-1x.mp4)
+- [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-special-integrated/narrow-1x.mp4)
+
+血月截图来自Android测试App；后三段视频为真实组件演示，非同次实机录屏。媒体采集早于正式包，复用关系见[媒体记录](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rain-header/provenance.json)和[验证范围](docs/evolution/EVO-RELEASE-GATE-2026-10-24.md)。

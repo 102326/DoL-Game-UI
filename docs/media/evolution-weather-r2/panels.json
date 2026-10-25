@@ -1,0 +1,134 @@
+[
+  {
+    "kind": "journal",
+    "results": [
+      {
+        "zoom": 1,
+        "gap": 12,
+        "expected": 12
+      },
+      {
+        "zoom": 1.25,
+        "gap": 14.5,
+        "expected": 15
+      },
+      {
+        "zoom": 0.85,
+        "gap": 10.296875,
+        "expected": 10.2
+      }
+    ],
+    "nativePreserved": true,
+    "remaining": 0
+  },
+  {
+    "kind": "traits",
+    "results": [
+      {
+        "zoom": 1,
+        "gap": 12,
+        "expected": 12
+      },
+      {
+        "zoom": 1.25,
+        "gap": 15,
+        "expected": 15
+      },
+      {
+        "zoom": 0.85,
+        "gap": 10.59375,
+        "expected": 10.2
+      }
+    ],
+    "nativePreserved": true,
+    "remaining": 0
+  },
+  {
+    "kind": "statistics",
+    "results": [
+      {
+        "zoom": 1,
+        "gap": 12,
+        "expected": 12
+      },
+      {
+        "zoom": 1.25,
+        "gap": 14.5,
+        "expected": 15
+      },
+      {
+        "zoom": 0.85,
+        "gap": 9.875,
+        "expected": 10.2
+      }
+    ],
+    "nativePreserved": true,
+    "remaining": 0
+  },
+  {
+    "kind": "feats",
+    "results": [
+      {
+        "zoom": 1,
+        "gap": 12,
+        "expected": 12
+      },
+      {
+        "zoom": 1.25,
+        "gap": 14.5,
+        "expected": 15
+      },
+      {
+        "zoom": 0.85,
+        "gap": 10.28125,
+        "expected": 10.2
+      }
+    ],
+    "nativePreserved": true,
+    "remaining": 0
+  },
+  {
+    "kind": "cheats",
+    "results": [
+      {
+        "zoom": 1,
+        "gap": 12,
+        "expected": 12
+      },
+      {
+        "zoom": 1.25,
+        "gap": 14.5,
+        "expected": 15
+      },
+      {
+        "zoom": 0.85,
+        "gap": 9.6875,
+        "expected": 10.2
+      }
+    ],
+    "nativePreserved": true,
+    "remaining": 0
+  },
+  {
+    "kind": "options",
+    "results": [
+      {
+        "zoom": 1,
+        "gap": 12,
+        "expected": 12
+      },
+      {
+        "zoom": 1.25,
+        "gap": 14.5,
+        "expected": 15
+      },
+      {
+        "zoom": 0.85,
+        "gap": 9.6875,
+        "expected": 10.2
+      }
+    ],
+    "nativePreserved": true,
+    "remaining": 0
+  }
+]

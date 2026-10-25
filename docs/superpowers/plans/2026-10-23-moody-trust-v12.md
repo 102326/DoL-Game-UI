@@ -1,0 +1,28 @@
+# Moody Blues V1.2 execution
+
+Authority: owner-pasted V1.2 Approved for Implementation, 2026-10-23. Continue PR24 from 0a9e628; preserve latest dev7d531a0 snow study via merge2df0e3d. No main merge, Release, protection/required-check/bypass change, product visual/Host API change. Keep existing permanent Project ID and independent versions; optional does not require removing an already authorized identity.
+
+## Completion record
+
+Implemented and integrated through PR24 into development at3e6e039; actual PR/push Standard and Research, downloaded artifacts and post-merge Research39950006354 passed. The owner then requested portable documentation and device handoff; see [current handoff](../../audits/MOODY-CI-V1.2-HANDOFF.md). This plan remains the implementation history, not a request to repeat completed work. Main/release/governance and device/overall visual acceptance remain excluded.
+
+## Deliverables and order
+
+1. **P0 typed contracts / expected lock / seal.** Add strict, erasable TypeScript for new management logic. Node22 native type stripping (explicit flag where needed) keeps the downloaded verifier dependency-free; tsc validates after dependency installation. Generate a reviewed expected lock from source test declarations/native tests, not a second handwritten case registry. Record lock hash, explicit final seal and terminal source fingerprint in existing evidence/index. Retain exact required-file checks and G01–G12/F1–F3; upload failure is ERROR/evidence_upload, confirmed FAIL remains primary with evidence_incomplete.
+2. **P1 execution coverage / scheduler / render path.** Thin case helpers extend named multi-scenario tests and existing checkpoints; record exact IDs, terminal outcomes, assertions, time and failure signatures. Native cases remain exact. Be explicit about entry-granularity legacy contracts rather than pretending they enumerate unknown internal cases. Continue independent Unit/Browser checks under a saved budget/seed, and fix workflow prerequisite conditions as well as runner propagation. Terminal source changes and incomplete cases cannot pass. Record actual Canvas2D/CSS/SVG paths; require the targeted weather material, retain a separately tested static fallback. No invented GL product requirement.
+3. **P2 research dependency/family contracts / Standard migration.** Use real input dependencies, preserve all 38 original research commands, original native unit and 45 required PNGs. Split evidence and status by family/maturity; failure blocks only dependents. Existing settings-ci and evolution-owner-resources already run settings/weather/Hub production integration and exact counterexamples. Preserve those entries, compose their healthy named subcases into the lock, and do not add duplicate standalone scripts. Keep existing public job/check names. Preserve SHA/head/base/actual merge/tree/workflow/toolchain/lock/attempt/profile anchors and separate concurrency events so main push/manual runs do not cancel required verification.
+4. **P3 construction and gate validation.** Demonstrate a genuinely separate second build workspace and nonsemantic environment variation using existing producers and strict ZIP bytes; no volatile IDs in ZIP. Add targeted corruptions for seal, source-after, lock/case count, renderer mismatch, upload failure and gate skip. Add deterministic evidence mutation properties, static workflow checks, and explicit retention/budget limits rather than a new platform.
+
+## Verification and delivery
+
+For each behavior: failing reproduction, implementation, scoped regression. Verify strict tsc and clean/no-npm bootstrap, generated-lock drift/empty/skip, all existing gate negatives, independent scheduling/dependency blocking/budget/seed, actual Core/UI/Host version positives, missing/unsealed/corrupt evidence, source-after mutation, renderer-path mismatch, repeated-build bytes. Then required Standard/Research actual PR and push CI, actual uploaded/downloaded evidence and independent anchors. Use anonymous102326/noreply commits. Update PR24 description around final scope, handoff and phase report, preserving historical evidence and notifying the already authorized other chat. Report Implemented/Tested/Integrated/Release Ready separately; no game/Windows/physical-device or visual acceptance claim.
+
+## Evidence-led constraints
+
+- Owner subsequently authorized synchronization after completion and no blockers (2026-10-23). Align PR24 with accepted, pushed research d60ccc8, retain the W01 frost assertion, regenerate/review its composed lock and verify actual Standard/Research/download gates for the new combined source before marking ready and merging into dev/evolution-4.0. This supersedes the earlier Draft-only delivery boundary; main, Release and governance remain excluded. Preserve the other chat's uncommitted candidates.
+
+- Existing evidence omission failure-close and downloaded gate already work; reuse, do not rebuild a Judge runtime.
+- Native-case and research-case JSON lists currently duplicate source labels; replace with generated lock.
+- Most older scripts are entry contracts. Migrate actual named cases/loops incrementally; list remaining granularity openly.
+- Sphere/Hub tests start Vite themselves; their build checks are independent, not false runtime dependencies. Weather static-server tests genuinely need weather build; settings comparison needs baseline reconstruction and build.
+- Research media retain bounded diagnostics and sufficient required PNGs; cancelled/unsealed fragments are diagnostic only. Long-term archiving is explicit local/retention documentation, not an unrequested automation/service.

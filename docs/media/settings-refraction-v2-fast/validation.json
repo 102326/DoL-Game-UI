@@ -1,0 +1,1617 @@
+{
+  "scope": "Playwright Chromium static-build controlled real-settings study; actual OS in runtime; not game, physical-device/WebView or owner visual acceptance",
+  "checks": [
+    "frozen baseline source identity; only two generated candidate source files differ",
+    "V2.1 open, close and category settlement stay near the actual 3.0.4 baseline",
+    "1280: real modal, geometry, hit testing, actual preference input and keyboard close",
+    "1280: fast latest-intent category switching settles one accessible page",
+    "1280: close during unfolding and reverse from current geometry without restart",
+    "1280: reduced motion, preference cancellation and hidden-page settlement",
+    "1280: unmount while moving removes owned nodes and remount preserves preference",
+    "390: real modal, geometry, hit testing, actual preference input and keyboard close",
+    "390: fast latest-intent category switching settles one accessible page",
+    "390: close during unfolding and reverse from current geometry without restart",
+    "390: reduced motion, preference cancellation and hidden-page settlement",
+    "390: unmount while moving removes owned nodes and remount preserves preference",
+    "resize/rotation and 125% page zoom settle usable controls"
+  ],
+  "errors": [],
+  "recordings": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "video": "settings-refraction-v2-fast-desktop-1x.mp4",
+      "sha256": "b78865b33c1d668064a7df5c27265ca8668a12610cdaa4481f717f994c1fe0de",
+      "bytes": 2973123,
+      "inputSkewMs": 0.39990234375,
+      "duration": 18.64,
+      "data": [
+        {
+          "variant": "old",
+          "revision": "3.0.4",
+          "viewport": {
+            "width": 1280,
+            "height": 900,
+            "dpr": 1,
+            "zoom": "1"
+          },
+          "preferences": {
+            "enabled": true,
+            "combatFocused": false,
+            "storyActions": false,
+            "comfortable": true,
+            "mobileCompactControls": false,
+            "showCompact": false,
+            "layout": true,
+            "compactStats": false,
+            "wideReading": false,
+            "collapsedStats": false,
+            "statusPreview": false,
+            "wardrobePaged": true,
+            "wardrobeHiddenList": false,
+            "shopDeferredPaint": false,
+            "shopPageExperiment": false,
+            "startupCacheLazy": false,
+            "savesV2": false,
+            "fontScale": 100,
+            "buttonScale": 100,
+            "visualTier": 1,
+            "visualGlass": true,
+            "visualMotion": true,
+            "visualGlow": true,
+            "visualPattern": false
+          },
+          "operations": [
+            {
+              "action": "打开设置",
+              "at": 876.8999999761581,
+              "wallTime": 1792573779740.2
+            },
+            {
+              "action": "切换：材质",
+              "at": 3075.699999988079,
+              "wallTime": 1792573781939
+            },
+            {
+              "action": "切换：入口",
+              "at": 4775.099999964237,
+              "wallTime": 1792573783638.4001
+            },
+            {
+              "action": "切换：阅读",
+              "at": 6476.399999976158,
+              "wallTime": 1792573785339.7
+            },
+            {
+              "action": "切换：材质",
+              "at": 8376.099999964237,
+              "wallTime": 1792573787239.4001
+            },
+            {
+              "action": "切换：入口",
+              "at": 8536.300000011921,
+              "wallTime": 1792573787399.6
+            },
+            {
+              "action": "切换：阅读",
+              "at": 8696.099999964237,
+              "wallTime": 1792573787559.4001
+            },
+            {
+              "action": "关闭设置",
+              "at": 10375.599999964237,
+              "wallTime": 1792573789238.9001
+            },
+            {
+              "action": "打开设置",
+              "at": 12476.199999988079,
+              "wallTime": 1792573791339.5
+            },
+            {
+              "action": "展开中关闭",
+              "at": 12775.599999964237,
+              "wallTime": 1792573791638.9001
+            },
+            {
+              "action": "关闭中重新打开",
+              "at": 12936.5,
+              "wallTime": 1792573791799.8
+            },
+            {
+              "action": "关闭设置",
+              "at": 15176.399999976158,
+              "wallTime": 1792573794039.7
+            }
+          ],
+          "evidence": [],
+          "final": {
+            "open": false,
+            "sections": 1,
+            "stage": 0
+          }
+        },
+        {
+          "variant": "new",
+          "revision": "v2.1",
+          "viewport": {
+            "width": 1280,
+            "height": 900,
+            "dpr": 1,
+            "zoom": "1"
+          },
+          "preferences": {
+            "enabled": true,
+            "combatFocused": false,
+            "storyActions": false,
+            "comfortable": true,
+            "mobileCompactControls": false,
+            "showCompact": false,
+            "layout": true,
+            "compactStats": false,
+            "wideReading": false,
+            "collapsedStats": false,
+            "statusPreview": false,
+            "wardrobePaged": true,
+            "wardrobeHiddenList": false,
+            "shopDeferredPaint": false,
+            "shopPageExperiment": false,
+            "startupCacheLazy": false,
+            "savesV2": false,
+            "fontScale": 100,
+            "buttonScale": 100,
+            "visualTier": 1,
+            "visualGlass": true,
+            "visualMotion": true,
+            "visualGlow": true,
+            "visualPattern": false
+          },
+          "operations": [
+            {
+              "action": "打开设置",
+              "at": 876.4000000357628,
+              "wallTime": 1792573779740.2
+            },
+            {
+              "action": "切换：材质",
+              "at": 3075.5,
+              "wallTime": 1792573781939.3
+            },
+            {
+              "action": "切换：入口",
+              "at": 4774.700000047684,
+              "wallTime": 1792573783638.5
+            },
+            {
+              "action": "切换：阅读",
+              "at": 6476,
+              "wallTime": 1792573785339.8
+            },
+            {
+              "action": "切换：材质",
+              "at": 8375.800000011921,
+              "wallTime": 1792573787239.6
+            },
+            {
+              "action": "切换：入口",
+              "at": 8535.900000035763,
+              "wallTime": 1792573787399.7
+            },
+            {
+              "action": "切换：阅读",
+              "at": 8696,
+              "wallTime": 1792573787559.8
+            },
+            {
+              "action": "关闭设置",
+              "at": 10375.300000011921,
+              "wallTime": 1792573789239.1
+            },
+            {
+              "action": "打开设置",
+              "at": 12475.800000011921,
+              "wallTime": 1792573791339.6
+            },
+            {
+              "action": "展开中关闭",
+              "at": 12775.300000011921,
+              "wallTime": 1792573791639.1
+            },
+            {
+              "action": "关闭中重新打开",
+              "at": 12936.100000023842,
+              "wallTime": 1792573791799.9001
+            },
+            {
+              "action": "关闭设置",
+              "at": 15176.200000047684,
+              "wallTime": 1792573794040
+            }
+          ],
+          "evidence": [
+            {
+              "event": "open-request",
+              "at": 883.3000000119209
+            },
+            {
+              "event": "input-acknowledged",
+              "at": 887.1000000238419,
+              "duration": 0.5,
+              "virtualDuration": 1.3,
+              "origin": true,
+              "revision": "v2.1"
+            },
+            {
+              "event": "content-usable",
+              "at": 1478.300000011921,
+              "time": 1.3
+            },
+            {
+              "event": "visual-settled",
+              "at": 1478.4000000357628
+            },
+            {
+              "event": "category-start",
+              "at": 3076.800000011921,
+              "entering": false,
+              "direction": 1,
+              "heading": "dmt-reading-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 3080.800000011921,
+              "entering": true,
+              "direction": 1,
+              "heading": "dmt-material-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 3393.7000000476837,
+              "entering": false,
+              "heading": "dmt-reading-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 3715.100000023842,
+              "entering": true,
+              "heading": "dmt-material-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 4775.5,
+              "entering": false,
+              "direction": 1,
+              "heading": "dmt-material-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 4780.300000011921,
+              "entering": true,
+              "direction": 1,
+              "heading": "dmt-entry-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 5186.200000047684,
+              "entering": false,
+              "heading": "dmt-material-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 5402,
+              "entering": true,
+              "heading": "dmt-entry-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 6476.5,
+              "entering": false,
+              "direction": -1,
+              "heading": "dmt-entry-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 6478.600000023842,
+              "entering": true,
+              "direction": -1,
+              "heading": "dmt-reading-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 6838.800000011921,
+              "entering": false,
+              "heading": "dmt-entry-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 7169.200000047684,
+              "entering": true,
+              "heading": "dmt-reading-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 8376.300000011921,
+              "entering": false,
+              "direction": 1,
+              "heading": "dmt-reading-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 8378.5,
+              "entering": true,
+              "direction": 1,
+              "heading": "dmt-material-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 8537.100000023842,
+              "entering": true,
+              "heading": "dmt-material-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 8537.200000047684,
+              "entering": false,
+              "direction": 1,
+              "heading": "dmt-material-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 8539.300000011921,
+              "entering": true,
+              "direction": 1,
+              "heading": "dmt-entry-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 8697.400000035763,
+              "entering": true,
+              "heading": "dmt-entry-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 8697.400000035763,
+              "entering": false,
+              "direction": -1,
+              "heading": "dmt-entry-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 8699.700000047684,
+              "entering": true,
+              "direction": -1,
+              "heading": "dmt-reading-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 8764.300000011921,
+              "entering": false,
+              "heading": "dmt-reading-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 8764.5,
+              "entering": false,
+              "heading": "dmt-material-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 8981.300000011921,
+              "entering": false,
+              "heading": "dmt-entry-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 9302.700000047684,
+              "entering": true,
+              "heading": "dmt-reading-heading"
+            },
+            {
+              "event": "close-request",
+              "at": 10375.400000035763,
+              "time": 1.3,
+              "duration": 0.26,
+              "revision": "v2.1"
+            },
+            {
+              "event": "closed",
+              "at": 10610.5
+            },
+            {
+              "event": "open-request",
+              "at": 12477.900000035763
+            },
+            {
+              "event": "input-acknowledged",
+              "at": 12479.700000047684,
+              "duration": 0.5,
+              "virtualDuration": 1.3,
+              "origin": true,
+              "revision": "v2.1"
+            },
+            {
+              "event": "close-request",
+              "at": 12775.400000035763,
+              "time": 0.5902,
+              "duration": 0.26,
+              "revision": "v2.1"
+            },
+            {
+              "event": "closed",
+              "at": 12898.200000047684
+            },
+            {
+              "event": "open-request",
+              "at": 12937.800000011921
+            },
+            {
+              "event": "input-acknowledged",
+              "at": 12939.600000023842,
+              "duration": 0.5,
+              "virtualDuration": 1.3,
+              "origin": true,
+              "revision": "v2.1"
+            },
+            {
+              "event": "content-usable",
+              "at": 13351,
+              "time": 1.183
+            },
+            {
+              "event": "visual-settled",
+              "at": 13533.800000011921
+            },
+            {
+              "event": "close-request",
+              "at": 15176.300000011921,
+              "time": 1.3,
+              "duration": 0.26,
+              "revision": "v2.1"
+            },
+            {
+              "event": "closed",
+              "at": 15417.5
+            }
+          ],
+          "final": {
+            "open": false,
+            "sections": 1,
+            "stage": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "narrow",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "video": "settings-refraction-v2-fast-narrow-1x.mp4",
+      "sha256": "272c0a9b2d1bf674accedb4d6721a1e6217958b31dc3b8afcd3beb2b0d2d4324",
+      "bytes": 1686200,
+      "inputSkewMs": 0.60009765625,
+      "duration": 18.64,
+      "data": [
+        {
+          "variant": "old",
+          "revision": "3.0.4",
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1,
+            "zoom": "1"
+          },
+          "preferences": {
+            "enabled": true,
+            "combatFocused": false,
+            "storyActions": false,
+            "comfortable": true,
+            "mobileCompactControls": false,
+            "showCompact": false,
+            "layout": true,
+            "compactStats": false,
+            "wideReading": false,
+            "collapsedStats": false,
+            "statusPreview": false,
+            "wardrobePaged": true,
+            "wardrobeHiddenList": false,
+            "shopDeferredPaint": false,
+            "shopPageExperiment": false,
+            "startupCacheLazy": false,
+            "savesV2": false,
+            "fontScale": 100,
+            "buttonScale": 100,
+            "visualTier": 1,
+            "visualGlass": true,
+            "visualMotion": true,
+            "visualGlow": true,
+            "visualPattern": false
+          },
+          "operations": [
+            {
+              "action": "打开设置",
+              "at": 871.3000000119209,
+              "wallTime": 1792573802411.6
+            },
+            {
+              "action": "切换：材质",
+              "at": 3070.900000035763,
+              "wallTime": 1792573804611.2
+            },
+            {
+              "action": "切换：入口",
+              "at": 4770.600000023842,
+              "wallTime": 1792573806310.9001
+            },
+            {
+              "action": "切换：阅读",
+              "at": 6471.300000011921,
+              "wallTime": 1792573808011.6
+            },
+            {
+              "action": "切换：材质",
+              "at": 8371.200000047684,
+              "wallTime": 1792573809911.5
+            },
+            {
+              "action": "切换：入口",
+              "at": 8530.700000047684,
+              "wallTime": 1792573810071
+            },
+            {
+              "action": "切换：阅读",
+              "at": 8690.300000011921,
+              "wallTime": 1792573810230.6
+            },
+            {
+              "action": "关闭设置",
+              "at": 10370.600000023842,
+              "wallTime": 1792573811910.9001
+            },
+            {
+              "action": "打开设置",
+              "at": 12469.600000023842,
+              "wallTime": 1792573814009.9001
+            },
+            {
+              "action": "展开中关闭",
+              "at": 12770.700000047684,
+              "wallTime": 1792573814311
+            },
+            {
+              "action": "关闭中重新打开",
+              "at": 12930.5,
+              "wallTime": 1792573814470.8
+            },
+            {
+              "action": "关闭设置",
+              "at": 15170.800000011921,
+              "wallTime": 1792573816711.1
+            }
+          ],
+          "evidence": [],
+          "final": {
+            "open": false,
+            "sections": 1,
+            "stage": 0
+          }
+        },
+        {
+          "variant": "new",
+          "revision": "v2.1",
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1,
+            "zoom": "1"
+          },
+          "preferences": {
+            "enabled": true,
+            "combatFocused": false,
+            "storyActions": false,
+            "comfortable": true,
+            "mobileCompactControls": false,
+            "showCompact": false,
+            "layout": true,
+            "compactStats": false,
+            "wideReading": false,
+            "collapsedStats": false,
+            "statusPreview": false,
+            "wardrobePaged": true,
+            "wardrobeHiddenList": false,
+            "shopDeferredPaint": false,
+            "shopPageExperiment": false,
+            "startupCacheLazy": false,
+            "savesV2": false,
+            "fontScale": 100,
+            "buttonScale": 100,
+            "visualTier": 1,
+            "visualGlass": true,
+            "visualMotion": true,
+            "visualGlow": true,
+            "visualPattern": false
+          },
+          "operations": [
+            {
+              "action": "打开设置",
+              "at": 870.6999999880791,
+              "wallTime": 1792573802411.5
+            },
+            {
+              "action": "切换：材质",
+              "at": 3070.5,
+              "wallTime": 1792573804611.3
+            },
+            {
+              "action": "切换：入口",
+              "at": 4770.300000011921,
+              "wallTime": 1792573806311.1
+            },
+            {
+              "action": "切换：阅读",
+              "at": 6471,
+              "wallTime": 1792573808011.8
+            },
+            {
+              "action": "切换：材质",
+              "at": 8370.800000011921,
+              "wallTime": 1792573809911.6
+            },
+            {
+              "action": "切换：入口",
+              "at": 8530.800000011921,
+              "wallTime": 1792573810071.6
+            },
+            {
+              "action": "切换：阅读",
+              "at": 8690,
+              "wallTime": 1792573810230.8
+            },
+            {
+              "action": "关闭设置",
+              "at": 10370.399999976158,
+              "wallTime": 1792573811911.2
+            },
+            {
+              "action": "打开设置",
+              "at": 12469.100000023842,
+              "wallTime": 1792573814009.9001
+            },
+            {
+              "action": "展开中关闭",
+              "at": 12770.300000011921,
+              "wallTime": 1792573814311.1
+            },
+            {
+              "action": "关闭中重新打开",
+              "at": 12930.100000023842,
+              "wallTime": 1792573814470.9001
+            },
+            {
+              "action": "关闭设置",
+              "at": 15170.600000023842,
+              "wallTime": 1792573816711.4001
+            }
+          ],
+          "evidence": [
+            {
+              "event": "open-request",
+              "at": 875.8999999761581
+            },
+            {
+              "event": "input-acknowledged",
+              "at": 879.3999999761581,
+              "duration": 0.5,
+              "virtualDuration": 1.3,
+              "origin": true,
+              "revision": "v2.1"
+            },
+            {
+              "event": "content-usable",
+              "at": 1348.300000011921,
+              "time": 1.2272
+            },
+            {
+              "event": "visual-settled",
+              "at": 1387.5
+            },
+            {
+              "event": "category-start",
+              "at": 3071.800000011921,
+              "entering": false,
+              "direction": 1,
+              "heading": "dmt-reading-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 3075.699999988079,
+              "entering": true,
+              "direction": 1,
+              "heading": "dmt-material-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 3370.100000023842,
+              "entering": false,
+              "heading": "dmt-reading-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 3696.399999976158,
+              "entering": true,
+              "heading": "dmt-material-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 4770.800000011921,
+              "entering": false,
+              "direction": 1,
+              "heading": "dmt-material-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 4774.699999988079,
+              "entering": true,
+              "direction": 1,
+              "heading": "dmt-entry-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 5057.800000011921,
+              "entering": false,
+              "heading": "dmt-material-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 5373.5,
+              "entering": true,
+              "heading": "dmt-entry-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 6471.300000011921,
+              "entering": false,
+              "direction": -1,
+              "heading": "dmt-entry-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 6473.399999976158,
+              "entering": true,
+              "direction": -1,
+              "heading": "dmt-reading-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 6776,
+              "entering": false,
+              "heading": "dmt-entry-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 7089.5,
+              "entering": true,
+              "heading": "dmt-reading-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 8371.300000011921,
+              "entering": false,
+              "direction": 1,
+              "heading": "dmt-reading-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 8372.800000011921,
+              "entering": true,
+              "direction": 1,
+              "heading": "dmt-material-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 8531.899999976158,
+              "entering": true,
+              "heading": "dmt-material-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 8531.899999976158,
+              "entering": false,
+              "direction": 1,
+              "heading": "dmt-material-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 8533.100000023842,
+              "entering": true,
+              "direction": 1,
+              "heading": "dmt-entry-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 8676,
+              "entering": false,
+              "heading": "dmt-reading-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 8690.899999976158,
+              "entering": true,
+              "heading": "dmt-entry-heading"
+            },
+            {
+              "event": "category-start",
+              "at": 8690.899999976158,
+              "entering": false,
+              "direction": -1,
+              "heading": "dmt-entry-heading",
+              "duration": 0.3,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-start",
+              "at": 8692.199999988079,
+              "entering": true,
+              "direction": -1,
+              "heading": "dmt-reading-heading",
+              "duration": 0.62,
+              "revision": "v2.1"
+            },
+            {
+              "event": "category-settled",
+              "at": 8856.300000011921,
+              "entering": false,
+              "heading": "dmt-material-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 9010.699999988079,
+              "entering": false,
+              "heading": "dmt-entry-heading"
+            },
+            {
+              "event": "category-settled",
+              "at": 9296.300000011921,
+              "entering": true,
+              "heading": "dmt-reading-heading"
+            },
+            {
+              "event": "close-request",
+              "at": 10370.600000023842,
+              "time": 1.3,
+              "duration": 0.26,
+              "revision": "v2.1"
+            },
+            {
+              "event": "closed",
+              "at": 10640.899999976158
+            },
+            {
+              "event": "open-request",
+              "at": 12471.100000023842
+            },
+            {
+              "event": "input-acknowledged",
+              "at": 12472.199999988079,
+              "duration": 0.5,
+              "virtualDuration": 1.3,
+              "origin": true,
+              "revision": "v2.1"
+            },
+            {
+              "event": "close-request",
+              "at": 12770.300000011921,
+              "time": 0.767,
+              "duration": 0.26,
+              "revision": "v2.1"
+            },
+            {
+              "event": "closed",
+              "at": 12927.100000023842
+            },
+            {
+              "event": "open-request",
+              "at": 12931.699999988079
+            },
+            {
+              "event": "input-acknowledged",
+              "at": 12932.800000011921,
+              "duration": 0.5,
+              "virtualDuration": 1.3,
+              "origin": true,
+              "revision": "v2.1"
+            },
+            {
+              "event": "content-usable",
+              "at": 13365,
+              "time": 1.1414
+            },
+            {
+              "event": "visual-settled",
+              "at": 13438.5
+            },
+            {
+              "event": "close-request",
+              "at": 15170.699999988079,
+              "time": 1.3,
+              "duration": 0.26,
+              "revision": "v2.1"
+            },
+            {
+              "event": "closed",
+              "at": 15442.5
+            }
+          ],
+          "final": {
+            "open": false,
+            "sections": 1,
+            "stage": 0
+          }
+        }
+      ]
+    }
+  ],
+  "timingMeasurements": {
+    "old": {
+      "open": 652.8000000119209,
+      "category": 735.8999999761581,
+      "close": 431.30000001192093
+    },
+    "new": {
+      "open": 554,
+      "category": 629.5,
+      "close": 317.0999999642372
+    }
+  },
+  "provenance": {
+    "scope": "Source reconstruction, not packaged game execution",
+    "refs": {
+      "old": "915dcb9e85f3266a73a3e7ce38d769edd0c29ff4",
+      "new": "b507f1a7d18d4d77067fa0c793aea44d7de96b57"
+    },
+    "files": {
+      "old": {
+        "framework/README.md": "902a9fc54b5c2bafc473d4fd66631175b4f4d6c6af5bdc8e37a9c51bdee4c729",
+        "framework/boot.ts": "4a9d35e8a9819264edeee6c45dc5b90c0bbacec093fc0893c4226461a7ceba10",
+        "framework/connect.ts": "0072f693366492397e4001dbabf11111f1c912cd464ecbd79bd9db943987920f",
+        "framework/contracts.ts": "155d420806e441910949f616a2c7764183a00e92b89fb1ecbdd6acd3f2d3f43a",
+        "framework/examples/ComparisonInline.vue": "f889b9328262f43fda72e9dd7d35b77150a1cc114f11df5006f59aff97c3616a",
+        "framework/examples/ComparisonPanel.vue": "12931290dab86c24bb2c83d96fa1d41a934374e586ed5d4615f04ad08654a74f",
+        "framework/examples/ReadingPanel.vue": "4ac1eef77bb9ec5dba0487ab8d41fab1e63c29fbac48c4c1c16844b4023b3c73",
+        "framework/examples/StatusInline.vue": "97b28ca6cc20f461880dcce7f84d284abc99632e062308fac34e251354998623",
+        "framework/examples/StatusPanel.vue": "42c6697473246cce5dab0bc4dbf3124beb5fa34972a4c9e59cff2a7434baf299",
+        "framework/examples/SurfacePanel.vue": "957e370ca77b23df4fb85365c8a4ad0860b133f3c0f1ba503d76b6c717d4949c",
+        "framework/examples/alternate-workspace-mod.ts": "fef77cc9af373fa379810523b93f562b0ced48c8d53e466fa7410f881478f2ff",
+        "framework/examples/comparison-mod.ts": "113eb87521cbc9c2580b3d64734928a63c9b674c4e6867f0d0a8585bfe8c86ea",
+        "framework/examples/native-reading.ts": "61cb0f07f7b965d9435e9cad0f7bdf38aac5f5cd4bfc59342ea49957bf077a5b",
+        "framework/examples/native-status.ts": "3bcda46a5397f55ef638811179ece54a28e5659d32130fb57f057295a9699f84",
+        "framework/examples/panel.css": "96f424249c95fc466d38c527e0a027e8b950820e7d9caa1cd35e2d6da1800f51",
+        "framework/examples/reading-controls-mod.ts": "bb8095b5de3df53405fea5262252011f979a483570bc37a991f220508d5fb175",
+        "framework/examples/reading-source-mod.ts": "618fa65cc70f29f8d63cde18933344c8162e46a0de7ffc3f174f5a85b7026f66",
+        "framework/examples/reading.css": "e7aafec2cc6bcc9a7e12fbaca195a6cb069b85fe671a8793046196a4dc25d677",
+        "framework/examples/soft-wet-surface.ts": "90a70592b49895c2b2598440ac437d38b50d52309521cbe522f8ffd72c26182a",
+        "framework/examples/status-mod.ts": "84f1cb97385bae48ec48fa8fccc14f5c1a0bfc70aed030e7eb1a133859c0d32a",
+        "framework/examples/workspace-mod.ts": "8292635be3b78f6420b230236830d06cb84e0d81baf62a7cb4833379f1eac2ea",
+        "framework/experiments/README.md": "60b3183800ff2001a23aabd8e2611c2a5fdfeed028ddd711430a0b2bd0294dd0",
+        "framework/experiments/shared-vue.ts": "673fdc1715a6c0453bac7f4c8f347336e20e3b0fe6145bd0ff56046adfa5ca4b",
+        "framework/factory/AUTHOR_KIT.md": "6bd7c1f7be38a6470aafcd8bc498f5b5f4e32b5b7afb52f2aac337d5f20d804b",
+        "framework/factory/Panel.vue": "333e703145aa5e028decc73d54c49b7c25ee4761c1878f737333df0eb8fb2d65",
+        "framework/factory/index.html": "3b8fcdd06dd9239ef01056db611cd143e6915116d406ce68de529fe34e0bb97d",
+        "framework/factory/package.py": "8dc6b6a1d4d1f4fa235f5e072cdc911a9d2ec799b82493d28af4c3da31295a5d",
+        "framework/factory/preview.ts": "c871e40737259e9224219aa186e8bb262715aa3c8175b666bc07a616ab6954e5",
+        "framework/factory/vite.config.mjs": "366fc3073b0d8c4956935ff14224464d64f781c7bb17f9f600fb8e4ed1f814ca",
+        "framework/host.ts": "cfe13f34257525286492d15154c3ec8443bf44ace7e915419a600014102d3e11",
+        "framework/host/README.md": "aa854537a1931b5e5134eab2b8d118e5fe51f0b8bdaa057efd654f9d49ca921a",
+        "framework/motion-hub/MotionHub.vue": "b16adee0affc6486198098fa31f25545553d0ba7d02da47fb2885fcbd815aeb2",
+        "framework/motion-hub/README.md": "816f28666634efdbfd429db2bcd310bc578ee79b6586658a80b23506281ddb20",
+        "framework/motion-hub/geometry.ts": "179e09aa237f99a4874d3d062d25ba542d9cd9d0f756ff1b3e50f78cde4680f0",
+        "framework/motion-hub/main.ts": "14059bca19c75196d4f9162070250eb22b3ab2eb546b3817d9647f079915734a",
+        "framework/motion-hub/style.css": "a30b30400e22a95c922c929e090fe809021cfb91961a71b5123517bf020ddbf1",
+        "framework/official-ui/README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+        "framework/official-ui/hub.ts": "55520f36d3a7b0efa5d155f63b1648ff47448c42e91cc746c40e2a40a56f3a7f",
+        "framework/official-ui/main.ts": "72112d011ce8aa45f6ebc741a450c15f030010604a16b42f27f017ff7564c750",
+        "framework/official-ui/motion.ts": "2b578bfcd43cee02e9a7932e268722d3cef707c81af871cc3da24c4ffea6e0dd",
+        "framework/official-ui/navigation.ts": "e938cd89dbfa4a391a2e32e402666f96a7df1dbbcb6947dfbad7078e67efcba5",
+        "framework/official-ui/reference-shelf.ts": "bcc8c881ea21bc8c38c69b5bf78c6c9f5fd4a115ad0f29a958fdd81ca69a3117",
+        "framework/official-ui/startup-notice.ts": "88fd2ec3e340d8e131cb6fdc85e3e7b2d1182503b174cd49d859a1ce13939dcc",
+        "framework/official-ui/weather.ts": "00efae74d05fe01f7621560a29f136961b558f81855321b515b162eba13cffdf",
+        "framework/signals.ts": "b3172e4255c505c123b1092f89dc2d7145e17b35237a352385a79cb9fa8af374",
+        "framework/vue.ts": "ec08cf58d9e19ae2523b84b222ad079c3d78d2e48a324192bf5f99a397eb5056",
+        "framework/wardrobe-reference/README.md": "252f1e6d3e6532074a3d8ad119be02c9814b56b8d457df36bf8eb74a3bdb4fd1",
+        "framework/wardrobe-reference/ReferenceSpace.vue": "27d1d7b9187f98a4efdd4b4cd21619da62934eced2519dc9c91f55f10582fd1a",
+        "framework/wardrobe-reference/main.ts": "97dcb53a57dcd105dda651e156bcd9fa54c3cfaec451cf186d7c82eec1d9ab98",
+        "framework/wardrobe-reference/source.ts": "1dc9ed392937df53bbf529f30363812bdef5080eecb121deae0ba7ff076c0538",
+        "framework/wardrobe-reference/style.css": "1760fee299ec5020be4b6834cba6b7a99a81fc97ef9c6e645790fbd58c68d82d",
+        "framework/workspace/ViewOutlet.vue": "53897be06ada7c7accba7a8c2c3bde83f89728317d71dbc66c6de0d1ce55e6e9",
+        "framework/workspace/WorkspacePanel.vue": "14766487aaae8c69dadc97ae0eb6f42b69f88ebc57bd5ae48d4fe025ce7b53a5",
+        "framework/workspace/preferences.ts": "4991d3ea6ca3f8dd2ad6f83734753d055f6a28c6cf3d49a29abc95fb0ef94b91",
+        "framework/workspace/start.ts": "a8122a5e7929ec6d2f0fd9c044eaee33cff655c6522692671f01636d31a72c10",
+        "framework/workspace/style.css": "0f7141057ec2527ae52df35a5c1074611215683d20c842150442272cf8c5a28c",
+        "src/characteristics/Navigation.vue": "26167a7422af6aa87e19b7b55c6c6659869b03792c080f8290968285d1612221",
+        "src/characteristics/main.ts": "5980de1d1386b4b3dcc8423c9b688ef2a1a9d89d91ffb5021f632fbfa607005c",
+        "src/characteristics/style.css": "60b9433cad86e3bce931a02076fbbfa2001c4dba328105a3f181bb3e780a36b7",
+        "src/combat/CombatPanel.vue": "6bb9c727c24c2ef9c0405a8ad174f315694f96bdca27f7c51b03ae6d77febaf5",
+        "src/combat/main.ts": "75a4999f79aca7e78c4f1d603a0cfc7c96e557fc0e5850c04d3bc6ea0b930224",
+        "src/combat/native-actions.ts": "b1e42c6c06a400224fd5907505fd4a29e2df0c0612996148c06f1cfaad8f696a",
+        "src/combat/select.css": "202fa72261bb217402d3c01efa7e3dc6c2bde36ca83afce142500f566005b741",
+        "src/combat/source.ts": "3d7fae6efceafbfeccbc91c1176ffa3a016c7de5bbafa5baa3cb9777906b0739",
+        "src/combat/style.css": "d33d08ac7d3ff731d5bbc04cf298f795bf053b695bec9dd6b8ad942dd24098b5",
+        "src/combat/types.ts": "b0fd8adc28e8360eafa7f50fcbd58478c53eda68a1d1acad8d32d2b6f701f1d6",
+        "src/floating/FloatingTools.vue": "c9d980be417b3048c9442ec58979b65358fa6ead74a7ce7dfc41c5012999b5c7",
+        "src/floating/Settings.vue": "1b0db9831ac4ba6cadb7c576e262c259596dc0af683cbcac4dd8751ba6cc5e29",
+        "src/floating/main.ts": "f019525f45c13e027bf7f0c607a51a8340ae0e9f9545e58e0b0ef0c69d147835",
+        "src/floating/preferences.ts": "d8d7b0a88e7d0196c72ffe2dedc688d0ec9aeff482199c160569b0f824b08bea",
+        "src/floating/style.css": "eb067b375a1eb88073b848e82bd9bbb4fabf55d06a57c8dbbdb7e60a44ecef4d",
+        "src/main.ts": "af6857df479c982326f153a28af208f162d5c148a86f60a40c9b949ccbb6e43f",
+        "src/panels/Navigation.vue": "974f7c7ace6ff7cf4e5360741a9a534feef17aaaf4285989dc6af47b462ef10b",
+        "src/panels/main.ts": "913c1e8f3d50f283d191215095897a4291392d20ec04162869c8cf3776538b30",
+        "src/panels/presentation.ts": "60a98d57e7185a9341b34b5673a63108ed13be77a93fd1bdb12519303c5dcf6c",
+        "src/panels/style.css": "c44bb2f17b50b4642e8b3c8225bf6db466b9ae0e3218e1e7fed061c5a258207b",
+        "src/panels/visibility.ts": "1048ed46b039c7089f14d3825ab3a4ffdf08e70ceb2640febd0617cf895d35e0",
+        "src/public/ui.ts": "2cf21f9d7b3d1b6e4c75161ce1a78f22b58fcaff4b2b3d2e6990cec7a840c223",
+        "src/public/wardrobe.ts": "1e297cbeea01628527748276e2e21923a87cee96f231bc003b1f216cbce38fe9",
+        "src/runtime/experiments.ts": "24765c1b69032a66c61a71f4d5594923ab7490f03a86dbcdf03fe8bbd099ee1f",
+        "src/runtime/inspector.ts": "b2d97b7d0e2ded6ffd881a6d825615c8b27a5b17351aa4676419ffbdc08d0da0",
+        "src/runtime/master.ts": "127f55b702c149b8cf537a7ece0b24e00cd1fdb2006bff2e4dabfcd4d74e1857",
+        "src/runtime/presentation.ts": "f3d28659d51d0b23780a35c8e211f2670e06920755ccd154d0ac6db86b4e0a7d",
+        "src/runtime/roles.css": "4451e3da819b5248e830abe2ee2aeff84048c9faa0e4024f7d5db33762be0f2e",
+        "src/runtime/status.ts": "9bb0a5733a39dfbd7a61ecb644dfc0b80b9e5240a3dd227d26822282c7aa61a4",
+        "src/runtime/sugarcube.ts": "7c5da87baa9ecec843dd0be755cd4e11e00a56e2c1dac3c1ac1ddb1d94bc5724",
+        "src/runtime/surfaces.css": "32f2c0d827f1122f759567e4bdc33b32d3938a1e142fe331fd73892c323e0e54",
+        "src/runtime/surfaces.ts": "03867dfeb632e4058f723ef899b2aec480bec121bdad89df65d4ad5014130e24",
+        "src/runtime/target-version.ts": "c59c5db2af0b8e6e0f15eb5be2e65fd01b2b04b26468ba16b82e6500735dcd96",
+        "src/runtime/ui.ts": "bd61a9f04c05b17c43b0e696c47cfdf29a6b5cba1a066382b039555d71d61490",
+        "src/saves/SavePanel.vue": "b42683393490c8c5703eaf42909eb1ab22ea976f7677798635fa1405dcaa60be",
+        "src/saves/main.ts": "c94d66e07a207a332ea264c126deb1f35c79ef98b1e66e518b72672b40fb7fec",
+        "src/saves/metadata.ts": "15426d53b9bddc2e8bb298de15a4f8922a24e77610749dcf8f4480e3d9561fff",
+        "src/saves/source.ts": "1a245e6a936f1e178a9b9917b7efa4db48c903562e9cc8c299fa9433341c836f",
+        "src/saves/style.css": "ae1613cf589955f971897208121417ceef48803465a4cc1e8da6aa157f4eb0e7",
+        "src/saves/transfer.ts": "5c53f56fae7ae3edd783c2aee7052eb54a4e7612e1db2a68c7ee476960076ada",
+        "src/shop/ShopReference.vue": "fe0b00ec77048c58a1245c96b27bc6b38e471c45f11b6999d62adb900651602b",
+        "src/shop/Toolbar.vue": "dd0670f15268555f46754dd37d07e598a78f36d2f45d94f12581a76508a45006",
+        "src/shop/main.ts": "58e0e8970b2be8c6d29e66cf268c91e20a29a0171e88d714642a2882bc590da3",
+        "src/shop/source.ts": "4efa5adb9a64c4a24c79350f24c04df8d29c5e79674b83eec539ae03ef461f66",
+        "src/shop/style.css": "8fe2d4b4689c0b8c6c937f31b83c904c83545041c86ccbf5c7a3b136a545ed88",
+        "src/shop/transaction.ts": "ba7375a52833e4a4ff41aa20226603523f3532828a2f4e9cd6edec6598fb6fcc",
+        "src/social/Navigation.vue": "48a63cad0b399ca42d1d81df3355a01e0a2932ed1d26f61fce640f05e940436b",
+        "src/social/main.ts": "320686c3fdbad6ecc02f3ee0a304ac1d557b3c9164e5f9ccc4f73f0d121576c8",
+        "src/social/style.css": "bf4f1603ef975a75cd7c632398b60a94ad7d8dd801cf4704316df95f23197374",
+        "src/story-actions/main.ts": "252a6afb5a69c0ab372cad74f1c2ba88fb414dd7003ea0f2b5e671a08e216871",
+        "src/story-actions/style.css": "6180247f028b0345907f35b7bc8cc20549e265f63bf4fc86d55e873dc2599f23",
+        "src/theme/SettingsNavigation.vue": "b9971a5d7812d002b003c71feed0feac842221f48afdfe6779ad6830a6e5d522",
+        "src/theme/SettingsPanel.vue": "0c261c609266e825796671dadc6000bc31debddccef726680f2ed8eb0aa10b17",
+        "src/theme/SettingsPreview.vue": "f659043e62370fb718573b055db09cc11584e019080a2a5122e296bef08b1bf9",
+        "src/theme/controller.ts": "b658c2e47eb341c763e5623bb369499e9975c1eda111367e10da374c3253ca0c",
+        "src/theme/controls.css": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+        "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+        "src/theme/drawer-corner.svg": "bd1da769f8c78bdaa768e70effec79334563eb53511e04623ca6612ca3892bbf",
+        "src/theme/kraft-work-motion.css": "5606dc48ff813db966ebbadfadfc5beb3699363df02cc3515e9dbcc1503f026e",
+        "src/theme/kraft-work-native.css": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa",
+        "src/theme/kraft-work-pages.css": "7cb5caf798ca15575a3415c1c271d5b7399b6bf02fec6e46514846999e07339f",
+        "src/theme/kraft-work-surfaces.css": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0",
+        "src/theme/kw-weather-condensation.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
+        "src/theme/kw-weather-mist.svg": "ca34fdd9a419a0ef046b05adcde47b23e87399dfd7181a6ffdbdd55b4a9990e9",
+        "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+        "src/theme/kw-weather-snow-far.svg": "599565b90efeb72292b7be34ede0442330c848f776eb806d1b6339e98d59f6cf",
+        "src/theme/kw-weather-snow-near.svg": "089055a38f1256bef1e0d7bea4b4a6f4031ab460add848bf4a263f80d2a3ad2e",
+        "src/theme/layout.css": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265",
+        "src/theme/layout.ts": "0031b897705b32e2c52236c0478f8c162d94ea240fe0a06f7e0990275c50246f",
+        "src/theme/mobile.css": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1",
+        "src/theme/navigation-material.css": "6df318a851446678ad100e0069266fec6400c18eaf890f6109a94fe6acbad54a",
+        "src/theme/preferences.ts": "a8169ec051969fd3d4817256bf612d36037a522ff40c36ae4da7de7f48fb7b42",
+        "src/theme/settings-workspace.css": "30f332a4c871eaf2c6c5a2ed57ead85a545f46e7b6d5a59c444111d89b36329e",
+        "src/theme/sidebar-layout.ts": "76bc16439b994577538877852389a05e944adee0c265a441eb5a6585e5b180a0",
+        "src/theme/sidebar.css": "65926604dc7c2ba303ca45e704b8735d6b07927de3090b9e60a2433b5239a7b7",
+        "src/theme/stone-free.css": "3feacbac9933aab21a9eb0d1ff6b9a91e3dc47a57f0a8706971f4c870c908d17",
+        "src/theme/theme.ts": "223423adea451d4a7c25be98c3f102bc4de79d9bbd85b1a92e081a49bc42c92d",
+        "src/theme/visual.css": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6",
+        "src/tokens.css": "0487c6ad1e6f598fa8d2845f2da00b603f48ad93dbe200d66e10b5a18577dc17",
+        "src/ui/GameButton.vue": "ec3fb9866e83bdaf27be7245c4574b7a50931a6ac40b67ea510d721a4fac4bec",
+        "src/ui/OrbitFocus.vue": "8587738edad55c61dcb69019378fe5ecaad0c018c09b5d630e6bbe5235d80774",
+        "src/ui/SettingsToggle.vue": "f8e3626a8c495310b182d5f2b5fee4ee222d81b0eb60506f0dcd57012f34764d",
+        "src/ui/source-motion.ts": "334259d8f263ee1f0cec718bc63ac4d1c4d7ff690b236e60cd97784616bec9d3",
+        "src/wardrobe/ClothingIcon.vue": "3e544037aaea137e8dc3f3592a2f2a6cd6080e96d3096f52970fa7f5a529bead",
+        "src/wardrobe/ClothingTraits.vue": "e1baa89b2abf1a61d21efc3a8e3eb55e334fe3e05a04c7ecc15995c377a938a0",
+        "src/wardrobe/ReferenceDock.vue": "400a0e1a6c9f9bb499380cc00a04442a7585dfa7347416f598bd198d72de492f",
+        "src/wardrobe/WardrobePanel.vue": "eb3192576b8d6b3ad2fd23a8fccc183f7a6f3c654ef7e85a943274d2d6e477c8",
+        "src/wardrobe/data.ts": "aeab6b12e936e7b806e9e02f35aeb0bc41d337ec7ac5f8f5dbe1ce147a16c7ca",
+        "src/wardrobe/extras.ts": "1a86c7b986abc64f8ceb763e54cfe70cdc4e7c3767206dfebccae2b0efeb7ee1",
+        "src/wardrobe/host.ts": "081093dc2142af05e9253afdd1f1ad5d8facf1248257bd845199e9ee96aa5aff",
+        "src/wardrobe/icons.ts": "f90d490abd7245cf5e0aa3a914af1adf962b128affb3dc4415eaa5cfdc65c02e",
+        "src/wardrobe/main.ts": "5cec77c5a7146a1fbcdbabd674ec0de7150696246c3f3ebeb1cfb707c21b56b9",
+        "src/wardrobe/native.ts": "1b397b79bc0d55c08e094abb1e64ee28ffa331735222b3065f6abad3017507b9",
+        "src/wardrobe/operations.ts": "f95ef3d1f6d9495aa56f435cd9a6fad008c993c354dcae585dd0232806bd34b9",
+        "src/wardrobe/outfit-layout.ts": "60eff48b672c846c4a6a93c33036fd66193e3dcf9f9d8e9c2094924a8defb528",
+        "src/wardrobe/performance.ts": "5586cf46ba6c681233cbf6d38f3a589689c22525f7979e91012a11281913cc6b",
+        "src/wardrobe/reference.css": "94326187360e8215ec3eef63f23586af6348c91d1c7b55122d54d38261764d65",
+        "src/wardrobe/reference.ts": "a1b889994093515fe15ccbda417ac1567ae4c6521b4684e1322709ea2788b513",
+        "src/wardrobe/render-state-fields.ts": "04b2ce19efac40c805a2edb94afda0f0cc2038770eea90649adb57f1d6fcee76",
+        "src/wardrobe/render-state.ts": "63104728c2768df02479a6b9e12079485ed87ee08530e833f848a8732e1fad5a",
+        "src/wardrobe/render.ts": "57f8a527c06174d4fb082a7da9eadc59cf1678ead0f1259c27ea408480d28c13",
+        "src/wardrobe/sidebar-preview.ts": "28ae19c2542a162d0fa2b4c87ec133f30a61f27a4324e9d40b6cfbdc37d1d8a0",
+        "src/wardrobe/slot-mappings.ts": "b0334343f88750aacc9bf0765665a9d536193e40b1100b468f3586ea88263c30",
+        "src/wardrobe/source.ts": "9383b5a207617afeacd6c51391237ac295726e96036b4ec1c24b7b2c2dfb9bdb",
+        "src/wardrobe/style.css": "fd494e65134658750b56016b4cfac252a71761ad6da87fecaf07f53d62cc532f",
+        "src/wardrobe/types.ts": "bbe91ba527981bafbc2a94869b6b6149e30afec9edac00ae01dc80a6680ef767",
+        "src/wardrobe/vendor/isolated-model.js": "c30d30131c349ec82f2cb5e067fb822cd688ee83e766276a5fc7e7da7886d6a6"
+      },
+      "new": {
+        "framework/README.md": "902a9fc54b5c2bafc473d4fd66631175b4f4d6c6af5bdc8e37a9c51bdee4c729",
+        "framework/boot.ts": "4a9d35e8a9819264edeee6c45dc5b90c0bbacec093fc0893c4226461a7ceba10",
+        "framework/connect.ts": "0072f693366492397e4001dbabf11111f1c912cd464ecbd79bd9db943987920f",
+        "framework/contracts.ts": "155d420806e441910949f616a2c7764183a00e92b89fb1ecbdd6acd3f2d3f43a",
+        "framework/examples/ComparisonInline.vue": "f889b9328262f43fda72e9dd7d35b77150a1cc114f11df5006f59aff97c3616a",
+        "framework/examples/ComparisonPanel.vue": "12931290dab86c24bb2c83d96fa1d41a934374e586ed5d4615f04ad08654a74f",
+        "framework/examples/ReadingPanel.vue": "4ac1eef77bb9ec5dba0487ab8d41fab1e63c29fbac48c4c1c16844b4023b3c73",
+        "framework/examples/StatusInline.vue": "97b28ca6cc20f461880dcce7f84d284abc99632e062308fac34e251354998623",
+        "framework/examples/StatusPanel.vue": "42c6697473246cce5dab0bc4dbf3124beb5fa34972a4c9e59cff2a7434baf299",
+        "framework/examples/SurfacePanel.vue": "957e370ca77b23df4fb85365c8a4ad0860b133f3c0f1ba503d76b6c717d4949c",
+        "framework/examples/alternate-workspace-mod.ts": "fef77cc9af373fa379810523b93f562b0ced48c8d53e466fa7410f881478f2ff",
+        "framework/examples/comparison-mod.ts": "113eb87521cbc9c2580b3d64734928a63c9b674c4e6867f0d0a8585bfe8c86ea",
+        "framework/examples/native-reading.ts": "61cb0f07f7b965d9435e9cad0f7bdf38aac5f5cd4bfc59342ea49957bf077a5b",
+        "framework/examples/native-status.ts": "3bcda46a5397f55ef638811179ece54a28e5659d32130fb57f057295a9699f84",
+        "framework/examples/panel.css": "96f424249c95fc466d38c527e0a027e8b950820e7d9caa1cd35e2d6da1800f51",
+        "framework/examples/reading-controls-mod.ts": "bb8095b5de3df53405fea5262252011f979a483570bc37a991f220508d5fb175",
+        "framework/examples/reading-source-mod.ts": "618fa65cc70f29f8d63cde18933344c8162e46a0de7ffc3f174f5a85b7026f66",
+        "framework/examples/reading.css": "e7aafec2cc6bcc9a7e12fbaca195a6cb069b85fe671a8793046196a4dc25d677",
+        "framework/examples/soft-wet-surface.ts": "90a70592b49895c2b2598440ac437d38b50d52309521cbe522f8ffd72c26182a",
+        "framework/examples/status-mod.ts": "84f1cb97385bae48ec48fa8fccc14f5c1a0bfc70aed030e7eb1a133859c0d32a",
+        "framework/examples/workspace-mod.ts": "8292635be3b78f6420b230236830d06cb84e0d81baf62a7cb4833379f1eac2ea",
+        "framework/experiments/README.md": "60b3183800ff2001a23aabd8e2611c2a5fdfeed028ddd711430a0b2bd0294dd0",
+        "framework/experiments/shared-vue.ts": "673fdc1715a6c0453bac7f4c8f347336e20e3b0fe6145bd0ff56046adfa5ca4b",
+        "framework/factory/AUTHOR_KIT.md": "6bd7c1f7be38a6470aafcd8bc498f5b5f4e32b5b7afb52f2aac337d5f20d804b",
+        "framework/factory/Panel.vue": "333e703145aa5e028decc73d54c49b7c25ee4761c1878f737333df0eb8fb2d65",
+        "framework/factory/index.html": "3b8fcdd06dd9239ef01056db611cd143e6915116d406ce68de529fe34e0bb97d",
+        "framework/factory/package.py": "8dc6b6a1d4d1f4fa235f5e072cdc911a9d2ec799b82493d28af4c3da31295a5d",
+        "framework/factory/preview.ts": "c871e40737259e9224219aa186e8bb262715aa3c8175b666bc07a616ab6954e5",
+        "framework/factory/vite.config.mjs": "366fc3073b0d8c4956935ff14224464d64f781c7bb17f9f600fb8e4ed1f814ca",
+        "framework/host.ts": "cfe13f34257525286492d15154c3ec8443bf44ace7e915419a600014102d3e11",
+        "framework/host/README.md": "aa854537a1931b5e5134eab2b8d118e5fe51f0b8bdaa057efd654f9d49ca921a",
+        "framework/motion-hub/MotionHub.vue": "500c5e1413c69bd5ff096fbdcba9b47eb5fce1b527c80b1bc38b601a0f74ba28",
+        "framework/motion-hub/README.md": "816f28666634efdbfd429db2bcd310bc578ee79b6586658a80b23506281ddb20",
+        "framework/motion-hub/geometry.ts": "179e09aa237f99a4874d3d062d25ba542d9cd9d0f756ff1b3e50f78cde4680f0",
+        "framework/motion-hub/main.ts": "14059bca19c75196d4f9162070250eb22b3ab2eb546b3817d9647f079915734a",
+        "framework/motion-hub/style.css": "a30b30400e22a95c922c929e090fe809021cfb91961a71b5123517bf020ddbf1",
+        "framework/official-ui/README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+        "framework/official-ui/hub.ts": "55520f36d3a7b0efa5d155f63b1648ff47448c42e91cc746c40e2a40a56f3a7f",
+        "framework/official-ui/main.ts": "72112d011ce8aa45f6ebc741a450c15f030010604a16b42f27f017ff7564c750",
+        "framework/official-ui/motion.ts": "7a4ac51bc0150fdd0e7948ee8ff6f3432d96234b06e1a94d92fe8bbe8e0029b7",
+        "framework/official-ui/navigation.ts": "e938cd89dbfa4a391a2e32e402666f96a7df1dbbcb6947dfbad7078e67efcba5",
+        "framework/official-ui/reference-shelf.ts": "bcc8c881ea21bc8c38c69b5bf78c6c9f5fd4a115ad0f29a958fdd81ca69a3117",
+        "framework/official-ui/startup-notice.ts": "88fd2ec3e340d8e131cb6fdc85e3e7b2d1182503b174cd49d859a1ce13939dcc",
+        "framework/official-ui/weather.ts": "00efae74d05fe01f7621560a29f136961b558f81855321b515b162eba13cffdf",
+        "framework/signals.ts": "b3172e4255c505c123b1092f89dc2d7145e17b35237a352385a79cb9fa8af374",
+        "framework/vue.ts": "ec08cf58d9e19ae2523b84b222ad079c3d78d2e48a324192bf5f99a397eb5056",
+        "framework/wardrobe-reference/README.md": "252f1e6d3e6532074a3d8ad119be02c9814b56b8d457df36bf8eb74a3bdb4fd1",
+        "framework/wardrobe-reference/ReferenceSpace.vue": "27d1d7b9187f98a4efdd4b4cd21619da62934eced2519dc9c91f55f10582fd1a",
+        "framework/wardrobe-reference/main.ts": "97dcb53a57dcd105dda651e156bcd9fa54c3cfaec451cf186d7c82eec1d9ab98",
+        "framework/wardrobe-reference/source.ts": "1dc9ed392937df53bbf529f30363812bdef5080eecb121deae0ba7ff076c0538",
+        "framework/wardrobe-reference/style.css": "1760fee299ec5020be4b6834cba6b7a99a81fc97ef9c6e645790fbd58c68d82d",
+        "framework/workspace/ViewOutlet.vue": "53897be06ada7c7accba7a8c2c3bde83f89728317d71dbc66c6de0d1ce55e6e9",
+        "framework/workspace/WorkspacePanel.vue": "14766487aaae8c69dadc97ae0eb6f42b69f88ebc57bd5ae48d4fe025ce7b53a5",
+        "framework/workspace/preferences.ts": "4991d3ea6ca3f8dd2ad6f83734753d055f6a28c6cf3d49a29abc95fb0ef94b91",
+        "framework/workspace/start.ts": "a8122a5e7929ec6d2f0fd9c044eaee33cff655c6522692671f01636d31a72c10",
+        "framework/workspace/style.css": "0f7141057ec2527ae52df35a5c1074611215683d20c842150442272cf8c5a28c",
+        "src/characteristics/Navigation.vue": "26167a7422af6aa87e19b7b55c6c6659869b03792c080f8290968285d1612221",
+        "src/characteristics/main.ts": "5980de1d1386b4b3dcc8423c9b688ef2a1a9d89d91ffb5021f632fbfa607005c",
+        "src/characteristics/style.css": "60b9433cad86e3bce931a02076fbbfa2001c4dba328105a3f181bb3e780a36b7",
+        "src/combat/CombatPanel.vue": "6bb9c727c24c2ef9c0405a8ad174f315694f96bdca27f7c51b03ae6d77febaf5",
+        "src/combat/main.ts": "75a4999f79aca7e78c4f1d603a0cfc7c96e557fc0e5850c04d3bc6ea0b930224",
+        "src/combat/native-actions.ts": "b1e42c6c06a400224fd5907505fd4a29e2df0c0612996148c06f1cfaad8f696a",
+        "src/combat/select.css": "202fa72261bb217402d3c01efa7e3dc6c2bde36ca83afce142500f566005b741",
+        "src/combat/source.ts": "3d7fae6efceafbfeccbc91c1176ffa3a016c7de5bbafa5baa3cb9777906b0739",
+        "src/combat/style.css": "d33d08ac7d3ff731d5bbc04cf298f795bf053b695bec9dd6b8ad942dd24098b5",
+        "src/combat/types.ts": "b0fd8adc28e8360eafa7f50fcbd58478c53eda68a1d1acad8d32d2b6f701f1d6",
+        "src/floating/FloatingTools.vue": "c9d980be417b3048c9442ec58979b65358fa6ead74a7ce7dfc41c5012999b5c7",
+        "src/floating/Settings.vue": "1b0db9831ac4ba6cadb7c576e262c259596dc0af683cbcac4dd8751ba6cc5e29",
+        "src/floating/main.ts": "f019525f45c13e027bf7f0c607a51a8340ae0e9f9545e58e0b0ef0c69d147835",
+        "src/floating/preferences.ts": "d8d7b0a88e7d0196c72ffe2dedc688d0ec9aeff482199c160569b0f824b08bea",
+        "src/floating/style.css": "eb067b375a1eb88073b848e82bd9bbb4fabf55d06a57c8dbbdb7e60a44ecef4d",
+        "src/main.ts": "af6857df479c982326f153a28af208f162d5c148a86f60a40c9b949ccbb6e43f",
+        "src/panels/Navigation.vue": "974f7c7ace6ff7cf4e5360741a9a534feef17aaaf4285989dc6af47b462ef10b",
+        "src/panels/main.ts": "913c1e8f3d50f283d191215095897a4291392d20ec04162869c8cf3776538b30",
+        "src/panels/presentation.ts": "60a98d57e7185a9341b34b5673a63108ed13be77a93fd1bdb12519303c5dcf6c",
+        "src/panels/style.css": "c44bb2f17b50b4642e8b3c8225bf6db466b9ae0e3218e1e7fed061c5a258207b",
+        "src/panels/visibility.ts": "1048ed46b039c7089f14d3825ab3a4ffdf08e70ceb2640febd0617cf895d35e0",
+        "src/public/ui.ts": "2cf21f9d7b3d1b6e4c75161ce1a78f22b58fcaff4b2b3d2e6990cec7a840c223",
+        "src/public/wardrobe.ts": "1e297cbeea01628527748276e2e21923a87cee96f231bc003b1f216cbce38fe9",
+        "src/runtime/experiments.ts": "24765c1b69032a66c61a71f4d5594923ab7490f03a86dbcdf03fe8bbd099ee1f",
+        "src/runtime/inspector.ts": "b2d97b7d0e2ded6ffd881a6d825615c8b27a5b17351aa4676419ffbdc08d0da0",
+        "src/runtime/master.ts": "127f55b702c149b8cf537a7ece0b24e00cd1fdb2006bff2e4dabfcd4d74e1857",
+        "src/runtime/presentation.ts": "f3d28659d51d0b23780a35c8e211f2670e06920755ccd154d0ac6db86b4e0a7d",
+        "src/runtime/roles.css": "4451e3da819b5248e830abe2ee2aeff84048c9faa0e4024f7d5db33762be0f2e",
+        "src/runtime/status.ts": "9bb0a5733a39dfbd7a61ecb644dfc0b80b9e5240a3dd227d26822282c7aa61a4",
+        "src/runtime/sugarcube.ts": "7c5da87baa9ecec843dd0be755cd4e11e00a56e2c1dac3c1ac1ddb1d94bc5724",
+        "src/runtime/surfaces.css": "32f2c0d827f1122f759567e4bdc33b32d3938a1e142fe331fd73892c323e0e54",
+        "src/runtime/surfaces.ts": "03867dfeb632e4058f723ef899b2aec480bec121bdad89df65d4ad5014130e24",
+        "src/runtime/target-version.ts": "c59c5db2af0b8e6e0f15eb5be2e65fd01b2b04b26468ba16b82e6500735dcd96",
+        "src/runtime/ui.ts": "bd61a9f04c05b17c43b0e696c47cfdf29a6b5cba1a066382b039555d71d61490",
+        "src/saves/SavePanel.vue": "b42683393490c8c5703eaf42909eb1ab22ea976f7677798635fa1405dcaa60be",
+        "src/saves/main.ts": "c94d66e07a207a332ea264c126deb1f35c79ef98b1e66e518b72672b40fb7fec",
+        "src/saves/metadata.ts": "15426d53b9bddc2e8bb298de15a4f8922a24e77610749dcf8f4480e3d9561fff",
+        "src/saves/source.ts": "1a245e6a936f1e178a9b9917b7efa4db48c903562e9cc8c299fa9433341c836f",
+        "src/saves/style.css": "ae1613cf589955f971897208121417ceef48803465a4cc1e8da6aa157f4eb0e7",
+        "src/saves/transfer.ts": "5c53f56fae7ae3edd783c2aee7052eb54a4e7612e1db2a68c7ee476960076ada",
+        "src/shop/ShopReference.vue": "fe0b00ec77048c58a1245c96b27bc6b38e471c45f11b6999d62adb900651602b",
+        "src/shop/Toolbar.vue": "dd0670f15268555f46754dd37d07e598a78f36d2f45d94f12581a76508a45006",
+        "src/shop/main.ts": "58e0e8970b2be8c6d29e66cf268c91e20a29a0171e88d714642a2882bc590da3",
+        "src/shop/source.ts": "4efa5adb9a64c4a24c79350f24c04df8d29c5e79674b83eec539ae03ef461f66",
+        "src/shop/style.css": "8fe2d4b4689c0b8c6c937f31b83c904c83545041c86ccbf5c7a3b136a545ed88",
+        "src/shop/transaction.ts": "ba7375a52833e4a4ff41aa20226603523f3532828a2f4e9cd6edec6598fb6fcc",
+        "src/social/Navigation.vue": "48a63cad0b399ca42d1d81df3355a01e0a2932ed1d26f61fce640f05e940436b",
+        "src/social/main.ts": "320686c3fdbad6ecc02f3ee0a304ac1d557b3c9164e5f9ccc4f73f0d121576c8",
+        "src/social/style.css": "bf4f1603ef975a75cd7c632398b60a94ad7d8dd801cf4704316df95f23197374",
+        "src/story-actions/main.ts": "252a6afb5a69c0ab372cad74f1c2ba88fb414dd7003ea0f2b5e671a08e216871",
+        "src/story-actions/style.css": "6180247f028b0345907f35b7bc8cc20549e265f63bf4fc86d55e873dc2599f23",
+        "src/theme/SettingsNavigation.vue": "b9971a5d7812d002b003c71feed0feac842221f48afdfe6779ad6830a6e5d522",
+        "src/theme/SettingsPanel.vue": "47b69b05516bc837b368cdbef00c78383d77d2377f3fd2794af268b4a5cd59d0",
+        "src/theme/SettingsPreview.vue": "f659043e62370fb718573b055db09cc11584e019080a2a5122e296bef08b1bf9",
+        "src/theme/controller.ts": "f479e1a18241e5e2c878613c16149432ceb2126712a507001498f177310430c9",
+        "src/theme/controls.css": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+        "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+        "src/theme/drawer-corner.svg": "bd1da769f8c78bdaa768e70effec79334563eb53511e04623ca6612ca3892bbf",
+        "src/theme/kraft-work-motion.css": "5606dc48ff813db966ebbadfadfc5beb3699363df02cc3515e9dbcc1503f026e",
+        "src/theme/kraft-work-native.css": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa",
+        "src/theme/kraft-work-pages.css": "7cb5caf798ca15575a3415c1c271d5b7399b6bf02fec6e46514846999e07339f",
+        "src/theme/kraft-work-surfaces.css": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0",
+        "src/theme/kw-weather-condensation.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
+        "src/theme/kw-weather-mist.svg": "ca34fdd9a419a0ef046b05adcde47b23e87399dfd7181a6ffdbdd55b4a9990e9",
+        "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+        "src/theme/kw-weather-snow-far.svg": "599565b90efeb72292b7be34ede0442330c848f776eb806d1b6339e98d59f6cf",
+        "src/theme/kw-weather-snow-near.svg": "089055a38f1256bef1e0d7bea4b4a6f4031ab460add848bf4a263f80d2a3ad2e",
+        "src/theme/layout.css": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265",
+        "src/theme/layout.ts": "0031b897705b32e2c52236c0478f8c162d94ea240fe0a06f7e0990275c50246f",
+        "src/theme/mobile.css": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1",
+        "src/theme/navigation-material.css": "6df318a851446678ad100e0069266fec6400c18eaf890f6109a94fe6acbad54a",
+        "src/theme/preferences.ts": "a8169ec051969fd3d4817256bf612d36037a522ff40c36ae4da7de7f48fb7b42",
+        "src/theme/settings-workspace.css": "30f332a4c871eaf2c6c5a2ed57ead85a545f46e7b6d5a59c444111d89b36329e",
+        "src/theme/sidebar-layout.ts": "76bc16439b994577538877852389a05e944adee0c265a441eb5a6585e5b180a0",
+        "src/theme/sidebar.css": "65926604dc7c2ba303ca45e704b8735d6b07927de3090b9e60a2433b5239a7b7",
+        "src/theme/stone-free.css": "3feacbac9933aab21a9eb0d1ff6b9a91e3dc47a57f0a8706971f4c870c908d17",
+        "src/theme/theme.ts": "223423adea451d4a7c25be98c3f102bc4de79d9bbd85b1a92e081a49bc42c92d",
+        "src/theme/visual.css": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6",
+        "src/tokens.css": "0487c6ad1e6f598fa8d2845f2da00b603f48ad93dbe200d66e10b5a18577dc17",
+        "src/ui/GameButton.vue": "ec3fb9866e83bdaf27be7245c4574b7a50931a6ac40b67ea510d721a4fac4bec",
+        "src/ui/OrbitFocus.vue": "8587738edad55c61dcb69019378fe5ecaad0c018c09b5d630e6bbe5235d80774",
+        "src/ui/SettingsToggle.vue": "f8e3626a8c495310b182d5f2b5fee4ee222d81b0eb60506f0dcd57012f34764d",
+        "src/ui/source-motion.ts": "49938840b11111fd8b85903fb063cbc733ec68440236d3bb18857bb39889ba5c",
+        "src/wardrobe/ClothingIcon.vue": "3e544037aaea137e8dc3f3592a2f2a6cd6080e96d3096f52970fa7f5a529bead",
+        "src/wardrobe/ClothingTraits.vue": "e1baa89b2abf1a61d21efc3a8e3eb55e334fe3e05a04c7ecc15995c377a938a0",
+        "src/wardrobe/ReferenceDock.vue": "400a0e1a6c9f9bb499380cc00a04442a7585dfa7347416f598bd198d72de492f",
+        "src/wardrobe/WardrobePanel.vue": "eb3192576b8d6b3ad2fd23a8fccc183f7a6f3c654ef7e85a943274d2d6e477c8",
+        "src/wardrobe/data.ts": "aeab6b12e936e7b806e9e02f35aeb0bc41d337ec7ac5f8f5dbe1ce147a16c7ca",
+        "src/wardrobe/extras.ts": "1a86c7b986abc64f8ceb763e54cfe70cdc4e7c3767206dfebccae2b0efeb7ee1",
+        "src/wardrobe/host.ts": "081093dc2142af05e9253afdd1f1ad5d8facf1248257bd845199e9ee96aa5aff",
+        "src/wardrobe/icons.ts": "f90d490abd7245cf5e0aa3a914af1adf962b128affb3dc4415eaa5cfdc65c02e",
+        "src/wardrobe/main.ts": "5cec77c5a7146a1fbcdbabd674ec0de7150696246c3f3ebeb1cfb707c21b56b9",
+        "src/wardrobe/native.ts": "1b397b79bc0d55c08e094abb1e64ee28ffa331735222b3065f6abad3017507b9",
+        "src/wardrobe/operations.ts": "f95ef3d1f6d9495aa56f435cd9a6fad008c993c354dcae585dd0232806bd34b9",
+        "src/wardrobe/outfit-layout.ts": "60eff48b672c846c4a6a93c33036fd66193e3dcf9f9d8e9c2094924a8defb528",
+        "src/wardrobe/performance.ts": "5586cf46ba6c681233cbf6d38f3a589689c22525f7979e91012a11281913cc6b",
+        "src/wardrobe/reference.css": "94326187360e8215ec3eef63f23586af6348c91d1c7b55122d54d38261764d65",
+        "src/wardrobe/reference.ts": "a1b889994093515fe15ccbda417ac1567ae4c6521b4684e1322709ea2788b513",
+        "src/wardrobe/render-state-fields.ts": "04b2ce19efac40c805a2edb94afda0f0cc2038770eea90649adb57f1d6fcee76",
+        "src/wardrobe/render-state.ts": "63104728c2768df02479a6b9e12079485ed87ee08530e833f848a8732e1fad5a",
+        "src/wardrobe/render.ts": "57f8a527c06174d4fb082a7da9eadc59cf1678ead0f1259c27ea408480d28c13",
+        "src/wardrobe/sidebar-preview.ts": "28ae19c2542a162d0fa2b4c87ec133f30a61f27a4324e9d40b6cfbdc37d1d8a0",
+        "src/wardrobe/slot-mappings.ts": "b0334343f88750aacc9bf0765665a9d536193e40b1100b468f3586ea88263c30",
+        "src/wardrobe/source.ts": "9383b5a207617afeacd6c51391237ac295726e96036b4ec1c24b7b2c2dfb9bdb",
+        "src/wardrobe/style.css": "fd494e65134658750b56016b4cfac252a71761ad6da87fecaf07f53d62cc532f",
+        "src/wardrobe/types.ts": "bbe91ba527981bafbc2a94869b6b6149e30afec9edac00ae01dc80a6680ef767",
+        "src/wardrobe/vendor/isolated-model.js": "c30d30131c349ec82f2cb5e067fb822cd688ee83e766276a5fc7e7da7886d6a6"
+      }
+    },
+    "patched": {
+      "controller": "2ed3af83796fdf5b50af670b62d59033db2b9a642aef09dc109e500b1316e1b7",
+      "panel": "6154029b65561266729339bc93be62e13c43d6c5d049395cfc1b9d48e6d03197"
+    }
+  },
+  "runtime": {
+    "platform": "darwin",
+    "node": "v24.18.0",
+    "chromium": "153.0.8010.12"
+  },
+  "prototypeFiles": {
+    "prototypes/settings-refraction-v1/README.md": "6d99f0c039b7f6d602fdb8f62ed1d38c0d8917ba88b4710fb02afed17da7de0c",
+    "prototypes/settings-refraction-v1/compare.ts": "3c468d364e60376a17108afc3a5889bd41618e2ad85372d91a27de940352a100",
+    "prototypes/settings-refraction-v1/index.html": "7f6f1db5a6761ccece9baecdfe938150dcd4219bfbc8cb0e559e2943cceceac9",
+    "prototypes/settings-refraction-v1/new.ts": "48483accbcd4177539ddab4d765b4550cf1b25ef66331d855e0920ca5b5ea36c",
+    "prototypes/settings-refraction-v1/old.ts": "b849cafc09d4c43b7cc8af13e95fa7e040c3a3ff0097bba77c3aec89d2ec2566",
+    "prototypes/settings-refraction-v1/refraction.css": "d3ee5c41158b52fe99b92597a3f5cefa1e17c030dd16b23b96e90ecc2856840e",
+    "prototypes/settings-refraction-v1/refraction.ts": "21948c2a6aacbd998d58f3619bac135f225b11c79681aa050ae282e793eb5da1",
+    "prototypes/settings-refraction-v1/scene.css": "72737ea3c56c64ad2f29ad4b9815a0a32e941b8f75fc1f31ff5a5b7518514b7a",
+    "prototypes/settings-refraction-v1/scene.html": "e4050063f6626d0bf5443d0548f3fa8e9e8b8d7745f0fd26ade520f4b3ca882b",
+    "prototypes/settings-refraction-v1/scene.ts": "413fa5ac5a1c5ef141dfc8a095c212dcb323e97e6fb2576b9a6b742ad79e5c55",
+    "prototypes/settings-refraction-v1/sequence.ts": "8b38c3da4f891126354477edfa2e4aa00a6ac889af42ca0a11a9d2f317005045",
+    "scripts/check-settings-refraction.cjs": "527e5a05c11e04b564acad4af57ba6e7f171c6ba1899c7999898b137136b16f9",
+    "scripts/prepare-settings-refraction.mjs": "67ec13915595ff6a265652dc883338cfdd56229d82dbf5ae04dd8b2892f49304",
+    "tsconfig.settings-refraction.json": "ce0ef1f76ffcbbe0d8cb0d8240d1749f6c82bec86a31eb6cb0db4301536bc861",
+    "vite.settings-refraction.config.ts": "d07ca2972e86a8bd5afa2d2a947880901426127c260accb507c8b5310cfa39b0"
+  },
+  "buildFiles": {
+    "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+    "THIRD_PARTY_NOTICES.md": "8f3d278c8b8cfea5321fd3ed4fcb9ab7b2ba966aa74bcc2f09e7005d54bee5e1",
+    "assets/compare-DsGNuM5y.js": "8d6143d02f506b6751db96e0e0793ed582a73c18c0bbad2829fe8a0cc4f63e4c",
+    "assets/kw-weather-condensation-Deeqv1zV.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
+    "assets/modulepreload-polyfill-B5Qt9EMX.js": "d2a32840421496e872ade591618d2fa5c33797605d1aec04301717e5a90757d0",
+    "assets/new-C-oIb99b.css": "a7ca54e57a2674ee5d7ad2b1490e399a4125b46af09a2d9c7e417563c2cb6b31",
+    "assets/new-CabeK286.js": "fce5c945160f97b2449d2033c07d4cad61336ec186c3eac9412290efc1eba23d",
+    "assets/old-BMAlx5Zy.js": "12fa1bf6599da34fc49caf5ca402437b515835ae61b5504e6c1546f913185279",
+    "assets/old-DIxzhhSP.css": "626186fbe1c5f0010c5b7c41cc7b7797c4d11ad1990433eb13125592397a7e52",
+    "assets/refraction-D8Ab3-k8.js": "7f9765e117866b4de329b64094da31809c507646e1add666659c79a33f80c7e9",
+    "assets/runtime-dom.esm-bundler-BubMrm3P.js": "97a45dbed7250c5af64e079116d936e5721aab182ea8ef54d8393b9e1824a345",
+    "assets/scene-DsA_8Ahf.css": "1c77584b9a04af8e6bfb75dab2d56fcd76e9e1c185c5f47c1307e42d558c34ab",
+    "assets/scene-lIuhG_d_.js": "eb4385e291552ea34d95922dff77a9af89e059c8e4bfc221c4ca505a48f067f2",
+    "index.html": "0787c529aa1ab1eac347c3ff4f22e564a71e2d5cd99a41c99a0b18f7a3622270",
+    "scene.html": "d6c74b41347fdbed5a7a7595e7a4089b0a7ed85b789be1e30f2de03ef8c6a32a"
+  },
+  "testedTree": {
+    "baseHead": "e018f5e0d74283e28d3895357d638fcdb9c03b94",
+    "uncommittedPrototype": true,
+    "identity": "Match prototypeFiles to the committed tree; parent HEAD is not the tested implementation."
+  },
+  "geometry": {
+    "1280": {
+      "modal": true,
+      "rect": {
+        "x": 140,
+        "y": 18.53125,
+        "width": 1000,
+        "height": 862.9375,
+        "top": 18.53125,
+        "right": 1140,
+        "bottom": 881.46875,
+        "left": 140
+      },
+      "width": 1280,
+      "height": 900,
+      "scrollWidth": 1280,
+      "hit": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "decorative": true
+    },
+    "390": {
+      "modal": true,
+      "rect": {
+        "x": 12,
+        "y": 12,
+        "width": 366,
+        "height": 820,
+        "top": 12,
+        "right": 378,
+        "bottom": 832,
+        "left": 12
+      },
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "hit": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "decorative": true
+    }
+  },
+  "reversal": {
+    "1280": {
+      "initial": [
+        {
+          "x": -351.193,
+          "y": -33.0902,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -219.23344799999998,
+          "y": -70.7374546,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -310.3518094,
+          "y": 110.06482599999998,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -178.39225739999998,
+          "y": 72.41757139999999,
+          "z": 0,
+          "w": 1
+        }
+      ],
+      "closed": [
+        {
+          "x": -351.193,
+          "y": -33.0902,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -219.23344799999998,
+          "y": -70.7374546,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -310.3518094,
+          "y": 110.06482599999998,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -178.39225739999998,
+          "y": 72.41757139999999,
+          "z": 0,
+          "w": 1
+        }
+      ],
+      "reopened": [
+        {
+          "x": -351.193,
+          "y": -33.0902,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -219.23344799999998,
+          "y": -70.7374546,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -310.3518094,
+          "y": 110.06482599999998,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -178.39225739999998,
+          "y": 72.41757139999999,
+          "z": 0,
+          "w": 1
+        }
+      ],
+      "ratio": 0.1727980194091797
+    },
+    "390": {
+      "initial": [
+        {
+          "x": -65.9831,
+          "y": -68.318,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -47.2680764,
+          "y": -74.2066464,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -43.22380419999999,
+          "y": 4.014468000000008,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -24.508780599999994,
+          "y": -1.874178399999991,
+          "z": 0,
+          "w": 1
+        }
+      ],
+      "closed": [
+        {
+          "x": -65.9831,
+          "y": -68.318,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -47.2680764,
+          "y": -74.2066464,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -43.22380419999999,
+          "y": 4.014468000000008,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -24.508780599999994,
+          "y": -1.874178399999991,
+          "z": 0,
+          "w": 1
+        }
+      ],
+      "reopened": [
+        {
+          "x": -65.9831,
+          "y": -68.318,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -47.2680764,
+          "y": -74.2066464,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -43.22380419999999,
+          "y": 4.014468000000008,
+          "z": 0,
+          "w": 1
+        },
+        {
+          "x": -24.508780599999994,
+          "y": -1.874178399999991,
+          "z": 0,
+          "w": 1
+        }
+      ],
+      "ratio": 0.11331787526281804
+    }
+  },
+  "recordingMethod": "Same viewport/DPR/preferences and 12 operations; separate localhost origins, site-per-process; 1x no cuts; actual input delivery skew <80ms."
+}

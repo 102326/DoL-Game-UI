@@ -1,0 +1,126 @@
+{
+  "results": [
+    {
+      "kind": "characteristics",
+      "mounted": true,
+      "disabled": true,
+      "leaseReleased": true,
+      "respectsLease": true,
+      "reentered": true,
+      "zoom": [
+        {
+          "zoom": 1,
+          "gap": 15.609375,
+          "expected": 16
+        },
+        {
+          "zoom": 1.25,
+          "gap": 20.28125,
+          "expected": 20
+        },
+        {
+          "zoom": 0.85,
+          "gap": 13.59375,
+          "expected": 13.6
+        }
+      ],
+      "proxyZoom": true,
+      "proxyGeometry": {
+        "rect": {
+          "x": 11,
+          "y": 213.171875,
+          "width": 937.5,
+          "height": 205.828125,
+          "top": 213.171875,
+          "right": 948.5,
+          "bottom": 419,
+          "left": 11
+        },
+        "group": {
+          "x": 11,
+          "y": 213.171875,
+          "width": 935.5,
+          "height": 780,
+          "top": 213.171875,
+          "right": 946.5,
+          "bottom": 993.171875,
+          "left": 11
+        },
+        "viewport": {
+          "x": 11,
+          "y": 117,
+          "width": 935.5,
+          "height": 300,
+          "top": 117,
+          "right": 946.5,
+          "bottom": 417,
+          "left": 11
+        },
+        "progress": 0.7800000039069849
+      },
+      "noUnrelatedScan": true,
+      "replacementSafe": true,
+      "cancelled": true,
+      "ownerReleased": true,
+      "nativeSafe": true,
+      "faultClean": true,
+      "recovered": true,
+      "classicMounted": true,
+      "shared": {
+        "mounts": 4,
+        "scans": 7,
+        "failures": 0,
+        "implementation": "native-overlay-navigation/v1",
+        "consumer": "characteristics",
+        "generation": 11,
+        "mounted": true
+      },
+      "finalNodes": 0
+    },
+    {
+      "kind": "social",
+      "mounted": true,
+      "disabled": true,
+      "leaseReleased": true,
+      "respectsLease": true,
+      "reentered": true,
+      "zoom": [
+        {
+          "zoom": 1,
+          "gap": 15.515625,
+          "expected": 16
+        },
+        {
+          "zoom": 1.25,
+          "gap": 19.671875,
+          "expected": 20
+        },
+        {
+          "zoom": 0.85,
+          "gap": 13.453125,
+          "expected": 13.6
+        }
+      ],
+      "proxyZoom": true,
+      "noUnrelatedScan": true,
+      "replacementSafe": true,
+      "cancelled": true,
+      "ownerReleased": true,
+      "nativeSafe": true,
+      "faultClean": true,
+      "recovered": true,
+      "classicMounted": true,
+      "shared": {
+        "mounts": 4,
+        "scans": 7,
+        "failures": 0,
+        "implementation": "native-overlay-navigation/v1",
+        "consumer": "social",
+        "generation": 11,
+        "mounted": true
+      },
+      "finalNodes": 0
+    }
+  ],
+  "errors": []
+}

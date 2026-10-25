@@ -1,0 +1,772 @@
+{
+  "task": "EVO-G1-COEX",
+  "scope": "Controlled macOS actual UI owners only; no physical-device, full-game, heap, GPU or long-term claim.",
+  "inputHead": "afc78bbadfae05875cb30c82f51e564390593f1c",
+  "workingTree": true,
+  "runtime": {
+    "platform": "darwin",
+    "node": "v24.18.0",
+    "chromium": "153.0.8010.12"
+  },
+  "fullRun": {
+    "sha256": "fed3d57ae23dabcb13faee88548e3c9f90dadfcc30952b64c043df5ad3dec5bf",
+    "inputHashes": {
+      "scripts/check-evolution-coexistence.cjs": "69786e11c868abb487c37252b277548a7076a5772561b59d6dc35181460ac31e",
+      "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+      "framework/motion-hub/README.md": "816f28666634efdbfd429db2bcd310bc578ee79b6586658a80b23506281ddb20",
+      "framework/motion-hub/geometry.ts": "179e09aa237f99a4874d3d062d25ba542d9cd9d0f756ff1b3e50f78cde4680f0",
+      "framework/motion-hub/main.ts": "14059bca19c75196d4f9162070250eb22b3ab2eb546b3817d9647f079915734a",
+      "framework/motion-hub/style.css": "a30b30400e22a95c922c929e090fe809021cfb91961a71b5123517bf020ddbf1",
+      "framework/official-ui/README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+      "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
+      "framework/official-ui/main.ts": "72112d011ce8aa45f6ebc741a450c15f030010604a16b42f27f017ff7564c750",
+      "framework/official-ui/motion.ts": "6331487a96d23256c2330b21dcb2a1e4797f9f3858e02aa29ae3333ad70fcecc",
+      "framework/official-ui/navigation.ts": "2c23118e017cd2d57bb9e235f195ae708e6fbe6f0367f05540c2dba0ab97edf6",
+      "framework/official-ui/reference-shelf.ts": "bcc8c881ea21bc8c38c69b5bf78c6c9f5fd4a115ad0f29a958fdd81ca69a3117",
+      "framework/official-ui/startup-notice.ts": "88fd2ec3e340d8e131cb6fdc85e3e7b2d1182503b174cd49d859a1ce13939dcc",
+      "framework/official-ui/weather.ts": "1f1d8681c06c8140e152f55b08ad3474e318905cfc5888996cec85b1877edab9",
+      "package-lock.json": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4",
+      "scripts/preview-evolution-hub.mjs": "974d7e1ea01a1c1e9bf30ea6a0b8e8db4f01d28140f647f2570f4b452a42e2b8",
+      "src/floating/FloatingTools.vue": "c9d980be417b3048c9442ec58979b65358fa6ead74a7ce7dfc41c5012999b5c7",
+      "src/floating/Settings.vue": "1b0db9831ac4ba6cadb7c576e262c259596dc0af683cbcac4dd8751ba6cc5e29",
+      "src/floating/main.ts": "2437a273a6e9ddc78fc9f9e4259f56084b4305ae59a1d6f39b229c246f6911d6",
+      "src/floating/preferences.ts": "d8d7b0a88e7d0196c72ffe2dedc688d0ec9aeff482199c160569b0f824b08bea",
+      "src/floating/style.css": "eb067b375a1eb88073b848e82bd9bbb4fabf55d06a57c8dbbdb7e60a44ecef4d",
+      "src/theme/SettingsNavigation.vue": "b9971a5d7812d002b003c71feed0feac842221f48afdfe6779ad6830a6e5d522",
+      "src/theme/SettingsPanel.vue": "92024ad0eaf7fc02c9f105f0e1d1a497551284472975362a59eaeefb7f4d782e",
+      "src/theme/SettingsPreview.vue": "f659043e62370fb718573b055db09cc11584e019080a2a5122e296bef08b1bf9",
+      "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+      "src/theme/controls.css": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+      "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+      "src/theme/drawer-corner.svg": "bd1da769f8c78bdaa768e70effec79334563eb53511e04623ca6612ca3892bbf",
+      "src/theme/kraft-work-motion.css": "5606dc48ff813db966ebbadfadfc5beb3699363df02cc3515e9dbcc1503f026e",
+      "src/theme/kraft-work-native.css": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa",
+      "src/theme/kraft-work-pages.css": "7cb5caf798ca15575a3415c1c271d5b7399b6bf02fec6e46514846999e07339f",
+      "src/theme/kraft-work-surfaces.css": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0",
+      "src/theme/kw-weather-condensation.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
+      "src/theme/kw-weather-mist.svg": "ca34fdd9a419a0ef046b05adcde47b23e87399dfd7181a6ffdbdd55b4a9990e9",
+      "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+      "src/theme/kw-weather-snow-far.svg": "599565b90efeb72292b7be34ede0442330c848f776eb806d1b6339e98d59f6cf",
+      "src/theme/kw-weather-snow-near.svg": "089055a38f1256bef1e0d7bea4b4a6f4031ab460add848bf4a263f80d2a3ad2e",
+      "src/theme/layout.css": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265",
+      "src/theme/layout.ts": "4a7779635d50ae0de3040effe6ed23ba32be22f21d7376654b7602bf9dcfc19f",
+      "src/theme/mobile.css": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1",
+      "src/theme/navigation-material.css": "6df318a851446678ad100e0069266fec6400c18eaf890f6109a94fe6acbad54a",
+      "src/theme/preferences.ts": "a8169ec051969fd3d4817256bf612d36037a522ff40c36ae4da7de7f48fb7b42",
+      "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+      "src/theme/sidebar-layout.ts": "76bc16439b994577538877852389a05e944adee0c265a441eb5a6585e5b180a0",
+      "src/theme/sidebar.css": "65926604dc7c2ba303ca45e704b8735d6b07927de3090b9e60a2433b5239a7b7",
+      "src/theme/stone-free.css": "3feacbac9933aab21a9eb0d1ff6b9a91e3dc47a57f0a8706971f4c870c908d17",
+      "src/theme/theme.ts": "223423adea451d4a7c25be98c3f102bc4de79d9bbd85b1a92e081a49bc42c92d",
+      "src/theme/visual.css": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6",
+      "src/ui/GameButton.vue": "ec3fb9866e83bdaf27be7245c4574b7a50931a6ac40b67ea510d721a4fac4bec",
+      "src/ui/OrbitFocus.vue": "8ff14e5d8c98ba2ae7ac73c2e81f2902e41cab194eb1c791280a9cbd9b6c7f21",
+      "src/ui/SettingsToggle.vue": "f8e3626a8c495310b182d5f2b5fee4ee222d81b0eb60506f0dcd57012f34764d",
+      "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
+      "src/ui/golden-spin/hub.css": "9be30ae90c2170462b5e7589b52092231046419f2a3dabf82ac6745d539cf7eb",
+      "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
+      "src/ui/native-overlay-navigation.ts": "1eac7d4d91db47226cc00a1eab40e278ff772b8988e79bdbb045ec1c33bc36a0",
+      "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+      "src/ui/navigation-mount.ts": "66bfd4412338fbce3074dbdc407823e4e01379cbe648cffeabafde7d339a3dae",
+      "src/ui/source-motion.ts": "c26166d11f4547af4caaec5844e49d40e43c51dc825d9de02a06b53b5c3994db",
+      "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+      "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+      "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+      "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+      "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+      "src/ui/weather/settings.ts": "e05231f13a5be3e7c1312a822ccca252349c63ea1f0822a9d970c1607e5d2a91",
+      "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+      "src/ui/weather/surface.ts": "5d61766221293b7fde0599a76bda89ed1ffa1bebddff1db5cff77ecae6edcdf2",
+      "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+      "src/ui/weather/wet-glass.ts": "3a667a752104925f090f8094a9d7c156e0060d4358c3cf7f74b9cc682c478f6b",
+      "dist/framework/official-ui/style.css": "68eb1dfe1e075e9bcb8b853776d98fdb73341a88b2062a891c029fbd917c5f2c"
+    },
+    "results": [
+      {
+        "viewport": {
+          "width": 1280,
+          "height": 900,
+          "dpr": 1
+        },
+        "warmScopes": {
+          "active": 15,
+          "frames": 0,
+          "cleanups": 98
+        },
+        "warmDom": {
+          "sphere": 1,
+          "weather": 0,
+          "materials": 0,
+          "nodes": 137
+        },
+        "cycles": [
+          {
+            "cycle": 1,
+            "activeScopes": {
+              "active": 19,
+              "frames": 2,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 2,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 3,
+            "activeScopes": {
+              "active": 19,
+              "frames": 2,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 4,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 5,
+            "activeScopes": {
+              "active": 19,
+              "frames": 2,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 6,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 7,
+            "activeScopes": {
+              "active": 19,
+              "frames": 2,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 8,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 9,
+            "activeScopes": {
+              "active": 19,
+              "frames": 2,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 10,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 11,
+            "activeScopes": {
+              "active": 19,
+              "frames": 2,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 12,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          }
+        ],
+        "observed": {
+          "elapsedMs": 15012.100000023842,
+          "samples": 901,
+          "rafMs": {
+            "median": 16.69999999999709,
+            "p95": 16.700000000004366,
+            "max": 16.80000000000291
+          },
+          "weatherDrawMs": {
+            "median": 1.5,
+            "p95": 2
+          },
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        "hiddenPolls": 0,
+        "afterHiddenPolls": 0,
+        "classicSurface": "PASS actual settings action, modal release/restore, disable/re-enable and destroy",
+        "disposedScopes": {
+          "active": 0,
+          "frames": 0,
+          "cleanups": 0
+        },
+        "disposedDom": {
+          "sphere": 0,
+          "weather": 0,
+          "materials": 0,
+          "nodes": 27
+        }
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "warmScopes": {
+          "active": 15,
+          "frames": 0,
+          "cleanups": 98
+        },
+        "warmDom": {
+          "sphere": 1,
+          "weather": 0,
+          "materials": 0,
+          "nodes": 137
+        },
+        "cycles": [
+          {
+            "cycle": 1,
+            "activeScopes": {
+              "active": 19,
+              "frames": 1,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 2,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 3,
+            "activeScopes": {
+              "active": 19,
+              "frames": 1,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 4,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 5,
+            "activeScopes": {
+              "active": 19,
+              "frames": 1,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 6,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 7,
+            "activeScopes": {
+              "active": 19,
+              "frames": 1,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 8,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 9,
+            "activeScopes": {
+              "active": 19,
+              "frames": 1,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 10,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 11,
+            "activeScopes": {
+              "active": 19,
+              "frames": 1,
+              "cleanups": 118
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          },
+          {
+            "cycle": 12,
+            "activeScopes": {
+              "active": 18,
+              "frames": 2,
+              "cleanups": 111
+            },
+            "closedScopes": {
+              "active": 15,
+              "frames": 0,
+              "cleanups": 98
+            },
+            "closedDom": {
+              "sphere": 1,
+              "weather": 0,
+              "materials": 0,
+              "nodes": 137
+            }
+          }
+        ],
+        "observed": {
+          "elapsedMs": 15004,
+          "samples": 901,
+          "rafMs": {
+            "median": 16.69999999999709,
+            "p95": 16.700000000004366,
+            "max": 16.80000000000291
+          },
+          "weatherDrawMs": {
+            "median": 1.5,
+            "p95": 1.800000011920929
+          },
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        "hiddenPolls": 0,
+        "afterHiddenPolls": 0,
+        "classicSurface": "PASS actual settings action, modal release/restore, disable/re-enable and destroy",
+        "disposedScopes": {
+          "active": 0,
+          "frames": 0,
+          "cleanups": 0
+        },
+        "disposedDom": {
+          "sphere": 0,
+          "weather": 0,
+          "materials": 0,
+          "nodes": 27
+        }
+      }
+    ]
+  },
+  "finalToolCheck": {
+    "note": "After full observation, record stage snapshots immediately and add explicit teardown assertion label; runtime inputs unchanged. Focused teardown retains actual tool identity; full run is not relabeled.",
+    "sha256": "3d0ae5335fe26a2452bd5a81364c1c8b585687843564d49f66fa7b2ad76c351d",
+    "inputHashes": {
+      "scripts/check-evolution-coexistence.cjs": "e00e3419774ab371ea25b141972e7504db1566536422420a68aaa86a8eb74a96",
+      "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+      "framework/motion-hub/README.md": "816f28666634efdbfd429db2bcd310bc578ee79b6586658a80b23506281ddb20",
+      "framework/motion-hub/geometry.ts": "179e09aa237f99a4874d3d062d25ba542d9cd9d0f756ff1b3e50f78cde4680f0",
+      "framework/motion-hub/main.ts": "14059bca19c75196d4f9162070250eb22b3ab2eb546b3817d9647f079915734a",
+      "framework/motion-hub/style.css": "a30b30400e22a95c922c929e090fe809021cfb91961a71b5123517bf020ddbf1",
+      "framework/official-ui/README.md": "dfb8cdee91e31d29c7c47161a6ffab52a403c8179d6235769e263bc2543595f8",
+      "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
+      "framework/official-ui/main.ts": "72112d011ce8aa45f6ebc741a450c15f030010604a16b42f27f017ff7564c750",
+      "framework/official-ui/motion.ts": "6331487a96d23256c2330b21dcb2a1e4797f9f3858e02aa29ae3333ad70fcecc",
+      "framework/official-ui/navigation.ts": "2c23118e017cd2d57bb9e235f195ae708e6fbe6f0367f05540c2dba0ab97edf6",
+      "framework/official-ui/reference-shelf.ts": "bcc8c881ea21bc8c38c69b5bf78c6c9f5fd4a115ad0f29a958fdd81ca69a3117",
+      "framework/official-ui/startup-notice.ts": "88fd2ec3e340d8e131cb6fdc85e3e7b2d1182503b174cd49d859a1ce13939dcc",
+      "framework/official-ui/weather.ts": "1f1d8681c06c8140e152f55b08ad3474e318905cfc5888996cec85b1877edab9",
+      "package-lock.json": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4",
+      "scripts/preview-evolution-hub.mjs": "974d7e1ea01a1c1e9bf30ea6a0b8e8db4f01d28140f647f2570f4b452a42e2b8",
+      "src/floating/FloatingTools.vue": "c9d980be417b3048c9442ec58979b65358fa6ead74a7ce7dfc41c5012999b5c7",
+      "src/floating/Settings.vue": "1b0db9831ac4ba6cadb7c576e262c259596dc0af683cbcac4dd8751ba6cc5e29",
+      "src/floating/main.ts": "2437a273a6e9ddc78fc9f9e4259f56084b4305ae59a1d6f39b229c246f6911d6",
+      "src/floating/preferences.ts": "d8d7b0a88e7d0196c72ffe2dedc688d0ec9aeff482199c160569b0f824b08bea",
+      "src/floating/style.css": "eb067b375a1eb88073b848e82bd9bbb4fabf55d06a57c8dbbdb7e60a44ecef4d",
+      "src/theme/SettingsNavigation.vue": "b9971a5d7812d002b003c71feed0feac842221f48afdfe6779ad6830a6e5d522",
+      "src/theme/SettingsPanel.vue": "92024ad0eaf7fc02c9f105f0e1d1a497551284472975362a59eaeefb7f4d782e",
+      "src/theme/SettingsPreview.vue": "f659043e62370fb718573b055db09cc11584e019080a2a5122e296bef08b1bf9",
+      "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+      "src/theme/controls.css": "3b929cb29af064027547700f7cccd8db8aa28a573a04652237d00aea6a23cd77",
+      "src/theme/dark-acrylic.css": "d7909c433baffd3e3cb8beb512e6262a6a6fed064bf36e834d7790d26f61f371",
+      "src/theme/drawer-corner.svg": "bd1da769f8c78bdaa768e70effec79334563eb53511e04623ca6612ca3892bbf",
+      "src/theme/kraft-work-motion.css": "5606dc48ff813db966ebbadfadfc5beb3699363df02cc3515e9dbcc1503f026e",
+      "src/theme/kraft-work-native.css": "c77aed5e7ba81d5d74d9c41826c307ad285d031364001abcb0f8b986a252caaa",
+      "src/theme/kraft-work-pages.css": "7cb5caf798ca15575a3415c1c271d5b7399b6bf02fec6e46514846999e07339f",
+      "src/theme/kraft-work-surfaces.css": "2655b985e0fc1ffb49ff7898eadaa3fb3816b9c649e74c8fa00a2bab605fccf0",
+      "src/theme/kw-weather-condensation.svg": "f1e9e8b1f85811ca1463bae461578e5e0606742a0a1f9b40a5d3f2ae21a98100",
+      "src/theme/kw-weather-mist.svg": "ca34fdd9a419a0ef046b05adcde47b23e87399dfd7181a6ffdbdd55b4a9990e9",
+      "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+      "src/theme/kw-weather-snow-far.svg": "599565b90efeb72292b7be34ede0442330c848f776eb806d1b6339e98d59f6cf",
+      "src/theme/kw-weather-snow-near.svg": "089055a38f1256bef1e0d7bea4b4a6f4031ab460add848bf4a263f80d2a3ad2e",
+      "src/theme/layout.css": "4decb7b2e578d8a2572558eb4df3bc18eb51a0ab13b02bc870cdf1fb93c97265",
+      "src/theme/layout.ts": "4a7779635d50ae0de3040effe6ed23ba32be22f21d7376654b7602bf9dcfc19f",
+      "src/theme/mobile.css": "877db71a2cc9d9c783852007eba945391974f8bd71a4751acf41f4c1006ad4b1",
+      "src/theme/navigation-material.css": "6df318a851446678ad100e0069266fec6400c18eaf890f6109a94fe6acbad54a",
+      "src/theme/preferences.ts": "a8169ec051969fd3d4817256bf612d36037a522ff40c36ae4da7de7f48fb7b42",
+      "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+      "src/theme/sidebar-layout.ts": "76bc16439b994577538877852389a05e944adee0c265a441eb5a6585e5b180a0",
+      "src/theme/sidebar.css": "65926604dc7c2ba303ca45e704b8735d6b07927de3090b9e60a2433b5239a7b7",
+      "src/theme/stone-free.css": "3feacbac9933aab21a9eb0d1ff6b9a91e3dc47a57f0a8706971f4c870c908d17",
+      "src/theme/theme.ts": "223423adea451d4a7c25be98c3f102bc4de79d9bbd85b1a92e081a49bc42c92d",
+      "src/theme/visual.css": "9de974a31f340dcf969ce72b0857d32304dde98ec379c717315cae6e37b261e6",
+      "src/ui/GameButton.vue": "ec3fb9866e83bdaf27be7245c4574b7a50931a6ac40b67ea510d721a4fac4bec",
+      "src/ui/OrbitFocus.vue": "8ff14e5d8c98ba2ae7ac73c2e81f2902e41cab194eb1c791280a9cbd9b6c7f21",
+      "src/ui/SettingsToggle.vue": "f8e3626a8c495310b182d5f2b5fee4ee222d81b0eb60506f0dcd57012f34764d",
+      "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
+      "src/ui/golden-spin/hub.css": "9be30ae90c2170462b5e7589b52092231046419f2a3dabf82ac6745d539cf7eb",
+      "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
+      "src/ui/native-overlay-navigation.ts": "1eac7d4d91db47226cc00a1eab40e278ff772b8988e79bdbb045ec1c33bc36a0",
+      "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+      "src/ui/navigation-mount.ts": "66bfd4412338fbce3074dbdc407823e4e01379cbe648cffeabafde7d339a3dae",
+      "src/ui/source-motion.ts": "c26166d11f4547af4caaec5844e49d40e43c51dc825d9de02a06b53b5c3994db",
+      "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+      "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+      "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+      "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+      "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+      "src/ui/weather/settings.ts": "e05231f13a5be3e7c1312a822ccca252349c63ea1f0822a9d970c1607e5d2a91",
+      "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+      "src/ui/weather/surface.ts": "5d61766221293b7fde0599a76bda89ed1ffa1bebddff1db5cff77ecae6edcdf2",
+      "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+      "src/ui/weather/wet-glass.ts": "3a667a752104925f090f8094a9d7c156e0060d4358c3cf7f74b9cc682c478f6b",
+      "dist/framework/official-ui/style.css": "68eb1dfe1e075e9bcb8b853776d98fdb73341a88b2062a891c029fbd917c5f2c"
+    },
+    "teardownOnly": true,
+    "results": [
+      {
+        "viewport": {
+          "width": 1280,
+          "height": 900,
+          "dpr": 1
+        },
+        "disposedScopes": {
+          "active": 0,
+          "frames": 0,
+          "cleanups": 0
+        },
+        "classicSurface": "PASS actual settings action, modal release/restore, disable/re-enable and destroy"
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "disposedScopes": {
+          "active": 0,
+          "frames": 0,
+          "cleanups": 0
+        },
+        "classicSurface": "PASS actual settings action, modal release/restore, disable/re-enable and destroy"
+      }
+    ]
+  },
+  "negative": {
+    "sha256": "ab6d177b064c5c39fb03f99eeee3cd3c8e614abfd91fff61dafc78b0ee102d11",
+    "faultInjection": "old-empty-floating-placeholder",
+    "teardownOnly": true,
+    "status": "REJECTED",
+    "disposedScopes": {
+      "active": 2,
+      "frames": 0,
+      "cleanups": 0
+    },
+    "origins": [
+      [
+        "    at startFloatingTools (http://127.0.0.1:5174/src/floating/main.ts:18:19)",
+        "    at http://127.0.0.1:5174/:3:152"
+      ],
+      [
+        "    at startFloatingTools (http://127.0.0.1:5174/src/floating/main.ts:18:19)",
+        "    at eval (eval at evaluate (:311:30), <anonymous>:1:142)",
+        "    at async <anonymous>:337:30"
+      ]
+    ]
+  },
+  "rawLogs": "Ignored local artifacts; not assumed available on another device. Rerun the manual command to reproduce."
+}

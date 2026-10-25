@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.historical-settings.json",
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.js",
+    "prototypes/evolution-weather/**/*.ts"
+  ],
+  "compilerOptions": {
+    "allowJs": true
+  }
+}

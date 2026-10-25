@@ -1,3 +1,4 @@
+import {visualScope} from '../ui/visual-scope';
 import {isolate,mountUI,unmountUI,restoreNative} from '../runtime/presentation';
 import {createNativeWardrobe} from './native';
 import {createWardrobePerformance} from './performance';
@@ -23,15 +24,16 @@ export interface WardrobeFramework {host:Host;owner:Participant;rememberReferenc
 export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework){
  const slotMappings=createSlotMappings(name=>root.modUtils?.getMod?.(name)?.version, root.modUtils);
  const timing=createWardrobePerformance(),native=createNativeWardrobe(root,timing),extras=createWardrobeExtras(root);
- const KEY='DoLGameUI.wardrobe.v1';let enabled=true,nativeHiddenList=false,disposed=false,queued=false,generation=0;
+ const KEY='DoLGameUI.wardrobe.v1';const scope=visualScope();let enabled=true,nativeHiddenList=false,generation=0;
  try{enabled=localStorage.getItem(KEY)!=='false'}catch{}
  interface WardrobeView {preview?:HTMLElement;exits:HTMLElement;native:HTMLElement;actions:HTMLElement;warmth:HTMLElement;equipment:HTMLElement;services:HTMLElement}
- interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:WardrobeView|null;state:WardrobeModel;snapshot:Snapshot;owned?:Readonly<MountHandle>;binding?:Binding;plan?:{mode:Operation;entries:Entry[];location:string;inventory:Inventory;fingerprint:string;target?:string;targetFingerprint?:string};paintKey?:string;wearOrigin?:{width:number;height:number;at:number};refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
+ interface Session {passage:HTMLElement;host:HTMLElement;original:HTMLElement;anchor:Comment;toggle:HTMLButtonElement;exit?:HTMLElement;exitAnchor?:Comment;app?:App;view:WardrobeView|null;state:WardrobeModel;snapshot:Snapshot;owned?:Readonly<MountHandle>;binding?:Binding;plan?:{mode:Operation;entries:Entry[];location:string;inventory:Inventory;fingerprint:string;target?:string;targetFingerprint?:string};visual:ReturnType<typeof visualScope>;releaseVisual:()=>void;paintKey?:string;wearOrigin?:{width:number;height:number;at:number};refreshQueued?:boolean;moved?:{node:HTMLElement;anchor:Comment}[];nativeOpen?:boolean;nativeListDirty?:boolean}
  let active:Session|undefined,previewAbort:AbortController|undefined,source:ReturnType<typeof createWardrobeSource>|undefined;
- const outfits=createOutfitLayout(),motion=sourceMotion();
+ const outfits=createOutfitLayout(),motion=sourceMotion();scope.own(()=>motion.dispose());
  function isCurrentPassage(s:Session){return s.passage.isConnected&&!s.passage.classList.contains('passage-out')&&s.passage.dataset.passage===(root.SugarCube?.State??root.State)?.passage&&document.querySelector('#passages .passage:not(.passage-out)')===s.passage}
  function flushNative(s:Session,force=false){
-  if(!s.nativeListDirty||!isCurrentPassage(s)||(!force&&!s.nativeOpen))return;
+  // Passage init can reset temporary State before the old DOM is removed.
+  if(!s.nativeListDirty||s.binding&&!s.binding.isCurrent()||!isCurrentPassage(s)||(!force&&!s.nativeOpen))return;
   if(!native.available()||!s.original.querySelector('#wardrobeList'))return;
   try{
    const output=native.refreshList();
@@ -46,7 +48,7 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   list.removeAttribute('id');s.nativeListDirty=true;
   try{return operation()}finally{list.id='wardrobeList'}
  }
- function release(){extras.closeDetails();motion.cancel();const s=active;if(!s)return;active=undefined;flushNative(s,true);source?.destroy();source=undefined;generation++;previewAbort?.abort();
+ function release(){extras.closeDetails();motion.cancel();const s=active;if(!s)return;active=undefined;s.releaseVisual();flushNative(s,true);source?.destroy();source=undefined;generation++;previewAbort?.abort();
   outfits.restore();
   // Restore the actual nodes, including changes made by native widgets.
   for(const {node,anchor} of s.moved??[]){restoreNative(node,anchor,s.original.isConnected?s.original:s.passage)}
@@ -99,10 +101,10 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
  }
  function queueRefresh(s:Session){
   if(s.refreshQueued)return;s.refreshQueued=true;
-  requestAnimationFrame(()=>{s.refreshQueued=false;if(active===s)refresh(s)});
+  s.visual.frame(()=>{s.refreshQueued=false;if(active===s)refresh(s)});
  }
  function resolveBindings(s:Session,keys:string[]){
-  if(active!==s||disposed||!enabled||failed||!isMasterEnabled()||!isCurrentPassage(s)||s.binding&&!s.binding.isCurrent())return null;
+  if(active!==s||!scope.active()||!enabled||failed||!isMasterEnabled()||!isCurrentPassage(s)||s.binding&&!s.binding.isCurrent())return null;
   return isolate('wardrobe binding',()=>source?.resolveMany(keys)??null,recover)??null;
  }
  function wear(s:Session,key:string){
@@ -184,12 +186,13 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
      if(JSON.stringify(targetData)!==plan.targetFingerprint){reason='目标衣柜发生变化，剩余操作已停止';break}
      const problem=transferProblem(current,[e],plan.target);if(problem){reason=problem;break}
     }
+    const currentIncludes=(piece:Pick<Entry,'slot'|'raw'>)=>{const list=current.inventory[piece.slot];if(!Array.isArray(list))throw Error('Missing current inventory slot');return list.includes(piece.raw)};
     const affected=pieces(current,e),before=count(current.inventory),beforeItem=JSON.stringify(e.raw),output=native.action(plan.mode,e.slot,index,plan.target);
     const after=count(current.inventory);removed+=Math.max(0,before-after);
     const success=plan.mode==='repair'?affected.every(p=>{
       const max=typeof root.clothingData==='function'?root.clothingData(p.slot,p.raw,'integrity_max'):descriptor(current,p.slot,p.raw)?.integrity_max;
       return Number.isFinite(max)&&p.raw.integrity===max;
-     }):plan.mode==='transfer'?affected.every(p=>!(current.inventory as ClothingSlots)[p.slot].includes(p.raw)&&(targetData as ClothingSlots|undefined)?.[p.slot]?.includes(p.raw)):plan.mode==='separateOutfits'?e.raw.one_piece==='split'&&JSON.stringify(e.raw)!==beforeItem:!(current.inventory as ClothingSlots)[e.slot].includes(e.raw);
+     }):plan.mode==='transfer'?affected.every(p=>!currentIncludes(p)&&(targetData as ClothingSlots|undefined)?.[p.slot]?.includes(p.raw)):plan.mode==='separateOutfits'?e.raw.one_piece==='split'&&JSON.stringify(e.raw)!==beforeItem:!currentIncludes(e);
     if(success)done++;else {skipped++;skippedReasons.push(`${e.name}：${native.message(s.original)||'游戏未允许本次操作'}`)}
     if(output.querySelector('.error')||s.passage.querySelector('.error')){reason='原版处理报错，剩余操作已停止';break}
     if(!success&&JSON.stringify(current.inventory)!==expected){reason='原版操作结果不明确，剩余操作已停止';break}
@@ -198,6 +201,7 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
     expectedWorn=JSON.stringify(current.worn);
     if(plan.mode==='transfer')plan.targetFingerprint=JSON.stringify(targetData);
     s.state.progress=`已处理 ${done+skipped} / ${plan.entries.length} 项`;
+    // This business yield must settle so native mode restoration still runs after view exit.
     await new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
    }
   }catch{reason='处理异常，剩余操作已停止'}
@@ -217,8 +221,8 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   const host=document.createElement('div');host.className='dgw-root';
   const toggle=document.createElement('button');toggle.type='button';toggle.className='dgw-fallback';toggle.textContent='启用穿搭衣柜';toggle.hidden=true;toggle.onclick=()=>setEnabled(true);
   const state=reactive<WardrobeModel>({pendingMode:'delete',canRepair:false,destinations:[],pendingMinutes:null,wornItem:null,owned:0,capacity:null,busy:false,pending:[],progress:'',slots:[],slot:Object.hasOwn(slotMappings.labels(data),data.variables.lastWardrobeSlot!)?data.variables.lastWardrobeSlot!:'upper',items:[],searchAll:false,loading:false,message:'',previewStatus:'',canWear:false,wornName:'',currentWarmth:null,unknownSlots:[],categoryNote:'',nativeVisible:false});
-  const s:Session={passage,host,original,anchor,toggle,state,snapshot:data,view:null};active=s;
-  source=createWardrobeSource(root,slotMappings.labels,()=>active===s&&!disposed&&enabled&&!failed&&isMasterEnabled()&&isCurrentPassage(s)&&(!s.binding||s.binding.isCurrent()));
+  const visual=visualScope(),releaseVisual=scope.own(()=>visual.dispose());const s:Session={passage,host,original,anchor,toggle,state,snapshot:data,view:null,visual,releaseVisual};active=s;
+  source=createWardrobeSource(root,slotMappings.labels,()=>active===s&&scope.active()&&enabled&&!failed&&isMasterEnabled()&&isCurrentPassage(s)&&(!s.binding||s.binding.isCurrent()));
   // Keep the native close/return controls visible and bound to their original events.
   // Keep global overlays and SugarCube header/footer outside the collapsible native wardrobe.
   for(const node of [...passage.childNodes])if(node!==anchor&&!(node instanceof Element&&node.matches('#passage-header,#passage-footer,#customOverlayContainer')))original.append(node);
@@ -248,26 +252,27 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
  function recover(){failed=true;release();document.dispatchEvent(new Event('dol-ui-wardrobe-change'))}
  function scan(){isolate('wardrobe',update,recover)}
  function update(){
-  if(disposed)return;
+  if(!scope.active())return;
   if(!isMasterEnabled()||failed||framework&&!framework.host.binding().isCurrent()){release();return}
   const list=document.querySelector<HTMLElement>('#passages .passage #wardrobeList');
   const passage=list?.closest<HTMLElement>('.passage');
   if(!passage||document.querySelectorAll('#passages .passage #wardrobeList').length!==1||!native.available()){release();return}
   if(active?.passage!==passage){release();mount(passage)}
  }
- function schedule(){if(disposed||queued)return;queued=true;requestAnimationFrame(()=>{queued=false;scan()})}
+ function schedule(){scope.frame(scan)}
  function setEnabled(value:boolean){if(active?.state.busy){document.dispatchEvent(new Event('dol-ui-wardrobe-change'));return}failed=false;enabled=!!value;try{localStorage.setItem(KEY,String(enabled))}catch{}release();schedule();document.dispatchEvent(new Event('dol-ui-wardrobe-change'))}
  function setNativeHiddenList(value:boolean){nativeHiddenList=!!value;if(!nativeHiddenList&&active?.nativeListDirty)flushNative(active,true);}
  const observer=new MutationObserver(records=>{
   if(active?.app&&records.some(r=>active?.original.contains(r.target)||active?.view!.actions?.contains(r.target)))queueRefresh(active);
   if(records.some(r=>!(r.target instanceof Element?r.target:r.target.parentElement)?.closest('.dgw-root')))schedule();
  });
- function start(){if(disposed)return;observer.observe(document.getElementById('passages')||document.body,{childList:true,subtree:true});root.jQuery?.(document).on(':passageend.dgw :storyready.dgw',schedule);schedule()}
+ function start(){if(!scope.active())return;observer.observe(document.getElementById('passages')||document.body,{childList:true,subtree:true});root.jQuery?.(document).on(':passageend.dgw :storyready.dgw',schedule);schedule()}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
  function registerSlotMapping(spec:WardrobeSlotMapping){
   const handle=slotMappings.register(spec);
-  const changed=()=>{if(disposed)return;if(active?.app&&!active.state.busy){cancel(active);refresh(active)}else schedule()};
+  const changed=()=>{if(!scope.active())return;if(active?.app&&!active.state.busy){cancel(active);refresh(active)}else schedule()};
   changed();return Object.freeze({destroy(){handle.destroy();changed()}});
  }
- return {registerSlotMapping,getSlotSupport:()=>slotMappings.support(disposed?null:snapshot(root)),performance:timing,getEnabled:()=>enabled&&!failed,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()||failed){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){motion.dispose();slotMappings.destroy();timing.setEnabled(false);timing.reset();disposed=true;observer.disconnect();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release();extras.destroy()}};
+ scope.own(()=>observer.disconnect());
+ return {registerSlotMapping,getSlotSupport:()=>slotMappings.support(!scope.active()?null:snapshot(root)),performance:timing,getEnabled:()=>enabled&&!failed,isBusy:()=>!!active?.state.busy,setEnabled,getNativeHiddenList:()=>nativeHiddenList,setNativeHiddenList,refresh:()=>{if(!isMasterEnabled()||failed){release();return}if(active?.app)refresh(active,true);else schedule()},destroy(){slotMappings.destroy();timing.setEnabled(false);timing.reset();scope.dispose();root.jQuery?.(document).off('.dgw');document.removeEventListener('DOMContentLoaded',start);release();extras.destroy()}};
 }

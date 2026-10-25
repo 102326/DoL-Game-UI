@@ -1,3 +1,4 @@
+import {visualScope} from '../ui/visual-scope';
 import {isolate,mountUI,unmountUI,supportsDialog,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
 import SavePanel from './SavePanel.vue';
@@ -6,19 +7,20 @@ import './style.css';
 import {createSaveMetadata,type SaveMetadataHost} from './metadata';
 import {isMasterEnabled} from '../runtime/master';
 import {createSaveSource,type SaveEntry} from './source';
+import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 export type {SaveEntry} from './source';
-export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Participant}){
+export function startSaves(root:SaveMetadataHost&Pick<NativeEventsHost,'jQuery'>,framework?:{host:Host;owner:Participant}){
  const transfer=createSaveTransfer();
  let metadata:ReturnType<typeof createSaveMetadata>|undefined;
  let enabled=true;try{enabled=root.localStorage.getItem('DoLGameUI.saves.enabled')!=='false'}catch{}
- let container:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,frame=0,destroyed=false;
+ let container:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined;const scope=visualScope();
  let frameworkMount:Readonly<MountHandle>|undefined,ownerLease:Readonly<Claim>|undefined,ownerExited=false,disposingMount=false;
  let rows:HTMLElement[]=[],dirty=false;
  const state=reactive({entries:[] as SaveEntry[],v2:false,query:'',selectedSlot:'',pending:false,message:'',unknown:0});
  function isCurrent(next:HTMLElement){
   const selector='#saveList #saves-list-container,#saveList #savesListContainer',overlay=next.closest<HTMLElement>('#customOverlay');
-  return !destroyed&&!ownerExited&&(!ownerLease||ownerLease.isCurrent())&&isMasterEnabled()&&enabled&&!failed&&next===container&&next.isConnected
+  return scope.active()&&!ownerExited&&(!ownerLease||ownerLease.isCurrent())&&isMasterEnabled()&&enabled&&!failed&&next===container&&next.isConnected
    &&document.querySelector(selector)===next&&document.querySelectorAll(selector).length===1
    &&!next.closest('[hidden],[aria-hidden=true],.hidden')&&(!overlay||overlay.dataset.overlay==='saves')
    &&getComputedStyle(next.closest('#saveList')!).display!=='none';
@@ -36,7 +38,7 @@ export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Par
   const target=overlay?.querySelector<HTMLElement>('#customOverlayTitle');
   const cloud=overlay?.matches('[data-dgu-adapter=MapleBirchSoftWet][data-dgu-adapter-match=full]')&&overlay.querySelector('#maplebirch-cloud-save');
   const description=overlay?.querySelector('.dgs-transfer')?'通过文件或存档码备份与载入进度。':cloud?'云端连接与操作仍由 MapleBirch 管理。':overlay?.querySelector('.dgs-host')?'选择一个存档，查看详情与可用操作。':'';
-  if(!target||!description||destroyed||ownerExited||failed||!enabled||!isMasterEnabled()){releaseTitle();return}
+  if(!target||!description||!scope.active()||ownerExited||failed||!enabled||!isMasterEnabled()){releaseTitle();return}
   if(titlebar?.parentElement!==target){
    releaseTitle();titlebar=document.createElement('header');titlebar.className='dgs-toolbar dgs-titlebar';
    const text=document.createElement('div'),eyebrow=document.createElement('p'),heading=document.createElement('h2'),hint=document.createElement('p'),fallback=document.createElement('button');
@@ -76,7 +78,7 @@ export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Par
  function recover(){failed=true;failedContainer=container;release();transfer.release();metadata?.destroy();metadata=undefined;document.dispatchEvent(new Event('dol-ui-saves-change'))}
  function refresh(){isolate('saves',()=>{update();syncTitle()},()=>{releaseTitle();recover()})}
  function update(){
-  if(destroyed)return;
+  if(!scope.active())return;
   visibility.disconnect();const overlayRoot=document.getElementById('customOverlay');
   const visibilityNodes=new Set<Element>([overlayRoot,overlayRoot?.parentElement,document.querySelector('#saveList'),document.querySelector('#saveList #saves-list-container,#saveList #savesListContainer')].filter((n):n is Element=>!!n));
   for(const n of visibilityNodes)visibility.observe(n,{attributes:true,attributeFilter:['class','style','hidden','data-overlay','data-dgu-adapter','data-dgu-adapter-match']});
@@ -126,7 +128,7 @@ export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Par
   rows.forEach(row=>row.classList.add('dgs-native-row'));
   const header=[...next.querySelectorAll(':scope > .savesListRow')].find(row=>row.querySelector('.saveId')?.textContent?.trim()==='#');header?.classList.add('dgs-native-row');
  }
- function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
+ function schedule(){scope.frame(refresh)}
  const observer=new MutationObserver(records=>{
   if(records.some(r=>container?.contains(r.target)))dirty=true;
   if(dirty||!container?.isConnected||!host?.isConnected)schedule();
@@ -136,5 +138,7 @@ export function startSaves(root:SaveMetadataHost,framework?:{host:Host;owner:Par
  root.jQuery?.(document).on(':oncloseoverlay.dolSaves',overlayClosed);
  observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['disabled']});refresh();
  function setEnabled(value:boolean){failed=false;failedContainer=null;enabled=!!value;try{root.localStorage.setItem('DoLGameUI.saves.enabled',String(enabled))}catch{}refresh();document.dispatchEvent(new Event('dol-ui-saves-change'))}
- return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled&&!failed,setEnabled,refresh,destroy(){metadata?.destroy();destroyed=true;root.jQuery?.(document).off(':oncloseoverlay.dolSaves',overlayClosed);observer.disconnect();visibility.disconnect();if(frame)cancelAnimationFrame(frame);releaseTitle();release();transfer.release();ownerLease?.release();ownerLease=undefined}};
+
+ scope.own(()=>observer.disconnect());scope.own(()=>visibility.disconnect());
+ return {setV2:(value:boolean)=>{state.v2=value},getEnabled:()=>enabled&&!failed,setEnabled,refresh,destroy(){metadata?.destroy();scope.dispose();root.jQuery?.(document).off(':oncloseoverlay.dolSaves',overlayClosed);releaseTitle();release();transfer.release();ownerLease?.release();ownerLease=undefined}};
 }

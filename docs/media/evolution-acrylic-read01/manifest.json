@@ -1,0 +1,65 @@
+{
+  "scope": "Isolated CSS research only; default accepted settings remains unchanged. Background edge metric is not a visual acceptance or GPU/device result.",
+  "files": {
+    "current-1280-clear.png": {
+      "bytes": 327056,
+      "sha256": "5465d686d38fd050e2cad821fcaceeef4b22aaacd879b33c6eb3b1813a81d492"
+    },
+    "current-1280-heavy.png": {
+      "bytes": 339986,
+      "sha256": "d827cc567afff116fc78a6f9459204c14e2a3d346f78301c0ed243118cde62de"
+    },
+    "current-1280-snow.png": {
+      "bytes": 430649,
+      "sha256": "213608fb10bba8b57e491774a77030dcb03f14bc6c73018df10c180a2337d105"
+    },
+    "current-390-clear.png": {
+      "bytes": 163646,
+      "sha256": "236f48ea9c3bba379c2d8c944f76dc617f7e45844e5629bba5e28382622769b1"
+    },
+    "current-390-heavy.png": {
+      "bytes": 170919,
+      "sha256": "4f03dd1c7f6013e89cd62039a16102a7f47af66562dacd74493fd215dac12c59"
+    },
+    "current-390-snow.png": {
+      "bytes": 198352,
+      "sha256": "9342486c21ffa9b3489d7e0906cf25aeb29134b8da5439846e06d34738a66159"
+    },
+    "current-desktop-1x.mp4": {
+      "bytes": 1311783,
+      "sha256": "2e903161bc7b4bbf1d0b5b46096180cff8bd29c68b7ac2f82cba536a3b871c02"
+    },
+    "candidate-1280-clear.png": {
+      "bytes": 302083,
+      "sha256": "60a5ac1e9bc652277bd462d9fbabcba82c7780afb322b224a7de7b33c9467f7d"
+    },
+    "candidate-1280-heavy.png": {
+      "bytes": 314902,
+      "sha256": "7df18ade2760e291688f1f47c69ac00cc5de7923d2916bd866c007b872595dc5"
+    },
+    "candidate-1280-snow.png": {
+      "bytes": 409120,
+      "sha256": "20727880bb9ad4ca9230f1d7077df4a02cd6c7b6852be60016197e67d89b6547"
+    },
+    "candidate-390-clear.png": {
+      "bytes": 142751,
+      "sha256": "6c37b52d31bf2d89267dbd51ea47b6c266700eb3a1b103f802175207388c84ec"
+    },
+    "candidate-390-heavy.png": {
+      "bytes": 150361,
+      "sha256": "3a54618bf6a3d2adc3c59e77af3f0eaef6c93e709dbd373b0a0c8bfa45cc2ec5"
+    },
+    "candidate-390-snow.png": {
+      "bytes": 179006,
+      "sha256": "acf80c5523bad8f28dcdb01d384d640334c7807437884c96dfcbd738e07582e2"
+    },
+    "candidate-desktop-1x.mp4": {
+      "bytes": 995377,
+      "sha256": "7104ae7546ed37d0d1ee9767aef9c510bd6138a17d141fa03c14fff578690be9"
+    },
+    "result.json": {
+      "bytes": 12257,
+      "sha256": "cadcec371bed23d0346ef73524de1f56de2ac69f65bc9c269db38ef7b8c032a1"
+    }
+  }
+}

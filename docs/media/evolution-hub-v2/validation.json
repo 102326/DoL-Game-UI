@@ -1,0 +1,147 @@
+{
+  "scope": "EVO-HUB-V2-INPUT; standalone actual MotionHub, simulated tool contents; not game/physical-device or owner visual acceptance",
+  "baseline": {
+    "revision": "5a656c602cdf5d9bf569ba9364ee46f5475e5c66",
+    "rejected": true,
+    "pointerEvents": "none",
+    "tabIndex": -1,
+    "hit": false,
+    "nativeActivations": 0,
+    "reason": "visible tools remained blocked until the whole menu animation finished"
+  },
+  "current": {
+    "baseline": false,
+    "revision": "working tree",
+    "checks": [
+      "H3 visible moving tool accepts a real pointer once without moving beneath the press",
+      "H3 keyboard activation and cancel during opening retain native focus and single activation",
+      "H3 releasing a pointer outside cancels activation and resumes instead of pinning pointer focus",
+      "H1 H2 opening and closing reverse continuously, keep native terminal layout and settle resources",
+      "H3 H4 drag during opening closes safely, then dock and restore work during the next opening",
+      "H4 narrow touch and zoom preserve targets; active reduced/disabled motion settles immediately",
+      "H4 hidden view pauses both layers and resumes the latest intent",
+      "H4 scene exit, owner teardown and re-mount cannot replay activation or retain callbacks"
+    ],
+    "errors": [],
+    "pointer": {
+      "before": {
+        "x": 1157.0551147460938,
+        "y": 420.6031799316406,
+        "pointer": "auto",
+        "tab": 0,
+        "hit": true
+      },
+      "press": {
+        "q": 0.715101,
+        "target": 1,
+        "moving": true,
+        "paused": true,
+        "pressed": true,
+        "nodes": 5,
+        "phase": "moving",
+        "dead": false,
+        "renders": 303,
+        "framePending": false,
+        "sphere": {
+          "phase": "release",
+          "speed": 59.422143,
+          "charge": 1,
+          "energy": 0.927768,
+          "spread": 0.79788,
+          "pressure": 0.072232,
+          "angle": 0.8702806617224845,
+          "orbit": 1.6875514186364133,
+          "draws": 352,
+          "meteors": 6,
+          "running": true,
+          "dead": false,
+          "reduced": false,
+          "motionChanges": 0,
+          "width": 175,
+          "height": 174.99996948242188
+        }
+      },
+      "held": {
+        "q": 0.715101,
+        "target": 1,
+        "moving": true,
+        "paused": true,
+        "pressed": true,
+        "nodes": 5,
+        "phase": "moving",
+        "dead": false,
+        "renders": 303,
+        "framePending": false,
+        "sphere": {
+          "phase": "release",
+          "speed": 59.981792,
+          "charge": 1,
+          "energy": 0.997724,
+          "spread": 0.858043,
+          "pressure": 0.002276,
+          "angle": 1.4172483508428992,
+          "orbit": 2.974297428007414,
+          "draws": 384,
+          "meteors": 10,
+          "running": true,
+          "dead": false,
+          "reduced": false,
+          "motionChanges": 0,
+          "width": 175,
+          "height": 174.99996948242188
+        }
+      },
+      "after": {
+        "q": 0.217152,
+        "target": 0,
+        "moving": true,
+        "paused": false,
+        "pressed": false,
+        "nodes": 5,
+        "phase": "moving",
+        "dead": false,
+        "renders": 338,
+        "framePending": false,
+        "sphere": {
+          "phase": "return",
+          "speed": 36.852466,
+          "charge": 0.629775,
+          "energy": 0.836971,
+          "spread": 0.4611,
+          "pressure": 0.093611,
+          "angle": 3.364199804683719,
+          "orbit": 5.7402121796014125,
+          "draws": 425,
+          "meteors": 6,
+          "running": true,
+          "dead": false,
+          "reduced": false,
+          "motionChanges": 0,
+          "width": 175,
+          "height": 174.99996948242188
+        }
+      },
+      "native": 1,
+      "calls": [
+        "interface-settings"
+      ],
+      "sameNode": true
+    }
+  },
+  "additionalValidation": {
+    "prototypeTypecheck": "passed",
+    "ciCheck": "passed",
+    "standaloneBuild": "passed",
+    "existingSphereSuite": "passed",
+    "existingHubSuite": "passed",
+    "windowWorkspaceSuite": "passed after correcting Windows /@fs/ URL; first failed module fetch retained locally"
+  },
+  "ownerVisualAcceptance": "pending for this V2 Hub input batch; accepted sphere/settings/weather retained",
+  "integration": "standalone only; no production enablement",
+  "notValidated": [
+    "physical Android/iOS/WebView",
+    "actual game/ModLoader/third-party Mod mix",
+    "long multi-surface performance",
+    "Mac local execution of this input batch"
+  ]
+}

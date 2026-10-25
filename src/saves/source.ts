@@ -26,7 +26,7 @@ export function createSaveSource(current:(container:HTMLElement)=>boolean,revisi
    entries.push(entry);rows.push(row);bindings.set(entry.key,{entry,row,container,controls,parents:controls.map(n=>n.parentElement),handlers:controls.map(n=>n.onclick),signature:signature(row)});
   }
   const counts=new Map<string,number>();for(const entry of entries)counts.set(entry.slot,(counts.get(entry.slot)??0)+1);
-  for(let i=entries.length-1;i>=0;i--)if(counts.get(entries[i].slot)!>1){bindings.delete(entries[i].key);entries.splice(i,1);rows.splice(i,1)}
+  for(let i=entries.length-1;i>=0;i--){const entry=entries[i];if(entry&&(counts.get(entry.slot)??0)>1){bindings.delete(entry.key);entries.splice(i,1);rows.splice(i,1)}}
   return {entries,rows,unknown:[...container.querySelectorAll(':scope > .savesListRow')].filter(row=>!rows.includes(row as HTMLElement)&&!row.closest('[hidden],[aria-hidden=true],.hidden')&&row.querySelector('.saveId')?.textContent?.trim()!=='#').length};
  }
  function valid(b:Binding,node?:HTMLElement){return current(b.container)&&b.row.isConnected&&b.row.parentElement===b.container&&signature(b.row)===b.signature&&(!node||b.controls.every((n,i)=>n.isConnected&&b.row.contains(n)&&n.parentElement===b.parents[i]&&n.onclick===b.handlers[i])&&!blocked(node))}

@@ -1,0 +1,10 @@
+<<if _dolShopPageExperimentMode>>
+	<<run $(window).off('resize.DoLShopPageExperiment').on('resize.DoLShopPageExperiment', () => {
+__SHOP_RESIZE_TYPED__
+	})>>
+<<else>>
+	<<run $(window).off('resize.DoLShopPageExperiment')>>
+	<<run $(window).on('resize', () => {
+__SHOP_RESIZE_TYPED__
+	})>>
+<</if>>

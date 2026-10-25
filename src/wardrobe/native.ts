@@ -1,7 +1,7 @@
 import type {NativeWidgetHost,WardrobeVariables} from './host';
 import type {WardrobePerformance} from './performance';
 /** Game rules and side effects remain owned by the native wardrobe. */
-export function createNativeWardrobe(root:NativeWidgetHost,timing:WardrobePerformance){
+export function createNativeWardrobe(root:Pick<NativeWidgetHost,'SugarCube'|'Wikifier'>,timing:Pick<WardrobePerformance,'measure'>){
  const wikifier=()=>root.SugarCube?.Wikifier??root.Wikifier;
  function execute(source:string,phase:string){
   const W=wikifier();if(!W)throw Error('衣柜处理接口尚不可用');
@@ -17,8 +17,9 @@ export function createNativeWardrobe(root:NativeWidgetHost,timing:WardrobePerfor
    // Use the source widget as well as its update macro: Mods can patch the link's selection semantics.
    const output=execute(`<<set $wardrobeOption="wear">><<capture _wardrobe_list _selectedWardrobe _wear>><<set _wardrobe_list=${JSON.stringify(slot)}>><<set _selectedWardrobe=selectWardrobe()>><<set _wear="wear_${slot}">><<wearlink_norefresh "Soft & Wet" ${JSON.stringify(index)}>><</capture>>`,index==='strip'?'native.strip':'native.wear');
    const links=output.querySelectorAll<HTMLAnchorElement>('a.link-internal');
-   if(output.querySelector('.error')||links.length!==1)throw Error('原版衣柜操作入口结构未知，请使用原版衣柜');
-   links[0].click();return output;
+   const link=links[0];
+   if(output.querySelector('.error')||links.length!==1||!link)throw Error('原版衣柜操作入口结构未知，请使用原版衣柜');
+   link.click();return output;
   }
   const targetCode=mode==='transfer'?`<<set _wardrobeTransfer=${JSON.stringify(target||'').replace(/</g,'\\u003c').replace(/>/g,'\\u003e')}>>`:'';
   return execute(`${targetCode}<<set $wardrobeOption="${mode}">><<set $wear_${slot}=${JSON.stringify(index)}>><<updatewardrobe undefined "wear_${slot}">>`,mode==='delete'?'native.discard':mode==='separateOutfits'?'native.split':mode==='repair'?'native.repair':mode==='transfer'?'native.transfer':index==='strip'?'native.strip':'native.wear');
@@ -27,7 +28,7 @@ export function createNativeWardrobe(root:NativeWidgetHost,timing:WardrobePerfor
   setSlot(slot:string){return execute(`<<set $lastWardrobeSlot=${JSON.stringify(slot)}>>`,'native.category')},
   refreshList(){return execute('<<replace "#wardrobeList">><<wardrobeContents>><</replace>>','native.list')},
   message(container:HTMLElement){return container.querySelector('#wardrobewear')?.textContent?.trim()||''},
-  resetMode(variables:WardrobeVariables,expectedMode:string,currentVariables:WardrobeVariables|undefined){
+  resetMode(variables:Pick<WardrobeVariables,'wardrobeOption'>,expectedMode:string,currentVariables:Pick<WardrobeVariables,'wardrobeOption'>|undefined){
    if(variables===currentVariables&&variables.wardrobeOption===expectedMode)variables.wardrobeOption='wear';
   }
  };

@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "run": 39950006354,
+  "attempt": 1,
+  "event": "push",
+  "conclusion": "success",
+  "report": {
+    "schema": 1,
+    "identity": {
+      "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+      "source": {
+        "head": "3e6e0396f70dacf5dc6c730fec8fb73cfd7360c2",
+        "tree": "5cfade70cf6012824bb75ef992e0037468daac97",
+        "dirty": false,
+        "contentSha256": "fae70d0ff711665d05348cc4139969e7ad00e95d952eed0e1abae558d3f3bc0e",
+        "lockSha256": "e0313e47f5f2c8939839120f2da0bf5a142582578f8ef4cb89a8c6bc265f61a6"
+      },
+      "run": {
+        "id": "39950006354-1-research",
+        "attempt": "1",
+        "githubRunId": "39950006354",
+        "repository": "102326/DoL-Game-UI",
+        "ref": "refs/heads/dev/evolution-4.0",
+        "event": "push",
+        "workflow": "Motion Evolution prototype",
+        "job": "prototype",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/39950006354"
+      },
+      "nonce": "b2f9474da7bb549cd3bf95f60603536c",
+      "profile": "research",
+      "catalog": {
+        "version": "1.3.0",
+        "profile": "research",
+        "depth": "standard",
+        "expectedLockSha256": "dfb57c2e92f984c51b13ab828ea07913552e024ca934a79fdcf5c4b2d1984846",
+        "sha256": "804c82adc14746e686ef417c37c6ffd61c6fdf114becbedd8a8ebfb5d03fe99c"
+      },
+      "pr": null,
+      "environment": {
+        "orderSeed": null,
+        "runnerImage": "ubuntu26",
+        "runnerImageVersion": "20261012.163.1",
+        "platform": "linux",
+        "arch": "x64",
+        "deviceDepth": "standard",
+        "node": "v22.23.3",
+        "npm": "10.9.9",
+        "python": "Python 3.14.4",
+        "playwright": "1.63.0",
+        "browser": "Pinned Playwright Chromium (browser suite)"
+      }
+    },
+    "status": "PASS",
+    "assertionResult": "PASS",
+    "evidenceIntegrity": "COMPLETE",
+    "reasonCodes": [],
+    "problems": [],
+    "remoteVerificationMs": 384
+  },
+  "producerOutputAnchors": {
+    "run": 39950006354,
+    "job": 120405598964,
+    "nonce": "b2f9474da7bb549cd3bf95f60603536c",
+    "manifestSha256": "50c34b5f111ece717923f7b1317a4aea9209ed1717e246d826f43d0ebba9a203",
+    "source": "Actual evidence-verify job log resolved producer outputs"
+  },
+  "scope": "Actual final-development-commit post-merge workflow and downloaded remote-verification report: GitHub archive digest, final source/run/profile/catalog/nonce bound to live job outputs; full research artifacts/media checked by actual Actions download verifier. No second local full-media download is claimed."
+}

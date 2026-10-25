@@ -1,0 +1,21 @@
+{
+  "scope": "Blood-rain BR01 isolated actual settings; controlled input; no production/save changes",
+  "files": {
+    "blood-rain-1x.mp4": {
+      "bytes": 1035731,
+      "sha256": "149215fbcf2e06ec0374e55f12b412af797f13878e335a76b072bc1fc5c9ab7f"
+    },
+    "blood-rain.png": {
+      "bytes": 514685,
+      "sha256": "1d11efeba63053a7dd0b5b6a2b0af03b112a82e8cb3f503be03781f703fbd0ce"
+    },
+    "narrow.png": {
+      "bytes": 173740,
+      "sha256": "35d76f933eaf20ec3037c202bdac236ce2538a7b1c08b87f509565583a4f17bb"
+    },
+    "result.json": {
+      "bytes": 2071,
+      "sha256": "1173bc4d71327569dd77e1de225514c1b2c88bf7ed7f9a575fc6f9df35f96052"
+    }
+  }
+}

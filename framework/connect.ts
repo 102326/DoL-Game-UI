@@ -1,7 +1,7 @@
 import {PROTOCOL, type Host} from './contracts';
 
 /** One consumer owns its own lifecycle subscription; existing Mods need not opt in. */
-export function connectConsumer(start: (host: Host) => () => void, root = window, onStatus?: (reason:string|null)=>void) {
+export function connectConsumer(start: (host: Host) => () => void, root: Pick<Window, 'document' | 'DoLUiHost'> = window, onStatus?: (reason:string|null)=>void) {
  let cleanup: (() => void) | undefined, current: Host | undefined, closed = false, lastReason = '';
  function status(reason:string|null){try{onStatus?.(reason)}catch{/* Diagnostics cannot invalidate a consumer. */}}
  function warn(reason: string) {if (reason !== lastReason) console.warn(`[Stone Free] Consumer unavailable: ${reason}`); lastReason = reason;status(reason)}

@@ -1,0 +1,33 @@
+{
+  "extends": "./tsconfig.tools.json",
+  "compilerOptions": {
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node",
+      "vite/client"
+    ],
+    "paths": {
+      "/src/*": [
+        "./src/*"
+      ],
+      "/framework/*": [
+        "./framework/*"
+      ]
+    }
+  },
+  "include": [
+    "tests/*.cts",
+    "compat/reoverfits-soft-wet/check.cts",
+    "scripts/record-*.cts",
+    "scripts/check-evolution-*.cts",
+    "scripts/check-settings-refraction.cts",
+    "scripts/measure-evolution-*.cts"
+  ],
+  "exclude": []
+}

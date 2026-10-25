@@ -1,0 +1,90 @@
+{
+  "scope": "First-party controlled prototypes. Weather graphics pending owner visual acceptance; not game/device integration.",
+  "base": "98c32bc18a7537e0abf8577ec83cee087be0c35f",
+  "weatherRecordSourceHashesVerified": true,
+  "navigationSources": {
+    "src/ui/navigation-geometry.ts": "10991764aea642ea7913e424be000116768f2b81c1c38fd7d4e00dbb37a5b54e",
+    "src/ui/native-overlay-navigation.ts": "312302123a852adfc827a8acf078dec59cc05c103aba0a103dcd8a24f6e3174c",
+    "src/panels/main.ts": "fffbab48d26f495e146a8b312115d868613ff7c41068fec958f0278342d0929e",
+    "tests/evolution-panels.cjs": "8b105231a07c8c8a7241b72835bf6a5e5b1d9e195c08d5a5b1c71e3f5373e430",
+    "tests/panels-framework.cjs": "f22cdee00cf030500f7a8e59df8590bb1d368f4ec711a3067c2762514a3de0ee"
+  },
+  "files": {
+    "a2-negative.json": {
+      "bytes": 465,
+      "sha256": "d72853252c96b0ac25f10f77391203900990b3713170f3bb0ce780e6af43c22d"
+    },
+    "beads-1x.mp4": {
+      "bytes": 1116164,
+      "sha256": "6d7df1fb50add5f4f316cf4bbfac440b10c34496dac7b584548e0a9e17a2b4e8"
+    },
+    "beads-clear.png": {
+      "bytes": 345239,
+      "sha256": "7134259c312bf63726c622727d3f7e309358544e126f1bcd2055a29ee23e517c"
+    },
+    "beads-rain.png": {
+      "bytes": 364547,
+      "sha256": "2a6bbd149169fa9e2383a9bd4559c9ada00885b57c046700a9302d7fbedb7cc3"
+    },
+    "beads-snow.png": {
+      "bytes": 355444,
+      "sha256": "2fc2dc99d489b18614c3d80ae7fbc30e06348e474f60fc1e04b0468ade095649"
+    },
+    "film-1x.mp4": {
+      "bytes": 1113841,
+      "sha256": "37525e7bb59ea4f17c12cbffa06a23ec43e8d1a5dd897c28456caabf94a02e71"
+    },
+    "film-clear.png": {
+      "bytes": 345045,
+      "sha256": "b7ac67583575463c435596a43288b3eb1c0ad8972c65eba55ee5a23db263d2c6"
+    },
+    "film-rain.png": {
+      "bytes": 383896,
+      "sha256": "c8575964bf3cf5f20593ecd5e238e65301001d07508dfa1b3c9ed140d641fd4c"
+    },
+    "film-snow.png": {
+      "bytes": 374214,
+      "sha256": "721868675427ec0ad05018ade311b038c58e87e72892b5fb0acc38899a429fc1"
+    },
+    "native-filter-off.png": {
+      "bytes": 189888,
+      "sha256": "2df6c57ab016ff337d5b6ca7ec91b8b8815127debb77f3e05459d60dbae519e8"
+    },
+    "native-filter-on.png": {
+      "bytes": 190196,
+      "sha256": "e80e8d96c1f9f05465721737a7532ccd3824ebc4f7cb8abb04e5234436521203"
+    },
+    "panels.json": {
+      "bytes": 2111,
+      "sha256": "f849db84efec6eafcda235af8bfdd9bf3d7ac3ba613b446496c88f784d09bfe1"
+    },
+    "result.json": {
+      "bytes": 41681,
+      "sha256": "354042d22172865dc93b37e8e46a8ad69f6ae3d8539d6f1670e4c14f776d25e0"
+    },
+    "v1-1x.mp4": {
+      "bytes": 1656580,
+      "sha256": "09b8eda87429a798c2d2fcaf0e5ba1401f6b17d2eeed97a6dbb38ed62ea17504"
+    },
+    "v1-clear.png": {
+      "bytes": 539372,
+      "sha256": "786151fb4e05b8f94e9a4fafa603b26ea26780a7f910a82cd017a097a4f9e98a"
+    },
+    "v1-rain.png": {
+      "bytes": 508555,
+      "sha256": "c0df926a86728c09727a61e7afea2a3d719d9635fb3fff994e5ec5a6418692a1"
+    },
+    "v1-snow.png": {
+      "bytes": 533934,
+      "sha256": "134daeb3a0f7dba2c28e0260241df5f3b87e66ffe55970fa840f4e2382f1d1b5"
+    }
+  },
+  "postRecordChanges": [
+    {
+      "file": "vite.evolution-weather.config.ts",
+      "recordedSha256": "bde79ec453f38b2283b85829aa5cfe1e4818dae67d22e0e07d34bfc89c90b805",
+      "finalSha256": "3b51bcdf61869ea1ca29c22ea63d98bd229918beb8dc7f7fbc095d93a0854240",
+      "reason": "Review media middleware strips Connect leading slash. No graphics/runtime/HTML/CSS/test changes; record used built static server, so original-speed media remains valid. Latest build and live review route checked separately."
+    }
+  ]
+}

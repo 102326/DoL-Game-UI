@@ -15,7 +15,7 @@ export function wrapActionLists(passage:HTMLElement){
   }
   const list=document.createElement('div'),group=document.createElement('div');
   list.dataset.dcuActionList='';group.dataset.dcuActionKey=input.name.replace(/^radiobutton-/,'');
-  nodes[0].parentNode!.insertBefore(list,nodes[0]);list.append(group);group.append(...nodes);lists.push(list);
+  const first=nodes[0];if(!first?.parentNode)continue;first.parentNode.insertBefore(list,first);list.append(group);group.append(...nodes);lists.push(list);
  }
  return {lists,restore(){for(const list of lists){const group=list.firstElementChild;if(group)list.replaceWith(...group.childNodes);else list.remove()}}};
 }

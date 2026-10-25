@@ -1,3 +1,4 @@
+import {visualScope} from '../ui/visual-scope';
 import {createSidebarLayout} from './sidebar-layout';
 import type {Preferences} from './preferences';
 type LayoutPreferences = Partial<Pick<Preferences, 'enabled' | 'layout' | 'compactStats' | 'wideReading'>>;
@@ -11,10 +12,11 @@ type LayoutRuntime = Window & {
 export function startLayout(root: LayoutRuntime=window as LayoutRuntime){
   if(root.DMTLayout)return;
   const sidebarLayout=createSidebarLayout();
-  let sidebarFrame=0;
-  function scheduleSidebar(){cancelAnimationFrame(sidebarFrame);sidebarFrame=requestAnimationFrame(()=>sidebarLayout.sync(active))}
+  const scope=visualScope();scope.own(()=>sidebarLayout.destroy());
+  const updateSidebar=()=>sidebarLayout.sync(active);
+  function scheduleSidebar(){scope.frame(updateSidebar)}
   let active=false, shade: HTMLButtonElement | undefined, bar: HTMLElement | null | undefined,
-    observer: MutationObserver | undefined, previousFocus: Element | null | undefined, disposed=false;
+    observer: MutationObserver | undefined, previousFocus: Element | null | undefined, releaseObserver:(()=>void)|undefined;
   const narrow=root.matchMedia('(max-width: 899px)');
   const visible=(node: Element | null | undefined): node is Element=>!!node && node.getClientRects().length>0 && getComputedStyle(node).visibility!=='hidden';
   function stow(){
@@ -33,7 +35,7 @@ export function startLayout(root: LayoutRuntime=window as LayoutRuntime){
     if(!open)previousFocus=null;
   }
   function sync(preferences: LayoutPreferences){
-    if(disposed)return;
+    if(!scope.active())return;
     active=!!(preferences.enabled&&preferences.layout);
     const html=document.documentElement;
     html.toggleAttribute('data-dmt-layout',active);
@@ -49,7 +51,7 @@ export function startLayout(root: LayoutRuntime=window as LayoutRuntime){
       document.body.append(shade);
     }
     const next=document.getElementById('ui-bar');
-    if(next!==bar){observer?.disconnect();bar=next;if(bar){observer=new MutationObserver(records=>{if(records.some(r=>r.type==='attributes'&&r.target===bar))updateShade();if(records.some(r=>r.type==='childList'&&(r.target===bar||r.target instanceof Element&&r.target.closest('#storyCaptionContent'))))scheduleSidebar()});observer.observe(bar,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});}}
+    if(next!==bar){releaseObserver?.();bar=next;if(bar){observer=new MutationObserver(records=>{if(records.some(r=>r.type==='attributes'&&r.target===bar))updateShade();if(records.some(r=>r.type==='childList'&&(r.target===bar||r.target instanceof Element&&r.target.closest('#storyCaptionContent'))))scheduleSidebar()});const current=observer;releaseObserver=scope.own(()=>current.disconnect());observer.observe(bar,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});}}
     sidebarLayout.sync(active);
     updateShade();
   }
@@ -78,7 +80,7 @@ export function startLayout(root: LayoutRuntime=window as LayoutRuntime){
   root.addEventListener('backbutton',onBack,true);
   narrow.addEventListener('change',updateShade);
   root.DMTLayout={sync,destroy(){
-    disposed=true;observer?.disconnect();cancelAnimationFrame(sidebarFrame);sidebarLayout.destroy();shade?.remove();document.getElementById('dmt-status-toggle')?.remove();document.removeEventListener('keydown',onBack,true);
+    scope.dispose();shade?.remove();document.getElementById('dmt-status-toggle')?.remove();document.removeEventListener('keydown',onBack,true);
     root.removeEventListener('backbutton',onBack,true);narrow.removeEventListener('change',updateShade);
     for(const name of ['data-dmt-layout','data-dmt-compact-stats','data-dmt-stats-collapsed','data-dmt-reading'])document.documentElement.removeAttribute(name);
     delete root.DMTLayout;

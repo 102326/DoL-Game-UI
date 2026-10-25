@@ -1,3 +1,4 @@
+import {visualScope} from '../ui/visual-scope';
 /** Copy the native full-character canvas; never move it or rerun its renderer. */
 export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:()=>void,onRecovered:(canvas:HTMLCanvasElement)=>void):Promise<HTMLCanvasElement|null>{
  return new Promise(resolve=>{
@@ -6,15 +7,15 @@ export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:
   const sample=probe.getContext('2d',{willReadFrequently:true});
   canvas.setAttribute('role','img');canvas.setAttribute('aria-label','当前角色完整穿搭预览');
   canvas.dataset.previewSource='sidebar';
-  let timer:ReturnType<typeof setTimeout>|undefined,finished=false,stopped=false,visible=true,mirrored=false;
+  const scope=visualScope();let finished=false,visible=true,mirrored=false;
   let source:HTMLCanvasElement|null=null,missingSince=performance.now();
   const observer=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??true});
   observer.observe(host);
-  function stop(){stopped=true;clearTimeout(timer);observer.disconnect();signal.removeEventListener('abort',abort)}
+  function stop(){scope.dispose()}
   function abort(){stop();if(!finished){finished=true;resolve(null)}}
   function unavailable(){if(!finished){finished=true;resolve(null)}else if(mirrored)onUnavailable();mirrored=false}
   function tick(){
-   if(stopped)return;
+   if(!scope.active())return;
    if(!finished||(!document.hidden&&visible)){
     // Only the native main canvas contract is supported. Lighting is deliberately
     // excluded: it is a scene overlay, not part of the character's outfit.
@@ -42,9 +43,9 @@ export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:
    }
    // Bounded sampling also observes in-place canvas animation, which a DOM
    // MutationObserver cannot see. Pause copies while the preview is offscreen.
-   timer=setTimeout(tick,mirrored?125:500);
+   scope.timeout(tick,mirrored?125:500);
   }
-  signal.addEventListener('abort',abort,{once:true});
+  signal.addEventListener('abort',abort,{once:true});scope.own(()=>signal.removeEventListener('abort',abort));scope.own(()=>observer.disconnect());
   if(signal.aborted)abort();else tick();
  });
 }

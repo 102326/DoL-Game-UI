@@ -1,0 +1,41 @@
+{
+  "scope": "Isolated actual-settings special-weather preview; controlled inputs; original speed; no game/save changes or production integration",
+  "files": {
+    "alien-rain.png": {
+      "bytes": 563699,
+      "sha256": "a3d826f619314ac671cb2f9d19c15e38e3d5be4c25a1c298a66b54a4f40d604d"
+    },
+    "alien.png": {
+      "bytes": 521056,
+      "sha256": "5743e3315370f0ed5ec54e2747c3e2573d4cfd77fd5a34f5c3cddb6ef9e3bca3"
+    },
+    "cold-snow.png": {
+      "bytes": 477015,
+      "sha256": "c56edfed23147f1d28f2a12248988dfa74bd6c72612e0c1b1368edadc3b9f9c0"
+    },
+    "cold.png": {
+      "bytes": 404905,
+      "sha256": "abf9a4cd17039d922494910fa9d7df87bf9c08df9ad53e9e7a13adb98bec3abb"
+    },
+    "desktop-1x.mp4": {
+      "bytes": 2724650,
+      "sha256": "57add1e02dd0b7254d3b7526c8bdb759d966cda4de6962e36204c8413e86a674"
+    },
+    "heat.png": {
+      "bytes": 482252,
+      "sha256": "3c3e13272ec0e3b9d1588d3d8bb4a48194d0a3f9d3314dead49d3ada324a295b"
+    },
+    "narrow-1x.mp4": {
+      "bytes": 719869,
+      "sha256": "7b7e9b8a79cc5c7ace4d5a5a4c6b13f741e238c9cc99a41433f6b01dd0fb299d"
+    },
+    "narrow.png": {
+      "bytes": 177584,
+      "sha256": "da17b88d1e818699e4a2a0dee656fcdb825391cc8f7433a3eecc6fc2164f230a"
+    },
+    "result.json": {
+      "bytes": 31214,
+      "sha256": "efe5826279b83d3d84d3303c42fdeaade7e60711f3a028106dfc620322c7255d"
+    }
+  }
+}

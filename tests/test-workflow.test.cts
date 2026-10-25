@@ -1,0 +1,24 @@
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"entry"}
+import assert = require('node:assert/strict');
+import path = require('node:path');
+import child = require('node:child_process');
+const {spawnSync}=child;
+const run=(...args:string[])=>spawnSync(process.execPath,[path.join(__dirname,'../scripts/test-workflow.cjs'),...args],{encoding:'utf8'});
+function planFrom(text:string){const value:unknown=JSON.parse(text);assert.ok(value&&typeof value==='object'&&'steps' in value&&'tests' in value);const {steps,tests}=value;assert.ok(Array.isArray(steps)&&steps.every((x:unknown)=>typeof x==='string'));assert.ok(Array.isArray(tests)&&tests.every((x:unknown)=>typeof x==='string'));return {steps,tests};}
+for(const mode of ['quick','release','performance']){
+ const r=run(mode,'--plan');assert.equal(r.status,0,r.stderr);
+ const plan=planFrom(r.stdout);assert.deepEqual(plan.steps.slice(0,2),['build','unit']);
+ assert.ok(plan.tests.every(x=>!x.startsWith('adb-')));
+ if(mode==='quick')assert.deepEqual(plan.tests,[]);
+ if(mode==='release')for(const test of ['save-compatibility.cjs','wardrobe-m2.cjs','shop-source.test.cjs','saves-source-m4b.cjs','combat-m4a.cjs'])assert.ok(plan.tests.includes(test),test);
+ if(mode==='performance')assert.deepEqual(plan.tests,['shop-current-baseline.cjs','wardrobe-current-baseline.cjs']);
+}
+assert.notEqual(run('quick','unknown','--plan').status,0);
+assert.notEqual(run('release','shop','--plan').status,0);
+for(const [group,test] of [['wardrobe','wardrobe-search.test.cjs'],['shop','shop-source.test.cjs'],['saves','saves-source-m4b.cjs'],['combat','combat-m4a.cjs'],['story','story-actions.test.cjs']] as const){
+ const plan=planFrom(run('quick',group,group,'--plan').stdout);
+ assert.equal(plan.tests.filter(name=>name===test).length,1);
+ assert.ok(!plan.tests.includes('wardrobe-m2.cjs'),'slow wardrobe integration is release-only');
+}
+assert.deepEqual(planFrom(run('quick','layout','layout','--plan').stdout).tests,['ui-runtime.cjs','resilience.cjs','master-toggle.cjs','master-native.cjs','mobile-density.cjs','display-scale.cjs','preferences-preservation.cjs','sidebar-layout.cjs','floating-tools.test.cjs','floating-boundaries.test.cjs','overlay-manager-layout.cjs','kitchen-layout.cjs','release-27-settings.cjs']);
+console.log('PASS workflow selection, deduplication and invalid arguments');

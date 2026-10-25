@@ -37,7 +37,10 @@ html[data-stone-free][data-dol-midnight] .kw-heading-weather:not([data-weather=u
 .kw-heading-weather[data-weather=clear][data-night]::before{background:radial-gradient(ellipse 28% 32% at 68% 15%,#aabfd334,transparent 85%)}
 .kw-heading-weather[data-weather=cloud]::before{background:radial-gradient(ellipse 42% 33% at 20% 18%,#030812ad,transparent 85%),radial-gradient(ellipse 48% 28% at 78% 37%,#080e1b99,transparent 85%);animation:kw-weather-cloud-shadow 18s ease-in-out infinite alternate}
 .kw-heading-weather[data-weather=cloud]::after{background:radial-gradient(ellipse 44% 26% at 60% 9%,#a9b9c34d,transparent 80%);animation:kw-weather-cloud-shadow 26s ease-in-out infinite alternate-reverse}
-.kw-heading-weather:is([data-weather=rain],[data-weather=storm]){--kw-drop-scale:1;--kw-drop-rate:1;--kw-shower-time:1.35s;--kw-shower-width:560px;--kw-shower-height:320px;background-image:url('./kw-weather-shower.svg'),radial-gradient(ellipse at 65% 8%,#abc3d51a,transparent 65%);background-size:var(--kw-shower-width) var(--kw-shower-height),100% 100%;animation:kw-weather-shower calc(var(--kw-shower-time)*3/1.4) linear infinite}
+.kw-heading-weather:is([data-weather=rain],[data-weather=storm]){--kw-drop-scale:1;--kw-drop-rate:1;--kw-shower-time:1.35s;--kw-shower-width:560px;--kw-shower-height:320px;background-image:radial-gradient(ellipse at 65% 8%,#abc3d51a,transparent 65%)}
+/* Move one cached texture instead of repainting the entire masked window each frame. */
+.kw-weather-shower{display:none;position:absolute;z-index:-1;left:calc(-1 * var(--kw-shower-width));top:calc(-3 * var(--kw-shower-height));width:calc(100% + var(--kw-shower-width));height:calc(100% + var(--kw-shower-height)*3);background:url('./kw-weather-shower.svg') 0 0/var(--kw-shower-width) var(--kw-shower-height) repeat;will-change:transform;animation:kw-weather-shower calc(var(--kw-shower-time)*3/1.4) linear infinite}
+.kw-heading-weather:is([data-weather=rain],[data-weather=storm])>.kw-weather-shower{display:block}
 .kw-heading-weather:is([data-weather=rain],[data-weather=storm])[data-rain=heavy]{--kw-drop-scale:1.25;--kw-drop-rate:.75;--kw-shower-time:.9s;--kw-shower-width:700px;--kw-shower-height:400px}
 .kw-heading-weather:is([data-weather=rain],[data-weather=storm])[data-rain=severe]{--kw-drop-scale:1.5;--kw-drop-rate:.5;--kw-shower-time:.55s;--kw-shower-width:560px;--kw-shower-height:320px}
 .kw-heading-weather:is([data-weather=rain],[data-weather=storm])::after{background:0 0/530px 370px repeat url('./kw-weather-condensation.svg');opacity:.5;animation:kw-weather-condensation 14s ease-in-out infinite alternate}
@@ -57,7 +60,18 @@ html[data-stone-free][data-dol-midnight] .kw-heading-weather:not([data-weather=u
 .kw-heading-weather[data-weather=snow]::after{background:0 0/900px 520px repeat url('./kw-weather-snow-far.svg');--kw-rain-distance:520px;opacity:.6;animation:kw-weather-snow 21s linear infinite}
 .kw-heading-weather[data-weather=fog]::before{inset:8% -12% 25%;background:0 0/100% 100% no-repeat url('./kw-weather-mist.svg');opacity:.85;animation:kw-weather-fog 24s ease-in-out infinite alternate}
 .kw-heading-weather[data-weather=fog]::after{inset:22% -18% 6%;background:0 0/100% 100% no-repeat url('./kw-weather-mist.svg');opacity:.6;animation:kw-weather-fog 33s ease-in-out infinite alternate-reverse}
-@keyframes kw-weather-shower{to{background-position:var(--kw-shower-width) calc(var(--kw-shower-height)*3),0 0}}
+.kw-weather-atmosphere{display:none;position:absolute;inset:0;--kw-atmosphere:171,45,51}
+html[data-stone-free][data-dol-midnight] .kw-heading-weather[data-special]:not([data-special=none]){display:block}
+.kw-heading-weather[data-special]:not([data-special=none])>.kw-weather-atmosphere{display:block}
+.kw-heading-weather[data-special=tentacle]>.kw-weather-atmosphere{--kw-atmosphere:125,68,175}
+.kw-heading-weather[data-special=heat]>.kw-weather-atmosphere{--kw-atmosphere:211,139,65}
+.kw-heading-weather[data-special=cold]>.kw-weather-atmosphere{--kw-atmosphere:133,189,215}
+.kw-weather-atmosphere::before,.kw-weather-atmosphere::after{content:'';position:absolute;inset:0;pointer-events:none}
+.kw-weather-atmosphere::before{background:radial-gradient(ellipse 36% 34% at 78% 16%,rgba(var(--kw-atmosphere),.4),rgba(var(--kw-atmosphere),.16) 46%,transparent 85%);animation:kw-weather-sun 18s ease-in-out infinite alternate}
+.kw-heading-weather[data-special=blood-moon]>.kw-weather-atmosphere::before{background:radial-gradient(circle at 78% 16%,#df847780 0 1.6%,#8c282f88 2.1%,#390d1840 2.5%,transparent 2.8%),radial-gradient(ellipse 36% 34% at 78% 16%,#ab2d3366,#ab2d3329 46%,transparent 85%)}
+.kw-heading-weather:is([data-special=blood-moon],[data-special=tentacle])[data-weather=clear]::before{background:none}
+.kw-weather-atmosphere::after{background:radial-gradient(ellipse 36% 28% at 56% 14%,#04060c66,transparent 80%);animation:kw-weather-cloud-shadow 17s ease-in-out infinite alternate}
+@keyframes kw-weather-shower{from{transform:translate3d(0,0,0)}to{transform:translate3d(var(--kw-shower-width),calc(var(--kw-shower-height)*3),0)}}
 @keyframes kw-weather-drop{0%{opacity:0;transform:translateY(0) scale(.4)}14%{opacity:.6;transform:translateY(0) scale(.7)}48%{opacity:.8;transform:translateY(0) scale(1)}58%{opacity:.9;transform:translateY(0) scale(1.12)}72%{opacity:.8;transform:translateY(calc(var(--kw-travel)*.18)) scale(.95,1.08)}91%{opacity:.45;transform:translateY(var(--kw-travel)) scale(.8,1.12)}100%{opacity:0;transform:translateY(var(--kw-travel)) scale(.7,1)}}
 @keyframes kw-weather-trace{0%,58%,100%{opacity:0;transform:scaleY(0)}72%{opacity:.45;transform:scaleY(.7)}85%{opacity:.3;transform:scaleY(1)}95%{opacity:0;transform:scaleY(1)}}
 @keyframes kw-weather-condensation{from{opacity:.3}to{opacity:.65}}

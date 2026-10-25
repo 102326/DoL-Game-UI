@@ -1,0 +1,1230 @@
+{
+  "scope": "Integrated actual-settings special weather; controlled inputs; original speed when recorded; no game/save changes or release",
+  "sourceHead": "78430e6df124f9d9dd3a9b32fc3e8bc35602878d",
+  "workingTree": true,
+  "sources": {
+    "prototypes/evolution-weather/blood-moon.ts": "95d7033df20a6b363127413c119a0a857607f58ca45b1fba3e3ebe32e722fe65",
+    "prototypes/evolution-weather/special-atmosphere.ts": "03e9c01eb4f4945b284d110b0746e180bc85924d46cba91ac89bcb283b0c6fdf",
+    "scripts/preview-evolution-blood-moon.ts": "71447dee7234c49765b40e1d52f359ac0e5001f13554e2938a58ecc9da9c50e4",
+    "scripts/record-evolution-special-weather.ts": "c0723feab622655118ea7c40f0ed84295b2087d741f080c6fd93aea2aa68e62d",
+    "src/ui/weather/wet-glass.ts": "dd85eb0f0e19996f2f3b9d4786062ba0931c8c6df0b43aece8a50b696896f831",
+    "src/ui/weather/surface.ts": "372e683b9ea88fa37cb18ee532592f148ee1403be788cf2357db5db77b58aa41",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/theme/controller.ts": "fad171991ef58d0c51222691f5d9c66a5855e90fb05cd130adc74546eb52e9cf",
+    "dist/framework/official-ui/style.css": "54bc0e2a2eac5a9dbdb42874527a15ddb8461efe9dddd315395e280c3c438b1e",
+    "src/ui/weather/blood-moon.ts": "a5d06e51b5e619d58fc65b54aa5819310b1bf00f6f472fa0907884288a25ab88",
+    "src/ui/weather/special-atmosphere.ts": "84ca650b7baa985443d51d7ab875c5f7104d51343b5876a754687e791e32637f",
+    "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e"
+  },
+  "acceptedBloodMoonUnchanged": true,
+  "browser": "157.0.4341.16",
+  "checks": [
+    "alien: protected text/close, no invented snow, static reduced motion, animated pixels, full category continuity",
+    "heat: protected text/close, no invented snow, static reduced motion, animated pixels, full category continuity",
+    "cold: protected text/close, no invented snow, static reduced motion, animated pixels, full category continuity",
+    "Real preference input operates and restores",
+    "Actual dual layouts remain available",
+    "Alien sky coexists with protected original rain",
+    "Cold sky retains original snow and edge frost",
+    "390px shell stays in viewport",
+    "Animation preference stops the existing clock",
+    "Close and dispose release owned surfaces"
+  ],
+  "appearances": [
+    {
+      "kind": "alien",
+      "state": {
+        "target": {
+          "kind": "clear",
+          "night": true,
+          "rain": "normal",
+          "special": "tentacle"
+        },
+        "wet": 0,
+        "snow": 0,
+        "light": 1,
+        "night": 1,
+        "intensity": 0.65,
+        "specialAmount": 1,
+        "frames": 1287,
+        "reads": 59,
+        "width": 998,
+        "height": 895,
+        "dpr": 1,
+        "activeFrames": 1,
+        "activePolls": 0,
+        "disposed": false,
+        "particles": 90,
+        "paused": false,
+        "paintMs": 0.09999999962747097,
+        "time": 4.626400000000323,
+        "material": "glass",
+        "specialSkiesEnabled": true,
+        "specialSkyModels": [
+          {
+            "renderer": "special-atmosphere-s01",
+            "kind": "tentacle",
+            "textures": 4,
+            "disposed": false
+          }
+        ],
+        "forceEnabled": true,
+        "scatterEnabled": true,
+        "showerPattern": "independent-streaks",
+        "showerGeometry": [],
+        "rainEnergy": 1.6025,
+        "rainAmount": 0.52,
+        "showerDensity": 0,
+        "showerSpeed": 0,
+        "showerEnabled": true,
+        "showerReady": true,
+        "showerPhase": 0,
+        "climateEnabled": true,
+        "microVisible": 0,
+        "snowStudy": "feather",
+        "iceBounds": [],
+        "flakeBounds": [],
+        "icePlates": 0,
+        "snowflakes": 0,
+        "edgeFrostBounds": [],
+        "runoffEnabled": true,
+        "runoffBorn": 0,
+        "runoffDrained": 0,
+        "trailMode": "natural-footprint",
+        "wetBounds": [],
+        "wetPaths": 0,
+        "activeDrops": 0,
+        "moving": 0,
+        "attached": 0,
+        "merges": 0,
+        "slides": 0,
+        "drained": 0,
+        "trailSegments": 0,
+        "protected": [
+          {
+            "x": 924,
+            "y": 34.26794759825327,
+            "width": 50,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 86,
+            "y": 116.56104803493449,
+            "width": 60,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 152,
+            "y": 116.56104803493449,
+            "width": 60,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 24,
+            "y": 185.59720524017467,
+            "width": 185.1875,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 215.1875,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 406.390625,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 597.59375,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 788.796875,
+            "y": 185.59720524017467,
+            "width": 185.1875,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 551.375,
+            "y": 396.53580786026197,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 551.375,
+            "y": 456.973711790393,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 551.375,
+            "y": 509.00096069868994,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 305.6875,
+            "y": 560.5279475982533,
+            "width": 281.6875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 305.6875,
+            "y": 629.5641048034934,
+            "width": 281.6875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 24,
+            "y": 688.5950218340611,
+            "width": 88.296875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 551.375,
+            "y": 755.5206986899562,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 619.375,
+            "y": 377.63528384279476,
+            "width": 354.625,
+            "height": 189.59930131004367
+          },
+          {
+            "x": 640.375,
+            "y": 498.19842794759825,
+            "width": 102,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 24,
+            "y": 29.015196506550218,
+            "width": 83.703125,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 24,
+            "y": 53.52803493449781,
+            "width": 96,
+            "height": 30.015720524017464
+          },
+          {
+            "x": 936,
+            "y": 45.52384279475982,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 24,
+            "y": 130.56838427947596,
+            "width": 48,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 103,
+            "y": 129.81799126637554,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 169,
+            "y": 129.81799126637554,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 37,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 228.1875,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 419.390625,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 610.59375,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 801.796875,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 26,
+            "y": 269.6412227074236,
+            "width": 25.3125,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 26,
+            "y": 291.1524890829694,
+            "width": 160,
+            "height": 25.01310043668122
+          },
+          {
+            "x": 26,
+            "y": 328.17187772925763,
+            "width": 351,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 26,
+            "y": 386.64,
+            "width": 138.859375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 411.6531004366812,
+            "width": 336,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 26,
+            "y": 458.47449781659384,
+            "width": 84,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 510.5017467248908,
+            "width": 56,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 571.0334497816593,
+            "width": 69.234375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 640.0696069868995,
+            "width": 69.234375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 36,
+            "y": 699.8509170305676,
+            "width": 64.296875,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 124.296875,
+            "y": 700.6951091703056,
+            "width": 353.90625,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 26,
+            "y": 745.6248908296943,
+            "width": 112,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 770.6379912663755,
+            "width": 358.765625,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 640.375,
+            "y": 403.6489082969432,
+            "width": 77,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 640.375,
+            "y": 436.1659388646288,
+            "width": 300,
+            "height": 19.009956331877728
+          },
+          {
+            "x": 640.375,
+            "y": 461.6793013100436,
+            "width": 90,
+            "height": 19.009956331877728
+          },
+          {
+            "x": 652.375,
+            "y": 511.4553711790393,
+            "width": 78,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 24,
+            "y": 858.4808733624453,
+            "width": 156,
+            "height": 16.008384279475983
+          }
+        ],
+        "dropBounds": [],
+        "protectedOverlap": 0,
+        "backdropSupported": true,
+        "optics": "Native SVG backdrop displacement; approximate normal field, not a physical refraction solver",
+        "drops": []
+      }
+    },
+    {
+      "kind": "heat",
+      "state": {
+        "target": {
+          "kind": "clear",
+          "night": true,
+          "rain": "normal",
+          "special": "heat"
+        },
+        "wet": 0,
+        "snow": 0,
+        "light": 1,
+        "night": 1,
+        "intensity": 0.65,
+        "specialAmount": 1,
+        "frames": 1992,
+        "reads": 83,
+        "width": 998,
+        "height": 895,
+        "dpr": 1,
+        "activeFrames": 1,
+        "activePolls": 0,
+        "disposed": false,
+        "particles": 90,
+        "paused": false,
+        "paintMs": 0.19999999925494194,
+        "time": 14.836499999999957,
+        "material": "glass",
+        "specialSkiesEnabled": true,
+        "specialSkyModels": [
+          {
+            "renderer": "special-atmosphere-s01",
+            "kind": "heat",
+            "textures": 4,
+            "disposed": false
+          }
+        ],
+        "forceEnabled": true,
+        "scatterEnabled": true,
+        "showerPattern": "independent-streaks",
+        "showerGeometry": [],
+        "rainEnergy": 1.6025,
+        "rainAmount": 0.52,
+        "showerDensity": 0,
+        "showerSpeed": 0,
+        "showerEnabled": true,
+        "showerReady": true,
+        "showerPhase": 0,
+        "climateEnabled": true,
+        "microVisible": 0,
+        "snowStudy": "feather",
+        "iceBounds": [],
+        "flakeBounds": [],
+        "icePlates": 0,
+        "snowflakes": 0,
+        "edgeFrostBounds": [],
+        "runoffEnabled": true,
+        "runoffBorn": 0,
+        "runoffDrained": 0,
+        "trailMode": "natural-footprint",
+        "wetBounds": [],
+        "wetPaths": 0,
+        "activeDrops": 0,
+        "moving": 0,
+        "attached": 0,
+        "merges": 0,
+        "slides": 0,
+        "drained": 0,
+        "trailSegments": 0,
+        "protected": [
+          {
+            "x": 924,
+            "y": 34.26794759825327,
+            "width": 50,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 86,
+            "y": 116.56104803493449,
+            "width": 60,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 152,
+            "y": 116.56104803493449,
+            "width": 60,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 24,
+            "y": 185.59720524017467,
+            "width": 185.1875,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 215.1875,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 406.390625,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 597.59375,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 788.796875,
+            "y": 185.59720524017467,
+            "width": 185.1875,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 551.375,
+            "y": 396.53580786026197,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 551.375,
+            "y": 456.973711790393,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 551.375,
+            "y": 509.00096069868994,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 305.6875,
+            "y": 560.5279475982533,
+            "width": 281.6875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 305.6875,
+            "y": 629.5641048034934,
+            "width": 281.6875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 24,
+            "y": 688.5950218340611,
+            "width": 88.296875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 551.375,
+            "y": 755.5206986899562,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 619.375,
+            "y": 377.63528384279476,
+            "width": 354.625,
+            "height": 189.59930131004367
+          },
+          {
+            "x": 640.375,
+            "y": 498.19842794759825,
+            "width": 102,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 24,
+            "y": 29.015196506550218,
+            "width": 83.703125,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 24,
+            "y": 53.52803493449781,
+            "width": 96,
+            "height": 30.015720524017464
+          },
+          {
+            "x": 936,
+            "y": 45.52384279475982,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 24,
+            "y": 130.56838427947596,
+            "width": 48,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 103,
+            "y": 129.81799126637554,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 169,
+            "y": 129.81799126637554,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 37,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 228.1875,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 419.390625,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 610.59375,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 801.796875,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 26,
+            "y": 269.6412227074236,
+            "width": 25.3125,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 26,
+            "y": 291.1524890829694,
+            "width": 160,
+            "height": 25.01310043668122
+          },
+          {
+            "x": 26,
+            "y": 328.17187772925763,
+            "width": 351,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 26,
+            "y": 386.64,
+            "width": 138.859375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 411.6531004366812,
+            "width": 336,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 26,
+            "y": 458.47449781659384,
+            "width": 84,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 510.5017467248908,
+            "width": 56,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 571.0334497816593,
+            "width": 69.234375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 640.0696069868995,
+            "width": 69.234375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 36,
+            "y": 699.8509170305676,
+            "width": 64.296875,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 124.296875,
+            "y": 700.6951091703056,
+            "width": 353.90625,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 26,
+            "y": 745.6248908296943,
+            "width": 112,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 770.6379912663755,
+            "width": 358.765625,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 640.375,
+            "y": 403.6489082969432,
+            "width": 77,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 640.375,
+            "y": 436.1659388646288,
+            "width": 300,
+            "height": 19.009956331877728
+          },
+          {
+            "x": 640.375,
+            "y": 461.6793013100436,
+            "width": 90,
+            "height": 19.009956331877728
+          },
+          {
+            "x": 652.375,
+            "y": 511.4553711790393,
+            "width": 78,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 24,
+            "y": 858.4808733624453,
+            "width": 156,
+            "height": 16.008384279475983
+          }
+        ],
+        "dropBounds": [],
+        "protectedOverlap": 0,
+        "backdropSupported": true,
+        "optics": "Native SVG backdrop displacement; approximate normal field, not a physical refraction solver",
+        "drops": []
+      }
+    },
+    {
+      "kind": "cold",
+      "state": {
+        "target": {
+          "kind": "clear",
+          "night": true,
+          "rain": "normal",
+          "special": "cold"
+        },
+        "wet": 0,
+        "snow": 0,
+        "light": 1,
+        "night": 1,
+        "intensity": 0.65,
+        "specialAmount": 1,
+        "frames": 2372,
+        "reads": 98,
+        "width": 998,
+        "height": 895,
+        "dpr": 1,
+        "activeFrames": 1,
+        "activePolls": 0,
+        "disposed": false,
+        "particles": 90,
+        "paused": false,
+        "paintMs": 0.2000000011175871,
+        "time": 19.670499999999976,
+        "material": "glass",
+        "specialSkiesEnabled": true,
+        "specialSkyModels": [
+          {
+            "renderer": "special-atmosphere-s01",
+            "kind": "cold",
+            "textures": 4,
+            "disposed": false
+          }
+        ],
+        "forceEnabled": true,
+        "scatterEnabled": true,
+        "showerPattern": "independent-streaks",
+        "showerGeometry": [],
+        "rainEnergy": 1.6025,
+        "rainAmount": 0.52,
+        "showerDensity": 0,
+        "showerSpeed": 0,
+        "showerEnabled": true,
+        "showerReady": true,
+        "showerPhase": 0,
+        "climateEnabled": true,
+        "microVisible": 0,
+        "snowStudy": "feather",
+        "iceBounds": [],
+        "flakeBounds": [],
+        "icePlates": 0,
+        "snowflakes": 0,
+        "edgeFrostBounds": [],
+        "runoffEnabled": true,
+        "runoffBorn": 0,
+        "runoffDrained": 0,
+        "trailMode": "natural-footprint",
+        "wetBounds": [],
+        "wetPaths": 0,
+        "activeDrops": 0,
+        "moving": 0,
+        "attached": 0,
+        "merges": 0,
+        "slides": 0,
+        "drained": 0,
+        "trailSegments": 0,
+        "protected": [
+          {
+            "x": 924,
+            "y": 34.26794759825327,
+            "width": 50,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 86,
+            "y": 116.56104803493449,
+            "width": 60,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 152,
+            "y": 116.56104803493449,
+            "width": 60,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 24,
+            "y": 185.59720524017467,
+            "width": 185.1875,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 215.1875,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 406.390625,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 597.59375,
+            "y": 185.59720524017467,
+            "width": 185.203125,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 788.796875,
+            "y": 185.59720524017467,
+            "width": 185.1875,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 551.375,
+            "y": 396.53580786026197,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 551.375,
+            "y": 456.973711790393,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 551.375,
+            "y": 509.00096069868994,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 305.6875,
+            "y": 560.5279475982533,
+            "width": 281.6875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 305.6875,
+            "y": 629.5641048034934,
+            "width": 281.6875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 24,
+            "y": 688.5950218340611,
+            "width": 88.296875,
+            "height": 40.020960698689954
+          },
+          {
+            "x": 551.375,
+            "y": 755.5206986899562,
+            "width": 38,
+            "height": 22.011528384279476
+          },
+          {
+            "x": 619.375,
+            "y": 377.63528384279476,
+            "width": 354.625,
+            "height": 189.59930131004367
+          },
+          {
+            "x": 640.375,
+            "y": 498.19842794759825,
+            "width": 102,
+            "height": 44.02305676855895
+          },
+          {
+            "x": 24,
+            "y": 29.015196506550218,
+            "width": 83.703125,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 24,
+            "y": 53.52803493449781,
+            "width": 96,
+            "height": 30.015720524017464
+          },
+          {
+            "x": 936,
+            "y": 45.52384279475982,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 24,
+            "y": 130.56838427947596,
+            "width": 48,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 103,
+            "y": 129.81799126637554,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 169,
+            "y": 129.81799126637554,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 37,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 228.1875,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 419.390625,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 610.59375,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 801.796875,
+            "y": 198.8541484716157,
+            "width": 26,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 26,
+            "y": 269.6412227074236,
+            "width": 25.3125,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 26,
+            "y": 291.1524890829694,
+            "width": 160,
+            "height": 25.01310043668122
+          },
+          {
+            "x": 26,
+            "y": 328.17187772925763,
+            "width": 351,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 26,
+            "y": 386.64,
+            "width": 138.859375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 411.6531004366812,
+            "width": 336,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 26,
+            "y": 458.47449781659384,
+            "width": 84,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 510.5017467248908,
+            "width": 56,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 571.0334497816593,
+            "width": 69.234375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 640.0696069868995,
+            "width": 69.234375,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 36,
+            "y": 699.8509170305676,
+            "width": 64.296875,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 124.296875,
+            "y": 700.6951091703056,
+            "width": 353.90625,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 26,
+            "y": 745.6248908296943,
+            "width": 112,
+            "height": 18.00943231441048
+          },
+          {
+            "x": 26,
+            "y": 770.6379912663755,
+            "width": 358.765625,
+            "height": 15.007860262008732
+          },
+          {
+            "x": 640.375,
+            "y": 403.6489082969432,
+            "width": 77,
+            "height": 14.007336244541484
+          },
+          {
+            "x": 640.375,
+            "y": 436.1659388646288,
+            "width": 300,
+            "height": 19.009956331877728
+          },
+          {
+            "x": 640.375,
+            "y": 461.6793013100436,
+            "width": 90,
+            "height": 19.009956331877728
+          },
+          {
+            "x": 652.375,
+            "y": 511.4553711790393,
+            "width": 78,
+            "height": 16.008384279475983
+          },
+          {
+            "x": 24,
+            "y": 858.4808733624453,
+            "width": 156,
+            "height": 16.008384279475983
+          }
+        ],
+        "dropBounds": [],
+        "protectedOverlap": 0,
+        "backdropSupported": true,
+        "optics": "Native SVG backdrop displacement; approximate normal field, not a physical refraction solver",
+        "drops": []
+      }
+    }
+  ],
+  "records": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "events": [
+        {
+          "label": "已认可血月",
+          "ms": 1507
+        },
+        {
+          "label": "异世界",
+          "ms": 5512
+        },
+        {
+          "label": "异世界 分类切换",
+          "ms": 15550
+        },
+        {
+          "label": "返回阅读",
+          "ms": 17078
+        },
+        {
+          "label": "极热",
+          "ms": 18581
+        },
+        {
+          "label": "极热 分类切换",
+          "ms": 28605
+        },
+        {
+          "label": "返回阅读",
+          "ms": 30132
+        },
+        {
+          "label": "严寒",
+          "ms": 31637
+        },
+        {
+          "label": "严寒 分类切换",
+          "ms": 41660
+        },
+        {
+          "label": "返回阅读",
+          "ms": 43188
+        },
+        {
+          "label": "异世界＋雨",
+          "ms": 44691
+        },
+        {
+          "label": "严寒＋雪",
+          "ms": 52698
+        },
+        {
+          "label": "切换左右布局",
+          "ms": 61748
+        },
+        {
+          "label": "真实设置操作",
+          "ms": 63601
+        },
+        {
+          "label": "关闭",
+          "ms": 64649
+        },
+        {
+          "label": "重新打开",
+          "ms": 65426
+        },
+        {
+          "label": "普通夜间",
+          "ms": 67438
+        }
+      ]
+    },
+    {
+      "name": "narrow",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "events": [
+        {
+          "label": "已认可血月",
+          "ms": 1514
+        },
+        {
+          "label": "异世界",
+          "ms": 5519
+        },
+        {
+          "label": "极热",
+          "ms": 12020
+        },
+        {
+          "label": "严寒",
+          "ms": 18523
+        },
+        {
+          "label": "异世界＋雨",
+          "ms": 25028
+        },
+        {
+          "label": "严寒＋雪",
+          "ms": 31031
+        },
+        {
+          "label": "切换左右布局",
+          "ms": 37569
+        },
+        {
+          "label": "真实设置操作",
+          "ms": 39397
+        },
+        {
+          "label": "关闭",
+          "ms": 40435
+        },
+        {
+          "label": "重新打开",
+          "ms": 41196
+        },
+        {
+          "label": "普通夜间",
+          "ms": 43204
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

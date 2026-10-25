@@ -1,0 +1,175 @@
+{
+  "inputHead": "d60ccc844942e950f41beb188a27dec5e11823fe",
+  "scope": "Historical single-variable headless desktop rain observations; source/rendering references in EVO-MAT-READ01-OBSERVATIONS.json; no integration or GPU root-cause claim. Temporary scripts remain local only.",
+  "environment": {
+    "platform": "darwin",
+    "node": "v24.18.0",
+    "chromium": "153.0.8010.12",
+    "viewport": {
+      "width": 1280,
+      "height": 900,
+      "dpr": 1
+    }
+  },
+  "method": {
+    "warmupMs": 3500,
+    "windowMs": {
+      "plane": 4000,
+      "radius": 2000,
+      "toplayer": 4000
+    },
+    "injection": "Use createSettingsPreviewServer(0, plugins), append only the recorded candidate CSS to src/theme/settings-workspace.css in a Vite pre-load plugin; open settings in ?weather=heavy; sample successive requestAnimationFrame timestamps; return to current controls at sequence ends. No video recording.",
+    "quantiles": "Sorted interval at floor(samples * q), unlike the 8-case observation script which uses floor((samples-1)*q). Short-window values are observations, not comparable performance budgets."
+  },
+  "probes": {
+    "plane": {
+      "scope": "Interleaved desktop rain hypothesis test; default product unchanged; rAF observations only",
+      "parentCss": "/* Research only: one stationary backdrop plane; no changes to the accepted base,\n   weather geometry, controls, timing or nested panel surfaces. */\nhtml[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls[open]>.dmt-settings-shell{\n backdrop-filter:blur(24px) saturate(.9)!important;\n -webkit-backdrop-filter:blur(24px) saturate(.9)!important;\n}\n",
+      "planeCss": "html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls[open]>.dmt-settings-shell::before{content:\"\";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;backdrop-filter:blur(24px) saturate(.9)!important;-webkit-backdrop-filter:blur(24px) saturate(.9)!important;}",
+      "records": [
+        {
+          "mode": "current",
+          "samples": 239,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.800000000000182,
+          "shell": "none",
+          "before": "none"
+        },
+        {
+          "mode": "parent",
+          "samples": 112,
+          "medianMs": 33.30000000000018,
+          "p95Ms": 66.60000000000036,
+          "shell": "blur(24px) saturate(0.9)",
+          "before": "none"
+        },
+        {
+          "mode": "plane",
+          "samples": 147,
+          "medianMs": 33.29999999999927,
+          "p95Ms": 33.400000000000546,
+          "shell": "none",
+          "before": "blur(24px) saturate(0.9)"
+        },
+        {
+          "mode": "parent",
+          "samples": 145,
+          "medianMs": 33.29999999999927,
+          "p95Ms": 50,
+          "shell": "blur(24px) saturate(0.9)",
+          "before": "none"
+        },
+        {
+          "mode": "current",
+          "samples": 240,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.800000000000182,
+          "shell": "none",
+          "before": "none"
+        }
+      ]
+    },
+    "radius": {
+      "scope": "Desktop rain blur-radius hypothesis test; default product unchanged; rAF observations only",
+      "parentCss": "/* Research only: one stationary backdrop plane; no changes to the accepted base,\n   weather geometry, controls, timing or nested panel surfaces. */\nhtml[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls[open]>.dmt-settings-shell{\n backdrop-filter:blur(24px) saturate(.9)!important;\n -webkit-backdrop-filter:blur(24px) saturate(.9)!important;\n}\n",
+      "planeCss": "html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls[open]>.dmt-settings-shell::before{content:\"\";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;backdrop-filter:blur(24px) saturate(.9)!important;-webkit-backdrop-filter:blur(24px) saturate(.9)!important;}",
+      "records": [
+        {
+          "mode": "current",
+          "samples": 120,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.800000000000182,
+          "shell": "none",
+          "before": "none"
+        },
+        {
+          "mode": "r4",
+          "samples": 80,
+          "medianMs": 16.700000000000728,
+          "p95Ms": 33.400000000000546,
+          "shell": "blur(4px) saturate(0.9)",
+          "before": "none"
+        },
+        {
+          "mode": "r8",
+          "samples": 81,
+          "medianMs": 16.700000000000728,
+          "p95Ms": 33.399999999999636,
+          "shell": "blur(8px) saturate(0.9)",
+          "before": "none"
+        },
+        {
+          "mode": "r12",
+          "samples": 79,
+          "medianMs": 16.799999999999272,
+          "p95Ms": 33.400000000000546,
+          "shell": "blur(12px) saturate(0.9)",
+          "before": "none"
+        },
+        {
+          "mode": "r16",
+          "samples": 76,
+          "medianMs": 33.29999999999927,
+          "p95Ms": 50,
+          "shell": "blur(16px) saturate(0.9)",
+          "before": "none"
+        },
+        {
+          "mode": "r24",
+          "samples": 77,
+          "medianMs": 16.800000000000182,
+          "p95Ms": 49.899999999999636,
+          "shell": "blur(24px) saturate(0.9)",
+          "before": "none"
+        },
+        {
+          "mode": "current",
+          "samples": 120,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.800000000000182,
+          "shell": "none",
+          "before": "none"
+        }
+      ]
+    },
+    "toplayer": {
+      "scope": "Interleaved desktop rain hypothesis test; default product unchanged; rAF observations only",
+      "parentCss": "/* Research only: one stationary backdrop plane; no changes to the accepted base,\n   weather geometry, controls, timing or nested panel surfaces. */\nhtml[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls[open]>.dmt-settings-shell{\n backdrop-filter:blur(24px) saturate(.9)!important;\n -webkit-backdrop-filter:blur(24px) saturate(.9)!important;\n}\n",
+      "planeCss": "html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls[open]::backdrop{backdrop-filter:blur(24px) saturate(.9)!important;-webkit-backdrop-filter:blur(24px) saturate(.9)!important;}",
+      "records": [
+        {
+          "mode": "current",
+          "samples": 240,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "shell": "none",
+          "before": "none"
+        },
+        {
+          "mode": "parent",
+          "samples": 140,
+          "medianMs": 33.30000000000018,
+          "p95Ms": 49.899999999999636,
+          "shell": "blur(24px) saturate(0.9)",
+          "before": "none"
+        },
+        {
+          "mode": "plane",
+          "samples": 132,
+          "medianMs": 33.30000000000018,
+          "p95Ms": 50,
+          "shell": "none",
+          "before": "blur(24px) saturate(0.9)"
+        },
+        {
+          "mode": "current",
+          "samples": 240,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.799999999999272,
+          "shell": "none",
+          "before": "none"
+        }
+      ]
+    }
+  }
+}

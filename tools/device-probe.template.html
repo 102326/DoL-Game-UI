@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>设备视口测量 · 本地离线</title>
+<style>
+:root{color-scheme:light dark;font-family:system-ui,sans-serif;line-height:1.55}*{box-sizing:border-box}body{margin:0;padding:20px;padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:#171b20;color:#edf0f4}main{max-width:740px;margin:auto}h1{font-size:1.55rem;margin:0 0 12px}h2{font-size:1.1rem}p{color:#c1cbd6}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}label{display:block}input,textarea,button{font:inherit;color:inherit}input:not([type=checkbox]),textarea{width:100%;background:#242b34;border:1px solid #667382;border-radius:8px;padding:10px}input:focus-visible,button:focus-visible,textarea:focus-visible{outline:3px solid #8bb9f1;outline-offset:2px}.confirm{margin:18px 0}input[type=checkbox]{width:20px;height:20px;vertical-align:middle}button{min-height:44px;border:1px solid #667382;background:#303e50;border-radius:8px;padding:9px 15px;cursor:pointer}#record{background:#315e79}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}textarea{min-height:240px;resize:vertical;font:13px/1.5 ui-monospace,monospace}#status{min-height:1.55em;color:#b2d7c4}small{color:#b8c5d3}#insets{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+</style>
+<main>
+<h1>设备视口测量</h1>
+<p>先竖屏记录一次，再旋转为横屏记录一次，最后导出 JSON。每次点击只读取浏览器当前数值；等待旋转和浏览器地址栏稳定后再记录。</p>
+<p>全程离线，仅保存在本页内存。不会读取存档、游戏内容、账号、Cookie 或存储，也不会上传。刷新或关闭页面会清空记录。</p>
+<div class="fields">
+<label>设备型号（不要填序列号或 IMEI）<input id="model" list="models" value="UNKNOWN" autocomplete="off"></label>
+<datalist id="models"><option value="Redmi K90ProMax"><option value="Xiaomi pad9 pro max"><option value="iPad Air"><option value="iPadPro"><option value="iPad mini"><option value="iPhone18pro"><option value="iphone18promax"></datalist>
+<label>实际浏览器 / 应用名称与版本<input id="browser" value="UNKNOWN" autocomplete="off"></label>
+<label>实际游戏宿主（仅名称，不填网址）<input id="host" value="UNKNOWN" autocomplete="off"></label>
+<label>系统显示缩放（人工填写；不知道请保留 UNKNOWN）<input id="displayScale" value="UNKNOWN" autocomplete="off"></label>
+<label>浏览器缩放（人工填写；不知道请保留 UNKNOWN）<input id="browserZoom" value="UNKNOWN" autocomplete="off"></label>
+</div>
+<p><small>“Xiaomi pad9 pro max” 暂按你提供的名称保留，需用“关于设备”中的型号文字确认对应产品。无需提供序列号或设备标识。</small></p>
+<label class="confirm"><input id="physical" type="checkbox"> 本次在真实设备运行（由你确认，页面无法独立验证）</label>
+<button id="record" type="button">记录当前方向</button>
+<p id="status" role="status" aria-live="polite">尚未记录。竖屏、横屏请分别点击。</p>
+<h2>本次记录</h2>
+<p><small>独立浏览器的数值不能证明游戏 WebView 的视口。请在实际使用的同一宿主测量；若不能在宿主打开此页，保留宿主未知，另行采集。DPR 不是物理分辨率，visualViewport.scale 也不是系统缩放或浏览器菜单缩放。</small></p>
+<div class="actions"><button id="copy" type="button">复制 JSON</button><button id="export" type="button">导出 JSON</button><button id="clear" type="button">清空记录</button></div>
+<label>JSON（仅本页内存）<textarea id="output" readonly spellcheck="false"></textarea></label>
+</main>
+<div id="insets" aria-hidden="true"></div>
+<script>
+/*__DEVICE_PROBE_SCRIPT__*/
+</script>
+</html>

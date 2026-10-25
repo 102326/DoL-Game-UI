@@ -1,7 +1,9 @@
+import {visualScope} from '../ui/visual-scope';
 import {isolate,unmountUI,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
 import CombatPanel from './CombatPanel.vue';
-import type {CombatModel} from './types';
+import type {CombatModel,CombatControls} from './types';
+export type {CombatControls} from './types';
 import {createCombatSource,visible} from './source';
 import './style.css';
 import './select.css';
@@ -10,15 +12,14 @@ import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 export interface CombatFramework {host:Host;owner:Participant}
-export interface CombatControls {version:string;getEnabled:()=>boolean;refresh:()=>void;setEnabled:(value:boolean)=>void;destroy:()=>void}
 
 export function startCombat(framework?:CombatFramework){
 const KEY='DoLCombatUI.enabled.v1';
 const runtime=window as NativeEventsHost & {DoLCombatUI?:CombatControls};
 interface Docked {node:HTMLElement;anchor:Comment;slot:HTMLElement}
 interface Region {list:HTMLElement;anchor:Comment;host?:HTMLElement}
-interface Session {focusPreference?:boolean;regions:Region[];list:HTMLElement;anchor:Comment;host:HTMLElement;appHost?:HTMLElement;toggle:HTMLButtonElement;app?:App;owned?:Readonly<MountHandle>;claim?:Readonly<Claim>;binding?:ReturnType<Host['binding']>;releasing?:boolean;model:CombatModel;source:ReturnType<typeof createCombatSource>;groups:Map<string,HTMLElement>;decorated:Set<HTMLElement>;separators:Map<Text,string>;dock:HTMLElement;docked:Docked[];resize?:ResizeObserver;resizeFrame?:number;spacer?:HTMLElement;edited:Set<string>;positions:Map<string,number>;editor?:HTMLElement}
-let active:Session|undefined,enabled=true,queued=false,disposed=false;
+interface Session {focusPreference?:boolean;regions:Region[];list:HTMLElement;anchor:Comment;host:HTMLElement;appHost?:HTMLElement;toggle:HTMLButtonElement;app?:App;owned?:Readonly<MountHandle>;claim?:Readonly<Claim>;binding?:ReturnType<Host['binding']>;releasing?:boolean;model:CombatModel;source:ReturnType<typeof createCombatSource>;groups:Map<string,HTMLElement>;decorated:Set<HTMLElement>;separators:Map<Text,string>;dock:HTMLElement;docked:Docked[];resizeOwner?:()=>void;spacer?:HTMLElement;edited:Set<string>;positions:Map<string,number>;editor?:HTMLElement}
+const scope=visualScope();let active:Session|undefined,enabled=true;
 const theme=()=>(window as Window & {DoLMidnightTheme?:{getPreferences:()=>{combatFocused?:boolean};setPreference?:(key:'combatFocused',value:boolean)=>void}}).DoLMidnightTheme;
 const focusRequested=()=>!!theme()?.getPreferences().combatFocused;
 let actionLists:ReturnType<typeof wrapActionLists>|undefined;
@@ -40,7 +41,7 @@ function restoreDock(s:Session){
  for(const d of s.docked){const current=d.slot.querySelector<HTMLElement>('[id="'+d.node.id+'"]')||d.node;restoreNative(current,d.anchor,s.list.closest('.passage'));d.slot.remove()}
  s.docked=[];
 }
-function release(s:Session){if(s.releasing)return;s.releasing=true;s.resize?.disconnect();if(s.resizeFrame!==undefined){cancelAnimationFrame(s.resizeFrame);s.resizeFrame=undefined}clearDecorations(s);restoreDock(s);for(const region of s.regions){if(region.list.isConnected&&(s.host.contains(region.list)||region.host?.contains(region.list)))restoreNative(region.list,region.anchor,s.host.closest('.passage'),true);region.host?.remove();region.host=undefined}s.spacer?.remove();s.spacer=undefined;unmountUI(s.app);s.app=undefined;s.owned?.dispose();s.owned=undefined;s.appHost=undefined;s.claim?.release();s.claim=undefined;s.host.remove();s.editor=undefined;s.groups.clear();s.releasing=false}
+function release(s:Session){if(s.releasing)return;s.releasing=true;s.resizeOwner?.();s.resizeOwner=undefined;clearDecorations(s);restoreDock(s);for(const region of s.regions){if(region.list.isConnected&&(s.host.contains(region.list)||region.host?.contains(region.list)))restoreNative(region.list,region.anchor,s.host.closest('.passage'),true);region.host?.remove();region.host=undefined}s.spacer?.remove();s.spacer=undefined;unmountUI(s.app);s.app=undefined;s.owned?.dispose();s.owned=undefined;s.appHost=undefined;s.claim?.release();s.claim=undefined;s.host.remove();s.editor=undefined;s.groups.clear();s.releasing=false}
 function disposeSession(){const s=active;if(!s)return;release(s);s.source.destroy();s.toggle.remove();for(const region of s.regions)region.anchor.remove();active=undefined;actionLists?.restore();actionLists=undefined}
 function setEnabled(value:boolean){if(value===enabled&&!failed)return;failed=false;enabled=value;try{localStorage.setItem(KEY,String(value))}catch{}if(active&&actionLists&&!enabled)disposeSession();if(active){release(active);active.toggle.hidden=enabled;active.toggle.textContent='启用新版战斗面板';if(enabled)mount(active)}document.dispatchEvent(new Event("dol-ui-combat-change"));schedule()}
 function readGroups(s:Session){
@@ -91,10 +92,16 @@ function syncDock(s:Session){
   s.dock.querySelector('.dcu-dock-native')!.append(slot);slot.append(node);s.docked.push({node,anchor,slot});
  }
  const r=s.host.getBoundingClientRect();
+ // Top-layer coordinates are viewport pixels, but the dock still inherits game zoom.
+ let scale=1;
+ for(let el:HTMLElement|null=s.dock;el;el=el.parentElement){
+  const zoom=Number.parseFloat(getComputedStyle(el).zoom);
+  if(Number.isFinite(zoom)&&zoom>0)scale*=zoom;
+ }
  const set=(key:string,value:string)=>{if(s.dock.style.getPropertyValue(key)!==value)s.dock.style.setProperty(key,value)};
- set('--dcu-left',`${r.left}px`);set('--dcu-width',`${r.width}px`);
+ set('--dcu-left',`${r.left/scale}px`);set('--dcu-width',`${r.width/scale}px`);
  const viewport=window.visualViewport;
- set('--dcu-bottom',`${viewport?Math.max(0,innerHeight-viewport.offsetTop-viewport.height):0}px`);
+ set('--dcu-bottom',`${viewport?Math.max(0,innerHeight-viewport.offsetTop-viewport.height)/scale:0}px`);
  const passage=s.list.closest('.passage');
  if(passage){if(!s.spacer){s.spacer=document.createElement('div');s.spacer.className='dcu-bottom-reserve';s.spacer.setAttribute('aria-hidden','true')}if(passage.lastElementChild!==s.spacer)passage.append(s.spacer);const reserve=`${s.dock.offsetHeight+16}px`;if(s.spacer.style.height!==reserve)s.spacer.style.height=reserve}
 }
@@ -105,12 +112,12 @@ function sync(s:Session){s.host.toggleAttribute('data-dcu-narrow',s.host.clientW
  else if(s.focusPreference!==requested||s.model.focused===undefined)s.model.focused=requested;
  s.focusPreference=requested;
  s.model.editedKeys=[...s.edited].filter(key=>s.groups.has(key));applyFocus(s);syncDock(s)}
-function mount(s:Session){if(s.app||!s.list.isConnected)return;if(framework){if(!s.claim)s.claim=framework.owner.claim('region','combat')??undefined;if(!s.claim||!s.claim.isCurrent())return;s.binding=framework.host.binding();s.host=document.createElement('div');s.host.className='dcu-root dcu-candidate';s.anchor.parentNode?.insertBefore(s.host,s.anchor.nextSibling);s.owned=framework.owner.mount({id:'combat',parent:s.host,lifetime:'passage',setup(context){const binding=context.binding();s.binding=binding;s.appHost=context.element;binding.signal.addEventListener('abort',schedule,{once:true});context.onCleanup(()=>{binding.signal.removeEventListener('abort',schedule);if(active===s&&!s.releasing)disposeSession()});context.onScene(schedule)}});if(!s.owned.isCurrent()){disposeSession();return}}else{s.host=document.createElement('div');s.host.className='dcu-root dcu-candidate';s.anchor.parentNode?.insertBefore(s.host,s.anchor.nextSibling)}const app=createApp(CombatPanel,{model:s.model,onClassic:()=>setEnabled(false),onMode:()=>{const focused=!s.model.focused;theme()?.setPreference?.('combatFocused',focused);s.model.focused=focused;applyFocus(s);schedule()},onJump:(key:string)=>{focusGroup(s,key);const el=s.source.group(key);el?.scrollIntoView({block:'nearest',behavior:'auto'});s.source.focusTarget(key)?.focus({preventScroll:true})}});app.config.errorHandler=error=>{console.error('[DoLCombatUI]',error);queueMicrotask(()=>{if(active===s)recover()})};s.app=app;try{const vm=app.mount(s.appHost??s.host) as unknown as {native:HTMLElement;dock:HTMLElement};if(!vm.native||!vm.dock)throw Error('Missing native hosts');s.dock=vm.dock;s.editor=vm.native.parentElement??undefined;vm.native.append(s.list);for(const region of s.regions.slice(1)){const host=document.createElement('div');host.className='dcu-root dcu-extension dcu-candidate';const native=document.createElement('div');native.className='dcu-native';host.append(native);region.anchor.parentNode?.insertBefore(host,region.anchor.nextSibling);native.append(region.list);region.host=host}if(typeof ResizeObserver==='function'){s.resize=new ResizeObserver(()=>{if(s.resizeFrame!==undefined)return;s.resizeFrame=requestAnimationFrame(()=>{s.resizeFrame=undefined;if(s.app&&s.host.isConnected)isolate('combat resize',()=>{s.host.toggleAttribute('data-dcu-narrow',s.host.clientWidth<700);syncDock(s)},recover)})});s.resize.observe(s.host);s.resize.observe(s.dock);const story=document.getElementById("story");if(story)s.resize.observe(story)}sync(s)}catch(error){recover();console.error('[DoLCombatUI mount]',error)}}
+function mount(s:Session){if(s.app||!s.list.isConnected)return;if(framework){if(!s.claim)s.claim=framework.owner.claim('region','combat')??undefined;if(!s.claim||!s.claim.isCurrent())return;s.binding=framework.host.binding();s.host=document.createElement('div');s.host.className='dcu-root dcu-candidate';s.anchor.parentNode?.insertBefore(s.host,s.anchor.nextSibling);s.owned=framework.owner.mount({id:'combat',parent:s.host,lifetime:'passage',setup(context){const binding=context.binding();s.binding=binding;s.appHost=context.element;binding.signal.addEventListener('abort',schedule,{once:true});context.onCleanup(()=>{binding.signal.removeEventListener('abort',schedule);if(active===s&&!s.releasing)disposeSession()});context.onScene(schedule)}});if(!s.owned.isCurrent()){disposeSession();return}}else{s.host=document.createElement('div');s.host.className='dcu-root dcu-candidate';s.anchor.parentNode?.insertBefore(s.host,s.anchor.nextSibling)}const app=createApp(CombatPanel,{model:s.model,onClassic:()=>setEnabled(false),onMode:()=>{const focused=!s.model.focused;theme()?.setPreference?.('combatFocused',focused);s.model.focused=focused;applyFocus(s);schedule()},onJump:(key:string)=>{focusGroup(s,key);const el=s.source.group(key);el?.scrollIntoView({block:'nearest',behavior:'auto'});s.source.focusTarget(key)?.focus({preventScroll:true})}});app.config.errorHandler=error=>{console.error('[DoLCombatUI]',error);queueMicrotask(()=>{if(active===s)recover()})};s.app=app;try{const vm=app.mount(s.appHost??s.host) as unknown as {native:HTMLElement;dock:HTMLElement};if(!vm.native||!vm.dock)throw Error('Missing native hosts');s.dock=vm.dock;s.editor=vm.native.parentElement??undefined;vm.native.append(s.list);for(const region of s.regions.slice(1)){const host=document.createElement('div');host.className='dcu-root dcu-extension dcu-candidate';const native=document.createElement('div');native.className='dcu-native';host.append(native);region.anchor.parentNode?.insertBefore(host,region.anchor.nextSibling);native.append(region.list);region.host=host}if(typeof ResizeObserver==='function'){const layoutScope=visualScope();s.resizeOwner=scope.own(()=>layoutScope.dispose());const measure=()=>{if(s.app&&s.host.isConnected)isolate('combat resize',()=>{s.host.toggleAttribute('data-dcu-narrow',s.host.clientWidth<700);syncDock(s)},recover)},resize=new ResizeObserver(()=>layoutScope.frame(measure));layoutScope.own(()=>resize.disconnect());resize.observe(s.host);resize.observe(s.dock);const story=document.getElementById("story");if(story)resize.observe(story)}sync(s)}catch(error){recover();console.error('[DoLCombatUI mount]',error)}}
 let failed=false,failedPassage:Element|null=null;
 function recover(){failed=true;failedPassage=active?.list.closest('.passage')??null;disposeSession();document.dispatchEvent(new Event('dol-ui-combat-change'))}
 function scan(){isolate('combat',update,recover)}
 function update(){
- if(disposed)return;observeScope();if(failed&&document.querySelector('#passages .passage:not(.passage-out)')!==failedPassage){failed=false;failedPassage=null}
+ if(!scope.active())return;observeScope();if(failed&&document.querySelector('#passages .passage:not(.passage-out)')!==failedPassage){failed=false;failedPassage=null}
  if(!isMasterEnabled()||failed||framework&&(!framework.host.binding().isCurrent()||framework.host.getDiagnostics().disposed)){disposeSession();return}
  // Original struggle scenes deliberately emit several listContainer IDs.
  // Keep each region in place rather than gathering narrative into one panel.
@@ -131,13 +138,13 @@ function update(){
  }
  if(!active){
   const regions=lists.map(list=>{const anchor=document.createComment('DoLCombatUI original list position');list.before(anchor);return{list,anchor}});
-  const {list,anchor}=regions[0];const toggle=document.createElement('button');toggle.type='button';toggle.className='dcu-toggle';toggle.hidden=enabled;toggle.textContent='启用新版战斗面板';toggle.onclick=()=>setEnabled(!enabled);anchor.parentNode!.insertBefore(toggle,anchor);
-  const source=createCombatSource(lists,()=>!disposed&&isMasterEnabled()&&(!framework||!!active?.binding?.isCurrent())&&list.isConnected&&list.closest('.passage')===document.querySelector('#passages .passage:not(.passage-out)'));
+  const first=regions[0];if(!first)throw Error('Missing combat region');const {list,anchor}=first;const toggle=document.createElement('button');toggle.type='button';toggle.className='dcu-toggle';toggle.hidden=enabled;toggle.textContent='启用新版战斗面板';toggle.onclick=()=>setEnabled(!enabled);anchor.parentNode!.insertBefore(toggle,anchor);
+  const source=createCombatSource(lists,()=>scope.active()&&isMasterEnabled()&&(!framework||!!active?.binding?.isCurrent())&&list.isConnected&&list.closest('.passage')===document.querySelector('#passages .passage:not(.passage-out)'));
   active={regions,list,anchor,toggle,host:document.createElement('div'),source,model:reactive({groups:[],unknown:0,selectedGroups:0,availableActions:0,phase:'selecting',message:''}),groups:new Map(),decorated:new Set(),separators:new Map(),dock:document.createElement('div'),docked:[],edited:new Set(),positions:new Map()};if(enabled)mount(active)
  }
  if(active)sync(active)
 }
-function schedule(){if(queued||disposed)return;queued=true;requestAnimationFrame(()=>{queued=false;scan()})}
+function schedule(){scope.frame(scan)}
 const observer=new MutationObserver(records=>{if(records.some(r=>{const el=r.target instanceof Element?r.target:r.target.parentElement;return !!el?.closest('.dcu-native,.dcu-dock-native')||!el?.closest('.dcu-root')}))schedule()});
 function nativeClick(event:Event){
  const s=active;if(!enabled||failed||!s?.app||!(event.target instanceof Element)||(!s.host.contains(event.target)&&!s.regions.some(r=>r.list.contains(event.target as Node))))return;
@@ -150,8 +157,9 @@ function change(e:Event){const s=active;if(!s||!s.regions.some(r=>r.list.contain
  schedule();
 }
 let observedRoot:HTMLElement|undefined;function observeScope(){const target=document.getElementById('passages')||document.body;if(target===observedRoot)return;observer.disconnect();observedRoot=target;observer.observe(target,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['disabled','hidden','style','aria-disabled','aria-hidden','class','checked']})}
-function start(){if(disposed)return;observeScope();if(failed&&document.querySelector('#passages .passage:not(.passage-out)')!==failedPassage){failed=false;failedPassage=null}document.addEventListener('toggle',schedule,true);document.addEventListener('click',nativeClick,true);document.addEventListener('focusin',focusAction);document.addEventListener('pointerdown',focusAction);document.addEventListener('change',change);document.addEventListener('input',change);window.addEventListener('resize',schedule);window.addEventListener('scroll',schedule,true);window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);if(runtime.jQuery)runtime.jQuery(document).on(':passageend.dcu :storyready.dcu',schedule);schedule()}
+function start(){if(!scope.active())return;observeScope();if(failed&&document.querySelector('#passages .passage:not(.passage-out)')!==failedPassage){failed=false;failedPassage=null}document.addEventListener('toggle',schedule,true);document.addEventListener('click',nativeClick,true);document.addEventListener('focusin',focusAction);document.addEventListener('pointerdown',focusAction);document.addEventListener('change',change);document.addEventListener('input',change);window.addEventListener('resize',schedule);window.addEventListener('scroll',schedule,true);window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);if(runtime.jQuery)runtime.jQuery(document).on(':passageend.dcu :storyready.dcu',schedule);schedule()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-runtime.DoLCombatUI={version:'0.2.0',getEnabled:()=>enabled&&!failed,refresh:scan,setEnabled,destroy(){disposed=true;observer.disconnect();document.removeEventListener('toggle',schedule,true);document.removeEventListener('click',nativeClick,true);document.removeEventListener('focusin',focusAction);document.removeEventListener('pointerdown',focusAction);document.removeEventListener('change',change);document.removeEventListener('input',change);window.removeEventListener('resize',schedule);window.removeEventListener('scroll',schedule,true);window.visualViewport?.removeEventListener('resize',schedule);window.visualViewport?.removeEventListener('scroll',schedule);document.removeEventListener('DOMContentLoaded',start);runtime.jQuery?.(document).off('.dcu');disposeSession();delete runtime.DoLCombatUI}};
+scope.own(()=>observer.disconnect());
+runtime.DoLCombatUI={version:'0.2.0',getEnabled:()=>enabled&&!failed,refresh:scan,setEnabled,destroy(){scope.dispose();document.removeEventListener('toggle',schedule,true);document.removeEventListener('click',nativeClick,true);document.removeEventListener('focusin',focusAction);document.removeEventListener('pointerdown',focusAction);document.removeEventListener('change',change);document.removeEventListener('input',change);window.removeEventListener('resize',schedule);window.removeEventListener('scroll',schedule,true);window.visualViewport?.removeEventListener('resize',schedule);window.visualViewport?.removeEventListener('scroll',schedule);document.removeEventListener('DOMContentLoaded',start);runtime.jQuery?.(document).off('.dcu');disposeSession();delete runtime.DoLCombatUI}};
 
 }

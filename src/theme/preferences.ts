@@ -1,4 +1,4 @@
-import type {PanelKind} from '../panels/main';
+import type {PanelKind} from '../panels/types';
 export const defaults={enabled:true,combatFocused:false,storyActions:false,comfortable:true,mobileCompactControls:false,showCompact:false,layout:true,compactStats:false,wideReading:false,collapsedStats:false,statusPreview:false,wardrobePaged:true,wardrobeHiddenList:false,shopDeferredPaint:false,shopPageExperiment:false,startupCacheLazy:false,savesV2:false,fontScale:100,buttonScale:100,visualTier:1,visualGlass:true,visualMotion:true,visualGlow:true,visualPattern:false};
 // Retired flags remain false for existing preference readers; they no longer activate runtime code.
 export type Preferences=typeof defaults;

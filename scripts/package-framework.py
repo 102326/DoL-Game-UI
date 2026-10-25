@@ -37,7 +37,7 @@ for directory, name in packages:
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
     package_version = official_version if directory == 'official-ui' else host_version if directory == 'host' else '0.1.5-experimental' if directory == 'motion-hub' else version
-    nickname = 'Soft & Wet 3.0 — Kraft Work' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
+    nickname = 'Soft & Wet 4.0 — Evolution' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
     boot = dict(name=name, version=package_version, nickName=nickname, scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
@@ -50,11 +50,15 @@ for directory, name in packages:
         licenses = []
         for module in ['vue', '@vue/shared', '@vue/reactivity', '@vue/runtime-core', '@vue/runtime-dom'] + (['tailwindcss'] if directory == 'official-ui' else []):
             licenses.append(module + '\n' + next((root/'node_modules'/module).glob('LICENSE*')).read_text(encoding='utf-8'))
+        if directory == 'official-ui':
+            # GSAP ships its proprietary notice in source banners, not LICENSE*.
+            licenses.append('gsap\n/*!' + (root/'node_modules/gsap/gsap-core.js').read_text(encoding='utf-8').split('/*!', 1)[1].split('*/', 1)[0] + '*/')
         files['THIRD-PARTY-NOTICES.txt'] = '\n\n'.join(licenses).encode()
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
     if directory == 'official-ui':
-        for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md',f'docs/RELEASE_{official_version}.md']:
+        release_notes = [f'docs/RELEASE_{official_version}.md'] if (root / f'docs/RELEASE_{official_version}.md').is_file() else []
+        for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md',*release_notes]:
             files[doc] = (root/doc).read_bytes(); boot['additionFile'].append(doc)
         for declaration in ['ui.d.ts','wardrobe.d.ts']:
             asset_name = 'types/'+declaration
@@ -73,9 +77,9 @@ for directory, name in packages:
 # Development sources only: no runtime boot.json, UI sources, dependencies or test evidence.
 if args.players_only:
     raise SystemExit(0)
-kit_paths = ['LICENSE', 'scripts/framework-factory.mjs', 'framework/contracts.ts', 'framework/vue.ts', 'framework/connect.ts',
+kit_paths = ['LICENSE', 'scripts/framework-factory.mts', 'scripts/framework-factory.mjs', 'framework/contracts.ts', 'framework/vue.ts', 'framework/connect.ts',
              'framework/factory/Panel.vue', 'framework/factory/preview.ts', 'framework/factory/index.html',
-             'framework/factory/vite.config.mjs', 'framework/factory/package.py']
+             'framework/factory/vite.config.mts', 'framework/factory/package.py']
 files = {name: (root/name).read_bytes() for name in kit_paths}
 files['README.md'] = (root/'framework/factory/AUTHOR_KIT.md').read_bytes()
 manifest = dict(kind='source-kit', version=version, sdkProtocol='0.1-experimental',

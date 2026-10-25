@@ -1,0 +1,18 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Soft & Wet · 设置材质可读性对照</title>
+<style>
+body{margin:0;background:#181a1d;color:#e4e7e8;font:16px/1.7 system-ui}main{max-width:1280px;margin:auto;padding:32px 24px 64px}h1{font-size:30px;line-height:1.3}h2{margin-top:40px;font-size:22px}small,p{color:#b7bec3}a{color:#b6d1cf}nav{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}nav a{padding:10px 16px;border:1px solid #c2d8cc35;border-radius:12px;text-decoration:none}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0;min-width:0}figcaption{margin:0 0 8px;color:#bcc6cb}img,video{display:block;width:100%;border-radius:16px;background:#111315;border:1px solid #ffffff18}.narrow img{width:min(100%,390px);margin:auto}@media(max-width:760px){.pair{grid-template-columns:1fr}main{padding:24px 16px}}
+</style>
+<main>
+<small>SOFT & WET 4.0 · EVO-MAT-READ01 · 隔离研究</small>
+<h1>让底材保留氛围，让文字留在自己的层次</h1>
+<p>右侧候选只对窗口背景恢复一层模糊，底色、边框、布局、设置节奏和已通过的0.56浓度边霜保持。左侧为当前研发默认值。本页等待负责人评审，未替换实际默认材质。</p>
+<p><strong>研究阻塞：桌面短时观测中，候选雨/雪的中位帧间隔由约16.7ms升至33.3ms。尚未解决，未批准接入；功能检查PASS不表示性能或视觉通过。详见 <a href="/docs/evolution/EVO-MAT-READ01.md">完整报告</a>。</strong></p>
+<nav><a href="http://127.0.0.1:5196/?weather=snow" target="_blank">操作当前版本</a><a href="/?weather=snow" target="_blank">操作单层Acrylic候选</a></nav>
+<p>两页均保留同一背景正文，打开设置后可用 Alt+1/2/3 切换晴/雨/雪。截图按相同视口比较；录像采用同一操作顺序并保留原速，实际事件时间写入记录，未伪称逐帧同步。</p>
+<h2>雪天 · 桌面</h2><div class="pair"><figure><figcaption>当前默认：背景文字仍清晰透出</figcaption><img src="/docs/media/evolution-acrylic-read01/current-1280-snow.png" alt="当前设置雪天，后方文字透出"></figure><figure><figcaption>候选：单层背景模糊，保留霜羽和边霜</figcaption><img src="/docs/media/evolution-acrylic-read01/candidate-1280-snow.png" alt="候选设置雪天，后方文字被模糊"></figure></div>
+<h2>原速操作 · 同为1280×900 / DPR1</h2><div class="pair"><figure><figcaption>当前默认</figcaption><video controls preload="metadata" src="/docs/media/evolution-acrylic-read01/current-desktop-1x.mp4"></video></figure><figure><figcaption>单层Acrylic候选</figcaption><video controls preload="metadata" src="/docs/media/evolution-acrylic-read01/candidate-desktop-1x.mp4"></video></figure></div>
+<h2>雪天 · 窄屏390×844</h2><div class="pair narrow"><figure><figcaption>当前默认</figcaption><img src="/docs/media/evolution-acrylic-read01/current-390-snow.png" alt="窄屏当前材质"></figure><figure><figcaption>候选</figcaption><img src="/docs/media/evolution-acrylic-read01/candidate-390-snow.png" alt="窄屏候选材质"></figure></div>
+<h2>晴天与雨天</h2><div class="pair"><figure><figcaption>当前 · 晴天</figcaption><img src="/docs/media/evolution-acrylic-read01/current-1280-clear.png" alt="当前晴天"></figure><figure><figcaption>候选 · 晴天</figcaption><img src="/docs/media/evolution-acrylic-read01/candidate-1280-clear.png" alt="候选晴天"></figure><figure><figcaption>当前 · 雨天</figcaption><img src="/docs/media/evolution-acrylic-read01/current-1280-heavy.png" alt="当前雨天"></figure><figure><figcaption>候选 · 雨天</figcaption><img src="/docs/media/evolution-acrylic-read01/candidate-1280-heavy.png" alt="候选雨天"></figure></div>
+<p>背景模糊会增加合成工作，也可能改变雨滴取样到的背景。浏览器模拟和像素对照不能替代WebView、真实设备、GPU或长期性能验收；本页没有因此宣布全局G2/G3或4.0发布。</p>
+</main></html>

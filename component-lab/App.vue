@@ -3,19 +3,20 @@ import {reactive,ref,onMounted,onBeforeUnmount} from 'vue';
 import Toolbar from '../src/shop/Toolbar.vue';
 import FloatingTools from '../src/floating/FloatingTools.vue';
 import type {FloatingState} from '../src/floating/main';
+import {isSourceLink,type SourceLink} from './source-link';
 const component=ref('floating.tools'),glass=ref(true),tier=ref('1');
 const floating=reactive<FloatingState>({x:160,y:320,intentX:.5,intentY:.5,open:true,mode:'grid',config:false,dragging:false,menuX:-130,menuY:-250,menuWidth:280,menuMaxHeight:480,message:'',fan:[{x:0,y:70},{x:94,y:0},{x:188,y:70}],tools:[{id:'settings',name:'界面设置',icon:'⚙',description:'Lab 内存回调',reason:''},{id:'inspector',name:'开发检查',icon:'⌕',description:'Lab 内存回调',reason:''},{id:'move',name:'移动悬浮球',icon:'✥',description:'Lab 内存回调',reason:''}]});
 function floatingRun(id:string){record('floating.run',id);if(id==='move')floating.config=true;else floating.message='仅记录 Lab 回调：'+id}
 function updateGlass(){document.documentElement.toggleAttribute('data-dgu-visualGlass',glass.value);document.documentElement.setAttribute('data-dgu-visual',tier.value)}
 function noGesture(){record('pointer','Lab 不接入生产拖动算法')}
-const scenario=ref('ordinary'),width=ref(960),index=ref<any>(null),events=ref<{name:string;value:unknown}[]>([]);
+const scenario=ref('ordinary'),width=ref(960),index=ref<SourceLink|null>(null),events=ref<{name:string;value:unknown}[]>([]);
 const state=reactive({hasDetails:true,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'虚构样品',referenceEnabled:false,referenceA:null,comparisonB:null,comparisonTarget:null,comparisonOrigin:null,transactionStatus:'' as const,transactionMessage:'',defaultGender:'game',message:''});
 const record=(name:string,value:unknown)=>{events.value=[...events.value.slice(-15),{name,value}]};
 function setDefaultGender(value:string){state.defaultGender=value;state.message='Lab 内存分类：'+value;record('setDefaultGender',value)}
 function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;record('toggleCategories',state.categoriesOpen)}
 function toggle(){state.open=!state.open;record('toggle',state.open)}
 function changeScene(){Object.assign(state,{open:false,categoriesOpen:false,message:'',narrow:scenario.value!=='ordinary',compact:scenario.value==='compact',selectedTitle:scenario.value==='long'?'用于预览的较长标题：同源组件与局部状态测试，不执行游戏购买或偏好写入':'虚构样品'});width.value=scenario.value==='ordinary'?960:scenario.value==='compact'?360:550;if(scenario.value==='long')state.message='这是一段较长的 Lab 状态消息，仅检查当前组件的文本换行与控件可达性。'}
-async function refreshIndex(){index.value=null;try{const next=await(await fetch('/__lab/source-index?component='+component.value,{cache:'no-store'})).json();index.value=next.format==='dol-ui-source-index'?next:null}catch{index.value=null}}
+async function refreshIndex(){index.value=null;try{const next:unknown=await(await fetch('/__lab/source-index?component='+component.value,{cache:'no-store'})).json();index.value=isSourceLink(next)?next:null}catch{index.value=null}}
 function clue(){return {format:'dol-ui-source-clue',version:1,componentId:component.value,instanceId:component.value==='shop.toolbar'?'lab-toolbar-1':'lab-floating-1',role:component.value==='shop.toolbar'?'toolbar':'floating',runtime:{kind:'vite-dev-server',revision:index.value?.snapshot.revision,inputDigest:index.value?.snapshot.digest}}}
 onMounted(()=>{refreshIndex();updateGlass();window.addEventListener('keydown',escape)});
 function escape(e:KeyboardEvent){if(e.key==='Escape'){state.open=false;state.categoriesOpen=false}}

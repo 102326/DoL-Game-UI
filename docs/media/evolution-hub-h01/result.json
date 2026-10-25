@@ -1,0 +1,148 @@
+{
+  "scope": "Actual official Hub and settings/weather owners with first-party native-entry stand-ins. Original speed, all waits retained. Inspector is a mock notification. Not full game, physical touch, frozen old/new comparison or owner G2 approval.",
+  "inputHead": "ed81b5aaf1b0d71f8069dcdc7300ffb7762ab7cc",
+  "workingTree": true,
+  "sources": {
+    "framework/official-ui/hub.ts": "b6206e609e00ee520d6ecc0cbb447a33f2734ecb6091b8de05a516caaf733746",
+    "framework/motion-hub/MotionHub.vue": "7bce665ca3af217110ed859ba5ddafcf099687a1ecba705243d0f62893f671a6",
+    "framework/motion-hub/geometry.ts": "179e09aa237f99a4874d3d062d25ba542d9cd9d0f756ff1b3e50f78cde4680f0",
+    "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+    "scripts/preview-evolution-hub.mjs": "92913a1290aed283f0ce8216409359c5ba1f065f4e57b2ee69a2f190acaaa08e",
+    "scripts/record-evolution-hub.cjs": "26e4538ff18870f61e43439a46a24195c4b2e99daee6ddab7a59c26a2231c096",
+    "package-lock.json": "c2ddc33d41a6230d351c88b5679c7160dbe2494e4f3ee18458bccfd57e03dac4",
+    "dist/framework/official-ui/style.css": "905e65421b63285f08b6ebdc804306e7d55e076d103e9be30fbfb4a566e12706",
+    "src/ui/golden-spin/hub-motion.ts": "aad906560ac559e8f3d15b598e86699fc2717e687aed17556be1cb5c0cd6fd32",
+    "src/ui/golden-spin/hub.css": "e20131eca4c2d7feea56ba923643c68dd090e1ded8bcb72825842887eac3f21a",
+    "src/ui/golden-spin/sphere.ts": "8e46cdc11fe104d3e0de698a8fcefa95e1780ed115558bd93a77933f2d90be81",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "7bffb68e6418ea55a5e8327fdee10936e02254f69b9bb5ae67a69e40cbe15479",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "e05231f13a5be3e7c1312a822ccca252349c63ea1f0822a9d970c1607e5d2a91",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/surface.ts": "5d61766221293b7fde0599a76bda89ed1ffa1bebddff1db5cff77ecae6edcdf2",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "3a667a752104925f090f8094a9d7c156e0060d4358c3cf7f74b9cc682c478f6b"
+  },
+  "runtime": {
+    "platform": "darwin",
+    "node": "v24.18.0",
+    "chromium": "153.0.8010.12"
+  },
+  "records": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "events": [
+        {
+          "label": "H1 实际工具并行展开",
+          "actualMs": 575
+        },
+        {
+          "label": "H2 Escape收束",
+          "actualMs": 1571
+        },
+        {
+          "label": "H3 中途反向",
+          "actualMs": 3390
+        },
+        {
+          "label": "实际设置单次激活",
+          "actualMs": 3663
+        },
+        {
+          "label": "设置分类",
+          "actualMs": 6142
+        },
+        {
+          "label": "关闭设置",
+          "actualMs": 6924
+        },
+        {
+          "label": "H4 原生社交入口一次",
+          "actualMs": 8174
+        },
+        {
+          "label": "左侧移动与停靠",
+          "actualMs": 10371
+        },
+        {
+          "label": "恢复球体与展开",
+          "actualMs": 12404
+        }
+      ],
+      "final": {
+        "counts": {
+          "native": 1,
+          "settings": 1,
+          "inspector": 0
+        },
+        "open": "true",
+        "canvases": 1,
+        "gameData": false
+      },
+      "errors": []
+    },
+    {
+      "name": "narrow",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "events": [
+        {
+          "label": "H1 实际工具并行展开",
+          "actualMs": 516
+        },
+        {
+          "label": "H2 Escape收束",
+          "actualMs": 1520
+        },
+        {
+          "label": "H3 中途反向",
+          "actualMs": 3352
+        },
+        {
+          "label": "实际设置单次激活",
+          "actualMs": 3620
+        },
+        {
+          "label": "设置分类",
+          "actualMs": 6072
+        },
+        {
+          "label": "关闭设置",
+          "actualMs": 6848
+        },
+        {
+          "label": "H4 原生社交入口一次",
+          "actualMs": 8081
+        },
+        {
+          "label": "左侧移动与停靠",
+          "actualMs": 10299
+        },
+        {
+          "label": "恢复球体与展开",
+          "actualMs": 12356
+        }
+      ],
+      "final": {
+        "counts": {
+          "native": 1,
+          "settings": 1,
+          "inspector": 0
+        },
+        "open": "true",
+        "canvases": 1,
+        "gameData": false
+      },
+      "errors": []
+    }
+  ]
+}

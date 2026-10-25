@@ -1,13 +1,18 @@
+import {visualScope} from '../ui/visual-scope';
 import {createApp,reactive,type App} from 'vue';
 import Navigation from './Navigation.vue';
 import {panelPresentation} from './presentation';
 import {visible} from './visibility';
 import {isMasterEnabled} from '../runtime/master';
 import {sourceMotion} from '../ui/source-motion';
+import {navigationScrollTop} from '../ui/navigation-geometry';
+import {navigationMount} from '../ui/navigation-mount';
+import {unmountUI} from '../runtime/presentation';
 import type {NativeEventsHost} from '../runtime/sugarcube';
-import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
+import type {Host,Participant} from '../../framework/contracts';
 import './style.css';
-export type PanelKind='journal'|'traits'|'statistics'|'feats'|'cheats'|'attitudes'|'settings';
+import type {PanelKind,PanelControls} from './types';
+export type {PanelKind} from './types';
 export interface NavigationState{title:string;sections:string[]}
 const titles:Record<PanelKind,string>={journal:'日志',traits:'特质',statistics:'统计',feats:'成就',cheats:'作弊',attitudes:'态度',settings:'游戏设置'};
 const panelKeys:Record<string,PanelKind>={options:'settings',cheats:'cheats',journal:'journal',journalNotes:'journal',traits:'traits',statistics:'statistics',gameFeats:'feats',startFeats:'feats'};
@@ -20,33 +25,40 @@ const selectors:Record<PanelKind,string>={
  feats:'#featTypes,#featsList'
 };
 const fixedLabels:Record<string,string>={journalNotesTextarea:'笔记编辑',moneyButton:'详细统计',spoilerWarning:'额外统计提示',featTypes:'筛选与排序',featsList:'成就列表'};
-export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Participant}){
+export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Participant}):PanelControls{
  const preferences:Record<PanelKind,boolean>={journal:true,traits:true,statistics:true,feats:true,cheats:true,attitudes:true,settings:true};
  for(const kind of Object.keys(preferences) as PanelKind[])try{preferences[kind]=root.localStorage.getItem(`DoLGameUI.${kind}.enabled`)!=='false'}catch{/* Session fallback. */}
- let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined,frame=0,destroyed=false,overlayOwnerExited=false,overlayClaimUnavailable=false,disposingOverlayMount=false,overlayMount:Readonly<MountHandle>|undefined,overlayLease:Readonly<Claim>|undefined;
+ let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined;const scope=visualScope();
  let targets:HTMLElement[]=[];
  const state=reactive<NavigationState>({title:'',sections:[]});
  const counts={mounts:0,scans:0,failures:0};
  let lastFailure='';
  const presentation=panelPresentation(),passagePresentation=panelPresentation();
- const motion=sourceMotion();
- function unmount(value:App|undefined){try{value?.unmount()}catch(error){console.warn('DoLGameUI panel cleanup',error)}}
- function release(){motion.cancel();const mount=overlayMount;overlayMount=undefined;presentation.release();unmount(app);app=undefined;if(mount){disposingOverlayMount=true;mount.dispose();disposingOverlayMount=false}host?.remove();host=null;overlay?.classList.remove('dgp-overlay');overlay?.removeAttribute('data-dgp-panel');content=null;active=undefined;targets=[]}
+ const motion=sourceMotion();scope.own(()=>motion.dispose());
+ const overlayLife=framework?navigationMount(framework.owner,'panels-overlay-life',release):undefined;
+ const passageLife=framework?navigationMount(framework.owner,'panels-passage-life',releasePassage):undefined;
+ let restoreOverlay=()=>{},restorePassage=()=>{};
+ function decorate(node:HTMLElement,kind:PanelKind){
+  const hadClass=node.classList.contains('dgp-overlay'),previous=node.getAttribute('data-dgp-panel');
+  node.classList.add('dgp-overlay');node.dataset.dgpPanel=kind;
+  return()=>{if(!hadClass)node.classList.remove('dgp-overlay');if(node.dataset.dgpPanel===kind){if(previous===null)node.removeAttribute('data-dgp-panel');else node.setAttribute('data-dgp-panel',previous)}};
+ }
+ function release(){motion.cancel();presentation.release();unmountUI(app);app=undefined;overlayLife?.release();host?.remove();host=null;restoreOverlay();restoreOverlay=()=>{};content=null;active=undefined;targets=[]}
  function go(index:number){
-  if(!content)return;
+  if(!content||overlayLife&&!overlayLife.current())return;
   const target=targets[index];
   if(index!==-1&&(!target||!content.contains(target)||!visible(target)))return;
-  const top=index<0?0:content.scrollTop+target.getBoundingClientRect().top-content.getBoundingClientRect().top-12;
+  const top=index<0?0:target?navigationScrollTop(content,target,12):undefined;
+  if(top===undefined)return;
   if(document.documentElement.hasAttribute('data-stone-free')){motion.scroll(content,top);if(target)motion.animate(target,[{boxShadow:'inset 3px 0 #a79ab380',backgroundColor:'#a79ab318'},{boxShadow:getComputedStyle(target).boxShadow,backgroundColor:getComputedStyle(target).backgroundColor}],900)}else content.scrollTo({top,behavior:'auto'});
  }
  let seenPassage:Element|null=null;
- let passage:HTMLElement|null=null,passageHost:HTMLElement|null=null,passageApp:App|undefined,passageOwnerExited=false,passageClaimUnavailable=false,disposingPassageMount=false,passageMount:Readonly<MountHandle>|undefined,passageLease:Readonly<Claim>|undefined;
+ let passage:HTMLElement|null=null,passageHost:HTMLElement|null=null,passageApp:App|undefined;
  let passageTargets:HTMLElement[]=[];
  const passageState=reactive<NavigationState>({title:'',sections:[]});
- function releasePassage(){const mount=passageMount;passageMount=undefined;passageObserver.disconnect();passagePresentation.release();unmount(passageApp);passageApp=undefined;if(mount){disposingPassageMount=true;mount.dispose();disposingPassageMount=false}passageHost?.remove();passageHost=null;passage?.classList.remove('dgp-overlay');passage?.removeAttribute('data-dgp-panel');passage=null;passageTargets=[]}
- function recover(kind:PanelKind,error:unknown,inline=false){
+ function releasePassage(){passageObserver.disconnect();passagePresentation.release();unmountUI(passageApp);passageApp=undefined;passageLife?.release();passageHost?.remove();passageHost=null;restorePassage();restorePassage=()=>{};passage=null;passageTargets=[]}
+ function recover(kind:PanelKind,error:unknown,inline=false,parent:HTMLElement|null=inline?passage:overlay){
   if(!isMasterEnabled()){if(inline)releasePassage();else release();return}
-  const parent=inline?passage:overlay;
   counts.failures++;lastFailure=String(error);console.warn('DoLGameUI panel reverted',kind,error);
   preferences[kind]=false;try{root.localStorage.setItem(`DoLGameUI.${kind}.enabled`,'false')}catch{}
   if(inline)releasePassage();else release();
@@ -74,26 +86,24 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   seenPassage=next;
   const name=next?.dataset.passage??'';
   const kind:PanelKind|undefined=['Attitudes','Livestock Attitudes'].includes(name)?'attitudes':['Settings','Livestock Settings'].includes(name)?'settings':undefined;
-  if(framework&&passageLease&&!passageLease.isCurrent())passageOwnerExited=true;
-  if(!isMasterEnabled()||!next||!kind||!preferences[kind]||passageOwnerExited||passageClaimUnavailable){if(passage)releasePassage();return}
-  if(passage!==next||!passageHost?.isConnected||!!framework&&!passageMount?.isCurrent()){
-   releasePassage();passage=next;passage.classList.add('dgp-overlay');passage.dataset.dgpPanel=kind;passageState.title=titles[kind];passageState.sections=[];
+  if(!isMasterEnabled()||!next||!kind||!preferences[kind]||passageLife?.exited()){if(passage)releasePassage();return}
+  if(passage!==next||!passageHost?.isConnected||!!passageLife&&!passageLife.current()){
+   releasePassage();if(passageLife&&!passageLife.acquire())return;passage=next;restorePassage=decorate(passage,kind);passageState.title=titles[kind];passageState.sections=[];
    passageHost=document.createElement('div');passageHost.className='dgp-host';passage.prepend(passageHost);
-   const createNavigation=()=>createApp(Navigation,{state:passageState,go:(index:number)=>{const target=index<0?passage:passageTargets[index];if(target&&passage?.contains(target)&&visible(target))target.scrollIntoView({block:'start'})},fallback:()=>setEnabled(kind,false)});
-   if(framework){
-    passageLease?.release();passageLease=undefined;passageApp=createNavigation();
-    try{passageMount=framework.owner.mount({id:'panels-passage',parent:passageHost,lifetime:'passage',setup(context){context.onCleanup(()=>{if(disposingPassageMount)return;if(!passageLease?.isCurrent())passageOwnerExited=true;passageMount=undefined;releasePassage()});mount(passageApp!,context.element,kind,true)}})}catch(error){passageOwnerExited=true;throw error}
-    if(!passageMount.isCurrent()){passageMount=undefined;passageOwnerExited=true;releasePassage();return}
-    passageLease=framework.owner.claim('region','panels-passage-life')??undefined;
-    if(!passageLease){passageClaimUnavailable=true;releasePassage();return}
-   }else{passageApp=createNavigation();mount(passageApp,passageHost,kind,true)}
+   const createNavigation=()=>createApp(Navigation,{state:passageState,go:(index:number)=>{const target=index<0?passage:passageTargets[index];if((!passageLife||passageLife.current())&&target&&passage?.contains(target)&&visible(target))target.scrollIntoView({block:'start'})},fallback:()=>setEnabled(kind,false)});
+   passageApp=createNavigation();
+   if(passageLife){
+    if(!passageLife.mount({id:'panels-passage',parent:passageHost,lifetime:'passage',setup:context=>mount(passageApp!,context.element,kind,true)})){
+     if(!passageLife.exited())recover(kind,Error('Panel passage mount failed'),true,next);return;
+    }
+   }else mount(passageApp,passageHost,kind,true);
    passageObserver.observe(passage,watch);
   }
   passagePresentation.refresh(passage,kind);
   passageTargets=index(passage,kind,passageState);
  }
  function refresh(){
-  if(destroyed)return;
+  if(!scope.active())return;
   if(!isMasterEnabled())document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());
   try{refreshPassage()}catch(error){recover(passage?.dataset.dgpPanel as PanelKind||'settings',error,true)}
   try{refreshOverlay()}catch(error){recover(active||panelKeys[overlay?.dataset.overlay??'']||'settings',error)}
@@ -103,20 +113,18 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   if(next!==overlay){release();observer.disconnect();overlay=next;if(overlay)observer.observe(overlay,watch)}
   const kind=panelKeys[overlay?.dataset.overlay??''];
   const body=overlay?.querySelector<HTMLElement>('#customOverlayContent')??null;
-  if(framework&&overlayLease&&!overlayLease.isCurrent())overlayOwnerExited=true;
-  if(!isMasterEnabled()||!kind||!preferences[kind]||!body||overlay?.classList.contains('hidden')||overlayOwnerExited||overlayClaimUnavailable){if(host)release();return}
-  if(active!==kind||content!==body||!host?.isConnected||!!framework&&!overlayMount?.isCurrent()){
-   release();active=kind;content=body;host=document.createElement('div');host.className='dgp-host';body.before(host);
+  if(!isMasterEnabled()||!kind||!preferences[kind]||!body||overlay?.classList.contains('hidden')||overlayLife?.exited()){if(host)release();return}
+  if(active!==kind||content!==body||!host?.isConnected||!!overlayLife&&!overlayLife.current()){
+   release();if(overlayLife&&!overlayLife.acquire())return;active=kind;content=body;host=document.createElement('div');host.className='dgp-host';body.before(host);
    state.title=titles[kind];state.sections=[];
    const createNavigation=()=>createApp(Navigation,{state,go,fallback:()=>setEnabled(kind,false)});
-   if(framework){
-    overlayLease?.release();overlayLease=undefined;app=createNavigation();
-    try{overlayMount=framework.owner.mount({id:'panels-overlay',parent:host,lifetime:'persistent',setup(context){context.onCleanup(()=>{if(disposingOverlayMount)return;if(!overlayLease?.isCurrent())overlayOwnerExited=true;overlayMount=undefined;release()});mount(app!,context.element,kind)}})}catch(error){overlayOwnerExited=true;throw error}
-    if(!overlayMount.isCurrent()){overlayMount=undefined;overlayOwnerExited=true;release();return}
-    overlayLease=framework.owner.claim('region','panels-overlay-life')??undefined;
-    if(!overlayLease){overlayClaimUnavailable=true;release();return}
-   }else{app=createNavigation();mount(app,host,kind)}
-   overlay!.classList.add('dgp-overlay');overlay!.dataset.dgpPanel=kind;counts.mounts++;
+   app=createNavigation();
+   if(overlayLife){
+    if(!overlayLife.mount({id:'panels-overlay',parent:host,lifetime:'persistent',setup:context=>mount(app!,context.element,kind)})){
+     if(!overlayLife.exited())recover(kind,Error('Panel overlay mount failed'));return;
+    }
+   }else mount(app,host,kind);
+   restoreOverlay=decorate(overlay!,kind);counts.mounts++;
   }
   counts.scans++;
   presentation.refresh(body,kind);
@@ -124,7 +132,7 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   // clone notes inputs, or cache game variables. Native tabs can replace this body.
   targets=index(body,kind,state);
  }
- function schedule(){if(!destroyed&&!frame)frame=requestAnimationFrame(()=>{frame=0;refresh()})}
+ function schedule(){scope.frame(refresh)}
  const watch:MutationObserverInit={childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['data-overlay','hidden','class','style']};
  function changed(records:MutationRecord[],inline=false){
   if(!inline&&!panelKeys[overlay?.dataset.overlay??'']){if(host)schedule();return}
@@ -140,10 +148,12 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
  const observer=new MutationObserver(records=>changed(records)),passageObserver=new MutationObserver(records=>changed(records,true));
  // Discover only root replacement; never watch the entire document subtree.
  const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay||document.querySelector('#passages .passage:last-child')!==seenPassage)schedule()});
- function setEnabled(kind:PanelKind,value:boolean){if(destroyed||!Object.hasOwn(preferences,kind))return;preferences[kind]=!!value;try{root.localStorage.setItem(`DoLGameUI.${kind}.enabled`,String(!!value))}catch{/* Display changes still apply. */}refresh();document.dispatchEvent(new Event('dol-ui-panels-change'))}
+ function setEnabled(kind:PanelKind,value:boolean){if(!scope.active()||!Object.hasOwn(preferences,kind))return;preferences[kind]=!!value;try{root.localStorage.setItem(`DoLGameUI.${kind}.enabled`,String(!!value))}catch{/* Display changes still apply. */}refresh();document.dispatchEvent(new Event('dol-ui-panels-change'))}
  const overlayParent=document.getElementById('customOverlay')?.parentElement,passages=document.getElementById('passages');
  if(overlayParent)discovery.observe(overlayParent,{childList:true});
  if(passages)discovery.observe(passages,{childList:true});
  root.jQuery?.(document).on(':passageend.dolPanels',schedule);refresh();
- return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts}),getLastFailure:()=>lastFailure,destroy(){destroyed=true;if(frame)cancelAnimationFrame(frame);root.jQuery?.(document).off(':passageend.dolPanels',schedule);discovery.disconnect();observer.disconnect();release();releasePassage();motion.dispose();overlayLease?.release();overlayLease=undefined;passageLease?.release();passageLease=undefined;document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
+
+ scope.own(()=>discovery.disconnect());scope.own(()=>observer.disconnect());scope.own(()=>passageObserver.disconnect());
+ return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts,mountContract:overlayLife?.implementation??'classic'}),getLastFailure:()=>lastFailure,destroy(){scope.dispose();root.jQuery?.(document).off(':passageend.dolPanels',schedule);release();releasePassage();document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
 }

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.historical-settings.json",
+  "include": [
+    "prototypes/settings-refraction-v1/**/*.ts",
+    "tests/artifacts/settings-refraction-v1/old/src/**/*.ts",
+    "tests/artifacts/settings-refraction-v1/old/src/**/*.vue",
+    "tests/artifacts/settings-refraction-v1/new/src/**/*.ts",
+    "tests/artifacts/settings-refraction-v1/new/src/**/*.vue"
+  ]
+}

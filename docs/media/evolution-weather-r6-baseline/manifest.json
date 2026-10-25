@@ -1,0 +1,80 @@
+{
+  "scope": "R6 controlled C3/C4 1x rain-level and snow comparison. C3 rain accepted, C4 visuals pending owner. Not physical-device evidence. Same common control row in both views.",
+  "baseHead": "9fa1fb0384624b522bef4576ed0e765b33bd9e7a",
+  "baseline": true,
+  "totalBytesExcludingManifest": 5759439,
+  "durationSeconds": 53.48,
+  "sourceHashes": {
+    "prototypes/evolution-weather/climate-review.html": "4e4f025a0682f34a21e68aefd30d5f779082a5175f0f03a6594b359c58517644",
+    "prototypes/evolution-weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "tests/evolution-weather-levels.cjs": "a6f1e6566272bd01cd57ad0233e77dc1a8cdbff16b7b198be380185f4a39a8ff",
+    "prototypes/evolution-weather/README.md": "6d814f2539f0b01488878a9a6583d0dfb5f8d6105fcc3da45d500759c98ec812",
+    "prototypes/evolution-weather/compare.html": "600b4e4eee73b17c356b0280620de593264e1a67632a8cdf793ad8b08ba01558",
+    "prototypes/evolution-weather/glass-optics.html": "cff5ed496385188f196fc89f2b027fcbddc0a419c9e848202a24751c03f5d065",
+    "prototypes/evolution-weather/index.html": "5b692205f386ef756d981f84bfb026db95deff974069b493944eec845ba9d8eb",
+    "prototypes/evolution-weather/main.ts": "d0d31a40861093dc101e0f202937c24843468c4b6c9b0b8667f0d12b8db4383c",
+    "prototypes/evolution-weather/material.ts": "5c33c29180c35e75a9226ec20cc4ce446c68ebb0324116fe9aafd2a1a149e815",
+    "prototypes/evolution-weather/optics.html": "e08f1c5e50a5c79f02c36f1c2ab11293e86084976417a172e0226b09342243a2",
+    "prototypes/evolution-weather/rain-model.ts": "86059c2632a5b938b5bb88fb42a2b1471d29903e2b6ad52e38d4b81e04f91d48",
+    "prototypes/evolution-weather/rain-review.html": "57e53167b28082ae7ebb0aa0b2287230ae270fcfb28fd529b9668cbc2cdda0f9",
+    "prototypes/evolution-weather/renderer.ts": "456e44bec4804c48447c1a41a25fa7b503c26af6bb99ff2d3bce13ecdb965cce",
+    "prototypes/evolution-weather/runoff-review.html": "1b02dde0a234c3fa77119f059426b5360521477348b5ed9148b527805b262b04",
+    "prototypes/evolution-weather/style.css": "1809a77f2a1d6ef39fbf1fa84beb37b0110a8a7202027ebc618f1996fdcb4031",
+    "prototypes/evolution-weather/trail-review.html": "3b5876f86787a4be4b138184de742751a148092fd912a85958c0320bec578672",
+    "prototypes/evolution-weather/v1-renderer.ts": "e8788d8e0c4ed279d561341de5f12cd402c0c0d71e5251cb511421a201f7ccf5",
+    "prototypes/evolution-weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "prototypes/evolution-weather/wet-glass.ts": "fe5e1f5d3c6082cb5467553c6d051615f0a32ef6ba19f0499a70cd23d4610edc",
+    "tests/evolution-rain-model.test.cjs": "2c9768b0caa4c5ac5929dedae3bc03a599508bb28e4a0526fdf134de04ca6f79",
+    "vite.evolution-weather.config.ts": "762d5de8067b107ed07ec7872ed519e03bbb9db9657aac4e2fb532e58aa7645d"
+  },
+  "files": {
+    "climate-1x.mp4": {
+      "bytes": 1702694,
+      "sha256": "c37618e45d0b7e226dfacb216051793d3d2d2391d9a1723faae144e4b757786c"
+    },
+    "climate-clear.png": {
+      "bytes": 401828,
+      "sha256": "df8db56d80dce5cb411024f9b7c023d2bd7eaa6d9b44ad1a5f2eab88a0fac5fb"
+    },
+    "climate-heavy.png": {
+      "bytes": 418572,
+      "sha256": "7aca3957855bd233a69af8e2bc4b5f1da62d6968a238e630e94b98e5c649ce6f"
+    },
+    "climate-light.png": {
+      "bytes": 414404,
+      "sha256": "8c94ab1737a06864c97db919823e17948eb728f924b867b67d6e62b53e27d6e3"
+    },
+    "climate-material-day.png": {
+      "bytes": 328612,
+      "sha256": "22b63a20e35e256ec353d139f46848aa00f0b2bec905ba36e37c8adde90722e6"
+    },
+    "climate-material-night.png": {
+      "bytes": 232743,
+      "sha256": "0dce4e6d9fd57ff94775318ac7a7a944ec1e7554bd0d060ecd13e67693feb871"
+    },
+    "climate-normal.png": {
+      "bytes": 417849,
+      "sha256": "b65554a2adc587438d42741a71f08ad0ac7d16dbf091f91190a82cc5d0dc5242"
+    },
+    "climate-return.png": {
+      "bytes": 415583,
+      "sha256": "4fec395fc0dd2f9749e4407b2f609c4573ae1e699e7dc11b8bd00aa7ce16f291"
+    },
+    "climate-severe.png": {
+      "bytes": 419572,
+      "sha256": "9dc925f15e6edcee76bb48f77b9fef40b4ed318cdcbc09cb117b4e78a1809053"
+    },
+    "climate-snow-transition.png": {
+      "bytes": 414091,
+      "sha256": "0614e95089155b5ab94c6ad78676d5a981998623e63c622a8d0e2b0c48d000b7"
+    },
+    "climate-snow.png": {
+      "bytes": 414769,
+      "sha256": "53c89533647f10f781770e13ad02ff3adfb20dd28763b0175e4f3c7eca509927"
+    },
+    "result.json": {
+      "bytes": 178722,
+      "sha256": "03dc13caa9826b192ae233bfe027ffe53923c12e1352a6951a9155495a9f83a9"
+    }
+  }
+}

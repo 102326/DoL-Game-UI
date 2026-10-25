@@ -1,6 +1,8 @@
-# Soft & Wet 3.0 — Kraft Work
+# Soft & Wet 4.0 — Evolution
 
-`DoLGameUI 3.0.4` 是 Kraft Work 3.x 的维护更新，修复缺少AbortSignal.any时Host无法启动，并增加可见启动诊断；保留既有波纹修正。技术名仍为 DoLGameUI，原有 UI API v1 保留，Framework Host 独立安装。
+`DoLGameUI 4.0.0` 是 Evolution 的正式版本构建。修复ModHub等已适配窗口旧雨幕的重复重绘，保留原雨量、速度和外观。更新悬浮球回旋、设置转场与玻璃天气，保留3.X黑灰Acrylic、真实游戏操作、UI API v1及独立Framework Host。
+
+普通雨珠集中覆盖设置标题、布局切换及横向分类区，并在下缘柔化衔接；保留原水珠尺寸、流速与真实背景折射。雪与特殊天气继续使用各自的表现范围。
 
 ## 安装与升级
 
@@ -22,7 +24,7 @@ R16-W01 修复保留：快穿和脱下通过当前原穿戴入口执行，避免
 
 ## 回退与数据
 
-界面设置总开关可回到原版。回到 2.7 时，停用本 UI、恢复旧包并重启；无其它消费者依赖时可停用 Host。不要清除存档或偏好，不承诺整包热卸载。
+界面设置总开关可回到原版。回退时，停用本 UI、恢复备份的原包并重启；无其它消费者依赖时可停用 Host。不要清除存档或偏好，不承诺整包热卸载。
 
 不迁移原游戏存档格式。继续保留 `metadata.dolGameUI.gameTime` 及同命名空间中其它有效附加字段。保存、读取、导入导出及云端业务仍由原游戏或对应 Mod 执行。Windows 和 Android 的 RC 升级回退已有代表性证据；各版验证范围以对应记录为准。
 
@@ -36,6 +38,6 @@ Loader 2.101.1 的预发布比较有已知限制，部分 0.2.0 预发布可能�
 
 Host 0.1.5 修复缺少 AbortSignal.any 时不启动的问题；历史0.1.4包保留，不覆盖同版本字节。Framework 不提供单包/双包混装或整包热替换。
 
-设置与可选包见 `docs/UI_SETTINGS.md`、`docs/OPTIONAL_ADAPTERS.md`，本版变化见 `docs/RELEASE_3.0.4.md`。许可证见 LICENSE、THIRD-PARTY-NOTICES.txt 及 UPSTREAM-RENDERER 文件。
+设置与可选包见 `docs/UI_SETTINGS.md`、`docs/OPTIONAL_ADAPTERS.md`，本版变化见包内与当前版本对应的 `docs/RELEASE_*.md`。许可证见 LICENSE、THIRD-PARTY-NOTICES.txt 及 UPSTREAM-RENDERER 文件。
 
 反馈入口：https://github.com/102326/DoL-Game-UI/issues 。请附 DoL/Lyra、Loader、Host/UI、相关 Mod 版本、平台/WebView、复现步骤及实际与期望表现。不要公开上传私人存档、账号、敏感数据或未获授权的第三方 Mod 包。
