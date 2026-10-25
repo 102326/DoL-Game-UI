@@ -725,8 +725,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ac2234cebe3899a07bd2891b458195719736922575cfc800a78f198d5ecd9906",
-      "assertionSites": 32
+      "sourceSha256": "71a301d646993e87a1fc2a833f0ae0f32d3351020bb2e3918e85baec4bac6b71",
+      "assertionSites": 35
     },
     {
       "entry": "tests/combat-focused.cjs",
@@ -784,6 +784,7 @@
     },
     {
       "entry": "tests/device-layouts.cjs",
+      "sourceEntry": "tests/device-layouts.cts",
       "profiles": [
         "standard"
       ],
@@ -795,8 +796,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8dc72d5ac8ba99f62e635de494e110de84ae27a9e8dee55ea1c0d0f520891469",
-      "assertionSites": 13
+      "sourceSha256": "5bdf88fdf8bee890b77b8c9036667e32b7f88d15f2fa07c8ce7726eee789eb7a",
+      "assertionSites": 15
     },
     {
       "entry": "tests/device-plan-boundary.test.mts",
@@ -963,7 +964,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b553715be09046e2d81ec61799457f1880e8e85d748e01d918d4a29f05e11fae",
+      "sourceSha256": "c39aeba91bb9497dc2445c39743a3409207318c0c59a1876559ca5ed22e6682b",
       "assertionSites": 117,
       "rendererContexts": [
         "sphere:2d"
@@ -989,6 +990,7 @@
     },
     {
       "entry": "tests/evolution-rain-glass.cjs",
+      "sourceEntry": "tests/evolution-rain-glass.cts",
       "profiles": [
         "research"
       ],
@@ -1000,7 +1002,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6f46021dfdff5804411b2d20999eb4a65b97feb23f824d3904c4d7e58adfb3bc",
+      "sourceSha256": "030295fcdda57faba8759dfe23f61900f1eb2ba01025df20058c07e0a2ff51bd",
       "assertionSites": 33
     },
     {
@@ -1299,6 +1301,7 @@
     },
     {
       "entry": "tests/framework.cjs",
+      "sourceEntry": "tests/framework.cts",
       "profiles": [
         "standard"
       ],
@@ -1310,7 +1313,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "07689c7aaa921c58643915ba315b80d262e08f5d18a89d61ecd014e7cd565374",
+      "sourceSha256": "79e9e3e0764c06b3fcb22677161899b2d60c543d78df10916e92de3c4a745ea2",
       "assertionSites": 73
     },
     {
@@ -1623,6 +1626,7 @@
     },
     {
       "entry": "tests/motion-workspace.cjs",
+      "sourceEntry": "tests/motion-workspace.cts",
       "profiles": [
         "research"
       ],
@@ -1650,8 +1654,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "64c6049f980befd15557bec5d3150ecaf9cdef0c51b9e73e4551893de76c15d3",
-      "assertionSites": 67
+      "sourceSha256": "dedab513cb0648d9c676e035273bb4d1a321baf5262265af1c53d1119342ebf5",
+      "assertionSites": 69
     },
     {
       "entry": "tests/mouth-compat-adapter.cjs",
@@ -1938,7 +1942,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "18f98c7e024a13db9d1baa951c09cca849b86f986501dcd2b7495fd379dc427c",
+      "sourceSha256": "43d6aeba587fe09e0562b287f8d73f59442555946e58e6e43b99308388e02166",
       "assertionSites": 86
     },
     {
@@ -1960,6 +1964,7 @@
     },
     {
       "entry": "tests/settings-ci.cjs",
+      "sourceEntry": "tests/settings-ci.cts",
       "profiles": [
         "standard",
         "research"
@@ -2028,8 +2033,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "1aaca991783d4639562d084f053676a3d326d7179f880d999c2c1dcaf40400c9",
-      "assertionSites": 160,
+      "sourceSha256": "9e14d0d8861a9510138ef1217bf7aa7165e691a5fb76b140edec5312b9efe841",
+      "assertionSites": 178,
       "rendererContexts": [
         "weather:2d"
       ]
@@ -2279,6 +2284,10 @@
       "granularity": "checkpoint",
       "cases": [
         {
+          "id": "core-identity",
+          "minimumAssertions": 1
+        },
+        {
           "id": "before-core",
           "minimumAssertions": 1
         },
@@ -2303,8 +2312,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "72bc616ff9e168e6d0432b763ad1b7d0dac11193b5117e5054e347c9df43b54d",
-      "assertionSites": 45,
+      "sourceSha256": "64992f3f7d024f15a66eeb1aeb7c254b20217fc599ecd9edceaa234c43e90f3a",
+      "assertionSites": 50,
       "evidence": "checkpoints"
     },
     {
@@ -2321,8 +2330,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "72bc616ff9e168e6d0432b763ad1b7d0dac11193b5117e5054e347c9df43b54d",
-      "assertionSites": 7,
+      "sourceSha256": "64992f3f7d024f15a66eeb1aeb7c254b20217fc599ecd9edceaa234c43e90f3a",
+      "assertionSites": 9,
       "evidence": "checkpoints"
     },
     {
@@ -2334,6 +2343,10 @@
       "classification": "contract",
       "granularity": "checkpoint",
       "cases": [
+        {
+          "id": "core-identity",
+          "minimumAssertions": 1
+        },
         {
           "id": "privacy",
           "minimumAssertions": 1
@@ -2351,8 +2364,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "72bc616ff9e168e6d0432b763ad1b7d0dac11193b5117e5054e347c9df43b54d",
-      "assertionSites": 48,
+      "sourceSha256": "64992f3f7d024f15a66eeb1aeb7c254b20217fc599ecd9edceaa234c43e90f3a",
+      "assertionSites": 53,
       "evidence": "checkpoints"
     },
     {
@@ -2382,6 +2395,10 @@
       "granularity": "checkpoint",
       "cases": [
         {
+          "id": "core-identity",
+          "minimumAssertions": 1
+        },
+        {
           "id": "focus-escape",
           "minimumAssertions": 1
         },
@@ -2398,8 +2415,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "72bc616ff9e168e6d0432b763ad1b7d0dac11193b5117e5054e347c9df43b54d",
-      "assertionSites": 39,
+      "sourceSha256": "64992f3f7d024f15a66eeb1aeb7c254b20217fc599ecd9edceaa234c43e90f3a",
+      "assertionSites": 44,
       "evidence": "checkpoints"
     },
     {
@@ -2486,6 +2503,23 @@
       ],
       "sourceSha256": "c5bb8ad7402c277dfe78ced63a380a0adcb2d812bae523f175ab80b4f2a6aa2a",
       "assertionSites": 15
+    },
+    {
+      "entry": "tests/wardrobe-preview-boundary.test.cjs",
+      "sourceEntry": "tests/wardrobe-preview-boundary.test.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "b04a1ab9a54842211ffa05d37a87aa736b333192ef86b5a5a54890c5fbe3637a",
+      "assertionSites": 4
     },
     {
       "entry": "tests/wardrobe-slot-mappings.test.cjs",

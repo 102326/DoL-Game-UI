@@ -383,3 +383,25 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 
 
 检查点补充：186项完整ci:check、UI实际Vite构建和Framework实际构建均exit 0。重建后衣柜features复验在“修改描述后点击确认修理”出现一次按钮脱离DOM超时；准确旧JS使用同一新构建的一次对照通过。先前CTS使用旧构建曾通过，不能冒称最新构建该项通过，也不能据此认定产品回归或TS原因；原日志保留，后续先检查这段注入/点击之间的时序，并保留无写入与过期拒绝断言。本阶段不启动新迁移批次，先向负责人汇报186/243及57项后续工作。
+
+
+## 2026-10-25 收束批次：243/243 源码已迁移，最终验证进行中
+
+负责人恢复并授权完成剩余全部任务。冻结清单的243个维护中独立JS来源现均有TS源码，最后57项已经逐项接入严格工具图；生成CJS/MJS继续保持原命令、路径及模块运行形式。此处的243/243是源码清单完成，不代表最终CI、装机或发布通过。
+
+- 186项准确提交b7260aaf432c25f4f3200d0779b74695a656b186：标准40125602117、研究40125601288均success。两份独立remote-verification及summary回读确认准确HEAD、dirty=false、Node26.12.1、PASS/COMPLETE、problems=[]；下载10摘要、9ZIP CRC和双构建PASS/differences=[]。不把它自动覆盖后续源码。
+- 两处Twee自有resize回调已提取到src/early/shop-resize.ts；模板生成保持原宏和事件路径，原始冻结回调8类输入逐项等价，生成漂移反例通过。原SugarCube宏表达式与包装保留原格式。
+- 产品、Host、Vue、兼容包关闭allowJs并启用noUncheckedIndexedAccess；工具和研究图继续strict/checked indexing。工厂返回值传递、原型测量目标与兼容包正则/数组边界按实际类型修正，没有用any或忽略检查代替。设置与存档测试的局部Theme不再全局增补Window而污染其它消费者。
+- 最后一批Windows实际浏览器：UI Runtime全流程通过，含Inspector、隐私/导出、原生浮层、兼容包重绑定和销毁；历史反例的正常迟完成、真正残余、缺CSS和错误定位仍被精确区分。中转工作区5项、历史菜单原型10项、手机兼容、Framework根合同32项、天气W01九项和雨幕普通/径流用例通过。原生战斗隔离夹具5视口完整通过；这些不代替当前Android游戏结果。
+- 历史0.5.11.9游戏测试中，社交/面板/衣柜features遇到bannerFallbackImage.onload的skybox异步错误；无UI对照未复现，保留Unknown，不排除后记PASS。features中描述失效与点击确认之间的夹具竞态另行用同一页任务操作真实按钮修正，过期/无写入断言保留。
+- 本机device-layouts新CTS与准确旧CJS在同一当前源码下各有4个超时，均执行124条计划并准确拒绝4类错误反例；具体超时包含冷加载、可见/稳定等待，不能写为Windows该矩阵通过，也不放宽2500ms断言。完整Linux CI待最终精确提交。迁移中两次误改夹具脚本的失败保留，HTML内容已经恢复原JS，不把编译成功当渲染证明。
+- 历史resilience新旧同在旧Core身份等待超时；visual-effects新旧同在旧偏好“不重写原字节”断言失败；settings-acrylic新旧首条背景透明断言不符；saves-native-tools新旧文件选择器背景断言不符；雪集成48项冻结像素一致后第一项实际正文截图新旧不同。均保留原断言与失败，不将历史期望改回旧主题，不宣称这些完整通过。缺历史ZIP/game.html/外部旧Lab工具的脚本仅编译，长基线测量未重跑。
+- 衣柜私有预览去掉空对象冒充完整setup的断言，先检查复制后的colours/skin_options，按实际读取的肤色项校验gradient；异常沿已有预览错误/原生路径处理，不改存档。新增缺失/畸形定义反例及无写入断言通过，真实preview-hook原用例通过。CI上传sidecar改为校验schema、当前run identity及状态一致性，假PASS、陈旧身份和不完整证据反例通过，独立远端验收仍保留。
+
+### 仍保留的JS：有限例外
+
+1. 固定第三方生成src/wardrobe/vendor/isolated-model.js：保留源码与生成身份，.d.ts输出unknown，消费端检查模型/尺寸/compile及layers；不将第三方源码换后缀冒充维护迁移。
+2. 10个提交内生成CommonJS入口：scripts/ci-cases、ci-catalog、ci-evidence、ci-png、ci-process-receipt、ci-research、ci-test-reporter、ci-verify-remote、test-ci，以及tests/device-case-plan。均有严格CTS单一来源；保留是为了npm安装前与下载后独立证据检查，不是保留手写JS。其余相同路径的CJS/MJS由tooling:build生成且不手工维护。
+3. 冻结反例/原始回调夹具是数据；原游戏、第三方源码、归档制品和SugarCube必需宏胶水不属于可继续运行的1.X/2.X自有样式。测试内受控HTML的原生脚本与待测试反例仍需原样执行，不能无故重写其语义。
+
+接下来的本轮必需项：以最后冻结源码跑两套完整CI、下载回读与九包合同；新包代表性Windows/Android复验与加载成员核对；更新本记录/交接并保留未覆盖与真实限制。Node26 Only与4.0.0-rc.2不变；不合main、不Tag、不发布，不改玩家浏览器目标或私人长期存档。

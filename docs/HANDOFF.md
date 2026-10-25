@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **当前 TS First：186/243，剩余57项测试。** 独立脚本全部接入TS，本批按负责人要求先收束汇报；后续继续剩余测试、Twee与既有TS边界。147项ee68d20的标准40123691561、研究40123691058成功，下载准确HEAD/PASS/COMPLETE、10摘要/9ZIP/双构建通过。后续真实owner API图暴露的运行索引和私有模型边界已修正；13类owner及H01四反例、私有绘图1013项通过；186项ci:check和UI/Host实际构建通过。新构建features一次确认按钮脱离DOM超时、旧JS对照通过，时序待查，不能记为最新该项通过。尚待新批CI和最终装机。保留衣柜90ms采样、native-small-surfaces颜色超时、display-scale背景断言新旧同失败、共存观测失败及console404 Unknown，详见[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。Android旧100项证据不自动覆盖本批；继续全部冻结项，不发布。
+- **当前 TS First：243/243 独立源码迁移完成，最终验证进行中。** 本轮完成全部冻结项、两处Twee resize回调与既有TS边界检查；产品/Host/Vue/兼容包strict及checked indexing，保持Node26.12.1 Only、CommonJS命令与原业务/视觉。186项b7260aa标准40125602117、研究40125601288及下载10摘要/9ZIP/双构建已通过；不能替代243项最终CI/装机。最后一批Runtime、原生战斗、工作区、历史反例、天气和手机兼容代表检查通过；本地设备矩阵新旧各4超时、旧颜色/偏好断言、缺历史输入及banner Unknown均保留。最终两套CI、制品与Windows/Android复验尚待本批完成；旧100项Android不自动继承。[完整执行与有限JS例外](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)。未发布。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
