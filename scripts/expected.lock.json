@@ -2717,6 +2717,35 @@
       "assertionSites": 43
     },
     {
+      "entry": "tests/weather-dom-writes.cjs",
+      "sourceEntry": "tests/weather-dom-writes.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "named",
+      "cases": [
+        {
+          "id": "stationary glass frame does not rewrite DOM",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "moving glass retains geometry and original controls",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "same-frame repaint restores changed owned style",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "dry repeated frame is quiet and material releases",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "73bfb58dc07b396af54aaa8744c2ef58fd51e0d2d5f8f7babf05ea41719a2635",
+      "assertionSites": 16
+    },
+    {
       "entry": "tests/weather-review-pages.cjs",
       "sourceEntry": "tests/weather-review-pages.cts",
       "profiles": [

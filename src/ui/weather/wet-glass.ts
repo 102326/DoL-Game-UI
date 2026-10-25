@@ -166,7 +166,9 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
    active.push(b);if(d.vy>0)visibleFlow++;
    const shape=Math.min(2,Math.floor(d.shape*3));
    Object.assign(node.style,{display:'block',left:b.x+'px',top:b.y+'px',width:b.width+'px',height:b.height+'px',borderRadius:d.vy>0?'47% 53% 51% 49% / 41% 38% 62% 59%':`${44+d.shape*9}% ${53-d.shape*7}% 49% 51% / 46% 42% 58% 54%`,backdropFilter:`url(#${ids[shape]})`,opacity:String(Math.min(1,humidity*1.35)*(d.runoff?Math.min(1,d.age/.6):1)*density),'--drop-light':String(luminance)});
-   node.dataset.dropId=String(d.id);node.dataset.moving=String(d.vy>0);node.dataset.runoff=String(!!d.runoff);
+   if(node.dataset.dropId!==String(d.id))node.dataset.dropId=String(d.id);
+   if(node.dataset.moving!==String(d.vy>0))node.dataset.moving=String(d.vy>0);
+   if(node.dataset.runoff!==String(!!d.runoff))node.dataset.runoff=String(!!d.runoff);
   });
   const rim=ctx.createLinearGradient(0,0,width,height);rim.addColorStop(0,`rgba(184,209,214,${humidity*.28+s.snow*.3})`);rim.addColorStop(.3,'transparent');rim.addColorStop(1,`rgba(130,166,182,${humidity*.16+s.snow*.3})`);ctx.strokeStyle=rim;ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(1.5,1.5,width-3,height-3,21);ctx.stroke();
   if(frost)frost.draw(s.snow,s.time,width,height);

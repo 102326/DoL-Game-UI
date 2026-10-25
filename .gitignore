@@ -295,3 +295,5 @@ docs/HANDOFF.local.md
 /tests/wardrobe-runtime.cjs
 /tests/weather-types.cjs
 /tests/save-revision-source.cjs
+
+/tests/weather-dom-writes.cjs
