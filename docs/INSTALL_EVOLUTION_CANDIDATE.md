@@ -1,6 +1,6 @@
 # Evolution 候选：安装、升级与回退
 
-本指南用于 Soft & Wet 4.0 — Evolution 内部候选 `4.0.0-rc.2`，尚未正式发布。Host沿用0.1.5-experimental；按本轮冻结清单及ZIP核对身份。特殊天气已获本批视觉认可并接入设置，最终候选装机已完成，技术结果与发布裁决单列于[关卡报告](evolution/EVO-RELEASE-GATE-2026-10-24.md)。
+本指南用于 Soft & Wet 4.0 — Evolution 内部候选 `4.0.0-rc.2`，尚未正式发布。当前包来自已完成TS First及存档P2独立复核的源码`178f8b2`，Host沿用0.1.5-experimental；相同rc.2版本标签不代表包字节相同，请核对[最新冻结清单](evolution/EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json)。整体体验和发布裁决见[关卡报告](evolution/EVO-RELEASE-GATE-2026-10-24.md)。
 
 ## 安装
 
@@ -30,7 +30,7 @@
 | ReOverfitsSoftWet | 额外衣槽；本轮未安装目标，未作新实机声明 |
 | LyraMouthCompat051213 | 指定 Lyra 0.5.12.13 嘴部资源适配，须核对资源环境与 MapleBirch 范围 |
 
-具体候选版本和依赖见[RC2九包清单](evolution/EVO-RC2-PACKAGES-2026-10-24.json)及ZIP的boot.json。旧37da596九包清单保留为历史记录，其中原版优化兼容包1.0.2不能替代当前1.0.3。除嘴部资源包外，通常还需要 UI；SmartPhone 要求 UI >=3.0.2，其它外观包沿用已有最低合同。没有目标 Mod 就不安装对应包；主 Mod 与 PhotoPack 另行获取，本候选不打包第三方主 Mod。
+具体候选版本和依赖见[最新九包清单](evolution/EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json)及ZIP的boot.json。早期RC2、TS迁移前及局部修复前的清单只作历史；当前UI ZIP SHA-256为`43f61524eaadc35715f0ba548ac324d6afdba18bd5ff92d04aa0779f810dfaa6`。本轮候选集合只含九个Mod ZIP和对应SHA256SUMS，不含内部检查报告。除嘴部资源包外，通常还需要 UI；SmartPhone 要求 UI >=3.0.2，其它外观包沿用已有最低合同。没有目标 Mod 就不安装对应包；主 Mod 与 PhotoPack 另行获取，本候选不打包第三方主 Mod。
 
 原版优化叠穿是否开启由其原设置决定，兼容包不强制开启。已识别的叠穿项目、顺序和卸下操作使用作者原逻辑。
 
@@ -38,7 +38,9 @@
 
 ## 偏好与回退
 
-显示偏好保存在浏览器或 App 内，已有选择保留；新偏好默认显示 Hub、开启动画、战斗全部平铺，聚焦编辑仍可选。游戏存档格式不由 UI 迁移。
+显示偏好保存在浏览器或 App 内，已有选择保留；新偏好默认显示 Hub、开启动画、战斗全部平铺，聚焦编辑仍可选。游戏存档格式不由 UI 迁移。最新候选加强存档按钮操作前的异常数据检查；无法确认时停止该次转发并保留原版入口，不尝试自动修复或写入存档。带额外摘要的未知行可能继续显示原生控件。
+
+Node26仅为开发/构建工具要求，玩家浏览器或Android App无需安装Node。TS First没有改变玩家端依赖或存档格式。
 
 回退时停用候选 UI 与相应兼容包，恢复原来保存的包和加载顺序，再重启。其它 Mod 仍依赖 Host 时保留它。不要清空存档或整个 App 数据。
 

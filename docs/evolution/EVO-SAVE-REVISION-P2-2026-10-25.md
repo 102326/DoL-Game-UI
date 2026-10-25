@@ -35,7 +35,9 @@ Android的四个已有槽位包含`saveTitle`及额外彩色摘要span，原sour
 
 ## 完成与剩余边界
 
-**Implemented / Validated：本次P2修复、合同、两套CI、制品身份及代表性只读实机范围完成。Independent Re-review：Pending，等待独立复核，不代签终审。** 243/243迁移结论保留，本次必要修复的技术复验已完成。未改部分的Windows/Android设置、Hub、天气及既有业务证据按相同源码/相同包范围复用，不重新包装为178f8b2的全量业务测试。
+**Implemented / Validated / Independent Re-review：Accept；GB40-TS-F1／P2 Closed。** 2026-10-25，负责人转述小鸥独立复核结论并允许关闭：源码正确区分空槽与畸形数据，source守卫未变；32场景真实执行包含正常可用、异常拒绝与零写入；两套CI准确绑定178f8b2，标准190项、研究478项证据及九包摘要已独立核对；下载新旧包确认仅UI/index.js变化。上述独立复核结论来源于负责人本轮明确反馈，不是Codex自行签署。
+
+**TS First本轮技术范围Completed恢复，本次未发现新增阻断项。** 243/243迁移结论保留，局部修复与独立复核均已完成。未改部分的Windows/Android设置、Hub、天气及既有业务证据按相同源码/相同包范围复用，不重新包装为178f8b2的全量业务测试。Issue #22继续跟踪全局4.0任务，本次只关闭其P2子项，不等同关闭整体Issue或批准发行。
 
 本轮未发现新增产品阻塞；不声称已经验证所有设备/社区组合、真实畸形存档或长期资源。内部4.0.0-rc.2、main、Tag、Release、公开Assets和负责人G1/G2/G3边界保持原约定；未发布。
 

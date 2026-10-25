@@ -1,6 +1,6 @@
 # Soft & Wet 4.0 — Evolution
 
-> 面向玩家的发布草稿。内部候选4.0.0-rc.2已完成技术准备，拟正式4.0.0，未正式发布；仅最终验收后替换为正式版本与真实下载入口。
+> 面向玩家的发布草稿，更新2026-10-25。内部候选4.0.0-rc.2已完成TS First、存档P2修复及独立复核；当前受验代码178f8b2，拟正式4.0.0，未正式发布。最终验收后再替换正式版本与真实下载入口。
 
 Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口、焦点和悬浮工具的动态表现，并整理它们在缩放、滚动和快速切换时的行为。
 
@@ -28,6 +28,8 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 
 修复原版优化部分存档附加日期显示为无效文字的问题。仅在能够确认存档时间时修正显示，正常日期保留；不改存档数据，上游恢复正常后自动让位。
 
+存档操作前增加异常数据检查，避免把无法识别的数据当成空槽。信息无法确认时停止该次操作转发并保留原版入口；正常槽位仍沿原按钮路径处理，不自动改写存档。带有未知扩展内容的行继续保留原生展示与操作。
+
 兼容包按需安装，不包含第三方主 Mod。Cheat Extended 原作者版与独立维护的 rebuild.30 需要二选一。
 
 ## 安装与回退
@@ -35,6 +37,8 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 主 UI 与 Framework Host 仍是两个独立包，Host 先加载；对应兼容包放在目标 Mod 和 UI 之后，每个技术名只启用一个版本。无需解压 ZIP。
 
 当前适配基线为 DoL 0.5.12.13，Loader 和其它依赖的最低要求及实测版本见[安装说明](INSTALL_EVOLUTION_CANDIDATE.md)。先备份存档并保留原包；回退时恢复旧包和顺序、重启即可，不需要清空游戏数据。
+
+本次维护代码已转入TypeScript工具链，便于持续检查与维护；玩家不需要安装Node，浏览器与游戏端依赖、存档格式保持原约定。
 
 ## 已知限制
 
@@ -56,4 +60,4 @@ Evolution 继续使用 Soft & Wet 的黑灰 Acrylic 风格，重点改进窗口�
 - [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
 - [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
 
-截图来自实际测试App；视频为当前真实组件的受控原速演示，不标为自然天气事件或真机录屏。天气及Hub绘制与候选一致，来源见[技术验证](evolution/EVO-RC2-VALIDATION-2026-10-24.md)。媒体在正文展示，不放入Assets。
+截图来自实际测试App；视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称178f8b2安装包的新录屏。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。

@@ -36,6 +36,6 @@ Loader 2.101.1 的预发布比较有已知限制，部分 0.2.0 预发布可能�
 
 Host 0.1.5 修复缺少 AbortSignal.any 时不启动的问题；历史0.1.4包保留，不覆盖同版本字节。Framework 不提供单包/双包混装或整包热替换。
 
-设置与可选包见 `docs/UI_SETTINGS.md`、`docs/OPTIONAL_ADAPTERS.md`，本版变化见 `docs/RELEASE_3.0.4.md`。许可证见 LICENSE、THIRD-PARTY-NOTICES.txt 及 UPSTREAM-RENDERER 文件。
+设置与可选包见 `docs/UI_SETTINGS.md`、`docs/OPTIONAL_ADAPTERS.md`，本版变化见包内与当前版本对应的 `docs/RELEASE_*.md`。许可证见 LICENSE、THIRD-PARTY-NOTICES.txt 及 UPSTREAM-RENDERER 文件。
 
 反馈入口：https://github.com/102326/DoL-Game-UI/issues 。请附 DoL/Lyra、Loader、Host/UI、相关 Mod 版本、平台/WebView、复现步骤及实际与期望表现。不要公开上传私人存档、账号、敏感数据或未获授权的第三方 Mod 包。

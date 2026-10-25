@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **GB40-TS-F1修复与技术复验完成，独立复审Pending。** 受验代码`178f8b2b5b1828038b7c3ec304e8995bbe99ee38`；[标准40175814517](https://github.com/102326/DoL-Game-UI/actions/runs/40175814517)及[研究40175811238](https://github.com/102326/DoL-Game-UI/actions/runs/40175811238)完整success，独立下载PASS/COMPLETE、9ZIP/10摘要及双构建一致性通过。畸形目标不封存、revision拒绝，source原守卫字节不变；32项IDB/legacy真实模块联合合同、原20项source及单元通过。只有UI的index.js变化，其余八包容器/成员与d8430相同。Android仅更新UI并原生重启，八个适用包实际成员、顺序/禁用列表/偏好核对；Windows实际Loader与Android只读存档入口开关/读取通过，摘要哈希不变。Android四个额外摘要槽按原合同保留可见原生行，未点击存档业务按钮。详见[专项记录](evolution/EVO-SAVE-REVISION-P2-2026-10-25.md)和[新包冻结](evolution/EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json)。243/243迁移结论及未变范围原证据保留；文档后续提交与受验代码分开。下一步为独立复核该P2及负责人G1/G2/G3裁决，未授权main/Tag/Release/公开Assets。Node26.12.1 Only、4.0.0-rc.2不变。
+- **TS First本轮技术范围Completed；GB40-TS-F1独立复核Accept并关闭。** 2026-10-25负责人转述小鸥复核：32项正常/异常/零写入、标准190项及研究478项证据、九包摘要与新旧包差异均已独立核对。受验代码`178f8b2b5b1828038b7c3ec304e8995bbe99ee38`；标准40175814517、研究40175811238完整success。仅UI/index.js改变，其余八ZIP字节不变；Android重启八个适用包成员/顺序/偏好及Windows/Android只读存档页通过。见[局部修复与接受记录](evolution/EVO-SAVE-REVISION-P2-2026-10-25.md)、[最新九包冻结](evolution/EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json)。243/243迁移已完成，不再继续历史186/243批次。下一步已进入[最终候选验收与发布准备](evolution/EVO-RELEASE-GATE-2026-10-24.md)：同步最新安装、玩家文案与候选集合；整体G1/G2/G3及发行授权由负责人决定。Node26.12.1 Only、4.0.0-rc.2、未合main/未Tag/未发布不变；文档后续提交不冒称受验代码HEAD。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
@@ -47,8 +47,8 @@
 
 1. 先读 AGENTS、本文件和 READ01 报告；只读核对 `git status --short`、branch、HEAD、remote，`git fetch origin --prune`；列出独有提交/日志/修改。干净且无冲突才 `git merge --ff-only origin/dev/evolution-4.0`；禁止覆盖未提交工作或强推。
 2. 核对Node 26.12.1+且<27（两套Actions读取.node-version）、npm、Python及浏览器实际环境；按锁 `npm ci`，有需要再 `npx playwright install chromium`；录制脚本需系统PATH可用FFmpeg，媒体时长核对使用ffprobe。Python仅有python3时，运行打包器用显式python3；不要把旧Mac日志算新设备通过。
-3. 先按TS First方案一继续T1/T2/T3：当前186项已迁移，57项及既有TS边界仍在范围内；12个维护HTML内联程序已收敛，Twee仍待处理；逐批检查调用、导出、启动、生成锁和原反例，完成即退出对应重复JS。不要拿冻结清单的文件数当工程百分比，也不要仅完成当前CI入口就宣布全仓完成。
-4. 保留Windows Edge H01原始超时，继续有依据地归因；带记录的诊断通过不能抹去失败。Vite7.3.7已单独修补，旧审计为历史。每批做受影响验证，最终迁移源码再做两套CI、九包与代表Windows/Android实际宿主回归。旧RC2/8033b7f只能复用未改行为的有效证据，不替代新候选。
-5. TS First完成后更新候选冻结、依赖/许可/摘要与玩家材料，再提交负责人验收。4.0.0-rc.2保持内部版本；未授权正式版本变更、main、Tag、Release或公开Assets。READ01仍隔离，不主动新增视觉研究；额外设备及全Mod穷举不自动成为阻塞项。
+3. TS First方案一243/243与GB40-TS-F1独立复核均已完成。当前受验代码为178f8b2，两套CI与新九包身份见当前入口；旧186/243、Twee待迁移及旧“独立复审Pending”仅属历史状态，不再启动重复迁移。
+4. 使用最新冻结九包及安装/Release/首页草稿提交负责人整体验收。装机与业务仅复用各自适用范围的有效证据；本轮P2的新Windows/Android场景为只读存档页，不冒称全量业务重跑。保留历史失败、原生回退及日期/长期资源Unknown；READ01继续隔离，不新增视觉研究或全Mod穷举。
+5. 负责人确认G1/G2/G3、正式版本和发行授权后，才进行正式标记重建、最终摘要/加载身份及受影响场景复验，再按明确授权合main/Tag/Release。当前只准备材料，4.0.0-rc.2不改，公开首页/Assets不替换。
 
 交接更新约定：每批主要任务更新 Current / Decided / Next，记录实际输入SHA、命令/环境/范围、CI链接和未同步内容。绝对路径、服务会话、临时文件仅放Git忽略的 `docs/HANDOFF.local.md`；本文件保持一至两页，历史细节链接到专题报告。

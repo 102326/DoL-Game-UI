@@ -1,6 +1,6 @@
 # Soft & Wet 4.0 — Evolution
 
-> 首页替换稿，尚未启用。对应已完成技术准备的内部候选4.0.0-rc.2，拟正式4.0.0；正式发布与下载入口待负责人最终确认。
+> 首页替换稿，尚未启用。更新2026-10-25，对应已完成TS First及存档P2独立复核的内部候选4.0.0-rc.2（受验代码178f8b2），拟正式4.0.0；正式发布与下载入口待负责人最终确认。
 
 Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、服装店、角色信息和常用窗口。Evolution 延续3.X视觉基线，更新悬浮工具与设置的动态表现，并改进窗口在滚动、缩放和快速切换时的行为。
 
@@ -36,6 +36,8 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 新安装默认开启动画、平铺全部战斗选项；聚焦编辑可选，已有偏好保留。修复缩放后的战斗底栏偏移及一条衣柜离开时的失效刷新路径。
 
 存档、导出／载入与已适配云存档共用管理页头。原版优化附加日期无效时，兼容包仅在能确定存档时间的情况下修正文字；正常上游日期保留，存档数据不变。
+
+存档按钮转发前区分正常空槽和异常数据，无法确认时停止该次转发并保留原版入口；未知扩展行继续使用原生控件，不自动修复存档内容。
 
 ## 安装与升级
 
@@ -79,7 +81,7 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 
 ## 开发者与许可
 
-技术栈包含Vue、TypeScript及独立Framework Host。对外UI API保持v1；Host保留`StoneFreeHost`技术名，公共协议不因视觉升级而改变。
+维护中的自有界面、Host、兼容逻辑及测试/构建工具已按TS First整理，CommonJS运行形式按需保留。开发工具使用Node26；玩家无需安装Node。对外UI API保持v1，Host保留`StoneFreeHost`技术名，公共协议不因视觉或类型迁移改变。
 
 - [验证范围与发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)
 - [持续集成](CI.md)、[UI Runtime API](UI_RUNTIME.md)、[兼容适配](OPTIONAL_ADAPTERS.md)
@@ -95,4 +97,4 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 - [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-rc1-hub/desktop-1x.mp4)
 - [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/dev/evolution-4.0/docs/media/evolution-special-integrated/narrow-1x.mp4)
 
-截图来自实际测试App；视频为当前真实组件的受控原速演示，不标为自然天气事件或真机录屏。天气及Hub绘制与候选一致，来源见[技术验证](evolution/EVO-RC2-VALIDATION-2026-10-24.md)。媒体在正文展示，不放入Assets。
+截图来自实际测试App；视频为对应真实组件的受控原速演示，不标为自然天气事件或真机录屏。录制早于TS First最终候选，展示的已认可效果继续保留，不冒称178f8b2安装包的新录屏。原始来源见[RC2媒体记录](evolution/EVO-RC2-VALIDATION-2026-10-24.md)，当前候选证据见[发布关卡](evolution/EVO-RELEASE-GATE-2026-10-24.md)。媒体在正文展示，不放入Assets。
