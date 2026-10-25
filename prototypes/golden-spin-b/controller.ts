@@ -34,10 +34,11 @@ export function goldenSpin(root:HTMLElement,initial:Partial<Options>={}) {
  }
  function restoreFocus(){if(nodes.some(n=>n.contains(document.activeElement)))hubBall.focus({preventScroll:true})}
  function restoreTab(node:HTMLElement){const before=originalTabs.get(node);if(before==null)node.removeAttribute('tabindex');else node.setAttribute('tabindex',before)}
- function positions(){return nodes.map((_,i)=>{const p=pose(q,i,nodes.length,origin,targets[i],bounds,options.turns),c=correction[i]??{x:0,y:0},w=1-smooth(segmentT);return{x:p.x+c.x*w,y:p.y+c.y*w}})}
+ function targetAt(index:number){const value=targets[index];if(!value)throw Error('Missing measured tool target');return value}
+ function positions(){return nodes.map((_,i)=>{const p=pose(q,i,nodes.length,origin,targetAt(i),bounds,options.turns),c=correction[i]??{x:0,y:0},w=1-smooth(segmentT);return{x:p.x+c.x*w,y:p.y+c.y*w}})}
  function rebase(){
   const oldNodes=nodes.slice(),old=q>0?positions():[];measure();
-  correction=nodes.map((node,i)=>{const previous=old[oldNodes.indexOf(node)],p=pose(q,i,nodes.length,origin,targets[i],bounds,options.turns);return previous?{x:previous.x-p.x,y:previous.y-p.y}:{x:0,y:0}});
+  correction=nodes.map((node,i)=>{const previous=old[oldNodes.indexOf(node)],p=pose(q,i,nodes.length,origin,targetAt(i),bounds,options.turns);return previous?{x:previous.x-p.x,y:previous.y-p.y}:{x:0,y:0}});
  }
  function render() {
   if(dead||!root.isConnected)return;
@@ -47,8 +48,8 @@ export function goldenSpin(root:HTMLElement,initial:Partial<Options>={}) {
   root.dataset.gsMoving=String(active);
   // The native inert/aria-hidden state remains the logical owner's decision.
   for(const [i,node]of nodes.entries()) {
-   const p=pose(q,i,nodes.length,origin,targets[i],bounds,options.turns),offset=correction[i]??{x:0,y:0};
-   const weight=1-smooth(segmentT),dx=(p.x+offset.x*weight-targets[i].x)/scaleX,dy=(p.y+offset.y*weight-targets[i].y)/scaleY;
+   const p=pose(q,i,nodes.length,origin,targetAt(i),bounds,options.turns),offset=correction[i]??{x:0,y:0};
+   const weight=1-smooth(segmentT),dx=(p.x+offset.x*weight-targetAt(i).x)/scaleX,dy=(p.y+offset.y*weight-targetAt(i).y)/scaleY;
    if(q>=1&&!active){set(node,'transform','');set(node,'opacity','');set(node,'will-change','')}
    else {set(node,'transform',`translate(${dx}px,${dy}px) perspective(700px) rotate(${p.rotation}deg) rotateX(${p.tiltX}deg) rotateY(${p.tiltY}deg) scale(${p.scale})`);set(node,'opacity',String(p.opacity));set(node,'will-change',active?'transform, opacity':'')}
    set(node,'pointer-events',!active&&q===1&&target===1?'':'none');
