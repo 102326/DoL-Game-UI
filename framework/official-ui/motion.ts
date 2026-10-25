@@ -3,14 +3,14 @@ import {sourceMotion} from '../../src/ui/source-motion';
 import {fadeWindow} from '../../src/ui/window-fade';
 import {isMasterEnabled} from '../../src/runtime/master';
 import type {NativeEventsHost} from '../../src/runtime/sugarcube';
-import {nativeNavigation,adaptedOverlaySelector} from './navigation';
+import {nativeNavigation,adaptedOverlaySelector,nativeEntryKinds} from './navigation';
 
 /** Presentation only: never cancel an event, dispatch an action or read game variables. */
 export function startOfficialMotion(root:NativeEventsHost=window){
  const scope=visualScope(),motion=sourceMotion(),navigation=nativeNavigation(),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
  let overlay:HTMLElement|null=null,active:HTMLElement|null=null,presented:HTMLElement|null=null,activeKind='',plane:HTMLElement|undefined;
  scope.own(()=>motion.dispose());scope.own(()=>navigation.dispose());
- let origin:{rect:DOMRect;node:HTMLElement;time:number;hub:boolean;bedroom:boolean}|undefined,returnTo:HTMLElement|null=null;
+ let origin:{rect:DOMRect;node:HTMLElement;time:number;hub:boolean;bedroom:boolean;expected?:string}|undefined,returnTo:HTMLElement|null=null;
  let previousPetal:DOMRect|undefined;
  let sidebarRoots:HTMLElement[]=[];
  let pressed:{node:HTMLElement;pointer:number;before:string|null}|undefined;
@@ -23,7 +23,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function later(callback:()=>void){scope.frame(()=>{if(live())callback()})}
  function settle(callback:()=>void){later(()=>later(callback))}
  const clearFrames=scope.cancelFrames;
- function cancelPresentation(){clearPress();motion.cancel()}
+ function cancelPresentation(preserveOpening?:HTMLElement){clearPress();motion.cancel(undefined,preserveOpening)}
  function clearMarks(){for(const [nodes,attribute]of [[marked,'data-kw-native'],[entries,'data-kw-entry']] as const){for(const [node,value]of nodes)if(value===null)node.removeAttribute(attribute);else node.setAttribute(attribute,value);nodes.clear()}}
  function sidebar(){
   const roots=[...document.querySelectorAll<HTMLElement>('#ui-bar #overlayButtons,#ui-bar #startCaption')];
@@ -68,15 +68,22 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   }
  }
  function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
+ function beginExpected(){
+  if(!live()||!origin?.expected||performance.now()-origin.time>=1000)return;
+  const node=document.getElementById('customOverlay');
+  if(!node||node===presented||node.hidden||node.classList.contains('hidden')||node.dataset.overlay!==origin.expected)return;
+  // Start before the first paint; a late adapter match must never fade an already visible window again.
+  presented=node;fadeWindow(motion,node,1,0);
+ }
  function syncOverlay(){
   if(!scope.active())return;
   const next=document.getElementById('customOverlay');
-  if(next!==overlay){observer.disconnect();overlay=next;presented=null;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
+  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
   const shown=live()&&overlay&&visible(overlay);if(!shown)presented=null;
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
   navigation.refresh();
   const kind=nextActive?.dataset.overlay??'';if(nextActive===active&&kind===activeKind)return;
-  const old=active,opacity=plane?Number(getComputedStyle(plane).opacity):0;active=nextActive;activeKind=kind;cancelPresentation();
+  const old=active,adopting=!active&&!!nextActive&&presented===nextActive,opacity=plane?Number(getComputedStyle(plane).opacity):0;active=nextActive;activeKind=kind;cancelPresentation(adopting?nextActive??undefined:undefined);
   if(active){
    const entering=presented!==active;presented=active;scrim(true,entering,opacity);const from=origin&&performance.now()-origin.time<1000?origin:undefined;
    if(entering)returnTo=from?.hub?document.querySelector<HTMLElement>('.sf-motion-ball'):from?.node??null;
@@ -89,7 +96,8 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   }
  }
  function stamp(node:HTMLElement){
-  if(!origin?.hub||performance.now()-origin.time>100)origin={rect:node.getBoundingClientRect(),node,time:performance.now(),hub:!!node.closest('.sf-motion-petal'),bedroom:node.hasAttribute('data-kw-native')};
+  const expected=node.dataset.kwEntry==='modhub-entry'?'modloader':node.dataset.kwEntry==='native-caption'?nativeEntryKinds[node.textContent?.trim()??'']:undefined;
+  if(!origin?.hub||performance.now()-origin.time>100)origin={rect:node.getBoundingClientRect(),node,time:performance.now(),hub:!!node.closest('.sf-motion-petal'),bedroom:node.hasAttribute('data-kw-native'),expected};else if(expected)origin.expected=expected;
  }
  function response(node:HTMLElement){if(node.dataset.kwNavControl==='tab'){motion.animate(node,[{'--kw-heading-wave':-1,'--kw-heading-wave-opacity':0},{'--kw-heading-wave':-.2,'--kw-heading-wave-opacity':.8,offset:.35},{'--kw-heading-wave':1,'--kw-heading-wave-opacity':0}],720);return}motion.animate(node,[{boxShadow:'inset 0 0 0 1px #8cb3a666',backgroundColor:'#8cb3a617'},{boxShadow:getComputedStyle(node).boxShadow,backgroundColor:getComputedStyle(node).backgroundColor}],360)}
  function click(event:MouseEvent){
@@ -98,7 +106,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(detail&&visible(detail))response(detail);
   const node=event.target.closest<HTMLElement>(formButtons+',.dgw-exits a.link-internal,.sf-motion-petal,.sf-motion-ball,.dgw-slots button,.dgw-item,.dgshop-content .category-tab,.dgshop-content .clothing-item,.dcu-arrangement button,[data-kw-native],[data-kw-entry],[data-kw-nav-control],.dgp-navigation button');
   if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;
-  stamp(node);response(node);
+  stamp(node);response(node);queueMicrotask(beginExpected);
   const nav=node.closest<HTMLElement>('#shopCategories');
   const before=nav?.querySelector<HTMLElement>('[aria-pressed=true],.category-tab.active,[aria-current]')?.getBoundingClientRect();
   const passage=node.closest('.passage');
@@ -130,7 +138,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=presented=null;activeKind='';origin=undefined;returnTo=null;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
  function resize(){cancelPresentation()}
- const observer=new MutationObserver(()=>later(syncOverlay));scope.own(()=>observer.disconnect());
+ const observer=new MutationObserver(()=>{beginExpected();later(syncOverlay)});scope.own(()=>observer.disconnect());
  const sidebarObserver=new MutationObserver(()=>later(sidebar));scope.own(()=>sidebarObserver.disconnect());
  const blur=()=>clearPress();
  const parent=document.getElementById('customOverlay')?.parentElement;

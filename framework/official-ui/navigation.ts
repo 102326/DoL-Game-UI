@@ -6,13 +6,14 @@ import {headerWeather} from './weather';
 import {visualScope} from '../../src/ui/visual-scope';
 
 export const adaptedOverlaySelector='#customOverlay[data-dgu-adapter-match=full]:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet])';
+export const nativeEntryKinds:Readonly<Record<string,string>>={属性:'characteristics',Attributes:'characteristics',社交:'social',Social:'social',特质:'traits',Traits:'traits',日志:'journal',Journal:'journal',统计:'statistics',Statistics:'statistics',成就:'gameFeats',Feats:'gameFeats',选项:'options',Options:'options',存档:'saves',Saves:'saves',作弊:'cheats',Cheats:'cheats'};
 
 // Decoration for reviewed native navigation only; native nodes and handlers stay in place.
 export function nativeNavigation(){
  type Group={node:HTMLElement;host?:HTMLElement;app?:App;state:{active:string};attrs:Map<HTMLElement,[string|null,string|null]>;className:string;hadClass:boolean;observer:MutationObserver};
  const groups=new Map<'sidebar'|'tabs'|'ce-inline',Group>(),weather=headerWeather(),scope=visualScope();
  scope.own(()=>weather.dispose());for(const key of ['ce-inline','sidebar','tabs'] as const)scope.own(()=>release(key));
- const labels:Record<string,string>={属性:'characteristics',Attributes:'characteristics',社交:'social',Social:'social',特质:'traits',Traits:'traits',日志:'journal',Journal:'journal',统计:'statistics',Statistics:'statistics',成就:'gameFeats',Feats:'gameFeats',选项:'options',Options:'options',存档:'saves',Saves:'saves',作弊:'cheats',Cheats:'cheats'};
+ const labels=nativeEntryKinds;
  const tabNames=new Set(['社交','特征','特质','成就','日志','笔记','统计','额外统计 (包含剧透)','模组统计','作弊','选项','游戏设置','Social','Characteristics','Traits','Feats','Journal','Notes','Statistics','Extra Statistics (Spoilers)','Mod Statistics','Cheats','Options']);
  const formTabs:Record<string,Set<string>>={
   journal:new Set(['可用物品','Available Items']),
