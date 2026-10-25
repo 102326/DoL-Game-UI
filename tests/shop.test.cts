@@ -31,7 +31,7 @@ const server=http.createServer((req,res)=>{
 (async()=>{await new Promise<void>(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true});try{
  const p=await browser.newPage({viewport:{width:1704,height:1136}});const errors:Array<string|undefined>=[];p.on('pageerror',e=>errors.push(e.stack));
  await p.addInitScript(()=>{localStorage.setItem('verifiedAge','true');Reflect.set(window,'must',(value:unknown)=>{if(value==null)throw Error('Missing shop fixture value');return value})});
- await p.goto(`http://127.0.0.1:${portOf(server)}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>Reflect.get(window,'SugarCube')?.State?.variables?.options,{timeout:60000});
+ await p.goto(`http://127.0.0.1:${portOf(server)}/game`,{waitUntil:'load',timeout:90000});await p.waitForFunction(()=>(typeof SugarCube==='undefined'?undefined:SugarCube)?.State?.variables?.options,{timeout:60000});
  await p.waitForLoadState('networkidle');
  console.log('BOOT',await p.evaluate(()=>({passage:SugarCube.State.passage,keys:Object.keys(V).length,worn:!!V.worn,renderer:!!Reflect.get(window,'Renderer'),skin:!!Reflect.get(window,'Skin')})));
  await p.evaluate(()=>{SugarCube.Engine.play('Start2')});
@@ -327,7 +327,7 @@ const server=http.createServer((req,res)=>{
  const exported=await p.evaluate(()=>SugarCube.Save.serialize());
  assert.equal(typeof exported,'string');
  await p.reload({waitUntil:'load'});
-  await p.waitForFunction(()=>Reflect.get(window,'SugarCube')?.State?.variables?.options);
+  await p.waitForFunction(()=>(typeof SugarCube==='undefined'?undefined:SugarCube)?.State?.variables?.options);
   assert.equal(await p.evaluate(()=>!!Reflect.get(window,'DoLGameUI')),false,'fresh native runtime has no injected UI');
  await p.evaluate(async()=>{await idb.getSaveDetails();await idb.loadState(1)});
  assert.deepEqual(await p.evaluate(inventorySnapshot),saved,'native IDB load preserves money, full wardrobe, worn items and game time');
