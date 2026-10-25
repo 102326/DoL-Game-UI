@@ -4,7 +4,7 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 
 购买、穿戴、战斗结算、角色数值和存档继续由原游戏及对应Mod处理。安装包不包含游戏本体、APK或第三方主Mod。
 
-[版本与下载](https://github.com/102326/DoL-Game-UI/releases) · [安装与回退](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/INSTALL_EVOLUTION_CANDIDATE.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+[版本与下载](https://github.com/102326/DoL-Game-UI/releases) · [安装与回退](docs/INSTALL_EVOLUTION_CANDIDATE.md) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 ## 核心界面
 
@@ -57,7 +57,7 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 4. 按目标Mod选装兼容包，放在目标Mod和UI之后。
 5. 重启，确认入口与版本，再读取自己的进度。
 
-最低依赖、已验证版本与结构识别共同决定兼容范围，不保证所有未来版本或整合包均已验证。详细步骤见[安装、升级与回退](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/INSTALL_EVOLUTION_CANDIDATE.md)。
+最低依赖、已验证版本与结构识别共同决定兼容范围，不保证所有未来版本或整合包均已验证。详细步骤见[安装、升级与回退](docs/INSTALL_EVOLUTION_CANDIDATE.md)。
 
 ## 可选兼容包
 
@@ -83,9 +83,9 @@ Soft & Wet 为 Degrees of Lewdity 提供黑灰 Acrylic 界面，整理衣柜、�
 
 维护中的自有界面、Host、兼容逻辑及测试/构建工具已按TS First整理，CommonJS运行形式按需保留。开发工具使用Node26；玩家无需安装Node。对外UI API保持v1，Host保留`StoneFreeHost`技术名，公共协议不因视觉或类型迁移改变。
 
-- [验证范围与发布关卡](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/evolution/EVO-RELEASE-GATE-2026-10-24.md)
-- [持续集成](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/CI.md)、[UI Runtime API](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/UI_RUNTIME.md)、[兼容适配](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/OPTIONAL_ADAPTERS.md)
-- [UI接入示例](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/examples/ui-surfaces/README.md)
+- [验证范围与发布关卡](docs/evolution/EVO-RELEASE-GATE-2026-10-24.md)
+- [持续集成](docs/CI.md)、[UI Runtime API](docs/UI_RUNTIME.md)、[兼容适配](docs/OPTIONAL_ADAPTERS.md)
+- [UI接入示例](examples/ui-surfaces/README.md)
 
 <details>
 <summary>源码检查与构建</summary>
@@ -106,11 +106,11 @@ npm run ci:build
 
 通过[GitHub Issues](https://github.com/102326/DoL-Game-UI/issues)提供游戏、Loader、UI／Host及相关Mod版本，说明设备、复现步骤和实际表现。截图、日志与存档可选；公开反馈中不要包含账号凭据、敏感数据或无权分发的Mod包。
 
-项目原创代码使用[MIT](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/LICENSE)，版权署名为DoLWorkbench contributors。衣柜衍生渲染及四项游戏Twee替换来自Vrelnir及Degrees of Lewdity贡献者，适用**CC BY-NC-SA 4.0**；见[来源与修改说明](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/UPSTREAM-RENDERER-NOTICE.md)及[完整许可](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/UPSTREAM-RENDERER-LICENSE)。MIT不替代这些衍生代码的原许可。Vue、Tailwind CSS与GSAP等依赖的声明随包保留。
+项目原创代码使用[MIT](LICENSE)，版权署名为DoLWorkbench contributors。衣柜衍生渲染及四项游戏Twee替换来自Vrelnir及Degrees of Lewdity贡献者，适用**CC BY-NC-SA 4.0**；见[来源与修改说明](UPSTREAM-RENDERER-NOTICE.md)及[完整许可](UPSTREAM-RENDERER-LICENSE)。MIT不替代这些衍生代码的原许可。Vue、Tailwind CSS与GSAP等依赖的声明随包保留。
 
 ## 画面与动态预览
 
-[Android设置原速顶栏雨效录屏（24秒）](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rain-header/android-settings-rain.mp4)。来源、运行成员等价及性能限制见[本轮复验](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)。
+[Android设置原速顶栏雨效录屏（24秒）](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rain-header/android-settings-rain.mp4)。来源、运行成员等价及性能限制见[本轮复验](docs/evolution/EVO-RAIN-HEADER-PERF-2026-10-25.md)。
 
 ![本轮Android设置：上下布局](https://raw.githubusercontent.com/102326/DoL-Game-UI/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rain-header/android-horizontal.png)
 
@@ -120,4 +120,4 @@ npm run ci:build
 - [悬浮球与工具原速预览](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rc1-hub/desktop-1x.mp4)
 - [窄屏设置预览](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-special-integrated/narrow-1x.mp4)
 
-血月截图来自Android测试App；后三段视频为真实组件演示，非同次实机录屏。媒体采集早于正式包，复用关系见[媒体记录](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rain-header/provenance.json)和[验证范围](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/evolution/EVO-RELEASE-GATE-2026-10-24.md)。
+血月截图来自Android测试App；后三段视频为真实组件演示，非同次实机录屏。媒体采集早于正式包，复用关系见[媒体记录](https://github.com/102326/DoL-Game-UI/blob/198d684118f04189340a68991e7cb8875fab22f7/docs/media/evolution-rain-header/provenance.json)和[验证范围](docs/evolution/EVO-RELEASE-GATE-2026-10-24.md)。
