@@ -1,0 +1,98 @@
+{
+  "mod": {
+    "description": "工具甲是前置"
+  },
+  "catalog": [
+    {
+      "name": "工具甲",
+      "bootNames": [
+        "AlphaTools"
+      ],
+      "aliases": [
+        "Alpha Tools",
+        "Alpha.Tool+Tools"
+      ]
+    },
+    {
+      "name": "工具乙",
+      "bootNames": [
+        "BetaTools"
+      ],
+      "aliases": [
+        "Beta Tools"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "patch": {
+        "description": "工具甲是前置"
+      },
+      "expected": [
+        {
+          "modName": "AlphaTools",
+          "version": "*",
+          "source": "简介声明",
+          "evidence": "工具甲是前置"
+        }
+      ]
+    },
+    {
+      "patch": {
+        "description": "工具乙是前置"
+      },
+      "expected": [
+        {
+          "modName": "BetaTools",
+          "version": "*",
+          "source": "简介声明",
+          "evidence": "工具乙是前置"
+        }
+      ]
+    },
+    {
+      "patch": {
+        "description": "工具乙是可选前置"
+      },
+      "expected": []
+    },
+    {
+      "patch": {
+        "description": "新名字是前置",
+        "catalogPatch": {
+          "index": 1,
+          "aliases": [
+            "新名字"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "modName": "BetaTools",
+          "version": "*",
+          "source": "简介声明",
+          "evidence": "新名字是前置"
+        }
+      ]
+    },
+    {
+      "patch": {
+        "description": "新名字是前置",
+        "catalogPatch": {
+          "index": 1,
+          "aliases": []
+        }
+      },
+      "expected": []
+    },
+    {
+      "patch": {
+        "description": "工具甲是前置",
+        "bootNames": [
+          "AlphaTools"
+        ]
+      },
+      "expected": []
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "traces": [
+    {
+      "file": "timeline-ModHub-true.json",
+      "bytes": 6709356,
+      "sha256": "32614e301ecf4dc21c853ceddecf06bc503685ef91d0571610d2b978081ae6d4"
+    },
+    {
+      "file": "timeline-\u4f5c\u5f0a-false.json",
+      "bytes": 10135465,
+      "sha256": "d1c0e4da91d1d2f116b3c5cc45db24eeb507f41f002c84a34f3924e790b9b4e3"
+    },
+    {
+      "file": "timeline-\u4f5c\u5f0a-true.json",
+      "bytes": 13578030,
+      "sha256": "7ef047b28a5b283044723253703269f914938a8d3e23431f6b962b071e99acfd"
+    },
+    {
+      "file": "timeline-\u5c5e\u6027-true.json",
+      "bytes": 12848926,
+      "sha256": "38dc9d8aad2cf285987f06a97dd5cdd8db8634ccacb76982a772baab83ee5a3e"
+    }
+  ],
+  "scope": "Browser trace with target marker; no full system/GPU trace. Original trace files retained locally, not in this kit."
+}

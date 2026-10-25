@@ -1,0 +1,32 @@
+{
+  "sourceCommit": "ff428b4d385b79f6c14fada9a65301157978aa6f",
+  "platform": "Windows Edge",
+  "node": "26.12.1",
+  "commands": [
+    {
+      "command": "node tests/evolution-panels.cjs",
+      "exitCode": 0,
+      "scope": "6 actual panel consumers, 3 zooms, native dispatch preserved and cleanup; controlled DOM without game"
+    },
+    {
+      "command": "node tests/official-game-motion.cjs",
+      "exitCode": 0,
+      "scope": "shared 100/80 motion, native dispatch/hitbox/forms, interruption/master/reduced gates and teardown; controlled DOM without game"
+    }
+  ],
+  "counterexamples": [
+    {
+      "file": "negative-object-cache.mts",
+      "exitCode": 1,
+      "expected": true,
+      "assertion": "same-object invalidation step 1"
+    },
+    {
+      "file": "negative-catalog-cache.mts",
+      "exitCode": 1,
+      "expected": true,
+      "assertion": "same-object invalidation step 4"
+    }
+  ],
+  "macExecuted": false
+}

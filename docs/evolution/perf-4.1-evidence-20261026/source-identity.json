@@ -1,0 +1,25 @@
+{
+  "commit": "ff428b4d385b79f6c14fada9a65301157978aa6f",
+  "uiVersion": "4.0.1",
+  "uiZipSha256": "d7417963c75636bf60f3263536ed7cae15866005f0fcecc8bd8f3f890502d3c3",
+  "uiLoadedMembersVerified": 18,
+  "modHubVersion": "1.8.3",
+  "androidEnvironment": {
+    "model": "M367FC",
+    "android": "17",
+    "webview": "155.0.8059.43",
+    "cssViewport": [
+      1363,
+      876
+    ],
+    "dpr": 2.5,
+    "weather": "storm/rain/intensity=2",
+    "reportedModCount": 47
+  },
+  "limits": "UI ZIP member equality from preceding baseline; no restart or package changes occurred. Other Mod metadata is reported, not full member proof.",
+  "modHubMarketCapturedSourceUtf8Sha256": "cb46981ebf5998beb0605813cfe9208e3a27f705cd13892f66ccc390a12ad85c",
+  "modHubManagerCapturedSourceUtf8Sha256": "23a29de56c557b8c206b346cae959a8cbf83d0864ddb7a37bcbfb4feb4eba701",
+  "archiveNormalization": "All saved text uses LF for Git and Mac. Captured source UTF-8 hashes identify the original decoded source; archived file hashes are separate. No product source was modified.",
+  "modHubMarketArchivedLfSha256": "cb46981ebf5998beb0605813cfe9208e3a27f705cd13892f66ccc390a12ad85c",
+  "modHubManagerArchivedLfSha256": "23a29de56c557b8c206b346cae959a8cbf83d0864ddb7a37bcbfb4feb4eba701"
+}
