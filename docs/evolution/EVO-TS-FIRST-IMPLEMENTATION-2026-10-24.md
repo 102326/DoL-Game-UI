@@ -452,3 +452,7 @@ d69d434单独修复窄屏Hub与原生combat popover重叠。只缩减Hub可用�
 本机原始模块对照：ff7942的32场景在新更严验收下30通过/2拒绝不足（原有occupied malformed放行，不归为本次新回归）；d8430相同矩阵16通过/16失败；补丁32通过。报告列出的空槽→畸形与初始空行畸形差异均复现。新metadata三项单元、原source M4-B二十项、实际Moody单项终端收据、完整ci:check均通过，原失败和两版blob/输入摘要保留在review-p2-*及save-revision-source-*。待新准确提交两套CI、制品身份与代表性目标场景核验，不能沿用d8430的通过结论。
 
 终审同时确认243项与CI/制品信任层基本接受。历史报告“全部研究图都带索引检查”的泛化表述已纠正：research-tools strict=true但没有noUncheckedIndexedAccess，产品与原型内核另外检查。整体技术状态因本项P2重新打开；G1/G2/G3及发布授权依然独立。
+
+### 独立终审P2的新候选复验
+
+受验代码178f8b2b5b1828038b7c3ec304e8995bbe99ee38。标准40175814517、研究40175811238含独立下载均success；两份summary/remote准确身份、PASS/COMPLETE，9ZIP/10摘要、合同/CRC/双构建一致性通过。仅UI/index.js与d8430不同，其余八包字节完全相同。Android仅替换UI并原生重启，八个适用包成员及偏好/顺序保持；Windows真实Loader与Android只读存档页开关/读取通过，存档摘要哈希不变。Android额外摘要槽按原合同保留原生行，检查脚本误以为必须有occupied UI卡片的失败已诊断记录，未改source或缩减正式断言。完整结果及未测边界见EVO-SAVE-REVISION-P2-2026-10-25.md；新制品见EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json。本轮修复技术范围完成，独立复审/负责人关卡仍Pending。后续文档提交不冒称受验代码HEAD，未合main/Tag/发布。

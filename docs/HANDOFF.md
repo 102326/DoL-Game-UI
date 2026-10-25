@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- **独立终审发现GB40-TS-F1，局部修复复验中。** 243/243迁移与d8430原CI证据保留，但目标槽畸形metadata被归为空槽的P2需新验收；原“整体技术已收束”已重新打开。metadata改为畸形目标不封存、revision拒绝，source原守卫不变；32项IDB/legacy真实DOM联合合同、原20项source、单元与ci:check已通过，已接入标准CI。下一步针对新准确提交运行两套CI、核对新包并做代表性只读存档界面复验。见[专项记录](evolution/EVO-SAVE-REVISION-P2-2026-10-25.md)。Node26.12.1 Only、4.0.0-rc.2及未发布边界不变。
+- **GB40-TS-F1修复与技术复验完成，独立复审Pending。** 受验代码`178f8b2b5b1828038b7c3ec304e8995bbe99ee38`；[标准40175814517](https://github.com/102326/DoL-Game-UI/actions/runs/40175814517)及[研究40175811238](https://github.com/102326/DoL-Game-UI/actions/runs/40175811238)完整success，独立下载PASS/COMPLETE、9ZIP/10摘要及双构建一致性通过。畸形目标不封存、revision拒绝，source原守卫字节不变；32项IDB/legacy真实模块联合合同、原20项source及单元通过。只有UI的index.js变化，其余八包容器/成员与d8430相同。Android仅更新UI并原生重启，八个适用包实际成员、顺序/禁用列表/偏好核对；Windows实际Loader与Android只读存档入口开关/读取通过，摘要哈希不变。Android四个额外摘要槽按原合同保留可见原生行，未点击存档业务按钮。详见[专项记录](evolution/EVO-SAVE-REVISION-P2-2026-10-25.md)和[新包冻结](evolution/EVO-SAVE-REVISION-P2-PACKAGES-2026-10-25.json)。243/243迁移结论及未变范围原证据保留；文档后续提交与受验代码分开。下一步为独立复核该P2及负责人G1/G2/G3裁决，未授权main/Tag/Release/公开Assets。Node26.12.1 Only、4.0.0-rc.2不变。
 
 - **TS First方案一已授权执行，发布继续暂停**：负责人选择覆盖全部仍维护自有代码的方案一，不采用原建议的125项有界终点。[执行记录](evolution/EVO-TS-FIRST-IMPLEMENTATION-2026-10-24.md)列明批次及验收；[评估](evolution/EVO-TS-FIRST-ASSESSMENT-2026-10-24.md)、[清单](evolution/EVO-TS-FIRST-INVENTORY-2026-10-24.json)、[CTS路线](evolution/EVO-TS-FIRST-CTS-2026-10-24.md)保留为决策依据。基线ff7942d / 4.0.0-rc.2。迁移、行为修复分开提交，原RC2证据不自动覆盖新源码；未授权正式版本、main、Tag或发布。
 
