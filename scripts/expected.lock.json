@@ -2738,12 +2738,16 @@
           "minimumAssertions": 1
         },
         {
+          "id": "official rain stays in its header without compressing the model",
+          "minimumAssertions": 1
+        },
+        {
           "id": "dry repeated frame is quiet and material releases",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "73bfb58dc07b396af54aaa8744c2ef58fd51e0d2d5f8f7babf05ea41719a2635",
-      "assertionSites": 16
+      "sourceSha256": "c87695ede84567b85e6d8a1f93c68062ad145924d59a11ef72796dcbdcd0b581",
+      "assertionSites": 32
     },
     {
       "entry": "tests/weather-review-pages.cjs",
