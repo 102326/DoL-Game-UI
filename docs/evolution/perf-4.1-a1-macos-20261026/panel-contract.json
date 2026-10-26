@@ -1,0 +1,105 @@
+{
+  "sourceHead": "936ec63288f1e6f66314cde84cebb17c8e77adee",
+  "preparationBaseline": false,
+  "records": [
+    {
+      "lateNative": false,
+      "initial": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic",
+        "reads": 2,
+        "labels": [
+          "First",
+          "Last"
+        ]
+      },
+      "hiddenClickBlocked": true,
+      "hiddenRemoved": true,
+      "restored": true,
+      "renamed": true,
+      "ancestorHidden": true,
+      "ancestorRestored": true,
+      "inlineRefreshed": true,
+      "originalPreserved": true,
+      "bodyReplaced": true,
+      "rootReplaced": true,
+      "stopped": true,
+      "failures": 0,
+      "errors": []
+    },
+    {
+      "lateNative": true,
+      "initial": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic",
+        "reads": 4,
+        "labels": [
+          "First",
+          "Last",
+          "Late native"
+        ]
+      },
+      "hiddenClickBlocked": true,
+      "hiddenRemoved": true,
+      "restored": true,
+      "renamed": true,
+      "ancestorHidden": true,
+      "ancestorRestored": true,
+      "inlineRefreshed": true,
+      "originalPreserved": true,
+      "bodyReplaced": true,
+      "rootReplaced": true,
+      "stopped": true,
+      "failures": 0,
+      "errors": []
+    },
+    {
+      "lateNative": "during-read",
+      "initial": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic",
+        "reads": 4,
+        "labels": [
+          "First",
+          "Last",
+          "Late native"
+        ]
+      },
+      "hiddenClickBlocked": true,
+      "hiddenRemoved": true,
+      "restored": true,
+      "renamed": true,
+      "ancestorHidden": true,
+      "ancestorRestored": true,
+      "inlineRefreshed": true,
+      "originalPreserved": true,
+      "bodyReplaced": true,
+      "rootReplaced": true,
+      "stopped": true,
+      "failures": 0,
+      "errors": []
+    }
+  ],
+  "traitPreparation": [
+    {
+      "duringCount": false,
+      "count": "1",
+      "traits": 1,
+      "scans": 1,
+      "separatorRestored": true
+    },
+    {
+      "duringCount": true,
+      "count": "2",
+      "traits": 2,
+      "scans": 2,
+      "separatorRestored": true
+    }
+  ]
+}

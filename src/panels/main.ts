@@ -127,6 +127,10 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
    restoreOverlay=decorate(overlay!,kind);counts.mounts++;
   }
   counts.scans++;
+  // Mount/pending writes are covered by the upcoming presentation + index.
+  // Drain before either read phase: native mutations during/after those reads
+  // must still request a fresh scan. Never cache visibility across batches.
+  observer.takeRecords();
   presentation.refresh(body,kind);
   // Index rendered headings only: do not rerun macros, read hidden feat definitions,
   // clone notes inputs, or cache game variables. Native tabs can replace this body.

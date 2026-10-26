@@ -1,0 +1,26 @@
+{
+  "sourceHead": "936ec63288f1e6f66314cde84cebb17c8e77adee",
+  "environment": {
+    "platform": "macOS arm64",
+    "node": "v26.12.1",
+    "browser": "Pinned Playwright Chromium",
+    "chromium": "153.0.8010.12",
+    "playwright": "1.63.0",
+    "macOS": "27.0.1"
+  },
+  "records": [
+    {
+      "test": "node tests/evolution-panels.cjs",
+      "exitCode": 0,
+      "elapsedSeconds": 3.173,
+      "status": "PASS"
+    },
+    {
+      "test": "node tests/official-game-motion.cjs",
+      "exitCode": 0,
+      "elapsedSeconds": 7.336,
+      "status": "PASS"
+    }
+  ],
+  "scope": "Controlled first-party browser contracts only; not full game/Android/performance acceptance."
+}

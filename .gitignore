@@ -297,3 +297,4 @@ docs/HANDOFF.local.md
 /tests/save-revision-source.cjs
 
 /tests/weather-dom-writes.cjs
+/scripts/measure-evolution-panel-preparation.cjs
