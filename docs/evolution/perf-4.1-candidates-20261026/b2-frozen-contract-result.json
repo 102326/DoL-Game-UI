@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "platform": "darwin",
+  "node": "26.12.1",
+  "modHubSource": "1.8.3",
+  "functionSha256": "91b2a5b6330482745c6cf09d50d10d32eff5645ffbe756f876f4fab9e721b5bb",
+  "staticCases": 26,
+  "sameObjectMutationSteps": 6,
+  "inputMutation": false,
+  "consumerResultIsolation": true,
+  "candidate": "docs/evolution/perf-4.1-candidates-20261026/alias-patterns-b2.mts",
+  "benchmark": [
+    {
+      "syntheticCatalogSize": 25,
+      "calls": 10,
+      "regexpConstructorCalls": 6480,
+      "originalNodeElapsedMs": 5.303917000000013
+    },
+    {
+      "syntheticCatalogSize": 100,
+      "calls": 10,
+      "regexpConstructorCalls": 24480,
+      "originalNodeElapsedMs": 20.185583000000065
+    },
+    {
+      "syntheticCatalogSize": 250,
+      "calls": 10,
+      "regexpConstructorCalls": 60480,
+      "originalNodeElapsedMs": 91.6674579999999
+    }
+  ],
+  "limits": "Synthetic original-function replay, not full ModHub dependency semantics, browser or device performance. RegExp constructions are not guaranteed engine compilation counts."
+}
