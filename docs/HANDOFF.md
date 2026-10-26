@@ -8,7 +8,7 @@
 - A1本地提交 `172747cce8f432fe425b99a318ddeae3109aa918`：面板准备避免重复扫描；功能回归通过，实测没有布局或时间改善，暂不扩大A2联动。
 - B1历史候选 `945f51b92f535273c86126b10675c1055703f469`：容量内有局部收益，400目录回退曾较慢，原证据保留。
 - B2实现提交 `7662b7f`：身份表完成后仅一次容量分派，超预算保留原tail。26场景／6步、1279状态与严格类型通过；三方／稳定函数控制中大目录接近原函数，但有噪声，未证明统计等价或整体性能通过。详见[B2报告](evolution/EVO-4.1-B2-2026-10-26.md)。
-- 前一批A1／B1／B2及浏览器／A2定位已推送；精确实现 `179c80fbd316c586ec8a1931a2db502aea43d438` 的CI见[前批报告](evolution/EVO-4.1-MAC-BROWSER-A2-2026-10-26.md)。本批[A2导航顺序候选](evolution/EVO-4.1-A2-ORDER-2026-10-26.md)改变运行源码，不能冒用前批CI；提交/远端证据见新报告收口。接手仍须核对真实HEAD／工作区及远端。
+- 前一批A1／B1／B2及浏览器／A2定位已推送；精确实现 `179c80fbd316c586ec8a1931a2db502aea43d438` 的CI见[前批报告](evolution/EVO-4.1-MAC-BROWSER-A2-2026-10-26.md)。本批[A2导航顺序候选](evolution/EVO-4.1-A2-ORDER-2026-10-26.md)运行实现 `db9d8d23c3de4248416810c32047cbad30041175` 已推送，精确新CI与下载验收均通过；其后仅文档收口，不冒用前批179c80f的CI或声称新Run覆盖后置文档HEAD。接手仍须核对真实HEAD／工作区及远端；没有待推送的运行源码。
 - 尚未取得真实catalog规模／描述分布，也没有本轮完整DoL、ModHub业务或Android复验。B浏览器候选与上游review补丁已完成；400目录仍有小幅耗时退化，保持未整合。A2只接入原生天气set先于导航标记写入的小候选，没有做全局调度或Host重构；Mac局部结果不等于游戏性能接受。
 - 已记录[Host公共能力整合调查 EVO41-HOST-S01](evolution/EVO-4.1-HOST-SHARED-SURVEY-2026-10-26.md)，调查输入7ac2d59，只更新调查/计划与隔离证据；Host API未改，不将HC候选视为已批准开发。其后的主线A2另行记录，不属于Host迁移。
 
@@ -26,7 +26,8 @@
 10. A2内存探针：一次原开窗／一次挂载，首开syncOverlay、导航、天气刷新各3次，同帧最多2次；首开天气可见性与焦点关联style切片。人工Observer burst同帧3次，但未关联到白名单读取的style/layout，不能据次数做去重补丁。原始trace本机独有，受控投影和摘要已同步。
 11. 起始c7e4995手动标准40264580067／研究40264583106成功。最终实现179c80f的手动标准40266918701／研究40266921904均success、Attempt1，独立证据PASS／COMPLETE；最终标准192项937715字节本地逐项核对、遗漏0，九个下载ZIP摘要匹配两轮合同报告。后置收口只改文档／收据，不宣称Run覆盖后置文档HEAD。详见[最终收据](evolution/perf-4.1-browser-a2-20261026/final-ci-receipt.json)。新增B／A2工具实际在Mac执行，未变为CI必需检查。分支不在push过滤内，没有改触发、检查名或远端规则。
 12. Host调查以真实4.0.1基线读取：独立Host已提供共同所有权/场景Binding；UI内部另有共享原语。5个实际外观包入口的隔离样本注册9条目，构造21个MO／观察12个、无关body子节点变更引起9次目标Mod查询，退出后自有观察0；未证明集中到Host更快。原release表达式故障注入显示motion清理异常会跳过后续Hub/shelf/UI清理，列HC-07独立候选，未修复。证据仅Mac隔离页面/VM，不是新完整CI或游戏验收。
-13. A2独立两种假设各12对：离屏构建初始天气没有耗时收益、未启用；导航set前置候选LayoutCount中位8→7，配对TaskDuration中位-1.4275ms、3/12更慢。既有header-weather／official-game-motion断言在单模块内存替换下通过；实际最终fixture bundle与测量候选逐字节相等，ci:check退出0。保留所有负结果；完整游戏、Android及整体性能未接受，精确新CI另记。
+13. A2独立两种假设各12对：离屏构建初始天气没有耗时收益、未启用；导航set前置候选LayoutCount中位8→7，配对TaskDuration中位-1.4275ms、3/12更慢。既有header-weather／official-game-motion断言在单模块内存替换下通过；实际最终fixture bundle与测量候选逐字节相等，ci:check退出0。保留所有负结果；完整游戏、Android及整体性能未接受，精确新CI见下一项。
+14. 本批实现db9d8d2：手动[标准40274564553](https://github.com/102326/DoL-Game-UI/actions/runs/40274564553)／[研究40274568700](https://github.com/102326/DoL-Game-UI/actions/runs/40274568700)均success、Attempt1，两套独立下载核验PASS／COMPLETE。标准192项937717字节本机逐项摘要匹配、遗漏0，37项unit／42项browser均PASS，九个下载ZIP与两轮不同invocation合同摘要相符。研究只本机下载独立收据，完整媒体由远端核验；Mac不冒称复算了研究媒体。见[本批最终收据](evolution/perf-4.1-a2-order-20261026/final-ci-receipt.json)。标准14分43秒、研究11分04秒；Actions为Linux x64／Ubuntu26，Mac和Android范围分开。后置文档提交复用未变实现证据，不为仅文档再跑全套。
 
 ## Next — 接续顺序
 

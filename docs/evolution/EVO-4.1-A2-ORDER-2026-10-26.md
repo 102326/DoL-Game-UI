@@ -58,6 +58,19 @@ Implemented／Mac Controlled Tested／研发候选；整体性能接受、完整
 
 ### 收口
 
-待精确实现提交的两套CI完成后填写Run／Attempt、证据下载核验及后置文档关系。
+运行实现提交 **`db9d8d23c3de4248416810c32047cbad30041175`** 已推送至 `perf/4.1-panel-preparation`。两套CI均为真实 `workflow_dispatch`、Attempt 1、success；当前分支不在push过滤内，没有把推送或未触发当作通过，也没有更改触发条件／检查名。
+
+| 工作流 | 精确Run | 实际总历时 | 结果 |
+| --- | --- | ---: | --- |
+| 标准 | [40274564553](https://github.com/102326/DoL-Game-UI/actions/runs/40274564553) | 14分43秒 | validate／evidence-verify／moody-gate均success |
+| 研究 | [40274568700](https://github.com/102326/DoL-Game-UI/actions/runs/40274568700) | 11分04秒 | prototype／evidence-verify均success |
+
+Actions实际环境为Linux x64、Ubuntu26镜像 `20261023.163.3`、Node26.12.1／npm11.20.0／Playwright1.63.0。标准Python3.12.15，研究工作流环境Python3.14.4；Mac本地收口摘要复算使用Python3.9.6，环境分别记录。
+
+Mac下载标准白名单证据 **192项、937,717字节**：逐项大小与SHA256匹配，规定文件齐全、遗漏0；整轮PASS／COMPLETE，37项unit与42项browser实际记录均PASS且数量与计划一致。九个下载研发ZIP摘要匹配两轮制品报告；两轮invocation不同、九包摘要相同，下载的PACKAGE_CHECKS与受控合同报告逐字节一致。精确ZIP版本、依赖、成员及负例由CI中的Python制品检查器负责；整轮／远端核验器负责结果身份、规定结构和完整性，本机下载摘要校验不是第二套ZIP合同检查器。
+
+两套独立远端下载核验均PASS／PASS／COMPLETE、problems为空，源码HEAD／tree／内容摘要／锁摘要相同。研究完整媒体未再次下载到Mac，只下载独立验收收据，不宣称本机逐项复算了研究媒体。收据及本机复算结果见[final-ci-receipt.json](perf-4.1-a2-order-20261026/final-ci-receipt.json)，已加入本轮SHA清单；原先冻结项保持不变。
+
+本节及HANDOFF是实现之后的**文档收口**，复用未变的 `db9d8d2` 运行源码证据；不宣称两个Run针对后置文档HEAD执行。A2测量工具在Mac实际运行，未变为CI必需性能门禁。没有合main、更新版本或发布，也没有把CI通过写成完整游戏／实机性能接受。
 
 后续优先用同一场景的实际游戏对照验证这个小收益是否保留；继续定位仍在的较大样式刷新，不凭同帧调用数合并所有settle。B保持浏览器候选和400档限制，等待真实catalog输入；HC-07继续待独立方案审阅。
