@@ -1,0 +1,100 @@
+var OriginalInference = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // docs/evolution/perf-4.1-candidates-20261026/generated-alias-research.js
+  var generated_alias_research_exports = {};
+  __export(generated_alias_research_exports, {
+    createCandidate: () => createCandidate
+  });
+  function createCandidate() {
+    let marketModList = [];
+    function cleanText(text) {
+      const entities = { amp: "&", quot: '"', "#39": "'", apos: "'", lt: "<", gt: ">" };
+      return String(text || "").replace(/&(amp|quot|#39|apos|lt|gt);/gi, (_match, entity) => entities[entity.toLowerCase()]).replace(/\s+/g, " ").trim();
+    }
+    function inferRequiredDependencies(mod, catalog = marketModList) {
+      const description = String(mod?.description || mod?.desc || "");
+      if (!description) return [];
+      const identities = [
+        { id: "maplebirch", bootNames: ["maplebirch"], name: "\u79CB\u67AB\u767D\u6866\u6846\u67B6", aliases: ["\u67AB\u53F6\u6846\u67B6", "Maplebirch Frameworks"] },
+        { id: "simple-framework", bootNames: ["Simple Frameworks"], name: "\u7B80\u6613\u6846\u67B6", aliases: ["SCML \u7B80\u6613\u6846\u67B6", "SimpleFramework", "SimpleFrameworks", "Simple Framework"] },
+        ...Array.isArray(catalog) ? catalog : []
+      ];
+      const names = /* @__PURE__ */ new Map();
+      for (const identity of identities) {
+        const boots = [...new Set((Array.isArray(identity.bootNames) ? identity.bootNames : []).filter((name) => typeof name === "string" && name.trim()).map((name) => name.trim()))];
+        if (identity.identityId === null || boots.length !== 1) continue;
+        for (const name of [identity.name, identity.wikiName, ...boots, ...Array.isArray(identity.aliases) ? identity.aliases : []]) {
+          if (typeof name !== "string" || name.trim().length < 2) continue;
+          const alias = name.trim(), key = alias.toLowerCase();
+          if (!names.has(key)) names.set(key, { alias, modName: boots[0] });
+          else if (names.get(key)?.modName !== boots[0]) names.set(key, null);
+        }
+      }
+      const result = [];
+      const escapePattern = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const clauses = description.split(/[。！？!?；;\n]/).map(cleanText).filter((sentence) => sentence && !/(?:可能|有时|如需|若|如果|只有|仅在|仅当|时才|情况|条件|当.+时|可(?:以)?独立(?:运行|使用)|独立运行|单独运行|可选|非必需|非必须|不再|无需|无须|不需|不必|不依赖|移除|取消|optional|standalone|independent|\b(?:may|might|sometimes|if|unless)\b|\bnot\s+(?:requires?|needs?|depends?)\b)/i.test(sentence) && !(/(?:或|任选|二选一|任一|均可|\b(?:either|or)\b)/i.test(sentence) && new Set([...names.values()].filter((entry) => entry && sentence.toLowerCase().includes(entry.alias.toLowerCase())).map((entry) => entry.modName)).size > 1)).flatMap((sentence) => sentence.split(/[，,](?!\s*(?:[<>=^~]|且|并且|或|and\b|or\b))/i)).map(cleanText).filter(Boolean);
+      for (const clause of clauses) {
+        if (/(?:无需|无须|不再|不必|不需|不依赖|没有依赖|已(?:经)?(?:移除|取消)|移除(?:了)?依赖|取消(?:了)?依赖|可选|非必需|非必须|按需|建议|推荐|兼容|支持|曾经|旧版|以前|如果|若需|optional|without|no longer|does not|not required)/i.test(clause)) continue;
+        for (const entry of names.values()) {
+          if (!entry) continue;
+          const name = '[\u3010\u300C\u201C"\\s]*' + escapePattern(entry.alias).replace(/\s+/g, "\\s*") + '[\u3011\u300D\u201D"\\s]*';
+          const boundary = /[a-z0-9_]$/i.test(entry.alias) ? "(?![a-z0-9_])" : "";
+          const target = name + boundary;
+          const explicit = new RegExp("(?:\u4F9D\u8D56(?:\u4E8E)?|\u9700\u8981(?:\u5148)?(?:\u5B89\u88C5|\u542F\u7528|\u4F7F\u7528)?|\u5FC5\u987B(?:\u5148)?(?:\u5B89\u88C5|\u542F\u7528|\u4F7F\u7528)?|\u5FC5\u9700(?:\u5B89\u88C5|\u542F\u7528)?|\u524D\u7F6E(?:\u6846\u67B6|\u6A21\u7EC4|\u63D2\u4EF6)?\\s*(?:[:\uFF1A]|\u4E3A|\u662F)|requires?\\s+|depends\\s+on\\s+)\\s*[:\uFF1A]?\\s*(?:\u6A21\u7EC4|\u6846\u67B6|\u63D2\u4EF6)?\\s*(?:[^\u3002\uFF1B;!?]*?[\u3001\u548C\u4E0E\u53CA/])?" + target, "i");
+          const framework = new RegExp("(?:\u901A\u8FC7|\u57FA\u4E8E|\u4F7F\u7528)\\s*" + target + "(?:\u6846\u67B6)?\\s*(?:v?\\d+(?:\\.\\d+)*(?:\u53CA\u4EE5\u4E0A|\u4EE5\u4E0A|\u6216\u66F4\u9AD8)?\\s*)?(?:\u5236\u4F5C|\u5F00\u53D1|\u6784\u5EFA|\u5B9E\u73B0)", "i");
+          const requiredAs = new RegExp(target + "(?:\u4E3A|\u662F)(?:\u5FC5\u9700|\u5FC5\u987B)?\u524D\u7F6E", "i");
+          if (!explicit.test(clause) && !framework.test(clause) && !requiredAs.test(clause)) continue;
+          if (Array.isArray(mod.bootNames) && mod.bootNames.includes(entry.modName)) continue;
+          const after = clause.slice(clause.toLowerCase().indexOf(entry.alias.toLowerCase()) + entry.alias.length);
+          const tail = after.replace(/^[】」”"\s]*(?:(?:版本(?:要求)?|要求(?:版本)?)\s*[:：]?\s*)?/, "").replace(/^[（(]\s*(?=[v\d<>=^~≥≤])/i, "").replace(/[）)]$/, "");
+          const range = (explicit.test(clause) || requiredAs.test(clause)) && /^[v\d<>=^~≥≤]/i.test(tail) ? tail.split("\u3001")[0].trim() : "";
+          const version = range?.replace(/≥/g, ">=").replace(/≤/g, "<=").replace(/v?(\d+(?:\.\d+)*)\s*(?:及以上|以上|或更高)/gi, ">=$1").replace(/\s*(?:且|并且|\band\b|[，,](?=\s*[<>=^~]))\s*/gi, " && ").replace(/\s*(?:或|\bor\b)\s*/gi, " || ").replace(/(^|[\s<>=^~|&])v(?=\d)/gi, "$1").replace(/([<>=^~])\s+(?=\d)/g, "$1").trim();
+          result.push({
+            modName: entry.modName,
+            version: version || "*",
+            source: "\u7B80\u4ECB\u58F0\u660E",
+            evidence: clause
+          });
+        }
+      }
+      return [...new Map(result.map((item) => [item.modName.toLowerCase() + "\n" + item.version, item])).values()];
+    }
+    function getRequiredDependencies(mod, catalog = marketModList) {
+      const declared = window.modHubMarketVariants?.normalizeRequiredDependencies(mod?.requiredDependencies) || [];
+      const result = /* @__PURE__ */ new Map();
+      for (const item of [...inferRequiredDependencies(mod, catalog), ...declared]) {
+        const key = item.modName.toLowerCase() + "\n" + item.version;
+        result.set(key, { ...result.get(key), ...item });
+      }
+      return [...result.values()];
+    }
+    return {
+      inferRequiredDependencies,
+      getRequiredDependencies,
+      setCatalog(value) {
+        marketModList = value;
+      },
+      stats: () => null,
+      clear() {
+      }
+    };
+  }
+  return __toCommonJS(generated_alias_research_exports);
+})();

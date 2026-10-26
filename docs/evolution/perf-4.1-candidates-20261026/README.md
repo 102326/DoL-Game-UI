@@ -4,6 +4,8 @@
 
 后续B2已完成单次容量分派与三方／稳定函数对照，见[B2报告](../EVO-4.1-B2-2026-10-26.md)。B1代码与结果保持原样，下文属于B1阶段；B2的三个MTS与结果使用独立 `B2-SHA256SUMS.txt`，不覆盖B1清单。
 
+后续浏览器原生候选、可审查上游补丁及A2诊断见[Mac整体报告](../EVO-4.1-MAC-BROWSER-A2-2026-10-26.md)，使用另一个独立证据目录，不覆盖B1／B2结果。对应手动工具为 `check-alias-browser.mts`、`build-alias-review.mts`、`probe-a2-opening.mts`。
+
 使用项目Node26.12.1与锁定开发依赖，在仓库根目录：
 
 ```sh

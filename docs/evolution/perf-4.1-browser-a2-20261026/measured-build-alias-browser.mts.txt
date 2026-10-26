@@ -1,0 +1,36 @@
+// Build-time source extraction only. The generated browser candidate has no VM/eval/Node imports.
+import {readFileSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+import {buildSync} from 'esbuild';
+export const digest = (value: string | Uint8Array) => createHash('sha256').update(value).digest('hex');
+const frozen = new URL('../perf-4.1-evidence-20261026/', import.meta.url);
+const source = JSON.parse(readFileSync(new URL('inference-source.json', frozen), 'utf8')) as {code: string};
+assert.equal(digest(source.code), '91b2a5b6330482745c6cf09d50d10d32eff5645ffbe756f876f4fab9e721b5bb');
+const vendor = readFileSync(new URL('vendor/modhub-market.js', frozen), 'utf8');
+assert.equal(digest(vendor), 'cb46981ebf5998beb0605813cfe9208e3a27f705cd13892f66ccc390a12ad85c');
+const requiredStart = vendor.indexOf('    function getRequiredDependencies('), requiredEnd = vendor.indexOf('\n    function getCatalogRequiredDependencies(', requiredStart);
+assert.ok(requiredStart > 0 && requiredEnd > requiredStart);
+const required = vendor.slice(requiredStart, requiredEnd);
+const start = source.code.indexOf('                const name = '), end = source.code.indexOf('\n                if (!explicit.test(clause)', start), pivot = source.code.indexOf('        const result = [];');
+assert.ok(pivot > 0 && pivot < start && start < end);
+const block = source.code.slice(start, end), tail = source.code.slice(pivot, source.code.lastIndexOf('}'));
+assert.equal((block.match(/new RegExp\(/g) ?? []).length, 3);
+const escapeLine = source.code.split('\n').find(line => line.includes('const escapePattern =')); assert.ok(escapeLine);
+const patched = source.code.slice(0, pivot) +
+    'if (names.size <= patternCacheLimit) return inferCached(mod, description, names);\n' + source.code.slice(pivot) + '\n' +
+    'function inferCached(mod, description, names) {\n' + tail.replace(block, 'const [explicit, framework, requiredAs] = patternsForAlias(entry.alias);') + '}';
+
+export function browserBundle(candidate: boolean) {
+    const cacheImport = candidate ? "import {createRuleCache} from './alias-browser-cache.mts';" : '';
+    const cache = candidate ? `const compile = (alias) => {${escapeLine}\n${block.replaceAll('entry.alias', 'alias')}\nreturn [explicit, framework, requiredAs];};
+        const cache = createRuleCache(compile), patternsForAlias = cache.get, patternCacheLimit = cache.limit;` : '';
+    const input = `${cacheImport}\nexport function createCandidate() {let marketModList = [];${cache}\n${candidate ? patched : source.code}\n${required}
+        return {inferRequiredDependencies, getRequiredDependencies, setCatalog(value) {marketModList = value;},
+        ${candidate ? 'stats: cache.stats, clear: cache.clear' : 'stats: () => null, clear() {}'}};}`;
+    const built = buildSync({stdin: {contents: input, resolveDir: fileURLToPath(new URL('.', import.meta.url)), sourcefile: 'generated-alias-research.js'}, bundle: true, format: 'iife', globalName: candidate ? 'CandidateInference' : 'OriginalInference', platform: 'browser', target: 'es2022', write: false, legalComments: 'inline'});
+    const code = built.outputFiles[0]!.text;
+    assert.ok(!code.includes('/Users/') && !code.includes('node:vm') && !code.includes('node:fs'));
+    return {code, sha256: digest(code), requiredSha256: digest(required)};
+}

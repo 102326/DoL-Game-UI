@@ -1,0 +1,12 @@
+{
+  "measurementBuilderSha256": "e937be4109738818e5d61dbeb0545d0bff34b9c60cdf75d541211ed83199f1ef",
+  "currentBuilderSha256": "1587f21c34465ff9616125cde1cfc5b8d2b614eaf7b00ac30d94b6268ec59e01",
+  "difference": "After measurement only proposedVendorSource review-artifact generator was added; measured browserBundle program remains byte-identical (checked separately).",
+  "sources": {
+    "docs/evolution/perf-4.1-candidates-20261026/alias-browser-cache.mts": "835653951e79edb4520c198c8ad920229bc4dd20c91e66c20efe9e66f301a42e",
+    "docs/evolution/perf-4.1-candidates-20261026/build-alias-browser.mts": "1587f21c34465ff9616125cde1cfc5b8d2b614eaf7b00ac30d94b6268ec59e01",
+    "docs/evolution/perf-4.1-candidates-20261026/build-alias-review.mts": "5701500f792131a6bcfdfe060338ffb6660bf6cd612bd1bb52f885f2cae74bbe",
+    "docs/evolution/perf-4.1-candidates-20261026/check-alias-browser.mts": "efeb9e268dfbc0b58e27eaf4dc4eac7ef84c65403e0f0f290a90f5f587d3661e",
+    "docs/evolution/perf-4.1-candidates-20261026/probe-a2-opening.mts": "faa6dc1ba6b69dad899c54831c3c6e742beed23b66e4a709e148b1bf4fc5a386"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "command": "node --check candidate.js",
+      "exitCode": 0
+    },
+    {
+      "command": "git apply --check proposed.patch (scratch only)",
+      "exitCode": 0
+    },
+    {
+      "command": "git apply proposed.patch (scratch only)",
+      "exitCode": 0
+    }
+  ],
+  "originalVendorSha256": "cb46981ebf5998beb0605813cfe9208e3a27f705cd13892f66ccc390a12ad85c",
+  "proposedVendorSha256": "24092ec32e2ddb5d458adb4687b81449ec27e9ee8ba91fb06013b15a35505fb7",
+  "patchSha256": "503b00f71cbe782653c3721509689bcd31223c103f0e762ad3fe506d336fd423",
+  "browserBundleSha256": "acde26c739d43780008ed81febbb4cf0d20ece20039e1bcaab3282685dc0def3",
+  "sourceSha256": "5701500f792131a6bcfdfe060338ffb6660bf6cd612bd1bb52f885f2cae74bbe",
+  "limits": "Syntax, clean scratch application and resulting bytes only. No upstream communication, repository/vendor mutation, ModHub installation, full-game boot, update/install or device validation. Patch targets frozen 1.8.3 only."
+}
