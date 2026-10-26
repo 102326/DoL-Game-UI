@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "actualBundleSha256": "8ab0c36573a0c15fa7c3269ae03379c7552ce329e5863166d9e1f75fe56c725d",
+  "measuredBundleSha256": "8ab0c36573a0c15fa7c3269ae03379c7552ce329e5863166d9e1f75fe56c725d",
+  "actualNavigationSha256": "7e09422db00408c584b4a99606ba62cb848c45e8dadb5fbc3d0f0d04c443fd6f",
+  "measuredNavigationSha256": "7aff33d07294ac3675014fea5c09c8575574b0f21633b6f4dd51a85d33da2c07",
+  "limits": "Only formatting and explanatory comment differ in navigation module; actual full fixture bundle equals the measured candidate byte for byte. No new performance observation."
+}

@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "test": "official-game-motion",
+  "originalTestSha256": "4a77f95565758ad55f5277d97cb3a92381a4c469a39d6875c403c0f8125db467",
+  "originalNavigationSha256": "a9d2632889f9801cc926497398561fecd058decdf3932b5d32e4f6580298398d",
+  "candidateNavigationSha256": "7aff33d07294ac3675014fea5c09c8575574b0f21633b6f4dd51a85d33da2c07",
+  "transformedTestSha256": "8c8f59b294b3aeae6d4ecf82329dfdb5aaf3eddb06bd5e2c72f153c047174098",
+  "runnerSha256": "16cc9a24fb7e00dcd73d5516940cc9cc536c96235a66f2a6d57361e6e5699845",
+  "substitutions": 1,
+  "limits": "Existing assertions and fixture, one in-memory candidate substitution, no product source writes; candidate integration/device/performance acceptance not implied."
+}
