@@ -78,7 +78,6 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    <section v-if="category==='reading'" class="dmt-workspace-section dmt-workspace-reading" aria-labelledby="dmt-reading-heading">
     <div class="dmt-workspace-intro"><p class="dmt-eyebrow">阅读</p><h3 id="dmt-reading-heading">按自己的节奏阅读</h3><p>调整正文密度与常用控件大小，改动会立即生效并自动保存。</p></div>
     <div class="dmt-setting-card dmt-control-sheet dmt-reading-controls">
-     <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
      <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
      <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
      <label class="dgu-setting-row"><span><strong>选项文字对齐</strong><small>调整选项、导航与设置标签，正文保持原样。</small></span><select aria-label="选项文字对齐" :value="state.preferences.centerOptions?'center':'left'" @change="onPreference('centerOptions',($event.target as HTMLSelectElement).value==='center')"><option value="left">原样 / 靠左</option><option value="center">居中</option></select></label>
@@ -154,7 +153,6 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
 
  <div v-else class="dmt-controls-content cu:grid cu:gap-4 cu:md:grid-cols-2">
   <section class="dmt-setting-card"><h3>主题与阅读</h3>
-   <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
    <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
    <label class="dgu-setting-row"><span><strong>选项文字对齐</strong></span><select aria-label="选项文字对齐" :value="state.preferences.centerOptions?'center':'left'" @change="onPreference('centerOptions',($event.target as HTMLSelectElement).value==='center')"><option value="left">原样 / 靠左</option><option value="center">居中</option></select></label>

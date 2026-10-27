@@ -4,7 +4,9 @@
 
 ## Current — 当前状态
 
-- 分支 `feature/4.1-ui-material-hub`；材质 `ee36aaf`、居中 `699a7a2`、共享选择框/HC-07 `3554456`、ModHub hybrid研究 `f1beec5`、菜单响应 `557f9f7`、picker Escape `76afc72`。文档提交HEAD以实际Git为准。研发分支已推送；最终验证源码 **c3b280f**（含76afc72 Escape修复）双手动CI与本机下载复算通过。后续收口提交仅文档/证据，运行代码不变；准确文档HEAD以Git为准。
+- 最新增量：负责人指定保留「高级」的「回退原版界面／启用新版界面」，移除「阅读」总开关；传统平铺设置同步去重。`npm run tooling:build`、`npm run typecheck`与`node tests/ui41-settings-retirement.cjs`通过，覆盖两布局的回退、停用后重启、重新启用与其它偏好保持；实际预览已核对。该增量尚无新远端CI，上轮c3b280f结果不冒称覆盖此模板变更。
+
+- 分支 `feature/4.1-ui-material-hub`；材质 `ee36aaf`、居中 `699a7a2`、共享选择框/HC-07 `3554456`、ModHub hybrid研究 `f1beec5`、菜单响应 `557f9f7`、picker Escape `76afc72`。文档提交HEAD以实际Git为准。研发分支已推送；最终验证源码 **c3b280f**（含76afc72 Escape修复）双手动CI与本机下载复算通过。当时的收口提交仅文档/证据；本次控件去重另见上方最新增量，未复用旧CI作为新模板验证。准确HEAD以Git为准。
 - [UI报告](evolution/EVO-4.1-UI-765-2026-10-27.md)：负责人已通过60%材质/居中排版，默认仍60%/左对齐。材质仅review标记启用，未全局推广。新共享原生选择框及取消半秒等待的菜单响应已本机验证，**尚待负责人体验**。
 - 正式版本仍4.0.1 / main `ff428b4`；未改版本、Tag、Release、Host API、保护/bypass。ModHub候选是评审patch，未改vendor/兼容包运行代码，未安装到游戏。
 - 预览：`node scripts/preview-ui41.mjs`，默认5204；先锁定Node26依赖、tooling:build与Framework构建。服务不随Git跨机。本地绝对路径与原始公开目录仅在忽略目录/`HANDOFF.local.md`，另一设备不可假定可访问。

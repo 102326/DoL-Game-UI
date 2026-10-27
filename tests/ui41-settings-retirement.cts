@@ -19,6 +19,7 @@ declare const theme:Theme,restart:()=>void;
    for(const key of ['wardrobeHiddenList','shopDeferredPaint','shopPageExperiment'] as const)assert.equal(before.prefs[key],false);
    await page.evaluate(()=>{theme.setPreference('compactStats',true);theme.setPreference('visualMotion',false);theme.openSettings()});
    assert.equal(await page.evaluate(()=>theme.getPreferences().compactStats),false);assert.equal(await page.evaluate(()=>document.documentElement.hasAttribute('data-dmt-compact-stats')),false);
+   assert.equal(await page.getByLabel('启用 Soft & Wet 界面',{exact:true}).count(),0,'the master control belongs only to recovery actions');
    if(mode==='official')await page.getByRole('button',{name:'材质',exact:true}).click();
    assert.equal(await page.getByLabel('标题边缘纹样',{exact:true}).count(),1);assert.equal(await page.getByLabel('标题边缘纹样',{exact:true}).isChecked(),true);
    if(mode==='official')await page.getByRole('button',{name:'入口',exact:true}).click();
@@ -27,9 +28,15 @@ declare const theme:Theme,restart:()=>void;
    assert.equal(await page.getByText('兼容回退与实验选项',{exact:true}).count(),1);
    const experiments=page.locator('.dmt-experiments');assert.equal(await experiments.locator('[aria-label="标题边缘纹样"]').count(),0);
    await experiments.locator('summary').click();for(const label of ['衣柜延迟原版隐藏列表（实验）','商店离屏绘制延后（实验）'])assert.equal(await page.getByLabel(label,{exact:true}).isChecked(),false);
+   const preferences=await page.evaluate(()=>theme.getPreferences());
+   for(const label of ['回退原版界面','启用新版界面'])assert.equal(await page.getByRole('button',{name:label,exact:true}).count(),1);
+   await page.getByRole('button',{name:'回退原版界面',exact:true}).click();assert.deepEqual(await page.evaluate(()=>theme.getPreferences()),{...preferences,enabled:false});
+   await page.evaluate(()=>{theme.destroy();restart();theme.openSettings()});assert.equal(await page.evaluate(()=>theme.getPreferences().enabled),false,'recovery choice persists across restart');
+   if(mode==='official')await page.getByRole('button',{name:'高级',exact:true}).click();
+   await page.getByRole('button',{name:'启用新版界面',exact:true}).click();assert.deepEqual(await page.evaluate(()=>theme.getPreferences()),preferences,'re-enable preserves all display and page choices');
    await page.evaluate(()=>{theme.destroy();restart()});assert.equal(await page.evaluate(()=>theme.getPreferences().compactStats),false);assert.equal(await page.evaluate(()=>document.documentElement.hasAttribute('data-dmt-compact-stats')),false);
    await page.evaluate(()=>theme.destroy());await page.close();
   }
-  console.log('PASS legacy compactStats migration and rejected writes; material and compatibility settings in both layouts');
+  console.log('PASS compactStats retirement; duplicate master toggle removed; recovery buttons disable, persist and re-enable without resetting preferences in both settings layouts');
  }finally{await browser?.close();await server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
