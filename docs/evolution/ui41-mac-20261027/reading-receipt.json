@@ -35,7 +35,7 @@
     "tests/settings-modal-scroll.cts": "5d2acc827d4eaf7632110e28c0a8320ddc9aae1e46c3fcc2e04000e583daa1a7",
     "tests/settings-orbit.cts": "9aae55be7c1ac8e6ac2c0f2ad51eb51bff4263e025f083a14c6c700c5ff4596f",
     "tests/ui41-option-alignment.cts": "991d9756377edfa5f03b81f15faa3d002e6938f771c57f1bc8006ce7e1988ec3",
-    "tests/ui41-reading.cts": "4b655568ce8d7215953c6647223c6262cdda7c8b12ee2d9f2dc7e8cc76897e99",
+    "tests/ui41-reading.cts": "07e25c15147b601efcc9c3a110f90b03a89e9df35be5dc783a95f9b54c0976d8",
     "tests/ui41-settings-retirement.cts": "f5180b5e9f57fa084ab512a325c6770f9f26cd773fd4e6a12e1e145aff748626",
     "tests/unified.test.cts": "28db79961bb0b09a7d5e2bdd2ea2c4fa05deb6ac84da10715098b49547cbd23e",
     "tests/weather-special.cts": "06b1310a3a38df6092b0c7bbd4a2884abc4c7b6001217623e6252e207fbfd241"
@@ -343,6 +343,7 @@
     "npm run framework:build exits 127 because python command is absent; built code and python3 packaging run separately.",
     "An early settings run was invalidated by editing source during Vite HMR; final frozen-source run passes.",
     "Initial tests referred to retired controls; input assertions migrated to active control, not removed.",
-    "Global performance and visual acceptance remain separate."
+    "Global performance and visual acceptance remain separate.",
+    "Initial reading helper omitted full production CSS. Fixed by loading actual built official UI stylesheet; styled phone/desktop contract rerun passed. Superseded CI137a89c was cancelled, not reported passing."
   ]
 }
