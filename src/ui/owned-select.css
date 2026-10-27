@@ -1,0 +1,69 @@
+/* Shared owned single-select paint. Native semantics/events remain unchanged.
+   Unsupported engines keep their platform picker, with dark native hints. */
+html[data-stone-free][data-dol-midnight] :is(
+ #dol-midnight-controls .dgu-setting-row>select,
+ .dgp-navigation>select[data-kw-nav-control=action],
+ .dgshop-toolbar .dgshop-default-filter>select,
+ .dgw-root :is(.dgw-mobile-category,.dgw-tools,.dgw-selection-bar)>select,
+ #customOverlay[data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] :is(select.modhub-select,.modhub-help-choice>select)
+):not([multiple]):not([size]) {color-scheme:dark}
+
+html[data-stone-free][data-dol-midnight] :is(
+ #dol-midnight-controls .dgu-setting-row>select,
+ .dgp-navigation>select[data-kw-nav-control=action],
+ .dgshop-toolbar .dgshop-default-filter>select,
+ .dgw-root :is(.dgw-mobile-category,.dgw-tools,.dgw-selection-bar)>select,
+ #customOverlay[data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] :is(select.modhub-select,.modhub-help-choice>select)
+):not([multiple]):not([size]) :is(option,optgroup) {background:#282a2f;color:#e6e7eb}
+
+@supports (appearance:base-select) and selector(select::picker(select)) {
+ html[data-stone-free][data-dol-midnight] :is(
+  #dol-midnight-controls .dgu-setting-row>select,
+  .dgp-navigation>select[data-kw-nav-control=action],
+  .dgshop-toolbar .dgshop-default-filter>select,
+  .dgw-root :is(.dgw-mobile-category,.dgw-tools,.dgw-selection-bar)>select,
+  #customOverlay[data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] :is(select.modhub-select,.modhub-help-choice>select)
+ ):not([multiple]):not([size]) {appearance:base-select;align-items:center;gap:.5em;overflow-wrap:anywhere}
+ html[data-stone-free][data-dol-midnight] :is(
+  #dol-midnight-controls .dgu-setting-row>select,
+  .dgp-navigation>select[data-kw-nav-control=action],
+  .dgshop-toolbar .dgshop-default-filter>select,
+  .dgw-root :is(.dgw-mobile-category,.dgw-tools,.dgw-selection-bar)>select,
+  #customOverlay[data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] :is(select.modhub-select,.modhub-help-choice>select)
+ ):not([multiple]):not([size])::picker(select) {
+  appearance:base-select;
+  background:rgba(36,38,42,.98);color:#e6e7eb;
+  border:1px solid #ffffff24;border-radius:12px;padding:5px;
+  box-shadow:0 14px 42px #0008;max-height:min(60dvh,22rem);
+  overflow:auto;overscroll-behavior:contain;font:inherit;
+ }
+ html[data-stone-free][data-dol-midnight] :is(
+  #dol-midnight-controls .dgu-setting-row>select,
+  .dgp-navigation>select[data-kw-nav-control=action],
+  .dgshop-toolbar .dgshop-default-filter>select,
+  .dgw-root :is(.dgw-mobile-category,.dgw-tools,.dgw-selection-bar)>select,
+  #customOverlay[data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] :is(select.modhub-select,.modhub-help-choice>select)
+ ):not([multiple]):not([size]) option {
+  min-height:44px;padding:10px 12px;border-radius:8px;gap:10px;
+  white-space:normal;overflow-wrap:anywhere;cursor:pointer;
+ }
+ html[data-stone-free][data-dol-midnight] :is(
+  #dol-midnight-controls .dgu-setting-row>select,
+  .dgp-navigation>select[data-kw-nav-control=action],
+  .dgshop-toolbar .dgshop-default-filter>select,
+  .dgw-root :is(.dgw-mobile-category,.dgw-tools,.dgw-selection-bar)>select,
+  #customOverlay[data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] :is(select.modhub-select,.modhub-help-choice>select)
+ ):not([multiple]):not([size]) option:is(:hover,:focus-visible,:checked) {background:#41464d;color:#f0f2f3}
+ html[data-stone-free][data-dol-midnight] :is(
+  #dol-midnight-controls .dgu-setting-row>select,
+  .dgp-navigation>select[data-kw-nav-control=action],
+  .dgshop-toolbar .dgshop-default-filter>select,
+  .dgw-root :is(.dgw-mobile-category,.dgw-tools,.dgw-selection-bar)>select,
+  #customOverlay[data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] :is(select.modhub-select,.modhub-help-choice>select)
+ ):not([multiple]):not([size]) option:disabled {color:#a6a9b0;background:#282a2f;cursor:default}
+}
+
+@supports (appearance:base-select) and selector(select::picker(select)) {
+ html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row>select {position:relative;justify-content:center;padding-inline:2rem}
+ html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row>select::picker-icon {position:absolute;inset-inline-end:.75rem}
+}

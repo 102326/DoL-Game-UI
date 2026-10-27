@@ -22,11 +22,22 @@ const disconnect=connectConsumer(host=>{
  let stopHub:(()=>void)|undefined;
  let stopMotion:(()=>void)|undefined;
  const html=document.documentElement,previous=html.getAttribute('data-stone-free'),visualVersion=productVersion;
- const release=()=>{try{stopMotion?.();stopHub?.();shelf.dispose();destroyUi?.()}finally{ui=undefined;destroyUi=undefined;stopHub=undefined;stopMotion=undefined;owner.dispose();if(html.getAttribute('data-stone-free')===visualVersion){if(previous===null)html.removeAttribute('data-stone-free');else html.setAttribute('data-stone-free',previous)}}};
+ let released=false;
+ const release=()=>{
+  if(released)return;released=true;
+  // Keep the original retirement order, but one failed stage must not skip peers.
+  const stages=[stopMotion,stopHub,()=>shelf.dispose(),destroyUi,()=>owner.dispose(),()=>{
+   if(html.getAttribute('data-stone-free')===visualVersion){if(previous===null)html.removeAttribute('data-stone-free');else html.setAttribute('data-stone-free',previous)}
+  }];
+  ui=undefined;destroyUi=undefined;stopHub=undefined;stopMotion=undefined;
+  const errors:unknown[]=[];
+  for(const stage of stages){try{stage?.()}catch(error){errors.push(error)}}
+  if(errors.length)throw new AggregateError(errors,'Official UI cleanup failed');
+ };
  try{
   if(!owner.claim('region','soft-wet-official-ui')){release();return release}
   ui=startGameUI({host,owner,rememberReference:shelf.remember,rememberProduct:shelf.rememberProduct});if(!ui)throw Error('Official UI unavailable');
   destroyUi=ui.destroy;ui.destroy=()=>{disconnect();notice.dispose()};ui.version=visualVersion;html.setAttribute('data-stone-free',visualVersion);stopHub=startOfficialHub(host,owner);stopMotion=isolate('official motion',()=>startOfficialMotion());return release;
- }catch(error){release();throw error}
+ }catch(error){try{release()}catch(cleanupError){throw new AggregateError([error,cleanupError],'Official UI initialization and cleanup failed')}throw error}
 },window,notice.set);
 export function dispose(){disconnect();notice.dispose()}

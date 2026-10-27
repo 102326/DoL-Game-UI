@@ -305,3 +305,5 @@ docs/HANDOFF.local.md
 /tests/ui41-settings-retirement.cjs
 /tests/ui41-option-alignment.cjs
 /tests/ui41-weather-paint.cjs
+/tests/official-cleanup.cjs
+/tests/owned-select.cjs

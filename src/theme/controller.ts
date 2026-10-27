@@ -6,6 +6,7 @@ import {experiments} from '../runtime/experiments';
 import type {PanelKind} from '../panels/main';
 import {createApp,reactive,type App} from 'vue';
 import SettingsPanel from './SettingsPanel.vue';
+import '../ui/owned-select.css';
 import {defaults,type Preferences,type PreferenceKey,type SettingsState} from './preferences';
 import {isMasterEnabled,setMasterEnabled} from '../runtime/master';
 import {acrylicParameters} from './acrylic';

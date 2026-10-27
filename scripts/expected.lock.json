@@ -1271,7 +1271,7 @@
         "standard"
       ],
       "classification": "contract",
-      "granularity": "checkpoint",
+      "granularity": "composed",
       "cases": [
         {
           "id": "missing-any",
@@ -1308,10 +1308,18 @@
         {
           "id": "signal-composition",
           "minimumAssertions": 1
+        },
+        {
+          "id": "cleanup:fault-isolation",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "select:native-enhancement",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ce56ff40ce01e511dcda05017817722706d87230ff3fe2f0a73d2c8ad76c427a",
-      "assertionSites": 158
+      "sourceSha256": "5ea53052093cc9a191fa2339f7003d3f343ba5f3720948ecb7ef15af5288a025",
+      "assertionSites": 389
     },
     {
       "entry": "tests/framework.cjs",

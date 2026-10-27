@@ -1,4 +1,4 @@
-// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"checkpoint","caseSource":"caseCheckpoint"}
+// @ci-contract {"profiles":["standard"],"classification":"contract","granularity":"composed","caseSource":"caseCheckpoint","includes":[{"prefix":"cleanup","source":"tests/official-cleanup.cjs"},{"prefix":"select","source":"tests/owned-select.cjs"}]}
 // Real built player entries on controlled HTML. No game/Loader or physical-device claim.
 import cases = require('../scripts/ci-cases.cjs');
 import assert = require('node:assert/strict');
@@ -9,6 +9,8 @@ import esbuild = require('esbuild');
 import pkg = require('../package.json');
 import browserOptions = require('./browser-options.cjs');
 import receipt = require('../scripts/ci-process-receipt.cjs');
+import cleanup = require('./official-cleanup.cjs');
+import selects = require('./owned-select.cjs');
 import type {Host,MountContext,Cleanup} from '../framework/contracts';
 import type {GameUiControls} from '../src/runtime/game-controls';
 declare const DoLUiHost:Host;
@@ -56,6 +58,8 @@ const root=path.resolve(__dirname,'..');
   for(const index of [0,1] as const){const a=new AbortController(),b=new AbortController(),inputs:[AbortController,AbortController]=[a,b],reason={expected:'reason-'+index},counts=new Set<EventListenerOrEventListenerObject>();for(const c of inputs){const add=c.signal.addEventListener.bind(c.signal),remove=c.signal.removeEventListener.bind(c.signal);c.signal.addEventListener=(t:string,f:EventListenerOrEventListenerObject,o?:boolean|AddEventListenerOptions)=>{counts.add(f);return add(t,f,o)};c.signal.removeEventListener=(t:string,f:EventListenerOrEventListenerObject,o?:boolean|EventListenerOptions)=>{counts.delete(f);return remove(t,f,o)}}const combined=combineSignals(inputs.map(c=>c.signal));assert.equal(counts.size,2);inputs[index].abort(reason);assert.equal(combined.signal.reason,reason);assert.equal(counts.size,0);combined.dispose();assert.equal(inputs[index===0?1:0].signal.aborted,false)}
   const first=new AbortController(),second=new AbortController();first.abort('first');second.abort('second');assert.equal(combineSignals([first.signal,second.signal]).signal.reason,'first');const a=new AbortController(),b=new AbortController(),disposed=combineSignals([a.signal,b.signal]);disposed.dispose();a.abort('ignored');assert.equal(disposed.signal.aborted,false);
   caseCheckpoint('signal-composition');
+  await cases.withCaseScope('cleanup',()=>cleanup.verifyOfficialCleanup(browser));
+  await cases.withCaseScope('select',()=>selects.verifyOwnedSelect(browser));
   console.log('PASS built player startup: missing any without global polyfill, owner/scene cancellation, saved opt-out, late Host, visible/dismissible diagnosis and cleanup; controlled fixture only');
  }finally{await browser.close();await new Promise<void>((resolve,reject)=>server.close(error=>error?reject(error):resolve()))}
 })().catch(e=>{receipt.terminalFailure(e);process.exitCode=1});
