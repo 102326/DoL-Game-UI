@@ -1,4 +1,5 @@
 import {visualScope} from '../ui/visual-scope';
+import {isOpenSelectEscape} from '../ui/native-select';
 import {createSidebarLayout} from './sidebar-layout';
 import type {Preferences} from './preferences';
 type LayoutPreferences = Partial<Pick<Preferences, 'enabled' | 'layout' | 'wideReading'>>;
@@ -56,6 +57,7 @@ export function startLayout(root: LayoutRuntime=window as LayoutRuntime){
     updateShade();
   }
   function onBack(event: Event & Partial<Pick<KeyboardEvent, 'key' | 'shiftKey'>>){
+    if(active&&event instanceof KeyboardEvent&&isOpenSelectEscape(event))return;
     if(active&&event.type==='keydown'&&event.key==='Tab'&&shade&&!shade.hidden&&!document.querySelector('dialog[open]')&&!visible(document.getElementById('customOverlay'))&&!visible(document.getElementById('ui-dialog'))){
       const targets=[...bar!.querySelectorAll<HTMLElement & {disabled?: boolean}>('button,a[href],input,select,textarea,[tabindex]')].filter(node=>visible(node)&&!node.disabled&&node.tabIndex>=0);
       const first=targets[0],last=targets[targets.length-1];

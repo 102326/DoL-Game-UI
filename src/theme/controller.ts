@@ -7,6 +7,7 @@ import type {PanelKind} from '../panels/main';
 import {createApp,reactive,type App} from 'vue';
 import SettingsPanel from './SettingsPanel.vue';
 import '../ui/owned-select.css';
+import {isOpenSelectEscape} from '../ui/native-select';
 import {defaults,type Preferences,type PreferenceKey,type SettingsState} from './preferences';
 import {isMasterEnabled,setMasterEnabled} from '../runtime/master';
 import {acrylicParameters} from './acrylic';
@@ -161,7 +162,7 @@ export function startTheme(root:Runtime=window as Runtime){
   app=createApp(SettingsPanel,{state,onSaves:setSaves,onPreference:setPreference,onCombat:setCombat,onWardrobe:setWardrobe,onCharacteristics:setCharacteristics,onSocial:setSocial,onPanel:setPanel,onShop:setShop,onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
   // Native modal hit testing does not stop delegated game handlers from receiving our controls' events.
   for(const type of ['click','input','change','pointerdown','pointerup','touchstart','touchend','keyup'])controls.addEventListener(type,event=>event.stopPropagation());
-  controls.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Escape'){event.preventDefault();closeSettings()}});
+  controls.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Escape'&&!isOpenSelectEscape(event)){event.preventDefault();closeSettings()}});
   controls.addEventListener('close',()=>{if(!controls?.open){document.documentElement.removeAttribute('data-dgu-settings-open');++transition;motion.cancel();controls?.removeAttribute('data-sf-leaving')}});
   controls.addEventListener('cancel',event=>{event.preventDefault();closeSettings()});
   controls.addEventListener('click',event=>{if(event.target===controls)closeSettings()});

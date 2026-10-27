@@ -1,4 +1,5 @@
 import {visualScope} from '../ui/visual-scope';
+import {isOpenSelectEscape} from '../ui/native-select';
 import {isolate,mountUI,unmountUI,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
 import Toolbar from './Toolbar.vue';
@@ -229,7 +230,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   schedule();
  }
  function quantity(event:Event){const input=event.target;if(!(input instanceof HTMLInputElement)||!input.matches('#buy-multiple-slider input[type=range]')||!shop?.contains(input)||!current())return;quantityCheck?.();quantityCheck=scope.timeout(()=>{quantityCheck=undefined;isolate('shop quantity quote',()=>source?.quantityChanged(input),recover)},0)}
- function escape(event:KeyboardEvent){if(event.key==='Escape'&&state.open&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false)}
+ function escape(event:KeyboardEvent){if(event.key==='Escape'&&!isOpenSelectEscape(event)&&state.open&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false)}
  const observer=new MutationObserver(records=>{if(!isolate('shop mutation',()=>fastPath(records),recover))schedule()});
  const discovery=new MutationObserver(()=>{if(document.querySelector('.passage #clothingShop-div')!==shop)schedule()});
  function setEnabled(value:boolean){if(!scope.active())return;failed=false;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* Session preference. */}refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}

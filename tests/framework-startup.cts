@@ -38,6 +38,19 @@ const root=path.resolve(__dirname,'..');
    assert.equal(await page.evaluate(()=>!!window.DoLUiHost),true,mode+': Host must start');
    assert.equal(await page.evaluate(()=>DoLGameUI?.version),version);assert.equal(await page.locator('#dol-midnight-sidebar-button').count(),1);
    await page.evaluate(()=>DoLGameUI.openSettings());assert.equal(await page.locator('#dol-midnight-controls').evaluate(n=>n instanceof HTMLDialogElement&&n.open),true);assert.equal(await page.locator('#soft-wet-startup-notice').count(),0);
+   if(mode==='healthy'){
+    const picker=page.getByLabel('选项文字对齐',{exact:true});await picker.click();assert.equal(await picker.evaluate(n=>n.matches(':open')),true);
+    await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.querySelector('[aria-label="选项文字对齐"]')?.matches(':open'),null,{timeout:2000});
+    assert.equal(await page.locator('#dol-midnight-controls').evaluate(n=>n instanceof HTMLDialogElement&&n.open&&!n.hasAttribute('data-sf-leaving')),true,'picker Escape must not start closing its settings dialog');
+    assert.equal(await picker.evaluate(n=>n===document.activeElement),true,'picker returns focus to the native select');
+    await page.keyboard.press('Escape');await page.waitForFunction(()=>!(document.querySelector('#dol-midnight-controls') instanceof HTMLDialogElement&&document.querySelector<HTMLDialogElement>('#dol-midnight-controls')!.open));
+    await page.evaluate(()=>{document.body.insertAdjacentHTML('beforeend','<div id="customOverlay" data-overlay="modloader" data-dgu-adapter="ModHubSoftWet" data-dgu-adapter-match="full"><button class="customOverlayClose">Close fixture</button><select id="overlay-picker" class="modhub-select"><option>First</option><option>Second</option></select></div>');Reflect.set(window,'closeOverlay',()=>{document.getElementById('customOverlay')!.hidden=true;document.body.dataset.pickerCloses='1'})});
+    const overlayPicker=page.locator('#overlay-picker');await overlayPicker.click();assert.equal(await overlayPicker.evaluate(n=>n.matches(':open')),true);
+    await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.getElementById('overlay-picker')?.matches(':open'),null,{timeout:2000});
+    assert.equal(await page.locator('#customOverlay').isVisible(),true,'layout capture must let the native overlay picker close first');assert.equal(await page.locator('body').getAttribute('data-picker-closes'),null);
+    await page.keyboard.press('Escape');assert.equal(await page.locator('body').getAttribute('data-picker-closes'),'1','second Escape keeps native overlay close dispatch');
+
+   }
    if(mode==='missing-any'){
     assert.equal(await page.evaluate(()=>typeof AbortSignal.any),'undefined','no global polyfill');
     const signals=await page.evaluate(()=>{
