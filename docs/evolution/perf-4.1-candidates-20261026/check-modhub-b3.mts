@@ -6,14 +6,14 @@ import {spawnSync} from 'node:child_process';
 import assert from 'node:assert/strict';
 import {chromium,type Page} from 'playwright';
 import browserOptions from '../../../tests/browser-options.cjs';
-import {bundles,vendor,proposedVendor as targetVendor,withTargetFilter,withCombinedRules,digest} from './build-modhub-b3.mts';
+import {bundles,vendor,proposedVendor as targetVendor,withTargetFilter,withCombinedRules,hybridVendor,digest} from './build-modhub-b3.mts';
 import {proposedVendorSource} from './build-alias-browser.mts';
 type Identity={name:string;bootNames:string[];aliases:string[];identityId?:string|null};
 type Mod={id?:string;name?:string;description:string;bootNames?:string[];aliases?:string[];requiredDependencies?:unknown[];[key:string]:unknown};
-type Engine={inferRequiredDependencies(mod:unknown,catalog?:unknown):unknown;getRequiredDependencies(mod:unknown):unknown;setCatalog(value:unknown):void};
+type Engine={inferRequiredDependencies(mod:unknown,catalog?:unknown):unknown;getRequiredDependencies(mod:unknown):unknown;setCatalog(value:unknown):void;stats():{builds:number;size:number;limit:number;maxAliasLength:number;bypasses:number;evictions:number}|null;clear():void};
 declare const OriginalInference:{createCandidate():Engine},CandidateInference:{createCandidate():Engine},TargetInference:{createCandidate():Engine};
-const lazy=process.argv.includes('--lazy'),union=process.argv.includes('--union');assert.ok(!(lazy&&union));const proposedVendor=union?withCombinedRules(vendor):lazy?withTargetFilter(vendor,true):targetVendor;
-const frozen=new URL('../perf-4.1-evidence-20261026/',import.meta.url),built=bundles(lazy,union);
+const lazy=process.argv.includes('--lazy'),union=process.argv.includes('--union'),hybrid=process.argv.includes('--hybrid');assert.ok(Number(lazy)+Number(union)+Number(hybrid)<=1);const proposedVendor=hybrid?hybridVendor():union?withCombinedRules(vendor):lazy?withTargetFilter(vendor,true):targetVendor;
+const frozen=new URL('../perf-4.1-evidence-20261026/',import.meta.url),built=bundles(lazy,union,hybrid);
 const golden=JSON.parse(readFileSync(new URL('inference-cases.json',frozen),'utf8')) as Array<{name:string;mod:Mod;catalog:Identity[];expected:unknown}>;
 const sequence=JSON.parse(readFileSync(new URL('inference-sequence.json',frozen),'utf8')) as {mod:Mod;catalog:Identity[];steps:Array<{patch:{description:string;bootNames?:string[];catalogPatch?:{index:number;aliases:string[]}};expected:unknown}>};
 const out=resolve('tests/artifacts/evolution/modhub-b3-'+Date.now());mkdirSync(out,{recursive:true});
@@ -24,7 +24,7 @@ let status='FAIL',phase='pure',failure:string|undefined,contracts:unknown,measur
 const newPage=async()=>{const page=await browser.newPage({viewport:{width:1280,height:900}});page.on('pageerror',e=>errors.push(e.message));return page};
 try{
  const page=await newPage();await page.setContent('<!doctype html><p>First-party inference fixture</p>');for(const b of Object.values(built))await page.addScriptTag({content:b.code});
- contracts=await page.evaluate(({golden,sequence})=>{
+ contracts=await page.evaluate(({golden,sequence,hybrid})=>{
   const engines=[OriginalInference,CandidateInference,TargetInference].map(n=>n.createCandidate());
   const check=(ok:boolean,label:string)=>{if(!ok)throw Error(label)},serial=(n:unknown)=>JSON.stringify(n);let comparisons=0;
   const compare=(mod:unknown,catalog:unknown,label:string,expected?:unknown)=>{
@@ -43,8 +43,18 @@ try{
   const native=window.RegExp,constructors:Record<string,number>={};
   try{for(const [i,e]of engines.entries()){let count=0;window.RegExp=new Proxy(native,{construct(target,args){count++;return Reflect.construct(target,args)}});const catalog=Array.from({length:400},(_,j)=>({name:'工具'+j,bootNames:['Boot'+j],aliases:['别名'+j]}));e.inferRequiredDependencies({description:'需要工具0 >=1.0'},catalog);constructors[['original','b2','b3'][i]!]=count}}finally{window.RegExp=native}
   check(constructors.b3!<constructors.original!,'negative target work reduced');
-  return{comparisons,golden:golden.length,sequence:sequence.steps.length,constructors};
- },{golden,sequence});
+  let routing:unknown;
+  if(hybrid){
+   const p=TargetInference.createCandidate(),small=[{name:'工具甲',bootNames:['AlphaTools'],aliases:[]}],m={description:'需要工具甲 >=1.0'};
+   p.inferRequiredDependencies(m,small);const cold=p.stats();check(!!cold&&cold.builds>0,'small catalog uses cache');p.inferRequiredDependencies(m,small);check(p.stats()!.builds===cold!.builds,'small repeated rules reused');
+   const wide=[{...small[0]!,aliases:Array.from({length:1100},(_,i)=>'宽别名'+i)}];p.inferRequiredDependencies(m,wide);check(p.stats()!.builds===cold!.builds,'overflow union does not build cache rules');
+   wide[0]!.aliases=[];wide[0]!.bootNames=['ChangedBoot'];check(JSON.stringify(p.inferRequiredDependencies(m,wide)).includes('ChangedBoot'),'shrink rereads changed boot');
+   for(let i=0;i<1100;i++)p.inferRequiredDependencies({description:'需要驱逐名'+i},[{name:'驱逐名'+i,bootNames:['EvictionBoot'],aliases:[]}]);
+   const long='长别名'+('甲'.repeat(257));p.inferRequiredDependencies({description:'需要'+long},[{name:long,bootNames:['LongBoot'],aliases:[]}]);const stats=p.stats()!;
+   check(stats.limit===1024&&stats.maxAliasLength===256&&stats.size<=1024&&stats.evictions>0&&stats.bypasses>0,'original budgets, eviction and long bypass retained');p.clear();check(p.stats()!.size===0,'clear releases rule entries');routing={cold,stats,cleared:p.stats()};
+  }
+  return{comparisons,golden:golden.length,sequence:sequence.steps.length,constructors,routing};
+ },{golden,sequence,hybrid});
  phase='timing';
  measurements=await page.evaluate(()=>{
   const factories={original:OriginalInference,b2:CandidateInference,b3:TargetInference};type Key=keyof typeof factories;
@@ -76,11 +86,11 @@ try{
  phase='review-patch';
  const temp=mkdtempSync(join(tmpdir(),'modhub-b3-'));writeFileSync(join(temp,'old.js'),vendor);writeFileSync(join(temp,'new.js'),proposedVendor);
  const diff=spawnSync('git',['diff','--no-index','--','old.js','new.js'],{cwd:temp,encoding:'utf8'});assert.equal(diff.status,1);
- const patch=diff.stdout.replace('a/old.js b/new.js','a/javascript/modhub-market.js b/javascript/modhub-market.js').replace('--- a/old.js','--- a/javascript/modhub-market.js').replace('+++ b/new.js','+++ b/javascript/modhub-market.js').replace(/^ $/gm,'-\n+');writeFileSync(join(out,'modhub-1.8.3-target-filter.patch'),patch);writeFileSync(join(temp,'patch.diff'),patch);mkdirSync(join(temp,'javascript'));writeFileSync(join(temp,'javascript/modhub-market.js'),vendor);
+ const patch=diff.stdout.replace('a/old.js b/new.js','a/javascript/modhub-market.js b/javascript/modhub-market.js').replace('--- a/old.js','--- a/javascript/modhub-market.js').replace('+++ b/new.js','+++ b/javascript/modhub-market.js').replace(/^ $/gm,'-\n+');writeFileSync(join(out,`modhub-1.8.3-${hybrid?'hybrid':union?'union':lazy?'target-lazy':'target-filter'}-review.patch`),patch);writeFileSync(join(temp,'patch.diff'),patch);mkdirSync(join(temp,'javascript'));writeFileSync(join(temp,'javascript/modhub-market.js'),vendor);
  for(const args of [['--check',join(temp,'new.js')],['apply','--check',join(temp,'patch.diff')],['apply',join(temp,'patch.diff')]]){const command=args[0]==='--check'?process.execPath:'git';const r=spawnSync(command,args,{cwd:temp,encoding:'utf8'});assert.equal(r.status,0,r.stderr)}
  assert.equal(digest(readFileSync(join(temp,'javascript/modhub-market.js'))),digest(proposedVendor));assert.deepEqual(errors,[]);assert.deepEqual(sources(),sourceHashes);status='PASS';
 }catch(e){failure=String(e);throw e}finally{
- writeFileSync(join(out,'result.json'),JSON.stringify({status,phase,lazy,union,failure,environment:{node:process.version,platform:process.platform,chromium:browser.version()},sourceHashes,bundles:Object.fromEntries(Object.entries(built).map(([k,v])=>[k,v.sha256])),vendor:digest(vendor),proposedVendor:digest(proposedVendor),contracts,measurements,full,errors,limits:'Frozen1.8.3 isolated pure engines and complete original market scripts; no live game/real catalog/installation. Full-script external variants/version/history services are explicit controlled providers. Network blocked. Timing has no constructor proxy or trace, two warm-up triples discarded then twelve balanced triples; not a device or end-to-end result.'},null,2));console.log(out);await browser.close();
+ writeFileSync(join(out,'result.json'),JSON.stringify({status,candidateKind:hybrid?'hybrid':union?'union':lazy?'target-lazy':'target-filter',phase,lazy,union,hybrid,failure,environment:{node:process.version,platform:process.platform,chromium:browser.version()},sourceHashes,bundles:Object.fromEntries(Object.entries(built).map(([k,v])=>[k,v.sha256])),vendor:digest(vendor),proposedVendor:digest(proposedVendor),contracts,measurements,full,errors,limits:'Frozen1.8.3 isolated pure engines and complete original market scripts; no live game/real catalog/installation. Full-script external variants/version/history services are explicit controlled providers. Network blocked. Timing has no constructor proxy or trace, two warm-up triples discarded then twelve balanced triples; not a device or end-to-end result.'},null,2));console.log(out);await browser.close();
 }
 
 async function fullClosure(page:Page){return page.evaluate(async()=>{

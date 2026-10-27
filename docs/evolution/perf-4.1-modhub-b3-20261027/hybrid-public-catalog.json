@@ -1,0 +1,384 @@
+{
+  "status": "PASS",
+  "candidateKind": "hybrid",
+  "hybrid": true,
+  "environment": {
+    "node": "v26.12.1",
+    "platform": "darwin",
+    "chromium": "153.0.8010.12"
+  },
+  "sourceSha256": "cb381539e9cde1ef02678497da8cc6db8adb21d5cec6f30b70aafc89082309b4",
+  "publicSnapshot": {
+    "url": "https://dol.alseece.top/release-index.json",
+    "bytes": 408448,
+    "sha256": "c6f48d557f1029e6eb211854250d689bf87d13ef3323d84a3cea487c76aa5ceb"
+  },
+  "bundleSha256": {
+    "original": "daf5b2a3b5b863d467bc4a8e9caaf71c9dacbed94bc6dec7abc42f724487f70c",
+    "b2": "acde26c739d43780008ed81febbb4cf0d20ece20039e1bcaab3282685dc0def3",
+    "b3": "4690e725e821e083ee1ff2f5b29abd9bc7e9a055fff16f21f34fe12d922f1a4b"
+  },
+  "result": {
+    "mods": 145,
+    "descriptions": 145,
+    "dependencyItems": 11,
+    "records": [
+      {
+        "phase": "first-batch",
+        "pair": 0,
+        "order": [
+          "b2",
+          "original",
+          "candidate"
+        ],
+        "ms": {
+          "original": 95.69999992847443,
+          "b2": 46.800000071525574,
+          "candidate": 49.799999952316284
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 1,
+        "order": [
+          "b2",
+          "candidate",
+          "original"
+        ],
+        "ms": {
+          "original": 96.30000007152557,
+          "b2": 44.800000071525574,
+          "candidate": 45.5
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 2,
+        "order": [
+          "candidate",
+          "original",
+          "b2"
+        ],
+        "ms": {
+          "original": 96.39999997615814,
+          "b2": 45.699999928474426,
+          "candidate": 44.5
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 3,
+        "order": [
+          "candidate",
+          "b2",
+          "original"
+        ],
+        "ms": {
+          "original": 95.60000002384186,
+          "b2": 45,
+          "candidate": 44.800000071525574
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 4,
+        "order": [
+          "original",
+          "b2",
+          "candidate"
+        ],
+        "ms": {
+          "original": 93.10000002384186,
+          "b2": 47,
+          "candidate": 47.40000009536743
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 5,
+        "order": [
+          "original",
+          "candidate",
+          "b2"
+        ],
+        "ms": {
+          "original": 95.5,
+          "b2": 44.700000047683716,
+          "candidate": 45.5
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 6,
+        "order": [
+          "b2",
+          "original",
+          "candidate"
+        ],
+        "ms": {
+          "original": 94.89999997615814,
+          "b2": 44.10000002384186,
+          "candidate": 43.800000071525574
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 7,
+        "order": [
+          "b2",
+          "candidate",
+          "original"
+        ],
+        "ms": {
+          "original": 93.90000009536743,
+          "b2": 44,
+          "candidate": 43.5
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 8,
+        "order": [
+          "candidate",
+          "original",
+          "b2"
+        ],
+        "ms": {
+          "original": 94.39999997615814,
+          "b2": 47.299999952316284,
+          "candidate": 44.799999952316284
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 9,
+        "order": [
+          "candidate",
+          "b2",
+          "original"
+        ],
+        "ms": {
+          "original": 93.89999997615814,
+          "b2": 44.200000047683716,
+          "candidate": 44.89999997615814
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 10,
+        "order": [
+          "original",
+          "b2",
+          "candidate"
+        ],
+        "ms": {
+          "original": 93.70000004768372,
+          "b2": 43.699999928474426,
+          "candidate": 45
+        }
+      },
+      {
+        "phase": "first-batch",
+        "pair": 11,
+        "order": [
+          "original",
+          "candidate",
+          "b2"
+        ],
+        "ms": {
+          "original": 94.80000007152557,
+          "b2": 43.60000002384186,
+          "candidate": 45.59999990463257
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 0,
+        "order": [
+          "b2",
+          "original",
+          "candidate"
+        ],
+        "ms": {
+          "original": 105.20000004768372,
+          "b2": 46.300000071525574,
+          "candidate": 46.60000002384186
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 1,
+        "order": [
+          "b2",
+          "candidate",
+          "original"
+        ],
+        "ms": {
+          "original": 96.79999995231628,
+          "b2": 44,
+          "candidate": 43.800000071525574
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 2,
+        "order": [
+          "candidate",
+          "original",
+          "b2"
+        ],
+        "ms": {
+          "original": 93.5,
+          "b2": 63,
+          "candidate": 43.59999990463257
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 3,
+        "order": [
+          "candidate",
+          "b2",
+          "original"
+        ],
+        "ms": {
+          "original": 95.5,
+          "b2": 49.200000047683716,
+          "candidate": 60.300000071525574
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 4,
+        "order": [
+          "original",
+          "b2",
+          "candidate"
+        ],
+        "ms": {
+          "original": 99,
+          "b2": 56.89999997615814,
+          "candidate": 44.300000071525574
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 5,
+        "order": [
+          "original",
+          "candidate",
+          "b2"
+        ],
+        "ms": {
+          "original": 95,
+          "b2": 45.09999990463257,
+          "candidate": 43.39999997615814
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 6,
+        "order": [
+          "b2",
+          "original",
+          "candidate"
+        ],
+        "ms": {
+          "original": 99.5,
+          "b2": 45.299999952316284,
+          "candidate": 42.700000047683716
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 7,
+        "order": [
+          "b2",
+          "candidate",
+          "original"
+        ],
+        "ms": {
+          "original": 95.60000002384186,
+          "b2": 44.10000002384186,
+          "candidate": 43.200000047683716
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 8,
+        "order": [
+          "candidate",
+          "original",
+          "b2"
+        ],
+        "ms": {
+          "original": 95.69999992847443,
+          "b2": 44.09999990463257,
+          "candidate": 45.800000071525574
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 9,
+        "order": [
+          "candidate",
+          "b2",
+          "original"
+        ],
+        "ms": {
+          "original": 109.89999997615814,
+          "b2": 46.300000071525574,
+          "candidate": 46.299999952316284
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 10,
+        "order": [
+          "original",
+          "b2",
+          "candidate"
+        ],
+        "ms": {
+          "original": 101.80000007152557,
+          "b2": 68.30000007152557,
+          "candidate": 71.10000002384186
+        }
+      },
+      {
+        "phase": "warm-batch",
+        "pair": 11,
+        "order": [
+          "original",
+          "candidate",
+          "b2"
+        ],
+        "ms": {
+          "original": 131.89999997615814,
+          "b2": 46.200000047683716,
+          "candidate": 52.200000047683716
+        }
+      }
+    ],
+    "summary": [
+      {
+        "phase": "first-batch",
+        "original": 94.85000002384186,
+        "b2": 44.750000059604645,
+        "candidate": 44.94999998807907,
+        "candidateDelta": -49.80000001192093,
+        "candidateSlower": 0
+      },
+      {
+        "phase": "warm-batch",
+        "original": 97.89999997615814,
+        "b2": 46.250000059604645,
+        "candidate": 45.050000071525574,
+        "candidateDelta": -52.699999928474426,
+        "candidateSlower": 0
+      }
+    ]
+  },
+  "errors": [],
+  "limits": "Unmodified public release-index snapshot; not actual normalized loaded game catalog. Raw descriptions remain local and are not included in this result. First batch=new factory/one whole catalog pass, warm=two whole catalog primes then one pass. Two triples discarded, twelve balanced triples retained per phase; no constructor proxy/trace; browser caches and host activity uncontrolled."
+}

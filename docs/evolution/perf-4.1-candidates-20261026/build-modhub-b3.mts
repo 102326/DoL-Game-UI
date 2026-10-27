@@ -2,7 +2,7 @@
 import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import {buildSync} from 'esbuild';
-import {digest,browserBundle} from './build-alias-browser.mts';
+import {digest,browserBundle,proposedVendorSource} from './build-alias-browser.mts';
 export {digest};
 const root=new URL('../perf-4.1-evidence-20261026/',import.meta.url);
 export const vendor=readFileSync(new URL('vendor/modhub-market.js',root),'utf8');
@@ -44,8 +44,14 @@ export function withCombinedRules(input:string){
 }
 const from=vendor.indexOf('    function getRequiredDependencies('),to=vendor.indexOf('\n    function getCatalogRequiredDependencies(',from);
 assert.ok(from>0&&to>from);
-export function bundles(lazy=false,union=false){
- const input=`export function createCandidate(){let marketModList=[];${union?withCombinedRules(source):withTargetFilter(source,lazy)}\n${vendor.slice(from,to)}\nreturn{inferRequiredDependencies,getRequiredDependencies,setCatalog(v){marketModList=v},stats:()=>null,clear(){}}}`;
+export function hybridVendor(){
+ const b2=proposedVendorSource(),start=b2.indexOf('function inferRequiredDependencies('),end=b2.indexOf('    function getRequiredDependencies(',start);assert.ok(start>0&&end>start);
+ return b2.slice(0,start)+withCombinedRules(b2.slice(start,end))+b2.slice(end);
+}
+export function bundles(lazy=false,union=false,hybrid=false){
+ const full=hybrid?hybridVendor():'',setup=full.indexOf('var SwModHubDependencyRules'),required=full.indexOf('    function getRequiredDependencies(',setup);if(hybrid)assert.ok(setup>0&&required>setup);
+ const inference=hybrid?source.slice(0,source.indexOf('function inferRequiredDependencies'))+full.slice(setup,required):union?withCombinedRules(source):withTargetFilter(source,lazy);
+ const input=`export function createCandidate(){let marketModList=[];${inference}\n${vendor.slice(from,to)}\nreturn{inferRequiredDependencies,getRequiredDependencies,setCatalog(v){marketModList=v},${hybrid?'stats:swDependencyRuleCache.stats,clear:swDependencyRuleCache.clear':'stats:()=>null,clear(){}'}}}`;
  const code=buildSync({stdin:{contents:input,sourcefile:'modhub-b3-review.js'},bundle:true,platform:'browser',format:'iife',globalName:'TargetInference',target:'es2022',write:false}).outputFiles[0]!.text;
  assert.ok(!/node:|new Function\(|eval\(/.test(code));
  return{original:browserBundle(false),b2:browserBundle(true),b3:{code,sha256:digest(code)}};

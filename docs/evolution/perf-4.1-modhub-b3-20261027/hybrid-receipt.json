@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-27",
+  "candidateKind": "hybrid",
+  "baseCommit": "cd67fa497463de43885b4b38e5ea48b6d9141de8",
+  "sourceSha256": {
+    "docs/evolution/perf-4.1-candidates-20261026/build-modhub-b3.mts": "31d5ed84ad9a253b765eda4d18278745fd1f90a2f84802381f04693ee3a581bc",
+    "docs/evolution/perf-4.1-candidates-20261026/check-modhub-b3.mts": "3718d2c7d27e5141ef80573ab7d72e58782284db4f48be046f46b45623295938",
+    "docs/evolution/perf-4.1-candidates-20261026/check-modhub-public-b3.mts": "cb381539e9cde1ef02678497da8cc6db8adb21d5cec6f30b70aafc89082309b4",
+    "docs/evolution/perf-4.1-candidates-20261026/build-alias-browser.mts": "1587f21c34465ff9616125cde1cfc5b8d2b614eaf7b00ac30d94b6268ec59e01",
+    "docs/evolution/perf-4.1-candidates-20261026/alias-browser-cache.mts": "835653951e79edb4520c198c8ad920229bc4dd20c91e66c20efe9e66f301a42e"
+  },
+  "commands": [
+    {
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.research-tools.json",
+      "exit": 0
+    },
+    {
+      "command": "node docs/evolution/perf-4.1-candidates-20261026/check-modhub-b3.mts --hybrid",
+      "exit": 0
+    },
+    {
+      "command": "node docs/evolution/perf-4.1-candidates-20261026/check-modhub-public-b3.mts <explicit matching public JSON> --hybrid",
+      "exit": 0
+    }
+  ],
+  "limits": "Review-only patch, not installed; original 1024/256 budget; public raw JSON remains local; result b3 means hybrid, public candidateKind is explicit. Previous union and negative results remain immutable."
+}
