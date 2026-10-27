@@ -101,18 +101,6 @@ html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) {
     }
 }
 
-html[data-dol-midnight][data-dmt-layout][data-dmt-reading="standard"] #passages {
-    max-width: 68rem !important;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-html[data-dol-midnight][data-dmt-layout][data-dmt-reading="wide"] #passages {
-    max-width: 90rem !important;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 @media screen and (max-width: 899px) {
     html[data-dol-midnight][data-dmt-layout] #passages {
         padding-left: .75rem;

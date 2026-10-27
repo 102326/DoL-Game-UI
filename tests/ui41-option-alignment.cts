@@ -22,7 +22,7 @@ async function actualSettings(browser:playwright.Browser){
     const scrollTop=()=>page.locator('.dmt-controls-content').evaluate(n=>{n.scrollTop=0});await scrollTop();const left=await sample();
     await page.getByLabel('选项文字对齐',{exact:true}).selectOption('center');await scrollTop();const centered=await sample();
     for(const s of centered){assert.ok(Math.abs(s.row.cx-s.label.cx)<1&&Math.abs(s.row.cx-s.input.cx)<1,'actual label/control share the content axis');assert.ok(s.input.y>=s.label.bottom+8,'actual control is below the entire label block');assert.ok(s.row.h>=44&&!s.overflow);if(s.type!=='checkbox')assert.ok(s.input.h>=44)}
-    const checkbox=page.getByLabel('宽幅正文',{exact:true});await checkbox.check();await checkbox.focus();await page.keyboard.press('Space');assert.equal(await checkbox.isChecked(),false);
+    const checkbox=page.getByLabel('手机紧凑按钮间距',{exact:true});await checkbox.check();await checkbox.focus();await page.keyboard.press('Space');assert.equal(await checkbox.isChecked(),false);
     const range=page.getByLabel('按钮大小',{exact:true});await range.focus();await page.keyboard.press('ArrowRight');assert.equal(await range.inputValue(),'105');await page.keyboard.press('ArrowLeft');
     await page.getByLabel('选项文字对齐',{exact:true}).selectOption('left');await scrollTop();assert.deepEqual(await sample(),left,'actual default layout restores exactly');
     await page.getByLabel('选项文字对齐',{exact:true}).selectOption('center');await scrollTop();await page.screenshot({path:path.join(out,`${width}-${layout}-${font}-reading.png`)});

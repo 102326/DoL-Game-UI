@@ -37,14 +37,6 @@ html[data-dol-midnight] .passage {
     color: var(--000);
 }
 
-html[data-dol-midnight] .passage {
-    line-height: 1.65;
-}
-
-html[data-dol-midnight][data-dol-midnight-comfortable] .passage {
-    line-height: 1.8;
-}
-
 html[data-dol-midnight] #ui-bar {
     background: var(--850);
     border-right-color: var(--700);

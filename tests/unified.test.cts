@@ -9,7 +9,7 @@ declare const DoLGameUI:GameUiControls;
 declare const shopCalls:()=>boolean[];
 function version(){const value:unknown=JSON.parse(fs.readFileSync(path.join(__dirname,'../package.json'),'utf8'));if(!value||typeof value!=='object'||!('version' in value)||typeof value.version!=='string')throw Error('Invalid package version');return value.version}
 
-(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{
+(async()=>{const b=await chromium.launch(require('./browser-options.cjs'));try{
  const p=await b.newPage({viewport:{width:1704,height:1136}}),errors:string[]=[];p.on('pageerror',e=>errors.push(e.message));
  await p.emulateMedia({reducedMotion:'reduce'});
  const url=pathToFileURL(path.join(__dirname,'fixture.html')).href;
@@ -20,7 +20,7 @@ function version(){const value:unknown=JSON.parse(fs.readFileSync(path.join(__di
  await p.evaluate(()=>DoLGameUI.setPreference('wardrobePaged',false));await p.reload();await p.waitForSelector('#listContainer');await inject();
  assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().wardrobePaged),false,'saved opt-out survives upgrade and reload');
  await p.evaluate(()=>DoLGameUI.setPreference('wardrobePaged',true));
- assert.equal(await p.locator('.dcu-shell').count(),0);assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().enabled),false);assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().wideReading),true);assert.equal(await p.locator('#dol-midnight-compact-button').count(),0);
+ assert.equal(await p.locator('.dcu-shell').count(),0);assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().enabled),false);assert.equal(await p.evaluate(()=>DoLGameUI.getPreferences().wideReading),false);assert.equal(await p.locator('#dol-midnight-compact-button').count(),0);
  await p.evaluate(()=>DoLGameUI.openSettings());await p.getByLabel('启用 Soft & Wet 界面',{exact:true}).check();await p.locator('.dmt-page-switches>summary').click();await p.getByLabel('启用新版战斗界面',{exact:true}).check();await p.waitForSelector('.dcu-shell');assert.equal(await p.evaluate(()=>localStorage.getItem('DoLCombatUI.enabled.v1')),'true');
  await p.keyboard.press('Escape');assert.equal(await p.locator('dialog[open]').count(),0);
  await p.getByRole('button',{name:'原版界面 ↗',exact:true}).click();await p.evaluate(()=>DoLGameUI.openSettings());assert.equal(await p.getByLabel('启用新版战斗界面',{exact:true}).isChecked(),false);assert.equal(await p.getByLabel('启用 Soft & Wet 界面',{exact:true}).isChecked(),true);

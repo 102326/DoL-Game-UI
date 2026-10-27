@@ -63,7 +63,7 @@ html[data-stone-free] #dol-midnight-controls .dmt-preview-status{margin:0;min-he
 @media(prefers-reduced-motion:reduce){html[data-stone-free] #dol-midnight-controls :is(.dmt-preview-reference,.dmt-workspace-nav button){transition:none}}
 
 html[data-stone-free] #dol-midnight-controls .dmt-reading-sample{display:grid;align-content:center;justify-items:start;gap:14px;min-width:0;padding:24px 20px;border:1px solid #ffffff10;border-radius:16px}
-html[data-stone-free] #dol-midnight-controls .dmt-reading-sample p{font-size:calc(15px * var(--dgu-font-scale,1));line-height:1.7;margin:0;color:var(--sf-ink,#eef0f4)}
+html[data-stone-free] #dol-midnight-controls .dmt-reading-sample .dmt-reading-demo p{font-size:calc(15px * var(--dgu-font-scale,1));line-height:inherit;margin:0 0 calc(.65em + var(--reading-demo-gap,0px));color:var(--sf-ink,#eef0f4)}
 html[data-stone-free] #dol-midnight-controls .dmt-reading-sample>span{font-size:11px;color:var(--sf-muted,#aaa9ad)}
 html[data-stone-free]:not([data-dgu-visualMotion]) #dol-midnight-controls .dmt-preview-reference{transition:none}
 
@@ -93,3 +93,11 @@ html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{transform-st
 
 html[data-stone-free] .dgu-orbit-nav{position:relative}
 html[data-stone-free] .hidden .dgu-orbit-nav :is(.dmt-orbit-flow,.dmt-orbit-tail){animation-play-state:paused}
+
+html[data-stone-free] #dol-midnight-controls .dmt-reading-demo{min-width:0;justify-self:center;overflow-wrap:anywhere;box-sizing:border-box}
+html[data-stone-free] #dol-midnight-controls .dmt-reading-demo-options{display:grid;gap:calc(6px + var(--reading-demo-gap,0px))}
+html[data-stone-free] #dol-midnight-controls .dmt-reading-demo-note{font-size:11px;line-height:1.5;color:var(--sf-muted,#aaa9ad)}
+
+/* Help text may wrap; keep range tracks on a shared axis in the left layout. */
+html:not([data-dgu-options-centered]) #dol-midnight-controls .dgu-setting-row:has(>input[type=range])>span{flex:1;max-width:none;min-width:0}
+html:not([data-dgu-options-centered]) #dol-midnight-controls .dgu-setting-row>input[type=range]{flex:0 0 46%}

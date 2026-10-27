@@ -15,7 +15,7 @@ declare const theme:Theme,restart:()=>void;
    const page=await browser.newPage({viewport:{width:390,height:844}});await page.emulateMedia({reducedMotion:'reduce'});
    await page.goto(`http://127.0.0.1:${address.port}/__ui41_settings__?${mode}`);await page.waitForFunction(()=>typeof theme!=='undefined');
    const before=await page.evaluate(()=>({prefs:theme.getPreferences(),stored:JSON.parse(localStorage.getItem('DoLMidnightTheme.preferences.v1')||'{}'),compact:document.documentElement.hasAttribute('data-dmt-compact-stats'),reading:document.documentElement.dataset.dmtReading,controls:document.documentElement.hasAttribute('data-dgu-compact-controls')}));
-   assert.equal(before.prefs.compactStats,false);assert.equal(before.stored.compactStats,false);assert.equal(before.compact,false);assert.equal(before.reading,'wide');assert.equal(before.controls,true);
+   assert.equal(before.prefs.compactStats,false);assert.equal(before.stored.compactStats,false);assert.equal(before.compact,false);assert.equal(before.reading,'native');assert.equal(before.controls,true);
    for(const key of ['wardrobeHiddenList','shopDeferredPaint','shopPageExperiment'] as const)assert.equal(before.prefs[key],false);
    await page.evaluate(()=>{theme.setPreference('compactStats',true);theme.setPreference('visualMotion',false);theme.openSettings()});
    assert.equal(await page.evaluate(()=>theme.getPreferences().compactStats),false);assert.equal(await page.evaluate(()=>document.documentElement.hasAttribute('data-dmt-compact-stats')),false);

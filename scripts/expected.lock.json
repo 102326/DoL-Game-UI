@@ -1541,7 +1541,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4f79265d3b397556978861b4cb0dc497c19aab59c76c6c9d5ce10dbe1faa9288",
+      "sourceSha256": "da5af806da26d47dc852ae26cced1f665871dfa8a3d3464a9a0c7ab5e06aaa52",
       "assertionSites": 45
     },
     {
@@ -1680,7 +1680,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "bd8b5607a3da9eb57b7e24fa3d7cd96baf11cf0d564108afba281b540697967c",
+      "sourceSha256": "db9f36a8f8c2fb89c0ccdd53e112276bbcda5e8a6d184e095fc946c4937ff656",
       "assertionSites": 39
     },
     {
@@ -2148,6 +2148,18 @@
           "minimumAssertions": 1
         },
         {
+          "id": "reading:native-default",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "reading:native-adjustment-and-release",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "reading:reading-preferences-and-ui",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings:S01 approved shell and page timing, real input and single material surface",
           "minimumAssertions": 1
         },
@@ -2204,8 +2216,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c9d92b678ae3268c8eb348b0ca1d2405d27d2be4ff8310a35756efb4ddd13c35",
-      "assertionSites": 178,
+      "sourceSha256": "edbf8e23884ba213773f521d2a20ad8b946878f5f71d50ea924592b2ed9a987b",
+      "assertionSites": 253,
       "rendererContexts": [
         "weather:2d"
       ]
@@ -2811,7 +2823,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b6f0393494de442b4806a7726664c435502b14830c8471e25be3e9d9423f8f12",
+      "sourceSha256": "06b1310a3a38df6092b0c7bbd4a2884abc4c7b6001217623e6252e207fbfd241",
       "assertionSites": 54,
       "rendererContexts": [
         "weather:2d"

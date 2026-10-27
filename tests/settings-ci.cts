@@ -1,4 +1,4 @@
-// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"composed","includes":[{"prefix":"settings","source":"tests/evolution-settings-integration.cjs"},{"prefix":"weather","source":"tests/evolution-weather-integration.cjs"}],"rendererContexts":["weather:2d"]}
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"composed","includes":[{"prefix":"reading","source":"tests/ui41-reading.cjs"},{"prefix":"settings","source":"tests/evolution-settings-integration.cjs"},{"prefix":"weather","source":"tests/evolution-weather-integration.cjs"}],"rendererContexts":["weather:2d"]}
 // Actual settings controller/components in a first-party fixture, without game sources.
 import playwright = require('playwright');
 import assert = require('node:assert/strict');
@@ -11,9 +11,10 @@ import type {Browser,Page} from 'playwright';
 import type {ViteDevServer} from 'vite';
 const {chromium}=playwright,{waitSettings,waitSettingsClosed,settingsSnapshot}=oracles,{captureFailure}=evidence,{withCaseScope}=cases;
 const settingsIntegration:{verifySettingsIntegration(browser:Browser):Promise<unknown>}=require('./evolution-settings-integration.cjs');
+const readingIntegration:typeof import('./ui41-reading.cjs')=require('./ui41-reading.cjs');
 const weatherIntegration:{verifyWeatherIntegration(browser:Browser,options?:{lateHost?:boolean}):Promise<unknown>}=require('./evolution-weather-integration.cjs');
 type ResourceStats={frames:number;workspaces:number};
-type Theme={openSettings():void;setPreference(key:'fontScale',value:number):void;getPreferences():{comfortable:boolean;fontScale:number};destroy():void};
+type Theme={openSettings():void;setPreference(key:'fontScale',value:number):void;getPreferences():{mobileCompactControls:boolean;fontScale:number};destroy():void};
 declare const theme:Theme,settingsResources:{stats():ResourceStats;deliver():void},leaked:string[];
 declare let calls:number;
 function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing settings fixture value');return value}
@@ -63,9 +64,9 @@ function portOf(server:ViteDevServer){const address=server.httpServer?.address()
    assert.ok(await workspace.evaluate(n=>n.scrollTop>0),'long settings body scrolls');
    assert.equal(await page.evaluate(()=>scrollY),y,'background must not scroll');
    await workspace.evaluate(n=>n.scrollTop=0);
-   const before:boolean=await page.evaluate(()=>theme.getPreferences().comfortable);
-   await page.getByLabel('舒适阅读间距',{exact:true}).click();
-   assert.equal(await page.evaluate(()=>theme.getPreferences().comfortable),!before);
+   const before:boolean=await page.evaluate(()=>theme.getPreferences().mobileCompactControls);
+   await page.getByLabel('手机紧凑按钮间距',{exact:true}).click();
+   assert.equal(await page.evaluate(()=>theme.getPreferences().mobileCompactControls),!before);
    const slider=page.getByLabel('字体大小',{exact:true});
    await slider.focus();await page.keyboard.press('ArrowRight');
    assert.equal(await page.evaluate(()=>theme.getPreferences().fontScale),105);
@@ -77,7 +78,7 @@ function portOf(server:ViteDevServer){const address=server.httpServer?.address()
   await waitSettings(page);
   assert.equal(await page.locator('.dmt-workspace-section[inert]').count(),0);
    assert.equal(await page.locator('.dmt-workspace-section').getAttribute('aria-labelledby'),'dmt-reading-heading');
-   assert.equal(await page.getByLabel('舒适阅读间距',{exact:true}).isEnabled(),true);
+   assert.equal(await page.getByLabel('手机紧凑按钮间距',{exact:true}).isEnabled(),true);
   assert.deepEqual(await page.evaluate(()=>leaked),[],'settings events cannot leak to delegated game handlers');
   // DoL's global zoom changes body CSS zoom, independently of our font preference.
   await page.evaluate(()=>theme.setPreference('fontScale',80));
@@ -95,9 +96,9 @@ function portOf(server:ViteDevServer){const address=server.httpServer?.address()
     await workspace.evaluate(n=>n.scrollTop=n.scrollHeight);
     assert.ok(await workspace.evaluate(n=>n.scrollTop>0),'zoomed long content remains scrollable');
     await workspace.evaluate(n=>n.scrollTop=0);
-    const before:boolean=await page.evaluate(()=>theme.getPreferences().comfortable);
-    await page.getByLabel('舒适阅读间距',{exact:true}).click();
-    assert.equal(await page.evaluate(()=>theme.getPreferences().comfortable),!before,'zoomed original setting remains operable');
+    const before:boolean=await page.evaluate(()=>theme.getPreferences().mobileCompactControls);
+    await page.getByLabel('手机紧凑按钮间距',{exact:true}).click();
+    assert.equal(await page.evaluate(()=>theme.getPreferences().mobileCompactControls),!before,'zoomed original setting remains operable');
     assert.equal(await page.evaluate(()=>calls),0);
    }
   }
@@ -106,13 +107,15 @@ function portOf(server:ViteDevServer){const address=server.httpServer?.address()
   await page.locator('.dmt-close').click();await waitSettingsClosed(page);
    assert.equal(await dialog.evaluate(n=>n instanceof HTMLDialogElement&&n.open),false);
   await page.locator('#background').click();assert.equal(await page.evaluate(()=>calls),1);
+  const persistedCompact=await page.evaluate(()=>theme.getPreferences().mobileCompactControls);
   await page.evaluate(()=>theme.destroy());
   assert.equal(await page.locator('.dmt-settings-context,.dmt-settings-material,#dol-midnight-controls').count(),0);
    await page.evaluate(async()=>{const {startTheme}=await import('/src/theme/controller.ts');startTheme();Reflect.set(window,'theme',Reflect.get(window,'DoLMidnightTheme'));theme.openSettings()});
   await page.waitForTimeout(700);
   assert.equal(await page.locator('.dmt-workspace').getAttribute('data-settings-layout'),'horizontal');
-  assert.equal(await page.evaluate(()=>theme.getPreferences().comfortable),true,'persisted preference is read on remount');
+  assert.equal(await page.evaluate(()=>theme.getPreferences().mobileCompactControls),persistedCompact,'persisted preference is read on remount');
    const teardown: {mounted:ResourceStats;queued:ResourceStats;disposed:ResourceStats;late:ResourceStats;integration?:unknown;weather?:unknown}=await page.evaluate(()=>{const mounted=settingsResources.stats();settingsResources.deliver();const queued=settingsResources.stats();theme.destroy();const disposed=settingsResources.stats();settingsResources.deliver();return{mounted,queued,disposed,late:settingsResources.stats()}});
+   await withCaseScope('reading',()=>readingIntegration.verifyReading(must(browser)));
    teardown.integration=await withCaseScope('settings',()=>settingsIntegration.verifySettingsIntegration(must(browser)));
    teardown.weather=await withCaseScope('weather',()=>weatherIntegration.verifyWeatherIntegration(must(browser)));
    await assert.rejects(weatherIntegration.verifyWeatherIntegration(must(browser),{lateHost:true}),error=>error instanceof Error&&/rain must not alter actual reading sample pixels/.test(error.message));

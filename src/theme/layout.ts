@@ -42,7 +42,7 @@ export function startLayout(root: LayoutRuntime=window as LayoutRuntime){
     html.toggleAttribute('data-dmt-layout',active);
     html.removeAttribute('data-dmt-compact-stats');
     html.removeAttribute('data-dmt-stats-collapsed');
-    if(active)html.dataset.dmtReading=preferences.wideReading?'wide':'standard';else delete html.dataset.dmtReading;
+    if(active)html.dataset.dmtReading='native';else delete html.dataset.dmtReading;
     if(!document.body)return;
     document.getElementById('dmt-status-toggle')?.remove();
     if(!shade){
