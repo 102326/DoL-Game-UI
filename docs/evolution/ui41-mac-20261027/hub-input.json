@@ -1,0 +1,205 @@
+{
+  "baseline": false,
+  "revision": "working tree",
+  "checks": [
+    "H3 visible moving tool accepts a real pointer once without moving beneath the press",
+    "H3 keyboard activation and cancel during opening retain native focus and single activation",
+    "H3 releasing a pointer outside cancels activation and resumes instead of pinning pointer focus",
+    "H1 H2 opening and closing reverse continuously, keep native terminal layout and settle resources",
+    "H3 H4 drag during opening closes safely, then dock and restore work during the next opening",
+    "H4 narrow touch and zoom preserve targets; active reduced/disabled motion settles immediately",
+    "H4 hidden view pauses both layers and resumes the latest intent",
+    "H4 scene exit, owner teardown and re-mount cannot replay activation or retain callbacks"
+  ],
+  "errors": [],
+  "pointer": {
+    "before": {
+      "x": 1150.1311645507812,
+      "y": 438.25791931152344,
+      "pointer": "auto",
+      "tab": 0,
+      "hit": true
+    },
+    "press": {
+      "q": 0.821494,
+      "target": 1,
+      "moving": true,
+      "paused": true,
+      "pressed": true,
+      "geometryValid": true,
+      "nodes": 5,
+      "phase": "moving",
+      "dead": false,
+      "renders": 8,
+      "framePending": true,
+      "sphere": {
+        "phase": "charge",
+        "speed": 15.888342,
+        "charge": 0.4468,
+        "energy": 0,
+        "spread": 0,
+        "pressure": 0.297866,
+        "angle": 0.4954619278184922,
+        "orbit": 0.11942852772914368,
+        "draws": 9,
+        "meteors": 0,
+        "running": true,
+        "dead": false,
+        "paused": false,
+        "reduced": false,
+        "motionChanges": 0,
+        "width": 175,
+        "height": 174.99996948242188
+      }
+    },
+    "held": {
+      "q": 0.821494,
+      "target": 1,
+      "moving": true,
+      "paused": true,
+      "pressed": true,
+      "geometryValid": true,
+      "nodes": 5,
+      "phase": "moving",
+      "dead": false,
+      "renders": 9,
+      "framePending": false,
+      "sphere": {
+        "phase": "charge",
+        "speed": 16.378698,
+        "charge": 0.459613,
+        "energy": 0,
+        "spread": 0,
+        "pressure": 0.311652,
+        "angle": 2.1000518901293104,
+        "orbit": 0.5017688213482088,
+        "draws": 15,
+        "meteors": 0,
+        "running": true,
+        "dead": false,
+        "paused": false,
+        "reduced": false,
+        "motionChanges": 0,
+        "width": 175,
+        "height": 174.99996948242188
+      }
+    },
+    "after": {
+      "q": 0,
+      "target": 0,
+      "moving": false,
+      "paused": false,
+      "pressed": false,
+      "geometryValid": true,
+      "nodes": 5,
+      "phase": "closed",
+      "dead": false,
+      "renders": 24,
+      "framePending": false,
+      "sphere": {
+        "phase": "return",
+        "speed": 10.427787,
+        "charge": 0.217411,
+        "energy": 0.13994,
+        "spread": 0,
+        "pressure": 0.207488,
+        "angle": 5.571129649327384,
+        "orbit": 1.3664120403069768,
+        "draws": 31,
+        "meteors": 0,
+        "running": true,
+        "dead": false,
+        "paused": false,
+        "reduced": false,
+        "motionChanges": 0,
+        "width": 175,
+        "height": 174.99996948242188
+      }
+    },
+    "native": 1,
+    "calls": [
+      "interface-settings"
+    ],
+    "sameNode": true
+  },
+  "keyboard": {
+    "before": {
+      "q": 0.717312,
+      "target": 1,
+      "moving": true,
+      "paused": true,
+      "pressed": false,
+      "geometryValid": true,
+      "nodes": 5,
+      "phase": "moving",
+      "dead": false,
+      "renders": 32,
+      "framePending": true,
+      "sphere": {
+        "phase": "charge",
+        "speed": 15.866983,
+        "charge": 0.446062,
+        "energy": 0.000241,
+        "spread": 0,
+        "pressure": 0.297482,
+        "angle": 1.8859348345508478,
+        "orbit": 2.1567704241466252,
+        "draws": 48,
+        "meteors": 0,
+        "running": true,
+        "dead": false,
+        "paused": false,
+        "reduced": false,
+        "motionChanges": 0,
+        "width": 175,
+        "height": 174.99996948242188
+      }
+    },
+    "held": {
+      "q": 0.717312,
+      "target": 1,
+      "moving": true,
+      "paused": true,
+      "pressed": false,
+      "geometryValid": true,
+      "nodes": 5,
+      "phase": "moving",
+      "dead": false,
+      "renders": 33,
+      "framePending": false,
+      "sphere": {
+        "phase": "charge",
+        "speed": 16.364674,
+        "charge": 0.459257,
+        "energy": 0,
+        "spread": 0,
+        "pressure": 0.311221,
+        "angle": 3.502763868385144,
+        "orbit": 2.5420713598722298,
+        "draws": 54,
+        "meteors": 1,
+        "running": true,
+        "dead": false,
+        "paused": false,
+        "reduced": false,
+        "motionChanges": 0,
+        "width": 175,
+        "height": 174.99996948242188
+      }
+    }
+  },
+  "reversal": {
+    "before": {
+      "q": 0.254626,
+      "sphere": {
+        "angle": 1.938524293182744
+      }
+    },
+    "after": {
+      "q": 0.254626,
+      "sphere": {
+        "angle": 1.938524293182744
+      }
+    }
+  }
+}

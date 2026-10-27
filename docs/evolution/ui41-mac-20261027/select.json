@@ -1,0 +1,200 @@
+{
+  "status": "PASS",
+  "chromium": "153.0.8010.12",
+  "builtCssSha256": "2c1a7c826a6e747dd8dc1e1a32862d3d97322119a269683cb3b3f1ca7b176d97",
+  "rows": [
+    {
+      "width": 320,
+      "id": "settings",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 202,
+        "right": 314,
+        "width": 296,
+        "height": 56
+      }
+    },
+    {
+      "width": 320,
+      "id": "navigation",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 22,
+        "y": 551,
+        "right": 314,
+        "width": 292,
+        "height": 66.375
+      }
+    },
+    {
+      "width": 320,
+      "id": "shop",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 599,
+        "right": 314,
+        "width": 296,
+        "height": 64
+      }
+    },
+    {
+      "width": 320,
+      "id": "category",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 348,
+        "right": 314,
+        "width": 296,
+        "height": 59
+      }
+    },
+    {
+      "width": 320,
+      "id": "tools",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 392,
+        "right": 314,
+        "width": 296,
+        "height": 59
+      }
+    },
+    {
+      "width": 320,
+      "id": "selection",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 26,
+        "y": 460,
+        "right": 314,
+        "width": 288,
+        "height": 59
+      }
+    },
+    {
+      "width": 320,
+      "id": "modhub",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 19,
+        "y": 526,
+        "right": 314,
+        "width": 295,
+        "height": 64
+      }
+    },
+    {
+      "width": 320,
+      "id": "help",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 87.546875,
+        "y": 508,
+        "right": 314,
+        "width": 226.453125,
+        "height": 82
+      }
+    },
+    {
+      "width": 1100,
+      "id": "settings",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 261,
+        "right": 442.421875,
+        "width": 424.421875,
+        "height": 44
+      }
+    },
+    {
+      "width": 1100,
+      "id": "navigation",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 373,
+        "right": 532.5,
+        "width": 514.5,
+        "height": 64
+      }
+    },
+    {
+      "width": 1100,
+      "id": "shop",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 417,
+        "right": 460.453125,
+        "width": 442.453125,
+        "height": 64
+      }
+    },
+    {
+      "width": 1100,
+      "id": "category",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 413,
+        "right": 456.234375,
+        "width": 438.234375,
+        "height": 44
+      }
+    },
+    {
+      "width": 1100,
+      "id": "tools",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 18,
+        "y": 457,
+        "right": 456.234375,
+        "width": 438.234375,
+        "height": 44
+      }
+    },
+    {
+      "width": 1100,
+      "id": "selection",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 26,
+        "y": 525,
+        "right": 464.234375,
+        "width": 438.234375,
+        "height": 44
+      }
+    },
+    {
+      "width": 1100,
+      "id": "modhub",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 19,
+        "y": 344,
+        "right": 533.5,
+        "width": 514.5,
+        "height": 64
+      }
+    },
+    {
+      "width": 1100,
+      "id": "help",
+      "picker": "rgba(36, 38, 42, 0.98)",
+      "geometry": {
+        "x": 87.546875,
+        "y": 344,
+        "right": 602.046875,
+        "width": 514.5,
+        "height": 64
+      }
+    }
+  ],
+  "scope": "Eight owned/fully matched adapter structures; 320/1100 CSS px; native changes, navigation reset, focus, keyboard, disabled and excluded controls; fallback CSS branch only. Not actual game/Android/Windows picker or visual acceptance."
+}

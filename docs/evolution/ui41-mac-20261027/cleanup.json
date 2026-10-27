@@ -1,0 +1,217 @@
+{
+  "baseline": false,
+  "rows": [
+    {
+      "name": "normal",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "motion",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "hub",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "shelf",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "ui",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "owner",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "multiple",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "reentrant-close",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "ready-during",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [
+        [
+          "Another official UI is already active"
+        ]
+      ],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    },
+    {
+      "name": "previous",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": "prior"
+    },
+    {
+      "name": "foreign-attribute",
+      "trace": [
+        "motion",
+        "hub",
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": "foreign"
+    },
+    {
+      "name": "initialization-and-cleanup",
+      "trace": [
+        "shelf",
+        "ui",
+        "owner"
+      ],
+      "caught": [
+        [
+          "controlled init failure",
+          "controlled ui failure"
+        ]
+      ],
+      "global": false,
+      "nodes": 0,
+      "participants": [
+        "CleanupPeer"
+      ],
+      "attribute": null
+    }
+  ],
+  "scope": "Real official entry; injected faults follow real cleanup. Post-cleanup fault injection; connect catch is instrumented to observe root errors, while production retains its fixed warning. No game/device or failed-stage internal leak guarantee."
+}

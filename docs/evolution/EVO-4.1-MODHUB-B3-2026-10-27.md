@@ -1,5 +1,20 @@
 # 4.1 第2项：ModHub B3 接续
 
+## Mac收口：hybrid组合候选（2026-10-27）
+
+实现与证据 `f1beec5`。保留**原1024项／256字符预算内B2**，原有预算外回退改为无状态union；没有缓存目录、Mod、推断结果，没有新增阈值。仍只是原闭包内的隔离评审补丁，**未装入ModHub、兼容包或发行件**。下面三轮及公开目录结果是历史样本，不能混算。
+
+- 196组等价、26个golden、6步变更及原/B2/hybrid各6类完整闭包迟到结果对照通过；缓存命中、超预算不建缓存、原地变更、淘汰、长别名绕过与清空均通过。最终size1024、91次淘汰、1次长别名绕过；这些计数不是性能指标。
+- 同轮稀疏400项热10次中位：原114.25／B2 115.90／hybrid76.80ms；hybrid相对原配对差值中位−36.70ms，0/12更慢。25项密集热10次为5.20／4.50／4.45ms。100项冷调用hybrid有3/12慢于原，保留负样本。小目录没有证据证明hybrid显著优于B2。
+- 相同公开145项原始快照，输出逐项相同、合计11条依赖。首次整批原/B2/hybrid94.85／44.75／44.95ms；热整批97.90／46.25／45.05ms。没有把公开原始目录当真实归一化catalog或游戏开窗时间。
+- 独立审查指出旧结果键`union`及固定patch名会误读；当前统一`candidate`系列＋`candidateKind:hybrid`、按variant命名patch，重新采样。合成结果的通用`b3`系列由顶层`candidateKind`明确绑定为hybrid。首次命名修订前结果只留本机，不作为交付数据。
+
+实际命令：`node .../check-modhub-b3.mts --hybrid`、`node .../check-modhub-public-b3.mts <相同摘要公开JSON> --hybrid`与研究tsc均退出0。见[组合结果](perf-4.1-modhub-b3-20261027/hybrid.json)、[公开复算](perf-4.1-modhub-b3-20261027/hybrid-public-catalog.json)、[评审patch](perf-4.1-modhub-b3-20261027/modhub-1.8.3-hybrid-review.patch)、[源码与命令](perf-4.1-modhub-b3-20261027/hybrid-receipt.json)。既有MIT许可说明同目录保留。浏览器缓存、CPU频率与宿主活动未控制，不宣称真机或端到端收益。
+
+本机可做的算法/闭包/容量候选已收口；正式接入需回家核对实际归一化catalog、完整目标版本/列表与更新统计消费者、安装更新业务及真实Mod组合。组合并非无条件获准采用。
+
+## 前置实验快照
+
 2026-10-27，Issue #31。接续[既有B浏览器研究](EVO-4.1-MAC-BROWSER-A2-2026-10-26.md)，不是新路线图。当前分支 `feature/4.1-ui-material-hub`；工具提交 `0d93250`、公开目录复算 `c6318c0`。
 
 已发布[Issue #31本批简报](https://github.com/102326/DoL-Game-UI/issues/31#issuecomment-6434195404)。受控证据12个文件、190,075字节，不含公开目录的原始描述或玩家数据。
