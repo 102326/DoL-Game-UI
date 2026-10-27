@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Owner acceptance (2026-10-27): centered settings layout `699a7a2` is visually accepted; preserve default left alignment and acrylic60. Add the expanded native-select popup (reported white background/pale text) to the shared-control follow-up. Audit owned UI and reviewed compatibility surfaces, not settings alone; preserve native/third-party business and keyboard/touch fallbacks. Continue #31 item2 ModHub performance; this follow-up is not a release or indiscriminate global restyling authorization.
+
 - Owner acceptance (2026-10-27): `ee36aaf` acrylic range is visually accepted; preserve default60%, neutral-gray dense endpoint and 4.0.1 clear endpoint. Continue Issue #31 in its approved order. This accepts the isolated material range, not all-window rollout, performance acceptance, main merge or release.
 
 - 4.1 owner direction (2026-10-27): Issue #31 order is 7→6→5→3→2→1→4→8→9; the first three may progress in parallel. Original V1/Q1 is the selected material reference, not the retired V2/light revision. This batch on `feature/4.1-ui-material-hub` provides a review-gated material slider, settings retirement, dual-ring Hub with sphere-centered geometry and reversible owned-option text alignment. Material rollout needs the owner's preview decision; preserve game/Host contracts, safe experimental defaults and prior performance evidence. No main merge, version/release/rules changes. Read current HANDOFF/report before resuming; local work is not assumed pushed.

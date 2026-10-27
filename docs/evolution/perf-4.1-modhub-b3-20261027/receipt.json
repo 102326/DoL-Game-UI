@@ -1,0 +1,65 @@
+{
+  "sourceCommit": "c6318c0555a0f2f56a26804cec59fa0beed9a2f2",
+  "scope": "Issue31 item2 isolated ModHub1.8.3 review; no product/vendor/compat runtime changes",
+  "sourceSha256": {
+    "docs/evolution/perf-4.1-candidates-20261026/build-modhub-b3.mts": "048ebcc832120002b9854d370cb3b77398803b3969179d31a32eac561388a408",
+    "docs/evolution/perf-4.1-candidates-20261026/check-modhub-b3.mts": "2029e1d80a7772e3fde9045aba63fd8c25cc4934c310d7437e3168b8f88b4738",
+    "docs/evolution/perf-4.1-candidates-20261026/check-modhub-public-b3.mts": "b3cc9916097e559f0159484953af372d642e71224ad8a88390ed5f9b7e0ee4fb",
+    "docs/evolution/perf-4.1-candidates-20261026/build-alias-browser.mts": "1587f21c34465ff9616125cde1cfc5b8d2b614eaf7b00ac30d94b6268ec59e01",
+    "docs/evolution/perf-4.1-candidates-20261026/alias-browser-cache.mts": "835653951e79edb4520c198c8ad920229bc4dd20c91e66c20efe9e66f301a42e",
+    "docs/evolution/perf-4.1-evidence-20261026/vendor/modhub-market.js": "cb46981ebf5998beb0605813cfe9208e3a27f705cd13892f66ccc390a12ad85c",
+    "docs/evolution/perf-4.1-evidence-20261026/inference-cases.json": "e74fdd4ff743d5e28f8bbccc2fa557fc41c55ce1cf2608300dd0972f9c14a89d",
+    "docs/evolution/perf-4.1-evidence-20261026/inference-sequence.json": "eddfc42a4b7706fa2124c1d095835c97baece0f8a96f55364325aaefe4a87788"
+  },
+  "completedChecks": [
+    {
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.research-tools.json",
+      "exit": 0
+    },
+    {
+      "command": "node docs/evolution/perf-4.1-candidates-20261026/check-modhub-b3.mts",
+      "exit": 0,
+      "stage": "target-only archived source"
+    },
+    {
+      "command": "node docs/evolution/perf-4.1-candidates-20261026/check-modhub-b3.mts --lazy",
+      "exit": 0,
+      "stage": "lazy archived source"
+    },
+    {
+      "command": "node docs/evolution/perf-4.1-candidates-20261026/check-modhub-b3.mts --union",
+      "exit": 0
+    },
+    {
+      "command": "node docs/evolution/perf-4.1-candidates-20261026/check-modhub-public-b3.mts <explicit captured public JSON>",
+      "exit": 0
+    },
+    {
+      "command": "all three current generated bundle and full-script SHA comparisons against measured stages",
+      "exit": 0
+    }
+  ],
+  "publicSources": [
+    {
+      "url": "https://dol.alseece.top/mod-identities.json",
+      "sha256": "56f6e063b4eaa94fa5ea6d5a33fe7d6e3c59a870b68ef0ff57bb0d14d4be2a86",
+      "mods": 125,
+      "descriptionFields": 0
+    },
+    {
+      "url": "https://dol.alseece.top/release-index.json",
+      "sha256": "c6f48d557f1029e6eb211854250d689bf87d13ef3323d84a3cea487c76aa5ceb",
+      "bytes": 408448,
+      "mods": 145,
+      "descriptionFields": 145,
+      "generatedAt": "2026-10-27T04:50:44.276Z"
+    }
+  ],
+  "publicRaw": "Raw public JSON remains local/ignored; not included in Git evidence. Another device needs identical SHA input to replay these exact observations, or must collect a new dated dataset.",
+  "candidateDecision": "Keep B2 and stateless union as review inputs. Public145 snapshot favors B2; union improves tested overflow/dense cases. No blanket replacement or cache budget increase.",
+  "limits": [
+    "No actual normalized game catalog, complete installed ModHub/dependent modules, install/uninstall or physical device acceptance",
+    "Full-market tests use controlled external variants/version/history providers; existing stale-write behavior is preserved, not a new product fix",
+    "No remote CI/push/main merge/version/release/rules changes"
+  ]
+}
