@@ -37,14 +37,8 @@ html[data-dol-midnight][data-dmt-layout] #overlayButtons > .managerButton {
     grid-column: 1 / -1;
 }
 
-html[data-dol-midnight][data-dmt-layout] #stats + #storyCaptionContent,
-html[data-dol-midnight][data-dmt-layout][data-dmt-compact-stats] #statmeters {
+html[data-dol-midnight][data-dmt-layout] #stats + #storyCaptionContent {
     padding-top: .35rem;
-}
-
-html[data-dol-midnight][data-dmt-layout][data-dmt-compact-stats] #statmeters > * {
-    margin-top: .25rem;
-    margin-bottom: .25rem;
 }
 
 html[data-dol-midnight][data-dmt-layout] #storyCaptionContent > [data-dmt-heading] {

@@ -28,7 +28,7 @@ const grid = computed(() => menu.value.grid);
 function petalOffset(index:number){
  if(!props.officialPreferences||grid.value)return{x:menu.value.petalX,y:index*66};
  const curve=Math.cos((index/Math.max(1,views.value.length-1)-.5)*Math.PI);
- return{x:menu.value.petalX===0?28+64*curve:92-64*curve,y:8+index*76};
+ return{x:menu.value.petalX===0?28+64*curve:92-64*curve,y:index*76};
 }
 function clearHint(){stopHint?.();stopHint=undefined;message.value=''}
 function hint(text:string){clearHint();message.value=text;stopHint=scope.timeout(clearHint,2200)}
@@ -152,7 +152,7 @@ onBeforeUnmount(scope.dispose);
  <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" @keydown="key">
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
-  :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
+  :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--utility-x': `${menu.petalX===0?0:menu.width-64}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
    <button v-for="(view, index) in views" :key="`${view.owner}:${view.id}`" type="button" class="sf-motion-petal" :data-motion-view="`${view.owner}:${view.id}`"
     :style="{'--i': index, '--x': `${petalOffset(index).x}px`, '--y': `${petalOffset(index).y}px`}" @click="choose(view)">
     <svg v-if="officialPreferences" class="sf-motion-tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">

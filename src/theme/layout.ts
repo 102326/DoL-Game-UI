@@ -1,7 +1,7 @@
 import {visualScope} from '../ui/visual-scope';
 import {createSidebarLayout} from './sidebar-layout';
 import type {Preferences} from './preferences';
-type LayoutPreferences = Partial<Pick<Preferences, 'enabled' | 'layout' | 'compactStats' | 'wideReading'>>;
+type LayoutPreferences = Partial<Pick<Preferences, 'enabled' | 'layout' | 'wideReading'>>;
 type LayoutRuntime = Window & {
  DMTLayout?: {sync(preferences: LayoutPreferences): void; destroy(): void};
  UIBar?: {stow?: () => unknown};
@@ -39,7 +39,7 @@ export function startLayout(root: LayoutRuntime=window as LayoutRuntime){
     active=!!(preferences.enabled&&preferences.layout);
     const html=document.documentElement;
     html.toggleAttribute('data-dmt-layout',active);
-    html.toggleAttribute('data-dmt-compact-stats',active&&preferences.compactStats);
+    html.removeAttribute('data-dmt-compact-stats');
     html.removeAttribute('data-dmt-stats-collapsed');
     if(active)html.dataset.dmtReading=preferences.wideReading?'wide':'standard';else delete html.dataset.dmtReading;
     if(!document.body)return;

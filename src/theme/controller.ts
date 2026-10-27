@@ -8,6 +8,7 @@ import {createApp,reactive,type App} from 'vue';
 import SettingsPanel from './SettingsPanel.vue';
 import {defaults,type Preferences,type PreferenceKey,type SettingsState} from './preferences';
 import {isMasterEnabled,setMasterEnabled} from '../runtime/master';
+import {acrylicParameters} from './acrylic';
 import type {startLayout} from './layout';
 // Only UI controls used here; native game state remains outside this host contract.
 type PageControls={getEnabled():boolean;setEnabled(value:boolean):void;refresh?:()=>void};
@@ -49,11 +50,12 @@ export function startTheme(root:Runtime=window as Runtime){
   for(const key of Object.keys(defaults) as PreferenceKey[]){
    const v=value?.[key];
    if(key==='visualTier'){if(typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=2)preferences[key]=v}
+   else if(key==='acrylicTransparency'){if(typeof v==='number'&&Number.isFinite(v))preferences[key]=Math.max(0,Math.min(100,Math.round(v)))}
    else if(key==='fontScale'||key==='buttonScale'){if(typeof v==='number'&&Number.isFinite(v))preferences[key]=Math.max(50,Math.min(150,Math.round(v)))}
    else if(typeof v==='boolean')preferences[key]=v;
   }
-  const retiredEnabled=preferences.statusPreview||preferences.startupCacheLazy||preferences.storyActions;
-  preferences.statusPreview=false;preferences.startupCacheLazy=false;preferences.storyActions=false;
+  const retiredEnabled=preferences.statusPreview||preferences.startupCacheLazy||preferences.storyActions||preferences.compactStats;
+  preferences.statusPreview=false;preferences.startupCacheLazy=false;preferences.storyActions=false;preferences.compactStats=false;
   if(value?._scaleBaseline26!==true){
    preferences.fontScale=100;preferences.buttonScale=100;
   }
@@ -83,6 +85,10 @@ export function startTheme(root:Runtime=window as Runtime){
   const html=document.documentElement,visualTier=official?2:state.preferences.visualTier;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?visualTier:0));
   for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
+  html.toggleAttribute('data-dgu-acrylic-adjustment',state.preferences.enabled&&official&&html.hasAttribute('data-evo41-material-review'));
+  for(const [key,value] of Object.entries(acrylicParameters(state.preferences.acrylicTransparency)))html.style.setProperty(key,value);
+  html.toggleAttribute('data-dgu-options-centered',state.preferences.enabled&&state.preferences.centerOptions);
+  html.style.setProperty('--dgu-option-text-align',state.preferences.enabled&&state.preferences.centerOptions?'center':'left');
  const fontScale=Math.min(state.scaleMax,state.preferences.fontScale),buttonScale=Math.min(state.scaleMax,state.preferences.buttonScale);
  document.documentElement.toggleAttribute('data-dgu-font-scaled',isMasterEnabled()&&fontScale!==100);document.documentElement.style.setProperty('--dgu-font-scale',String((isMasterEnabled()?fontScale:100)/100));document.documentElement.style.setProperty('--dgu-button-scale',String((isMasterEnabled()?buttonScale:100)/100));document.documentElement.toggleAttribute('data-dgu-buttons-scaled',isMasterEnabled()&&buttonScale!==100);isolate('saves layout',()=>root.DoLSavesUI?.setV2?.(isMasterEnabled()&&state.preferences.savesV2));
   experiments.wardrobePaged=isMasterEnabled()&&state.preferences.wardrobePaged;experiments.shopDeferredPaint=isMasterEnabled()&&state.preferences.shopDeferredPaint;
@@ -95,7 +101,7 @@ export function startTheme(root:Runtime=window as Runtime){
   sync();
  }
  function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify({...state.preferences,_scaleBaseline26:true}));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请关闭此项或重启后重试。':'显示设置已保存。'}
- function setPreference(key:PreferenceKey,value:boolean|number){if(!scope.active()||!Object.hasOwn(defaults,key)||key==='statusPreview'||key==='startupCacheLazy'||key==='storyActions')return;if(key==='enabled'){if(typeof value==='boolean')setMaster(value);return}if(key==='visualTier'){if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;state.preferences[key]=value}else if(key==='fontScale'||key==='buttonScale'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(50,Math.min(150,Math.round(value)))}else{if(typeof value!=='boolean')return;state.preferences[key]=value}persist();if(key==='combatFocused')isolate('combat presentation',()=>root.DoLCombatUI?.refresh?.());if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。'}
+ function setPreference(key:PreferenceKey,value:boolean|number){if(!scope.active()||!Object.hasOwn(defaults,key)||key==='statusPreview'||key==='startupCacheLazy'||key==='storyActions'||key==='compactStats')return;if(key==='enabled'){if(typeof value==='boolean')setMaster(value);return}if(key==='visualTier'){if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;state.preferences[key]=value}else if(key==='acrylicTransparency'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(0,Math.min(100,Math.round(value)))}else if(key==='fontScale'||key==='buttonScale'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(50,Math.min(150,Math.round(value)))}else{if(typeof value!=='boolean')return;state.preferences[key]=value}persist();if(key==='combatFocused')isolate('combat presentation',()=>root.DoLCombatUI?.refresh?.());if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。'}
  function resizeScale(){apply()}
  function setPanel(kind:PanelKind,value:boolean){root.DoLPanelsUI?.setEnabled(kind,value);sync()}
  function setSaves(value:boolean){root.DoLSavesUI?.setEnabled(value);sync()}
@@ -175,7 +181,7 @@ export function startTheme(root:Runtime=window as Runtime){
  }
  function listen(target:EventTarget,type:string,fn:EventListener){target.addEventListener(type,fn);scope.own(()=>target.removeEventListener(type,fn))}
  listen(root,'resize',resizeScale);listen(document,'DOMContentLoaded',schedule);listen(root,'load',schedule);listen(document,'dol-ui-saves-change',sync);listen(document,'dol-ui-combat-change',sync);listen(document,'dol-ui-wardrobe-change',sync);listen(document,'dol-ui-characteristics-change',sync);listen(document,'dol-ui-social-change',sync);listen(document,'dol-ui-panels-change',sync);listen(document,'dol-ui-shop-change',sync);listen(root,'backbutton',()=>{if(controls?.open)closeSettings()});
- root.DoLMidnightTheme={setPreference,setEnabled:(value:boolean)=>setPreference('enabled',value),mount,openSettings,getPreferences:()=>({...state.preferences}),getLifecycleCounts:()=>({...counts}),destroy(){if(!scope.active())return;scope.dispose();++transition;document.documentElement.removeAttribute('data-dgu-settings-open');for(const attribute of ['data-dgu-visual','data-dgu-visualGlass','data-dgu-visualMotion','data-dgu-visualGlow','data-dgu-visualPattern','data-dgu-compact-controls'])document.documentElement.removeAttribute(attribute);document.documentElement.removeAttribute('data-dgu-font-scaled');document.documentElement.style.removeProperty('--dgu-font-scale');document.documentElement.style.removeProperty('--dgu-button-scale');document.documentElement.removeAttribute('data-dgu-buttons-scaled');experiments.wardrobePaged=false;experiments.shopDeferredPaint=false;document.documentElement.removeAttribute('data-dol-shop-deferred-paint');if(jqAttached)root.jQuery!(document).off('.dolMidnight');unmountUI(app);controls?.remove();expanded?.remove();root.DMTLayout?.destroy();document.documentElement.removeAttribute('data-dol-midnight');document.documentElement.removeAttribute('data-dol-midnight-comfortable');delete root.DoLMidnightTheme}};
+ root.DoLMidnightTheme={setPreference,setEnabled:(value:boolean)=>setPreference('enabled',value),mount,openSettings,getPreferences:()=>({...state.preferences}),getLifecycleCounts:()=>({...counts}),destroy(){if(!scope.active())return;scope.dispose();++transition;document.documentElement.removeAttribute('data-dgu-settings-open');for(const attribute of ['data-dgu-visual','data-dgu-visualGlass','data-dgu-visualMotion','data-dgu-visualGlow','data-dgu-visualPattern','data-dgu-compact-controls','data-dgu-acrylic-adjustment','data-dgu-options-centered'])document.documentElement.removeAttribute(attribute);document.documentElement.removeAttribute('data-dgu-font-scaled');for(const key of [...Object.keys(acrylicParameters(0)),'--dgu-option-text-align'])document.documentElement.style.removeProperty(key);document.documentElement.style.removeProperty('--dgu-font-scale');document.documentElement.style.removeProperty('--dgu-button-scale');document.documentElement.removeAttribute('data-dgu-buttons-scaled');experiments.wardrobePaged=false;experiments.shopDeferredPaint=false;document.documentElement.removeAttribute('data-dol-shop-deferred-paint');if(jqAttached)root.jQuery!(document).off('.dolMidnight');unmountUI(app);controls?.remove();expanded?.remove();root.DMTLayout?.destroy();document.documentElement.removeAttribute('data-dol-midnight');document.documentElement.removeAttribute('data-dol-midnight-comfortable');delete root.DoLMidnightTheme}};
  mount();
  // Early mod injection can precede SugarCube/jQuery. These bounded retries only mount when needed.
  if(!jqAttached)for(const delay of [250,1000,3000]){scope.timeout(()=>{if(!jqAttached||needsMount())isolate('theme retry',mount,nativeSettings)},delay)}

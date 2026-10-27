@@ -1,0 +1,71 @@
+/* Adapted original V1 / Q1, 2026-10-27. Source CSS SHA-256: f9758adb1d3c69fe991f3de049d3d2b4ca634f2f9a9521f5c3f1609bbc99325d.
+   Only anonymous owner selectors and continuous material parameters are rebound.
+   Original archive remains immutable. Scoped to the isolated review until visual approval. */
+/* Q1: warm receiving edge, cool return edge, calm reading wells. No new blur loop. */
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment]{--q-key:232 216 186;--q-return:146 180 191;--q-edge:.25;--q-fill:rgb(20 24 27 / var(--dgu-acrylic-axis-shell-alpha,.43));--q-well:rgb(11 15 18 / var(--dgu-acrylic-axis-reading-alpha,.28));--q-angle:126deg;--q-cast:14px;--q-outline:rgb(180 202 203 / .065);--kw-shell:rgba(21,25,28,.46);--kw-island:rgba(16,21,25,.44);--sf-ink:#e8e9e7;--sf-muted:#a6b0b0}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment][data-quartz-light=dusk]{--q-key:246 191 137;--q-return:143 163 201;--q-edge:.33;--q-angle:235deg;--q-cast:-13px}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment][data-quartz-light=night]{--q-key:169 198 224;--q-return:144 175 166;--q-edge:.18;--q-angle:155deg;--q-fill:rgba(17,22,26,.49);--q-well:rgba(8,13,17,.24)}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] body{background:radial-gradient(ellipse at 13% 0%,rgb(var(--q-key) / .14),transparent 48%),radial-gradient(ellipse at 86% 65%,#28525626,transparent 52%),linear-gradient(128deg,#20272c,#11171d 63%,#141b20);color:var(--sf-ink)}
+.q-window-light{display:none}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .q-window-light{display:block;position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.42;background:linear-gradient(108deg,transparent 4%,rgb(var(--q-key) / .07) 17%,transparent 39%),repeating-linear-gradient(104deg,transparent 0 180px,#02050826 180px 190px,transparent 190px 370px);filter:blur(6px)}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #fixture-heading{padding-top:25px;padding-bottom:15px}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #fixture-heading>small{font-size:10px;letter-spacing:.15em;color:#a3b6b4}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #fixture-heading h1{font-size:24px;font-weight:550;letter-spacing:-.025em}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #fixture-notice{color:#8d9e9e;font-size:11px}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .fixture-prose{background:#1420273d;border-color:#bed1d312;box-shadow:inset 0 1px rgb(var(--q-key) / .08)}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls>.dmt-settings-shell,
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #customOverlay,
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .dgshop-host,
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .dgw-shell{
+ background:radial-gradient(ellipse 85% 65% at 0% 0%,rgb(var(--q-key) / .052),transparent 64%),linear-gradient(var(--q-angle),rgb(var(--q-key) / .035),transparent 45%),var(--q-fill)!important;
+ border:1px solid rgb(var(--q-return) / .14)!important;
+ box-shadow:inset 1px 1px 0 rgb(var(--q-key) / var(--q-edge)),inset -1px -1px 0 rgb(var(--q-return) / .12),inset 0 0 15px rgb(var(--q-return) / .025),var(--q-cast) 26px 65px #03080d59,0 4px 12px #02060b30!important;
+ outline:1px solid var(--q-outline);outline-offset:-4px;border-radius:23px;
+}
+/* Keep sampling on the established material nodes; do not filter the input/scroll owner again. */
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment][data-dgu-visualGlass] #dol-midnight-controls>.dmt-settings-shell{backdrop-filter:blur(var(--dgu-acrylic-axis-blur,24px)) saturate(.78)!important;-webkit-backdrop-filter:blur(var(--dgu-acrylic-axis-blur,24px)) saturate(.78)!important}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls::backdrop{background:#030a101c;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-settings-header{position:relative;padding:24px 29px 19px;background:linear-gradient(var(--q-angle),rgb(var(--q-key) / .035),transparent 60%);border-bottom:1px solid #d5e4e20c}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-settings-header h2{font-size:29px;font-weight:550;letter-spacing:-.025em;margin-top:6px}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-eyebrow{color:#a6bab7;letter-spacing:.12em;font-size:10px}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-layout-choice{padding:11px 29px 16px;background:transparent;border-color:#d5e4e20b}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace{background:transparent}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace-nav{padding:16px 15px;background:linear-gradient(100deg,#060e1220,transparent);border-color:#d5e4e20a}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace-page{padding:23px 28px 26px;background:transparent}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace-intro{margin-bottom:25px}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace-intro h3{font-size:24px;line-height:1.4;font-weight:550;letter-spacing:-.02em}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace-intro>p:last-child{color:#a4afaf;line-height:1.75}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-control-sheet{background:var(--q-well)!important;padding:9px 18px;border:1px solid #08131932!important;border-radius:17px!important;box-shadow:inset 0 1px 3px #02070d26,0 1px 0 rgb(var(--q-key) / .045)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-control-sheet .dgu-setting-row{border-color:#c4d8d70b;padding-block:17px}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-control-sheet .dgu-setting-description{color:#9da9aa}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-reading-sample,
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-preview-lab{
+ background:linear-gradient(var(--q-angle),rgb(var(--q-key) / .065),transparent 78%),rgb(28 38 42 / var(--dgu-acrylic-axis-preview-alpha,.37))!important;
+ border:1px solid rgb(var(--q-return) / .13)!important;box-shadow:inset 1px 1px 0 rgb(var(--q-key) / .14),inset -1px -1px 0 rgb(var(--q-return) / .06),3px 9px 22px #03080e20!important;border-radius:17px;backdrop-filter:none!important;
+}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-settings-footer{border-color:#c4d8d70d;background:#0b13181a;color:#a6b4b2}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls :is(.dmt-close,.dmt-workspace-actions button){background:linear-gradient(var(--q-angle),#ffffff08,transparent),#1c292e55;border-color:#c6d8d313;box-shadow:inset 0 1px 0 rgb(var(--q-key) / .08)}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #customOverlayTitle{background:linear-gradient(var(--q-angle),rgb(var(--q-key) / .03),transparent)!important;border-bottom:1px solid #c4d8d70c}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #customOverlayContent{background:linear-gradient(#07111908,#0711191d)!important}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #customOverlayContent :is(section,.trait){border-color:#b9ced00c}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #customOverlayContent .trait{background:#101a2029!important;box-shadow:inset 0 1px #d2e4e203!important}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] :is(.dgw-content,.dgshop-content){--kw-island:rgba(13,21,26,.38);--dgu-card:#182229;--dgu-panel:#1c272e}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .sf-motion-hub[data-official] .sf-motion-petal{background:linear-gradient(var(--q-angle),rgb(var(--q-key) / .075),transparent 70%),rgba(28,39,43,.6)!important;border-color:rgb(var(--q-return) / .15)!important;box-shadow:inset 1px 1px rgb(var(--q-key) / .18),inset -1px -1px rgb(var(--q-return) / .06),3px 7px 18px #02080e29!important}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .sf-motion-hub[data-official] .sf-motion-orbit:not(.is-grid){background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .sf-motion-hub[data-spin-hub] .sf-motion-orbit::before{display:none}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .sf-motion-hub[data-official] .sf-motion-orbit.is-grid{background:linear-gradient(var(--q-angle),rgb(var(--q-key) / .04),transparent 60%),rgba(21,30,35,.63)!important;border-color:#b9ced018!important;box-shadow:inset 1px 1px #d2e4e218,0 18px 42px #0005!important}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment]:not([data-dgu-visualGlass]) #dol-midnight-controls>.dmt-settings-shell{background:#1d262b!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+/* Preserve the real glass-off fallback despite the study's important surface fills. */
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment]:not([data-dgu-visualGlass]) .sf-motion-hub[data-official] :is(.sf-motion-petal,.sf-motion-orbit.is-grid,.sf-motion-utilities button){background:#29292c!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+@media(max-width:620px){
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls{padding:9px!important}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls>.dmt-settings-shell{width:100%!important;max-height:100%;border-radius:20px}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-settings-header{padding:19px 18px 13px}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-settings-header h2{font-size:25px}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-layout-choice{padding:8px 18px 12px;gap:8px;flex-wrap:wrap}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace-nav{padding:10px 12px;min-height:61px}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace-page{padding:20px 16px}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-workspace-intro h3{font-size:22px}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-control-sheet{padding:5px 13px}
+ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-control-sheet .dgu-setting-row{padding-block:16px}
+}

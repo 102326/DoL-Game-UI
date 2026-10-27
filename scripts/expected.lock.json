@@ -66,6 +66,9 @@
       "scan:599",
       "scan:600",
       "scan:601",
+      "scan:619",
+      "scan:620",
+      "scan:621",
       "scan:639",
       "scan:640",
       "scan:641",
@@ -219,6 +222,9 @@
       "scan:600",
       "scan:601",
       "scan:608",
+      "scan:619",
+      "scan:620",
+      "scan:621",
       "scan:624",
       "scan:639",
       "scan:640",
@@ -968,8 +974,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b004dcdf35e87338e9e29927e1129af9c626e46941b9ee962eeeb165595c443f",
-      "assertionSites": 118,
+      "sourceSha256": "ce956e6c664a0720535eb76375ee4b9f494040b2f999f3807ccd1e70ea9bccf3",
+      "assertionSites": 346,
       "rendererContexts": [
         "sphere:2d"
       ]

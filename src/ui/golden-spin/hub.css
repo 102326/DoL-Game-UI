@@ -4,12 +4,17 @@ html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motio
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-ball::before,html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-ball::after{display:none}
 .spin-hub-canvas{position:absolute;width:175px;height:175px;left:50%;top:50%;transform:translate(-50%,-48%);pointer-events:none}
 .sf-motion-ball.is-docked .spin-hub-canvas{width:125px;height:125px}
-/* Only the owned pseudo-layer draws the shell, including the no-glass fallback. */
+/* Only grid has a shared shell; fan controls each own their floating surface. */
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-orbit{transform:none;clip-path:none;opacity:1;transition:none;overflow:visible;background:transparent!important;backdrop-filter:none!important;box-shadow:none!important;border-color:transparent!important;isolation:isolate}
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-petal{left:var(--x);top:var(--y);transform:none;width:136px;min-height:58px}
-html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities{top:auto;bottom:0;left:0;right:0;justify-content:center}
+html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities{left:var(--utility-x);top:calc(50% - 78px);bottom:auto;right:auto;width:64px;display:flex;flex-direction:column;gap:12px;margin:0;padding:0;border:0}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities button{flex:none;width:64px;height:44px;min-height:44px;padding:4px;border:1px solid #ffffff23;border-radius:16px;background:linear-gradient(140deg,#b4d7f329,#242b33d9);backdrop-filter:blur(22px);box-shadow:0 8px 24px #0003;font-size:11px;text-align:var(--dgu-option-text-align,left);white-space:nowrap}
+/* The inner column is at x=0 or x=206; bend its middle toward the outer tools. */
+html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities button:nth-child(2){position:relative;left:clamp(-8px,calc(8px - var(--utility-x)),8px)}
+html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-tool-label{flex:1;min-width:0;width:100%;text-align:var(--dgu-option-text-align,left)}
 html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=closed] :is(.sf-motion-orbit,.sf-motion-sheet)[aria-hidden=true]{display:none!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit::before{content:'';position:absolute;inset:0;z-index:-1;border:1px solid #ffffff16;border-radius:24px;background:linear-gradient(135deg,#ffffff08,transparent 65%),rgba(25,28,28,.72);box-shadow:0 18px 42px #0005;backdrop-filter:blur(24px);opacity:var(--spin-shell,0);pointer-events:none}
+html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit:not(.is-grid)::before{content:none}
+html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit.is-grid::before{content:'';position:absolute;inset:0;z-index:-1;border:1px solid #ffffff16;border-radius:24px;background:linear-gradient(135deg,#ffffff08,transparent 65%),rgba(25,28,28,.72);box-shadow:0 18px 42px #0005;backdrop-filter:blur(24px);opacity:var(--spin-shell,0);pointer-events:none}
 html[data-stone-free][data-dgu-visualMotion] .sf-motion-hub[data-spin-hub] .sf-motion-petal{transition:none!important;animation:none!important;transform-origin:center}
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-utilities{transition:none;transform:none;grid-column:1/-1}
 html[data-stone-free] .sf-motion-hub[data-spin-hub][data-spin-phase=moving] .sf-motion-petal{background:linear-gradient(135deg,#bda77615,transparent 75%),rgba(29,31,31,.75);border-color:#c8b28122;box-shadow:0 8px 20px #0003}
@@ -20,7 +25,9 @@ html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-ball:focus-visible{outline:1px solid #c8b78599;outline-offset:4px}
 
 /* Respect the actual shared preference; opaque fallback keeps text readable. */
-html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-spin-hub] .sf-motion-orbit::before{background:#29292c;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-spin-hub] .sf-motion-orbit.is-grid::before{background:#29292c;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities button{background:#29292c;backdrop-filter:none;-webkit-backdrop-filter:none}
+@supports not (backdrop-filter:blur(1px)){html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities button{background:#29292c}}
 
 /* Keep wheel, touch and keyboard scrolling without a visible scrollbar rail. */
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit{scrollbar-width:none}

@@ -10,10 +10,13 @@ import SettingsPreview from './SettingsPreview.vue';
 import SettingsNavigation from './SettingsNavigation.vue';
 import {sourceMotion} from '../ui/source-motion';
 import {visualScope} from '../ui/visual-scope';
+import AcrylicControls from './AcrylicControls.vue';
 
 const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
 declare const __STONE_FREE_CONSUMER__:boolean;
 const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
+// The new material needs its own visual review before replacing the accepted base.
+const acrylicReview=document.documentElement.hasAttribute('data-evo41-material-review');
 const category=ref<'reading'|'material'|'entry'|'pages'|'advanced'>('reading');
 const categories=[{id:'reading',label:'阅读'},{id:'material',label:'材质'},{id:'entry',label:'入口'},{id:'pages',label:'页面'},{id:'advanced',label:'高级'}] as const;
 // Private display choice: not a public preference/API or a responsive-mode truth.
@@ -78,6 +81,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
      <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
      <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
      <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
+     <label class="dgu-setting-row"><span><strong>选项文字对齐</strong><small>调整选项、导航与设置标签，正文保持原样。</small></span><select aria-label="选项文字对齐" :value="state.preferences.centerOptions?'center':'left'" @change="onPreference('centerOptions',($event.target as HTMLSelectElement).value==='center')"><option value="left">原样 / 靠左</option><option value="center">居中</option></select></label>
      <label v-for="item in ([{key:'fontScale',label:'字体'},{key:'buttonScale',label:'按钮'}] as const)" :key="item.key" class="dgu-setting-row"><span>{{item.label}} {{state.preferences[item.key]}}%</span><input type="range" min="50" max="150" step="5" :aria-label="item.label+'大小'" :value="state.preferences[item.key]" @input="onPreference(item.key,Number(($event.target as HTMLInputElement).value))"/></label>
      <div class="dmt-workspace-actions"><GameButton @click="onPreference('fontScale',100);onPreference('buttonScale',100)">恢复 100%</GameButton><p>字号和按钮范围均为 50%–150%，默认 100%。图片保持原大小。</p></div>
      <SettingsToggle label="手机紧凑按钮间距" description="缩小操作控件的留白，保留至少 44px 点击区域；仅在手机尺寸生效" :checked="state.preferences.mobileCompactControls" @change="onPreference('mobileCompactControls',$event)"/>
@@ -89,8 +93,10 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
     <div class="dmt-workspace-intro"><p class="dmt-eyebrow">材质</p><h3 id="dmt-material-heading">看见层次如何变化</h3><p>预览会使用当前材质与动效设置。预览操作不会改动游戏内容。</p></div>
     <div class="dmt-setting-card dmt-control-sheet dmt-material-controls">
      <SettingsToggle label="玻璃模糊" :checked="state.preferences.visualGlass" @change="onPreference('visualGlass',$event)"/>
+     <AcrylicControls v-if="acrylicReview" :value="state.preferences.acrylicTransparency" :disabled="!state.preferences.visualGlass" @change="onPreference('acrylicTransparency',$event)"/>
      <SettingsToggle label="交互与进入动画" :checked="state.preferences.visualMotion" @change="onPreference('visualMotion',$event)"/>
      <SettingsToggle label="交互层次反馈" description="只调整选中项的额外层次反馈；不改变主体配色或游戏状态" :checked="state.preferences.visualGlow" @change="onPreference('visualGlow',$event)"/>
+     <SettingsToggle label="标题边缘纹样" description="可选静态装饰" :checked="state.preferences.visualPattern" @change="onPreference('visualPattern',$event)"/>
      <p>当前主体材质默认使用完整表现。关闭动画或系统减少动态效果时，操作仍会立即完成。</p>
     </div>
     <SettingsPreview :state="state"/>
@@ -100,7 +106,6 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
     <div class="dmt-workspace-intro"><p class="dmt-eyebrow">入口与布局</p><h3 id="dmt-entry-heading">决定界面从哪里开始</h3><p>这些设置只影响页面入口与排布，不改变游戏状态。</p></div>
     <div class="dmt-setting-card dmt-control-sheet">
      <SettingsToggle label="启用响应式布局" description="适配手机抽屉与平板侧栏；关闭可恢复原版布局" :checked="state.preferences.layout" @change="onPreference('layout',$event)"/>
-     <SettingsToggle label="紧凑状态间距" :checked="state.preferences.compactStats" @change="onPreference('compactStats',$event)"/>
      <p>角色状态保持展开。折叠侧栏沿用游戏原有操作。</p>
     </div>
     <FloatingSettings/>
@@ -134,8 +139,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
 
    <section v-else class="dmt-workspace-section" aria-labelledby="dmt-advanced-heading">
     <div class="dmt-workspace-intro"><p class="dmt-eyebrow">高级</p><h3 id="dmt-advanced-heading">兼容与恢复</h3><p>仅在需要时调整；遇到异常可以单独关闭。</p></div>
-    <details class="dmt-setting-card dmt-control-sheet dmt-experiments"><summary><strong>性能与兼容选项</strong><span>默认收起，按需启用</span></summary>
-     <SettingsToggle label="标题边缘纹样" description="可选静态装饰" :checked="state.preferences.visualPattern" @change="onPreference('visualPattern',$event)"/>
+    <details class="dmt-setting-card dmt-control-sheet dmt-experiments"><summary><strong>兼容回退与实验选项</strong><span>默认收起，按需调整</span></summary>
      <SettingsToggle label="衣柜延迟原版隐藏列表（实验）" description="新版衣柜换装时暂不重建隐藏的原版列表；出现兼容问题时关闭此项" :checked="state.preferences.wardrobeHiddenList" @change="onPreference('wardrobeHiddenList',$event)"/>
      <SettingsToggle label="商店离屏绘制延后（实验）" description="让支持的浏览器跳过屏幕外商品的排版与绘制；滚动异常时关闭此项" :checked="state.preferences.shopDeferredPaint" @change="onPreference('shopDeferredPaint',$event)"/>
      <SettingsToggle v-if="state.shopPageExperimentAvailable" label="商店按页生成（实验）" description="只生成当前页商品；下次进入商店列表时生效，异常时关闭此项" :checked="state.preferences.shopPageExperiment" @change="onPreference('shopPageExperiment',$event)"/>
@@ -153,12 +157,14 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    <SettingsToggle label="启用 Soft & Wet 界面" description="关闭后返回原版界面；页面和显示选择会保留，重新开启时恢复" :checked="state.preferences.enabled" @change="onPreference('enabled',$event)"/>
    <SettingsToggle label="舒适阅读间距" :checked="state.preferences.comfortable" @change="onPreference('comfortable',$event)"/>
    <SettingsToggle label="宽幅正文" :checked="state.preferences.wideReading" @change="onPreference('wideReading',$event)"/>
+   <label class="dgu-setting-row"><span><strong>选项文字对齐</strong></span><select aria-label="选项文字对齐" :value="state.preferences.centerOptions?'center':'left'" @change="onPreference('centerOptions',($event.target as HTMLSelectElement).value==='center')"><option value="left">原样 / 靠左</option><option value="center">居中</option></select></label>
   </section>
   <section class="dmt-setting-card"><h3>材质与动效</h3>
    <label class="dgu-setting-row"><span>效果档位</span><select aria-label="视觉效果档位" :value="state.preferences.visualTier" @change="onPreference('visualTier',Number(($event.target as HTMLSelectElement).value))"><option :value="0">流畅</option><option :value="1">均衡</option><option :value="2">华丽</option></select></label>
    <SettingsToggle label="玻璃模糊" :checked="state.preferences.visualGlass" @change="onPreference('visualGlass',$event)"/>
    <SettingsToggle label="交互与进入动画" :checked="state.preferences.visualMotion" @change="onPreference('visualMotion',$event)"/>
    <SettingsToggle label="光影高光" :checked="state.preferences.visualGlow" @change="onPreference('visualGlow',$event)"/>
+   <SettingsToggle label="标题边缘纹样" description="可选静态装饰" :checked="state.preferences.visualPattern" @change="onPreference('visualPattern',$event)"/>
    <p>流畅档不使用模糊。均衡与华丽共享布局，主要区别是材质强度；系统减少动态效果设置优先。</p>
   </section>
   <section class="dmt-setting-card"><h3>字体与按钮大小</h3><p>调整主界面与弹窗；侧边栏与模组管理弹窗保持原有大小。</p>
@@ -168,7 +174,6 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
   </section>
   <section class="dmt-setting-card"><h3>侧栏与布局</h3>
    <SettingsToggle label="启用响应式布局" description="适配手机抽屉与平板侧栏；关闭可恢复原版布局" :checked="state.preferences.layout" @change="onPreference('layout',$event)"/>
-   <SettingsToggle label="紧凑状态间距" :checked="state.preferences.compactStats" @change="onPreference('compactStats',$event)"/>
    <p>角色状态保持展开。折叠侧栏沿用游戏原有操作。</p>
   </section>
   <details class="dmt-setting-card dmt-page-switches"><summary><strong>各页面与兼容开关</strong><span>按页面切回原版</span></summary>
@@ -191,8 +196,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    <SettingsToggle v-if="state.wardrobe" label="衣柜按页渲染" description="每页显示 40 件；搜索、排序和全选仍覆盖整个分类" :checked="state.preferences.wardrobePaged" @change="onPreference('wardrobePaged',$event)"/>
    <p>这些选项只调整显示，不改变存档或衣物数据。</p>
   </section>
-  <details class="dmt-setting-card dmt-experiments"><summary><strong>性能与兼容选项</strong><span>默认收起，按需启用</span></summary>
-   <SettingsToggle label="标题边缘纹样" description="可选静态装饰" :checked="state.preferences.visualPattern" @change="onPreference('visualPattern',$event)"/>
+  <details class="dmt-setting-card dmt-experiments"><summary><strong>兼容回退与实验选项</strong><span>默认收起，按需调整</span></summary>
    <SettingsToggle label="衣柜延迟原版隐藏列表（实验）" description="新版衣柜换装时暂不重建隐藏的原版列表；出现兼容问题时关闭此项" :checked="state.preferences.wardrobeHiddenList" @change="onPreference('wardrobeHiddenList',$event)"/>
    <SettingsToggle label="商店离屏绘制延后（实验）" description="让支持的浏览器跳过屏幕外商品的排版与绘制；滚动异常时关闭此项" :checked="state.preferences.shopDeferredPaint" @change="onPreference('shopDeferredPaint',$event)"/>
    <SettingsToggle v-if="state.shopPageExperimentAvailable" label="商店按页生成（实验）" description="只生成当前页商品；下次进入商店列表时生效，异常时关闭此项" :checked="state.preferences.shopPageExperiment" @change="onPreference('shopPageExperiment',$event)"/>
@@ -206,3 +210,6 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
 </template>
 
 <style src="./settings-workspace.css"></style>
+<style src="./acrylic-v1.css"></style>
+<style src="./acrylic-adjustment.css"></style>
+<style src="./option-alignment.css"></style>

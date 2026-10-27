@@ -1,0 +1,20 @@
+/* Only our settings and reviewed navigation controls opt into centered text. */
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row > span {
+    flex: 1;
+    text-align: center;
+}
+
+html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-workspace-nav > button[data-kw-nav-control=category],
+html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #ui-bar :is(#startCaption,#overlayButtons) > button[data-kw-nav-control=entry],
+html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #ui-bar :is(#startCaption,#overlayButtons) > .sidebarButtonSplit > button[data-kw-nav-control=entry] {
+    justify-content: center;
+    text-align: center;
+}
+
+html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #customOverlay:is(.dgs-overlay,.dgc-overlay,.dgp-overlay,.dgs-native-tools) #overlayTabs > button[data-kw-nav-control=tab],
+html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #customOverlay[data-dgu-adapter-match=full]:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet]) :is(#overlayTabs > button[data-kw-nav-control=tab],#cheat_extended_options > :is(.CE-category-bar,.CE-subtab-bar) > button[data-kw-nav-control]),
+html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #customOverlay [data-dgu-adapter=CheatExtendedInlineSoftWet][data-dgu-adapter-match=full] #cheat_extended_options > :is(.CE-category-bar,.CE-subtab-bar) > button[data-kw-nav-control],
+html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #customOverlay :is(.dgc-navigation,.dgs-navigation,.dgp-navigation) > button[data-kw-nav-control] {
+    justify-content: center;
+    text-align: center;
+}
