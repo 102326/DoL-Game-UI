@@ -2765,8 +2765,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "46a57c79b82b999518d5922363b532f453126e92e2693610c9099f8e9fd02a17",
-      "assertionSites": 38
+      "sourceSha256": "335cf44d2f66f2facc5c29b7c397a3c7a1eb997093fad72f067eaf35d8bcd6ba",
+      "assertionSites": 39
     },
     {
       "entry": "tests/weather-review-pages.cjs",
