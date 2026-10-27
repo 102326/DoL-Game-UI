@@ -4,7 +4,7 @@
 
 ## Current — 当前状态
 
-- 分支 `feature/4.1-ui-material-hub`；材质 `ee36aaf`、居中 `699a7a2`、共享选择框/HC-07 `3554456`、ModHub hybrid研究 `f1beec5`、菜单响应 `557f9f7`、picker Escape `76afc72`。文档提交HEAD以实际Git为准。已推送前置源码0ede042且双手动CI成功；后来新增76afc72 Escape修复，最终双CI准备执行，不能沿用前置绿色结果。
+- 分支 `feature/4.1-ui-material-hub`；材质 `ee36aaf`、居中 `699a7a2`、共享选择框/HC-07 `3554456`、ModHub hybrid研究 `f1beec5`、菜单响应 `557f9f7`、picker Escape `76afc72`。文档提交HEAD以实际Git为准。研发分支已推送；最终验证源码 **c3b280f**（含76afc72 Escape修复）双手动CI与本机下载复算通过。后续收口提交仅文档/证据，运行代码不变；准确文档HEAD以Git为准。
 - [UI报告](evolution/EVO-4.1-UI-765-2026-10-27.md)：负责人已通过60%材质/居中排版，默认仍60%/左对齐。材质仅review标记启用，未全局推广。新共享原生选择框及取消半秒等待的菜单响应已本机验证，**尚待负责人体验**。
 - 正式版本仍4.0.1 / main `ff428b4`；未改版本、Tag、Release、Host API、保护/bypass。ModHub候选是评审patch，未改vendor/兼容包运行代码，未安装到游戏。
 - 预览：`node scripts/preview-ui41.mjs`，默认5204；先锁定Node26依赖、tooling:build与Framework构建。服务不随Git跨机。本地绝对路径与原始公开目录仅在忽略目录/`HANDOFF.local.md`，另一设备不可假定可访问。
@@ -21,9 +21,11 @@
 8. 76afc72补齐实际picker Escape：设置和layout兼容窗口路径先在旧入口超时失败，修复后第一次收picker、第二次正常关窗/原生overlay；商店实际组件同样保留详情后再关闭。没有改变Host/第三方业务或backbutton协议。见[补充收据](evolution/ui41-mac-20261027/escape-receipt.json)。
 9. 本机macOS arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153.0.8010.12。ci:check、Framework实际构建、startup/connect、居中与上述Hub套件通过；两个新helper纳入composed源声明锁。首次npm framework:build因缺`python`命令退出127，已单独用python3完成打包；不记为该npm命令成功。源码、命令、范围及独立审查见[本机收据](evolution/ui41-mac-20261027/receipt.json)。
 
+10. 最终准确源码c3b280f：标准[40468311476](https://github.com/102326/DoL-Game-UI/actions/runs/40468311476)、研究[40468315629](https://github.com/102326/DoL-Game-UI/actions/runs/40468315629)，均workflow_dispatch/Attempt1且独立证据复核成功。Mac重算标准192文件/943,377字节、研究479文件/127,601,523字节，全部摘要/计划匹配；9个开发ZIP/10条摘要/56成员与两轮快照相符。37个unit入口、42个browser入口完整，研究完整。详见[最终收据](evolution/ui41-mac-20261027/final-ci-receipt.json)。这些是开发制品，仍标4.0.1，不是新发行包；回家使用该Run的制品并核对SHA，本机旧dist ZIP不能假定最新。标准制品/证据保留到11月3日，研究到11月10日。
+
 ## Next — 下一步
 
-1. 接手先核对branch/HEAD/工作区、领先落后、Node26及锁定依赖、实际浏览器；不覆盖本机未推送工作，不把旧dev/main当本批。双手动CI完成后更新本页的准确SHA/Run/Attempt与下载复核。
+1. 接手先核对branch/HEAD/工作区、领先落后、Node26及锁定依赖、实际浏览器；保留本机工作，不把旧dev/main当本批。CI针对c3b280f，后续文档提交可按实际diff确认代码相同，不能将旧Run写成新HEAD执行。
 2. 负责人体验新菜单响应与深色选择框；保留已通过的默认60%/左对齐。材质跨窗口推广按消费者验证，不以新控件样式替代整体视觉裁决。
 3. **回家优先**：核对真实游戏/Loader/完整ModHub及实际归一化catalog；按同操作交错对照列表/统计/异步变化、窗口/焦点/原版天气、多Mod业务与回退。只有实际证据支持才决定安装组合候选或内置实验策略。
 4. Android/WebView真机触控/软键盘/系统选择框/旋转/安全区与玻璃GPU总体性能；Windows原生弹层另测。Actions与Mac通过都不替代这些检查；无需为收口补所有未持有设备。

@@ -1,0 +1,249 @@
+{
+  "schema": 1,
+  "source": {
+    "head": "c3b280fe67007766bd01b5c8b4340a9709a654cf",
+    "tree": "4d53eb5a9dbb248f0738cefa6d1ce1ff13b46888",
+    "dirty": false,
+    "contentSha256": "6678b88a2163c7a0f8d32009364911ac8019d32a77e3268f264bec522d5b3da3",
+    "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+  },
+  "runs": {
+    "40468311476": {
+      "databaseId": 40468311476,
+      "headSha": "c3b280fe67007766bd01b5c8b4340a9709a654cf",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "createdAt": "2026-10-27T07:38:16Z",
+      "updatedAt": "2026-10-27T07:52:43Z",
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40468311476",
+      "jobs": [
+        {
+          "name": "validate",
+          "conclusion": "success",
+          "startedAt": "2026-10-27T07:38:20Z",
+          "completedAt": "2026-10-27T07:52:15Z"
+        },
+        {
+          "name": "evidence-verify",
+          "conclusion": "success",
+          "startedAt": "2026-10-27T07:52:18Z",
+          "completedAt": "2026-10-27T07:52:36Z"
+        },
+        {
+          "name": "moody-gate",
+          "conclusion": "success",
+          "startedAt": "2026-10-27T07:52:39Z",
+          "completedAt": "2026-10-27T07:52:42Z"
+        }
+      ]
+    },
+    "40468315629": {
+      "databaseId": 40468315629,
+      "headSha": "c3b280fe67007766bd01b5c8b4340a9709a654cf",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "createdAt": "2026-10-27T07:38:18Z",
+      "updatedAt": "2026-10-27T07:48:44Z",
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40468315629",
+      "jobs": [
+        {
+          "name": "prototype",
+          "conclusion": "success",
+          "startedAt": "2026-10-27T07:38:23Z",
+          "completedAt": "2026-10-27T07:48:22Z"
+        },
+        {
+          "name": "evidence-verify",
+          "conclusion": "success",
+          "startedAt": "2026-10-27T07:48:24Z",
+          "completedAt": "2026-10-27T07:48:44Z"
+        }
+      ]
+    }
+  },
+  "standardSuites": {
+    "unit": {
+      "status": "PASS",
+      "expectedEntries": 37,
+      "recordedEntries": 37
+    },
+    "browser": {
+      "status": "PASS",
+      "expectedEntries": 42,
+      "recordedEntries": 42
+    }
+  },
+  "researchResultEntries": 4,
+  "downloadedEvidence": {
+    "standard": {
+      "profile": "standard",
+      "runId": 40468311476,
+      "attempt": 1,
+      "workflow": "Kraft Work CI",
+      "event": "workflow_dispatch",
+      "source": {
+        "head": "c3b280fe67007766bd01b5c8b4340a9709a654cf",
+        "tree": "4d53eb5a9dbb248f0738cefa6d1ce1ff13b46888",
+        "dirty": false,
+        "contentSha256": "6678b88a2163c7a0f8d32009364911ac8019d32a77e3268f264bec522d5b3da3",
+        "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+      },
+      "identity": {
+        "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+        "source": {
+          "head": "c3b280fe67007766bd01b5c8b4340a9709a654cf",
+          "tree": "4d53eb5a9dbb248f0738cefa6d1ce1ff13b46888",
+          "dirty": false,
+          "contentSha256": "6678b88a2163c7a0f8d32009364911ac8019d32a77e3268f264bec522d5b3da3",
+          "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+        },
+        "run": {
+          "id": "40468311476-1-validate",
+          "attempt": "1",
+          "githubRunId": "40468311476",
+          "repository": "102326/DoL-Game-UI",
+          "ref": "refs/heads/feature/4.1-ui-material-hub",
+          "event": "workflow_dispatch",
+          "workflow": "Kraft Work CI",
+          "job": "validate",
+          "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40468311476"
+        },
+        "nonce": "15047200f3c4c63dbf57cd8b249a8702",
+        "profile": "standard",
+        "catalog": {
+          "version": "1.3.0",
+          "profile": "standard",
+          "depth": "standard",
+          "expectedLockSha256": "70273e969d64c278f5df6b9d36eaf3dbacde7b7b6a48594247e7ac3cc5330cac",
+          "sha256": "c76be110adc4bff287fc69f23490fae64d00548cb0e69eec8248fa3388f888a1"
+        },
+        "pr": null,
+        "environment": {
+          "orderSeed": null,
+          "runnerImage": "ubuntu26",
+          "runnerImageVersion": "20261023.163.3",
+          "platform": "linux",
+          "arch": "x64",
+          "deviceDepth": "standard",
+          "node": "v26.12.1",
+          "npm": "11.20.0",
+          "python": "Python 3.12.15",
+          "playwright": "1.63.0",
+          "browser": "Pinned Playwright Chromium (browser suite)"
+        }
+      },
+      "status": "PASS",
+      "evidenceIntegrity": "COMPLETE",
+      "reasonCodes": [],
+      "problems": [],
+      "indexedFiles": 192,
+      "indexedBytes": 943377,
+      "uploadIndexSha256": "e8e6721f7bb03aafb00d766b87e4ebf67435768d02d0fa8492a4a1e07e9419a6",
+      "allFileDigestsMatch": true,
+      "summaryStatus": "PASS",
+      "omitted": []
+    },
+    "research": {
+      "profile": "research",
+      "runId": 40468315629,
+      "attempt": 1,
+      "workflow": "Motion Evolution prototype",
+      "event": "workflow_dispatch",
+      "source": {
+        "head": "c3b280fe67007766bd01b5c8b4340a9709a654cf",
+        "tree": "4d53eb5a9dbb248f0738cefa6d1ce1ff13b46888",
+        "dirty": false,
+        "contentSha256": "6678b88a2163c7a0f8d32009364911ac8019d32a77e3268f264bec522d5b3da3",
+        "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+      },
+      "identity": {
+        "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+        "source": {
+          "head": "c3b280fe67007766bd01b5c8b4340a9709a654cf",
+          "tree": "4d53eb5a9dbb248f0738cefa6d1ce1ff13b46888",
+          "dirty": false,
+          "contentSha256": "6678b88a2163c7a0f8d32009364911ac8019d32a77e3268f264bec522d5b3da3",
+          "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+        },
+        "run": {
+          "id": "40468315629-1-research",
+          "attempt": "1",
+          "githubRunId": "40468315629",
+          "repository": "102326/DoL-Game-UI",
+          "ref": "refs/heads/feature/4.1-ui-material-hub",
+          "event": "workflow_dispatch",
+          "workflow": "Motion Evolution prototype",
+          "job": "prototype",
+          "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40468315629"
+        },
+        "nonce": "1e91fb4b992acc7984044c9519bfaf0d",
+        "profile": "research",
+        "catalog": {
+          "version": "1.3.0",
+          "profile": "research",
+          "depth": "standard",
+          "expectedLockSha256": "70273e969d64c278f5df6b9d36eaf3dbacde7b7b6a48594247e7ac3cc5330cac",
+          "sha256": "ebf7c9c72d1e935feb4846763ea3db39abc4c071a599b54dc6e8b202b14c1004"
+        },
+        "pr": null,
+        "environment": {
+          "orderSeed": null,
+          "runnerImage": "ubuntu26",
+          "runnerImageVersion": "20261023.163.3",
+          "platform": "linux",
+          "arch": "x64",
+          "deviceDepth": "standard",
+          "node": "v26.12.1",
+          "npm": "11.20.0",
+          "python": "Python 3.14.4",
+          "playwright": "1.63.0",
+          "browser": "Pinned Playwright Chromium (browser suite)"
+        }
+      },
+      "status": "PASS",
+      "evidenceIntegrity": "COMPLETE",
+      "reasonCodes": [],
+      "problems": [],
+      "indexedFiles": 479,
+      "indexedBytes": 127601523,
+      "uploadIndexSha256": "a92c67d4b67ad0959493b847804e5342de19282b1b55fd3743a7958bd4c24419",
+      "allFileDigestsMatch": true,
+      "summaryStatus": "PASS",
+      "omitted": []
+    }
+  },
+  "downloadedBuild": {
+    "status": "PASS",
+    "sourceHead": "c3b280fe67007766bd01b5c8b4340a9709a654cf",
+    "runId": 40468311476,
+    "attempt": 1,
+    "zipFiles": 9,
+    "checksumEntries": 10,
+    "packageReportMatchesAnchoredEvidence": true,
+    "independentBuildInvocations": true,
+    "bothSnapshotsMatch": true,
+    "members": 56,
+    "actualArchivesMatchSnapshots": true,
+    "normalization": "Python date_time tuples encoded to JSON arrays, then strict full-object equality; initial direct tuple/list comparison was rejected.",
+    "scope": "Downloaded transport, package-report identity, existing Python archive_snapshot recomputation of content/compressed bytes/metadata. CI Python checker owns detailed version/dependency contracts; no game/device acceptance."
+  },
+  "researchArchiveTransport": {
+    "artifactId": 12717284566,
+    "bytes": 123179072,
+    "githubArchiveSha256": "486c98d784436bbf429815c4dd28ef0a6324f1912705baa8fd6d8a991254c37d",
+    "matched": true,
+    "backend": "GitHub connector cache of the same archive after slow direct transfer; no signed URL saved"
+  },
+  "priorRuns": {
+    "source": "0ede04260efdb95da32eb8df1bdc2fafd929e943",
+    "runs": [
+      40465953127,
+      40465957683
+    ],
+    "conclusion": "success",
+    "limit": "Before native picker Escape fix, not final-source evidence"
+  },
+  "limits": "Both final runs are workflow_dispatch on c3b280f, not PR or game/device acceptance. Detailed version/dependency/member contracts belong to the Python package checker; whole-run verifier checks identity, required structure and evidence consistency. Local archive_snapshot recomputed transport/content/compressed bytes/metadata against both retained snapshots. Subsequent closeout changes are documentation/evidence only."
+}

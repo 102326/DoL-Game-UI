@@ -1,5 +1,16 @@
 # 4.1 界面定型首批：7 / 6 / 5 与文字对齐
 
+## 最终研发交付状态
+
+最终运行代码为`76afc72`，包含报告/证据的验证提交为**c3b280fe67007766bd01b5c8b4340a9709a654cf**。标准[40468311476](https://github.com/102326/DoL-Game-UI/actions/runs/40468311476)与研究[40468315629](https://github.com/102326/DoL-Game-UI/actions/runs/40468315629)均为workflow_dispatch、Attempt1、success；各自独立下载验收成功，标准质量门成功。标准约14分27秒、研究约10分26秒，含环境准备；未改push触发范围或检查名。后续收口仅文档/证据，不能写成CI在后续HEAD实际执行。
+
+Mac完整下载复算：标准192文件/943,377字节、研究479文件/127,601,523字节；完整计划、源码、Run/Attempt、独立校验日志中的nonce/manifest锚点及逐文件大小/SHA相符，无遗漏。研究外层ZIP123,179,072字节匹配GitHub Artifact SHA，直连慢后经同一Artifact的连接器缓存完成，没有截断报告。9个开发ZIP与10条摘要通过，制品报告逐字节等同已锚定标准证据；两轮invocation不同，56成员的内容、压缩字节与全部元数据由现有Python archive_snapshot复算一致。初次直接比较Python tuple与JSON array不等，按原JSON编码规范化后严格比较，不放宽数据值或ZIP合同。
+
+标准37个unit入口、42个browser入口完整通过，包含新增真实picker Escape、清理/选择框composed合同；研究完整通过，含本轮菜单响应/打断。**精确版本、依赖和包合同由Python检查器执行；整轮汇总器核对身份、规定结构和一致性。** 详见[最终CI与下载收据](ui41-mac-20261027/final-ci-receipt.json)与[交接](../HANDOFF.md)。原始大证据和九ZIP不提交Git，Actions标准保留7天、研究14天；内部候选包仍使用4.0.1版本，不得当成正式新Release。
+
+当前本机批次已收口。新增菜单时序/选择框等待负责人体验；真实归一化catalog、完整游戏/ModHub安装更新、多Mod、Android触控/软键盘/返回键与GPU、Windows原生弹层仍待回家对应环境。没有正式接入ModHub算法候选、全局材质推广、Host迁移、main合并、4.1发布或保护规则变更。
+
+
 2026-10-27追加收口：原始V1冻结HTML已实际运行，在同1280×900预览的一次观察中，首次可见/展开完成/收起完成分别约514/748/650ms；新候选约11/244/233ms。见[观察数据](ui41-mac-20261027/hub-v1-observation.json)，原速录像只在本机outputs，不假定异机可见；这不是多轮性能基准或真机收益。
 
 新增修复 `76afc72`：真实原生可定制picker的Escape目标是OPTION。设置原key处理器抢先preventDefault，会让picker无法退出且外窗进入leaving；实际入口回归先超时拒绝旧实现。修复设置后又用真实layout捕获＋兼容窗口夹具复现同类问题。内部小函数`isOpenSelectEscape`让三个自有处理器（设置、layout捕获、商店详情）先放行浏览器收picker；第二次Escape仍按原路径关闭窗口/原生overlay/详情，backbutton合同不改。非Escape先返回，不新增全局监听、轮询或查询扫描。实际built启动组合及真实商店组件已通过，命令/源码见[补充收据](ui41-mac-20261027/escape-receipt.json)。不扩张为已验证所有第三方键盘业务。
