@@ -4,7 +4,7 @@
 
 ## Current — 当前状态
 
-- 分支 `feature/4.1-ui-material-hub`，实现 `8403c3a291e61acdcdfa33ac58463e04d919162e`，从干净且已同步的 `perf/4.1-panel-preparation` / `07b152c` 隔离。**尚未推送，无本批远端CI**；新设备不能假定GitHub已有本批提交。收口文档HEAD以实际Git为准。
+- 分支 `feature/4.1-ui-material-hub`，首批实现 `8403c3a`、最新材质修订 `ee36aaf`，从干净且已同步的 `perf/4.1-panel-preparation` / `07b152c` 隔离。**尚未推送，无本批远端CI**；新设备不能假定GitHub已有本批提交。收口文档HEAD以实际Git为准。
 - [本批报告](evolution/EVO-4.1-UI-765-2026-10-27.md)：原始V1＋连续通透度已提供隔离实际设置预览；compactStats退役/高级整理、双层扇形/菜单居中、文字原样/居中切换已形成研发候选。新材质只在专属review标记启用，尚未全局推广或取得本轮视觉裁决。
 - 产品仍为4.0.1 / `ff428b4`；main、Tag、Release、包版本、Host API及保护/bypass未改。旧性能候选与400目录退化继续保留，未宣称真实游戏性能通过。
 - 本地预览命令 `node scripts/preview-ui41.mjs`，默认5204；服务不会随Git跨机，机器路径只放忽略的HANDOFF.local.md。无玩家存档或完整游戏输入。
@@ -12,7 +12,7 @@
 ## Decided — 已确定与证据
 
 1. 原始V1 ZIP SHA `ef2109b81b6690abf60e615ba61c7ac8b04e07e862e5965c56e92269826cd9e0`，174负载摘要/CRC一致；源CSS f9758adb，冻结HTML b31d3732。原档案只读保留，未使用作废V2/轻盈方案。
-2. 材质50%锚定原V1：外壳.43、承载.28、预览.37、blur24px；0–100为候选范围，不是物理透射率。单外壳模糊、内层改着色，文字与整窗opacity不变。推广/性能验收另定。
+2. 最新材质默认60%锚定原V1：外壳.43、承载.28、预览.37、blur24px。0%为中性灰；100%恢复4.0.1设置外壳底色/无模糊/透明控件区，保留新布局边缘。不是单一alpha或物理透射率，感知连续性待体验。保存值保留，恢复默认切到60%；文字与整窗opacity不变。`ee36aaf`的tooling:check、typecheck及12个材质样本/保存回退合同通过，见[修订收据](evolution/ui41-20261027/material-range-r2.json)；旧50%收据为历史证据，推广/性能验收另定。
 3. 保留100/80ms开关、620ms分类、球体回旋、原节点单次派发、输入/焦点/资源清理。扇形五外圈＋三小内弧，无公共背板；网格有面板。正常空间相对球心居中，边界才避让。
 4. compactStats保留false兼容读值，但不能再激活；基础紧凑、手机按钮紧凑与宽幅正文保留。实验仍按原安全默认/独立开关。文字对齐仅已识别自有控件，不覆盖正文和未知第三方。
 5. Mac arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153.0.8010.12：ci:check、Framework构建、新材质/退役/对齐及既有settings-ci通过；最终Hub12检查点/48实际布局通过。输入8项/生命周期3项按本批未变源码复用。见[收据](evolution/ui41-20261027/receipt.json)与[报告](evolution/EVO-4.1-UI-765-2026-10-27.md)。不代表Windows、Actions、Android、游戏或性能验收。
