@@ -1,0 +1,90 @@
+{
+  "baseline": false,
+  "lateHost": false,
+  "legacySnow": false,
+  "source": "311f5fbac56d24eeb065018441757d3932c6dc12",
+  "workingTree": true,
+  "cssSha256": "76834b45a45c0d2d7375bd4a4522d8cdac4260ef8e4376238e17ba9a89ca885d",
+  "runtime": {
+    "platform": "darwin",
+    "node": "v26.12.1",
+    "chromium": "153.0.8010.12"
+  },
+  "checks": [
+    {
+      "name": "accepted actual entry, one renderer, no legacy layer or study controls",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous R10 and four levels",
+      "status": "PASS",
+      "detail": [
+        {
+          "level": "light",
+          "elapsedMs": 2180
+        },
+        {
+          "level": "normal",
+          "elapsedMs": 550
+        },
+        {
+          "level": "heavy",
+          "elapsedMs": 562
+        },
+        {
+          "level": "severe",
+          "elapsedMs": 678
+        }
+      ]
+    },
+    {
+      "name": "mid-snow reversal and throwing provider neutral fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "unchanged reading/close pixels, visible rain and real preference input",
+      "status": "PASS"
+    },
+    {
+      "name": "zoom, narrow rotation/resize and zero-size recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "motion off, hidden, close/reopen and dispose stop owned work",
+      "status": "PASS"
+    },
+    {
+      "name": "nativeNavigation uses new settings surface and removes it on close",
+      "status": "PASS"
+    },
+    {
+      "name": "partial material construction failure leaves usable static settings and no owned nodes",
+      "status": "PASS"
+    },
+    {
+      "name": "throwing cleanup remains observable while all surfaces and nodes retire",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "hashes": {
+    "framework/official-ui/navigation.ts": "7e09422db00408c584b4a99606ba62cb848c45e8dadb5fbc3d0f0d04c443fd6f",
+    "framework/official-ui/weather.ts": "8a6a0795816bf4cc7fb3ce8452b99243f48a88216a821c6233ce6350216f1f75",
+    "src/theme/SettingsPanel.vue": "10eba96d512b6a97514474f133e78e62d8f1b3c028316a9a1f82e8dc9f90b92b",
+    "src/theme/controller.ts": "9d401e502947bcaef7c804bf6abdd42861043ebcfc6327a25f4bf93e2d066e74",
+    "src/theme/settings-workspace.css": "491c728622f3b51bb0679807bfa66ad7b7645cb8031e485acd35ef0194acfce4",
+    "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+    "src/ui/weather/surface.ts": "43736ea3ffc9f19ce89a4355d4fbac930ed528707d45131804d49eb99c98b581",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "d23a37f483dc709c088a217f1d5730cc18451417f7eab29b8c0fbb25230188ba"
+  }
+}

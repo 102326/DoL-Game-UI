@@ -2,6 +2,8 @@
 
 接续索引：首轮现场数据保留如下；后续见[深度复核](EVO-4.1-PERF-DEEP-2026-10-26.md)、[Mac浏览器/A2结果](EVO-4.1-MAC-BROWSER-A2-2026-10-26.md)及低优先的[Host公共能力整合调查 EVO41-HOST-S01](EVO-4.1-HOST-SHARED-SURVEY-2026-10-26.md)。Host项只补充现有计划，未改变主线顺序或自动批准候选开发。
 
+2026-10-27更新：第7项通透度已获视觉认可，默认60%；按Issue #31新顺序接续第3项的[天气C1/C2结果](#第3项持续天气首轮c1c22026-10-27)。以下首轮调查保持原始日期和样本口径。
+
 2026-10-26。范围为负责人批准的调查与基线采样，未修改产品运行代码、Mod 包、偏好、启用组合或发布内容。此报告提出实施顺序，不表示优化已经实现。
 
 ## 建议先做什么
@@ -147,3 +149,26 @@ CPU 调用栈持续出现游戏 `Weather.Renderer` 的 `drawEffects`、粒子 `d
 2026-10-26 负责人已同意将上述优先顺序计入 4.1，已同步至规划 Issue #31。首批为 A／B，持续天气列第二批，游戏 Renderer 与原生宏渲染列后续研究批。下一步收敛首批具体方案、量化目标与兼容验收，再按授权实施；本次确认不启动运行代码修改。负责人后续已授权保存到 GitHub；报告和[可跨机复核资料](perf-4.1-evidence-20261026/README.md)在独立研究分支 `research/perf-4.1-baseline` 保存，原始证据仍保留在忽略目录。
 
 后续已补 UI 总开关交错对照、浏览器时间线和 Mac 离线用例，见[深度复核与 Mac 接续](EVO-4.1-PERF-DEEP-2026-10-26.md)。本报告表格保持首轮独立样本，不将两批数据混算；这里的未覆盖项按首轮口径记录。
+
+## 第3项：持续天气首轮C1/C2（2026-10-27）
+
+分支 `feature/4.1-ui-material-hub`，实现 `41b094a9cafba1f2765af3621001f845d5b5f3d0`，对照311f5fb。**保留C2小幅受控收益候选，拒绝C1；没有宣称天气热点已全部解决。** 通透度视觉接受见[当前UI报告](EVO-4.1-UI-765-2026-10-27.md)。未推送，无本批远端Run。
+
+已在[Issue #31更新本批简报](https://github.com/102326/DoL-Game-UI/issues/31#issuecomment-6433350304)。本地证据8个文件共27,607字节；归档C1补丁在临时目录重建后的摘要与实测候选一致，C2测量摘要也与提交源码一致，7项负载摘要复算通过。
+
+| 候选 | 实际改动与结果 | 裁决 |
+| --- | --- | --- |
+| C1 样式合写 | 水滴/湿痕每帧整段style提交；60帧属性记录18,646→4,657，单节点最多8→1次；但240帧受控TaskDuration中位374.95→398.24ms，6/6配对上升，样式重算34.58→88.01ms。 | **Reject，运行源码已撤回**；[补丁](perf-4.1-weather-20261027/c1-rejected.patch)、[全部测量](perf-4.1-weather-20261027/c1.json)与失败反例保留，不能将减少Mutation称作提速。 |
+| C2 碰撞轴预筛 | `src/ui/weather/rain-model.ts`仅在既有圆形检测前排除X/Y已分离的对，保留hypot终判、循环/合并顺序、种子、时间和轨迹。8×1000步完整快照逐帧相同，模型内hypot调用合计1,762,753→4,745。240帧TaskDuration中位367.85→357.86ms（约2.7%），配对差值中位−8.95ms，4/6对更小、2/6对更大。 | **Implemented / Mac Controlled Tested，研发候选**；[逐对结果](perf-4.1-weather-20261027/c2.json)。样本较少、收益较小，不能宣称统计显著性、Android提速或总体性能验收。 |
+
+两个实验分别交替顺序、2对预热舍弃＋6对有效样本；不可将两轮绝对耗时相减。环境Mac arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153.0.8010.12，960×700夹具、DPR1，固定240个1/60s模型步；每步强制布局flush以观察脚本/样式/布局总成本，无MutationObserver在计时区。它是受控同步重放，不是实时FPS、触控INP、GPU或完整游戏测试。C2没有减少DOM写入或样式重算次数，玻璃合成与原版天气仍未解决。
+
+C1的4,657条记录来自初轮写入探针；随后发现光照expando差异并恢复旧行为，最终归档patch与耗时结果是修正后的版本。两阶段源码摘要分别记在收据和c1.json，不混称同一源码验证。两次初期画面对照因此先被拒绝，修正光照及改用实际计算样式后，七组模型/像素比较才通过；未靠放宽原有断言取得通过。
+
+七组full-heavy/header-light/header-heavy/rain-to-snow/snow/rain-return/dry的模型、有效计算样式、Canvas像素及整页截图摘要严格相同；纯模型另覆盖两种种子、自然/线性轨迹、runoff开关、四档雨量、干湿切换和两次resize，共8000步。不是七种实机。C1研究曾发现旧`--drop-light`只是JS expando，未进入CSS；已保持旧行为，不将其顺手修成光照变化。单属性与整段解析还有约0.00001px的CSSOM文本序列化差别，故新增比较采用有效计算样式/像素严格判等；原有几何断言没有放宽。
+
+完成命令：`npm run ci:lock`；`npm run ci:check`；`node scripts/build-framework.mjs`；`node tests/evolution-rain-model.test.cjs`（7项）；`node tests/weather-dom-writes.cjs`（6项）；`node tests/evolution-weather-integration.cjs`（9检查点）；`node tests/ui41-weather-paint.cjs`。均最终退出0。最初静态检查检测到测试源码声明锁漂移，更新后仅源码摘要和断言位点38→39变化，没有删减用例。末尾预览说明文字更新后再次完成`npm run tooling:build`，不重复测量未变天气源码。见[源码/验证收据](perf-4.1-weather-20261027/receipt.json)及[摘要](perf-4.1-weather-20261027/SHA256SUMS.txt)。
+
+复现C2：锁定Node26与依赖，`npm run tooling:build && node tests/ui41-weather-paint.cjs`；需本地存在311f5fb对照提交。C1仅供隔离worktree复查：从311f5fb应用归档patch，使用当前测量工具的`--paint-only`模式；`weather-dom-writes --coalesced`是该已拒绝方案的定向探针，不是正式运行源码必须满足的新合同。不要在有未保存工作的目录应用研究补丁。
+
+接续：保留C2并按第2项检查已有ModHub候选的集成条件和大目录负结果；持续天气的真实游戏采样、GPU/合成、长期运行以及其它原版/Mod路径仍待对应环境。没有改天气模型规则、已认可雨雪材质/数量/速度、Host API、业务或存档；没有全局材质推广、main合并、版本修改或发布。

@@ -1,0 +1,65 @@
+{
+  "baseline": false,
+  "baselineRef": "178f8b2b5b1828038b7c3ec304e8995bbe99ee38",
+  "inputSha256": "d23a37f483dc709c088a217f1d5730cc18451417f7eab29b8c0fbb25230188ba",
+  "stationary": {
+    "mutations": 0,
+    "active": 76,
+    "nodesSame": true,
+    "snapshotSame": true
+  },
+  "moving": {
+    "writes": 18646,
+    "maxStyleWritesPerNode": 8,
+    "remounts": 0,
+    "nodesSame": true,
+    "advanced": true,
+    "geometry": true,
+    "geometryFailures": [],
+    "visible": 79,
+    "controlSame": true,
+    "overlap": 0
+  },
+  "header": {
+    "horizontalCanvas": 208,
+    "verticalCanvas": 168,
+    "snowCanvas": 700,
+    "restoredCanvas": 700,
+    "horizontal": {
+      "width": 960,
+      "height": 208,
+      "coverage": "header"
+    },
+    "vertical": {
+      "width": 960,
+      "height": 168,
+      "coverage": "header"
+    },
+    "restored": {
+      "width": 960,
+      "height": 700,
+      "coverage": "surface"
+    },
+    "physicalHeight": 208,
+    "geometry": true,
+    "quiet": 0,
+    "active": 27,
+    "beforeActive": 79,
+    "modelSame": true,
+    "fullHeight": 700,
+    "restoredActive": 79
+  },
+  "cadence": {
+    "coalesced": true,
+    "forcedHeight": 138,
+    "forcedAdvanced": true,
+    "nextAdvanced": true,
+    "motionOffAdvanced": true,
+    "full": 700
+  },
+  "dry": {
+    "writes": 0,
+    "left": 0
+  },
+  "status": "PASS"
+}
