@@ -9,6 +9,7 @@ declare const DoLMidnightTheme:Theme;
 declare const hubPreview:typeof import('../prototypes/evolution-integration/hub-preview').hubPreview;
 function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing material fixture');return value}
 (async()=>{
+ const {acrylicDefault}=await import('../src/theme/acrylic.ts');
  const {createUi41PreviewServer}=await import('../scripts/preview-ui41.mjs');
  const server=await createUi41PreviewServer(0),browser=await playwright.chromium.launch(browserOptions);
  const address=server.httpServer?.address();if(!address||typeof address==='string')throw Error('Missing review port');
@@ -21,20 +22,28 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing m
   await page.getByRole('button',{name:'材质',exact:true}).click();
   const slider=page.getByRole('slider',{name:'Acrylic 通透度',exact:true});await slider.waitFor();
   const sample=()=>page.evaluate(()=>{const n=document.querySelector<HTMLElement>('.dmt-settings-shell'),label=document.querySelector<HTMLElement>('.dmt-acrylic-control strong'),well=document.querySelector<HTMLElement>('.dmt-control-sheet');if(!n||!label||!well)throw Error('Missing material nodes');const c=getComputedStyle(n),r=n.getBoundingClientRect();return{background:c.backgroundColor,blur:c.backdropFilter,well:getComputedStyle(well).backgroundColor,textOpacity:getComputedStyle(label).opacity,textColor:getComputedStyle(label).color,opacity:c.opacity,rect:{x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom}}});
-  const baseline=await sample();let alpha=1;
-  for(const value of [0,25,50,75,100]){
-   await slider.fill(String(value));const actual=await sample(),next=Number(actual.background.match(/[\d.]+/g)?.[3]);
-   assert.ok(Number.isFinite(next)&&next<alpha,'outer surface continuously changes');alpha=next;
+  // The existing non-review cascade supplies the 4.0.1 material reference.
+  await page.evaluate(()=>document.documentElement.removeAttribute('data-evo41-material-review'));
+  const legacy=await sample();
+  await page.evaluate(()=>document.documentElement.setAttribute('data-evo41-material-review',''));
+  const baseline=await sample();
+  for(const value of [0,25,50,acrylicDefault,75,100]){
+   await slider.fill(String(value));const actual=await sample();
    assert.equal(actual.opacity,'1');assert.equal(actual.textOpacity,'1');assert.equal(actual.textColor,baseline.textColor);assert.deepEqual(actual.rect,baseline.rect);
-   assert.match(actual.blur,new RegExp(`blur\\(${20+value*.08}px\\)`),'full production cascade follows the blur axis');
+   if(value===0){
+    const shell=actual.background.match(/[\d.]+/g)!.slice(0,3).map(Number),well=actual.well.match(/[\d.]+/g)!.slice(0,3).map(Number);
+    assert.ok(Math.min(...shell)>=50&&Math.max(...shell)-Math.min(...shell)<=8,'dense endpoint is neutral gray, not near black');
+    assert.ok(Math.min(...well)>=45,'inner well must not re-blacken the gray endpoint');
+   }
+   if(value===100){assert.equal(actual.background,legacy.background);assert.equal(actual.blur,legacy.blur);assert.equal(actual.well,legacy.well,'clear endpoint restores 4.0.1 control-plane material');}
    assert.ok(actual.rect.x>=0&&actual.rect.right<=width+1&&actual.rect.bottom<=height+1,'shell fits viewport');
    rows.push({width,value,...actual});
-   if([0,50,100].includes(value))await page.screenshot({path:path.join(out,`material-${width}-${value}.png`)});
+   if([0,acrylicDefault,100].includes(value))await page.screenshot({path:path.join(out,`material-${width}-${value}.png`)});
   }
-  await page.getByRole('button',{name:'恢复默认通透度',exact:true}).click();assert.equal(await slider.inputValue(),'50');
+  await page.getByRole('button',{name:'恢复默认通透度',exact:true}).click();assert.equal(await slider.inputValue(),String(acrylicDefault));
   assert.match((await sample()).background,/0\.43/);assert.match((await sample()).well,/0\.28/);assert.match((await sample()).blur,/blur\(24px\)/);
-  await slider.focus();await page.keyboard.press('ArrowRight');assert.equal(await slider.inputValue(),'51');
-  await page.evaluate(()=>{DoLMidnightTheme.setPreference('acrylicTransparency',NaN);DoLMidnightTheme.setPreference('acrylicTransparency',Infinity)});assert.equal(await slider.inputValue(),'51');
+  await slider.focus();await page.keyboard.press('ArrowRight');assert.equal(await slider.inputValue(),String(acrylicDefault+1));
+  await page.evaluate(()=>{DoLMidnightTheme.setPreference('acrylicTransparency',NaN);DoLMidnightTheme.setPreference('acrylicTransparency',Infinity)});assert.equal(await slider.inputValue(),String(acrylicDefault+1));
   await page.evaluate(()=>DoLMidnightTheme.setPreference('acrylicTransparency',250));assert.equal(await slider.inputValue(),'100');
   await page.evaluate(()=>DoLMidnightTheme.setPreference('acrylicTransparency',-20));assert.equal(await slider.inputValue(),'0');
   await slider.fill('73');await page.getByLabel('玻璃模糊',{exact:true}).uncheck();assert.equal(await slider.isDisabled(),true);assert.equal((await sample()).blur,'none');
@@ -66,6 +75,6 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing m
  await p.evaluate(()=>{Storage.prototype.setItem=()=>{throw Error('controlled storage failure')};DoLMidnightTheme.setPreference('acrylicTransparency',23)});
  assert.equal(await p.evaluate(()=>DoLMidnightTheme.getPreferences().acrylicTransparency),23);assert.match(await p.locator('.dmt-settings-footer').innerText(),/无法保存/);await p.close();
  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({node:process.version,browser:browser.version(),scope:'Controlled source preview; no game, device, visual or performance acceptance',rows,errors},null,2));
- console.log('PASS material: original-V1 anchors, continuous range, input validation, storage/reload/failure, text opacity, modal input, master and cleanup; '+out);
+ console.log('PASS material: neutral-gray dense endpoint, V1 default, 4.0.1 clear endpoint, input validation, storage/reload/failure, text opacity, modal input, master and cleanup; '+out);
  }catch(error){fs.writeFileSync(path.join(out,'failure.txt'),String(error));throw error}finally{await browser.close();await server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

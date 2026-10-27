@@ -2,7 +2,7 @@
    Only anonymous owner selectors and continuous material parameters are rebound.
    Original archive remains immutable. Scoped to the isolated review until visual approval. */
 /* Q1: warm receiving edge, cool return edge, calm reading wells. No new blur loop. */
-html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment]{--q-key:232 216 186;--q-return:146 180 191;--q-edge:.25;--q-fill:rgb(20 24 27 / var(--dgu-acrylic-axis-shell-alpha,.43));--q-well:rgb(11 15 18 / var(--dgu-acrylic-axis-reading-alpha,.28));--q-angle:126deg;--q-cast:14px;--q-outline:rgb(180 202 203 / .065);--kw-shell:rgba(21,25,28,.46);--kw-island:rgba(16,21,25,.44);--sf-ink:#e8e9e7;--sf-muted:#a6b0b0}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment]{--q-key:232 216 186;--q-return:146 180 191;--q-edge:.25;--q-fill:rgb(var(--dgu-acrylic-axis-shell-rgb,20 24 27) / var(--dgu-acrylic-axis-shell-alpha,.43));--q-well:rgb(var(--dgu-acrylic-axis-reading-rgb,11 15 18) / var(--dgu-acrylic-axis-reading-alpha,.28));--q-angle:126deg;--q-cast:14px;--q-outline:rgb(180 202 203 / .065);--kw-shell:rgba(21,25,28,.46);--kw-island:rgba(16,21,25,.44);--sf-ink:#e8e9e7;--sf-muted:#a6b0b0}
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment][data-quartz-light=dusk]{--q-key:246 191 137;--q-return:143 163 201;--q-edge:.33;--q-angle:235deg;--q-cast:-13px}
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment][data-quartz-light=night]{--q-key:169 198 224;--q-return:144 175 166;--q-edge:.18;--q-angle:155deg;--q-fill:rgba(17,22,26,.49);--q-well:rgba(8,13,17,.24)}
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] body{background:radial-gradient(ellipse at 13% 0%,rgb(var(--q-key) / .14),transparent 48%),radial-gradient(ellipse at 86% 65%,#28525626,transparent 52%),linear-gradient(128deg,#20272c,#11171d 63%,#141b20);color:var(--sf-ink)}
@@ -17,13 +17,13 @@ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-ac
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #customOverlay,
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .dgshop-host,
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] .dgw-shell{
- background:radial-gradient(ellipse 85% 65% at 0% 0%,rgb(var(--q-key) / .052),transparent 64%),linear-gradient(var(--q-angle),rgb(var(--q-key) / .035),transparent 45%),var(--q-fill)!important;
+ background:linear-gradient(130deg,rgb(227 243 255 / var(--dgu-acrylic-axis-legacy-light,0)),transparent 56%),radial-gradient(ellipse 85% 65% at 0% 0%,rgb(var(--q-key) / calc(.052 * var(--dgu-acrylic-axis-v1-light,1))),transparent 64%),linear-gradient(var(--q-angle),rgb(var(--q-key) / calc(.035 * var(--dgu-acrylic-axis-v1-light,1))),transparent 45%),var(--q-fill)!important;
  border:1px solid rgb(var(--q-return) / .14)!important;
  box-shadow:inset 1px 1px 0 rgb(var(--q-key) / var(--q-edge)),inset -1px -1px 0 rgb(var(--q-return) / .12),inset 0 0 15px rgb(var(--q-return) / .025),var(--q-cast) 26px 65px #03080d59,0 4px 12px #02060b30!important;
  outline:1px solid var(--q-outline);outline-offset:-4px;border-radius:23px;
 }
 /* Keep sampling on the established material nodes; do not filter the input/scroll owner again. */
-html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment][data-dgu-visualGlass] #dol-midnight-controls>.dmt-settings-shell{backdrop-filter:blur(var(--dgu-acrylic-axis-blur,24px)) saturate(.78)!important;-webkit-backdrop-filter:blur(var(--dgu-acrylic-axis-blur,24px)) saturate(.78)!important}
+html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment][data-dgu-visualGlass] #dol-midnight-controls>.dmt-settings-shell{backdrop-filter:var(--dgu-acrylic-axis-filter,blur(24px) saturate(.78))!important;-webkit-backdrop-filter:var(--dgu-acrylic-axis-filter,blur(24px) saturate(.78))!important}
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls::backdrop{background:#030a101c;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-settings-header{position:relative;padding:24px 29px 19px;background:linear-gradient(var(--q-angle),rgb(var(--q-key) / .035),transparent 60%);border-bottom:1px solid #d5e4e20c}
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-settings-header h2{font-size:29px;font-weight:550;letter-spacing:-.025em;margin-top:6px}
@@ -40,7 +40,7 @@ html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-ac
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-control-sheet .dgu-setting-description{color:#9da9aa}
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-reading-sample,
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-preview-lab{
- background:linear-gradient(var(--q-angle),rgb(var(--q-key) / .065),transparent 78%),rgb(28 38 42 / var(--dgu-acrylic-axis-preview-alpha,.37))!important;
+ background:linear-gradient(var(--q-angle),rgb(var(--q-key) / .065),transparent 78%),rgb(var(--dgu-acrylic-axis-preview-rgb,28 38 42) / var(--dgu-acrylic-axis-preview-alpha,.37))!important;
  border:1px solid rgb(var(--q-return) / .13)!important;box-shadow:inset 1px 1px 0 rgb(var(--q-key) / .14),inset -1px -1px 0 rgb(var(--q-return) / .06),3px 9px 22px #03080e20!important;border-radius:17px;backdrop-filter:none!important;
 }
 html[data-stone-free][data-dol-midnight][data-evo41-material-review][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-settings-footer{border-color:#c4d8d70d;background:#0b13181a;color:#a6b4b2}
