@@ -1,5 +1,7 @@
 # Soft & Wet 4.1 — 跨设备当前交接
 
+2026-10-27最新顺序：**7 → 6 → 5 → 3 → 2 → 1 → 4 → 8 → 9**，分为界面定型、性能主线、可靠性与整体验收。默认原始V1，低通透端参考Strata／Smoked Quartz，高通透端参考4.0.1；统一材质语言，不拆成三套皮肤。状态为待实现，原始V1留档不变；先做连续调节预览，确认后按范围整合，必要功能／性能检查随批进行。先完成7材质、6设置精简、5双层扇形，再进入3／2／1／4性能阶段；第6项保留独立手机紧凑按钮间距，撤销的是侧栏紧凑状态间距；详见[更新后的计划](superpowers/plans/2026-10-26-evo41-first-batch-proposal.md)。以下运行实现与CI证据仍按原日期读取。
+
 更新：2026-10-26。当前实现分支 `perf/4.1-panel-preparation`，从 `research/perf-4.1-baseline`／`936ec63288f1e6f66314cde84cebb17c8e77adee` 隔离。关联Issue #31。负责人在审阅[首批计划](superpowers/plans/2026-10-26-evo41-first-batch-proposal.md)后回复“可以，开始推进吧”。以下为局部候选，不是性能验收或发布完成。
 
 ## Current — 当前状态
@@ -30,6 +32,8 @@
 14. 本批实现db9d8d2：手动[标准40274564553](https://github.com/102326/DoL-Game-UI/actions/runs/40274564553)／[研究40274568700](https://github.com/102326/DoL-Game-UI/actions/runs/40274568700)均success、Attempt1，两套独立下载核验PASS／COMPLETE。标准192项937717字节本机逐项摘要匹配、遗漏0，37项unit／42项browser均PASS，九个下载ZIP与两轮不同invocation合同摘要相符。研究只本机下载独立收据，完整媒体由远端核验；Mac不冒称复算了研究媒体。见[本批最终收据](evolution/perf-4.1-a2-order-20261026/final-ci-receipt.json)。标准14分43秒、研究11分04秒；Actions为Linux x64／Ubuntu26，Mac和Android范围分开。后置文档提交复用未变实现证据，不为仅文档再跑全套。
 
 ## Next — 接续顺序
+
+当前按7／6／5完成界面阶段；其后按3／2／1／4接续性能，再8／9收口。以下是性能阶段的接续依据，按上述新顺序读取；未变源码的有效证据继续复用。总跟踪仍为Issue #31，子任务随批按需拆分，不重复建单。
 
 1. 先保留工作，fetch同名研发分支，核对HEAD／工作区／origin与本机领先落后及实际Node、锁与浏览器。不要默认切回旧dev/evolution-4.0，不覆盖或强推。
 2. B浏览器候选保持未整合；下一步核对实际catalog规模／别名及描述分布，评审已生成的上游闭包内补丁。现有公开getMarketMods可作为后续有游戏环境的读取入口；不替换导出API冒充覆盖内部热点，不静默塞入视觉Adapter。容量上限和400档继续保留。
