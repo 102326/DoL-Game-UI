@@ -32,8 +32,8 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing m
    assert.equal(actual.opacity,'1');assert.equal(actual.textOpacity,'1');assert.equal(actual.textColor,baseline.textColor);assert.deepEqual(actual.rect,baseline.rect);
    if(value===0){
     const shell=actual.background.match(/[\d.]+/g)!.slice(0,3).map(Number),well=actual.well.match(/[\d.]+/g)!.slice(0,3).map(Number);
-    assert.ok(Math.min(...shell)>=50&&Math.max(...shell)-Math.min(...shell)<=8,'dense endpoint is neutral gray, not near black');
-    assert.ok(Math.min(...well)>=45,'inner well must not re-blacken the gray endpoint');
+    assert.ok(Math.min(...shell)>=42&&Math.max(...shell)<=52&&Math.max(...shell)-Math.min(...shell)<=5,'dense endpoint is subdued neutral gray, neither bright nor near black');
+    assert.ok(Math.min(...well)>=36&&Math.max(...well)<=46,'inner well stays subdued gray without re-blackening the endpoint');
    }
    if(value===100){assert.equal(actual.background,legacy.background);assert.equal(actual.blur,legacy.blur);assert.equal(actual.well,legacy.well,'clear endpoint restores 4.0.1 control-plane material');}
    assert.ok(actual.rect.x>=0&&actual.rect.right<=width+1&&actual.rect.bottom<=height+1,'shell fits viewport');
