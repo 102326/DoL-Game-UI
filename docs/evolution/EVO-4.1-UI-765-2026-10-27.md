@@ -1,5 +1,12 @@
 # 4.1 界面定型首批：7 / 6 / 5 与文字对齐
 
+2026-10-27追加收口：原始V1冻结HTML已实际运行，在同1280×900预览的一次观察中，首次可见/展开完成/收起完成分别约514/748/650ms；新候选约11/244/233ms。见[观察数据](ui41-mac-20261027/hub-v1-observation.json)，原速录像只在本机outputs，不假定异机可见；这不是多轮性能基准或真机收益。
+
+新增修复 `76afc72`：真实原生可定制picker的Escape目标是OPTION。设置原key处理器抢先preventDefault，会让picker无法退出且外窗进入leaving；实际入口回归先超时拒绝旧实现。修复设置后又用真实layout捕获＋兼容窗口夹具复现同类问题。内部小函数`isOpenSelectEscape`让三个自有处理器（设置、layout捕获、商店详情）先放行浏览器收picker；第二次Escape仍按原路径关闭窗口/原生overlay/详情，backbutton合同不改。非Escape先返回，不新增全局监听、轮询或查询扫描。实际built启动组合及真实商店组件已通过，命令/源码见[补充收据](ui41-mac-20261027/escape-receipt.json)。不扩张为已验证所有第三方键盘业务。
+
+前置源码`0ede042`的标准[40465953127](https://github.com/102326/DoL-Game-UI/actions/runs/40465953127)与研究[40465957683](https://github.com/102326/DoL-Game-UI/actions/runs/40465957683)均成功；**它们不包含76afc72，不能作为最终Escape修复证据**。最终源码双CI另行手动执行并按HANDOFF记录。
+
+
 ## Mac收口与菜单响应候选（2026-10-27）
 
 代码 `3554456`（共享原生选择框、HC-07）、`557f9f7`（菜单响应），ModHub研究另见[B3接续](EVO-4.1-MODHUB-B3-2026-10-27.md)。以下旧“尚未实施”按日期读取，本节覆盖当前本机交付状态。正式版本仍4.0.1；main、Tag、Release、Host协议与远端规则不改。

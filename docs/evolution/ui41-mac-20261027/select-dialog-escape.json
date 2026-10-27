@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "pickerEscapeKeepsDialogOpen": true,
+  "focusRestored": true,
+  "nextEscapeClosesDialog": true,
+  "chromium": "153.0.8010.12",
+  "scope": "Actual source settings/native picker; Chromium only. Before fix Escape was intercepted and picker did not close."
+}

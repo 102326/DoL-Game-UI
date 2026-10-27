@@ -1,0 +1,40 @@
+{
+  "rows": [
+    {
+      "id": "v1",
+      "timing": {
+        "open": {
+          "firstVisibleMs": 514.2999999523163,
+          "settledMs": 747.6000000238419
+        },
+        "close": {
+          "firstVisibleMs": 16.299999952316284,
+          "settledMs": 650.0999999046326
+        }
+      },
+      "closed": "closed",
+      "urlPath": "/tests/artifacts/ui41/v1-hub-reference/candidate-v1.html"
+    },
+    {
+      "id": "current",
+      "timing": {
+        "open": {
+          "firstVisibleMs": 11.099999904632568,
+          "settledMs": 244.39999997615814
+        },
+        "close": {
+          "firstVisibleMs": 17.299999952316284,
+          "settledMs": 233.29999995231628
+        }
+      },
+      "closed": "closed",
+      "urlPath": "/"
+    }
+  ],
+  "environment": {
+    "node": "v26.12.1",
+    "chromium": "153.0.8010.12",
+    "platform": "darwin"
+  },
+  "scope": "Actual frozen V1 HTML and current actual-component preview; same1280x900 original-speed operations. Single observation, not a performance benchmark or game/device acceptance."
+}
