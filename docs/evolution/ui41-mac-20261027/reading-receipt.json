@@ -4,7 +4,7 @@
     "EVO41-UI-HELP-01"
   ],
   "base": "7d61a7e",
-  "source": "sha256 map; final commit and CI recorded in report after push",
+  "source": "runtime implemented at137a89c; exact final CI source47a6a1e; subsequent delivery changes are documents/receipts only",
   "environment": {
     "platform": "macOS arm64",
     "node": "26.12.1",
@@ -357,7 +357,7 @@
   },
   "limitations": [
     "No real game/player save or Android/WebView/Windows validation.",
-    "Historical settings-orbit, input-boundary, modal-scroll and unified tests require absent tests/fixture.html; not reported passing.",
+    "Historical settings-orbit, input-boundary, modal-scroll, settings-workspace and unified tests require absent tests/fixture.html; not reported passing.",
     "npm run framework:build exits 127 because python command is absent; built code and python3 packaging run separately.",
     "An early settings run was invalidated by editing source during Vite HMR; final frozen-source run passes.",
     "Initial tests referred to retired controls; input assertions migrated to active control, not removed.",
@@ -388,5 +388,160 @@
       "assertionResult": "old35ms oracle rejected a legally settling UI"
     },
     "fix": "test-only: real paused80ms close, actual cancellation, same node/one backdrop/published/action counts; bounded3sec wait; both paragraphs exact pixels. Runtime motion and CI workflows untouched."
+  },
+  "ciFinal": {
+    "testedCommit": "47a6a1e5255eed2a1106a30d513dd4a02ba0e954",
+    "runtimeCommit": "137a89c41986cd0394d2cf45ecfc2469bc1aa6ae",
+    "trigger": "workflow_dispatch",
+    "standard": {
+      "runId": 40485371464,
+      "attempt": 1,
+      "status": "PASS",
+      "source": {
+        "head": "47a6a1e5255eed2a1106a30d513dd4a02ba0e954",
+        "tree": "6d1284b31cf024207c185ead80583f3c0b5c72fb",
+        "dirty": false,
+        "contentSha256": "01f37422a8dff97e017280afc1f339af32c62f480610b39dbc174bf9d361229d",
+        "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+      },
+      "remoteVerification": {
+        "schema": 1,
+        "identity": {
+          "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+          "source": {
+            "head": "47a6a1e5255eed2a1106a30d513dd4a02ba0e954",
+            "tree": "6d1284b31cf024207c185ead80583f3c0b5c72fb",
+            "dirty": false,
+            "contentSha256": "01f37422a8dff97e017280afc1f339af32c62f480610b39dbc174bf9d361229d",
+            "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+          },
+          "run": {
+            "id": "40485371464-1-validate",
+            "attempt": "1",
+            "githubRunId": "40485371464",
+            "repository": "102326/DoL-Game-UI",
+            "ref": "refs/heads/feature/4.1-ui-material-hub",
+            "event": "workflow_dispatch",
+            "workflow": "Kraft Work CI",
+            "job": "validate",
+            "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40485371464"
+          },
+          "nonce": "44296288469adeb5f5bd7ad8e6e4854c",
+          "profile": "standard",
+          "catalog": {
+            "version": "1.3.0",
+            "profile": "standard",
+            "depth": "standard",
+            "expectedLockSha256": "d65b79089f5dfbf76c639da0fb7b8493175899488f3b117773faee733d83862d",
+            "sha256": "8f08d0823cdd9fb225f1cd9f8795972797a8a0992473f0b401bb4c8d64eeb77b"
+          },
+          "pr": null,
+          "environment": {
+            "orderSeed": null,
+            "runnerImage": "ubuntu26",
+            "runnerImageVersion": "20261023.163.3",
+            "platform": "linux",
+            "arch": "x64",
+            "deviceDepth": "standard",
+            "node": "v26.12.1",
+            "npm": "11.20.0",
+            "python": "Python 3.12.15",
+            "playwright": "1.63.0",
+            "browser": "Pinned Playwright Chromium (browser suite)"
+          }
+        },
+        "status": "PASS",
+        "assertionResult": "PASS",
+        "evidenceIntegrity": "COMPLETE",
+        "reasonCodes": [],
+        "problems": [],
+        "remoteVerificationMs": 50
+      },
+      "macVerification": {
+        "indexedFiles": 192,
+        "indexedBytes": 959879,
+        "allDigestsMatch": true,
+        "manifestSha256": "41bf826f93971ac2cf64b01cc4b2dfc0c4679e2c290a854b9e7b5d1749852720",
+        "omitted": [],
+        "status": "PASS",
+        "evidenceIntegrity": "COMPLETE"
+      }
+    },
+    "research": {
+      "runId": 40485378609,
+      "attempt": 1,
+      "status": "PASS",
+      "source": {
+        "head": "47a6a1e5255eed2a1106a30d513dd4a02ba0e954",
+        "tree": "6d1284b31cf024207c185ead80583f3c0b5c72fb",
+        "dirty": false,
+        "contentSha256": "01f37422a8dff97e017280afc1f339af32c62f480610b39dbc174bf9d361229d",
+        "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+      },
+      "artifactId": 12725772774,
+      "artifactSha256": "b0355a452e488fbbb7d0e1c3ccb16dff2a77c4bc053ef9cd60cae8b888e37c86",
+      "manifestSha256": "a6c06cb80047c54ce2fbe5425547dda067c3f19d4f1aca749e603d12134e0828",
+      "remoteVerification": {
+        "schema": 1,
+        "identity": {
+          "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+          "source": {
+            "head": "47a6a1e5255eed2a1106a30d513dd4a02ba0e954",
+            "tree": "6d1284b31cf024207c185ead80583f3c0b5c72fb",
+            "dirty": false,
+            "contentSha256": "01f37422a8dff97e017280afc1f339af32c62f480610b39dbc174bf9d361229d",
+            "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+          },
+          "run": {
+            "id": "40485378609-1-research",
+            "attempt": "1",
+            "githubRunId": "40485378609",
+            "repository": "102326/DoL-Game-UI",
+            "ref": "refs/heads/feature/4.1-ui-material-hub",
+            "event": "workflow_dispatch",
+            "workflow": "Motion Evolution prototype",
+            "job": "prototype",
+            "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40485378609"
+          },
+          "nonce": "bc2faae4dd2d52bd5c926e191254a156",
+          "profile": "research",
+          "catalog": {
+            "version": "1.3.0",
+            "profile": "research",
+            "depth": "standard",
+            "expectedLockSha256": "d65b79089f5dfbf76c639da0fb7b8493175899488f3b117773faee733d83862d",
+            "sha256": "cb7ebf9690e26bcaa1acd1ada34604c5123d598868f57600e8858d013be8bc79"
+          },
+          "pr": null,
+          "environment": {
+            "orderSeed": null,
+            "runnerImage": "ubuntu26",
+            "runnerImageVersion": "20261023.163.3",
+            "platform": "linux",
+            "arch": "x64",
+            "deviceDepth": "standard",
+            "node": "v26.12.1",
+            "npm": "11.20.0",
+            "python": "Python 3.14.4",
+            "playwright": "1.63.0",
+            "browser": "Pinned Playwright Chromium (browser suite)"
+          }
+        },
+        "status": "PASS",
+        "assertionResult": "PASS",
+        "evidenceIntegrity": "COMPLETE",
+        "reasonCodes": [],
+        "problems": [],
+        "remoteVerificationMs": 414
+      },
+      "macScope": "Independent CI verifier receipt downloaded and checked against GitHub archive SHA and verifier-log anchors. Full research media archive not re-downloaded to Mac."
+    },
+    "scope": "Both exact-source workflows and their independent download verification passed. Standard complete evidence also recomputed on Mac. Research full media not re-downloaded to Mac; its independent CI receipt was verified."
+  },
+  "testReview": {
+    "model": "gpt-6.1-terra",
+    "effort": "xhigh",
+    "mode": "read only; no independent rerun",
+    "result": "midpoint pause/cancel/same-backdrop and every-paragraph pixel assertions preserve strength; 3-second bounded wait and finally cleanup close the identified hang risk"
   }
 }
