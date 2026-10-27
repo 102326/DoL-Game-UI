@@ -1,0 +1,84 @@
+{
+  "sourceCommit": "8403c3a291e61acdcdfa33ac58463e04d919162e",
+  "tree": "a347868b84ee4a193d7eeed6a2a1b33d8774085a",
+  "sourceFilesSha256": {
+    ".gitignore": "4f2852f83a3b98fe588b51b6b6175bf7c3c86af5cc23afcc27fe461d21087977",
+    "docs/superpowers/plans/2026-10-27-ui41-material-settings-hub.md": "86057dfd48d707c00b391fac12b38e605a6c2b56224d9543d01cec66a97c5d41",
+    "framework/motion-hub/MotionHub.vue": "a94c3a468082ca7981b6f48998d77b73710eb5490b2b355396f0bf3fb1ec98cd",
+    "framework/motion-hub/geometry.ts": "d741e4c539421cbd8a592ff6b812fc56b28949cc17b3c2100256fa430ae4e900",
+    "framework/motion-hub/style.css": "fef53f1c24df38f8bcdeed2481581145e3c62eab05878ebd0547afbdde33b42c",
+    "prototypes/evolution41-ui/main.ts": "613d9bc8d0bb26a2d1c7babd39229ec089e0ea6ad88c2eff6b0a952a471d7525",
+    "scripts/expected.lock.json": "7ea4451cb1e5708c9e5396d6d624957fd3b4bfeaabf69d314dcc4cb48287dccb",
+    "scripts/preview-ui41.mts": "277501527c623c119333b726828a422ece223c00c26c8655fa3153c13b970109",
+    "src/theme/AcrylicControls.vue": "674bb6e5d86a9f93242a1f7175b9e48d92863b80e8417751de8ebfc2521bf920",
+    "src/theme/SettingsPanel.vue": "10eba96d512b6a97514474f133e78e62d8f1b3c028316a9a1f82e8dc9f90b92b",
+    "src/theme/acrylic-adjustment.css": "69ee0c9b16295a37a892dbfdde5f8df7cf5a124429209c5a7a01a06653307671",
+    "src/theme/acrylic-v1.css": "0389f74f20bdad62081768fc5bb61d26b5e70e4166d6193c783dcb6366769419",
+    "src/theme/acrylic.ts": "e16f4c77fbc9f7d65231e14b01b41baf9ed08f9f438bd2dbb23a6f770f94bf64",
+    "src/theme/controller.ts": "9d401e502947bcaef7c804bf6abdd42861043ebcfc6327a25f4bf93e2d066e74",
+    "src/theme/layout.css": "44b4ee76663463511a7f0776794422a72af6d881e6cc99d35d7918d1dca69560",
+    "src/theme/layout.ts": "d45dea9144629fd5ff491102674f9cc6a474fecaa91241cec0569e65e9e61000",
+    "src/theme/option-alignment.css": "94005eae4ce2299bd06ff0cab3c088a8ef68c734e1a07ea61c1afc486d8bab93",
+    "src/theme/preferences.ts": "8568b597286ec6d4d15a7967943c3f967a996c84ecab3b4b0767af7799e8ae27",
+    "src/ui/golden-spin/hub.css": "a28cbfd9a1f7ae3d31b17917415baec065e3fa566d5126e01aa589c9868ff8ce",
+    "tests/evolution-hub-integration.cts": "4e9ddc68463cee7a39464d8c893a75a9c848b45382c87675fec44481b8274634",
+    "tests/framework-motion.cts": "6ff23137e51681857fab5ed1097d4a9eecc6360b627cf495c4c49cc67ad6016e",
+    "tests/ui41-material.cts": "b2beccf770022fadea6a7a67549655dee58b322040de873e2881de0916fe858b",
+    "tests/ui41-option-alignment.cts": "6991c2b0837ab1f86b24c95b5f551170d6b5572735f9b4e1186ea81a44dbc0ec",
+    "tests/ui41-settings-retirement.cts": "883bd18ccd84526ef345ca328bc4572b4f3f645a215572b224eb09c795d80a63",
+    "tsconfig.preview-pages.json": "fe50217c4ddd94a12467612efaa6cb3e7ec8c276afb8356580b39ac8fe4221d8"
+  },
+  "originalV1": {
+    "zip": "SoftWet-UI-Design-V1-20261027.zip",
+    "sha256": "ef2109b81b6690abf60e615ba61c7ac8b04e07e862e5965c56e92269826cd9e0",
+    "checkedPayloads": 174,
+    "quartzCssSha256": "f9758adb1d3c69fe991f3de049d3d2b4ca634f2f9a9521f5c3f1609bbc99325d",
+    "frozenHtmlSha256": "b31d3732707b3d9dfdde1c3c3a0de9694914e4d51a1d02d2847cbcbe6fe3a864"
+  },
+  "environment": {
+    "platform": "macOS arm64",
+    "node": "26.12.1",
+    "playwright": "1.63.0",
+    "chromium": "153.0.8010.12"
+  },
+  "completedChecks": [
+    {
+      "command": "npm run ci:lock && npm run ci:check && node scripts/build-framework.mjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/ui41-material.cjs",
+      "exit": 0,
+      "scope": "Final V1 review with actual source and full production stylesheet; includes corrected axis blur and Hub glass-off fallback"
+    },
+    {
+      "command": "node tests/ui41-settings-retirement.cjs && node tests/ui41-option-alignment.cjs && node tests/settings-ci.cjs",
+      "exit": 0,
+      "scope": "Retirement, targeted alignment and inherited settings/weather contracts; later material-only CSS changes are review-gated and checked by final material run"
+    },
+    {
+      "command": "node tests/evolution-hub-integration.cjs",
+      "exit": 0,
+      "checkpoints": 12,
+      "renderedLayouts": 48
+    },
+    {
+      "command": "node tests/golden-spin-hub-input.cjs",
+      "exit": 0,
+      "scope": "8 checks; unchanged input implementation reused after only inner-arc CSS correction"
+    },
+    {
+      "command": "node tests/golden-spin-hub-lifecycle.cjs",
+      "exit": 0,
+      "scope": "3 checks; unchanged lifecycle implementation reused"
+    }
+  ],
+  "review": "Independent read-only review identified local blur shadowing and important-fill fallback conflicts; both fixed and covered by final material run. No additional confirmed blocker.",
+  "limitations": [
+    "Material is isolated behind data-evo41-material-review; no product-wide material rollout",
+    "No new remote Actions run or PR checks",
+    "No real game, Android/WebView, multi-Mod or comparative performance acceptance",
+    "Legacy Hub result.source names the pre-commit working-tree base; source identity for this delivery is this receipt and per-file hashes, not an assertion that the base commit contains the new changes"
+  ],
+  "synchronization": "Local development commit only; not pushed"
+}

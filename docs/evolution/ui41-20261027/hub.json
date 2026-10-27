@@ -1,0 +1,73 @@
+{
+  "source": "07b152ca9b6ccadb764e72a8241a484e36ae82a7",
+  "workingTree": true,
+  "executedOverrides": {},
+  "faultInjection": null,
+  "runtime": {
+    "platform": "darwin",
+    "node": "v26.12.1",
+    "chromium": "153.0.8010.12"
+  },
+  "checks": [
+    {
+      "name": "actual official registration",
+      "status": "PASS"
+    },
+    {
+      "name": "menu background fades with its owned shell and disappears on close",
+      "status": "PASS"
+    },
+    {
+      "name": "preview style isolation and scrollbar-free scrolling",
+      "status": "PASS"
+    },
+    {
+      "name": "actual settings action once during movement and protected real settings",
+      "status": "PASS"
+    },
+    {
+      "name": "actual glass preference gates the new shell",
+      "status": "PASS"
+    },
+    {
+      "name": "native whitelist single action, unavailable fallback and third-party view",
+      "status": "PASS"
+    },
+    {
+      "name": "keyboard, latest intent, drag cancel and docking",
+      "status": "PASS"
+    },
+    {
+      "name": "zoom, rotation, finite geometry and reachable tools",
+      "status": "PASS"
+    },
+    {
+      "name": "hidden scene, zero-size, motion preference and owner release",
+      "status": "PASS"
+    },
+    {
+      "name": "partial visual construction failure preserves classic actual Hub",
+      "status": "PASS"
+    },
+    {
+      "name": "observer constructor failure leaves no appended canvas",
+      "status": "PASS"
+    },
+    {
+      "name": "peer clock survives Hub teardown and throwing cleanup retires every owned node",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "hashes": {
+    "framework/motion-hub/MotionHub.vue": "a94c3a468082ca7981b6f48998d77b73710eb5490b2b355396f0bf3fb1ec98cd",
+    "framework/motion-hub/README.md": "816f28666634efdbfd429db2bcd310bc578ee79b6586658a80b23506281ddb20",
+    "framework/motion-hub/geometry.ts": "d741e4c539421cbd8a592ff6b812fc56b28949cc17b3c2100256fa430ae4e900",
+    "framework/motion-hub/main.ts": "14059bca19c75196d4f9162070250eb22b3ab2eb546b3817d9647f079915734a",
+    "framework/motion-hub/style.css": "fef53f1c24df38f8bcdeed2481581145e3c62eab05878ebd0547afbdde33b42c",
+    "framework/official-ui/hub.ts": "5ca440120396db101f95fc04fb85cae673c7062eac4bacaffe51bc9786467127",
+    "src/ui/golden-spin/hub-motion.ts": "620a7757a495693e4a3727838c6818ad071f0556cb270a99ad7917eb0d3283c5",
+    "src/ui/golden-spin/hub.css": "a28cbfd9a1f7ae3d31b17917415baec065e3fa566d5126e01aa589c9868ff8ce",
+    "src/ui/golden-spin/sphere.ts": "e8864236eb5edec50a8a14a48b5de3f8871ae2fdb8311b5dd533d90c671ad70a"
+  }
+}
