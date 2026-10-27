@@ -27,7 +27,7 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
  const server=await createServer({configFile:path.resolve('vite.golden-spin.config.ts'),plugins:baseline?[{name:'frozen-hub-input-baseline',enforce:'pre',load(id){if(id.replaceAll('\\','/').endsWith('/prototypes/golden-spin-b/hub-motion.ts'))return old}}]:[],server:{port:5184,strictPort:true}});await server.listen();
  const browser=await chromium.launch(process.platform==='win32'?{channel:'msedge',headless:true}:{headless:true});
  type PointerEvidence={before:{x:number;y:number;pointer:string;tab:number;hit:boolean};press:HubState;held:HubState;after:HubState;native:number;calls:string[];sameNode:boolean};
- const evidence:{baseline:boolean;revision:string;checks:string[];errors:string[];pointer?:PointerEvidence;reversal?:Awaited<ReturnType<typeof reverseHub>>;failure?:string;state?:HubState|null}={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p:playwright.Page|undefined;
+ const evidence:{baseline:boolean;revision:string;checks:string[];errors:string[];pointer?:PointerEvidence;keyboard?:{before:HubState;held:HubState};reversal?:Awaited<ReturnType<typeof reverseHub>>;failure?:string;state?:HubState|null}={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p:playwright.Page|undefined;
  const check=async(name:string,fn:()=>Promise<void>)=>{await runCase(name,fn);evidence.checks.push(name);console.log('PASS',name)};
  try{
   p=await browser.newPage({viewport:{width:1280,height:900},hasTouch:true});const page=p;page.on('pageerror',e=>evidence.errors.push(e.message));
@@ -44,13 +44,14 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
    evidence.pointer={before,press,held,after:await inspect(),native:await page.evaluate(()=>nativeToolClicks),calls:await page.evaluate(()=>goldenSpinLab.recorded.value.slice()),sameNode:await tool.evaluate(n=>n===originalTool)};
    fs.writeFileSync(path.join(out,'pointer.json'),JSON.stringify(evidence.pointer,null,2));
    assert.ok(before.hit&&before.pointer!=='none'&&before.tab===0,'visible tools must not be locked until the whole animation ends');
-   assert.ok(Math.abs(held.q-press.q)<.015,'hold the current pose during the pointer transaction');
+   assert.ok(press.moving&&press.paused&&press.pressed&&press.q>0&&press.q<1,'pointer press must occur during a paused opening, not after it');
+   assert.ok(held.moving&&held.paused&&Math.abs(held.q-press.q)<.015,'hold the current pose during the pointer transaction');
    assert.equal(evidence.pointer.native,1);assert.deepEqual(evidence.pointer.calls,['interface-settings']);assert.ok(evidence.pointer.sameNode);
    await closed();assert.equal(await page.locator('.sf-motion-sheet').getAttribute('aria-hidden'),'false');
    assert.ok(await page.locator('.sf-motion-sheet h2').evaluate(n=>n===document.activeElement));await page.screenshot({path:path.join(out,'pointer-tool-open.png')});
   });
   await check('H3 keyboard activation and cancel during opening retain native focus and single activation',async()=>{
-   await page.getByRole('button',{name:'返回工具',exact:true}).click();await mid();await keyboardTool();const before=await inspect();await page.waitForTimeout(100);assert.ok(Math.abs((await inspect()).q-before.q)<.015);
+   await page.getByRole('button',{name:'返回工具',exact:true}).click();await mid();await keyboardTool();const before=await inspect();await page.waitForTimeout(100);const held=await inspect();evidence.keyboard={before,held};assert.ok(before.moving&&before.paused&&before.q>0&&before.q<1,'keyboard focus must pause an in-progress opening');assert.ok(held.moving&&held.paused&&Math.abs(held.q-before.q)<.015);
    await tool.press('Enter');await closed();assert.equal(await page.evaluate(()=>nativeToolClicks),2);assert.equal(await page.evaluate(()=>goldenSpinLab.recorded.value.length),2);
    await page.getByRole('button',{name:'返回工具',exact:true}).click();await mid();await keyboardTool();await tool.press('Escape');await closed();assert.ok(await ball.evaluate(n=>n===document.activeElement));assert.equal(await nav.getAttribute('inert'),'');
   });

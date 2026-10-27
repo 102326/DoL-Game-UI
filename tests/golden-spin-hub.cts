@@ -9,7 +9,7 @@ type Controller=ReturnType<typeof sphereHub>;
 type Snapshot=ReturnType<Controller['inspect']>;
 // Authored HubApp preview surface; no game-host declaration.
 declare const goldenSpinLab:{controller:Controller;recorded:Ref<string[]>;setZoom(value:number):void;mountExtra():void;settleScene():void;unmount():void};
-declare global {interface Window {chargeSamples?:Promise<{charge:Snapshot;beforeReveal:Snapshot;pointer:string}>;retired?:Controller}}
+declare global {interface Window {chargeSamples?:Promise<{early:Snapshot;settled:Snapshot;pointer:string}>;retired?:Controller}}
 import assert = require('node:assert/strict');
 import fs = require('node:fs');
 import path = require('node:path');
@@ -29,15 +29,15 @@ import reverseHub = require('./hub-reversal-probe.cjs');
   const inspect=()=>page.evaluate(()=>goldenSpinLab.controller.inspect());
   const open=()=>page.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='open');
   const closed=()=>page.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='closed');
-  await check('sphere charges for half a second before real tools unfold in their native layout',async()=>{
-   await page.evaluate(()=>{const ball=document.querySelector('.sf-motion-ball');if(!ball)throw Error('Missing charge fixture ball');window.chargeSamples=new Promise(resolve=>ball.addEventListener('click',async()=>{await new Promise(r=>setTimeout(r,120));const charge=goldenSpinLab.controller.inspect();await new Promise(r=>setTimeout(r,280));resolve({charge,beforeReveal:goldenSpinLab.controller.inspect(),pointer:(()=>{const petal=document.querySelector('.sf-motion-petal');if(!petal)throw Error('Missing charge fixture tool');return getComputedStyle(petal).pointerEvents})()})},{once:true}))});
+  await check('real tools unfold promptly alongside the sphere without a half-second gate',async()=>{
+   await page.evaluate(()=>{const ball=document.querySelector('.sf-motion-ball');if(!ball)throw Error('Missing charge fixture ball');window.chargeSamples=new Promise(resolve=>ball.addEventListener('click',async()=>{await new Promise(r=>setTimeout(r,120));const early=goldenSpinLab.controller.inspect();await new Promise(r=>setTimeout(r,280));resolve({early,settled:goldenSpinLab.controller.inspect(),pointer:(()=>{const petal=document.querySelector('.sf-motion-petal');if(!petal)throw Error('Missing charge fixture tool');return getComputedStyle(petal).pointerEvents})()})},{once:true}))});
    await ball.click();assert.equal(await ball.evaluate(n=>getComputedStyle(n).outlineStyle),'none','pointer activation must not show the old rectangular focus frame');const samples=await page.evaluate(()=>window.chargeSamples);
-   assert.ok(samples);assert.equal(samples.charge.q,0,'menu must leave time for the sphere effect');assert.ok(samples.charge.sphere.speed>10);assert.equal(samples.beforeReveal.q,0);assert.equal(samples.pointer,'none','waiting tools must not accept input');
+   assert.ok(samples);assert.ok(samples.early.q>0,'tools must begin during the initial sphere effect');assert.ok(samples.early.sphere.speed>10);assert.equal(samples.settled.q,1,'menu is settled before the old 500ms gate');assert.notEqual(samples.pointer,'none','settled tools accept input');
    await open();assert.equal((await inspect()).nodes,5);assert.equal(await nav.getAttribute('aria-hidden'),'false');
    for(const node of await page.locator('.sf-motion-petal').all())assert.ok(await node.evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}));
    await page.screenshot({path:path.join(out,'desktop-open.png')});
   });
-  await check('closing during charge cancels delayed reveal and leaves no visible menu',async()=>{
+  await check('closing during expansion cancels the reveal and leaves no visible menu',async()=>{
    await ball.click();await closed();await ball.click();await page.waitForTimeout(100);await ball.click();await closed();await page.waitForTimeout(800);
    assert.equal((await inspect()).q,0);assert.equal(await nav.evaluate(n=>getComputedStyle(n).visibility),'hidden');assert.equal(await nav.getAttribute('inert'),'');
    await ball.click();await open();

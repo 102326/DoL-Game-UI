@@ -90,8 +90,8 @@ export function sphereHub(root:HTMLElement) {
   if(next)sphere.play();else{press=undefined;sphere.recover()}
   if(!next&&orbit.contains(document.activeElement))ball.focus({preventScroll:true});
   timeline=gsap.timeline({onUpdate:render,onComplete(){timeline=undefined;state.q=next;render()}});
-  // A fresh opening leaves half a second for the sphere; reversals keep their current pose.
-  timeline.to(state,{q:next,duration:Math.max(.2,Math.abs(next-state.q)*(next?.24:.65)),ease:next?'power3.out':'power2.inOut'},next&&state.q===0?.5:0);
+  // The sphere and tools start together. Reversals keep their pose and remaining distance.
+  timeline.to(state,{q:next,duration:Math.max(.06,Math.abs(next-state.q)*(next?.24:.22)),ease:next?'power3.out':'power2.inOut'});
   render();holdInput();
  }
  function relayout(){frame=0;if(dead)return;measure();render();holdInput()}

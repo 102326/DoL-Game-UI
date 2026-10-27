@@ -508,8 +508,8 @@
       "H4 zero-root scene replacement retains finite geometry and restores native input"
     ],
     "golden-spin-hub": [
-      "sphere charges for half a second before real tools unfold in their native layout",
-      "closing during charge cancels delayed reveal and leaves no visible menu",
+      "real tools unfold promptly alongside the sphere without a half-second gate",
+      "closing during expansion cancels the reveal and leaves no visible menu",
       "real tool detail opens once and returns to the menu; Escape collects it",
       "rapid reversals retain the current menu progress and sphere angle",
       "left/right docking, narrow touch, resize and reduced motion preserve interaction",
@@ -1434,8 +1434,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "793eed5ef3668b1c9bd76058964d5ddafade8724befae52e82ab9299680e5fec",
-      "assertionSites": 35
+      "sourceSha256": "eb964d4bedca4aa4df373208b10d57c5db70164c2b98051ee35575bae2af401b",
+      "assertionSites": 37
     },
     {
       "entry": "tests/golden-spin-hub-lifecycle.cjs",
@@ -1472,11 +1472,11 @@
       "granularity": "named",
       "cases": [
         {
-          "id": "sphere charges for half a second before real tools unfold in their native layout",
+          "id": "real tools unfold promptly alongside the sphere without a half-second gate",
           "minimumAssertions": 1
         },
         {
-          "id": "closing during charge cancels delayed reveal and leaves no visible menu",
+          "id": "closing during expansion cancels the reveal and leaves no visible menu",
           "minimumAssertions": 1
         },
         {
@@ -1504,7 +1504,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "346182e92977603a4daf9351d07fa2b1b690db4513595ec2ed5cd52163003170",
+      "sourceSha256": "4a0657ffba1c42ab9587f3dc27cf99ff40095d09d37674615baa07fca997c236",
       "assertionSites": 40,
       "rendererContexts": [
         "sphere:2d"
