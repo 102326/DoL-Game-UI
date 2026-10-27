@@ -29,10 +29,10 @@ async function waitForSettled(page:playwright.Page){
   assert.equal(await page.locator('.dmt-workspace-nav [aria-current=page]').textContent(),'阅读');
   assert.equal(await page.locator('.dmt-workspace-section:not([aria-hidden="true"])').count(),1);
   assert.equal(await page.getByLabel('启用 Soft & Wet 界面',{exact:true}).isVisible(),true);
-  const initialFont=await page.locator('.dmt-reading-sample p').evaluate(element=>getComputedStyle(element).fontSize);
+  const initialFont=await page.locator('.dmt-reading-demo p').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).fontSize).join(','));
   await page.getByLabel('字体大小').evaluate(element=>{if(!(element instanceof HTMLInputElement))throw Error('Not a scale input');element.value='125';element.dispatchEvent(new Event('input',{bubbles:true}))});
   assert.equal(await page.evaluate(()=>DoLGameUI.getPreferences().fontScale),125);
-  assert.notEqual(await page.locator('.dmt-reading-sample p').evaluate(element=>getComputedStyle(element).fontSize),initialFont);
+  assert.notEqual(await page.locator('.dmt-reading-demo p').evaluateAll(elements=>elements.map(element=>getComputedStyle(element).fontSize).join(',')),initialFont);
 
   const legacyTier=await page.evaluate(()=>DoLGameUI.getPreferences().visualTier);
   assert.equal(await page.getByLabel('视觉效果档位').count(),0);

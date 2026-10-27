@@ -31,14 +31,16 @@
     "tests/motion-workspace.cts": "db9f36a8f8c2fb89c0ccdd53e112276bbcda5e8a6d184e095fc946c4937ff656",
     "tests/preferences-preservation.cts": "c20f62e949be0d719dad8fb753effa31a9612856962d3561eb02d2732380c309",
     "tests/settings-ci.cts": "d677d7e512add611ffc78cf53b5db2db55d394c50c4bb89db371c1b476f95331",
-    "tests/settings-input-boundary.cts": "9d3a097cb18a711ded5f7a5d30add3b3d807c030aa07a09e1f279f6707433776",
+    "tests/settings-input-boundary.cts": "7306559d323d9f3f490de22cc61146de05f72f5960e0e1a95f0c80c75a791111",
     "tests/settings-modal-scroll.cts": "5d2acc827d4eaf7632110e28c0a8320ddc9aae1e46c3fcc2e04000e583daa1a7",
     "tests/settings-orbit.cts": "9aae55be7c1ac8e6ac2c0f2ad51eb51bff4263e025f083a14c6c700c5ff4596f",
     "tests/ui41-option-alignment.cts": "991d9756377edfa5f03b81f15faa3d002e6938f771c57f1bc8006ce7e1988ec3",
     "tests/ui41-reading.cts": "07e25c15147b601efcc9c3a110f90b03a89e9df35be5dc783a95f9b54c0976d8",
     "tests/ui41-settings-retirement.cts": "f5180b5e9f57fa084ab512a325c6770f9f26cd773fd4e6a12e1e145aff748626",
     "tests/unified.test.cts": "28db79961bb0b09a7d5e2bdd2ea2c4fa05deb6ac84da10715098b49547cbd23e",
-    "tests/weather-special.cts": "06b1310a3a38df6092b0c7bbd4a2884abc4c7b6001217623e6252e207fbfd241"
+    "tests/weather-special.cts": "d9570b5224a2447fa2671ba6ebfbaa48c6ec3805402392b54ba66fb40784a5d4",
+    "tests/official-game-motion.cts": "4d5c82f85015b0e23fc9f92b1d78c56c14c20b2f4f3a467a69685b9de3061bcd",
+    "tests/settings-workspace.cts": "09466806d0211da3530752b104b0bdc00c53cf7c4b8e48ced5f430ce0aafca2d"
   },
   "checks": [
     {
@@ -91,6 +93,22 @@
       "command": "node tests/motion-workspace.cjs",
       "result": "PASS",
       "scope": "motion cleanup, stable hitboxes, native controls, zoom/reduced motion, unmount/remount preferences"
+    },
+    {
+      "command": "node tests/official-game-motion.cjs",
+      "result": "PASS",
+      "scope": "real close paused at midpoint; reopen cancels it, same live backdrop retained; original action count, short fade, zoom/reduced/teardown preserved"
+    },
+    {
+      "command": "node tests/official-game-motion.cjs --bad-backdrop-cleanup",
+      "result": "EXPECTED_REJECTION",
+      "assertion": "quick reopen retains one backdrop: 0 !== 1",
+      "input": "isolated compiled source drops !active cleanup guard; no runtime file mutation"
+    },
+    {
+      "command": "node tests/weather-special.cjs",
+      "result": "PASS",
+      "scope": "both actual reading paragraphs and close pixels protected across special skies; input/rain/snow/narrow/motion/release"
     }
   ],
   "readingResult": {
@@ -345,5 +363,30 @@
     "Initial tests referred to retired controls; input assertions migrated to active control, not removed.",
     "Global performance and visual acceptance remain separate.",
     "Initial reading helper omitted full production CSS. Fixed by loading actual built official UI stylesheet; styled phone/desktop contract rerun passed. Superseded CI137a89c was cancelled, not reported passing."
-  ]
+  ],
+  "ciInvestigation": {
+    "source": "0d070bc181e76f2da8ea78947c5c1f9506f153a5",
+    "standard": {
+      "runId": 40482703113,
+      "result": "FAIL",
+      "reason": "weather-special old locator matched two new sample paragraphs; settings-ci itself passed"
+    },
+    "research": {
+      "runId": 40482708896,
+      "result": "FAIL",
+      "reason": "official-game-motion sampled backdrop at fixed35ms before next animation frame"
+    },
+    "controlledDelay": {
+      "driverDelayMs": 100,
+      "frameDelayMs": 120,
+      "early": {
+        "count": 0,
+        "visible": true,
+        "published": false
+      },
+      "afterActualFrameCount": 1,
+      "assertionResult": "old35ms oracle rejected a legally settling UI"
+    },
+    "fix": "test-only: real paused80ms close, actual cancellation, same node/one backdrop/published/action counts; bounded3sec wait; both paragraphs exact pixels. Runtime motion and CI workflows untouched."
+  }
 }

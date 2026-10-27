@@ -1768,8 +1768,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4a77f95565758ad55f5277d97cb3a92381a4c469a39d6875c403c0f8125db467",
-      "assertionSites": 98
+      "sourceSha256": "4d5c82f85015b0e23fc9f92b1d78c56c14c20b2f4f3a467a69685b9de3061bcd",
+      "assertionSites": 108
     },
     {
       "entry": "tests/optimization-date.cjs",
@@ -2823,8 +2823,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "06b1310a3a38df6092b0c7bbd4a2884abc4c7b6001217623e6252e207fbfd241",
-      "assertionSites": 54,
+      "sourceSha256": "d9570b5224a2447fa2671ba6ebfbaa48c6ec3805402392b54ba66fb40784a5d4",
+      "assertionSites": 55,
       "rendererContexts": [
         "weather:2d"
       ]

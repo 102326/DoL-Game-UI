@@ -12,6 +12,8 @@
 
 本机实际设置/阅读合同、旧CSS反例、类型/构建及独立只读审查已执行，复现与最终结果见[本机收据](ui41-mac-20261027/reading-receipt.json)。旧测试仍保留输入/转场/滚动/持久化目的，改用未退役控件；历史Edge脚本改用项目browser-options，Windows仍选择Edge、Mac使用锁定Chromium。初次旧控件定位失败与源码修改期间的Vite热重载干扰已定位，最终冻结源码重跑；不以重复重跑掩盖未知flaky。npm framework:build缺python命令，源码构建与python3打包分开记录，不声称该npm命令成功。
 
+CI追加调查：0d070bc标准40482703113被weather-special旧单段locator的strict错误阻断（新样例为两段）；研究40482708896在official-game-motion的35ms重开采样读到0层。后者在隔离100ms驱动／120ms rAF延迟下复现early0且未发布、实际帧后1，不能冒称产品已丢失背景。仅改测试：逐段精确比对两段正文像素；捕获实际80ms关闭、暂停在中点再真实重开，等待取消并验证同一节点/1层/已发布/调用次数，3秒有界等待和finally清理。去除真实清理守卫的隔离负例在原断言0≠1被拒绝。两失败Run保留，不靠重跑旧源码取绿；后续准确源码另验。未修改motion运行代码、工作流、阈值或保护规则。
+
 本轮不代表真实游戏/多Mod排版、Android/WebView或Windows验收，不合并main或发布。新增准确源码CI另行记录，前批c3b280f结果不能作为本轮通过。
 
 
