@@ -2761,12 +2761,16 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings alignment refreshes protected control geometry",
+          "minimumAssertions": 1
+        },
+        {
           "id": "dry repeated frame is quiet and material releases",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "335cf44d2f66f2facc5c29b7c397a3c7a1eb997093fad72f067eaf35d8bcd6ba",
-      "assertionSites": 39
+      "sourceSha256": "a75d1be5ea141ba9ee221d4cc523592919e990501b073b3ec92159644fc0c550",
+      "assertionSites": 40
     },
     {
       "entry": "tests/weather-review-pages.cjs",

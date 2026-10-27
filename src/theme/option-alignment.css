@@ -1,9 +1,52 @@
-/* Only our settings and reviewed navigation controls opt into centered text. */
-html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row > span {
-    flex: 1;
+/* Centered settings use one content/control axis. The default row is untouched.
+   Only owned toggle/range/select rows participate; text fields keep their layout. */
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row:has(> :is(input[type=checkbox],input[type=range],select)) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-inline: 0;
+}
+
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row:has(> :is(input[type=checkbox],input[type=range],select)) > span {
+    flex: none;
+    width: 100%;
+    max-width: 34rem;
+    align-self: center;
+    overflow-wrap: anywhere;
     text-align: center;
 }
 
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row > :is(input[type=range],select),
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-acrylic-scale {
+    width: 100%;
+    max-width: 22rem;
+    margin-inline: auto;
+}
+
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row > input[type=range] {height: 44px}
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row > select {
+    min-height: 44px;
+    padding-inline: 2rem;
+    text-align: center;
+    text-align-last: center;
+}
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-acrylic-control > .dgu-setting-row {border-bottom: 0}
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-acrylic-control {border-bottom: 1px solid #c4d8d70b}
+
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls :is(.dmt-workspace-intro,.dmt-control-sheet > h3,details.dmt-setting-card > summary) {text-align: center}
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-workspace-intro > p:last-child {max-width: 34rem; margin-inline: auto}
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls details.dmt-setting-card > summary {align-items: center}
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-workspace-actions {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-workspace-actions > :is(p,small) {flex: none; max-width: 34rem; margin-inline: auto}
+html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-recovery {justify-content: center}
+
+/* Navigation retains its existing geometry and hit areas. */
 html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-workspace-nav > button[data-kw-nav-control=category],
 html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #ui-bar :is(#startCaption,#overlayButtons) > button[data-kw-nav-control=entry],
 html[data-stone-free][data-dol-midnight][data-dgu-options-centered] #ui-bar :is(#startCaption,#overlayButtons) > .sidebarButtonSplit > button[data-kw-nav-control=entry] {

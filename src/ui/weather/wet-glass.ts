@@ -54,6 +54,8 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
  let protectedBoxes:Box[]=[],frameProtection:Box[]=[],active:Box[]=[],dirty=true,width=0,height=0,rainHeight=0,lastTime=0,visibleFlow=0,wasMoving=false;
  let layoutAnimations:Animation[]=[];
  const mark=()=>{if(!scope.active())return;dirty=true;invalidate()};const observer=new MutationObserver(mark);scope.own(()=>observer.disconnect());observer.observe(shell,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-workspace-transition','data-settings-layout','open']});shell.addEventListener('scroll',mark,true);scope.own(()=>shell.removeEventListener('scroll',mark,true));
+ // Centered settings move protected labels/controls without resizing the shell.
+ observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-options-centered']});
  const intersects=(a:Box,b:Box)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
  function layout(w:number,h:number){
   model.resize(w,h);const base=canvas.getBoundingClientRect(),scale=base.width/w||1,scaleY=base.height/(canvas.clientHeight||h)||1;
