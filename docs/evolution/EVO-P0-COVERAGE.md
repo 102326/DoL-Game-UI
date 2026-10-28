@@ -115,7 +115,7 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 
 2026-10-29负责人补充：兼容包须对齐当前UI口径，并受同一套适用设置控制。主体接入不等于全部控件联动完成。静态复核确认`src/theme/controls.css`的通用字号/按钮缩放仍排除`data-overlay=modloader`，`workspace-theme.css`导航和SmartPhone等存在固定字号；ModHub独立工具菜单/安装弹层及SmartPhone debug也需作为独立消费者核对，不能用主窗口full标记代签。
 
-COMPAT-PREFS-01实施：已审full结构沿`compat-settings.css`消费现有偏好，不新增设置、存储或Host合同。ModHub主体/工具菜单/确认弹层、MapleBirch、原版优化、CE独立/内嵌及SmartPhone主体/debug补接适用字号、按钮、间距、对齐、玻璃/通透度及动效/减少动态；导航固定字号改用现有倍率。ReOverfits额外槽入口沿宿主读取字号/按钮倍率；嘴部资源包无窗口，不适用。保留未知/partial原生回退，不改变第三方事件、值、节点父子关系、虚拟设备几何及位图大小。受控浏览器实际偏好、恢复、原事件/值和结构回退通过；首轮遗漏ModHub section间距的失败保留并针对性修复。实际设备、当前提交双CI与最终制品身份在本切片交付前继续核对，不能用前批证据代签。
+COMPAT-PREFS-01实施：已审full结构沿`compat-settings.css`消费现有偏好，不新增设置、存储或Host合同。ModHub主体/工具菜单/确认弹层、MapleBirch、原版优化、CE独立/内嵌及SmartPhone主体/debug补接适用字号、按钮、间距、对齐、玻璃/通透度及动效/减少动态；导航固定字号改用现有倍率。ReOverfits额外槽入口沿宿主读取字号/按钮倍率；嘴部资源包无窗口，不适用。保留未知/partial原生回退，不改变第三方事件、值、节点父子关系、虚拟设备几何及位图大小。受控浏览器实际偏好、恢复、原事件/值和结构回退通过；首轮遗漏ModHub section间距的失败保留并针对性修复。Android真实ModHub五页签/工具菜单、存档/导出载入/云存档联动通过，三个变化包仅CSS不同，八包成员、顺序/停用及偏好核对完成。CE/手机debug新增偏好仅受控验证，ReOverfits设备未装，不冒充全业务或整体性能验收；整页巡检失败及Windows完整W01收敛超时沿UI报告保留。6d91f44新标准/研究CI均success，远端证据PASS/COMPLETE、九包/十摘要及八个实机成员已核对；本轮设置联动切片Completed，不等于4.1整体验收通过。
 
 ### 必须显式保留的边界
 
