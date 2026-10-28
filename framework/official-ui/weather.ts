@@ -40,7 +40,9 @@ export function headerWeather(){
  function clean(tasks:Array<()=>void>){const errors:unknown[]=[];for(const task of tasks)try{task()}catch(error){errors.push(error)}if(errors.length)throw new AggregateError(errors,'Weather cleanup failed')}
  function remove(key:string){const s=surfaces.get(key);if(!s)return;surfaces.delete(key);s.revision++;clean([()=>motion.cancel(s.node),()=>s.renderer?.dispose(),()=>s.stopWatch?.(),()=>s.node.remove(),()=>{if(s.materialAttribute!==undefined){if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');else s.parent.setAttribute('data-sf-weather-material',s.materialAttribute)}},()=>{if(!surfaces.size){const stop=stopTimer;stopTimer=undefined;stop?.()}}])}
  function clear(){clean([...surfaces.keys()].map(key=>()=>remove(key)))}
- const showing=(s:Surface)=>visible(s.header)&&(!foreground||foreground===s.parent||foreground.contains(s.parent))&&(!s.renderer||s.parent.clientWidth>0&&s.parent.clientHeight>0);
+ // Keep legacy CSS peers on their established shared update contract; only
+ // complete Canvas renderers suspend behind an owned modal.
+ const showing=(s:Surface)=>visible(s.header)&&(!s.renderer||(!foreground||foreground===s.parent||foreground.contains(s.parent))&&s.parent.clientWidth>0&&s.parent.clientHeight>0);
  const headerRegions=':scope>.dgc-host,:scope>.dgs-host,:scope>.dgp-host,.modhub-sticky-toolbar,.CE-category-bar,.CE-subtab-bar';
  function fitHeader(s:Surface){
   if(s.renderer||s.static)return;

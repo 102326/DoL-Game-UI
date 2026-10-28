@@ -27,6 +27,7 @@ const server=http.createServer((q,r)=>{const p=new URL(q.url??'/','http://local'
  context=await browser.newContext({viewport:{width:1280,height:900},deviceScaleFactor:1,recordVideo:record?{dir:path.join(out,'raw'),size:{width:1280,height:900}}:undefined});page=await must(context).newPage();await active().goto(base+'/glass-optics.html?'+query);await installGuards();
  const opticsStart=Date.now();
  await active().waitForFunction(()=>glass(rainOptics.snapshot()).drops.some(d=>d.id===65));
+ assert.ok(await active().evaluate(()=>glass(rainOptics.snapshot()).activeDrops>0),'weather must not protect its own Canvas and suppress all visible droplets');
  const pairBefore=await active().locator('.evo-glass-drop[data-drop-id="65"]').boundingBox();assert.ok(pairBefore);assert.ok(await active().locator('.evo-glass-drop[data-drop-id="66"]').isVisible());await active().screenshot({path:path.join(out,'contact-before.png')});
  await active().waitForFunction(()=>!glass(rainOptics.snapshot()).drops.some(d=>d.id===66));const pairAfter=await active().locator('.evo-glass-drop[data-drop-id="65"]').boundingBox();if(!pairAfter)throw Error('Missing merged glass drop');assert.ok(pairAfter.width*pairAfter.height>pairBefore.width*pairBefore.height*1.2);assert.equal(await active().locator('.evo-glass-drop[data-drop-id="66"]').count(),0);await active().screenshot({path:path.join(out,'contact-after.png')});
  if(natural)await active().waitForFunction(()=>glass(rainOptics.snapshot()).wetPaths>0);

@@ -1012,8 +1012,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "030295fcdda57faba8759dfe23f61900f1eb2ba01025df20058c07e0a2ff51bd",
-      "assertionSites": 33
+      "sourceSha256": "062808d0b8aaba4ca65f061746208419278302cd215cfcadfdcd0d482b8bf422",
+      "assertionSites": 34
     },
     {
       "entry": "tests/evolution-rain-model.test.cjs",
@@ -2130,8 +2130,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ac23bfad8553eb9a08bbc9176a165384450f8b3d99394db990b186f0634f3645",
-      "assertionSites": 14
+      "sourceSha256": "a5106cb6867d18304b265b4c4f6180d58d9ea768f10657e2e8bb8f50fcfae772",
+      "assertionSites": 19
     },
     {
       "entry": "tests/settings-ci.cjs",

@@ -73,7 +73,7 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   layer.style.height=rainHeight+'px';layer.style.bottom='auto';
   protectedBoxes=[];
   const controls=shell.matches('.dmt-settings-shell')?'button,input,select,.dmt-reading-sample'+(runoff?'':',.evo-toolbar,.dmt-settings-footer'):'button,input,select,textarea,a,[role=button],img,canvas:not(.sf-weather-canvas)';
-  for(const el of shell.querySelectorAll(controls))if(el.getClientRects().length)protectedBoxes.push(box(el.getBoundingClientRect()));
+  for(const el of shell.querySelectorAll(controls))if(el!==canvas&&el.getClientRects().length)protectedBoxes.push(box(el.getBoundingClientRect()));
   const walker=document.createTreeWalker(shell,NodeFilter.SHOW_TEXT);let text:Node|null;
   while((text=walker.nextNode())){
    if(!text.textContent?.trim()||text.parentElement?.closest('.evo-material-layer,script,style'))continue;
