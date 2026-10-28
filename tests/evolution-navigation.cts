@@ -30,16 +30,14 @@ const {chromium}=playwright;
    must(document.querySelector('#customOverlay')).classList.remove('hidden');ui.refresh();await frame();const respectsLease=!document.querySelector('.'+prefix+'-host');lease?.release();ui.refresh();await frame();const reentered=!!document.querySelector('.'+prefix+'-host');
    document.documentElement.setAttribute('data-stone-free','');const zoom=[];
    for(const value of [1,1.25,.85]){document.body.style.zoom=String(value);content.scrollTop=0;const button=[...document.querySelectorAll<HTMLButtonElement>('.'+prefix+'-navigation button')].find(n=>n.textContent===(kind==='social'?'知名度':'学业'));if(!button)throw Error('Expected actual navigation button: '+kind);button.click();await frame();const a=must(document.getElementById('last-heading')).getBoundingClientRect(),b=content.getBoundingClientRect();zoom.push({zoom:value,gap:a.top-b.top,expected:16*value});}
-   let proxyZoom=true,proxyGeometry;
-   if(kind==='characteristics'){
-    document.body.style.zoom='1.25';document.documentElement.setAttribute('data-dgu-visualMotion','');
-    must([...document.querySelectorAll<HTMLButtonElement>('.'+prefix+'-navigation button')].find(n=>n.textContent==='学业')??null).click();
-    const proxy=await new Promise<HTMLElement>((resolve,reject)=>{const begin=performance.now();const tick=()=>{const n=document.querySelector<HTMLElement>('.kw-object-relay');if(n)resolve(n);else if(performance.now()-begin>2500)reject(Error('Expected real characteristics relay'));else requestAnimationFrame(tick)};requestAnimationFrame(tick)});
-    const animation=proxy.getAnimations()[0],effect=animation?.effect;if(!animation||!(effect instanceof KeyframeEffect))throw Error('Missing relay animation');const duration=effect.getTiming().duration;if(typeof duration!=='number')throw Error('Invalid relay duration');animation.pause();let lo=0,hi=duration;for(let i=0;i<28;i++){const mid=(lo+hi)/2;animation.currentTime=mid;if((effect.getComputedTiming().progress??0)<.78)lo=mid;else hi=mid}
-    const a=proxy.getBoundingClientRect(),g=must(document.getElementById(last)).getBoundingClientRect(),v=content.getBoundingClientRect(),expectedTop=Math.max(g.top,v.top);
-    proxyGeometry={rect:{x:a.x,y:a.y,width:a.width,height:a.height},group:{x:g.x,y:g.y,width:g.width,height:g.height},viewport:{x:v.x,y:v.y,width:v.width,height:v.height},progress:effect.getComputedTiming().progress};proxyZoom=Math.abs(a.x-g.x)<3&&Math.abs(a.y-expectedTop)<3&&Math.abs(a.width-g.width)<3;
-    document.documentElement.removeAttribute('data-dgu-visualMotion');await frame();
-   }
+   document.body.style.zoom='1.25';document.documentElement.setAttribute('data-dgu-visualMotion','');content.scrollTop=0;
+   must([...document.querySelectorAll<HTMLButtonElement>('.'+prefix+'-navigation button')].find(n=>n.textContent===(kind==='social'?'知名度':'学业'))??null).click();
+   const heading=must(document.getElementById('last-heading'));
+   const animation=await new Promise<Animation>((resolve,reject)=>{const begin=performance.now();const tick=()=>{const a=heading.getAnimations()[0];if(a)resolve(a);else if(performance.now()-begin>2500)reject(Error('Expected heading-only navigation feedback: '+kind));else requestAnimationFrame(tick)};requestAnimationFrame(tick)});
+   const effect=animation.effect;if(!(effect instanceof KeyframeEffect))throw Error('Missing heading effect');
+   const headingFeedback={target:effect.target===heading,duration:effect.getTiming().duration,frames:effect.getKeyframes(),proxies:document.querySelectorAll('.kw-object-relay,.sf-source-trace,.kw-moving-focus').length,groupAnimations:must(document.getElementById(last)).getAnimations().length};
+   const headingOnly=headingFeedback.target&&headingFeedback.duration===360&&headingFeedback.proxies===0&&headingFeedback.groupAnimations===0&&headingFeedback.frames.every(f=>!('transform' in f)&&!('boxShadow' in f));
+   document.documentElement.removeAttribute('data-dgu-visualMotion');await frame();
    const before=ui.getLifecycleCounts();const unrelated=document.createElement('div');document.body.append(unrelated);unrelated.textContent='outside';unrelated.remove();await frame();const noUnrelatedScan=JSON.stringify(before)===JSON.stringify(ui.getLifecycleCounts());
    const old=must(document.getElementById('customOverlay')),replacement=document.createElement('div');replacement.id='customOverlay';replacement.dataset.overlay=kind;replacement.append(content);old.replaceWith(replacement);await frame();const replacementSafe=!old.querySelector('.'+prefix+'-host')&&!!replacement.querySelector('.'+prefix+'-navigation');
    document.documentElement.setAttribute('data-dgu-visualMotion','');for(const id of [first,last,first,last])must([...document.querySelectorAll<HTMLButtonElement>('.'+prefix+'-navigation button')].find(n=>n.textContent===(id===first?(kind==='social'?'主要关系':'基础属性'):(kind==='social'?'知名度':'学业')))??null).click();ui.setEnabled(false);await frame();const cancelled=!document.querySelector('.'+prefix+'-host');ui.setEnabled(true);await frame();
@@ -51,10 +49,10 @@ const {chromium}=playwright;
    const wrapper:Participant={...o2,mount(request){if(fail){fail=false;throw Error('controlled mount failure')}return raw(request)}};
    const retry=checked(start(window,{host:h2,owner:wrapper}));await frame();const faultClean=!document.querySelector('.'+prefix+'-host');retry.setEnabled(true);await frame();const recovered=!!document.querySelector('.'+prefix+'-navigation');retry.destroy();o2.dispose();h2.dispose();
    const classic=checked(start(window));await frame();const classicMounted=!!document.querySelector('.'+prefix+'-navigation');classic.destroy();
-   return{kind,mounted,disabled,leaseReleased,respectsLease,reentered,zoom,proxyZoom,proxyGeometry,noUnrelatedScan,replacementSafe,cancelled,ownerReleased,nativeSafe,faultClean,recovered,classicMounted,shared,finalNodes:document.querySelectorAll('.'+prefix+'-host').length};
+   return{kind,mounted,disabled,leaseReleased,respectsLease,reentered,zoom,headingOnly,headingFeedback,noUnrelatedScan,replacementSafe,cancelled,ownerReleased,nativeSafe,faultClean,recovered,classicMounted,shared,finalNodes:document.querySelectorAll('.'+prefix+'-host').length};
   },kind);
   results.push(r);fs.writeFileSync('tests/artifacts/evolution/navigation.json',JSON.stringify({results,errors},null,2));
-  for(const key of ['mounted','disabled','leaseReleased','respectsLease','reentered','noUnrelatedScan','replacementSafe','cancelled','ownerReleased','nativeSafe','proxyZoom','faultClean','recovered','classicMounted'] as const)assert.equal(r[key],true,kind+': '+key);
+  for(const key of ['mounted','disabled','leaseReleased','respectsLease','reentered','noUnrelatedScan','replacementSafe','cancelled','ownerReleased','nativeSafe','headingOnly','faultClean','recovered','classicMounted'] as const)assert.equal(r[key],true,kind+': '+key);
   for(const z of r.zoom)assert.ok(Math.abs(z.gap-z.expected)<=3,kind+': zoom coordinate '+JSON.stringify(z));
   assert.equal(r.shared.implementation,'native-overlay-navigation/v1');assert.equal(r.shared.mountContract,'navigation-mount/v1');assert.equal(r.finalNodes,0);assert.deepEqual(errors,[]);console.log('PASS EVO-A1',kind);await page.close();
  }

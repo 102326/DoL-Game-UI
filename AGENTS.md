@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Owner direction (2026-10-28): owned section navigation uses one quiet heading-only flash after locating the section. Remove characteristics button-to-content relay/card entrance and per-consumer group animation; align navigation control surfaces across characteristics/social/panels while retaining select semantics, focus accessibility, reduced-motion and native fallback. This supersedes those section effects only, not accepted Hub/settings/weather motion.
+
 - Owner acceptance (2026-10-28): inner Hub utility style `4663ad1` is visually accepted. Preserve its quiet black-gray icon/label treatment, 64×44 hitboxes, default settings, original actions and timing; legacy/no-spin fallback stays text-only. Continue the existing #31 consumer checklist, without main/release authorization.
 
 - Owner acceptance (2026-10-27): centered settings layout `699a7a2` is visually accepted; preserve default left alignment and acrylic60. Add the expanded native-select popup (reported white background/pale text) to the shared-control follow-up. Audit owned UI and reviewed compatibility surfaces, not settings alone; preserve native/third-party business and keyboard/touch fallbacks. Continue #31 item2 ModHub performance; this follow-up is not a release or indiscriminate global restyling authorization.

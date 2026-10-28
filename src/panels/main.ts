@@ -6,6 +6,7 @@ import {visible} from './visibility';
 import {isMasterEnabled} from '../runtime/master';
 import {sourceMotion} from '../ui/source-motion';
 import {navigationScrollTop} from '../ui/navigation-geometry';
+import {navigationHeading,flashNavigationHeading} from '../ui/navigation-feedback';
 import {navigationMount} from '../ui/navigation-mount';
 import {unmountUI} from '../runtime/presentation';
 import type {NativeEventsHost} from '../runtime/sugarcube';
@@ -48,15 +49,19 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   if(!content||overlayLife&&!overlayLife.current())return;
   const target=targets[index];
   if(index!==-1&&(!target||!content.contains(target)||!visible(target)))return;
-  const top=index<0?0:target?navigationScrollTop(content,target,12):undefined;
+  const heading=target?navigationHeading(target):undefined;
+  const top=index<0?0:target?navigationScrollTop(content,heading??target,16):undefined;
   if(top===undefined)return;
-  if(document.documentElement.hasAttribute('data-stone-free')){motion.scroll(content,top);if(target)motion.animate(target,[{boxShadow:'inset 3px 0 #a79ab380',backgroundColor:'#a79ab318'},{boxShadow:getComputedStyle(target).boxShadow,backgroundColor:getComputedStyle(target).backgroundColor}],900)}else content.scrollTo({top,behavior:'auto'});
+  motion.cancel();const pane=content;
+  if(document.documentElement.hasAttribute('data-stone-free'))motion.scroll(pane,top,()=>{if(scope.active()&&pane===content&&heading&&pane.contains(heading))flashNavigationHeading(motion,heading)});else pane.scrollTo({top,behavior:'auto'});
  }
  let seenPassage:Element|null=null;
  let passage:HTMLElement|null=null,passageHost:HTMLElement|null=null,passageApp:App|undefined;
  let passageTargets:HTMLElement[]=[];
+ let passageHeading:HTMLElement|undefined;
+ function clearPassageFlash(){if(passageHeading)motion.cancel(passageHeading);passageHeading=undefined}
  const passageState=reactive<NavigationState>({title:'',sections:[]});
- function releasePassage(){passageObserver.disconnect();passagePresentation.release();unmountUI(passageApp);passageApp=undefined;passageLife?.release();passageHost?.remove();passageHost=null;restorePassage();restorePassage=()=>{};passage=null;passageTargets=[]}
+ function releasePassage(){clearPassageFlash();passageObserver.disconnect();passagePresentation.release();unmountUI(passageApp);passageApp=undefined;passageLife?.release();passageHost?.remove();passageHost=null;restorePassage();restorePassage=()=>{};passage=null;passageTargets=[]}
  function recover(kind:PanelKind,error:unknown,inline=false,parent:HTMLElement|null=inline?passage:overlay){
   if(!isMasterEnabled()){if(inline)releasePassage();else release();return}
   counts.failures++;lastFailure=String(error);console.warn('DoLGameUI panel reverted',kind,error);
@@ -90,7 +95,7 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   if(passage!==next||!passageHost?.isConnected||!!passageLife&&!passageLife.current()){
    releasePassage();if(passageLife&&!passageLife.acquire())return;passage=next;restorePassage=decorate(passage,kind);passageState.title=titles[kind];passageState.sections=[];
    passageHost=document.createElement('div');passageHost.className='dgp-host';passage.prepend(passageHost);
-   const createNavigation=()=>createApp(Navigation,{state:passageState,go:(index:number)=>{const target=index<0?passage:passageTargets[index];if((!passageLife||passageLife.current())&&target&&passage?.contains(target)&&visible(target))target.scrollIntoView({block:'start'})},fallback:()=>setEnabled(kind,false)});
+   const createNavigation=()=>createApp(Navigation,{state:passageState,go:(index:number)=>{const target=index<0?passage:passageTargets[index];if((!passageLife||passageLife.current())&&target&&passage?.contains(target)&&visible(target)){clearPassageFlash();const heading=index<0?undefined:navigationHeading(target);(heading??target).scrollIntoView({block:'start'});if(document.documentElement.hasAttribute('data-stone-free')&&heading){passageHeading=heading;flashNavigationHeading(motion,heading)}}},fallback:()=>setEnabled(kind,false)});
    passageApp=createNavigation();
    if(passageLife){
     if(!passageLife.mount({id:'panels-passage',parent:passageHost,lifetime:'passage',setup:context=>mount(passageApp!,context.element,kind,true)})){

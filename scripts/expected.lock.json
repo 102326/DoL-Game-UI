@@ -890,7 +890,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "038b6d703f2b76cedc9a325a3ad38a26d1ea949496c7d62f27b96654b99f546d",
+      "sourceSha256": "f5a19324ae2ccffec887295e47579fe74c1ff833f60c09be2d790e07ac185f25",
       "assertionSites": 39
     },
     {
@@ -995,8 +995,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ac3a32cb6300272082a405e554f2a332c3571bf711928ae910dcf7f836a1d64b",
-      "assertionSites": 18
+      "sourceSha256": "40dffc53aa8dad693df6f1b162b53c50ffabe506ef7f29acc9b9cfb0ff600a3d",
+      "assertionSites": 48
     },
     {
       "entry": "tests/evolution-rain-glass.cjs",

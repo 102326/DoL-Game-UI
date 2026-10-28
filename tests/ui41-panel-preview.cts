@@ -14,6 +14,7 @@ declare const hubPreview:typeof import('../prototypes/evolution-integration/hub-
  fs.mkdirSync(out,{recursive:true});
  try{for(const width of [1280,390]){
   const page=await browser.newPage({viewport:{width,height:900}});page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.goto(`http://127.0.0.1:${address.port}/`);await page.getByText('共用窗口巡检 · 真实 UI 控制器＋合成内容',{exact:true}).click();
+  let controlBaseline:unknown;
   // Cache entry must freeze/reuse live controllers, not dispose them.
   await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pagehide',{persisted:true})));
   for(const kind of ['characteristics','social','journal','traits','statistics','feats','cheats','settings','attitudes'] as PreviewPanel[]){
@@ -22,6 +23,16 @@ declare const hubPreview:typeof import('../prototypes/evolution-integration/hub-
    await root.locator('.'+prefix+'-navigation').waitFor({timeout:3000});assert.equal(await page.evaluate(()=>ui41PanelPreview.current()),kind);
    const geometry=await root.evaluate(n=>{const r=n.getBoundingClientRect();return{x:r.x,width:r.width,right:r.right,overflow:n.scrollWidth>n.clientWidth+1}});assert.ok(geometry.x>=0&&geometry.right<=width+1&&!geometry.overflow,JSON.stringify({kind,width,geometry}));
    if(kind!=='attitudes')assert.match(await root.evaluate(n=>getComputedStyle(n).backgroundColor),/0\.43/,'approved material reaches actual owned overlay');
+   await page.mouse.move(0,0);
+   const controlStyle=await root.locator('.'+prefix+'-fallback').evaluate(n=>{const c=getComputedStyle(n);return{padding:c.padding,radius:c.borderRadius,minHeight:c.minHeight,background:c.backgroundColor,border:c.borderWidth,font:c.fontSize}});
+   if(!controlBaseline)controlBaseline=controlStyle;else assert.deepEqual(controlStyle,controlBaseline,'owned navigation button styling agrees across consumers');
+   const groupSelect=root.locator('.dgp-navigation select');if(await groupSelect.count()){const style=await groupSelect.evaluate(n=>{const c=getComputedStyle(n);return{padding:c.padding,radius:c.borderRadius,minHeight:c.minHeight,background:c.backgroundColor,border:c.borderWidth,font:c.fontSize}});assert.deepEqual(style,controlBaseline,'group select shares the navigation control surface');}
+
+   if(kind==='attitudes'){
+    await page.emulateMedia({reducedMotion:'no-preference'});await root.getByLabel('跳到分组',{exact:true}).selectOption('1');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.passage[data-ui41-preview] .settingsHeader')].some(n=>n.textContent==='其它态度'&&n.getAnimations().length>0));
+    const feedback=await root.getByRole('heading',{name:'其它态度',exact:true}).evaluate(n=>{const a=n.getAnimations()[0],effect=a?.effect;if(a)a.pause();if(!(effect instanceof KeyframeEffect))throw Error('Missing actual inline heading animation');return{duration:effect.getTiming().duration,frames:effect.getKeyframes(),proxies:document.querySelectorAll('.kw-object-relay,.sf-source-trace,.kw-moving-focus').length}});assert.equal(feedback.duration,360);assert.equal(feedback.proxies,0);assert.ok(feedback.frames.every(f=>!('transform'in f)&&!('boxShadow'in f)));await root.locator('.dgp-fallback').click();assert.equal(await root.getByRole('heading',{name:'其它态度',exact:true}).evaluate(n=>n.getAnimations().length),0,'inline fallback cancels the actually in-flight title flash');await root.getByRole('button',{name:'恢复新版',exact:true}).click();await root.locator('.dgp-navigation').waitFor();await page.emulateMedia({reducedMotion:'reduce'});
+   }
    const action=root.locator('[data-demo-action]').first(),before=await page.evaluate(()=>ui41PanelPreview.counts());await action.click();assert.equal(await page.evaluate(()=>ui41PanelPreview.counts()),before+1);
    const input=root.locator('input[type=checkbox]').first();if(await input.count()){await input.check();assert.equal(await input.isChecked(),true)}
    const note=root.locator('textarea');if(await note.count())await note.fill('本页测试笔记');
