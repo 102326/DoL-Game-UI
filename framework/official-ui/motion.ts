@@ -1,3 +1,4 @@
+import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {fadeWindow} from '../../src/ui/window-fade';
@@ -15,8 +16,8 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  let previousPetal:DOMRect|undefined;
  let sidebarRoots:HTMLElement[]=[];
  let pressed:{node:HTMLElement;pointer:number;before:string|null}|undefined;
- const ownedContent=':is(#customOverlay:is(.dgc-overlay,.dgs-overlay,.dgp-overlay):has(>.dgc-host,>.dgs-host,>.dgp-host) #customOverlayContent,.passage.dgp-overlay:has(>.dgp-host))';
- const formButtons='#customOverlay.dgs-native-tools .dgs-transfer :is(button,input[type=button]),'+ownedContent+' :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit]),'+adaptedOverlaySelector+' :is(button,input[type=button],input[type=submit])';
+ const ownedContent=':is(#customOverlay:is(.dgc-overlay,.dgs-overlay,.dgp-overlay):has(>.dgc-host,>.dgs-host,>.dgp-host) #customOverlayContent,.passage.dgp-overlay:has(>.dgp-host),[data-sf-workspace=saves])';
+ const formButtons='[data-sf-workspace] :is(button,input[type=button],input[type=submit]),#customOverlay.dgs-native-tools .dgs-transfer :is(button,input[type=button]),'+ownedContent+' :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit]),'+adaptedOverlaySelector+' :is(button,input[type=button],input[type=submit])';
  const pressSelector=formButtons+','+'.dgw-exits a.link-internal,[data-kw-entry],[data-kw-nav-control],.sf-motion-hub[data-official] button,#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab';
  function clearPress(event?:PointerEvent){if(!pressed||event&&event.pointerId!==pressed.pointer)return;const {node,pointer,before}=pressed;if(node.getAttribute('data-kw-press')===String(pointer)){if(before===null)node.removeAttribute('data-kw-press');else node.setAttribute('data-kw-press',before)}pressed=undefined}
  function press(event:PointerEvent){if(!live()||!event.isPrimary||event.button!==0||!(event.target instanceof Element))return;const node=event.target.closest<HTMLElement>(pressSelector);if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;clearPress();pressed={node,pointer:event.pointerId,before:node.getAttribute('data-kw-press')};node.setAttribute('data-kw-press',String(event.pointerId))}
@@ -58,7 +59,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   }
  }
  function markScrimFamily(node:HTMLElement|null){
-  plane?.toggleAttribute('data-kw-settings-family',!!node?.matches('.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host)'));
+  plane?.toggleAttribute('data-kw-settings-family',!!node?.matches('.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),[data-sf-workspace=saves]'));
  }
  function scrim(open:boolean,enter=true,initial=0){
   if(open){
@@ -73,7 +74,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    if(animation)void animation.finished.then(remove,remove);else remove();
   }
  }
- function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
+ function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,[data-sf-workspace=saves],'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
  function beginExpected(){
   if(!live()||!origin?.expected||performance.now()-origin.time>=1000)return;
   const node=document.getElementById('customOverlay');
@@ -107,9 +108,9 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   const expected=node.dataset.kwEntry==='modhub-entry'?'modloader':node.dataset.kwEntry==='native-caption'?nativeEntryKinds[node.textContent?.trim()??'']:undefined;
   if(!origin?.hub||performance.now()-origin.time>100)origin={rect:node.getBoundingClientRect(),node,time:performance.now(),hub:!!node.closest('.sf-motion-petal'),bedroom:node.hasAttribute('data-kw-native'),expected};else if(expected)origin.expected=expected;
  }
- const ownWindowSelector='html[data-dgu-acrylic-adjustment] #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host))';
+ const ownWindowSelector='html[data-dgu-acrylic-adjustment] '+ownedOverlaySelector;
  let pageTransition:{body:HTMLElement;root:HTMLElement;before:string|null}|undefined,pageRevision=0;
- type PageIntent={root:HTMLElement;parent:HTMLElement|null;body:HTMLElement|null;title:HTMLElement|null;renderRoots:Set<Node>;views:Map<HTMLElement,boolean>;oldKind:string;expectedKind:string;oldSelected:number;oldLabel:string|null|undefined;requested:string;direction:number;changed:boolean;observer:MutationObserver;stop:()=>void;ticket:number};
+ type PageIntent={navSelector:string;root:HTMLElement;parent:HTMLElement|null;body:HTMLElement|null;title:HTMLElement|null;renderRoots:Set<Node>;views:Map<HTMLElement,boolean>;oldKind:string;expectedKind:string;oldSelected:number;oldLabel:string|null|undefined;requested:string;direction:number;changed:boolean;observer:MutationObserver;stop:()=>void;ticket:number};
  let pageIntent:PageIntent|undefined;
  function stopPageIntent(){const intent=pageIntent;pageIntent=undefined;scope.cancelFrame(commitPage);if(intent){intent.observer.disconnect();intent.stop()}}
  function clearPage(){pageRevision++;stopPageIntent();if(pageTransition){const {body,root,before}=pageTransition;motion.cancel(body);if(root.getAttribute('data-workspace-transition')===''){if(before===null)root.removeAttribute('data-workspace-transition');else root.setAttribute('data-workspace-transition',before)}pageTransition=undefined}}
@@ -139,16 +140,16 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(pageIntent!==intent||intent.ticket!==pageRevision)return;
   const body=intent.root.querySelector<HTMLElement>('#customOverlayContent'),title=intent.root.querySelector<HTMLElement>('#customOverlayTitle');
   if(body!==intent.body||title!==intent.title){intent.changed||=body!==intent.body;intent.body=body;intent.title=title;watchPage(intent)}
-  const buttons=[...intent.root.querySelectorAll<HTMLElement>('#overlayTabs>button')],selected=buttons.findIndex(n=>n.classList.contains('tab-selected')),label=buttons[selected]?.textContent;
+  const buttons=[...intent.root.querySelectorAll<HTMLElement>(intent.navSelector+'>button')],selected=buttons.findIndex(n=>n.matches('.tab-selected,.CEtabSelected,.CEbuttonBarSelected')),label=buttons[selected]?.textContent;
   if(!intent.changed||!body||!visible(body)||!intent.root.matches(ownWindowSelector)||label?.trim()!==intent.requested||intent.root.dataset.overlay===intent.oldKind&&selected===intent.oldSelected&&label===intent.oldLabel)return;
   stopPageIntent();const ticket=intent.ticket;
   pageTransition={body,root:intent.root,before:intent.root.getAttribute('data-workspace-transition')};intent.root.setAttribute('data-workspace-transition','');const animation=motion.animate(body,workspaceEnterFrames(intent.direction),620);
   const finish=()=>{if(ticket===pageRevision)clearPage()};if(animation)void animation.finished.then(finish,finish);else finish();
  }
- function expectPage(root:HTMLElement,node:HTMLElement,buttons:HTMLElement[],selected:number){
+ function expectPage(root:HTMLElement,node:HTMLElement,buttons:HTMLElement[],selected:number,navSelector:string){
   if(buttons[selected]===node)return;
-  const requested=node.textContent?.trim()??'',oldKind=root.dataset.overlay??'',expectedKind=nativeEntryKinds[requested]??({'特征':'characteristics',Characteristics:'characteristics','笔记':'journalNotes',Notes:'journalNotes'} as Record<string,string>)[requested]??oldKind;
-  const intent:PageIntent={root,parent:root.parentElement,body:root.querySelector('#customOverlayContent'),title:root.querySelector('#customOverlayTitle'),renderRoots:new Set(),views:new Map(),oldKind,expectedKind,oldSelected:selected,oldLabel:buttons[selected]?.textContent,requested,direction:buttons.indexOf(node)>=selected?1:-1,changed:false,ticket:pageRevision,stop:()=>{},observer:new MutationObserver(records=>{
+  const requested=node.textContent?.trim()??'',oldKind=root.dataset.overlay??'',expectedKind=root.hasAttribute('data-dgu-adapter')?oldKind:nativeEntryKinds[requested]??({'特征':'characteristics',Characteristics:'characteristics','笔记':'journalNotes',Notes:'journalNotes'} as Record<string,string>)[requested]??oldKind;
+  const intent:PageIntent={navSelector,root,parent:root.parentElement,body:root.querySelector('#customOverlayContent'),title:root.querySelector('#customOverlayTitle'),renderRoots:new Set(),views:new Map(),oldKind,expectedKind,oldSelected:selected,oldLabel:buttons[selected]?.textContent,requested,direction:buttons.indexOf(node)>=selected?1:-1,changed:false,ticket:pageRevision,stop:()=>{},observer:new MutationObserver(records=>{
    if(pageIntent!==intent)return;
    if(records.some(record=>record.type==='childList'&&intent.renderRoots.has(record.target)||record.type==='attributes'&&record.target instanceof HTMLElement&&intent.views.has(record.target)&&intent.views.get(record.target)!==hiddenView(record.target)))intent.changed=true;
    scope.frame(commitPage);
@@ -163,16 +164,13 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(detail&&visible(detail))response(detail);
   const node=event.target.closest<HTMLElement>(formButtons+',.dgw-exits a.link-internal,.sf-motion-petal,.sf-motion-ball,.dgw-slots button,.dgw-item,.dgshop-content .category-tab,.dgshop-content .clothing-item,.dcu-arrangement button,[data-kw-native],[data-kw-entry],[data-kw-nav-control],.dgp-navigation button');
   if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;
-  const top=node.dataset.kwNavControl==='tab'&&node.closest<HTMLElement>(ownWindowSelector),topButtons=top?[...top.querySelectorAll<HTMLElement>('#overlayTabs>button')]:[],oldSelected=topButtons.findIndex(n=>n.classList.contains('tab-selected'));
-  clearPage();if(top)expectPage(top,node,topButtons,oldSelected);
+  const top=(node.dataset.kwNavControl==='tab'||node.dataset.kwNavControl==='category')&&node.closest<HTMLElement>(ownWindowSelector),navSelector=node.closest('.CE-category-bar')?'#cheat_extended_options>.CE-category-bar':node.closest('.CE-subtab-bar')?'#cheat_extended_options>.CE-subtab-bar':'#overlayTabs',topButtons=top?[...top.querySelectorAll<HTMLElement>(navSelector+'>button')]:[],oldSelected=topButtons.findIndex(n=>n.matches('.tab-selected,.CEtabSelected,.CEbuttonBarSelected'));
+  clearPage();if(top)expectPage(top,node,topButtons,oldSelected,navSelector);
   stamp(node);response(node);queueMicrotask(beginExpected);
-  const nav=node.closest<HTMLElement>('#shopCategories');
-  const before=nav?.querySelector<HTMLElement>('[aria-pressed=true],.category-tab.active,[aria-current]')?.getBoundingClientRect();
   const passage=node.closest('.passage');
   settle(()=>{
    if(passage&&!passage.isConnected)return;
-   const selected=nav?.querySelector<HTMLElement>('[aria-pressed=true],.category-tab.active,[aria-current]');
-   if(before&&selected&&visible(selected))motion.focus(before,selected.getBoundingClientRect());
+
 
    syncOverlay();
   });

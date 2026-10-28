@@ -227,8 +227,12 @@
 .dgshop-detail-backdrop[hidden]{display:none!important}
 .dgshop-content.dgshop-narrow .dgshop-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;height:auto;min-height:0}
 .dgshop-content.dgshop-narrow .dgshop-catalog{height:auto;max-height:none;min-height:0;overflow:visible;scrollbar-gutter:auto;padding:0}
-.dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details{display:none;position:fixed;inset:auto 12px 12px;height:min(80dvh,820px);min-height:0;z-index:2000;box-shadow:0 16px 48px #0008}
+.dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details{display:none;position:fixed;inset:auto 12px 12px;width:min(calc(100vw - 24px),56rem);max-width:calc(100vw - 24px);height:auto;max-height:min(80dvh,820px);min-height:0;margin:0 auto;box-sizing:border-box;z-index:2000;box-shadow:0 16px 48px #0008}
 .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details.dgshop-detail-open{display:flex}
+.dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details[popover=manual]:popover-open{position:fixed;inset:auto 12px 12px;margin:0 auto}
+/* Legacy engines cannot escape a query container; the open detail temporarily
+   uses the existing narrow classes instead of container queries. */
+.dgshop-content.dgshop-narrow.dgshop-fixed-details{container-type:normal}
 .dgshop-content.dgshop-narrow .dgshop-close-detail{display:block;border:0;border-bottom:1px solid var(--dgu-border);border-radius:0;background:var(--dgu-surface);color:var(--dgu-text);padding:12px;min-height:44px;flex-shrink:0;text-align:left}
 .dgshop-content.dgshop-narrow .dgshop-browse-tools #shopCategories,.dgshop-content.dgshop-narrow .dgshop-browse-tools .optionsBar{flex-basis:100%}
 .dgshop-content.dgshop-narrow .dgshop-catalog #shop-pagination{position:static}

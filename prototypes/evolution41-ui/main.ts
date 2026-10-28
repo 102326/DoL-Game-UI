@@ -1,15 +1,17 @@
 import {hubPreview} from '../evolution-integration/hub-preview';
 import {createPanelPreview,panelCases,type PreviewPanel} from './panels';
+import {createIndependentPreview,independentCases,type IndependentPanel} from './independent';
 
 const required=<T extends Element>(selector:string)=>{const n=document.querySelector<T>(selector);if(!n)throw Error(`Missing preview control ${selector}`);return n};
 const theme=(window as Window & {DoLMidnightTheme?:{openSettings():void}}).DoLMidnightTheme;
 if(!theme)throw Error('Settings owner is unavailable');
 required<HTMLButtonElement>('#review-open-settings').onclick=()=>theme.openSettings();
 required<HTMLButtonElement>('#review-find-hub').onclick=()=>hubPreview.floating.show();
-const panels=createPanelPreview(),panelPicker=required<HTMLSelectElement>('#review-panel');
+const independent=new URLSearchParams(location.search).has('independent');
+const panels=independent?createIndependentPreview():createPanelPreview(),panelPicker=required<HTMLSelectElement>('#review-panel');
 hubPreview.enableOfficialMotion();
-for(const [key,label] of Object.entries(panelCases)){const option=document.createElement('option');option.value=key;option.textContent=label;panelPicker.append(option)}
-required<HTMLButtonElement>('#review-open-panel').onclick=()=>panels.open(panelPicker.value as PreviewPanel);
+for(const [key,label] of Object.entries(independent?independentCases:panelCases)){const option=document.createElement('option');option.value=key;option.textContent=label;panelPicker.append(option)}
+required<HTMLButtonElement>('#review-open-panel').onclick=()=>independent?(panels as ReturnType<typeof createIndependentPreview>).open(panelPicker.value as IndependentPanel):(panels as ReturnType<typeof createPanelPreview>).open(panelPicker.value as PreviewPanel);
 required<HTMLButtonElement>('#review-restore-panel').onclick=()=>panels.restore();
 Object.assign(window,{ui41PanelPreview:panels});
 const picker=required<HTMLSelectElement>('#review-weather');
@@ -30,3 +32,5 @@ function onPageHide(event:PageTransitionEvent){
 window.addEventListener('pagehide',onPageHide);
 weather(new URLSearchParams(location.search).get('weather')??'clear');
 if(new URLSearchParams(location.search).has('settings'))theme.openSettings();
+
+const requested=new URLSearchParams(location.search).get('independent');if(independent&&requested&&requested in independentCases){panelPicker.value=requested;required<HTMLButtonElement>('#review-open-panel').click();const section=panelPicker.closest('details');if(section)section.open=true}

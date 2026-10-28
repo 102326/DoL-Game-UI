@@ -664,8 +664,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6fd56c19d3bbbdca6f165dadb77f09ff90cae7efcf528d723c80c202b23f8cfb",
-      "assertionSites": 176
+      "sourceSha256": "0b31449dbb7e96b21c0f7067760920f9618fa3cad6e4fa66bf66a6cb40b6c869",
+      "assertionSites": 196
     },
     {
       "entry": "tests/checkpoint-boundary.test.mts",
@@ -974,8 +974,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "e62c9b57b3bc2fadf1eb7ddc3335989814ad9e357fd52d3f1d5bf84101df81ad",
-      "assertionSites": 346,
+      "sourceSha256": "0c9588b87f16c8f418c7e3790f725d822017accb477439e1d508997dd5a52aa3",
+      "assertionSites": 358,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1768,8 +1768,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6cad7eead552689f657f05cb342eaa602a7ecc81d6aa1ee3e1a4b3263f9c0843",
-      "assertionSites": 114
+      "sourceSha256": "b3f456fb52944a0bf56bb7474d75a7ccf4b0659a73921be18dfc67ae78550d7d",
+      "assertionSites": 117
     },
     {
       "entry": "tests/optimization-date.cjs",
@@ -2320,8 +2320,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "254b2bfad659bd3eb565262b4be1932989df321a17ee394cd66dc4054a2f764f",
-      "assertionSites": 21
+      "sourceSha256": "adaa2f1393be55bd3c3cc75914b8e166303bfafc8a64dc193e710405232a41fa",
+      "assertionSites": 23
     },
     {
       "entry": "tests/source-identity-boundary.test.mts",

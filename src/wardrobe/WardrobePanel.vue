@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useWorkspaceSurface} from '../ui/workspace-surface';
 import {computed,ref,watch,nextTick,onMounted,onBeforeUnmount} from 'vue';
 import {visualScope} from '../ui/visual-scope';
 const scope=visualScope();
@@ -11,6 +12,7 @@ import {experiments} from '../runtime/experiments';
 import ReferenceDock from './ReferenceDock.vue';
 import type {ReferenceContext} from './reference';
 import './reference.css';
+import {workspaceEnterFrames} from '../ui/workspace-transition';
 import {sourceMotion} from '../ui/source-motion';
 const props=defineProps<{model:WardrobeModel;reference?:ReferenceContext;resolveIcon:(src:string)=>Promise<string>;onSplit:(keys:string[])=>void;onSlot:(key:string)=>void;onRepair:(keys:string[])=>void;onTransfer:(keys:string[],target:string)=>void;onTowel:(kind:'towel'|'large_towel')=>void;onSearch:(acrossSlots:boolean)=>void;onWear:(key:string)=>void;onNative:(open:boolean)=>void;onReview:(keys:string[])=>void;onConfirm:()=>void;onCancel:()=>void;onStrip:()=>void}>();
 const view=computed(()=>props.model),officialMotion=document.documentElement.hasAttribute('data-stone-free');
@@ -18,6 +20,7 @@ const referenceDock=ref<InstanceType<typeof ReferenceDock>>();
 const preview=ref<HTMLElement>(),native=ref<HTMLElement>(),actions=ref<HTMLElement>(),warmth=ref<HTMLElement>(),equipment=ref<HTMLElement>(),services=ref<HTMLElement>(),confirmationTitle=ref<HTMLElement>();
 const exits=ref<HTMLElement>();
 const shell=ref<HTMLElement>(),previewOpen=ref(true),quickOpen=ref(true);
+useWorkspaceSurface(shell,'wardrobe');
 const complexContent=computed(()=>props.model.slots.length>11||props.model.items.length>8);
 let previewResize:ResizeObserver|undefined,lastNarrow:boolean|undefined;
 function resizePreview(){
@@ -33,7 +36,7 @@ const destination=ref('');
 const query=ref(''),sort=ref('name'),descending=ref(false),zoom=ref(false);
 const page=ref(0),itemsList=ref<HTMLElement>();
 const motion=sourceMotion();
-watch(()=>props.model.slot,()=>{if(document.documentElement.hasAttribute('data-stone-free')){if(itemsList.value)motion.animate(itemsList.value,[{opacity:.65,backgroundColor:'#8baea312'},{opacity:1,backgroundColor:'transparent'}],480);const label=shell.value?.querySelector<HTMLElement>('.dgw-count');if(label)motion.animate(label,[{transform:'translateY(12px)',opacity:.4},{transform:'none',opacity:1}],520)}},{flush:'post'});
+watch(()=>props.model.slot,()=>{if(document.documentElement.hasAttribute('data-stone-free')){if(itemsList.value)motion.animate(itemsList.value,workspaceEnterFrames(1),620)}},{flush:'post'});
 
 scope.own(()=>motion.dispose());
 const pageSize=40;

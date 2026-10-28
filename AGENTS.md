@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Owner direction (2026-10-28, WORKSPACE-03): continue remaining owned surfaces and reviewed adapters; default text/options use compact spacing, preserve 44px primary hit areas and use the existing paragraph/option-gap slider for extra whitespace. Keep default60/left; real preview, native node/events, popup geometry, rollback and cleanup remain required. Internal presentation leases are not a new Host/public protocol. No main merge or release.
+
 - Owner clarification (2026-10-28): settings and other owned windows may use different implementations, but their presented styles and effects must align. Authorizes WORKSPACE-02 for the current nine native entries: complete accepted weather material, category states/contour and page entry, while section navigation remains heading-only. Code reuse and automated PASS do not substitute for visual acceptance; no main/release authorization.
 
 - Owner direction (2026-10-28): mature settings is the shared visual/interaction source for other owned windows. Reuse its spacing, reading wells and control rules instead of creating per-consumer styles. Keep accepted settings defaults/appearance, native node ownership and fallback; each consumer still needs separate visual/game/weather acceptance. Issue #33 wardrobe quarter-view occurs with Ray while the sidebar is complete; this narrows diagnosis but is not a confirmed cause or fix.

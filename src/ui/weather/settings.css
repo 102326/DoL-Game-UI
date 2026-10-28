@@ -12,3 +12,11 @@
 :is(#customOverlay,.passage.dgp-overlay)[data-sf-weather-material]>.sf-weather-canvas{position:absolute!important;inset:0;width:100%;height:100%;z-index:0;pointer-events:none!important;border-radius:22px}
 :is(#customOverlay,.passage.dgp-overlay)[data-sf-weather-material]>.evo-material-layer{position:absolute!important;inset:0;overflow:hidden;border-radius:22px;z-index:0!important;pointer-events:none!important;contain:layout style}
 :is(#customOverlay,.passage.dgp-overlay)[data-sf-weather-material]>.evo-material-layer *{pointer-events:none!important}
+
+/* Explicit first-party leases only; keep existing positioned controls above decoration. */
+[data-sf-workspace][data-sf-weather-material]{isolation:isolate}
+[data-sf-workspace][data-sf-weather-material]:not(dialog){position:relative}
+:where([data-sf-workspace][data-sf-weather-material]>:not(.sf-weather-canvas):not(.evo-material-layer)){position:relative;z-index:1}
+[data-sf-workspace][data-sf-weather-material]>.sf-weather-canvas{position:absolute!important;inset:0;width:100%;height:100%;z-index:0;pointer-events:none!important;border-radius:inherit}
+[data-sf-workspace][data-sf-weather-material]>.evo-material-layer{position:absolute!important;inset:0;overflow:hidden;border-radius:inherit;z-index:0!important;pointer-events:none!important;contain:layout style}
+[data-sf-workspace][data-sf-weather-material]>.evo-material-layer *{pointer-events:none!important}

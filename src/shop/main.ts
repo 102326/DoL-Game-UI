@@ -6,6 +6,7 @@ import Toolbar from './Toolbar.vue';
 import {createShopSource,copyShopItem,purchaseControl,type ShopFacts} from './source';
 import './style.css';
 import {purchaseWitness,purchaseResult} from './transaction';
+import {workspaceEnterFrames} from '../ui/workspace-transition';
 import {sourceMotion} from '../ui/source-motion';
 import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
@@ -37,15 +38,28 @@ export function startShop(root:Runtime,framework?:ShopFramework){
  const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'',referenceEnabled:!!framework,referenceA:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonB:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonTarget:null as string|null,comparisonOrigin:null as {left:number;top:number;width:number;height:number}|null,transactionStatus:'' as ''|'pending'|'confirmed'|'unknown',transactionMessage:'',defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
  function current(){const passage=shop?.closest<HTMLElement>('.passage');return scope.active()&&(!frameworkBinding||frameworkBinding.isCurrent())&&!!shop?.isConnected&&!!passage&&!passage.classList.contains('passage-out')&&document.querySelector('#passages .passage:not(.passage-out)')===passage&&(!root.SugarCube?.State?.passage||root.SugarCube.State.passage===passage.dataset.passage)}
  function facts():ShopFacts{const variables=root.SugarCube?.State?.variables;const clothes=(root as unknown as {setup?:{clothes?:Record<string,unknown[]>}}).setup?.clothes;return {variables,definition:clothes?.[String(variables?.clothingShopSlot)]?.[Number(variables?.clothes_choice)]}}
- function syncBackdrop(){if(backdrop)backdrop.hidden=!(state.narrow&&state.open&&state.hasDetails)}
+ let detailPopover:HTMLElement|undefined,popoverUnavailable=false;
+ function detailToggle(){if(scope.active()&&detailPopover&&!detailPopover.matches(':popover-open')&&state.open)toggle(false)}
+ function releasePopover(){const node=detailPopover;detailPopover=undefined;if(!node)return;node.removeEventListener('toggle',detailToggle);if(node.getAttribute('popover')!=='manual')return;try{if(node.matches(':popover-open'))node.hidePopover()}catch{/* Unsupported or already detached: removing our attribute still retires the top layer. */}finally{if(node.getAttribute('popover')==='manual')node.removeAttribute('popover')}}
+ function syncBackdrop(){
+  const open=state.narrow&&state.open&&state.hasDetails;if(backdrop)backdrop.hidden=!open;
+  if(detailPopover&&(detailPopover!==details||!state.narrow))releasePopover();
+  const capable=!!details&&typeof details.showPopover==='function'&&!popoverUnavailable&&(!details.hasAttribute('popover')||details===detailPopover);
+  if(detailPopover&&!capable)releasePopover();
+  if(capable&&details&&(!details.hasAttribute('popover')||details===detailPopover)){
+   try{if(state.narrow){if(!detailPopover){detailPopover=details;details.setAttribute('popover','manual');details.addEventListener('toggle',detailToggle)}if(open&&!details.matches(':popover-open'))details.showPopover();else if(!open&&details.matches(':popover-open'))details.hidePopover()}}
+   catch{popoverUnavailable=true;releasePopover()}
+  }
+  shop?.classList.toggle('dgshop-fixed-details',open&&(!capable||popoverUnavailable));
+ }
  function resizeLayout(){if(!shop)return;state.narrow=shop.clientWidth<800;state.compact=shop.clientWidth<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop();syncRipple()}
  function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;shop?.classList.toggle('dgshop-categories-open',state.categoriesOpen)}
  function scheduleResize(){motion.cancel();selectionMotion=undefined;clearRipple();scope.frame(resizeLayout)}
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
  function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
- function restore(){for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();referenceMount=null;state.comparisonTarget=null;state.comparisonOrigin=null;state.comparisonB=null;details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
+ function restore(){releasePopover();shop?.classList.remove('dgshop-fixed-details');for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();referenceMount=null;state.comparisonTarget=null;state.comparisonOrigin=null;state.comparisonB=null;details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
- function release(){motion.cancel();selectionMotion=undefined;clearRipple();transactionCheck?.();transactionCheck=undefined;quantityCheck?.();quantityCheck=undefined;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;releaseResize?.();releaseResize=undefined;scope.cancelFrame(resizeLayout);source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null}
+ function release(){motion.cancel();selectionMotion=undefined;clearRipple();transactionCheck?.();transactionCheck=undefined;quantityCheck?.();quantityCheck=undefined;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;releaseResize?.();releaseResize=undefined;scope.cancelFrame(resizeLayout);source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null;popoverUnavailable=false}
  function arrangeEntry(){
   if(entry?.isConnected)return;
   if(!shop)return;
@@ -148,8 +162,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
    if(document.documentElement.hasAttribute('data-stone-free')&&motion.enabled()){
     if(pending.category){
      // The catalog owns scrolling, not native fixed controls or their coordinate system.
-     motion.animate(catalog!,[{clipPath:'inset(0 0 0 100%)',opacity:.5},{clipPath:'inset(0)',opacity:1}],520);
-     const selected=shop.querySelector<HTMLElement>('.category-tab.active');if(selected)motion.focus(pending.rect,selected.getBoundingClientRect());
+     motion.animate(catalog!,workspaceEnterFrames(1),620);
     }else if(projection?.selected&&pending.display===source!.selectionDisplay()&&state.hasDetails&&details.getClientRects().length){
      syncRipple(pending.point);
      const distance=Math.min(160,details.clientWidth*.38);

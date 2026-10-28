@@ -12,6 +12,7 @@ declare let calls:number,portalCalls:number,modalCalls:number;
 declare const nativeProgressDisplay:string,nativeProgressAnimation:string,modalNode:HTMLElement,nativeFooter:HTMLElement;
 declare const ModHubSoftWet:{getDiagnostics():unknown};
 declare const modalLevel:()=>string;
+declare const adapterNav:ReturnType<typeof import('../framework/official-ui/navigation').nativeNavigation>;
 declare const must:<T>(node:T|null)=>T;
 const {chromium}=playwright;
 const cases=[
@@ -83,8 +84,12 @@ const cases=[
    assert.equal(await page.evaluate(()=>calls),widths.length);assert.equal(await page.evaluate(()=>original.parentNode===nativeParent&&originalInput===document.querySelector('#value')),true);
    assert.equal(await page.locator('#customOverlayContent').evaluate(n=>getComputedStyle(n).backdropFilter),'none','no nested content blur');
    if(item.card!=='#CE_settingsDiv')assert.match(await page.locator(item.card).first().evaluate(n=>getComputedStyle(n).backgroundColor),/^rgba\(/,item.id+' uses translucent content plane');
-   await page.locator(item.drift).evaluate(n=>n.remove());await page.evaluate(()=>runtime.api.rescan());
+   await page.evaluate(async()=>{const {nativeNavigation}=await import('../framework/official-ui/navigation');const {acrylicParameters}=await import('../src/theme/acrylic');document.documentElement.setAttribute('data-dgu-acrylic-adjustment','');for(const[key,value]of Object.entries(acrylicParameters(60)))document.documentElement.style.setProperty(key,value);Reflect.set(window,'Weather',{name:'rain',precipitation:'rain'});Reflect.set(window,'adapterNav',nativeNavigation());adapterNav.refresh()});
+   await page.locator('#customOverlay>.sf-weather-canvas').waitFor({timeout:3000});assert.equal(await page.locator('#customOverlay>.sf-weather-canvas').count(),1,'reviewed full adapter uses the common complete material');assert.equal(await page.locator('#customOverlay>.kw-heading-weather').count(),0);
+   if(item.id==='CheatExtendedSoftWet'){await page.evaluate(()=>{document.querySelector('#cheat_extended_options>.CE-category-bar>button')?.classList.add('CEtabSelected');document.querySelector('#cheat_extended_options>.CE-subtab-bar>button')?.classList.add('CEbuttonBarSelected');adapterNav.refresh()});await page.waitForFunction(()=>document.querySelectorAll('#cheat_extended_options .dmt-orbit-focus').length===2);assert.equal(await page.locator('#cheat_extended_options .dmt-orbit-focus').count(),2,'CE category and subcategory keep independent live contours')}
+   await page.locator(item.drift).evaluate(n=>n.remove());await page.evaluate(()=>{runtime.api.rescan();adapterNav.refresh()});
    assert.notEqual(await page.locator('#customOverlay').getAttribute('data-dgu-adapter-match'),'full','structure drift withdraws full styling');
+   assert.equal(await page.locator('#customOverlay>.sf-weather-canvas,#customOverlay>.evo-glass-layer').count(),0,'partial adapter relinquishes the complete renderer');await page.evaluate(()=>adapterNav.dispose());
    await page.evaluate(id=>{const adapter:unknown=Reflect.get(window,id);if(!adapter||typeof adapter!=='object'||!('destroy' in adapter)||typeof adapter.destroy!=='function')throw Error('Missing adapter teardown');adapter.destroy();runtime.destroy()},item.id);
    if(item.id==='ModHubSoftWet'){assert.equal(await page.locator('#modHubManagerToolsMenu[data-dgu-adapter]').count(),0);assert.equal(await page.locator('#portaled-action').count(),1);if(item.drift==='#modHubModManageContainer')assert.equal(await page.evaluate(()=>modalNode.hasAttribute('data-dgu-adapter')),false)}
    assert.equal(await page.locator('#native').count(),['#modHubModManageContainer','#modHubHelpContainer'].includes(item.drift)?0:1);

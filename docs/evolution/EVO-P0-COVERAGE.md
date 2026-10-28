@@ -101,17 +101,17 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 | 作弊 | 同上；cheats | WORKSPACE-02完整天气、设置式顶层状态与620ms进入候选已接入；宽窄原控件/回退/清理已检。视觉裁决、真实业务/游戏/设备及性能仍待验 |
 | 态度 | 同上；attitudes与非overlay宿主 | WORKSPACE-02真实正文宿主接完整天气（绘制高度限一视口）及匹配控件；长正文/回退/释放已检。没有overlay顶层分类，不假造页切换；业务/设备及性能仍待验 |
 | 游戏设置 | 同上；settings（与界面设置独立） | WORKSPACE-02完整天气、设置式顶层状态与620ms进入候选已接入；宽窄原控件/回退/清理已检。视觉裁决、真实业务/游戏/设备及性能仍待验 |
-| 存档/详情/传输工具 | src/saves/main.ts；.dgs-host/.dgs-native-tools | 待核对双栏/窄屏详情/原生工具与材质、天气、退出；不自动读写真实存档 |
-| 服装店列表/分类/筛选 | src/shop/main.ts、Toolbar.vue；.dgshop-host/.dgshop-content | 待核对原列表节点、长商品、默认过滤、滚动/材质与适用天气，不改购买语义 |
-| 商品详情/对照浮层 | src/shop/ShopReference.vue及main.ts详情/比较 | 待核对浮层材质、遮挡、关闭/Escape/取消和资源，不能复用列表单行结论 |
-| 衣柜主界面 | src/wardrobe/main.ts、WardrobePanel.vue；.dgw-shell | 待核对新材质/天气角色、换装/搜索/分页、异步退出与原生恢复 |
-| 衣柜抽屉/参考/预览 | src/wardrobe/extras.ts、ReferenceDock.vue、WardrobePanel.vue及runtime/surfaces抽屉 | 待逐层核对材质深度、原动作/系统控件/Canvas边界及释放，不重写上游渲染算法 |
-| 战斗主面板/扩展区域/聚焦编辑 | src/combat/main.ts、CombatPanel.vue；.dcu-shell/.dcu-root | 独立伪元素材质仍需接轴；真实动作/布局/多region/选择框与适用天气待核对 |
-| 官方Hub（扇形/网格/停靠/内圈工具） | framework/official-ui/hub.ts、motion-hub/MotionHub.vue | 布局/响应已有候选；材质轴的角色映射、玻璃关闭和全部工具/连续打断需组合验证，保留已认可球体 |
-| 经典Floating回退 | src/floating/main.ts、FloatingTools.vue | 明确保留回退，核对显示/隐藏/偏好/释放；若视觉角色保留旧式须列原因，不假定可删除 |
-| UI自有参考/对照表面 | framework/official-ui/reference-shelf.ts、src/theme/SettingsPreview.vue及参考组件 | 需覆盖停驻/浮起/关闭的材质和原节点、业务边界；原型样例不能替代实际消费者 |
-| ModHub / MapleBirch / 原版优化 / CE | compat下对应四个外观包；navigation.adaptedOverlaySelector | 仅full匹配且已审宿主进入装饰，材质/天气/控件/退出逐包验证；partial/未知不接管，业务算法另保原作者合同 |
-| SmartPhone / ReOverfits | compat下对应独立外观入口 | 不属于上述四包overlay选择器，须各自审宿主和控制边界后登记接入/例外，不能算在“四包通过”内 |
+| 存档/详情/传输工具 | src/saves/main.ts；.dgs-host/.dgs-native-tools | WORKSPACE-03：真实存档控制器列表/详情接轴与完整天气，1280/390受控原生形状输入、模态详情/宽屏inline、单选展开与销毁已检。inline不叠第二renderer；真实传输/保存/载入及游戏/设备仍待验，不读写真实存档 |
+| 服装店列表/分类/筛选 | src/shop/main.ts、Toolbar.vue；.dgshop-host/.dgshop-content | WORKSPACE-03：实际控制器接轴/完整天气与原生单选；材质采样放非祖先装饰面，分类进入使用设置620ms，无定位接力。宽窄及原事件已检，真实商品/分页/多Mod/性能待验，不改购买语义 |
+| 商品详情/对照浮层 | src/shop/ShopReference.vue及main.ts详情/比较 | WORKSPACE-03：原详情节点现代顶层/不支持接口/外部popover三路径定位；短内容收缩、长内容内部滚动、宽屏上限、关闭受检。inline用reading well，独立窄弹层用同轴shell；比较保留单一原空间动画。真实游戏/全部比较流程仍待验 |
+| 衣柜主界面 | src/wardrobe/main.ts、WardrobePanel.vue；.dgw-shell | WORKSPACE-03：实际WardrobePanel接轴、完整天气、紧凑行/现有间距与选择框；受控模型宽窄/栏目620ms/退出已检。完整main原节点换装/分页/渲染、Ray #33及游戏/设备仍待验 |
+| 衣柜抽屉/参考/预览 | src/wardrobe/extras.ts、ReferenceDock.vue、WardrobePanel.vue及runtime/surfaces抽屉 | WORKSPACE-03：extras自有drawer与ReferenceDock登记内部呈现租约；参考实屏模型/单一动画/天气/退出已检，正式drawer原节点/事件/模态/回退合同已检。完整游戏drawer天气、实际预览Canvas/Ray与设备仍待验，不改上游算法 |
+| 战斗主面板/扩展区域/聚焦编辑 | src/combat/main.ts、CombatPanel.vue；.dcu-shell/.dcu-root | WORKSPACE-03：主shell接轴/完整天气，移除重复伪层；固定底栏定位保留。受控原控件/选择框/聚焦合同已检，扩展区保留原生区域语义，不强造第三方标题或粒子；实际多region/战斗结算、设备及性能待验 |
+| 官方Hub（扇形/网格/停靠/内圈工具） | framework/official-ui/hub.ts、motion-hub/MotionHub.vue | WORKSPACE-03：材质轴映射扇形选项、内圈和网格原动画背板；不把背景画到菜单base，球体/命中/时序保留。Hub输入/打断/退出及真实集成另检；设备/GPU和全局视觉验收仍待验 |
+| 经典Floating回退 | src/floating/main.ts、FloatingTools.vue | WORKSPACE-03：网格只复用静态reading well，不叠天气renderer；功能回退保留，资源合同已检，真实游戏/视觉/设备待验。经典路径不因正式Hub存在而删除 |
+| UI自有参考/对照表面 | framework/official-ui/reference-shelf.ts、src/theme/SettingsPreview.vue及参考组件 | WORKSPACE-03：readonly副本采用同轴reading well；不涂改原作者frame。衣柜/商店比较登记自身材质/天气并保留原单一空间动画，不竞争100ms fade；完整业务/其它作者视图及设备分别验收 |
+| ModHub / MapleBirch / 原版优化 / CE | compat下对应四个外观包；navigation.adaptedOverlaySelector | WORKSPACE-03：四包full白名单接完整天气与共享布局；CE主分类/子分类分开OrbitFocus及620ms进入，原事件单次/full退出合同已检。partial/未知保留旧路径，真实包组合与性能待验 |
+| SmartPhone / ReOverfits | compat下对应独立外观入口 | WORKSPACE-03：SmartPhone完整wrapper接轴/单选/紧凑标题并保留原应用和缩放；虚拟屏幕/debug不新增雨层。ReOverfits没有独立窗口，复用实际shop宿主，保留专属业务。phone原事件/结构降级受检，真实设备/包组合待验 |
 
 ### 必须显式保留的边界
 
@@ -142,3 +142,5 @@ EVO41-WORKSPACE-01（2026-10-28）：设置正式规则成为第一批自有窗�
 WORKSPACE-02（2026-10-28）更新以上九入口状态：属性/社交/日志/特质/统计/成就/作弊/游戏设置已由旧标题天气切换至完整认可天气factory，接入设置式顶层状态/轮廓与620ms进入；态度为真实正文宿主，接完整天气、匹配承载和控件，绘制高度限一视口，没有overlay顶层分类，不假造页切换。宽窄受控源码、原控件/回退/清理通过，仍待视觉裁决、业务/游戏/设备及性能。负责人以最终呈现验收，不要求同代码；原生内容立即替换，不复制旧业务DOM来伪造离场。普通商店/衣柜/战斗/存档及第三方不因本批变成完成。具体证据和差异沿HANDOFF与UI报告。
 
 WORKSPACE-AUDIT-01：补五类原生表单/筛选的设置式单选、三类滑块（含实际拇指token）及自有正文普通操作；多选/size/未知包保持原生。延迟结构提交、同父根替换和待处理观察器退出已回归。仅已知结构、1秒意图窗口内接续进入，超过期限不阻塞原生操作，也不承诺补播。原生立即关闭与旧页无离场差异仍开放，总状态PARTIAL；九入口宽窄通过不代表全局完成。新手动审查入口`tests/ui41-workspace-audit.cts`，复现及未做项沿既有UI报告，不另建路线图。
+
+2026-10-28 WORKSPACE-03：本机剩余表面实施接续原表，默认文字/行内留白收紧，现有段落与选项间距滑杆增加自有表单/卡片留白，默认0；主触控保留44px。Implemented/受控Tested的增量如上，未新增全局视觉Accepted或游戏/设备Integrated结论。原生立即关闭、reference单一空间运动、虚拟设备不铺雨及未知作者frame边界均为明确保留的角色差异，不能据此将未验部分签为通过。详见既有UI报告WORKSPACE-03。

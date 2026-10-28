@@ -64,9 +64,9 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   // official rain surface to its header instead of compressing the model into it.
   rainHeight=h;
   if(shell.hasAttribute('data-sf-weather-material')){
-   const header=shell.querySelector('.dmt-settings-header,#customOverlayTitle,:scope>.dgp-host');rainHeight=0;
+   const header=shell.querySelector('.dmt-settings-header,#customOverlayTitle,:scope>.dgp-host,:scope>header,.dgshop-native-header');rainHeight=shell.hasAttribute('data-sf-workspace')?Math.min(h,112):0;
    if(header?.getClientRects().length){
-    const regions=[header,...shell.querySelectorAll('.dmt-layout-choice,.dmt-workspace[data-settings-layout=horizontal] .dmt-workspace-nav,:scope>.dgc-host,:scope>.dgs-host,:scope>.dgp-host')];
+    const regions=[header,...shell.querySelectorAll('.dmt-layout-choice,.dmt-workspace[data-settings-layout=horizontal] .dmt-workspace-nav,:scope>.dgc-host,:scope>.dgs-host,:scope>.dgp-host,.dgw-slots,.dgw-tools')];
     rainHeight=Math.max(0,Math.min(h,Math.max(...regions.filter(n=>n.getClientRects().length).map(n=>{const r=box(n.getBoundingClientRect());return r.y+r.height}))+48));
    }
   }

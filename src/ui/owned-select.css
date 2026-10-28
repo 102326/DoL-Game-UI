@@ -2,6 +2,11 @@
    Unsupported engines keep their platform picker, with dark native hints. */
 html[data-stone-free][data-dol-midnight] :is(
  #dol-midnight-controls .dgu-setting-row>select,
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container #phone-content select,
+ .dgshop-content .dgshop-browse-tools :is(.optionsBar,#shopCategories) select,
+ .dgshop-content .clothing-colours-div select,
+ .dcu-shell .dcu-native :is(#leftaction,#rightaction,#feetaction,#penisaction,#vaginaaction,#anusaction,#chestaction,#thighaction) select,
+ .dcu-shell #mouthaction select#listbox-askaction,
  .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #traitListsSearch label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=feats]:has(>.dgp-host) #featTypes label>select:only-of-type,
@@ -13,6 +18,11 @@ html[data-stone-free][data-dol-midnight] :is(
 
 html[data-stone-free][data-dol-midnight] :is(
  #dol-midnight-controls .dgu-setting-row>select,
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container #phone-content select,
+ .dgshop-content .dgshop-browse-tools :is(.optionsBar,#shopCategories) select,
+ .dgshop-content .clothing-colours-div select,
+ .dcu-shell .dcu-native :is(#leftaction,#rightaction,#feetaction,#penisaction,#vaginaaction,#anusaction,#chestaction,#thighaction) select,
+ .dcu-shell #mouthaction select#listbox-askaction,
  .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #traitListsSearch label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=feats]:has(>.dgp-host) #featTypes label>select:only-of-type,
@@ -25,6 +35,11 @@ html[data-stone-free][data-dol-midnight] :is(
 @supports (appearance:base-select) and selector(select::picker(select)) {
  html[data-stone-free][data-dol-midnight] :is(
   #dol-midnight-controls .dgu-setting-row>select,
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container #phone-content select,
+ .dgshop-content .dgshop-browse-tools :is(.optionsBar,#shopCategories) select,
+ .dgshop-content .clothing-colours-div select,
+ .dcu-shell .dcu-native :is(#leftaction,#rightaction,#feetaction,#penisaction,#vaginaaction,#anusaction,#chestaction,#thighaction) select,
+ .dcu-shell #mouthaction select#listbox-askaction,
  .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #traitListsSearch label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=feats]:has(>.dgp-host) #featTypes label>select:only-of-type,
@@ -35,6 +50,11 @@ html[data-stone-free][data-dol-midnight] :is(
  ):not([multiple]):not([size]) {appearance:base-select;align-items:center;gap:.5em;overflow-wrap:anywhere}
  html[data-stone-free][data-dol-midnight] :is(
   #dol-midnight-controls .dgu-setting-row>select,
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container #phone-content select,
+ .dgshop-content .dgshop-browse-tools :is(.optionsBar,#shopCategories) select,
+ .dgshop-content .clothing-colours-div select,
+ .dcu-shell .dcu-native :is(#leftaction,#rightaction,#feetaction,#penisaction,#vaginaaction,#anusaction,#chestaction,#thighaction) select,
+ .dcu-shell #mouthaction select#listbox-askaction,
  .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #traitListsSearch label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=feats]:has(>.dgp-host) #featTypes label>select:only-of-type,
@@ -51,6 +71,11 @@ html[data-stone-free][data-dol-midnight] :is(
  }
  html[data-stone-free][data-dol-midnight] :is(
   #dol-midnight-controls .dgu-setting-row>select,
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container #phone-content select,
+ .dgshop-content .dgshop-browse-tools :is(.optionsBar,#shopCategories) select,
+ .dgshop-content .clothing-colours-div select,
+ .dcu-shell .dcu-native :is(#leftaction,#rightaction,#feetaction,#penisaction,#vaginaaction,#anusaction,#chestaction,#thighaction) select,
+ .dcu-shell #mouthaction select#listbox-askaction,
  .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #traitListsSearch label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=feats]:has(>.dgp-host) #featTypes label>select:only-of-type,
@@ -64,6 +89,11 @@ html[data-stone-free][data-dol-midnight] :is(
  }
  html[data-stone-free][data-dol-midnight] :is(
   #dol-midnight-controls .dgu-setting-row>select,
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container #phone-content select,
+ .dgshop-content .dgshop-browse-tools :is(.optionsBar,#shopCategories) select,
+ .dgshop-content .clothing-colours-div select,
+ .dcu-shell .dcu-native :is(#leftaction,#rightaction,#feetaction,#penisaction,#vaginaaction,#anusaction,#chestaction,#thighaction) select,
+ .dcu-shell #mouthaction select#listbox-askaction,
  .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #traitListsSearch label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=feats]:has(>.dgp-host) #featTypes label>select:only-of-type,
@@ -74,6 +104,11 @@ html[data-stone-free][data-dol-midnight] :is(
  ):not([multiple]):not([size]) option:is(:hover,:focus-visible,:checked) {background:#41464d;color:#f0f2f3}
  html[data-stone-free][data-dol-midnight] :is(
   #dol-midnight-controls .dgu-setting-row>select,
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container #phone-content select,
+ .dgshop-content .dgshop-browse-tools :is(.optionsBar,#shopCategories) select,
+ .dgshop-content .clothing-colours-div select,
+ .dcu-shell .dcu-native :is(#leftaction,#rightaction,#feetaction,#penisaction,#vaginaaction,#anusaction,#chestaction,#thighaction) select,
+ .dcu-shell #mouthaction select#listbox-askaction,
  .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=traits]:has(>.dgp-host) #traitListsSearch label>select:only-of-type,
  .dgp-overlay[data-dgp-panel=feats]:has(>.dgp-host) #featTypes label>select:only-of-type,

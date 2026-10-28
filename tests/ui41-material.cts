@@ -58,8 +58,9 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing m
   await page.evaluate(()=>DoLMidnightTheme.setPreference('visualGlass',false));
   for(const mode of ['fan','grid'] as const){
    await page.evaluate(m=>hubPreview.floating.setPreference('mode',m),mode);const ball=page.locator('.sf-motion-ball');await ball.click();await page.locator('.sf-motion-orbit.is-expanded').waitFor();
-   const fills=await page.locator('.sf-motion-orbit.is-expanded .sf-motion-petal').evaluateAll(nodes=>nodes.map(n=>getComputedStyle(n).backgroundColor));assert.ok(fills.length===5&&fills.every(x=>x==='rgb(41, 41, 44)'),'review Hub keeps opaque glass-off tool surfaces');
-   if(mode==='grid')assert.equal(await page.locator('.sf-motion-orbit.is-expanded').evaluate(n=>getComputedStyle(n).backgroundColor),'rgb(41, 41, 44)');
+   const fills=await page.locator('.sf-motion-orbit.is-expanded .sf-motion-petal').evaluateAll(nodes=>nodes.map(n=>getComputedStyle(n).backgroundColor));assert.equal(fills.length,5);
+   if(mode==='fan')assert.ok(fills.every(x=>x==='rgb(41, 41, 44)'),'fan tools retain their own opaque glass-off surfaces');
+   else{assert.equal(await page.locator('.sf-motion-orbit.is-expanded').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)','grid base stays transparent; its animated shell owns the background');assert.deepEqual(await page.locator('.sf-motion-orbit.is-expanded').evaluate(n=>({fill:getComputedStyle(n,'::before').backgroundColor,filter:getComputedStyle(n,'::before').backdropFilter})),{fill:'rgb(41, 41, 44)',filter:'none'},'grid has one opaque glass-off sampling plane');assert.ok(await page.locator('.sf-motion-orbit.is-expanded .sf-motion-petal:not([data-motion-view$="interface-settings"])').evaluateAll(nodes=>nodes.every(n=>getComputedStyle(n).backgroundColor==='rgba(0, 0, 0, 0)')),'ordinary grid tools do not add duplicate opaque plates')}
    assert.equal(await page.locator('.sf-motion-tool-label').first().evaluate(n=>getComputedStyle(n).textAlign),'center');
    await ball.press('Escape');await page.waitForFunction(()=>document.querySelector('.sf-motion-ball')?.getAttribute('aria-expanded')==='false');
   }

@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import {useWorkspaceSurface} from '../ui/workspace-surface';
 import {computed,ref,toRef,onMounted,onBeforeUnmount,watch} from 'vue';
 import type {SaveEntry} from './source';
 import {visualScope} from '../ui/visual-scope';
 const scope=visualScope();
 const props=defineProps<{state:{entries:SaveEntry[];v2:boolean;query:string;selectedSlot:string;pending:boolean;message:string;unknown:number};headerTarget?:HTMLElement;fallback:()=>void;act:(key:number,index:number)=>void|Promise<void>;rename:(key:number,name:string)=>string}>();
 const query=toRef(props.state,'query'),selected=ref<number|null>((props.state.entries.find(e=>e.slot===props.state.selectedSlot)||props.state.entries.find(e=>!e.empty))?.key??null),drawer=ref<HTMLDialogElement|null>(null);
+useWorkspaceSurface(drawer,'save-detail',node=>node,true);
 const layout=ref<HTMLElement|null>(null),wide=ref(false);
+useWorkspaceSurface(layout,'saves',node=>node.closest<HTMLElement>('#customOverlay[data-overlay=saves]')??undefined);
 const inline=computed(()=>props.state.v2&&wide.value);
 let observer:ResizeObserver|undefined;
 function measure(){wide.value=(layout.value?.parentElement?.getBoundingClientRect().width??0)>=760}

@@ -268,3 +268,36 @@ Mac arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153的实际完成检查：
 - `node tests/source-motion-lifecycle.cjs`退出0；审查者两轮只读复查未发现剩余明确越界/清理缺陷，未自行运行测试。最初手动审查的关闭details定位失败、旧无host夹具按压失败均已查清并修正夹具，没有算作产品反例或反复重跑掩盖。
 
 未做：独立商店/衣柜/战斗/存档和逐兼容包的完整样式/特效整合，#33的真实Ray衣柜及祭坛溢出复现，完整游戏/多Mod、Android/WebView/Windows、软键盘/系统选择框、GPU/功耗/持续帧率和新远端双CI。已有针对性测试不是实际设备或整体视觉验收。上述项目保留在原覆盖表，未改main、版本/Host协议或Release。原始截图、失败及最终日志只在忽略目录/本机补充中，不能假定另一设备已收到。
+
+### EVO41-WORKSPACE-03：剩余表面与紧凑默认施工
+
+负责人继续授权完成剩余可在本机处理的UI，并要求默认文字/选项紧凑、现有间距滑杆提供额外留白。本计划接续原覆盖表，不建立第二条路线。
+
+1. 收紧设置与原生面板的重复内边距、标题/说明间隔，保持44px触控范围。正文默认继续继承原版，不全局压缩业务DOM；现有段落/选项间距值同时驱动已识别自有控件行的额外留白，零值为紧凑基线。
+2. 核对并接通存档列表/详情、商店、衣柜/参考/抽屉、战斗等真实独立表面的材质轴、适用天气与按钮/选择框。保留原生立即关闭和业务提交顺序，退出不复制旧业务DOM。第三方full/partial边界和原作者业务仍有效。
+3. 复用真实组件/控制器制作独立巡检入口；宽窄检查左/居中、长文字、下拉展开/取消/键盘、详情与顶层定位、零/最大间距和回退/释放。为确认的遗漏增加最小反例，不添加设备名称或新测试框架。
+4. 运行受影响的构建/类型/定向合同，独立复查并提交研发分支、同步#31及HANDOFF。涉及实际游戏、Ray包、设备系统弹层或持续GPU的条目按真实阻塞保留，不能凭合成预览收口；不合main、改Host协议或发布。
+
+#### WORKSPACE-03 实施结果（研发候选，未代签视觉或实机）
+
+本批接续同一消费者表。默认60%/左对齐、认可雨雪算法、球体和Hub响应时序保留；没有新增偏好或Host公共协议。设置/已识别原生表单默认收紧标题、说明、well和行内留白，主要命中区域保留44px；正文仍继承原版行距/段落基准，不对未知业务DOM全局压缩。现有“段落与选项间距”额外值同时驱动自有表单/列表留白，默认0，+12px受控表单行高增加12px，复位恢复原高度。移动设置的旧字面量也改为同一变量；不是只收紧其它窗口。
+
+- **独立自有表面**：真实存档列表/详情、商店、衣柜、战斗及自有reference/drawer通过内部呈现租约登记明确节点和现有销毁回调；同一个原有天气管理器消费，不新增Host注册接口或改业务所有权。主表面接材质轴及完整天气；宽屏inline详情复用父材质，模态详情在前台显示，背景renderer暂停。比较保留已有单一空间运动，避免另加100ms动画竞争；原生立即关闭继续保留，不复制旧业务DOM。
+- **具体角色边界**：商店wide详情是reading well，narrow独立详情使用同轴shell但不另加第二天气renderer；战斗扩展区保留原生区域。SmartPhone完整wrapper/debug接材质和紧凑标题、已知select，但虚拟设备显示区不铺天气，保留原尺寸/缩放及app命令。ReOverfits没有独立窗口，沿实际shop宿主接入。只读副本/经典Floating网格用静态reading well，不涂改其它作者frame，不给所有fallback复制粒子。这些是明确呈现角色选择，仍待负责人整体视觉裁决。
+- **兼容白名单**：ModHub、MapleBirch、Optimization、CE的full宿主接原共享材质/完整天气；CE主分类和子分类分别拥有轮廓及切页意图，原处理器只派发一次。partial/未知结构回退。SmartPhone新增实际原生select展开/取消与结构退出检查；shop筛选、衣柜工具和已识别战斗单选保留原节点/事件。
+- **EVO41-SHOP-DETAIL-01**：新增根blur会影响固定定位，但移开后严格坐标仍失败，确认旧query container也会改变fixed基准。材质采样改在非祖先装饰面；现代浏览器让原详情节点进入top layer，不复制/重排商品控件。无接口及外部已占用popover属性走临时取消query containment的原narrow布局，退出还原且不删除外部属性。原生hidePopover与按钮关闭均收拢背景。实屏另发现宽视口/窄shop时详情铺太宽、短内容固定80vh；现宽度有56rem上限、短内容自动收缩、长内容内部滚动且footer可见。这不是Ray #33修复。
+- **Hub采样所有权**：回归实际拒绝新轴在grid menu base重复绘制背景；修正为只在原动画`::before`背板采样，base透明，关闭/玻璃关闭和原时序保留。grid默认维持实际正式层rgba(25,28,28,.72)，0/100/60端点受检。未将同源化或较少代码当性能收益；新增天气消费者会增加绘制工作，持续GPU/帧率仍待测。
+
+实际发现并修正的证据差异：combat固定底栏一度被通用装饰定位改成relative，收窄为零优先级装饰规则后恢复fixed；独立标题未识别使雨层只有1px高，补实际header识别；reference双动画竞争由独立复查指出并排除。完整巡检的动画检查曾在“发现”与下一次“读取”之间结束，改成一次浏览器操作中发现、暂停和取样，保留620ms与完整关键帧相等断言，未延长sleep。布局回归中的旧Q1字面量按本次紧凑需求改为精确新值，旧main样式污染反例仍必须被拒绝。
+
+**验证环境与范围**：Mac arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153；真实组件/控制器＋合成DOM/模型。没有游戏HTML、玩家存档或Ray包。`npm run build`、`node scripts/build-framework.mjs`、`npm run ci:lock`、`npm run ci:check`及tooling构建退出0；应用build先执行、Framework最后执行，避免清空dist导致预览读取旧缓存。声明锁只更新四个既有入口的源码/断言身份，断言176→196、346→358、114→117、21→23；未删门禁、减少范围或放宽几何/业务断言。
+
+已执行的定向合同：`owned-select`、`adapter-materials`、`smartphone-adapter`、`official-game-motion`、`header-weather`、`evolution-weather-integration`、`evolution-owner-resources`、`source-motion-lifecycle`、`shop-ripple-motion`、`wardrobe-details-drawer`、`combat-select`、`combat-focused`及`golden-spin-hub`/`-input`/`-lifecycle`（均为`node tests/<名称>.cjs`）。owner资源合同保留13类真实owner释放、迟到回调、实际Hub集成/48布局及四类旧反例；独立复查两轮未发现剩余明确阻断，审查者未自行运行测试。
+
+旧`shop-stone-free`、`shop-transaction`、`shop-transaction-lifecycle`硬编码Edge。本机另在隔离进程中仅把编译后的launch参数替换为现有browser-options，原测试内容/断言不变，三项均退出0；这是Mac Chromium补充证据，**不计原Edge命令或Windows环境已通过**，未为此改测试源码。完整游戏及旧游戏夹具所需环境继续待验。
+
+手动源码预览命令：`node scripts/preview-ui41.mjs`，默认九入口；`/?independent=saves|shop|wardrobe|combat&weather=heavy`分别打开真实独立组件/控制器夹具。`ui41-independent`记录8个宽窄主场景、详情/单选/原动作与释放、异常注册、原生/不支持/外部popover分支、长短详情及reference单一动画。`ui41-workspace-audit`、`ui41-panel-preview`和`ui41-material`沿原入口核对。手动入口未自动扩入CI；报告中的baseHead/dirty及源码/构建摘要区分未提交树与父提交，原始日志/截图仅在本机忽略目录，不假定另一设备已收到。
+
+**仍未完成**：负责人对本批其它窗口的视觉裁决；真实游戏原版间距、真实保存/载入/交易/换装/战斗结算/多Mod；Ray衣柜1/4和祭坛图越界#33；完整游戏drawer天气/全部参考业务；Android/WebView与Windows的系统picker/触控/键盘/旋转；全部特殊天气逐消费者验收、GPU/功耗/持续帧率。九入口报告保留原生立即关闭、旧业务页无离场的PARTIAL，未通过阻塞业务或复制旧页强制同构。4.1最终统一源码/制品与性能整合仍按原计划，不改main、版本、Release或Host协议。
+
+本批远端CI和提交身份在提交后的交接快照补记；旧a4e1320的Run不覆盖本批。

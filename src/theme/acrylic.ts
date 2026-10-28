@@ -9,6 +9,12 @@ export function acrylicParameters(value:number){
  // The clear endpoint restores 4.0.1's unblurred face. Alpha alone does not
  // describe perceived transparency: the V1 midpoint still scatters its backdrop.
  return {
+  '--dgu-acrylic-axis-float':`rgb(${rgb([46,47,50],[28,39,43],[41,41,44])} / ${blend(.94,.6,.38)})`,
+  '--dgu-acrylic-axis-grid':`rgb(${rgb([46,47,50],[25,28,28],[41,41,44])} / ${blend(.94,.72,.38)})`,
+  '--dgu-acrylic-axis-utility':`rgb(${rgb([46,47,50],[36,38,41],[41,41,44])} / ${blend(.94,214/255,.38)})`,
+  '--dgu-acrylic-axis-float-filter':amount===1?'none':`blur(${blend(22,22,0)}px)`,
+  '--dgu-acrylic-axis-grid-filter':amount===1?'none':`blur(${blend(24,24,0)}px)`,
+  '--dgu-acrylic-axis-utility-filter':amount===1?'none':`blur(${blend(18,18,0)}px)`,
   '--dgu-acrylic-axis-shell-rgb':rgb([46,47,50],[20,24,27],[36,38,42]),
   '--dgu-acrylic-axis-reading-rgb':rgb([39,40,43],[11,15,18],[0,0,0]),
   '--dgu-acrylic-axis-preview-rgb':rgb([47,49,52],[28,38,42],[29,30,34]),

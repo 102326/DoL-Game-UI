@@ -30,6 +30,13 @@ html[data-stone-free][data-dol-midnight] #phone-wrapper[data-dgu-adapter=SmartPh
  #phone-content .todo-item{background:var(--kw-island);border-color:#ffffff18;box-shadow:inset 0 1px #ffffff06}
  #phone-content .todo-item label{min-height:44px}
 }
+
+/* The virtual device keeps its own navigation/geometry; only its glass face follows the axis. */
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container,
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug][data-dgu-adapter-match=full]>#smart-phone-debug-container{background:var(--q-fill,var(--sf-reading));border-color:rgb(var(--q-return,146 180 191) / .14)}
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment][data-dgu-visualGlass] #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container{backdrop-filter:var(--dgu-acrylic-axis-filter,none)}
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment]:not([data-dgu-visualGlass]) #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container{background:#1d262b;backdrop-filter:none}
+html[data-stone-free][data-dol-midnight] #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #phone-content>h3{margin:calc(8px + var(--dgu-ui-extra-gap,0px)) 4px 6px}
 /* Keep command inputs and links native; the debugger never runs commands on the adapter's behalf. */
 html[data-stone-free][data-dol-midnight] #smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug][data-dgu-adapter-match=full]>#smart-phone-debug-container{
  box-sizing:border-box;width:min(420px,calc(100vw - 30px));height:min(620px,calc(100dvh - 40px));max-width:calc(100vw - 30px);padding:18px;right:15px;bottom:20px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#ffffff30 transparent;background:var(--sf-reading);color:var(--sf-ink);font-size:13px;line-height:1.6;border:1px solid #ffffff22;border-radius:18px;box-shadow:inset 0 1px #ffffff08,0 20px 55px #0006;overflow-wrap:anywhere;color-scheme:dark;

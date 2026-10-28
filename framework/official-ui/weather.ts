@@ -1,3 +1,4 @@
+import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {settingsWeather} from '../../src/ui/weather/settings';
@@ -34,12 +35,12 @@ export function readGameWeather(root:WeatherHost=window as Window & WeatherHost)
 
 export function headerWeather(){
  type Surface={header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;material:boolean;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
- const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=sourceMotion();scope.own(()=>motion.dispose());let stopTimer:(()=>void)|undefined,state=readGameWeather();
+ const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=sourceMotion();scope.own(()=>motion.dispose());let stopTimer:(()=>void)|undefined,state=readGameWeather(),foreground:HTMLElement|null=null;
  const visible=(n:HTMLElement)=>n.isConnected&&!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert],[data-sf-leaving]');
  function clean(tasks:Array<()=>void>){const errors:unknown[]=[];for(const task of tasks)try{task()}catch(error){errors.push(error)}if(errors.length)throw new AggregateError(errors,'Weather cleanup failed')}
  function remove(key:string){const s=surfaces.get(key);if(!s)return;surfaces.delete(key);s.revision++;clean([()=>motion.cancel(s.node),()=>s.renderer?.dispose(),()=>s.stopWatch?.(),()=>s.node.remove(),()=>{if(s.materialAttribute!==undefined){if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');else s.parent.setAttribute('data-sf-weather-material',s.materialAttribute)}},()=>{if(!surfaces.size){const stop=stopTimer;stopTimer=undefined;stop?.()}}])}
  function clear(){clean([...surfaces.keys()].map(key=>()=>remove(key)))}
- const showing=(s:Surface)=>visible(s.header)&&(!s.renderer||s.parent.clientWidth>0&&s.parent.clientHeight>0);
+ const showing=(s:Surface)=>visible(s.header)&&(!foreground||foreground===s.parent||foreground.contains(s.parent))&&(!s.renderer||s.parent.clientWidth>0&&s.parent.clientHeight>0);
  const headerRegions=':scope>.dgc-host,:scope>.dgs-host,:scope>.dgp-host,.modhub-sticky-toolbar,.CE-category-bar,.CE-subtab-bar';
  function fitHeader(s:Surface){
   if(s.renderer||s.static)return;
@@ -56,6 +57,7 @@ export function headerWeather(){
   if(exit)void exit.finished.then(apply,apply);else apply();
  }
  function refresh(){
+  foreground=document.querySelector<HTMLElement>('dialog#dol-midnight-controls:modal,dialog[data-sf-workspace]:modal');
   stopTimer?.();stopTimer=undefined;if(!scope.active()||!surfaces.size||document.hidden)return;
   if([...surfaces.values()].some(showing))state=readGameWeather();
   for(const[key,s]of surfaces){if(!showing(s)){
@@ -68,7 +70,7 @@ export function headerWeather(){
  }
  function set(key:string,header?:HTMLElement,parent?:HTMLElement){
   if(!scope.active())return;const old=surfaces.get(key);
-  const material=key==='settings'||!!parent?.matches('html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay.dgc-overlay:has(>.dgc-host),#customOverlay.dgs-overlay:has(>.dgs-host),#customOverlay.dgp-overlay:has(>.dgp-host),.passage.dgp-overlay:has(>.dgp-host))');
+  const material=key==='settings'||!!parent?.matches('html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is('+ownedOverlaySelector+',.passage.dgp-overlay:has(>.dgp-host),[data-sf-workspace])');
   if(old&&(old.header!==header||old.parent!==parent||old.material!==material))remove(key);
   const liveSettings=material&&header?.isConnected&&parent?.isConnected&&!header.closest('[data-sf-leaving],dialog:not([open])');
   if(!header||!parent||!visible(header)&&!liveSettings){remove(key);return}

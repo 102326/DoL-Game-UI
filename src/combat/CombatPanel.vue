@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import {useWorkspaceSurface} from '../ui/workspace-surface';
 import {ref,computed,watch,onBeforeUnmount} from 'vue';
+import {workspaceEnterFrames} from '../ui/workspace-transition';
 import {sourceMotion} from '../ui/source-motion';
 import OrbitFocus from '../ui/OrbitFocus.vue';
 const officialMotion=document.documentElement.hasAttribute('data-stone-free');
 import type {CombatModel} from './types';
 const props=defineProps<{model:CombatModel;onJump:(key:string)=>void;onClassic:()=>void;onMode?:()=>void}>();
+const workspace=ref<HTMLElement>();useWorkspaceSurface(workspace,'combat');
 const native=ref<HTMLElement>();
 const dock=ref<HTMLElement>();
 const summaryOpen=ref(false);
@@ -14,10 +17,7 @@ const heading=ref<HTMLElement>(),plane=ref<HTMLElement>(),motion=sourceMotion();
 const activeIndex=computed(()=>Math.max(0,props.model.groups.findIndex(g=>g.key===currentGroup.value)));
 watch(currentGroup,()=>{
  if(!props.model.focused)return;
- if(heading.value)motion.animate(heading.value,[{opacity:.3,transform:'translateY(14px)'},{opacity:1,transform:'none'}],460);
- // Native actions keep final hitboxes throughout the transition.
- if(native.value)motion.animate(native.value,[{opacity:.35,filter:'blur(3px)'},{opacity:1,filter:'blur(0)'}],420);
- if(plane.value)motion.animate(plane.value,[{clipPath:'inset(12% 5% round 32px)',backgroundColor:'#ffffff0d'},{clipPath:'inset(0 round 16px)',backgroundColor:'#2020226b'}],540);
+ if(native.value)motion.animate(native.value,workspaceEnterFrames(1),620);
 },{flush:'post'});
 watch(()=>editing.value?.selected,(value,previous)=>{
  if(value===previous||!props.model.focused||!plane.value)return;
@@ -40,7 +40,7 @@ function nativeMenuClick(event:MouseEvent){
 defineExpose({native,dock});
 </script>
 <template>
- <section class="dcu-shell sf-material-main" :data-focused="model.focused||undefined" aria-label="新版战斗面板" data-dcu-vue>
+ <section ref="workspace" class="dcu-shell sf-material-main" :data-focused="model.focused||undefined" aria-label="新版战斗面板" data-dcu-vue>
   <header class="dcu-header">
   <nav v-if="!model.focused" class="dcu-nav dgu-orbit-nav" aria-label="定位行动部位"><OrbitFocus v-if="officialMotion" :active="currentGroup" selector="[aria-current=location]"/><span>全部行动</span><button v-for="g in model.groups" :key="g.key" type="button" :aria-current="currentGroup===g.key?'location':undefined" @click="jump(g.key)">{{g.title}}</button></nav><strong v-if="model.focused" class="dcu-round-title">当前安排 <small>选择后，继续执行回合</small></strong><div class="dcu-display-actions"><button v-if="model.focusAvailable" type="button" :aria-pressed="model.focused" @click="onMode?.()">{{model.focused?'全部展开':'聚焦编辑'}}</button><button type="button" @click="onClassic">原版界面 ↗</button></div></header>
   <div class="dcu-context" :data-phase="model.phase" aria-live="polite"><span>{{model.phase==='unavailable'?'当前无可用选项':`当前 ${model.groups.length} 组 · ${model.editedKeys?.length||0} 组本次更改 · 尚未执行`}}</span><span v-if="!model.focused">{{model.availableActions}} 个原生选项</span><span v-if="model.unknown">保留原版扩展内容</span><p v-if="model.message" role="status">{{model.message}}</p></div>

@@ -1,3 +1,4 @@
+import {registerWorkspaceSurface} from '../ui/workspace-surface';
 import {visualScope} from '../ui/visual-scope';
 import type {WardrobeDataHost,Inventory} from './host';
 import type {Snapshot} from './data';
@@ -8,9 +9,10 @@ import {isMasterEnabled} from '../runtime/master';
 export function createWardrobeExtras(root:WardrobeDataHost){
  const scope=visualScope(),signatures=new WeakMap<HTMLElement,string>();
  const surfaces=createSurfaces(window,isMasterEnabled);
- type Detail={details:HTMLDetailsElement;summary:HTMLElement;content:HTMLElement;nodes:Node[];wasOpen:boolean;handle?:NonNullable<ReturnType<typeof surfaces.openDrawer>>};
+ type Detail={details:HTMLDetailsElement;summary:HTMLElement;content:HTMLElement;nodes:Node[];wasOpen:boolean;releaseSurface?:()=>void;handle?:NonNullable<ReturnType<typeof surfaces.openDrawer>>};
  let detail:Detail|undefined;
  function restore(current:Detail){
+  current.releaseSurface?.();current.releaseSurface=undefined;
   current.details.append(...current.nodes);current.details.open=current.wasOpen;
   if(detail===current)detail=undefined;
   if(current.summary.isConnected)current.summary.focus({preventScroll:true});
@@ -23,7 +25,7 @@ export function createWardrobeExtras(root:WardrobeDataHost){
   detail=current;current.content.append(...current.nodes);
   const handle=surfaces.openDrawer({id:'wardrobe-item-details',title:summary.textContent?.trim()||'衣物详情与特质',content:current.content,onClose:()=>restore(current)});
   if(!handle){restore(current);details.open=!current.wasOpen;return false}
-  current.handle=handle;return true;
+  current.handle=handle;const dialog=current.content.closest<HTMLDialogElement>('dialog.dgu-surface');if(dialog)current.releaseSurface=registerWorkspaceSurface(dialog,dialog.querySelector<HTMLElement>('.dgu-surface-header')??dialog,'drawer');return true;
  }
  function write(container:HTMLElement,source:string){
   const W=root.SugarCube?.Wikifier??root.Wikifier;
