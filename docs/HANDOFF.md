@@ -33,7 +33,7 @@ Mac只下载两份小型remote-verification结果核对GitHub ZIP摘要、源码
 
 1. 换机先核对branch/HEAD、工作区、领先落后、Node26、锁定依赖与实际浏览器；保留本机独有工作。前批a4e1320/47a6a1e/c3b280f的Run只覆盖各自源码。应用build会清空dist，正确预览构建顺序：`npm run tooling:build` → `npm run build` → `node scripts/build-framework.mjs`（最后执行）。
 2. `node scripts/preview-ui41.mjs`启动本机5204：`/?settings&weather=heavy`看紧凑设置；默认页九入口；`/?independent=saves|shop|wardrobe|combat&weather=heavy`看独立窗口（`|`表示选择一个值）。先做本批视觉裁决，再按表逐项记录，不用设置成功代替其它窗口。
-   负责人2026-10-29明确兼容包也必须对齐最新视觉、受主UI设置控制。下一兼容切片按原覆盖表核对主体与独立弹层的材质/动效/字号/按钮/间距/对齐/总开关回退；已发现通用缩放排除ModHub及固定字号等静态缺口，未因默认视觉通过就记全设置联动完成。尚未改运行代码，见覆盖表本日补充。
+   负责人2026-10-29明确兼容包也必须对齐最新视觉、受主UI设置控制。COMPAT-PREFS-01已补接已审full主体、独立弹层及SmartPhone debug的共用偏好，ReOverfits槽入口沿宿主读取倍率；嘴部资源无窗口不适用。实际偏好/恢复、原事件与结构回退受控检查通过。当前切片实际设备、同提交双CI和制品核对仍在执行；不能拿前批CI代签，见覆盖表本日补充。
 3. **回家优先**：真实原版间距/br/复杂嵌入、多Mod与原版回退；真实存档/工具、交易、换装/搜索/分页、战斗多region/结算、参考/drawer与全部特殊天气逐消费者。#33先确认Ray衣柜实际preview-source、源/副本bitmap/CSS与图层，再调查祭坛原元素，禁止全局img/canvas缩放掩盖。
 4. Android/WebView触控/系统选择框/软键盘/旋转/安全区、Windows原生弹层；相同档位和操作下交错测GPU/持续帧率/功耗。Actions/Mac通过不代签。保留天气/ModHub正负证据，真实热点验证后才决定优化候选接入。
 5. 最终4.1用同一集成源码核对全部消费者、CI/制品身份与负责人验收；分支分开不等于可以漏整合。CJ-4及bypass另批，不自动合main、发布或更改游戏/玩家数据。

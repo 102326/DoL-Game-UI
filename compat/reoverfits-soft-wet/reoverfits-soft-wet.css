@@ -1,8 +1,9 @@
 html[data-stone-free][data-dol-midnight] #clothingShop-div [data-reoverfits-category] {width:auto;min-width:70px}
 html[data-stone-free][data-dol-midnight] #clothingShop-div [data-reoverfits-category] img,
 html[data-stone-free][data-dol-midnight] #clothingShop-div img[data-reoverfits-entry-icon] {display:none}
-html[data-stone-free][data-dol-midnight] #clothingShop-div [data-reoverfits-category] a {display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px;font-size:14px}
+html[data-stone-free][data-dol-midnight] #clothingShop-div [data-reoverfits-category] a {display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px;font-size:calc(14px * var(--dgu-font-scale,1))}
 html[data-stone-free][data-dol-midnight] #clothingShop-div [data-reoverfits-category] a::after {content:attr(aria-label)}
 html[data-stone-free][data-dol-midnight] #clothingShop-div a[data-reoverfits-entry] {display:inline-block;min-height:44px;padding:8px 12px;border:1px solid var(--dgu-border);border-radius:10px}
 html[data-stone-free][data-dol-midnight] #clothingShop-div .dgshop-entry-category>a[data-reoverfits-entry] {min-height:auto;padding:8px .1em;border:0;border-radius:0}
 html[data-stone-free][data-dol-midnight] #clothingShop-div .dgshop-entry-category>img[data-reoverfits-entry-icon] {display:block}
+html[data-stone-free][data-dol-midnight] #clothingShop-div :is([data-reoverfits-category] a,a[data-reoverfits-entry]) {box-sizing:border-box;min-height:max(44px,calc(44px * var(--dgu-button-scale,1)));padding:calc(8px * var(--dgu-button-scale,1)) calc(12px * var(--dgu-button-scale,1));font-size:calc(14px * var(--dgu-font-scale,1));text-align:var(--dgu-option-text-align,left)}

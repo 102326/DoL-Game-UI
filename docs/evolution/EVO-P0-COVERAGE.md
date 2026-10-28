@@ -113,7 +113,9 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 | ModHub / MapleBirch / 原版优化 / CE | compat下对应四个外观包；navigation.adaptedOverlaySelector | WORKSPACE-03：四包full白名单接完整天气与共享布局；CE主分类/子分类分开OrbitFocus及620ms进入，原事件单次/full退出合同已检。partial/未知保留旧路径，真实包组合与性能待验 |
 | SmartPhone / ReOverfits | compat下对应独立外观入口 | WORKSPACE-03：SmartPhone完整wrapper接轴/单选/紧凑标题并保留原应用和缩放；虚拟屏幕/debug不新增雨层。ReOverfits没有独立窗口，复用实际shop宿主，保留专属业务。phone原事件/结构降级受检，真实设备/包组合待验 |
 
-2026-10-29负责人补充：兼容包须对齐当前UI口径，并受同一套适用设置控制。主体接入不等于全部控件联动完成。静态复核确认`src/theme/controls.css`的通用字号/按钮缩放仍排除`data-overlay=modloader`，`workspace-theme.css`导航和SmartPhone等存在固定字号；ModHub独立工具菜单/安装弹层及SmartPhone debug也需作为独立消费者核对，不能用主窗口full标记代签。接续原表逐项检查通透度、玻璃、动画/减少动态、字号、按钮大小、间距、文字对齐和UI总开关/原生回退，修复漏接并验证可逆恢复；按控件语义适用，不放大图标/角色位图或改业务布局。无窗口的嘴部资源包不适用这些设置，ReOverfits沿实际衣柜/商店宿主验证。当前新增的是验收要求及静态缺口记录，尚未修改运行代码或证明所有设置已实际失效。
+2026-10-29负责人补充：兼容包须对齐当前UI口径，并受同一套适用设置控制。主体接入不等于全部控件联动完成。静态复核确认`src/theme/controls.css`的通用字号/按钮缩放仍排除`data-overlay=modloader`，`workspace-theme.css`导航和SmartPhone等存在固定字号；ModHub独立工具菜单/安装弹层及SmartPhone debug也需作为独立消费者核对，不能用主窗口full标记代签。
+
+COMPAT-PREFS-01实施：已审full结构沿`compat-settings.css`消费现有偏好，不新增设置、存储或Host合同。ModHub主体/工具菜单/确认弹层、MapleBirch、原版优化、CE独立/内嵌及SmartPhone主体/debug补接适用字号、按钮、间距、对齐、玻璃/通透度及动效/减少动态；导航固定字号改用现有倍率。ReOverfits额外槽入口沿宿主读取字号/按钮倍率；嘴部资源包无窗口，不适用。保留未知/partial原生回退，不改变第三方事件、值、节点父子关系、虚拟设备几何及位图大小。受控浏览器实际偏好、恢复、原事件/值和结构回退通过；首轮遗漏ModHub section间距的失败保留并针对性修复。实际设备、当前提交双CI与最终制品身份在本切片交付前继续核对，不能用前批证据代签。
 
 ### 必须显式保留的边界
 

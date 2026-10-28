@@ -207,3 +207,4 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
 <style src="./acrylic-adjustment.css"></style>
 <style src="./option-alignment.css"></style>
 <style src="./workspace-theme.css"></style>
+<style src="./compat-settings.css"></style>

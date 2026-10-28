@@ -664,8 +664,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "0b31449dbb7e96b21c0f7067760920f9618fa3cad6e4fa66bf66a6cb40b6c869",
-      "assertionSites": 196
+      "sourceSha256": "2e17a9432f5a9efa67d6fa1c72f67281545b2903928a8f54de7f50e4abf7eb30",
+      "assertionSites": 279
     },
     {
       "entry": "tests/checkpoint-boundary.test.mts",
@@ -2320,8 +2320,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "adaa2f1393be55bd3c3cc75914b8e166303bfafc8a64dc193e710405232a41fa",
-      "assertionSites": 23
+      "sourceSha256": "5b741f4345e3a6ffcb592e1b6ab95ae24d0b4c55c73ee7346adae166b6c9294b",
+      "assertionSites": 39
     },
     {
       "entry": "tests/source-identity-boundary.test.mts",

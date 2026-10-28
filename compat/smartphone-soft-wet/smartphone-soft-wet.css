@@ -10,11 +10,11 @@ html[data-stone-free][data-dol-midnight] #phone-wrapper[data-dgu-adapter=SmartPh
  .phone-tool-bar>span:is(:hover,:active){background:#8baea31b}
  #phone-content{min-height:0;min-width:0;flex:1 1 0;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#ffffff30 transparent;background:var(--kw-island);border-radius:12px}
  #phone-content.phone-content-desktop{background:transparent}
- #phone-content>h2{font-size:18px;font-weight:500;letter-spacing:.02em;margin:6px 4px 16px;padding:10px 4px 14px;border-bottom:1px solid #ffffff12}
- #phone-content>h3{font-size:14px;font-weight:500;margin:18px 4px 10px}
+ #phone-content>h2{font-size:calc(18px * var(--dgu-font-scale,1));font-weight:500;letter-spacing:.02em;margin:6px 4px 16px;padding:10px 4px 14px;border-bottom:1px solid #ffffff12}
+ #phone-content>h3{font-size:calc(14px * var(--dgu-font-scale,1));font-weight:500;margin:18px 4px 10px}
  #phone-content>hr{border:0;border-top:1px solid #ffffff12;margin:18px 4px}
  .phone-desktop{gap:12px;padding:16px 10px;align-content:start}
- .phone-app-icon{box-sizing:border-box;min-width:60px;min-height:72px;height:auto;gap:6px;padding:10px 4px;color:var(--sf-ink);font-size:11px;font-weight:500;border:1px solid #ffffff10;border-radius:16px;background:linear-gradient(135deg,#ffffff06,transparent 70%),var(--kw-island);box-shadow:inset 0 1px #ffffff06,0 4px 12px #0002;transition:background-color .16s,border-color .16s,box-shadow .16s}
+ .phone-app-icon{box-sizing:border-box;min-width:60px;min-height:72px;height:auto;gap:6px;padding:10px 4px;color:var(--sf-ink);font-size:calc(11px * var(--dgu-font-scale,1));font-weight:500;border:1px solid #ffffff10;border-radius:16px;background:linear-gradient(135deg,#ffffff06,transparent 70%),var(--kw-island);box-shadow:inset 0 1px #ffffff06,0 4px 12px #0002;transition:background-color .16s,border-color .16s,box-shadow .16s}
  .phone-app-icon:not(.phone-app-icon-disabled):is(:hover,:active){background:linear-gradient(135deg,#8baea31b,transparent 80%),var(--kw-island);border-color:#8baea34a;box-shadow:inset 0 1px #ffffff08,0 2px 6px #0002}
  .phone-app-icon.phone-app-icon-disabled{opacity:.45;box-shadow:none}
  .phone-app-icon .icon{width:28px;height:28px;object-fit:contain}
@@ -39,14 +39,14 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment]:not([data-
 html[data-stone-free][data-dol-midnight] #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #phone-content>h3{margin:calc(8px + var(--dgu-ui-extra-gap,0px)) 4px 6px}
 /* Keep command inputs and links native; the debugger never runs commands on the adapter's behalf. */
 html[data-stone-free][data-dol-midnight] #smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug][data-dgu-adapter-match=full]>#smart-phone-debug-container{
- box-sizing:border-box;width:min(420px,calc(100vw - 30px));height:min(620px,calc(100dvh - 40px));max-width:calc(100vw - 30px);padding:18px;right:15px;bottom:20px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#ffffff30 transparent;background:var(--sf-reading);color:var(--sf-ink);font-size:13px;line-height:1.6;border:1px solid #ffffff22;border-radius:18px;box-shadow:inset 0 1px #ffffff08,0 20px 55px #0006;overflow-wrap:anywhere;color-scheme:dark;
- &::before{content:'SmartPhone / Debug';display:block;margin-bottom:14px;color:var(--sf-muted);font-size:12px;letter-spacing:.08em}
- #smartphone_debug_msg{padding:12px;min-height:44px;max-height:180px;overflow:auto;user-select:text;background:var(--kw-island);border:1px solid #ffffff12;border-radius:12px;font:12px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap;overscroll-behavior:contain}
+ box-sizing:border-box;width:min(420px,calc(100vw - 30px));height:min(620px,calc(100dvh - 40px));max-width:calc(100vw - 30px);padding:18px;right:15px;bottom:20px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#ffffff30 transparent;background:var(--sf-reading);color:var(--sf-ink);font-size:calc(13px * var(--dgu-font-scale,1));line-height:1.6;border:1px solid #ffffff22;border-radius:18px;box-shadow:inset 0 1px #ffffff08,0 20px 55px #0006;overflow-wrap:anywhere;color-scheme:dark;
+ &::before{content:'SmartPhone / Debug';display:block;margin-bottom:14px;color:var(--sf-muted);font-size:calc(12px * var(--dgu-font-scale,1));letter-spacing:.08em}
+ #smartphone_debug_msg{padding:12px;min-height:44px;max-height:180px;overflow:auto;user-select:text;background:var(--kw-island);border:1px solid #ffffff12;border-radius:12px;font:calc(12px * var(--dgu-font-scale,1))/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap;overscroll-behavior:contain}
  #smartphone_debug_msg:empty::before{content:'Debugger';color:var(--sf-muted);letter-spacing:.08em}
- >h3{font-size:14px;font-weight:500;margin:20px 0 8px;padding:0 0 8px;border-bottom:1px solid #ffffff10}
+ >h3{font-size:calc(14px * var(--dgu-font-scale,1));font-weight:500;margin:20px 0 8px;padding:0 0 8px;border-bottom:1px solid #ffffff10}
  >hr{border:0;border-top:1px solid #ffffff12;margin:18px 0}
  >br:nth-child(-n+4),>br:nth-last-child(-n+3){display:none}
- >input{box-sizing:border-box;width:100%;min-height:44px;margin:8px 0;padding:10px 12px;color:var(--sf-ink);background:#10121570;border:1px solid #ffffff20;border-radius:11px;font:12px/1.5 ui-monospace,Consolas,monospace}
+ >input{box-sizing:border-box;width:100%;min-height:44px;margin:8px 0;padding:10px 12px;color:var(--sf-ink);background:#10121570;border:1px solid #ffffff20;border-radius:11px;font:calc(12px * var(--dgu-font-scale,1))/1.5 ui-monospace,Consolas,monospace}
  >input::placeholder{color:var(--sf-muted);opacity:1}
  >a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;box-sizing:border-box;padding:8px 12px;margin:3px 4px 3px 0;border:1px solid #ffffff10;border-radius:11px;color:var(--sf-ink);background:var(--kw-island);text-decoration:none;vertical-align:middle}
  >a:is(:hover,:active){background:linear-gradient(125deg,#8baea31b,transparent 80%),#11131542;border-color:#8baea33b}
@@ -59,3 +59,6 @@ html[data-stone-free][data-dol-midnight] #passages:has(#smartphone_debug[data-dg
  html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug][data-dgu-adapter-match=full]>#smart-phone-debug-container{background:linear-gradient(125deg,#ffffff06,transparent 70%),var(--kw-shell);backdrop-filter:blur(var(--sf-blur,28px)) saturate(.85);-webkit-backdrop-filter:blur(var(--sf-blur,28px)) saturate(.85)}
 }
 @media(prefers-reduced-motion:reduce){html[data-stone-free][data-dol-midnight] #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] :is(.phone-app-icon,.phone-tool-bar>span){transition:none}}
+html[data-stone-free][data-dol-midnight] #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] .phone-app-icon{min-height:max(72px,calc(72px * var(--dgu-button-scale,1)));padding-block:calc(10px * var(--dgu-button-scale,1));text-align:var(--dgu-option-text-align,left)}
+html[data-stone-free][data-dol-midnight] #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #phone-content .todo-item{padding-block:calc(8px + var(--dgu-ui-extra-gap,0px) * .5)}
+html[data-stone-free][data-dol-midnight] #smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug][data-dgu-adapter-match=full]>#smart-phone-debug-container>a{min-height:max(44px,calc(44px * var(--dgu-button-scale,1)));padding:calc(8px * var(--dgu-button-scale,1)) calc(12px * var(--dgu-button-scale,1));font-size:calc(13px * var(--dgu-font-scale,1));text-align:var(--dgu-option-text-align,left)}

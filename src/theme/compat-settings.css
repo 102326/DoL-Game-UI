@@ -1,0 +1,44 @@
+/* Reviewed adapters consume the same preferences; unknown/partial surfaces stay native. */
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay,#modHubManagerToolsMenu,.modhub-modal-backdrop,#phone-wrapper,#smartphone_debug,.CEDISPLAY):is(
+ [data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=ModHubSoftWetTools],[data-dgu-adapter=ModHubSoftWetModal],
+ [data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],
+ [data-dgu-adapter=CheatExtendedSoftWet],[data-dgu-adapter=CheatExtendedInlineSoftWet],
+ [data-dgu-adapter=SmartPhoneSoftWet],[data-dgu-adapter=SmartPhoneSoftWetDebug]
+)[data-dgu-adapter-match=full]{
+ --kw-island:var(--q-well);
+ font-size:calc(1rem * var(--dgu-font-scale,1));
+ & :is(button,input[type=button],input[type=submit],summary,.phone-tool-bar>span){
+  box-sizing:border-box;max-width:100%;min-height:max(44px,calc(44px * var(--dgu-button-scale,1)))!important;
+  padding:calc(7px * var(--dgu-button-scale,1)) calc(11px * var(--dgu-button-scale,1))!important;
+  font-size:calc(13px * var(--dgu-font-scale,1))!important;text-align:var(--dgu-option-text-align,left)!important;
+  white-space:normal;overflow-wrap:anywhere;
+ }
+ & :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]),select,textarea){font-size:calc(13px * var(--dgu-font-scale,1));max-width:100%;box-sizing:border-box}
+ & :is(.modhub-section,.modhub-item,.modhub-market-card,.modhub-help-section,.modhub-help-result,.settingsToggleItemWide,.savesListRow,.CEDISPLAY_setting){padding-block:calc(8px + var(--dgu-ui-extra-gap,0px) * .5)!important}
+ & :is(.modhub-btn-group,.maplebirch-cloud-save-actions,.CE-category-bar,.CE-subtab-bar,.footer-actions){gap:calc(6px + var(--dgu-ui-extra-gap,0px) * .5)!important}
+ & label{ text-align:var(--dgu-option-text-align,left) }
+}
+
+/* Portaled dialogs and the virtual phone sample only their existing outer face. */
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(
+ #modHubManagerToolsMenu[data-dgu-adapter=ModHubSoftWetTools][data-dgu-adapter-match=full],
+ .modhub-modal-backdrop[data-dgu-adapter=ModHubSoftWetModal][data-dgu-adapter-match=full]>.modhub-modal-dialog,
+ #smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug][data-dgu-adapter-match=full]>#smart-phone-debug-container,
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container
+){
+ background:var(--q-fill)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+ &:is(html[data-dgu-visualGlass] *){backdrop-filter:var(--dgu-acrylic-axis-filter)!important;-webkit-backdrop-filter:var(--dgu-acrylic-axis-filter)!important}
+ &:is(html:not([data-dgu-visualGlass]) *){background:#1d262b!important}
+}
+
+/* These are paint-only overrides; progress values and native handlers keep running. */
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay,#modHubManagerToolsMenu,.modhub-modal-backdrop,#phone-wrapper,#smartphone_debug,.CEDISPLAY):is(
+ [data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=ModHubSoftWetTools],[data-dgu-adapter=ModHubSoftWetModal],
+ [data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],
+ [data-dgu-adapter=CheatExtendedSoftWet],[data-dgu-adapter=CheatExtendedInlineSoftWet],
+ [data-dgu-adapter=SmartPhoneSoftWet],[data-dgu-adapter=SmartPhoneSoftWetDebug]
+)[data-dgu-adapter-match=full]{
+ &:is(html:not([data-dgu-visualGlow]) *) :is(button,[data-dgu-role~=card],.phone-app-icon){box-shadow:none!important}
+ &:is(html:not([data-dgu-visualMotion]) *) :is(button,input,select,textarea,summary,.phone-app-icon,.phone-tool-bar>span,.modhub-progress-ring,.modhub-progress-indeterminate){animation:none!important;transition:none!important}
+ @media(prefers-reduced-motion:reduce){& :is(button,input,select,textarea,summary,.phone-app-icon,.phone-tool-bar>span,.modhub-progress-ring,.modhub-progress-indeterminate){animation:none!important;transition:none!important}}
+}
