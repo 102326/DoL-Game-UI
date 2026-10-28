@@ -29,7 +29,7 @@
 
 html[data-dgu-font-scaled] :is(#passages,#customOverlay:not([data-overlay="modloader"]),#ui-dialog-body){font-size:calc(1rem * var(--dgu-font-scale,1))}
 html[data-dgu-buttons-scaled] :is(button,input[type=button],input[type=submit]):not(#ui-bar *):not([data-overlay="modloader"] *){padding:calc(.5em * var(--dgu-button-scale,1)) calc(.75em * var(--dgu-button-scale,1))!important;min-height:max(36px,calc(44px * var(--dgu-button-scale,1)));box-sizing:border-box;max-width:100%;white-space:normal;overflow-wrap:anywhere}
-#dol-midnight-controls input[type=range]{width:50%;min-width:0;accent-color:var(--dgu-accent)}
+:is(#dol-midnight-controls input[type=range],.dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=range]:only-of-type){width:50%;min-width:0;accent-color:var(--dgu-accent)}
 
 /* Sidebar retains its native sizing, including embedded UI controls. */
 #ui-bar{--dgu-font-scale:1;--dgu-button-scale:1}

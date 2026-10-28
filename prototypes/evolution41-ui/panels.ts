@@ -10,7 +10,7 @@ export const panelCases={characteristics:'属性',social:'社交',journal:'日�
 export type PreviewPanel=keyof typeof panelCases;
 const overlayKeys:Partial<Record<PreviewPanel,string>>={feats:'gameFeats',settings:'options'};
 const action='<button type="button" class="link-internal macro-button" data-demo-action>演示原控件</button>';
-const settings=(title:string)=>`<h2 class="settingsHeader">${title}</h2><div class="settingsGrid"><div class="settingsToggleItem"><label><input type="checkbox">启用示例选项</label></div><div class="settingsToggleItem"><label>展示方式 <select aria-label="示例展示方式"><option>标准</option><option>详细</option></select></label></div></div><p>这里使用合成内容观察排版与输入，操作只改变本页示例。</p>${action}`;
+const settings=(title:string)=>`<h2 class="settingsHeader">${title}</h2><div class="settingsGrid"><div class="settingsToggleItem"><label><input type="checkbox">启用示例选项</label></div><div class="settingsToggleItem"><label>展示方式 <select aria-label="示例展示方式"><option>标准</option><option>详细</option></select></label></div><div class="settingsToggleItem"><label>示例密度 <input type="range" min="0" max="100" value="50" aria-label="示例密度"></label></div></div><p>这里使用合成内容观察排版与输入，操作只改变本页示例。</p>${action}`;
 function content(kind:PreviewPanel):string{
  switch(kind){
   case 'characteristics':return '<div id="characteristics-display">'+[['base-characteristics','基础属性'],['base-skills','生活技能'],['school-grades','学业']].map(([id,label])=>`<h2>${label}</h2><div id="${id}"><div class="characteristic-box"><h3>观察项目</h3><p>清晰的标题与数值</p><strong>72 / 100</strong></div><div class="characteristic-box"><h3>第二项目</h3><p>较长的描述用于观察窄屏换行与卡片边界。</p>${action}</div></div>`).join('')+'</div>';
@@ -31,6 +31,10 @@ export function createPanelPreview(){
  document.body.append(overlay);
  const nativeBody=overlay.querySelector<HTMLElement>('#customOverlayContent')!,tabs=overlay.querySelector<HTMLElement>('#overlayTabs')!;
  const characteristics=startCharacteristics(window,framework),social=startSocial(window,framework),panels=startPanels(window,framework);
+ // Settings must operate on these actual preview controllers, as in the official entry.
+ const exposed={DoLCharacteristicsUI:characteristics,DoLSocialUI:social,DoLPanelsUI:panels};
+ const previous=new Map(Object.keys(exposed).map(key=>[key,Object.getOwnPropertyDescriptor(window,key)]));
+ for(const [key,value]of Object.entries(exposed))Reflect.set(window,key,value);
  const originalPassage=document.querySelector<HTMLElement>('#passages .passage')!,passages=originalPassage.parentElement!,notice=document.querySelector<HTMLElement>('#notice')!;
  let inline:HTMLElement|undefined,current:PreviewPanel|undefined,calls=0,disposed=false,originalHidden=originalPassage.hidden;
  const refresh=()=>{characteristics.refresh();social.refresh();panels.refresh()};
@@ -50,5 +54,5 @@ export function createPanelPreview(){
  }
  function restore(){if(current){const kind=current;if(kind==='characteristics')characteristics.setEnabled(true);else if(kind==='social')social.setEnabled(true);else panels.setEnabled(kind,true);refresh()}}
  overlay.querySelector('[data-demo-close]')!.addEventListener('click',close);overlay.querySelector('[data-demo-restore]')!.addEventListener('click',restore);
- return{open,close,current:()=>current,counts:()=>calls,restore,dispose(){if(disposed)return;close();disposed=true;characteristics.destroy();social.destroy();panels.destroy();owner.dispose();overlay.remove()}};
+ return{open,close,current:()=>current,counts:()=>calls,restore,dispose(){if(disposed)return;close();disposed=true;characteristics.destroy();social.destroy();panels.destroy();owner.dispose();overlay.remove();for(const [key,value]of Object.entries(exposed)){if(Reflect.get(window,key)!==value)continue;const descriptor=previous.get(key);if(descriptor)Object.defineProperty(window,key,descriptor);else Reflect.deleteProperty(window,key)}}};
 }

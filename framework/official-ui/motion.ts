@@ -15,7 +15,8 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  let previousPetal:DOMRect|undefined;
  let sidebarRoots:HTMLElement[]=[];
  let pressed:{node:HTMLElement;pointer:number;before:string|null}|undefined;
- const formButtons='#customOverlay.dgs-native-tools .dgs-transfer :is(button,input[type=button]),#customOverlay.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=settings]) #customOverlayContent :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit])'+','+adaptedOverlaySelector+' :is(button,input[type=button],input[type=submit])';
+ const ownedContent=':is(#customOverlay:is(.dgc-overlay,.dgs-overlay,.dgp-overlay):has(>.dgc-host,>.dgs-host,>.dgp-host) #customOverlayContent,.passage.dgp-overlay:has(>.dgp-host))';
+ const formButtons='#customOverlay.dgs-native-tools .dgs-transfer :is(button,input[type=button]),'+ownedContent+' :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit]),'+adaptedOverlaySelector+' :is(button,input[type=button],input[type=submit])';
  const pressSelector=formButtons+','+'.dgw-exits a.link-internal,[data-kw-entry],[data-kw-nav-control],.sf-motion-hub[data-official] button,#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab';
  function clearPress(event?:PointerEvent){if(!pressed||event&&event.pointerId!==pressed.pointer)return;const {node,pointer,before}=pressed;if(node.getAttribute('data-kw-press')===String(pointer)){if(before===null)node.removeAttribute('data-kw-press');else node.setAttribute('data-kw-press',before)}pressed=undefined}
  function press(event:PointerEvent){if(!live()||!event.isPrimary||event.button!==0||!(event.target instanceof Element))return;const node=event.target.closest<HTMLElement>(pressSelector);if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;clearPress();pressed={node,pointer:event.pointerId,before:node.getAttribute('data-kw-press')};node.setAttribute('data-kw-press',String(event.pointerId))}
@@ -83,7 +84,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function syncOverlay(){
   if(!scope.active())return;
   const next=document.getElementById('customOverlay');
-  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{childList:true,attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
+  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{childList:true,attributes:true,attributeFilter:['class','hidden','inert','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
   const shown=live()&&overlay&&visible(overlay);if(!shown)presented=null;
   if(pageTransition&&(!shown||!overlay?.matches(ownWindowSelector)))clearPage();
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
@@ -108,8 +109,53 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  const ownWindowSelector='html[data-dgu-acrylic-adjustment] #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host))';
  let pageTransition:{body:HTMLElement;root:HTMLElement;before:string|null}|undefined,pageRevision=0;
- function clearPage(){pageRevision++;if(pageTransition){const {body,root,before}=pageTransition;motion.cancel(body);if(root.getAttribute('data-workspace-transition')===''){if(before===null)root.removeAttribute('data-workspace-transition');else root.setAttribute('data-workspace-transition',before)}pageTransition=undefined}}
+ type PageIntent={root:HTMLElement;parent:HTMLElement|null;body:HTMLElement|null;title:HTMLElement|null;renderRoots:Set<Node>;views:Map<HTMLElement,boolean>;oldKind:string;expectedKind:string;oldSelected:number;oldLabel:string|null|undefined;requested:string;direction:number;changed:boolean;observer:MutationObserver;stop:()=>void;ticket:number};
+ let pageIntent:PageIntent|undefined;
+ function stopPageIntent(){const intent=pageIntent;pageIntent=undefined;scope.cancelFrame(commitPage);if(intent){intent.observer.disconnect();intent.stop()}}
+ function clearPage(){pageRevision++;stopPageIntent();if(pageTransition){const {body,root,before}=pageTransition;motion.cancel(body);if(root.getAttribute('data-workspace-transition')===''){if(before===null)root.removeAttribute('data-workspace-transition');else root.setAttribute('data-workspace-transition',before)}pageTransition=undefined}}
  scope.own(clearPage);
+ const hiddenView=(node:HTMLElement)=>node.hidden||node.classList.contains('hidden')||node.getAttribute('aria-hidden')==='true'||node.style.display==='none'||node.style.visibility==='hidden';
+ function watchPage(intent:PageIntent){
+  intent.renderRoots=new Set(intent.body?[intent.body,...intent.body.querySelectorAll<HTMLElement>(':scope>#cheatsShown')]:[]);
+  intent.views=new Map([...intent.renderRoots].flatMap(node=>[...node.childNodes].filter((n):n is HTMLElement=>n instanceof HTMLElement)).map(node=>[node,hiddenView(node)]));
+  intent.observer.disconnect();if(intent.parent)intent.observer.observe(intent.parent,{childList:true});intent.observer.observe(intent.root,{childList:true,attributes:true,attributeFilter:['class','hidden','inert','data-overlay','data-dgp-panel']});
+  if(intent.title)intent.observer.observe(intent.title,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+  if(intent.body)intent.observer.observe(intent.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','aria-hidden','style']});
+ }
+ function commitPage(){
+  const intent=pageIntent;if(!intent||intent.ticket!==pageRevision)return;
+  if(!live()){stopPageIntent();return}
+  const current=document.getElementById('customOverlay');
+  if(current!==intent.root){
+   if(!current)return;
+   if(current.parentElement!==intent.parent||current.dataset.overlay!==intent.expectedKind){stopPageIntent();return}
+   intent.root=current;intent.body=current.querySelector('#customOverlayContent');intent.title=current.querySelector('#customOverlayTitle');intent.changed=true;watchPage(intent);
+  }
+  if(!visible(intent.root)){stopPageIntent();return}
+  const kind=intent.root.dataset.overlay??'';
+  if(kind!==intent.oldKind&&kind!==intent.expectedKind){stopPageIntent();return}
+  if(kind!==intent.expectedKind)return;
+  syncOverlay();
+  if(pageIntent!==intent||intent.ticket!==pageRevision)return;
+  const body=intent.root.querySelector<HTMLElement>('#customOverlayContent'),title=intent.root.querySelector<HTMLElement>('#customOverlayTitle');
+  if(body!==intent.body||title!==intent.title){intent.changed||=body!==intent.body;intent.body=body;intent.title=title;watchPage(intent)}
+  const buttons=[...intent.root.querySelectorAll<HTMLElement>('#overlayTabs>button')],selected=buttons.findIndex(n=>n.classList.contains('tab-selected')),label=buttons[selected]?.textContent;
+  if(!intent.changed||!body||!visible(body)||!intent.root.matches(ownWindowSelector)||label?.trim()!==intent.requested||intent.root.dataset.overlay===intent.oldKind&&selected===intent.oldSelected&&label===intent.oldLabel)return;
+  stopPageIntent();const ticket=intent.ticket;
+  pageTransition={body,root:intent.root,before:intent.root.getAttribute('data-workspace-transition')};intent.root.setAttribute('data-workspace-transition','');const animation=motion.animate(body,workspaceEnterFrames(intent.direction),620);
+  const finish=()=>{if(ticket===pageRevision)clearPage()};if(animation)void animation.finished.then(finish,finish);else finish();
+ }
+ function expectPage(root:HTMLElement,node:HTMLElement,buttons:HTMLElement[],selected:number){
+  if(buttons[selected]===node)return;
+  const requested=node.textContent?.trim()??'',oldKind=root.dataset.overlay??'',expectedKind=nativeEntryKinds[requested]??({'特征':'characteristics',Characteristics:'characteristics','笔记':'journalNotes',Notes:'journalNotes'} as Record<string,string>)[requested]??oldKind;
+  const intent:PageIntent={root,parent:root.parentElement,body:root.querySelector('#customOverlayContent'),title:root.querySelector('#customOverlayTitle'),renderRoots:new Set(),views:new Map(),oldKind,expectedKind,oldSelected:selected,oldLabel:buttons[selected]?.textContent,requested,direction:buttons.indexOf(node)>=selected?1:-1,changed:false,ticket:pageRevision,stop:()=>{},observer:new MutationObserver(records=>{
+   if(pageIntent!==intent)return;
+   if(records.some(record=>record.type==='childList'&&intent.renderRoots.has(record.target)||record.type==='attributes'&&record.target instanceof HTMLElement&&intent.views.has(record.target)&&intent.views.get(record.target)!==hiddenView(record.target)))intent.changed=true;
+   scope.frame(commitPage);
+  })};pageIntent=intent;watchPage(intent);
+  // Observe the native commit; this deadline only retires abandoned presentation intent.
+  intent.stop=scope.timeout(()=>{if(pageIntent===intent)stopPageIntent()},1000);
+ }
  function response(node:HTMLElement){if(node.dataset.kwNavControl==='tab'&&!node.closest(ownWindowSelector)){motion.animate(node,[{'--kw-heading-wave':-1,'--kw-heading-wave-opacity':0},{'--kw-heading-wave':-.2,'--kw-heading-wave-opacity':.8,offset:.35},{'--kw-heading-wave':1,'--kw-heading-wave-opacity':0}],720);return}motion.animate(node,[{boxShadow:'inset 0 0 0 1px #8cb3a666',backgroundColor:'#8cb3a617'},{boxShadow:getComputedStyle(node).boxShadow,backgroundColor:getComputedStyle(node).backgroundColor}],360)}
  function click(event:MouseEvent){
   if(!live()||!(event.target instanceof Element))return;
@@ -117,8 +163,8 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(detail&&visible(detail))response(detail);
   const node=event.target.closest<HTMLElement>(formButtons+',.dgw-exits a.link-internal,.sf-motion-petal,.sf-motion-ball,.dgw-slots button,.dgw-item,.dgshop-content .category-tab,.dgshop-content .clothing-item,.dcu-arrangement button,[data-kw-native],[data-kw-entry],[data-kw-nav-control],.dgp-navigation button');
   if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;
-  const top=node.dataset.kwNavControl==='tab'&&node.closest(ownWindowSelector),oldKind=top?activeKind:undefined,topButtons=top?[...top.querySelectorAll<HTMLElement>('#overlayTabs>button')]:[],oldSelected=topButtons.findIndex(n=>n.dataset.kwSelected==='true'),oldLabel=topButtons[oldSelected]?.textContent,direction=topButtons.indexOf(node)>=oldSelected?1:-1;
-  clearPage();const ticket=pageRevision;
+  const top=node.dataset.kwNavControl==='tab'&&node.closest<HTMLElement>(ownWindowSelector),topButtons=top?[...top.querySelectorAll<HTMLElement>('#overlayTabs>button')]:[],oldSelected=topButtons.findIndex(n=>n.classList.contains('tab-selected'));
+  clearPage();if(top)expectPage(top,node,topButtons,oldSelected);
   stamp(node);response(node);queueMicrotask(beginExpected);
   const nav=node.closest<HTMLElement>('#shopCategories');
   const before=nav?.querySelector<HTMLElement>('[aria-pressed=true],.category-tab.active,[aria-current]')?.getBoundingClientRect();
@@ -129,12 +175,6 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    if(before&&selected&&visible(selected))motion.focus(before,selected.getBoundingClientRect());
 
    syncOverlay();
-   const nextTabs=active?[...active.querySelectorAll<HTMLElement>('#overlayTabs>button')]:[],nextSelected=nextTabs.findIndex(n=>n.dataset.kwSelected==='true');
-   if(top&&(oldKind!==activeKind||oldSelected!==nextSelected||oldLabel!==nextTabs[nextSelected]?.textContent)&&ticket===pageRevision&&active?.matches(ownWindowSelector)){
-    const body=active.querySelector<HTMLElement>('#customOverlayContent');if(!body||!visible(body))return;
-    pageTransition={body,root:active,before:active.getAttribute('data-workspace-transition')};active.setAttribute('data-workspace-transition','');const animation=motion.animate(body,workspaceEnterFrames(direction),620);
-    const finish=()=>{if(ticket===pageRevision)clearPage()};if(animation)void animation.finished.then(finish,finish);else finish();
-   }
   });
  }
  function collectionChange(event:Event){

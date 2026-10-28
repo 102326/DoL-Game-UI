@@ -1318,8 +1318,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "e31e08c2125f5d06fba2d11ccb5b7f6b0acd42b1043847551c8a29f7ba886232",
-      "assertionSites": 445
+      "sourceSha256": "d3fdffbd5c21b2c8ac9e62dace85dc4fd3e37eb8e823d7dc3a8193f7c33045e2",
+      "assertionSites": 505
     },
     {
       "entry": "tests/framework.cjs",
@@ -1768,8 +1768,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4d5c82f85015b0e23fc9f92b1d78c56c14c20b2f4f3a467a69685b9de3061bcd",
-      "assertionSites": 108
+      "sourceSha256": "6cad7eead552689f657f05cb342eaa602a7ecc81d6aa1ee3e1a4b3263f9c0843",
+      "assertionSites": 114
     },
     {
       "entry": "tests/optimization-date.cjs",
