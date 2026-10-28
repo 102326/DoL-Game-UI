@@ -28,3 +28,6 @@ body.ui-open .sf-motion-hub{display:none}
 @media(prefers-reduced-motion:reduce){.sf-motion-hub *,.sf-motion-hub *:before{transition:none!important;animation:none!important}}
 html[data-dol-midnight]:not([data-dgu-visualMotion]) .sf-motion-hub *{transition:none!important;animation:none!important}
 html[data-dol-midnight]:not([data-dgu-visualGlass]) .sf-motion-hub :is(.sf-motion-petal,.sf-motion-sheet,.sf-motion-ball){backdrop-filter:none;background:#28323b}
+
+/* Optional official-sphere decoration; legacy/fallback Hub keeps its text-only actions. */
+.sf-motion-hub .sf-motion-utility-icon{display:none}

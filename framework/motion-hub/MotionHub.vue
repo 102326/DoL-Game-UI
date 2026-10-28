@@ -163,7 +163,11 @@ onBeforeUnmount(scope.dispose);
      <path v-else d="m12 2 10 10-10 10L2 12 12 2Zm0 5v6m0 3v1"/>
     </svg><span v-else aria-hidden="true">{{ ['◉', '◈', '⇄'][index % 3] }}</span><span class="sf-motion-tool-label">{{ view.title }}</span>
    </button>
-   <div class="sf-motion-utilities"><button type="button" @click="dock">停靠侧边</button><button type="button" @click="reset">恢复位置</button><button type="button" @click="dismiss">隐藏工具</button></div>
+   <div class="sf-motion-utilities">
+    <button type="button" @click="dock"><svg v-if="officialPreferences" :style="{transform:side==='left'?'scaleX(-1)':undefined}" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 4v16M4 12h11m-4-4 4 4-4 4"/></svg><span>停靠侧边</span></button>
+    <button type="button" @click="reset"><svg v-if="officialPreferences" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8a8 8 0 1 1-1 7M5 3v5h5"/><circle cx="12" cy="12" r="2"/></svg><span>恢复位置</span></button>
+    <button type="button" @click="dismiss"><svg v-if="officialPreferences" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.5 5.2c4.8-.7 8.2 3 10.5 6.8a17 17 0 0 1-3.1 3.8M6.1 6.1A20 20 0 0 0 1 12c3 5 7 8 11 7a11 11 0 0 0 3.2-.8"/><path d="M10 10a3 3 0 0 0 4 4"/></svg><span>隐藏工具</span></button>
+   </div>
   </nav>
   <section class="sf-motion-sheet" aria-label="自由工具详情" :aria-hidden="!selected" :inert="!selected" :class="{'is-open': !!selected}"
    :style="{left: `${panel.x}px`, top: `${panel.y}px`, width: `${panel.width}px`, height: `${panel.height}px`, '--origin-x': `${point.x + 28 - panel.x}px`, '--origin-y': `${point.y + 28 - panel.y}px`}">

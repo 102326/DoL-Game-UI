@@ -4,6 +4,8 @@
 
 ## Current — 当前状态
 
+- **EVO41-HUB-UTILITY-01／辅助按钮视觉候选**：负责人要求修改内侧三个按钮。改为黑灰低反光、图标上／文字下居中；64×44命中区、扇形内弧、网格位置与原功能/节奏保持，停靠图标随侧别镜像。仅official spin生效；普通/失败回退Hub仍纯文字。Mac Framework构建/类型与golden-spin-hub既有8项合同通过，实际5204预览已展示，**待负责人视觉反馈**。此小改未新跑双CI，不能复用a4e1320声称新样式已远端验证；不合main或发布。
+
 - **2026-10-28工具交接／DEVTOOLS-EVAL-01・ENV-REACH-16**：Agent Reach已升级1.6.0（uv），新Skill位于`~/.agents/skills/agent-reach`，旧自定义副本已备份移出发现路径；公开网页与GitHub gh已实测，未认证API读取限流，未全平台验证。工具组合、来源身份与另一设备操作见[跨机摘要](evolution/DEVTOOLS-EVAL-2026-10-28.md)。memory私有备份`86f71ed`已推送，不表示另一设备已导入；原始实验/工具备份仅本机。
 
 - **2026-10-28统一交付首批／EVO41-INTEGRATION-M01**：已解除正式设置对演示标记的依赖；设置和`.dgc/.dgs/.dgp-overlay/.dgs-native-tools`及四个full adapter共用材质轴，未知/partial/非名单窗口排除。默认60%/左对齐与低端灰值不变，6张前后认可预览PNG字节相同；M01先在旧实现失败，新增及既有6项设置/取消/退出合同、宽窄材质/原生消费者/适配器与ci:check通过，独立只读审查无剩余发现。证据见[本机收据](evolution/ui41-mac-20261027/material-entry-receipt.json)。本条为材质切片，不是所有消费者/天气/游戏与设备验收；实际通过源码与CI见下一条，不将后续文档HEAD冒称再次执行。
