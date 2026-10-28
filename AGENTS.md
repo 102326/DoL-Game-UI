@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Owner direction (2026-10-29): during the next performance/integration batch, audit visual consistency across owned UI and maintained compatibility UI, including independent portals/dialogs. Use the accepted V1/default60/left baseline; check shell, headings/navigation, controls/states, spacing, motion and shared preferences. Keep role-specific layout and original business/native fallback. Record per-consumer observations in the existing report; shared tokens or CI PASS alone are not visual acceptance. No main merge or release.
+
 - Owner direction (2026-10-28, WORKSPACE-03): continue remaining owned surfaces and reviewed adapters; default text/options use compact spacing, preserve 44px primary hit areas and use the existing paragraph/option-gap slider for extra whitespace. Keep default60/left; real preview, native node/events, popup geometry, rollback and cleanup remain required. Internal presentation leases are not a new Host/public protocol. No main merge or release.
 
 - Owner clarification (2026-10-28): settings and other owned windows may use different implementations, but their presented styles and effects must align. Authorizes WORKSPACE-02 for the current nine native entries: complete accepted weather material, category states/contour and page entry, while section navigation remains heading-only. Code reuse and automated PASS do not substitute for visual acceptance; no main/release authorization.
