@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Owner clarification (2026-10-28): settings and other owned windows may use different implementations, but their presented styles and effects must align. Authorizes WORKSPACE-02 for the current nine native entries: complete accepted weather material, category states/contour and page entry, while section navigation remains heading-only. Code reuse and automated PASS do not substitute for visual acceptance; no main/release authorization.
+
 - Owner direction (2026-10-28): mature settings is the shared visual/interaction source for other owned windows. Reuse its spacing, reading wells and control rules instead of creating per-consumer styles. Keep accepted settings defaults/appearance, native node ownership and fallback; each consumer still needs separate visual/game/weather acceptance. Issue #33 wardrobe quarter-view occurs with Ray while the sidebar is complete; this narrows diagnosis but is not a confirmed cause or fix.
 
 - Owner direction (2026-10-28): owned section navigation uses one quiet heading-only flash after locating the section. Remove characteristics button-to-content relay/card entrance and per-consumer group animation; align navigation control surfaces across characteristics/social/panels while retaining select semantics, focus accessibility, reduced-motion and native fallback. This supersedes those section effects only, not accepted Hub/settings/weather motion.

@@ -33,7 +33,7 @@ export function readGameWeather(root:WeatherHost=window as Window & WeatherHost)
 }
 
 export function headerWeather(){
- type Surface={header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
+ type Surface={header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;material:boolean;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
  const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=sourceMotion();scope.own(()=>motion.dispose());let stopTimer:(()=>void)|undefined,state=readGameWeather();
  const visible=(n:HTMLElement)=>n.isConnected&&!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert],[data-sf-leaving]');
  function clean(tasks:Array<()=>void>){const errors:unknown[]=[];for(const task of tasks)try{task()}catch(error){errors.push(error)}if(errors.length)throw new AggregateError(errors,'Weather cleanup failed')}
@@ -68,17 +68,18 @@ export function headerWeather(){
  }
  function set(key:string,header?:HTMLElement,parent?:HTMLElement){
   if(!scope.active())return;const old=surfaces.get(key);
-  if(old&&(old.header!==header||old.parent!==parent))remove(key);
-  const liveSettings=key==='settings'&&header?.isConnected&&parent?.isConnected&&!header.closest('[data-sf-leaving],dialog:not([open])');
+  const material=key==='settings'||!!parent?.matches('html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay.dgc-overlay:has(>.dgc-host),#customOverlay.dgs-overlay:has(>.dgs-host),#customOverlay.dgp-overlay:has(>.dgp-host),.passage.dgp-overlay:has(>.dgp-host))');
+  if(old&&(old.header!==header||old.parent!==parent||old.material!==material))remove(key);
+  const liveSettings=material&&header?.isConnected&&parent?.isConnected&&!header.closest('[data-sf-leaving],dialog:not([open])');
   if(!header||!parent||!visible(header)&&!liveSettings){remove(key);return}
   if(!surfaces.has(key)){
-   if(key==='settings'){
+   if(material){
     const canvas=document.createElement('canvas');canvas.className='sf-weather-canvas';canvas.setAttribute('aria-hidden','true');parent.prepend(canvas);
-    const s:Surface={header,parent,node:canvas,key:'',revision:0,materialAttribute:parent.getAttribute('data-sf-weather-material')};
+    const s:Surface={header,parent,node:canvas,key:'',revision:0,material,materialAttribute:parent.getAttribute('data-sf-weather-material')};
     // Establish absolute positioning before the material measures text/control geometry.
     parent.setAttribute('data-sf-weather-material','');
     try{s.renderer=settingsWeather(canvas,()=>state)}
-    catch(error){canvas.remove();if(s.materialAttribute===null)parent.removeAttribute('data-sf-weather-material');else parent.setAttribute('data-sf-weather-material',s.materialAttribute!);s.static=true;console.warn('Settings weather unavailable; keeping static Acrylic',error)}
+    catch(error){canvas.remove();if(s.materialAttribute===null)parent.removeAttribute('data-sf-weather-material');else parent.setAttribute('data-sf-weather-material',s.materialAttribute!);s.static=true;console.warn('Window weather unavailable; keeping static Acrylic',error)}
     surfaces.set(key,s);
     if(s.renderer){
      const watch=visualScope();s.stopWatch=scope.own(()=>watch.dispose());const wake=()=>{if(scope.active()&&surfaces.get(key)===s)refresh()};
@@ -93,7 +94,7 @@ export function headerWeather(){
     for(const[key,value]of Object.entries({'--kw-x':(3+i*37%91+Math.random()*3)+'%','--kw-y':(3+i*13%35+Math.random()*7)+'%','--kw-size':(3.5+i%4*.9+Math.random()*.7)+'px','--kw-travel':(70+Math.random()*110)+'px','--kw-trail':(18+Math.random()*24)+'px','--kw-duration':(7+Math.random()*9)+'s','--kw-delay':(-Math.random()*16)+'s'}))drop.style.setProperty(key,value);
     node.append(drop);
    }
-   node.style.height='0px';parent.append(node);const s:Surface={header,parent,node,key:'',revision:0};surfaces.set(key,s);
+   node.style.height='0px';parent.append(node);const s:Surface={header,parent,node,key:'',revision:0,material};surfaces.set(key,s);
    // Measure after native layout, and only when the actual header regions change.
    const fit=()=>{if(scope.active()&&surfaces.get(key)===s)fitHeader(s)},resize=new ResizeObserver(()=>scope.frame(fit));let regions:Element[]=[];
    s.syncHeader=()=>{const next=[header,...parent.querySelectorAll(headerRegions)];if(next.length===regions.length&&next.every((n,i)=>n===regions[i]))return;resize.disconnect();resize.observe(parent);for(const n of next)resize.observe(n);regions=next;scope.frame(fit)};

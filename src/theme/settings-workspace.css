@@ -68,18 +68,18 @@ html[data-stone-free] #dol-midnight-controls .dmt-reading-sample>span{font-size:
 html[data-stone-free]:not([data-dgu-visualMotion]) #dol-midnight-controls .dmt-preview-reference{transition:none}
 
 /* One moving contour follows selection; the original buttons retain their hitboxes. */
-html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-focus{position:absolute;z-index:2;pointer-events:none;transform-origin:0 0;border-radius:12px}
-html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-focus svg{display:block;width:100%;height:100%;overflow:visible}
-html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-focus rect{fill:none;vector-effect:non-scaling-stroke}
-html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-base{stroke:#78958c66;stroke-width:1}
-html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-flow{stroke:#86aaa3;stroke-width:1.3;stroke-linecap:round;stroke-dasharray:16 84;opacity:.7;animation:dmt-orbit-flow 7s linear infinite paused}
-html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) .dmt-orbit-tail{stroke:#9c8fa9;stroke-width:1;stroke-linecap:round;stroke-dasharray:8 92;stroke-dashoffset:42;opacity:.45;animation:dmt-orbit-tail 7s linear infinite paused}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-focus{position:absolute;z-index:2;pointer-events:none;transform-origin:0 0;border-radius:12px}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-focus svg{display:block;width:100%;height:100%;overflow:visible}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-focus rect{fill:none;vector-effect:non-scaling-stroke}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-base{stroke:#78958c66;stroke-width:1}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-flow{stroke:#86aaa3;stroke-width:1.3;stroke-linecap:round;stroke-dasharray:16 84;opacity:.7;animation:dmt-orbit-flow 7s linear infinite paused}
+html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-tail{stroke:#9c8fa9;stroke-width:1;stroke-linecap:round;stroke-dasharray:8 92;stroke-dashoffset:42;opacity:.45;animation:dmt-orbit-tail 7s linear infinite paused}
 html[data-stone-free][data-dgu-visualMotion][data-dgu-visualGlow] :is(#dol-midnight-controls[open]:not([data-sf-leaving]),.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation-play-state:running}
-html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls,.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation:none}
-html[data-stone-free]:not([data-dgu-visualGlow]) :is(#dol-midnight-controls,.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){opacity:0}
+html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation:none}
+html[data-stone-free]:not([data-dgu-visualGlow]) :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){opacity:0}
 @keyframes dmt-orbit-flow{to{stroke-dashoffset:-100}}
 @keyframes dmt-orbit-tail{to{stroke-dashoffset:-58}}
-@media(prefers-reduced-motion:reduce){html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation:none!important}}
+@media(prefers-reduced-motion:reduce){html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation:none!important}}
 
 html[data-stone-free] .dgs-navigation{position:relative}
 

@@ -202,3 +202,31 @@ Issue #33报告4.0.1/DoL5.12.13、Android浏览器/WebView：衣柜人物仅1/4�
 隔离DPR2/120px容器/100×200→200×400画布探针：复制前后完整bitmap相等且右下像素保留，无溢出。这仅证明该合成输入，不是实际Ray复现。后续先读实际data-preview-source，再比source/copy bitmap、CSS矩形/transform与侧栏siblings：源单画布完整则查预览CSS/遮挡；源部分而侧栏整体完整则查多层/CSS组合；fallback则查model/渲染合同。不覆盖原sidebar renderer、不贸然乘除DPR。
 
 祭坛图截图不足以区分普通img、canvas或定位sprite。现有layout限制文本宽度，mobile只见战斗canvas规则，缺可证明安全的目标元素数据；下一步需UI开关对照、元素/父容器及natural/layout尺寸。没有以全局img/canvas max-width掩盖。原始截图、探针/日志仅本机忽略目录，不提交存档/私人数据；两案继续打开。
+
+## 2026-10-28 WORKSPACE-02 当前执行计划
+
+负责人明确按最终显示效果验收，两边代码可以不同；本轮授权同步样式及完整特效。范围为成熟设置＋当前九个自有预览入口，沿原消费者清单继续，不改业务、Host、main或发行。
+
+1. 修复属性/Attributes顶层识别遗漏；对照设置分类的默认/选中/悬停/按压/焦点与边框流动，移除本批自有tabs旧波纹，保留未知/兼容包旧路径。分组定位仍只闪标题。
+2. 真实自有overlay与正文态度接入已认可C5.2/R10＋FROST02全套天气，保护文字/原控件，不重复创建旧粒子层；处理主开关、尺寸、隐藏/回退/销毁及失败静态降级。长正文限制绘制高度，不能创建无限大Canvas。
+3. 顶层页面切换对齐设置的620ms层叠进入，开关窗口保留100/80ms；不复制旧业务DOM、不延迟业务动作，快速切换/取消必须收敛。正文分组仍只标题反馈。
+4. 实际宽窄预览检验每个顶层按钮、雨/雪与中途转场、输入/滚动、原节点、减少动态/关闭/退出；保留旧settings天气合同及adapter legacy合同，比较认可设置前后画面。用现有测试/证据入口，不扩充设备矩阵。最后独立复查、提交推送研发分支并同步#31。
+
+### WORKSPACE-02 实施与证据
+
+呈现对齐：修复名单缺少属性/Attributes。本批顶层tabs与真实设置分类比较默认/选中/悬停/键盘焦点/按压/禁用状态的字体、颜色、背景/边框/阴影、命中高度、轮廓和光标。比较先拒绝15px字体、旧surface颜色覆盖及hover/press/focus差异，再按实际设置值修正，没有放宽断言。旧kraft-work-surfaces的:is内含saveList ID，提高整组优先级，压过新规则；只在本批自有顶层接管，不改第三方。580ms流动轮廓替换本批旧720ms波纹，分组定位继续只闪标题，不恢复属性飞跃。
+
+完整天气：自有overlay和正文态度接入实际settingsWeather/C5.2散布斜雨、附着/合并/自然湿痕/流出、四档雨量及FROST02羽状雪晶/浅霜。晴/云/雾/风暴/特殊环境能力随同一factory保留；自动native矩阵实际采样晴/雨/雪，四档路由另有正式合同，特殊环境尚未逐个在native/游戏验收。完整renderer与旧span互斥，adapter/classic及未知包保留旧路径。正文只观察passages直接子级和当前passage直接host/相关属性，未扩大为全业务subtree观察。canvas正文高度限一视口，文字/链接/表单/原图片画布受到保护；正文装饰随文档滚动，不冒称固定模态窗口。
+
+页面运动：顶层复用真实设置620ms进入关键帧，开关仍100/80ms。原生业务立即替换内容，因此不复制旧业务DOM、不等演出完成，也没有保留旧页的620ms离场副本；结构差异明确保留，实际体验待负责人裁决。没有顶层分类的正文态度不假造页切换。独立审查指出同options/cheats分栏kind不变会漏进入、整体替换body会漏清marker，已改为比较真实选中项、保存原overlay及marker值；当前项不重放、快速中断、替换后取消和退出受检，复查无剩余明确问题。审查者未自行运行的测试未算通过。
+
+实际验证：本次提交运行代码，macOS arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153。
+
+- `npm run tooling:build`、`npm run build`、`node scripts/build-framework.mjs`、`npm run ci:lock`及最终`npm run ci:check`退出0。正式header-weather扩展后锁检查先拒绝漂移，重建并审阅仅该入口sourceSha和assertionSites 64→73，没有删用例或降低门槛。
+- `node tests/ui41-panel-preview.cjs`最终退出0：1280/390九入口、逐顶层按钮、实际设置各状态/关键帧、雨雪控件像素不变、原节点/输入/回退/重入/释放、长正文canvas、同窗口分栏、当前项不重放、动画中替换body再取消等通过。最初实现被属性漏标记实际拒绝。此手动预览不自动计入远端CI。
+- `node tests/header-weather.cjs`退出0：legacy及新增native模式、双语属性标记、四档雨量路由/雪天、原节点输入、切回legacy后完整层/轮廓退出。正式CI继续运行此入口。
+- `node tests/evolution-weather-integration.cjs`退出0：W01已有9个检查点，保留设置实际雨量/中断、雪霜/真实像素、尺寸/零尺寸、主开关/隐藏/关闭及异常清理。`node tests/official-game-motion.cjs`退出0，保留一次原生派发、100/80、classic旧wave、中断和释放。
+- `node tests/ui41-material.cjs`退出0。相对WORKSPACE-01六图，五张字节相同，1280/100有6像素RGB最大差2；未声称全部逐像素相同，也未重跑到全等。设置分类只抽取同值进入关键帧，没有重设计认可设置。
+- 未执行成功：旧`node tests/settings-workspace.cjs`硬编码Edge，本机缺该浏览器，且tests/fixture.html不存在，未执行其完整游戏断言。没有装新全局浏览器或删断言凑通过；本轮源级实际分类/运动由手动预览和W01覆盖，不能替代该完整游戏测试。
+
+未做：实际游戏/多Mod、Android/WebView、软键盘、GPU/功耗及持续帧率。完整renderer增加其它窗口绘制工作，不能把同源或少重复代码当性能收益。独立商店/衣柜/战斗/存档及第三方全部表面仍按同表推进，不宣称4.1全局完成。未跑新远端双CI、未改版本/Host协议、未合main或发布。新效果为待负责人视觉裁决候选；原始图/日志仅本机忽略目录，另一设备不可假定可访问。

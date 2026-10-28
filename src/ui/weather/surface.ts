@@ -26,7 +26,7 @@ export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement
  }
  function refresh(){if(!scope.active()||document.hidden)return;reads++;const next=read(),changed=JSON.stringify(next)!==JSON.stringify(target);target=next;if(changed)request()}
  function poll(){stopPoll?.();stopPoll=undefined;if(!scope.active()||document.hidden)return;refresh();stopPoll=scope.timeout(poll,500)}
- function resized(){if(!scope.active()||document.hidden)return;width=parent.clientWidth;height=parent.clientHeight;dpr=devicePixelRatio||1;if(!valid()){cancel();last=0;return}canvas.width=Math.max(1,Math.round(width*dpr));canvas.height=Math.max(1,Math.round(height*dpr));context!.setTransform(dpr,0,0,dpr,0,0);draw();request(true)}
+ function resized(){if(!scope.active()||document.hidden)return;width=parent.clientWidth;height=parent.matches('.passage.dgp-overlay')?Math.min(parent.clientHeight,window.innerHeight):parent.clientHeight;if(parent.matches('.passage.dgp-overlay'))canvas.style.height=height+'px';dpr=devicePixelRatio||1;if(!valid()){cancel();last=0;return}canvas.width=Math.max(1,Math.round(width*dpr));canvas.height=Math.max(1,Math.round(height*dpr));context!.setTransform(dpr,0,0,dpr,0,0);draw();request(true)}
  function visibility(){if(!scope.active())return;if(document.hidden){cancel();stopPoll?.();stopPoll=undefined;last=0}else{if(!managedPoll)poll();else refresh();resized()}}
  function motionChanged(){if(!scope.active())return;cancel();last=0;request(true)}
  try{

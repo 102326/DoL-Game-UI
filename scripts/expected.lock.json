@@ -1524,8 +1524,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "60957c4449f7daa1d3ce5deee76128f224f3e4f1a367574d5cf4f49aceee8656",
-      "assertionSites": 64
+      "sourceSha256": "03537417347341c5c2d2439d13f91b4002e1e09e9e20a1226cfc553ccad823ad",
+      "assertionSites": 73
     },
     {
       "entry": "tests/integration-preview-pages.cjs",

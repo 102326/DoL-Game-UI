@@ -64,15 +64,16 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   // official rain surface to its header instead of compressing the model into it.
   rainHeight=h;
   if(shell.hasAttribute('data-sf-weather-material')){
-   const header=shell.querySelector('.dmt-settings-header');rainHeight=0;
+   const header=shell.querySelector('.dmt-settings-header,#customOverlayTitle,:scope>.dgp-host');rainHeight=0;
    if(header?.getClientRects().length){
-    const regions=[header,...shell.querySelectorAll('.dmt-layout-choice,.dmt-workspace[data-settings-layout=horizontal] .dmt-workspace-nav')];
+    const regions=[header,...shell.querySelectorAll('.dmt-layout-choice,.dmt-workspace[data-settings-layout=horizontal] .dmt-workspace-nav,:scope>.dgc-host,:scope>.dgs-host,:scope>.dgp-host')];
     rainHeight=Math.max(0,Math.min(h,Math.max(...regions.filter(n=>n.getClientRects().length).map(n=>{const r=box(n.getBoundingClientRect());return r.y+r.height}))+48));
    }
   }
   layer.style.height=rainHeight+'px';layer.style.bottom='auto';
   protectedBoxes=[];
-  for(const el of shell.querySelectorAll('button,input,select,.dmt-reading-sample'+(runoff?'':',.evo-toolbar,.dmt-settings-footer')))if(el.getClientRects().length)protectedBoxes.push(box(el.getBoundingClientRect()));
+  const controls=shell.matches('.dmt-settings-shell')?'button,input,select,.dmt-reading-sample'+(runoff?'':',.evo-toolbar,.dmt-settings-footer'):'button,input,select,textarea,a,[role=button],img,canvas:not(.sf-weather-canvas)';
+  for(const el of shell.querySelectorAll(controls))if(el.getClientRects().length)protectedBoxes.push(box(el.getBoundingClientRect()));
   const walker=document.createTreeWalker(shell,NodeFilter.SHOW_TEXT);let text:Node|null;
   while((text=walker.nextNode())){
    if(!text.textContent?.trim()||text.parentElement?.closest('.evo-material-layer,script,style'))continue;
@@ -116,11 +117,11 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   if(shell.hasAttribute('data-sf-weather-material')&&document.documentElement.hasAttribute('data-dgu-visualmotion')&&!reduced.matches&&s.wet>.002&&s.snow<=.002&&(s.specialAmount??0)<=.002&&!dirty&&!wasMoving&&s.width===width&&s.height===height&&s.time>lastTime&&Math.floor(s.time*60)===Math.floor(lastTime*60))return;
   // WAAPI geometry changes do not emit mutations. Protect the moving workspace
   // conservatively, then remeasure its final text/controls after cancellation or finish.
-  if(dirty)layoutAnimations=shell.getAnimations({subtree:true}).filter(a=>a.effect instanceof KeyframeEffect&&a.effect.target instanceof Element&&a.effect.target.matches('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab,.dmt-workspace-section'));
+  if(dirty)layoutAnimations=shell.getAnimations({subtree:true}).filter(a=>a.effect instanceof KeyframeEffect&&a.effect.target instanceof Element&&a.effect.target.matches('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab,.dmt-workspace-section,#customOverlayContent'));
   const movingLayout=layoutAnimations.some(a=>a.playState==='running');
   if(dirty||specialSkies&&movingLayout||s.width!==width||s.height!==height||wasMoving&&!movingLayout)layout(s.width,s.height);
   frameProtection=protectedBoxes;
-  const workspace=shell.querySelector('.dmt-workspace');
+  const workspace=shell.querySelector('.dmt-workspace,#customOverlayContent');
   if(movingLayout&&workspace){const r=workspace.getBoundingClientRect(),base=canvas.getBoundingClientRect(),scale=base.width/s.width||1;frameProtection=[...protectedBoxes,{x:(r.x-base.x)/scale-96,y:(r.y-base.y)/scale-48,width:r.width/scale+192,height:r.height/scale+96}]}
   wasMoving=movingLayout;
   const dt=Math.min(.05,Math.max(0,s.time-lastTime));lastTime=s.time;

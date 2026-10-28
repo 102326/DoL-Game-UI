@@ -9,6 +9,7 @@ import type {UiApi} from '../public/ui';
 import SettingsPreview from './SettingsPreview.vue';
 import SettingsNavigation from './SettingsNavigation.vue';
 import {sourceMotion} from '../ui/source-motion';
+import {workspaceEnterFrames} from '../ui/workspace-transition';
 import {visualScope} from '../ui/visual-scope';
 import AcrylicControls from './AcrylicControls.vue';
 import ReadingControls from './ReadingControls.vue';
@@ -47,13 +48,8 @@ const motion=sourceMotion(),activeTransitions=new Set<symbol>();scope.own(()=>mo
 function selectCategory(id:string){const item=categories.find(item=>item.id===id);if(!item||item.id===category.value)return;const next=item.id;const from=categories.findIndex(item=>item.id===category.value),to=categories.findIndex(item=>item.id===next);direction=to>=from?1:-1;layoutRevision++;layoutMotion.cancel();motion.cancel();category.value=next}
 function transitionTask(element:Element,frames:Keyframe[],done:()=>void){const token=Symbol();activeTransitions.add(token);const dialog=document.getElementById('dol-midnight-controls');dialog?.setAttribute('data-workspace-transition','');let complete=false;const finish=()=>{if(complete)return;complete=true;activeTransitions.delete(token);if(!activeTransitions.size)dialog?.removeAttribute('data-workspace-transition');done()};const animation=motion.animate(element as HTMLElement,frames,620);if(animation)void animation.finished.then(finish,finish);else finish()}
 function enterTask(element:Element,done:()=>void){
- element.removeAttribute('inert');element.removeAttribute('aria-hidden');const origin=direction>0?'0% 0%':'100% 0%';
- transitionTask(element,[
-  {transformOrigin:origin,transform:`translate3d(${direction*80}px,16px,-100px) rotateY(${-direction*24}deg) rotateX(7deg)`,opacity:0,clipPath:direction>0?'inset(0 96% 0 0 round 16px)':'inset(0 0 0 96% round 16px)'},
-  {clipPath:'inset(0 0% 0 0% round 0px)',offset:.55},
-  {transformOrigin:origin,transform:'translate3d(0,0,0) rotateY(0deg) rotateX(0deg)',opacity:1,clipPath:'inset(0 0% 0 0% round 0px)',offset:.78},
-  {transformOrigin:origin,transform:'translate3d(0,0,0) rotateY(0deg) rotateX(0deg)',opacity:1,clipPath:'inset(0 0% 0 0% round 0px)'}
- ],done);
+ element.removeAttribute('inert');element.removeAttribute('aria-hidden');
+ transitionTask(element,workspaceEnterFrames(direction),done);
 }
 function leaveTask(element:Element,done:()=>void){
  element.setAttribute('inert','');element.setAttribute('aria-hidden','true');const origin=direction>0?'100% 0%':'0% 0%';
