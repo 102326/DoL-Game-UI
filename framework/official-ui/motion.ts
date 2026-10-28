@@ -59,7 +59,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   }
  }
  function markScrimFamily(node:HTMLElement|null){
-  plane?.toggleAttribute('data-kw-settings-family',!!node?.matches('.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),[data-sf-workspace=saves]'));
+  plane?.toggleAttribute('data-kw-settings-family',!!node?.matches(ownedOverlaySelector));
  }
  function scrim(open:boolean,enter=true,initial=0){
   if(open){

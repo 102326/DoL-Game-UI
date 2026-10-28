@@ -17,6 +17,8 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#custo
  & :is(.modhub-section,.modhub-item,.modhub-market-card,.modhub-help-section,.modhub-help-result,.settingsToggleItemWide,.savesListRow,.CEDISPLAY_setting){padding-block:calc(8px + var(--dgu-ui-extra-gap,0px) * .5)!important}
  & :is(.modhub-btn-group,.maplebirch-cloud-save-actions,.CE-category-bar,.CE-subtab-bar,.footer-actions){gap:calc(6px + var(--dgu-ui-extra-gap,0px) * .5)!important}
  & label{ text-align:var(--dgu-option-text-align,left) }
+ & .modhub-sticky-toolbar{background:var(--q-fill)!important}
+ &[data-dgu-adapter=CheatExtendedInlineSoftWet] .CEDISPLAY_setting{background:var(--q-well)!important}
 }
 
 /* Portaled dialogs and the virtual phone sample only their existing outer face. */
