@@ -1,0 +1,16 @@
+/* Fixture geometry only; material, navigation, controls and content layout come from actual UI sources. */
+#customOverlay[data-ui41-preview]{position:fixed;inset:20px;margin:auto;width:min(1100px,calc(100% - 40px));height:min(760px,calc(100dvh - 40px));max-height:calc(100dvh - 40px);z-index:1000;padding:0;overflow:hidden;background:#24262a;color:#e4e7e8;border:1px solid #ffffff20;border-radius:23px}
+#customOverlay[data-ui41-preview].hidden{display:none!important}
+#customOverlay[data-ui41-preview]:not(.hidden){display:flex;flex-direction:column}
+#customOverlay[data-ui41-preview] #customOverlayTitle{display:flex;align-items:flex-start;gap:12px;padding:16px;flex:none}
+#customOverlay[data-ui41-preview] #overlayTabs{flex:1;min-width:0}
+#customOverlay[data-ui41-preview] :is([data-demo-close],[data-demo-restore]){flex:none;min-width:44px;min-height:44px;padding:8px;border:1px solid #ffffff20;border-radius:11px;background:#252a2dd9;color:inherit;cursor:pointer}
+#customOverlay[data-ui41-preview] #customOverlayContent{min-height:0;overflow:auto;padding:20px 24px}
+#customOverlay[data-ui41-preview] :is(h1,h2,h3,h4){color:inherit}
+#customOverlay[data-ui41-preview] :is(.characteristic-box,.relation-box){padding:16px}
+#customOverlay[data-ui41-preview] :is(.relation-box-list,#featsList){display:grid;gap:12px}
+#customOverlay[data-ui41-preview] .feat{border:1px solid #ffffff12;border-radius:14px}
+[data-ui41-preview] [data-demo-action]{min-height:44px;padding:8px 12px;color:inherit;background:#ffffff08;border:1px solid #ffffff20;border-radius:10px;cursor:pointer}
+.passage[data-ui41-preview]{padding:20px;color:#e4e7e8;background:#20242780;border:1px solid #ffffff1a;border-radius:18px}
+.passage[data-ui41-preview]>:is([data-demo-close],[data-demo-restore]){min-height:44px;padding:8px 12px;color:inherit;background:#ffffff08;border:1px solid #ffffff20;border-radius:10px}
+@media(max-width:620px){#customOverlay[data-ui41-preview]{inset:8px;width:calc(100% - 16px);height:calc(100dvh - 16px);max-height:calc(100dvh - 16px)}#customOverlay[data-ui41-preview] #customOverlayTitle{padding:10px;gap:6px}#customOverlay[data-ui41-preview] #customOverlayContent{padding:16px}}

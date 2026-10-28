@@ -309,3 +309,5 @@ docs/HANDOFF.local.md
 /tests/owned-select.cjs
 
 /tests/ui41-reading.cjs
+
+/tests/ui41-panel-preview.cjs
