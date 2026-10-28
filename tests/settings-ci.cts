@@ -118,8 +118,8 @@ function portOf(server:ViteDevServer){const address=server.httpServer?.address()
    await withCaseScope('reading',()=>readingIntegration.verifyReading(must(browser)));
    teardown.integration=await withCaseScope('settings',()=>settingsIntegration.verifySettingsIntegration(must(browser)));
    teardown.weather=await withCaseScope('weather',()=>weatherIntegration.verifyWeatherIntegration(must(browser)));
-   await assert.rejects(weatherIntegration.verifyWeatherIntegration(must(browser),{lateHost:true}),error=>error instanceof Error&&/rain must not alter actual reading sample pixels/.test(error.message));
-  console.log('PASS W01 controlled late material host is rejected by actual reading pixels');
+   await assert.rejects(weatherIntegration.verifyWeatherIntegration(must(browser),{lateHost:true}),error=>error instanceof Error&&/weather canvas must be absolutely positioned before first context acquisition/.test(error.message));
+  console.log('PASS W01 controlled late material host is rejected at first renderer context; normal path retains pixel protection');
   fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/settings-resources.json',JSON.stringify(teardown,null,2));
   assert.equal(teardown.mounted.workspaces,1);assert.ok(teardown.queued.frames>0,'teardown exercises an actually queued workspace measurement');
   assert.deepEqual(teardown.disposed,{frames:0,workspaces:0});assert.deepEqual(teardown.late,teardown.disposed,'late workspace observer cannot schedule work after unmount');assert.deepEqual(errors,[]);

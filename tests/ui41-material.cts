@@ -21,11 +21,9 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing m
   await page.goto(url);await page.waitForFunction(()=>!!document.querySelector<HTMLDialogElement>('dialog')?.open);
   await page.getByRole('button',{name:'材质',exact:true}).click();
   const slider=page.getByRole('slider',{name:'Acrylic 通透度',exact:true});await slider.waitFor();
-  const sample=()=>page.evaluate(()=>{const n=document.querySelector<HTMLElement>('.dmt-settings-shell'),label=document.querySelector<HTMLElement>('.dmt-acrylic-control strong'),well=document.querySelector<HTMLElement>('.dmt-control-sheet');if(!n||!label||!well)throw Error('Missing material nodes');const c=getComputedStyle(n),r=n.getBoundingClientRect();return{background:c.backgroundColor,blur:c.backdropFilter,well:getComputedStyle(well).backgroundColor,textOpacity:getComputedStyle(label).opacity,textColor:getComputedStyle(label).color,opacity:c.opacity,rect:{x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom}}});
+  const sample=(legacy=false)=>page.evaluate(legacy=>{const root=document.documentElement;if(legacy)root.removeAttribute('data-dgu-acrylic-adjustment');try{const n=document.querySelector<HTMLElement>('.dmt-settings-shell'),label=document.querySelector<HTMLElement>('.dmt-acrylic-control strong'),well=document.querySelector<HTMLElement>('.dmt-control-sheet');if(!n||!label||!well)throw Error('Missing material nodes');const c=getComputedStyle(n),r=n.getBoundingClientRect();return{background:c.backgroundColor,blur:c.backdropFilter,well:getComputedStyle(well).backgroundColor,textOpacity:getComputedStyle(label).opacity,textColor:getComputedStyle(label).color,opacity:c.opacity,rect:{x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom}}}finally{if(legacy)root.setAttribute('data-dgu-acrylic-adjustment','')}},legacy);
   // Disable only the new material axis to sample the retained 4.0.1 cascade.
-  await page.evaluate(()=>document.documentElement.removeAttribute('data-dgu-acrylic-adjustment'));
-  const legacy=await sample();
-  await page.evaluate(()=>document.documentElement.setAttribute('data-dgu-acrylic-adjustment',''));
+  const legacy=await sample(true);
   const baseline=await sample();
   for(const value of [0,25,50,acrylicDefault,75,100]){
    await slider.fill(String(value));const actual=await sample();

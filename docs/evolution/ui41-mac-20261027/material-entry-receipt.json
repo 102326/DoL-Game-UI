@@ -7,9 +7,12 @@
     "src/theme/controller.ts": "167660b0a9f9c61c883e505996b41940b266774f7b4350286963df769261482c",
     "src/theme/SettingsPanel.vue": "c09e6c8f9bd5533e9b9a66666fcabac4519b19197e91667825626a2e3a34633a",
     "src/theme/acrylic-v1.css": "e9502b9837b3d360eb8e5dc9512c457c51722a484ae52fbb38aa34caeb2022b7",
-    "tests/evolution-settings-integration.cts": "d844ad56a06f4407a48d4e73f0ce621a4e088c2d2dc40e00e5e53640ea104b1a",
-    "tests/ui41-material.cts": "fd75b08cf15d3bfc3c558b7da5cd30fb0300e9223f2043e53fc87f69503afdc0",
-    "scripts/expected.lock.json": "93579759e2cd64777d84d1d6a64d3fb95e6254dd0a2ba1f451eb7ed09f12370d"
+    "tests/evolution-settings-integration.cts": "c95cbf9004220c13287192698cf9a3127bf02832aa102c4933e59f508437a09b",
+    "tests/ui41-material.cts": "01f90ef0960db0f93652cf706a03f36b188e5a3041338248c98da029b0a2fa22",
+    "scripts/expected.lock.json": "973e53467fae9bf746f872d004f073464826a9dbeb0a79810a4e3bd1b5570ddd",
+    "tests/evolution-hub-integration.cts": "91a33b0edeedde4a1851b8c34ab9e040b2be181aa73b3b9ae1044e31230a8d84",
+    "tests/evolution-weather-integration.cts": "9d349f327dad2689d3575ebaa43863be6cb7010fa4549e179a75a5669f2c4b4e",
+    "tests/settings-ci.cts": "4a738d2df10bd1ea6c100d927fac8d34026571faec9e87c4d12448d9d049efd9"
   },
   "environment": {
     "platform": "darwin",
@@ -98,15 +101,40 @@
     "node tests/evolution-navigation.cjs",
     "node tests/adapter-materials.cjs",
     "npm run ci:lock",
-    "npm run ci:check"
+    "npm run ci:check",
+    "node tests/settings-ci.cjs",
+    "node tests/evolution-owner-resources.cjs",
+    "node tests/evolution-hub-integration.cjs --preview-layout --old-preview-style (expected rejection)",
+    "node tests/evolution-weather-integration.cjs --late-host (expected rejection)"
   ],
   "review": {
     "independent": "gpt-6.1-terra/high read-only",
     "result": "No remaining actionable finding",
-    "withdrawn": "Modal backdrop concern disproved by existing settings-workspace.css:90 none!important cascade and new real-dialog assertion; no production fix added"
+    "withdrawn": "Modal backdrop concern disproved by existing settings-workspace.css:90 none!important cascade and new real-dialog assertion; no production fix added",
+    "testAlignment": "Independent read-only re-review found no actionable issue or weakened coverage. getContext probe forces style computation and is only behavioral, never uninstrumented timing/performance evidence."
   },
   "scope": "Official settings plus owned/full-match common-overlay material; other surfaces/weather/game/device pending. No new observer, Host API, business change, main merge or release.",
   "ci": {
-    "status": "pending exact committed source; future run identities recorded separately"
+    "status": "new exact-source CI required after test alignment; first failed runs retained"
+  },
+  "ciInvestigation": {
+    "source": "d9df64c7a3027a62cef69d7c0eb4f269437199d0",
+    "failedRuns": [
+      {
+        "id": 40630769444,
+        "profile": "standard"
+      },
+      {
+        "id": 40630773241,
+        "profile": "research"
+      }
+    ],
+    "findings": [
+      "Preview layout still required retired padding0; retain width/finite-section guards and require approved Q1 padding plus no global max-width/margins. Old global main mutant is still rejected (width56,section0).",
+      "Weather entry still required alpha>=.8; require accepted default60 and shell alpha.43 instead.",
+      "Late-host mutant no longer reliably changes eventual reading pixels after the new layout recovers geometry. Preserve pixel equality assertions and observe computed canvas position at first context acquisition; mutant is static instead of absolute and rejected before rendering. No production renderer change.",
+      "Local combined run exposed cross-task legacy reference sampling race. Remove/sample/restore axis atomically in one browser evaluation, including unknown-overlay checks, instead of depending on elapsed time."
+    ],
+    "localResult": "Final settings-ci, ui41-material, evolution-owner-resources and both controlled negatives passed their expected verdicts; strict ci:check passed. Earlier local M01 reference race failure retained in investigation."
   }
 }

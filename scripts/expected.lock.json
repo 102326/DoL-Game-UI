@@ -974,7 +974,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ce956e6c664a0720535eb76375ee4b9f494040b2f999f3807ccd1e70ea9bccf3",
+      "sourceSha256": "e62c9b57b3bc2fadf1eb7ddc3335989814ad9e357fd52d3f1d5bf84101df81ad",
       "assertionSites": 346,
       "rendererContexts": [
         "sphere:2d"
@@ -2220,8 +2220,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6b69e17ed12cd20be8bc50e4017c8ed86f95e5c30a616353315a2b2dc0562d8a",
-      "assertionSites": 279,
+      "sourceSha256": "56abfaa055eaf84b2d3eb7e3481d7302404e13f5ecf546cf902daeabddc67f3f",
+      "assertionSites": 281,
       "rendererContexts": [
         "weather:2d"
       ]

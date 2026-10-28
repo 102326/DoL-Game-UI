@@ -139,8 +139,10 @@ async function previewLayout(p:playwright.Page,{oldPreviewCSS=null}:{oldPreviewC
    await p.getByRole('button',{name:layout,exact:true}).click();
    for(const category of ['阅读','页面']){
     await p.locator('.dmt-workspace-nav').getByRole('button',{name:category,exact:true}).click();
-    const data=await p.locator('.dmt-workspace-page').evaluate(n=>{const parent=n.parentElement;if(!parent)throw Error('Missing settings page parent');return{width:n.getBoundingClientRect().width,available:parent.getBoundingClientRect().width,padding:getComputedStyle(n).padding,sectionWidth:n.querySelector(':scope>section:not([inert])')?.getBoundingClientRect().width}});
-    assert.ok(data.width>=Math.min(240,data.available*.6)&&data.padding==='0px'&&Number.isFinite(data.sectionWidth)&&typeof data.sectionWidth==='number'&&data.sectionWidth>0,'preview styles must not collapse actual settings content: '+JSON.stringify({viewport:{width,height},layout,category,...data}));
+    const data=await p.locator('.dmt-workspace-page').evaluate(n=>{const parent=n.parentElement;if(!parent)throw Error('Missing settings page parent');return{width:n.getBoundingClientRect().width,available:parent.getBoundingClientRect().width,padding:getComputedStyle(n).padding,maxWidth:getComputedStyle(n).maxWidth,marginLeft:getComputedStyle(n).marginLeft,marginRight:getComputedStyle(n).marginRight,sectionWidth:n.querySelector(':scope>section:not([inert])')?.getBoundingClientRect().width}});
+    // Approved Q1 spacing is now production; the old global main rule must still fail max-width/margin isolation.
+    const approvedPadding=width<=620?'20px 16px':'23px 28px 26px';
+    assert.ok(data.width>=Math.min(240,data.available*.6)&&data.padding===approvedPadding&&data.maxWidth==='none'&&data.marginLeft==='0px'&&data.marginRight==='0px'&&Number.isFinite(data.sectionWidth)&&typeof data.sectionWidth==='number'&&data.sectionWidth>0,'preview styles must not collapse actual settings content: '+JSON.stringify({viewport:{width,height},layout,category,...data}));
    }
   }
   await p.getByRole('button',{name:'上下',exact:true}).click();await p.locator('.dmt-close').click();await p.waitForFunction(()=>{const dialog=document.querySelector('dialog');if(!dialog)throw Error('Missing settings dialog');return !dialog.open});
