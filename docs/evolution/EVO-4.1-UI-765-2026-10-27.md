@@ -311,3 +311,21 @@ Mac arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153的实际完成检查：
 3. **旧社交分组巡检合同漂移**：社交分组Orbit已按负责人“只闪标题”指令移除，`selection-motion`仍查不存在的Orbit节点。更新为原go/refusal、选中状态、键盘单派、禁止旧Orbit/relay；减少动态、衣柜单波纹/原回调/卸载合同保留，断言14→19。实际标题反馈仍由原真实导航集成检查覆盖，不把这个组件夹具当游戏验收。
 
 这三项不是“超时就延长sleep”；前两项修运行代码，最后一项按已批准产品行为更正过期巡检。锁追加同步rain-glass 33→34、selection 14→19，未扩大模拟矩阵或删除必需入口。独立只读复查未发现剩余明确问题（未自行运行测试）。新修正提交/准确SHA的两套CI结果在后续交接补记；首轮65189f7的36项本机摘要相符只覆盖当时实现，不冒充后续修正后的全量摘要。
+
+后续修正已提交/推送`e909eaf3ea87ed3284183faeb4990b4c80fe2120`；新标准40702217590/研究40702225001均手动触发同SHA，最终均success/Attempt1，独立下载证据复核也PASS。该干净提交上的独立窗口再次实跑8个主场景及详情/选择框/退场子路径，PASS，构建和记录摘要无漂移；并非把65189f7父提交的摘要改写为新提交。CSS legacy保持原共享更新；前台暂停只适用于完整Canvas renderer。
+
+
+#### WORKSPACE-03 最终交付身份
+
+运行代码为`e909eaf3ea87ed3284183faeb4990b4c80fe2120`（主体65189f7＋定向修正）；后续交接提交仅更新文档。分支`feature/4.1-ui-material-hub`，未改main、版本/发行、Host协议或远端保护规则。
+
+| 准确源码手动运行 | 实际结果 | 本轮实际耗时 |
+| --- | --- | --- |
+| [标准40702217590](https://github.com/102326/DoL-Game-UI/actions/runs/40702217590) | validate、evidence-verify、工作流内moody-gate全部success；源码/业务、九包构建、ZIP合同/负例/双构建与规定浏览器/布局范围完整通过 | 16分28秒（含独立复核和gate） |
+| [研究40702225001](https://github.com/102326/DoL-Game-UI/actions/runs/40702225001) | prototype、evidence-verify全部success；受控研究及原/自然/流出光学入口通过 | 10分51秒（含独立复核） |
+
+两Run均Attempt1、workflow_dispatch、同一e909eaf；不是PR检查。本机实际下载两份独立复核结果，ZIP SHA256分别为`3222bf49cbf55062a3071fcfffce749468b54693e6d0f350d7cc1ba22a748018`（标准）与`63ecae13c0a3b247b175d378b03e1fad97672ebafbeff206acf09b007e912146`（研究），与GitHub artifact digest相同。内部均为PASS / assertion PASS / evidence COMPLETE、problems空、source=e909eaf。该下载核对不是在Mac第二次独立重验所有ZIP合同或全部研究文件；完整下载证据的重算由两个Actions独立job执行。没有将先前65189f7失败、其它旧Run或文档提交冒称新源码全量CI。
+
+当前耗时比早期记录中的典型约5/8分钟更长，但不是配对实验，不能归因于本批UI或用于推算帧率；本轮未扩大常规入口/设备矩阵、改工作流或放宽预算。后续CI成本继续按既有CI调查处理，不在本UI批次另开路线图。开发包版本仍4.0.1，属于该准确研发源码的开发制品，不是4.1或正式4.0.1 Release更新。
+
+交付范围仍按上表和未完成清单：负责人本批视觉验收、真实游戏/多Mod/原版间距、#33、Android/WebView/Windows、全部特殊天气逐消费者与持续GPU/功耗/性能待验。localhost服务和原图/原日志仅本机；新设备先核对HEAD/工作区/Node/依赖及构建，再启动既有预览，不假定旧5204可访问。
