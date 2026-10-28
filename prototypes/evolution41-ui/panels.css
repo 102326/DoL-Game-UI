@@ -14,3 +14,5 @@
 .passage[data-ui41-preview]{padding:20px;color:#e4e7e8;background:#20242780;border:1px solid #ffffff1a;border-radius:18px}
 .passage[data-ui41-preview]>:is([data-demo-close],[data-demo-restore]){min-height:44px;padding:8px 12px;color:inherit;background:#ffffff08;border:1px solid #ffffff20;border-radius:10px}
 @media(max-width:620px){#customOverlay[data-ui41-preview]{inset:8px;width:calc(100% - 16px);height:calc(100dvh - 16px);max-height:calc(100dvh - 16px)}#customOverlay[data-ui41-preview] #customOverlayTitle{padding:10px;gap:6px}#customOverlay[data-ui41-preview] #customOverlayContent{padding:16px}}
+
+#customOverlay[data-ui41-preview]>[data-demo-tools]{flex:none;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:10px 16px;border-top:1px solid #ffffff0b;background:#11191b38}#customOverlay[data-ui41-preview]>[data-demo-tools]>small{margin-right:auto;font-size:11px;color:#9da9aa}

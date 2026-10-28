@@ -55,9 +55,13 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    marked.set(link,link.getAttribute('data-kw-native'));link.setAttribute('data-kw-native',target);
   }
  }
+ function markScrimFamily(node:HTMLElement|null){
+  plane?.toggleAttribute('data-kw-settings-family',!!node?.matches('.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host)'));
+ }
  function scrim(open:boolean,enter=true,initial=0){
   if(open){
    if(!plane){plane=document.createElement('div');plane.className='kw-context-plane';plane.setAttribute('aria-hidden','true');document.body.append(plane)}
+   markScrimFamily(active);
    if(enter)fadeWindow(motion,plane,1,initial);else motion.cancel(plane);
    document.documentElement.setAttribute('data-kw-character-layer','');
   }else{
@@ -78,10 +82,11 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function syncOverlay(){
   if(!scope.active())return;
   const next=document.getElementById('customOverlay');
-  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
+  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{childList:true,attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
   const shown=live()&&overlay&&visible(overlay);if(!shown)presented=null;
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
   navigation.refresh();
+  if(plane&&nextActive)markScrimFamily(nextActive);
   const kind=nextActive?.dataset.overlay??'';if(nextActive===active&&kind===activeKind)return;
   const old=active,adopting=!active&&!!nextActive&&presented===nextActive,opacity=plane?Number(getComputedStyle(plane).opacity):0;active=nextActive;activeKind=kind;cancelPresentation(adopting?nextActive??undefined:undefined);
   if(active){
@@ -138,7 +143,10 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=presented=null;activeKind='';origin=undefined;returnTo=null;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
  function resize(){cancelPresentation()}
- const observer=new MutationObserver(()=>{beginExpected();later(syncOverlay)});scope.own(()=>observer.disconnect());
+ const observer=new MutationObserver(records=>{
+  if(!records.some(record=>record.type==='attributes'||[...record.addedNodes,...record.removedNodes].some(node=>node instanceof Element&&node.matches('.dgc-host,.dgs-host,.dgp-host'))))return;
+  beginExpected();later(syncOverlay);
+ });scope.own(()=>observer.disconnect());
  const sidebarObserver=new MutationObserver(()=>later(sidebar));scope.own(()=>sidebarObserver.disconnect());
  const blur=()=>clearPress();
  const parent=document.getElementById('customOverlay')?.parentElement;

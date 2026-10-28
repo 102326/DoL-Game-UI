@@ -87,7 +87,7 @@ html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{animation:none}
 /* Accepted settings V2.3: real stationary shell, no separate material proxy. */
 html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{background:linear-gradient(125deg,#bfd4df12,transparent 55%),#24262aee!important;border:1px solid #d4ece42b!important;box-shadow:inset 0 1px #e5f2f329,0 24px 80px #0006!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html[data-stone-free][data-dgu-visualGlass] #dol-midnight-controls>.dmt-settings-shell{background:linear-gradient(130deg,#e3f3ff14,transparent 56%),#24262ad9!important}
-html[data-stone-free] #dol-midnight-controls::backdrop{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transition:none}
+html[data-stone-free] #dol-midnight-controls::backdrop{background:var(--dgu-workspace-context-background,transparent)!important;backdrop-filter:var(--dgu-workspace-context-filter,none)!important;-webkit-backdrop-filter:var(--dgu-workspace-context-filter,none)!important;transition:none}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{perspective:1400px}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{transform-style:preserve-3d}
 

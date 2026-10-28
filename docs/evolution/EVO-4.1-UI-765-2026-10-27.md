@@ -181,3 +181,24 @@ CONSUMER-PREVIEW-01新增既有5204页面的「共用窗口巡检」：实际sta
 独立审查发现正文回退可能残留标题动画：测试将真实在运行的标题动画暂停后回退，旧清理得到动画数1而非0；修正仅记录/取消当前正文标题，不取消其它overlay的滚动，修复后通过，复查无剩余明确问题。旧relay定位检查已按负责人取消该功能的决定改为标题/无代理正反合同，并保留缩放、生命周期和原控件断言；不把产品要求改变写成旧缺陷。
 
 当前新方案已在5204实际操作，等待负责人视觉反馈。本批修改产品UI内部导航，但不改Host、游戏业务、main、版本/发行；未新跑远端全量CI，不将a4e1320旧Run写作本批验证。天气与其它独立表面、真实游戏/设备与性能仍按原清单接续。
+
+
+## 2026-10-28 设置反哺共用窗口：EVO41-WORKSPACE-01
+
+按负责人方向，成熟设置是共享来源。新workspace-theme复用原Q1的标题/导航/正文留白、well边框/圆角/阴影和行距变量，原设置对应字面量替换为同值变量；其它自有overlay消费同一变量和材质。原版设置/作弊/正文态度中明确匹配的单二态checkbox复用设置已有paint/状态规则，原节点、事件和选择值不变；其它输入保留原语义。默认60%/左对齐与认可Hub节奏不变。没有新增绘制循环/依赖/Host协议或游戏业务。选择器重复使原CSS约增11KB（gzip约1.2KB），不将代码共享写成性能提升。
+
+预览使用实际startOfficialMotion，替代其原先单独nativeNavigation，防止双重天气/导航所有者；工具按钮移出原生tabs。只对含直接dgc/dgs/dgp-host的已知壳接管，full adapter上下文仍保留。审查发现未限定context、直接host移除不触发根属性观察、标题/tab在保留class时漏出新样式三项，分别修复；前两项受控旧实现实际被拒绝，最后一项收窄后增加有效样式恢复对照。observer仅观察根属性和直接host增删，不扩大为业务subtree。
+
+验证身份：本节提交中的运行代码；Mac arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153。`npm run tooling:build`、`node scripts/build-framework.mjs`、`npm run ci:check`、`node tests/official-game-motion.cjs`、`node tests/ui41-panel-preview.cjs`退出0。手动巡检1280/390下九入口、settings well及实际checkbox开关状态样式对照、原节点/笔记保留、fallback/reentry、原adapter上下文、保留class下host增删/样式恢复及最终释放；手动结果现在同时记录整轮PASS/FAIL，尾部失败不再仅留前几行PASS。panels-framework沿用本批未变Host合同的通过结果。正式全游戏panels.test断言已更新其明确匹配分支，但未运行，不把它算通过。
+
+`node tests/ui41-material.cjs`本批通过；与改动前六图相比，初步版本六图字节一致，最终版本五图一致，desktop100%有6像素RGB最大差2（1280×900，范围x723–725/y463–469），尚未确认其渲染差异原因，不声称最终全部逐像素相等，也未反复重跑取得全等。实际5204旧进程曾缓存构建前style.css，已重启并从有效样式确认38×22/appearance:none，避免把旧画面给负责人评审。
+
+未做：新远端标准/研究CI、真实游戏原生表单/宏/多Mod与Ray、Android/WebView、性能/GPU、所有消费者天气迁移及全局视觉验收；原settings的renderer仍不能算迁移到其它窗口。无main、Release、版本或公开包更新。本批是第一组设置家族候选，等待负责人预览裁决，后续继续同一覆盖表。
+
+### BUG33-TRIAGE（同批调查，不是修复）
+
+Issue #33报告4.0.1/DoL5.12.13、Android浏览器/WebView：衣柜人物仅1/4、Gwylan祭坛护符图越界。负责人确认衣柜使用Ray，侧栏完整、仅衣柜异常；Ray版本未知。`src/wardrobe/main.ts:59`优先镜像sidebar mainCanvas，失败才fallback；`sidebar-preview.ts:22`复制bitmap宽高及drawImage(0,0)，不会复制CSS/其它图层；`style.css`预览容器260/350px，canvas height100%/auto width/contain；`render.ts:69`fallback按model尺寸scale1合成。上述衣柜文件与v4.0.1一致，尚不能认定是DPR或Ray本体错误。
+
+隔离DPR2/120px容器/100×200→200×400画布探针：复制前后完整bitmap相等且右下像素保留，无溢出。这仅证明该合成输入，不是实际Ray复现。后续先读实际data-preview-source，再比source/copy bitmap、CSS矩形/transform与侧栏siblings：源单画布完整则查预览CSS/遮挡；源部分而侧栏整体完整则查多层/CSS组合；fallback则查model/渲染合同。不覆盖原sidebar renderer、不贸然乘除DPR。
+
+祭坛图截图不足以区分普通img、canvas或定位sprite。现有layout限制文本宽度，mobile只见战斗canvas规则，缺可证明安全的目标元素数据；下一步需UI开关对照、元素/父容器及natural/layout尺寸。没有以全局img/canvas max-width掩盖。原始截图、探针/日志仅本机忽略目录，不提交存档/私人数据；两案继续打开。

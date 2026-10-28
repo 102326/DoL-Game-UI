@@ -9,7 +9,7 @@ import './panels.css';
 export const panelCases={characteristics:'属性',social:'社交',journal:'日志',traits:'特质',statistics:'统计',feats:'成就',cheats:'作弊',settings:'原版设置',attitudes:'态度（正文）'} as const;
 export type PreviewPanel=keyof typeof panelCases;
 const overlayKeys:Partial<Record<PreviewPanel,string>>={feats:'gameFeats',settings:'options'};
-const action='<button type="button" data-demo-action>演示原控件</button>';
+const action='<button type="button" class="link-internal macro-button" data-demo-action>演示原控件</button>';
 const settings=(title:string)=>`<h2 class="settingsHeader">${title}</h2><div class="settingsGrid"><div class="settingsToggleItem"><label><input type="checkbox">启用示例选项</label></div><div class="settingsToggleItem"><label>展示方式 <select aria-label="示例展示方式"><option>标准</option><option>详细</option></select></label></div></div><p>这里使用合成内容观察排版与输入，操作只改变本页示例。</p>${action}`;
 function content(kind:PreviewPanel):string{
  switch(kind){
@@ -27,13 +27,13 @@ function content(kind:PreviewPanel):string{
 export function createPanelPreview(){
  const owner=hubPreview.host.register('UI41PanelPreview'),framework={host:hubPreview.host,owner};
  const overlay=document.createElement('section');overlay.id='customOverlay';overlay.dataset.ui41Preview='';overlay.className='hidden';
- overlay.innerHTML='<div id="customOverlayTitle"><div id="overlayTabs"></div><button type="button" data-demo-restore>恢复新版</button><button type="button" data-demo-close>关闭窗口</button></div><div id="customOverlayContent"></div>';
+ overlay.innerHTML='<div id="customOverlayTitle"><div id="overlayTabs"></div></div><div id="customOverlayContent"></div><footer data-demo-tools><small>预览工具</small><button type="button" data-demo-restore>恢复新版</button><button type="button" data-demo-close>关闭窗口</button></footer>';
  document.body.append(overlay);
  const nativeBody=overlay.querySelector<HTMLElement>('#customOverlayContent')!,tabs=overlay.querySelector<HTMLElement>('#overlayTabs')!;
  const characteristics=startCharacteristics(window,framework),social=startSocial(window,framework),panels=startPanels(window,framework);
  const originalPassage=document.querySelector<HTMLElement>('#passages .passage')!,passages=originalPassage.parentElement!,notice=document.querySelector<HTMLElement>('#notice')!;
  let inline:HTMLElement|undefined,current:PreviewPanel|undefined,calls=0,disposed=false,originalHidden=originalPassage.hidden;
- const refresh=()=>{characteristics.refresh();social.refresh();panels.refresh();hubPreview.navigation.refresh()};
+ const refresh=()=>{characteristics.refresh();social.refresh();panels.refresh()};
  function close(){if(disposed)return;overlay.classList.add('hidden');inline?.remove();inline=undefined;originalPassage.hidden=originalHidden;current=undefined;refresh()}
  function open(kind:PreviewPanel){
   if(disposed)return;close();current=kind;

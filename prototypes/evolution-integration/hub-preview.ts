@@ -3,6 +3,7 @@ import {startOfficialHub} from '../../framework/official-ui/hub';
 import {startTheme} from '../../src/theme/controller';
 import {startFloatingTools} from '../../src/floating/main';
 import {nativeNavigation} from '../../framework/official-ui/navigation';
+import {startOfficialMotion} from '../../framework/official-ui/motion';
 
 const root:NonNullable<Parameters<typeof startTheme>[0]>=window;
 startTheme(root);
@@ -18,11 +19,13 @@ Object.assign(window,{DoLGameUI:{
  openSettings(){settings++;theme.openSettings();navigation.refresh()},
  ui:{openInspector(){inspector++;notice.textContent='本页模拟的运行检查通知'}}
 }});
-let stop=startOfficialHub(host,owner);
+let stop=startOfficialHub(host,owner),stopMotion:(()=>void)|undefined;
 bodyAction.onclick=()=>notice.textContent='正文操作成功';
 export const hubPreview={
- host,owner,floating,navigation,counts:()=>({native:count,settings,inspector}),
+ host,owner,floating,navigation,
+ enableOfficialMotion(){if(stopMotion)return;navigation.dispose();stopMotion=startOfficialMotion(window)},
+ counts:()=>({native:count,settings,inspector}),
  stop(){stop()},remount(){stop();stop=startOfficialHub(host,owner)},
- dispose(){stop();owner.dispose();host.dispose();floating.destroy();navigation.dispose();theme.destroy();Reflect.deleteProperty(window,'DoLGameUI')}
+ dispose(){stopMotion?.();stopMotion=undefined;stop();owner.dispose();host.dispose();floating.destroy();navigation.dispose();theme.destroy();Reflect.deleteProperty(window,'DoLGameUI')}
 };
 Object.assign(window,{hubPreview});

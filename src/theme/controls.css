@@ -17,7 +17,7 @@
 #dol-midnight-controls .dgu-setting-row{display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:48px;padding:8px 0;color:var(--dgu-text);cursor:pointer}
 #dol-midnight-controls .dgu-setting-row strong{display:block;font-weight:500;font-size:calc(14px * var(--dgu-font-scale,1))}
 #dol-midnight-controls .dgu-setting-row small{display:block;color:var(--dgu-secondary);font-size:calc(12px * var(--dgu-font-scale,1));margin-top:3px}
-#dol-midnight-controls input[type=checkbox]{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--dgu-accent)}
+:is(#dol-midnight-controls input[type=checkbox],html[data-dol-midnight][data-dgu-acrylic-adjustment] .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=checkbox]:only-of-type){width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--dgu-accent)}
 #dol-midnight-controls button,#dol-midnight-controls select{min-height:44px;max-width:100%;padding:9px 12px;border:1px solid rgba(255,255,255,.09);border-radius:8px;background:#24262b;color:var(--dgu-text);font:inherit;cursor:pointer;transition:background .15s,border-color .15s}
 #dol-midnight-controls button:hover{background:#35363c;border-color:rgba(255,255,255,.14)}
 #dol-midnight-controls select{min-width:0;font-size:calc(13px * var(--dgu-font-scale,1))}
