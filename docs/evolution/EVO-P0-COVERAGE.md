@@ -101,7 +101,7 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 | 作弊 | 同上；cheats | WORKSPACE-02完整天气、设置式顶层状态与620ms进入候选已接入；宽窄原控件/回退/清理已检。视觉裁决、真实业务/游戏/设备及性能仍待验 |
 | 态度 | 同上；attitudes与非overlay宿主 | WORKSPACE-02真实正文宿主接完整天气（绘制高度限一视口）及匹配控件；长正文/回退/释放已检。没有overlay顶层分类，不假造页切换；业务/设备及性能仍待验 |
 | 游戏设置 | 同上；settings（与界面设置独立） | WORKSPACE-02完整天气、设置式顶层状态与620ms进入候选已接入；宽窄原控件/回退/清理已检。视觉裁决、真实业务/游戏/设备及性能仍待验 |
-| 存档/详情/传输工具 | src/saves/main.ts；.dgs-host/.dgs-native-tools | WORKSPACE-03：真实存档控制器列表/详情接轴与完整天气，1280/390受控原生形状输入、模态详情/宽屏inline、单选展开与销毁已检。inline不叠第二renderer；真实传输/保存/载入及游戏/设备仍待验，不读写真实存档 |
+| 存档/详情/传输工具 | src/saves/main.ts；.dgs-host/.dgs-native-tools | WORKSPACE-03及4226997：列表/详情/已识别导出页接轴与完整天气，列表先退出租约再交接导出页。1280/390受控原事件、原版回退/未知结构及销毁通过；Android真实存档/导出/云页签分别仅一个renderer、触控/轴受检。inline不叠第二renderer；本轮未实际保存/载入/传输文件或云数据 |
 | 服装店列表/分类/筛选 | src/shop/main.ts、Toolbar.vue；.dgshop-host/.dgshop-content | WORKSPACE-03：实际控制器接轴/完整天气与原生单选；材质采样放非祖先装饰面，分类进入使用设置620ms，无定位接力。宽窄及原事件已检，真实商品/分页/多Mod/性能待验，不改购买语义 |
 | 商品详情/对照浮层 | src/shop/ShopReference.vue及main.ts详情/比较 | WORKSPACE-03：原详情节点现代顶层/不支持接口/外部popover三路径定位；短内容收缩、长内容内部滚动、宽屏上限、关闭受检。inline用reading well，独立窄弹层用同轴shell；比较保留单一原空间动画。真实游戏/全部比较流程仍待验 |
 | 衣柜主界面 | src/wardrobe/main.ts、WardrobePanel.vue；.dgw-shell | WORKSPACE-03：实际WardrobePanel接轴、完整天气、紧凑行/现有间距与选择框；受控模型宽窄/栏目620ms/退出已检。完整main原节点换装/分页/渲染、Ray #33及游戏/设备仍待验 |

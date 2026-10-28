@@ -329,3 +329,28 @@ Mac arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153的实际完成检查：
 当前耗时比早期记录中的典型约5/8分钟更长，但不是配对实验，不能归因于本批UI或用于推算帧率；本轮未扩大常规入口/设备矩阵、改工作流或放宽预算。后续CI成本继续按既有CI调查处理，不在本UI批次另开路线图。开发包版本仍4.0.1，属于该准确研发源码的开发制品，不是4.1或正式4.0.1 Release更新。
 
 交付范围仍按上表和未完成清单：负责人本批视觉验收、真实游戏/多Mod/原版间距、#33、Android/WebView/Windows、全部特殊天气逐消费者与持续GPU/功耗/性能待验。localhost服务和原图/原日志仅本机；新设备先核对HEAD/工作区/Node/依赖及构建，再启动既有预览，不假定旧5204可访问。
+
+
+### Windows / Android 接续与导出页修复（2026-10-28）
+
+本批输入为`b5cdbbc`，运行代码`e909eaf`；没有继续旧默认50%的独立材质研究。沿用默认60%/左对齐及认可雨雪/球体/Hub时序。修复提交`42269972b5b304e0a74973fa6c5dc9c8926127c8`，仍在`feature/4.1-ui-material-hub`，无main/版本/发行操作。
+
+**确认的缺口与修复。** 真实Android切到“导出/载入”时没有full adapter或内部呈现租约，旧CSS雨效仍在，完整Canvas renderer为0；并非整个天气被删除。外壳在默认60%的既有材质值已经相同，不能据此声称所有材质此前都失效。现在仅已识别原版导出widget登记既有`saves`角色，先释放列表的租约，再交接窗口；回退/离开移除租约并恢复原节点。未知云/第三方形状和原确认页仍按既有边界处理。未改导入导出业务、存档数据、Host协议或天气算法。
+
+**源码与受控检查。** Node26.12.1、Playwright1.63.0、Windows原生Edge157.0.4341.24。应用/Framework构建、`npm run ci:check`、`node tests/save-transfer-lifecycle.cjs`通过。改进该既有CI入口的夹具，确保最初的还原检查确实运行了适配器，而非缺少overlay导致空跑；旧HEAD实现在“transfer owns the shared presentation shell”断言被拒绝。声明锁仅该入口SHA及断言数9→13，未降低门槛。`node tests/ui41-independent.cjs`通过1280/390×存档/商店/衣柜/战斗及子路径；新增列表→导出→原版回退→重新接入→未知结构→列表的真实控制器链、单次原事件、0/100/60轴及零残留。`node tests/ui41-panel-preview.cjs`的Windows九入口检查在同一e909eaf输入通过，后续修复仅涉及存档transfer/main，不把它改称最终源码全套重跑。
+
+额外手动运行的旧`tests/saves-native-tools.cjs`失败：文件选择按钮预期`rgb(52,54,60)`，实际`rgb(201,201,205)`；替换回未修改HEAD的transfer也同样失败，原始结果保留。它的夹具没有实际3.x根标记，预期来自另一容器的旧样式，不能据此认定新修复造成业务回归。曾临时补根标记核对真实文件按钮颜色，随后又遇到既有cloud blur字面量差异；临时夹具修改已撤回，未改该测试断言以宣称PASS。当前不把这个额外旧入口计入成功项。
+
+**实际安装与交互。** 独立Android17测试App / WebView155.0.8059.43 / DoL0.5.12.13 / Loader2.101.1，CSS视口1363×876、DPR2.5，44项Loader报告Mod。包括ModHub1.8.3、MapleBirch5.5.5、Optimization1.1.2.1、CE1.20.3.1-rebuild.30、SmartPhone Alpha0.3.91.1；没有Ray。先备份原加载包，下载并核对40702217590标准CI全部摘要、九ZIP结构和元数据；只主UI及SmartPhone外观成员变化，因此仅更新这两个。重启后八个实际适用包成员与CI完全一致，Loader顺序/停用列表保持。
+
+随后主UI局部补丁ZIP SHA-256为`439988d1672d9f034f0843eae4571139421bc74b8955f0d5b77fc9935709fb28`，与CI主UI相比只有`index.js`不同；保留原CI包作回退，没有替换本地生成但无关的Host。重启后逐项复核该UI及七个未变包的实际加载成员。首次启动等待超过CDP单次求值时限，保留超时；原生截图确认App已到Start，再以新会话只读核对通过，未重复安装或再次重启。
+
+通过CDP trusted touch实际切换设置分类和双布局、滚动到设置底部并关闭；ModHub命中full，窗口在视口内且仅一套天气。存档/导出/云三个原页签切换无`.error`；修复后均一套完整renderer、零旧weather peer，天气层`pointer-events:none`，默认材质一致，导出页0/100/60轴和原文件/文本控件可见。同一实机随后逐一打开ModHub管理/市场/说明/日志/帮助中心，均full、单renderer、零旧peer、内容横向溢出0；未安装或更新Mod。原生选项与标题页成就（startFeats）均实际挂载dgp-host，单renderer、零横向溢出、无宏错误；关闭后weather Canvas归零。不是游戏中gameFeats业务验收。首次ModHub追加巡检因把存档关闭控件误当标题最后一个button而在触摸前停止，读取原`.customOverlayClose`后续行，原失败保留。测试位于Start，当前页没有已有手动槽，未点击空槽保存、实际导入/导出/载入/删除或云登录。本轮不声称这些业务完成复验。
+
+**Hub实机补验（跨至2026-10-29）。** 原偏好备份/恢复，真实触控切换fan/grid并展开，确认布局不同；fan无整体伪背板、三个内圈工具64×44，grid只使用原单一背板。球按钮及Escape关闭后phase=closed、菜单display:none/零矩形，未残留黑底。未改球体、轨迹或时序，未点击隐藏/重置/停靠改变位置。WebView `Page.captureScreenshot`在该设备会漏掉球体画面，而同场景ADB系统截图能看到完整金属球；Canvas有实际非透明像素。此差异作为采集限制记录，未误判为产品删除球体。不能只用CDP截图代签球体视觉。
+
+**真实性能观察，不作整体验收。** 采样来自修复前e909eaf的上述44-Mod组合、Start背景、ModHub管理窗口、自然雷雨`storm`/雨量2、Acrylic60、动态/玻璃/高光开启；120Hz，省电关闭。工具未发起录屏，外部录屏状态未另记录。3.5秒rAF短采样按动态开→关→关→开交错，动态198/203个间隔、P95为41.8/41.7ms，静态414/417个间隔、P95均约8.4ms；不是实际呈现FPS。动态期间LayoutCount131/146、累计LayoutDuration约19.7/20.6ms，静态为0；这不足以单独解释全部长帧。
+
+另有动态/静态各8秒Perfetto与原始SQL/CSV。目标App层动态321条、静态98条完成frame记录，未结束frame均0；frame lifetime中位48.49/9.83ms是生产到呈现的生命周期，不是GPU忙碌或绘制耗时。静态提交帧更少是预期，不能据低提交速率认定静态更卡。`visualMotion`同时控制多种动画，本轮只有短ABBA和单对原生trace，不能把差值全部算给雨效，也不能确认原版、ModHub或设备根因。没有本轮停用UI/最小Mod对照，未宣称GPU/功耗或持续性能通过；C1/C3已撤回的历史负结果仍有效。原始资料留本地，不上传完整系统trace或设备身份。
+
+**当前门禁。** 新提交的[标准40719759793](https://github.com/102326/DoL-Game-UI/actions/runs/40719759793)与[研究40719767518](https://github.com/102326/DoL-Game-UI/actions/runs/40719767518)均精确对应4226997、Attempt1、workflow_dispatch，最终success；标准validate/evidence-verify/moody-gate成功。新标准build/checks/remote与研究remote的原ZIP摘要均匹配GitHub；标准全部十项负载摘要及九ZIP/包身份在本机重算，八个已装包成员映射与新CI完全一致，ReOverfits未装。CI主UI ZIP摘要`d48783484d876c8167647f5aa9b4ba9360c3f849ecce9b961b0f0f9b3f6e809c`与Windows局部包容器摘要不同，但全部成员相同，不必为此重装或冒称两个ZIP字节相同。研究仅下载小型独立复核PASS/COMPLETE，完整124MB研究包由远端独立job核验，本机未再下载。e909eaf的40702217590/40702225001成功继续只覆盖旧输入。负责人本批整体视觉、真实游戏交易/穿戴/战斗及更多消费者仍未验；#33无Ray版本/现场，继续Unknown，不据合成Canvas或本机无Ray环境关闭。
