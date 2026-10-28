@@ -908,8 +908,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "7b9c10b3e8f271dfb5b724325741198e3efa09f0970fc1a08644d93c05b0a0e1",
-      "assertionSites": 18
+      "sourceSha256": "5229475a7a9b59b6aad5e98d4e8de91c678c8670a4e068d11b332002bcfd2801",
+      "assertionSites": 20
     },
     {
       "entry": "tests/evolution-owner-resources.cjs",
@@ -1524,8 +1524,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "03537417347341c5c2d2439d13f91b4002e1e09e9e20a1226cfc553ccad823ad",
-      "assertionSites": 73
+      "sourceSha256": "b65f035a8521adfbb3686e3819088b85eab6cef535ac480bf8b5662a5c66165b",
+      "assertionSites": 84
     },
     {
       "entry": "tests/integration-preview-pages.cjs",

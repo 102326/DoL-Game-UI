@@ -74,7 +74,7 @@ html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav)
 html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-base{stroke:#78958c66;stroke-width:1}
 html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-flow{stroke:#86aaa3;stroke-width:1.3;stroke-linecap:round;stroke-dasharray:16 84;opacity:.7;animation:dmt-orbit-flow 7s linear infinite paused}
 html[data-stone-free] :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) .dmt-orbit-tail{stroke:#9c8fa9;stroke-width:1;stroke-linecap:round;stroke-dasharray:8 92;stroke-dashoffset:42;opacity:.45;animation:dmt-orbit-tail 7s linear infinite paused}
-html[data-stone-free][data-dgu-visualMotion][data-dgu-visualGlow] :is(#dol-midnight-controls[open]:not([data-sf-leaving]),.dgu-orbit-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation-play-state:running}
+html[data-stone-free][data-dgu-visualMotion][data-dgu-visualGlow] :is(#dol-midnight-controls[open]:not([data-sf-leaving]),.dgu-orbit-nav,.kw-heading-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation-play-state:running}
 html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation:none}
 html[data-stone-free]:not([data-dgu-visualGlow]) :is(#dol-midnight-controls,.dgu-orbit-nav,.kw-heading-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail){opacity:0}
 @keyframes dmt-orbit-flow{to{stroke-dashoffset:-100}}
@@ -92,7 +92,8 @@ html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{perspective:140
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{transform-style:preserve-3d}
 
 html[data-stone-free] .dgu-orbit-nav{position:relative}
-html[data-stone-free] .hidden .dgu-orbit-nav :is(.dmt-orbit-flow,.dmt-orbit-tail){animation-play-state:paused}
+html[data-stone-free] :is(.hidden,[hidden],[inert]) :is(.dgu-orbit-nav,.kw-heading-nav) :is(.dmt-orbit-flow,.dmt-orbit-tail),
+html[data-stone-free] :is(.dgu-orbit-nav,.kw-heading-nav):is(.hidden,[hidden],[inert]) :is(.dmt-orbit-flow,.dmt-orbit-tail){animation-play-state:paused!important}
 
 html[data-stone-free] #dol-midnight-controls .dmt-reading-demo{min-width:0;justify-self:center;overflow-wrap:anywhere;box-sizing:border-box}
 html[data-stone-free] #dol-midnight-controls .dmt-reading-demo-options{display:grid;gap:calc(6px + var(--reading-demo-gap,0px))}

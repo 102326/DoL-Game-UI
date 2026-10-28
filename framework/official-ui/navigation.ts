@@ -26,7 +26,7 @@ export function nativeNavigation(){
  function schedule(){scope.frame(refresh)}
  function group(key:'sidebar'|'tabs'|'ce-inline',node:HTMLElement|undefined,orbit=key==='sidebar'){
   if(groups.get(key)?.node!==node||groups.get(key)?.orbit!==orbit)release(key);if(!node)return;
-  let g=groups.get(key);if(g)return g;
+  let g=groups.get(key);if(g){if(g.host&&g.host.parentElement!==node)node.append(g.host);return g}
   const state=reactive({active:''}),className=key==='sidebar'?'dgu-orbit-nav':'kw-heading-nav';
   g={node,state,orbit,attrs:new Map(),className,hadClass:node.classList.contains(className),observer:new MutationObserver(schedule)};groups.set(key,g);node.classList.add(className);
   if(orbit){const host=document.createElement('span');host.className='kw-native-orbit';host.setAttribute('aria-hidden','true');const app=createApp({render:()=>h(OrbitFocus,{container:node,selector:'[data-kw-selected=true]',active:state.active})});g.host=host;g.app=app;node.append(host);mountUI(app,host,()=>release(key))}

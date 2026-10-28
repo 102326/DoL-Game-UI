@@ -230,3 +230,13 @@ Issue #33报告4.0.1/DoL5.12.13、Android浏览器/WebView：衣柜人物仅1/4�
 - 未执行成功：旧`node tests/settings-workspace.cjs`硬编码Edge，本机缺该浏览器，且tests/fixture.html不存在，未执行其完整游戏断言。没有装新全局浏览器或删断言凑通过；本轮源级实际分类/运动由手动预览和W01覆盖，不能替代该完整游戏测试。
 
 未做：实际游戏/多Mod、Android/WebView、软键盘、GPU/功耗及持续帧率。完整renderer增加其它窗口绘制工作，不能把同源或少重复代码当性能收益。独立商店/衣柜/战斗/存档及第三方全部表面仍按同表推进，不宣称4.1全局完成。未跑新远端双CI、未改版本/Host协议、未合main或发布。新效果为待负责人视觉裁决候选；原始图/日志仅本机忽略目录，另一设备不可假定可访问。
+
+### EVO41-ORBIT-01：点击后的轮廓停顿
+
+负责人指出“属性”按钮环绕像卡一帧后停止。97a4134的静态状态对照没有覆盖轮廓持续运行与原生tabs子节点替换，遗漏属实。实际源码预览先观察到native flow为paused、currentTime=0；切换后轮廓数量0/原节点断连；设置对话框无关class变化将原580ms动画取消成idle。不是凭截图推断，也不以“组件同源”代替动态验证。
+
+修正范围仅OrbitFocus、nativeNavigation及既有轮廓CSS：同一nav宿主重建子节点时重附原自有host，保留Vue实例/原控件；相同目标几何的观察回调不递增revision或取消移动，可见无关class只请求复测；真正隐藏/无效几何仍取消。补kw-heading-nav持续流动，class/hidden/inert（祖先或自身）的暂停以明确优先级生效，状态解除恢复。独立复查发现第一版隐藏选择器弱于运行规则，已修正并加入实际计算样式回归。未改580ms移动、7秒环绕、认可材质、天气、原生动作或Host合同。
+
+Mac锁定Node26环境：`npm run tooling:build`、`node scripts/build-framework.mjs`、`npm run ci:lock`、`npm run ci:check`退出0；`node tests/evolution-orbit.cjs`及`node tests/header-weather.cjs`最终退出0。前者旧代码真实得到idle而非保留paused/120ms的在行动画，修复后保留，并通过0.85/1/1.25缩放、滚动、隐藏/零尺寸、减少动态和待处理销毁；后者旧CSS真实paused!=running，修复后检验实际时钟前进、同一轮廓节点恢复、可见class不取消、三类隐藏/恢复和现有天气/业务节点/退出合同。锁只同步这两入口源码身份及新增断言，未削弱检查。实际预览修复后为running、原生重建后1个相同且连接的轮廓，设置无关class不再把动画取消为idle。没有将running状态当作GPU/实际帧率结论。
+
+一轮回归最初因dist/framework样式缺失未能执行；先前应用build清空dist是本机预览构建顺序问题，已先恢复Framework再运行，未把缺文件失败算产品反例或PASS。header-weather夹具补载真实轮廓CSS，避免只有默认animationPlayState却根本没有实际CSS时钟。原始探针/失败/最终日志仅本机，另一设备须自行构建。当前仅做这两项定向回归和必要类型/构建，不重复全矩阵；此前未变的天气/控件合同证据沿用。未新跑远端CI、游戏/实机或性能测试，未改版本、合main或发布；实际视觉仍待负责人体验。
