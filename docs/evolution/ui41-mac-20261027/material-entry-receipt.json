@@ -115,7 +115,95 @@
   },
   "scope": "Official settings plus owned/full-match common-overlay material; other surfaces/weather/game/device pending. No new observer, Host API, business change, main merge or release.",
   "ci": {
-    "status": "new exact-source CI required after test alignment; first failed runs retained"
+    "status": "PASS at exact tested source; later delivery docs do not rerun CI",
+    "source": {
+      "head": "a4e1320719bdc2fcc954e87f87ba204d98ff3f98",
+      "tree": "f784225e7a8411684a08ccf5c24058e5d7c97f2b",
+      "dirty": false,
+      "contentSha256": "11e13d79c414b557f5113b20757bc77f48de50b1146009f9cddc335ac28557e5",
+      "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+    },
+    "runs": [
+      {
+        "profile": "standard",
+        "id": 40633651039,
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40633651039",
+        "headSha": "a4e1320719bdc2fcc954e87f87ba204d98ff3f98",
+        "attempt": 1,
+        "event": "workflow_dispatch",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "name": "validate",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:40:35Z",
+            "completedAt": "2026-10-28T04:55:41Z"
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:55:44Z",
+            "completedAt": "2026-10-28T04:56:02Z"
+          },
+          {
+            "name": "moody-gate",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:56:05Z",
+            "completedAt": "2026-10-28T04:56:09Z"
+          }
+        ],
+        "remoteReceipt": {
+          "sha256": "375bf8bd7c45f5079beb9762400325ac82ab1b29eee0af29017aa295a357d474",
+          "status": "PASS",
+          "assertionResult": "PASS",
+          "evidenceIntegrity": "COMPLETE",
+          "problems": []
+        }
+      },
+      {
+        "profile": "research",
+        "id": 40633654571,
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40633654571",
+        "headSha": "a4e1320719bdc2fcc954e87f87ba204d98ff3f98",
+        "attempt": 1,
+        "event": "workflow_dispatch",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "name": "prototype",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:40:37Z",
+            "completedAt": "2026-10-28T04:48:53Z"
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:48:57Z",
+            "completedAt": "2026-10-28T04:49:27Z"
+          }
+        ],
+        "remoteReceipt": {
+          "sha256": "8c24dc99e8322bc6acfaf0d86efccc10056b10c5eeceff07790f8ec2441e2b8c",
+          "status": "PASS",
+          "assertionResult": "PASS",
+          "evidenceIntegrity": "COMPLETE",
+          "problems": []
+        }
+      }
+    ],
+    "macStandard": {
+      "status": "PASS",
+      "files": 193,
+      "bytes": 1004567,
+      "verification": "Existing verifyRemote recomputed complete downloaded set, hashes, catalog, mandatory structure and whole-run verdict; nonce and manifest hash anchored to completed CI job log",
+      "manifestSha256": "8fa5d921ff0b3f6414002e75902938d3b1ee431dae82fc418716afdc6e839acd"
+    },
+    "macResearch": {
+      "status": "receipt identity PASS",
+      "fullMediaRedownloaded": false,
+      "verification": "Downloaded independent remote-verification receipt and checked exact clean local source, run identity, PASS/COMPLETE and empty problems. Full research evidence was downloaded/recomputed by independent GitHub job, not re-downloaded on Mac."
+    },
+    "transportNote": "gh run watch once exited on TLS handshake timeout; direct Run query confirmed success. No CI rerun or product change for this network observer failure."
   },
   "ciInvestigation": {
     "source": "d9df64c7a3027a62cef69d7c0eb4f269437199d0",

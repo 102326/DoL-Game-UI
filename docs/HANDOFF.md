@@ -6,9 +6,9 @@
 
 - **2026-10-28工具交接／DEVTOOLS-EVAL-01・ENV-REACH-16**：Agent Reach已升级1.6.0（uv），新Skill位于`~/.agents/skills/agent-reach`，旧自定义副本已备份移出发现路径；公开网页与GitHub gh已实测，未认证API读取限流，未全平台验证。工具组合、来源身份与另一设备操作见[跨机摘要](evolution/DEVTOOLS-EVAL-2026-10-28.md)。memory私有备份`86f71ed`已推送，不表示另一设备已导入；原始实验/工具备份仅本机。
 
-- **2026-10-28统一交付首批／EVO41-INTEGRATION-M01**：已解除正式设置对演示标记的依赖；设置和`.dgc/.dgs/.dgp-overlay/.dgs-native-tools`及四个full adapter共用材质轴，未知/partial/非名单窗口排除。默认60%/左对齐与低端灰值不变，6张前后认可预览PNG字节相同；M01先在旧实现失败，新增及既有6项设置/取消/退出合同、宽窄材质/原生消费者/适配器与ci:check通过，独立只读审查无剩余发现。证据见[本机收据](evolution/ui41-mac-20261027/material-entry-receipt.json)。本条为材质切片，不是所有消费者/天气/游戏与设备验收；标准/研究CI按本次实际提交另行核对。
+- **2026-10-28统一交付首批／EVO41-INTEGRATION-M01**：已解除正式设置对演示标记的依赖；设置和`.dgc/.dgs/.dgp-overlay/.dgs-native-tools`及四个full adapter共用材质轴，未知/partial/非名单窗口排除。默认60%/左对齐与低端灰值不变，6张前后认可预览PNG字节相同；M01先在旧实现失败，新增及既有6项设置/取消/退出合同、宽窄材质/原生消费者/适配器与ci:check通过，独立只读审查无剩余发现。证据见[本机收据](evolution/ui41-mac-20261027/material-entry-receipt.json)。本条为材质切片，不是所有消费者/天气/游戏与设备验收；实际通过源码与CI见下一条，不将后续文档HEAD冒称再次执行。
 
-- **M01 CI跟进**：首批`d9df64c`标准[40630769444](https://github.com/102326/DoL-Game-UI/actions/runs/40630769444)与研究[40630773241](https://github.com/102326/DoL-Game-UI/actions/runs/40630773241)均失败，不算通过。已本机复现旧padding/alpha验收目标，修正为认可Q1值并保留旧全局main反例；天气迟标记反例改在首个Canvas上下文观察实际定位，正常像素保护保留。材质参考取样原子化，避免异步重挂载夹入。新源码CI身份以收据后续结果为准。
+- **M01 CI跟进**：首批`d9df64c`标准[40630769444](https://github.com/102326/DoL-Game-UI/actions/runs/40630769444)与研究[40630773241](https://github.com/102326/DoL-Game-UI/actions/runs/40630773241)均失败，不算通过。已本机复现旧padding/alpha验收目标，修正为认可Q1值并保留旧全局main反例；天气迟标记反例改在首个Canvas上下文观察实际定位，正常像素保护保留。材质参考取样原子化，避免异步重挂载夹入。修正后准确源码`a4e1320`标准[40633651039](https://github.com/102326/DoL-Game-UI/actions/runs/40633651039)、研究[40633654571](https://github.com/102326/DoL-Game-UI/actions/runs/40633654571)均手动Attempt1成功，独立证据任务通过。Mac完整复算标准193文件／1,004,567字节；研究仅核对独立回执身份，未本机重下全量媒体。详情见同一收据。后续交付仅文档，不冒称CI在文档HEAD重新运行。
 
 - **统一交付要求继续有效**：视觉交互/滑杆与性能共同计入4.1，分支不构成漏改理由。[逐消费者清单](evolution/EVO-P0-COVERAGE.md#41统一交付覆盖补充2026-10-28)保留旧路径与例外；新天气renderer目前仍只有settings，其它独立表面逐项接续，不将共享CSS存在冒充整体验收。
 
@@ -21,7 +21,7 @@
 - 最新增量 **EVO41-READ-01／EVO41-UI-HELP-01**：两个旧阅读开关改为行距／段落与选项额外留白／正文宽度三滑杆，默认继承原版。旧键退役为false，其它偏好保留；恢复只重置三项。容易误解的选项补一句说明，直接开关不堆字。准确验证源码 **47a6a1e**；运行代码自137a89c后未变。标准[40485371464](https://github.com/102326/DoL-Game-UI/actions/runs/40485371464)、研究[40485378609](https://github.com/102326/DoL-Game-UI/actions/runs/40485378609)均手动／Attempt1成功，独立下载校验通过。Mac标准192文件／959,879字节完整复算；研究只复核独立CI回执，未本机重下全量大媒体。源码、失败调查、命令和局限见[最新收据](evolution/ui41-mac-20261027/reading-receipt.json)。
 - 高级「回退原版界面／启用新版界面」继续保留，阅读总开关仍已移除；默认材质60%／左对齐不变。
 
-- 分支 `feature/4.1-ui-material-hub`，已推送。材质ee36aaf／居中699a7a2／共享选择框与HC-07 3554456／ModHub研究f1beec5／菜单557f9f7／picker76afc72均保留；阅读与说明137a89c、夹具0d070bc、测试修正47a6a1e。交付文档提交HEAD以实际Git为准，不冒称CI在后续文档HEAD重新执行。
+- 分支 `feature/4.1-ui-material-hub`，已推送。材质ee36aaf／居中699a7a2／共享选择框与HC-07 3554456／ModHub研究f1beec5／菜单557f9f7／picker76afc72均保留；阅读与说明137a89c、夹具0d070bc、测试修正47a6a1e。首批正式材质运行代码d9df64c，测试收口a4e1320；交付文档提交HEAD以实际Git为准，不冒称CI在后续文档HEAD重新执行。
 - [UI报告](evolution/EVO-4.1-UI-765-2026-10-27.md)：负责人已通过60%材质/居中排版，默认仍60%/左对齐。设置和已识别共用窗口材质已进入正式入口；独立表面仍未全局推广。新共享原生选择框及取消半秒等待的菜单响应已本机验证，**尚待负责人体验**。
 - 正式版本仍4.0.1 / main `ff428b4`；未改版本、Tag、Release、Host API、保护/bypass。ModHub候选是评审patch，未改vendor/兼容包运行代码，未安装到游戏。
 - 预览：`node scripts/preview-ui41.mjs`，默认5204；先锁定Node26依赖、tooling:build与Framework构建。服务不随Git跨机。本地绝对路径与原始公开目录仅在忽略目录/`HANDOFF.local.md`，另一设备不可假定可访问。
@@ -42,7 +42,7 @@
 
 ## Next — 下一步
 
-1. 接手先核对branch/HEAD/工作区、领先落后、Node26及锁定依赖、实际浏览器；保留本机工作，不把旧dev/main当本批。阅读增量准确源码与CI见本报告最新收据；c3b280f仅覆盖前批，不能将旧Run写成新HEAD执行。
+1. 接手先核对branch/HEAD/工作区、领先落后、Node26及锁定依赖、实际浏览器；保留本机工作，不把旧dev/main当本批。本批准确源码a4e1320与双CI见材质接入收据；阅读47a6a1e与c3b280f仅覆盖前批，不能将旧Run写成新HEAD执行。
 2. 设置正式入口＋共用窗口白名单材质已实现并定向验证；接续适用天气/动效与各真实kind原生操作、固定档位性能，再逐项处理商店/衣柜/战斗/存档等独立表面。保留默认60%/左对齐与已认可视觉，不以设置成功或分支分别通过代替4.1全覆盖。
 3. **回家优先**：核对三滑杆的真实原版基准、br/复杂组件、多Mod嵌入与原版回退；核对真实游戏/Loader/完整ModHub及实际归一化catalog；按同操作交错对照列表/统计/异步变化、窗口/焦点/原版天气、多Mod业务与回退。只有实际证据支持才决定安装组合候选或内置实验策略。
 4. Android/WebView真机触控/软键盘/系统选择框/旋转/安全区与玻璃GPU总体性能；Windows原生弹层另测。Actions与Mac通过都不替代这些检查；无需为收口补所有未持有设备。
