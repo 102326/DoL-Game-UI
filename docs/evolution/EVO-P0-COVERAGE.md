@@ -75,3 +75,59 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 ## 2026-10-24 发布前技术收口
 
 当前Mod组合、正式消费者真实宿主证据及G1/G2/G3边界更新见[发布前报告](EVO-PRERELEASE-2026-10-24.md)。受验实现37da596，两套CI与独立下载成功；九包冻结、八包实际加载成员一致。既有A2/A3代码与六项例外保持，本批没有重新启动全UI视觉研究或扩大READ01接入范围。负责人整体关卡仍Pending。
+
+
+## 4.1统一交付覆盖补充（2026-10-28）
+
+关联#31／EVO41-INTEGRATION-01。负责人明确：滑杆、视觉/交互改善和性能工作均属于4.1优化，最终共同交付；研发分支隔离不构成部分窗口漏改的理由。本节是原消费者清单的4.1接续，不重写4.0架构验收或另建路线图。
+
+### 当前真实缺口
+
+输入38a30cb。`src/theme/controller.ts`仍要求`data-evo41-material-review`才启用材质轴，`SettingsPanel.vue`也据此显示通透度控件；因此26d233c设置预览获认可不等于正式入口已完成接入。`framework/official-ui/weather.ts:set`只有settings创建新renderer，其他surface创建旧kw-heading-weather，必须逐消费者迁移或保留明确批准的角色例外。`acrylic-v1.css`中的普通`#customOverlay`选择器太宽，直接全局移除预览条件会命中未知第三方；`.dcu-shell`等还有独立材质层，不能据共享变量存在便记为覆盖。
+
+### 逐消费者核对表
+
+以下是当前待交付范围，不把代码存在、词法命中、设置通过或模拟通过当整体验收。每行接续都要补实际源码/测试/预览与对应提交；未列明完成证据即保持待整合。自有业务节点和第三方业务所有权继续保留。
+
+| 消费者 | 真实入口/宿主 | 当前4.1接入与剩余核对 |
+| --- | --- | --- |
+| 界面设置（阅读/材质/入口/页面/高级，上下/左右） | src/theme/controller.ts、SettingsPanel.vue | 已有认可预览；正式入口去除演示依赖、偏好/恢复/长文/缩放/动效中断与性能同条件核对待收口 |
+| 属性 | src/characteristics/main.ts；.dgc-overlay | 共用窗口材质轴待正式接入；天气仍native旧路径，原节点、信息变化、焦点、关重开待新组合核对 |
+| 社交 | src/social/main.ts；.dgs-overlay | 同上，另核对分组/长名称/原社交动作，不因共享壳自动记为通过 |
+| 日志/笔记 | src/panels/main.ts；journal | 待逐kind核对新材质、标题天气、正文保护/长滚动和原操作 |
+| 特质 | 同上；traits | 待逐kind核对折叠/动态内容/材质及标题天气 |
+| 统计 | 同上；statistics | 待逐kind核对原生数据/信息密度、材质及标题天气 |
+| 成就 | 同上；feats | 待逐kind核对长列表、点击、材质及标题天气 |
+| 作弊 | 同上；cheats | 待逐kind核对分页/表单/输入、材质及标题天气，不改业务调用 |
+| 态度 | 同上；attitudes与非overlay宿主 | 独立核对真实宿主、恢复与适用材质/天气角色，不能套overlay证据 |
+| 游戏设置 | 同上；settings（与界面设置独立） | 待核对原生tabs/输入/系统选择框、材质及标题天气 |
+| 存档/详情/传输工具 | src/saves/main.ts；.dgs-host/.dgs-native-tools | 待核对双栏/窄屏详情/原生工具与材质、天气、退出；不自动读写真实存档 |
+| 服装店列表/分类/筛选 | src/shop/main.ts、Toolbar.vue；.dgshop-host/.dgshop-content | 待核对原列表节点、长商品、默认过滤、滚动/材质与适用天气，不改购买语义 |
+| 商品详情/对照浮层 | src/shop/ShopReference.vue及main.ts详情/比较 | 待核对浮层材质、遮挡、关闭/Escape/取消和资源，不能复用列表单行结论 |
+| 衣柜主界面 | src/wardrobe/main.ts、WardrobePanel.vue；.dgw-shell | 待核对新材质/天气角色、换装/搜索/分页、异步退出与原生恢复 |
+| 衣柜抽屉/参考/预览 | src/wardrobe/extras.ts、ReferenceDock.vue、WardrobePanel.vue及runtime/surfaces抽屉 | 待逐层核对材质深度、原动作/系统控件/Canvas边界及释放，不重写上游渲染算法 |
+| 战斗主面板/扩展区域/聚焦编辑 | src/combat/main.ts、CombatPanel.vue；.dcu-shell/.dcu-root | 独立伪元素材质仍需接轴；真实动作/布局/多region/选择框与适用天气待核对 |
+| 官方Hub（扇形/网格/停靠/内圈工具） | framework/official-ui/hub.ts、motion-hub/MotionHub.vue | 布局/响应已有候选；材质轴的角色映射、玻璃关闭和全部工具/连续打断需组合验证，保留已认可球体 |
+| 经典Floating回退 | src/floating/main.ts、FloatingTools.vue | 明确保留回退，核对显示/隐藏/偏好/释放；若视觉角色保留旧式须列原因，不假定可删除 |
+| UI自有参考/对照表面 | framework/official-ui/reference-shelf.ts、src/theme/SettingsPreview.vue及参考组件 | 需覆盖停驻/浮起/关闭的材质和原节点、业务边界；原型样例不能替代实际消费者 |
+| ModHub / MapleBirch / 原版优化 / CE | compat下对应四个外观包；navigation.adaptedOverlaySelector | 仅full匹配且已审宿主进入装饰，材质/天气/控件/退出逐包验证；partial/未知不接管，业务算法另保原作者合同 |
+| SmartPhone / ReOverfits | compat下对应独立外观入口 | 不属于上述四包overlay选择器，须各自审宿主和控制边界后登记接入/例外，不能算在“四包通过”内 |
+
+### 必须显式保留的边界
+
+- 正文排版与游戏语义仍属原游戏；阅读调节及界面主题按现有合同工作，不把粒子铺满正文当全覆盖。
+- Host是公共机制，其他作者/未知贡献视图、未知第三方窗口不强制套同一外观；本工程装饰层适用范围逐条说明。
+- mouth类资源兼容包无窗口，保留资源/包合同，列为不适用；上游衣柜Canvas算法等继续例外冻结。
+- 工具、正文、信息板、抽屉可采用不同材质/天气强度；角色差异要有设计/性能理由和对应认可，不能将未迁移改写成“不适用”。
+
+### 统一完成条件
+
+1. 同一份清单记录每行的材质/偏好、天气/动效、控件、原生行为、布局/输入/焦点、恢复/释放、性能与设备证据；Implemented / Tested / Visually Accepted / Integrated分开记录。旧证据仅覆盖未变内容。
+2. 对首批已批准自有窗口逐个接入同一偏好与共同机制；保留100/80ms窗口节奏、默认60%/左对齐和已认可雨雪，不以削弱效果冒称性能优化。比较固定相同档位/操作/视口，性能无收益也如实记录。
+3. 每行完成后再退出其旧路径。新机制仅在设置生效、其他目标仍留旧路径且没有认可例外时，4.1整体不得标为完成。
+4. 分支最终汇入同一个4.1集成源码，核对实际diff和生产入口；使用无需手工预览标记的真实构建验证，不用截图、原型或分支分别绿灯代替集成树。最终CI、包、源码与验收证据必须对应同一明确提交。
+5. 游戏、多Mod、Android/WebView、Windows与GPU等需要真实环境的条目保持待验，不能由Mac/Actions代签；main、版本与发行仍按明确授权执行。
+
+### 施工接续
+
+第一批从设置正式入口和共用原生窗口（属性/社交及各PanelKind）开始：先收窄宿主白名单、让统一偏好贯通真实材质层，再迁移适用天气/动效并做行为与固定档位性能对照；随后按表处理商店、衣柜、战斗、Hub/参考表面和各兼容宿主。每批同步#31和HANDOFF。当前本节完成的是覆盖核对与联合验收约束，未因记录计划就宣称这些迁移已实施。
