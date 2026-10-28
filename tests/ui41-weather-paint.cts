@@ -19,14 +19,21 @@ async function setup(){
  Object.assign(window,{paintProbe:{draw(time:number,patch?:Partial<WeatherFrame>){Object.assign(state,patch,{time});material.draw(state)},snapshot:material.snapshot,dispose:material.dispose}});
  for(let i=0;i<10;i++)paintProbe.draw(2);
 }
-const reference='311f5fbac56d24eeb065018441757d3932c6dc12',file=process.argv.includes('--paint-only')?'src/ui/weather/wet-glass.ts':'src/ui/weather/rain-model.ts';
+const scalarProtection=process.argv.includes('--scalar-protection'),paintOnly=scalarProtection||process.argv.includes('--paint-only');
+const reference=scalarProtection?cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim():'311f5fbac56d24eeb065018441757d3932c6dc12',file=paintOnly?'src/ui/weather/wet-glass.ts':'src/ui/weather/rain-model.ts';
 const hash=(v:string|Buffer)=>crypto.createHash('sha256').update(v).digest('hex');
 (async()=>{
  const {createServer}=await import('vite');
  const out='tests/artifacts/ui41/weather-paint-'+Date.now();fs.mkdirSync(out,{recursive:true});
  const sources={baseline:cp.execFileSync('git',['show',reference+':'+file],{encoding:'utf8'}),candidate:fs.readFileSync(file,'utf8')};
+ if(scalarProtection){
+  const before='frameProtection.some(p=>intersects(b,{x:p.x-padding,y:p.y-padding,width:p.width+padding*2,height:p.height+padding*2}))';
+  const after='frameProtection.some(p=>{const x=p.x-padding,y=p.y-padding,w=p.width+padding*2,h=p.height+padding*2;return b.x<x+w&&b.x+b.width>x&&b.y<y+h&&b.y+b.height>y})';
+  assert.equal(sources.candidate.split(before).length,2,'one reviewed protection comparison');sources.candidate=sources.candidate.replace(before,after);
+  assert.equal(sources.baseline,fs.readFileSync(file,'utf8'),'scalar baseline is exact current product source');
+ }
  const modelProof:Array<{seed:number;natural:boolean;runoff:boolean;frames:number;calls:{baseline:number;candidate:number}}>=[];
- if(!process.argv.includes('--paint-only'))for(const seed of [19,0x27fa29])for(const natural of [false,true])for(const runoff of [false,true]){
+ if(!paintOnly)for(const seed of [19,0x27fa29])for(const natural of [false,true])for(const runoff of [false,true]){
   const load=(source:string)=>{let calls=0;const box={exports:{}};vm.runInNewContext(esbuild.transformSync(source,{loader:'ts',format:'cjs'}).code,{module:box,exports:box.exports,Math:Object.assign(Object.create(Math),{hypot(...n:number[]){calls++;return Math.hypot(...n)}})});const api:unknown=box.exports;assert.ok(api&&typeof api==='object'&&'rainModel'in api&&typeof api.rainModel==='function');return{model:(api.rainModel as typeof import('../src/ui/weather/rain-model')['rainModel'])(seed,natural,runoff),calls:()=>calls}};
   const a=load(sources.baseline),b=load(sources.candidate);
   for(let i=0;i<1000;i++){
@@ -70,6 +77,6 @@ const hash=(v:string|Buffer)=>crypto.createHash('sha256').update(v).digest('hex'
   }
   assert.deepEqual(errors,[]);status='PASS';console.log('PASS weather: seven exact model/effective-style/canvas/displayed-pixel comparisons; six alternating timing pairs');
  }finally{
-  fs.writeFileSync(out+'/result.json',JSON.stringify({status,reference,comparedFile:file,sourceHashes:Object.fromEntries(Object.entries(sources).map(([k,v])=>[k,hash(v)])),node:process.version,platform:process.platform,browser:browser.version(),scope:'Controlled Chromium fixed-clock header rain with per-frame forced layout flush. No game/device/GPU/FPS claim.',modelProof,proof,rows,errors},null,2));console.log('Evidence',out);await browser.close();for(const server of servers)await server.close();
+  fs.writeFileSync(out+'/result.json',JSON.stringify({status,reference,...(scalarProtection?{candidateKind:'scalar-protection'}:{}),comparedFile:file,sourceHashes:Object.fromEntries(Object.entries(sources).map(([k,v])=>[k,hash(v)])),node:process.version,platform:process.platform,browser:browser.version(),scope:'Controlled Chromium fixed-clock header rain with per-frame forced layout flush. No game/device/GPU/FPS claim.',modelProof,proof,rows,errors},null,2));console.log('Evidence',out);await browser.close();for(const server of servers)await server.close();
  }
 })().catch(e=>{console.error(e);process.exitCode=1});
