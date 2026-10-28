@@ -22,6 +22,12 @@ declare const transferProbe:{list:Element;input:HTMLTextAreaElement;file:HTMLInp
    assert.equal(await root.locator(':scope>.sf-weather-canvas').count(),1,'one complete renderer on the identified independent face');assert.equal(await root.locator('.kw-heading-weather').count(),0);
    const material=await root.evaluate((n,shop)=>{const c=getComputedStyle(n,shop?'::before':undefined);return{filter:c.backdropFilter,fill:c.backgroundColor}},kind==='shop');assert.match(material.filter,/blur\(24px\)/);
    for(const value of [0,100,60]){await page.evaluate(v=>DoLMidnightTheme.setPreference('acrylicTransparency',v),value);const current=await root.evaluate((n,shop)=>{const c=getComputedStyle(n,shop?'::before':undefined);return{filter:c.backdropFilter,fill:c.backgroundColor,opacity:getComputedStyle(n).opacity}},kind==='shop');assert.equal(current.opacity,'1');if(value===100)assert.equal(current.filter,'none');if(value===0)assert.match(current.fill,/46, 47, 50/)}
+   if(kind==='wardrobe')for(const value of [0,100,60]){
+    await page.evaluate(v=>DoLMidnightTheme.setPreference('acrylicTransparency',v),value);
+    const paint=await root.evaluate(n=>{const item=n.querySelector('.dgw-item-row'),button=item?.querySelector('.dgw-item');if(!item||!button)throw Error('Missing wardrobe card face or control');const sample=document.createElement('div');sample.hidden=true;sample.style.background='var(--q-well)';n.append(sample);const expected=getComputedStyle(sample).backgroundColor;sample.remove();return{actual:getComputedStyle(item).backgroundColor,expected,button:getComputedStyle(button).backgroundColor}});
+    assert.equal(paint.actual,paint.expected,'wardrobe cards follow the same reading material at every acrylic level');
+    assert.equal(paint.button,'rgba(0, 0, 0, 0)','the inner native control must not stack another card background');
+   }
    if(kind==='combat')assert.equal(await root.locator('.dcu-footer').evaluate(n=>getComputedStyle(n).position),'fixed','weather decoration must not alter the native dock coordinate system');
    const selects=root.locator('select:not([multiple]):not([size])');
    for(const select of await selects.all()){
