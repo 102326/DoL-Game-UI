@@ -2096,8 +2096,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "715b2dd6a59d1325862eeb77e5ad792e53ac4e78af8fcd47401b24647d3efac8",
-      "assertionSites": 9
+      "sourceSha256": "da19d342f39bd060a49a8a44d215c87e7a45b06527c6241efe8fcdb5e5ee63c1",
+      "assertionSites": 13
     },
     {
       "entry": "tests/saves-viewport.cjs",
