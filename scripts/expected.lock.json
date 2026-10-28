@@ -2160,6 +2160,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings:M01 official material without review marker and scoped native surfaces",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings:S01 approved shell and page timing, real input and single material surface",
           "minimumAssertions": 1
         },
@@ -2216,8 +2220,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "f39372e4f181045fe71706ba952a38bb905048522eb44fe67d81e2fd3ebb5a17",
-      "assertionSites": 253,
+      "sourceSha256": "6b69e17ed12cd20be8bc50e4017c8ed86f95e5c30a616353315a2b2dc0562d8a",
+      "assertionSites": 279,
       "rendererContexts": [
         "weather:2d"
       ]

@@ -81,9 +81,9 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 
 关联#31／EVO41-INTEGRATION-01。负责人明确：滑杆、视觉/交互改善和性能工作均属于4.1优化，最终共同交付；研发分支隔离不构成部分窗口漏改的理由。本节是原消费者清单的4.1接续，不重写4.0架构验收或另建路线图。
 
-### 当前真实缺口
+### 首批接续前核对与当前缺口
 
-输入38a30cb。`src/theme/controller.ts`仍要求`data-evo41-material-review`才启用材质轴，`SettingsPanel.vue`也据此显示通透度控件；因此26d233c设置预览获认可不等于正式入口已完成接入。`framework/official-ui/weather.ts:set`只有settings创建新renderer，其他surface创建旧kw-heading-weather，必须逐消费者迁移或保留明确批准的角色例外。`acrylic-v1.css`中的普通`#customOverlay`选择器太宽，直接全局移除预览条件会命中未知第三方；`.dcu-shell`等还有独立材质层，不能据共享变量存在便记为覆盖。
+以下为输入38a30cb时的审计；2026-10-28首批M01已解除设置门控并收窄共用overlay材质，见当前表和material-entry-receipt。天气与独立表面缺口继续有效。输入38a30cb。`src/theme/controller.ts`仍要求`data-evo41-material-review`才启用材质轴，`SettingsPanel.vue`也据此显示通透度控件；因此26d233c设置预览获认可不等于正式入口已完成接入。`framework/official-ui/weather.ts:set`只有settings创建新renderer，其他surface创建旧kw-heading-weather，必须逐消费者迁移或保留明确批准的角色例外。`acrylic-v1.css`中的普通`#customOverlay`选择器太宽，直接全局移除预览条件会命中未知第三方；`.dcu-shell`等还有独立材质层，不能据共享变量存在便记为覆盖。
 
 ### 逐消费者核对表
 
@@ -91,10 +91,10 @@ A1通过只是路线验证；V1原型只有Implemented/Tested候选身份；G1/G
 
 | 消费者 | 真实入口/宿主 | 当前4.1接入与剩余核对 |
 | --- | --- | --- |
-| 界面设置（阅读/材质/入口/页面/高级，上下/左右） | src/theme/controller.ts、SettingsPanel.vue | 已有认可预览；正式入口去除演示依赖、偏好/恢复/长文/缩放/动效中断与性能同条件核对待收口 |
-| 属性 | src/characteristics/main.ts；.dgc-overlay | 共用窗口材质轴待正式接入；天气仍native旧路径，原节点、信息变化、焦点、关重开待新组合核对 |
-| 社交 | src/social/main.ts；.dgs-overlay | 同上，另核对分组/长名称/原社交动作，不因共享壳自动记为通过 |
-| 日志/笔记 | src/panels/main.ts；journal | 待逐kind核对新材质、标题天气、正文保护/长滚动和原操作 |
+| 界面设置（阅读/材质/入口/页面/高级，上下/左右） | src/theme/controller.ts、SettingsPanel.vue | M01正式入口去除演示依赖，设置/恢复/中断/宽窄合同及6张认可预览一致；真实游戏/设备与整合性能待核对 |
+| 属性 | src/characteristics/main.ts；.dgc-overlay | M01已接入白名单共用窗口材质并验证受控几何/原事件；天气仍native旧路径，原节点、信息变化、焦点、关重开待新组合核对 |
+| 社交 | src/social/main.ts；.dgs-overlay | M01共享材质已接入；分组/长名称/真实社交动作和天气仍逐项核对，不因共享壳自动记为通过 |
+| 日志/笔记 | src/panels/main.ts；journal | M01 dgp共用壳材质已接入；仍逐kind核对标题天气、正文保护/长滚动和原操作 |
 | 特质 | 同上；traits | 待逐kind核对折叠/动态内容/材质及标题天气 |
 | 统计 | 同上；statistics | 待逐kind核对原生数据/信息密度、材质及标题天气 |
 | 成就 | 同上；feats | 待逐kind核对长列表、点击、材质及标题天气 |

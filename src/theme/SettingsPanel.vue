@@ -17,8 +17,7 @@ import ReadingSample from './ReadingSample.vue';
 const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
 declare const __STONE_FREE_CONSUMER__:boolean;
 const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
-// The new material needs its own visual review before replacing the accepted base.
-const acrylicReview=document.documentElement.hasAttribute('data-evo41-material-review');
+// Approved material controls follow the existing official-consumer boundary.
 const category=ref<'reading'|'material'|'entry'|'pages'|'advanced'>('reading');
 const categories=[{id:'reading',label:'阅读'},{id:'material',label:'材质'},{id:'entry',label:'入口'},{id:'pages',label:'页面'},{id:'advanced',label:'高级'}] as const;
 // Private display choice: not a public preference/API or a responsive-mode truth.
@@ -93,7 +92,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
     <div class="dmt-workspace-intro"><p class="dmt-eyebrow">材质</p><h3 id="dmt-material-heading">看见层次如何变化</h3><p>预览会使用当前材质与动效设置。预览操作不会改动游戏内容。</p></div>
     <div class="dmt-setting-card dmt-control-sheet dmt-material-controls">
      <SettingsToggle label="玻璃模糊" description="柔化界面后方的背景细节。" :checked="state.preferences.visualGlass" @change="onPreference('visualGlass',$event)"/>
-     <AcrylicControls v-if="acrylicReview" :value="state.preferences.acrylicTransparency" :disabled="!state.preferences.visualGlass" @change="onPreference('acrylicTransparency',$event)"/>
+     <AcrylicControls v-if="official" :value="state.preferences.acrylicTransparency" :disabled="!state.preferences.visualGlass" @change="onPreference('acrylicTransparency',$event)"/>
      <SettingsToggle label="交互与进入动画" description="控制窗口和切换动效；系统减少动态效果设置优先。" :checked="state.preferences.visualMotion" @change="onPreference('visualMotion',$event)"/>
      <SettingsToggle label="交互层次反馈" description="只调整选中项的额外层次反馈；不改变主体配色或游戏状态" :checked="state.preferences.visualGlow" @change="onPreference('visualGlow',$event)"/>
      <SettingsToggle label="标题边缘纹样" description="可选静态装饰" :checked="state.preferences.visualPattern" @change="onPreference('visualPattern',$event)"/>

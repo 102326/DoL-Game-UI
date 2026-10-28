@@ -91,7 +91,7 @@ export function startTheme(root:Runtime=window as Runtime){
   const html=document.documentElement,visualTier=official?2:state.preferences.visualTier;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?visualTier:0));
   for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
-  html.toggleAttribute('data-dgu-acrylic-adjustment',state.preferences.enabled&&official&&html.hasAttribute('data-evo41-material-review'));
+  html.toggleAttribute('data-dgu-acrylic-adjustment',state.preferences.enabled&&official);
   for(const [key,value] of Object.entries(acrylicParameters(state.preferences.acrylicTransparency)))html.style.setProperty(key,value);
   html.toggleAttribute('data-dgu-options-centered',state.preferences.enabled&&state.preferences.centerOptions);
   html.style.setProperty('--dgu-option-text-align',state.preferences.enabled&&state.preferences.centerOptions?'center':'left');

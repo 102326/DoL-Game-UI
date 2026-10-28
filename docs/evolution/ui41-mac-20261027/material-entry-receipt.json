@@ -1,0 +1,112 @@
+{
+  "id": "EVO41-INTEGRATION-M01",
+  "date": "2026-10-28",
+  "baseCommit": "368a69b8feb6473f361c06bc31ed50d19b047ead",
+  "branch": "feature/4.1-ui-material-hub",
+  "sourceHashes": {
+    "src/theme/controller.ts": "167660b0a9f9c61c883e505996b41940b266774f7b4350286963df769261482c",
+    "src/theme/SettingsPanel.vue": "c09e6c8f9bd5533e9b9a66666fcabac4519b19197e91667825626a2e3a34633a",
+    "src/theme/acrylic-v1.css": "e9502b9837b3d360eb8e5dc9512c457c51722a484ae52fbb38aa34caeb2022b7",
+    "tests/evolution-settings-integration.cts": "d844ad56a06f4407a48d4e73f0ce621a4e088c2d2dc40e00e5e53640ea104b1a",
+    "tests/ui41-material.cts": "fd75b08cf15d3bfc3c558b7da5cd30fb0300e9223f2043e53fc87f69503afdc0",
+    "scripts/expected.lock.json": "93579759e2cd64777d84d1d6a64d3fb95e6254dd0a2ba1f451eb7ed09f12370d"
+  },
+  "environment": {
+    "platform": "darwin",
+    "node": "v26.12.1",
+    "chromium": "153.0.8010.12"
+  },
+  "checks": [
+    {
+      "name": "M01 official material without review marker and scoped native surfaces",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 approved shell and page timing, real input and single material surface",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 reversal samples current opacity before cancellation and latest open wins",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 closing and native close cancel category WAAPI and settle exactly one page",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 cancellation, preferences, hidden/resize and teardown keep latest usable state",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 modeless fallback and replaced dialog cancel retired shell work",
+      "status": "PASS"
+    }
+  ],
+  "red": {
+    "case": "M01 official material without review marker and scoped native surfaces",
+    "reason": "Old runtime has no Acrylic control without data-evo41-material-review; actual locator timed out before runtime edits",
+    "evidence": "settings-integration-1793159448589 (local only)"
+  },
+  "previewComparison": {
+    "samePngBytes": true,
+    "images": [
+      {
+        "file": "material-1280-0.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-1280-100.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-1280-60.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-390-0.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-390-100.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-390-60.png",
+        "samePngBytes": true
+      }
+    ],
+    "limits": "Existing accepted controlled preview only; not real game or device"
+  },
+  "fixedChildProbe": {
+    "before": {
+      "x": 108,
+      "y": 90,
+      "parentBlur": "blur(28px) saturate(0.85)"
+    },
+    "after": {
+      "x": 108,
+      "y": 90,
+      "parentBlur": "blur(24px) saturate(0.78)"
+    },
+    "samePosition": true
+  },
+  "verifiedCommands": [
+    "npm run tooling:build",
+    "node scripts/build-framework.mjs",
+    "node tests/evolution-settings-integration.cjs",
+    "node tests/ui41-material.cjs",
+    "node tests/evolution-navigation.cjs",
+    "node tests/adapter-materials.cjs",
+    "npm run ci:lock",
+    "npm run ci:check"
+  ],
+  "review": {
+    "independent": "gpt-6.1-terra/high read-only",
+    "result": "No remaining actionable finding",
+    "withdrawn": "Modal backdrop concern disproved by existing settings-workspace.css:90 none!important cascade and new real-dialog assertion; no production fix added"
+  },
+  "scope": "Official settings plus owned/full-match common-overlay material; other surfaces/weather/game/device pending. No new observer, Host API, business change, main merge or release.",
+  "ci": {
+    "status": "pending exact committed source; future run identities recorded separately"
+  }
+}
