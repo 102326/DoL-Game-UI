@@ -442,3 +442,35 @@ Android17/WebView155、CSS1363×876实测：ModHub五页签的字号/按钮150%�
 **性能仍开放。** 10月30日当前03094f0、同一Start/ModHub、自然storm/rain强度2、Acrylic60做动态→静态→静态→动态，每段预热700ms/采3.5秒。四段rAF间隔数量203/418/413/190，P95约41.7/8.4/8.4/41.7ms；累计layout约20.76/0/0/19.93ms。修正额外层没有消除动态卡顿，不能宣称性能优化成功。rAF不是呈现FPS，静态切换影响多种动效；没有GPU/功耗结论。新旧轮次场景/Mod状态并非完整冻结，不据跨轮绝对值计算改进率。此前CPU抽样中原生游戏Canvas在动态关闭时仍绘制，也不足以归因原版。
 
 原始资料留Git忽略的`tests/artifacts/ui41/integration-20261029/`及`composite-fix/`；不公开设备身份、实际存档描述、凭据或完整系统trace。本切片完成兼容合成修复与代表性核对，整体4.1视觉、业务、多Mod性能和#33仍按原覆盖表推进。下一步继续动态绘制/合成热点归因，独立保留优化候选及等价/失败证据，不降低已认可效果；不合main、不改正式版本或发布。
+
+### PERF-COMBAT-01 — 天气装饰不再唤醒战斗扫描
+
+2026-11-02整理，运行提交`a5982ecb158a6028913451e2b3fcb45f97a255f6`。本切片接续性能主线，不改变认可视觉、游戏动作或兼容包业务。
+
+**实际热点。** 之前CPU调用栈中的`querySelectorAll`定位到战斗模块scan。实机ModHub的实际祖先链是`#customOverlay→#customOverlayContainer→#passage-footer→.passage→#passages`，所以雨滴样式变化落在战斗观察范围。1.8秒被动记录有66批、1064条水珠style变化；旧判定会让全部66批进入战斗扫描调度。该记录只观察事件，未替换设备上的原生DOM方法。
+
+修复只排除style属性变化，并要求节点为`[data-sf-weather-material]>.evo-material-layer.evo-glass-layer>i.evo-glass-drop/i.evo-wet-path`。未知同名装饰、class/hidden/disabled、childList和真实控件不在排除范围。没有停止业务观察器、节流原生事件或新增缓存/循环/开关。其它消费者主要观察childList或已有属性筛选，本轮没有无证据扩大全局过滤。
+
+**回归与反例。** `combat-focused`新增实际扫描次数检查：旧实现5次水珠style更新造成5次扫描，按新断言失败；修复后为0，未知同名节点为1，水珠更新与原生disabled混合批次仍为1。原有单选/目标/Continue单次原事件、聚焦/全部展开、320–1280宽度、缩放/滚动、reduced motion和释放检查全部通过。完整build、严格产品/研究/工具/Framework类型、声明锁通过；只增加三个断言位置，未降低门槛。
+
+额外手动运行的`combat-resize.test.cjs`在旧质量档色值断言提前失败，实际`rgb(32,32,34)`、期望`rgb(28,29,32)`。仅从生成JS撤去本次过滤条件、保持同一CSS和全部原断言后，仍出现相同失败；未通过改色值断言使它变绿。该脚本剩余步骤未执行，不能宣称此手工入口通过；新的聚焦布局/缩放用例及当前正式CI分别报告。
+
+**装机与性能。** 独立测试App在Start先备份原包，只安装主UI并原生重启；本地ZIP SHA`7d4f14d9209c2cfd2196f015c42035244f0683e57985f3b77c742870398f8eec`。相对03094f0仅`index.js`成员变化，CSS、元数据、依赖、许可证和其它包不变；实际加载18成员全部匹配。前后Mod技术名/版本、Loader顺序/停用与全部偏好一致，均Start/ModHub、自然storm/rain强度2、Acrylic60。
+
+前后各做动态→静态→静态→动态，每段预热700ms后采3.5秒。原始rAF间隔、累计计数及条件保留，结果如下；这是单次安装前后的短对照，未交错切换两套源码，未控制温度/频率，不能作为因果性能增幅或持续FPS验收。
+
+| 指标 | 原包动态两段 | 修复动态两段 | 静态对照 |
+| --- | --- | --- | --- |
+| rAF间隔P95，ms | 41.8 / 41.7 | 41.7 / 41.7 | 前后均约8.4 |
+| 累计ScriptDuration，ms | 416.31 / 395.53 | 333.67 / 326.18 | 原227.39 / 234.06；新227.39 / 219.92 |
+| 累计LayoutDuration，ms | 20.12 / 18.91 | 19.37 / 19.23 | 前后均0 |
+
+新CPU抽样未采到`querySelectorAll`；采样未命中不等于所有查询被消灭。冗余扫描已由定向计数证明退出，但整体动态卡顿没有消除。本轮只采用这项有明确根因、保留行为的修复，不改变水珠模型、渲染分辨率、数量、速度或材质参数。
+
+**系统跟踪。** 修复后动态/静态各8秒，现有工具深度采集complete，原SQL/CSV/trace留本机。App实际frame timeline为360/98条，未结束frame均0，frame lifetime中位43.85/9.61ms、P95为59.92/19.41ms；生命周期不是绘制/GPU忙碌时间，静态提交更少也不是更卡。目标进程RenderThread的Running累计约2119.43/408.00ms，Chrome_InProcGp存在QueueSubmit等路径；这些不能归因到某一个滤镜或原版游戏。下一步重点是渲染/合成的逐帧关联，尚无GPU counter、停用UI/最小组合或原版根因结论。
+
+首次深采因进程未配置官方recorder而unsupported，未开始trace；保留partial目录，后续仅在该进程配置已核对的官方脚本后新采。Windows命名trace_processor会话未能被客户端访问，已核对并退出自有进程，使用小trace的有界批查询。先查实际表schema；CSV初次解析被多语句前导空行影响，保留错误派生JSON，修正解析后从相同原CSV复算，没有重录。没有改变工具产品或系统全局配置。
+
+**当前门禁。** [标准41323469961](https://github.com/102326/DoL-Game-UI/actions/runs/41323469961)与[研究41323475873](https://github.com/102326/DoL-Game-UI/actions/runs/41323475873)均精确对应a5982ec、Attempt1、success；标准validate/evidence-verify/moody-gate成功，独立复核均PASS/COMPLETE。本机核对两份remote原ZIP摘要、标准192项索引文件/十项负载、九包CRC及主UI实际18成员。CI主UI ZIP SHA`858ed702b8c6f346a7e5e2a19ea71d8bc7d34990bed4bd7fccb989751638eda2`，与本地容器摘要不同、成员完全相同；完整研究图包只由远端独立job核验。03094f0两Run仍是前批证据，不代替新源码。
+
+原始资料在Git忽略的`tests/artifacts/ui41/combat-weather-scan-20261101/`及前批`composite-fix/modhub-scan-baseline.json`。采样/跟踪结束后独立核对全部偏好、Mod版本/顺序/停用、Start、窗口关闭、renderer/诊断样式归零、自有CDP资源释放；未保存/载入、购买、穿戴或执行作弊。主线仍有动态渲染/合成开销、#33及整体验收；未合main、改正式版本或发布。

@@ -153,3 +153,6 @@ WORKSPACE-AUDIT-01：补五类原生表单/筛选的设置式单选、三类滑�
 
 
 2026-11-01 COMPAT-COMPOSITE-01（运行03094f0）：根token一致不足以证明实画面一致。已退出自有/四类full兼容根的额外祖先blur/暗色peer，ModHub sticky toolbar及CE内嵌行读取同轴；partial/未知和原生回退保留。设置/ModHub三档及存档/传输/云存档九组实际paint及关闭清理检查完成，Android原生默认档截图已查看；衣柜候选已装，真实两卡片三档且原穿戴不变。CE独立/内嵌及phone主体沿受控合同，实际phone debug三档通过；CE独立菜单、可用phone主体、ReOverfits业务仍未实机覆盖，嘴部资源无UI。双CI40755180813/40755187425均当前源码success，独立PASS/COMPLETE及九包/加载身份已核对。当前ModHub雷雨ABBA仍有动态开销，未获性能/整体视觉通过；#33保持开放。详见原UI报告COMPAT-COMPOSITE-01，不另建覆盖账本。
+
+
+2026-11-02 PERF-COMBAT-01（运行a5982ec）：仅过滤已归属天气根的水珠/水痕style通知，避免兼容窗口动效唤醒战斗重扫；原生disabled与未知节点/混合批仍可发现。受控旧5→新0扫描、原战斗操作/布局/释放通过；实机安装仅index.js变化且加载18成员一致。当前双CI41323469961/41323475873与独立证据/制品复核通过。旧combat-resize手工入口在原有色值断言失败，余下覆盖未执行，不改断言；不是新的全战斗验收结论。实机动态rAF P95仍约41.7ms，系统trace/CPU采样不构成GPU或持续FPS通过，性能主线仍开放。详见原UI报告PERF-COMBAT-01。
