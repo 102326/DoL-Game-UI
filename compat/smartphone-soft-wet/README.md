@@ -1,6 +1,6 @@
-# SmartPhoneSoftWet 1.1.1（本地候选）
+# SmartPhoneSoftWet 1.1.2
 
-将 NEEDMEET遇欲／ANLINSTUDIO 的“万能的智能手机”窗口适配为 Kraft Work 3.X 黑灰 Acrylic。主 Mod 技术名是 `SmartPhone Alpha`；本包在结构匹配时接受已核对的 `0.3.91` 和 `0.3.91.1`，不包含主 Mod 或 PhotoPack。
+将 NEEDMEET遇欲／ANLINSTUDIO 的“万能的智能手机”窗口适配为主 UI 的黑灰 Acrylic。主 Mod 技术名是 `SmartPhone Alpha`；本包在结构匹配时接受已核对的 `0.3.91` 和 `0.3.91.1`，不包含主 Mod 或 PhotoPack。
 
 要求 DoL `0.5.12.13`、`DoLGameUI >=3.0.2` 及主 UI 所需 Host。先加载作者主 Mod、Host 和主 UI，再加载本包。作者下载：[v0.3.91](https://github.com/ANLINSTUDIO/Degrees-of-Lewdity-DolSmartPhone/releases/tag/v0.3.91)。
 
@@ -11,3 +11,5 @@
 未识别的结构、版本、预览窗口和响铃特殊窗口保持原样。关闭主 UI 或移除兼容包后恢复作者外观；回退时停用本包并重启，无需清空游戏数据。当前候选的验证与未覆盖项见仓库发布前Gate报告；1.1.0历史记录位于独立compat/smartphone-3x分支。
 
 构建：`python scripts/package-adapter.py compat/smartphone-soft-wet`。
+
+4.1 配套：跟随主 UI 的适用设置；虚拟手机保留壁纸和自身层次，不额外铺天气。
