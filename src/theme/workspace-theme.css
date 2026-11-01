@@ -64,6 +64,10 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#custo
 html[data-stone-free]:not([data-dgu-visualMotion]) :is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host)) :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit]){transition:none!important}
 @media(prefers-reduced-motion:reduce){html[data-stone-free] :is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host)) :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit]){transition:none!important}}
 
+/* Native multi-arrow steppers cannot use the text-button padding inside a fixed 32px column. */
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #customOverlay.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=settings]) #customOverlayContent .numberStepperGroup>button.numberStepper{--dgu-stepper-size:max(44px,calc(44px * var(--dgu-font-scale,1)),calc(44px * var(--dgu-button-scale,1)));flex:0 0 var(--dgu-stepper-size);width:var(--dgu-stepper-size);min-width:var(--dgu-stepper-size);max-width:var(--dgu-stepper-size);height:var(--dgu-stepper-size);min-height:var(--dgu-stepper-size);padding:0!important;line-height:1;white-space:nowrap;align-self:center}
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #customOverlay.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=settings]) #customOverlayContent .numberStepperGroup>button.numberStepper>.fa-icon{flex:none;line-height:1;white-space:nowrap}
+
 /* Compact defaults; optional extra whitespace is the existing reading gap preference. */
 html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #dol-midnight-controls .dmt-control-sheet .dgu-setting-row{box-sizing:border-box;min-height:44px;padding-block:var(--dgu-workspace-row-padding);line-height:1.45}
 html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #dol-midnight-controls .dgu-setting-row small{margin-top:2px;line-height:1.45}

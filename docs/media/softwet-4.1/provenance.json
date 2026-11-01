@@ -1,0 +1,87 @@
+{
+  "captured": "2026-11-02",
+  "platform": "Real Android WebView",
+  "uiVersion": "4.1.0",
+  "localInstalledZipSha256": "89b66f3fb22ee4ded2e74259a3e499ecd4f8214be7b14b6a7006bc537ce93ca5",
+  "loadedMembers": {
+    "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+    "MODHUB-PERFORMANCE-NOTICE.txt": "8bc1ab1c41af770ed48aaedfa8111faedf1901387c96a65ddc81c9c726fcc351",
+    "README.md": "e240ad836b815166c5e13ba15db1cb08859dbcd94608b3a09b47bdfa5ac0ab9e",
+    "THIRD-PARTY-NOTICES.txt": "b59cbe1add88d81375c867e58b3a2af068adae49e3aecb241eb99ff422634ce3",
+    "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+    "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+    "boot.json": "099d8204c1a2f8d56f3b265747af38f0d8c536d1fc9112255917d22d784ecb00",
+    "docs/OPTIONAL_ADAPTERS.md": "b4d1f8b0c3f7dacf5119c7a816e6b548a19b6fce0cad09b83f1c819c3d5ca5e8",
+    "docs/RELEASE_4.1.0.md": "200449093eed0fa933565b1f3f2c7193d6a1330e21b9766a36298559b7915148",
+    "docs/UI_SETTINGS.md": "bc8361fd0a1dd5a8e53a820c04f8215aad20121fb7c4bb622595a50e30057d67",
+    "index.js": "6a4562fdfba60f38494a04c657fec1ade1200b15d522c54ac31349dc45e72d0f",
+    "modhub-performance.js": "feafd6a3372d557f3bb6eeabfa2cb33d828e48f2b033551f76b683f7ba861027",
+    "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+    "style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+    "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+    "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+    "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+    "twee/patch-resize.twee": "c2075700d7f1ab2dfacf2b35d69bfe9377ef5ec9c8a678222cf9e2cc9b2ce723",
+    "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+    "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+  },
+  "capture": "Original native Android screen record, original UI APIs/DOM handlers and native passage transitions; no timeline speed changes; not a performance sample",
+  "video": {
+    "seconds": 23.993044,
+    "width": 1704,
+    "height": 1136,
+    "codec": "H.264",
+    "retimed": false
+  },
+  "scenes": [
+    {
+      "file": "release-android-settings.png",
+      "scene": {
+        "passage": "Bedroom",
+        "version": "4.1.0",
+        "weather": "storm",
+        "acrylic": 60
+      }
+    },
+    {
+      "file": "release-android-wardrobe.png",
+      "scene": {
+        "passage": "Wardrobe",
+        "version": "4.1.0",
+        "weather": "storm",
+        "acrylic": 60
+      }
+    },
+    {
+      "file": "release-android-shop.png",
+      "scene": {
+        "passage": "Clothing Shop",
+        "version": "4.1.0",
+        "weather": "clear",
+        "acrylic": 60
+      }
+    }
+  ],
+  "files": [
+    {
+      "file": "android-settings.png",
+      "bytes": 1986440,
+      "sha256": "15c54c508e477c31ef2427d1edfe82d1d211a17529b7724fc582150ecd5bf490"
+    },
+    {
+      "file": "android-wardrobe.png",
+      "bytes": 926366,
+      "sha256": "986f347f51521e8f75c781a6d15769a653da6bd3bc49f70885d0ab8a587c828e"
+    },
+    {
+      "file": "android-shop.png",
+      "bytes": 738583,
+      "sha256": "30336f22dcd1da78a29afd9ba08b7740b8593f5afbd196b11fdf966fa7742571"
+    },
+    {
+      "file": "android-preview.mp4",
+      "bytes": 4556576,
+      "sha256": "0629d2dfaa6956a9b27eb6a8d62b25b6034ecf24ff31ce0760636f2dd9f5c872"
+    }
+  ]
+}

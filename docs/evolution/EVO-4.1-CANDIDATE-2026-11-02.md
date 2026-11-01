@@ -160,3 +160,20 @@ ModHub1.8.3、自然storm/rain强度2、Acrylic60：旧包两次3.5秒采样rAF 
 - 重启早期WebView尚无页面的一次连接失败及原生控件命中保护拒绝保留，未绕过遮挡点击；待真实就绪后使用新上下文复验。测试App进度与UI包有本地备份；未碰私人长期App/存档或云端。
 
 当前候选的标准/研究 CI 与整体 Owner Acceptance 仍分别记录。无 main/Tag/Release 操作。
+
+
+## 最终补修与发布授权（2026-11-02）
+
+负责人已确认当前效果，授权修复箭头尺寸、验证后直接发布4.1；首页和发布页沿4.0.0的玩家格式，测试、代码细节及防御性说明留在技术记录。
+
+- 实机作弊页 font/button均100%、全局zoom1；32px宽步进按钮错误继承7px/11px普通按钮内边距，三箭头压缩换行，行高约54.6px。修正为至少44px的方形步进控件、零文本内距、图标不换行；随字号/按钮比例调整，不修改原步进回调，也不改普通按钮。
+- 临时CSS预览观测为44×44px，三图标均留在框内；最终仍需安装正式构建复验，临时样式不作为发行制品证据。
+- 新增宽窄视口、100/150%字号及50/100/150%按钮组合的实际多箭头几何检查，保留一次原生事件与未知节点不接管断言。夹具首次media选择器低于原按钮规则、外部按钮漏掉border-box均已明确纠正，未放宽产品几何要求。
+- 先前d5228d1的标准41347623864／研究41347629777在新增修复进入同批后主动取消，避免为已过期源码重复跑完整链。它们不是通过证据；最终冻结后重新手动派发一次双CI。
+
+### Final stepper/device and media checkpoint
+
+- The final installed UI ZIP is SHA-256 `89b66f3fb22ee4ded2e74259a3e499ecd4f8214be7b14b6a7006bc537ce93ca5`; all 20 loaded package members match, including the final player documentation. The previous 19-member checkpoint predates the packaged Release document and is historical.
+- Real native cheats show 44×44px steppers, zero text-button padding, no temporary preview stylesheet, no error elements and unchanged money. No stepper action was invoked for this geometry check. The targeted contract also covers narrow/wide viewports, mixed font/button scaling, icon containment and unchanged foreign steppers.
+- The final Android settings, wardrobe and shop images and original-speed 23.99-second video are stored under `docs/media/softwet-4.1/`, with sanitized source/member/capture provenance. They are presentation evidence, not FPS or manual-touch measurements. No device identifier or serialized game progress is included.
+- Local strict checks, tooling build, final nine-package build and targeted contracts passed. Final exact-source standard/research CI and package rehash remain the public-release gate.
