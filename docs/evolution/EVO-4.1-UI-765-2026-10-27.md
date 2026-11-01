@@ -536,3 +536,12 @@ Android新包代表性smoke通过：设置双布局/分类/实际字号触控后
 该夹具在首次分层前可能取得原位置的动画对象；下一帧交接按设计取消它，可见镜像改由新时钟继续运动。拿旧对象检查前进会误报停止。旧夹具在本机锁定Chromium一次通过，说明并非每次复现，不能用这次通过抹去CI失败。新增明确的交接检查稳定验证“原时钟idle/currentTime=null，实际可见时钟继续前进”；修正header-weather等待真实可见轮廓并取其时钟，保留前进、580ms迁移、暂停、原节点和清理断言，没有加固定sleep、放宽阈值或改动画。更新后的定向foreground-plane和header-weather通过，后者分别以Edge及锁定Chromium执行；更新声明锁后再核对完整冻结点。产品代码/本地ZIP及Android加载字节未改，不重复装机或把它叫新性能修复。
 
 补充消费者检查：实际控制器＋合成内容的8类窗口×1280/390共16组，通过晴/雨/雪单renderer、原控件单回调、无横溢和退出清理，宽窄截图已查看；不是游戏业务或设备验收。Android补查真实拖动滚动（scrollTop0→232）、ModHub上打开设置再返回、动态关闭/恢复、六次快速开关无前景/标记残留，采后原状态恢复。原始资料继续在本机同一忽略目录，不上传用户数据。
+
+
+**PERF-GLASS-03修正冻结与交付结果。** 测试修正提交`afa8457fbea3375c4f44942bf19211c913c9cb02`未改运行目录；新的[标准41336939223](https://github.com/102326/DoL-Game-UI/actions/runs/41336939223)与[研究41336944764](https://github.com/102326/DoL-Game-UI/actions/runs/41336944764)均Attempt1/success、精确同SHA，独立PASS/COMPLETE，标准moody-gate成功。锁定Chromium另验foreground交接断言通过，原断言未削弱。首轮f294855失败仍保留。
+
+本机下载两份小型独立结果和标准检查/构建原ZIP，核对GitHub摘要、194项标准索引文件/SEALED sourceAfter、10项构建负载及九包合同、CRC、ZIP元数据、成员、依赖/许可；双构建和反例结果PASS。新UI CI原ZIP SHA`ce03139ff2901d5e44ada7b42f5d1e81289fafb1105f2d9b4526e5a35bd06226`，与实机本地容器摘要不同、18成员完全相同；相对a5982ec仅index.js/style.css改变，其它八ZIP逐字节不变。当前实际加载的八包成员均再次只读核对匹配，ReOverfits未装，没有重复未改运行包的装机/业务测试。
+
+已封本机`SoftWet-4.1-review-candidate-afa8457.zip`，SHA`c19c396270f9e38a5a244048c506c2bbb8fa7ed766012667e33ee8138e9811c3`，357865字节/13成员；相同输入重复字节一致，全部校验表读回通过，Downloads副本已核对。具体安装/旧新身份/已验与限制见[候选记录](EVO-4.1-CANDIDATE-2026-11-02.md#当前候选afa8457)。只是评审候选，整体性能/视觉待负责人，不合main或发布。
+
+本机首次读回脚本误将seal.state写作seal.status，KeyError退出后按实际schema修正；194项原输入和原摘要未变，无运行代码/CI重跑。完整研究媒体未本机重下，仍由远端独立job核验；不声称全部研究图已本机再算。原始失败和有效证据均保留，不扩写业务或长期功耗通过。
