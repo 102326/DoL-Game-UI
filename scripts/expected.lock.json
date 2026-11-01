@@ -1458,8 +1458,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "eb964d4bedca4aa4df373208b10d57c5db70164c2b98051ee35575bae2af401b",
-      "assertionSites": 37
+      "sourceSha256": "4896375b851ae7995c69ac7c4b101d9563b3522fa886156469ce4027d585a9fa",
+      "assertionSites": 39
     },
     {
       "entry": "tests/golden-spin-hub-lifecycle.cjs",

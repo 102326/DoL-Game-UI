@@ -1,5 +1,4 @@
 {
-  "source": "fdcda5e4c87b36754c60a202dc75ca9df7c340eb",
   "tag": "v4.1.0",
   "ownerAcceptance": "APPROVED",
   "releaseAuthorization": true,
@@ -373,5 +372,7 @@
     "#33 remains Unknown/open; no reliable Ray reproduction"
   ],
   "releaseUrl": "https://github.com/102326/DoL-Game-UI/releases/tag/v4.1.0",
-  "publicationReceipt": "GitHub Release and Issue #31 record the final public operation; this file freezes source and checked payloads."
+  "publicationReceipt": "GitHub Release and Issue #31 record the final public operation; this file freezes source and checked payloads.",
+  "runtimeFreeze": "fdcda5e4c87b36754c60a202dc75ca9df7c340eb",
+  "tagSourcePolicy": "Resolve the final main merge after PR gates, compare its tree with the tested PR source and all nine package members with these frozen inputs; record the public commit in Release/Issue #31."
 }

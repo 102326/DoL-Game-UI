@@ -1,5 +1,7 @@
 # DoL UI project rules
 
+- Main integration uses active repository Rulesets with required `validate` and `moody-gate` checks. A 404 from the legacy branch-protection endpoint does not mean main is unprotected. Use the reviewed PR path and actual required checks; do not bypass or replace statuses.
+
 - Owner release authorization (2026-11-02): after the final page-transition, shop-details, wardrobe-entry and cheat-stepper fixes pass their checks, publish Soft & Wet 4.1.0, synchronize main and the player-facing homepage, and use the previous 4.0.0 Release format. Keep technical test/code details in engineering records; public Assets contain nine player Mod ZIPs plus SHA256SUMS, with preview media in the repository/page. This supersedes earlier 4.1 no-main/no-release limits. Preserve validated source/artifact identity, Host/UI and native business contracts; do not silently replace a materially different validated payload.
 
 - Owner direction (2026-11-02): batch full CI at meaningful integration/freeze boundaries. Accumulate multiple small/medium edits; converge large changes with risk-proportional local checks before one full stage run. Preserve required candidate/merge/release gates and exact source/artifact identity, diagnose failures, and never weaken assertions or skip required PR checks. The current research branch already uses manual workflows; do not add automatic runs per commit or change branch protections. See [CI policy](docs/CI.md#按批次执行负责人2026-11-02确认).
