@@ -16,13 +16,24 @@
 
 Node 26 Only的当前实施、完整Actions和制品回读见[专项报告](evolution/EVO-NODE26-ONLY-2026-10-24.md)。它不等于全量TS First或发布验收完成。
 
+## 按批次执行（负责人2026-11-02确认）
+
+完整CI按阶段集中运行，不要求每个提交都跑一次。
+
+- 每次逻辑改动先完成与风险相称的本地检查，例如受影响模块的类型、构建、回归或反例。文档改动只检查内容、链接和必要的身份一致性，不自动启动全量测试。
+- 多次中小改动可以积累成一个可核对批次；大改动先完成本地实现和针对性验证，收敛后统一跑本阶段需要的完整CI。当前4.1候选的正式完整门禁仍包括标准与研究两套工作流。
+- 没有固定“攒够几个提交”的门槛。按集成边界、受影响范围和定位成本划批；真实失败、未解决的交互影响或工具链/CI合同变化应先处理，不把已知失败留到最终封包才查。不能删断言、跳过必需检查或反复重跑直到变绿。
+- 候选冻结、合并和发布前核对最终受验提交、构建输入、制品和工作流结果。后续产品/依赖/打包/门禁输入改变，要补受影响验证并在新冻结点完成要求的CI；仅无关文档变化不使有效证据自动失效，但必须保留旧Run的准确源码身份，不能声称它覆盖新HEAD。
+
+当前`feature/4.1-ui-material-hub`不在两套push触发范围内，继续用手动运行完成批次CI，无需为本策略新增开关或改工作流。准备PR前可以本地提交多次、集中推送；已建立PR仍保留原有`synchronize`检查和并发取消规则，不通过`skip ci`、删必需job或修改分支保护实现节省。当前策略调整本身只改文档，不启动完整CI，也不改变发布授权。
+
 ## 检查内容
 
 | 入口 | 检查范围 |
 | --- | --- |
 | `npm run ci:check` | 严格CI TypeScript、源码声明生成锁的一致性、render-state字段、UI／Adapter／early TypeScript与Framework合同类型 |
 | `npm run ci:unit` | 偏好、版本边界、衣柜投影／槽位／容量／原生操作参数、渲染状态、嘴部资源门槛与已退役实验入口 |
-| `npm run ci:build` | 构建Framework及必要合同样例，生成当前UI、Host与六个可选兼容包的八包receipt；此入口本身不等于双构建验收 |
+| `npm run ci:build` | 构建Framework及必要合同样例，生成当前UI、Host与七个可选兼容包的九包receipt；此入口本身不等于双构建验收 |
 | `npm run ci:packages` | ZIP 成员与路径、CRC、Mod 身份、加载入口、依赖、Twee 替换声明、源码／构建成员一致性、许可证与依赖NOTICE；独立第二工作目录双构建/严格ZIP字节比较、9个Python合同测试及损坏包反例 |
 | `npm run ci:browser` | Host／消费者独立性与释放、真实设置组件的双布局／滚动／输入阻挡、衣柜详情抽屉、商店事件、存档传输恢复、天气／页面动效、CE 原作者与 rebuild.30 的受控兼容合同；并包含官方默认值、原生选择器、存档视口、三页页头与四个外观包材质回归，以及唯一 3.x 视觉基线检查 |
 
@@ -36,7 +47,7 @@ Node 26 Only的当前实施、完整Actions和制品回读见[专项报告](evol
 
 当前 Moody Blues 身份规则见 [Project / Build Identity](audits/MOODY-PROJECT-BUILD-IDENTITY.md)。`project-identity.json` 中的 Project ID 只生成一次并永久保留；UI、Core、Host 各自读取实际来源，不要求同号，也不固定产品主版本。制品仍须与本次声明和构建输入一致，Host 协议及依赖兼容合同保留。
 
-GitHub 构建以 Project ID、Commit SHA、Run ID、Attempt 绑定证据，八包 SHA-256 通过 receipt、合同报告和上传索引溯源。本地独立执行下列 build / packages 命令时，检查器复用首轮 receipt 的本地 Run ID，并严格核对源码和完整身份；CI 不从旧 receipt 接管 Run ID。完整 stage runner 仍统一设置 `MOODY_EVIDENCE_ID`。
+GitHub 构建以 Project ID、Commit SHA、Run ID、Attempt 绑定证据，九包 SHA-256 通过 receipt、合同报告和上传索引溯源。本地独立执行下列 build / packages 命令时，检查器复用首轮 receipt 的本地 Run ID，并严格核对源码和完整身份；CI 不从旧 receipt 接管 Run ID。完整 stage runner 仍统一设置 `MOODY_EVIDENCE_ID`。
 
 当前采用Node 26 Only，最低26.12.1且<27；两套工作流读取 `.node-version`，当前固定26.12.1。该版本默认支持可擦除TS；工作流保留显式 `NODE_OPTIONS=--experimental-strip-types`。`npm ci`不需要先构建CI工具，严格类型检查在依赖安装后执行。旧Node22/24及26.0结果仅为历史证据，不代表当前支持范围。
 
@@ -59,9 +70,9 @@ Linux 首次运行浏览器检查前执行 `npx playwright install --with-deps c
 
 - `DoLGameUI-<package.json.version>.mod.zip`
 - `StoneFreeHost-<host_version>.mod.zip`
-- 六个当前可选包：ModHub、MapleBirch、原版优化、Cheat Extended、ReOverfits、Lyra嘴部兼容，文件名/版本读取各自Manifest；旧Lyra整合包不在此集合。
+- 七个当前可选包：ModHub、MapleBirch、原版优化、Cheat Extended、ReOverfits、Lyra嘴部兼容、SmartPhone，文件名/版本读取各自Manifest；旧Lyra整合包不在此集合。
 - `PACKAGE_CHECKS.json`：实际提交、工作区状态、依赖和每个 ZIP 成员的 SHA-256。
-- `SHA256SUMS.txt`：八个ZIP与PACKAGE_CHECKS共九个负载的SHA-256，校验清单自身除外。
+- `SHA256SUMS.txt`：九个ZIP与PACKAGE_CHECKS共十个负载的SHA-256，校验清单自身除外。
 
 这些是当前提交的 CI 构建，不是已发布冻结包。文档或构建环境不同可能改变 ZIP 摘要，CI 不据此替换公开附件。
 
