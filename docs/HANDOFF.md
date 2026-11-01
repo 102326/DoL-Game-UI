@@ -1,60 +1,53 @@
-# Soft & Wet 4.1 — 跨设备当前交接
+# Soft & Wet 4.1 — 当前交接
 
-更新：2026-11-02。总跟踪[#31](https://github.com/102326/DoL-Game-UI/issues/31)，顺序 **7→6→5→3→2→1→4→8→9**；必要验证贯穿各批。本文件只保留接手快照，历史过程沿[UI实施与失败记录](evolution/EVO-4.1-UI-765-2026-10-27.md)及Git历史读取。
+更新：2026-11-02。总跟踪 [#31](https://github.com/102326/DoL-Game-UI/issues/31)。负责人批准的顺序仍为 **7→6→5→3→2→1→4→8→9**；历史实施与失败沿下方报告及 Git 历史读取。
 
-## Current — 当前做什么
+## Current — 当前状态
 
-- 分支：`feature/4.1-ui-material-hub`。负责人已授权推进到正式版准备，整体验收无误后才公开。新增运行提交`bdc9e92`完成PERF-MODHUB-01：精确核对作者/设备ModHub1.9.2，原闭包内复用有界规则，不动ZIP、状态或外观Adapter业务；142项真目录等价、12组原/新完整迟到响应、回退与真实装机通过。平板重复计算中位125.35→38.35ms，只是算法时间；新版组合雷雨rAF P95仍16.7/16.6ms。设置双布局/真实输入、ModHub五页签、存档展示与触控/退出清理通过。详情见[接线与限制](evolution/EVO-4.1-MODHUB-B3-2026-10-27.md#真实192接线2026-11-02)。
-- 当前准备本地`DoLGameUI 4.1.0`冻结；公开版仍4.0.1，不覆盖旧包。与公开包成员实际比对后，只递增有样式变化的ModHubSoftWet1.0.3、ReOverfitsSoftWet1.0.1、SmartPhoneSoftWet1.1.2；Host和其余四包成员不变。更新包内设置/适配说明、安装与Release草稿，再按批次跑精确源码双CI和最终制品/装机核对。版本整理与运行修复分开提交，不把旧CI代签新版本。
-- 旧`f294855`动态前景分层、`afa8457`测试/CI与评审包完整保留，见下文历史记录。其标准41336939223/研究41336944764与独立核验已通过，主UI18成员装机相同。新ModHub早期脚本及版本冻结需要自己的门禁，尚未标4.1全部完成。未合main、Tag、Release。
+**4.1.0 正式版准备 Completed，Owner Acceptance Pending，未公开发布。**
 
-- **WORKSPACE-03**：紧凑默认与剩余自有表面接入已形成研发候选。设置、九个原生语义入口、独立存档/详情、商店、衣柜/参考/自有drawer、战斗及已审兼容宿主，沿[同一消费者表](evolution/EVO-P0-COVERAGE.md#41统一交付覆盖补充2026-10-28)区分实现、受控测试、视觉认可与游戏/设备整合。不能宣称4.1全局验收完成。
-- 无等待负责人才能继续的本机工程阻塞；下一关是本批视觉裁决、实际游戏/多Mod/设备和持续性能证据。#33两案未修复；已重新读取Issue，暂无新增Ray版本/复现数据。
-- 原日志、原图、本机补充与5204服务没有同步到其它设备；路径见Git忽略的`HANDOFF.local.md`。不自动采集或上传玩家存档、游戏HTML或凭据。
-- **前批Windows/Android证据（fb90c20/6d91f44）**：本切片Edge157的兼容主窗口/弹层、CE内嵌、手机/debug及实际设置宽窄对齐通过；整页巡检失败另记，不能称全项通过。Android17/WebView155的Loader47项（ModHub显示44）组合已安装主UI、ModHub及SmartPhone三个仅CSS改变的候选；五个原包不变，八包成员逐项核对，Loader顺序/停用列表及全部偏好已恢复。真实ModHub五页签/工具菜单、存档/传输/云存档的设置联动和输入回退通过；无保存/载入/云端/文件业务动作。fb90c20标准40726973016因雨效即时取样失败，研究40726980210成功且独立证据复核PASS/COMPLETE；包合同/双构建通过，十项负载及八个实机包成员已下载核对。6d91f44仅修测试原子取样及声明锁，产品相同；[新标准40730826632](https://github.com/102326/DoL-Game-UI/actions/runs/40730826632)、[新研究40730834860](https://github.com/102326/DoL-Game-UI/actions/runs/40730834860)均success，独立下载的精确源码证据均PASS/COMPLETE，标准moody-gate成功；新九包/十项摘要及八个已装成员已重算匹配。前批4226997的设置触控/双布局/滚动、原生选项/标题成就、Hub扇形/网格及关闭证据在相关行为未改时复用；其CI是历史证据，不代替本批。
-- **性能限制**：e909eaf在真实ModHub雷雨场景的短ABBA中，开动态的rAF间隔P95约41.7–41.8ms，关动态约8.4ms。已保存原始记录、Perfetto/SQL/CSV；此开关同时影响多种动画，不能全归因雨滴。尚无本轮停用UI/最小Mod对照，未认定原版或目标Mod根因；详情见原UI实施报告新增Windows/Android段。
+- 研发分支 `feature/4.1-ui-material-hub`，产品/文档冻结 `8d660382685230a8af74516c307fa97168e13913`。ModHub运行优化 `bdc9e92` 与版本整理分开提交；后续技术记录提交不改变已验产品输入。
+- V1/default60/默认左对齐、阅读三滑杆、官方/完整兼容材质轴、双布局、悬浮工具、完整天气与动态前景分层进入同一源码。Host + UI 双包、UI API v1、游戏和存档行为保持。
+- 当前内部产品版已为4.1.0，不再借技术版4.0.1冒充最终包。公开版仍未改，未合main、创建Tag或Release。
+- 只递增有变化的 ModHubSoftWet1.0.3、ReOverfitsSoftWet1.0.1、SmartPhoneSoftWet1.1.2；Host和其余四包成员与公开版一致，分发使用其公开原字节，不覆盖同版本。
 
-**COMPAT-COMPOSITE-01当前增量**：负责人指出的ModHub通透度差异属实：根token相同，但祖先`#customOverlayContainer`和并列退让层额外叠blur/暗色。03094f0只对自有/四类full兼容根退出这些层，partial和原生回退保留；工具条/CE内嵌固定底色也改读同轴。设置、ModHub及存档/传输/云存档实机三档核对通过，Start的Android原生截图已查看。SmartPhone debug实机三档及phone/CE受控测试分列；手机主体新进度未取得，CE独立菜单/ReOverfits业务未实机验证。衣柜新CSS已安装，实有两件卡片三档/原穿戴不变已验；不再沿用“未安装”旧快照。完整证据与失败见UI报告COMPAT-COMPOSITE-01。
+## Delivered — 负责人材料
 
-**前批精确源码门禁（a5982ec）**：[标准41323469961](https://github.com/102326/DoL-Game-UI/actions/runs/41323469961)与[研究41323475873](https://github.com/102326/DoL-Game-UI/actions/runs/41323475873)均a5982ec/Attempt1/success，独立PASS/COMPLETE，标准moody-gate成功。标准192项索引/十负载、九ZIP及两份remote原摘要已重算；当前装机主UI SHA7d4f14d9…与CI的858ed702…容器不同，18成员完全相同。新包相对03094f0仅index.js变化，CSS/元数据/依赖/许可不变。完整研究图只由远端独立job核验。旧03094f0两Run及其原生截图仍是兼容材质证据，不借它给新逻辑代签。
+本机 Downloads：
 
-**PERF-COMBAT-01**：实机ModHub挂在#passages下，1.8秒内水珠style产生66批通知，旧战斗观察器全部调度扫描。新过滤只覆盖明确归属天气根的水珠/水痕style。受控反例旧实现5扫描、新0，未知节点和原disabled混合批仍各1；聚焦/全部展开、宽窄缩放/滚动、原单选/目标/Continue/释放通过。额外旧combat-resize手工脚本停在过期色值断言，撤去本次过滤仍同样失败；原断言保留，该入口未通过。
+- `SoftWet-4.1.0-owner-review-8d66038.zip`：347370字节/11成员；SHA-256 `105bf1c82c6805a65c91c26bdaea00075b5439b62871922d0880184da227c773`，另有`.sha256`。内含九个Mod ZIP、玩家README和九包校验清单；外层先解压，各`.mod.zip`不解压。
+- `SoftWet-4.1.0-Android-preview-22s.mp4`：最终4.1.0原生录屏，22.04秒/1704×1136，无变速，仅裁去末尾空闲。分类/布局原生触控，材质端点使用原UI偏好API；预览后偏好恢复。文件SHA见[制品清单](evolution/EVO-4.1.0-PACKAGES-2026-11-02.json)。
 
-**前批性能诊断（PERF-GLASS-02，a5982ec）**：a5982ec的动态卡顿仍在。本轮私有隔离了根/水珠/水痕滤镜、天气Canvas、导航动画及containment/合成提升，均没有得到稳定可采用的整体收益；首组两段根滤镜未实际关闭，已标无效。全部诊断已撤回，产品源码/认可视觉不变。新总开关交错对照：动态rAF P95为41.7/41.6ms，静态和UI总开关关闭均8.4ms；仍加载全部Mod，不能称卸载UI/最小组合或原版根因结论。Chrome动态/静态短trace无data loss，前者持续样式更新及document/customOverlay Paint，后者无这类记录；Paint计数不是组件重挂载、全屏重绘面积或GPU耗时。下一步针对动态失效/绘制范围选有证据的候选，先证视觉等价与真实Paint/raster减少，再做实机交错比较，不继续堆无收益CSS提示。没有新的运行修复或性能通过结论。详细条件、负结果与失败沿UI报告PERF-GLASS-02；原始脚本/trace在本机Git忽略目录，未同步Mac。采后偏好/顺序/停用/Start恢复，renderer与诊断style归零。CDP设置截图异常仍以原生截图/DOM核对，不据它改坏布局。
+[当前候选/完整边界](evolution/EVO-4.1-CANDIDATE-2026-11-02.md#当前候选4108d66038) · [安装与回退](INSTALL_4.1_CANDIDATE.md) · [玩家Release草稿](RELEASE_4.1.0_DRAFT.md) · [首页待验收稿](releases/4.1.0/HOMEPAGE.md)。公开首页尚未替换，素材不放Assets，技术报告不作为玩家附件。
 
-**前批评审候选（a5982ec）**：按负责人要求冻结a5982ec的九个原始CI包，完成包/摘要/许可/依赖核对和八个实际加载包逐成员复核；Android设置真实输入/双布局、ModHub五页签两轮及存档三页展示/关闭通过，19组状态。汇总包已在本机准备，主UI研发技术版仍4.0.1，不是公开旧包或正式4.1。**动态性能仍Blocked，尚未到可发布RC**；新静态底面分离实机明显变慢，已撤回，未入产品。源代码与已验证包不变，旧CI按准确运行身份复用。完整文件SHA/已验/未验及下一步见[评审候选冻结](evolution/EVO-4.1-CANDIDATE-2026-11-02.md)。私有包/截图/trace未传Git，#31/#33开放，无main/Tag/Release操作。
+## Validated — 当前证据
 
-**本批性能增量（PERF-GLASS-03）**：新正式接线两次ModHub雷雨rAF P95约16.7/16.6ms，旧包同场景两次41.7ms；未降低认可参数。Chrome短trace的原外壳Paint255→14，绘制转至独立装饰；总Paint/样式时间没有全面下降，不能当GPU/FPS/功耗通过。新包设置触控/双布局、ModHub五页签、存档三页及关闭恢复通过，原生截图已查；本地类型/定向资源和兼容检查通过。补查8类窗口×宽窄16组源控制器、Android拖动滚动/模态交叠/动态恢复/六次快速重开通过。afa8457已完成精确双CI/独立复核、新制品与实际加载核对及新候选封装；旧a5982ec评审汇总包仍独立保留，性能Blocked历史不改写。详见[PERF-GLASS-03](evolution/EVO-4.1-UI-765-2026-10-27.md#perf-glass-03--动态前景与静态玻璃分层2026-11-02)。
+- [标准41341589416](https://github.com/102326/DoL-Game-UI/actions/runs/41341589416)、[研究41341592938](https://github.com/102326/DoL-Game-UI/actions/runs/41341592938)均精确8d66038、Attempt1、workflow_dispatch、success。两份独立结果PASS/COMPLETE，标准moody-gate成功；Node26.12.1/Playwright1.63.0。
+- 本机下载两份小型独立结果及标准构建/检查artifact，GitHub摘要匹配。196项标准索引逐项重算、SEALED sourceAfter一致，十构建负载、九包的CRC/元数据/成员/依赖/许可及负例/双构建通过。124MB研究媒体由远端独立job验证，未本机重复全量下载。
+- 最终主UI CI原ZIP SHA `e78f1f38a3e4d1670a4c4d851751af46ec7a566c87388502cc69802d5d53f9e4`；实际装机本地ZIP `3da6395dd82500aa4e2d34b6f0edb3490b34bfe85276225d1f48b2627a192be2`，容器不同、全部成员一致。八个实际加载包所有成员与最终CI匹配；ReOverfits未安装。
+- Android17/WebView155、1363×876 CSS视口、47项Loader组合。目标含ModHub1.9.2、MapleBirch5.6.2、原版优化1.1.2.1、CE rebuild.30、SmartPhone Alpha0.3.91.1。设置双布局/分类/真实字号输入、ModHub五页签两轮、存档三页展示、拖动滚动/模态返回/动态关闭恢复和六次快速开关清理通过。重启后运行API/页面标记均4.1.0，原闭包规则缓存生效；偏好、顺序和停用列表保持。
+- ModHub1.9.2原ZIP及市场成员与作者最新正式版相同。精确源保护下接入1024项/256字符规则缓存，超预算/未知源原生回退，不缓存目录、推断结果或更新代次。142项真目录等价；原/新完整闭包各六类迟到响应和Loader回退通过。只读克隆的8轮交错计算中位125.35→38.35ms，是函数时间，不是开窗或FPS。详见[接线与失败记录](evolution/EVO-4.1-MODHUB-B3-2026-10-27.md#真实192接线2026-11-02)。
+- 新1.9.2组合雷雨短采样rAF P95仍16.7/16.6ms。复用f294855/afa8457已验动态前景、8类源控制器×宽窄16组及相关原业务合同；最终4.1JS仅换版本常量，CSS/早期脚本相同，另验身份和实机交互。不将短rAF/算法计时写成持续FPS、CPU/GPU或功耗保证。
 
-**前批评审交付（afa8457，未包含新的ModHub接线／4.1版本冻结）**：`SoftWet-4.1-review-candidate-afa8457.zip`，本机Downloads提供，357865字节/13成员，SHA c19c396270f9e38a5a244048c506c2bbb8fa7ed766012667e33ee8138e9811c3。CI主UI原ZIP ce03139f…仅index.js/style.css改变，其它八ZIP与旧候选逐字节一致；本地装机主UI b2c822d1…容器不同、18成员相同。原a5982ec候选仍保留，不混写身份。当前批次修复、代表性验证和候选整理完成；整体视觉/性能、#31其它整合与#33现场边界未代签，未发布。详见[新候选](evolution/EVO-4.1-CANDIDATE-2026-11-02.md#当前候选afa8457)。本快照之后只改工程记录，不因文档提交另跑未改产品的完整CI。
+## 失败与覆盖边界
 
-## Decided — 已确定什么
+- 原f294标准时钟夹具失败、旧combat-resize手工入口色值失败及性能负结果保留。详见[原UI实施报告](evolution/EVO-4.1-UI-765-2026-10-27.md)和[前后候选](evolution/EVO-4.1-CANDIDATE-2026-11-02.md)，不改写成全部通过。
+- 本地曾只用Python重封版本而漏掉Framework重编译，API仍4.0.1，被原版本断言拒绝；该包/日志保留。随后完整`npm run ci:build`、重装/原生重启并核对API/根标记/全部成员，最终与远端CI相符。一次过早Bootstrap采样也保留；按真实就绪条件修正前置，没有放宽断言。
+- 本批未穷举全部游戏交易/穿戴/战斗结算、安装更新/排序、云端写入、文件选择、更多物理手机/iOS/WebView或长期功耗。Windows/更早设备证据仅在相关输入未变时沿报告复用，不将合成内容写成游戏业务通过。
+- [#33](https://github.com/102326/DoL-Game-UI/issues/33)本轮重新读取正文/评论，仍缺Ray版本与可靠场景；衣柜预览1/4和祭坛媒体越界均Unknown/open，未宣称修复。不要用全局img/canvas缩放掩盖。
+- A1减少扫描但没有耗时改善，未证明收益的原版/Host候选不强行接入。其余HC公共能力仍为调查，不自动成为当前发布必须实现项。未穷举生态覆盖不等于本候选能力未实现；原消费者边界见[同一覆盖表](evolution/EVO-P0-COVERAGE.md#41统一交付覆盖补充2026-10-28)。
 
-**CI批次策略（2026-11-02）**：每次逻辑改动先做本地定向检查，多次中小改动或收敛后的大改在阶段边界集中跑完整CI；正式候选/合并/发布仍按准确冻结输入核对标准、研究及制品门禁。实际失败先处理，不改断言或跳必需检查。当前研发分支本来手动触发，两套工作流/PR检查/保护规则均未改；本次文档调整不新增CI。详见[当前CI策略](CI.md#按批次执行负责人2026-11-02确认)。
+## Next — 下一步
 
-1. **产品基线**：保留默认60%/默认左对齐、认可黑灰Acrylic、C5.2/R10雨滴/斜雨/四档雨量、FROST02浅霜、球体和Hub响应时序。设置是共享呈现来源，不因实现不同允许视觉各自成套。侧栏compactStats已撤销；三阅读滑杆取代旧舒适/宽幅开关。
-2. **紧凑排版**：默认收紧标题/说明/well及已识别表单内距，主要命中保留44px；正文默认继承原版。原有“段落与选项间距”额外值同时驱动自有表单/列表留白，默认0，不新增间距开关；保持用户已有偏好和恢复语义。原生select渐进美化保留节点、原事件、键盘/Escape及不支持引擎的系统回退，排除multiple/size和未知第三方。
-3. **呈现与所有权**：主自有表面接轴与适用完整天气，模态前景暂停背景完整renderer；legacy CSS peer保留原共享更新。内部呈现租约不是Host/第三方新协议。inline详情、只读副本及经典网格用reading well；reference保留单一原空间动画；SmartPhone虚拟屏幕/debug不铺雨，不涂改其他作者frame。原生窗口立即关闭，只有背景80ms退出；无旧业务页离场副本，不延迟业务或克隆旧控件强造一致性。栏目只闪已有标题，旧分组Orbit/relay不恢复。
-4. **本机证据**：Mac arm64 / Node26.12.1 / Playwright1.63.0 / Chromium153。构建/类型/声明锁、原select/adapter/motion/weather/资源/业务合同与受控预览通过。最终e909eaf干净树再跑1280/390×四个独立主场景及详情、原生/无API/外部popover、原事件/退出子路径，构建摘要匹配；原九入口/五类表单、材质与Hub集成证据沿报告。均为真实源码＋合成输入，不能代替真实保存/载入/交易/换装/战斗结算。旧Edge测试仅隔离替换launch到Mac Chromium，不计Windows已验。
-5. **实际失败保留**：65189f7首轮标准40698571933/研究40698579022均失败。修正自Canvas被保护导致雨滴全隐、modal误删legacy peer，按已批准行为更新过期社交Orbit巡检。商店fixed/query容器定位、宽视口窄shop详情、combat底栏定位、reference双动画及Hub重复背板也有反例/定向证据。未通过延长sleep、放宽断言、删门禁或扩矩阵处理。审查者只读复查无剩余明确发现，未自行运行测试。
-6. **历史远端证据**：下列同e909eaf、Attempt1、workflow_dispatch，均success，独立下载证据复核PASS/COMPLETE，标准工作流内moody-gate也成功；不是PR检查或新保护规则。
+1. 交给负责人体验上述同一候选，重点看通透度、官方/兼容协调、实际操作与雨效/翻页。局部设计认可继续有效，本次整体Owner Acceptance不自行代签。
+2. 若发现本范围内缺陷，定向修复并重验受影响行为。多次中小改动积累到阶段边界跑完整CI，不为文档记录或未改产品重复全套。
+3. 负责人确认无误后，才核对最终main/Tag指向、实际附件与校验清单，再进行公开发行；同步已备首页/发布页文案，图片/视频放页面，Assets仅玩家包和SHA。
+4. #33及额外生态/长期性能沿Coverage Ledger保留，不静默关闭、不扩大支持，也不自动追加新视觉研发。
 
-| 工作流 | Run | 本次实际总耗时 |
-| --- | --- | --- |
-| 标准：源码/业务、九包、ZIP合同/负例/双构建、浏览器/布局 | [40702217590](https://github.com/102326/DoL-Game-UI/actions/runs/40702217590) | 16分28秒 |
-| 研究：完整受控研究与独立证据复核 | [40702225001](https://github.com/102326/DoL-Game-UI/actions/runs/40702225001) | 10分51秒 |
+## 换机与恢复
 
-Mac只下载两份小型remote-verification结果核对GitHub ZIP摘要、源码及PASS/COMPLETE；未再次本机重算全部ZIP/研究文件。完整下载证据重算由Actions独立job完成。耗时不是产品性能结果，未作配对归因。
+先核对branch/HEAD、干净状态、Node26 Only（最低26.12.1）及锁定依赖；保留本机独有资料。`npm run ci:build`会执行完整Framework构建后封包；单独`python scripts/check-ci-packages.py build`只打包已有编译物，不能代替重编译。
 
-7. **性能主线保留**：天气C1/C3负结果撤回，C2仅小幅受控收益；[ModHub B3](evolution/EVO-4.1-MODHUB-B3-2026-10-27.md)等价/缓存与合成、公开catalog研究保留，尚未实际安装接入，不把算法计时当游戏收益。HC-07已有局部退出故障修复，其余Host候选仍为[调查](evolution/EVO-4.1-HOST-SHARED-SURVEY-2026-10-26.md)，不另建路线图。前期采样入口见[性能前置交接](HANDOFF-2026-10-26-perf41-before-ui765.md)。
+原始证据/备份/安装收据在Windows Git忽略的`tests/artifacts/ui41/release-prep-20261102/`；前批目录和旧评审包未覆盖。不会随Git到Mac，不假设Mac有游戏或实机；过期`HANDOFF.local.md`中的历史路径须重新确认。使用本机Paisley Park resolver定位工具，连接时明确独立测试App，不操作私人长期存档或云端。
 
-## Next — 下一步做什么
-
-本批新增要求（2026-10-29）：性能/整合推进时同步核对全部自有UI和已维护兼容UI的统一风格，包括独立工具菜单、确认弹层及手机debug。按已认可V1/default60/left对照壳体、标题/导航、内容承载、控件各状态、字号/按钮/留白和动效/设置联动；必要的虚拟设备、参考和资源角色差异保留，未知第三方不强行接管。沿原消费者表记录实际截图/计算样式和真实场景，不能用变量同名或测试通过代替观感；发现偏差按影响定向修复，不重置设计方向。
-
-1. 换机先核对branch/HEAD、工作区、领先落后、Node26、锁定依赖与实际浏览器；保留本机独有工作。前批a4e1320/47a6a1e/c3b280f的Run只覆盖各自源码。应用build会清空dist，正确预览构建顺序：`npm run tooling:build` → `npm run build` → `node scripts/build-framework.mjs`（最后执行）。
-2. `node scripts/preview-ui41.mjs`启动本机5204：`/?settings&weather=heavy`看紧凑设置；默认页九入口；`/?independent=saves|shop|wardrobe|combat&weather=heavy`看独立窗口（`|`表示选择一个值）。先做本批视觉裁决，再按表逐项记录，不用设置成功代替其它窗口。
-   COMPAT-PREFS-01本轮联动已实施并完成代表性设备核对，见覆盖表及UI报告；主窗口、独立弹层和SmartPhone debug分开记证据。ReOverfits在设备未装，CE与SmartPhone新增偏好为受控验证；嘴部资源无窗口不适用。后续随既定4.1整合继续覆盖真实业务，不把本切片声明成全局视觉/性能通过。
-3. **回家优先**：真实原版间距/br/复杂嵌入、多Mod与原版回退；真实存档/工具、交易、换装/搜索/分页、战斗多region/结算、参考/drawer与全部特殊天气逐消费者。#33先确认Ray衣柜实际preview-source、源/副本bitmap/CSS与图层，再调查祭坛原元素，禁止全局img/canvas缩放掩盖。
-4. Android/WebView触控/系统选择框/软键盘/旋转/安全区、Windows原生弹层；相同档位和操作下交错测GPU/持续帧率/功耗。Actions/Mac通过不代签。保留天气/ModHub正负证据，真实热点验证后才决定优化候选接入。
-5. 最终4.1用同一集成源码核对全部消费者、CI/制品身份与负责人验收；分支分开不等于可以漏整合。CJ-4及bypass另批，不自动合main、发布或更改游戏/玩家数据。
+技术记录与源码可同步研发分支；当前授权不包含4.1公开发布。CI批次策略见[CI文档](CI.md#按批次执行负责人2026-11-02确认)。

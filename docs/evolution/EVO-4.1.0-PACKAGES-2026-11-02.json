@@ -1,0 +1,345 @@
+{
+  "source": "8d660382685230a8af74516c307fa97168e13913",
+  "status": "PREPARED_FOR_OWNER_ACCEPTANCE",
+  "releaseAuthorization": false,
+  "ownerAcceptance": "PENDING",
+  "file": "SoftWet-4.1.0-owner-review-8d66038.zip",
+  "bytes": 347370,
+  "sha256": "105bf1c82c6805a65c91c26bdaea00075b5439b62871922d0880184da227c773",
+  "members": 11,
+  "repeatBytesEqual": true,
+  "readback": "PASS",
+  "ci": {
+    "source": "8d660382685230a8af74516c307fa97168e13913",
+    "standard": 41341589416,
+    "research": 41341592938,
+    "attempt": 1,
+    "remoteEvidence": "PASS/COMPLETE",
+    "standardFilesRehashed": 196,
+    "buildPayloadsRehashed": 10,
+    "packages": 9,
+    "loadedMemberMatches": 8,
+    "notInstalled": [
+      "ReOverfitsSoftWet"
+    ],
+    "fullResearchMediaLocalRedownload": false,
+    "mainUiCiSha256": "e78f1f38a3e4d1670a4c4d851751af46ec7a566c87388502cc69802d5d53f9e4"
+  },
+  "packages": [
+    {
+      "name": "StoneFreeHost",
+      "version": "0.1.5-experimental",
+      "file": "StoneFreeHost-0.1.5-experimental.mod.zip",
+      "sha256": "6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8",
+      "bytes": 5934,
+      "origin": "published-v4.0.1-original",
+      "ciFile": "StoneFreeHost-0.1.5-experimental.mod.zip",
+      "ciSha256": "6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "aa854537a1931b5e5134eab2b8d118e5fe51f0b8bdaa057efd654f9d49ca921a",
+        "boot.json": "80eee7e2f83d0dc23edf7828571ca745cde1e9b8be10ac40198dbdfaa26061c5",
+        "index.js": "86b828ae8aa2f389f17ac10eb887752d2972cdfddf172c06a8237e25a43ef7bd"
+      },
+      "dependencies": [
+        {
+          "modName": "ModLoader",
+          "version": ">=2.100.0"
+        }
+      ]
+    },
+    {
+      "name": "DoLGameUI",
+      "version": "4.1.0",
+      "file": "DoLGameUI-4.1.0.mod.zip",
+      "sha256": "e78f1f38a3e4d1670a4c4d851751af46ec7a566c87388502cc69802d5d53f9e4",
+      "bytes": 299216,
+      "origin": "8d66038-CI-original",
+      "ciFile": "DoLGameUI-4.1.0.mod.zip",
+      "ciSha256": "e78f1f38a3e4d1670a4c4d851751af46ec7a566c87388502cc69802d5d53f9e4",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "MODHUB-PERFORMANCE-NOTICE.txt": "8bc1ab1c41af770ed48aaedfa8111faedf1901387c96a65ddc81c9c726fcc351",
+        "README.md": "534dc3aafaf546d3d1aad0c8712c489b3429f7f3b8d3c22588eef1a6c7d2d6b2",
+        "THIRD-PARTY-NOTICES.txt": "b59cbe1add88d81375c867e58b3a2af068adae49e3aecb241eb99ff422634ce3",
+        "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+        "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+        "boot.json": "715c3ea90efdbe6a1d93db43878f42fa6fc7279daa39206b4947d2c043693121",
+        "docs/OPTIONAL_ADAPTERS.md": "b4d1f8b0c3f7dacf5119c7a816e6b548a19b6fce0cad09b83f1c819c3d5ca5e8",
+        "docs/UI_SETTINGS.md": "816b591fe674a6c196c2aa367d54a2c497ac6a6eb32b1e213755dee564c23c7f",
+        "index.js": "9e315861b4f54ef1081bc30c9ef0e48d21636d835f95aba76e7f76b9b3a2cfa1",
+        "modhub-performance.js": "feafd6a3372d557f3bb6eeabfa2cb33d828e48f2b033551f76b683f7ba861027",
+        "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+        "style.css": "c6af2d56be9e2e553660ad5d4a1543baa11a2970d9a7e8bc3a6ee55653365ae9",
+        "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+        "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+        "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+        "twee/patch-resize.twee": "c2075700d7f1ab2dfacf2b35d69bfe9377ef5ec9c8a678222cf9e2cc9b2ce723",
+        "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+        "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+      },
+      "dependencies": [
+        {
+          "modName": "ModLoader",
+          "version": ">=2.100.0"
+        },
+        {
+          "modName": "StoneFreeHost",
+          "version": ">=0.1.2-experimental && <0.2.0"
+        },
+        {
+          "modName": "TweeReplacer",
+          "version": ">=1.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ]
+    },
+    {
+      "name": "ModHubSoftWet",
+      "version": "1.0.3",
+      "file": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.3.mod.zip",
+      "sha256": "4ac28818457876f56862d56c451541b7bd4278e9bacfee000a55ceb6dea5ff83",
+      "bytes": 6458,
+      "origin": "8d66038-CI-original",
+      "ciFile": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.3.mod.zip",
+      "ciSha256": "4ac28818457876f56862d56c451541b7bd4278e9bacfee000a55ceb6dea5ff83",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "12c6acd10b99d7eb623331f0637a3dece09d90d27ce6c6ec045a2036a5a3278f",
+        "boot.json": "a7ffab5415b15045491dacc28bc34760c9f1b37404228b38755a1bb5d114f4af",
+        "modhub-soft-wet.css": "5f211d328da40d7d7664b86297471488da37178c7ed267214546ca25483810e6",
+        "modhub-soft-wet.js": "83701d5f8e070ae51dec1731bb6e101ad9c345b43b26c09b050b65093c476f44"
+      },
+      "dependencies": [
+        {
+          "modName": "ModHub",
+          "version": ">=1.3.0"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ]
+    },
+    {
+      "name": "MapleBirchSoftWet",
+      "version": "1.0.1",
+      "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip",
+      "sha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00",
+      "bytes": 4273,
+      "origin": "published-v4.0.1-original",
+      "ciFile": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip",
+      "ciSha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "b8b9c7b7684b5847f2478ca14c87340128d521bb474a61085f2529918e54b357",
+        "boot.json": "cbb09e2b6e28a1a64d14ce6469e17838c7fc42eea4ed3e2d90fc4cc236cea0aa",
+        "maplebirch-soft-wet.css": "ae8fcf9c46a6b2d4cd9163960eb74c5af261ef419cbeec74bd543cba6c57a774",
+        "maplebirch-soft-wet.js": "007c12199b60025c3d43c53ee4ac3eea21da14309067ce0985c2d64e89221361"
+      },
+      "dependencies": [
+        {
+          "modName": "maplebirch",
+          "version": ">=5.2.3"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ]
+    },
+    {
+      "name": "DolOptimizationSoftWet",
+      "version": "1.0.3",
+      "file": "DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.3.mod.zip",
+      "sha256": "f1120c18c8e058b0647d84676b217d278557b66c3611d9643f8ebf3213510f1f",
+      "bytes": 10844,
+      "origin": "published-v4.0.1-original",
+      "ciFile": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip",
+      "ciSha256": "f1120c18c8e058b0647d84676b217d278557b66c3611d9643f8ebf3213510f1f",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "2db5a8e87649d4abb4b0a5d9329f05993bb59849773d1358848c8e826a081545",
+        "boot.json": "7796f33edc7a21f58167f51bf511a02a5e2b1cf939d80aa5c41a447bfe73daa1",
+        "dol-optimization-soft-wet.css": "ee7d3433ffcf59fa7cca388813fa8dabb5a1cbfad89d551bbfb9a4fb4daffdee",
+        "dol-optimization-soft-wet.js": "22de6572f4c84bd24a22fb4ed5a54712805a4b882601dbd0ccca811e82a01908"
+      },
+      "dependencies": [
+        {
+          "modName": "原版优化",
+          "version": ">=1.1.1.2"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ]
+    },
+    {
+      "name": "CheatExtendedSoftWet",
+      "version": "1.0.0",
+      "file": "CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.0.mod.zip",
+      "sha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d",
+      "bytes": 4944,
+      "origin": "published-v4.0.1-original",
+      "ciFile": "CheatExtendedSoftWet-cheat extended-1.20.3-plus-v1.0.0.mod.zip",
+      "ciSha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "acde3a40dd680e524f97d223c023d098dea453f9bbb2e896f5757d73de6bc787",
+        "boot.json": "cfc5a3c4a1133ef2c67cce196814b11f3e7b08a3c54e0c2ad617719f7c2b9edc",
+        "cheat-extended-soft-wet.css": "8f0880a9c517c4e1a38873d21aa76680d552052d35c7a9e6927cc9a379cb92d9",
+        "cheat-extended-soft-wet.js": "cff9a52e58540b2b255074335ac4d1b3f37a3a6aa0f9d596acb53e4d63fbc550"
+      },
+      "dependencies": [
+        {
+          "modName": "cheat extended",
+          "version": ">=1.20.3"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ]
+    },
+    {
+      "name": "ReOverfitsSoftWet",
+      "version": "1.0.1",
+      "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.1.mod.zip",
+      "sha256": "3cd6e6cd517f92894a1d9f37d834e83c2b535e524049fcd9b58c73ccce92a260",
+      "bytes": 5005,
+      "origin": "8d66038-CI-original",
+      "ciFile": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.1.mod.zip",
+      "ciSha256": "3cd6e6cd517f92894a1d9f37d834e83c2b535e524049fcd9b58c73ccce92a260",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "c61fa8235a5d059e3c979f40a2c59b7e24a514b71afd9f5c53514020981400db",
+        "boot.json": "939037b12ae9d3ee2e73a1b16551ce49ad0643bc2edd9434604add9059415540",
+        "reoverfits-soft-wet.css": "e966ee25fa34387fcb55da707b39c1460017636a721109fc894eb75c29f89534",
+        "reoverfits-soft-wet.js": "f1e8ac7a41614acf74e3eb27ccaadca904b1113aa9911b29ebd6a546b11c74b9"
+      },
+      "dependencies": [
+        {
+          "modName": "ReOverfits",
+          "version": ">=4.1.1"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.0"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ]
+    },
+    {
+      "name": "LyraMouthCompat051213",
+      "version": "1.0.0",
+      "file": "LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip",
+      "sha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827",
+      "bytes": 3018,
+      "origin": "published-v4.0.1-original",
+      "ciFile": "LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip",
+      "ciSha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "553a43a8fab0ec318802d11471ea574eda9a021accafa099a81fbbd3763e7b82",
+        "boot.json": "23ea3bef7a2c9972c0e86540d7730bc280e5afd4d08f4b3ce9b13a0a8b4c85de",
+        "mouth-compat.js": "fc507845d33c5f1001c9830fe9a17d0b6ff0e9d7e7843fa22ec712fb55d787bb"
+      },
+      "dependencies": [
+        {
+          "modName": "Lyra",
+          "version": "=0.5.12.13-1.0.1a-1004.1-goose-ucb"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        },
+        {
+          "modName": "maplebirch",
+          "version": ">=5.2.3 <6.0.0"
+        }
+      ]
+    },
+    {
+      "name": "SmartPhoneSoftWet",
+      "version": "1.1.2",
+      "file": "SmartPhoneSoftWet-SmartPhoneAlpha-0.3.91-plus-v1.1.2.mod.zip",
+      "sha256": "06f72b3d645a2274104a18bcdf01f2dfe5aed01390bb228bbeccc8a10f468c97",
+      "bytes": 5972,
+      "origin": "8d66038-CI-original",
+      "ciFile": "SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.2.mod.zip",
+      "ciSha256": "06f72b3d645a2274104a18bcdf01f2dfe5aed01390bb228bbeccc8a10f468c97",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "29357c4669ce6d6010a9066067159b17aed9bd8bb3dfe0a7c9687d388ba1df25",
+        "boot.json": "a24417dfc15c4767c0028ab1549d0ab17ae23f0790722c22c1aea33130d9bb95",
+        "smartphone-soft-wet.css": "af353af28d237d884176b674ef64383341b93e5489740ac90ac44feedaaf86d7",
+        "smartphone-soft-wet.js": "c74dfcbfb2ab03a244ab0b4c61d2239b888638ccea1cd4483e8f7e302fe031e1"
+      },
+      "dependencies": [
+        {
+          "modName": "SmartPhone Alpha",
+          "version": ">=0.3.91"
+        },
+        {
+          "modName": "DoLGameUI",
+          "version": ">=3.0.2"
+        },
+        {
+          "modName": "GameVersion",
+          "version": "=0.5.12.13"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "androidLoadedPackages": 8,
+    "notInstalled": [
+      "ReOverfitsSoftWet"
+    ],
+    "notValidated": [
+      "All ModHub install/update operations",
+      "Cloud writes",
+      "All gameplay transactions/combat/save paths",
+      "More physical phones/iOS/WebView",
+      "Long-term resource/power attribution"
+    ],
+    "knownIssues": [
+      "#33 Ray preview/altar reproduction unavailable"
+    ]
+  },
+  "media": {
+    "file": "SoftWet-4.1.0-Android-preview-22s.mp4",
+    "sha256": "b0f8c5a20e43343894309e01384b7ad446168408f5e3d898ae2cfd559e4dcdc0",
+    "kind": "Native Android dedicated test App screen recording, final4.1.0 source, no speed change, trailing idle trimmed",
+    "durationSeconds": 22.044256,
+    "size": [
+      1704,
+      1136
+    ],
+    "inputs": "Native touch tabs/layout, Acrylic endpoints set through original UI preference API; original preferences restored",
+    "notInPublicAssets": true
+  }
+}
