@@ -63,8 +63,11 @@ for directory, name in packages:
         for declaration in ['ui.d.ts','wardrobe.d.ts']:
             asset_name = 'types/'+declaration
             files[asset_name] = (root/'dist/types'/declaration).read_bytes(); boot['additionFile'].append(asset_name)
-        boot['scriptFileList_inject_early'] = ['shop-page-experiment.js']
-        files['shop-page-experiment.js'] = (root/'dist/shop-page-experiment.js').read_bytes()
+        boot['scriptFileList_inject_early'] = ['shop-page-experiment.js', 'modhub-performance.js']
+        for entry in boot['scriptFileList_inject_early']:
+            files[entry] = (root/'dist'/entry).read_bytes()
+        files['MODHUB-PERFORMANCE-NOTICE.txt'] = (root/'MODHUB-PERFORMANCE-NOTICE.txt').read_bytes()
+        boot['additionFile'].append('MODHUB-PERFORMANCE-NOTICE.txt')
         boot['dependenceInfo'] += [{'modName':'TweeReplacer','version':'>=1.0.0'}, {'modName':'GameVersion','version':'=0.5.12.13'}]
         boot['addonPlugin'] = [{'modName':'TweeReplacer','addonName':'TweeReplacerAddon','modVersion':'>=1.0.0','params':[]}]
         add_shop_patches(root,boot,files)

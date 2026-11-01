@@ -29,7 +29,8 @@ with zipfile.ZipFile(package_path) as archive:
     assert not any(name.startswith('docs/audits/') for name in archive.namelist()), 'acceptance receipts belong in the repository'
     assert not {'docs/VALIDATION.md', 'docs/DEVELOPMENT.md', 'docs/TYPESCRIPT_2.2.md', 'docs/UI_INFRASTRUCTURE.md', 'docs/UI_RUNTIME.md'}.intersection(archive.namelist()), 'developer documents must not be bundled with the player package'
     integrated = next(item for item in boot['addonPlugin'] if item['modName'] == 'TweeReplacer')['params']
-    assert boot['scriptFileList_inject_early'] == ['shop-page-experiment.js'], 'only the supported shop early script should be shipped'
+    assert boot['scriptFileList_inject_early'] == ['shop-page-experiment.js', 'modhub-performance.js'], 'only the supported shop and guarded ModHub early scripts should be shipped'
+    assert archive.read('MODHUB-PERFORMANCE-NOTICE.txt') == (root / 'MODHUB-PERFORMANCE-NOTICE.txt').read_bytes(), 'ModHub source notice missing'
     assert 'index.js' in boot['scriptFileList'], 'game UI runtime missing'
     assert any(item['modName'] == 'TweeReplacer' and item['version'] == '>=1.0.0' for item in boot['dependenceInfo']), 'TweeReplacer dependency missing'
     assert len(integrated) == 4, f'expected four integrated shop patches, got {len(integrated)}'

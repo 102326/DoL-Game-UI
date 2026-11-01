@@ -424,6 +424,13 @@
       "saved run metrics retain failures, metadata grouping and qualified percentile samples",
       "malformed saved metrics are rejected and the real CJS CLI reads UTF-8 JSON"
     ],
+    "modhub-performance.test.mts": [
+      "guarded Loader hook patches only the reviewed source before execution and retains native fallback",
+      "bounded stateless rule cache releases entries and never stores dependency or catalog state",
+      "complete current ModHub closure preserves golden cases, mutations, ambiguity and fresh results",
+      "internal update consumers reuse rules while changed descriptions still rebuild inference",
+      "current full update closure rejects stale responses across all six identity mutations"
+    ],
     "native-tooling.test.mts": [
       "native erasure check rejects an extra enum fixture while retaining the normal roots"
     ],
@@ -1632,6 +1639,38 @@
       "assertionSites": 13
     },
     {
+      "entry": "tests/modhub-performance.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "guarded Loader hook patches only the reviewed source before execution and retains native fallback",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "bounded stateless rule cache releases entries and never stores dependency or catalog state",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "complete current ModHub closure preserves golden cases, mutations, ambiguity and fresh results",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "internal update consumers reuse rules while changed descriptions still rebuild inference",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "current full update closure rejects stale responses across all six identity mutations",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "b67f4feff3ac5e8023974392c9891b82efacf7862de51c539183c57b266f34f9",
+      "assertionSites": 81
+    },
+    {
       "entry": "tests/moody-historical-regressions.cjs",
       "sourceEntry": "tests/moody-historical-regressions.cts",
       "profiles": [
@@ -2432,7 +2471,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8c732737015d05d049444fea99caa40f28f736e979fe227fa56ca3d9162d25b3",
+      "sourceSha256": "26e4884d496bc19c6ea499480a5263a837542196a7ceed097fec925d7275825f",
       "assertionSites": 5
     },
     {

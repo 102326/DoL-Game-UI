@@ -16,6 +16,14 @@ for(const name of checkTwee?[]:['shop-page-experiment']){
  fs.writeFileSync(path.join(root,'dist',name+'.js'),file.contents);
 }
 
+if(!checkTwee){
+ const helper=buildSync({entryPoints:[path.join(root,'src/early/dependency-rule-cache.ts')],bundle:true,write:false,format:'iife',globalName:'SwModHubDependencyRules',target:'es2022'}).outputFiles[0];
+ if(!helper)throw Error('Dependency rule helper produced no output');
+ const output=buildSync({entryPoints:[path.join(root,'src/early/modhub-performance.ts')],bundle:true,write:false,format:'iife',target:'es2022',define:{__SW_MODHUB_RULE_HELPER__:JSON.stringify(helper.text)}}).outputFiles[0];
+ if(!output)throw Error('ModHub early entry produced no output');
+ fs.writeFileSync(path.join(root,'dist/modhub-performance.js'),output.contents);
+}
+
 const resizeSource=path.join(root,'src/early/shop-resize.ts');
 // SugarCube folds <<run>> line breaks into spaces; generated // comments would eat the rest.
 const resize=buildSync({entryPoints:[resizeSource],absWorkingDir:root,bundle:true,write:false,format:'iife',target:'es2022',metafile:true,minifyWhitespace:true,legalComments:'none'});
