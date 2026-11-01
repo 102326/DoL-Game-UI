@@ -150,3 +150,6 @@ WORKSPACE-02（2026-10-28）更新以上九入口状态：属性/社交/日志/�
 WORKSPACE-AUDIT-01：补五类原生表单/筛选的设置式单选、三类滑块（含实际拇指token）及自有正文普通操作；多选/size/未知包保持原生。延迟结构提交、同父根替换和待处理观察器退出已回归。仅已知结构、1秒意图窗口内接续进入，超过期限不阻塞原生操作，也不承诺补播。原生立即关闭与旧页无离场差异仍开放，总状态PARTIAL；九入口宽窄通过不代表全局完成。新手动审查入口`tests/ui41-workspace-audit.cts`，复现及未做项沿既有UI报告，不另建路线图。
 
 2026-10-28 WORKSPACE-03：本机剩余表面实施接续原表，默认文字/行内留白收紧，现有段落与选项间距滑杆增加自有表单/卡片留白，默认0；主触控保留44px。Implemented/受控Tested的增量如上，未新增全局视觉Accepted或游戏/设备Integrated结论。原生立即关闭、reference单一空间运动、虚拟设备不铺雨及未知作者frame边界均为明确保留的角色差异，不能据此将未验部分签为通过。详见既有UI报告WORKSPACE-03。
+
+
+2026-11-01 COMPAT-COMPOSITE-01（运行03094f0）：根token一致不足以证明实画面一致。已退出自有/四类full兼容根的额外祖先blur/暗色peer，ModHub sticky toolbar及CE内嵌行读取同轴；partial/未知和原生回退保留。设置/ModHub三档及存档/传输/云存档九组实际paint及关闭清理检查完成，Android原生默认档截图已查看；衣柜候选已装，真实两卡片三档且原穿戴不变。CE独立/内嵌及phone主体沿受控合同，实际phone debug三档通过；CE独立菜单、可用phone主体、ReOverfits业务仍未实机覆盖，嘴部资源无UI。双CI40755180813/40755187425均当前源码success，独立PASS/COMPLETE及九包/加载身份已核对。当前ModHub雷雨ABBA仍有动态开销，未获性能/整体视觉通过；#33保持开放。详见原UI报告COMPAT-COMPOSITE-01，不另建覆盖账本。

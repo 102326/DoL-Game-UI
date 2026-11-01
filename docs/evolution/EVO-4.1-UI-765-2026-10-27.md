@@ -408,3 +408,37 @@ Android17/WebView155、CSS1363×876实测：ModHub五页签的字号/按钮150%�
 原始JSON/脚本/截图在Git忽略的`tests/artifacts/ui41/style-perf-20261029/`；不上传设备身份、实际存档描述或完整屏幕。旧手动整页/W01失败和#33仍保留。当前是本批巡检、局部CSS修复与诊断证据，不是4.1整体性能/视觉/业务验收；最终统一源码CI、包和设备验证仍按原路径推进。
 
 **本批代码与验证。** 源码`2aa4913368236c629260c87aea183e0962a670df`。`npm run build`、`node scripts/build-framework.mjs`、工具和测试工具严格类型检查、声明锁检查通过；`node tests/ui41-independent.cjs`的4场景×两宽及全部原有picker/原事件/详情/回退/清理检查通过，另含三档衣柜真实卡片面与透明内层button检查。最终结果在本机`tests/artifacts/ui41/independent-1793211627877/result.json`；首轮失败在`independent-1793211463886/`，没有删除旧断言或把原失败写成通过。本批不新跑完整远端CI、不安装衣柜CSS候选，不复用6d91f44旧Run给新代码签通过。未合main、改版本、Host协议或发行附件。
+
+### COMPAT-COMPOSITE-01 — 兼容窗口实际通透度纠偏
+
+2026-11-01整理，来源为10月29–30日的源码、装机和实机证据。运行提交`03094f0e3d062c7106e6ba5d6ba1a3063a0019e2`，包含前批衣柜修复。此前仅核对共享变量和窗口根样式，不能证明合成结果一致；负责人指出ModHub偏厚后，本批检查了祖先、伪元素和并列退让层。
+
+**确认的差异与修复。** 同一Bedroom背景、Acrylic60，设置与ModHub根节点虽然同为`rgba(20,24,27,.43)`和`blur(24px) saturate(.78)`，ModHub的原生祖先`#customOverlayContainer`仍带`blur(3px)`；并列`.kw-context-plane`又叠加暗色和`blur(3px) contrast(.94)`。设置没有这些额外层。未确认祖先规则来自哪个包，不归责ModHub作者。共享呈现逻辑现在使用已有`ownedOverlaySelector`标记已审窗口，CSS仅对自有宿主及四类full兼容根退出额外祖先背景/模糊；partial、未知结构和UI回退保留原路径。没有改窗口位置、命中或原业务。
+
+另修两处固定底色：ModHub sticky toolbar由近不透明深灰改读同一`--q-fill`；CE内嵌设置行改读`--q-well`。没有新增皮肤、设置、动画或Host公共合同。
+
+| 消费者 | 本批证据与结论 | 覆盖限制 |
+| --- | --- | --- |
+| 设置 / ModHub | 同一Bedroom的0/60/100根材质、祖先和peer逐项核对；额外祖先模糊和暗层已退出，ModHub工具条跟随档位。10月30日Start背景又用Android原生截图对照默认60效果 | 主体实机已验；工具菜单/确认层的原事件和其它偏好复用COMPAT-PREFS-01，不将主体截图代签全部弹层 |
+| 原版优化 / 导出载入 / MapleBirch | 实际存档三页签各0/100/60：同轴外壳、祖先透明/无blur、peer透明/无blur、一个renderer、零宏错误及内容横向溢出；Start背景原生截图已查看 | 只切页和显示核对；未保存、载入、导入导出或执行云端操作。分页条保留原角色，不强制涂成同一颜色 |
+| CE独立 / 内嵌 | 真实源码的受控adapter测试覆盖三档、原事件、full/partial和回退；独立根接共享合成修复，内嵌行跟随reading well | 本批未打开实际CE独立菜单或运行作弊命令；原生“作弊”窗口不等于CE独立菜单 |
+| SmartPhone主体 / debug | 当前作者源码确认wrapper无额外祖先filter；受控测试通过。实际debug在三档跟随材质，保留无雨角色和原开关 | 新测试进度未取得可用手机，主虚拟屏幕实机未验；不为截图授予物品或执行debug命令 |
+| ReOverfits / 嘴部资源 | ReOverfits入口沿商店宿主，不存在独立玻璃壳；嘴部资源不含UI | ReOverfits设备未装，实际叠穿业务未验；资源包不适用页面设置 |
+
+默认60/左对齐、V1、认可球体/Hub及雨雪均保留。0/60/100的材质连续调节不等于单独降低alpha：100端沿已认可方案退出blur，不能仅以alpha大小判断是否更通透。最终视觉认可仍由负责人决定。
+
+**实机与身份。** Android17/WebView155、DoL0.5.12.13/Loader2.101.1的独立测试App。实际目标Mod为ModHub1.8.3、原版优化1.1.2.1、CE1.20.3.1-rebuild.30、SmartPhone Alpha0.3.91.1；本批后段MapleBirch及Simple Frameworks为5.5.6，早段曾为5.5.5，变化原因未确认，不将跨重启数据说成完全相同组合。此工具只安装主UI，不执行市场更新。市场显示可更新不等于已经安装最新版。
+
+主UI先安装2aa4913（仅`style.css`变），再安装03094f0（相对前包仅`index.js`和`style.css`变），每次保留原包并通过公开Loader写入、原生重启和加载成员校验。当前装机ZIP SHA为`1633a499daffc87d180990ffaa3abc90b7a561d4cd31a7af4d5d4e519bee2c45`；CI ZIP为`c1d5e2082c909b3d292d7a84729d02e3d4aadce335a7de58e6e39901f75e3a54`，容器摘要不同但18个成员逐字节相同。其余七个已装包成员映射沿前批实机证据复用，并与本次CI逐包核对不变；ReOverfits仍未装。版本元数据仍4.0.1，只是4.1研究包，不覆盖正式发行。
+
+衣柜已进入原生新测试流程，实有2件上装卡片在三档读取同一reading材质，内层button透明、穿戴状态摘要不变；只切分类，不穿戴/购买。八类侧栏窗口在前一个已装衣柜候选上完成单renderer/零错误及关闭清理，原业务未改；不能把这些证据全部说成03094f0后逐页视觉重验。最后Start核对的全部偏好、顺序/停用列表保持，窗口、诊断样式、renderer及自有CDP传输退出。没有操作私人长期存档。
+
+**定向检查与失败保留。** build、Framework构建/类型合同、测试工具严格类型检查、声明锁、`adapter-materials`、`official-game-motion`、`smartphone-adapter`通过。新增真实祖先filter夹具、四类full退让层及ModHub/CE实际paint三档检查；旧已装CSS在祖先采样断言正确失败。最初夹具额外fixed定位遮住原cancel按钮，已撤去新增定位，保留祖先filter和原断言。设备准备阶段的bootstrap超时、观察到Start2及记录文件EEXIST均保留；EEXIST发生在原生点击后，通过新鲜状态确认后继续，没有盲目重放动作。
+
+10月30日复查时设备曾断开；重新连接后实际在Start，原Bedroom前置检查拒绝，随后单独绑定Start。原生截图首次超过Node默认1MiB缓冲，保留失败并增加本地截图缓冲。相同设置窗口的原生截图和DOM标题尺寸正常，而CDP截图压扁标题/intro；本批改用原生截图判断设备显示，未为截图接口的差异修改产品CSS。该接口异常根因尚未确认。采样脚本一次分号遗漏在执行前解析失败，修正后才开始采样；这些均不计产品通过用例。
+
+**当前CI与制品。** [标准40755180813](https://github.com/102326/DoL-Game-UI/actions/runs/40755180813)和[研究40755187425](https://github.com/102326/DoL-Game-UI/actions/runs/40755187425)均success，精确对应03094f0、Attempt1、workflow_dispatch；独立复核均PASS/COMPLETE，标准moody-gate成功。本机下载标准build/checks及两份remote结果，原ZIP摘要匹配GitHub；标准索引192项文件大小/SHA重算、全部十项下载负载、九包CRC及合同、当前装机18成员均匹配。完整研究包由远端独立job核验，本机未重复下载124MB研究图。此前fcc9d15两Run虽成功，只覆盖旧输入。
+
+**性能仍开放。** 10月30日当前03094f0、同一Start/ModHub、自然storm/rain强度2、Acrylic60做动态→静态→静态→动态，每段预热700ms/采3.5秒。四段rAF间隔数量203/418/413/190，P95约41.7/8.4/8.4/41.7ms；累计layout约20.76/0/0/19.93ms。修正额外层没有消除动态卡顿，不能宣称性能优化成功。rAF不是呈现FPS，静态切换影响多种动效；没有GPU/功耗结论。新旧轮次场景/Mod状态并非完整冻结，不据跨轮绝对值计算改进率。此前CPU抽样中原生游戏Canvas在动态关闭时仍绘制，也不足以归因原版。
+
+原始资料留Git忽略的`tests/artifacts/ui41/integration-20261029/`及`composite-fix/`；不公开设备身份、实际存档描述、凭据或完整系统trace。本切片完成兼容合成修复与代表性核对，整体4.1视觉、业务、多Mod性能和#33仍按原覆盖表推进。下一步继续动态绘制/合成热点归因，独立保留优化候选及等价/失败证据，不降低已认可效果；不合main、不改正式版本或发布。
