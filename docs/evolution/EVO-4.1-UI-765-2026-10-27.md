@@ -474,3 +474,27 @@ Android17/WebView155、CSS1363×876实测：ModHub五页签的字号/按钮150%�
 **当前门禁。** [标准41323469961](https://github.com/102326/DoL-Game-UI/actions/runs/41323469961)与[研究41323475873](https://github.com/102326/DoL-Game-UI/actions/runs/41323475873)均精确对应a5982ec、Attempt1、success；标准validate/evidence-verify/moody-gate成功，独立复核均PASS/COMPLETE。本机核对两份remote原ZIP摘要、标准192项索引文件/十项负载、九包CRC及主UI实际18成员。CI主UI ZIP SHA`858ed702b8c6f346a7e5e2a19ea71d8bc7d34990bed4bd7fccb989751638eda2`，与本地容器摘要不同、成员完全相同；完整研究图包只由远端独立job核验。03094f0两Run仍是前批证据，不代替新源码。
 
 原始资料在Git忽略的`tests/artifacts/ui41/combat-weather-scan-20261101/`及前批`composite-fix/modhub-scan-baseline.json`。采样/跟踪结束后独立核对全部偏好、Mod版本/顺序/停用、Start、窗口关闭、renderer/诊断样式归零、自有CDP资源释放；未保存/载入、购买、穿戴或执行作弊。主线仍有动态渲染/合成开销、#33及整体验收；未合main、改正式版本或发布。
+
+### PERF-GLASS-02 — 动态绘制隔离与浏览器时间线（2026-11-02）
+
+运行代码仍为`a5982ec`，装机身份沿PERF-COMBAT-01。本批只做私有、可恢复的诊断，没有修改产品源码、依赖、视觉参数或发行包；没有把关闭特效采样当作采用的优化。仍是Android17/WebView155、Start背景、ModHub管理窗口、自然storm/rain强度2、Acrylic60/玻璃开启。采前核对47项Loader身份及版本、顺序/停用和偏好；不是更新后新Mod组合的兼容结论。
+
+**排除无证据的调参。** 五组研究共42个短采样区间，每段预热700ms（总开关组1000ms）后采3.5秒，保留原始rAF/CDP计数。关闭水珠位移滤镜、水痕滤镜、窗口根滤镜、全部这些滤镜，隐藏Canvas/天气层，暂停导航材质动画/Orbit，或给天气层加paint containment/合成提升，都没有得到稳定、足以采用的整体收益。首组两段“关闭根滤镜”实际被高优先级样式覆盖，computed仍为blur24，明确列为无效隔离；后组用诊断专属选择器确认none后才计结果。不能用第一组推断根滤镜已被排除，也不能由后组短负结果认定滤镜永远没有成本。containment和提升候选均撤回，没有加入产品。
+
+**总开关对照。** 保留全部Mod加载，按动态→静态→UI总开关关闭→关闭→静态→动态交错采样：
+
+| 条件 | rAF间隔数量 | 间隔P95，ms | 累计样式重算，ms | 累计布局，ms |
+| --- | --- | --- | --- | --- |
+| UI及动态开启 | 200 / 214 | 41.7 / 41.6 | 190.18 / 193.90 | 20.12 / 21.83 |
+| UI开启、动态关闭 | 413 / 416 | 8.4 / 8.4 | 0 / 0 | 0 / 0 |
+| UI总开关关闭 | 410 / 414 | 8.4 / 8.4 | 0 / 0 | 0 / 0 |
+
+总开关关闭时完整天气renderer为0，原ModHub管理节点仍在；静态为一个静态renderer。这个结果支持“当前持续动态呈现有明显增量”，不能证明它全部来自雨滴或排除其它Mod参与合成。UI总开关不是卸载UI/依赖兼容包，原生窗口结构也不同；尚未做最小Mod组合，不能据此归责原版或ModHub。rAF间隔不是呈现FPS。
+
+**浏览器时间线。** 动态/静态分别请求4.5秒Chrome timeline，以ReturnAsStream/gzip取回，均无data loss；renderer实际事件跨度约4680/4642ms，含采集边界，不伪称精确4.5秒标记区间。动态有255次UpdateLayoutTree（累计225.05ms）、164次Layout（29.56ms）、510条Paint（134.83ms），Paint节点是document与customOverlay各255条；静态这三类记录均为0。RasterTask为2296/58条。可见水珠/水痕style以及导航动画均有style invalidation记录，不能把这些记录数称为Vue重挂载、组件重复渲染次数或整个屏幕实际重绘面积。duration是包含子事件的时间，不能相加充当独占CPU或GPU忙碌时间；Chrome tracing自身也有开销，不直接拿这对trace计算净性能增幅。
+
+这一证据把下一步收敛到动态层引起的样式失效、绘制范围和合成关系；还不足以选定一个保持全部认可效果的安全优化。下一候选应先证明减少了真实Paint/raster工作，再以相同固定时间的视觉/命中/保护区域及实机交错采样核对；不通过降低密度、分辨率、速度或通透度制造收益。本批不追加无关的全量CI；已有a5982ec双CI/包合同继续覆盖未改源码，性能Gate仍开放。
+
+**恢复与失败。** 诊断脚本首次使用错误的ModHub wrapper选择器，在采样前断言失败；按现有源码改用modHubModManageContainer后重新开始，原失败及清理记录保留。导航脚本生成曾在执行前解析失败；本地首次分析JSON也有编码/metadata零时间戳处理错误，均保留原输入后纠正，不算产品失败或有效性能结果。采后全部偏好、Mod加载顺序/停用列表、Start与窗口关闭状态一致，天气renderer/诊断style归零，CDP和自有trace流释放。未执行保存、载入、交易、穿戴、安装/更新或作弊。
+
+原始JSON、五个隔离脚本、Chrome trace、摘要与可复算的summarize.py留本机Git忽略的`tests/artifacts/ui41/perf-glass-20261102/`；公开记录不包含设备标识、游戏文件、私有状态或完整trace。该目录没有随Git同步到Mac。当前完成本轮诊断，不代表动态卡顿已修复、4.1整体验收或发布准备完成。
