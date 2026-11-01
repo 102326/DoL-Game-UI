@@ -145,7 +145,8 @@ function update(){
  if(active)sync(active)
 }
 function schedule(){scope.frame(scan)}
-const observer=new MutationObserver(records=>{if(records.some(r=>{const el=r.target instanceof Element?r.target:r.target.parentElement;return !!el?.closest('.dcu-native,.dcu-dock-native')||!el?.closest('.dcu-root')}))schedule()});
+// Owned rain optics change style each frame without changing combat inputs.
+const observer=new MutationObserver(records=>{if(records.some(r=>{const el=r.target instanceof Element?r.target:r.target.parentElement;if(r.type==='attributes'&&r.attributeName==='style'&&el?.matches('[data-sf-weather-material]>.evo-material-layer.evo-glass-layer>i:is(.evo-glass-drop,.evo-wet-path)'))return false;return !!el?.closest('.dcu-native,.dcu-dock-native')||!el?.closest('.dcu-root')}))schedule()});
 function nativeClick(event:Event){
  const s=active;if(!enabled||failed||!s?.app||!(event.target instanceof Element)||(!s.host.contains(event.target)&&!s.regions.some(r=>r.list.contains(event.target as Node))))return;
  const target=event.target,continuation=target.closest<HTMLElement>('#next a,#next button,button#next,#skip a,#stop a');
