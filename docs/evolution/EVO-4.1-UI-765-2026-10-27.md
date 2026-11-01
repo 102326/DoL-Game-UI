@@ -529,3 +529,10 @@ Android新包代表性smoke通过：设置双布局/分类/实际字号触控后
 **保留失败与限制。** 首轮header-weather以旧父子选择器取Canvas得到0，更新为嵌套或并列的唯一renderer后，继续验证真实动画/隐藏/强度/释放，未删除断言。首次声明锁因编辑文件CRLF拒绝，按仓库LF修正；第一次重启使用不存在的Activity，随后通过package resolve-activity核对并启动真正入口，未重复导入包。完整标准/研究CI尚待本批精确提交运行，旧CI不覆盖新代码。性能总Gate与负责人整体裁决仍Pending；没有main、版本升级、Tag或发布。
 
 本机私有证据：`tests/artifacts/ui41/foreground-plane-20261102/`保存备份、包差异/加载成员、原始rAF、trace、smoke、截图和摘要；前置隔离在`perf-transform-20261102/`。这些未同步Git/Mac。无本批GPU counter、UI卸载/最小Mod、长期功耗或所有特殊天气/设备证据；#33保持Unknown。本地新包不是已冻结的a5982ec评审汇总包，旧候选保留原摘要与性能Blocked历史。
+
+
+**PERF-GLASS-03首轮完整CI与取样修正。** 运行修复提交`f2948555d7db22f4f96ceaa7da93ec62d42f9c4c`已推送。研究[41335001674](https://github.com/102326/DoL-Game-UI/actions/runs/41335001674)及独立复核success；本机下载小型复核ZIP并核对GitHub原SHA、精确源码和PASS/COMPLETE，未下载全部124MB研究媒体。标准[41334996695](https://github.com/102326/DoL-Game-UI/actions/runs/41334996695)在header-weather的contour.advanced断言得到false；validate、独立复核和moody-gate均失败，193项证据索引不能写成全通过。九包构建/合同/反例/双构建及其余浏览器条目通过，但本次不封新候选。
+
+该夹具在首次分层前可能取得原位置的动画对象；下一帧交接按设计取消它，可见镜像改由新时钟继续运动。拿旧对象检查前进会误报停止。旧夹具在本机锁定Chromium一次通过，说明并非每次复现，不能用这次通过抹去CI失败。新增明确的交接检查稳定验证“原时钟idle/currentTime=null，实际可见时钟继续前进”；修正header-weather等待真实可见轮廓并取其时钟，保留前进、580ms迁移、暂停、原节点和清理断言，没有加固定sleep、放宽阈值或改动画。更新后的定向foreground-plane和header-weather通过，后者分别以Edge及锁定Chromium执行；更新声明锁后再核对完整冻结点。产品代码/本地ZIP及Android加载字节未改，不重复装机或把它叫新性能修复。
+
+补充消费者检查：实际控制器＋合成内容的8类窗口×1280/390共16组，通过晴/雨/雪单renderer、原控件单回调、无横溢和退出清理，宽窄截图已查看；不是游戏业务或设备验收。Android补查真实拖动滚动（scrollTop0→232）、ModHub上打开设置再返回、动态关闭/恢复、六次快速开关无前景/标记残留，采后原状态恢复。原始资料继续在本机同一忽略目录，不上传用户数据。
