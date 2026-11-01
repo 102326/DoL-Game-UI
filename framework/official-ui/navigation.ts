@@ -67,7 +67,7 @@ export function nativeNavigation(){
    if(surface.parent===overlay)continue;nextKeys.add(surface.id);
    const allowed=document.documentElement.hasAttribute('data-dgu-acrylic-adjustment')&&surface.parent.isConnected&&(!surface.modalOnly||surface.parent.matches(':modal'));
    const visible=allowed&&!!surface.parent.getClientRects().length&&!surface.parent.closest('.hidden,[hidden],[inert]');
-   if(visible&&!presented.has(surface.id)){presented.add(surface.id);if(surface.role!=='reference')fadeWindow(workspaceMotion,surface.parent,1,0)}else if(!visible){presented.delete(surface.id);workspaceMotion.cancel(surface.parent)}
+   if(visible&&!presented.has(surface.id)){presented.add(surface.id);if(surface.role!=='reference'&&surface.role!=='wardrobe')fadeWindow(workspaceMotion,surface.parent,1,0)}else if(!visible){presented.delete(surface.id);workspaceMotion.cancel(surface.parent)}
    weather.set(surface.id,allowed?surface.header:undefined,allowed?surface.parent:undefined);
   }
   for(const key of workspaceKeys)if(!nextKeys.has(key)){weather.set(key);presented.delete(key)}workspaceKeys.clear();for(const key of nextKeys)workspaceKeys.add(key);

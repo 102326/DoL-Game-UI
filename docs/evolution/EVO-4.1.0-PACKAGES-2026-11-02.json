@@ -1,6 +1,6 @@
 {
   "source": "8d660382685230a8af74516c307fa97168e13913",
-  "status": "PREPARED_FOR_OWNER_ACCEPTANCE",
+  "status": "Superseded by the 2026-11-02 owner-feedback fixes; this manifest describes the historical 8d66038 candidate",
   "releaseAuthorization": false,
   "ownerAcceptance": "PENDING",
   "file": "SoftWet-4.1.0-owner-review-8d66038.zip",

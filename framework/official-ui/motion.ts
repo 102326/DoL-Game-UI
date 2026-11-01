@@ -2,7 +2,6 @@ import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {fadeWindow} from '../../src/ui/window-fade';
-import {workspaceEnterFrames} from '../../src/ui/workspace-transition';
 import {isMasterEnabled} from '../../src/runtime/master';
 import type {NativeEventsHost} from '../../src/runtime/sugarcube';
 import {nativeNavigation,adaptedOverlaySelector,nativeEntryKinds} from './navigation';
@@ -87,7 +86,6 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   const next=document.getElementById('customOverlay');
   if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{childList:true,attributes:true,attributeFilter:['class','hidden','inert','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
   const shown=live()&&overlay&&visible(overlay);if(!shown)presented=null;
-  if(pageTransition&&(!shown||!overlay?.matches(ownWindowSelector)))clearPage();
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
   navigation.refresh();
   if(plane&&nextActive)markScrimFamily(nextActive);
@@ -109,54 +107,6 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(!origin?.hub||performance.now()-origin.time>100)origin={rect:node.getBoundingClientRect(),node,time:performance.now(),hub:!!node.closest('.sf-motion-petal'),bedroom:node.hasAttribute('data-kw-native'),expected};else if(expected)origin.expected=expected;
  }
  const ownWindowSelector='html[data-dgu-acrylic-adjustment] '+ownedOverlaySelector;
- let pageTransition:{body:HTMLElement;root:HTMLElement;before:string|null}|undefined,pageRevision=0;
- type PageIntent={navSelector:string;root:HTMLElement;parent:HTMLElement|null;body:HTMLElement|null;title:HTMLElement|null;renderRoots:Set<Node>;views:Map<HTMLElement,boolean>;oldKind:string;expectedKind:string;oldSelected:number;oldLabel:string|null|undefined;requested:string;direction:number;changed:boolean;observer:MutationObserver;stop:()=>void;ticket:number};
- let pageIntent:PageIntent|undefined;
- function stopPageIntent(){const intent=pageIntent;pageIntent=undefined;scope.cancelFrame(commitPage);if(intent){intent.observer.disconnect();intent.stop()}}
- function clearPage(){pageRevision++;stopPageIntent();if(pageTransition){const {body,root,before}=pageTransition;motion.cancel(body);if(root.getAttribute('data-workspace-transition')===''){if(before===null)root.removeAttribute('data-workspace-transition');else root.setAttribute('data-workspace-transition',before)}pageTransition=undefined}}
- scope.own(clearPage);
- const hiddenView=(node:HTMLElement)=>node.hidden||node.classList.contains('hidden')||node.getAttribute('aria-hidden')==='true'||node.style.display==='none'||node.style.visibility==='hidden';
- function watchPage(intent:PageIntent){
-  intent.renderRoots=new Set(intent.body?[intent.body,...intent.body.querySelectorAll<HTMLElement>(':scope>#cheatsShown')]:[]);
-  intent.views=new Map([...intent.renderRoots].flatMap(node=>[...node.childNodes].filter((n):n is HTMLElement=>n instanceof HTMLElement)).map(node=>[node,hiddenView(node)]));
-  intent.observer.disconnect();if(intent.parent)intent.observer.observe(intent.parent,{childList:true});intent.observer.observe(intent.root,{childList:true,attributes:true,attributeFilter:['class','hidden','inert','data-overlay','data-dgp-panel']});
-  if(intent.title)intent.observer.observe(intent.title,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-  if(intent.body)intent.observer.observe(intent.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','aria-hidden','style']});
- }
- function commitPage(){
-  const intent=pageIntent;if(!intent||intent.ticket!==pageRevision)return;
-  if(!live()){stopPageIntent();return}
-  const current=document.getElementById('customOverlay');
-  if(current!==intent.root){
-   if(!current)return;
-   if(current.parentElement!==intent.parent||current.dataset.overlay!==intent.expectedKind){stopPageIntent();return}
-   intent.root=current;intent.body=current.querySelector('#customOverlayContent');intent.title=current.querySelector('#customOverlayTitle');intent.changed=true;watchPage(intent);
-  }
-  if(!visible(intent.root)){stopPageIntent();return}
-  const kind=intent.root.dataset.overlay??'';
-  if(kind!==intent.oldKind&&kind!==intent.expectedKind){stopPageIntent();return}
-  if(kind!==intent.expectedKind)return;
-  syncOverlay();
-  if(pageIntent!==intent||intent.ticket!==pageRevision)return;
-  const body=intent.root.querySelector<HTMLElement>('#customOverlayContent'),title=intent.root.querySelector<HTMLElement>('#customOverlayTitle');
-  if(body!==intent.body||title!==intent.title){intent.changed||=body!==intent.body;intent.body=body;intent.title=title;watchPage(intent)}
-  const buttons=[...intent.root.querySelectorAll<HTMLElement>(intent.navSelector+'>button')],selected=buttons.findIndex(n=>n.matches('.tab-selected,.CEtabSelected,.CEbuttonBarSelected')),label=buttons[selected]?.textContent;
-  if(!intent.changed||!body||!visible(body)||!intent.root.matches(ownWindowSelector)||label?.trim()!==intent.requested||intent.root.dataset.overlay===intent.oldKind&&selected===intent.oldSelected&&label===intent.oldLabel)return;
-  stopPageIntent();const ticket=intent.ticket;
-  pageTransition={body,root:intent.root,before:intent.root.getAttribute('data-workspace-transition')};intent.root.setAttribute('data-workspace-transition','');const animation=motion.animate(body,workspaceEnterFrames(intent.direction),620);
-  const finish=()=>{if(ticket===pageRevision)clearPage()};if(animation)void animation.finished.then(finish,finish);else finish();
- }
- function expectPage(root:HTMLElement,node:HTMLElement,buttons:HTMLElement[],selected:number,navSelector:string){
-  if(buttons[selected]===node)return;
-  const requested=node.textContent?.trim()??'',oldKind=root.dataset.overlay??'',expectedKind=root.hasAttribute('data-dgu-adapter')?oldKind:nativeEntryKinds[requested]??({'特征':'characteristics',Characteristics:'characteristics','笔记':'journalNotes',Notes:'journalNotes'} as Record<string,string>)[requested]??oldKind;
-  const intent:PageIntent={navSelector,root,parent:root.parentElement,body:root.querySelector('#customOverlayContent'),title:root.querySelector('#customOverlayTitle'),renderRoots:new Set(),views:new Map(),oldKind,expectedKind,oldSelected:selected,oldLabel:buttons[selected]?.textContent,requested,direction:buttons.indexOf(node)>=selected?1:-1,changed:false,ticket:pageRevision,stop:()=>{},observer:new MutationObserver(records=>{
-   if(pageIntent!==intent)return;
-   if(records.some(record=>record.type==='childList'&&intent.renderRoots.has(record.target)||record.type==='attributes'&&record.target instanceof HTMLElement&&intent.views.has(record.target)&&intent.views.get(record.target)!==hiddenView(record.target)))intent.changed=true;
-   scope.frame(commitPage);
-  })};pageIntent=intent;watchPage(intent);
-  // Observe the native commit; this deadline only retires abandoned presentation intent.
-  intent.stop=scope.timeout(()=>{if(pageIntent===intent)stopPageIntent()},1000);
- }
  function response(node:HTMLElement){if(node.dataset.kwNavControl==='tab'&&!node.closest(ownWindowSelector)){motion.animate(node,[{'--kw-heading-wave':-1,'--kw-heading-wave-opacity':0},{'--kw-heading-wave':-.2,'--kw-heading-wave-opacity':.8,offset:.35},{'--kw-heading-wave':1,'--kw-heading-wave-opacity':0}],720);return}motion.animate(node,[{boxShadow:'inset 0 0 0 1px #8cb3a666',backgroundColor:'#8cb3a617'},{boxShadow:getComputedStyle(node).boxShadow,backgroundColor:getComputedStyle(node).backgroundColor}],360)}
  function click(event:MouseEvent){
   if(!live()||!(event.target instanceof Element))return;
@@ -164,8 +114,6 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(detail&&visible(detail))response(detail);
   const node=event.target.closest<HTMLElement>(formButtons+',.dgw-exits a.link-internal,.sf-motion-petal,.sf-motion-ball,.dgw-slots button,.dgw-item,.dgshop-content .category-tab,.dgshop-content .clothing-item,.dcu-arrangement button,[data-kw-native],[data-kw-entry],[data-kw-nav-control],.dgp-navigation button');
   if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;
-  const top=(node.dataset.kwNavControl==='tab'||node.dataset.kwNavControl==='category')&&node.closest<HTMLElement>(ownWindowSelector),navSelector=node.closest('.CE-category-bar')?'#cheat_extended_options>.CE-category-bar':node.closest('.CE-subtab-bar')?'#cheat_extended_options>.CE-subtab-bar':'#overlayTabs',topButtons=top?[...top.querySelectorAll<HTMLElement>(navSelector+'>button')]:[],oldSelected=topButtons.findIndex(n=>n.matches('.tab-selected,.CEtabSelected,.CEbuttonBarSelected'));
-  clearPage();if(top)expectPage(top,node,topButtons,oldSelected,navSelector);
   stamp(node);response(node);queueMicrotask(beginExpected);
   const passage=node.closest('.passage');
   settle(()=>{
@@ -188,13 +136,13 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   const rect=node.getBoundingClientRect();if(previousPetal)motion.focus(previousPetal,rect);previousPetal=rect;
  }
  function scene(){
-  clearPage();clearFrames();cancelPresentation();previousPetal=undefined;bedroom();settle(()=>{
-   syncOverlay();const header=document.querySelector<HTMLElement>('.dgw-header,.dgshop-host');
+  clearFrames();cancelPresentation();previousPetal=undefined;bedroom();settle(()=>{
+   syncOverlay();const header=document.querySelector<HTMLElement>('.dgshop-host');
    if(header&&origin?.bedroom&&performance.now()-origin.time<1000)motion.focus(origin.rect,header.getBoundingClientRect());
   });
  }
- function enabled(){navigation.refresh();if(live())scene();else{clearPage();clearFrames();cancelPresentation();clearMarks();active=presented=null;activeKind='';origin=undefined;returnTo=null;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
- function resize(){clearPage();cancelPresentation()}
+ function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=presented=null;activeKind='';origin=undefined;returnTo=null;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
+ function resize(){cancelPresentation()}
  const observer=new MutationObserver(records=>{
   if(!records.some(record=>record.type==='attributes'||[...record.addedNodes,...record.removedNodes].some(node=>node instanceof Element&&node.matches('.dgc-host,.dgs-host,.dgp-host'))))return;
   beginExpected();later(syncOverlay);

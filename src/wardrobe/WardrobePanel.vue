@@ -12,8 +12,6 @@ import {experiments} from '../runtime/experiments';
 import ReferenceDock from './ReferenceDock.vue';
 import type {ReferenceContext} from './reference';
 import './reference.css';
-import {workspaceEnterFrames} from '../ui/workspace-transition';
-import {sourceMotion} from '../ui/source-motion';
 const props=defineProps<{model:WardrobeModel;reference?:ReferenceContext;resolveIcon:(src:string)=>Promise<string>;onSplit:(keys:string[])=>void;onSlot:(key:string)=>void;onRepair:(keys:string[])=>void;onTransfer:(keys:string[],target:string)=>void;onTowel:(kind:'towel'|'large_towel')=>void;onSearch:(acrossSlots:boolean)=>void;onWear:(key:string)=>void;onNative:(open:boolean)=>void;onReview:(keys:string[])=>void;onConfirm:()=>void;onCancel:()=>void;onStrip:()=>void}>();
 const view=computed(()=>props.model),officialMotion=document.documentElement.hasAttribute('data-stone-free');
 const referenceDock=ref<InstanceType<typeof ReferenceDock>>();
@@ -35,10 +33,6 @@ function capacityWarning(count:number,capacity:number|null){return capacity!==nu
 const destination=ref('');
 const query=ref(''),sort=ref('name'),descending=ref(false),zoom=ref(false);
 const page=ref(0),itemsList=ref<HTMLElement>();
-const motion=sourceMotion();
-watch(()=>props.model.slot,()=>{if(document.documentElement.hasAttribute('data-stone-free')){if(itemsList.value)motion.animate(itemsList.value,workspaceEnterFrames(1),620)}},{flush:'post'});
-
-scope.own(()=>motion.dispose());
 const pageSize=40;
 const manageMode=ref(false),checked=ref<string[]>([]);
 watch(()=>!!query.value.trim()&&!manageMode.value,acrossSlots=>props.onSearch(acrossSlots),{flush:'sync'});

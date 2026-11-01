@@ -11,7 +11,7 @@ html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{container-type:
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-width:0;padding:10px 0 14px;border-bottom:1px solid #ffffff0b}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:flex-start;min-height:44px;padding:9px 12px;border-color:transparent;border-radius:11px;background:transparent;color:var(--sf-muted,#aaa9ad);text-align:left}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{background:rgba(12,14,15,.2);box-shadow:none;color:var(--sf-ink,#e6e6e8)}
-html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{display:grid;perspective:1200px;min-width:0;min-height:18rem}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{display:grid;min-width:0;min-height:18rem}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{grid-area:1/1;align-self:start;display:grid;gap:14px;min-width:0;width:100%;backface-visibility:hidden;transform-origin:center top}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro{padding:2px 2px 4px}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro .dmt-eyebrow{margin:0 0 4px}
@@ -88,7 +88,6 @@ html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{animation:none}
 html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{background:linear-gradient(125deg,#bfd4df12,transparent 55%),#24262aee!important;border:1px solid #d4ece42b!important;box-shadow:inset 0 1px #e5f2f329,0 24px 80px #0006!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html[data-stone-free][data-dgu-visualGlass] #dol-midnight-controls>.dmt-settings-shell{background:linear-gradient(130deg,#e3f3ff14,transparent 56%),#24262ad9!important}
 html[data-stone-free] #dol-midnight-controls::backdrop{background:var(--dgu-workspace-context-background,transparent)!important;backdrop-filter:var(--dgu-workspace-context-filter,none)!important;-webkit-backdrop-filter:var(--dgu-workspace-context-filter,none)!important;transition:none}
-html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{perspective:1400px}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{transform-style:preserve-3d}
 
 html[data-stone-free] .dgu-orbit-nav{position:relative}

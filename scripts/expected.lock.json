@@ -1685,8 +1685,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "fa1be3c81bf4fad25e754d9de5ba2aca68e4a7aa5ec608ff2e62f6adbd084a70",
-      "assertionSites": 17
+      "sourceSha256": "f9edd8ccac7bf50273395c2ee9a181fed51b3b58c77a91a9ca7e93d826913f98",
+      "assertionSites": 20
     },
     {
       "entry": "tests/moody-oracles.test.cjs",
@@ -1824,8 +1824,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "1df1db5ec344be97a9b0b742e5c2257ef810e8ec4e73ad0b707999b265cefe4f",
-      "assertionSites": 118
+      "sourceSha256": "9eca240d2b60544fcdc13453680aa73f1996c8fa3c330acc956a88c33c2b2abe",
+      "assertionSites": 123
     },
     {
       "entry": "tests/optimization-date.cjs",
@@ -2276,7 +2276,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "0d1db6c118f55aa425a37309584a8ad6f0596141331eb7e1b4f4bba23519050d",
+      "sourceSha256": "890e247fe61b923beb2c4ba13c4e0125d921354a14fbc969ebf44bb3b6502818",
       "assertionSites": 282,
       "rendererContexts": [
         "weather:2d"
@@ -2342,8 +2342,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "23c19b38c8dae0e31491f30953aada5d6b7ed81349af2e68a444251b7b296def",
-      "assertionSites": 23
+      "sourceSha256": "daa69a33fa5d5d561b81a349ee63aa93059044d7f13884a35b9f3eb67b8545ea",
+      "assertionSites": 27
     },
     {
       "entry": "tests/shop-source.test.cjs",
@@ -2808,8 +2808,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "db124313ec98ac0bd33086978bee3b191490f992ab3c0c262726938eef55c347",
-      "assertionSites": 43
+      "sourceSha256": "55cf6958e3dca4f7e4723e6690a871cbea1377c6a5974b5bac356ae9e694940a",
+      "assertionSites": 46
     },
     {
       "entry": "tests/weather-dom-writes.cjs",

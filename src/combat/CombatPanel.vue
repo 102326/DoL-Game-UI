@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {useWorkspaceSurface} from '../ui/workspace-surface';
 import {ref,computed,watch,onBeforeUnmount} from 'vue';
-import {workspaceEnterFrames} from '../ui/workspace-transition';
 import {sourceMotion} from '../ui/source-motion';
 import OrbitFocus from '../ui/OrbitFocus.vue';
 const officialMotion=document.documentElement.hasAttribute('data-stone-free');
@@ -15,10 +14,6 @@ const currentGroup=computed(()=>props.model.activeKey||'');
 const editing=computed(()=>props.model.groups.find(g=>g.key===currentGroup.value));
 const heading=ref<HTMLElement>(),plane=ref<HTMLElement>(),motion=sourceMotion();
 const activeIndex=computed(()=>Math.max(0,props.model.groups.findIndex(g=>g.key===currentGroup.value)));
-watch(currentGroup,()=>{
- if(!props.model.focused)return;
- if(native.value)motion.animate(native.value,workspaceEnterFrames(1),620);
-},{flush:'post'});
 watch(()=>editing.value?.selected,(value,previous)=>{
  if(value===previous||!props.model.focused||!plane.value)return;
  motion.animate(plane.value,[{backgroundColor:'#92a6b119',boxShadow:'inset 2px 0 #92a6b177'},{backgroundColor:'#2020226b',boxShadow:'none'}],480);

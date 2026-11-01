@@ -6,7 +6,6 @@ import Toolbar from './Toolbar.vue';
 import {createShopSource,copyShopItem,purchaseControl,type ShopFacts} from './source';
 import './style.css';
 import {purchaseWitness,purchaseResult} from './transaction';
-import {workspaceEnterFrames} from '../ui/workspace-transition';
 import {sourceMotion} from '../ui/source-motion';
 import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
@@ -52,7 +51,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   }
   shop?.classList.toggle('dgshop-fixed-details',open&&(!capable||popoverUnavailable));
  }
- function resizeLayout(){if(!shop)return;state.narrow=shop.clientWidth<800;state.compact=shop.clientWidth<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop();syncRipple()}
+ function resizeLayout(){if(!shop)return;const style=getComputedStyle(shop),width=shop.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);state.narrow=width<800;state.compact=width<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop();syncRipple()}
  function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;shop?.classList.toggle('dgshop-categories-open',state.categoriesOpen)}
  function scheduleResize(){motion.cancel();selectionMotion=undefined;clearRipple();scope.frame(resizeLayout)}
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
@@ -160,15 +159,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   if(selectionMotion){
    const pending=selectionMotion;selectionMotion=undefined;
    if(document.documentElement.hasAttribute('data-stone-free')&&motion.enabled()){
-    if(pending.category){
-     // The catalog owns scrolling, not native fixed controls or their coordinate system.
-     motion.animate(catalog!,workspaceEnterFrames(1),620);
-    }else if(projection?.selected&&pending.display===source!.selectionDisplay()&&state.hasDetails&&details.getClientRects().length){
-     syncRipple(pending.point);
-     const distance=Math.min(160,details.clientWidth*.38);
-     motion.animate(detailBody!,[{left:distance+'px',opacity:.24},{left:'-3px',opacity:1,offset:.8},{left:'0px',opacity:1}],660);
-     if(footer&&!footer.hidden)motion.animate(footer,[{left:Math.min(52,distance*.4)+'px',opacity:.4},{left:'0px',opacity:1}],620);
-    }
+    if(!pending.category&&projection?.selected&&pending.display===source!.selectionDisplay()&&state.hasDetails&&details.getClientRects().length)syncRipple(pending.point);
    }
   }
   observe();
