@@ -313,3 +313,5 @@ docs/HANDOFF.local.md
 /tests/ui41-panel-preview.cjs
 /tests/ui41-workspace-audit.cjs
 /tests/ui41-independent.cjs
+
+/tests/foreground-plane.cjs

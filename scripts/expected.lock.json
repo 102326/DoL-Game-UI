@@ -664,7 +664,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "67b54ee34cba97290e1bc16dd5780e77956c3aaa851cf014d01fd5a9240830fa",
+      "sourceSha256": "98d4b6afb68b5fc875196352e09c6f488ad25be7cc428871cc9b10e681bfcfc2",
       "assertionSites": 307
     },
     {
@@ -1231,6 +1231,23 @@
       "assertionSites": 16
     },
     {
+      "entry": "tests/foreground-plane.cjs",
+      "sourceEntry": "tests/foreground-plane.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "a29d37d66c40a3662d29d6ec2286110cfb80e7be7b4aa425ce57926f3ba5928b",
+      "assertionSites": 57
+    },
+    {
       "entry": "tests/framework-commands.cjs",
       "sourceEntry": "tests/framework-commands.cts",
       "profiles": [
@@ -1524,7 +1541,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b65f035a8521adfbb3686e3819088b85eab6cef535ac480bf8b5662a5c66165b",
+      "sourceSha256": "fe2e94f7cc5fbdfaef05fcd1eb431e6b0e7550fff4827e4ef3570589f9a47e2b",
       "assertionSites": 84
     },
     {

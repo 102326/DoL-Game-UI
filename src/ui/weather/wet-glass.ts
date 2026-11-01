@@ -7,6 +7,7 @@ import {frostSurface} from './frost';
 import {scatteredShower} from './scattered-shower';
 import {bloodMoonSky} from './blood-moon';
 import {specialAtmosphere} from './special-atmosphere';
+import {foregroundPlane} from '../foreground-plane';
 import type {WeatherFrame as Frame} from './surface';
 type Box={x:number;y:number;width:number;height:number};
 type Frost=ReturnType<typeof frostSurface>;
@@ -199,6 +200,7 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   if(frost)frost.draw(s.snow,s.time,width,height);
   else if(s.snow>.01){ctx.strokeStyle=`rgba(207,230,238,${s.snow*.4})`;ctx.lineWidth=.5;for(let i=0;i<50;i++){const y=i*height/50,edge=i%2?width-2:2,sign=i%2?-1:1,len=(4+(i*19%17))*s.snow;ctx.beginPath();ctx.moveTo(edge,y);ctx.lineTo(edge+sign*len,y-len*.5);ctx.lineTo(edge+sign*len*.65,y-len*.8);ctx.stroke()}}
  }
+ const releaseForeground=foregroundPlane(shell,[layer,canvas]);if(releaseForeground)scope.own(releaseForeground);
  return{draw,shower(value:boolean){showerEnabled=withShower&&value},count:nodes.length,layoutMoving:()=>wasMoving,snapshot:()=>{const s=model.snapshot();const cold:Partial<T>=frost?.snapshot()??{};return Object.assign({material:'glass',specialSkiesEnabled:specialSkies,specialSkyModels:[blood?.snapshot(),atmosphere?.snapshot()].filter(Boolean),forceEnabled:!!withForce,scatterEnabled:scatter,showerPattern:scatter?'independent-streaks':'tiled-svg',showerGeometry,rainEnergy,rainAmount,showerDensity,showerSpeed,showerEnabled,showerReady:scatter||!!(showerImage?.complete&&showerImage.naturalWidth),showerPhase,climateEnabled:climate,microVisible},cold,{runoffEnabled:runoff,runoffBorn:s.runoffBorn,runoffDrained:s.runoffDrained,trailMode:naturalTrails?'natural-footprint':'linear-stroke',rainRegion:{width,height:rainHeight,coverage:shell.hasAttribute('data-sf-weather-material')?'header':'surface'},wetBounds,wetPaths:wetBounds.length,activeDrops:active.length,moving:visibleFlow,attached:active.length-visibleFlow,merges:s.merges,slides:s.slides,drained:s.drained,trailSegments:s.trails.length,protected:frameProtection,dropBounds:active,protectedOverlap:[...active,...wetBounds,...(cold?.iceBounds??[]),...(cold?.flakeBounds??[])].filter(b=>frameProtection.some(q=>intersects(b,q))).length,backdropSupported:CSS.supports('backdrop-filter',`url(#${ids[0]})`),optics:'Native SVG backdrop displacement; approximate normal field, not a physical refraction solver',drops:s.drops})},dispose(){if(showerImage)showerImage.onload=null;scope.dispose();layer.remove()}};
  }catch(error){scope.dispose();throw error}
 }
