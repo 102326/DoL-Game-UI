@@ -117,7 +117,7 @@ html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-
 html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgw-slots button,.dgshop-content .category-tab)[aria-busy=true]{cursor:progress;border-style:dashed}
 @media(prefers-reduced-motion:reduce){html[data-stone-free] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){transition:none!important}}
 html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){transition:none!important}
-html[data-stone-free]:not([data-dgu-visualMotion]) #dol-midnight-controls input[type=checkbox]{transition:none!important}
+html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls input[type=checkbox],html[data-dol-midnight][data-dgu-acrylic-adjustment] .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=checkbox]:only-of-type){transition:none!important}
 
 html[data-stone-free][data-dol-midnight] :is(#ui-bar button[data-kw-entry],.sf-motion-hub[data-official] button)[data-kw-press]{background-color:#8baea324!important;box-shadow:inset 0 0 0 1px #8baea352!important}
 /* The settings window remains available when the theme is off; disabled still means unavailable. */

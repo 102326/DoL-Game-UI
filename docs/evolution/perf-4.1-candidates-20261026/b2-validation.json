@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-26",
+  "baseHead": "c7ba325f80a8ba8396c24258e96284c1ad6ce20a",
+  "testedTree": "base plus new B2 files, identified by SHA256; no runtime UI or frozen vendor changes",
+  "node": "26.12.1",
+  "platform": "darwin arm64",
+  "commands": [
+    {
+      "command": "node docs/evolution/perf-4.1-evidence-20261026/check-inference.mts docs/evolution/perf-4.1-candidates-20261026/alias-patterns-b2.mts",
+      "exitCode": 0,
+      "scope": "26 golden cases, 6 mutation steps, input/result isolation"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.research-tools.json",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/evolution/perf-4.1-candidates-20261026/check-alias-patterns-b2.mts",
+      "exitCode": 0,
+      "scope": "1279 states and 96 recorded fresh-VM three-way observations"
+    },
+    {
+      "command": "node docs/evolution/perf-4.1-candidates-20261026/check-b2-steady-overflow.mts",
+      "exitCode": 0,
+      "scope": "12 recorded steady-VM three-way observations of 400-entry boundary"
+    }
+  ],
+  "decision": "B2 removes per-entry capacity checks and preserves local warm-path gains. Large-catalog timings near baseline with noise; no statistical equivalence or end-to-end performance acceptance. B1 large slowdown also reduced in this round; cannot attribute all historical slowdown to B2 changes. No production integration or new remote CI."
+}

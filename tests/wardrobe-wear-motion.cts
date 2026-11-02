@@ -9,6 +9,7 @@ declare const releaseTest:{host:Pick<Host,'invalidateScene'|'dispose'>;root:unkn
 declare const must:<T>(value:T|null)=>T;
 declare const rect:(value:DOMRect)=>{x:number;y:number;width:number;height:number;top:number;right:number;bottom:number;left:number};
 declare let nativeCalls:number,listRefreshes:number;
+declare let wearAnimation:Animation|undefined;
 const {chromium}=playwright;
 (async()=>{
  const [{createServer},{default:vue}]=await Promise.all([import('vite'),import('@vitejs/plugin-vue')]);
@@ -18,6 +19,9 @@ const {chromium}=playwright;
   await server.listen();const address=server.httpServer?.address();assert.ok(address&&typeof address!=='string');const port=address.port;const page=await browser.newPage({viewport:{width:1000,height:800}});
   await page.goto('http://127.0.0.1:'+port+'/__wardrobe_wear__');await page.evaluate(()=>Object.assign(window,{must:<T,>(value:T|null)=>{if(!value)throw Error('Missing wardrobe fixture');return value},rect:(r:DOMRect)=>({x:r.x,y:r.y,width:r.width,height:r.height,top:r.top,right:r.right,bottom:r.bottom,left:r.left})}));
   await page.addStyleTag({path:'src/theme/kraft-work-pages.css'});
+  // Hold the real press effect at 90ms; a busy renderer can otherwise sample after its 1250ms lifetime.
+  await page.evaluate(()=>{const animate=Element.prototype.animate;Element.prototype.animate=function(frames,options){const a=animate.call(this,frames,options);if(this.matches('.kw-wardrobe-press')){Object.assign(window,{wearAnimation:a});a.pause();a.currentTime=90}return a}});
+
   for(const zoom of [.8,1,1.25]){
    await page.evaluate(async zoom=>{
     (()=>{const previous:unknown=Reflect.get(window,'testWardrobe');if(previous&&typeof previous==='object'&&'destroy' in previous&&typeof previous.destroy==='function')previous.destroy()})();document.body.innerHTML='<div style="height:150px"></div><div id="passages"><div class="passage" data-passage="Wardrobe"><div id="wardrobeList"></div></div></div><div style="height:1000px"></div>';
@@ -33,7 +37,7 @@ const {chromium}=playwright;
    const before=await page.evaluate(()=>{const item=must(document.querySelector<HTMLElement>('.dgw-item')),list=must(item.closest<HTMLElement>('.dgw-items'));const box=item.getBoundingClientRect(),parent=list.getBoundingClientRect();item.click();return {box:rect(box),parent:rect(parent)}});
    await page.waitForTimeout(90);
    const after=await page.evaluate(()=>{const n=document.querySelector('.kw-wardrobe-press'),p=must(document.querySelector<HTMLElement>('.dgw-items'));return {parent:n?.parentElement===p,box:n?rect(n.getBoundingClientRect()):null,list:rect(p.getBoundingClientRect()),pointer:n&&getComputedStyle(n).pointerEvents,calls:nativeCalls}});
-   assert.equal(after.parent,true);assert.equal(after.pointer,'none');assert.equal(after.calls,1);assert.ok(after.box);
+   assert.equal(await page.evaluate(()=>wearAnimation?.effect?.getTiming().duration),1250);assert.equal(after.parent,true);assert.equal(after.pointer,'none');assert.equal(after.calls,1);assert.ok(after.box);
    for(const axis of ['x','y'] as const)assert.ok(Math.abs((after.box[axis]-after.list[axis])-(before.box[axis]-before.parent[axis]))<1.5,`Ripple follows inventory at zoom ${zoom}: ${axis}`);
    for(const size of ['width','height'] as const)assert.ok(Math.abs(after.box[size]-before.box[size])<1.5,`Ripple size at zoom ${zoom}`);
    const scrolled=await page.evaluate(()=>{const list=must(document.querySelector<HTMLElement>('.dgw-items'));const before=list.scrollTop;list.scrollTop+=32;return {delta:list.scrollTop-before,box:rect(must(document.querySelector<HTMLElement>('.kw-wardrobe-press')).getBoundingClientRect())}});

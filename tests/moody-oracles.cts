@@ -9,7 +9,7 @@ function readSettingsSnapshot(){return {
  closeAnimations:[...(document.querySelector('.dmt-settings-shell')?.getAnimations()||[])].map(a=>({state:a.playState,time:a.currentTime,duration:a.effect?.getTiming().duration})),
  transition:!!document.querySelector('#dol-midnight-controls[data-workspace-transition]'),
  sections:[...document.querySelectorAll('.dmt-workspace-section')].map(n=>({heading:n.getAttribute('aria-labelledby'),inert:n.hasAttribute('inert'),hidden:n.getAttribute('aria-hidden')==='true'})),
- readingEnabled:!!document.querySelector('[aria-label="舒适阅读间距"]:enabled'),
+ readingEnabled:!!document.querySelector('[aria-label="正文行距"]:enabled'),
  animations:document.querySelectorAll('.dmt-workspace-section').length?[...document.querySelectorAll('.dmt-workspace-section')].flatMap(n=>n.getAnimations().map(a=>({state:a.playState,time:a.currentTime,duration:a.effect?.getTiming().duration}))):[]
  }}
 async function settingsSnapshot(page:Page){return page.evaluate(readSettingsSnapshot)}

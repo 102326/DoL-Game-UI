@@ -1,0 +1,80 @@
+// Isolated census of the release source; no candidate, game or installed Mod mutation.
+import {build} from 'esbuild';
+import {chromium} from 'playwright';
+import {execFileSync} from 'node:child_process';
+import {readFileSync, writeFileSync} from 'node:fs';
+import {relative, resolve, dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+import ts from 'typescript';
+import {runInNewContext} from 'node:vm';
+const root=process.cwd(), base='ff428b4d385b79f6c14fada9a65301157978aa6f';
+const sources:Record<string,string>={};
+const digest=(text:string)=>createHash('sha256').update(text).digest('hex');
+async function bundle(entry:string,name:string){
+ const result=await build({entryPoints:[resolve(entry)],bundle:true,write:false,format:'iife',globalName:name,platform:'browser',target:'es2022',plugins:[{name:'release-source',setup(b){
+  b.onLoad({filter:/\.ts$/},({path})=>{const name=relative(root,path).replaceAll('\\','/');assert(!name.startsWith('../'));const contents=execFileSync('git',['show',`${base}:${name}`],{encoding:'utf8'});sources[name]=digest(contents);return{contents,loader:'ts',resolveDir:dirname(path)}});
+ }}]});return result.outputFiles[0]!.text;
+}
+const ui=await bundle('src/runtime/ui.ts','UiSurvey'),host=await bundle('framework/host.ts','HostSurvey');
+const names=['modhub','maplebirch','smartphone','cheat-extended','dol-optimization'];
+const compat=[];for(const n of names)compat.push(await bundle(`compat/${n}-soft-wet/${n}-soft-wet.ts`,'CompatSurvey'));
+// Execute the exact parsed release expression with dependency spies, not a rewritten example.
+const officialText=execFileSync('git',['show',`${base}:framework/official-ui/main.ts`],{encoding:'utf8'});
+sources['framework/official-ui/main.ts']=digest(officialText);
+const ast=ts.createSourceFile('main.ts',officialText,ts.ScriptTarget.Latest,true),releaseExpressions:string[]=[];
+function findRelease(node:ts.Node){if(ts.isVariableDeclaration(node)&&ts.isIdentifier(node.name)&&node.name.text==='release'&&node.initializer)releaseExpressions.push(node.initializer.getText(ast));ts.forEachChild(node,findRelease)}
+findRelease(ast);assert.equal(releaseExpressions.length,1);
+const cleanupCalls:string[]=[];let thrown='';
+try{runInNewContext('('+releaseExpressions[0]+')()',{
+ stopMotion(){cleanupCalls.push('motion');throw Error('injected motion cleanup failure')},stopHub(){cleanupCalls.push('hub')},shelf:{dispose(){cleanupCalls.push('shelf')}},destroyUi(){cleanupCalls.push('ui')},
+ owner:{dispose(){cleanupCalls.push('owner')}},ui:{},html:{getAttribute(){return'4.0.1'},removeAttribute(){cleanupCalls.push('attribute')},setAttribute(){throw Error('Unexpected')}},visualVersion:'4.0.1',previous:null
+},{timeout:1000})}catch(error){thrown=(error as Error).message}
+assert.equal(thrown,'injected motion cleanup failure');assert.deepEqual(cleanupCalls,['motion','owner','attribute']);
+const faultCharacterization={expressionSha256:digest(releaseExpressions[0]!),injectedFailure:'stopMotion cleanup throws',observedCalls:cleanupCalls,skipped:['stopHub','shelf.dispose','destroyUi'],exception:thrown,limits:'Exact release expression with spies only; confirms control flow, not measured full-UI leak or ordinary-player failure frequency.'};
+const browser=await chromium.launch({headless:true});
+try{
+ const page=await browser.newPage({viewport:{width:1280,height:900}}),errors:string[]=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.setContent('<!doctype html><html data-dol-midnight><body></body></html>');
+ // Initialize Playwright's own global-listener removal observer before product census.
+ assert.equal(await page.locator('body').count(),1);
+ // addScriptTag also initializes a main-world InjectedScript, separate from locators.
+ await page.addScriptTag({content:'/* initialize Playwright main-world helper */'});
+ await page.evaluate(()=>{
+  const w=window as any,Native=window.MutationObserver,raf=window.requestAnimationFrame.bind(window),records:any[]=[],gets:string[]=[];let frames=0;
+  w.MutationObserver=class extends Native{record:any;constructor(cb:MutationCallback){const record={callbacks:0,targets:new Set<Node>(),stack:new Error().stack};super((r,o)=>{record.callbacks++;cb(r,o)});this.record=record;records.push(record)}observe(n:Node,o:MutationObserverInit){this.record.targets.add(n);super.observe(n,o)}disconnect(){this.record.targets.clear();super.disconnect()}};
+  w.requestAnimationFrame=(cb:FrameRequestCallback)=>raf(t=>{frames++;cb(t)});
+  w.survey={records,gets,frames:()=>frames,settle:async()=>{for(let i=0;i<3;i++)await new Promise(raf)}};
+  w.modUtils={getMod:(name:string)=>{gets.push(name);return{version:'1.0.0'}}};
+ });
+ await page.addScriptTag({content:ui});
+ await page.evaluate(()=>{const w=window as any;w.runtime=w.UiSurvey.createUiRuntime(window,()=>({}));w.DoLGameUI={ui:w.runtime.api}});
+ for(const code of compat)await page.addScriptTag({content:code});
+ const census=await page.evaluate(async()=>{
+  const w=window as any,s=w.survey;await s.settle();
+  const ids=w.runtime.api.getAdapterDiagnostics().map((d:any)=>d.id).sort(),before={gets:s.gets.length,frames:s.frames(),callbacks:s.records.map((r:any)=>r.callbacks)};
+  const node=document.createElement('div');node.id='survey-unrelated';document.body.append(node);await s.settle();
+  const delta={targetLookups:s.gets.length-before.gets,frames:s.frames()-before.frames,observerCallbacks:s.records.reduce((sum:number,r:any,i:number)=>sum+r.callbacks-before.callbacks[i],0)};
+  const resources={constructedObservers:s.records.length,observingInstances:s.records.filter((r:any)=>r.targets.size).length};
+  for(const name of ['ModHubSoftWet','MapleBirchSoftWet','SmartPhoneSoftWet','CheatExtendedSoftWet','DolOptimizationSoftWet'])w[name].destroy();w.runtime.destroy();await s.settle();
+  return{adapterIds:ids,resources,unrelatedDirectBodyChild:delta,afterDisposeObservingInstances:s.records.filter((r:any)=>r.targets.size).length,observerOwners:s.records.map((r:any)=>{const known=['createEntry','createUiRuntime','createOptimizationWardrobe','createOptimizationDates'].find(name=>r.stack?.includes(name+' ('));if(!known)throw Error('Unknown observer owner: '+r.stack);return known})};
+ });
+ writeFileSync(resolve("tests/artifacts/host-survey-20261026/census-diagnostic.json"),JSON.stringify(census,null,2));assert.equal(census.adapterIds.length,9);assert.equal(census.resources.constructedObservers,21);assert.equal(census.unrelatedDirectBodyChild.targetLookups,9);assert.equal(census.afterDisposeObservingInstances,0);
+ await page.close();
+ const p=await browser.newPage();p.on('pageerror',e=>errors.push(e.message));await p.setContent('<!doctype html><body><section id="survey-parent"></section></body>');
+ await p.addScriptTag({content:host});
+ const ownership=await p.evaluate(async()=>{
+  const w=window as any,core=w.HostSurvey.createHost(window),owner=core.register('Survey'),parent=document.getElementById('survey-parent')!;let cleaned=0,sceneNotifications=0;
+  core.sceneReady();const handles=['one','two'].map(id=>owner.mount({id,parent,lifetime:'persistent',setup(ctx:any){ctx.onCleanup(()=>cleaned++);ctx.onScene(()=>sceneNotifications++)}}));
+  const binding=core.binding();core.invalidateScene();const staleAfterInvalidate=!binding.isCurrent()&&binding.signal.aborted;
+  core.sceneReady();const keptAfterScene=core.getDiagnostics().mounts.length;parent.remove();
+  await new Promise(resolve=>setTimeout(resolve,0));const afterRemoval=core.getDiagnostics().mounts.length;
+  const allHandlesClosed=handles.every(h=>!h.isCurrent());owner.dispose();core.dispose();
+  return{staleAfterInvalidate,sceneNotifications,keptAfterScene,afterRemoval,allHandlesClosed,cleaned,disposed:core.getDiagnostics().disposed};
+ });
+ assert.deepEqual(ownership,{staleAfterInvalidate:true,sceneNotifications:2,keptAfterScene:2,afterRemoval:0,allHandlesClosed:true,cleaned:2,disposed:true});assert.deepEqual(errors,[]);
+ const result={schema:1,status:'PASS',baseline:base,environment:{platform:process.platform,arch:process.arch,node:process.version,chromium:browser.version(),viewport:{width:1280,height:900}},sourceSha256:sources,bundleSha256:{ui:digest(ui),host:digest(host),compat:compat.map(digest)},adapterCensus:census,hostOwnership:ownership,faultCharacterization,limits:'Release-source isolated blank page with five actual compatibility entrypoints; no target Mod/game DOM or business, no runtime optimization, time/memory/device acceptance. Constructed and observing observer counts differ. All-adapter target lookups expose fanout, not equal costs or proven savings.',probeSha256:digest(readFileSync(fileURLToPath(import.meta.url),'utf8'))};
+ writeFileSync(resolve('tests/artifacts/host-survey-20261026/result.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));
+}finally{await browser.close()}

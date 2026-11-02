@@ -1,0 +1,38 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: tools must begin during the initial sphere effect\n    at Object.apply (<repo>/scripts/ci-process-receipt.cjs:23:66)\n    at <repo>/tests/golden-spin-hub.cjs:41:20\n    at async runCase (<repo>/scripts/ci/cases.ts:15:54)\n    at async check (<repo>/tests/golden-spin-hub.cjs:22:41)\n    at async <repo>/tests/golden-spin-hub.cjs:33:9",
+  "checks": [],
+  "errors": [],
+  "state": {
+    "q": 0.93539,
+    "target": 1,
+    "moving": true,
+    "paused": false,
+    "pressed": false,
+    "geometryValid": true,
+    "nodes": 5,
+    "phase": "moving",
+    "dead": false,
+    "renders": 39,
+    "framePending": false,
+    "sphere": {
+      "phase": "charge",
+      "speed": 34.953665,
+      "charge": 0.836948,
+      "energy": 0,
+      "spread": 0,
+      "pressure": 0.777656,
+      "angle": 1.072363292001997,
+      "orbit": 2.9386547641338514,
+      "draws": 40,
+      "meteors": 2,
+      "running": true,
+      "dead": false,
+      "paused": false,
+      "reduced": false,
+      "motionChanges": 0,
+      "width": 175,
+      "height": 174.99996948242188
+    }
+  },
+  "redaction": "Only the local checkout prefix was replaced with <repo>; failure and state unchanged."
+}

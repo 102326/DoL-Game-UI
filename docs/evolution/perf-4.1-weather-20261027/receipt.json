@@ -1,0 +1,85 @@
+{
+  "sourceCommit": "41b094a9cafba1f2765af3621001f845d5b5f3d0",
+  "sourceFilesSha256": {
+    "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/settings.css": "a9156ed347322c64c1df902a40d2bac6e2eed8e47013e2aabef6a78142d5bb64",
+    "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+    "src/ui/weather/surface.ts": "43736ea3ffc9f19ce89a4355d4fbac930ed528707d45131804d49eb99c98b581",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "d23a37f483dc709c088a217f1d5730cc18451417f7eab29b8c0fbb25230188ba",
+    "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+    "tests/ui41-weather-paint.cts": "695bcb81d450b0f38ee829ba7cdc9a6ac8ae63feaba68f1d733f273711d157df",
+    "tests/weather-dom-writes.cts": "335cf44d2f66f2facc5c29b7c397a3c7a1eb997093fad72f067eaf35d8bcd6ba",
+    "scripts/preview-ui41.mts": "3d68c600b2a90e01bb56b30f35d234b8ef9f2dea4fd4f9b1635ca9787e1cc551",
+    "scripts/expected.lock.json": "ffcaa79473a1ae17dd05630e6cbf4b53a071945d82e721aaf86716e48480905e",
+    "package-lock.json": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591",
+    "dist/framework/official-ui/style.css": "76834b45a45c0d2d7375bd4a4522d8cdac4260ef8e4376238e17ba9a89ca885d"
+  },
+  "environment": {
+    "platform": "macOS arm64",
+    "node": "v26.12.1",
+    "playwright": "1.63.0",
+    "chromium": "153.0.8010.12"
+  },
+  "completedChecks": [
+    {
+      "command": "npm run ci:lock",
+      "exit": 0
+    },
+    {
+      "command": "npm run ci:check",
+      "exit": 0
+    },
+    {
+      "command": "node scripts/build-framework.mjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/evolution-rain-model.test.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/weather-dom-writes.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/evolution-weather-integration.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/ui41-weather-paint.cjs",
+      "exit": 0
+    },
+    {
+      "command": "npm run tooling:build (after preview copy change only)",
+      "exit": 0
+    }
+  ],
+  "rejected": {
+    "candidate": "C1 full-style replacement",
+    "patch": "c1-rejected.patch",
+    "timing": "c1.json",
+    "domRed": "c1-dom-red.json",
+    "initialDomProbe": {
+      "sourceSha256": "8488723843607780da13645ae367ec86df32f65d1906f606fadd6c60f0023c1a",
+      "writes": 4657,
+      "maxStyleWritesPerNode": 1,
+      "note": "Initial probe briefly included the legacy expando as a CSS variable. Final timed C1 patch preserves legacy lighting; do not claim identical source identities."
+    }
+  },
+  "limitations": [
+    "Only C2 remains in runtime source; wet-glass.ts matches reference",
+    "Material range accepted, default60; no product-wide rollout",
+    "No remote CI, actual game, physical device or GPU/overall-performance acceptance",
+    "Fixture and model comparisons support bounded equivalence; timing does not prove statistical significance",
+    "Evidence files name the measurement-time parent source; current commit and per-file hashes bind the adopted candidate"
+  ],
+  "synchronization": "Local commits only; not pushed"
+}

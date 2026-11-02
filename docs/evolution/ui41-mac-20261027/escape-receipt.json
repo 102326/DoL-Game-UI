@@ -1,0 +1,51 @@
+{
+  "sourceCommit": "76afc7237a41b1c87043e1880283dcb00898cc86",
+  "status": "PASS",
+  "commands": [
+    {
+      "command": "npm run ci:check (initial Escape fix, then only early-return optimization)",
+      "exit": 0
+    },
+    {
+      "command": "node scripts/build-framework.mjs (final source)",
+      "exit": 0
+    },
+    {
+      "command": "node tests/framework-startup.cjs (final actual built entry)",
+      "exit": 0
+    },
+    {
+      "command": "node tests/shop-ripple-motion.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node scripts/ci/generate-lock.ts",
+      "exit": 0
+    }
+  ],
+  "sourceSha256": {
+    "src/ui/native-select.ts": "274f2546d77679bac9e87b341f3dcc3354b3acdcfccbd61733e860a6f88fd297",
+    "src/theme/controller.ts": "9f54ece87d2f40c1c3d3d814d029757e20d540805927cbc9eebf8bd8a654b7f9",
+    "src/theme/layout.ts": "da39edce57617fdddffb2b9a63a51c1ab6512c37b25ba087520cddeab3ea8678",
+    "src/shop/main.ts": "6f5d61c5f51fcdbee17cf756877b6ba77c883f48848608b009f5547f9454c8aa",
+    "tests/framework-startup.cts": "308e3260556f50a64e7b124427db4058f05d03d15f48969ebef099f724d9a156",
+    "tests/shop-ripple-motion.cts": "23c19b38c8dae0e31491f30953aada5d6b7ed81349af2e68a444251b7b296def",
+    "scripts/expected.lock.json": "70273e969d64c278f5df6b9d36eaf3dbacde7b7b6a48594247e7ac3cc5330cac"
+  },
+  "scenarios": [
+    "native picker Escape retains settings dialog and focus; next Escape closes dialog",
+    "actual layout capture plus controlled compatible overlay: picker first, native closeOverlay second",
+    "actual shop toolbar: picker first, detail close second, native actions unchanged"
+  ],
+  "rejectedOld": [
+    {
+      "source": "0ede042 built official entry",
+      "reason": "settings picker did not close within2000ms; root key handler prevented native Escape"
+    },
+    {
+      "source": "controller fix with old layout built entry",
+      "reason": "visible overlay picker did not close within2000ms; layout capture prevented native Escape"
+    }
+  ],
+  "limits": "Chromium on Mac controlled HTML, not game/ModHub business or native Android backbutton verification. Root event target was OPTION, so closest(select) is intentional. Real game/third-party handlers still need the home combination."
+}

@@ -1,0 +1,9 @@
+{
+  "source": "https://github.com/JohnLiao501/ModHub/releases/download/v1.9.2/ModHub-v1.9.2.zip",
+  "zipSha256": "f8080a869190c30d47decac5a168a7bb9b366fc9eda354ac6b885884e30480a1",
+  "member": "javascript/modhub-market.js",
+  "memberSha256": "4082ed4ba8e0d3d64035bf24bcf34376f70572ba0f4cefcce26f9cb0c7e3a648",
+  "compressedFixture": "modhub-1.9.2-market.js.gz",
+  "purpose": "Original complete closure for equivalence and stale-response regression, never shipped as runtime",
+  "license": "../../MODHUB-PERFORMANCE-NOTICE.txt"
+}

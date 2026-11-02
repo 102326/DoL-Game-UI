@@ -274,9 +274,11 @@ def check_package(path, name):
     lists = {'scriptFileList': ['index.js'], 'styleFileList': [], 'tweeFileList': [], 'imgFileList': [], 'additionFile': ['README.md', 'LICENSE']}
     if name == 'DoLGameUI':
         deps += [{'modName': 'StoneFreeHost', 'version': '>=0.1.2-experimental && <0.2.0'}, {'modName': 'TweeReplacer', 'version': '>=1.0.0'}, {'modName': 'GameVersion', 'version': '=0.5.12.13'}]
-        lists.update(styleFileList=['style.css'], scriptFileList_inject_early=['shop-page-experiment.js'])
+        lists.update(styleFileList=['style.css'], scriptFileList_inject_early=['shop-page-experiment.js', 'modhub-performance.js'])
         expected['style.css'] = ROOT / 'dist/framework/official-ui/style.css'
         expected['shop-page-experiment.js'] = ROOT / 'dist/shop-page-experiment.js'
+        expected['modhub-performance.js'] = ROOT / 'dist/modhub-performance.js'
+        expected['MODHUB-PERFORMANCE-NOTICE.txt'] = ROOT / 'MODHUB-PERFORMANCE-NOTICE.txt'
         for filename in ['ui.d.ts', 'wardrobe.d.ts']:
             expected['types/' + filename] = ROOT / 'dist/types' / filename
         release_notes = [f'docs/RELEASE_{version}.md'] if (ROOT / f'docs/RELEASE_{version}.md').is_file() else []
@@ -294,7 +296,7 @@ def check_package(path, name):
         assert boot['addonPlugin'] == [{'modName': 'TweeReplacer', 'addonName': 'TweeReplacerAddon', 'modVersion': '>=1.0.0', 'params': params}], 'Wrong shop patch metadata'
         for _, _, filename in shop_patches:
             expected[filename] = ROOT / filename
-        lists['additionFile'] += ['THIRD-PARTY-NOTICES.txt', 'docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', *release_notes, 'types/ui.d.ts', 'types/wardrobe.d.ts', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']
+        lists['additionFile'] += ['THIRD-PARTY-NOTICES.txt', 'docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', *release_notes, 'types/ui.d.ts', 'types/wardrobe.d.ts', 'MODHUB-PERFORMANCE-NOTICE.txt', 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']
     else:
         assert not boot.get('addonPlugin') and not boot.get('scriptFileList_inject_early'), 'Unexpected Host entry'
     assert boot['dependenceInfo'] == deps, 'Dependency policy drift'

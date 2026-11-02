@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "baseline": "ff428b4d385b79f6c14fada9a65301157978aa6f",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v26.12.1",
+    "chromium": "153.0.8010.12",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    }
+  },
+  "sourceSha256": {
+    "src/runtime/ui.ts": "573ac776c5c3de543813c849ba41465ef4f80d8217c9cb48483d4973aebcdb91",
+    "src/runtime/target-version.ts": "c59c5db2af0b8e6e0f15eb5be2e65fd01b2b04b26468ba16b82e6500735dcd96",
+    "src/runtime/inspector.ts": "b2d97b7d0e2ded6ffd881a6d825615c8b27a5b17351aa4676419ffbdc08d0da0",
+    "src/runtime/surfaces.ts": "03867dfeb632e4058f723ef899b2aec480bec121bdad89df65d4ad5014130e24",
+    "src/public/ui.ts": "2cf21f9d7b3d1b6e4c75161ce1a78f22b58fcaff4b2b3d2e6990cec7a840c223",
+    "src/runtime/presentation.ts": "f3d28659d51d0b23780a35c8e211f2670e06920755ccd154d0ac6db86b4e0a7d",
+    "framework/host.ts": "cfe13f34257525286492d15154c3ec8443bf44ace7e915419a600014102d3e11",
+    "framework/signals.ts": "b3172e4255c505c123b1092f89dc2d7145e17b35237a352385a79cb9fa8af374",
+    "framework/contracts.ts": "155d420806e441910949f616a2c7764183a00e92b89fb1ecbdd6acd3f2d3f43a",
+    "compat/modhub-soft-wet/modhub-soft-wet.ts": "1c5aad552a2be8d9c378f9fc5aa3db9f935d2f2f73c590eef893bc6055b4e8e8",
+    "compat/maplebirch-soft-wet/maplebirch-soft-wet.ts": "e645d1d4f2be25bdb947102ea149a8eac3d488fb0c994cc41ede213a2043ac6c",
+    "compat/smartphone-soft-wet/smartphone-soft-wet.ts": "72186b484531de5dba9e45e66e35f455301e693a76924944fe3f935486d9eca2",
+    "compat/cheat-extended-soft-wet/cheat-extended-soft-wet.ts": "a64afbc3ba8ca9b68280b2ff8b07c2c450ba36626b012294a324dc8284d403c5",
+    "compat/dol-optimization-soft-wet/dol-optimization-soft-wet.ts": "d568314514cf67b817e361b047f775d6d0311924f3cf3fe5c57154b8331df04f",
+    "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+    "framework/official-ui/main.ts": "37f89c48ec9ac639810bfc5770285558643cfe1e6d0aa665c289b30c748664d2"
+  },
+  "bundleSha256": {
+    "ui": "7ca9653142581240af6860a1f7bac5f6ddbf600d97a55d305be108fca2e1ad9b",
+    "host": "734de7afd3b9f9c47c611867621cb99eea3410a7a1972c5a1b638c5184401e76",
+    "compat": [
+      "c3340df0adb235752f33ba73105f08eeb7c05c26fb5079c2ec7aa618ea9cd199",
+      "55c06fbd992f186ef42e8b423273b2a27a4d53f75e2e884aeff3f0f8295a8fc0",
+      "eafbbd7acf7101528f6a79a7ec116121c1b437eb35140c6d7e44aebdc0540226",
+      "897c2097a40865353b088a5fda0ca678696f387dc91399184bb481a25385ca63",
+      "289467bd2057af92ecc1c26cdec3a01718539c3026fa83eacecc4d0461781d84"
+    ]
+  },
+  "adapterCensus": {
+    "adapterIds": [
+      "CheatExtendedInlineSoftWet",
+      "CheatExtendedSoftWet",
+      "DolOptimizationSoftWet",
+      "MapleBirchSoftWet",
+      "ModHubSoftWet",
+      "ModHubSoftWetModal",
+      "ModHubSoftWetTools",
+      "SmartPhoneSoftWet",
+      "SmartPhoneSoftWetDebug"
+    ],
+    "resources": {
+      "constructedObservers": 21,
+      "observingInstances": 12
+    },
+    "unrelatedDirectBodyChild": {
+      "targetLookups": 9,
+      "frames": 2,
+      "observerCallbacks": 11
+    },
+    "afterDisposeObservingInstances": 0,
+    "observerOwners": [
+      "createUiRuntime",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createEntry",
+      "createOptimizationWardrobe",
+      "createOptimizationDates",
+      "createEntry",
+      "createEntry"
+    ]
+  },
+  "hostOwnership": {
+    "staleAfterInvalidate": true,
+    "sceneNotifications": 2,
+    "keptAfterScene": 2,
+    "afterRemoval": 0,
+    "allHandlesClosed": true,
+    "cleaned": 2,
+    "disposed": true
+  },
+  "faultCharacterization": {
+    "expressionSha256": "28b254fb590aa0c2f7637b8cb5185ebb2a50b5a8e2da92395f478220be813e9c",
+    "injectedFailure": "stopMotion cleanup throws",
+    "observedCalls": [
+      "motion",
+      "owner",
+      "attribute"
+    ],
+    "skipped": [
+      "stopHub",
+      "shelf.dispose",
+      "destroyUi"
+    ],
+    "exception": "injected motion cleanup failure",
+    "limits": "Exact release expression with spies only; confirms control flow, not measured full-UI leak or ordinary-player failure frequency."
+  },
+  "limits": "Release-source isolated blank page with five actual compatibility entrypoints; no target Mod/game DOM or business, no runtime optimization, time/memory/device acceptance. Constructed and observing observer counts differ. All-adapter target lookups expose fanout, not equal costs or proven savings.",
+  "probeSha256": "825a045bede7d4d66f3702d783b9240cba792f5d4a4fb86547e46bfd7813eb89"
+}

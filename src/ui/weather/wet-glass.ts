@@ -7,6 +7,7 @@ import {frostSurface} from './frost';
 import {scatteredShower} from './scattered-shower';
 import {bloodMoonSky} from './blood-moon';
 import {specialAtmosphere} from './special-atmosphere';
+import {foregroundPlane} from '../foreground-plane';
 import type {WeatherFrame as Frame} from './surface';
 type Box={x:number;y:number;width:number;height:number};
 type Frost=ReturnType<typeof frostSurface>;
@@ -54,6 +55,8 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
  let protectedBoxes:Box[]=[],frameProtection:Box[]=[],active:Box[]=[],dirty=true,width=0,height=0,rainHeight=0,lastTime=0,visibleFlow=0,wasMoving=false;
  let layoutAnimations:Animation[]=[];
  const mark=()=>{if(!scope.active())return;dirty=true;invalidate()};const observer=new MutationObserver(mark);scope.own(()=>observer.disconnect());observer.observe(shell,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-workspace-transition','data-settings-layout','open']});shell.addEventListener('scroll',mark,true);scope.own(()=>shell.removeEventListener('scroll',mark,true));
+ // Centered settings move protected labels/controls without resizing the shell.
+ observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-options-centered']});
  const intersects=(a:Box,b:Box)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
  function layout(w:number,h:number){
   model.resize(w,h);const base=canvas.getBoundingClientRect(),scale=base.width/w||1,scaleY=base.height/(canvas.clientHeight||h)||1;
@@ -62,15 +65,16 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   // official rain surface to its header instead of compressing the model into it.
   rainHeight=h;
   if(shell.hasAttribute('data-sf-weather-material')){
-   const header=shell.querySelector('.dmt-settings-header');rainHeight=0;
+   const header=shell.querySelector('.dmt-settings-header,#customOverlayTitle,:scope>.dgp-host,:scope>header,.dgshop-native-header');rainHeight=shell.hasAttribute('data-sf-workspace')?Math.min(h,112):0;
    if(header?.getClientRects().length){
-    const regions=[header,...shell.querySelectorAll('.dmt-layout-choice,.dmt-workspace[data-settings-layout=horizontal] .dmt-workspace-nav')];
+    const regions=[header,...shell.querySelectorAll('.dmt-layout-choice,.dmt-workspace[data-settings-layout=horizontal] .dmt-workspace-nav,:scope>.dgc-host,:scope>.dgs-host,:scope>.dgp-host,.dgw-slots,.dgw-tools')];
     rainHeight=Math.max(0,Math.min(h,Math.max(...regions.filter(n=>n.getClientRects().length).map(n=>{const r=box(n.getBoundingClientRect());return r.y+r.height}))+48));
    }
   }
   layer.style.height=rainHeight+'px';layer.style.bottom='auto';
   protectedBoxes=[];
-  for(const el of shell.querySelectorAll('button,input,select,.dmt-reading-sample'+(runoff?'':',.evo-toolbar,.dmt-settings-footer')))if(el.getClientRects().length)protectedBoxes.push(box(el.getBoundingClientRect()));
+  const controls=shell.matches('.dmt-settings-shell')?'button,input,select,.dmt-reading-sample'+(runoff?'':',.evo-toolbar,.dmt-settings-footer'):'button,input,select,textarea,a,[role=button],img,canvas:not(.sf-weather-canvas)';
+  for(const el of shell.querySelectorAll(controls))if(el!==canvas&&el.getClientRects().length)protectedBoxes.push(box(el.getBoundingClientRect()));
   const walker=document.createTreeWalker(shell,NodeFilter.SHOW_TEXT);let text:Node|null;
   while((text=walker.nextNode())){
    if(!text.textContent?.trim()||text.parentElement?.closest('.evo-material-layer,script,style'))continue;
@@ -114,11 +118,11 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   if(shell.hasAttribute('data-sf-weather-material')&&document.documentElement.hasAttribute('data-dgu-visualmotion')&&!reduced.matches&&s.wet>.002&&s.snow<=.002&&(s.specialAmount??0)<=.002&&!dirty&&!wasMoving&&s.width===width&&s.height===height&&s.time>lastTime&&Math.floor(s.time*60)===Math.floor(lastTime*60))return;
   // WAAPI geometry changes do not emit mutations. Protect the moving workspace
   // conservatively, then remeasure its final text/controls after cancellation or finish.
-  if(dirty)layoutAnimations=shell.getAnimations({subtree:true}).filter(a=>a.effect instanceof KeyframeEffect&&a.effect.target instanceof Element&&a.effect.target.matches('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab,.dmt-workspace-section'));
+  if(dirty)layoutAnimations=shell.getAnimations({subtree:true}).filter(a=>a.effect instanceof KeyframeEffect&&a.effect.target instanceof Element&&a.effect.target.matches('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab,.dmt-workspace-section,#customOverlayContent'));
   const movingLayout=layoutAnimations.some(a=>a.playState==='running');
   if(dirty||specialSkies&&movingLayout||s.width!==width||s.height!==height||wasMoving&&!movingLayout)layout(s.width,s.height);
   frameProtection=protectedBoxes;
-  const workspace=shell.querySelector('.dmt-workspace');
+  const workspace=shell.querySelector('.dmt-workspace,#customOverlayContent');
   if(movingLayout&&workspace){const r=workspace.getBoundingClientRect(),base=canvas.getBoundingClientRect(),scale=base.width/s.width||1;frameProtection=[...protectedBoxes,{x:(r.x-base.x)/scale-96,y:(r.y-base.y)/scale-48,width:r.width/scale+192,height:r.height/scale+96}]}
   wasMoving=movingLayout;
   const dt=Math.min(.05,Math.max(0,s.time-lastTime));lastTime=s.time;
@@ -196,6 +200,7 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   if(frost)frost.draw(s.snow,s.time,width,height);
   else if(s.snow>.01){ctx.strokeStyle=`rgba(207,230,238,${s.snow*.4})`;ctx.lineWidth=.5;for(let i=0;i<50;i++){const y=i*height/50,edge=i%2?width-2:2,sign=i%2?-1:1,len=(4+(i*19%17))*s.snow;ctx.beginPath();ctx.moveTo(edge,y);ctx.lineTo(edge+sign*len,y-len*.5);ctx.lineTo(edge+sign*len*.65,y-len*.8);ctx.stroke()}}
  }
+ const releaseForeground=foregroundPlane(shell,[layer,canvas]);if(releaseForeground)scope.own(releaseForeground);
  return{draw,shower(value:boolean){showerEnabled=withShower&&value},count:nodes.length,layoutMoving:()=>wasMoving,snapshot:()=>{const s=model.snapshot();const cold:Partial<T>=frost?.snapshot()??{};return Object.assign({material:'glass',specialSkiesEnabled:specialSkies,specialSkyModels:[blood?.snapshot(),atmosphere?.snapshot()].filter(Boolean),forceEnabled:!!withForce,scatterEnabled:scatter,showerPattern:scatter?'independent-streaks':'tiled-svg',showerGeometry,rainEnergy,rainAmount,showerDensity,showerSpeed,showerEnabled,showerReady:scatter||!!(showerImage?.complete&&showerImage.naturalWidth),showerPhase,climateEnabled:climate,microVisible},cold,{runoffEnabled:runoff,runoffBorn:s.runoffBorn,runoffDrained:s.runoffDrained,trailMode:naturalTrails?'natural-footprint':'linear-stroke',rainRegion:{width,height:rainHeight,coverage:shell.hasAttribute('data-sf-weather-material')?'header':'surface'},wetBounds,wetPaths:wetBounds.length,activeDrops:active.length,moving:visibleFlow,attached:active.length-visibleFlow,merges:s.merges,slides:s.slides,drained:s.drained,trailSegments:s.trails.length,protected:frameProtection,dropBounds:active,protectedOverlap:[...active,...wetBounds,...(cold?.iceBounds??[]),...(cold?.flakeBounds??[])].filter(b=>frameProtection.some(q=>intersects(b,q))).length,backdropSupported:CSS.supports('backdrop-filter',`url(#${ids[0]})`),optics:'Native SVG backdrop displacement; approximate normal field, not a physical refraction solver',drops:s.drops})},dispose(){if(showerImage)showerImage.onload=null;scope.dispose();layer.remove()}};
  }catch(error){scope.dispose();throw error}
 }

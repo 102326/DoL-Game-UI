@@ -15,6 +15,9 @@ declare let nativeToolClicks:number;
 declare const originalTool:Element;
 declare const retired:ReturnType<typeof sphereHub>;
 declare let hiddenBefore:PropertyDescriptor|undefined;
+declare let dockOpeningSample:HubState|null;
+declare let dockOpeningFrame:number;
+declare let dockOpeningClicks:number;
 function must<T>(value:T|null|undefined):T{if(value===null||value===undefined)throw Error('Missing Hub input value');return value}
 const reverseModule:unknown=require('./hub-reversal-probe.cjs');if(typeof reverseModule!=='function')throw Error('Missing Hub reversal probe');
 const reverseHub=async(page:playwright.Page)=>{const value:unknown=await reverseModule(page);if(!value||typeof value!=='object'||!('before' in value)||!('after' in value)||!value.before||!value.after||typeof value.before!=='object'||typeof value.after!=='object'||!('q' in value.before)||typeof value.before.q!=='number'||!('q' in value.after)||typeof value.after.q!=='number'||!('sphere' in value.before)||!value.before.sphere||typeof value.before.sphere!=='object'||!('angle' in value.before.sphere)||typeof value.before.sphere.angle!=='number'||!('sphere' in value.after)||!value.after.sphere||typeof value.after.sphere!=='object'||!('angle' in value.after.sphere)||typeof value.after.sphere.angle!=='number')throw Error('Invalid Hub reversal sample');return{before:{q:value.before.q,sphere:{angle:value.before.sphere.angle}},after:{q:value.after.q,sphere:{angle:value.after.sphere.angle}}}};
@@ -27,7 +30,7 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
  const server=await createServer({configFile:path.resolve('vite.golden-spin.config.ts'),plugins:baseline?[{name:'frozen-hub-input-baseline',enforce:'pre',load(id){if(id.replaceAll('\\','/').endsWith('/prototypes/golden-spin-b/hub-motion.ts'))return old}}]:[],server:{port:5184,strictPort:true}});await server.listen();
  const browser=await chromium.launch(process.platform==='win32'?{channel:'msedge',headless:true}:{headless:true});
  type PointerEvidence={before:{x:number;y:number;pointer:string;tab:number;hit:boolean};press:HubState;held:HubState;after:HubState;native:number;calls:string[];sameNode:boolean};
- const evidence:{baseline:boolean;revision:string;checks:string[];errors:string[];pointer?:PointerEvidence;reversal?:Awaited<ReturnType<typeof reverseHub>>;failure?:string;state?:HubState|null}={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p:playwright.Page|undefined;
+  const evidence:{baseline:boolean;revision:string;checks:string[];errors:string[];pointer?:PointerEvidence;keyboard?:{before:HubState;held:HubState};reversal?:Awaited<ReturnType<typeof reverseHub>>;dock?:{before:HubState;native:number};failure?:string;state?:HubState|null}={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p:playwright.Page|undefined;
  const check=async(name:string,fn:()=>Promise<void>)=>{await runCase(name,fn);evidence.checks.push(name);console.log('PASS',name)};
  try{
   p=await browser.newPage({viewport:{width:1280,height:900},hasTouch:true});const page=p;page.on('pageerror',e=>evidence.errors.push(e.message));
@@ -44,13 +47,14 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
    evidence.pointer={before,press,held,after:await inspect(),native:await page.evaluate(()=>nativeToolClicks),calls:await page.evaluate(()=>goldenSpinLab.recorded.value.slice()),sameNode:await tool.evaluate(n=>n===originalTool)};
    fs.writeFileSync(path.join(out,'pointer.json'),JSON.stringify(evidence.pointer,null,2));
    assert.ok(before.hit&&before.pointer!=='none'&&before.tab===0,'visible tools must not be locked until the whole animation ends');
-   assert.ok(Math.abs(held.q-press.q)<.015,'hold the current pose during the pointer transaction');
+   assert.ok(press.moving&&press.paused&&press.pressed&&press.q>0&&press.q<1,'pointer press must occur during a paused opening, not after it');
+   assert.ok(held.moving&&held.paused&&Math.abs(held.q-press.q)<.015,'hold the current pose during the pointer transaction');
    assert.equal(evidence.pointer.native,1);assert.deepEqual(evidence.pointer.calls,['interface-settings']);assert.ok(evidence.pointer.sameNode);
    await closed();assert.equal(await page.locator('.sf-motion-sheet').getAttribute('aria-hidden'),'false');
    assert.ok(await page.locator('.sf-motion-sheet h2').evaluate(n=>n===document.activeElement));await page.screenshot({path:path.join(out,'pointer-tool-open.png')});
   });
   await check('H3 keyboard activation and cancel during opening retain native focus and single activation',async()=>{
-   await page.getByRole('button',{name:'返回工具',exact:true}).click();await mid();await keyboardTool();const before=await inspect();await page.waitForTimeout(100);assert.ok(Math.abs((await inspect()).q-before.q)<.015);
+   await page.getByRole('button',{name:'返回工具',exact:true}).click();await mid();await keyboardTool();const before=await inspect();await page.waitForTimeout(100);const held=await inspect();evidence.keyboard={before,held};assert.ok(before.moving&&before.paused&&before.q>0&&before.q<1,'keyboard focus must pause an in-progress opening');assert.ok(held.moving&&held.paused&&Math.abs(held.q-before.q)<.015);
    await tool.press('Enter');await closed();assert.equal(await page.evaluate(()=>nativeToolClicks),2);assert.equal(await page.evaluate(()=>goldenSpinLab.recorded.value.length),2);
    await page.getByRole('button',{name:'返回工具',exact:true}).click();await mid();await keyboardTool();await tool.press('Escape');await closed();assert.ok(await ball.evaluate(n=>n===document.activeElement));assert.equal(await nav.getAttribute('inert'),'');
   });
@@ -68,8 +72,10 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
   await check('H3 H4 drag during opening closes safely, then dock and restore work during the next opening',async()=>{
    await ball.click();await mid();const r=must(await ball.boundingBox());await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.down();await page.mouse.move(4,r.y+70,{steps:6});await page.mouse.up();await closed();
    assert.ok(await ball.evaluate(n=>n.classList.contains('is-docked')));await ball.click();assert.ok(await ball.evaluate(n=>!n.classList.contains('is-docked')));
-   await ball.click();await page.waitForFunction(()=>{const s=goldenSpinLab.controller.inspect();return s.moving&&s.q>.9});
-   const dock=page.getByRole('button',{name:'停靠侧边',exact:true});const b=must(await dock.boundingBox());await page.mouse.click(b.x+b.width/2,b.y+b.height/2);await closed();assert.ok(await ball.evaluate(n=>n.classList.contains('is-docked')));await ball.click();
+   // Arm before the click: driver latency can otherwise miss the short in-flight state.
+   await page.evaluate(()=>{Object.assign(window,{dockOpeningSample:null,dockOpeningFrame:0,dockOpeningClicks:0});const sample=()=>{const before=goldenSpinLab.controller.inspect();if(before.moving&&before.target===1&&before.q>.9){const dock=[...document.querySelectorAll<HTMLButtonElement>('.sf-motion-utilities button')].find(n=>n.textContent?.trim()==='停靠侧边');if(!dock)throw Error('Missing native dock control');dock.addEventListener('click',()=>dockOpeningClicks++,{once:true});dockOpeningSample=before;dock.click()}else dockOpeningFrame=requestAnimationFrame(sample)};dockOpeningFrame=requestAnimationFrame(sample)});
+   try{await ball.click();await page.waitForFunction(()=>dockOpeningSample);evidence.dock=await page.evaluate(()=>{if(!dockOpeningSample)throw Error('Missing dock opening sample');return{before:dockOpeningSample,native:dockOpeningClicks}});assert.ok(evidence.dock.before.moving&&evidence.dock.before.target===1&&evidence.dock.before.q>.9,'dock activation is captured during the actual opening');assert.equal(evidence.dock.native,1,'one native dock activation')}finally{await page.evaluate(()=>cancelAnimationFrame(dockOpeningFrame))}
+   await closed();assert.ok(await ball.evaluate(n=>n.classList.contains('is-docked')));await ball.click();
   });
   await check('H4 narrow touch and zoom preserve targets; active reduced/disabled motion settles immediately',async()=>{
    await page.setViewportSize({width:390,height:844});await page.waitForTimeout(100);await ball.tap();await mid();const touchTarget=must(await tool.boundingBox()),prior=await page.evaluate(()=>nativeToolClicks);await page.touchscreen.tap(touchTarget.x+touchTarget.width/2,touchTarget.y+touchTarget.height/2);await closed();assert.equal(await page.evaluate(()=>nativeToolClicks),prior+1);await page.getByRole('button',{name:'返回工具',exact:true}).click();await open();const r=must(await nav.boundingBox());assert.ok(r.x>=0&&r.x+r.width<=390);await page.screenshot({path:path.join(out,'narrow.png')});await ball.press('Escape');await closed();
@@ -89,6 +95,6 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
    await page.emulateMedia({reducedMotion:'no-preference'});await page.getByRole('button',{name:'重新挂载',exact:true}).click();await page.waitForSelector('.spin-hub-canvas');assert.equal(await page.locator('.spin-hub-canvas').count(),1);await ball.click();await open();
   });
   assert.deepEqual(evidence.errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(evidence,null,2));console.log('Evidence',out);
- }catch(e){evidence.failure=e instanceof Error?e.stack:String(e);evidence.state=p?await p.evaluate(()=>typeof goldenSpinLab==='undefined'?null:goldenSpinLab.controller.inspect()).catch(()=>null):null;if(p)await p.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify(evidence,null,2));console.error('Evidence',out);throw e}
+ }catch(e){evidence.failure=e instanceof Error?e.stack:String(e);evidence.state=p?await p.evaluate(()=>typeof goldenSpinLab==='undefined'?null:goldenSpinLab.controller.inspect()).catch(()=>null):null;if(p)await p.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify(evidence,null,2));console.error('Evidence',out,'State',JSON.stringify(evidence.state));throw e}
  finally{await browser.close();await server.close()}
 })().catch(e=>{receipt.terminalFailure(e);process.exitCode=1});

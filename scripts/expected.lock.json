@@ -66,6 +66,9 @@
       "scan:599",
       "scan:600",
       "scan:601",
+      "scan:619",
+      "scan:620",
+      "scan:621",
       "scan:639",
       "scan:640",
       "scan:641",
@@ -219,6 +222,9 @@
       "scan:600",
       "scan:601",
       "scan:608",
+      "scan:619",
+      "scan:620",
+      "scan:621",
       "scan:624",
       "scan:639",
       "scan:640",
@@ -418,6 +424,13 @@
       "saved run metrics retain failures, metadata grouping and qualified percentile samples",
       "malformed saved metrics are rejected and the real CJS CLI reads UTF-8 JSON"
     ],
+    "modhub-performance.test.mts": [
+      "guarded Loader hook patches only the reviewed source before execution and retains native fallback",
+      "bounded stateless rule cache releases entries and never stores dependency or catalog state",
+      "complete current ModHub closure preserves golden cases, mutations, ambiguity and fresh results",
+      "internal update consumers reuse rules while changed descriptions still rebuild inference",
+      "current full update closure rejects stale responses across all six identity mutations"
+    ],
     "native-tooling.test.mts": [
       "native erasure check rejects an extra enum fixture while retaining the normal roots"
     ],
@@ -502,8 +515,8 @@
       "H4 zero-root scene replacement retains finite geometry and restores native input"
     ],
     "golden-spin-hub": [
-      "sphere charges for half a second before real tools unfold in their native layout",
-      "closing during charge cancels delayed reveal and leaves no visible menu",
+      "real tools unfold promptly alongside the sphere without a half-second gate",
+      "closing during expansion cancels the reveal and leaves no visible menu",
       "real tool detail opens once and returns to the menu; Escape collects it",
       "rapid reversals retain the current menu progress and sphere angle",
       "left/right docking, narrow touch, resize and reduced motion preserve interaction",
@@ -658,8 +671,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6fd56c19d3bbbdca6f165dadb77f09ff90cae7efcf528d723c80c202b23f8cfb",
-      "assertionSites": 176
+      "sourceSha256": "98d4b6afb68b5fc875196352e09c6f488ad25be7cc428871cc9b10e681bfcfc2",
+      "assertionSites": 307
     },
     {
       "entry": "tests/checkpoint-boundary.test.mts",
@@ -746,8 +759,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "7edcfe2a1fa0b120d8f041c2cf4dc0cad22a25806d596c719ba93b96d99280ff",
-      "assertionSites": 134
+      "sourceSha256": "be59fbcbe8ff38935ff511934ffcc949da507471ef6be769e220bea2460fca8c",
+      "assertionSites": 137
     },
     {
       "entry": "tests/combat-select.cjs",
@@ -884,7 +897,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "038b6d703f2b76cedc9a325a3ad38a26d1ea949496c7d62f27b96654b99f546d",
+      "sourceSha256": "f5a19324ae2ccffec887295e47579fe74c1ff833f60c09be2d790e07ac185f25",
       "assertionSites": 39
     },
     {
@@ -902,8 +915,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "7b9c10b3e8f271dfb5b724325741198e3efa09f0970fc1a08644d93c05b0a0e1",
-      "assertionSites": 18
+      "sourceSha256": "5229475a7a9b59b6aad5e98d4e8de91c678c8670a4e068d11b332002bcfd2801",
+      "assertionSites": 20
     },
     {
       "entry": "tests/evolution-owner-resources.cjs",
@@ -968,8 +981,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b004dcdf35e87338e9e29927e1129af9c626e46941b9ee962eeeb165595c443f",
-      "assertionSites": 118,
+      "sourceSha256": "0c9588b87f16c8f418c7e3790f725d822017accb477439e1d508997dd5a52aa3",
+      "assertionSites": 358,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -989,8 +1002,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "005b50b4a86c84d27bc189ca1f074463a4139306e0185883191834581ef94641",
-      "assertionSites": 18
+      "sourceSha256": "40dffc53aa8dad693df6f1b162b53c50ffabe506ef7f29acc9b9cfb0ff600a3d",
+      "assertionSites": 48
     },
     {
       "entry": "tests/evolution-rain-glass.cjs",
@@ -1006,8 +1019,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "030295fcdda57faba8759dfe23f61900f1eb2ba01025df20058c07e0a2ff51bd",
-      "assertionSites": 33
+      "sourceSha256": "062808d0b8aaba4ca65f061746208419278302cd215cfcadfdcd0d482b8bf422",
+      "assertionSites": 34
     },
     {
       "entry": "tests/evolution-rain-model.test.cjs",
@@ -1225,6 +1238,23 @@
       "assertionSites": 16
     },
     {
+      "entry": "tests/foreground-plane.cjs",
+      "sourceEntry": "tests/foreground-plane.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "71be8b7618a537c04c70107dc719a8849f4b0f212e1caed83665b3a961d91191",
+      "assertionSites": 58
+    },
+    {
       "entry": "tests/framework-commands.cjs",
       "sourceEntry": "tests/framework-commands.cts",
       "profiles": [
@@ -1265,7 +1295,7 @@
         "standard"
       ],
       "classification": "contract",
-      "granularity": "checkpoint",
+      "granularity": "composed",
       "cases": [
         {
           "id": "missing-any",
@@ -1302,10 +1332,18 @@
         {
           "id": "signal-composition",
           "minimumAssertions": 1
+        },
+        {
+          "id": "cleanup:fault-isolation",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "select:native-enhancement",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ce56ff40ce01e511dcda05017817722706d87230ff3fe2f0a73d2c8ad76c427a",
-      "assertionSites": 158
+      "sourceSha256": "d3fdffbd5c21b2c8ac9e62dace85dc4fd3e37eb8e823d7dc3a8193f7c33045e2",
+      "assertionSites": 505
     },
     {
       "entry": "tests/framework.cjs",
@@ -1420,8 +1458,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "793eed5ef3668b1c9bd76058964d5ddafade8724befae52e82ab9299680e5fec",
-      "assertionSites": 35
+      "sourceSha256": "4896375b851ae7995c69ac7c4b101d9563b3522fa886156469ce4027d585a9fa",
+      "assertionSites": 39
     },
     {
       "entry": "tests/golden-spin-hub-lifecycle.cjs",
@@ -1458,11 +1496,11 @@
       "granularity": "named",
       "cases": [
         {
-          "id": "sphere charges for half a second before real tools unfold in their native layout",
+          "id": "real tools unfold promptly alongside the sphere without a half-second gate",
           "minimumAssertions": 1
         },
         {
-          "id": "closing during charge cancels delayed reveal and leaves no visible menu",
+          "id": "closing during expansion cancels the reveal and leaves no visible menu",
           "minimumAssertions": 1
         },
         {
@@ -1490,7 +1528,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "346182e92977603a4daf9351d07fa2b1b690db4513595ec2ed5cd52163003170",
+      "sourceSha256": "4a0657ffba1c42ab9587f3dc27cf99ff40095d09d37674615baa07fca997c236",
       "assertionSites": 40,
       "rendererContexts": [
         "sphere:2d"
@@ -1510,8 +1548,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "60957c4449f7daa1d3ce5deee76128f224f3e4f1a367574d5cf4f49aceee8656",
-      "assertionSites": 64
+      "sourceSha256": "1a0888c34346029023fcc9ea24c20222f96b6ffba404c6c5e0f5b0b6036bd7da",
+      "assertionSites": 84
     },
     {
       "entry": "tests/integration-preview-pages.cjs",
@@ -1527,7 +1565,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4f79265d3b397556978861b4cb0dc497c19aab59c76c6c9d5ce10dbe1faa9288",
+      "sourceSha256": "da5af806da26d47dc852ae26cced1f665871dfa8a3d3464a9a0c7ab5e06aaa52",
       "assertionSites": 45
     },
     {
@@ -1601,6 +1639,38 @@
       "assertionSites": 13
     },
     {
+      "entry": "tests/modhub-performance.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "guarded Loader hook patches only the reviewed source before execution and retains native fallback",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "bounded stateless rule cache releases entries and never stores dependency or catalog state",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "complete current ModHub closure preserves golden cases, mutations, ambiguity and fresh results",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "internal update consumers reuse rules while changed descriptions still rebuild inference",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "current full update closure rejects stale responses across all six identity mutations",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "b67f4feff3ac5e8023974392c9891b82efacf7862de51c539183c57b266f34f9",
+      "assertionSites": 81
+    },
+    {
       "entry": "tests/moody-historical-regressions.cjs",
       "sourceEntry": "tests/moody-historical-regressions.cts",
       "profiles": [
@@ -1615,8 +1685,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "fa1be3c81bf4fad25e754d9de5ba2aca68e4a7aa5ec608ff2e62f6adbd084a70",
-      "assertionSites": 17
+      "sourceSha256": "f9edd8ccac7bf50273395c2ee9a181fed51b3b58c77a91a9ca7e93d826913f98",
+      "assertionSites": 20
     },
     {
       "entry": "tests/moody-oracles.test.cjs",
@@ -1666,7 +1736,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "bd8b5607a3da9eb57b7e24fa3d7cd96baf11cf0d564108afba281b540697967c",
+      "sourceSha256": "db9f36a8f8c2fb89c0ccdd53e112276bbcda5e8a6d184e095fc946c4937ff656",
       "assertionSites": 39
     },
     {
@@ -1754,8 +1824,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4a77f95565758ad55f5277d97cb3a92381a4c469a39d6875c403c0f8125db467",
-      "assertionSites": 98
+      "sourceSha256": "3a006eab82226fd83f955ca68328fa465b0e6e387fd75511e1661faedc336372",
+      "assertionSites": 133
     },
     {
       "entry": "tests/optimization-date.cjs",
@@ -2082,8 +2152,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "715b2dd6a59d1325862eeb77e5ad792e53ac4e78af8fcd47401b24647d3efac8",
-      "assertionSites": 9
+      "sourceSha256": "da19d342f39bd060a49a8a44d215c87e7a45b06527c6241efe8fcdb5e5ee63c1",
+      "assertionSites": 13
     },
     {
       "entry": "tests/saves-viewport.cjs",
@@ -2116,8 +2186,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ac23bfad8553eb9a08bbc9176a165384450f8b3d99394db990b186f0634f3645",
-      "assertionSites": 14
+      "sourceSha256": "a5106cb6867d18304b265b4c4f6180d58d9ea768f10657e2e8bb8f50fcfae772",
+      "assertionSites": 19
     },
     {
       "entry": "tests/settings-ci.cjs",
@@ -2131,6 +2201,22 @@
       "cases": [
         {
           "id": "entry",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "reading:native-default",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "reading:native-adjustment-and-release",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "reading:reading-preferences-and-ui",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:M01 official material without review marker and scoped native surfaces",
           "minimumAssertions": 1
         },
         {
@@ -2190,8 +2276,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c9d92b678ae3268c8eb348b0ca1d2405d27d2be4ff8310a35756efb4ddd13c35",
-      "assertionSites": 178,
+      "sourceSha256": "890e247fe61b923beb2c4ba13c4e0125d921354a14fbc969ebf44bb3b6502818",
+      "assertionSites": 282,
       "rendererContexts": [
         "weather:2d"
       ]
@@ -2256,8 +2342,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b6cb1d0a17883c77ab4b77648e0a97a0557886940da3311d2927421ee7fe308d",
-      "assertionSites": 20
+      "sourceSha256": "daa69a33fa5d5d561b81a349ee63aa93059044d7f13884a35b9f3eb67b8545ea",
+      "assertionSites": 27
     },
     {
       "entry": "tests/shop-source.test.cjs",
@@ -2290,8 +2376,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "254b2bfad659bd3eb565262b4be1932989df321a17ee394cd66dc4054a2f764f",
-      "assertionSites": 21
+      "sourceSha256": "5b741f4345e3a6ffcb592e1b6ab95ae24d0b4c55c73ee7346adae166b6c9294b",
+      "assertionSites": 39
     },
     {
       "entry": "tests/source-identity-boundary.test.mts",
@@ -2385,7 +2471,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8c732737015d05d049444fea99caa40f28f736e979fe227fa56ca3d9162d25b3",
+      "sourceSha256": "26e4884d496bc19c6ea499480a5263a837542196a7ceed097fec925d7275825f",
       "assertionSites": 5
     },
     {
@@ -2722,8 +2808,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "db124313ec98ac0bd33086978bee3b191490f992ab3c0c262726938eef55c347",
-      "assertionSites": 43
+      "sourceSha256": "55cf6958e3dca4f7e4723e6690a871cbea1377c6a5974b5bac356ae9e694940a",
+      "assertionSites": 46
     },
     {
       "entry": "tests/weather-dom-writes.cjs",
@@ -2755,12 +2841,16 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings alignment refreshes protected control geometry",
+          "minimumAssertions": 1
+        },
+        {
           "id": "dry repeated frame is quiet and material releases",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "46a57c79b82b999518d5922363b532f453126e92e2693610c9099f8e9fd02a17",
-      "assertionSites": 38
+      "sourceSha256": "a75d1be5ea141ba9ee221d4cc523592919e990501b073b3ec92159644fc0c550",
+      "assertionSites": 40
     },
     {
       "entry": "tests/weather-review-pages.cjs",
@@ -2793,8 +2883,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "b6f0393494de442b4806a7726664c435502b14830c8471e25be3e9d9423f8f12",
-      "assertionSites": 54,
+      "sourceSha256": "d9570b5224a2447fa2671ba6ebfbaa48c6ec3805402392b54ba66fb40784a5d4",
+      "assertionSites": 55,
       "rendererContexts": [
         "weather:2d"
       ]

@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "real tools unfold promptly alongside the sphere without a half-second gate",
+    "closing during expansion cancels the reveal and leaves no visible menu",
+    "real tool detail opens once and returns to the menu; Escape collects it",
+    "rapid reversals retain the current menu progress and sphere angle",
+    "left/right docking, narrow touch, resize and reduced motion preserve interaction",
+    "dynamic tools, zoom and scene invalidation keep the native Hub owner in control",
+    "explicit fan remains curved and reachable with five real tools; closed shells leave no backing box",
+    "unmount stops both controllers and removes the experimental canvas"
+  ],
+  "errors": [],
+  "coverage": "standalone real MotionHub; simulated tool contents; controlled Edge/CI Chromium",
+  "visualAcceptance": "full Hub pending"
+}

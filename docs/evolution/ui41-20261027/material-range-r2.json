@@ -1,0 +1,259 @@
+{
+  "sourceCommit": "ee36aafb66457e51126188d20da12f3ad7e71829",
+  "sourceFilesSha256": {
+    "src/theme/acrylic.ts": "7813703cf6e1cf96c3d1db0eb33284e4e95edc4d086e706d1b701e0a6f4144c6",
+    "src/theme/acrylic-v1.css": "50f6a182f7b1f34ee8fc95bd87dcd679fc22fab267e67ec4aed2b877e126a1f9",
+    "scripts/preview-ui41.mts": "cb87051f9e4421c2263f8291f8b57c34744a812c011ee03bcac9bc40e6f04780",
+    "tests/ui41-material.cts": "2ded856540bcbe767f9828ab1a6f52406f7b0e02b5539a7303841f14a1cfea0d"
+  },
+  "environment": {
+    "platform": "macOS arm64",
+    "node": "26.12.1",
+    "playwright": "1.63.0",
+    "chromium": "153.0.8010.12"
+  },
+  "reference": "v4.0.1 src/theme/settings-workspace.css: shell rgba(36,38,42,.85), no backdrop filter, transparent control sheet; not whole-window pixel equivalence",
+  "completedChecks": [
+    {
+      "command": "npm run tooling:check",
+      "exit": 0
+    },
+    {
+      "command": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "command": "node tests/ui41-material.cjs",
+      "exit": 0
+    }
+  ],
+  "result": {
+    "node": "v26.12.1",
+    "browser": "153.0.8010.12",
+    "scope": "Controlled source preview; no game, device, visual or performance acceptance",
+    "rows": [
+      {
+        "width": 1280,
+        "value": 0,
+        "background": "rgba(56, 58, 62, 0.94)",
+        "blur": "blur(24px) saturate(0.78)",
+        "well": "rgba(48, 50, 54, 0.55)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 140,
+          "y": 12,
+          "width": 1000,
+          "height": 876,
+          "right": 1140,
+          "bottom": 888
+        }
+      },
+      {
+        "width": 1280,
+        "value": 25,
+        "background": "rgba(41, 44, 47, 0.73)",
+        "blur": "blur(24px) saturate(0.78)",
+        "well": "rgba(33, 35, 39, 0.44)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 140,
+          "y": 12,
+          "width": 1000,
+          "height": 876,
+          "right": 1140,
+          "bottom": 888
+        }
+      },
+      {
+        "width": 1280,
+        "value": 50,
+        "background": "rgba(26, 30, 33, 0.514)",
+        "blur": "blur(24px) saturate(0.78)",
+        "well": "rgba(17, 21, 24, 0.325)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 140,
+          "y": 12,
+          "width": 1000,
+          "height": 876,
+          "right": 1140,
+          "bottom": 888
+        }
+      },
+      {
+        "width": 1280,
+        "value": 60,
+        "background": "rgba(20, 24, 27, 0.43)",
+        "blur": "blur(24px) saturate(0.78)",
+        "well": "rgba(11, 15, 18, 0.28)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 140,
+          "y": 12,
+          "width": 1000,
+          "height": 876,
+          "right": 1140,
+          "bottom": 888
+        }
+      },
+      {
+        "width": 1280,
+        "value": 75,
+        "background": "rgba(26, 29, 33, 0.59)",
+        "blur": "blur(15px) saturate(0.78)",
+        "well": "rgba(7, 9, 11, 0.176)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 140,
+          "y": 12,
+          "width": 1000,
+          "height": 876,
+          "right": 1140,
+          "bottom": 888
+        }
+      },
+      {
+        "width": 1280,
+        "value": 100,
+        "background": "rgba(36, 38, 42, 0.85)",
+        "blur": "none",
+        "well": "rgba(0, 0, 0, 0)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 140,
+          "y": 12,
+          "width": 1000,
+          "height": 876,
+          "right": 1140,
+          "bottom": 888
+        }
+      },
+      {
+        "width": 390,
+        "value": 0,
+        "background": "rgba(56, 58, 62, 0.94)",
+        "blur": "blur(24px) saturate(0.78)",
+        "well": "rgba(48, 50, 54, 0.55)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 9,
+          "y": 9,
+          "width": 372,
+          "height": 826,
+          "right": 381,
+          "bottom": 835
+        }
+      },
+      {
+        "width": 390,
+        "value": 25,
+        "background": "rgba(41, 44, 47, 0.73)",
+        "blur": "blur(24px) saturate(0.78)",
+        "well": "rgba(33, 35, 39, 0.44)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 9,
+          "y": 9,
+          "width": 372,
+          "height": 826,
+          "right": 381,
+          "bottom": 835
+        }
+      },
+      {
+        "width": 390,
+        "value": 50,
+        "background": "rgba(26, 30, 33, 0.514)",
+        "blur": "blur(24px) saturate(0.78)",
+        "well": "rgba(17, 21, 24, 0.325)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 9,
+          "y": 9,
+          "width": 372,
+          "height": 826,
+          "right": 381,
+          "bottom": 835
+        }
+      },
+      {
+        "width": 390,
+        "value": 60,
+        "background": "rgba(20, 24, 27, 0.43)",
+        "blur": "blur(24px) saturate(0.78)",
+        "well": "rgba(11, 15, 18, 0.28)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 9,
+          "y": 9,
+          "width": 372,
+          "height": 826,
+          "right": 381,
+          "bottom": 835
+        }
+      },
+      {
+        "width": 390,
+        "value": 75,
+        "background": "rgba(26, 29, 33, 0.59)",
+        "blur": "blur(15px) saturate(0.78)",
+        "well": "rgba(7, 9, 11, 0.176)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 9,
+          "y": 9,
+          "width": 372,
+          "height": 826,
+          "right": 381,
+          "bottom": 835
+        }
+      },
+      {
+        "width": 390,
+        "value": 100,
+        "background": "rgba(36, 38, 42, 0.85)",
+        "blur": "none",
+        "well": "rgba(0, 0, 0, 0)",
+        "textOpacity": "1",
+        "textColor": "rgb(230, 230, 232)",
+        "opacity": "1",
+        "rect": {
+          "x": 9,
+          "y": 9,
+          "width": 372,
+          "height": 826,
+          "right": 381,
+          "bottom": 835
+        }
+      }
+    ],
+    "errors": []
+  },
+  "limits": [
+    "Isolated review only; visual acceptance pending",
+    "No remote CI, actual game, physical device or performance acceptance",
+    "Existing first-batch evidence remains historical and unchanged"
+  ]
+}

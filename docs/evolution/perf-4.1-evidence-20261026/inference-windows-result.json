@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "platform": "win32",
+  "node": "26.12.1",
+  "modHubSource": "1.8.3",
+  "functionSha256": "91b2a5b6330482745c6cf09d50d10d32eff5645ffbe756f876f4fab9e721b5bb",
+  "staticCases": 26,
+  "sameObjectMutationSteps": 6,
+  "inputMutation": false,
+  "consumerResultIsolation": true,
+  "candidate": null,
+  "benchmark": [
+    {
+      "syntheticCatalogSize": 25,
+      "calls": 10,
+      "regexpConstructorCalls": 6480,
+      "originalNodeElapsedMs": 5.680599999999998
+    },
+    {
+      "syntheticCatalogSize": 100,
+      "calls": 10,
+      "regexpConstructorCalls": 24480,
+      "originalNodeElapsedMs": 25.29419999999999
+    },
+    {
+      "syntheticCatalogSize": 250,
+      "calls": 10,
+      "regexpConstructorCalls": 60480,
+      "originalNodeElapsedMs": 47.97320000000002
+    }
+  ],
+  "limits": "Synthetic original-function replay, not full ModHub dependency semantics, browser or device performance. RegExp constructions are not guaranteed engine compilation counts."
+}

@@ -1,0 +1,36 @@
+diff --git a/src/ui/weather/wet-glass.ts b/src/ui/weather/wet-glass.ts
+index c1b9023..ad8b843 100644
+--- a/src/ui/weather/wet-glass.ts
++++ b/src/ui/weather/wet-glass.ts
+@@ -84,6 +84,10 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
+  function rainSafe(b:Box,padding=5,edge=false){return rainHeight>0&&b.y<rainHeight&&b.y+b.height>0&&rainFade(b)>.001&&safe(b,padding,edge)}
+  // A clipped, translucent footprint changes actual backdrop pixels. It has no
+  // continuous bright outline; its banks narrow as the deposited water dries.
++ // These private paint nodes own their full inline presentation. Compare the
++ // actual attribute (not a last-value cache) so an altered owned style is restored.
++ // One attribute commit avoids separate live mutations for each geometry property.
++ function paint(node:HTMLElement,css:string){if(node.getAttribute('style')!==css)node.setAttribute('style',css)}
+  function wetPaths(trails:Trail[],humidity:number){
+   const groups:Trail[][]=[];let group:Trail[]=[];
+   for(const t of [...trails].sort((a,b)=>(a.strand!-b.strand!)||(a.distance!-b.distance!))){
+@@ -106,7 +110,7 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
+    const bounds={x,y,width:w,height:h};
+    // Conservative final bounds avoid a footprint spanning text after a layout change.
+    if(!rainSafe(bounds,6)){node.style.display='none';return}
+-   wetBounds.push(bounds);Object.assign(node.style,{display:'block',left:x+'px',top:y+'px',width:w+'px',height:h+'px',clipPath:`polygon(${points.map(p=>`${(p[0]-x)/w*100}% ${(p[1]-y)/h*100}%`).join(',')})`,opacity:String(humidity*(.25+.55*g.at(-1)!.life)*rainFade(bounds))});
++   wetBounds.push(bounds);paint(node,`display:block;left:${x}px;top:${y}px;width:${w}px;height:${h}px;clip-path:polygon(${points.map(p=>`${(p[0]-x)/w*100}% ${(p[1]-y)/h*100}%`).join(',')});opacity:${humidity*(.25+.55*g.at(-1)!.life)*rainFade(bounds)}`);
+   });
+  }
+  function draw(s:Frame){
+@@ -186,7 +190,10 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
+    if(density<=.001||!rainSafe(b,5,!!d.runoff)){node.style.display='none';delete node.dataset.dropId;delete node.dataset.runoff;delete node.dataset.moving;return}
+    active.push(b);if(d.vy>0)visibleFlow++;
+    const shape=Math.min(2,Math.floor(d.shape*3));
+-   Object.assign(node.style,{display:'block',left:b.x+'px',top:b.y+'px',width:b.width+'px',height:b.height+'px',borderRadius:d.vy>0?'47% 53% 51% 49% / 41% 38% 62% 59%':`${44+d.shape*9}% ${53-d.shape*7}% 49% 51% / 46% 42% 58% 54%`,backdropFilter:`url(#${ids[shape]})`,opacity:String(Math.min(1,humidity*1.35)*(d.runoff?Math.min(1,d.age/.6):1)*density*rainFade(b)),'--drop-light':String(luminance)});
++   paint(node,`display:block;left:${b.x}px;top:${b.y}px;width:${b.width}px;height:${b.height}px;border-radius:${d.vy>0?'47% 53% 51% 49% / 41% 38% 62% 59%':`${44+d.shape*9}% ${53-d.shape*7}% 49% 51% / 46% 42% 58% 54%`};backdrop-filter:url(#${ids[shape]});opacity:${Math.min(1,humidity*1.35)*(d.runoff?Math.min(1,d.age/.6):1)*density*rainFade(b)}`);
++   // Preserve the legacy JS expando; changing it into a CSS custom property
++   // would also change accepted lighting, outside this paint-only optimization.
++   Object.assign(node.style,{'--drop-light':String(luminance)});
+    if(node.dataset.dropId!==String(d.id))node.dataset.dropId=String(d.id);
+    if(node.dataset.moving!==String(d.vy>0))node.dataset.moving=String(d.vy>0);
+    if(node.dataset.runoff!==String(!!d.runoff))node.dataset.runoff=String(!!d.runoff);

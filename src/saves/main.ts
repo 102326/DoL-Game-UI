@@ -88,11 +88,13 @@ export function startSaves(root:SaveMetadataHost&Pick<NativeEventsHost,'jQuery'>
   metadata??=createSaveMetadata(root);
   const currentMetadata=metadata;
   currentMetadata.attach();
-  transfer.refresh(isMasterEnabled()&&enabled);
   const next=document.querySelector<HTMLElement>('#saveList #saves-list-container,#saveList #savesListContainer');
-  if(!next||document.querySelectorAll('#saveList #saves-list-container,#saveList #savesListContainer').length!==1){release();return}
-  const nativeOverlay=next.closest<HTMLElement>('#customOverlay');
-  if(!next.getClientRects().length||next.closest('[hidden],.hidden')||(nativeOverlay&&nativeOverlay.dataset.overlay!=='saves')||getComputedStyle(next.closest('#saveList')!).display==='none'){release();return}
+  const nativeOverlay=next?.closest<HTMLElement>('#customOverlay');
+  const listVisible=next&&document.querySelectorAll('#saveList #saves-list-container,#saveList #savesListContainer').length===1&&next.getClientRects().length&&!next.closest('[hidden],.hidden')&&(!nativeOverlay||nativeOverlay.dataset.overlay==='saves')&&getComputedStyle(next.closest('#saveList')!).display!=='none';
+  // Retire the list's shell lease before the native transfer tab acquires it.
+  if(!listVisible)release();
+  transfer.refresh(isMasterEnabled()&&enabled);
+  if(!listVisible||!next)return;
   if(next===container&&host?.isConnected&&!dirty)return;
   dirty=false;
   const settingsOpen=footer?.querySelector<HTMLDetailsElement>('.dgs-save-settings')?.open??false;

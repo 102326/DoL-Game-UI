@@ -1,0 +1,255 @@
+{
+  "status": "PASS",
+  "node": "v26.12.1",
+  "platform": "darwin",
+  "records": [
+    {
+      "triple": 0,
+      "order": [
+        "baseline",
+        "b1",
+        "b2"
+      ],
+      "ms": {
+        "baseline": 101.96316699999988,
+        "b1": 96.30712500000027,
+        "b2": 90.60266599999977
+      },
+      "cpuMs": {
+        "baseline": 124.892,
+        "b1": 119.098,
+        "b2": 91.327
+      }
+    },
+    {
+      "triple": 1,
+      "order": [
+        "baseline",
+        "b2",
+        "b1"
+      ],
+      "ms": {
+        "baseline": 90.62545799999998,
+        "b1": 97.33954099999983,
+        "b2": 125.46033299999999
+      },
+      "cpuMs": {
+        "baseline": 90.833,
+        "b1": 96.913,
+        "b2": 117.129
+      }
+    },
+    {
+      "triple": 2,
+      "order": [
+        "b1",
+        "baseline",
+        "b2"
+      ],
+      "ms": {
+        "baseline": 110.66487499999994,
+        "b1": 97.04966600000034,
+        "b2": 89.81575000000021
+      },
+      "cpuMs": {
+        "baseline": 129.037,
+        "b1": 117.248,
+        "b2": 89.493
+      }
+    },
+    {
+      "triple": 3,
+      "order": [
+        "b1",
+        "b2",
+        "baseline"
+      ],
+      "ms": {
+        "baseline": 90.47166599999991,
+        "b1": 91.62079199999971,
+        "b2": 87.85058299999992
+      },
+      "cpuMs": {
+        "baseline": 89.822,
+        "b1": 91.133,
+        "b2": 87.899
+      }
+    },
+    {
+      "triple": 4,
+      "order": [
+        "b2",
+        "baseline",
+        "b1"
+      ],
+      "ms": {
+        "baseline": 84.82037500000024,
+        "b1": 88.14141599999994,
+        "b2": 90.71004200000016
+      },
+      "cpuMs": {
+        "baseline": 84.913,
+        "b1": 88.183,
+        "b2": 90.423
+      }
+    },
+    {
+      "triple": 5,
+      "order": [
+        "b2",
+        "b1",
+        "baseline"
+      ],
+      "ms": {
+        "baseline": 86.71075000000019,
+        "b1": 88.70420800000011,
+        "b2": 86.01916599999959
+      },
+      "cpuMs": {
+        "baseline": 86.688,
+        "b1": 88.748,
+        "b2": 86.105
+      }
+    },
+    {
+      "triple": 6,
+      "order": [
+        "baseline",
+        "b1",
+        "b2"
+      ],
+      "ms": {
+        "baseline": 84.04570899999999,
+        "b1": 88.89975000000004,
+        "b2": 86.86008399999992
+      },
+      "cpuMs": {
+        "baseline": 84.149,
+        "b1": 88.851,
+        "b2": 86.766
+      }
+    },
+    {
+      "triple": 7,
+      "order": [
+        "baseline",
+        "b2",
+        "b1"
+      ],
+      "ms": {
+        "baseline": 88.12179199999991,
+        "b1": 91.50674999999956,
+        "b2": 88.03812500000004
+      },
+      "cpuMs": {
+        "baseline": 88.245,
+        "b1": 91.383,
+        "b2": 88.121
+      }
+    },
+    {
+      "triple": 8,
+      "order": [
+        "b1",
+        "baseline",
+        "b2"
+      ],
+      "ms": {
+        "baseline": 88.37170799999967,
+        "b1": 88.9521249999998,
+        "b2": 107.76708400000007
+      },
+      "cpuMs": {
+        "baseline": 88.363,
+        "b1": 89.234,
+        "b2": 104.397
+      }
+    },
+    {
+      "triple": 9,
+      "order": [
+        "b1",
+        "b2",
+        "baseline"
+      ],
+      "ms": {
+        "baseline": 105.35399999999936,
+        "b1": 112.29362500000025,
+        "b2": 106.48262499999964
+      },
+      "cpuMs": {
+        "baseline": 116.17,
+        "b1": 109.04,
+        "b2": 104.085
+      }
+    },
+    {
+      "triple": 10,
+      "order": [
+        "b2",
+        "baseline",
+        "b1"
+      ],
+      "ms": {
+        "baseline": 88.91550000000007,
+        "b1": 87.9067500000001,
+        "b2": 95.7519169999996
+      },
+      "cpuMs": {
+        "baseline": 88.92,
+        "b1": 88.487,
+        "b2": 120.504
+      }
+    },
+    {
+      "triple": 11,
+      "order": [
+        "b2",
+        "b1",
+        "baseline"
+      ],
+      "ms": {
+        "baseline": 95.56579199999942,
+        "b1": 92.14624999999978,
+        "b2": 93.90504099999998
+      },
+      "cpuMs": {
+        "baseline": 94.008,
+        "b1": 91.301,
+        "b2": 93.166
+      }
+    }
+  ],
+  "medianMs": {
+    "baseline": 89.69358299999999,
+    "b1": 91.56377099999963,
+    "b2": 90.65635399999996
+  },
+  "b2MinusBaselineMedianMs": 0.5224790000002031,
+  "b2MinusB1MedianMs": -2.362354000000323,
+  "b2SlowerThanBaselineCount": 6,
+  "b1Cache": {
+    "builds": 0,
+    "hits": 0,
+    "evictions": 0,
+    "bypasses": 0,
+    "size": 0,
+    "limit": 1024,
+    "maxAliasLength": 256
+  },
+  "b2Cache": {
+    "builds": 0,
+    "hits": 0,
+    "evictions": 0,
+    "bypasses": 0,
+    "size": 0,
+    "limit": 1024,
+    "maxAliasLength": 256
+  },
+  "sources": {
+    "alias-patterns.mts": "b781e3507e86f623ee1e8caf45a1f533e862a4b2a04e3248e002c666388e3905",
+    "alias-patterns-b2.mts": "549342b03caee5be8ad325ef6817746d5fc8fff724acb8dc4abe5aa29d2d8627",
+    "check-b2-steady-overflow.mts": "1880a9f9cbd602ce43f55a49238d9d489b7d8ebac8ec9a83f905003659294965"
+  },
+  "limits": "Focused 400-entry synthetic control, stable VM/function per mode after 20 equal priming calls. Two discarded triples then 12 triples cycling all 6 orders; each measurement 10 inferences. No constructor proxy or tracing. Process CPU includes runtime threads and is diagnostic, not exclusive function cost. PASS means equality/cache/collection only; not statistical equivalence, browser, Android or end-to-end acceptance."
+}

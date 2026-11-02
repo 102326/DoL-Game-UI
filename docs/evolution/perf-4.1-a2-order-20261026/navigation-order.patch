@@ -1,0 +1,24 @@
+--- a/framework/official-ui/navigation.ts
++++ b/framework/official-ui/navigation.ts
+@@ -36,15 +36,18 @@
+  function refresh(){
+   if(!scope.active())return;if(!isMasterEnabled()){release('tabs');release('sidebar');release('ce-inline');weather.clear();return}
+   const overlay=document.querySelector<HTMLElement>('#customOverlay:not(.hidden):is(.dgs-overlay,.dgc-overlay,.dgp-overlay,.dgs-native-tools),'+adaptedOverlaySelector+':not(.hidden)'),kind=overlay?.dataset.overlay;
++  const tabNode=overlay?.querySelector<HTMLElement>(overlay.dataset.dguAdapter==='CheatExtendedSoftWet'?'#cheat_extended_options':'#overlayTabs')??undefined,adapted=!!overlay?.matches(adaptedOverlaySelector),ce=overlay?.dataset.dguAdapter==='CheatExtendedSoftWet';
++  const tabButtons=tabNode?(adapted?[...tabNode.querySelectorAll<HTMLElement>(ce?':scope>.CE-category-bar>button,:scope>.CE-subtab-bar>button':':scope>button')]:[...tabNode.querySelectorAll<HTMLElement>(':scope>button.link-internal.macro-button')].filter(n=>{const label=n.textContent?.trim()??'',plain=!n.childElementCount,optimization=kind==='options'&&n.childElementCount===1&&n.firstElementChild?.matches('span#doloptimizationModTab');return (plain||optimization)&&(tabNames.has(label)||!!formTabs[kind??'']?.has(label))})):[];
++  // Let weather read visibility before navigation decorations invalidate layout.
++  weather.set('native',tabButtons.length?tabNode?.closest<HTMLElement>('#customOverlayTitle')??undefined:undefined,overlay??undefined);
+   const sidebar=group('sidebar',document.querySelector<HTMLElement>('#ui-bar #overlayButtons,#ui-bar #startCaption')??undefined);
+   if(sidebar){const buttons=[...sidebar.node.querySelectorAll<HTMLElement>('[data-kw-entry=native-caption],[data-kw-entry=official-settings]')];for(const n of sidebar.attrs.keys())if(!buttons.includes(n))restore(sidebar,n);
+    let current='';for(const n of buttons){const own=n.dataset.kwEntry==='official-settings',selected=document.documentElement.hasAttribute('data-dgu-settings-open')?own:!own&&!!kind&&(labels[n.textContent?.trim()??'']===kind||kind==='journalNotes'&&labels[n.textContent?.trim()??'']==='journal');mark(sidebar,n,'entry',selected);if(selected)current=n.textContent??''}sidebar.state.active=current;
+   }
+-  const tabs=group('tabs',overlay?.querySelector<HTMLElement>(overlay.dataset.dguAdapter==='CheatExtendedSoftWet'?'#cheat_extended_options':'#overlayTabs')??undefined);
+-  if(tabs){const adapted=!!overlay?.matches(adaptedOverlaySelector),ce=overlay?.dataset.dguAdapter==='CheatExtendedSoftWet';const buttons=adapted?[...tabs.node.querySelectorAll<HTMLElement>(ce?':scope>.CE-category-bar>button,:scope>.CE-subtab-bar>button':':scope>button')]:[...tabs.node.querySelectorAll<HTMLElement>(':scope>button.link-internal.macro-button')].filter(n=>{const label=n.textContent?.trim()??'',plain=!n.childElementCount,optimization=kind==='options'&&n.childElementCount===1&&n.firstElementChild?.matches('span#doloptimizationModTab');return (plain||optimization)&&(tabNames.has(label)||!!formTabs[kind??'']?.has(label))});for(const n of tabs.attrs.keys())if(!buttons.includes(n))restore(tabs,n);for(const n of buttons)mark(tabs,n,ce&&n.parentElement?.classList.contains('CE-subtab-bar')?'category':'tab',n.matches('.tab-selected,.CEtabSelected,.CEbuttonBarSelected'))}
++  const tabs=group('tabs',tabNode);
++  if(tabs){const buttons=tabButtons;for(const n of tabs.attrs.keys())if(!buttons.includes(n))restore(tabs,n);for(const n of buttons)mark(tabs,n,ce&&n.parentElement?.classList.contains('CE-subtab-bar')?'category':'tab',n.matches('.tab-selected,.CEtabSelected,.CEbuttonBarSelected'))}
+   const inline=group('ce-inline',overlay?.querySelector<HTMLElement>('[data-dgu-adapter=CheatExtendedInlineSoftWet][data-dgu-adapter-match=full] #cheat_extended_options')??undefined);
+   if(inline){const buttons=[...inline.node.querySelectorAll<HTMLElement>(':scope>.CE-category-bar>button,:scope>.CE-subtab-bar>button')];for(const n of inline.attrs.keys())if(!buttons.includes(n))restore(inline,n);for(const n of buttons)mark(inline,n,n.parentElement?.classList.contains('CE-subtab-bar')?'category':'tab',n.matches('.CEtabSelected,.CEbuttonBarSelected'))}
+-  weather.set('native',tabs?.attrs.size?tabs.node.closest<HTMLElement>('#customOverlayTitle')??undefined:undefined,overlay??undefined);
+   const settings=document.querySelector<HTMLElement>('#dol-midnight-controls[open]:not([data-sf-leaving]) .dmt-settings-header');
+   weather.set('settings',settings??undefined,settings?.closest<HTMLElement>('.dmt-settings-shell')??undefined);weather.refresh();
+  }

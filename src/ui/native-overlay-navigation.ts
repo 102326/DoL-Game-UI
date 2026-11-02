@@ -5,10 +5,10 @@ import {isolate,mountUI,unmountUI} from '../runtime/presentation';
 import {isMasterEnabled} from '../runtime/master';
 import {sourceMotion} from './source-motion';
 import {navigationScrollTop} from './navigation-geometry';
+import {navigationHeading,flashNavigationHeading} from './navigation-feedback';
 import {navigationMount} from './navigation-mount';
 
-type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:readonly (readonly [string,string])[];component:Component;
- navigate:(context:{target:HTMLElement;group:HTMLElement|null;content:HTMLElement;origin:DOMRect|undefined;motion:ReturnType<typeof sourceMotion>;scroll:(after?:()=>void)=>void;relay:(from:DOMRect,to:DOMRect)=>Animation|undefined;current:()=>boolean})=>void};
+type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:readonly (readonly [string,string])[];component:Component};
 /** Internal adapter for this reviewed native family; never owns/rebuilds native content. */
 export function nativeOverlayNavigation(root:Window,options:Options,framework?:{host:Host;owner:Participant}){
  const key=`DoLGameUI.${options.kind}.enabled`,state=reactive({sections:[] as {id:string;label:string}[]}),motion=sourceMotion();
@@ -27,15 +27,13 @@ export function nativeOverlayNavigation(root:Window,options:Options,framework?:{
   if(!scope.active()||failed||!host?.isConnected||!content?.isConnected||!overlay||overlay.classList.contains('hidden')||overlay.dataset.overlay!==options.kind)return false;
   if(life&&!life.current())return false;
   const pane=content,group=id?pane.querySelector<HTMLElement>(`#${id}`):null;
-  let target=id?group:pane;if(id&&target?.previousElementSibling?.matches('.gold,h1,h2,h3,h4'))target=target.previousElementSibling as HTMLElement;
+  const heading=group?navigationHeading(group):undefined,target=id?heading??group:pane;
   if(!target||!pane.contains(target))return false;
   const top=id?navigationScrollTop(pane,target,16):0;
   if(top===undefined)return false;
   motion.cancel();const ticket=++intent,epoch=generation;
   const current=()=>scope.active()&&!failed&&intent===ticket&&generation===epoch&&pane===content&&!!host?.isConnected&&target.isConnected;
-  const scroll=(after?:()=>void)=>motion.scroll(pane,top,()=>{if(current())after?.()});
-  const relay=(from:DOMRect,to:DOMRect)=>{const body=document.body,scale=body.getBoundingClientRect().width/body.offsetWidth;if(!current()||!Number.isFinite(scale)||scale<=0)return;const local=(r:DOMRect)=>new DOMRect(r.x/scale,r.y/scale,r.width/scale,r.height/scale);return motion.relay(local(from),local(to))};
-  if(document.documentElement.hasAttribute('data-stone-free'))options.navigate({target,group,content:pane,origin:host.querySelector<HTMLElement>(`[data-section="${id}"]`)?.getBoundingClientRect()??host.getBoundingClientRect(),motion,scroll,relay,current});
+  if(document.documentElement.hasAttribute('data-stone-free'))motion.scroll(pane,top,()=>{if(current()&&heading)flashNavigationHeading(motion,heading)});
   else pane.scrollTo({top,behavior:'auto'});
   return true;
  }

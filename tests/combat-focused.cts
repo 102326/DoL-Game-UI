@@ -33,6 +33,21 @@ const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'artifacts/mater
  await p.waitForTimeout(60);assert.equal(await p.locator('.dcu-shell:not([data-focused])').count(),1,'default is animated flat presentation with original controls');assert.equal(await p.locator('#leftaction').isVisible(),true);assert.equal(await p.locator('#rightaction').isVisible(),true);await p.evaluate(()=>{focusOn=true;DoLCombatUI.refresh()});await p.waitForSelector('.dcu-shell[data-focused]');
  assert.equal(await p.locator('.dcu-arrangement button').count(),2);assert.equal(await p.locator('#rightaction').isVisible(),false);assert.equal(await p.locator('#third-party button').isVisible(),true);
  assert.equal(await p.locator('.dcu-arrangement small[data-edited]').count(),0,'default checked values are not user edits');
+ const weatherScans=await p.evaluate(async()=>{
+  const page=must(document.querySelector('.passage')),surface=document.createElement('div'),layer=document.createElement('div'),drop=document.createElement('i'),foreign=document.createElement('i');
+  surface.setAttribute('data-sf-weather-material','');layer.className='evo-material-layer evo-glass-layer';drop.className=foreign.className='evo-glass-drop';layer.append(drop);surface.append(layer);page.append(surface,foreign);
+  const frames=(n:number)=>new Promise<void>(resolve=>{const next=()=>--n?requestAnimationFrame(next):resolve();requestAnimationFrame(next)});
+  const original=document.querySelectorAll,descriptor=Object.getOwnPropertyDescriptor(document,'querySelectorAll');let scans=0;
+  Object.defineProperty(document,'querySelectorAll',{configurable:true,value:(selector:string)=>{if(selector.includes('[id="listContainer"]'))scans++;return original.call(document,selector)}});
+  try{
+   await frames(4);scans=0;for(let i=0;i<5;i++){drop.style.top=i+'px';await frames(2)}const owned=scans;
+   scans=0;foreign.style.top='1px';await frames(3);const unowned=scans;
+   scans=0;drop.style.top='6px';test.input.disabled=true;await frames(3);const native=scans;test.input.disabled=false;await frames(3);
+   return{owned,unowned,native};
+  }finally{if(descriptor)Object.defineProperty(document,'querySelectorAll',descriptor);else Reflect.deleteProperty(document,'querySelectorAll');surface.remove();foreign.remove()}
+ });
+ assert.equal(weatherScans.owned,0,'Owned weather styles must not rescan combat');assert.ok(weatherScans.unowned>0,'Unknown same-name decoration retains discovery');assert.ok(weatherScans.native>0,'Native disabled changes still refresh combat');
+ console.log('PASS weather/native mutation scan counts',weatherScans);
  await p.locator('#leftaction input[value=guard]').check();await p.waitForFunction(()=>document.querySelector('.dcu-arrangement small[data-edited]'));
  assert.equal(await p.evaluate(()=>test.changes),1);assert.equal(await p.evaluate(()=>test.input===document.querySelector('#leftaction input[value=guard]')),true);
  await p.locator('[data-edit-group="0:rightaction"]').click();assert.equal(await p.locator('#rightaction').isVisible(),true);assert.equal(await p.locator('#leftaction').isVisible(),false);

@@ -1,0 +1,136 @@
+diff --git a/javascript/modhub-market.js b/javascript/modhub-market.js
+index 27c4c70..15b5d86 100644
+--- a/javascript/modhub-market.js
++++ b/javascript/modhub-market.js
+@@ -2880,7 +2880,78 @@
+     }
+-
++
+     /** 简介只识别明确的必需声明；展示别名用于找目录，实际提供者仍核验包内 name/alias。 */
+-    function inferRequiredDependencies(mod, catalog = marketModList) {
++"use strict";
++var SwModHubDependencyRules = (() => {
++  var __defProp = Object.defineProperty;
++  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
++  var __getOwnPropNames = Object.getOwnPropertyNames;
++  var __hasOwnProp = Object.prototype.hasOwnProperty;
++  var __export = (target, all) => {
++    for (var name in all)
++      __defProp(target, name, { get: all[name], enumerable: true });
++  };
++  var __copyProps = (to, from, except, desc) => {
++    if (from && typeof from === "object" || typeof from === "function") {
++      for (let key of __getOwnPropNames(from))
++        if (!__hasOwnProp.call(to, key) && key !== except)
++          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
++    }
++    return to;
++  };
++  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
++
++  // docs/evolution/perf-4.1-candidates-20261026/alias-browser-cache.mts
++  var alias_browser_cache_exports = {};
++  __export(alias_browser_cache_exports, {
++    createRuleCache: () => createRuleCache
++  });
++  function createRuleCache(compile) {
++    const entries = /* @__PURE__ */ new Map(), limit = 1024, maxAliasLength = 256;
++    let builds = 0, hits = 0, evictions = 0, bypasses = 0;
++    return {
++      limit,
++      get(alias) {
++        const found = entries.get(alias);
++        if (found) {
++          entries.delete(alias);
++          entries.set(alias, found);
++          hits++;
++          return found;
++        }
++        const patterns = compile(alias);
++        builds++;
++        if (patterns.some((pattern) => pattern.global || pattern.sticky)) throw Error("Stateful rules cannot be cached");
++        if (alias.length > maxAliasLength) {
++          bypasses++;
++          return patterns;
++        }
++        if (entries.size === limit) {
++          entries.delete(entries.keys().next().value);
++          evictions++;
++        }
++        entries.set(alias, patterns);
++        return patterns;
++      },
++      clear() {
++        entries.clear();
++      },
++      stats: () => ({ builds, hits, evictions, bypasses, size: entries.size, limit, maxAliasLength })
++    };
++  }
++  return __toCommonJS(alias_browser_cache_exports);
++})();
++
++const swCompileDependencyAlias = (alias) => {        const escapePattern = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
++                const name = '[【「“"\\s]*' + escapePattern(alias).replace(/\s+/g, '\\s*') + '[】」”"\\s]*';
++                const boundary = /[a-z0-9_]$/i.test(alias) ? '(?![a-z0-9_])' : '';
++                const target = name + boundary;
++                const explicit = new RegExp('(?:依赖(?:于)?|需要(?:先)?(?:安装|启用|使用)?|必须(?:先)?(?:安装|启用|使用)?|必需(?:安装|启用)?|前置(?:框架|模组|插件)?\\s*(?:[:：]|为|是)|requires?\\s+|depends\\s+on\\s+)\\s*[:：]?\\s*(?:模组|框架|插件)?\\s*(?:[^。；;!?]*?[、和与及/])?' + target, 'i');
++                const framework = new RegExp('(?:通过|基于|使用)\\s*' + target + '(?:框架)?\\s*(?:v?\\d+(?:\\.\\d+)*(?:及以上|以上|或更高)?\\s*)?(?:制作|开发|构建|实现)', 'i');
++                const requiredAs = new RegExp(target + '(?:为|是)(?:必需|必须)?前置', 'i');
++return [explicit, framework, requiredAs];};
++        const swDependencyRuleCache = SwModHubDependencyRules.createRuleCache(swCompileDependencyAlias);
++        const patternsForAlias = swDependencyRuleCache.get, patternCacheLimit = swDependencyRuleCache.limit;
++function inferRequiredDependencies(mod, catalog = marketModList) {
+         const description = String(mod?.description || mod?.desc || '');
+         if (!description) return [];
+         const identities = [
+@@ -2899,6 +2970,7 @@
+                 else if (names.get(key)?.modName !== boots[0]) names.set(key, null);
+             }
+         }
++if (names.size <= patternCacheLimit) return inferCached(mod, description, names);
+         const result = [];
+         const escapePattern = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+         const clauses = description.split(/[。！？!?；;\n]/).map(cleanText).filter(sentence => sentence
+@@ -2913,9 +2985,39 @@
+                 const name = '[【「“"\\s]*' + escapePattern(entry.alias).replace(/\s+/g, '\\s*') + '[】」”"\\s]*';
+                 const boundary = /[a-z0-9_]$/i.test(entry.alias) ? '(?![a-z0-9_])' : '';
+                 const target = name + boundary;
+-                const explicit = new RegExp('(?:依赖(?:于)?|需要(?:先)?(?:安装|启用|使用)?|必须(?:先)?(?:安装|启用|使用)?|必需(?:安装|启用)?|前置(?:框架|模组|插件)?\\s*(?:[:：]|为|是)|requires?\\s+|depends\\s+on\\s+)\\s*[:：]?\\s*(?:模组|框架|插件)?\\s*(?:[^。；;!?]*?[、和与及/])?' + target, 'i');
+-                const framework = new RegExp('(?:通过|基于|使用)\\s*' + target + '(?:框架)?\\s*(?:v?\\d+(?:\\.\\d+)*(?:及以上|以上|或更高)?\\s*)?(?:制作|开发|构建|实现)', 'i');
+-                const requiredAs = new RegExp(target + '(?:为|是)(?:必需|必须)?前置', 'i');
++                const explicit = '(?:依赖(?:于)?|需要(?:先)?(?:安装|启用|使用)?|必须(?:先)?(?:安装|启用|使用)?|必需(?:安装|启用)?|前置(?:框架|模组|插件)?\\s*(?:[:：]|为|是)|requires?\\s+|depends\\s+on\\s+)\\s*[:：]?\\s*(?:模组|框架|插件)?\\s*(?:[^。；;!?]*?[、和与及/])?' + target;
++                const framework = '(?:通过|基于|使用)\\s*' + target + '(?:框架)?\\s*(?:v?\\d+(?:\\.\\d+)*(?:及以上|以上|或更高)?\\s*)?(?:制作|开发|构建|实现)';
++                const requiredAs = target + '(?:为|是)(?:必需|必须)?前置';
++                if (!new RegExp('(?:' + explicit + ')|(?:' + framework + ')|(?:' + requiredAs + ')', 'i').test(clause)) continue;
++                if (Array.isArray(mod.bootNames) && mod.bootNames.includes(entry.modName)) continue;
++                const after = clause.slice(clause.toLowerCase().indexOf(entry.alias.toLowerCase()) + entry.alias.length);
++                const tail = after.replace(/^[】」”"\s]*(?:(?:版本(?:要求)?|要求(?:版本)?)\s*[:：]?\s*)?/, '')
++                    .replace(/^[（(]\s*(?=[v\d<>=^~≥≤])/i, '').replace(/[）)]$/, '');
++                const range = /^[v\d<>=^~≥≤]/i.test(tail) && (new RegExp(explicit, 'i').test(clause) || new RegExp(requiredAs, 'i').test(clause)) ? tail.split('、')[0].trim() : '';
++                const version = range?.replace(/≥/g, '>=').replace(/≤/g, '<=')
++                    .replace(/v?(\d+(?:\.\d+)*)\s*(?:及以上|以上|或更高)/gi, '>=$1')
++                    .replace(/\s*(?:且|并且|\band\b|[，,](?=\s*[<>=^~]))\s*/gi, ' && ')
++                    .replace(/\s*(?:或|\bor\b)\s*/gi, ' || ').replace(/(^|[\s<>=^~|&])v(?=\d)/gi, '$1')
++                    .replace(/([<>=^~])\s+(?=\d)/g, '$1').trim();
++                result.push({ modName: entry.modName, version: version || '*',
++                    source: '简介声明', evidence: clause });
++            }
++        }
++        return [...new Map(result.map(item => [item.modName.toLowerCase() + '\n' + item.version, item])).values()];
++    }
++function inferCached(mod, description, names) {
++        const result = [];
++        const escapePattern = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
++        const clauses = description.split(/[。！？!?；;\n]/).map(cleanText).filter(sentence => sentence
++            && !/(?:可能|有时|如需|若|如果|只有|仅在|仅当|时才|情况|条件|当.+时|可(?:以)?独立(?:运行|使用)|独立运行|单独运行|可选|非必需|非必须|不再|无需|无须|不需|不必|不依赖|移除|取消|optional|standalone|independent|\b(?:may|might|sometimes|if|unless)\b|\bnot\s+(?:requires?|needs?|depends?)\b)/i.test(sentence)
++            && !(/(?:或|任选|二选一|任一|均可|\b(?:either|or)\b)/i.test(sentence)
++                && new Set([...names.values()].filter(entry => entry && sentence.toLowerCase().includes(entry.alias.toLowerCase())).map(entry => entry.modName)).size > 1))
++            .flatMap(sentence => sentence.split(/[，,](?!\s*(?:[<>=^~]|且|并且|或|and\b|or\b))/i)).map(cleanText).filter(Boolean);
++        for (const clause of clauses) {
++            if (/(?:无需|无须|不再|不必|不需|不依赖|没有依赖|已(?:经)?(?:移除|取消)|移除(?:了)?依赖|取消(?:了)?依赖|可选|非必需|非必须|按需|建议|推荐|兼容|支持|曾经|旧版|以前|如果|若需|optional|without|no longer|does not|not required)/i.test(clause)) continue;
++            for (const entry of names.values()) {
++                if (!entry) continue;
++const [explicit, framework, requiredAs] = patternsForAlias(entry.alias);
+                 if (!explicit.test(clause) && !framework.test(clause) && !requiredAs.test(clause)) continue;
+                 if (Array.isArray(mod.bootNames) && mod.bootNames.includes(entry.modName)) continue;
+                 const after = clause.slice(clause.toLowerCase().indexOf(entry.alias.toLowerCase()) + entry.alias.length);

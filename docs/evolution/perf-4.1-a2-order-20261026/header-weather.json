@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "test": "header-weather",
+  "originalTestSha256": "60957c4449f7daa1d3ce5deee76128f224f3e4f1a367574d5cf4f49aceee8656",
+  "originalNavigationSha256": "a9d2632889f9801cc926497398561fecd058decdf3932b5d32e4f6580298398d",
+  "candidateNavigationSha256": "7aff33d07294ac3675014fea5c09c8575574b0f21633b6f4dd51a85d33da2c07",
+  "transformedTestSha256": "2e5a7ff88815019df657165449f644d8a8eb3f3da26332f055bc2215456b795b",
+  "runnerSha256": "16cc9a24fb7e00dcd73d5516940cc9cc536c96235a66f2a6d57361e6e5699845",
+  "substitutions": 1,
+  "limits": "Existing assertions and fixture, one in-memory candidate substitution, no product source writes; candidate integration/device/performance acceptance not implied."
+}

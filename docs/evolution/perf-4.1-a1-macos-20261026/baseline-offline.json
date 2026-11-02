@@ -1,0 +1,35 @@
+{
+  "sourceHead": "936ec63288f1e6f66314cde84cebb17c8e77adee",
+  "platform": "darwin-arm64",
+  "node": "v26.12.1",
+  "scope": "Offline replay/source identity and controlled negative verification only; no current Mac/Android frame measurement.",
+  "results": [
+    {
+      "name": "replay",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "inference",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "source",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "reject-object",
+      "status": "EXPECTED_REJECTION",
+      "exitCode": 1,
+      "assertion": "same-object invalidation step 1"
+    },
+    {
+      "name": "reject-catalog",
+      "status": "EXPECTED_REJECTION",
+      "exitCode": 1,
+      "assertion": "same-object invalidation step 4"
+    }
+  ]
+}

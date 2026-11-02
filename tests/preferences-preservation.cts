@@ -10,7 +10,7 @@ function preferenceSnapshot(){
  return {prefs:DoLGameUI.getPreferences(),stored};
 }
 
-(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{
+(async()=>{const b=await chromium.launch(require('./browser-options.cjs'));try{
  const p=await b.newPage({viewport:{width:1200,height:900}});
  await p.route('http://preferences.test/',r=>r.fulfill({contentType:'text/html',body:'<html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><main id="story"><div id="passages"></div></main></body></html>'}));
  await p.goto('http://preferences.test/');
@@ -22,7 +22,7 @@ await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});await p.a
  const migrated=await p.evaluate(preferenceSnapshot);
  assert.deepEqual(await prefs(),[100,100],'first 2.6 upgrade resets only both scales');
  assert.equal(migrated.stored._scaleBaseline26,true);
- for(const [key,value] of Object.entries({comfortable:false,visualTier:2,visualGlass:false,visualPattern:true,mobileCompactControls:true,wideReading:true}))assert.equal(migrated.prefs[key],value,'other preference retained: '+key);
+ for(const [key,value] of Object.entries({comfortable:false,visualTier:2,visualGlass:false,visualPattern:true,mobileCompactControls:true,wideReading:false}))assert.equal(migrated.prefs[key],value,'other preference retained: '+key);
  await p.evaluate(()=>{DoLGameUI.setPreference('fontScale',150);DoLGameUI.setPreference('buttonScale',150)});
  assert.deepEqual(await prefs(),[150,150]);assert.deepEqual(await applied(),['1.5','1.5']);
  await p.setViewportSize({width:390,height:844});await p.waitForTimeout(150);

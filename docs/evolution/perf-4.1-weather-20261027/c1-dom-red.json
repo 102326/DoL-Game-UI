@@ -1,0 +1,23 @@
+{
+  "baseline": false,
+  "baselineRef": "178f8b2b5b1828038b7c3ec304e8995bbe99ee38",
+  "inputSha256": "d23a37f483dc709c088a217f1d5730cc18451417f7eab29b8c0fbb25230188ba",
+  "stationary": {
+    "mutations": 0,
+    "active": 76,
+    "nodesSame": true,
+    "snapshotSame": true
+  },
+  "moving": {
+    "writes": 18646,
+    "maxStyleWritesPerNode": 8,
+    "remounts": 0,
+    "nodesSame": true,
+    "advanced": true,
+    "geometry": true,
+    "geometryFailures": [],
+    "visible": 79,
+    "controlSame": true,
+    "overlap": 0
+  }
+}

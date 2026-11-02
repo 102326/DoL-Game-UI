@@ -9,7 +9,7 @@ declare const window: Window & {
  'use strict';
  if (window.SmartPhoneSoftWet) return;
  const spec: StyleAdapter = {
-  id: 'SmartPhoneSoftWet', version: '1.1.1', target: {name: 'SmartPhone Alpha', versions: ['0.3.91', '0.3.91.1']},
+  id: 'SmartPhoneSoftWet', version: '1.1.2', target: {name: 'SmartPhone Alpha', versions: ['0.3.91', '0.3.91.1']},
   // The author recreates the phone asynchronously; observe its stable wrapper across app switches.
   scope: ['#phone-wrapper'],
   fingerprint: {
@@ -22,7 +22,7 @@ declare const window: Window & {
   ]
  };
  const debugSpec: StyleAdapter = {
-  id: 'SmartPhoneSoftWetDebug', version: '1.1.1', target: spec.target,
+  id: 'SmartPhoneSoftWetDebug', version: '1.1.2', target: spec.target,
   scope: ['#smartphone_debug'],
   fingerprint: {
    id: 'smartphone-debug-0.3.91', safe: [[':scope>#smart-phone-debug-container']],

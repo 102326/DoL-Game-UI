@@ -37,7 +37,7 @@ for directory, name in packages:
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
     package_version = official_version if directory == 'official-ui' else host_version if directory == 'host' else '0.1.5-experimental' if directory == 'motion-hub' else version
-    nickname = 'Soft & Wet 4.0 — Evolution' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
+    nickname = 'Soft & Wet 4.1' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
     boot = dict(name=name, version=package_version, nickName=nickname, scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
@@ -63,8 +63,11 @@ for directory, name in packages:
         for declaration in ['ui.d.ts','wardrobe.d.ts']:
             asset_name = 'types/'+declaration
             files[asset_name] = (root/'dist/types'/declaration).read_bytes(); boot['additionFile'].append(asset_name)
-        boot['scriptFileList_inject_early'] = ['shop-page-experiment.js']
-        files['shop-page-experiment.js'] = (root/'dist/shop-page-experiment.js').read_bytes()
+        boot['scriptFileList_inject_early'] = ['shop-page-experiment.js', 'modhub-performance.js']
+        for entry in boot['scriptFileList_inject_early']:
+            files[entry] = (root/'dist'/entry).read_bytes()
+        files['MODHUB-PERFORMANCE-NOTICE.txt'] = (root/'MODHUB-PERFORMANCE-NOTICE.txt').read_bytes()
+        boot['additionFile'].append('MODHUB-PERFORMANCE-NOTICE.txt')
         boot['dependenceInfo'] += [{'modName':'TweeReplacer','version':'>=1.0.0'}, {'modName':'GameVersion','version':'=0.5.12.13'}]
         boot['addonPlugin'] = [{'modName':'TweeReplacer','addonName':'TweeReplacerAddon','modVersion':'>=1.0.0','params':[]}]
         add_shop_patches(root,boot,files)

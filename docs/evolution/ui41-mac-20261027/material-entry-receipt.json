@@ -1,0 +1,228 @@
+{
+  "id": "EVO41-INTEGRATION-M01",
+  "date": "2026-10-28",
+  "baseCommit": "368a69b8feb6473f361c06bc31ed50d19b047ead",
+  "branch": "feature/4.1-ui-material-hub",
+  "sourceHashes": {
+    "src/theme/controller.ts": "167660b0a9f9c61c883e505996b41940b266774f7b4350286963df769261482c",
+    "src/theme/SettingsPanel.vue": "c09e6c8f9bd5533e9b9a66666fcabac4519b19197e91667825626a2e3a34633a",
+    "src/theme/acrylic-v1.css": "e9502b9837b3d360eb8e5dc9512c457c51722a484ae52fbb38aa34caeb2022b7",
+    "tests/evolution-settings-integration.cts": "c95cbf9004220c13287192698cf9a3127bf02832aa102c4933e59f508437a09b",
+    "tests/ui41-material.cts": "01f90ef0960db0f93652cf706a03f36b188e5a3041338248c98da029b0a2fa22",
+    "scripts/expected.lock.json": "973e53467fae9bf746f872d004f073464826a9dbeb0a79810a4e3bd1b5570ddd",
+    "tests/evolution-hub-integration.cts": "91a33b0edeedde4a1851b8c34ab9e040b2be181aa73b3b9ae1044e31230a8d84",
+    "tests/evolution-weather-integration.cts": "9d349f327dad2689d3575ebaa43863be6cb7010fa4549e179a75a5669f2c4b4e",
+    "tests/settings-ci.cts": "4a738d2df10bd1ea6c100d927fac8d34026571faec9e87c4d12448d9d049efd9"
+  },
+  "environment": {
+    "platform": "darwin",
+    "node": "v26.12.1",
+    "chromium": "153.0.8010.12"
+  },
+  "checks": [
+    {
+      "name": "M01 official material without review marker and scoped native surfaces",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 approved shell and page timing, real input and single material surface",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 reversal samples current opacity before cancellation and latest open wins",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 closing and native close cancel category WAAPI and settle exactly one page",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 cancellation, preferences, hidden/resize and teardown keep latest usable state",
+      "status": "PASS"
+    },
+    {
+      "name": "S01 modeless fallback and replaced dialog cancel retired shell work",
+      "status": "PASS"
+    }
+  ],
+  "red": {
+    "case": "M01 official material without review marker and scoped native surfaces",
+    "reason": "Old runtime has no Acrylic control without data-evo41-material-review; actual locator timed out before runtime edits",
+    "evidence": "settings-integration-1793159448589 (local only)"
+  },
+  "previewComparison": {
+    "samePngBytes": true,
+    "images": [
+      {
+        "file": "material-1280-0.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-1280-100.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-1280-60.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-390-0.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-390-100.png",
+        "samePngBytes": true
+      },
+      {
+        "file": "material-390-60.png",
+        "samePngBytes": true
+      }
+    ],
+    "limits": "Existing accepted controlled preview only; not real game or device"
+  },
+  "fixedChildProbe": {
+    "before": {
+      "x": 108,
+      "y": 90,
+      "parentBlur": "blur(28px) saturate(0.85)"
+    },
+    "after": {
+      "x": 108,
+      "y": 90,
+      "parentBlur": "blur(24px) saturate(0.78)"
+    },
+    "samePosition": true
+  },
+  "verifiedCommands": [
+    "npm run tooling:build",
+    "node scripts/build-framework.mjs",
+    "node tests/evolution-settings-integration.cjs",
+    "node tests/ui41-material.cjs",
+    "node tests/evolution-navigation.cjs",
+    "node tests/adapter-materials.cjs",
+    "npm run ci:lock",
+    "npm run ci:check",
+    "node tests/settings-ci.cjs",
+    "node tests/evolution-owner-resources.cjs",
+    "node tests/evolution-hub-integration.cjs --preview-layout --old-preview-style (expected rejection)",
+    "node tests/evolution-weather-integration.cjs --late-host (expected rejection)"
+  ],
+  "review": {
+    "independent": "gpt-6.1-terra/high read-only",
+    "result": "No remaining actionable finding",
+    "withdrawn": "Modal backdrop concern disproved by existing settings-workspace.css:90 none!important cascade and new real-dialog assertion; no production fix added",
+    "testAlignment": "Independent read-only re-review found no actionable issue or weakened coverage. getContext probe forces style computation and is only behavioral, never uninstrumented timing/performance evidence."
+  },
+  "scope": "Official settings plus owned/full-match common-overlay material; other surfaces/weather/game/device pending. No new observer, Host API, business change, main merge or release.",
+  "ci": {
+    "status": "PASS at exact tested source; later delivery docs do not rerun CI",
+    "source": {
+      "head": "a4e1320719bdc2fcc954e87f87ba204d98ff3f98",
+      "tree": "f784225e7a8411684a08ccf5c24058e5d7c97f2b",
+      "dirty": false,
+      "contentSha256": "11e13d79c414b557f5113b20757bc77f48de50b1146009f9cddc335ac28557e5",
+      "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+    },
+    "runs": [
+      {
+        "profile": "standard",
+        "id": 40633651039,
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40633651039",
+        "headSha": "a4e1320719bdc2fcc954e87f87ba204d98ff3f98",
+        "attempt": 1,
+        "event": "workflow_dispatch",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "name": "validate",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:40:35Z",
+            "completedAt": "2026-10-28T04:55:41Z"
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:55:44Z",
+            "completedAt": "2026-10-28T04:56:02Z"
+          },
+          {
+            "name": "moody-gate",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:56:05Z",
+            "completedAt": "2026-10-28T04:56:09Z"
+          }
+        ],
+        "remoteReceipt": {
+          "sha256": "375bf8bd7c45f5079beb9762400325ac82ab1b29eee0af29017aa295a357d474",
+          "status": "PASS",
+          "assertionResult": "PASS",
+          "evidenceIntegrity": "COMPLETE",
+          "problems": []
+        }
+      },
+      {
+        "profile": "research",
+        "id": 40633654571,
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40633654571",
+        "headSha": "a4e1320719bdc2fcc954e87f87ba204d98ff3f98",
+        "attempt": 1,
+        "event": "workflow_dispatch",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "name": "prototype",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:40:37Z",
+            "completedAt": "2026-10-28T04:48:53Z"
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "startedAt": "2026-10-28T04:48:57Z",
+            "completedAt": "2026-10-28T04:49:27Z"
+          }
+        ],
+        "remoteReceipt": {
+          "sha256": "8c24dc99e8322bc6acfaf0d86efccc10056b10c5eeceff07790f8ec2441e2b8c",
+          "status": "PASS",
+          "assertionResult": "PASS",
+          "evidenceIntegrity": "COMPLETE",
+          "problems": []
+        }
+      }
+    ],
+    "macStandard": {
+      "status": "PASS",
+      "files": 193,
+      "bytes": 1004567,
+      "verification": "Existing verifyRemote recomputed complete downloaded set, hashes, catalog, mandatory structure and whole-run verdict; nonce and manifest hash anchored to completed CI job log",
+      "manifestSha256": "8fa5d921ff0b3f6414002e75902938d3b1ee431dae82fc418716afdc6e839acd"
+    },
+    "macResearch": {
+      "status": "receipt identity PASS",
+      "fullMediaRedownloaded": false,
+      "verification": "Downloaded independent remote-verification receipt and checked exact clean local source, run identity, PASS/COMPLETE and empty problems. Full research evidence was downloaded/recomputed by independent GitHub job, not re-downloaded on Mac."
+    },
+    "transportNote": "gh run watch once exited on TLS handshake timeout; direct Run query confirmed success. No CI rerun or product change for this network observer failure."
+  },
+  "ciInvestigation": {
+    "source": "d9df64c7a3027a62cef69d7c0eb4f269437199d0",
+    "failedRuns": [
+      {
+        "id": 40630769444,
+        "profile": "standard"
+      },
+      {
+        "id": 40630773241,
+        "profile": "research"
+      }
+    ],
+    "findings": [
+      "Preview layout still required retired padding0; retain width/finite-section guards and require approved Q1 padding plus no global max-width/margins. Old global main mutant is still rejected (width56,section0).",
+      "Weather entry still required alpha>=.8; require accepted default60 and shell alpha.43 instead.",
+      "Late-host mutant no longer reliably changes eventual reading pixels after the new layout recovers geometry. Preserve pixel equality assertions and observe computed canvas position at first context acquisition; mutant is static instead of absolute and rejected before rendering. No production renderer change.",
+      "Local combined run exposed cross-task legacy reference sampling race. Remove/sample/restore axis atomically in one browser evaluation, including unknown-overlay checks, instead of depending on elapsed time."
+    ],
+    "localResult": "Final settings-ci, ui41-material, evolution-owner-resources and both controlled negatives passed their expected verdicts; strict ci:check passed. Earlier local M01 reference race failure retained in investigation."
+  }
+}

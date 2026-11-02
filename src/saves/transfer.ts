@@ -1,9 +1,11 @@
 import {restoreNative} from '../runtime/presentation';
+import {registerWorkspaceSurface} from '../ui/workspace-surface';
 /** Rehouse native transfer controls without replacing their events or values. */
 export function createSaveTransfer(){
  let host:HTMLElement|null=null,overlay:HTMLElement|null=null;
+ let releaseSurface:(()=>void)|undefined;
  const moved:{node:Node;anchor:Comment}[]=[];
- function release(){for(const {node,anchor} of moved){restoreNative(node,anchor,host?.parentNode??null)}moved.length=0;host?.remove();host=null;overlay?.classList.remove('dgs-native-tools');overlay=null}
+ function release(){releaseSurface?.();releaseSurface=undefined;for(const {node,anchor} of moved){restoreNative(node,anchor,host?.parentNode??null)}moved.length=0;host?.remove();host=null;overlay?.classList.remove('dgs-native-tools');overlay=null}
  function refresh(enabled:boolean){
   const input=document.querySelector('#customOverlayContent #saveDataInput');
   if(enabled&&host?.isConnected&&host.contains(input)&&!input?.closest('[hidden],.hidden')&&overlay?.matches('[data-overlay=saves],[data-overlay=export]'))return;
@@ -34,6 +36,7 @@ export function createSaveTransfer(){
    move(node,settings);
   });
   code.append(actions,settings);
+  releaseSurface=registerWorkspaceSurface(nextOverlay,nextOverlay.querySelector<HTMLElement>('#customOverlayTitle')??host,'saves');
  }
  return {refresh,release};
 }

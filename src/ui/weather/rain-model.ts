@@ -54,7 +54,10 @@ export function rainModel(seed=0x27fa29,naturalTrails=false,runoff=false){
   }
   for(let i=0;i<drops.length;i++)for(let j=i+1;j<drops.length;j++){
    const a=drops[i],b=drops[j];if(!a||!b)throw Error('Missing rain drop in bounded pair');if(a.area===0||b.area===0)continue;
-   if(Math.hypot(a.x-b.x,a.y-b.y)>(Math.sqrt(a.area)+Math.sqrt(b.area))*.88)continue;
+   // Axis rejection is conservative: only call hypot for overlapping bounds.
+   // Keep the exact circular contact test and pair/merge order unchanged.
+   const reach=(Math.sqrt(a.area)+Math.sqrt(b.area))*.88,dx=a.x-b.x,dy=a.y-b.y;
+   if(Math.abs(dx)>reach||Math.abs(dy)>reach||Math.hypot(dx,dy)>reach)continue;
    const sum=a.area+b.area;a.x=(a.x*a.area+b.x*b.area)/sum;a.y=(a.y*a.area+b.y*b.area)/sum;
    a.vy=Math.max(a.vy,b.vy);a.pin=Math.min(a.pin,b.pin);a.age=Math.max(a.age,b.age);a.area=sum;b.area=0;merges++;if(runoff&&b.runoff)a.runoff=true;anchors.delete(a.id);anchors.delete(b.id);
   }

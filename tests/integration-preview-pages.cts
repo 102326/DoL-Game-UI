@@ -27,7 +27,7 @@ import browserOptions = require('./browser-options.cjs');
     }else{
      await page.locator(mode==='blood'||mode==='special'?'#open-review':'#dol-midnight-sidebar-button').click();
      await page.waitForFunction(()=>document.querySelector('dialog')?.open);
-     const comfortable=page.getByLabel('舒适阅读间距',{exact:true}),before=await comfortable.isChecked();await comfortable.click();assert.equal(await comfortable.isChecked(),!before);
+     const comfortable=page.getByLabel('手机紧凑按钮间距',{exact:true}),before=await comfortable.isChecked();await comfortable.click();assert.equal(await comfortable.isChecked(),!before);
      const keys=mode==='special'?['Digit2','Digit3','Digit4','Digit5','Digit6','Digit7','Digit8','Digit9','Digit0']:mode==='blood'?['Digit2','Digit3','Digit1']:mode==='settings-weather'?['Digit3','Digit2','Digit1']:[];
      const states:unknown[]=[];
      for(const code of keys){await page.keyboard.press('Alt+'+code.replace('Digit',''));const state=await page.evaluate(()=>{const weather:unknown=Reflect.get(window,'Weather');if(!weather||typeof weather!=='object')throw Error('Missing preview Weather');return JSON.stringify(weather)});const parsed:unknown=JSON.parse(state);states.push(parsed)}

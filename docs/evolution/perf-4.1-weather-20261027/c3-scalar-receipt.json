@@ -1,0 +1,132 @@
+{
+  "task": "EVO41-WEATHER-C3",
+  "date": "2026-10-28",
+  "baseCommit": "4506134bdf7428a050a57dc9194a2b5ca2de2dd5",
+  "decision": "REJECT_NOT_ADOPTED",
+  "reason": "No supported main-thread benefit; 4/6 pairs slower and style/layout counts unchanged. No runtime source modification.",
+  "commands": [
+    {
+      "command": "npm run tooling:build",
+      "exitCode": 0
+    },
+    {
+      "command": "npx playwright install chromium --only-shell",
+      "exitCode": 0,
+      "reason": "browser cache was absent; restored pinned1.63.0 revision1243, no lock/package update"
+    },
+    {
+      "command": "node tests/ui41-weather-paint.cjs --scalar-protection",
+      "exitCode": 0
+    }
+  ],
+  "initialAttempt": "Browser launch failed before cases because pinned headless-shell cache was absent. No completed comparison or passing result from that attempt.",
+  "environment": {
+    "node": "v26.12.1",
+    "platform": "darwin",
+    "browser": "153.0.8010.12"
+  },
+  "scope": "Controlled Chromium fixed-clock header rain with per-frame forced layout flush. No game/device/GPU/FPS claim.",
+  "correctness": {
+    "exactScenarios": 7,
+    "sourceHashes": {
+      "baseline": "34d58f641b6dd5b2f0a17c26de22bb52dabc8a5c1534dce895e7601b7982dd36",
+      "candidate": "2d21b578228d7105b34f7b113c9934538e7ec79373f4a41915699dc09d130c38"
+    }
+  },
+  "pairs": [
+    {
+      "pair": 0,
+      "baselineTaskMs": 374.31300000000005,
+      "candidateTaskMs": 375.36199999999997,
+      "deltaMs": 1.0489999999999111,
+      "baselineStyleCount": 231,
+      "candidateStyleCount": 231,
+      "baselineLayoutCount": 231,
+      "candidateLayoutCount": 231
+    },
+    {
+      "pair": 1,
+      "baselineTaskMs": 377.14000000000004,
+      "candidateTaskMs": 374.90999999999997,
+      "deltaMs": -2.2300000000000653,
+      "baselineStyleCount": 231,
+      "candidateStyleCount": 231,
+      "baselineLayoutCount": 231,
+      "candidateLayoutCount": 231
+    },
+    {
+      "pair": 2,
+      "baselineTaskMs": 381.858,
+      "candidateTaskMs": 376.8980000000001,
+      "deltaMs": -4.959999999999964,
+      "baselineStyleCount": 231,
+      "candidateStyleCount": 231,
+      "baselineLayoutCount": 231,
+      "candidateLayoutCount": 231
+    },
+    {
+      "pair": 3,
+      "baselineTaskMs": 373.67800000000005,
+      "candidateTaskMs": 530.11,
+      "deltaMs": 156.4319999999999,
+      "baselineStyleCount": 231,
+      "candidateStyleCount": 231,
+      "baselineLayoutCount": 231,
+      "candidateLayoutCount": 231
+    },
+    {
+      "pair": 4,
+      "baselineTaskMs": 370.69399999999996,
+      "candidateTaskMs": 380.844,
+      "deltaMs": 10.150000000000048,
+      "baselineStyleCount": 231,
+      "candidateStyleCount": 231,
+      "baselineLayoutCount": 231,
+      "candidateLayoutCount": 231
+    },
+    {
+      "pair": 5,
+      "baselineTaskMs": 370.2610000000001,
+      "candidateTaskMs": 375.727,
+      "deltaMs": 5.465999999999916,
+      "baselineStyleCount": 231,
+      "candidateStyleCount": 231,
+      "baselineLayoutCount": 231,
+      "candidateLayoutCount": 231
+    }
+  ],
+  "summary": {
+    "baselineTaskMedianMs": 373.99550000000005,
+    "candidateTaskMedianMs": 376.3125,
+    "pairedDeltaMedianMs": 3.2574999999999132,
+    "slowerPairs": 4,
+    "styleLayoutCountsEveryPair": [
+      231,
+      231
+    ]
+  },
+  "limits": [
+    "Fixed240 model frames with forced per-frame layout flush, not real-time FPS/INP/GPU/game.",
+    "Six pairs, uncontrolled OS/CPU/JIT/GC; the +156.432ms pair is retained and unexplained, not discarded.",
+    "Object literal removal is not evidence of fewer actual V8 allocations or GC.",
+    "Existing product C2 and approved rain/snow/material are unchanged.",
+    "Research tool only; no new required CI, full CI, package or release."
+  ],
+  "inputSha256": {
+    "src/ui/weather/wet-glass.ts": "34d58f641b6dd5b2f0a17c26de22bb52dabc8a5c1534dce895e7601b7982dd36",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+    "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+    "tests/ui41-weather-paint.cts": "fab6df1dc44a83ca3a98980e8901e31752461e2bfff65e788d6e27e6473db6d8",
+    "package-lock.json": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+  },
+  "evidenceSha256": {
+    "c3-scalar-result.json": "81219d0aeff6b6bac4b2baa5d674ea6f391c6c36cd61c3121528b8e92235b46a",
+    "c3-scalar-rejected.patch": "df1cff3766de703c678a7a10171c4f8756b1d91e8bb1971463804b37c9dd44d3"
+  }
+}

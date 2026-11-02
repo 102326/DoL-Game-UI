@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {useWorkspaceSurface} from '../ui/workspace-surface';
+const comparison=ref<HTMLElement>();useWorkspaceSurface(comparison,'reference');
 import GameButton from '../ui/GameButton.vue';
 import {onBeforeUnmount,ref,watch,nextTick} from 'vue';
 import {sourceMotion} from '../ui/source-motion';
@@ -41,7 +43,7 @@ function relation(a:string,b:string){return !a||!b?'未提供':a===b?'显示文�
  </div>
  <Teleport :to="target||'body'" :disabled="!target">
   <Transition :css="false" @enter="enter" @leave="leave" @enter-cancelled="cancel" @leave-cancelled="cancel" @after-enter="afterEnter">
-   <section v-if="comparisonB&&referenceA" :key="JSON.stringify(comparisonB)" class="dgshop-reference-comparison" role="region" aria-label="商品显示对比">
+   <section ref="comparison" v-if="comparisonB&&referenceA" :key="JSON.stringify(comparisonB)" class="dgshop-reference-comparison" role="region" aria-label="商品显示对比">
     <header class="dgshop-reference-comparison-head"><strong>商品对照</strong><button type="button" data-shop-close @click="closeFromPanel">关闭</button></header>
     <div class="dgshop-reference-cards">
      <article class="dgshop-reference-card" data-side="A"><h3><span>A</span>{{referenceA.title}}</h3><p class="dgshop-reference-price">{{referenceA.price||'无价格文字'}}</p><small>原名称：{{referenceA.owned||'无名称行文字'}}</small></article>

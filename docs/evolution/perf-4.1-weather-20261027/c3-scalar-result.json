@@ -1,0 +1,218 @@
+{
+  "status": "PASS",
+  "reference": "4506134bdf7428a050a57dc9194a2b5ca2de2dd5",
+  "candidateKind": "scalar-protection",
+  "comparedFile": "src/ui/weather/wet-glass.ts",
+  "sourceHashes": {
+    "baseline": "34d58f641b6dd5b2f0a17c26de22bb52dabc8a5c1534dce895e7601b7982dd36",
+    "candidate": "2d21b578228d7105b34f7b113c9934538e7ec79373f4a41915699dc09d130c38"
+  },
+  "node": "v26.12.1",
+  "platform": "darwin",
+  "browser": "153.0.8010.12",
+  "scope": "Controlled Chromium fixed-clock header rain with per-frame forced layout flush. No game/device/GPU/FPS claim.",
+  "modelProof": [],
+  "proof": [
+    {
+      "name": "full-heavy",
+      "canvas": "d4856464ac4abb7b90166194b955ff45c2b38b307e2c14017d2acbdb5ceb200f",
+      "screenshot": "6421e340529d52a0ba9446a0d3e319c3cbd1a606cbaf9f97a11c29dd00ff143a",
+      "visible": 80
+    },
+    {
+      "name": "header-light",
+      "canvas": "b5c270ad221102ac80fe444849fb5deee3ad3b1b9ab1859deda5f069600fb8f3",
+      "screenshot": "17166ccd6c6e00ce6bb8b766b0448c4e061929224068c0870520716199db8615",
+      "visible": 12
+    },
+    {
+      "name": "header-heavy",
+      "canvas": "016b5c0d7581dd7ed0c74cc4769c124779366362219d3f4475f8be7293e6a1c8",
+      "screenshot": "c705d5242dfadc135495ab466fbcdeb00664711751efbc84c687e1d6d15ee4b1",
+      "visible": 22
+    },
+    {
+      "name": "rain-to-snow",
+      "canvas": "6727903e660aa1d02738dee0c28ce503449179f33f66a943e15095f48a7db8c2",
+      "screenshot": "f46e67d162a5220d0c0c1b20e462a84e00ca24404b2a26240af953f7460227f6",
+      "visible": 19
+    },
+    {
+      "name": "snow",
+      "canvas": "e259568138b8bcd13d0e16d15e8489a34f2e9d79e3faf1fe7a355f64dbe0a432",
+      "screenshot": "ee287acf07a0368f2805b97ad48104dbaf4f50d546470bec81950173076afda5",
+      "visible": 0
+    },
+    {
+      "name": "rain-return",
+      "canvas": "8beba7a449fbfcbfd97e469cb3602afe6c488c36949622abbc473700913deb84",
+      "screenshot": "02a56d255ac6066bf01711414e65419533fcb9ce058bd6d17bd3ade8e659607d",
+      "visible": 7
+    },
+    {
+      "name": "dry",
+      "canvas": "a677a53fb12ffd858fff79e961a1b450d840bee5867209b3a658b8561a4e9bd0",
+      "screenshot": "eb3f9c7a8b34cafda2d2c7c2e94c2c2075b072ee5a48979b135a3e625fc6b6af",
+      "visible": 0
+    }
+  ],
+  "rows": [
+    {
+      "pair": 0,
+      "variant": "baseline",
+      "elapsed": 371.7000000476837,
+      "metrics": {
+        "TaskDuration": 0.37431300000000006,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.037442,
+        "LayoutDuration": 0.032846,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 0,
+      "variant": "candidate",
+      "elapsed": 367.60000002384186,
+      "metrics": {
+        "TaskDuration": 0.375362,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.036446,
+        "LayoutDuration": 0.032215999999999995,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 1,
+      "variant": "candidate",
+      "elapsed": 367.10000002384186,
+      "metrics": {
+        "TaskDuration": 0.37490999999999997,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.035560999999999995,
+        "LayoutDuration": 0.032191,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 1,
+      "variant": "baseline",
+      "elapsed": 370.39999997615814,
+      "metrics": {
+        "TaskDuration": 0.37714000000000003,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.037405,
+        "LayoutDuration": 0.032757999999999995,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 2,
+      "variant": "baseline",
+      "elapsed": 374.8000000715256,
+      "metrics": {
+        "TaskDuration": 0.38185800000000003,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.03753,
+        "LayoutDuration": 0.03309,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 2,
+      "variant": "candidate",
+      "elapsed": 369.1999999284744,
+      "metrics": {
+        "TaskDuration": 0.37689800000000007,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.03617,
+        "LayoutDuration": 0.032307,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 3,
+      "variant": "candidate",
+      "elapsed": 521.3999999761581,
+      "metrics": {
+        "TaskDuration": 0.53011,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.06292800000000001,
+        "LayoutDuration": 0.049314000000000004,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 3,
+      "variant": "baseline",
+      "elapsed": 371.2000000476837,
+      "metrics": {
+        "TaskDuration": 0.37367800000000007,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.036334000000000005,
+        "LayoutDuration": 0.032741,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 4,
+      "variant": "baseline",
+      "elapsed": 368.1999999284744,
+      "metrics": {
+        "TaskDuration": 0.37069399999999997,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.036503,
+        "LayoutDuration": 0.032049999999999995,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 4,
+      "variant": "candidate",
+      "elapsed": 373.5,
+      "metrics": {
+        "TaskDuration": 0.380844,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.037574,
+        "LayoutDuration": 0.032982,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 5,
+      "variant": "candidate",
+      "elapsed": 372.6999999284744,
+      "metrics": {
+        "TaskDuration": 0.375727,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.037092,
+        "LayoutDuration": 0.032587,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    },
+    {
+      "pair": 5,
+      "variant": "baseline",
+      "elapsed": 367.7000000476837,
+      "metrics": {
+        "TaskDuration": 0.37026100000000006,
+        "ScriptDuration": 0,
+        "RecalcStyleDuration": 0.0363,
+        "LayoutDuration": 0.032361,
+        "RecalcStyleCount": 231,
+        "LayoutCount": 231
+      }
+    }
+  ],
+  "errors": []
+}

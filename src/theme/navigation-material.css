@@ -92,3 +92,7 @@ html[data-stone-free] .dgw-exits>#wardrobeExits>br{display:none}
 html[data-stone-free] :is(.dgw-header-actions>button,.dgw-exits a.link-internal){font:inherit;font-weight:500;line-height:1.45;padding:9px 12px;min-height:44px;margin:0}
 
 html[data-stone-free][data-dgu-visualMotion] :is(#overlayTabs,#cheat_extended_options .CE-category-bar)>[data-kw-nav-control=tab]{transition:background-color 240ms,color 240ms}
+
+/* One quiet control language for owned section navigation; select keeps its native behavior. */
+html[data-stone-free][data-dol-midnight] :is(.dgc-navigation,.dgs-navigation,.dgp-navigation)>:is(button,select)[data-kw-nav-control]{box-sizing:border-box;min-height:44px;padding:9px 12px!important;border:1px solid transparent!important;border-radius:11px!important;background:#ffffff02!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font:inherit;line-height:1.45}
+html[data-stone-free][data-dol-midnight] :is(.dgc-navigation,.dgs-navigation,.dgp-navigation)>button[aria-pressed=true]{background:#8baea314!important;color:#d2e1db;box-shadow:inset 0 -2px #8baea37a!important}

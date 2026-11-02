@@ -1,6 +1,6 @@
 {
   "name": "SmartPhoneSoftWet",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "SmartPhone Alpha 0.3.91 / 0.3.91.1 的 Kraft Work 3.X 可选外观包。",
   "styleFileList": ["smartphone-soft-wet.css"],
   "scriptFileList": ["smartphone-soft-wet.js"],

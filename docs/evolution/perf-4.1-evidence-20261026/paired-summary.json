@@ -1,0 +1,206 @@
+[
+  {
+    "label": "属性",
+    "enabled": true,
+    "n": 3,
+    "handlerMs": [
+      102.10000002384186,
+      134.09999990463257,
+      84.39999997615814
+    ],
+    "handlerMedianMs": 102.10000002384186,
+    "maxGapMs": [
+      116.79999999981374,
+      141.59999999962747,
+      100
+    ],
+    "maxGapMedianMs": 116.79999999981374,
+    "life": [
+      {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0
+      },
+      {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0
+      },
+      {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "label": "属性",
+    "enabled": false,
+    "n": 3,
+    "handlerMs": [
+      73.70000004768372,
+      99,
+      77.20000004768372
+    ],
+    "handlerMedianMs": 77.20000004768372,
+    "maxGapMs": [
+      116.79999999981374,
+      116.70000000018626,
+      83.29999999981374
+    ],
+    "maxGapMedianMs": 116.70000000018626,
+    "life": [
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      },
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      },
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "label": "作弊",
+    "enabled": true,
+    "n": 3,
+    "handlerMs": [
+      82.70000004768372,
+      89.30000007152557,
+      75.30000007152557
+    ],
+    "handlerMedianMs": 82.70000004768372,
+    "maxGapMs": [
+      300,
+      300,
+      300
+    ],
+    "maxGapMedianMs": 300,
+    "life": [
+      {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0
+      },
+      {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0
+      },
+      {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "label": "作弊",
+    "enabled": false,
+    "n": 3,
+    "handlerMs": [
+      68.5,
+      71.20000004768372,
+      92.80000007152557
+    ],
+    "handlerMedianMs": 71.20000004768372,
+    "maxGapMs": [
+      99.90000000037253,
+      99.90000000037253,
+      125
+    ],
+    "maxGapMedianMs": 99.90000000037253,
+    "life": [
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      },
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      },
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "label": "ModHub",
+    "enabled": true,
+    "n": 3,
+    "handlerMs": [
+      47.199999928474426,
+      20.799999952316284,
+      54.700000047683716
+    ],
+    "handlerMedianMs": 47.199999928474426,
+    "maxGapMs": [
+      341.6000000005588,
+      266.6000000005588,
+      149.90000000037253
+    ],
+    "maxGapMedianMs": 266.6000000005588,
+    "life": [
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      },
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      },
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "label": "ModHub",
+    "enabled": false,
+    "n": 3,
+    "handlerMs": [
+      38.699999928474426,
+      16.100000023841858,
+      38.39999997615814
+    ],
+    "handlerMedianMs": 38.39999997615814,
+    "maxGapMs": [
+      233.3999999994412,
+      216.69999999925494,
+      216.6000000005588
+    ],
+    "maxGapMedianMs": 216.69999999925494,
+    "life": [
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      },
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      },
+      {
+        "mounts": 0,
+        "scans": 0,
+        "failures": 0
+      }
+    ]
+  }
+]

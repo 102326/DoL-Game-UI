@@ -1,0 +1,65 @@
+{
+  "commit": "ff428b4d385b79f6c14fada9a65301157978aa6f",
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "83ffc10fec405cefbb12158414b047acde4939c18306e8b048aaf89df2f1a6f7"
+    },
+    {
+      "path": ".node-version",
+      "sha256": "2a4a3fac7ea8694f168266bd3a930b3fc5faa6e503d577d99c024f74582e4cb5"
+    },
+    {
+      "path": "src/panels/main.ts",
+      "sha256": "5c0b5f9d43770dc3a1a3202a4f079c667147de0e0e62b080bb79213e272c84f0"
+    },
+    {
+      "path": "src/panels/visibility.ts",
+      "sha256": "1048ed46b039c7089f14d3825ab3a4ffdf08e70ceb2640febd0617cf895d35e0"
+    },
+    {
+      "path": "src/panels/presentation.ts",
+      "sha256": "60a98d57e7185a9341b34b5673a63108ed13be77a93fd1bdb12519303c5dcf6c"
+    },
+    {
+      "path": "src/ui/native-overlay-navigation.ts",
+      "sha256": "eead4c227d25611f0c5756ff9f1c882afed3de06dcbc620247b44ad9e15afa8f"
+    },
+    {
+      "path": "src/ui/navigation-mount.ts",
+      "sha256": "66bfd4412338fbce3074dbdc407823e4e01379cbe648cffeabafde7d339a3dae"
+    },
+    {
+      "path": "src/ui/window-fade.ts",
+      "sha256": "a75e3ed4fbf8f6626ea1efade19790ea0fc7504b70f387f753c61578bab0db04"
+    },
+    {
+      "path": "framework/official-ui/motion.ts",
+      "sha256": "4b2bcc3d713ab64eb84cf788763986963a765c4b8b18845e89c9907f00bfe386"
+    },
+    {
+      "path": "framework/official-ui/navigation.ts",
+      "sha256": "a9d2632889f9801cc926497398561fecd058decdf3932b5d32e4f6580298398d"
+    },
+    {
+      "path": "framework/official-ui/weather.ts",
+      "sha256": "8a6a0795816bf4cc7fb3ce8452b99243f48a88216a821c6233ce6350216f1f75"
+    },
+    {
+      "path": "src/runtime/ui.ts",
+      "sha256": "573ac776c5c3de543813c849ba41465ef4f80d8217c9cb48483d4973aebcdb91"
+    },
+    {
+      "path": "tests/evolution-panels.cts",
+      "sha256": "005b50b4a86c84d27bc189ca1f074463a4139306e0185883191834581ef94641"
+    },
+    {
+      "path": "tests/official-game-motion.cts",
+      "sha256": "4a77f95565758ad55f5277d97cb3a92381a4c469a39d6875c403c0f8125db467"
+    },
+    {
+      "path": "tests/browser-options.cts",
+      "sha256": "77145969629bf96de4fb28f4f60bd9e1e49961c8060dabd45140a5d4524f090a"
+    }
+  ]
+}

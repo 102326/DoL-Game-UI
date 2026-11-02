@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import {ref} from 'vue';
+import {useWorkspaceSurface} from '../ui/workspace-surface';
+const toolbar=ref<HTMLElement>();useWorkspaceSurface(toolbar,'shop',node=>{const next=node.closest('.dgshop-host')?.nextElementSibling;return next instanceof HTMLElement&&next.matches('.dgshop-content')?next:undefined});
 import GameButton from '../ui/GameButton.vue';
 import ShopReference from './ShopReference.vue';
 defineProps<{state:{hasDetails:boolean;isEntry:boolean;open:boolean;narrow:boolean;compact:boolean;categoriesOpen:boolean;selectedTitle:string;referenceEnabled:boolean;referenceA:{title:string;price:string;owned:string}|null;comparisonB:{title:string;price:string;owned:string}|null;comparisonTarget:string|null;comparisonOrigin:{left:number;top:number;width:number;height:number}|null;transactionStatus:''|'pending'|'confirmed'|'unknown';transactionMessage:string;defaultGender:string;message:string};toggle:()=>void;toggleCategories:()=>void;setDefaultGender:(value:string)=>void;pinReference:()=>void;compareReference:(origin:HTMLElement)=>void;clearReference:()=>void;closeComparison:()=>void}>();
 </script>
-<template><header class="dgshop-toolbar cu:flex cu:items-center cu:justify-between cu:gap-3">
+<template><header ref="toolbar" class="dgshop-toolbar cu:flex cu:items-center cu:justify-between cu:gap-3">
  <h2>服装店</h2>
  <details class="dgshop-entry-settings" :open="!state.isEntry&&!state.narrow">
  <summary v-show="state.isEntry||state.narrow">进店设置</summary>

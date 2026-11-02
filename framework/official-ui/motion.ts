@@ -1,3 +1,4 @@
+import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {fadeWindow} from '../../src/ui/window-fade';
@@ -14,7 +15,8 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  let previousPetal:DOMRect|undefined;
  let sidebarRoots:HTMLElement[]=[];
  let pressed:{node:HTMLElement;pointer:number;before:string|null}|undefined;
- const formButtons='#customOverlay.dgs-native-tools .dgs-transfer :is(button,input[type=button]),#customOverlay.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=settings]) #customOverlayContent :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit])'+','+adaptedOverlaySelector+' :is(button,input[type=button],input[type=submit])';
+ const ownedContent=':is(#customOverlay:is(.dgc-overlay,.dgs-overlay,.dgp-overlay):has(>.dgc-host,>.dgs-host,>.dgp-host) #customOverlayContent,.passage.dgp-overlay:has(>.dgp-host),[data-sf-workspace=saves])';
+ const formButtons='[data-sf-workspace] :is(button,input[type=button],input[type=submit]),#customOverlay.dgs-native-tools .dgs-transfer :is(button,input[type=button]),'+ownedContent+' :is(button.macro-button,button.numberStepper,input[type=button],input[type=submit]),'+adaptedOverlaySelector+' :is(button,input[type=button],input[type=submit])';
  const pressSelector=formButtons+','+'.dgw-exits a.link-internal,[data-kw-entry],[data-kw-nav-control],.sf-motion-hub[data-official] button,#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab';
  function clearPress(event?:PointerEvent){if(!pressed||event&&event.pointerId!==pressed.pointer)return;const {node,pointer,before}=pressed;if(node.getAttribute('data-kw-press')===String(pointer)){if(before===null)node.removeAttribute('data-kw-press');else node.setAttribute('data-kw-press',before)}pressed=undefined}
  function press(event:PointerEvent){if(!live()||!event.isPrimary||event.button!==0||!(event.target instanceof Element))return;const node=event.target.closest<HTMLElement>(pressSelector);if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;clearPress();pressed={node,pointer:event.pointerId,before:node.getAttribute('data-kw-press')};node.setAttribute('data-kw-press',String(event.pointerId))}
@@ -55,9 +57,13 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    marked.set(link,link.getAttribute('data-kw-native'));link.setAttribute('data-kw-native',target);
   }
  }
+ function markScrimFamily(node:HTMLElement|null){
+  plane?.toggleAttribute('data-kw-settings-family',!!node?.matches(ownedOverlaySelector));
+ }
  function scrim(open:boolean,enter=true,initial=0){
   if(open){
    if(!plane){plane=document.createElement('div');plane.className='kw-context-plane';plane.setAttribute('aria-hidden','true');document.body.append(plane)}
+   markScrimFamily(active);
    if(enter)fadeWindow(motion,plane,1,initial);else motion.cancel(plane);
    document.documentElement.setAttribute('data-kw-character-layer','');
   }else{
@@ -67,7 +73,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
    if(animation)void animation.finished.then(remove,remove);else remove();
   }
  }
- function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
+ function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,[data-sf-workspace=saves],'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
  function beginExpected(){
   if(!live()||!origin?.expected||performance.now()-origin.time>=1000)return;
   const node=document.getElementById('customOverlay');
@@ -78,10 +84,11 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function syncOverlay(){
   if(!scope.active())return;
   const next=document.getElementById('customOverlay');
-  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['class','hidden','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
+  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{childList:true,attributes:true,attributeFilter:['class','hidden','inert','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
   const shown=live()&&overlay&&visible(overlay);if(!shown)presented=null;
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
   navigation.refresh();
+  if(plane&&nextActive)markScrimFamily(nextActive);
   const kind=nextActive?.dataset.overlay??'';if(nextActive===active&&kind===activeKind)return;
   const old=active,adopting=!active&&!!nextActive&&presented===nextActive,opacity=plane?Number(getComputedStyle(plane).opacity):0;active=nextActive;activeKind=kind;cancelPresentation(adopting?nextActive??undefined:undefined);
   if(active){
@@ -99,7 +106,8 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   const expected=node.dataset.kwEntry==='modhub-entry'?'modloader':node.dataset.kwEntry==='native-caption'?nativeEntryKinds[node.textContent?.trim()??'']:undefined;
   if(!origin?.hub||performance.now()-origin.time>100)origin={rect:node.getBoundingClientRect(),node,time:performance.now(),hub:!!node.closest('.sf-motion-petal'),bedroom:node.hasAttribute('data-kw-native'),expected};else if(expected)origin.expected=expected;
  }
- function response(node:HTMLElement){if(node.dataset.kwNavControl==='tab'){motion.animate(node,[{'--kw-heading-wave':-1,'--kw-heading-wave-opacity':0},{'--kw-heading-wave':-.2,'--kw-heading-wave-opacity':.8,offset:.35},{'--kw-heading-wave':1,'--kw-heading-wave-opacity':0}],720);return}motion.animate(node,[{boxShadow:'inset 0 0 0 1px #8cb3a666',backgroundColor:'#8cb3a617'},{boxShadow:getComputedStyle(node).boxShadow,backgroundColor:getComputedStyle(node).backgroundColor}],360)}
+ const ownWindowSelector='html[data-dgu-acrylic-adjustment] '+ownedOverlaySelector;
+ function response(node:HTMLElement){if(node.dataset.kwNavControl==='tab'&&!node.closest(ownWindowSelector)){motion.animate(node,[{'--kw-heading-wave':-1,'--kw-heading-wave-opacity':0},{'--kw-heading-wave':-.2,'--kw-heading-wave-opacity':.8,offset:.35},{'--kw-heading-wave':1,'--kw-heading-wave-opacity':0}],720);return}motion.animate(node,[{boxShadow:'inset 0 0 0 1px #8cb3a666',backgroundColor:'#8cb3a617'},{boxShadow:getComputedStyle(node).boxShadow,backgroundColor:getComputedStyle(node).backgroundColor}],360)}
  function click(event:MouseEvent){
   if(!live()||!(event.target instanceof Element))return;
   const detail=event.target.closest<HTMLElement>('#customOverlay.dgp-overlay[data-dgp-panel=traits] .foldoutHeader,#customOverlay.dgp-overlay[data-dgp-panel=feats] .feat');
@@ -107,13 +115,10 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   const node=event.target.closest<HTMLElement>(formButtons+',.dgw-exits a.link-internal,.sf-motion-petal,.sf-motion-ball,.dgw-slots button,.dgw-item,.dgshop-content .category-tab,.dgshop-content .clothing-item,.dcu-arrangement button,[data-kw-native],[data-kw-entry],[data-kw-nav-control],.dgp-navigation button');
   if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;
   stamp(node);response(node);queueMicrotask(beginExpected);
-  const nav=node.closest<HTMLElement>('#shopCategories');
-  const before=nav?.querySelector<HTMLElement>('[aria-pressed=true],.category-tab.active,[aria-current]')?.getBoundingClientRect();
   const passage=node.closest('.passage');
   settle(()=>{
    if(passage&&!passage.isConnected)return;
-   const selected=nav?.querySelector<HTMLElement>('[aria-pressed=true],.category-tab.active,[aria-current]');
-   if(before&&selected&&visible(selected))motion.focus(before,selected.getBoundingClientRect());
+
 
    syncOverlay();
   });
@@ -132,13 +137,16 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  function scene(){
   clearFrames();cancelPresentation();previousPetal=undefined;bedroom();settle(()=>{
-   syncOverlay();const header=document.querySelector<HTMLElement>('.dgw-header,.dgshop-host');
+   syncOverlay();const header=document.querySelector<HTMLElement>('.dgshop-host');
    if(header&&origin?.bedroom&&performance.now()-origin.time<1000)motion.focus(origin.rect,header.getBoundingClientRect());
   });
  }
  function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=presented=null;activeKind='';origin=undefined;returnTo=null;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
  function resize(){cancelPresentation()}
- const observer=new MutationObserver(()=>{beginExpected();later(syncOverlay)});scope.own(()=>observer.disconnect());
+ const observer=new MutationObserver(records=>{
+  if(!records.some(record=>record.type==='attributes'||[...record.addedNodes,...record.removedNodes].some(node=>node instanceof Element&&node.matches('.dgc-host,.dgs-host,.dgp-host'))))return;
+  beginExpected();later(syncOverlay);
+ });scope.own(()=>observer.disconnect());
  const sidebarObserver=new MutationObserver(()=>later(sidebar));scope.own(()=>sidebarObserver.disconnect());
  const blur=()=>clearPress();
  const parent=document.getElementById('customOverlay')?.parentElement;

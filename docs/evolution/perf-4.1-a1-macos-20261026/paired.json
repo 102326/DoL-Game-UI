@@ -1,0 +1,759 @@
+{
+  "status": "PASS",
+  "base": "936ec63288f1e6f66314cde84cebb17c8e77adee",
+  "baselineMainSha256": "5c0b5f9d43770dc3a1a3202a4f079c667147de0e0e62b080bb79213e272c84f0",
+  "sourceHead": "936ec63288f1e6f66314cde84cebb17c8e77adee",
+  "candidateSources": {
+    "src/panels/main.ts": "9fe4d626450c4e243fc86f50cba6c8b3f469087e04a8c9fc2a3b7836735341af",
+    "src/panels/presentation.ts": "60a98d57e7185a9341b34b5673a63108ed13be77a93fd1bdb12519303c5dcf6c",
+    "src/panels/visibility.ts": "1048ed46b039c7089f14d3825ab3a4ffdf08e70ceb2640febd0617cf895d35e0",
+    "dist/framework/official-ui/style.css": "eb498c3b482ed2d4f4267d0bde8aa30bc278168ec2ac86e7ca339729d7c486ac",
+    "package-lock.json": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591",
+    "scripts/measure-evolution-panel-preparation.cts": "78515aba2a786df9e45dc542fa77025819861208039ce529047c689f83c2e2e1"
+  },
+  "environment": {
+    "platform": "darwin",
+    "node": "v26.12.1",
+    "chromium": "153.0.8010.12",
+    "viewport": {
+      "width": 1280,
+      "height": 900,
+      "dpr": 1
+    }
+  },
+  "scope": "Synthetic first-party dense cheats panel, cold mount per opening, 2 warmup pairs then 12 alternating pairs. CDP Performance counters and instrumented heading reads; no CPU timeline, full game, Android, GPU or performance acceptance. PASS means observations and behavior checks completed, not a performance budget.",
+  "records": [
+    {
+      "pair": -2,
+      "warmup": true,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 85.10000002384186,
+      "maxRafGapMs": 50,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 5.5360000000000005,
+      "layoutCount": 2,
+      "layoutMs": 47.976,
+      "taskMs": 66.776
+    },
+    {
+      "pair": -2,
+      "warmup": true,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 59.69999998807907,
+      "maxRafGapMs": 16.69999999999999,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.665,
+      "layoutCount": 2,
+      "layoutMs": 16.183,
+      "taskMs": 31.115999999999996
+    },
+    {
+      "pair": -1,
+      "warmup": true,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.5,
+      "maxRafGapMs": 16.700000000000017,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.8149999999999995,
+      "layoutCount": 2,
+      "layoutMs": 15.817000000000002,
+      "taskMs": 31.112
+    },
+    {
+      "pair": -1,
+      "warmup": true,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 59.09999996423721,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 5.1000000000000005,
+      "layoutCount": 2,
+      "layoutMs": 15.812,
+      "taskMs": 30.806
+    },
+    {
+      "pair": 0,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 79.09999996423721,
+      "maxRafGapMs": 33.3,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.654,
+      "layoutCount": 2,
+      "layoutMs": 18.659,
+      "taskMs": 33.745999999999995
+    },
+    {
+      "pair": 0,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 62.10000002384186,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.558999999999999,
+      "layoutCount": 2,
+      "layoutMs": 14.865,
+      "taskMs": 29.386
+    },
+    {
+      "pair": 1,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 74.59999996423721,
+      "maxRafGapMs": 33.3,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 5.285,
+      "layoutCount": 2,
+      "layoutMs": 22.238,
+      "taskMs": 39.586999999999996
+    },
+    {
+      "pair": 1,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 60.19999998807907,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.638,
+      "layoutCount": 2,
+      "layoutMs": 16.113,
+      "taskMs": 30.612000000000002
+    },
+    {
+      "pair": 2,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 60.19999998807907,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.707,
+      "layoutCount": 2,
+      "layoutMs": 16.179,
+      "taskMs": 30.967000000000002
+    },
+    {
+      "pair": 2,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.5,
+      "maxRafGapMs": 33.30000000000001,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 6.585999999999999,
+      "layoutCount": 2,
+      "layoutMs": 22.49,
+      "taskMs": 42.263000000000005
+    },
+    {
+      "pair": 3,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.59999996423721,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 5.013,
+      "layoutCount": 2,
+      "layoutMs": 16.29,
+      "taskMs": 32.129999999999995
+    },
+    {
+      "pair": 3,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 58.89999997615814,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.659,
+      "layoutCount": 2,
+      "layoutMs": 16.060000000000002,
+      "taskMs": 31.064999999999998
+    },
+    {
+      "pair": 4,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.675999999999999,
+      "layoutCount": 2,
+      "layoutMs": 15.304,
+      "taskMs": 30.838
+    },
+    {
+      "pair": 4,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 62.19999998807907,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.767,
+      "layoutCount": 2,
+      "layoutMs": 15.381,
+      "taskMs": 30.294999999999998
+    },
+    {
+      "pair": 5,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.69999998807907,
+      "maxRafGapMs": 16.80000000000001,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.742999999999999,
+      "layoutCount": 2,
+      "layoutMs": 14.973,
+      "taskMs": 29.37
+    },
+    {
+      "pair": 5,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.19999998807907,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.924,
+      "layoutCount": 2,
+      "layoutMs": 16.733999999999998,
+      "taskMs": 31.987000000000002
+    },
+    {
+      "pair": 6,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.69999998807907,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.869,
+      "layoutCount": 2,
+      "layoutMs": 16.217,
+      "taskMs": 31.544000000000004
+    },
+    {
+      "pair": 6,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 78.60000002384186,
+      "maxRafGapMs": 33.39999999999999,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.866,
+      "layoutCount": 2,
+      "layoutMs": 18.37,
+      "taskMs": 33.505
+    },
+    {
+      "pair": 7,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.744,
+      "layoutCount": 2,
+      "layoutMs": 16.927999999999997,
+      "taskMs": 31.411
+    },
+    {
+      "pair": 7,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.19999998807907,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.7780000000000005,
+      "layoutCount": 2,
+      "layoutMs": 17.301000000000002,
+      "taskMs": 33.02
+    },
+    {
+      "pair": 8,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.39999997615814,
+      "maxRafGapMs": 16.80000000000001,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.643000000000001,
+      "layoutCount": 2,
+      "layoutMs": 14.952,
+      "taskMs": 29.656
+    },
+    {
+      "pair": 8,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.60000002384186,
+      "maxRafGapMs": 16.700000000000017,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.802,
+      "layoutCount": 2,
+      "layoutMs": 15.935,
+      "taskMs": 31.03
+    },
+    {
+      "pair": 9,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 77,
+      "maxRafGapMs": 33.3,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 5.164000000000001,
+      "layoutCount": 2,
+      "layoutMs": 18.824,
+      "taskMs": 35.261
+    },
+    {
+      "pair": 9,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.69999998807907,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.886,
+      "layoutCount": 2,
+      "layoutMs": 17.242,
+      "taskMs": 32.567
+    },
+    {
+      "pair": 10,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 62,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.876,
+      "layoutCount": 2,
+      "layoutMs": 16.136999999999997,
+      "taskMs": 31.206
+    },
+    {
+      "pair": 10,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 60,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.5729999999999995,
+      "layoutCount": 2,
+      "layoutMs": 15.809,
+      "taskMs": 30.061999999999998
+    },
+    {
+      "pair": 11,
+      "warmup": false,
+      "mode": "candidate",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 61.19999998807907,
+      "maxRafGapMs": 16.69999999999999,
+      "reads": 40,
+      "rects": 40,
+      "counts": {
+        "mounts": 1,
+        "scans": 1,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.558000000000001,
+      "layoutCount": 2,
+      "layoutMs": 16.197,
+      "taskMs": 30.918
+    },
+    {
+      "pair": 11,
+      "warmup": false,
+      "mode": "baseline",
+      "fixture": {
+        "headings": 40,
+        "descendants": 1962
+      },
+      "elapsedMs": 62,
+      "maxRafGapMs": 16.700000000000003,
+      "reads": 80,
+      "rects": 80,
+      "counts": {
+        "mounts": 1,
+        "scans": 2,
+        "failures": 0,
+        "mountContract": "classic"
+      },
+      "labels": 40,
+      "styleCount": 2,
+      "styleMs": 4.916,
+      "layoutCount": 2,
+      "layoutMs": 15.968,
+      "taskMs": 30.774
+    }
+  ],
+  "summaries": [
+    {
+      "mode": "baseline",
+      "n": 12,
+      "median": {
+        "elapsedMs": 61.39999997615814,
+        "maxRafGapMs": 16.700000000000003,
+        "reads": 80,
+        "rects": 80,
+        "styleCount": 2,
+        "styleMs": 4.7780000000000005,
+        "layoutCount": 2,
+        "layoutMs": 16.179,
+        "taskMs": 31.206
+      }
+    },
+    {
+      "mode": "candidate",
+      "n": 12,
+      "median": {
+        "elapsedMs": 61.69999998807907,
+        "maxRafGapMs": 16.700000000000017,
+        "reads": 40,
+        "rects": 40,
+        "styleCount": 2,
+        "styleMs": 4.802,
+        "layoutCount": 2,
+        "layoutMs": 16.29,
+        "taskMs": 31.411
+      }
+    }
+  ]
+}

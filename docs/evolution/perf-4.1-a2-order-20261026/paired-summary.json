@@ -1,0 +1,118 @@
+{
+  "native-stage": {
+    "syncMs": {
+      "unit": "ms",
+      "originalMedian": 0.5999999642372131,
+      "candidateMedian": 0.5999999940395355,
+      "pairedDeltaMedian": 0.0,
+      "candidateGreaterPairs": 5,
+      "pairs": 12
+    },
+    "longestFrameGapMs": {
+      "unit": "ms",
+      "originalMedian": 49.849999994039536,
+      "candidateMedian": 53.39999997615814,
+      "pairedDeltaMedian": 1.75,
+      "candidateGreaterPairs": 8,
+      "pairs": 12
+    },
+    "RecalcStyleCount": {
+      "unit": "count",
+      "originalMedian": 25.0,
+      "candidateMedian": 24.0,
+      "pairedDeltaMedian": -1.0,
+      "candidateGreaterPairs": 3,
+      "pairs": 12
+    },
+    "RecalcStyleDuration": {
+      "unit": "ms",
+      "originalMedian": 25.709,
+      "candidateMedian": 25.426499999999997,
+      "pairedDeltaMedian": -0.42249999999999927,
+      "candidateGreaterPairs": 5,
+      "pairs": 12
+    },
+    "LayoutCount": {
+      "unit": "count",
+      "originalMedian": 8.0,
+      "candidateMedian": 7.0,
+      "pairedDeltaMedian": -1.0,
+      "candidateGreaterPairs": 0,
+      "pairs": 12
+    },
+    "LayoutDuration": {
+      "unit": "ms",
+      "originalMedian": 10.308,
+      "candidateMedian": 10.5145,
+      "pairedDeltaMedian": 0.3294999999999999,
+      "candidateGreaterPairs": 7,
+      "pairs": 12
+    },
+    "TaskDuration": {
+      "unit": "ms",
+      "originalMedian": 54.494,
+      "candidateMedian": 55.683499999999995,
+      "pairedDeltaMedian": -0.4219999999999987,
+      "candidateGreaterPairs": 6,
+      "pairs": 12
+    }
+  },
+  "navigation-first": {
+    "syncMs": {
+      "unit": "ms",
+      "originalMedian": 0.5499999821186066,
+      "candidateMedian": 0.5999999642372131,
+      "pairedDeltaMedian": 0.0,
+      "candidateGreaterPairs": 5,
+      "pairs": 12
+    },
+    "longestFrameGapMs": {
+      "unit": "ms",
+      "originalMedian": 46.849999994039536,
+      "candidateMedian": 45.799999952316284,
+      "pairedDeltaMedian": -1.0999999940395355,
+      "candidateGreaterPairs": 5,
+      "pairs": 12
+    },
+    "RecalcStyleCount": {
+      "unit": "count",
+      "originalMedian": 26.5,
+      "candidateMedian": 25.0,
+      "pairedDeltaMedian": -1.0,
+      "candidateGreaterPairs": 0,
+      "pairs": 12
+    },
+    "RecalcStyleDuration": {
+      "unit": "ms",
+      "originalMedian": 26.002000000000002,
+      "candidateMedian": 25.417,
+      "pairedDeltaMedian": -0.307,
+      "candidateGreaterPairs": 3,
+      "pairs": 12
+    },
+    "LayoutCount": {
+      "unit": "count",
+      "originalMedian": 8.0,
+      "candidateMedian": 7.0,
+      "pairedDeltaMedian": -1.0,
+      "candidateGreaterPairs": 0,
+      "pairs": 12
+    },
+    "LayoutDuration": {
+      "unit": "ms",
+      "originalMedian": 10.367999999999999,
+      "candidateMedian": 10.2305,
+      "pairedDeltaMedian": -0.11149999999999961,
+      "candidateGreaterPairs": 5,
+      "pairs": 12
+    },
+    "TaskDuration": {
+      "unit": "ms",
+      "originalMedian": 54.400999999999996,
+      "candidateMedian": 52.458000000000006,
+      "pairedDeltaMedian": -1.4275000000000015,
+      "candidateGreaterPairs": 3,
+      "pairs": 12
+    }
+  }
+}

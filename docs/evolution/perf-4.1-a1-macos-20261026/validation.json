@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-26",
+  "baseHead": "936ec63288f1e6f66314cde84cebb17c8e77adee",
+  "testedTree": "candidate working tree before commit; exact affected source digests below",
+  "sourceSha256": {
+    "src/panels/main.ts": "9fe4d626450c4e243fc86f50cba6c8b3f469087e04a8c9fc2a3b7836735341af",
+    "src/panels/presentation.ts": "60a98d57e7185a9341b34b5673a63108ed13be77a93fd1bdb12519303c5dcf6c",
+    "src/panels/visibility.ts": "1048ed46b039c7089f14d3825ab3a4ffdf08e70ceb2640febd0617cf895d35e0",
+    "tests/evolution-panels.cts": "ac3a32cb6300272082a405e554f2a332c3571bf711928ae910dcf7f836a1d64b",
+    "scripts/measure-evolution-panel-preparation.cts": "78515aba2a786df9e45dc542fa77025819861208039ce529047c689f83c2e2e1",
+    "scripts/expected.lock.json": "155fe68f2a7a1f610b9b01f10addde275f1478da7a5d4b2e7f34529b81a4f9e2",
+    "package-lock.json": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+  },
+  "environment": {
+    "macOS": "27.0.1",
+    "arch": "arm64",
+    "node": "26.12.1",
+    "npm": "11.20.0",
+    "playwright": "1.63.0",
+    "chromium": "153.0.8010.12"
+  },
+  "commands": [
+    {
+      "command": "npm run ci:lock && npm run ci:check && node scripts/build-framework.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node tests/evolution-panels.cjs",
+      "exitCode": 0,
+      "seconds": 6.467
+    },
+    {
+      "command": "node tests/panels-framework.cjs",
+      "exitCode": 0,
+      "seconds": 5.957
+    },
+    {
+      "command": "node tests/official-game-motion.cjs",
+      "exitCode": 0,
+      "seconds": 7.134
+    }
+  ],
+  "expectedFailures": [
+    {
+      "variant": "original 936ec63 panels",
+      "assertion": "completed initial indexing must not schedule its own redundant scan",
+      "actualScans": 2,
+      "expectedScans": 1
+    },
+    {
+      "variant": "intermediate takeRecords after index",
+      "assertion": "late native mutation must trigger a fresh scan"
+    },
+    {
+      "variant": "intermediate takeRecords after presentation",
+      "assertion": "native mutation during trait reads must refresh the visible count",
+      "actualCount": "1",
+      "expectedCount": "2"
+    }
+  ],
+  "performanceDecision": "NO_OBSERVED_TIME_OR_LAYOUT_IMPROVEMENT; candidate only; summaries in paired.json use upper median for even n",
+  "scope": "Controlled first-party synthetic fixtures, not full game, ModHub integration, Android, visual/device or CI acceptance."
+}

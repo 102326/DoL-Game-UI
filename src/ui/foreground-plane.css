@@ -1,0 +1,7 @@
+.sf-foreground-host{position:fixed;inset:0;pointer-events:none!important;border:0;padding:0;margin:0}
+.sf-foreground-paint{position:absolute;overflow:hidden;border-radius:22px;pointer-events:none!important}
+.sf-foreground-paint>.sf-weather-canvas{position:absolute!important;inset:0;width:100%;height:100%;z-index:0;pointer-events:none!important;border-radius:22px}
+.sf-foreground-paint>.evo-material-layer{position:absolute!important;inset:0;overflow:hidden;border-radius:22px;z-index:0!important;pointer-events:none!important;contain:layout style}
+.sf-foreground-contour{position:absolute;overflow:hidden;z-index:2;pointer-events:none!important}
+.dmt-orbit-focus[data-sf-foreground-source="1"]>svg{visibility:hidden!important}
+.dmt-orbit-focus[data-sf-foreground-source="1"] :is(.dmt-orbit-flow,.dmt-orbit-tail){animation:none!important}

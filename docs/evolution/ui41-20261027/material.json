@@ -1,0 +1,188 @@
+{
+  "node": "v26.12.1",
+  "browser": "153.0.8010.12",
+  "scope": "Controlled source preview; no game, device, visual or performance acceptance",
+  "rows": [
+    {
+      "width": 1280,
+      "value": 0,
+      "background": "rgba(20, 24, 27, 0.9)",
+      "blur": "blur(20px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.6)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 140,
+        "y": 12,
+        "width": 1000,
+        "height": 876,
+        "right": 1140,
+        "bottom": 888
+      }
+    },
+    {
+      "width": 1280,
+      "value": 25,
+      "background": "rgba(20, 24, 27, 0.667)",
+      "blur": "blur(22px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.44)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 140,
+        "y": 12,
+        "width": 1000,
+        "height": 876,
+        "right": 1140,
+        "bottom": 888
+      }
+    },
+    {
+      "width": 1280,
+      "value": 50,
+      "background": "rgba(20, 24, 27, 0.43)",
+      "blur": "blur(24px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.28)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 140,
+        "y": 12,
+        "width": 1000,
+        "height": 876,
+        "right": 1140,
+        "bottom": 888
+      }
+    },
+    {
+      "width": 1280,
+      "value": 75,
+      "background": "rgba(20, 24, 27, 0.333)",
+      "blur": "blur(26px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.2)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 140,
+        "y": 12,
+        "width": 1000,
+        "height": 876,
+        "right": 1140,
+        "bottom": 888
+      }
+    },
+    {
+      "width": 1280,
+      "value": 100,
+      "background": "rgba(20, 24, 27, 0.24)",
+      "blur": "blur(28px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.12)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 140,
+        "y": 12,
+        "width": 1000,
+        "height": 876,
+        "right": 1140,
+        "bottom": 888
+      }
+    },
+    {
+      "width": 390,
+      "value": 0,
+      "background": "rgba(20, 24, 27, 0.9)",
+      "blur": "blur(20px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.6)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 9,
+        "y": 9,
+        "width": 372,
+        "height": 826,
+        "right": 381,
+        "bottom": 835
+      }
+    },
+    {
+      "width": 390,
+      "value": 25,
+      "background": "rgba(20, 24, 27, 0.667)",
+      "blur": "blur(22px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.44)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 9,
+        "y": 9,
+        "width": 372,
+        "height": 826,
+        "right": 381,
+        "bottom": 835
+      }
+    },
+    {
+      "width": 390,
+      "value": 50,
+      "background": "rgba(20, 24, 27, 0.43)",
+      "blur": "blur(24px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.28)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 9,
+        "y": 9,
+        "width": 372,
+        "height": 826,
+        "right": 381,
+        "bottom": 835
+      }
+    },
+    {
+      "width": 390,
+      "value": 75,
+      "background": "rgba(20, 24, 27, 0.333)",
+      "blur": "blur(26px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.2)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 9,
+        "y": 9,
+        "width": 372,
+        "height": 826,
+        "right": 381,
+        "bottom": 835
+      }
+    },
+    {
+      "width": 390,
+      "value": 100,
+      "background": "rgba(20, 24, 27, 0.24)",
+      "blur": "blur(28px) saturate(0.78)",
+      "well": "rgba(11, 15, 18, 0.12)",
+      "textOpacity": "1",
+      "textColor": "rgb(230, 230, 232)",
+      "opacity": "1",
+      "rect": {
+        "x": 9,
+        "y": 9,
+        "width": 372,
+        "height": 826,
+        "right": 381,
+        "bottom": 835
+      }
+    }
+  ],
+  "errors": []
+}

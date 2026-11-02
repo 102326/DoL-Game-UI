@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useWorkspaceSurface} from '../ui/workspace-surface';
 import {computed,nextTick,onMounted,onBeforeUnmount,ref,shallowRef,watch} from 'vue';
 import {compareReferences,type ReferenceContext,type ReferenceItem} from './reference';
 import {sourceMotion} from '../ui/source-motion';
@@ -7,6 +8,7 @@ const scope=visualScope();
 const props=defineProps<{context:ReferenceContext;items:readonly {key:string}[]}>();
 const pinned=shallowRef<ReferenceItem>(),selected=shallowRef<ReferenceItem>(),opened=ref(false),spatial=ref(true),message=ref('');
 const chip=ref<HTMLElement>(),panel=ref<HTMLElement>();
+useWorkspaceSurface(panel,'reference');
 const panelTop=ref('128px');
 const space=ref<HTMLElement>(),narrow=ref(innerWidth<=800);
 let resize:ResizeObserver|undefined,withdraw:(()=>void)|undefined;

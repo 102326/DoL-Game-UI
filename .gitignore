@@ -297,3 +297,21 @@ docs/HANDOFF.local.md
 /tests/save-revision-source.cjs
 
 /tests/weather-dom-writes.cjs
+/scripts/measure-evolution-panel-preparation.cjs
+
+# Generated 4.1 review tooling.
+/scripts/preview-ui41.mjs
+/tests/ui41-material.cjs
+/tests/ui41-settings-retirement.cjs
+/tests/ui41-option-alignment.cjs
+/tests/ui41-weather-paint.cjs
+/tests/official-cleanup.cjs
+/tests/owned-select.cjs
+
+/tests/ui41-reading.cjs
+
+/tests/ui41-panel-preview.cjs
+/tests/ui41-workspace-audit.cjs
+/tests/ui41-independent.cjs
+
+/tests/foreground-plane.cjs

@@ -28,7 +28,7 @@ const grid = computed(() => menu.value.grid);
 function petalOffset(index:number){
  if(!props.officialPreferences||grid.value)return{x:menu.value.petalX,y:index*66};
  const curve=Math.cos((index/Math.max(1,views.value.length-1)-.5)*Math.PI);
- return{x:menu.value.petalX===0?28+64*curve:92-64*curve,y:8+index*76};
+ return{x:menu.value.petalX===0?28+64*curve:92-64*curve,y:index*76};
 }
 function clearHint(){stopHint?.();stopHint=undefined;message.value=''}
 function hint(text:string){clearHint();message.value=text;stopHint=scope.timeout(clearHint,2200)}
@@ -152,7 +152,7 @@ onBeforeUnmount(scope.dispose);
  <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" @keydown="key">
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
-  :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
+  :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--utility-x': `${menu.petalX===0?0:menu.width-64}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
    <button v-for="(view, index) in views" :key="`${view.owner}:${view.id}`" type="button" class="sf-motion-petal" :data-motion-view="`${view.owner}:${view.id}`"
     :style="{'--i': index, '--x': `${petalOffset(index).x}px`, '--y': `${petalOffset(index).y}px`}" @click="choose(view)">
     <svg v-if="officialPreferences" class="sf-motion-tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
@@ -163,7 +163,11 @@ onBeforeUnmount(scope.dispose);
      <path v-else d="m12 2 10 10-10 10L2 12 12 2Zm0 5v6m0 3v1"/>
     </svg><span v-else aria-hidden="true">{{ ['◉', '◈', '⇄'][index % 3] }}</span><span class="sf-motion-tool-label">{{ view.title }}</span>
    </button>
-   <div class="sf-motion-utilities"><button type="button" @click="dock">停靠侧边</button><button type="button" @click="reset">恢复位置</button><button type="button" @click="dismiss">隐藏工具</button></div>
+   <div class="sf-motion-utilities">
+    <button type="button" @click="dock"><svg v-if="officialPreferences" :style="{transform:side==='left'?'scaleX(-1)':undefined}" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 4v16M4 12h11m-4-4 4 4-4 4"/></svg><span>停靠侧边</span></button>
+    <button type="button" @click="reset"><svg v-if="officialPreferences" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8a8 8 0 1 1-1 7M5 3v5h5"/><circle cx="12" cy="12" r="2"/></svg><span>恢复位置</span></button>
+    <button type="button" @click="dismiss"><svg v-if="officialPreferences" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.5 5.2c4.8-.7 8.2 3 10.5 6.8a17 17 0 0 1-3.1 3.8M6.1 6.1A20 20 0 0 0 1 12c3 5 7 8 11 7a11 11 0 0 0 3.2-.8"/><path d="M10 10a3 3 0 0 0 4 4"/></svg><span>隐藏工具</span></button>
+   </div>
   </nav>
   <section class="sf-motion-sheet" aria-label="自由工具详情" :aria-hidden="!selected" :inert="!selected" :class="{'is-open': !!selected}"
    :style="{left: `${panel.x}px`, top: `${panel.y}px`, width: `${panel.width}px`, height: `${panel.height}px`, '--origin-x': `${point.x + 28 - panel.x}px`, '--origin-y': `${point.y + 28 - panel.y}px`}">

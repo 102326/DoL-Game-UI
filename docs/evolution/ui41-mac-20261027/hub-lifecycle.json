@@ -1,0 +1,134 @@
+{
+  "identity": {
+    "head": "f1beec5215cb93cb2cc7ce6b7c310f1f2bcccc14",
+    "baseline": null,
+    "workingTree": true,
+    "runtime": {
+      "node": "v26.12.1",
+      "platform": "darwin",
+      "chromium": "153.0.8010.12"
+    },
+    "hashes": {
+      "src/ui/golden-spin/hub-motion.ts": "b8970fc65ca43a32d78cec46017b74b96dac31283ba214309ce6ec2f4c445f1e",
+      "src/ui/golden-spin/sphere.ts": "e8864236eb5edec50a8a14a48b5de3f8871ae2fdb8311b5dd533d90c671ad70a",
+      "src/ui/golden-spin/hub.css": "a28cbfd9a1f7ae3d31b17917415baec065e3fa566d5126e01aa589c9868ff8ce",
+      "prototypes/golden-spin-b/hub-motion.ts": "a1cc4b0a3d01028cdf4d439acc9bf52e570917fc5571d823c9c54efd0a14f6d7",
+      "prototypes/golden-spin-b/sphere.ts": "a8c15d501a9e123b8320b0391fc31d0ba90d8f3a735f28358977100162c4beab",
+      "framework/motion-hub/MotionHub.vue": "a94c3a468082ca7981b6f48998d77b73710eb5490b2b355396f0bf3fb1ec98cd",
+      "tests/golden-spin-hub-lifecycle.cjs": "a14c4b4d75b7b1dc811d9982f9e364b761193e5ac7a2ff9166ad3a96047529df"
+    }
+  },
+  "results": [
+    {
+      "name": "H3 release over native ball clears the pressed tool without replay",
+      "status": "PASS",
+      "state": {
+        "q": 1,
+        "target": 1,
+        "moving": false,
+        "paused": false,
+        "pressed": false,
+        "geometryValid": true,
+        "nodes": 5,
+        "phase": "open",
+        "dead": false,
+        "renders": 22,
+        "framePending": false,
+        "sphere": {
+          "phase": "charge",
+          "speed": 20.313609,
+          "charge": 0.559499,
+          "energy": 0,
+          "spread": 0,
+          "pressure": 0.432726,
+          "angle": 3.9484841343449513,
+          "orbit": 0.9277623027599635,
+          "draws": 21,
+          "meteors": 0,
+          "running": true,
+          "dead": false,
+          "paused": false,
+          "reduced": false,
+          "motionChanges": 0,
+          "width": 175,
+          "height": 174.99996948242188
+        }
+      },
+      "errors": []
+    },
+    {
+      "name": "H4 hidden scene replacement freezes both new clocks until visible",
+      "status": "PASS",
+      "state": {
+        "q": 0,
+        "target": 0,
+        "moving": false,
+        "paused": false,
+        "pressed": false,
+        "geometryValid": true,
+        "nodes": 5,
+        "phase": "closed",
+        "dead": false,
+        "renders": 21,
+        "framePending": true,
+        "sphere": {
+          "phase": "return",
+          "speed": 13.13809,
+          "charge": 0.336725,
+          "energy": 0.060069,
+          "spread": 0,
+          "pressure": 0.251181,
+          "angle": 2.383234736229652,
+          "orbit": 0.5851099050541366,
+          "draws": 18,
+          "meteors": 0,
+          "running": true,
+          "dead": false,
+          "paused": false,
+          "reduced": false,
+          "motionChanges": 0,
+          "width": 175,
+          "height": 174.99996948242188
+        }
+      },
+      "errors": []
+    },
+    {
+      "name": "H4 zero-root scene replacement retains finite geometry and restores native input",
+      "status": "PASS",
+      "state": {
+        "q": 1,
+        "target": 0,
+        "moving": true,
+        "paused": false,
+        "pressed": false,
+        "geometryValid": true,
+        "nodes": 5,
+        "phase": "moving",
+        "dead": false,
+        "renders": 48,
+        "framePending": true,
+        "sphere": {
+          "phase": "return",
+          "speed": 20.242115,
+          "charge": 0.557684,
+          "energy": 0,
+          "spread": 0,
+          "pressure": 0.430527,
+          "angle": 1.9649821384476698,
+          "orbit": 1.9856284657304077,
+          "draws": 42,
+          "meteors": 1,
+          "running": true,
+          "dead": false,
+          "paused": false,
+          "reduced": false,
+          "motionChanges": 0,
+          "width": 175,
+          "height": 174.99996948242188
+        }
+      },
+      "errors": []
+    }
+  ]
+}

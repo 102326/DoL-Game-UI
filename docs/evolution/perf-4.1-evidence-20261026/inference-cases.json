@@ -1,0 +1,754 @@
+[
+  {
+    "name": "empty",
+    "mod": {
+      "description": ""
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "required-as",
+    "mod": {
+      "description": "工具甲是必需前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "工具甲是必需前置"
+      }
+    ]
+  },
+  {
+    "name": "two-requirements",
+    "mod": {
+      "description": "工具甲是前置。工具乙为前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "工具甲是前置"
+      },
+      {
+        "modName": "BetaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "工具乙为前置"
+      }
+    ]
+  },
+  {
+    "name": "duplicate",
+    "mod": {
+      "description": "工具甲是前置。工具甲是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "工具甲是前置"
+      }
+    ]
+  },
+  {
+    "name": "explicit-chinese",
+    "mod": {
+      "description": "必须安装工具甲"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "必须安装工具甲"
+      }
+    ]
+  },
+  {
+    "name": "explicit-english",
+    "mod": {
+      "description": "Requires Alpha Tools"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "Requires Alpha Tools"
+      }
+    ]
+  },
+  {
+    "name": "optional",
+    "mod": {
+      "description": "工具甲是可选前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "negated",
+    "mod": {
+      "description": "无需工具甲，工具甲是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "conditional",
+    "mod": {
+      "description": "如果需要工具甲是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "alternatives",
+    "mod": {
+      "description": "工具甲或工具乙是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "standalone",
+    "mod": {
+      "description": "Standalone, Alpha Tools is required"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "self-dependency",
+    "mod": {
+      "description": "工具甲是前置",
+      "bootNames": [
+        "AlphaTools"
+      ]
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "ambiguous-alias",
+    "mod": {
+      "description": "共用名字是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "共用名字"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "共用名字"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "multiple-boots",
+    "mod": {
+      "description": "工具甲是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools",
+          "OtherTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "identity-disabled",
+    "mod": {
+      "description": "工具甲是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ],
+        "identityId": null
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "trimmed-boot",
+    "mod": {
+      "description": "工具甲是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          " AlphaTools "
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "工具甲是前置"
+      }
+    ]
+  },
+  {
+    "name": "duplicate-boot",
+    "mod": {
+      "description": "工具甲是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools",
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "工具甲是前置"
+      }
+    ]
+  },
+  {
+    "name": "missing-catalog",
+    "mod": {
+      "description": "秋枫白桦框架是前置"
+    },
+    "catalog": null,
+    "expected": [
+      {
+        "modName": "maplebirch",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "秋枫白桦框架是前置"
+      }
+    ]
+  },
+  {
+    "name": "base-identity",
+    "mod": {
+      "description": "简易框架是前置"
+    },
+    "catalog": [],
+    "expected": [
+      {
+        "modName": "Simple Frameworks",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "简易框架是前置"
+      }
+    ]
+  },
+  {
+    "name": "version-range",
+    "mod": {
+      "description": "必须安装工具甲 >= 1.2 && < 2"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": ">=1.2 && <2",
+        "source": "简介声明",
+        "evidence": "必须安装工具甲 >= 1.2 && < 2"
+      }
+    ]
+  },
+  {
+    "name": "html-entities",
+    "mod": {
+      "description": "&quot;工具甲&quot;是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "regex-alias",
+    "mod": {
+      "description": "Alpha.Tool+Tools是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "Alpha.Tool+Tools是前置"
+      }
+    ]
+  },
+  {
+    "name": "case-fold",
+    "mod": {
+      "description": "alpha tools是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "AlphaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "alpha tools是前置"
+      }
+    ]
+  },
+  {
+    "name": "numeric-description",
+    "mod": {
+      "description": 123
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  },
+  {
+    "name": "desc-fallback",
+    "mod": {
+      "desc": "工具乙是前置"
+    },
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "modName": "BetaTools",
+        "version": "*",
+        "source": "简介声明",
+        "evidence": "工具乙是前置"
+      }
+    ]
+  },
+  {
+    "name": "null-mod",
+    "mod": null,
+    "catalog": [
+      {
+        "name": "工具甲",
+        "bootNames": [
+          "AlphaTools"
+        ],
+        "aliases": [
+          "Alpha Tools",
+          "Alpha.Tool+Tools"
+        ]
+      },
+      {
+        "name": "工具乙",
+        "bootNames": [
+          "BetaTools"
+        ],
+        "aliases": [
+          "Beta Tools"
+        ]
+      }
+    ],
+    "expected": []
+  }
+]

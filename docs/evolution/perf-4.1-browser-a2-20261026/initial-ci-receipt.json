@@ -1,0 +1,116 @@
+{
+  "sourceHead": "c7e49959e27465c5fdc81a9106d43a3df3ce2b91",
+  "standardLocalDownloadedFiles": 192,
+  "standardLocalDownloadedBytes": 938460,
+  "standardLocalAllHashesMatch": true,
+  "omitted": [],
+  "remoteVerification": {
+    "40264580067": {
+      "schema": 1,
+      "identity": {
+        "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+        "source": {
+          "head": "c7e49959e27465c5fdc81a9106d43a3df3ce2b91",
+          "tree": "96b21e7bfb20317d79ebfad3ba337583ecc6a34e",
+          "dirty": false,
+          "contentSha256": "1122535f9dece880d0d1f44c977f9ea2fa7ff2e1d27dde4949bdfc3b298783af",
+          "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+        },
+        "run": {
+          "id": "40264580067-1-validate",
+          "attempt": "1",
+          "githubRunId": "40264580067",
+          "repository": "102326/DoL-Game-UI",
+          "ref": "refs/heads/perf/4.1-panel-preparation",
+          "event": "workflow_dispatch",
+          "workflow": "Kraft Work CI",
+          "job": "validate",
+          "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40264580067"
+        },
+        "nonce": "29b4709f08bb7b8219857017c75437d3",
+        "profile": "standard",
+        "catalog": {
+          "version": "1.3.0",
+          "profile": "standard",
+          "depth": "standard",
+          "expectedLockSha256": "155fe68f2a7a1f610b9b01f10addde275f1478da7a5d4b2e7f34529b81a4f9e2",
+          "sha256": "82afb4ff8db329e86acbd1799c68c2eb5792b1107d0130c2d7077af8bd95f5ed"
+        },
+        "pr": null,
+        "environment": {
+          "orderSeed": null,
+          "runnerImage": "ubuntu26",
+          "runnerImageVersion": "20261023.163.3",
+          "platform": "linux",
+          "arch": "x64",
+          "deviceDepth": "standard",
+          "node": "v26.12.1",
+          "npm": "11.20.0",
+          "python": "Python 3.12.15",
+          "playwright": "1.63.0",
+          "browser": "Pinned Playwright Chromium (browser suite)"
+        }
+      },
+      "status": "PASS",
+      "assertionResult": "PASS",
+      "evidenceIntegrity": "COMPLETE",
+      "reasonCodes": [],
+      "problems": [],
+      "remoteVerificationMs": 67
+    },
+    "40264583106": {
+      "schema": 1,
+      "identity": {
+        "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+        "source": {
+          "head": "c7e49959e27465c5fdc81a9106d43a3df3ce2b91",
+          "tree": "96b21e7bfb20317d79ebfad3ba337583ecc6a34e",
+          "dirty": false,
+          "contentSha256": "1122535f9dece880d0d1f44c977f9ea2fa7ff2e1d27dde4949bdfc3b298783af",
+          "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+        },
+        "run": {
+          "id": "40264583106-1-research",
+          "attempt": "1",
+          "githubRunId": "40264583106",
+          "repository": "102326/DoL-Game-UI",
+          "ref": "refs/heads/perf/4.1-panel-preparation",
+          "event": "workflow_dispatch",
+          "workflow": "Motion Evolution prototype",
+          "job": "prototype",
+          "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40264583106"
+        },
+        "nonce": "bf1d19f81c97f2f47c654e306a8ebca7",
+        "profile": "research",
+        "catalog": {
+          "version": "1.3.0",
+          "profile": "research",
+          "depth": "standard",
+          "expectedLockSha256": "155fe68f2a7a1f610b9b01f10addde275f1478da7a5d4b2e7f34529b81a4f9e2",
+          "sha256": "a773c1a9156b175280107203b9b92ad3b8343e54d60fa0c7c920ccf43bf353d2"
+        },
+        "pr": null,
+        "environment": {
+          "orderSeed": null,
+          "runnerImage": "ubuntu26",
+          "runnerImageVersion": "20261023.163.3",
+          "platform": "linux",
+          "arch": "x64",
+          "deviceDepth": "standard",
+          "node": "v26.12.1",
+          "npm": "11.20.0",
+          "python": "Python 3.14.4",
+          "playwright": "1.63.0",
+          "browser": "Pinned Playwright Chromium (browser suite)"
+        }
+      },
+      "status": "PASS",
+      "assertionResult": "PASS",
+      "evidenceIntegrity": "COMPLETE",
+      "reasonCodes": [],
+      "problems": [],
+      "remoteVerificationMs": 495
+    }
+  },
+  "limits": "Exact initial research source only; final added browser/A2 tools are not covered by these runs. Research full 123MB artifact verified remotely, not downloaded again locally."
+}

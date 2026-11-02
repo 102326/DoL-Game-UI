@@ -1,0 +1,245 @@
+{
+  "schema": 1,
+  "sourceHead": "db9d8d23c3de4248416810c32047cbad30041175",
+  "runs": {
+    "40274564553": {
+      "databaseId": 40274564553,
+      "headSha": "db9d8d23c3de4248416810c32047cbad30041175",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "createdAt": "2026-10-26T05:30:15Z",
+      "updatedAt": "2026-10-26T05:44:58Z",
+      "jobs": [
+        {
+          "name": "validate",
+          "conclusion": "success",
+          "startedAt": "2026-10-26T05:30:19Z",
+          "completedAt": "2026-10-26T05:44:30Z"
+        },
+        {
+          "name": "evidence-verify",
+          "conclusion": "success",
+          "startedAt": "2026-10-26T05:44:33Z",
+          "completedAt": "2026-10-26T05:44:50Z"
+        },
+        {
+          "name": "moody-gate",
+          "conclusion": "success",
+          "startedAt": "2026-10-26T05:44:53Z",
+          "completedAt": "2026-10-26T05:44:57Z"
+        }
+      ]
+    },
+    "40274568700": {
+      "databaseId": 40274568700,
+      "headSha": "db9d8d23c3de4248416810c32047cbad30041175",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "createdAt": "2026-10-26T05:30:17Z",
+      "updatedAt": "2026-10-26T05:41:21Z",
+      "jobs": [
+        {
+          "name": "prototype",
+          "conclusion": "success",
+          "startedAt": "2026-10-26T05:30:21Z",
+          "completedAt": "2026-10-26T05:40:54Z"
+        },
+        {
+          "name": "evidence-verify",
+          "conclusion": "success",
+          "startedAt": "2026-10-26T05:40:57Z",
+          "completedAt": "2026-10-26T05:41:20Z"
+        }
+      ]
+    }
+  },
+  "standardLocalDownload": {
+    "indexedFiles": 192,
+    "indexedBytes": 937717,
+    "allSizeAndSha256Match": true,
+    "requiredFilesPresent": true,
+    "omitted": [],
+    "summaryStatus": "PASS",
+    "evidenceIntegrity": "COMPLETE",
+    "suites": {
+      "unit": {
+        "expected": 37,
+        "recorded": 37,
+        "status": "PASS"
+      },
+      "browser": {
+        "expected": 42,
+        "recorded": 42,
+        "status": "PASS"
+      }
+    },
+    "uploadIndexSha256": "3e7106b40fe0e83f2bad360965495a931e859e06847de69f4411b57af8c6e85a"
+  },
+  "downloadedBuild": {
+    "packages": [
+      {
+        "name": "StoneFreeHost",
+        "file": "StoneFreeHost-0.1.5-experimental.mod.zip",
+        "sha256": "6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8"
+      },
+      {
+        "name": "DoLGameUI",
+        "file": "DoLGameUI-4.0.1.mod.zip",
+        "sha256": "940af652e7e5596a539dd5c1ae293d72689be17eb78a0d13d1b3b7d647e1e6ac"
+      },
+      {
+        "name": "ModHubSoftWet",
+        "file": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.2.mod.zip",
+        "sha256": "6fc7893961d9f9ad6d1ecb90d039406c1b5f7061ece8f61b6300d37a65e01214"
+      },
+      {
+        "name": "MapleBirchSoftWet",
+        "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip",
+        "sha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00"
+      },
+      {
+        "name": "DolOptimizationSoftWet",
+        "file": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip",
+        "sha256": "f1120c18c8e058b0647d84676b217d278557b66c3611d9643f8ebf3213510f1f"
+      },
+      {
+        "name": "CheatExtendedSoftWet",
+        "file": "CheatExtendedSoftWet-cheat extended-1.20.3-plus-v1.0.0.mod.zip",
+        "sha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d"
+      },
+      {
+        "name": "ReOverfitsSoftWet",
+        "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.0.mod.zip",
+        "sha256": "09ef4b7f8a253486726a88d475c92cfb0ce1de05f0e9324141f4a81965fc413f"
+      },
+      {
+        "name": "LyraMouthCompat051213",
+        "file": "LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip",
+        "sha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827"
+      },
+      {
+        "name": "SmartPhoneSoftWet",
+        "file": "SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.1.mod.zip",
+        "sha256": "43dd325355754f36c38b7336e135964cd0e181744cdcb344eeca79ce9d63c1d8"
+      }
+    ],
+    "twoDistinctInvocations": [
+      "039484ca-ee2f-41b0-829b-bec1e10cb5a2",
+      "9f44b420-d229-4554-a923-4e17f5bb8734"
+    ],
+    "twoBuildReceiptsEqual": true,
+    "allNineDownloadedZipSha256Match": true,
+    "downloadedPackageReportMatchesControlledReport": true
+  },
+  "remoteVerification": {
+    "40274564553": {
+      "schema": 1,
+      "identity": {
+        "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+        "source": {
+          "head": "db9d8d23c3de4248416810c32047cbad30041175",
+          "tree": "c786b79291b43095dd836736a8cb5e8d7f3e6b03",
+          "dirty": false,
+          "contentSha256": "a84060a8a21821a240399454024af177ef6b3c3da9d6ba09750983ec3d7b04dd",
+          "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+        },
+        "run": {
+          "id": "40274564553-1-validate",
+          "attempt": "1",
+          "githubRunId": "40274564553",
+          "repository": "102326/DoL-Game-UI",
+          "ref": "refs/heads/perf/4.1-panel-preparation",
+          "event": "workflow_dispatch",
+          "workflow": "Kraft Work CI",
+          "job": "validate",
+          "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40274564553"
+        },
+        "nonce": "f93232e540921029e91297c1b6b63099",
+        "profile": "standard",
+        "catalog": {
+          "version": "1.3.0",
+          "profile": "standard",
+          "depth": "standard",
+          "expectedLockSha256": "155fe68f2a7a1f610b9b01f10addde275f1478da7a5d4b2e7f34529b81a4f9e2",
+          "sha256": "82afb4ff8db329e86acbd1799c68c2eb5792b1107d0130c2d7077af8bd95f5ed"
+        },
+        "pr": null,
+        "environment": {
+          "orderSeed": null,
+          "runnerImage": "ubuntu26",
+          "runnerImageVersion": "20261023.163.3",
+          "platform": "linux",
+          "arch": "x64",
+          "deviceDepth": "standard",
+          "node": "v26.12.1",
+          "npm": "11.20.0",
+          "python": "Python 3.12.15",
+          "playwright": "1.63.0",
+          "browser": "Pinned Playwright Chromium (browser suite)"
+        }
+      },
+      "status": "PASS",
+      "assertionResult": "PASS",
+      "evidenceIntegrity": "COMPLETE",
+      "reasonCodes": [],
+      "problems": [],
+      "remoteVerificationMs": 36
+    },
+    "40274568700": {
+      "schema": 1,
+      "identity": {
+        "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+        "source": {
+          "head": "db9d8d23c3de4248416810c32047cbad30041175",
+          "tree": "c786b79291b43095dd836736a8cb5e8d7f3e6b03",
+          "dirty": false,
+          "contentSha256": "a84060a8a21821a240399454024af177ef6b3c3da9d6ba09750983ec3d7b04dd",
+          "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591"
+        },
+        "run": {
+          "id": "40274568700-1-research",
+          "attempt": "1",
+          "githubRunId": "40274568700",
+          "repository": "102326/DoL-Game-UI",
+          "ref": "refs/heads/perf/4.1-panel-preparation",
+          "event": "workflow_dispatch",
+          "workflow": "Motion Evolution prototype",
+          "job": "prototype",
+          "url": "https://github.com/102326/DoL-Game-UI/actions/runs/40274568700"
+        },
+        "nonce": "fe564b5a074bd0ce1578e3b4caa309d6",
+        "profile": "research",
+        "catalog": {
+          "version": "1.3.0",
+          "profile": "research",
+          "depth": "standard",
+          "expectedLockSha256": "155fe68f2a7a1f610b9b01f10addde275f1478da7a5d4b2e7f34529b81a4f9e2",
+          "sha256": "a773c1a9156b175280107203b9b92ad3b8343e54d60fa0c7c920ccf43bf353d2"
+        },
+        "pr": null,
+        "environment": {
+          "orderSeed": null,
+          "runnerImage": "ubuntu26",
+          "runnerImageVersion": "20261023.163.3",
+          "platform": "linux",
+          "arch": "x64",
+          "deviceDepth": "standard",
+          "node": "v26.12.1",
+          "npm": "11.20.0",
+          "python": "Python 3.14.4",
+          "playwright": "1.63.0",
+          "browser": "Pinned Playwright Chromium (browser suite)"
+        }
+      },
+      "status": "PASS",
+      "assertionResult": "PASS",
+      "evidenceIntegrity": "COMPLETE",
+      "reasonCodes": [],
+      "problems": [],
+      "remoteVerificationMs": 442
+    }
+  },
+  "limits": "Exact implementation workflow_dispatch; A2 local timing studies not required CI checks. Independent remote verifier checks identity and required evidence structure, Python package checker checks ZIP contracts. Mac download digest comparison is transport verification, not a second ZIP contract checker. Research full media verified remotely, receipt only downloaded locally. Later documentation-only closeout reuses unchanged implementation evidence."
+}

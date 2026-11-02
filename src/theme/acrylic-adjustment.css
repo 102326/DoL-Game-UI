@@ -1,0 +1,5 @@
+/* Controls for the continuous original-V1 material axis. */
+#dol-midnight-controls .dmt-acrylic-control{min-width:0}
+#dol-midnight-controls .dmt-acrylic-scale{display:flex;justify-content:space-between;gap:10px;color:var(--dgu-secondary);font-size:12px}
+#dol-midnight-controls .dmt-acrylic-control .dmt-workspace-actions{margin:10px 0 16px}
+@media(max-width:600px){#dol-midnight-controls .dmt-acrylic-control .dgu-setting-row{flex-wrap:wrap}#dol-midnight-controls .dmt-acrylic-control input[type=range]{width:100%}}

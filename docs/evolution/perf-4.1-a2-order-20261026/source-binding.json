@@ -1,0 +1,26 @@
+{
+  "baselineHead": "7ac2d593cce707ecbd8eb10174592ad3513ed555",
+  "currentNavigationSha256": "7e09422db00408c584b4a99606ba62cb848c45e8dadb5fbc3d0f0d04c443fd6f",
+  "currentCheckerSha256": "1f1b6ae1a9bffe2d68deb138b74d7760ab5f2b49dd9a86aee1482dd613f43586",
+  "lockSha256": "63223540f5da418896c611740bc2459f064b0c0fa803fa91636710f21450b591",
+  "actualFixtureBundleEqualsMeasured": true,
+  "localCiCheck": {
+    "command": "npm run ci:check",
+    "exitCode": 0,
+    "includes": [
+      "research tsc",
+      "public/internal typecheck",
+      "Framework vue-tsc",
+      "existing generation checks"
+    ]
+  },
+  "sourceDifference": "Current navigation only adds formatting/comment to measured navigation-first candidate; full actual fixture bundle SHA equals measured candidate. Maintained checker subsequently pins original navigation from7ac2d59 so future comparisons do not use candidate as baseline. Both measured checker snapshots preserved.",
+  "review": {
+    "result": "no blocking findings",
+    "scope": [
+      "navigation code diff",
+      "driver and sample identity"
+    ],
+    "limits": "Read-only code review, no repeated timing or independent game/device acceptance."
+  }
+}

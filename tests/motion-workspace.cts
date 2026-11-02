@@ -43,7 +43,7 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing w
    for(const name of ['入口','阅读','材质','阅读'])await page.getByRole('button',{name,exact:true}).click();
    await waitSettings(page);assert.equal(await page.locator('.dmt-workspace-section[inert]').count(),0);
    const after=await page.locator('.dmt-settings-shell').boundingBox();assert.ok(after);for(const key of ['x','y','width'] as const)assert.ok(Math.abs(before[key]-after[key])<1);
-   const enabled=await page.evaluate(()=>DoLMidnightTheme.getPreferences().comfortable);await page.getByLabel('舒适阅读间距',{exact:true}).click();assert.equal(await page.evaluate(()=>DoLMidnightTheme.getPreferences().comfortable),!enabled);
+   const enabled=await page.evaluate(()=>DoLMidnightTheme.getPreferences().mobileCompactControls);await page.getByLabel('手机紧凑按钮间距',{exact:true}).click();assert.equal(await page.evaluate(()=>DoLMidnightTheme.getPreferences().mobileCompactControls),!enabled);
    assert.equal(await page.evaluate(()=>motionWorkspace.calls()),0);await page.screenshot({path:path.join(out,'settings-desktop.png')});
    await page.locator('.dmt-close').click();await page.evaluate(()=>motionWorkspace.open());await page.waitForFunction(()=>!document.querySelector('#dol-midnight-controls[data-sf-leaving]'));
    assert.equal(await dialog.evaluate(n=>n instanceof HTMLDialogElement&&n.open),true);await page.keyboard.press('Escape');await waitSettingsClosed(page);
@@ -70,11 +70,11 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing w
    assert.equal(await page.locator('.dmt-workspace-section').evaluate(n=>n.getAnimations().length),0);await page.keyboard.press('Escape');await waitSettingsClosed(page);
   });
   await check('unmount during motion removes only owned presentation; remount preserves settings',async()=>{
-   await page.emulateMedia({reducedMotion:'no-preference'});const saved=await page.evaluate(()=>DoLMidnightTheme.getPreferences().comfortable);
+   await page.emulateMedia({reducedMotion:'no-preference'});const saved=await page.evaluate(()=>DoLMidnightTheme.getPreferences().mobileCompactControls);
    await page.evaluate(()=>{motionWorkspace.open();motionWorkspace.destroy()});
    assert.equal(await page.locator('#dol-midnight-controls,.kw-window-stage,.kw-context-plane,.dmt-settings-context').count(),0);
    assert.equal(await page.locator('#native-action').count(),1);
-   await page.getByRole('button',{name:'重新挂载',exact:true}).click();assert.equal(await page.evaluate(()=>DoLMidnightTheme.getPreferences().comfortable),saved);
+   await page.getByRole('button',{name:'重新挂载',exact:true}).click();assert.equal(await page.evaluate(()=>DoLMidnightTheme.getPreferences().mobileCompactControls),saved);
    await page.evaluate(()=>motionWorkspace.destroy());assert.deepEqual(errors,[]);
   });
   fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({checks,errors,scope:'Mac/CI Chromium controlled real settings; simulated native overlay; not game/device acceptance',visualAcceptance:'window batch pending; sphere accepted by owner'},null,2));

@@ -1,0 +1,18 @@
+// Run existing test assertions with one Vite in-memory source substitution.
+import {readFileSync,writeFileSync} from 'node:fs';
+import {resolve,dirname} from 'node:path';
+import {createRequire} from 'node:module';
+import {transformSync} from 'esbuild';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+const name=process.argv[2];assert.ok(['header-weather','official-game-motion'].includes(name!));
+const file=resolve('tests/'+name+'.cts'),input=readFileSync(file,'utf8'),source='framework/official-ui/navigation.ts';
+const original=readFileSync(source,'utf8'),candidate=readFileSync('tests/artifacts/evolution/native-weather-stage-1792991818770/navigation-candidate.ts','utf8');
+const hash=(s:string)=>createHash('sha256').update(s).digest('hex');
+assert.equal(input.split('plugins:[').length,2,'single existing Vite fixture');assert.equal(input.split('\n(async()=>{').length,2,'single test entry');
+const injected=`{name:'a2-navigation-order-memory-only',enforce:'pre',transform(code,id){if(id.split('?')[0].endsWith('/framework/official-ui/navigation.ts')){if(code!==${JSON.stringify(original)})throw Error('Original navigation identity changed');__a2Injected++;return ${JSON.stringify(candidate)}}}},`;
+const text="let __a2Injected=0;\n"+input.replace('plugins:[','plugins:['+injected).replace('\n(async()=>{','\nmodule.exports=(async()=>{');
+const code=transformSync(text,{loader:'ts',format:'cjs',target:'node26'}).code;
+const module={exports:{} as unknown};new Function('require','module','exports','__dirname','__filename',code+'\nmodule.injected=()=>__a2Injected;')(createRequire(file),module,module.exports,dirname(file),file);
+await module.exports;assert.equal(process.exitCode??0,0,'existing test assertions');assert.equal((module as typeof module&{injected:()=>number}).injected(),1,'candidate actually loaded');
+writeFileSync(resolve('tests/artifacts/a2-order-regressions-20261026/'+name+'.json'),JSON.stringify({status:'PASS',test:name,originalTestSha256:hash(input),originalNavigationSha256:hash(original),candidateNavigationSha256:hash(candidate),transformedTestSha256:hash(text),runnerSha256:hash(readFileSync(new URL('./run.mts',import.meta.url),'utf8')),substitutions:1,limits:'Existing assertions and fixture, one in-memory candidate substitution, no product source writes; candidate integration/device/performance acceptance not implied.'},null,2)+'\n');

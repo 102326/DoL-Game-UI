@@ -6,5 +6,5 @@
     "types": ["node", "vite/client"], "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true
   },
-  "include": ["scripts/*.ts", "vite*.ts", "tests/*.mts"]
+  "include": ["scripts/*.ts", "vite*.ts", "tests/*.mts", "docs/evolution/perf-4.1-candidates-20261026/*.mts"]
 }

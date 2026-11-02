@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-27",
+  "productCommit": "3554456",
+  "hubResponseCommit": "557f9f77692c4889442788d6d1a59a4d5fdbfe5e",
+  "sourceSha256": {
+    "framework/official-ui/main.ts": "28aee3e613d72aac5e1f11d7f184fdaec1d01e9183f381de635ad3fe0c91d7ae",
+    "src/ui/owned-select.css": "dee1b669326e26a881e1e5bf92cd4f6cf3986ff447e0a29dcbc10b1030b3c7ef",
+    "src/theme/controller.ts": "fcbce4c31fab193f7e6c4fd952a813b6486917f23c486cbd4e3faf3fcdcd06d3",
+    "src/ui/golden-spin/hub-motion.ts": "b8970fc65ca43a32d78cec46017b74b96dac31283ba214309ce6ec2f4c445f1e",
+    "tests/framework-startup.cts": "bea04b31188522809ea9d6a7134037849687844f91659b2723361bd984ea25fc",
+    "tests/official-cleanup.cts": "7207c621e7b74fff5d56f3543676d7e78895ad6371e5ccc57f39538aea0583e6",
+    "tests/owned-select.cts": "5e897c1eb9d6e90c023cac63d4abfc87e861841451fb0ebe57add6d3c7c20073",
+    "tests/golden-spin-hub.cts": "4a0657ffba1c42ab9587f3dc27cf99ff40095d09d37674615baa07fca997c236",
+    "tests/golden-spin-hub-input.cts": "eb964d4bedca4aa4df373208b10d57c5db70164c2b98051ee35575bae2af401b",
+    "scripts/expected.lock.json": "1b97a2867bf571117c4e9697d9d4759e8f3a79d3ff26b86f0c0ccf84102298e1"
+  },
+  "checks": [
+    {
+      "command": "npm run ci:check",
+      "exit": 0
+    },
+    {
+      "command": "node scripts/build-framework.mjs",
+      "exit": 0
+    },
+    {
+      "command": "python3 scripts/package-framework.py (before response-only JS change)",
+      "exit": 0
+    },
+    {
+      "command": "node tests/framework-startup.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/framework-connect.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/ui41-option-alignment.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/golden-spin-hub.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/golden-spin-hub-input.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/golden-spin-hub-lifecycle.cjs",
+      "exit": 0
+    },
+    {
+      "command": "node tests/evolution-hub-integration.cjs",
+      "exit": 0
+    },
+    {
+      "command": "npm run tooling:build && npm run ci:lock (latest input assertions)",
+      "exit": 0
+    }
+  ],
+  "expectedFailures": [
+    {
+      "command": "node tests/official-cleanup.cjs against cd67fa4 main",
+      "failure": "motion global removed: true !== false",
+      "boundary": "post-real-cleanup injected motion fault"
+    },
+    {
+      "command": "node tests/golden-spin-hub.cjs against old hub timing",
+      "failure": "tools must begin during the initial sphere effect"
+    }
+  ],
+  "review": "Independent Terra/xhigh review; candidate naming, cleanup order and helper source-lock binding corrected. Input sampling assertion added: pointer q=.821494 and keyboard q=.717312, both moving+paused. Production connect keeps fixed warning; only the test catch observes internal AggregateError.",
+  "environment": {
+    "platform": "macOS arm64",
+    "node": "26.12.1",
+    "playwright": "1.63.0",
+    "chromium": "153.0.8010.12"
+  },
+  "limits": "Controlled owned UI and fixtures. No game/player storage, real ModHub install or physical-device claim. No owner acceptance of new select/timing visuals yet. First npm framework:build failed only because python command alias was absent; JS build completed and python3 packaging succeeded separately. Direct browser startup initially blocked by macOS sandbox, tests completed outside it.",
+  "finalCombination": "framework-startup rerun after latest runtime build at 557f9f7: exit0; cleanup/select JSON copied from this run. Actual hub integration result records f1beec5 workingTree:true before commit; receipt binds same executed runtime hashes, not a clean f1beec5 claim."
+}

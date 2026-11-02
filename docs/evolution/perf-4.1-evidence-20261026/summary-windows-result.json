@@ -1,0 +1,792 @@
+{
+  "status": "PASS",
+  "pairs": [
+    {
+      "label": "属性",
+      "enabled": true,
+      "n": 3,
+      "handlerMedianMs": 102.10000002384186,
+      "longestRafIntervalMedianMs": 116.79999999981374
+    },
+    {
+      "label": "属性",
+      "enabled": false,
+      "n": 3,
+      "handlerMedianMs": 77.20000004768372,
+      "longestRafIntervalMedianMs": 116.70000000018626
+    },
+    {
+      "label": "作弊",
+      "enabled": true,
+      "n": 3,
+      "handlerMedianMs": 82.70000004768372,
+      "longestRafIntervalMedianMs": 300
+    },
+    {
+      "label": "作弊",
+      "enabled": false,
+      "n": 3,
+      "handlerMedianMs": 71.20000004768372,
+      "longestRafIntervalMedianMs": 99.90000000037253
+    },
+    {
+      "label": "ModHub",
+      "enabled": true,
+      "n": 3,
+      "handlerMedianMs": 47.199999928474426,
+      "longestRafIntervalMedianMs": 266.6000000005588
+    },
+    {
+      "label": "ModHub",
+      "enabled": false,
+      "n": 3,
+      "handlerMedianMs": 38.39999997615814,
+      "longestRafIntervalMedianMs": 216.69999999925494
+    }
+  ],
+  "traces": [
+    {
+      "file": "timeline-ModHub-true.json",
+      "styleMs": 206.817,
+      "layoutMs": 7.9159999999999995,
+      "topStyle": [
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 5.54,
+          "durationMs": 13.088,
+          "overlapMs": 13.088,
+          "stack": [
+            {
+              "functionName": "ce.expr.pseudos.visible",
+              "line": 10965,
+              "column": 79428,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.expr.pseudos.hidden",
+              "line": 10965,
+              "column": 79369,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 17849,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "r",
+              "line": 10965,
+              "column": 19642,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 14895,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 17849,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "r",
+              "line": 10965,
+              "column": 19642,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "re",
+              "line": 10965,
+              "column": 20530,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "I",
+              "line": 10965,
+              "column": 7520,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "I.matches",
+              "line": 10965,
+              "column": 11243,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.filter",
+              "line": 10965,
+              "column": 21711,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "T",
+              "line": 10965,
+              "column": 21559,
+              "scriptId": "10"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 244.617,
+          "durationMs": 9.488,
+          "overlapMs": 9.488,
+          "stack": [
+            {
+              "functionName": "k",
+              "line": 208687,
+              "column": 111437,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "Q",
+              "line": 208687,
+              "column": 114625,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 117061,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 111533,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 257.921,
+          "durationMs": 8.707,
+          "overlapMs": 8.707,
+          "stack": [
+            {
+              "functionName": "k",
+              "line": 208687,
+              "column": 111437,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "Q",
+              "line": 208687,
+              "column": 114625,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 111533,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 29.881,
+          "durationMs": 7.577,
+          "overlapMs": 7.577,
+          "stack": []
+        }
+      ]
+    },
+    {
+      "file": "timeline-作弊-false.json",
+      "styleMs": 52.25999999999999,
+      "layoutMs": 19.165000000000003,
+      "topStyle": [
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 4.254,
+          "durationMs": 19.471,
+          "overlapMs": 19.471,
+          "stack": [
+            {
+              "functionName": "ce.expr.pseudos.visible",
+              "line": 10965,
+              "column": 79428,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.expr.pseudos.hidden",
+              "line": 10965,
+              "column": 79369,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 17849,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "r",
+              "line": 10965,
+              "column": 19642,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 14895,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 17849,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "r",
+              "line": 10965,
+              "column": 19642,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "re",
+              "line": 10965,
+              "column": 20530,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "I",
+              "line": 10965,
+              "column": 7520,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "I.matches",
+              "line": 10965,
+              "column": 11243,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.filter",
+              "line": 10965,
+              "column": 21711,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "T",
+              "line": 10965,
+              "column": 21559,
+              "scriptId": "10"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 158.233,
+          "durationMs": 18.108,
+          "overlapMs": 18.108,
+          "stack": [
+            {
+              "functionName": "ce.expr.pseudos.visible",
+              "line": 10965,
+              "column": 79428,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.expr.pseudos.hidden",
+              "line": 10965,
+              "column": 79369,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 17849,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "r",
+              "line": 10965,
+              "column": 19642,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 14895,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 17849,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "r",
+              "line": 10965,
+              "column": 19642,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "re",
+              "line": 10965,
+              "column": 20530,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "I",
+              "line": 10965,
+              "column": 7520,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "I.matches",
+              "line": 10965,
+              "column": 11243,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.filter",
+              "line": 10965,
+              "column": 21711,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "T",
+              "line": 10965,
+              "column": 21559,
+              "scriptId": "10"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 202.663,
+          "durationMs": 0.984,
+          "overlapMs": 0.984,
+          "stack": [
+            {
+              "functionName": "Ge",
+              "line": 10965,
+              "column": 49616,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "css",
+              "line": 10965,
+              "column": 54210,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "get",
+              "line": 10965,
+              "column": 54414,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "css",
+              "line": 10965,
+              "column": 54182,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 85730,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "M",
+              "line": 10965,
+              "column": 29644,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.fn.<computed>",
+              "line": 10965,
+              "column": 85473,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "resizeHandler",
+              "line": 43862,
+              "column": 33,
+              "scriptId": "931"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 939.893,
+          "durationMs": 0.439,
+          "overlapMs": 0.439,
+          "stack": []
+        }
+      ]
+    },
+    {
+      "file": "timeline-作弊-true.json",
+      "styleMs": 473.34899999999993,
+      "layoutMs": 31.152,
+      "topStyle": [
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 245.963,
+          "durationMs": 66.064,
+          "overlapMs": 66.064,
+          "stack": [
+            {
+              "functionName": "Zs",
+              "line": 208673,
+              "column": 89897,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "Q",
+              "line": 208673,
+              "column": 95320,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "J",
+              "line": 208673,
+              "column": 97310,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "I",
+              "line": 208673,
+              "column": 96507,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 380.908,
+          "durationMs": 62.94,
+          "overlapMs": 62.94,
+          "stack": [
+            {
+              "functionName": "a",
+              "line": 208687,
+              "column": 99293,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "d",
+              "line": 208687,
+              "column": 99952,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "m",
+              "line": 208687,
+              "column": 101327,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "f",
+              "line": 208687,
+              "column": 109781,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "Q",
+              "line": 208687,
+              "column": 114672,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 111533,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 450.67,
+          "durationMs": 47.81,
+          "overlapMs": 47.81,
+          "stack": [
+            {
+              "functionName": "Q",
+              "line": 208687,
+              "column": 115131,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 111533,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 338.155,
+          "durationMs": 39.169,
+          "overlapMs": 39.169,
+          "stack": [
+            {
+              "functionName": "k",
+              "line": 208687,
+              "column": 111437,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "Q",
+              "line": 208687,
+              "column": 114625,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 111533,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "timeline-属性-true.json",
+      "styleMs": 300.89500000000004,
+      "layoutMs": 13.574999999999998,
+      "topStyle": [
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 7.675,
+          "durationMs": 32.862,
+          "overlapMs": 32.862,
+          "stack": [
+            {
+              "functionName": "ce.expr.pseudos.visible",
+              "line": 10965,
+              "column": 79428,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.expr.pseudos.hidden",
+              "line": 10965,
+              "column": 79369,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 17849,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "r",
+              "line": 10965,
+              "column": 19642,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 14895,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "",
+              "line": 10965,
+              "column": 17849,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "r",
+              "line": 10965,
+              "column": 19642,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "re",
+              "line": 10965,
+              "column": 20530,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "I",
+              "line": 10965,
+              "column": 7520,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "I.matches",
+              "line": 10965,
+              "column": 11243,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "ce.filter",
+              "line": 10965,
+              "column": 21711,
+              "scriptId": "10"
+            },
+            {
+              "functionName": "T",
+              "line": 10965,
+              "column": 21559,
+              "scriptId": "10"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 174.235,
+          "durationMs": 6.437,
+          "overlapMs": 6.437,
+          "stack": [
+            {
+              "functionName": "Q",
+              "line": 208687,
+              "column": 115131,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 111533,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 156.5,
+          "durationMs": 6.414,
+          "overlapMs": 6.414,
+          "stack": [
+            {
+              "functionName": "k",
+              "line": 208687,
+              "column": 111437,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "Q",
+              "line": 208687,
+              "column": 114625,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 111533,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "startMs": 166.267,
+          "durationMs": 5.923,
+          "overlapMs": 5.923,
+          "stack": [
+            {
+              "functionName": "a",
+              "line": 208687,
+              "column": 99293,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "d",
+              "line": 208687,
+              "column": 99952,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "m",
+              "line": 208687,
+              "column": 101327,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "f",
+              "line": 208687,
+              "column": 109781,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "Q",
+              "line": 208687,
+              "column": 114672,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208687,
+              "column": 111533,
+              "scriptId": "931"
+            },
+            {
+              "functionName": "eval",
+              "line": 208653,
+              "column": 3544,
+              "scriptId": "931"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "limits": "Offline replay of captured Android data; does not remeasure the current computer or GPU/FPS."
+}

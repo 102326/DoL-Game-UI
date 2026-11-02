@@ -1,0 +1,3268 @@
+{
+  "status": "PASS",
+  "sourceSha256": {
+    "framework/official-ui/motion.ts": "4b2bcc3d713ab64eb84cf788763986963a765c4b8b18845e89c9907f00bfe386",
+    "framework/official-ui/navigation.ts": "a9d2632889f9801cc926497398561fecd058decdf3932b5d32e4f6580298398d",
+    "framework/official-ui/weather.ts": "8a6a0795816bf4cc7fb3ce8452b99243f48a88216a821c6233ce6350216f1f75",
+    "src/panels/main.ts": "9fe4d626450c4e243fc86f50cba6c8b3f469087e04a8c9fc2a3b7836735341af",
+    "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+    "dist/framework/official-ui/style.css": "eb498c3b482ed2d4f4267d0bde8aa30bc278168ec2ac86e7ca339729d7c486ac",
+    "docs/evolution/perf-4.1-candidates-20261026/probe-a2-opening.mts": "faa6dc1ba6b69dad899c54831c3c6e742beed23b66e4a709e148b1bf4fc5a386"
+  },
+  "transformedSha256": {
+    "src/panels/main.ts": "e9780913f9bbea4c189b093f2b36ad938b5180a21297c59de6ba08207f1e279d",
+    "framework/official-ui/motion.ts": "70de0ec2d31f870f082a8bfb267603c98dcfcbb0a52eca6d4f29e5bb04843b17",
+    "framework/official-ui/navigation.ts": "50610cdb36bba5733122b8ca2eca10f64692fd10e92ee75a5f55171c7eddea84",
+    "framework/official-ui/weather.ts": "e486d2aab536387b7c583d88d6e927e216dee21aeb889ae0794d34f508869b18"
+  },
+  "bundleSha256": "f7d4295706e2dfef39e582a51c3eb9270e82bdc03481af6fc683a3dcff7642f3",
+  "chromium": "153.0.8010.12",
+  "platform": "darwin",
+  "node": "v26.12.1",
+  "stages": [
+    {
+      "stage": "native-open",
+      "counts": {
+        "motion.later": 4,
+        "main.refreshOverlay": 2,
+        "motion.syncOverlay": 3,
+        "navigation.refresh": 3,
+        "navigation.group": 9,
+        "navigation.mark": 9,
+        "weather.set": 6,
+        "weather.refresh": 3,
+        "weather.paint": 3,
+        "motion.scrim": 1,
+        "weather.fitHeader": 1
+      },
+      "sameFrame": [
+        {
+          "label": "motion.later",
+          "maxCallsInOneFrame": 2
+        },
+        {
+          "label": "main.refreshOverlay",
+          "maxCallsInOneFrame": 1
+        },
+        {
+          "label": "motion.syncOverlay",
+          "maxCallsInOneFrame": 2
+        },
+        {
+          "label": "navigation.refresh",
+          "maxCallsInOneFrame": 2
+        },
+        {
+          "label": "navigation.group",
+          "maxCallsInOneFrame": 6
+        },
+        {
+          "label": "navigation.mark",
+          "maxCallsInOneFrame": 6
+        },
+        {
+          "label": "weather.set",
+          "maxCallsInOneFrame": 4
+        },
+        {
+          "label": "weather.refresh",
+          "maxCallsInOneFrame": 2
+        },
+        {
+          "label": "weather.paint",
+          "maxCallsInOneFrame": 2
+        },
+        {
+          "label": "motion.scrim",
+          "maxCallsInOneFrame": 1
+        },
+        {
+          "label": "weather.fitHeader",
+          "maxCallsInOneFrame": 1
+        }
+      ],
+      "capture": {
+        "anchor": 401.39999997615814,
+        "end": 1106.0999999642372,
+        "phase": "native-open",
+        "events": [
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "entry",
+            "time": 461.5,
+            "end": 461.5,
+            "frame": 7,
+            "stack": []
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "entry",
+            "time": 463.19999998807907,
+            "end": 463.30000001192093,
+            "frame": 7,
+            "stack": []
+          },
+          {
+            "kind": "read",
+            "label": "getBoundingClientRect",
+            "node": "entry",
+            "time": 463.30000001192093,
+            "end": 463.30000001192093,
+            "frame": 7,
+            "stack": []
+          },
+          {
+            "kind": "read",
+            "label": "getComputedStyle",
+            "node": "entry",
+            "time": 463.39999997615814,
+            "end": 463.39999997615814,
+            "frame": 7,
+            "stack": []
+          },
+          {
+            "kind": "read",
+            "label": "getComputedStyle",
+            "node": "entry",
+            "time": 463.39999997615814,
+            "end": 463.39999997615814,
+            "frame": 7,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.later",
+            "time": 468.19999998807907,
+            "frame": 7,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.request:anonymous",
+            "time": 468.19999998807907,
+            "frame": 7,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.later",
+            "time": 468.19999998807907,
+            "frame": 7,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.later",
+            "time": 469.69999998807907,
+            "frame": 7,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.request:B",
+            "time": 469.69999998807907,
+            "frame": 7,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.later",
+            "time": 469.69999998807907,
+            "frame": 7,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.later",
+            "time": 508.39999997615814,
+            "frame": 8,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.request:anonymous",
+            "time": 508.39999997615814,
+            "frame": 8,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.later",
+            "time": 508.39999997615814,
+            "frame": 8,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "main.refreshOverlay",
+            "time": 508.39999997615814,
+            "frame": 8,
+            "stack": [
+              "main.refreshOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "main.refreshOverlay",
+            "time": 531.3000000119209,
+            "frame": 8,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.later",
+            "time": 531.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.request:B",
+            "time": 531.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.later",
+            "time": 531.3000000119209,
+            "frame": 8,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.syncOverlay",
+            "time": 532.5,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 532.5,
+            "end": 539.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 539.1999999880791,
+            "end": 539.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.refresh",
+            "time": 539.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 539.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 539.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 539.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 539.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 539.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 539.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 539.3999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 539.3999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 539.3999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 539.3999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 539.3999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 539.3999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 539.3999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 539.3999999761581,
+            "end": 547.8000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "weather.append.before",
+            "time": 548.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "weather.append.after",
+            "time": 548.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 548.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 548.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 548.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.refresh",
+            "time": 548.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 548.3000000119209,
+            "end": 554.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 554.1999999880791,
+            "end": 554.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.paint",
+            "time": 554.1999999880791,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getComputedStyle",
+            "node": "kw-heading-weather",
+            "time": 554.1999999880791,
+            "end": 554.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "weather.paint.attributes",
+            "time": 554.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getComputedStyle",
+            "node": "kw-heading-weather",
+            "time": 554.3000000119209,
+            "end": 554.3000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.paint",
+            "time": 554.5,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 554.5,
+            "end": 554.5,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.refresh",
+            "time": 554.8000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.refresh",
+            "time": 554.8000000119209,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "motion.scrim",
+            "time": 555,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay",
+              "motion.scrim"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.scrim",
+            "time": 555.0999999642372,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.focus.before",
+            "time": 555.0999999642372,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "focus",
+            "node": "",
+            "time": 555.0999999642372,
+            "end": 555.8999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.focus.after",
+            "time": 555.8999999761581,
+            "frame": 8,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.syncOverlay",
+            "time": 555.8999999761581,
+            "frame": 8,
+            "stack": []
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "entry",
+            "time": 556.1999999880791,
+            "end": 556.1999999880791,
+            "frame": 8,
+            "stack": []
+          },
+          {
+            "kind": "read",
+            "label": "getBoundingClientRect",
+            "node": "entry",
+            "time": 556.3999999761581,
+            "end": 556.3999999761581,
+            "frame": 8,
+            "stack": []
+          },
+          {
+            "kind": "read",
+            "label": "getComputedStyle",
+            "node": "entry",
+            "time": 556.5,
+            "end": 556.5,
+            "frame": 8,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.syncOverlay",
+            "time": 560.8000000119209,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 560.8000000119209,
+            "end": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 560.8999999761581,
+            "end": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.refresh",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 560.8999999761581,
+            "end": 560.8999999761581,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 561,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 561,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 561,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.refresh",
+            "time": 561,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 561.0999999642372,
+            "end": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 561.0999999642372,
+            "end": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.paint",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.paint",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 561.0999999642372,
+            "end": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.refresh",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.refresh",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.syncOverlay",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.syncOverlay",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 561.0999999642372,
+            "end": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 561.0999999642372,
+            "end": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.refresh",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 561.0999999642372,
+            "end": 561.0999999642372,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.refresh",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 561.1999999880791,
+            "end": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 561.1999999880791,
+            "end": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.paint",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.paint",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 561.1999999880791,
+            "end": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.refresh",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.refresh",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.syncOverlay",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "weather.fitHeader",
+            "time": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getBoundingClientRect",
+            "node": "customOverlay",
+            "time": 561.1999999880791,
+            "end": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "offsetHeight",
+            "node": "customOverlay",
+            "time": 561.1999999880791,
+            "end": 561.1999999880791,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 561.3000000119209,
+            "end": 561.3000000119209,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "dgp-host",
+            "time": 561.3000000119209,
+            "end": 561.3000000119209,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "clientHeight",
+            "node": "customOverlay",
+            "time": 561.3000000119209,
+            "end": 561.3000000119209,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getBoundingClientRect",
+            "node": "customOverlayTitle",
+            "time": 561.3000000119209,
+            "end": 561.3000000119209,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "clientTop",
+            "node": "customOverlay",
+            "time": 561.3000000119209,
+            "end": 561.3000000119209,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getBoundingClientRect",
+            "node": "dgp-host",
+            "time": 561.3000000119209,
+            "end": 561.3000000119209,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "clientTop",
+            "node": "customOverlay",
+            "time": 561.3000000119209,
+            "end": 561.3000000119209,
+            "frame": 9,
+            "stack": [
+              "weather.fitHeader"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.fitHeader",
+            "time": 561.3000000119209,
+            "frame": 9,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "main.refreshOverlay",
+            "time": 561.3999999761581,
+            "frame": 9,
+            "stack": [
+              "main.refreshOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "main.refreshOverlay",
+            "time": 561.5999999642372,
+            "frame": 9,
+            "stack": []
+          }
+        ]
+      },
+      "styles": [
+        {
+          "name": "UpdateLayoutTree",
+          "time": 412.213,
+          "durationMs": 0.083,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 425.873,
+          "durationMs": 0.082,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 442.651,
+          "durationMs": 0.051,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 454.882,
+          "durationMs": 1.243,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 460.606,
+          "durationMs": 0.302,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 461.622,
+          "durationMs": 0.072,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "entry",
+              "stack": []
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 462.536,
+          "durationMs": 0.076,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 463.167,
+          "durationMs": 0.074,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "entry",
+              "stack": []
+            },
+            {
+              "label": "getBoundingClientRect",
+              "node": "entry",
+              "stack": []
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 469.641,
+          "durationMs": 5.19,
+          "readers": []
+        },
+        {
+          "name": "Layout",
+          "time": 474.835,
+          "durationMs": 2.676,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 510.151,
+          "durationMs": 5.841,
+          "readers": []
+        },
+        {
+          "name": "Layout",
+          "time": 516.006,
+          "durationMs": 14.971,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 532.685,
+          "durationMs": 5.734,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlay",
+              "stack": [
+                "motion.syncOverlay"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Layout",
+          "time": 538.422,
+          "durationMs": 0.78,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlay",
+              "stack": [
+                "motion.syncOverlay"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 539.39,
+          "durationMs": 5.005,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.set"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 543.019,
+          "durationMs": 0.053,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.set"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Layout",
+          "time": 543.216,
+          "durationMs": 0.14,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.set"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Layout",
+          "time": 544.396,
+          "durationMs": 3.368,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.set"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 548.297,
+          "durationMs": 5.785,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Layout",
+          "time": 554.083,
+          "durationMs": 0.027,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh"
+              ]
+            },
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh"
+              ]
+            },
+            {
+              "label": "getComputedStyle",
+              "node": "kw-heading-weather",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh",
+                "weather.paint"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 554.263,
+          "durationMs": 0.155,
+          "readers": [
+            {
+              "label": "getComputedStyle",
+              "node": "kw-heading-weather",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh",
+                "weather.paint"
+              ]
+            },
+            {
+              "label": "getComputedStyle",
+              "node": "kw-heading-weather",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh",
+                "weather.paint"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Layout",
+          "time": 554.419,
+          "durationMs": 0.02,
+          "readers": [
+            {
+              "label": "getComputedStyle",
+              "node": "kw-heading-weather",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh",
+                "weather.paint"
+              ]
+            },
+            {
+              "label": "getComputedStyle",
+              "node": "kw-heading-weather",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh",
+                "weather.paint"
+              ]
+            },
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 554.502,
+          "durationMs": 0.034,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.refresh"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 555.1,
+          "durationMs": 0.411,
+          "readers": [
+            {
+              "label": "focus",
+              "node": "",
+              "stack": [
+                "motion.syncOverlay"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 555.699,
+          "durationMs": 0.056,
+          "readers": [
+            {
+              "label": "focus",
+              "node": "",
+              "stack": [
+                "motion.syncOverlay"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Layout",
+          "time": 555.758,
+          "durationMs": 0.021,
+          "readers": [
+            {
+              "label": "focus",
+              "node": "",
+              "stack": [
+                "motion.syncOverlay"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 556.801,
+          "durationMs": 0.06,
+          "readers": []
+        },
+        {
+          "name": "Layout",
+          "time": 556.863,
+          "durationMs": 0.15,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 560.739,
+          "durationMs": 0.099,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlay",
+              "stack": [
+                "motion.syncOverlay"
+              ]
+            },
+            {
+              "label": "getClientRects",
+              "node": "customOverlay",
+              "stack": [
+                "motion.syncOverlay"
+              ]
+            },
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "motion.syncOverlay",
+                "navigation.refresh",
+                "weather.set"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 561.348,
+          "durationMs": 0.075,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "getClientRects",
+              "node": "dgp-host",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "clientHeight",
+              "node": "customOverlay",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "getBoundingClientRect",
+              "node": "customOverlayTitle",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "clientTop",
+              "node": "customOverlay",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "getBoundingClientRect",
+              "node": "dgp-host",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "clientTop",
+              "node": "customOverlay",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Layout",
+          "time": 561.426,
+          "durationMs": 0.042,
+          "readers": [
+            {
+              "label": "getClientRects",
+              "node": "customOverlayTitle",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "getClientRects",
+              "node": "dgp-host",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "clientHeight",
+              "node": "customOverlay",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "getBoundingClientRect",
+              "node": "customOverlayTitle",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "clientTop",
+              "node": "customOverlay",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "getBoundingClientRect",
+              "node": "dgp-host",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            },
+            {
+              "label": "clientTop",
+              "node": "customOverlay",
+              "stack": [
+                "weather.fitHeader"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 601.86,
+          "durationMs": 0.356,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 649.446,
+          "durationMs": 0.341,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 704.836,
+          "durationMs": 0.35,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 750.869,
+          "durationMs": 0.275,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 800.494,
+          "durationMs": 0.285,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 846.247,
+          "durationMs": 0.251,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 892.67,
+          "durationMs": 0.27,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 937.309,
+          "durationMs": 0.236,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 981.092,
+          "durationMs": 0.232,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1022.858,
+          "durationMs": 0.238,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1064.494,
+          "durationMs": 0.23,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1104.911,
+          "durationMs": 0.259,
+          "readers": []
+        }
+      ],
+      "traceSha256": "3bef7c56d41589f00a4fad886d6fe6b807582f77f2ad074ea064233c49acbfba",
+      "metrics": {
+        "RecalcStyleCount": 32,
+        "RecalcStyleDuration": 0.033736,
+        "LayoutCount": 9,
+        "LayoutDuration": 0.022088
+      }
+    },
+    {
+      "stage": "controlled-observer-burst",
+      "counts": {
+        "motion.later": 3,
+        "main.refreshOverlay": 1,
+        "motion.syncOverlay": 3,
+        "navigation.refresh": 3,
+        "navigation.group": 9,
+        "navigation.mark": 9,
+        "weather.set": 6,
+        "weather.refresh": 3,
+        "weather.paint": 3
+      },
+      "sameFrame": [
+        {
+          "label": "motion.later",
+          "maxCallsInOneFrame": 3
+        },
+        {
+          "label": "main.refreshOverlay",
+          "maxCallsInOneFrame": 1
+        },
+        {
+          "label": "motion.syncOverlay",
+          "maxCallsInOneFrame": 3
+        },
+        {
+          "label": "navigation.refresh",
+          "maxCallsInOneFrame": 3
+        },
+        {
+          "label": "navigation.group",
+          "maxCallsInOneFrame": 9
+        },
+        {
+          "label": "navigation.mark",
+          "maxCallsInOneFrame": 9
+        },
+        {
+          "label": "weather.set",
+          "maxCallsInOneFrame": 6
+        },
+        {
+          "label": "weather.refresh",
+          "maxCallsInOneFrame": 3
+        },
+        {
+          "label": "weather.paint",
+          "maxCallsInOneFrame": 3
+        }
+      ],
+      "capture": {
+        "anchor": 1758,
+        "end": 2281.300000011921,
+        "phase": "controlled-observer-burst",
+        "events": [
+          {
+            "kind": "enter",
+            "label": "motion.later",
+            "time": 1759.0999999642372,
+            "frame": 34,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.request:B",
+            "time": 1759.0999999642372,
+            "frame": 34,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.later",
+            "time": 1759.0999999642372,
+            "frame": 34,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.later",
+            "time": 1759.199999988079,
+            "frame": 34,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.request:B",
+            "time": 1759.199999988079,
+            "frame": 34,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.later",
+            "time": 1759.199999988079,
+            "frame": 34,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.later",
+            "time": 1759.199999988079,
+            "frame": 34,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "boundary",
+            "label": "motion.request:B",
+            "time": 1759.199999988079,
+            "frame": 34,
+            "stack": [
+              "motion.later"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.later",
+            "time": 1759.199999988079,
+            "frame": 34,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "main.refreshOverlay",
+            "time": 1785.800000011921,
+            "frame": 35,
+            "stack": [
+              "main.refreshOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "main.refreshOverlay",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.syncOverlay",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 1786.300000011921,
+            "end": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 1786.300000011921,
+            "end": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.refresh",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.300000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.3999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.3999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.3999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.3999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 1786.3999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.3999999761581,
+            "end": 1786.3999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.refresh",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.5,
+            "end": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.5,
+            "end": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.paint",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.paint",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.5,
+            "end": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.refresh",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.refresh",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.syncOverlay",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.syncOverlay",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 1786.5,
+            "end": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 1786.5,
+            "end": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.refresh",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.5,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.800000011921,
+            "end": 1786.800000011921,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.refresh",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.paint",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.paint",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.refresh",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.refresh",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.syncOverlay",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": []
+          },
+          {
+            "kind": "enter",
+            "label": "motion.syncOverlay",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlay",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.refresh",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.mark",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.mark"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.mark",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "navigation.group",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "navigation.group"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.group",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.set",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.set"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.set",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.refresh",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "enter",
+            "label": "weather.paint",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh",
+              "weather.paint"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.paint",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "read",
+            "label": "getClientRects",
+            "node": "customOverlayTitle",
+            "time": 1786.8999999761581,
+            "end": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh",
+              "weather.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "weather.refresh",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay",
+              "navigation.refresh"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "navigation.refresh",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": [
+              "motion.syncOverlay"
+            ]
+          },
+          {
+            "kind": "exit",
+            "label": "motion.syncOverlay",
+            "time": 1786.8999999761581,
+            "frame": 35,
+            "stack": []
+          }
+        ]
+      },
+      "styles": [
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1785.931,
+          "durationMs": 0.193,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1827.003,
+          "durationMs": 0.185,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1868.316,
+          "durationMs": 0.183,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1909.346,
+          "durationMs": 0.193,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1951.949,
+          "durationMs": 0.187,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 1998.33,
+          "durationMs": 0.376,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 2048.436,
+          "durationMs": 0.22,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 2097.905,
+          "durationMs": 0.202,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 2146.544,
+          "durationMs": 0.197,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 2189.439,
+          "durationMs": 0.207,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 2230.986,
+          "durationMs": 0.2,
+          "readers": []
+        },
+        {
+          "name": "UpdateLayoutTree",
+          "time": 2279.717,
+          "durationMs": 0.2,
+          "readers": []
+        }
+      ],
+      "traceSha256": "d87eed8315ccf17fc4d67761e16ee08a7b23b7d3eee8f865090c2eed4b87f104",
+      "metrics": {
+        "RecalcStyleCount": 12,
+        "RecalcStyleDuration": 0.0025470000000000007,
+        "LayoutCount": 0,
+        "LayoutDuration": 0
+      }
+    }
+  ],
+  "limits": "Instrumented first-party cheats fixture, not full game/Android or performance acceptance. Boundary marks, named function probes and native read wrappers affect timing. Observer burst is deliberately synthetic, not normal user frequency. Style attribution uses timing containment with 0.2ms tolerance and can be ambiguous; no parent/child cost summation or projected savings. Raw traces stay local; projection contains controlled node labels only."
+}
