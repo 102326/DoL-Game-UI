@@ -13,10 +13,18 @@ const ball=page.locator('.sf-motion-ball');
 async function point(){const r=await ball.boundingBox();assert.ok(r);return{x:r.x+r.width/2,y:r.y+r.height/2}}
 async function drop(x:number,y:number){const p=await point();await page.mouse.move(p.x,p.y);await page.mouse.down();await page.mouse.move(x,y,{steps:14});await page.mouse.move(x,y);await page.mouse.up();await page.waitForFunction(()=>Reflect.get(window,'evo42').snapshot().hub?.settled===true)}
 try{
- await page.goto(url);await ball.waitFor();await drop(640,440);
+ await page.goto(url);await ball.waitFor();
+ const legacy='{"side":"left","y":0.38,"docked":false}',legacyKey='StoneFreeMotionHub.position.v1';
+ await page.evaluate(({legacy,legacyKey})=>{localStorage.setItem(legacyKey,legacy);localStorage.removeItem('Evo42.hub.position.v1')},{legacy,legacyKey});await page.reload();await ball.waitFor();assert.ok(Math.abs((await point()).x-40)<2,'legacy side position is an initial free coordinate');
+ await drop(640,440);assert.equal(await page.evaluate(k=>localStorage.getItem(k),legacyKey),legacy,'free movement never overwrites the production legacy key');results.push({name:'legacy-read-without-write',status:'PASS'});
  const free=await point();assert.ok(Math.abs(free.x-640)<90,'released Hub must remain near the central drop, not snap to a side: '+JSON.stringify(free));results.push({name:'free-release',point:free});
  const key='Evo42.hub.position.v1',saved=await page.evaluate(k=>localStorage.getItem(k),key);assert.ok(saved,'research position is saved independently');
+ await page.evaluate(k=>localStorage.setItem(k,'{"version":999,"x":1e999,"y":0.5}'),key);await page.reload();await ball.waitFor();assert.ok(Math.abs((await point()).x-40)<2,'unsupported/nonfinite research data safely falls back to legacy');
+ await page.evaluate(({key,saved})=>localStorage.setItem(key,saved!),{key,saved});
  await page.reload();await ball.waitFor();const restored=await point();assert.ok(Math.hypot(restored.x-free.x,restored.y-free.y)<2,'reload restores the free position');
+ await page.evaluate(()=>{Reflect.set(window,'e42OriginalStorageSet',Storage.prototype.setItem);Storage.prototype.setItem=function(key,value){if(key==='Evo42.hub.position.v1')throw Error('controlled research storage rejection');Reflect.get(window,'e42OriginalStorageSet').call(this,key,value)}});
+ await drop(800,500);assert.equal(await page.evaluate(k=>localStorage.getItem(k),key),saved,'failed storage keeps the previous persisted coordinate');
+ await page.evaluate(()=>{Storage.prototype.setItem=Reflect.get(window,'e42OriginalStorageSet')});await page.reload();await ball.waitFor();assert.ok(Math.hypot((await point()).x-free.x,(await point()).y-free.y)<2,'reload after storage failure returns to last persisted coordinate');results.push({name:'invalid-data-and-controlled-storage-failure',status:'PASS'});
  const stable=await point();await page.mouse.move(stable.x,stable.y);await page.mouse.down();await page.mouse.move(320,260,{steps:8});await page.keyboard.press('Escape');await page.mouse.up();
  await page.waitForFunction(()=>Reflect.get(window,'evo42').snapshot().hub?.settled===true);const cancelled=await point();assert.ok(Math.hypot(cancelled.x-stable.x,cancelled.y-stable.y)<2,'cancel restores committed position');results.push({name:'cancel-and-reload',point:cancelled});
  await page.getByRole('button',{name:'召回到默认位置',exact:true}).click();
@@ -45,7 +53,7 @@ try{
  await page.evaluate(()=>Reflect.get(window,'evo42').dispose());await page.mouse.up();assert.equal(await page.locator('.sf-motion-hub,.e42-thread,.e42-soft-core').count(),0);assert.deepEqual(errors,[]);
 }catch(e){failure=String(e);throw e}
 finally{
- const files=['prototypes/evolution42/FreeHub.vue','prototypes/evolution42/hub-position.ts','prototypes/evolution42/hub-motion.ts','prototypes/evolution42/hub.ts','prototypes/evolution42/material.ts','prototypes/evolution42/style.css','prototypes/evolution42/main.ts','prototypes/evolution42/free-check.mts'];
+ const files=['prototypes/evolution42/FreeHub.vue','prototypes/evolution42/hub-position.ts','prototypes/evolution42/hub-motion.ts','prototypes/evolution42/hub.ts','prototypes/evolution42/shop-fixture.ts','prototypes/evolution42/material.ts','prototypes/evolution42/style.css','prototypes/evolution42/main.ts','prototypes/evolution42/free-check.mts'];
  fs.mkdirSync(out,{recursive:true});fs.writeFileSync(out+'/free-result.json',JSON.stringify({status:failure?'FAIL':'PASS',sourceHead:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),node:process.version,browser:browser.version(),results,errors,failure,inputs:files.filter(f=>fs.existsSync(f)).map(file=>({file,sha256:createHash('sha256').update(fs.readFileSync(file)).digest('hex')}))},null,2));
  await context.close();await browser.close();await server.close();
 }

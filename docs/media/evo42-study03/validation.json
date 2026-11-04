@@ -1,0 +1,1308 @@
+{
+  "schema": 1,
+  "date": "2026-11-04",
+  "platform": "macOS arm64",
+  "kind": "isolated-local-second-role",
+  "status": "PASS",
+  "baseHead": "e368f1ddda54d579708929d36f9399240f5a902f",
+  "dirtyInput": true,
+  "reports": {
+    "settings": {
+      "schema": 1,
+      "mode": "full-prototype",
+      "expected": {
+        "lifecycle": 3,
+        "materialLoops": 6,
+        "videos": 4
+      },
+      "status": "PASS",
+      "sourceHead": "e368f1ddda54d579708929d36f9399240f5a902f",
+      "dirty": true,
+      "node": "v26.12.1",
+      "browser": "153.0.8010.12",
+      "results": [
+        {
+          "name": "native-cancel",
+          "status": "PASS"
+        },
+        {
+          "name": "after-dispose",
+          "status": "PASS"
+        },
+        {
+          "name": "sequence-interrupt",
+          "status": "PASS"
+        },
+        {
+          "width": 1280,
+          "material": "baseline",
+          "status": "PASS",
+          "probe": {
+            "sameButton": true,
+            "sameCanvas": true,
+            "offsetX": 1,
+            "offsetY": 1,
+            "deltaX": 0,
+            "deltaY": 0,
+            "insideHeading": true,
+            "finite": true,
+            "rect": {
+              "x": 188,
+              "y": 16,
+              "right": 1188,
+              "bottom": 892
+            },
+            "state": {
+              "scene": "settings",
+              "disposed": false,
+              "material": {
+                "mode": "baseline",
+                "role": "settings",
+                "draggable": true,
+                "frames": 0,
+                "x": 48,
+                "y": 4,
+                "fx": 0,
+                "fy": 0,
+                "cx": 0,
+                "cy": 0,
+                "dragging": false,
+                "active": true
+              },
+              "surfaces": [
+                {
+                  "mode": "baseline",
+                  "role": "settings",
+                  "draggable": true,
+                  "frames": 0,
+                  "x": 48,
+                  "y": 4,
+                  "fx": 0,
+                  "fy": 0,
+                  "cx": 0,
+                  "cy": 0,
+                  "dragging": false,
+                  "active": true
+                }
+              ],
+              "hub": {
+                "phase": "rest",
+                "frames": 0,
+                "settled": true,
+                "reduced": false,
+                "held": false,
+                "x": 1212,
+                "y": 487.59999999999997
+              },
+              "weatherCanvases": 1,
+              "native": {
+                "native": 0,
+                "settings": 0,
+                "inspector": 0
+              }
+            }
+          }
+        },
+        {
+          "width": 1280,
+          "material": "edge",
+          "status": "PASS",
+          "probe": {
+            "sameButton": true,
+            "sameCanvas": true,
+            "offsetX": 1,
+            "offsetY": 1,
+            "deltaX": 0,
+            "deltaY": 0,
+            "insideHeading": true,
+            "finite": true,
+            "rect": {
+              "x": 188,
+              "y": 16,
+              "right": 1188,
+              "bottom": 892
+            },
+            "state": {
+              "scene": "settings",
+              "disposed": false,
+              "material": {
+                "mode": "edge",
+                "role": "settings",
+                "draggable": true,
+                "frames": 0,
+                "x": 48,
+                "y": 4,
+                "fx": 0,
+                "fy": 0,
+                "cx": 0,
+                "cy": 0,
+                "dragging": false,
+                "active": true
+              },
+              "surfaces": [
+                {
+                  "mode": "edge",
+                  "role": "settings",
+                  "draggable": true,
+                  "frames": 0,
+                  "x": 48,
+                  "y": 4,
+                  "fx": 0,
+                  "fy": 0,
+                  "cx": 0,
+                  "cy": 0,
+                  "dragging": false,
+                  "active": true
+                }
+              ],
+              "hub": {
+                "phase": "rest",
+                "frames": 0,
+                "settled": true,
+                "reduced": false,
+                "held": false,
+                "x": 1212,
+                "y": 487.59999999999997
+              },
+              "weatherCanvases": 1,
+              "native": {
+                "native": 0,
+                "settings": 0,
+                "inspector": 0
+              }
+            }
+          }
+        },
+        {
+          "width": 1280,
+          "material": "force",
+          "status": "PASS",
+          "probe": {
+            "sameButton": true,
+            "sameCanvas": true,
+            "offsetX": 1,
+            "offsetY": 1,
+            "deltaX": 0,
+            "deltaY": 0,
+            "insideHeading": true,
+            "finite": true,
+            "rect": {
+              "x": 188,
+              "y": 16.232513427734375,
+              "right": 1188,
+              "bottom": 892.2325134277344
+            },
+            "state": {
+              "scene": "settings",
+              "disposed": false,
+              "material": {
+                "mode": "force",
+                "role": "settings",
+                "draggable": true,
+                "frames": 36,
+                "x": 48,
+                "y": 4.232513427734375,
+                "fx": 0,
+                "fy": 0,
+                "cx": 0,
+                "cy": 0,
+                "dragging": false,
+                "active": true
+              },
+              "surfaces": [
+                {
+                  "mode": "force",
+                  "role": "settings",
+                  "draggable": true,
+                  "frames": 36,
+                  "x": 48,
+                  "y": 4.232513427734375,
+                  "fx": 0,
+                  "fy": 0,
+                  "cx": 0,
+                  "cy": 0,
+                  "dragging": false,
+                  "active": true
+                }
+              ],
+              "hub": {
+                "phase": "rest",
+                "frames": 0,
+                "settled": true,
+                "reduced": false,
+                "held": false,
+                "x": 1212,
+                "y": 487.59999999999997
+              },
+              "weatherCanvases": 1,
+              "native": {
+                "native": 0,
+                "settings": 0,
+                "inspector": 0
+              }
+            }
+          }
+        },
+        {
+          "width": 390,
+          "material": "baseline",
+          "status": "PASS",
+          "probe": {
+            "sameButton": true,
+            "sameCanvas": true,
+            "offsetX": 1,
+            "offsetY": 1,
+            "deltaX": 0,
+            "deltaY": 0,
+            "insideHeading": true,
+            "finite": true,
+            "rect": {
+              "x": 10,
+              "y": 10,
+              "right": 382,
+              "bottom": 892
+            },
+            "state": {
+              "scene": "settings",
+              "disposed": false,
+              "material": {
+                "mode": "baseline",
+                "role": "settings",
+                "draggable": true,
+                "frames": 0,
+                "x": 1,
+                "y": 1,
+                "fx": 0,
+                "fy": 0,
+                "cx": 0,
+                "cy": 0,
+                "dragging": false,
+                "active": true
+              },
+              "surfaces": [
+                {
+                  "mode": "baseline",
+                  "role": "settings",
+                  "draggable": true,
+                  "frames": 0,
+                  "x": 1,
+                  "y": 1,
+                  "fx": 0,
+                  "fy": 0,
+                  "cx": 0,
+                  "cy": 0,
+                  "dragging": false,
+                  "active": true
+                }
+              ],
+              "hub": {
+                "phase": "rest",
+                "frames": 0,
+                "settled": true,
+                "reduced": false,
+                "held": false,
+                "x": 322,
+                "y": 487.59999999999997
+              },
+              "weatherCanvases": 1,
+              "native": {
+                "native": 0,
+                "settings": 0,
+                "inspector": 0
+              }
+            }
+          }
+        },
+        {
+          "width": 390,
+          "material": "edge",
+          "status": "PASS",
+          "probe": {
+            "sameButton": true,
+            "sameCanvas": true,
+            "offsetX": 1,
+            "offsetY": 1,
+            "deltaX": 0,
+            "deltaY": 0,
+            "insideHeading": true,
+            "finite": true,
+            "rect": {
+              "x": 10,
+              "y": 10,
+              "right": 382,
+              "bottom": 892
+            },
+            "state": {
+              "scene": "settings",
+              "disposed": false,
+              "material": {
+                "mode": "edge",
+                "role": "settings",
+                "draggable": true,
+                "frames": 0,
+                "x": 1,
+                "y": 1,
+                "fx": 0,
+                "fy": 0,
+                "cx": 0,
+                "cy": 0,
+                "dragging": false,
+                "active": true
+              },
+              "surfaces": [
+                {
+                  "mode": "edge",
+                  "role": "settings",
+                  "draggable": true,
+                  "frames": 0,
+                  "x": 1,
+                  "y": 1,
+                  "fx": 0,
+                  "fy": 0,
+                  "cx": 0,
+                  "cy": 0,
+                  "dragging": false,
+                  "active": true
+                }
+              ],
+              "hub": {
+                "phase": "rest",
+                "frames": 0,
+                "settled": true,
+                "reduced": false,
+                "held": false,
+                "x": 322,
+                "y": 487.59999999999997
+              },
+              "weatherCanvases": 1,
+              "native": {
+                "native": 0,
+                "settings": 0,
+                "inspector": 0
+              }
+            }
+          }
+        },
+        {
+          "width": 390,
+          "material": "force",
+          "status": "PASS",
+          "probe": {
+            "sameButton": true,
+            "sameCanvas": true,
+            "offsetX": 1,
+            "offsetY": 1,
+            "deltaX": 0,
+            "deltaY": 0,
+            "insideHeading": true,
+            "finite": true,
+            "rect": {
+              "x": 10.192047119140625,
+              "y": 9.544219970703125,
+              "right": 382.1920471191406,
+              "bottom": 891.5442199707031
+            },
+            "state": {
+              "scene": "settings",
+              "disposed": false,
+              "material": {
+                "mode": "force",
+                "role": "settings",
+                "draggable": true,
+                "frames": 40,
+                "x": 1.192047119140625,
+                "y": 0.5442314147949219,
+                "fx": 0,
+                "fy": 0,
+                "cx": 0,
+                "cy": 0,
+                "dragging": false,
+                "active": true
+              },
+              "surfaces": [
+                {
+                  "mode": "force",
+                  "role": "settings",
+                  "draggable": true,
+                  "frames": 40,
+                  "x": 1.192047119140625,
+                  "y": 0.5442314147949219,
+                  "fx": 0,
+                  "fy": 0,
+                  "cx": 0,
+                  "cy": 0,
+                  "dragging": false,
+                  "active": true
+                }
+              ],
+              "hub": {
+                "phase": "rest",
+                "frames": 0,
+                "settled": true,
+                "reduced": false,
+                "held": false,
+                "x": 322,
+                "y": 487.59999999999997
+              },
+              "weatherCanvases": 1,
+              "native": {
+                "native": 0,
+                "settings": 0,
+                "inspector": 0
+              }
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "inputs": [
+        {
+          "file": "prototypes/evolution42/index.html",
+          "sha256": "93355ad4b2421629a21b3e9902f54f39e2d8ee866f74b62dce40fbb990e296fb"
+        },
+        {
+          "file": "prototypes/evolution42/main.ts",
+          "sha256": "c64e2508b070c018a22c2eb6e471a39f5c74c043f82c91dd23c7a58a2124bde4"
+        },
+        {
+          "file": "prototypes/evolution42/material.ts",
+          "sha256": "6e9a86a55a0471b67803df2c3ff66d88dc3bf0c6e90a12611efbe82bf54f6c72"
+        },
+        {
+          "file": "prototypes/evolution42/hub.ts",
+          "sha256": "0835b63561ef4ce3b9f762f9d90bdd73b7cf8265c22ec2fdf633b37c3e759ac1"
+        },
+        {
+          "file": "prototypes/evolution42/shop-fixture.ts",
+          "sha256": "dd3b748946c29640505b5ae32d8aee82d2d5e714ad58de225074a39a9ccc3be5"
+        },
+        {
+          "file": "prototypes/evolution42/FreeHub.vue",
+          "sha256": "691b94ece968a03bc846263738617e08531d1d312c72d8b771d2a57ea36f65f5"
+        },
+        {
+          "file": "prototypes/evolution42/hub-position.ts",
+          "sha256": "2071df142e3f0e35b34446aa975a006f3da0007c258ac6b96638080bd15170ad"
+        },
+        {
+          "file": "prototypes/evolution42/hub-motion.ts",
+          "sha256": "01b101c3c1331f2a52a467deb3a3c1c8f62d2780d33bc4e88962d5e18830b6bf"
+        },
+        {
+          "file": "prototypes/evolution42/style.css",
+          "sha256": "ed9a11918729b1ede3215290cd4a6d53445e19c000396a0c4ae7d8a182737552"
+        },
+        {
+          "file": "prototypes/evolution42/check.mts",
+          "sha256": "b68a4347c33b336ec1595295ffca1fcf22bc1e12671ff45fad393f354d0be7b2"
+        },
+        {
+          "file": "prototypes/evolution42/compare.html",
+          "sha256": "aad5bd6a5ab2fa0af5b04948340dec5b6a037f2dcdade942e6d451b89f25377f"
+        },
+        {
+          "file": "prototypes/evolution42/compare.ts",
+          "sha256": "e3c3847bc19cc55bec7a97cb1c39faa15f865f29b2c3eaff2cd4363ea08d6533"
+        },
+        {
+          "file": "scripts/preview-evo42.mts",
+          "sha256": "514ae252bdc80cc7657a31a222b01f178ec2170f3b8d806369d0885ff593a569"
+        }
+      ],
+      "limits": [
+        "Controlled desktop Chromium, no game or physical device",
+        "Isolated actual free position/recall; production MotionHub is unchanged",
+        "No measured GPU/power or touch latency conclusion"
+      ]
+    },
+    "hub": {
+      "status": "PASS",
+      "sourceHead": "e368f1ddda54d579708929d36f9399240f5a902f",
+      "node": "v26.12.1",
+      "browser": "153.0.8010.12",
+      "results": [
+        {
+          "name": "legacy-read-without-write",
+          "status": "PASS"
+        },
+        {
+          "name": "free-release",
+          "point": {
+            "x": 640,
+            "y": 440
+          }
+        },
+        {
+          "name": "invalid-data-and-controlled-storage-failure",
+          "status": "PASS"
+        },
+        {
+          "name": "cancel-and-reload",
+          "point": {
+            "x": 640,
+            "y": 440
+          }
+        },
+        {
+          "name": "real-recall-interrupt",
+          "point": {
+            "x": 454.9482421875,
+            "y": 578.788818359375
+          }
+        },
+        {
+          "name": "tap-interrupt-persistence",
+          "point": {
+            "x": 516.9993896484375,
+            "y": 573.7943115234375
+          }
+        },
+        {
+          "name": "edge-persistence-and-controlled-visibility",
+          "status": "PASS"
+        },
+        {
+          "name": "corners-keyboard-action-rotation",
+          "status": "PASS"
+        }
+      ],
+      "errors": [],
+      "inputs": [
+        {
+          "file": "prototypes/evolution42/FreeHub.vue",
+          "sha256": "691b94ece968a03bc846263738617e08531d1d312c72d8b771d2a57ea36f65f5"
+        },
+        {
+          "file": "prototypes/evolution42/hub-position.ts",
+          "sha256": "2071df142e3f0e35b34446aa975a006f3da0007c258ac6b96638080bd15170ad"
+        },
+        {
+          "file": "prototypes/evolution42/hub-motion.ts",
+          "sha256": "01b101c3c1331f2a52a467deb3a3c1c8f62d2780d33bc4e88962d5e18830b6bf"
+        },
+        {
+          "file": "prototypes/evolution42/hub.ts",
+          "sha256": "0835b63561ef4ce3b9f762f9d90bdd73b7cf8265c22ec2fdf633b37c3e759ac1"
+        },
+        {
+          "file": "prototypes/evolution42/shop-fixture.ts",
+          "sha256": "dd3b748946c29640505b5ae32d8aee82d2d5e714ad58de225074a39a9ccc3be5"
+        },
+        {
+          "file": "prototypes/evolution42/material.ts",
+          "sha256": "6e9a86a55a0471b67803df2c3ff66d88dc3bf0c6e90a12611efbe82bf54f6c72"
+        },
+        {
+          "file": "prototypes/evolution42/style.css",
+          "sha256": "ed9a11918729b1ede3215290cd4a6d53445e19c000396a0c4ae7d8a182737552"
+        },
+        {
+          "file": "prototypes/evolution42/main.ts",
+          "sha256": "c64e2508b070c018a22c2eb6e471a39f5c74c043f82c91dd23c7a58a2124bde4"
+        },
+        {
+          "file": "prototypes/evolution42/free-check.mts",
+          "sha256": "0f381c769ccb1df170b08c225a19df6bed2e55a49433c77ec26b4f6aee1cadf3"
+        }
+      ]
+    },
+    "shop": {
+      "status": "PASS",
+      "sourceHead": "e368f1ddda54d579708929d36f9399240f5a902f",
+      "node": "v26.12.1",
+      "browser": "153.0.8010.12",
+      "results": [
+        {
+          "width": 1280,
+          "mode": "baseline",
+          "fallback": false,
+          "status": "PASS",
+          "detailRect": {
+            "x": 785.390625,
+            "y": 416,
+            "width": 461.609375,
+            "height": 476
+          },
+          "draggedRect": {
+            "x": 785.390625,
+            "y": 416,
+            "width": 461.609375,
+            "height": 476
+          },
+          "motion": {
+            "x": 25,
+            "y": 8,
+            "maxCore": 0
+          }
+        },
+        {
+          "width": 1280,
+          "mode": "edge",
+          "fallback": false,
+          "status": "PASS",
+          "detailRect": {
+            "x": 785.390625,
+            "y": 416,
+            "width": 461.609375,
+            "height": 476
+          },
+          "draggedRect": {
+            "x": 785.390625,
+            "y": 416,
+            "width": 461.609375,
+            "height": 476
+          },
+          "motion": {
+            "x": 25,
+            "y": 8,
+            "maxCore": 0
+          }
+        },
+        {
+          "width": 1280,
+          "mode": "force",
+          "fallback": false,
+          "status": "PASS",
+          "detailRect": {
+            "x": 785.390625,
+            "y": 416,
+            "width": 461.609375,
+            "height": 476
+          },
+          "draggedRect": {
+            "x": 785.390625,
+            "y": 416,
+            "width": 461.609375,
+            "height": 476
+          },
+          "motion": {
+            "x": 25,
+            "y": 8,
+            "maxCore": 1.0396516984204531
+          }
+        },
+        {
+          "width": 390,
+          "mode": "baseline",
+          "fallback": false,
+          "status": "PASS",
+          "detailRect": {
+            "x": 12,
+            "y": 96,
+            "width": 366,
+            "height": 792
+          },
+          "draggedRect": {
+            "x": 16,
+            "y": 100,
+            "width": 366,
+            "height": 792
+          },
+          "motion": {
+            "x": 4,
+            "y": 4,
+            "maxCore": 0
+          }
+        },
+        {
+          "width": 390,
+          "mode": "edge",
+          "fallback": false,
+          "status": "PASS",
+          "detailRect": {
+            "x": 12,
+            "y": 96,
+            "width": 366,
+            "height": 792
+          },
+          "draggedRect": {
+            "x": 16,
+            "y": 100,
+            "width": 366,
+            "height": 792
+          },
+          "motion": {
+            "x": 4,
+            "y": 4,
+            "maxCore": 0
+          }
+        },
+        {
+          "width": 390,
+          "mode": "force",
+          "fallback": false,
+          "status": "PASS",
+          "detailRect": {
+            "x": 12,
+            "y": 96,
+            "width": 366,
+            "height": 792
+          },
+          "draggedRect": {
+            "x": 15.745803833007812,
+            "y": 100.54928588867188,
+            "width": 365.99998474121094,
+            "height": 792.0000305175781
+          },
+          "motion": {
+            "x": 3.7458038330078125,
+            "y": 4.549285888671875,
+            "maxCore": 1.017699560699436
+          }
+        },
+        {
+          "width": 390,
+          "mode": "force",
+          "fallback": true,
+          "status": "PASS",
+          "detailRect": {
+            "x": 12,
+            "y": 345.0625,
+            "width": 366,
+            "height": 542.9375
+          },
+          "draggedRect": {
+            "x": 15.477218627929688,
+            "y": 349.8358154296875,
+            "width": 366.00001525878906,
+            "height": 542.9375
+          },
+          "motion": {
+            "x": 3.4772186279296875,
+            "y": 4.7733154296875,
+            "maxCore": 1.8740612909254253
+          }
+        }
+      ],
+      "errors": [],
+      "inputs": [
+        {
+          "file": "prototypes/evolution42/shop-check.mts",
+          "sha256": "738f9d69933c7cac8a1acc191e642dc7bf5579a2f83ac22ba5a6d3348709f8dd"
+        },
+        {
+          "file": "prototypes/evolution42/shop-fixture.ts",
+          "sha256": "dd3b748946c29640505b5ae32d8aee82d2d5e714ad58de225074a39a9ccc3be5"
+        },
+        {
+          "file": "prototypes/evolution42/material.ts",
+          "sha256": "6e9a86a55a0471b67803df2c3ff66d88dc3bf0c6e90a12611efbe82bf54f6c72"
+        },
+        {
+          "file": "prototypes/evolution42/main.ts",
+          "sha256": "c64e2508b070c018a22c2eb6e471a39f5c74c043f82c91dd23c7a58a2124bde4"
+        },
+        {
+          "file": "prototypes/evolution42/style.css",
+          "sha256": "ed9a11918729b1ede3215290cd4a6d53445e19c000396a0c4ae7d8a182737552"
+        }
+      ]
+    }
+  },
+  "offlineCiSurvey": {
+    "kind": "read-only-catalog-research",
+    "standardEntries": 88,
+    "researchEntries": 41,
+    "exactCommandPairs": 12,
+    "expectedLockSha256": "e55e3b2802678ea2d3b6e356486f9e94d51e3d18f7e7bfe4aefe0e5b3ef22955",
+    "overlap": [
+      {
+        "standard": "stage.check",
+        "research": "research.source-check",
+        "entry": [
+          "npm",
+          "run",
+          "ci:check"
+        ],
+        "standardGranularity": null,
+        "standardCases": null,
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "command:source-check"
+        ],
+        "dependencies": []
+      },
+      {
+        "standard": "browser.settings-ci.cjs",
+        "research": "research.settings-ci",
+        "entry": [
+          "node",
+          "tests/settings-ci.cjs"
+        ],
+        "standardGranularity": "composed",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "reading:native-default",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "reading:native-adjustment-and-release",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "reading:reading-preferences-and-ui",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "settings:M01 official material without review marker and scoped native surfaces",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "settings:S01 approved shell and page timing, real input and single material surface",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "settings:S01 reversal samples current opacity before cancellation and latest open wins",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "settings:S01 closing and native close cancel category WAAPI and settle exactly one page",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "settings:S01 cancellation, preferences, hidden/resize and teardown keep latest usable state",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "settings:S01 modeless fallback and replaced dialog cancel retired shell work",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:accepted actual entry, one renderer, no legacy layer or study controls",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:continuous R10 and four levels",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:mid-snow reversal and throwing provider neutral fallback",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:unchanged reading/close pixels, visible rain and real preference input",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:zoom, narrow rotation/resize and zero-size recovery",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:motion off, hidden, close/reopen and dispose stop owned work",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:nativeNavigation uses new settings surface and removes it on close",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:partial material construction failure leaves usable static settings and no owned nodes",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "weather:throwing cleanup remains observable while all surfaces and nodes retire",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "settings-resources"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.moody-oracles.test.cjs",
+        "research": "research.moody-oracles.test",
+        "entry": [
+          "node",
+          "tests/moody-oracles.test.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "command:moody-oracles.test"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.moody-historical-regressions.cjs",
+        "research": "research.moody-historical-regressions",
+        "entry": [
+          "node",
+          "tests/moody-historical-regressions.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "MOODY_ORBIT_NONFINITE"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.official-game-motion.cjs",
+        "research": "research.official-game-motion",
+        "entry": [
+          "node",
+          "tests/official-game-motion.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "command:official-game-motion"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.source-motion-lifecycle.cjs",
+        "research": "research.source-motion-lifecycle",
+        "entry": [
+          "node",
+          "tests/source-motion-lifecycle.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "latest",
+          "peer",
+          "peer-again",
+          "other-node"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.game-first-motion.cjs",
+        "research": "research.game-first-motion",
+        "entry": [
+          "node",
+          "tests/game-first-motion.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "command:game-first-motion"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.evolution-owner-resources.cjs",
+        "research": "research.evolution-owner-resources",
+        "entry": [
+          "node",
+          "tests/evolution-owner-resources.cjs"
+        ],
+        "standardGranularity": "composed",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:actual official registration",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:menu background fades with its owned shell and disappears on close",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:preview style isolation and scrollbar-free scrolling",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:actual settings action once during movement and protected real settings",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:actual glass preference gates the new shell",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:native whitelist single action, unavailable fallback and third-party view",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:keyboard, latest intent, drag cancel and docking",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:zoom, rotation, finite geometry and reachable tools",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:hidden scene, zero-size, motion preference and owner release",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:partial visual construction failure preserves classic actual Hub",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:observer constructor failure leaves no appended canvas",
+            "minimumAssertions": 1
+          },
+          {
+            "id": "hub:peer clock survives Hub teardown and throwing cleanup retires every owned node",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "settings",
+          "layout",
+          "attributes",
+          "social",
+          "panels",
+          "shop",
+          "wardrobe",
+          "saves",
+          "combat",
+          "floating",
+          "official-motion",
+          "weather",
+          "hub"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.evolution-navigation.cjs",
+        "research": "research.evolution-navigation",
+        "entry": [
+          "node",
+          "tests/evolution-navigation.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "characteristics",
+          "social"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.evolution-panels.cjs",
+        "research": "research.evolution-panels",
+        "entry": [
+          "node",
+          "tests/evolution-panels.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "journal",
+          "traits",
+          "statistics",
+          "feats",
+          "cheats",
+          "options"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.evolution-orbit.cjs",
+        "research": "research.evolution-orbit",
+        "entry": [
+          "node",
+          "tests/evolution-orbit.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          1,
+          1.25,
+          0.85
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      },
+      {
+        "standard": "browser.panels-framework.cjs",
+        "research": "research.panels-framework",
+        "entry": [
+          "node",
+          "tests/panels-framework.cjs"
+        ],
+        "standardGranularity": "entry",
+        "standardCases": [
+          {
+            "id": "entry",
+            "minimumAssertions": 1
+          }
+        ],
+        "standardCheckpoints": [],
+        "researchCheckpoints": [
+          "command:panels-framework"
+        ],
+        "dependencies": [
+          "framework-build"
+        ]
+      }
+    ],
+    "examples": [
+      {
+        "id": "settings-ci",
+        "closure": [
+          "settings-ci",
+          "framework-build",
+          "source-check"
+        ]
+      },
+      {
+        "id": "source-motion-lifecycle",
+        "closure": [
+          "source-motion-lifecycle",
+          "framework-build",
+          "source-check"
+        ]
+      },
+      {
+        "id": "golden-spin-hub-input",
+        "closure": [
+          "golden-spin-hub-input"
+        ]
+      }
+    ],
+    "inputs": [
+      {
+        "file": "scripts/ci-catalog.cts",
+        "sha256": "ce428df3222b367d248400fe5ad85d1f54005f67bf5a7ec0069b8048290e8107"
+      },
+      {
+        "file": "scripts/ci/research-families.ts",
+        "sha256": "25ab64e40a1cf9313f3d4576a8b1dd420e1a8e41e05d910004301a4c9adee767"
+      },
+      {
+        "file": "scripts/expected.lock.json",
+        "sha256": "e55e3b2802678ea2d3b6e356486f9e94d51e3d18f7e7bfe4aefe0e5b3ef22955"
+      }
+    ],
+    "limits": [
+      "Entry and command equality are not equal profile contracts",
+      "Not an executable selector or deduplication authorization",
+      "No runtime savings measured"
+    ]
+  },
+  "media": [
+    {
+      "file": "shop-baseline-1280.png",
+      "bytes": 353953,
+      "sha256": "d20bd8c5bdb048245a056528051151966f91ee8391edea667e7bc3f9cc27679a"
+    },
+    {
+      "file": "shop-baseline-390.png",
+      "bytes": 180026,
+      "sha256": "ca5184769f65874fd84de68c868c891eb3df39b0f5a237e3a2a560b7d5f527ff"
+    },
+    {
+      "file": "shop-edge-1280.png",
+      "bytes": 676758,
+      "sha256": "7790cfd463193cb4a16f2519daf9541e2075b2959c20dfbdb4dca8291f5dd73b"
+    },
+    {
+      "file": "shop-edge-390.png",
+      "bytes": 252749,
+      "sha256": "71d65c1b840659f0308deaa6e35f0400e255743dba5e6494bec7a93013518e3a"
+    },
+    {
+      "file": "shop-force-1280.png",
+      "bytes": 677252,
+      "sha256": "e3e64bc9f967591cf5f35ac7890c95717e7eb1dc94535fa4ee52edc6eacec846"
+    },
+    {
+      "file": "shop-force-390.png",
+      "bytes": 252760,
+      "sha256": "6eb8928e4f69f2107ab11855ca3e60cf39941b0d2dc568687f2e40b0154c43e9"
+    },
+    {
+      "file": "shop-1280.webm",
+      "bytes": 487480,
+      "sha256": "4930c8037f74572c7f1159640d7d61709bbf684fee68fb0defc4184d3347370c"
+    },
+    {
+      "file": "shop-390.webm",
+      "bytes": 400572,
+      "sha256": "1fc10c86cf08a9fb2ba01c2c006e75b32758a66e68d8c983728176176cf47754"
+    }
+  ],
+  "reviewPage": {
+    "file": "prototypes/evolution42/shop-review.html",
+    "sha256": "8c49567b7e709f5399aab7876d110701495a2384b9cb0d95e2a5bb2b47c532db"
+  },
+  "limits": [
+    "Visual adoption pending",
+    "No Windows/physical WebView/game/GPU conclusion",
+    "Popover API failure and Storage failures are controlled cases",
+    "A prior drag assertion failed and the same-input diagnostic passed; retain uncertainty rather than claim flake rate zero",
+    "CI survey is read-only, no selector/runner/gate changes"
+  ]
+}

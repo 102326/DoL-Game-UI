@@ -9,7 +9,7 @@ html{scrollbar-width:none}body{margin:0;min-height:100dvh;font:15px/1.55 system-
 @media(max-width:600px){.e42-review{padding:28px 16px}.e42-pickers{gap:10px}.e42-pickers label{width:100%}.e42-review .sample{padding:16px}}
 
 /* Study 02: Claude Quartz layers on the real shell, with force-driven optical layers. */
-html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] .dmt-settings-shell[data-e42-material]{
+html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] :is(.dmt-settings-shell,.dgshop-host,.dgshop-content,.clothing-details)[data-e42-material]{
  --e42-force-x:0;--e42-force-y:0;
  background:radial-gradient(ellipse 85% 70% at 0 0,#e8d8ba12,transparent 65%),linear-gradient(126deg,#e8d8ba09,transparent 45%),var(--q-fill,rgba(20,24,27,.64))!important;
  border:1px solid #92b4bf4d;outline:1px solid #b4cacb1a;outline-offset:-5px;
@@ -29,4 +29,19 @@ html[data-stone-free][data-dol-midnight] [data-e42-material] :is(.dmt-setting-ca
 
 html:not([data-dgu-visualGlass]) [data-e42-material]>.e42-material-light{display:none}
 
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){html[data-stone-free][data-dol-midnight] .dmt-settings-shell[data-e42-material]{background:#202529!important}[data-e42-material]>.e42-material-light{display:none}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){html[data-stone-free][data-dol-midnight] :is(.dmt-settings-shell,.dgshop-host,.dgshop-content,.clothing-details)[data-e42-material]{background:#202529!important}[data-e42-material]>.e42-material-light{display:none}}
+
+/* Same study geometry for all shop variants; native catalog/detail layout remains the controller's. */
+html[data-e42-scene=shop] .e42-review{max-width:none;padding:16px}
+html[data-e42-scene=shop] .e42-review>:not(#story){display:none}
+html[data-e42-scene=shop] :is(#story,#passages,[data-independent-preview=shop]){margin:0;padding:0;max-width:none;width:auto}
+.e42-shop-back{min-height:44px;margin-bottom:12px;padding:8px 14px;background:#252d30;color:inherit;border:1px solid #ffffff21;border-radius:10px;cursor:pointer}
+[data-e42-role=shop-toolbar],[data-e42-role=shop-catalog]{position:relative;isolation:isolate;border-radius:20px}
+[data-e42-role=shop-detail] h3{cursor:grab;touch-action:none}
+/* Native shop rearranges direct children: use a pseudo layer, never inject a child it could take ownership of. */
+[data-e42-material][data-e42-role=shop-detail]::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;z-index:7;border:1px solid #92b4bf4d;box-shadow:inset 1px 1px #e8d8ba66,inset -1px -1px #92b4bf30;background:linear-gradient(126deg,transparent 38%,#e8d8ba10 46%,#e8d8ba29 49%,transparent 60%);background-position:calc(var(--e42-force-x)*-42px) calc(var(--e42-force-y)*-32px)}
+html:not([data-dgu-visualGlass]) [data-e42-role=shop-detail]::after{display:none}
+
+[data-e42-role=shop-detail]{position:relative}
+
+html[data-e42-scene=shop] .dgshop-content:not(.dgshop-narrow) .dgshop-layout{height:var(--e42-shop-room);min-height:0}
