@@ -5,7 +5,7 @@
 ## Current — 当前做什么
 
 - 分支`prototype/4.2-first-samples`。本批从已推送e368f1ddda54d579708929d36f9399240f5a902f接续；11月4日fetch确认origin/main仍c7d8bac67fd04d0a81e59cf4c49800a510a39a11。Tag v4.1.0与main树相同、提交身份不同。旧工作保留。
-- Study 03源码、媒体及本快照目前待提交/推送，未同步状态将在交付后更新。实际检查在未提交树执行，输入逐项摘要绑定文件；不改称干净提交执行。生产src/framework/compat、依赖锁、正式版本和CI工作流未改。
+- Study 03源码与媒体已随[`a0fda0f`](https://github.com/102326/DoL-Game-UI/commit/a0fda0fd87706067c08914e1d860cab2c8208af9)推送；GitHub确认author/committer均关联Codex bot。[#35进展](https://github.com/102326/DoL-Game-UI/issues/35#issuecomment-6623655879)已同步。本快照随后只补文档回执，分支最新HEAD以Git为准。实际检查在未提交树执行，输入逐项摘要绑定文件；不改称干净提交执行。生产src/framework/compat、依赖锁、正式版本和CI工作流未改。
 - 入口：[计划V1.5](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md) · [R1 Study 03及历史](evolution/EVO-4.2-R1-2026-11-02.md) · [本批验证摘要](media/evo42-study03/validation.json) · [原型命令](../prototypes/evolution42/README.md) · [GitHub #35](https://github.com/102326/DoL-Game-UI/issues/35)。不另建路线图、不重开旧Issue。
 - 本机预览5206；第二角色`/prototypes/evolution42/shop-review.html`，前批设置/Hub对照`/prototypes/evolution42/compare.html`。机器路径、服务进程和原始日志只放忽略的HANDOFF.local.md。
 
