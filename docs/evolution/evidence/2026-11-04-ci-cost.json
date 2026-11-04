@@ -1,0 +1,166 @@
+{
+  "run": "https://github.com/102326/DoL-Game-UI/actions/runs/41801384426",
+  "head": "1f611f6bf560221a74e29a4e0521d188dd4bd195",
+  "artifactId": 13309210290,
+  "archiveSha256": "1116929e914c2d211b23ca7c6978fe000e1dde392bbaced53fcee9e6311b08a1",
+  "indexedFilesSizeAndHashMatched": 196,
+  "scope": "Single historical CI run cost sample. Indexed file bytes/hash and report identity checked locally; not a rerun of all schema, seals, build or package verification; no new timing claims for current commit. Entry sums are sequential reported costs, not end-to-end owner waiting.",
+  "suites": {
+    "browser": {
+      "count": 43,
+      "sumMilliseconds": 421709,
+      "top": [
+        {
+          "name": "device-layouts.cjs",
+          "milliseconds": 179856,
+          "fractionOfEntrySum": 0.4265
+        },
+        {
+          "name": "evolution-owner-resources.cjs",
+          "milliseconds": 38437,
+          "fractionOfEntrySum": 0.0911
+        },
+        {
+          "name": "settings-ci.cjs",
+          "milliseconds": 33646,
+          "fractionOfEntrySum": 0.0798
+        },
+        {
+          "name": "ui-runtime-regressions.cjs",
+          "milliseconds": 21640,
+          "fractionOfEntrySum": 0.0513
+        },
+        {
+          "name": "framework-startup.cjs",
+          "milliseconds": 15317,
+          "fractionOfEntrySum": 0.0363
+        },
+        {
+          "name": "weather-special.cjs",
+          "milliseconds": 14280,
+          "fractionOfEntrySum": 0.0339
+        },
+        {
+          "name": "header-weather.cjs",
+          "milliseconds": 11740,
+          "fractionOfEntrySum": 0.0278
+        },
+        {
+          "name": "combat-focused.cjs",
+          "milliseconds": 8973,
+          "fractionOfEntrySum": 0.0213
+        }
+      ]
+    },
+    "unit": {
+      "count": 38,
+      "sumMilliseconds": 33026,
+      "top": [
+        {
+          "name": "context-boundary.test.mts",
+          "milliseconds": 5668,
+          "fractionOfEntrySum": 0.1716
+        },
+        {
+          "name": "ci-gate.test.cjs",
+          "milliseconds": 5491,
+          "fractionOfEntrySum": 0.1663
+        },
+        {
+          "name": "ci-evidence.test.cjs",
+          "milliseconds": 4135,
+          "fractionOfEntrySum": 0.1252
+        },
+        {
+          "name": "native-tooling.test.mts",
+          "milliseconds": 2017,
+          "fractionOfEntrySum": 0.0611
+        },
+        {
+          "name": "record-boundary.test.mts",
+          "milliseconds": 1611,
+          "fractionOfEntrySum": 0.0488
+        },
+        {
+          "name": "modhub-performance.test.mts",
+          "milliseconds": 1568,
+          "fractionOfEntrySum": 0.0475
+        },
+        {
+          "name": "research-evidence.test.cjs",
+          "milliseconds": 1516,
+          "fractionOfEntrySum": 0.0459
+        },
+        {
+          "name": "checkpoint-boundary.test.mts",
+          "milliseconds": 999,
+          "fractionOfEntrySum": 0.0302
+        }
+      ]
+    }
+  },
+  "stages": [
+    {
+      "name": "browser-install",
+      "status": "PASS",
+      "milliseconds": 44131
+    },
+    {
+      "name": "browser",
+      "status": "PASS",
+      "milliseconds": 422993
+    },
+    {
+      "name": "build",
+      "status": "PASS",
+      "milliseconds": 105243
+    },
+    {
+      "name": "check",
+      "status": "PASS",
+      "milliseconds": 31896
+    },
+    {
+      "name": "dependencies",
+      "status": "PASS",
+      "milliseconds": 1072
+    },
+    {
+      "name": "packages",
+      "status": "PASS",
+      "milliseconds": 110648
+    },
+    {
+      "name": "unit",
+      "status": "PASS",
+      "milliseconds": 34133
+    }
+  ],
+  "currentBatch": {
+    "run": "https://github.com/102326/DoL-Game-UI/actions/runs/41809668668",
+    "head": "37c334f12abe7ed16d0a59f44f220f5c88ba8270",
+    "artifactId": 13312586479,
+    "archiveSha256": "71dcfb3459f6b62c311a7e12f9aeec1d5662452a480364d57847779ce4eee9f3",
+    "indexedFilesSizeAndHashMatched": 202,
+    "addedRegressionResults": [
+      {
+        "name": "sidebar-preview-recovery.cjs",
+        "status": "PASS",
+        "milliseconds": 654
+      },
+      {
+        "name": "wardrobe-operation-yield.cjs",
+        "status": "PASS",
+        "milliseconds": 2202
+      },
+      {
+        "name": "wardrobe-preview-loading.cjs",
+        "status": "PASS",
+        "milliseconds": 3487
+      }
+    ],
+    "sumAddedMilliseconds": 6343,
+    "validateMilliseconds": 789000,
+    "scope": "Actual new regression durations only; not a causal whole-CI comparison. Both remote evidence-verify and moody-gate passed; local checks here cover indexed hashes and selected report identity, not all verifier semantics."
+  }
+}
