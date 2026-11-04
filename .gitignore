@@ -318,3 +318,7 @@ docs/HANDOFF.local.md
 
 # Isolated 4.2 preview tool: single MTS source, optional generated bootstrap.
 /scripts/preview-evo42.mjs
+
+# Generated loading-regression tooling.
+/tests/wardrobe-operation-yield.cjs
+/tests/wardrobe-preview-loading.cjs

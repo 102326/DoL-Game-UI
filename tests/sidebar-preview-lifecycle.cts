@@ -2,10 +2,11 @@ import playwright = require('playwright');
 import esbuild = require('esbuild');
 const {chromium}=playwright,{buildSync}=esbuild;
 import assert = require('node:assert/strict');
+import options = require('./browser-options.cjs');
 declare const Mirror:typeof import('../src/wardrobe/sidebar-preview');
 const bundle=buildSync({entryPoints:['src/wardrobe/sidebar-preview.ts'],bundle:true,write:false,format:'iife',globalName:'Mirror'}).outputFiles[0]?.text;
 if(!bundle)throw Error('Missing sidebar bundle');
-(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});try{
+(async()=>{const browser=await chromium.launch(options);try{
  const page=await browser.newPage();await page.setContent('<div id="sidebar-img-container"><div id="img"><canvas class="mainCanvas" width="32" height="32"></canvas></div></div><div id="preview" style="height:200px"></div>');await page.addScriptTag({content:bundle});
  const result=await page.evaluate(async()=>{
   const source=document.querySelector('canvas'),host=document.querySelector('#preview'),controller=new AbortController();let failed=0;

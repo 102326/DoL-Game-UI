@@ -2,6 +2,39 @@
 
 优先级：**UI Mod本体性能 → CI优化 → 新UI设计**。兼容Mod专项后置，共用路径继续保护已有消费者合同。研发分支为`prototype/4.2-first-samples`；本批集成检查源码冻结在`1f611f6bf560221a74e29a4e0521d188dd4bd195`，运行时代码与`1b6565c`相同。本文是研发交付记录，不是4.2发布验收。
 
+## 接续批次：空加载与操作收尾（2026-11-04）
+
+基于`f8eb6cc`继续E42-PERF-02第六批。下文原五批及其Run保持历史身份，本节是新增结果。优先级未变，没有开展新视觉推广或兼容Mod专项。
+
+### 本体实际修正
+
+- **衣柜缺源空等待**：`src/wardrobe/main.ts`的paint先await侧栏镜像；旧`sidebar-preview.ts`即使没有唯一原生canvas，也要在500ms轮询中等到超过1500ms才允许备用渲染启动，期间显示“正在生成”但备用渲染没有工作。新回归在旧源码得到`pending`、要求`fallback`失败。现在仅无唯一canvas时立即允许备用渲染；已有透明canvas继续保留绘制宽限，后续原生canvas出现仍能接管。不是缩短图片实际加载或取消原生画布优先。
+- **整理末项空让帧**：最后一个计划项原生操作已完成，却还await rAF才进入finally。冻结rAF的实际startWardrobe夹具中，旧代码单项已调用一次、库存已移除，但busy仍true、原生mode仍delete；新代码同事件恢复wear和解锁。批内让帧、逐项状态/页面/库存/定义重验、异常清理保留。这里修的是末项收尾，不声称所有批内等待已消失。
+- 三个新标准合同：`sidebar-preview-recovery.cjs`（缺失/歧义即时降级、透明画布延迟、超时、恢复/移除/取消）、`wardrobe-operation-yield.cjs`（单/双项、页面变化、库存变化、原生异常）、`wardrobe-preview-loading.cjs`（实际paint调度、晚到原生接管、旧resolve/reject、禁用和新paint后旧结果）。共增加38处静态断言点，原有条目/断言不减少；数量不代表实机覆盖。Expected Lock仅新增三个entry，标准catalog由88增至91，研究仍41。
+
+主代理Node26.12.1/锁定Chromium运行三个最终合同、原`sidebar-preview-lifecycle`、`wardrobe-wear-motion`、`wardrobe-operations.test`、`wardrobe-mode-cleanup`及`npm run ci:check`通过。子代理复现/初验使用Node26.13.0，分开记录。竞态夹具仅将私有renderOutfit换成可控Promise，真实main/mirror/Vue执行；原生Renderer及第三方适配器不在其证明范围。受控完成态已查看，不作为新视觉验收。
+
+初次测试编译曾因querySelector泛型缺失失败，修正后才执行旧行为负例；审查还纠正了新测试waitForFunction选项位置（第二参数是arg），因此不保留“500ms内完成”的错误结论，改为挂载后已发起一次渲染的直接断言。初始失败不算产品复现，实际pending断言失败才是。
+
+### 检查后保留的等待与后续候选
+
+| 路径 | 判断与处置 |
+|---|---|
+| Host早期100ms重试、主题250/1000/3000ms补挂 | 都先立即尝试；仅早注入缺能力或确需挂载时补偿，不是统一的启动等待。本批不改Host合同 |
+| 天气500ms状态轮询、图片15秒超时 | 前者不锁用户操作，后者是最长失败界限而非最短展示时长；不是空加载证据 |
+| 共用窗口100/80ms、设置20ms、Hub命中安全门槛 | 继续引用前批调用链/输入证据；没有发现必须等全部装饰演出结束的全局锁 |
+| 衣柜批内rAF | 保留让帧和逐项重验；后台若长期不给帧，仍可能延后剩余操作和清理，需单独制定中断语义。关联条目已被前项移除时也可能存在一帧可优化空间，未擅改业务顺序 |
+| 衣物多层图标串行resolver | 候选：层间异步等待可能叠加；尚无实际层数/缓存收益或resolver并发安全证据，不盲目Promise.all放大请求 |
+| 已启动的私有预览渲染 | generation/revision拒绝过期DOM结果，但compose本身不能取消；更早备用渲染可能增加与迟到原生渲染重叠的工作。保留为后续成本/取消能力调查，不宣称总渲染成本下降 |
+
+### CI42-S2：复用真实拒绝点，仍未迁移选测
+
+离线探针新增调用现有`researchSummary`：同时从生产者expected/results去掉一个必需check，并重建family输入以到达独立plan核对；即使报告声称PASS，research子结果仍为`UNVERIFIED / Missing/incomplete research plan`。其他stage故意不完整，仅断言这个拒绝点；不是整轮gate通过或新选测系统验收。主代理执行探针及独立tsc通过。
+
+既定14场景仍按现计划，不另建路线图：S1–S8全部缺新旧选测同base/head/merge对照；N1人工消费者清单不能证明发现完整，N2图前置负例不能证明真实调度门禁，N3现有source/run/attempt防线不等于新增base/merge绑定，N4本次证明完整profile独立计划拒绝而非未来排除清单可信性，N5现有零断言防线不代签所有pageerror变体，N6现有取消/缺报告拒绝不代签新路径。CI实际选测及正式启用仍未实施。
+
+本批只为两处修正增加必要小回归；不扩设备矩阵、不移除完整门禁。远端源码身份与本轮最终Run在收尾更新。
+
 ## 1. 本体性能：已实现与实际证据
 
 | 项目 | 已完成改动 | 受控验证结果 |

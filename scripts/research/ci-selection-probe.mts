@@ -1,9 +1,12 @@
 // Run npm run tooling:build first to refresh the generated catalog consumed below.
-// Offline hypothetical only: validates sample structure, closure and counts, not
-// source identity authenticity, execution order or evidence for PASS results.
+// Offline hypothetical samples plus one controlled existing full-profile verifier check.
+// Does not prove source identity, execution order or PASS evidence for a selected run.
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {readFileSync} from 'node:fs';
+import {mkdtempSync, readFileSync, rmSync} from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {createRequire} from 'node:module';
 import catalog from '../ci-catalog.cjs';
 
 const contracts = catalog.catalogFor('research').contracts.map(c => {
@@ -113,7 +116,32 @@ assert(validate({...valid, selected: [...selected, 'research.settings-study']}).
 assert(validate({...valid, terminals: terminals.slice(1)}).some(e => e.includes('missing terminal: research.settings-study')));
 assert(validate({...valid, terminals: [...terminals, terminals[0]]}).some(e => e.includes('terminal: duplicate research.settings-study')));
 assert(validate({...valid, counts: {...valid.counts, executed: 5}}).includes('count mismatch'));
-console.log(JSON.stringify({scope: 'offline hypothetical; no CI execution; sample structure, closure and counts only; no source authenticity, execution order or PASS evidence verification',
+// Exercise the existing full-profile verifier, not a future selection verifier.
+// Both producer lists omit the same entry; even family evidence is regenerated.
+const require = createRequire(import.meta.url);
+const {researchSummary, plan} = require('../ci-research.cjs');
+const {familyReports} = require('../ci/research-families.ts');
+const {writeJson} = require('../ci-evidence.cjs');
+const dir = mkdtempSync(path.join(os.tmpdir(), 'moody-offline-selection-'));
+let fullProfileRejection: {omitted: string; status: string; reason: string};
+try {
+ const identity = {profile: 'research', source: {head: 'controlled'}, run: {id: 'controlled', attempt: '1'}, catalog: catalog.catalogIdentity('research')};
+ const ctx = {root: dir, dir, identity};
+ const expected: string[] = plan.map((c: {id: string}) => c.id);
+ const omitted = expected.at(-1)!;
+ const reduced = expected.slice(0, -1);
+ const results = reduced.map(name => ({name, status: 'PASS', rawStatus: 'passed', caseIds: []}));
+ writeJson(path.join(dir, 'research.json'), {schema: 1, identity, suite: 'research', sourceAfter: identity.source, expected: reduced, status: 'PASS', results});
+ // Recreate the verifier's family input so this reaches the independent plan check.
+ for (const family of familyReports(identity, expected, results, identity.source)) writeJson(path.join(dir, 'families', `${family.family}.json`), family);
+ const outcome = researchSummary(ctx);
+ const check = outcome.results.find((r: {name: string}) => r.name === 'research');
+ assert.equal(check?.status, 'UNVERIFIED');
+ assert.equal(check?.reason, 'Missing/incomplete research plan');
+ fullProfileRejection = {omitted, status: check.status, reason: check.reason};
+} finally { rmSync(dir, {recursive: true, force: true}); }
+console.log(JSON.stringify({scope: 'offline hypothetical and controlled existing full-profile verifier; no CI execution; no selected-run source authenticity, execution order or PASS evidence verification',
+ fullProfileRejection,
  manualScenarios: scenarios.map(s => ({...s, research: s.research.map(normalize), fallback: 'full standard and research profiles; consumer completeness unproven', omittedFromFull: {standard: standardIds.size - s.standard.length, research: byId.size - s.research.length}})),
  fallbackCases: ['unknown impact', 'rename or delete', 'CI rules change'].map(reason => ({reason, fallback: 'full standard and research profiles; review separately'})),
  fullCatalogCounts: {standard: standardIds.size, research: byId.size},

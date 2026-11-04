@@ -2363,6 +2363,23 @@
       "assertionSites": 19
     },
     {
+      "entry": "tests/sidebar-preview-recovery.cjs",
+      "sourceEntry": "tests/sidebar-preview-recovery.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "856d0e0f4dfdf9384244de1427f142f838a206f2180dec19055b409cd96c2903",
+      "assertionSites": 12
+    },
+    {
       "entry": "tests/smartphone-adapter.cjs",
       "sourceEntry": "tests/smartphone-adapter.cts",
       "profiles": [
@@ -2710,6 +2727,23 @@
       "assertionSites": 12
     },
     {
+      "entry": "tests/wardrobe-operation-yield.cjs",
+      "sourceEntry": "tests/wardrobe-operation-yield.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "d0544f8b246be0b97fa8a0a4d9143a16b0e6e9bf7c7408af79f90645e018cede",
+      "assertionSites": 9
+    },
+    {
       "entry": "tests/wardrobe-operations.test.cjs",
       "sourceEntry": "tests/wardrobe-operations.test.cts",
       "profiles": [
@@ -2759,6 +2793,23 @@
       ],
       "sourceSha256": "b04a1ab9a54842211ffa05d37a87aa736b333192ef86b5a5a54890c5fbe3637a",
       "assertionSites": 4
+    },
+    {
+      "entry": "tests/wardrobe-preview-loading.cjs",
+      "sourceEntry": "tests/wardrobe-preview-loading.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "d3f58182ab93094ec1bbb0d08dc211f7697e6b495aaab9118d93b778653248c4",
+      "assertionSites": 17
     },
     {
       "entry": "tests/wardrobe-slot-mappings.test.cjs",
