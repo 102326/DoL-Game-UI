@@ -2,6 +2,30 @@
 
 初始日期：2026-11-02；Study 02更新：2026-11-04。承接 [计划V1.5](../superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md) 和 [R0](EVO-4.2-R0-2026-11-02.md)，不另建路线图。分支 `prototype/4.2-first-samples`，基点main c7d8bac。旧文档工作安全带入；Study 02已于11月4日随运行源码提交8da7f44推送，后续文档仅补交付回执；实际结果在本页更新，不由原型存在推导通过。**负责人指出首版差异难以感知；本页早先的“小样已实现”只指工程试验已交付，不表示区分度或视觉方向达标。以下校准为后续设计依据。**
 
+## E42-PERF-02 第五批 / CI42-S2隔离探针（2026-11-04）
+
+接续 `dffc98d`。继续本体性能第一，同时完成已授权的CI隔离样本验证；没有推进第三优先的新视觉小样。
+
+### 本体可见性读取合并
+
+`headerWeather.refresh()`原先在读取天气、更新各surface、决定下一次轮询时重复调用showing。实际设置稳定雨态8次refresh，标题getClientRects调用24次；新回归在24≠8失败。现在每轮先取得可见surface集合，再更新renderer/属性，后续使用同轮集合与仍存活surface交集决定轮询。每轮仍重新查询前景和几何，不引入跨轮可见性缓存。
+
+最终同一输入：标题查询8次、同值属性写入0次；已有resize探针仍0次画布重置/8次绘制/像素一致。这里只证明查询调用减少，不代表每次查询都会强制布局，也没有测量总体帧率/布局耗时。常规删除、暂停恢复、legacy/material共存与轮询周期保留。同轮处理中的后续可见性变化在下一refresh/观察回调重新判断；静态审查未发现常规写入会同步改变另一surface可见性的路径。
+
+Mac arm64/Node26.12.1/锁定Chromium：`evolution-weather-integration.cjs`9项W01、`header-weather.cjs`、`npm run ci:check`、测试vue-tsc及diff检查通过。Terra/high独立只读审查无阻断；shared header测试保留原生输入、共享天气、尺寸变化、timer stop及清理。Expected Lock只更新天气集成entry摘要及断言数。无远端整轮CI、真实游戏/Windows/Android、GPU/功耗结论或发行。
+
+### CI42-S2：人工计划/依赖/统计离线校验已落地
+
+新增隔离脚本 `scripts/research/ci-selection-probe.mts`，不由workflow、runner或gate调用，不自动选择真实diff。复用生成catalog及其research.dependencies，统一research前缀；检查ID存在/重复、人工声明消费者、传递前置、终态集合与计数。输出事实源SHA-256和缺失前置路径。
+
+有效**合成**样本8 selected / 8 terminal / 6 executed：5个settings研究链PASS、source-check FAIL、framework-build与settings-ci BLOCKED。这里的6是虚构样本字段，实际没有启动任何CI测试。有效指样本结构被接受，并非CI成功（样本本身含FAIL/BLOCKED）。7类负例分别拒绝：漏间接baselines、漏人工消费者、未知ID、重复ID、漏终态、重复终态、错误计数；遗漏baselines保留两条study→build→…路径。
+
+复现：项目Node26下先`npm run tooling:build`，再`node scripts/research/ci-selection-probe.mts`。主代理实际运行退出0，并以`tsc --noEmit --module nodenext --moduleResolution nodenext --target es2022 --allowImportingTsExtensions --skipLibCheck scripts/research/ci-selection-probe.mts`检查通过。子代理初稿直接导入CTS被strip-only限制拒绝，改用既有生成CJS；初次CLI类型检查发现catalog联合类型，增加运行时research dependencies断言并收窄后通过。没有更改全局类型配置或引入依赖。
+
+边界：仅研究profile的人工示例，**不证明真实变更消费者完整性，不验证源码身份真伪、执行顺序、PASS证据或安全门禁**。输出SHA供复核，不是身份认证；standard尚未适配；7类结构负例不等于既定14场景影子验收完成。下一CI切片应将实际改动的人工影响清单作为输入，与现完整profile离线对照，扩展缺报告/零断言/错误身份等已有故障样本；接门禁仍需另行评审。
+
+最终SHA-256：weather.ts `b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373`；天气集成测试 `cbaba62679d9edc587ae4e81a35b4ecd405fcfadef74fedb8862243ee864fb61`；离线探针 `547c1e85597f0b5302ec9353ec5966fb298848ae7753c14ecceb325e428542e1`。Git/Issue #35记录实际提交身份。
+
 ## E42-PERF-02 第四批与CI并行调查（2026-11-04）
 
 接续 `79ae13d`。负责人确定三条线优先级：**UI Mod本体性能第一、CI优化第二、新UI设计第三**；独立研究允许并行，不能挤占高优先级修复。计划V1.7同步此顺序，兼容Mod专项仍后置。
