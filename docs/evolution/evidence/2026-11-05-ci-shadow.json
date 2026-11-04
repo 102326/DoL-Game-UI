@@ -1,0 +1,541 @@
+{
+  "schema": 1,
+  "date": "2026-11-05",
+  "scope": "Local C1 consumer drill and controlled C2 scheduling; not a full profile or remote gate",
+  "source": {
+    "origin": {
+      "head": "65e39bcb136b27ae83dc051319f527a5d9a45d68",
+      "tree": "c7325f2b6d501b9f91bf225eb667ac42e5b44b0a",
+      "dirty": true,
+      "contentSha256": "837a86f26acbceed2c14e213eb904702066170692095b68b6cd4a807caa27109",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "derivedBase": "81e0c58a76178a139483f3ae486b65e36a4266dd",
+    "derivedSource": {
+      "head": "0541cdd88a42882a515503637a8266d0eae8ffd9",
+      "tree": "44ef2d6ec5f6db0f5029a2e9617960680dd3c1d4",
+      "dirty": false,
+      "contentSha256": "8de9a30f4ba4666b893a38e6c9fc5b773de80b7a5a6931a5d04a8ab9ab0edfbf",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "policySha256": "0da4a385cc0b2407ff56ef28d182f5d7762f2b5e3a5d88513d79a569ea89a7cf"
+  },
+  "environment": {
+    "orderSeed": null,
+    "runnerImage": null,
+    "runnerImageVersion": null,
+    "platform": "win32",
+    "arch": "x64",
+    "deviceDepth": "standard",
+    "node": "v26.12.1",
+    "npm": null,
+    "python": "Python 3.14.9",
+    "playwright": "1.63.0",
+    "browser": "Microsoft Edge (browser suite)"
+  },
+  "positive": {
+    "run": "shadow-d8702799-e488-44b9-8f16-7a61e36a3d7b",
+    "status": "PASS",
+    "problems": [],
+    "checks": [
+      {
+        "name": "source-check",
+        "status": "PASS",
+        "milliseconds": 27391
+      },
+      {
+        "name": "framework-build",
+        "status": "PASS",
+        "milliseconds": 4936
+      },
+      {
+        "name": "settings-ci",
+        "status": "PASS",
+        "milliseconds": 26272
+      },
+      {
+        "name": "official-game-motion",
+        "status": "PASS",
+        "milliseconds": 7544
+      },
+      {
+        "name": "source-motion-lifecycle",
+        "status": "PASS",
+        "milliseconds": 993
+      },
+      {
+        "name": "evolution-owner-resources",
+        "status": "PASS",
+        "milliseconds": 36798
+      },
+      {
+        "name": "evolution-navigation",
+        "status": "PASS",
+        "milliseconds": 4153
+      },
+      {
+        "name": "evolution-panels",
+        "status": "PASS",
+        "milliseconds": 7617
+      },
+      {
+        "name": "shadow-adapter-materials",
+        "status": "PASS",
+        "milliseconds": 6541
+      },
+      {
+        "name": "shadow-device-layouts",
+        "status": "PASS",
+        "milliseconds": 79151
+      },
+      {
+        "name": "shadow-kraft-work-adapters",
+        "status": "PASS",
+        "milliseconds": 1954
+      },
+      {
+        "name": "shadow-ui41-material",
+        "status": "PASS",
+        "milliseconds": 5636
+      }
+    ],
+    "researchPhases": {
+      "production.json": {
+        "status": "PASS",
+        "expected": [
+          "source-check",
+          "framework-build",
+          "settings-ci",
+          "official-game-motion",
+          "source-motion-lifecycle",
+          "evolution-owner-resources",
+          "evolution-navigation",
+          "evolution-panels"
+        ]
+      }
+    },
+    "browserPhase": "PASS",
+    "layoutCases": 127
+  },
+  "planOnly": [
+    {
+      "id": "S1",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S2",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S3",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S4",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S5",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S6",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S7",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S8",
+      "status": "PLAN_PASS"
+    }
+  ],
+  "controlledNegatives": {
+    "status": "PASS",
+    "ids": [
+      "N1-missing-consumer",
+      "N2-missing-prerequisite",
+      "N3-wrong-base",
+      "N3-wrong-attempt",
+      "N4-matching-plan-result-deletion",
+      "N5-zero-assertions-exit-zero",
+      "N5-real-browser-pageerror-exit-zero",
+      "N6-missing-report",
+      "N6-cancelled-process",
+      "N6-timed-out-process",
+      "N3-receipt-execution-id",
+      "N3-receipt-pid",
+      "N4-contradictory-top-status",
+      "N6-missing-layout-coverage",
+      "N3-observed-stage-source-drift"
+    ],
+    "normalReportRestored": true
+  },
+  "dependencyFixture": {
+    "scope": "source-less scheduling fixture, not product source validation",
+    "failureStatus": "FAIL",
+    "results": [
+      {
+        "id": "source-check",
+        "status": "FAIL",
+        "rawStatus": "failed",
+        "started": false
+      },
+      {
+        "id": "framework-build",
+        "status": "UNVERIFIED",
+        "rawStatus": "blocked",
+        "started": false
+      },
+      {
+        "id": "settings-ci",
+        "status": "UNVERIFIED",
+        "rawStatus": "blocked",
+        "started": false
+      },
+      {
+        "id": "prototype-check",
+        "status": "PASS",
+        "rawStatus": "passed",
+        "started": false
+      }
+    ],
+    "cancelStatus": "CANCELLED",
+    "cancelResults": [
+      "CANCELLED",
+      "CANCELLED"
+    ]
+  },
+  "preservedFailures": [
+    "Initial shadow lacked required layout evidence and is superseded",
+    "Receipt identity and envelope false-PASS reproduction retained",
+    "Observed stage source drift must survive aggregation even after files are restored",
+    "Interrupted run has no terminal receipt and is not PASS"
+  ],
+  "executingPrototypeSha256": {
+    "prototypes/evolution42-ci-c1/candidate.mts": "e2ede7e98c6a2d55b5947dbfef9ab772cadaa201cf9a913e2f446fcd445b4ac6",
+    "prototypes/evolution42-ci-c1/candidate.test.mts": "fb0c15ed237f728b3f9152bfda990ca91f944b9177142ec7e4d1913134ad09a7",
+    "prototypes/evolution42-ci-c1/consumer-map.mts": "d95e8a53a36149537dfe855a8094ebe23d77944ab8f7c122f8cf209d6456b1f0",
+    "prototypes/evolution42-ci-c1/dependency-shadow.test.mts": "a34b239888b4ae1757994fd65fda8d1805e984943ab2ebb1e0c7e5415f44f0c8",
+    "prototypes/evolution42-ci-c1/shadow-faults.mts": "89e44310597b7ecc0f34190d24d7e2966c8bd64300843b9e9f3ca59d4902e478",
+    "prototypes/evolution42-ci-c1/shadow-plans.test.mts": "13b3c42565539ab8f34e8a72d4cc2eb4b90928a18635e94c2fb166a56a066512",
+    "prototypes/evolution42-ci-c1/shadow-run.mts": "8eda5eff9b062c31b0df3bb5e2f0cf5dbb07ca70e4ee1744fdf3feeeab4c8d9b",
+    "prototypes/evolution42-ci-c1/shadow.mts": "e699b6459abb31d830ae737f34ab43adadd7d38563e7434c5671180aaac432ff"
+  },
+  "rawEvidenceSha256": {
+    "tests/artifacts/ui42/ci-shadow/1793818406590/provenance.json": "b2bf0d85a00e4d2ff19c8343ae3fa9071727d32e45a8b996795c91854a3f7ed3",
+    "tests/artifacts/ui42/ci-shadow/1793818406590/checkout/tests/artifacts/consumer-shadow/shadow-result.json": "931e25f0c6a3afa73841937afc6a03587e567e45633db4685bd6a506c79216f9",
+    "tests/artifacts/ui42/ci-shadow/1793818406590/checkout/tests/artifacts/ci/shadow-d8702799-e488-44b9-8f16-7a61e36a3d7b/faults-1793819014993/result.json": "f76903e40957c7bd0d42df17174db7ef6c2d7771b9a0cbec20a2246d61067936",
+    "tests/artifacts/ui42/ci-c1/plan-scenarios.json": "95d523d6719850000f9074ede56bdafcf2736f46e6a7e01dd6ff400d6223c492",
+    "tests/artifacts/ui42/ci-c1/dependency-shadow/run-0rjbEU/research.json": "089a09f3fd1e866ad0e04145a46e19952b4e272a957678c16805c7b09777ea17",
+    "tests/artifacts/ui42/ci-c1/dependency-shadow/run-0rjbEU/cancelled/research.json": "65ec116a5e9a38140c0bda7508b8c26bba1a3b70d7903f3a7df0033461210e49",
+    "tests/artifacts/ui42/ci-c1/interrupted-run.json": "3d56a077310080286821bf5da130073e6fb2ae3e99c68359dae9200f7862b7c1"
+  },
+  "productInputsUnchangedFromInstalledSettings": {
+    "src/theme/settings-material.ts": "8fc4b85e9c7ef36631116df4509614b01bb6bbba3204b2004b8e0677e192cf44",
+    "src/theme/SettingsPanel.vue": "c7241121f314a70378bd3bd6779fb00db1ec9cca9020173846a47fd13d57272d",
+    "src/theme/dark-acrylic.css": "56cad1e2ede24a34ce5f8c877d298dd66cd9581cde0501cdfd26ec57fcc1fb16",
+    "tests/settings-ci.cts": "8786b09f9a6d944835830588c949130b841c5d5214952f8ec9f07db6bf2dc952",
+    "scripts/expected.lock.json": "0ea26e5c9d1b130bfe92a9f0d20b71a0a45507197f8ed5ab1015a02cb4171ed8"
+  },
+  "notValidated": [
+    "Full standard/research profile comparison",
+    "Fresh preparation and independent dual build/download",
+    "Authenticated remote plan distribution and cross-Run/Attempt aggregation",
+    "Full repository impact graph"
+  ],
+  "formalGateChanged": false,
+  "published": false,
+  "standardAndTransportFollowup": {
+    "scope": "Native standard preparation and selected browser consumers; synthetic complete-profile transport contracts, no Actions gate migration",
+    "source": {
+      "head": "2e736e215b0385fd2664f245953e74a9e81f3ce2",
+      "tree": "33d597a1136306495aac46e52176cd7be12a332b",
+      "dirty": false,
+      "contentSha256": "30024bbda9b080ee50ffc57df71ec7aaf567882def8b953239c31555f3440e25",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "run": "standard-shadow-18943243-c6b1-4922-9da5-751a35a1dde2",
+    "nativeStages": [
+      {
+        "name": "dependencies",
+        "status": "PASS",
+        "milliseconds": 3727,
+        "exitCode": 0
+      },
+      {
+        "name": "check",
+        "status": "PASS",
+        "milliseconds": 25948,
+        "exitCode": 0
+      },
+      {
+        "name": "build",
+        "status": "PASS",
+        "milliseconds": 87390,
+        "exitCode": 0
+      },
+      {
+        "name": "packages",
+        "status": "PASS",
+        "milliseconds": 95674,
+        "exitCode": 0
+      },
+      {
+        "name": "browser-install",
+        "status": "PASS",
+        "milliseconds": 2038,
+        "exitCode": 0
+      }
+    ],
+    "browserConsumers": [
+      {
+        "name": "adapter-materials.cjs",
+        "status": "PASS",
+        "milliseconds": 6556
+      },
+      {
+        "name": "device-layouts.cjs",
+        "status": "PASS",
+        "milliseconds": 80523
+      },
+      {
+        "name": "evolution-navigation.cjs",
+        "status": "PASS",
+        "milliseconds": 4433
+      },
+      {
+        "name": "evolution-owner-resources.cjs",
+        "status": "PASS",
+        "milliseconds": 36342
+      },
+      {
+        "name": "evolution-panels.cjs",
+        "status": "PASS",
+        "milliseconds": 8624
+      },
+      {
+        "name": "kraft-work-adapters.cjs",
+        "status": "PASS",
+        "milliseconds": 2355
+      },
+      {
+        "name": "official-game-motion.cjs",
+        "status": "PASS",
+        "milliseconds": 7738
+      },
+      {
+        "name": "settings-ci.cjs",
+        "status": "PASS",
+        "milliseconds": 28468
+      },
+      {
+        "name": "source-motion-lifecycle.cjs",
+        "status": "PASS",
+        "milliseconds": 972
+      }
+    ],
+    "standalone": [
+      {
+        "entry": "tests/ui41-material.cjs",
+        "status": "PASS"
+      }
+    ],
+    "packageContracts": {
+      "packages": 9,
+      "builds": 2,
+      "negativeTests": {
+        "status": "PASS",
+        "plan": [
+          "test_ci_packages.AdapterDeterminism.test_ignores_source_mtime_and_permissions",
+          "test_ci_packages.BuildEvidence.test_independent_local_commands_reuse_the_build_run_only_locally",
+          "test_ci_packages.BuildEvidence.test_stale_incomplete_receipts_and_report_limit",
+          "test_ci_packages.OptionalContracts.test_all_current_positive_and_precise_mutations",
+          "test_ci_packages.OptionalContracts.test_joint_manifest_corruption_and_incomplete_compilation",
+          "test_ci_packages.PackageChecks.test_rejects_broken_packages",
+          "test_ci_packages.SourceVersions.test_product_labels_are_not_a_frozen_ci_policy",
+          "test_ci_packages.SourceVersions.test_rejects_mismatches_in_independent_sources",
+          "test_ci_packages.ZipMetadata.test_metadata_drift_and_comparison_diagnostics"
+        ],
+        "testsRun": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "reproducibility": {
+        "status": "PASS",
+        "differences": []
+      }
+    },
+    "layoutCases": 127,
+    "sourceUnchanged": true,
+    "finalPreparationRevalidation": {
+      "status": "PASS",
+      "problems": [],
+      "mode": "Final preparation verifier applied to preserved native-stage reports, not a rerun of those stages"
+    },
+    "fullProfileStatus": "UNVERIFIED",
+    "executionHarnessSha256": "3b5a59b2aac5be9595b4e0e65111ae7a39751453bb4df7886f70b5b85290ff09",
+    "finalHarnessSha256": "a9017ba1dfbdd3ce8974c4c3baaeacb69c2600d424a716de13c9b432912ba1cd",
+    "finalPreparationVerifierSha256": "e378eeb15bdd8f1938c6e3d3d33644c33c65cee4aa32c7cad9bc277882c610c4",
+    "harnessDifference": "During the frozen run, review added nested preparation evidence verification and corrected stage display. Final verifier was applied to preserved raw reports; preparation stages were not repeated.",
+    "remoteSynthetic": {
+      "scope": "Two synthetic complete standard profiles; not selected-profile support or actual cross-Actions transport",
+      "results": [
+        {
+          "name": "positive-a",
+          "status": "PASS",
+          "problems": []
+        },
+        {
+          "name": "positive-b",
+          "status": "PASS",
+          "problems": []
+        },
+        {
+          "name": "whole-package-cross-run",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "Source/catalog/profile/nonce mismatch"
+            }
+          ]
+        },
+        {
+          "name": "run-id-mismatch",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "Run identity mismatch: githubRunId"
+            }
+          ]
+        },
+        {
+          "name": "attempt-mismatch",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "Run identity mismatch: attempt"
+            }
+          ]
+        },
+        {
+          "name": "swapped-shard",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "checks/unit/adapter-build-boundary.test.cjs.json",
+              "reason": "Indexed size/hash mismatch"
+            },
+            {
+              "file": "checks/unit/adapter-build-boundary.test.cjs.json",
+              "reason": "Required file identity/schema mismatch"
+            },
+            {
+              "file": "summary.json",
+              "reason": "Uploaded result does not establish complete PASS"
+            }
+          ]
+        },
+        {
+          "name": "rewritten-index",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "Anchored manifest hash mismatch"
+            }
+          ]
+        },
+        {
+          "name": "pr-head",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "PR head/base/merge mismatch"
+            }
+          ]
+        },
+        {
+          "name": "pr-base",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "PR head/base/merge mismatch"
+            }
+          ]
+        },
+        {
+          "name": "pr-merge",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "PR head/base/merge mismatch"
+            }
+          ]
+        }
+      ]
+    },
+    "preparationContractNegatives": {
+      "scope": "synthetic preparation evidence contract, not actual package builds",
+      "status": "PASS",
+      "outcomes": [
+        {
+          "id": "failed-inner",
+          "problems": [
+            "PreparationEvidenceIncomplete:packages"
+          ]
+        },
+        {
+          "id": "missing-second-build",
+          "problems": [
+            "PreparationEvidenceIncomplete:packages"
+          ]
+        },
+        {
+          "id": "wrong-inner-identity",
+          "problems": [
+            "PreparationEvidenceIncomplete:packages"
+          ]
+        }
+      ]
+    },
+    "rawEvidenceSha256": {
+      "tests/artifacts/ui42/ci-standard/1793819647806/checkout/tests/artifacts/ci/standard-shadow-18943243-c6b1-4922-9da5-751a35a1dde2/standard-shadow.json": "b6c8e14ec40306ee0aa72d05d285b4ac0798256f00fb1ad8d8a1ad8a9ba9d238",
+      "tests/artifacts/ui42/ci-standard/1793819647806/checkout/tests/artifacts/ci/standard-shadow-18943243-c6b1-4922-9da5-751a35a1dde2/preparation-revalidation.json": "98dbfa841410ee04060237126941edc57980da6d2f21fb8ffe13aed8b0c19ddd",
+      "tests/artifacts/ui42/ci-standard/1793819647806/checkout/tests/artifacts/ci/standard-shadow-18943243-c6b1-4922-9da5-751a35a1dde2/package-contracts.json": "8257b55b8033eac8ce3ba035f955f5a9d252d1b145b2d815e02a565b4f84fe62",
+      "tests/artifacts/ui42/ci-standard/1793819647806/provenance.json": "da6f82a28b186d35af1691e79854a9dd0e1c9ce8157cadb6c4eb2c97858eaae4",
+      "tests/artifacts/ui42/ci-c1/remote-shadow/run-8xxMKH/frozen-variants.json": "1d148ba4a97756793be114740d3cd9406c0607b043d62ba2b5c20824f8b757a9",
+      "tests/artifacts/ui42/ci-c1/remote-shadow/run-8xxMKH/results.json": "9f6e107d77fc028cd8e3de8ba376bfec5fa94e0aef1bd5a4099d35bd5fbe6996",
+      "tests/artifacts/ui42/ci-c1/standard-evidence/run-rpgARG/result.json": "db85f2de7434cf2695b1852841cf07f5291b2fc95a01fde1aa689b7582612a1c",
+      "tests/artifacts/ui42/ci-c1/preparation-attempts.json": "cc8fb2eb59a768df67df4e27cf8707a32de437592b05ab6852b184bcb6f5a7ef"
+    },
+    "newPrototypeSha256": {
+      "prototypes/evolution42-ci-c1/standard-shadow.mts": "a9017ba1dfbdd3ce8974c4c3baaeacb69c2600d424a716de13c9b432912ba1cd",
+      "prototypes/evolution42-ci-c1/standard-evidence.mts": "e378eeb15bdd8f1938c6e3d3d33644c33c65cee4aa32c7cad9bc277882c610c4",
+      "prototypes/evolution42-ci-c1/standard-evidence.test.mts": "b58a3c2673a258c06acdbdb55f5b4be0c8176a2a51653a8ae86d1c2b175529c0",
+      "prototypes/evolution42-ci-c1/remote-shadow.test.mts": "87d11d0aa6e996aee799d3eb822699a86f9dde6bfee2b04ff993e785f4bbb9d9"
+    },
+    "preservedFailures": [
+      "Harness mixed into sample change correctly forced full fallback",
+      "Outer command wrapper needed generated policy before npm ci; tracked CLI bootstrap used instead",
+      "First remote test expected Run mismatch, but nonce was rejected earlier; added separate isolated Run and Attempt cases"
+    ],
+    "notValidated": [
+      "Full standard/research profile versus selected comparison",
+      "Actions upload/download with independent trusted selected plan",
+      "Entire Actions failure scheduling graph",
+      "Whole repository consumer completeness",
+      "Transient source mutation restored between phase snapshots"
+    ]
+  }
+}
