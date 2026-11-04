@@ -2,6 +2,19 @@
 
 初始日期：2026-11-02；Study 02更新：2026-11-04。承接 [计划V1.5](../superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md) 和 [R0](EVO-4.2-R0-2026-11-02.md)，不另建路线图。分支 `prototype/4.2-first-samples`，基点main c7d8bac。旧文档工作安全带入；Study 02已于11月4日随运行源码提交8da7f44推送，后续文档仅补交付回执；实际结果在本页更新，不由原型存在推导通过。**负责人指出首版差异难以感知；本页早先的“小样已实现”只指工程试验已交付，不表示区分度或视觉方向达标。以下校准为后续设计依据。**
 
+## E42-PERF-02 第三批：本体天气画布重复重置（2026-11-04）
+
+接续 `3405a52`，研发分支 `prototype/4.2-first-samples`。负责人明确先完成UI Mod本体性能，再向兼容Mod扩展；共用路径仍维护兼容合同，本批未专项修改兼容包。
+
+- **真实复现**：实际设置天气集成夹具，reduced-motion稳定雨态，连续8次同尺寸window resize，`weatherSurface.resized()`每次重设Canvas width/height，`wetGlass.draw()`又裁回雨天标题区。旧代码24次backing-store赋值、8次绘制，前后像素完全一致，新回归在24≠0失败。
+- **修改**：记录上次成功应用的目标像素宽高及DPR；仅首次/目标变化才重设backing store和transform。比较目标而不是当前canvas.height，避免将材质主动裁剪误认为尺寸漂移。零尺寸时不更新已应用缓存。每次有效resize仍调用draw/request，保留既有布局失效及资源管理机制。
+- **最终证据**：相同8次通知得到0次重置、8次绘制、前后画布像素完全一致。新增DPR变化但像素宽度取整相同的回归，transform正确更新。不得将重置次数减少外推为整体帧率、GPU内存或耗电收益；没有做这些测量。
+- **验证**：Mac arm64 / Node26.12.1 / 锁定Playwright Chromium；`node tests/evolution-weather-integration.cjs`通过全部9个W01 checkpoint，涵盖四档雨量、雨雪中断、正文与关闭按钮像素保护、原生偏好输入、缩放/窄屏旋转、零尺寸恢复、隐藏/关闭重开、销毁、静态降级及抛异常清理。`npm run ci:check`、`vue-tsc -p tsconfig.test-tools.json --noEmit`、`git diff --check`通过；Expected Lock仅此测试条目摘要/断言数282→287更新。
+- **审查**：Terra/high只读追踪settingsWeather→wetGlass及雪/特殊天空的context save/restore，未发现依赖每次resize重置的状态；保留首次有效尺寸初始化和DPR更新。现有固定像素测试不等于任意控件移动保护验收；Canvas context loss/外部改写不在本次覆盖范围，未新增恢复协议。
+- **范围**：没有调整天气密度/质量/动画时长或Host协议，没有向兼容Mod扩展新设计。未跑远端整轮CI、真实游戏、Windows/Android/WebView或GPU/功耗基准；性能主线仍未收口，下一步继续本体刷新扇出和后台工作核对。
+
+最终源码SHA-256：`src/ui/weather/surface.ts` = `379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3`；`tests/evolution-weather-integration.cts` = `cd1573ecbb0464dfd9c5874691634c0860d6cc0dc4eed40e11ae2de5ef92647c`。提交身份以Git和Issue #35回执为准。
+
 ## E42-PERF-02 第二批：重复反馈与Hub等待实测（2026-11-04）
 
 接续 `cafaf87`，仍在 `prototype/4.2-first-samples`；主代理实施，Terra/high独立只读核对Hub门槛与最终diff。
