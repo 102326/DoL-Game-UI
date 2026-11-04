@@ -1,11 +1,12 @@
 # Soft & Wet — 当前交接
 
-更新：2026-11-04。**4.1.0已发布；4.2 Study 02隔离原型完成本机定向检查，视觉待评审，准备同步研发分支。**
+更新：2026-11-04。**4.1.0已发布；4.2 Study 02隔离原型完成本机定向检查，视觉待评审，源码与媒体已同步研发分支。**
 
 ## Current — 当前做什么
 
 - 分支`prototype/4.2-first-samples`，本批开始HEAD/基点`c7d8bac67fd04d0a81e59cf4c49800a510a39a11`。11月4日fetch确认origin/main仍同SHA。旧4.1分支保留；Tag v4.1.0的9c26b00与main文件树相同，提交身份分开。
-- 本批包含前批R0/决议/计划、首版工程探针，以及Study 02原型/定向测试/原速媒体。本批源码提交和推送状态在交付后补记；未经推送内容不可假定其他设备已有。生产src/framework/compat、依赖/锁、正式版本和工作流未改。
+- 本批包含前批R0/决议/计划、首版工程探针，以及Study 02原型/定向测试/原速媒体。本批运行源码提交[`8da7f44`](https://github.com/102326/DoL-Game-UI/commit/8da7f44648b16930f8a8df28d135af8500f9ed54)已推送；本快照随后只更新文档回执，分支最新HEAD以Git为准。生产src/framework/compat、依赖/锁、正式版本和工作流未改。
+- GitHub接续：[4.2研究 #35](https://github.com/102326/DoL-Game-UI/issues/35)；承接已关闭的4.1/4.0历史，不重开旧Issue或复制路线图。新Issue正文已回读匹配，源码提交的author/committer均由GitHub关联到Codex bot。
 - 入口：[计划V1.4](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md) · [R1实际实现/原方案对应/失败](evolution/EVO-4.2-R1-2026-11-02.md) · [本批媒体与证据摘要](media/evo42-study02/validation.json) · [原型运行README](../prototypes/evolution42/README.md)。本机预览5206；对照页`/prototypes/evolution42/compare.html`。机器路径、临时进程和原始日志留忽略的HANDOFF.local.md。
 
 ## Decided — 已经确定什么

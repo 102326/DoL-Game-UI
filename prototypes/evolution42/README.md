@@ -23,7 +23,7 @@ node prototypes/evolution42/free-check.mts
 node prototypes/evolution42/check.mts --lifecycle-only
 ```
 
-完整本机检查生成 `tests/artifacts/evo42/result.json`、四段1280×900原速WEBM、1280/390截图及原型输入摘要。本次选定媒体和validation.json将随研发源码保存到`docs/media/evo42-study02/`，可在 `/prototypes/evolution42/compare.html` 查看；本机原始报告/失败/诊断仍在忽略目录，新设备重跑结果属于新执行环境。这里不下载游戏、不读玩家存档、不进行真实购买或保存。
+完整本机检查生成 `tests/artifacts/evo42/result.json`、四段1280×900原速WEBM、1280/390截图及原型输入摘要。本次选定媒体和validation.json已随研发源码保存到`docs/media/evo42-study02/`，可在 `/prototypes/evolution42/compare.html` 查看；本机原始报告/失败/诊断仍在忽略目录，新设备重跑结果属于新执行环境。这里不下载游戏、不读玩家存档、不进行真实购买或保存。
 
 当前P-A先验证实际设置，商店只是原组件参考入口，不算第二角色验收。B的硬壳做有限面积守恒伸缩，原内容节点作反向补偿和最多7px滞后，实际命中随DOM，未克隆正文。真实雨Canvas随外壳；无实时DOM纹理或GL折射。背景模糊、紧凑/对齐和既有控件仍由实际设置管理。
 
