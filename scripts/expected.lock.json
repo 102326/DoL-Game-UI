@@ -2884,6 +2884,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "fixed glass maps reuse pixels with independent owners and atomic retry",
+          "minimumAssertions": 1
+        },
+        {
           "id": "stable frost reuses paths without caching changing weather",
           "minimumAssertions": 1
         },
@@ -2904,8 +2908,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "d3b5d29334141c85d17fe5b85091aa17d21789d213ed51e4aeade8bb5a9a4dd7",
-      "assertionSites": 49
+      "sourceSha256": "053bc013a73eba66721cf569cc02fe892ca41b25e7d7034bedfa77d994d73da3",
+      "assertionSites": 60
     },
     {
       "entry": "tests/weather-review-pages.cjs",

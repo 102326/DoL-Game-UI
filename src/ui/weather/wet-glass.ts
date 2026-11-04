@@ -14,6 +14,24 @@ type Frost=ReturnType<typeof frostSurface>;
 type FrostSnapshot=ReturnType<Frost['snapshot']>;
 type FrostFactory<T extends FrostSnapshot=FrostSnapshot>=(...args:Parameters<typeof frostSurface>)=>Omit<Frost,'snapshot'>&{snapshot:()=>T};
 let instance=0;
+// The three normal fields depend only on the fixed shape, not on a window,
+// weather, size or DPR. Share immutable encoded pixels; DOM/filter IDs stay owned.
+let displacementMaps:readonly string[]|undefined;
+function normalMaps():readonly string[]{
+ if(displacementMaps)return displacementMaps;
+ const maps:string[]=[];
+ for(let shape=0;shape<3;shape++){
+  const map=document.createElement('canvas');map.width=96;map.height=96;const c=map.getContext('2d')!,pixels=c.createImageData(96,96);
+  for(let y=0;y<96;y++)for(let x=0;x<96;x++){
+   const ny=(y-47.5)/48,nx=(x-47.5)/48/(1+ny*(shape-1)*.12),r=Math.hypot(nx,ny),fall=r<1?Math.sqrt(1-r*r):0,i=(y*96+x)*4;
+   pixels.data[i]=128+nx*fall*122;pixels.data[i+1]=128+ny*fall*122;pixels.data[i+2]=128;pixels.data[i+3]=255;
+  }
+  c.putImageData(pixels,0,0);maps.push(map.toDataURL());
+ }
+ // Publish only a complete set: a failed canvas/encoding attempt can retry.
+ return displacementMaps=Object.freeze(maps);
+}
+
 /** Native SVG displacement reads the browser's backdrop. No DOM capture or substitute texture. */
 export function wetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails:boolean,runoff:boolean,climate:boolean,withShower:boolean,withForce:boolean|'scatter',makeFrost:FrostFactory<T>,specialSkies?:boolean):ReturnType<typeof createWetGlass<T>>;
 export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails?:boolean,runoff?:boolean,climate?:boolean,withShower?:boolean,withForce?:boolean|'scatter',makeFrost?:FrostFactory,specialSkies?:boolean):ReturnType<typeof createWetGlass<FrostSnapshot>>;
@@ -32,16 +50,12 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
  const layer=document.createElement('div');layer.className='evo-material-layer evo-glass-layer';layer.setAttribute('aria-hidden','true');
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('width','0');svg.setAttribute('height','0');
  const prefix='evo-rain-'+(++instance),ids:string[]=[];
+ const maps=normalMaps();
  for(let shape=0;shape<3;shape++){
-  const map=document.createElement('canvas');map.width=96;map.height=96;const c=map.getContext('2d')!,pixels=c.createImageData(96,96);
-  for(let y=0;y<96;y++)for(let x=0;x<96;x++){
-   const ny=(y-47.5)/48,nx=(x-47.5)/48/(1+ny*(shape-1)*.12),r=Math.hypot(nx,ny),fall=r<1?Math.sqrt(1-r*r):0,i=(y*96+x)*4;
-   pixels.data[i]=128+nx*fall*122;pixels.data[i+1]=128+ny*fall*122;pixels.data[i+2]=128;pixels.data[i+3]=255;
-  }
-  c.putImageData(pixels,0,0);const id=prefix+'-'+shape;ids.push(id);
+  const id=prefix+'-'+shape;ids.push(id);
   const filter=document.createElementNS(ns,'filter');filter.id=id;
   for(const[k,v]of Object.entries({x:'-.5',y:'-.5',width:'2',height:'2',primitiveUnits:'objectBoundingBox','color-interpolation-filters':'sRGB'}))filter.setAttribute(k,v);
-  const image=document.createElementNS(ns,'feImage');for(const[k,v]of Object.entries({x:'0',y:'0',width:'1',height:'1',preserveAspectRatio:'none',result:'lens',href:map.toDataURL()}))image.setAttribute(k,v);
+  const image=document.createElementNS(ns,'feImage');for(const[k,v]of Object.entries({x:'0',y:'0',width:'1',height:'1',preserveAspectRatio:'none',result:'lens',href:maps[shape]!}))image.setAttribute(k,v);
   const displace=document.createElementNS(ns,'feDisplacementMap');for(const[k,v]of Object.entries({in:'SourceGraphic',in2:'lens',scale:'7.5',xChannelSelector:'R',yChannelSelector:'G'}))displace.setAttribute(k,v);
   filter.append(image,displace);svg.append(filter);
  }
