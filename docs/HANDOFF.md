@@ -4,10 +4,10 @@
 
 ## Current — 当前做什么
 
-- **最新任务：旧代独立封存与4.x文档分离**，分支`docs/4x-legacy-separation`，从c8eafe8接续。本批未合main；origin/main仍为4.1.0的c7d8bac。原prototype/4.2-first-samples保留，作废视觉不推进。
+- **最新任务：旧代独立封存与4.x文档分离**，活跃分支`prototype/4.2-first-samples`已从c8eafe8快进同步本批；源清理检查点保存在`docs/4x-legacy-separation`（0f0a31d）。本批未合main；origin/main仍为4.1.0的c7d8bac。原prototype/4.2-first-samples保留，作废视觉不推进。
 - [old仓库](https://github.com/102326/DoL-Game-UI-old)已私有只读Archived，Actions关闭；固定归档提交61990df08986cf1cc9f8b9cd2ab998bb1b4863c4。26个Tag/17个分支、212份原文及25份Release正文已逐项核对远端对象和文件摘要。
 - 当前清理198个旧代专属文件，14个共用/过渡说明先保留原文再重写。当前4.x指导从[文档入口](README.md)、[视觉合同](VISUAL_BASELINE_4X.md)、[Host](HOST_4X.md)、[UI API](UI_RUNTIME.md)开始，不再使用3.x视觉规范或2.x接入说明。完整清单见[迁移记录](LEGACY_ARCHIVE.md)与[机器摘要](LEGACY_ARCHIVE.json)。
-- 本批冻结提交27767732d19858a1b12de0b7900a28b983a13173；ci:check、38项unit、九包两轮独立构建/包合同及修改后的视觉回归已实际通过。随后仅补非打包的衣柜API说明、Lab说明与回执；未运行远端整轮CI。研发源分支待推送，另准备main对照纯清理分支，避免夹带原型。
+- 本批冻结提交27767732d19858a1b12de0b7900a28b983a13173；ci:check、38项unit、九包两轮独立构建/包合同及修改后的视觉回归已实际通过。随后仅补非打包的衣柜API说明、Lab说明与回执；未运行远端整轮CI。研发线已推送。main对照纯清理分支`docs/4x-legacy-main`（633e709）已交[Draft PR #36](https://github.com/102326/DoL-Game-UI/pull/36)，不夹带原型；其真实[标准](https://github.com/102326/DoL-Game-UI/actions/runs/41787713829)与[研究](https://github.com/102326/DoL-Game-UI/actions/runs/41787713917)均成功，独立下载证据核验及moody-gate通过。
 - 机器路径、Python入口、原始输出与服务进程留忽略的HANDOFF.local.md。原4.x实验及否决记录仍在R1；旧候选成果只保留工程身份。
 
 ## Decided — 已经确定什么
@@ -24,7 +24,7 @@
 
 ## Next — 下一步做什么
 
-0. 本次迁移本机验证已完成；接续main对照分支的差异核对、提交推送与#35回执。当前只授权研发交付，不合main；后续若集成到main需复核实际差异与required检查，不能把整个作废原型一并带入。
+0. 本次封存、差异核对和PR真实CI已完成，[#35回执](https://github.com/102326/DoL-Game-UI/issues/35#issuecomment-6624562179)已同步；PR #36保持Draft，由负责人决定main合入。当前只授权研发交付，不合main；后续若集成到main需复核实际差异与required检查，不能把整个作废原型一并带入。
 
 1. 当前视觉候选停止。先回看Claude原附件的实际效果，逐项分清原作、适配与新增，再提出可供负责人选择的替代小样；不继续推广作废设计。工程机制与覆盖记录保留评估，正式迁移尚未开始。
 2. 非Hub需求继续沿R1记录发现，比较默认改进与选择的价值，允许零新增设置；完整P-C后续决定，不新增平行路线图。
