@@ -62,6 +62,23 @@ const {chromium}=playwright;
   }finally{document.getElementById=lookup;delete overlay.dataset.dgpPanel}
  });
  assert.deepEqual(rescheduledReads,{firstFrame:1,total:2},'cancelled observer work can be scheduled again; scene retains its two-frame settle');
+ const redundantFeedback=await p.evaluate(()=>{
+  const first=document.querySelector<HTMLElement>('.sf-motion-petal')!,second=document.createElement('button');
+  second.className='sf-motion-petal';second.textContent='Feedback probe';second.style.cssText='position:fixed;left:400px;top:400px';first.parentElement!.append(second);
+  const animate=Element.prototype.animate,computed=window.getComputedStyle;let ghosts=0,reads=0;
+  Element.prototype.animate=function(frames,options){if(this.classList.contains('kw-moving-focus'))ghosts++;return animate.call(this,frames,options)};
+  window.getComputedStyle=function(node,pseudo){if(node===second)reads++;return computed.call(this,node,pseudo)};
+  try{
+   first.dispatchEvent(new PointerEvent('pointerover',{bubbles:true}));
+   first.dispatchEvent(new FocusEvent('focusin',{bubbles:true}));const same=ghosts;
+   second.dispatchEvent(new PointerEvent('pointerover',{bubbles:true}));const moved=ghosts;
+   second.dispatchEvent(new FocusEvent('focusin',{bubbles:true}));const repeated=ghosts;
+   document.documentElement.removeAttribute('data-dgu-visualMotion');second.click();
+   return{same,moved,repeated,disabledStyleReads:reads};
+  }finally{Element.prototype.animate=animate;window.getComputedStyle=computed;second.remove();document.documentElement.setAttribute('data-dgu-visualMotion','');scene()}
+ });
+ console.log('Redundant feedback probe:',redundantFeedback);
+ assert.deepEqual(redundantFeedback,{same:0,moved:1,repeated:1,disabledStyleReads:0},'same-target focus and disabled feedback must not create redundant animation/style work');
  const wardrobeEntry=await p.evaluate(async()=>{const node=document.createElement('section'),header=document.createElement('header');node.className='dgw-shell';header.textContent='Wardrobe';node.append(header);document.body.append(node);const before=document.documentElement.hasAttribute('data-dgu-acrylic-adjustment');document.documentElement.setAttribute('data-dgu-acrylic-adjustment','');let starts=0;const animate=node.animate;node.animate=function(frames,options){starts++;return animate.call(this,frames,options)};const release=registerTestSurface(node,header,'wardrobe');try{await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));return{starts,visible:!!node.getClientRects().length,transform:getComputedStyle(node).transform}}finally{release();node.remove();if(!before)document.documentElement.removeAttribute('data-dgu-acrylic-adjustment')}});assert.equal(wardrobeEntry.starts,0,'registered wardrobe surfaces enter without loading/fade effects');assert.equal(wardrobeEntry.visible,true);assert.equal(wardrobeEntry.transform,'none');
  await p.evaluate(()=>{document.body.insertAdjacentHTML('beforeend','<div id="dol-midnight-controls" style="position:fixed;top:5px;right:5px"><button id="press-control">State control</button><button id="disabled-control" disabled>Disabled</button></div>');Object.assign(window,{presses:0});must(document.querySelector<HTMLElement>('#press-control')).onclick=()=>presses++});
  const pressBox=await p.locator('#press-control').boundingBox();if(!pressBox)throw Error('Missing press box');await p.mouse.move(pressBox.x+10,pressBox.y+10);await p.mouse.down();assert.notEqual(await p.locator('#press-control').getAttribute('data-kw-press'),null);assert.equal(await p.evaluate(()=>presses),0,'press feedback never dispatches an action');await p.mouse.up();assert.equal(await p.locator('#press-control').getAttribute('data-kw-press'),null);assert.equal(await p.evaluate(()=>presses),1);

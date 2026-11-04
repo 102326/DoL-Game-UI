@@ -30,7 +30,7 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
  const server=await createServer({configFile:path.resolve('vite.golden-spin.config.ts'),plugins:baseline?[{name:'frozen-hub-input-baseline',enforce:'pre',load(id){if(id.replaceAll('\\','/').endsWith('/prototypes/golden-spin-b/hub-motion.ts'))return old}}]:[],server:{port:5184,strictPort:true}});await server.listen();
  const browser=await chromium.launch(process.platform==='win32'?{channel:'msedge',headless:true}:{headless:true});
  type PointerEvidence={before:{x:number;y:number;pointer:string;tab:number;hit:boolean};press:HubState;held:HubState;after:HubState;native:number;calls:string[];sameNode:boolean};
-  const evidence:{baseline:boolean;revision:string;checks:string[];errors:string[];pointer?:PointerEvidence;keyboard?:{before:HubState;held:HubState};reversal?:Awaited<ReturnType<typeof reverseHub>>;dock?:{before:HubState;native:number};failure?:string;state?:HubState|null}={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p:playwright.Page|undefined;
+  const evidence:{baseline:boolean;revision:string;checks:string[];errors:string[];opening?:{tool:number;utility:number;settled:number}[];pointer?:PointerEvidence;keyboard?:{before:HubState;held:HubState};reversal?:Awaited<ReturnType<typeof reverseHub>>;dock?:{before:HubState;native:number};failure?:string;state?:HubState|null}={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p:playwright.Page|undefined;
  const check=async(name:string,fn:()=>Promise<void>)=>{await runCase(name,fn);evidence.checks.push(name);console.log('PASS',name)};
  try{
   p=await browser.newPage({viewport:{width:1280,height:900},hasTouch:true});const page=p;page.on('pageerror',e=>evidence.errors.push(e.message));
@@ -40,6 +40,25 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
   const mid=()=>page.waitForFunction(()=>{const s=goldenSpinLab.controller.inspect();return s.moving&&s.q>.68&&s.q<.96});
   const keyboardTool=async()=>{await ball.focus();for(let i=0;i<10;i++){await page.keyboard.press('Shift+Tab');if(await tool.evaluate(n=>n===document.activeElement))return}throw Error('native keyboard traversal did not reach the tool')};
   await check('H3 visible moving tool accepts a real pointer once without moving beneath the press',async()=>{
+   evidence.opening=[];
+   for(let i=0;i<3;i++){
+    evidence.opening.push(await page.evaluate(async()=>{
+     const ball=document.querySelector<HTMLButtonElement>('.sf-motion-ball')!,tool=document.querySelector<HTMLButtonElement>('[data-motion-view$="interface-settings"]')!,utility=document.querySelector<HTMLButtonElement>('.sf-motion-utilities button')!;
+     const start=performance.now(),sample={tool:-1,utility:-1,settled:-1};ball.click();
+     await new Promise<void>((resolve,reject)=>{
+      const frame=()=>{const elapsed=performance.now()-start,s=goldenSpinLab.controller.inspect();
+       const ready=(node:HTMLElement)=>{const r=node.getBoundingClientRect();return !node.closest('[inert]')&&getComputedStyle(node).pointerEvents!=='none'&&node.tabIndex>=0&&node.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))};
+       if(sample.tool<0&&ready(tool))sample.tool=elapsed;
+       if(sample.utility<0&&ready(utility))sample.utility=elapsed;
+       if(s.phase==='open'){sample.settled=elapsed;resolve()}else if(elapsed>2000)reject(Error('Opening timing probe did not settle'));else requestAnimationFrame(frame);
+      };requestAnimationFrame(frame);
+     });return sample;
+    }));
+    await ball.press('Escape');await closed();
+   }
+   console.log('Instrumented opening readiness milliseconds:',JSON.stringify(evidence.opening));
+   // Diagnostic only: a busy main thread can expose readiness and settlement in the same sampled frame.
+
    await tool.evaluate(n=>{Object.assign(window,{originalTool:n,nativeToolClicks:0});n.addEventListener('click',()=>nativeToolClicks++)});
    await ball.click();await mid();
    const before=await tool.evaluate(n=>{const r=n.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2,pointer:getComputedStyle(n).pointerEvents,tab:n.tabIndex,hit:n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}});
