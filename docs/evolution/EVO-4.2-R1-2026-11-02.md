@@ -2,6 +2,25 @@
 
 初始日期：2026-11-02；Study 02更新：2026-11-04。承接 [计划V1.5](../superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md) 和 [R0](EVO-4.2-R0-2026-11-02.md)，不另建路线图。分支 `prototype/4.2-first-samples`，基点main c7d8bac。旧文档工作安全带入；Study 02已于11月4日随运行源码提交8da7f44推送，后续文档仅补交付回执；实际结果在本页更新，不由原型存在推导通过。**负责人指出首版差异难以感知；本页早先的“小样已实现”只指工程试验已交付，不表示区分度或视觉方向达标。以下校准为后续设计依据。**
 
+## E42-PERF-02 首项修正：合并同帧窗口核对（2026-11-04）
+
+接续源码 `994fcab`，研发分支 `prototype/4.2-first-samples`。本批修改真实共用窗口路径，不涉及被否决的视觉小样。
+
+- **复现与根因**：`startOfficialMotion` 的 `later(callback)` 每次创建新的包装函数，破坏 `visualScope.frame` 已有的按函数身份去重。受控 Chromium 中同帧 8 次独立 MutationObserver delivery，旧实现执行 8 次 `syncOverlay` 入口查询，并分别进入导航刷新；并非 8 个必需业务动作。
+- **修正**：实例私有 WeakMap 保留 callback 的守卫函数身份。稳定的 `syncOverlay`/`sidebar` 可合并同帧任务，仍在执行时检查 live；既有取消、释放、重新排队和 settle 双帧语义不变。不新增框架、定时器或 Host API。
+- **观测结果**：同一受控输入从 8 次核对降至 1 次；取消后第一帧重排一次，场景收束在第二帧另执行一次。这里是工作次数证据，不能外推为整体加速87.5%、帧率改善或Android耗电结论。取消测试核对执行时序和次数，未直接断言每个属性变化对应的最终业务DOM。
+- **已执行验证**：Mac arm64 / Node26.12.1 / 本机锁定 Playwright Chromium；`node tests/official-game-motion.cjs`（先旧实现8≠1失败，再新实现1通过；最终包括取消重排断言）、`node tests/source-motion-lifecycle.cjs`、`npm run ci:check`、`vue-tsc -p tsconfig.test-tools.json --noEmit`、`git diff --check`通过。真实浏览器合同保留原生单次动作、100/80ms窗口反馈、关闭中断、master/reduced gates及资源清理。
+- **过程失败**：首次浏览器启动被沙箱MachPort权限阻止，获准沙箱外运行受控夹具后完成；首次ci:check因测试源码变化触发ExpectedLockDrift，生成后只该entry摘要与断言数133→135改变；曾误用普通tsc检查Vue测试工程产生模块解析错误，改用项目指定vue-tsc通过。均未通过重跑掩盖产品失败。
+- **独立审查**：Terra/high只读检查实际调用、去重/取消/释放边界、测试时序及锁摘要，无阻断意见；未代替运行测试。
+- **覆盖限制/下一步**：未跑远端整轮CI、Windows/WebView、真实游戏、GPU/功耗及端到端延迟基准；当前只是第一项可验证的重复工作修正，性能专项未收口。继续测量重复装饰反馈、Hub可操作门槛以及适配器/天气刷新，不凭动画总时长判定输入等待。主分支、版本、发行、保护规则未改。
+
+最终代码/测试身份（文档提交号以Git和Issue #35回执为准）：
+
+| 文件 | SHA-256 |
+|---|---|
+| framework/official-ui/motion.ts | `2b0284be829e716d6c73c09dbd5b7825415dca6c9ee56814cb759d54637bc7d2` |
+| tests/official-game-motion.cts | `9e8238faf3acd79c5a0e9658c0dd2f2f9f0ac45f6960a55fe69392a286989fbb` |
+
 ## 性能优先接续与首轮路径核对（2026-11-04）
 
 负责人提升优化优先级，并澄清本轮没有具体外部反馈材料：当前入口是负责人观察到不必要特效、隐藏加载延时和整体性能问题。更新同一计划为V1.6，先性能诊断/有证据的局部优化，后续视觉重提；不等外部报告、不默认关闭天气或降低画质。

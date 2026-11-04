@@ -22,7 +22,13 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function press(event:PointerEvent){if(!live()||!event.isPrimary||event.button!==0||!(event.target instanceof Element))return;const node=event.target.closest<HTMLElement>(pressSelector);if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;clearPress();pressed={node,pointer:event.pointerId,before:node.getAttribute('data-kw-press')};node.setAttribute('data-kw-press',String(event.pointerId))}
  const live=()=>scope.active()&&isMasterEnabled()&&document.documentElement.hasAttribute('data-stone-free');
  const visible=(n:HTMLElement)=>!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert]');
- function later(callback:()=>void){scope.frame(()=>{if(live())callback()})}
+ // Preserve callback identity so observer deliveries share one current-state read per frame.
+ const guardedFrames=new WeakMap<()=>void,()=>void>();
+ function later(callback:()=>void){
+  let guarded=guardedFrames.get(callback);
+  if(!guarded){guarded=()=>{if(live())callback()};guardedFrames.set(callback,guarded)}
+  scope.frame(guarded);
+ }
  function settle(callback:()=>void){later(()=>later(callback))}
  const clearFrames=scope.cancelFrames;
  function cancelPresentation(preserveOpening?:HTMLElement){clearPress();motion.cancel(undefined,preserveOpening)}
