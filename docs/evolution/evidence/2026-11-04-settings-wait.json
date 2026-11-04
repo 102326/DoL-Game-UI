@@ -110,7 +110,7 @@
   "notes": [
     "All eight full contract processes exited zero, including two warmups. The never-target control intentionally exited one with TimeoutError; the delayed target succeeded.",
     "Only frost-geometry-probe.mts changed in the conservative before/after input superset. Other recorded source, dependency, generated helper and CSS hashes matched. Overall process failure is retained.",
-    "The final probe excludes unrelated research files and records changedInputs/stoppedEarly; this final script has not been rerun as a complete comparison.",
+    "The final probe excludes unrelated research files and records changedInputs/stoppedEarly; at that point the final script had not been rerun; see finalProbeVerification for its later single complete run.",
     "First browser launch was blocked by macOS sandbox before the controls executed; separate failure report retained locally.",
     "No official test, workflow, profile selection, required gate or Ruleset has been migrated by this experiment."
   ],
@@ -137,6 +137,197 @@
       "legacy-final-batch": "28bda728e09a77ae00df86a50f0bdaec1f27651e1429ebb224644d3c82eb11d4",
       "fixed": "940fbc5ed2be80fb1cb8852f0b154b81847110d29e01bfcaa9b286a3b44ca6e1"
     },
-    "gate": "Correctly refused approval; new standard run pending."
+    "gate": "First run correctly refused approval; corrected a23c08f full standard run 41821019023 passed validate, independent evidence verification and final gate."
+  },
+  "recordRole": "Initial comparison retained below; finalProbeVerification describes the final script run.",
+  "finalProbeVerification": {
+    "status": "PASS",
+    "processExit": 0,
+    "head": "a23c08fca33bc16f388db9a6abd1ab86a7c62273",
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "browser": "153.0.8010.12",
+    "rawReportSha256": "ccf09bc63f43bef823d706413a94e7f667fb9f9258d6c6a1d91dda2655ed4ed3",
+    "inputsStable": true,
+    "changedInputs": [],
+    "controlsPassed": true,
+    "stoppedEarly": false,
+    "temporaryBuilds": {
+      "old": "1fb937863214a84bf3f1b0d721b652a307d79e077424a8a5082cdfe16b16a0f1",
+      "candidate": "684f9b620edc2ee2ca23d4c21cb772d9c9e068146edf07e6d82a865cce109f29",
+      "control": "7f9992722da50f271666b0b0877f2fe2d0ceaeb41eef714e7e81842a5b781776"
+    },
+    "probeSha256": "c42ecab7b2a60e2dd50700cc6ee44d819be18953f7ee0de74873891f4212e2a3",
+    "results": [
+      {
+        "id": "never-target",
+        "exit": 1,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 3956
+      },
+      {
+        "id": "late-target",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 714
+      },
+      {
+        "id": "warmup-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 29301
+      },
+      {
+        "id": "warmup-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 26893
+      },
+      {
+        "id": "sample-1-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 27879
+      },
+      {
+        "id": "sample-1-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 30546
+      },
+      {
+        "id": "sample-2-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 28878
+      },
+      {
+        "id": "sample-2-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 29039
+      },
+      {
+        "id": "sample-3-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 33670
+      },
+      {
+        "id": "sample-3-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 31245
+      }
+    ],
+    "decision": "Contract and input-identity validation passed; whole-entry timing is variable and two of three measured pairs are slower for the candidate. No stable CI speedup established; no official wait migration.",
+    "initialReportPreserved": true
+  },
+  "remoteIntegration": {
+    "runs": [
+      {
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41818673539",
+        "headSha": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+        "createdAt": "2026-11-04T11:06:46Z",
+        "updatedAt": "2026-11-04T11:20:27Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "jobs": [
+          {
+            "name": "validate",
+            "status": "completed",
+            "conclusion": "failure",
+            "startedAt": "2026-11-04T11:06:51Z",
+            "completedAt": "2026-11-04T11:19:57Z"
+          },
+          {
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "failure",
+            "startedAt": "2026-11-04T11:20:04Z",
+            "completedAt": "2026-11-04T11:20:21Z"
+          },
+          {
+            "name": "moody-gate",
+            "status": "completed",
+            "conclusion": "failure",
+            "startedAt": "2026-11-04T11:20:24Z",
+            "completedAt": "2026-11-04T11:20:26Z"
+          }
+        ]
+      },
+      {
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41821019023",
+        "headSha": "a23c08fca33bc16f388db9a6abd1ab86a7c62273",
+        "createdAt": "2026-11-04T11:27:30Z",
+        "updatedAt": "2026-11-04T11:43:25Z",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "name": "validate",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:27:34Z",
+            "completedAt": "2026-11-04T11:43:00Z"
+          },
+          {
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:43:02Z",
+            "completedAt": "2026-11-04T11:43:19Z"
+          },
+          {
+            "name": "moody-gate",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:43:22Z",
+            "completedAt": "2026-11-04T11:43:24Z"
+          }
+        ]
+      },
+      {
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41818680303",
+        "headSha": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+        "createdAt": "2026-11-04T11:06:50Z",
+        "updatedAt": "2026-11-04T11:19:19Z",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "name": "prototype",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:06:58Z",
+            "completedAt": "2026-11-04T11:17:15Z"
+          },
+          {
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:18:58Z",
+            "completedAt": "2026-11-04T11:19:16Z"
+          }
+        ]
+      }
+    ],
+    "standardRunCount": 2,
+    "researchRunCount": 1,
+    "testCorrectionRounds": 1,
+    "firstRecordedActionableFailureSeconds": 566,
+    "firstStandardDispatchToCorrectedConclusionSeconds": 2199,
+    "measurementBoundary": "CI delivery window including repair; not whole development time or controlled speedup comparison"
   }
 }
