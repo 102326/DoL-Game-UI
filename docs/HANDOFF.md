@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- 分支`docs/4x-legacy-main`，直接基于origin/main的c7d8bac67fd04d0a81e59cf4c49800a510a39a11。源研究线的清理提交2776773及文档复核0f0a31d保存在docs/4x-legacy-separation；此处只应用清理差异，不携带被否决的4.2原型。当前待冻结/推送main对照提交，尚未合main或发布。
+- 分支`docs/4x-legacy-main`，直接基于origin/main的c7d8bac67fd04d0a81e59cf4c49800a510a39a11。源研究线的清理提交2776773及文档复核0f0a31d保存在docs/4x-legacy-separation；此处只应用清理差异，不携带被否决的4.2原型。纯清理实现提交6cb4a4a已推送，后继仅补交付文档回执，最新HEAD以Git为准。准备独立PR取得自己的检查，尚未合main或发布。
 - [DoL-Game-UI-old](https://github.com/102326/DoL-Game-UI-old)已私有Archived只读，Actions关闭，归档HEAD61990df08986cf1cc9f8b9cd2ab998bb1b4863c4。26个旧Tag/17个旧分支对象一致，212份原文与25份Release正文已核对远端blob及SHA256。原仓库历史/Tag/Release/正式ZIP不改。
 - 清理198个旧代专属文件；其main基线字节与源研究清单逐项相同。14个共用/过渡说明先保存原文再改为4.x。当前指导：[文档入口](README.md)、[视觉合同](VISUAL_BASELINE_4X.md)、[Host](HOST_4X.md)、[UI API](UI_RUNTIME.md)。[迁移记录](LEGACY_ARCHIVE.md)/[机器清单](LEGACY_ARCHIVE.json)保留完整范围。
 - 本机源冻结2776773已通过ci:check、38项ci:unit、九包两轮独立构建/合同/负例及修改的视觉回归；其后只改非打包说明。main对照分支仍需自己的PR检查，不把源线结果冒签新HEAD。机器路径、Python入口和原日志在忽略的HANDOFF.local.md。
@@ -19,6 +19,6 @@
 
 ## Next — 下一步做什么
 
-1. 完成此纯清理分支的差异/链接检查、提交推送及实际PR验证；成功后仍由负责人决定main合入。不要把docs/4x-legacy-separation的整个研究祖先合入main。
+1. 此纯清理分支差异/链接检查与源码推送已完成；接续实际PR验证，运行结果和交付链接在Issue #35集中回执。成功后仍由负责人决定main合入。不要把docs/4x-legacy-separation的整个研究祖先合入main。
 2. 后续4.x任务先查新文档入口、当前源码与#35；回看旧资料时只作明确历史参考，不能把归档AGENTS或发布授权当作现行指令。4.2方向先对齐原作/适配/新增再提小样。
 3. 新设备先核对HEAD/工作区/远端、Node26.12.1/锁定依赖/实际浏览器与Python；本机日志、依赖、临时服务和私人材料不假定跨机存在。本次无Windows或真机必要验证，不新增或修改发布包。
