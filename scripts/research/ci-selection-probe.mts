@@ -15,6 +15,46 @@ const byId = new Map(contracts.map(c => [c.id, c] as const));
 assert.equal(byId.size, contracts.length, 'duplicate catalog IDs');
 const hash = (path: string) => createHash('sha256').update(readFileSync(new URL(path, import.meta.url))).digest('hex');
 
+// Human review candidates, not an impact graph or an executable selection policy.
+// Incomplete consumer discovery requires full-profile fallback for every example.
+const standardIds = new Set(catalog.catalogFor('standard').contracts.map(c => c.id));
+const scenarios = [
+ {name: 'official-motion', files: ['framework/official-ui/motion.ts'],
+  standard: ['browser.official-game-motion.cjs', 'browser.source-motion-lifecycle.cjs', 'browser.settings-ci.cjs', 'browser.evolution-navigation.cjs', 'browser.evolution-panels.cjs', 'browser.kraft-work-adapters.cjs'],
+  research: ['official-game-motion', 'source-motion-lifecycle', 'settings-ci', 'evolution-navigation', 'evolution-panels', 'framework-build', 'source-check'], standalone: []},
+ {name: 'shared-weather', files: ['framework/official-ui/weather.ts', 'src/ui/weather/surface.ts'],
+  standard: ['browser.header-weather.cjs', 'browser.weather-dom-writes.cjs', 'browser.weather-special.cjs', 'browser.kraft-work-adapters.cjs', 'browser.evolution-owner-resources.cjs'],
+  research: ['settings-ci', 'evolution-owner-resources', 'framework-build', 'source-check'], standalone: ['tests/evolution-weather-integration.cjs']},
+ {name: 'ci-probe', files: ['scripts/research/ci-selection-probe.mts'], standard: [], research: [], standalone: ['scripts/research/ci-selection-probe.mts']}
+];
+function validateScenario(s: typeof scenarios[number]): string[] {
+ const errors: string[] = [];
+ for (const [label, ids, known] of [['standard', s.standard, standardIds], ['research', s.research.map(normalize), new Set(byId.keys())]] as const) {
+  const seen = new Set<string>();
+  for (const id of ids) {
+   if (!known.has(id)) errors.push(`${label}: unknown ${id}`);
+   if (seen.has(id)) errors.push(`${label}: duplicate ${id}`);
+   seen.add(id);
+  }
+ }
+ const selected = new Set(s.research.map(normalize));
+ const visit = (id: string, path: string[]) => {
+  for (const dep of byId.get(id)?.dependencies ?? []) {
+   const next = normalize(dep), nextPath = [...path, next];
+   if (!byId.has(next)) errors.push(`unknown dependency: ${nextPath.join(' -> ')}`);
+   if (!selected.has(next)) errors.push(`missing dependency: ${nextPath.join(' -> ')}`);
+   if (path.includes(next)) errors.push(`dependency cycle: ${nextPath.join(' -> ')}`);
+   else visit(next, nextPath);
+  }
+ };
+ for (const id of selected) visit(id, [id]);
+ return errors;
+}
+for (const scenario of scenarios) assert.deepEqual(validateScenario(scenario), []);
+assert(validateScenario({...scenarios[0], research: scenarios[0].research.filter(id => id !== 'source-check')}).some(e => e.includes('missing dependency:')));
+assert(validateScenario({...scenarios[0], standard: [...scenarios[0].standard, 'browser.unknown.cjs']}).some(e => e.includes('standard: unknown')));
+assert(validateScenario({...scenarios[1], standard: [...scenarios[1].standard, scenarios[1].standard[0]]}).some(e => e.includes('standard: duplicate')));
+
 // These are illustrative, manually declared consumers, not a discovered impact graph.
 const consumers = ['research.settings-study', 'research.settings-ci'];
 const selected = ['settings-study', 'settings-build', 'settings-types', 'settings-prepare', 'settings-baselines', 'settings-ci', 'framework-build', 'source-check'];
@@ -73,4 +113,8 @@ assert(validate({...valid, selected: [...selected, 'research.settings-study']}).
 assert(validate({...valid, terminals: terminals.slice(1)}).some(e => e.includes('missing terminal: research.settings-study')));
 assert(validate({...valid, terminals: [...terminals, terminals[0]]}).some(e => e.includes('terminal: duplicate research.settings-study')));
 assert(validate({...valid, counts: {...valid.counts, executed: 5}}).includes('count mismatch'));
-console.log(JSON.stringify({scope: 'offline hypothetical; no CI execution; sample structure, closure and counts only; no source authenticity, execution order or PASS evidence verification', sample: {manualConsumers: consumers, counts: valid.counts}, negativeCases: ['indirect-baselines', 'manual-consumer', 'unknown-id', 'duplicate-id', 'missing-terminal', 'duplicate-terminal', 'count-mismatch'], missingBaselinePaths: missingBaseline.filter(e => e.startsWith('missing dependency: research.settings-study')), sourceSha256: {'scripts/ci-catalog.cjs': hash('../ci-catalog.cjs'), 'scripts/ci-catalog.cts': hash('../ci-catalog.cts'), 'scripts/ci/research-families.ts': hash('../ci/research-families.ts'), 'scripts/ci/lock.ts': hash('../ci/lock.ts'), 'scripts/expected.lock.json': hash('../expected.lock.json'), 'project-identity.json': hash('../../project-identity.json')}}, null, 2));
+console.log(JSON.stringify({scope: 'offline hypothetical; no CI execution; sample structure, closure and counts only; no source authenticity, execution order or PASS evidence verification',
+ manualScenarios: scenarios.map(s => ({...s, research: s.research.map(normalize), fallback: 'full standard and research profiles; consumer completeness unproven', omittedFromFull: {standard: standardIds.size - s.standard.length, research: byId.size - s.research.length}})),
+ fallbackCases: ['unknown impact', 'rename or delete', 'CI rules change'].map(reason => ({reason, fallback: 'full standard and research profiles; review separately'})),
+ fullCatalogCounts: {standard: standardIds.size, research: byId.size},
+ sample: {manualConsumers: consumers, counts: valid.counts}, negativeCases: ['indirect-baselines', 'manual-consumer', 'unknown-id', 'duplicate-id', 'missing-terminal', 'duplicate-terminal', 'count-mismatch', 'scenario-missing-prerequisite', 'standard-unknown-and-duplicate'], missingBaselinePaths: missingBaseline.filter(e => e.startsWith('missing dependency: research.settings-study')), sourceSha256: {'scripts/ci-catalog.cjs': hash('../ci-catalog.cjs'), 'scripts/ci-catalog.cts': hash('../ci-catalog.cts'), 'scripts/ci/research-families.ts': hash('../ci/research-families.ts'), 'scripts/ci/lock.ts': hash('../ci/lock.ts'), 'scripts/expected.lock.json': hash('../expected.lock.json'), 'project-identity.json': hash('../../project-identity.json')}}, null, 2));

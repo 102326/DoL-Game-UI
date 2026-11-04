@@ -1,0 +1,747 @@
+{
+  "scope": "Local synthetic weather refresh cost observation; no FPS, game, device or release claim",
+  "date": "2026-11-04",
+  "notes": [
+    "Both rounds retained; second round adds executed source and post-workload pixel checks.",
+    "The final post-state equality assertion was added to the script after round two; the saved round-two samples were independently checked with that assertion.",
+    "Host background load is not controlled; do not compare round one and round two as optimization stages."
+  ],
+  "rounds": [
+    {
+      "label": "preliminary",
+      "status": "PASS",
+      "baseline": "994fcab",
+      "head": "1b6565c47592797dfa3265bf5f3fa235e4726649",
+      "sources": {
+        "framework/official-ui/weather.ts": {
+          "baseline": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a",
+          "current": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+        },
+        "src/ui/weather/surface.ts": {
+          "baseline": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+          "current": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3"
+        }
+      },
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "browser": "153.0.8010.12",
+      "scope": "Controlled same-size refresh and synthetic resize, 60 repetitions; amplified local JS/layout observation, not daily frequency, FPS, GPU or physical-device performance.",
+      "samples": [
+        {
+          "pair": 0,
+          "version": "baseline",
+          "elapsedMs": 95.5,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.002543,
+            "RecalcStyleDuration": 0.005229,
+            "ScriptDuration": 0.08301,
+            "TaskDuration": 0.167696
+          }
+        },
+        {
+          "pair": 0,
+          "version": "current",
+          "elapsedMs": 49.39999997615814,
+          "metrics": {
+            "LayoutCount": 0,
+            "RecalcStyleCount": 0,
+            "LayoutDuration": 0,
+            "RecalcStyleDuration": 0,
+            "ScriptDuration": 0.045227,
+            "TaskDuration": 0.052212
+          }
+        },
+        {
+          "pair": 1,
+          "version": "current",
+          "elapsedMs": 27.5,
+          "metrics": {
+            "LayoutCount": 0,
+            "RecalcStyleCount": 0,
+            "LayoutDuration": 0,
+            "RecalcStyleDuration": 0,
+            "ScriptDuration": 0.025609,
+            "TaskDuration": 0.02904
+          }
+        },
+        {
+          "pair": 1,
+          "version": "baseline",
+          "elapsedMs": 71.7999999821186,
+          "metrics": {
+            "LayoutCount": 60,
+            "RecalcStyleCount": 60,
+            "LayoutDuration": 0.001833,
+            "RecalcStyleDuration": 0.003659,
+            "ScriptDuration": 0.062611,
+            "TaskDuration": 0.07619
+          }
+        },
+        {
+          "pair": 2,
+          "version": "baseline",
+          "elapsedMs": 43.099999994039536,
+          "metrics": {
+            "LayoutCount": 60,
+            "RecalcStyleCount": 60,
+            "LayoutDuration": 0.000702,
+            "RecalcStyleDuration": 0.001343,
+            "ScriptDuration": 0.039412,
+            "TaskDuration": 0.045673
+          }
+        },
+        {
+          "pair": 2,
+          "version": "current",
+          "elapsedMs": 15.599999994039536,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 4.8e-05,
+            "RecalcStyleDuration": 0.000193,
+            "ScriptDuration": 0.015169,
+            "TaskDuration": 0.045274999999999996
+          }
+        },
+        {
+          "pair": 3,
+          "version": "current",
+          "elapsedMs": 17.599999994039536,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 6.7e-05,
+            "RecalcStyleDuration": 0.000235,
+            "ScriptDuration": 0.016651,
+            "TaskDuration": 0.051281999999999994
+          }
+        },
+        {
+          "pair": 3,
+          "version": "baseline",
+          "elapsedMs": 32.599999994039536,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000471,
+            "RecalcStyleDuration": 0.001039,
+            "ScriptDuration": 0.03039,
+            "TaskDuration": 0.06569
+          }
+        },
+        {
+          "pair": 4,
+          "version": "baseline",
+          "elapsedMs": 44.400000005960464,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000906,
+            "RecalcStyleDuration": 0.001964,
+            "ScriptDuration": 0.040075,
+            "TaskDuration": 0.094224
+          }
+        },
+        {
+          "pair": 4,
+          "version": "current",
+          "elapsedMs": 30.30000001192093,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 0.000113,
+            "RecalcStyleDuration": 0.000332,
+            "ScriptDuration": 0.027896,
+            "TaskDuration": 0.074105
+          }
+        },
+        {
+          "pair": 5,
+          "version": "current",
+          "elapsedMs": 17,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 5.4e-05,
+            "RecalcStyleDuration": 0.00019,
+            "ScriptDuration": 0.016382,
+            "TaskDuration": 0.070074
+          }
+        },
+        {
+          "pair": 5,
+          "version": "baseline",
+          "elapsedMs": 51.30000001192093,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.00113,
+            "RecalcStyleDuration": 0.002558,
+            "ScriptDuration": 0.046037999999999996,
+            "TaskDuration": 0.056468
+          }
+        },
+        {
+          "pair": 6,
+          "version": "baseline",
+          "elapsedMs": 36.400000005960464,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000647,
+            "RecalcStyleDuration": 0.001429,
+            "ScriptDuration": 0.033599,
+            "TaskDuration": 0.10207200000000001
+          }
+        },
+        {
+          "pair": 6,
+          "version": "current",
+          "elapsedMs": 31.900000005960464,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 7.2e-05,
+            "RecalcStyleDuration": 0.000246,
+            "ScriptDuration": 0.029669,
+            "TaskDuration": 0.102563
+          }
+        },
+        {
+          "pair": 7,
+          "version": "current",
+          "elapsedMs": 16.80000001192093,
+          "metrics": {
+            "LayoutCount": 0,
+            "RecalcStyleCount": 0,
+            "LayoutDuration": 0,
+            "RecalcStyleDuration": 0,
+            "ScriptDuration": 0.016623,
+            "TaskDuration": 0.019293
+          }
+        },
+        {
+          "pair": 7,
+          "version": "baseline",
+          "elapsedMs": 61.099999994039536,
+          "metrics": {
+            "LayoutCount": 60,
+            "RecalcStyleCount": 60,
+            "LayoutDuration": 0.001565,
+            "RecalcStyleDuration": 0.003219,
+            "ScriptDuration": 0.052875,
+            "TaskDuration": 0.064247
+          }
+        }
+      ],
+      "pixels": {
+        "baseline": "b627a1035e2065cd7920f936976a2b1e06fdc865e9b2db1eb63b05c2edd852a4",
+        "current": "b627a1035e2065cd7920f936976a2b1e06fdc865e9b2db1eb63b05c2edd852a4"
+      }
+    },
+    {
+      "label": "source-identity-and-post-state-verified",
+      "status": "PASS",
+      "baseline": "994fcab",
+      "head": "1b6565c47592797dfa3265bf5f3fa235e4726649",
+      "sources": {
+        "framework/official-ui/weather.ts": {
+          "baseline": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a",
+          "current": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+        },
+        "src/ui/weather/surface.ts": {
+          "baseline": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+          "current": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3"
+        }
+      },
+      "inputs": {
+        "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373",
+        "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+        "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+        "src/ui/weather/wet-glass.ts": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+        "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+        "src/ui/weather/settings.css": "508ba0477945d5ee915c3c479ad82cd3d334bbbeb46a019a05ce739636374bed",
+        "src/theme/settings-workspace.css": "034d998ffe285c1f0b1fb5b973134ed492cea2d440bb914a873f552268866746",
+        "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      },
+      "endInputs": {
+        "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373",
+        "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+        "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+        "src/ui/weather/wet-glass.ts": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+        "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+        "src/ui/weather/settings.css": "508ba0477945d5ee915c3c479ad82cd3d334bbbeb46a019a05ce739636374bed",
+        "src/theme/settings-workspace.css": "034d998ffe285c1f0b1fb5b973134ed492cea2d440bb914a873f552268866746",
+        "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      },
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "browser": "153.0.8010.12",
+      "scope": "Controlled same-size refresh and synthetic resize, 60 repetitions; amplified local JS/layout observation, not daily frequency, FPS, GPU or physical-device performance.",
+      "samples": [
+        {
+          "pair": 0,
+          "version": "baseline",
+          "elapsedMs": 31.600000023841858,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000386,
+            "RecalcStyleDuration": 0.00089,
+            "ScriptDuration": 0.02956,
+            "TaskDuration": 0.058677
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+            "framework/official-ui/weather.ts": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 0,
+          "version": "current",
+          "elapsedMs": 16.5,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 3.7e-05,
+            "RecalcStyleDuration": 0.000175,
+            "ScriptDuration": 0.015794,
+            "TaskDuration": 0.045829999999999996
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+            "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 1,
+          "version": "current",
+          "elapsedMs": 17.400000005960464,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 4.6e-05,
+            "RecalcStyleDuration": 0.000207,
+            "ScriptDuration": 0.016538,
+            "TaskDuration": 0.048180999999999995
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+            "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 1,
+          "version": "baseline",
+          "elapsedMs": 33.10000002384186,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000485,
+            "RecalcStyleDuration": 0.001068,
+            "ScriptDuration": 0.030666,
+            "TaskDuration": 0.062153999999999994
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+            "framework/official-ui/weather.ts": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 2,
+          "version": "baseline",
+          "elapsedMs": 31.700000017881393,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000417,
+            "RecalcStyleDuration": 0.000914,
+            "ScriptDuration": 0.029556,
+            "TaskDuration": 0.061808999999999996
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+            "framework/official-ui/weather.ts": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 2,
+          "version": "current",
+          "elapsedMs": 17.400000005960464,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 4e-05,
+            "RecalcStyleDuration": 0.000188,
+            "ScriptDuration": 0.016549,
+            "TaskDuration": 0.044934
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+            "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 3,
+          "version": "current",
+          "elapsedMs": 16.69999998807907,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 4.6e-05,
+            "RecalcStyleDuration": 0.000201,
+            "ScriptDuration": 0.015973,
+            "TaskDuration": 0.047219
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+            "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 3,
+          "version": "baseline",
+          "elapsedMs": 32.19999998807907,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000387,
+            "RecalcStyleDuration": 0.000884,
+            "ScriptDuration": 0.030154,
+            "TaskDuration": 0.059383
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+            "framework/official-ui/weather.ts": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 4,
+          "version": "baseline",
+          "elapsedMs": 36.80000001192093,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000551,
+            "RecalcStyleDuration": 0.001238,
+            "ScriptDuration": 0.034067,
+            "TaskDuration": 0.068247
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+            "framework/official-ui/weather.ts": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 4,
+          "version": "current",
+          "elapsedMs": 16.30000001192093,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 7e-05,
+            "RecalcStyleDuration": 0.000247,
+            "ScriptDuration": 0.015479,
+            "TaskDuration": 0.054276000000000005
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+            "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 5,
+          "version": "current",
+          "elapsedMs": 16.599999994039536,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 4.3e-05,
+            "RecalcStyleDuration": 0.000187,
+            "ScriptDuration": 0.015871,
+            "TaskDuration": 0.050738
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+            "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 5,
+          "version": "baseline",
+          "elapsedMs": 30.900000005960464,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000384,
+            "RecalcStyleDuration": 0.000849,
+            "ScriptDuration": 0.029041,
+            "TaskDuration": 0.061625
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+            "framework/official-ui/weather.ts": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 6,
+          "version": "baseline",
+          "elapsedMs": 30.19999998807907,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000347,
+            "RecalcStyleDuration": 0.00079,
+            "ScriptDuration": 0.028453,
+            "TaskDuration": 0.059257
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+            "framework/official-ui/weather.ts": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 6,
+          "version": "current",
+          "elapsedMs": 16.799999982118607,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 4.7e-05,
+            "RecalcStyleDuration": 0.000203,
+            "ScriptDuration": 0.016099,
+            "TaskDuration": 0.046076
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+            "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 7,
+          "version": "current",
+          "elapsedMs": 16.399999976158142,
+          "metrics": {
+            "LayoutCount": 2,
+            "RecalcStyleCount": 2,
+            "LayoutDuration": 4.1e-05,
+            "RecalcStyleDuration": 0.000187,
+            "ScriptDuration": 0.015726,
+            "TaskDuration": 0.048831
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+            "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        },
+        {
+          "pair": 7,
+          "version": "baseline",
+          "elapsedMs": 31.200000017881393,
+          "metrics": {
+            "LayoutCount": 62,
+            "RecalcStyleCount": 62,
+            "LayoutDuration": 0.000377,
+            "RecalcStyleDuration": 0.000854,
+            "ScriptDuration": 0.029301,
+            "TaskDuration": 0.05842
+          },
+          "loaded": {
+            "src/ui/weather/surface.ts": "8a0f59479d505ca8d0ef64d4c0361fd1c38968c46b7703ff3655497e070e4984",
+            "framework/official-ui/weather.ts": "31c405e6c96ecd280c39142cc07a5f22ba04048d9677cd3ca885220781b8419a"
+          },
+          "state": {
+            "material": "glass-scatter",
+            "target": {
+              "kind": "rain",
+              "night": false,
+              "rain": "heavy",
+              "special": "none"
+            },
+            "weather": "rain",
+            "rain": "heavy"
+          }
+        }
+      ],
+      "pixels": {
+        "baseline": "b627a1035e2065cd7920f936976a2b1e06fdc865e9b2db1eb63b05c2edd852a4",
+        "current": "b627a1035e2065cd7920f936976a2b1e06fdc865e9b2db1eb63b05c2edd852a4"
+      },
+      "postPixels": {
+        "baseline": "73316188a282b0f7b44402e1f930b09ff05493e85f6c756e6d80d7fce11dcdb4",
+        "current": "73316188a282b0f7b44402e1f930b09ff05493e85f6c756e6d80d7fce11dcdb4"
+      }
+    }
+  ]
+}
