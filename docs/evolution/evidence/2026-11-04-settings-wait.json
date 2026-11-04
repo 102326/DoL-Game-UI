@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "scope": "Isolated full settings contract comparison, not active CI replacement",
+  "overallStatus": "UNVERIFIED_INPUT_DRIFT",
+  "processExit": 1,
+  "head": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "browser": "153.0.8010.12",
+  "rawReportSha256": "10b8090a8a30b27a276146a2f583a80149dd152a12a605bf444ac77d13e58ed6",
+  "controlsPassed": true,
+  "inputsStable": false,
+  "changedInputs": [
+    "scripts/research/frost-geometry-probe.mts"
+  ],
+  "inputCount": 801,
+  "selectedInputHashes": {
+    "tests/settings-ci.cts": "4a738d2df10bd1ea6c100d927fac8d34026571faec9e87c4d12448d9d049efd9",
+    "tests/ui41-reading.cts": "07e25c15147b601efcc9c3a110f90b03a89e9df35be5dc783a95f9b54c0976d8",
+    "tests/evolution-settings-integration.cts": "73a322155066ebf7eb225e75474ee1e5a2947ca74f0acedbbd05be029dd240da",
+    "tests/evolution-weather-integration.cts": "cbaba62679d9edc587ae4e81a35b4ecd405fcfadef74fedb8862243ee864fb61",
+    "tests/moody-oracles.cts": "587f988a1d4ef169cf465c7d337676aa0ce60871408dda73f862911cf9a314a5",
+    "tests/browser-options.cts": "77145969629bf96de4fb28f4f60bd9e1e49961c8060dabd45140a5d4524f090a",
+    "src/theme/SettingsPanel.vue": "e3c456e2f00d2ef0d247613f3d967f9e4413c444738e8a3b7d29a2aa2d69508f",
+    "src/theme/controller.ts": "5106dc3617129e6614b1133cf81c0ca82b8ad88d7ea6b9bf18db743194c2f876",
+    "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+    "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+    "scripts/research/settings-wait-probe.mts": "dfef850a7d1e722a5e2778ce706d384ea30aea3df26255a40a8ebbd9e0a49baf"
+  },
+  "temporaryBuilds": {
+    "old": "1fb937863214a84bf3f1b0d721b652a307d79e077424a8a5082cdfe16b16a0f1",
+    "candidate": "684f9b620edc2ee2ca23d4c21cb772d9c9e068146edf07e6d82a865cce109f29",
+    "control": "7f9992722da50f271666b0b0877f2fe2d0ceaeb41eef714e7e81842a5b781776"
+  },
+  "results": [
+    {
+      "id": "never-target",
+      "exit": 1,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 3822
+    },
+    {
+      "id": "late-target",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 718
+    },
+    {
+      "id": "warmup-old",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 29509
+    },
+    {
+      "id": "warmup-candidate",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 27145
+    },
+    {
+      "id": "sample-1-candidate",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 27504
+    },
+    {
+      "id": "sample-1-old",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 28778
+    },
+    {
+      "id": "sample-2-old",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 28844
+    },
+    {
+      "id": "sample-2-candidate",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 27220
+    },
+    {
+      "id": "sample-3-candidate",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 26968
+    },
+    {
+      "id": "sample-3-old",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 29078
+    }
+  ],
+  "notes": [
+    "All eight full contract processes exited zero, including two warmups. The never-target control intentionally exited one with TimeoutError; the delayed target succeeded.",
+    "Only frost-geometry-probe.mts changed in the conservative before/after input superset. Other recorded source, dependency, generated helper and CSS hashes matched. Overall process failure is retained.",
+    "The final probe excludes unrelated research files and records changedInputs/stoppedEarly; this final script has not been rerun as a complete comparison.",
+    "First browser launch was blocked by macOS sandbox before the controls executed; separate failure report retained locally.",
+    "No official test, workflow, profile selection, required gate or Ruleset has been migrated by this experiment."
+  ]
+}

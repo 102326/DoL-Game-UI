@@ -2884,6 +2884,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "stable frost reuses paths without caching changing weather",
+          "minimumAssertions": 1
+        },
+        {
           "id": "official rain stays in its header without compressing the model",
           "minimumAssertions": 1
         },
@@ -2900,8 +2904,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a75d1be5ea141ba9ee221d4cc523592919e990501b073b3ec92159644fc0c550",
-      "assertionSites": 40
+      "sourceSha256": "d3b5d29334141c85d17fe5b85091aa17d21789d213ed51e4aeade8bb5a9a4dd7",
+      "assertionSites": 49
     },
     {
       "entry": "tests/weather-review-pages.cjs",
