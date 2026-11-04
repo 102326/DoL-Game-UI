@@ -8,7 +8,7 @@ Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景�
 
 4.1 加入可自由调节的玻璃通透度、更细致的阅读设置和悬空排列的扇形工具菜单，同时简化换页、改善动态窗口的绘制开销，让界面更轻快。
 
-[下载 4.1](https://github.com/102326/DoL-Game-UI/releases/tag/v4.1.0) · [安装与升级](#安装与升级) · [动态预览](#画面与动态预览) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+[4.x文档](docs/README.md) · [下载 4.1](https://github.com/102326/DoL-Game-UI/releases/tag/v4.1.0) · [安装与升级](#安装与升级) · [动态预览](#画面与动态预览) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 > 普通玩家需要 **主 UI + Framework Host** 两个 ZIP。兼容包按自己安装的 Mod 选用，所有 `.mod.zip` 均无需解压。
 
