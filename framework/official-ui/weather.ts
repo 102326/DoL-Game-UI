@@ -66,7 +66,7 @@ export function headerWeather(){
     // A still-open settings owner can regain geometry without a new navigation intent.
     if(s.renderer&&s.header.isConnected&&s.parent.isConnected&&!s.header.closest('[data-sf-leaving],dialog:not([open])')){if(!s.suspended){s.suspended=true;s.renderer.pause(true)}continue}
     remove(key);continue;
-   }if(s.renderer){if(s.suspended){s.suspended=false;s.renderer.pause(false)}s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.dataset.special=state.special??'none';s.renderer.refresh()}else if(!s.static)paint(s,state)}
+   }if(s.renderer){if(s.suspended){s.suspended=false;s.renderer.pause(false)}if(s.node.dataset.weather!==state.kind)s.node.dataset.weather=state.kind;if(s.node.dataset.rain!==state.rain)s.node.dataset.rain=state.rain;const special=state.special??'none';if(s.node.dataset.special!==special)s.node.dataset.special=special;s.renderer.refresh()}else if(!s.static)paint(s,state)}
   // One shared low-frequency read, only while an owned header and document are visible.
   if([...surfaces.values()].some(showing)&&!document.hidden)stopTimer=scope.timeout(refresh,[...surfaces.values()].some(s=>s.renderer)?500:2000);
  }

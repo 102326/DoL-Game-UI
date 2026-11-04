@@ -2,6 +2,31 @@
 
 初始日期：2026-11-02；Study 02更新：2026-11-04。承接 [计划V1.5](../superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md) 和 [R0](EVO-4.2-R0-2026-11-02.md)，不另建路线图。分支 `prototype/4.2-first-samples`，基点main c7d8bac。旧文档工作安全带入；Study 02已于11月4日随运行源码提交8da7f44推送，后续文档仅补交付回执；实际结果在本页更新，不由原型存在推导通过。**负责人指出首版差异难以感知；本页早先的“小样已实现”只指工程试验已交付，不表示区分度或视觉方向达标。以下校准为后续设计依据。**
 
+## E42-PERF-02 第四批与CI并行调查（2026-11-04）
+
+接续 `79ae13d`。负责人确定三条线优先级：**UI Mod本体性能第一、CI优化第二、新UI设计第三**；独立研究允许并行，不能挤占高优先级修复。计划V1.7同步此顺序，兼容Mod专项仍后置。
+
+### 本体：天气共享刷新同值写入
+
+`headerWeather.refresh()`在每次共享刷新时无条件写入material canvas的data-weather、data-rain、data-special。真实设置、稳定雨态8次owner.refresh，MutationObserver记录24次属性写入；旧代码在新增0次断言上失败。现在逐项比较DOM现值，只在不同才写，继续执行renderer.refresh，保留源状态变化和被改写属性恢复，不使用可能失效的外部缓存。
+
+最终受控值：写入0次；将data-weather改为tampered后refresh恢复rain。此前同尺寸resize仍是0次重置、8次绘制、samePixels=true。Mac arm64/Node26.12.1/本机锁定Chromium：`node tests/evolution-weather-integration.cjs`全部9个W01 checkpoint通过，`npm run ci:check`、`vue-tsc -p tsconfig.test-tools.json --noEmit`和diff检查通过。Expected Lock仅该entry摘要及断言数287→289变化。没有整体帧率/实机收益结论，没有远端整轮CI、main合并或发布。
+
+最终源码SHA-256：weather.ts `fbeae62c78df01ffb4c46602ff831c5ae3a3bbc4d084f23204095453ce9d424b`；evolution-weather-integration.cts `97426a8700ce768e6ea50d84c26233659e1a5a3a1251e8519474aade21786488`。
+
+### 第二优先：CI42-S2依赖边界复核（离线，不是CI运行）
+
+Terra/high只读调查后，主代理读取实际代码并用Node26导入现有catalog/dependenciesFor离线复算：
+
+- research catalog ID含`research.`前缀，dependenciesFor返回不带前缀的执行ID；standard没有同类dependencies字段，不能直接套同一个键集合。
+- settings-study的前置闭包为settings-build、settings-prepare、settings-baselines、settings-types（此为集合，执行仍须按前置拓扑顺序）。漏settings-baselines时有两条缺失路径：study→build→prepare→baselines及study→build→types→prepare→baselines。
+- `scripts/ci/research-runner.ts`当前用`dependenciesFor(check.id).filter(id=>selectedIds.has(id))`再判断canSchedule；离线重算缺baselines子集，settings-prepare看到的dependencies变成空数组。因此“支持传checks子集”不等于已保证选测安全。未调用runner/执行测试，未证明实际Actions发生过漏选或假绿；现完整profile不因此判故障。
+- 此依赖图只表达部分直接执行前置，没有源码影响图/间接消费者发现；不能拿前置闭包冒充覆盖完整性。standard/research同命令不代表同合同。
+
+下一最小隔离切片：复用catalog检查人工场景ID/重复项、递归执行前置、人工列明的间接消费者和终态数量守恒；输出缺项及路径。不另建协议/路线图，不接workflow/gate。至少保留三类负例：漏间接baselines、漏人工已声明消费者、未知/重复ID或终态重复/缺项。该样本校验不是全局影响分析器；依然需要14场景影子结束条件与源码/结果身份核对。
+
+本批CI只有源码调查与离线图复算，无选测器实现/CI迁移/时间收益声明。第三优先视觉未新增小样，继续原作来源对齐，作废候选不复活。
+
 ## E42-PERF-02 第三批：本体天气画布重复重置（2026-11-04）
 
 接续 `3405a52`，研发分支 `prototype/4.2-first-samples`。负责人明确先完成UI Mod本体性能，再向兼容Mod扩展；共用路径仍维护兼容合同，本批未专项修改兼容包。
