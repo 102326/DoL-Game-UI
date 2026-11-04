@@ -23,3 +23,11 @@
 ## 交付状态
 
 归档远端原文/引用核验已完成；4.x清理的最终类型、定向合同和交付状态见HANDOFF。当前视觉Study 02/03仍为负责人否决，不因文档清理重新采用。4.x变更仅研发分支交付，main与正式发行不变。
+
+## 本机冻结验证与复核
+
+冻结源码27767732d19858a1b12de0b7900a28b983a13173、macOS arm64、Node26.12.1、Python3.12.14、锁定Chromium153.0.8010.12：ci:check、38项ci:unit、ci:build、ci:packages（九包两轮独立编译/打包、全部成员/ZIP摘要一致及负例）通过；修改的kraft-work-baseline浏览器合同通过。初次因Expected Lock与新检查不一致被拒绝，生成后仅该项sourceSha/assertionSites21→31变化；初次打包缺python入口退出127，使用本机已有隔离Python3.12后完成，不改全局环境。
+
+独立审查逐项核对212份原文与源/归档字节及198个删除路径，未发现误删现役实现或删除行为断言。审查发现重写UI说明漏掉独立wardrobe API及业务边界，随后按实际public类型与ReOverfits消费者补回；Component Lab当前说明也改为4.x，旧原文与归档history/local/main的blob8e6be5ad1bf94c0fea4ab921e6d9877da015e2ad完全一致。后继文档回执不修改受测运行代码、包内README或已打包玩家文档。
+
+本次未运行Windows/实机/游戏业务或新的远端全量CI；源分支从研究线接续，另准备main对照的纯文档/档案清理分支，避免夹带作废原型。原型代码与CI覆盖政策不在本次集成范围。
