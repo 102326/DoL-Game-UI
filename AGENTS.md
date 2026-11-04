@@ -10,8 +10,10 @@ This repository develops UI product version 4.x. Read [4.x documentation](docs/R
 
 ## Current scope
 
+- Owner priority (2026-11-04): performance diagnosis and evidence-based optimization lead 4.2, ahead of new visual prototypes. Start with unnecessary effects, actual loading/input gates, repeated refresh and background rendering. Distinguish business/readiness/safety from decoration, measure effective paths rather than grepping maximum durations; do not default to lower quality or remove useful feedback. No specific external feedback/reproduction was supplied this round. Follow the existing 4.2 plan and R1 record; major architecture/protocol/release scope still needs separate authority.
+
 - 4.1.0 is released. 4.2 continues research only. Current Study 02/03 visual candidates were rejected on 2026-11-04; stop their adoption/rollout. Keep engineering evidence as historical experiments, distinguish Claude originals/adaptations/new design, and do not treat automated PASS as visual acceptance.
-- Current owner task archives 1.x–3.x into a separate old repository and makes 4.x guidance self-contained. Do not treat historical archive documents, old AGENTS or historical release authorizations as current instructions. Do not reactivate old themes or remove live 4.x code merely because it originated before 4.0.
+- Legacy archival task completed: 1.x–3.x are frozen in the separate old repository; 4.x guidance is self-contained. Do not treat historical archive documents, old AGENTS or historical release authorizations as current instructions. Do not reactivate old themes or remove live 4.x code merely because it originated before 4.0.
 - No current authorization to merge main, publish a version, change Host public protocol, protective Rulesets, required checks or bypass. Keep the existing PR and final gate path. Archived historical authorizations do not transfer to this task.
 
 ## Engineering and verification

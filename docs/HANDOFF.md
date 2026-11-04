@@ -4,11 +4,10 @@
 
 ## Current — 当前做什么
 
-- **最新任务：旧代独立封存与4.x文档分离**，活跃分支`prototype/4.2-first-samples`已从c8eafe8快进同步本批；源清理检查点保存在`docs/4x-legacy-separation`（0f0a31d）。本批未合main；origin/main仍为4.1.0的c7d8bac。原prototype/4.2-first-samples保留，作废视觉不推进。
-- [old仓库](https://github.com/102326/DoL-Game-UI-old)已私有只读Archived，Actions关闭；固定归档提交61990df08986cf1cc9f8b9cd2ab998bb1b4863c4。26个Tag/17个分支、212份原文及25份Release正文已逐项核对远端对象和文件摘要。
-- 当前清理198个旧代专属文件，14个共用/过渡说明先保留原文再重写。当前4.x指导从[文档入口](README.md)、[视觉合同](VISUAL_BASELINE_4X.md)、[Host](HOST_4X.md)、[UI API](UI_RUNTIME.md)开始，不再使用3.x视觉规范或2.x接入说明。完整清单见[迁移记录](LEGACY_ARCHIVE.md)与[机器摘要](LEGACY_ARCHIVE.json)。
-- 本批冻结提交27767732d19858a1b12de0b7900a28b983a13173；ci:check、38项unit、九包两轮独立构建/包合同及修改后的视觉回归已实际通过。随后仅补非打包的衣柜API说明、Lab说明与回执；未运行远端整轮CI。研发线已推送。main对照纯清理分支`docs/4x-legacy-main`（633e709）已交[Draft PR #36](https://github.com/102326/DoL-Game-UI/pull/36)，不夹带原型；其真实[标准](https://github.com/102326/DoL-Game-UI/actions/runs/41787713829)与[研究](https://github.com/102326/DoL-Game-UI/actions/runs/41787713917)均成功，独立下载证据核验及moody-gate通过。
-- 机器路径、Python入口、原始输出与服务进程留忽略的HANDOFF.local.md。原4.x实验及否决记录仍在R1；旧候选成果只保留工程身份。
+- **当前首要目标：4.2性能诊断与优化，先于新视觉小样。** 负责人观察到冗余特效/隐藏加载延时，本轮没有具体外部反馈材料。先核对实际等待、重复反馈、Hub输入门槛、重复刷新及后台绘制，不等待外部报告、不预设根因。
+- 活跃分支prototype/4.2-first-samples，接续6048a6c。已更新[计划V1.6](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)和[R1静态候选清单](evolution/EVO-4.2-R1-2026-11-02.md)。本轮只有规划/源码核对，未做新运行采样或产品优化；本次文档交付身份以Git实际HEAD/远端为准，[#35](https://github.com/102326/DoL-Game-UI/issues/35)记录具体提交与同步回执。
+- 当前Study 02/03设计仍作废；先解决现役体验与成本，再对齐Claude原作/适配/新增。Host不先扩容，CI具体迁移不作为UI主线前置。
+- 旧代封存、旧远端分支删除与4.x文档整理已完成；old库只读Archived。main清理[Draft PR #36](https://github.com/102326/DoL-Game-UI/pull/36)两套真实检查成功、未合main。归档成功不代表4.2性能或视觉通过。机器路径/原日志留忽略的HANDOFF.local.md。
 
 ## Decided — 已经确定什么
 
@@ -24,10 +23,8 @@
 
 ## Next — 下一步做什么
 
-0. 本次封存、差异核对和PR真实CI已完成，[#35回执](https://github.com/102326/DoL-Game-UI/issues/35#issuecomment-6624562179)已同步；PR #36保持Draft，由负责人决定main合入。当前只授权研发交付，不合main；后续若集成到main需复核实际差异与required检查，不能把整个作废原型一并带入。
-
-1. 当前视觉候选停止。先回看Claude原附件的实际效果，逐项分清原作、适配与新增，再提出可供负责人选择的替代小样；不继续推广作废设计。工程机制与覆盖记录保留评估，正式迁移尚未开始。
-2. 非Hub需求继续沿R1记录发现，比较默认改进与选择的价值，允许零新增设置；完整P-C后续决定，不新增平行路线图。
-3. Windows原生弹窗、Android WebView触控/软键盘、真实游戏业务、GPU/功耗留对应现场。受控隐藏/存储/API失败和Chromium模拟不代替实机。早期间歇拖动若再现，保留现场再定位，不自动重试至绿。
-4. CI下一最小候选仍为离线计划/报告样本校验；未经选定不迁移producer/verifier/gate。沿14场景有界影子对照与有效变更端到端指标，不把旧命令重复直接删除。
-5. 新设备先核对HEAD/工作区/远端、固定Node26.12.1、锁定依赖及实际浏览器，再按README运行；媒体可随分支获取，临时服务/原日志不可假定跨机存在。本轮仅研发分支交付，不涉及main、Tag或发布。
+1. 第一批按E42-PERF-01/02对现役4.1共用开窗、重复反馈/移动焦点、Hub可交互门槛做真实组件受控对照；分别记录原动作、首个反馈、可操作、动画收束与资源。先测有效路径，再决定最小改法，不凭时长删除业务/布局前置。
+2. 后续按数据追重复扫描/读写、适配器扇出、天气/合成、ModHub与原生调用链。旧4.0.1/1.8.3证据不冒充4.1现热点；保留已集成成果和负结果，不重复立项。
+3. 性能优先阶段不推进作废视觉。之后先对齐Claude实际效果，再选Hub/窗口候选及第二角色；共享偏好/控件变化按消费者表覆盖，不只更新设置。非Hub自定义需求继续，允许零新增。
+4. Windows/WebView/真实游戏、物理触控/GPU/功耗在对应现场验证；当前Mac先做可复现组件/CPU/布局/资源对照。CI沿现政策，具体选测迁移另批；PR #36由负责人决定main合入。
+5. 新设备先核对分支/HEAD/工作区/远端、项目Node26.12.1、锁定依赖和实际浏览器/Python。旧记录/本机文件不自动可复用；当前无main合并、版本或发布授权。
