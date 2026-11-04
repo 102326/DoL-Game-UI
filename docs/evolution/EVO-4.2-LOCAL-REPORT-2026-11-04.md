@@ -24,9 +24,27 @@
 
 本轮初次采样在天气六组行为通过后截图超时；日志显示同URL重导航，现场canvas和owner为空、无pageerror，且源码TS断言恰在采样中修改。Vite热更新是与现场吻合的推断，没有直接记录触发源；该轮明确无效。随后过早启动的一次重试被中断（exit130、只完成控制项），先完成冻结后独立天气集成，再运行最终完整一轮。保留全部失败/中断，不把它们隐藏成首次成功。后续浏览器计时期间避免编辑任何受测依赖，包含会触发Vite更新的纯TS修改。
 
-本机集成验证：`npm run ci:check`、`node tests/weather-dom-writes.cjs`、`node tests/evolution-owner-resources.cjs`通过；旧源`--map-baseline`预期退出1。实际天气集成及settings完整组合合同已由冻结后的归因探针执行通过；两个研究MTS按strict、ES2022、Bundler模块解析独立类型检查通过。未变更workflow、catalog或正式settings-ci。远端本批验证将在冻结提交后触发，旧Run不作为此生产修改已通过的证据。
+本机集成验证：`npm run ci:check`、`node tests/weather-dom-writes.cjs`、`node tests/evolution-owner-resources.cjs`通过；旧源`--map-baseline`预期退出1。实际天气集成及settings完整组合合同已由冻结后的归因探针执行通过；两个研究MTS按strict、ES2022、Bundler模块解析独立类型检查通过。未变更workflow、catalog或正式settings-ci。本批冻结提交`971e58f93e74d587e101573add430673d4d21536`已推送，远端标准41826568142、研究41826583098已各触发一次workflow_dispatch；下方最终回执记录完成结果，旧Run不作为此生产修改已通过的证据。
+
+### CI42-S1下一候选：准备成本，先区分必要重复
+
+实际`ci-catalog.cts`中standard和research各仅安排一次settings-ci；后者内部正常阅读/设置/天气各一次，另一个lateHost是特定负例。不能把组合注解、单独可执行入口或不同研发天气场景误当本轮重复运行。两个独立workflow各自运行同一合同，目前承担各自profile/run证据。
+
+`package.json`及`isolated-build.ts`的实际调用链显示：standard的check→ci:check→tooling:build，随后build→ci:build→tooling:build，在同一工作区发生两次；research的source-check和prototype-build也各执行一次。这个**同工作区工具准备复用**值得下一轮隔离测量，需先记录三个工具TS工程检查与生成阶段耗时，再验证输入身份、生成文件缺失/篡改、错误传播和回退，不能直接删第二次检查。
+
+packages的第三次build-tooling在独立checkout、空输出和独立编译缓存中，为第二次fresh-build合同服务，继续保留。两个evidence-verify新job负责下载/身份/完整性重验，没有再调用tooling/typecheck；保留其独立性。不同类型工程即使源码交叉，也不视为配置等价。以上只读调用链已核对，尚无工具准备分段耗时或复用收益实测；未实施新的缓存或CI迁移。
 
 本轮没有增加新的视觉方案，既有雨滴光学与霜层表现保持；原JELLY档案摘要再次匹配，Study02/03不恢复。新设计仍排在本体性能和CI之后，沿同一计划接续。
+
+### 本批远端完成回执
+
+源码`971e58f93e74d587e101573add430673d4d21536`，两次均为workflow_dispatch，首轮成功，无远端修正/重跑：
+
+- [标准41826568142](https://github.com/102326/DoL-Game-UI/actions/runs/41826568142)：validate15分13秒、独立evidence-verify18秒、moody-gate3秒全部success。日志确认新map回归实际PASS，weather-dom-writes整项1647ms。九包合同、负例及独立双构建通过。
+- [研究41826583098](https://github.com/102326/DoL-Game-UI/actions/runs/41826583098)：prototype10分34秒、独立evidence-verify35秒全部success。
+- 标准dispatch至结论15分44秒；研究dispatch至结论11分17秒。本批两个Run、零远端修正轮，不拿非受控Run时长差宣称CI优化收益。远端Node26.12.1/Linux；与Mac局部计时分开。完整下载重验由Actions执行，本机核对运行身份/各job终态/新回归日志，没有再下载复算全部Artifact。
+
+后续回执只修改docs/JSON；生产、测试、probe及依赖继续对应上述源码。main、Release、保护规则和版本号未修改。当前批次无未解决的代码/CI阻断；真实设备/游戏总成本仍列未验证，下一步按同工作区准备成本与本体剩余热点继续。
 
 ## 接续批次：稳定霜层成本与设置等待研究（2026-11-04）
 

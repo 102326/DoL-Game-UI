@@ -4,11 +4,10 @@
 
 ## Current — 当前做什么
 
-- 本次从`cfd0350`接续第八批固定雨滴位移图复用，生产源SHA-256为`6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee`。本机天气DOM九项（旧版负例真实失败）、实际天气集成、所有者资源清理、ci:check及两个研究probe严格类型检查通过；整批远端运行待本次提交后触发，下列旧Run不当作此改动通过。
-- 分支`prototype/4.2-first-samples`。霜层生产提交`30ace2f916cd1ce8cd3a010ebb90da268cf243e4`；衣柜CI观测补正`a23c08fca33bc16f388db9a6abd1ab86a7c62273`。后续为文档/证据回执，接手机先用Git核对真实HEAD、差异和未同步内容。
-- [标准41821019023](https://github.com/102326/DoL-Game-UI/actions/runs/41821019023)在a23c08f全部success，含独立核验与最终gate。[研究41818680303](https://github.com/102326/DoL-Game-UI/actions/runs/41818680303)在生产相同的30ace2f全部success，含独立核验。均为workflow_dispatch，不冒称原生PR或实机验收。
-- 首次标准[41818673539](https://github.com/102326/DoL-Game-UI/actions/runs/41818673539)失败及门禁阻断保留；原因、受控复现和修正见[本机汇总](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)。本批没有未解决的代码/CI阻断；真实设备限制仍见Next。
-- 统一路线为[计划V1.9](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)，GitHub总跟踪[#35](https://github.com/102326/DoL-Game-UI/issues/35)。没有main合并、发布、保护规则或Host协议变更授权。
+- 分支`prototype/4.2-first-samples`，第八批代码冻结`971e58f93e74d587e101573add430673d4d21536`已推送；后续提交仅docs/JSON交付回执。接手机先核对实际HEAD、工作区和远端，不能把代码冻结SHA当作文档最新HEAD。
+- [标准41826568142](https://github.com/102326/DoL-Game-UI/actions/runs/41826568142)及[研究41826583098](https://github.com/102326/DoL-Game-UI/actions/runs/41826583098)均在971e58f首轮success，含独立证据核验，标准最终gate通过。均为workflow_dispatch，不冒称PR或实机验收。
+- 本机天气DOM九项（旧版负例真实失败）、实际天气集成、所有者资源清理、ci:check及两个研究probe严格类型检查通过。位移图画布/快照/截图一致。CI条件等待归因后停止该候选迁移；初次源码漂移/页面重载失败和一次中断均保留于[本机汇总](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)。当前批次无代码/CI阻断；本地独有原始日志不随Git。
+- 统一路线为[计划V1.9](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)，总跟踪[#35](https://github.com/102326/DoL-Game-UI/issues/35)。没有main合并、发布、保护规则或Host协议变更授权。
 
 ## Decided — 已经确定什么
 
@@ -24,6 +23,6 @@
 
 1. 固定位移图复用已完成。下一性能切片看真实开窗/多窗口的剩余成本（DOM建立、保护区扫描、绘制与合成分别归因），只有新的成本证据再改；不把局部构造提速扩写为整体卡顿已解决。首次构造仍需三图，暂不为消除这一小段成本增加预加载或首雨延迟。
 2. 继续本体实际操作端到端、多窗口和复杂页面成本调查；霜层驻留/GC、预览取消及多层图标resolver并发未证实收益，不自动迁移Host。当前ClothingIcon的reject疑点被生产调用方捕获/回退，未包装成缺陷。
-3. CI下一步优先端到端成本/薄映射与既定14场景影子研究；分段归因已完成：候选省约1.5秒等待，但完整耗时不稳定且属性不证明布局收束，停止该条件的正式迁移。正式选测、集中汇总或gate迁移仍按具体方案审阅，现完整profile、双构建、下载核验有效。
+3. CI下一步优先同工作区重复tooling准备的分段成本/安全复用隔离研究，再沿薄映射与既定14场景影子研究接续；独立第二次fresh-build和下载核验保留。分段归因已完成：候选省约1.5秒等待，但完整耗时不稳定且属性不证明布局收束，停止该条件的正式迁移。正式选测、集中汇总或gate迁移仍按具体方案审阅，现完整profile、双构建、下载核验有效。
 4. 新设计仍须按4.1、原V1/JELLY、新适配同操作/视口/背景/原速比较，首批Hub及部分窗口，不扩全局自由布局编辑器。采用与推广由负责人裁决。
 5. 新设备先核对Git HEAD/工作区/远端、Node26（>=26.12.1 <27）、锁定依赖、浏览器、Python；本机原始日志/录像和私有档案不随Git，不能假定可访问。Windows、Android/WebView物理输入、真实游戏/美化组合、GPU/功耗仍须对应环境；#33 Ray组合暂无新复现证据。自动证据只采受控白名单，私人存档须主动授权并隔离。

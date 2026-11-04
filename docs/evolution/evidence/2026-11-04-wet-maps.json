@@ -934,5 +934,71 @@
       "two owners have unique live filters",
       "disposal and reopening retain only immutable map strings"
     ]
+  },
+  "remoteIntegration": {
+    "runs": [
+      {
+        "databaseId": 41826568142,
+        "headSha": "971e58f93e74d587e101573add430673d4d21536",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-11-04T12:07:34Z",
+        "updatedAt": "2026-11-04T12:23:18Z",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41826568142",
+        "profile": "standard",
+        "jobs": [
+          {
+            "name": "validate",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:07:38Z",
+            "completedAt": "2026-11-04T12:22:51Z"
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:22:54Z",
+            "completedAt": "2026-11-04T12:23:12Z"
+          },
+          {
+            "name": "moody-gate",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:23:14Z",
+            "completedAt": "2026-11-04T12:23:17Z"
+          }
+        ]
+      },
+      {
+        "databaseId": 41826583098,
+        "headSha": "971e58f93e74d587e101573add430673d4d21536",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-11-04T12:07:40Z",
+        "updatedAt": "2026-11-04T12:18:57Z",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41826583098",
+        "profile": "research",
+        "jobs": [
+          {
+            "name": "prototype",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:07:44Z",
+            "completedAt": "2026-11-04T12:18:18Z"
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:18:21Z",
+            "completedAt": "2026-11-04T12:18:56Z"
+          }
+        ]
+      }
+    ],
+    "newRegressionObserved": "PASS fixed glass maps reuse pixels with independent owners and atomic retry; PASS weather-dom-writes.cjs (1647ms, exit=0, signal=null)",
+    "batchRuns": 2,
+    "remoteCorrectionRounds": 0,
+    "standardDispatchToConclusionSeconds": 944,
+    "verification": "Both workflows completed independent evidence verification; standard final moody-gate success. Local full artifact download/recompute not repeated.",
+    "limits": "These are integration timings, not controlled CI speed comparison. Research probes ran locally, not as new required CI entries."
   }
 }
