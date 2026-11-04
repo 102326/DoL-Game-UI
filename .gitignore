@@ -315,3 +315,6 @@ docs/HANDOFF.local.md
 /tests/ui41-independent.cjs
 
 /tests/foreground-plane.cjs
+
+# Isolated 4.2 preview tool: single MTS source, optional generated bootstrap.
+/scripts/preview-evo42.mjs
