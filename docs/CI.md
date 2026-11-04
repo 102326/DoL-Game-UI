@@ -1,6 +1,6 @@
-# Kraft Work 持续集成
+# Soft & Wet 4.x — 持续集成
 
-`Kraft Work CI` 检查当前源码、构建独立的官方 UI 与 Framework Host，并保留短期构建产物。它没有发布步骤，不创建 Tag，不更新公开 Release。
+工作流显示名`Kraft Work CI`保持不变，检查当前4.x源码、构建独立的官方 UI 与 Framework Host，并保留短期构建产物。它没有发布步骤，不创建 Tag，不更新公开 Release。
 
 当前已完成的CI整改及跨设备入口见 [Moody Blues V1.2交接](audits/MOODY-CI-V1.2-HANDOFF.md)。PR #24已合入研发3e6e039；本文描述运行合同，具体通过结论仍须匹配实际Commit/Run/Attempt。
 

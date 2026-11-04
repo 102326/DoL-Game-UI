@@ -4,12 +4,11 @@
 
 ## Current — 当前做什么
 
-- **最新裁决：当前设计作废。** 设置/商店候选不再待采用或继续迁移。背景演示内容与适配亮条的来源混杂已记录到R1；未开始替代设计。下方本批工程成果均为历史证据，不代表视觉通过。
-
-- 分支`prototype/4.2-first-samples`。本批从已推送e368f1ddda54d579708929d36f9399240f5a902f接续；11月4日fetch确认origin/main仍c7d8bac67fd04d0a81e59cf4c49800a510a39a11。Tag v4.1.0与main树相同、提交身份不同。旧工作保留。
-- Study 03源码与媒体已随[`a0fda0f`](https://github.com/102326/DoL-Game-UI/commit/a0fda0fd87706067c08914e1d860cab2c8208af9)推送；GitHub确认author/committer均关联Codex bot。[#35进展](https://github.com/102326/DoL-Game-UI/issues/35#issuecomment-6623655879)已同步。本快照随后只补文档回执，分支最新HEAD以Git为准。实际检查在未提交树执行，输入逐项摘要绑定文件；不改称干净提交执行。生产src/framework/compat、依赖锁、正式版本和CI工作流未改。
-- 入口：[计划V1.5](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md) · [R1 Study 03及历史](evolution/EVO-4.2-R1-2026-11-02.md) · [本批验证摘要](media/evo42-study03/validation.json) · [原型命令](../prototypes/evolution42/README.md) · [GitHub #35](https://github.com/102326/DoL-Game-UI/issues/35)。不另建路线图、不重开旧Issue。
-- 本机预览5206；第二角色`/prototypes/evolution42/shop-review.html`，前批设置/Hub对照`/prototypes/evolution42/compare.html`。机器路径、服务进程和原始日志只放忽略的HANDOFF.local.md。
+- **最新任务：旧代独立封存与4.x文档分离**，分支`docs/4x-legacy-separation`，从c8eafe8接续。本批未合main；origin/main仍为4.1.0的c7d8bac。原prototype/4.2-first-samples保留，作废视觉不推进。
+- [old仓库](https://github.com/102326/DoL-Game-UI-old)已私有只读Archived，Actions关闭；固定归档提交61990df08986cf1cc9f8b9cd2ab998bb1b4863c4。26个Tag/17个分支、212份原文及25份Release正文已逐项核对远端对象和文件摘要。
+- 当前清理198个旧代专属文件，14个共用/过渡说明先保留原文再重写。当前4.x指导从[文档入口](README.md)、[视觉合同](VISUAL_BASELINE_4X.md)、[Host](HOST_4X.md)、[UI API](UI_RUNTIME.md)开始，不再使用3.x视觉规范或2.x接入说明。完整清单见[迁移记录](LEGACY_ARCHIVE.md)与[机器摘要](LEGACY_ARCHIVE.json)。
+- 本批源码/文档清理待提交；ci:check与38项unit已在未提交树实际通过，九包构建已通过。最终包合同与修改后的视觉回归还待在冻结提交执行，完成后追加回执；不提前称整轮CI成功。
+- 机器路径、Python入口、原始输出与服务进程留忽略的HANDOFF.local.md。原4.x实验及否决记录仍在R1；旧候选成果只保留工程身份。
 
 ## Decided — 已经确定什么
 
@@ -24,6 +23,8 @@
 - 原型仍未纳入现workflow必需任务，本批没有新远端整轮CI；旧4.1成功Run不覆盖4.2候选。#33 Ray无新复现/修复证据，仍Unknown。正式发行证据见[Release记录](releases/4.1.0/RELEASE_RECORD.json)。
 
 ## Next — 下一步做什么
+
+0. 先完成本次迁移的冻结提交、包合同和受影响浏览器检查，推送独立分支并更新#35。当前只授权研发交付，不合main；后续若集成到main需复核实际差异与required检查，不能把整个作废原型一并带入。
 
 1. 当前视觉候选停止。先回看Claude原附件的实际效果，逐项分清原作、适配与新增，再提出可供负责人选择的替代小样；不继续推广作废设计。工程机制与覆盖记录保留评估，正式迁移尚未开始。
 2. 非Hub需求继续沿R1记录发现，比较默认改进与选择的价值，允许零新增设置；完整P-C后续决定，不新增平行路线图。
