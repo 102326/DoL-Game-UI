@@ -113,5 +113,30 @@
     "The final probe excludes unrelated research files and records changedInputs/stoppedEarly; this final script has not been rerun as a complete comparison.",
     "First browser launch was blocked by macOS sandbox before the controls executed; separate failure report retained locally.",
     "No official test, workflow, profile selection, required gate or Ruleset has been migrated by this experiment."
-  ]
+  ],
+  "standardFailureFollowup": {
+    "run": 41818673539,
+    "source": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+    "status": "FAIL",
+    "failedEntry": "wardrobe-operation-yield.cjs",
+    "assertion": "last action restores without another frame",
+    "actual": {
+      "calls": 2,
+      "busy": false,
+      "mode": "wear",
+      "remaining": 0,
+      "frames": 1
+    },
+    "expectedFrames": 0,
+    "sourceOfObservedExtraCallback": "Unknown; not captured by this CI failure",
+    "controlledReproduction": "One deliberately queued unrelated RAF reproduces the old assertion failure while business state is fully restored.",
+    "testCorrection": "Release the known business callback and observe after its microtask in one browser task; assert completion and unrelated callback still pending/unexecuted.",
+    "legacyBusinessWaitNegative": "Restoring a final extra await for the multi-item action is rejected: busy=true, mode=delete.",
+    "localLogs": {
+      "old-unrelated": "85b00e2b2ca930299cbc9ccf257af86ae7fecd1ebfb4d0fe93ec3f3ce2661777",
+      "legacy-final-batch": "28bda728e09a77ae00df86a50f0bdaec1f27651e1429ebb224644d3c82eb11d4",
+      "fixed": "940fbc5ed2be80fb1cb8852f0b154b81847110d29e01bfcaa9b286a3b44ca6e1"
+    },
+    "gate": "Correctly refused approval; new standard run pending."
+  }
 }

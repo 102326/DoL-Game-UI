@@ -40,9 +40,15 @@ const {chromium}=playwright;
   assert.equal(await page.locator('.dgw-preserved').evaluate(node=>(node as HTMLElement).inert),false,'native controls are unlocked');
   await page.reload();await setup(2);const first=await confirm();
   assert.deepEqual(first,{calls:1,busy:true,mode:'delete',remaining:1,frames:1},'batch yields between actions');
-  await page.evaluate(()=>{const callback=fixture.frames.shift();if(!callback)throw Error('missing business yield');callback(performance.now())});
-  await page.waitForFunction(()=>fixture.calls===2,undefined,{polling:10});
-  assert.deepEqual(await page.evaluate(()=>({calls:fixture.calls,busy:fixture.api.isBusy(),mode:fixture.variables.wardrobeOption,remaining:fixture.variables.wardrobe.upper.length,frames:fixture.frames.length})),{calls:2,busy:false,mode:'wear',remaining:0,frames:0},'last action restores without another frame');
+  const final=await page.evaluate(async()=>{
+   const callback=fixture.frames.shift();if(!callback)throw Error('missing business yield');
+   let unrelatedRan=false;const unrelated=()=>{unrelatedRan=true};
+   requestAnimationFrame(unrelated);callback(performance.now());
+   // Observe the business continuation in this task, before any other frame can run.
+   await Promise.resolve();
+   return{calls:fixture.calls,busy:fixture.api.isBusy(),mode:fixture.variables.wardrobeOption,remaining:fixture.variables.wardrobe.upper.length,unrelatedRan,unrelatedPending:fixture.frames.includes(unrelated)};
+  });
+  assert.deepEqual(final,{calls:2,busy:false,mode:'wear',remaining:0,unrelatedRan:false,unrelatedPending:true},'last action restores without consuming another frame');
   await page.reload();await setup(2);await confirm();
   await page.evaluate(()=>{fixture.state.passage='Elsewhere';const callback=fixture.frames.shift();if(!callback)throw Error('missing business yield');callback(performance.now())});
   await page.waitForFunction(()=>!fixture.api.isBusy(),undefined,{polling:10});

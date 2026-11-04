@@ -1388,5 +1388,269 @@
       "samplesIncludingWarmup": [],
       "mediansMs": {}
     }
-  ]
+  ],
+  "nextCandidateObservation": {
+    "status": "PASS",
+    "head": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "scope": "Controlled clear-weather headerWeather/settingsWeather construction and disposal; synchronous owner construction/set/refresh timing, not whole UI opening, GPU, FPS or general benchmark.",
+    "browser": "153.0.8010.12",
+    "errors": [],
+    "rawReportSha256": "ec390f969ee1b6bb450fb0666219d153482217f671fdc586bdd5979ceaeafe0e",
+    "samples": [
+      {
+        "cycle": 0,
+        "ownerMs": 1.0999999940395355,
+        "setMs": 36.099999994039536,
+        "refreshMs": 0.5,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 1,
+        "ownerMs": 0,
+        "setMs": 7.300000011920929,
+        "refreshMs": 0.09999999403953552,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 2,
+        "ownerMs": 0,
+        "setMs": 7,
+        "refreshMs": 0.10000002384185791,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 3,
+        "ownerMs": 0.09999999403953552,
+        "setMs": 4.5999999940395355,
+        "refreshMs": 0,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 4,
+        "ownerMs": 0,
+        "setMs": 5.200000017881393,
+        "refreshMs": 0,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      }
+    ],
+    "decision": "Repeated clear-weather displacement-map construction confirmed; cost attributable to those maps and reuse/lazy-initialization tradeoffs unverified. No implementation.",
+    "inputsAfter": {
+      "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+      "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373",
+      "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+      "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+      "src/theme/settings-workspace.css": "034d998ffe285c1f0b1fb5b973134ed492cea2d440bb914a873f552268866746",
+      "src/ui/foreground-plane.css": "e7ae030b7e31c474bec615def0725ea31210c0cae283f094f9649dc4afb6b42d",
+      "src/ui/foreground-plane.ts": "0f61afd3d16a858d6cc5ab599b0fd0bd4cb15717dc3ce746f67b162711ccadf2",
+      "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+      "src/ui/owned-overlay.ts": "c97532ccf1c227d68d3b8bb5961c17e8c466c0aeb9519eb638cc581a248b10a2",
+      "src/ui/source-motion.ts": "e4330917e2dec9a2d6ece7b5782743c5974860765e96af61106d052d709be3e2",
+      "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+      "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+      "src/ui/weather/edge-frost.ts": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+      "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+      "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+      "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+      "src/ui/weather/settings.css": "508ba0477945d5ee915c3c479ad82cd3d334bbbeb46a019a05ce739636374bed",
+      "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+      "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+      "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+      "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+      "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+      "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+      "src/ui/weather/wet-glass.ts": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+      "tests/artifacts/weather-opening-observation/observe.mjs": "84258a376f420295fe3f0ca6f357fd4c3d7f938b10cb3de4483784b7a303e677"
+    },
+    "fixtureHash": "1079d5440a793991bca0690d3bd1da7592845af440bba27baf226d957edb7cae",
+    "fixture": {
+      "viewport": [
+        1000,
+        750
+      ],
+      "surface": [
+        800,
+        600
+      ],
+      "dpr": 1,
+      "reducedMotion": "reduce",
+      "inputCollection": "Vite module graph and listed CSS/lock files after observation; not a before/after identity assertion"
+    }
+  },
+  "openingAttributionProbe": {
+    "status": "PASS",
+    "head": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "scope": "Controlled clear-weather headerWeather/settingsWeather construction and disposal; synchronous owner construction/set/refresh timing, not whole UI opening, GPU, FPS or general benchmark.",
+    "browser": "153.0.8010.12",
+    "originalWetHash": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+    "instrumentedWetHash": "a41cab778d8c617f327852bf0e5d0b2e8d6abd0eaa6fdf05c7335667799156c6",
+    "fixtureHash": "1079d5440a793991bca0690d3bd1da7592845af440bba27baf226d957edb7cae",
+    "inputs": {
+      "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+      "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373",
+      "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+      "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+      "src/theme/settings-workspace.css": "034d998ffe285c1f0b1fb5b973134ed492cea2d440bb914a873f552268866746",
+      "src/ui/foreground-plane.css": "e7ae030b7e31c474bec615def0725ea31210c0cae283f094f9649dc4afb6b42d",
+      "src/ui/foreground-plane.ts": "0f61afd3d16a858d6cc5ab599b0fd0bd4cb15717dc3ce746f67b162711ccadf2",
+      "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+      "src/ui/owned-overlay.ts": "c97532ccf1c227d68d3b8bb5961c17e8c466c0aeb9519eb638cc581a248b10a2",
+      "src/ui/source-motion.ts": "e4330917e2dec9a2d6ece7b5782743c5974860765e96af61106d052d709be3e2",
+      "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+      "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+      "src/ui/weather/edge-frost.ts": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+      "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+      "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+      "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+      "src/ui/weather/settings.css": "508ba0477945d5ee915c3c479ad82cd3d334bbbeb46a019a05ce739636374bed",
+      "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+      "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+      "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+      "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+      "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+      "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+      "src/ui/weather/wet-glass.ts": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+      "tests/artifacts/weather-opening-observation/map-timing.mjs": "cdae8ae8ff5724bbb6c35a916c737c3eed4960bd947099cdc381cf400278d45d"
+    },
+    "errors": [],
+    "rawReportSha256": "0b1223e2d448b2c494da7862dcf210a20c33a42513888aa09f086a883673512b",
+    "samples": [
+      {
+        "cycle": 0,
+        "ownerMs": 1.5,
+        "setMs": 26.799999982118607,
+        "refreshMs": 0.5,
+        "mapMs": 12.199999988079071,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 1,
+        "ownerMs": 0,
+        "setMs": 7.100000023841858,
+        "refreshMs": 0.09999999403953552,
+        "mapMs": 4.5,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 2,
+        "ownerMs": 0.10000002384185791,
+        "setMs": 6.199999988079071,
+        "refreshMs": 0.09999999403953552,
+        "mapMs": 3.699999988079071,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 3,
+        "ownerMs": 0.09999999403953552,
+        "setMs": 3.9000000059604645,
+        "refreshMs": 0,
+        "mapMs": 1.2000000178813934,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 4,
+        "ownerMs": 0,
+        "setMs": 4.300000011920929,
+        "refreshMs": 0,
+        "mapMs": 1.4000000059604645,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      }
+    ],
+    "limits": "Temporary Vite instrumentation around the whole 3-map/filter construction block, including image computation, encoding and filter DOM. Single diagnostic run; not an optimization comparison with the earlier run. reducedMotion reduce; inputs collected after run."
+  }
 }

@@ -4,7 +4,7 @@
 
 ## Current — 当前做什么
 
-- 分支`prototype/4.2-first-samples`，基于`ce25f59`完成第七批稳定霜层路径复用与CI等待隔离研究。生产源码、回归、探针及脱敏证据正在本批提交推送；完整远端CI待冻结后回填。第六批标准[41809668668](https://github.com/102326/DoL-Game-UI/actions/runs/41809668668)仅绑定`37c334f`，不代签本批。真实HEAD/同步状态以Git及[#35](https://github.com/102326/DoL-Game-UI/issues/35)为准。
+- 分支`prototype/4.2-first-samples`，基于`ce25f59`完成第七批稳定霜层路径复用与CI等待隔离研究。生产源码、回归、探针及脱敏证据已推送`30ace2f916cd1ce8cd3a010ebb90da268cf243e4`；标准41818673539首次失败于旧衣柜让帧合同；研究41818680303及独立核验success。正在修正并验证旧测试的全局队列观测问题，最终门禁尚未通过。第六批标准[41809668668](https://github.com/102326/DoL-Game-UI/actions/runs/41809668668)仅绑定`37c334f`，不代签本批。真实HEAD/同步状态以Git及[#35](https://github.com/102326/DoL-Game-UI/issues/35)为准。
 - [本机汇总报告](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)的“接续批次”记录最新改动、旧红新绿、竞态和限制；统一路线仍是[计划V1.8](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)，历史实验见[R1](evolution/EVO-4.2-R1-2026-11-02.md)。
 - 前批标准41801384426、研究41801390241均success，绑定`1f611f6`，不能代签本批新运行时代码。没有main合并、发布、规则或Host协议变更授权。
 
