@@ -1,4 +1,8 @@
-.sf-motion-hub[data-edge-prototype] .spin-hub-canvas{scale:var(--edge-sx,1) var(--edge-sy,1)}
+.sf-motion-hub[data-rigid-spin] .spin-hub-canvas{visibility:hidden}
+.sf-motion-hub[data-rigid-spin] .rigid-spin-body{position:absolute;left:50%;top:50%;width:96px;height:96px;transform:translate(-50%,-50%);pointer-events:none;z-index:2}
+.sf-motion-hub[data-rigid-spin] .sf-motion-ball.is-docked .rigid-spin-body{display:none}
+.sf-motion-hub[data-rigid-spin] .sf-motion-ball.is-docked .spin-hub-canvas{visibility:visible}
+.sf-motion-hub .rigid-spin-field{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .sf-motion-hub .edge-aim{position:absolute;pointer-events:none;overflow:visible;color:#c3b383;z-index:1}
 .sf-motion-hub .edge-aim :is(line,circle){stroke:currentColor;stroke-width:1.5;fill:none}
 .sf-motion-hub .edge-aim line{opacity:.55;stroke-dasharray:3 5}

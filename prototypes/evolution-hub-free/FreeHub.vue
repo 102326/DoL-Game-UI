@@ -21,19 +21,14 @@ let gesture: {id: number; x: number; y: number; startX: number; startY: number; 
 let suppressClick = false, sequence = 0, stopHint:(()=>void)|undefined, instance = ref('motion-view-0'), binding: Binding;
 let stopExperimental:(()=>void)|undefined,coordinateScale={x:1,y:1};
 let geometryObserver:ResizeObserver|undefined,observedDock:HTMLElement|undefined;
-const physics=new EdgePhysics(),edge=shallowRef(physics.snapshot()),trail=shallowRef<Point[]>([]);
+const physics=new EdgePhysics(),edge=shallowRef(physics.snapshot());
 const media=matchMedia('(prefers-reduced-motion: reduce)');
 const reduce=()=>media.matches||(document.documentElement.hasAttribute('data-dol-midnight')&&!document.documentElement.hasAttribute('data-dgu-visualMotion'));
 const limits=()=>({left:area.left+12,top:area.top+12,right:area.left+area.width-68,bottom:area.top+area.height-68});
 let intent:Point|undefined,lastFrame=0,edgeFrames=0,edgePending=false;
-const edgeStyle=computed(()=>{
- const q=edge.value.charge,horizontal=edge.value.wall==='left'||edge.value.wall==='right';
- return {'--edge-sx':horizontal?1-q*.22:1+q*.12,'--edge-sy':horizontal?1+q*.12:1-q*.22};
-});
 const aimLine=computed(()=>{const s=edge.value,angle=s.aim,n=Math.cos(angle)*80,t=Math.sin(angle)*80;return{x:88+(s.wall==='left'?n:s.wall==='right'?-n:t),y:88+(s.wall==='top'?n:s.wall==='bottom'?-n:t)}});
-const trailPoints=computed(()=>trail.value.map(p=>`${p.x+28},${p.y+28}`).join(' '));
 function requestEdge(){if(scope.frame(edgeFrame))edgePending=true}
-function stopEdge(){scope.cancelFrame(edgeFrame);edgePending=false;edge.value=physics.stop();intent=undefined;trail.value=[];lastFrame=0}
+function stopEdge(){scope.cancelFrame(edgeFrame);edgePending=false;edge.value=physics.stop();intent=undefined;lastFrame=0}
 function edgeFrame(){
  edgePending=false;
  if(!scope.active())return;
@@ -45,8 +40,7 @@ function edgeFrame(){
   if(edge.value.wall&&!reduce()&&(edge.value.phase==='dragging'||edge.value.charge!==previous))requestEdge();
  }else if(edge.value.phase==='flying'){
   edge.value=physics.step(now-lastFrame,limits());lastFrame=now;Object.assign(point,edge.value.point);
-  trail.value=[...trail.value.slice(-5),{...point}];
-  if(edge.value.phase==='flying')requestEdge();else{trail.value=[];save()}
+  if(edge.value.phase==='flying')requestEdge();else{save()}
  }
 }
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
@@ -205,12 +199,11 @@ onBeforeUnmount(scope.dispose);
 </script>
 
 <template>
- <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-edge-prototype="edgeEnabled || undefined" :data-edge-phase="edge.phase" :data-edge-charge="edge.charge" :style="edgeStyle" @keydown="key">
+ <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-edge-prototype="edgeEnabled || undefined" :data-edge-phase="edge.phase" :data-edge-charge="edge.charge" @keydown="key">
   <svg v-if="edge.phase==='charging'" class="edge-aim" width="176" height="176" :style="{left:`${point.x-60}px`,top:`${point.y-60}px`}" aria-hidden="true">
    <circle cx="88" cy="88" r="34" class="edge-ring" :stroke-dasharray="`${edge.charge*214} 214`"/>
    <line x1="88" y1="88" :x2="aimLine.x" :y2="aimLine.y"/><circle :cx="aimLine.x" :cy="aimLine.y" r="3"/>
   </svg>
-  <svg v-if="edge.phase==='flying'" class="edge-trail" aria-hidden="true"><polyline :points="trailPoints"/></svg>
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
   :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--utility-x': `${menu.petalX===0?0:menu.width-64}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">

@@ -10,7 +10,13 @@ const server=await createEvo42Server(0),address=server.httpServer!.address();ass
 const browser=await chromium.launch(),rows:unknown[]=[],errors:string[]=[];let page:Page|undefined,status='FAIL',failure:unknown,stage='startup';
 const ball=(p:Page)=>p.locator('.sf-motion-ball'),root=(p:Page)=>p.locator('.sf-motion-hub');
 async function frame(p:Page){await p.evaluate(()=>new Promise<void>(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r()))))}
-async function down(p:Page){const b=await ball(p).boundingBox();assert(b);await p.mouse.move(b.x+b.width/2,b.y+b.height/2);await p.mouse.down()}
+async function down(p:Page){
+ // At 3200px/s an async rect read can be a whole target behind the ball by pointerdown.
+ // Exercise real hit-testing during slower ongoing flight; fast-flight cancellation remains separate.
+ if(await root(p).getAttribute('data-edge-phase')==='flying')await p.waitForFunction(()=>{const s=Reflect.get(document.querySelector('.sf-motion-hub')!,'edgeResearchState');return s.phase==='flying'&&Math.hypot(s.vx,s.vy)<650});
+ else await ball(p).hover(); // Wait for a cancelled flight's CSS return to become actionable.
+ const b=await ball(p).boundingBox();assert(b);await p.mouse.move(b.x+b.width/2,b.y+b.height/2);await p.mouse.down()
+}
 async function pressEdge(p:Page,wall='left'){
  await down(p);const v=p.viewportSize()!;await p.mouse.move(wall==='left'?2:wall==='right'?v.width-2:v.width/2,wall==='top'?2:wall==='bottom'?v.height-2:500,{steps:4});
  await p.waitForFunction(()=>Number(document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-charge'))>.45);
@@ -26,7 +32,7 @@ try{
   stage='charge and quiescence';await pressEdge(p);await p.waitForFunction(()=>Number(document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-charge'))>=.999);await frame(p);const quiet=await p.evaluate(()=>Reflect.get(document.querySelector('.sf-motion-hub')!,'edgeResearchState'));assert.equal(quiet.pending,false);await p.waitForTimeout(100);assert.equal(await p.evaluate(()=>Reflect.get(document.querySelector('.sf-motion-hub')!,'edgeResearchState').frames),quiet.frames,'stable charge stops RAF');await p.mouse.move(2,550);await frame(p);const target=await p.locator('.edge-aim line').getAttribute('y2');assert(Number(target)>88,'along-wall movement aims inward');
   await p.screenshot({path:`${out}/${width}-charge.png`});await p.mouse.up();await p.waitForFunction(()=>document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-phase')==='flying');
   assert.equal(await ball(p).getAttribute('aria-expanded'),'false','release click cannot open menu or stop flight');
-  const samples=await p.evaluate(async()=>{const rows=[];for(let i=0;i<240;i++){await new Promise(requestAnimationFrame);const hub=document.querySelector('.sf-motion-hub')!,b=hub.querySelector('.sf-motion-ball')!.getBoundingClientRect();rows.push({x:b.x,y:b.y,w:b.width,h:b.height,phase:hub.getAttribute('data-edge-phase')});if(rows.at(-1)!.phase==='idle')break}return rows});
+  const samples=await p.evaluate(async()=>{const rows=[];for(let i=0;i<660;i++){await new Promise(requestAnimationFrame);const hub=document.querySelector('.sf-motion-hub')!,b=hub.querySelector('.sf-motion-ball')!.getBoundingClientRect();rows.push({x:b.x,y:b.y,w:b.width,h:b.height,phase:hub.getAttribute('data-edge-phase')});if(rows.at(-1)!.phase==='idle')break}return rows});
   assert.equal(samples.at(-1)!.phase,'idle','finite flight settles');assert(samples.every(r=>[r.x,r.y,r.w,r.h].every(Number.isFinite)&&r.x>=0&&r.y>=0&&r.x+r.w<=width+.1&&r.y+r.h<=900.1),'all flight frames in bounds');assert(new Set(samples.map(s=>s.x.toFixed(1))).size>5);
   await frame(p);const settled=await ball(p).getAttribute('style');await frame(p);assert.equal(await ball(p).getAttribute('style'),settled,'no continuing position writes after settle');assert(await stored(p));
   // Regrab uses a real pointer at the currently rendered sphere, not a forced DOM event.

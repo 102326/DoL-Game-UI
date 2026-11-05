@@ -16,7 +16,7 @@ try{for(const width of [1280,390])for(const variant of ['direct','free']){
  const r=await ball.boundingBox();assert(r);await p.mouse.move(r.x+r.width/2,r.y+r.height/2);await p.mouse.down();
  await p.mouse.move(width/2,620,{steps:24});await p.mouse.up();await p.waitForTimeout(800);
  const held=await ball.boundingBox();assert(held);await p.mouse.move(held.x+held.width/2,held.y+held.height/2);await p.mouse.down();await p.mouse.move(2,610,{steps:20});await p.waitForTimeout(1100);await p.mouse.move(2,665,{steps:12});await p.waitForTimeout(350);
- await p.screenshot({path:`${out}/${width}-${variant}-charge.png`});await p.mouse.up();await p.waitForTimeout(2600);
+ await p.screenshot({path:`${out}/${width}-${variant}-charge.png`});await p.mouse.up();if(variant==='free')await p.waitForFunction(()=>document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-phase')==='idle');else await p.waitForTimeout(2600);
  await ball.click();await p.waitForFunction(()=>document.querySelector('.sf-motion-hub')?.getAttribute('data-spin-phase')==='open');await p.waitForTimeout(1600);
  await p.screenshot({path:`${out}/${width}-${variant}.png`});
  await p.locator('[data-motion-view$="native-social"]').click();await p.waitForTimeout(800);

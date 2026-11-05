@@ -1,0 +1,136 @@
+{
+  "date": "2026-11-05",
+  "scope": "isolated rigid Golden Spin prototype; not product adoption",
+  "parent": "382d3f9ca0a7d30fa562dfa2b9922574f7864a42",
+  "node": "v26.13.0",
+  "browser": "153.0.8010.12",
+  "visual": {
+    "status": "PASS",
+    "inputs": {
+      "prototypes/evolution-hub-free/FreeHub.vue": "5cccd0e13acb0c01248026fa2dad9d38bd70900622413dc8c1b156a0b3e402ca",
+      "prototypes/evolution-hub-free/check.mts": "0804036a35d8118a35bc8342c1eb1c64fcf1494486abb6628031b5a7825d71ed",
+      "prototypes/evolution-hub-free/compare.html": "dea7c75ed3b70eca8f295ad54e40b81dea86d376e79d0e58060dbf4ac83cf8fe",
+      "prototypes/evolution-hub-free/edge-check.mts": "451f828b69cf191f76f0b8b6198905df8a506e10a76b169f705fefaf6a3eb94b",
+      "prototypes/evolution-hub-free/edge-physics-check.mts": "f859a7146048b86cf4d26248825548f0d0002982eeabfb4231901d845e243076",
+      "prototypes/evolution-hub-free/edge-physics.ts": "06d15aebe9a9e096cd9e9ccc8ae92262638424817ef45e3721b1be91088c54bf",
+      "prototypes/evolution-hub-free/edge.css": "14eb365a65f5ed4026cd6d44ce693e396ace5790bcd7f95dae49ee17d9f89d27",
+      "prototypes/evolution-hub-free/index.html": "d410593ebf36d4a102ec0e4f692b4be8d6567da75ec8cf3c48a08e96d26ba97b",
+      "prototypes/evolution-hub-free/main.ts": "96b00e50819727f0ac0c67f1113c946c5824e8548b2b000dcea5eea1b3853b35",
+      "prototypes/evolution-hub-free/owner.ts": "b8ceb5300bbf2514b6acfa5a32a4a8f1df120c969694ba7bbabc3fce4ea7b971",
+      "prototypes/evolution-hub-free/position.ts": "812961a8ba9be069e481ea112e96fd6e6764e6567bd586f4b23458bfcd88338b",
+      "prototypes/evolution-hub-free/record.mts": "b2c24c8ed0d361990799ac0fb723fbc233bf499bf26363258dd89aa870a0eb26",
+      "prototypes/evolution-hub-free/rigid-check.mts": "b4b2cde0fc19c0d6f3bb6bdedb1b72553cd9d46045995974a9b894246a0bc09d",
+      "prototypes/evolution-hub-free/rigid-review.html": "06bd8a8973bae01f15d30b3a6ed8f93cd448ab428529a435b80c3ac0cea01dcf",
+      "prototypes/evolution-hub-free/rigid-spin.ts": "5b812be4c777178ed97a7c719feaf5e0f608dba5562ea96cac69a09f31d5a21b",
+      "prototypes/evolution-hub-free/storage.ts": "6fcb7853ac70e01f185e6a8a3fe7e5ea9863e0410907963a64d2a53c29d9bb9a",
+      "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34"
+    },
+    "rows": [
+      {
+        "width": 1280,
+        "status": "PASS",
+        "frames": 461,
+        "bounces": 5,
+        "peakSpeed": 3176.327991087376,
+        "pose": {
+          "w": 96,
+          "h": 95.99996948242188,
+          "scale": "none"
+        },
+        "scope": "charge rotation, rigid silhouette, gold trail data, sustained ricochet, decay, idle sleep, menu, dock visibility and reduced motion"
+      },
+      {
+        "width": 390,
+        "status": "PASS",
+        "frames": 404,
+        "bounces": 12,
+        "peakSpeed": 3175.279975792763,
+        "pose": {
+          "w": 96,
+          "h": 95.99996948242188,
+          "scale": "none"
+        },
+        "scope": "charge rotation, rigid silhouette, gold trail data, sustained ricochet, decay, idle sleep, menu, dock visibility and reduced motion"
+      },
+      {
+        "constructionRollback": {
+          "threw": true,
+          "active": 0,
+          "canvases": 0,
+          "marked": false
+        }
+      }
+    ],
+    "artifact": "tests/artifacts/rigid-spin/1793884678912"
+  },
+  "behavior": {
+    "status": "PASS",
+    "inputs": {
+      "prototypes/evolution-hub-free/FreeHub.vue": "5cccd0e13acb0c01248026fa2dad9d38bd70900622413dc8c1b156a0b3e402ca",
+      "prototypes/evolution-hub-free/check.mts": "0804036a35d8118a35bc8342c1eb1c64fcf1494486abb6628031b5a7825d71ed",
+      "prototypes/evolution-hub-free/compare.html": "dea7c75ed3b70eca8f295ad54e40b81dea86d376e79d0e58060dbf4ac83cf8fe",
+      "prototypes/evolution-hub-free/edge-check.mts": "451f828b69cf191f76f0b8b6198905df8a506e10a76b169f705fefaf6a3eb94b",
+      "prototypes/evolution-hub-free/edge-physics-check.mts": "f859a7146048b86cf4d26248825548f0d0002982eeabfb4231901d845e243076",
+      "prototypes/evolution-hub-free/edge-physics.ts": "06d15aebe9a9e096cd9e9ccc8ae92262638424817ef45e3721b1be91088c54bf",
+      "prototypes/evolution-hub-free/edge.css": "14eb365a65f5ed4026cd6d44ce693e396ace5790bcd7f95dae49ee17d9f89d27",
+      "prototypes/evolution-hub-free/index.html": "d410593ebf36d4a102ec0e4f692b4be8d6567da75ec8cf3c48a08e96d26ba97b",
+      "prototypes/evolution-hub-free/main.ts": "96b00e50819727f0ac0c67f1113c946c5824e8548b2b000dcea5eea1b3853b35",
+      "prototypes/evolution-hub-free/owner.ts": "b8ceb5300bbf2514b6acfa5a32a4a8f1df120c969694ba7bbabc3fce4ea7b971",
+      "prototypes/evolution-hub-free/position.ts": "812961a8ba9be069e481ea112e96fd6e6764e6567bd586f4b23458bfcd88338b",
+      "prototypes/evolution-hub-free/record.mts": "b2c24c8ed0d361990799ac0fb723fbc233bf499bf26363258dd89aa870a0eb26",
+      "prototypes/evolution-hub-free/rigid-check.mts": "f815c988064815aa9f663696e9ed4ddb35a6b30abe7be5752074f52eda9d7491",
+      "prototypes/evolution-hub-free/rigid-review.html": "06bd8a8973bae01f15d30b3a6ed8f93cd448ab428529a435b80c3ac0cea01dcf",
+      "prototypes/evolution-hub-free/rigid-spin.ts": "8f10fb7b51b9e7e780a9e16f7eb866560f55452b2bd3d15a83e72f201241647d",
+      "prototypes/evolution-hub-free/storage.ts": "6fcb7853ac70e01f185e6a8a3fe7e5ea9863e0410907963a64d2a53c29d9bb9a",
+      "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34",
+      "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "rows": [
+      {
+        "width": 1280,
+        "status": "PASS",
+        "flightFrames": 446,
+        "scope": "placement, short-contact rejection, charge/aim, finite flight, real regrab, cancel, lifecycle, reduced motion, storage and teardown"
+      },
+      {
+        "width": 390,
+        "status": "PASS",
+        "flightFrames": 403,
+        "scope": "placement, short-contact rejection, charge/aim, finite flight, real regrab, cancel, lifecycle, reduced motion, storage and teardown"
+      },
+      {
+        "width": 390,
+        "input": "Chromium CDP touch emulation",
+        "status": "PASS"
+      },
+      {
+        "variant": "direct",
+        "status": "PASS",
+        "scope": "previous placement comparison has no edge launch"
+      }
+    ],
+    "artifact": "tests/artifacts/evo42-hub-edge/1793884563237",
+    "reuse": "Final renderer angular taper changed after this run; behavior, input and physics code unchanged. Final visual check covers the changed renderer."
+  },
+  "checks": [
+    "edge-physics-check.mts PASS",
+    "vue-tsc isolated prototype type check PASS",
+    "git diff --check PASS"
+  ],
+  "initial_failures": [
+    "Stale real-pointer rect at high flight speed and during cancellation return; actionability-aware test synchronization added without changing input contract.",
+    "Exact rectangle float equality rejected 0.00003 CSS pixel variation; tolerance 0.01px.",
+    "Reduced-motion snapshot preceded pending undock resize; synchronize notification delivery before idle check."
+  ],
+  "review_fixes": [
+    "Docked sphere visibility restored",
+    "Partial construction cleanup verified with injected ResizeObserver failure"
+  ],
+  "limits": [
+    "macOS Chromium controlled fixture only",
+    "No game, Windows or Android device acceptance",
+    "No formal CI or release changes",
+    "Discrete 4ms collision approximation, 8s safety limit",
+    "Owner visual acceptance pending"
+  ]
+}
