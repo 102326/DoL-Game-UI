@@ -551,5 +551,73 @@
     "tests/weather-review-pages.cjs",
     "tests/weather-special.cjs",
     "tests/weather-types.cjs"
-  ]
+  ],
+  "remoteValidation": {
+    "sourceCommit": "1d727d9be8b0a332a54f3f3498fe83045592e52f",
+    "runs": [
+      {
+        "databaseId": 41961828827,
+        "headSha": "1d727d9be8b0a332a54f3f3498fe83045592e52f",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-11-05T03:28:34Z",
+        "updatedAt": "2026-11-05T03:43:45Z",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41961828827",
+        "profile": "standard",
+        "elapsedSeconds": 911,
+        "jobs": [
+          {
+            "name": "validate",
+            "conclusion": "success",
+            "elapsedSeconds": 880
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "elapsedSeconds": 16
+          },
+          {
+            "name": "moody-gate",
+            "conclusion": "success",
+            "elapsedSeconds": 5
+          }
+        ],
+        "runReceiptSha256": "fe097061105179c5dbbffaf4415401375a6cda63facfc894a2e4d9e41f3a2718",
+        "fullLogSha256": "c61562da45621277d2b19f8dd9e6cedd9fbdf77c1f1b9dba206be571264a9450"
+      },
+      {
+        "databaseId": 41961826171,
+        "headSha": "1d727d9be8b0a332a54f3f3498fe83045592e52f",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-11-05T03:28:33Z",
+        "updatedAt": "2026-11-05T03:38:18Z",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41961826171",
+        "profile": "research",
+        "elapsedSeconds": 585,
+        "jobs": [
+          {
+            "name": "prototype",
+            "conclusion": "success",
+            "elapsedSeconds": 555
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "elapsedSeconds": 22
+          }
+        ],
+        "runReceiptSha256": "3367e061ad008b098dc708afb34f048f561d06ec65f5392a2e4b789a8e1721c5",
+        "fullLogSha256": "f11c82aa7876586075b27147f7124e4917a3fc72b4823a32d4f0ec76cae36486"
+      }
+    ],
+    "workflowRuns": 2,
+    "remoteCorrectionRounds": 0,
+    "firstDispatchToBothConclusionsSeconds": 912,
+    "coverage": "Existing full standard and research profiles, including current settings integration. Standalone C1/probe tests are local research verification, not new remote catalog entries.",
+    "verification": "Actions independent jobs verified downloaded evidence; this Mac checked run/job identities and final logs, without re-downloading all artifacts.",
+    "performanceClaim": "No controlled whole-CI speed comparison."
+  }
 }

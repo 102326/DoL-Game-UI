@@ -1,6 +1,6 @@
 # Soft & Wet 4.2 — 本机研发与验证汇总（更新至2026-11-05）
 
-优先级：**UI Mod本体性能 → CI优化 → 新UI设计**。兼容Mod专项后置，共用路径继续保护已有消费者合同。研发分支为`prototype/4.2-first-samples`；本文新增第八批固定雨滴位移图复用；第七批为霜层优化；第六批冻结在`37c334f`；下方第1–5节保留此前`1f611f6bf560221a74e29a4e0521d188dd4bd195`的集成记录（当时运行时代码同`1b6565c`），各批证据分别绑定。本文是研发交付记录，不是4.2发布验收。
+优先级：**UI Mod本体性能 → CI优化 → 新UI设计**。兼容Mod专项后置，共用路径继续保护已有消费者合同。当前接续分支为`perf/4.2-windows-device-followup`，最新CI研究见本文首节；第八批及以前的性能工作在其祖先分支`prototype/4.2-first-samples`完成，各批证据分别绑定，不用旧Run代签新整合。本文是研发交付记录，不是4.2发布验收。
 
 ## 2026-11-05 公司Mac：CI准备成本与隐藏Git修改补正
 
@@ -25,6 +25,18 @@
 现遇任意这两类索引标志即回退完整standard/research catalog，并绑定标志与对应路径的原始内容、缺失或符号链接目标；无法读取则拒绝生成，verify返回false。新回归验证两类flag、未知隐藏路径、二次变更、缺失/恢复、清除标志后重算和正常窄计划。完整catalog仍不包括所有standalone入口；此补正不证明消费者图完备。
 
 本机候选回归、S1–S8计划级检查、受控dependency-shadow、standard-evidence与合成remote-shadow均通过，整个C1及工具探针strict类型通过，`npm run ci:check`通过。N1–N6原15变体等已有Windows证据保留，不将本次局部检查冒称重新执行全部组合影子、14类完整profile或真实selected计划运输。本批仅修改研究候选/回归及研究probe，正式catalog、Expected Lock、workflow和gate不变。完整Actions在冻结本批后各手动执行一次，完成身份见随后回执。
+
+### 本批最终远端回执
+
+受测源码`1d727d9be8b0a332a54f3f3498fe83045592e52f`，保留最新设置整合，两个workflow_dispatch均首轮成功：
+
+- [标准41961828827](https://github.com/102326/DoL-Game-UI/actions/runs/41961828827)：validate14分40秒、独立evidence-verify16秒、moody-gate5秒。整轮15分11秒；九包构建、合同负例、独立双构建及浏览器合同通过。日志确认settings-ci（42.935秒）及weather-dom-writes（1.556秒）执行，后者包含固定三图复用、独立所有者和原子失败重试。
+- [研究41961826171](https://github.com/102326/DoL-Game-UI/actions/runs/41961826171)：prototype9分15秒、独立evidence-verify22秒，整轮9分45秒。实际设置、天气及生命周期合同通过。
+- 两个Run、0轮远端修正/重跑；最早dispatch至两条结论齐全15分12秒。没有失败型可行动反馈；研究完整结论在9分45秒返回。这不是同输入受控CI提速对照，也不是本批完整编码工时。
+
+远端Node26.12.1/Linux；本机只核对Run/源码/各job终态和执行日志，下载后的完整证据核验由Actions独立job执行。C1候选及准备probe的独立测试是本机研究验证，不冒称加入这两个正式profile或完成14类选测对照。运行摘要和日志摘要已并入本批[脱敏证据](evidence/2026-11-05-ci-preparation.json)。
+
+后续交付仅docs/JSON，受测代码保持不变。main、Release、版本、Host协议和保护规则未改。当前批次已收口；后续沿原优先级继续本体持续成本归因、CI既定选测影子和已批准设计适配，不把候选或未验证范围自动升级为发行结论。
 
 ## 接续批次：固定雨滴位移图复用（2026-11-04）
 

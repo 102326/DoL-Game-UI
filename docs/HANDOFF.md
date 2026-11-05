@@ -4,9 +4,9 @@
 
 ## Current — 当前做什么
 
-- 公司Mac本批已从原prototype分支安全接续到`perf/4.2-windows-device-followup`、基线`4b18069`，保留60069f0设置整合与0b637e7影子成果。新增C1隐藏Git索引标志的完整回退/身份回归，工具准备复用仅保留研究，未启用正式缓存；本机ci:check、研究strict类型、候选/S1–S8计划及受控证据检查通过。完整Actions待本批冻结后触发，不能引用971e58f代签新源码。最新实测和限制见[Mac接续报告](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)，统一计划V1.14。
+- 当前分支`perf/4.2-windows-device-followup`；本批源码`1d727d9be8b0a332a54f3f3498fe83045592e52f`已推送，后续仅docs/JSON回执。安全接续4b18069并保留60069f0设置整合与0b637e7影子成果。C1隐藏Git索引标志已补完整回退/身份回归；工具准备复用仍仅研究。本机ci:check、strict类型、候选/S1–S8计划及受控证据检查通过。[标准41961828827](https://github.com/102326/DoL-Game-UI/actions/runs/41961828827)和[研究41961826171](https://github.com/102326/DoL-Game-UI/actions/runs/41961826171)均在该源码首轮success，含独立证据核验和标准gate，均手动触发。标准15分11秒、研究9分45秒，2个Run、0轮远端修正；未做整轮CI提速对照。完整记录见[Mac接续报告](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)，统一计划V1.14。当前无本批代码/CI阻断；本机独有原始日志不随Git。
 
-- 本轮Git接续入口为 `perf/4.2-windows-device-followup`。设置整合提交 `60069f0fc151ba4e66d334e2ba960558cacc7a2e`，消费者/影子验证研究提交 `0b637e77a3ce547a618cda95a548e72774edb5b8`；本页和现场证据随下一笔文档提交。接续先核对该分支实际HEAD，不再沿用原prototype分支的上游。此次仅同步已有成果，未运行新提交的完整Actions，未合并main或发布。
+- 本批保留Windows接续成果：设置整合提交 `60069f0fc151ba4e66d334e2ba960558cacc7a2e`、消费者/影子验证研究提交 `0b637e77a3ce547a618cda95a548e72774edb5b8`及交接 `4b18069`。以下现场证据来自该轮，Mac仅接续源码与CI，不代签新的游戏/设备验收。接续先核对当前分支实际HEAD，不再沿用原prototype分支的上游。
 
 - 本轮继续性能/CI研究，未改产品运行输入：霜羽Path2D候选通过桌面258组逐像素/保护区对照、无Path2D回退及Android受控绘制对照，但稳定雪量收益小、变化/混合样本存在反向，未采用。原背景倒影中间输入边界仍保留，不以延迟合成改写原渲染语义。证据和具体数字见[现场报告](evolution/EVO-4.2-WINDOWS-DEVICE-2026-11-04.md)。
 - [C1候选](../prototypes/evolution42-ci-c1/README.md)现覆盖acrylic、正式Hub动效及官方动效三条路径；补上旧名单遗漏的资源所有权消费者，区分正式Hub组合合同与原型同名测试，并保留standard准备阶段、research递归前置和独立材质入口。隔离真实源码快照的组合样本实际执行12项通过，前后源码身份一致；S1–S8计划级检查及N1–N6的15个固定故障变体通过。复核发现的成功收据ID/PID串用、顶层状态矛盾、缺布局报告及阶段源码漂移被汇总覆盖均已实测修正；最终报告含127个布局场景。C2受控依赖失败/取消测试通过：仅依赖分支阻塞，独立分支继续，未执行项不冒充PASS。正式门禁未改变；全仓库消费者完备性、完整Actions调度和14类完整profile对照尚未完成。
@@ -16,13 +16,13 @@
 - 2026-11-05负责人确认Study04设置小样视觉方向，首个真实设置窗口已接入并装机。设置整合新增 `src/theme/settings-material.ts`，通过Vue挂载/卸载管理拖动、有限应变及内芯延迟；关闭/隐藏/失焦/缩放复位，动画关闭和减少动态停止形变，静止不循环。材质复用现役V1通透度轴。下面971e58f性能候选是上一冻结状态，不能代表60069f0新增整合源码。
 - 新整合入口 `/prototypes/evolution-integration/settings-material.html`；1280/390、正常/减少动态四组合控件与释放通过，另查CSS zoom、取消、静止停写和拖动不泄漏给背景委托手势。Android在原测试窗口临时注入同一最终编译模块/CSS，触控、命中、衰减和撤销后偏好/页面恢复通过；这是实际DOM探针，不是新ZIP装机验收。旧Study04入口改指整合预览，原源码/录像在既有快照封存，避免重复挂载。
 - 最新主UI构建摘要 `942ec9178cb465c36406bf19165f44b6ebfd913ab0296fc05fab63281993eb32`，其它八包摘要保持上一候选。独立App冷进程启动后实际全部成员匹配，47包版本/顺序及偏好保持；雨雪实际设置拖动/关闭复位、属性窗口通透度0/60/100、玻璃开关、触控滚动与关闭释放通过。仅使用已标记隔离槽6，未存档写入。最终恢复原测试场景/天气/偏好。
-- 最终 `npm run ci:check`、`npm run ci:build`、`node tests/settings-ci.cjs` 通过；后者包含阅读、实际设置、天气集成、失败回退及释放，新增真实壳拖动/关闭复位断言已进入现有标准/研究入口。Expected Lock仅更新该测试摘要与断言数290→293，原门槛保留。完整标准/研究工作流尚未运行本批，不能借用971e58f结果。
+- Windows整合时的 `npm run ci:check`、`npm run ci:build`、`node tests/settings-ci.cjs` 通过；后者包含阅读、实际设置、天气集成、失败回退及释放，新增真实壳拖动/关闭复位断言已进入现有标准/研究入口。Expected Lock仅更新该测试摘要与断言数290→293，原门槛保留。该轮未运行完整标准/研究，Mac接续的远端状态另列顶部，不借用971e58f结果。
 - 保留失败：首轮构建期间改源码被身份合同拒绝；首次新设置回归发现专属CSS绕过材质调整边界，导致最高档回退不等效。已移除重复CSS、复用现役V1规则；中间一次验证仍读取旧构建CSS，冻结源码重建后原断言通过。修正包相对初装d52f71c只有style.css变化，成员差异及安装回执保留。原性能候选目录未覆盖。
 
 - Windows接续基点 `65e39bc`；设置整合现已固化于 `60069f0`，分支为 `perf/4.2-windows-device-followup`，早期 `971e58f` 八批优化已封存为本地性能研究候选：九包结构/成员/元数据/依赖/许可通过，SHA及Android加载身份一致。新增复杂窗口雨雪12次，加此前24次开窗及雨雪触控操作，关闭/命中/清理通过；60段背景/UI与41→29→41组合归因已完成，最终47包及偏好恢复。完整4.2尚未完成，见[候选范围与剩余任务](evolution/EVO-4.2-CANDIDATE-2026-11-05.md)。
 - 此前性能归因批次没有新增产品修复。标签伪元素、霜层位图和渐变复用方案未采用；背景倒影读取中间Canvas，现微基准不足以支持延迟合成迁移。背景和UI雪效持续成本仍有实测负担。CI重复准备约9.9秒/次，Windows unit为36/38，两项文件symlink EPERM保留；该次相关输入与原971e58f通过的Linux CI一致。14场景仅核对研究边界，没有启用新选测或缓存。详见[现场报告](evolution/EVO-4.2-WINDOWS-DEVICE-2026-11-04.md)及[CI影子核对](../prototypes/evolution42/CI-SHADOW-BOUNDARIES.md)。
 - V1原档174项核对通过，负责人补充的JELLY原档摘要与历史记录一致。[Study04设置窗口](../prototypes/evolution42-study04/README.md)原小样已独立封存并获方向确认；后续接入和装机证据见本页顶部。它不恢复Study02/03，旧性能包不包含新设计。上述源码与研究结果已整理为本轮分支提交；私有设备资料、完整原始日志和录像保持忽略，不随Git同步。
-- 分支`prototype/4.2-first-samples`，第八批代码冻结`971e58f93e74d587e101573add430673d4d21536`已推送；后续提交仅docs/JSON交付回执。接手机先核对实际HEAD、工作区和远端，不能把代码冻结SHA当作文档最新HEAD。
+- 历史第八批：`prototype/4.2-first-samples`代码冻结`971e58f93e74d587e101573add430673d4d21536`，交接`65e39bc`仅docs/JSON。当前分支已包含后续设置整合，不能把这两个历史SHA当作接续HEAD。
 - [标准41826568142](https://github.com/102326/DoL-Game-UI/actions/runs/41826568142)及[研究41826583098](https://github.com/102326/DoL-Game-UI/actions/runs/41826583098)均在971e58f首轮success，含独立证据核验，标准最终gate通过。均为workflow_dispatch，不冒称PR或实机验收。
 - 原971e58f批次天气DOM九项（旧版负例真实失败）、实际天气集成、所有者资源清理、ci:check及两个研究probe严格类型检查通过。位移图画布/快照/截图一致。CI条件等待归因后停止该候选迁移；初次源码漂移/页面重载失败和一次中断均保留于[本机汇总](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)。此通过结论不覆盖本轮Windows unit的两项EPERM；本地独有原始日志不随Git。
 - 统一路线为[计划V1.14](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)，总跟踪[#35](https://github.com/102326/DoL-Game-UI/issues/35)。没有main合并、发布、保护规则或Host协议变更授权。
