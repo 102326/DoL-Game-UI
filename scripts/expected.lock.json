@@ -675,6 +675,24 @@
       "assertionSites": 307
     },
     {
+      "entry": "tests/attributes-material.cjs",
+      "sourceEntry": "tests/attributes-material.cts",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "8b5d63ee9a9c9a88995f2dc9d41ae544135e6a58882c1086f524ae4f2a6088e4",
+      "assertionSites": 65
+    },
+    {
       "entry": "tests/checkpoint-boundary.test.mts",
       "profiles": [
         "standard"
@@ -1251,8 +1269,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "71be8b7618a537c04c70107dc719a8849f4b0f212e1caed83665b3a961d91191",
-      "assertionSites": 58
+      "sourceSha256": "4deeacff3433cbc4f8bfbf81e23b890c5163be9ba802ed6e456c34802404f0bf",
+      "assertionSites": 60
     },
     {
       "entry": "tests/framework-commands.cjs",
@@ -1548,8 +1566,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "1a0888c34346029023fcc9ea24c20222f96b6ffba404c6c5e0f5b0b6036bd7da",
-      "assertionSites": 84
+      "sourceSha256": "82ee0654768381cec8ee5b18dc6647e6c1a901920c51e7b64ae18e0fed0cff89",
+      "assertionSites": 88
     },
     {
       "entry": "tests/integration-preview-pages.cjs",
@@ -2276,8 +2294,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8b3873899b4d18144d8c4591efa06915a4bb95d7544d5e402f37152fca0f68d7",
-      "assertionSites": 293,
+      "sourceSha256": "05b6cd72489fdf02ef8e7b123ece5f018626490f945b3262dcc3588e6d7a8f80",
+      "assertionSites": 295,
       "rendererContexts": [
         "weather:2d"
       ]
@@ -2900,6 +2918,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "material drag protects moving content and remeasures the final position",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings alignment refreshes protected control geometry",
           "minimumAssertions": 1
         },
@@ -2908,8 +2930,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "053bc013a73eba66721cf569cc02fe892ca41b25e7d7034bedfa77d994d73da3",
-      "assertionSites": 60
+      "sourceSha256": "103b274a03ecce8ffb9770280a8e4e4860b5e71a776f162217900a390bc0c4c8",
+      "assertionSites": 67
     },
     {
       "entry": "tests/weather-review-pages.cjs",

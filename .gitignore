@@ -322,3 +322,5 @@ docs/HANDOFF.local.md
 # Generated loading-regression tooling.
 /tests/wardrobe-operation-yield.cjs
 /tests/wardrobe-preview-loading.cjs
+
+/tests/attributes-material.cjs

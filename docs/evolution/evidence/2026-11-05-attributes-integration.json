@@ -1,0 +1,89 @@
+{
+  "schema": "evo42-attributes-integration-v1",
+  "date": "2026-11-05",
+  "base": "0ebd710d0a090a1703a6d087871668e11373f448",
+  "branch": "perf/4.2-windows-device-followup",
+  "scope": "Owner-approved attributes presentation integration; native ownership retained; no release approval",
+  "environment": {
+    "os": "macOS arm64",
+    "node": "26.13.0",
+    "chromium": "153.0.8010.12"
+  },
+  "inputSha256": {
+    "src/characteristics/material.ts": "c07c314d956cd6873fa726ea7f39e8fd40b86e62cb482c90aca6fa60c2d77e00",
+    "src/ui/material-motion-style.ts": "2b00bf3f27337ede9355ecd1bd7e8c7410d06661cf276d0260f6c5670450911e",
+    "src/ui/foreground-plane.ts": "48f1a733a6a5600d981639aac56eacbfc77850e08a8ff1c4a38f51c995b672fc",
+    "src/ui/native-overlay-navigation.ts": "d145dd44091927e2b6eeb392bc042f107e2e95923dccfe8d1b9c755dac1b9e4e",
+    "src/theme/settings-material.ts": "3f9bdb89a84395c5690a641b72e7a7493afc16622ab44ac66a22c24841b21e1a",
+    "src/ui/weather/wet-glass.ts": "8e5a1f7c3300d22ebadfd226878dec5d5c17a3a21fee4a7814771986ba45e26b",
+    "framework/official-ui/weather.ts": "5a935e10b31699f683f84ca8eafe82b69f7a541b40bf8a628ba1482069555a5d",
+    "tests/attributes-material.cts": "8b5d63ee9a9c9a88995f2dc9d41ae544135e6a58882c1086f524ae4f2a6088e4",
+    "tests/settings-ci.cts": "2241318eb1503fdbc4fa10eaf6832158a360e5f72dab01f43df889ee08f9a4c7",
+    "tests/header-weather.cts": "82ee0654768381cec8ee5b18dc6647e6c1a901920c51e7b64ae18e0fed0cff89",
+    "tests/weather-dom-writes.cts": "103b274a03ecce8ffb9770280a8e4e4860b5e71a776f162217900a390bc0c4c8",
+    "tests/foreground-plane.cts": "4deeacff3433cbc4f8bfbf81e23b890c5163be9ba802ed6e456c34802404f0bf",
+    "scripts/expected.lock.json": "7b64e47512c7b6a291dcfa3ffb87a96e751df6079a88f67f8cd77cde779cf2ab"
+  },
+  "local": {
+    "ciCheck": "PASS",
+    "attributes": {
+      "results": [
+        "geometry 1280 zoom 1: real native nodes, rain/snow, scroll, drag, settle, disposal",
+        "geometry 1280 zoom 1.25: real native nodes, rain/snow, scroll, drag, settle, disposal",
+        "geometry 390 zoom 1: real native nodes, rain/snow, scroll, drag, settle, disposal",
+        "geometry 390 zoom 1.25: real native nodes, rain/snow, scroll, drag, settle, disposal",
+        "12 pointer moves coalesce into one root transform paint",
+        "stone-free off/on retains native root and foreground and restores correct scale",
+        "finite native fade finish/cancel restores readiness without pointerdown; disposal prevents revival",
+        "close, role switch, disable, native transform fallback, reduced motion, replacement and destroy",
+        "unsupported independent transforms retain native behavior",
+        "baseline keeps native window without new motion"
+      ],
+      "errors": []
+    },
+    "affected": [
+      "settings-ci PASS",
+      "foreground-plane PASS",
+      "header-weather PASS",
+      "weather-dom-writes 10 named cases PASS",
+      "C1 candidate and shadow-plans PASS"
+    ],
+    "weatherReads": {
+      "controlledOwnedBatches": 12,
+      "oldModuleReads": 12,
+      "currentModuleReads": 0,
+      "externalStylesWake": true,
+      "mixedStylesWake": true,
+      "releaseWakes": true
+    },
+    "negativeCases": [
+      "0ebd710 header-weather module rejected at owned read count",
+      "0ebd710 wet-glass rejected at moving content protection"
+    ],
+    "preview": {
+      "output": "tests/artifacts/ui42/attributes-material/comparison-1793857033020",
+      "viewportHeights": 900,
+      "widths": [
+        1280,
+        390
+      ],
+      "playbackRate": 1,
+      "sequence": "rain, title drag, settle, section navigation, snow, close/reopen",
+      "note": "Independent recordings of the same operation script; startup timing and browser frame pacing are not synchronized."
+    },
+    "unitFirstAttempt": {
+      "status": "UNVERIFIED",
+      "individualPass": 38,
+      "reason": "SourceChangedDuringExecution: lock and documentation were updated during the run; final frozen repeat required"
+    }
+  },
+  "remote": {
+    "status": "PENDING_FROZEN_COMMIT"
+  },
+  "limits": [
+    "Controlled synthetic fixture only; no private game assets",
+    "Not Android/WebView, Windows or actual game acceptance",
+    "Not whole-game FPS/GPU/power improvement",
+    "No main merge, release, Host API or gate migration"
+  ]
+}

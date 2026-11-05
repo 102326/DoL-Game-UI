@@ -8,8 +8,8 @@ export const mappings: Record<string, Mapping> = {
  },
  'src/theme/acrylic.ts': {
   // Direct: adapter-materials; composed: theme/settings, official Hub integration and device layouts.
-  standard: ['browser.adapter-materials.cjs', 'browser.settings-ci.cjs', 'browser.evolution-owner-resources.cjs', 'browser.device-layouts.cjs'],
-  research: ['settings-ci', 'evolution-owner-resources'],
+  standard: ['browser.attributes-material.cjs', 'browser.adapter-materials.cjs', 'browser.settings-ci.cjs', 'browser.evolution-owner-resources.cjs', 'browser.device-layouts.cjs'],
+  research: ['attributes-material', 'settings-ci', 'evolution-owner-resources'],
   // Standalone: actual transparency values, controls and storage failure.
   standalone: ['tests/ui41-material.cjs']
  },

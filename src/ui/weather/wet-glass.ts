@@ -68,7 +68,7 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
  let rainEnergy=1,rainAmount=1,showerDensity=0,showerSpeed=0,microVisible=0;const frost=climate?makeFrost(ctx,safe):undefined;
  let protectedBoxes:Box[]=[],frameProtection:Box[]=[],active:Box[]=[],dirty=true,width=0,height=0,rainHeight=0,lastTime=0,visibleFlow=0,wasMoving=false;
  let layoutAnimations:Animation[]=[];
- const mark=()=>{if(!scope.active())return;dirty=true;invalidate()};const observer=new MutationObserver(mark);scope.own(()=>observer.disconnect());observer.observe(shell,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-workspace-transition','data-settings-layout','open']});shell.addEventListener('scroll',mark,true);scope.own(()=>shell.removeEventListener('scroll',mark,true));
+ const mark=()=>{if(!scope.active())return;dirty=true;invalidate()};const observer=new MutationObserver(mark);scope.own(()=>observer.disconnect());observer.observe(shell,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-workspace-transition','data-settings-layout','open','data-dgu-material-moving']});shell.addEventListener('scroll',mark,true);scope.own(()=>shell.removeEventListener('scroll',mark,true));
  // Centered settings move protected labels/controls without resizing the shell.
  observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-options-centered']});
  const intersects=(a:Box,b:Box)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
@@ -133,11 +133,16 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   // WAAPI geometry changes do not emit mutations. Protect the moving workspace
   // conservatively, then remeasure its final text/controls after cancellation or finish.
   if(dirty)layoutAnimations=shell.getAnimations({subtree:true}).filter(a=>a.effect instanceof KeyframeEffect&&a.effect.target instanceof Element&&a.effect.target.matches('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab,.dmt-workspace-section,#customOverlayContent'));
-  const movingLayout=layoutAnimations.some(a=>a.playState==='running');
-  if(dirty||specialSkies&&movingLayout||s.width!==width||s.height!==height||wasMoving&&!movingLayout)layout(s.width,s.height);
+  const animatedLayout=layoutAnimations.some(a=>a.playState==='running'),movingLayout=shell.hasAttribute('data-dgu-material-moving')||animatedLayout;
+  if(dirty||specialSkies&&animatedLayout||s.width!==width||s.height!==height||wasMoving&&!movingLayout)layout(s.width,s.height);
   frameProtection=protectedBoxes;
   const workspace=shell.querySelector('.dmt-workspace,#customOverlayContent');
-  if(movingLayout&&workspace){const r=workspace.getBoundingClientRect(),base=canvas.getBoundingClientRect(),scale=base.width/s.width||1;frameProtection=[...protectedBoxes,{x:(r.x-base.x)/scale-96,y:(r.y-base.y)/scale-48,width:r.width/scale+192,height:r.height/scale+96}]}
+  if(movingLayout&&workspace){
+   const base=canvas.getBoundingClientRect(),scale=base.width/s.width||1,scaleY=base.height/(canvas.clientHeight||s.height)||1,r=workspace.getBoundingClientRect();
+   // Header and navigation share the shell transform; their cached local boxes
+   // stay aligned. Only the counter-scaled, lagging core needs a broad guard.
+   frameProtection=[...protectedBoxes,{x:(r.x-base.x)/scale-96,y:(r.y-base.y)/scaleY-48,width:r.width/scale+192,height:r.height/scaleY+96}];
+  }
   wasMoving=movingLayout;
   const dt=Math.min(.05,Math.max(0,s.time-lastTime));lastTime=s.time;
   const humidity=s.wet*(1-s.snow*.8);rainEnergy=withForce?1.05+s.intensity*.85:1;rainAmount=climate?Math.min(2,s.intensity*(scatter?.8:withForce?1.4:1)):1;model.step(dt,humidity,rainAmount,rainEnergy);

@@ -1,6 +1,7 @@
 import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
+import {isMaterialTransformMutation} from '../../src/ui/material-motion-style';
 import {settingsWeather} from '../../src/ui/weather/settings';
 type WeatherKind='clear'|'cloud'|'rain'|'snow'|'storm'|'fog'|'unknown';
 type RainLevel='normal'|'light'|'heavy'|'severe';
@@ -89,7 +90,7 @@ export function headerWeather(){
     surfaces.set(key,s);
     if(s.renderer){
      const watch=visualScope();s.stopWatch=scope.own(()=>watch.dispose());const wake=()=>{if(scope.active()&&surfaces.get(key)===s)refresh()};
-     try{const resize=new ResizeObserver(wake);watch.own(()=>resize.disconnect());resize.observe(parent);const change=new MutationObserver(wake);watch.own(()=>change.disconnect());for(const node of new Set([header,parent,parent.closest('dialog')].filter((n):n is HTMLElement=>!!n)))change.observe(node,{attributes:true,attributeFilter:['style','class','hidden','open','inert']})}
+     try{const resize=new ResizeObserver(wake);watch.own(()=>resize.disconnect());resize.observe(parent);const change=new MutationObserver(records=>{if(records.some(record=>!isMaterialTransformMutation(record)))wake()});watch.own(()=>change.disconnect());for(const node of new Set([header,parent,parent.closest('dialog')].filter((n):n is HTMLElement=>!!n)))change.observe(node,{attributes:true,attributeOldValue:true,attributeFilter:['style','class','hidden','open','inert','data-dgu-material-moving']})}
      catch(error){remove(key);throw error}
     }return;
    }

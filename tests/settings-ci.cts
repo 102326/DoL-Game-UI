@@ -54,10 +54,11 @@ function portOf(server:ViteDevServer){const address=server.httpServer?.address()
   const material=dialog.locator('[data-dgu-settings-material]'),handle=dialog.locator('.dmt-settings-header');
   assert.equal(await material.count(),1,'real settings mounts one material owner');
   const grip=must(await handle.boundingBox()),dragX=grip.x+grip.width*.4,dragY=grip.y+grip.height*.5;
-  await page.mouse.move(dragX,dragY);await page.mouse.down();
+  await page.mouse.move(dragX,dragY);await page.mouse.down();assert.equal(await material.getAttribute('data-dgu-material-moving'),'');
   await page.mouse.move(dragX+18,dragY+4,{steps:6});await page.mouse.up();
   assert.doesNotMatch(await material.evaluate(n=>(n as HTMLElement).style.translate),/^0px(?: 0px)?$/,'title drag moves the real shell');
-  await page.waitForFunction(()=>/^1(?: 1)?$/.test(must(document.querySelector<HTMLElement>('[data-dgu-settings-material]')).style.scale));
+  await page.waitForFunction(()=>{const shell=must(document.querySelector<HTMLElement>('[data-dgu-settings-material]'));return /^1(?: 1)?$/.test(shell.style.scale)&&!shell.hasAttribute('data-dgu-material-moving')});
+  assert.equal(await material.getAttribute('data-dgu-material-moving'),null,'settled settings releases transient motion protection');
   // Closing/resetting cannot leave a translated shell behind on the next opening.
   await page.locator('.dmt-close').click();await waitSettingsClosed(page);
   assert.match(await material.evaluate(n=>(n as HTMLElement).style.translate),/^0px(?: 0px)?$/);

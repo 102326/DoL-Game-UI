@@ -3,6 +3,10 @@ import {navigationRect} from './navigation-geometry';
 import {visualScope} from './visual-scope';
 import './foreground-plane.css';
 
+// Internal presentation invalidation only; no native or Host protocol changes.
+const refreshers=new WeakMap<HTMLElement,()=>void>();
+export function refreshForeground(root:HTMLElement){refreshers.get(root)?.()}
+
 /** Keep animated decoration outside the static glass; native controls and geometry owners stay put. */
 export function foregroundPlane(root:HTMLElement,parts:readonly HTMLElement[]){
  if(!root.isConnected||!root.matches(ownedOverlaySelector)||!document.documentElement.hasAttribute('data-dgu-acrylic-adjustment'))return;
@@ -41,7 +45,7 @@ export function foregroundPlane(root:HTMLElement,parts:readonly HTMLElement[]){
    mirrors.set(source,m);paint.append(clip);source.setAttribute('data-sf-foreground-source','1');
   }
  }
- function place(m:Mirror,origin:{left:number;top:number}){
+ function place(m:Mirror,origin:{left:number;top:number},scaleX=1,scaleY=1){
   const r=m.source.getBoundingClientRect(),style=getComputedStyle(m.source);
   if(!r.width||!r.height||style.visibility==='hidden'||m.source.closest('.hidden,[hidden],[inert]')){m.clip.style.display='none';return}
   let left=r.left,top=r.top,right=r.right,bottom=r.bottom;
@@ -54,8 +58,8 @@ export function foregroundPlane(root:HTMLElement,parts:readonly HTMLElement[]){
   if(right<=left||bottom<=top){m.clip.style.display='none';return}
   const box=navigationRect(host,r),clip=navigationRect(host,new DOMRect(left,top,right-left,bottom-top));
   if(!box||!clip){m.clip.style.display='none';return}
-  Object.assign(m.clip.style,{display:'block',left:clip.left-origin.left+'px',top:clip.top-origin.top+'px',width:clip.width+'px',height:clip.height+'px'});
-  Object.assign(m.clone.style,{left:box.left-clip.left+'px',top:box.top-clip.top+'px',width:box.width+'px',height:box.height+'px',visibility:'visible'});
+  Object.assign(m.clip.style,{display:'block',left:(clip.left-origin.left)/scaleX+'px',top:(clip.top-origin.top)/scaleY+'px',width:clip.width/scaleX+'px',height:clip.height/scaleY+'px'});
+  Object.assign(m.clone.style,{left:(box.left-clip.left)/scaleX+'px',top:(box.top-clip.top)/scaleY+'px',width:box.width/scaleX+'px',height:box.height/scaleY+'px',visibility:'visible'});
   const from=m.source.querySelector('svg'),to=m.clone.querySelector('svg');if(!from||!to)return;
   for(const attribute of ['viewBox']){const value=from.getAttribute(attribute);if(value!==null&&to.getAttribute(attribute)!==value)to.setAttribute(attribute,value)}
   for(let i=0;i<from.children.length;i++)for(const attribute of ['width','height','rx']){
@@ -76,11 +80,17 @@ export function foregroundPlane(root:HTMLElement,parts:readonly HTMLElement[]){
   const sx=r.width/cssWidth,sy=r.height/cssHeight;
   const box=navigationRect(host,new DOMRect(r.left+parseFloat(style.borderLeftWidth)*sx,r.top+parseFloat(style.borderTopWidth)*sy,r.width-borderX*sx,r.height-borderY*sy));
   if(!box){nested();return}
-  Object.assign(paint.style,{left:box.left+'px',top:box.top+'px',width:box.width+'px',height:box.height+'px'});
+  // Material motion keeps DOM drops, cropped canvas and contours in the same
+  // local coordinates as the original shell, including its independent zoom.
+  const material=root.hasAttribute('data-dgu-attributes-material'),paintWidth=material?cssWidth-borderX:box.width,paintHeight=material?cssHeight-borderY:box.height;
+  const scaleX=box.width/paintWidth,scaleY=box.height/paintHeight;
+  if(![paintWidth,paintHeight,scaleX,scaleY].every(n=>Number.isFinite(n)&&n>0)){nested();return}
+  Object.assign(paint.style,{left:box.left+'px',top:box.top+'px',width:paintWidth+'px',height:paintHeight+'px',transformOrigin:'0 0',scale:material?`${scaleX} ${scaleY}`:''});
   if(!active){for(const node of parts)paint.append(node);active=true}
-  discover();let moving=false;for(const m of mirrors.values()){place(m,box);moving=running(m.source)||moving}if(moving)queue();
+  discover();let moving=false;for(const m of mirrors.values()){place(m,box,scaleX,scaleY);moving=running(m.source)||moving}if(moving)queue();
  }
- function dispose(){if(disposed)return;disposed=true;try{scope.dispose()}finally{try{nested()}finally{host.remove()}}}
+ function refreshNow(){scope.cancelFrame(tick);tick()}
+ function dispose(){if(disposed)return;disposed=true;if(refreshers.get(root)===refreshNow)refreshers.delete(root);try{scope.dispose()}finally{try{nested()}finally{host.remove()}}}
  try{
   root.after(host);
   const resized=new ResizeObserver(queue);scope.own(()=>resized.disconnect());resized.observe(root);
@@ -89,7 +99,7 @@ export function foregroundPlane(root:HTMLElement,parts:readonly HTMLElement[]){
   const preferences=new MutationObserver(queue);scope.own(()=>preferences.disconnect());preferences.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-dgu-acrylic-adjustment','data-dgu-visualmotion','data-dgu-visualglow','data-dol-midnight']});
   window.addEventListener('resize',queue);scope.own(()=>window.removeEventListener('resize',queue));
   document.addEventListener('scroll',queue,true);scope.own(()=>document.removeEventListener('scroll',queue,true));
-  sync();queue();
+  sync();queue();refreshers.set(root,refreshNow);
  }catch(error){try{dispose()}finally{console.warn('Foreground unavailable; keeping nested decoration',error)}return}
  return dispose;
 }
