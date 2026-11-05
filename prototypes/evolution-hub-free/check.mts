@@ -6,7 +6,7 @@ import {createEvo42Server} from '../../scripts/preview-evo42.mts';
 import {readPosition,locate,positionKey,canPersist} from './position.ts';
 import {positionKey as legacyKey} from '../../framework/motion-hub/geometry.ts';
 const out=`tests/artifacts/evo42-hub-direct/${Date.now()}`;fs.mkdirSync(out,{recursive:true});
-const inputs=['FreeHub.vue','position.ts','owner.ts','main.ts','storage.ts','index.html','check.mts'].map(p=>'prototypes/evolution-hub-free/'+p).concat(['dist/framework/official-ui/style.css']);
+const inputs=['FreeHub.vue','edge-physics.ts','edge.css','position.ts','owner.ts','main.ts','storage.ts','index.html','check.mts'].map(p=>'prototypes/evolution-hub-free/'+p).concat(['dist/framework/official-ui/style.css']);
 const hash=(f:string)=>createHash('sha256').update(fs.readFileSync(f)).digest('hex'),hashes=Object.fromEntries(inputs.map(f=>[f,hash(f)]));
 const errors:string[]=[],results:string[]=[];let status='FAIL',failure:string|undefined;
 const legacy=JSON.stringify({side:'left',y:.42,docked:false});

@@ -691,5 +691,803 @@
     "Selected remote files rehashed against the artifact index; this turn did not redownload and independently verify the entire research artifact",
     "Original full standard/research runs apply to unchanged e1a47d2 product inputs, not this new research code",
     "Raw video/logs remain ignored local files; regenerate on another device"
-  ]
+  ],
+  "edgeContinuation": {
+    "baseCommit": "ea0e83db7aefc50736b8e82d95915bdb63f57b1b",
+    "scope": "Isolated candidate, not production integration, game/device acceptance or performance result",
+    "behavior": {
+      "artifact": "evo42-hub-edge/1793873813750/result.json",
+      "sha256": "52d869a246c18b7ccf6236d567b048dfdedf2e6340999c9f4e89ce821ac5a317",
+      "status": "PASS",
+      "stage": "390 interrupt reduced",
+      "node": "v26.13.0",
+      "browser": "153.0.8010.12",
+      "inputs": {
+        "prototypes/evolution-hub-free/FreeHub.vue": "9ff14f1543585d4992d90269401b9b2603b84f7a40daaacf15f25e90759ee127",
+        "prototypes/evolution-hub-free/check.mts": "0804036a35d8118a35bc8342c1eb1c64fcf1494486abb6628031b5a7825d71ed",
+        "prototypes/evolution-hub-free/compare.html": "dea7c75ed3b70eca8f295ad54e40b81dea86d376e79d0e58060dbf4ac83cf8fe",
+        "prototypes/evolution-hub-free/edge-check.mts": "6ea598e34d1eef1433b68bfce95851e5963f0bd1b813089693c7011f1ab04837",
+        "prototypes/evolution-hub-free/edge-physics-check.mts": "2a169d3d8fa4b139872aee7540fc2ee228b96aaae31464c94584aa81819ca455",
+        "prototypes/evolution-hub-free/edge-physics.ts": "b19e597ee1e67024495d7aeda3d8242d8fe1f77cfeeebc43291e05a9ae30c963",
+        "prototypes/evolution-hub-free/edge.css": "858541b70274aaf8c6bd7af68817e3f7177feb9e5f19f9f394ef2ba604ab723c",
+        "prototypes/evolution-hub-free/index.html": "fcf6c5b37574e5da316f4c8189bf2139832cb8f37a9009c727ad089754efca78",
+        "prototypes/evolution-hub-free/main.ts": "96b00e50819727f0ac0c67f1113c946c5824e8548b2b000dcea5eea1b3853b35",
+        "prototypes/evolution-hub-free/owner.ts": "4b2869bbe7f96ebe3815bc39eda75d0a305f65b208bf7f6d1e8a227c035ad748",
+        "prototypes/evolution-hub-free/position.ts": "812961a8ba9be069e481ea112e96fd6e6764e6567bd586f4b23458bfcd88338b",
+        "prototypes/evolution-hub-free/record.mts": "25c5e1431dabe51858116b2c6d471e5fa2545fb72ef11496a03403a301eb85a0",
+        "prototypes/evolution-hub-free/storage.ts": "6fcb7853ac70e01f185e6a8a3fe7e5ea9863e0410907963a64d2a53c29d9bb9a",
+        "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      },
+      "rows": [
+        {
+          "width": 1280,
+          "status": "PASS",
+          "flightFrames": 133,
+          "scope": "placement, short-contact rejection, charge/aim, finite flight, real regrab, cancel, lifecycle, reduced motion, storage and teardown"
+        },
+        {
+          "width": 390,
+          "status": "PASS",
+          "flightFrames": 132,
+          "scope": "placement, short-contact rejection, charge/aim, finite flight, real regrab, cancel, lifecycle, reduced motion, storage and teardown"
+        },
+        {
+          "width": 390,
+          "input": "Chromium CDP touch emulation",
+          "status": "PASS"
+        },
+        {
+          "variant": "direct",
+          "status": "PASS",
+          "scope": "previous placement comparison has no edge launch"
+        }
+      ],
+      "errors": [],
+      "limits": "Isolated Chromium; not real touch/WebView, game, adoption or performance acceptance"
+    },
+    "menuRegression": {
+      "artifact": "evo42-hub-direct/1793873832986/result.json",
+      "sha256": "cef4358ad4059e82f0ed58f6c3672e3a932f676a6ecffafe8f9c6ad3de71f35f",
+      "status": "PASS",
+      "scope": "controlled prototype only; not product/device acceptance",
+      "environment": {
+        "node": "v26.13.0",
+        "chromium": "153.0.8010.12"
+      },
+      "inputs": {
+        "prototypes/evolution-hub-free/FreeHub.vue": "9ff14f1543585d4992d90269401b9b2603b84f7a40daaacf15f25e90759ee127",
+        "prototypes/evolution-hub-free/edge-physics.ts": "b19e597ee1e67024495d7aeda3d8242d8fe1f77cfeeebc43291e05a9ae30c963",
+        "prototypes/evolution-hub-free/edge.css": "858541b70274aaf8c6bd7af68817e3f7177feb9e5f19f9f394ef2ba604ab723c",
+        "prototypes/evolution-hub-free/position.ts": "812961a8ba9be069e481ea112e96fd6e6764e6567bd586f4b23458bfcd88338b",
+        "prototypes/evolution-hub-free/owner.ts": "4b2869bbe7f96ebe3815bc39eda75d0a305f65b208bf7f6d1e8a227c035ad748",
+        "prototypes/evolution-hub-free/main.ts": "96b00e50819727f0ac0c67f1113c946c5824e8548b2b000dcea5eea1b3853b35",
+        "prototypes/evolution-hub-free/storage.ts": "6fcb7853ac70e01f185e6a8a3fe7e5ea9863e0410907963a64d2a53c29d9bb9a",
+        "prototypes/evolution-hub-free/index.html": "fcf6c5b37574e5da316f4c8189bf2139832cb8f37a9009c727ad089754efca78",
+        "prototypes/evolution-hub-free/check.mts": "0804036a35d8118a35bc8342c1eb1c64fcf1494486abb6628031b5a7825d71ed",
+        "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34"
+      },
+      "results": [
+        "1280 baseline: placement, original action, fan/grid hits",
+        "1280 free: placement, original action, fan/grid hits, read-only legacy, reload, cancel, nudge, explicit dock, rotation, reduced motion, hide/restore, unknown-version notice, storage isolation and disposal",
+        "390 baseline: placement, original action, fan/grid hits",
+        "390 free: placement, original action, fan/grid hits, read-only legacy, reload, cancel, nudge, explicit dock, rotation, reduced motion, hide/restore, unknown-version notice, storage isolation and disposal"
+      ],
+      "errors": []
+    },
+    "recording": {
+      "artifact": "evo42-hub-edge/1793873846945/recording.json",
+      "sha256": "74072d5a3b4baa269fd68dc39c22596e04ddb921e1b8213bf0f741867a86c0d5",
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "node": "v26.13.0",
+      "inputs": {
+        "prototypes/evolution-hub-free/FreeHub.vue": "9ff14f1543585d4992d90269401b9b2603b84f7a40daaacf15f25e90759ee127",
+        "prototypes/evolution-hub-free/check.mts": "0804036a35d8118a35bc8342c1eb1c64fcf1494486abb6628031b5a7825d71ed",
+        "prototypes/evolution-hub-free/compare.html": "dea7c75ed3b70eca8f295ad54e40b81dea86d376e79d0e58060dbf4ac83cf8fe",
+        "prototypes/evolution-hub-free/edge-check.mts": "6ea598e34d1eef1433b68bfce95851e5963f0bd1b813089693c7011f1ab04837",
+        "prototypes/evolution-hub-free/edge-physics-check.mts": "2a169d3d8fa4b139872aee7540fc2ee228b96aaae31464c94584aa81819ca455",
+        "prototypes/evolution-hub-free/edge-physics.ts": "b19e597ee1e67024495d7aeda3d8242d8fe1f77cfeeebc43291e05a9ae30c963",
+        "prototypes/evolution-hub-free/edge.css": "858541b70274aaf8c6bd7af68817e3f7177feb9e5f19f9f394ef2ba604ab723c",
+        "prototypes/evolution-hub-free/index.html": "fcf6c5b37574e5da316f4c8189bf2139832cb8f37a9009c727ad089754efca78",
+        "prototypes/evolution-hub-free/main.ts": "96b00e50819727f0ac0c67f1113c946c5824e8548b2b000dcea5eea1b3853b35",
+        "prototypes/evolution-hub-free/owner.ts": "4b2869bbe7f96ebe3815bc39eda75d0a305f65b208bf7f6d1e8a227c035ad748",
+        "prototypes/evolution-hub-free/position.ts": "812961a8ba9be069e481ea112e96fd6e6764e6567bd586f4b23458bfcd88338b",
+        "prototypes/evolution-hub-free/record.mts": "25c5e1431dabe51858116b2c6d471e5fa2545fb72ef11496a03403a301eb85a0",
+        "prototypes/evolution-hub-free/storage.ts": "6fcb7853ac70e01f185e6a8a3fe7e5ea9863e0410907963a64d2a53c29d9bb9a",
+        "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34"
+      },
+      "cases": [
+        {
+          "width": 1280,
+          "variant": "direct",
+          "errors": []
+        },
+        {
+          "width": 1280,
+          "variant": "free",
+          "errors": []
+        },
+        {
+          "width": 390,
+          "variant": "direct",
+          "errors": []
+        },
+        {
+          "width": 390,
+          "variant": "free",
+          "errors": []
+        }
+      ],
+      "note": "Same operation script, viewport, waits and 1x playback; independent captures are not frame-synchronized or performance measurements."
+    },
+    "ciAttribution": {
+      "artifact": "evo42-next-ci-cost/device-layout-hub-probe.json",
+      "sha256": "72457e20293088c3d95af05a28e80bd1843e8b9e4bd2b1b660e04045304cf660",
+      "status": "PASS",
+      "scope": "isolated instrumented subset, not full device-layout PASS or comparative speed result",
+      "started": "2026-11-05T10:00:42.799Z",
+      "sourceCommit": "ea0e83db7aefc50736b8e82d95915bdb63f57b1b",
+      "node": "v26.13.0",
+      "browserVersion": "153.0.8010.12",
+      "playwright": "1.63.0",
+      "input": {
+        "manifestSha256": "6f31e1a3188363cef5c0a06ace139012522eae52b7890a0a4afb869ae40d32d6",
+        "count": 573,
+        "keyFiles": {
+          "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34",
+          "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+          "scripts/research/device-layout-cost-probe.mts": "f1ccf80db35c4d2c422baee50711ee5aaf1fc2aa5860aa4f12c19c4b5e9b15d9",
+          "tests/browser-options.cjs": "ba2900672fce2fa34c6016bc08ed74c24d31ba2871e67f1d1a16d73437732fb4",
+          "tests/device-case-plan.cjs": "8ee2e18378056cf1d0644f007d5571c75f04bb1b1c0b550afeccb5abf858500e",
+          "tests/device-layout-oracles.cjs": "f496ab0e3fb259371b3cf8ca5c8d790dfccb9e233bc5e61b6e3661c0162f1f82",
+          "tests/device-layout-oracles.cts": "da7a2cfcbd04ea0b9b9678bfd2cb6403fa287608e669f7d1257f0a14a4981a7a",
+          "tests/device-layouts.cts": "5bdf88fdf8bee890b77b8c9036667e32b7f88d15f2fa07c8ce7726eee789eb7a",
+          "tests/device-profiles.cjs": "d8df904a17e01e35084cdfc01e23d039e8859a929fcce83534ff889844855153",
+          "tests/device-profiles.cts": "affc12fe83bdbf8b4f2e2be621f34642f5cd324c399e258fecb78777c874f58d"
+        }
+      },
+      "widths": [
+        320,
+        600,
+        900,
+        1280
+      ],
+      "heights": [
+        390,
+        900
+      ],
+      "samples": [
+        {
+          "width": 320,
+          "height": 390,
+          "total": 821.4194160000002,
+          "parts": {
+            "scene": {
+              "milliseconds": 217.91445900000008,
+              "calls": 3
+            },
+            "hub.scene": {
+              "milliseconds": 33.317291999999725,
+              "calls": 1
+            },
+            "hub.ready": {
+              "milliseconds": 18.18120799999997,
+              "calls": 1
+            },
+            "scroll": {
+              "milliseconds": 28.168208999999933,
+              "calls": 7
+            },
+            "snapshot": {
+              "milliseconds": 11.718249000000469,
+              "calls": 7
+            },
+            "assert": {
+              "milliseconds": 1.0529999999994288,
+              "calls": 7
+            },
+            "hub.inspect": {
+              "milliseconds": 21.460042000000158,
+              "calls": 3
+            },
+            "hub.open": {
+              "milliseconds": 194.58458299999984,
+              "calls": 1
+            },
+            "hub.frame": {
+              "milliseconds": 61.27370800000017,
+              "calls": 2
+            },
+            "hub.detail-scroll": {
+              "milliseconds": 2.334374999999909,
+              "calls": 1
+            },
+            "hub.detail-open": {
+              "milliseconds": 7.579332999999679,
+              "calls": 1
+            },
+            "hub.detail-close": {
+              "milliseconds": 65.27645900000016,
+              "calls": 1
+            },
+            "hub": {
+              "milliseconds": 404.25250000000005,
+              "calls": 1
+            },
+            "settings": {
+              "milliseconds": 202.8673749999998,
+              "calls": 1
+            },
+            "saves": {
+              "milliseconds": 214.2010419999997,
+              "calls": 1
+            }
+          },
+          "completedScenes": [
+            "hub:scan-boundary-position",
+            "hub:long-view-detail-and-close",
+            "settings:modal-close-blocks-hub",
+            "saves:v2-container-layout",
+            "saves:native-bottom"
+          ]
+        },
+        {
+          "width": 320,
+          "height": 900,
+          "total": 519.9120420000004,
+          "parts": {
+            "scene": {
+              "milliseconds": 97.46583200000077,
+              "calls": 3
+            },
+            "hub.scene": {
+              "milliseconds": 33.36175000000003,
+              "calls": 1
+            },
+            "hub.ready": {
+              "milliseconds": 3.41466599999967,
+              "calls": 1
+            },
+            "scroll": {
+              "milliseconds": 21.599666999999954,
+              "calls": 7
+            },
+            "snapshot": {
+              "milliseconds": 8.614293000000998,
+              "calls": 7
+            },
+            "assert": {
+              "milliseconds": 0.2367500000000291,
+              "calls": 7
+            },
+            "hub.inspect": {
+              "milliseconds": 17.465124999998807,
+              "calls": 3
+            },
+            "hub.open": {
+              "milliseconds": 68.67029199999979,
+              "calls": 1
+            },
+            "hub.frame": {
+              "milliseconds": 53.992707999999766,
+              "calls": 2
+            },
+            "hub.detail-scroll": {
+              "milliseconds": 3.8498329999997623,
+              "calls": 1
+            },
+            "hub.detail-open": {
+              "milliseconds": 8.847749999999905,
+              "calls": 1
+            },
+            "hub.detail-close": {
+              "milliseconds": 64.06466700000055,
+              "calls": 1
+            },
+            "hub": {
+              "milliseconds": 253.7262499999997,
+              "calls": 1
+            },
+            "settings": {
+              "milliseconds": 100.65108400000008,
+              "calls": 1
+            },
+            "saves": {
+              "milliseconds": 165.51129200000014,
+              "calls": 1
+            }
+          },
+          "completedScenes": [
+            "hub:scan-boundary-position",
+            "hub:long-view-detail-and-close",
+            "settings:modal-close-blocks-hub",
+            "saves:v2-container-layout",
+            "saves:native-bottom"
+          ]
+        },
+        {
+          "width": 600,
+          "height": 390,
+          "total": 503.61012500000015,
+          "parts": {
+            "scene": {
+              "milliseconds": 96.92591699999775,
+              "calls": 3
+            },
+            "hub.scene": {
+              "milliseconds": 33.501375000000735,
+              "calls": 1
+            },
+            "hub.ready": {
+              "milliseconds": 2.3227910000005068,
+              "calls": 1
+            },
+            "scroll": {
+              "milliseconds": 17.11791499999981,
+              "calls": 7
+            },
+            "snapshot": {
+              "milliseconds": 5.823667999998179,
+              "calls": 7
+            },
+            "assert": {
+              "milliseconds": 0.18895599999996193,
+              "calls": 7
+            },
+            "hub.inspect": {
+              "milliseconds": 11.253456999999798,
+              "calls": 3
+            },
+            "hub.open": {
+              "milliseconds": 67.48558400000002,
+              "calls": 1
+            },
+            "hub.frame": {
+              "milliseconds": 47.70183399999951,
+              "calls": 2
+            },
+            "hub.detail-scroll": {
+              "milliseconds": 1.813666000000012,
+              "calls": 1
+            },
+            "hub.detail-open": {
+              "milliseconds": 5.957042000000001,
+              "calls": 1
+            },
+            "hub.detail-close": {
+              "milliseconds": 66.52520899999945,
+              "calls": 1
+            },
+            "hub": {
+              "milliseconds": 236.60899999999947,
+              "calls": 1
+            },
+            "settings": {
+              "milliseconds": 100.88687499999924,
+              "calls": 1
+            },
+            "saves": {
+              "milliseconds": 166.0991669999994,
+              "calls": 1
+            }
+          },
+          "completedScenes": [
+            "hub:scan-boundary-position",
+            "hub:long-view-detail-and-close",
+            "settings:modal-close-blocks-hub",
+            "saves:v2-container-layout",
+            "saves:native-bottom"
+          ]
+        },
+        {
+          "width": 600,
+          "height": 900,
+          "total": 534.3793329999999,
+          "parts": {
+            "scene": {
+              "milliseconds": 91.13637599999947,
+              "calls": 3
+            },
+            "hub.scene": {
+              "milliseconds": 30.3701659999997,
+              "calls": 1
+            },
+            "hub.ready": {
+              "milliseconds": 2.007166999999754,
+              "calls": 1
+            },
+            "scroll": {
+              "milliseconds": 26.333457999999155,
+              "calls": 7
+            },
+            "snapshot": {
+              "milliseconds": 8.667582999998558,
+              "calls": 7
+            },
+            "assert": {
+              "milliseconds": 0.3004579999997077,
+              "calls": 7
+            },
+            "hub.inspect": {
+              "milliseconds": 12.715126000000055,
+              "calls": 3
+            },
+            "hub.open": {
+              "milliseconds": 67.76100000000042,
+              "calls": 1
+            },
+            "hub.frame": {
+              "milliseconds": 45.54516699999931,
+              "calls": 2
+            },
+            "hub.detail-scroll": {
+              "milliseconds": 2.442874999999731,
+              "calls": 1
+            },
+            "hub.detail-open": {
+              "milliseconds": 6.7013749999996435,
+              "calls": 1
+            },
+            "hub.detail-close": {
+              "milliseconds": 69.67650000000049,
+              "calls": 1
+            },
+            "hub": {
+              "milliseconds": 237.31033300000036,
+              "calls": 1
+            },
+            "settings": {
+              "milliseconds": 116.09191699999974,
+              "calls": 1
+            },
+            "saves": {
+              "milliseconds": 180.95429200000035,
+              "calls": 1
+            }
+          },
+          "completedScenes": [
+            "hub:scan-boundary-position",
+            "hub:long-view-detail-and-close",
+            "settings:modal-close-blocks-hub",
+            "saves:v2-container-layout",
+            "saves:native-bottom"
+          ]
+        },
+        {
+          "width": 900,
+          "height": 390,
+          "total": 453.0266249999995,
+          "parts": {
+            "scene": {
+              "milliseconds": 103.03187500000058,
+              "calls": 3
+            },
+            "hub.scene": {
+              "milliseconds": 32.98854200000005,
+              "calls": 1
+            },
+            "hub.ready": {
+              "milliseconds": 2.596042000000125,
+              "calls": 1
+            },
+            "scroll": {
+              "milliseconds": 15.507126999998945,
+              "calls": 6
+            },
+            "snapshot": {
+              "milliseconds": 6.546417999999903,
+              "calls": 6
+            },
+            "assert": {
+              "milliseconds": 0.2123329999994894,
+              "calls": 6
+            },
+            "hub.inspect": {
+              "milliseconds": 13.13733400000001,
+              "calls": 3
+            },
+            "hub.open": {
+              "milliseconds": 68.07020899999952,
+              "calls": 1
+            },
+            "hub.frame": {
+              "milliseconds": 60.36341799999991,
+              "calls": 2
+            },
+            "hub.detail-scroll": {
+              "milliseconds": 2.2359999999998763,
+              "calls": 1
+            },
+            "hub.detail-open": {
+              "milliseconds": 6.633709000000636,
+              "calls": 1
+            },
+            "hub.detail-close": {
+              "milliseconds": 66.41183300000012,
+              "calls": 1
+            },
+            "hub": {
+              "milliseconds": 252.51520900000014,
+              "calls": 1
+            },
+            "settings": {
+              "milliseconds": 101.43570799999998,
+              "calls": 1
+            },
+            "saves": {
+              "milliseconds": 99.05154200000015,
+              "calls": 1
+            }
+          },
+          "completedScenes": [
+            "hub:scan-boundary-position",
+            "hub:long-view-detail-and-close",
+            "settings:modal-close-blocks-hub",
+            "saves:v2-container-layout",
+            "saves:native-bottom"
+          ]
+        },
+        {
+          "width": 900,
+          "height": 900,
+          "total": 443.1868749999994,
+          "parts": {
+            "scene": {
+              "milliseconds": 98.93954100000064,
+              "calls": 3
+            },
+            "hub.scene": {
+              "milliseconds": 23.558750000000146,
+              "calls": 1
+            },
+            "hub.ready": {
+              "milliseconds": 1.9217499999995198,
+              "calls": 1
+            },
+            "scroll": {
+              "milliseconds": 12.67687500000011,
+              "calls": 6
+            },
+            "snapshot": {
+              "milliseconds": 5.4722499999998035,
+              "calls": 6
+            },
+            "assert": {
+              "milliseconds": 0.18283299999984592,
+              "calls": 6
+            },
+            "hub.inspect": {
+              "milliseconds": 10.825042000000394,
+              "calls": 3
+            },
+            "hub.open": {
+              "milliseconds": 68.43537500000002,
+              "calls": 1
+            },
+            "hub.frame": {
+              "milliseconds": 48.06641700000091,
+              "calls": 2
+            },
+            "hub.detail-scroll": {
+              "milliseconds": 1.75,
+              "calls": 1
+            },
+            "hub.detail-open": {
+              "milliseconds": 5.824332999999569,
+              "calls": 1
+            },
+            "hub.detail-close": {
+              "milliseconds": 66.66695900000013,
+              "calls": 1
+            },
+            "hub": {
+              "milliseconds": 227.1148750000002,
+              "calls": 1
+            },
+            "settings": {
+              "milliseconds": 100.53670800000054,
+              "calls": 1
+            },
+            "saves": {
+              "milliseconds": 115.5145420000008,
+              "calls": 1
+            }
+          },
+          "completedScenes": [
+            "hub:scan-boundary-position",
+            "hub:long-view-detail-and-close",
+            "settings:modal-close-blocks-hub",
+            "saves:v2-container-layout",
+            "saves:native-bottom"
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 390,
+          "total": 435.740417,
+          "parts": {
+            "scene": {
+              "milliseconds": 103.43879200000083,
+              "calls": 3
+            },
+            "hub.scene": {
+              "milliseconds": 33.41533299999992,
+              "calls": 1
+            },
+            "hub.ready": {
+              "milliseconds": 1.630750000000262,
+              "calls": 1
+            },
+            "scroll": {
+              "milliseconds": 12.163249999999607,
+              "calls": 6
+            },
+            "snapshot": {
+              "milliseconds": 4.9707499999985885,
+              "calls": 6
+            },
+            "assert": {
+              "milliseconds": 0.1603769999983342,
+              "calls": 6
+            },
+            "hub.inspect": {
+              "milliseconds": 11.313042000000678,
+              "calls": 3
+            },
+            "hub.open": {
+              "milliseconds": 69.80012499999975,
+              "calls": 1
+            },
+            "hub.frame": {
+              "milliseconds": 46.15845899999931,
+              "calls": 2
+            },
+            "hub.detail-scroll": {
+              "milliseconds": 1.794832999999926,
+              "calls": 1
+            },
+            "hub.detail-open": {
+              "milliseconds": 5.656959000000825,
+              "calls": 1
+            },
+            "hub.detail-close": {
+              "milliseconds": 66.16829099999995,
+              "calls": 1
+            },
+            "hub": {
+              "milliseconds": 235.9722500000007,
+              "calls": 1
+            },
+            "settings": {
+              "milliseconds": 100.35400000000027,
+              "calls": 1
+            },
+            "saves": {
+              "milliseconds": 99.3925419999996,
+              "calls": 1
+            }
+          },
+          "completedScenes": [
+            "hub:scan-boundary-position",
+            "hub:long-view-detail-and-close",
+            "settings:modal-close-blocks-hub",
+            "saves:v2-container-layout",
+            "saves:native-bottom"
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 900,
+          "total": 471.4788749999998,
+          "parts": {
+            "scene": {
+              "milliseconds": 99.04308199999923,
+              "calls": 3
+            },
+            "hub.scene": {
+              "milliseconds": 34.472624999999425,
+              "calls": 1
+            },
+            "hub.ready": {
+              "milliseconds": 1.8942080000006172,
+              "calls": 1
+            },
+            "scroll": {
+              "milliseconds": 14.03058400000009,
+              "calls": 6
+            },
+            "snapshot": {
+              "milliseconds": 5.610124999999243,
+              "calls": 6
+            },
+            "assert": {
+              "milliseconds": 0.17758199999934732,
+              "calls": 6
+            },
+            "hub.inspect": {
+              "milliseconds": 11.78595899999982,
+              "calls": 3
+            },
+            "hub.open": {
+              "milliseconds": 68.65324999999939,
+              "calls": 1
+            },
+            "hub.frame": {
+              "milliseconds": 46.68529200000012,
+              "calls": 2
+            },
+            "hub.detail-scroll": {
+              "milliseconds": 1.7568750000000364,
+              "calls": 1
+            },
+            "hub.detail-open": {
+              "milliseconds": 5.933665999999903,
+              "calls": 1
+            },
+            "hub.detail-close": {
+              "milliseconds": 65.81837500000074,
+              "calls": 1
+            },
+            "hub": {
+              "milliseconds": 237.0490409999993,
+              "calls": 1
+            },
+            "settings": {
+              "milliseconds": 117.80641599999944,
+              "calls": 1
+            },
+            "saves": {
+              "milliseconds": 116.58779099999992,
+              "calls": 1
+            }
+          },
+          "completedScenes": [
+            "hub:scan-boundary-position",
+            "hub:long-view-detail-and-close",
+            "settings:modal-close-blocks-hub",
+            "saves:v2-container-layout",
+            "saves:native-bottom"
+          ]
+        }
+      ],
+      "measurement": "hub/settings/saves are inclusive; hub.* are nested; scene includes its original two frames; inspect includes scroll, snapshot and assertion; do not add inclusive and nested times",
+      "limitations": "single Mac Chromium pass; all selected widths use left Hub position; viewport setup is outside sample total; instrumentation adds overhead; no game or real device",
+      "totalsMilliseconds": {
+        "assert": 2.512,
+        "hub": 2084.549,
+        "hub.detail-close": 530.608,
+        "hub.detail-open": 53.134,
+        "hub.detail-scroll": 17.978,
+        "hub.frame": 409.787,
+        "hub.inspect": 109.955,
+        "hub.open": 673.46,
+        "hub.ready": 33.969,
+        "hub.scene": 254.986,
+        "saves": 1157.312,
+        "scene": 907.896,
+        "scroll": 147.597,
+        "settings": 940.63,
+        "snapshot": 57.423
+      },
+      "interpretation": "Nested attribution only. Real open/close includes scroll and actionability. No safe optimization benefit demonstrated; keep real click and original frame checks."
+    },
+    "checks": [
+      "Node26 pure physics assertions PASS",
+      "vue-tsc --noEmit -p prototypes/evolution-hub-free/tsconfig.json PASS",
+      "Strict TypeScript for edge/check/record/probe scripts PASS"
+    ],
+    "initialFailures": [
+      "Cancellation return in progress used logical destination on regrab; corrected to actual displayed position",
+      "Reduced-motion change notification could arrive after pointerup; synchronous move/up guard now prevents saving"
+    ],
+    "reviewFixes": [
+      "Stable charge stops RAF until pointer change",
+      "Catch click does not open menu"
+    ],
+    "notDone": [
+      "No product integration, global editor, main merge, release or new full Actions run",
+      "No Android/WebView physical touch, game-sidebars or final performance acceptance"
+    ]
+  }
 }

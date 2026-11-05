@@ -12,7 +12,7 @@ import type {FloatingApi} from '../../src/floating/main';
 import type {UiApi} from '../../src/public/ui';
 
 /** The existing opt-in floating preference also controls the official public-view Hub. */
-export function startFreeHub(host:Host,owner:Participant){
+export function startFreeHub(host:Host,owner:Participant,edgeEnabled=true){
  const scope=visualScope();let mounted:Readonly<MountHandle>|undefined;
  const root=window as Window & {DoLFloatingTools?:FloatingApi};
  let mode='';
@@ -39,7 +39,7 @@ export function startFreeHub(host:Host,owner:Participant){
   const p=root.DoLFloatingTools?.getPreferences();
   if(isMasterEnabled()&&p?.enabled&&!p.hidden){
    if(mode!==p.mode){mounted?.dispose();mounted=undefined;mode=p.mode}
-   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement)=>{const visual=isolate('Hub visual',()=>sphereHub(root));return ()=>visual?.destroy()},dismiss:()=>root.DoLFloatingTools?.hide()}});
+   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,edgeEnabled,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement)=>{const visual=isolate('Hub visual',()=>sphereHub(root));return ()=>visual?.destroy()},dismiss:()=>root.DoLFloatingTools?.hide()}});
   }else{mounted?.dispose();mounted=undefined}
  }
  document.addEventListener('dol-floating-change',sync);document.addEventListener('dol-ui-master-change',sync);sync();

@@ -1,0 +1,7 @@
+.sf-motion-hub[data-edge-prototype] .spin-hub-canvas{scale:var(--edge-sx,1) var(--edge-sy,1)}
+.sf-motion-hub .edge-aim{position:absolute;pointer-events:none;overflow:visible;color:#c3b383;z-index:1}
+.sf-motion-hub .edge-aim :is(line,circle){stroke:currentColor;stroke-width:1.5;fill:none}
+.sf-motion-hub .edge-aim line{opacity:.55;stroke-dasharray:3 5}
+.sf-motion-hub .edge-ring{transform:rotate(-90deg);transform-origin:88px 88px;stroke-width:2;opacity:.8}
+.sf-motion-hub .edge-trail{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;pointer-events:none}
+.sf-motion-hub .edge-trail polyline{fill:none;stroke:#c3b38350;stroke-width:2;stroke-linecap:round}

@@ -7,18 +7,48 @@ import type {Binding, Host, MountContext, View} from '../../framework/contracts'
 import ViewOutlet from '../../framework/workspace/ViewOutlet.vue';
 import {clamp,menuLayout,positionKey as legacyKey} from '../../framework/motion-hub/geometry';
 import {initialPosition,locate,readPosition,savePosition,positionKey,canPersist} from './position';
+import {EdgePhysics,type Point} from './edge-physics';
+import './edge.css';
 
-const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>;experimentalMotion?:(root:HTMLElement)=>()=>void}>();
+const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;edgeEnabled?:boolean;preferredMode?:'fan'|'grid';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>;experimentalMotion?:(root:HTMLElement)=>()=>void}>();
 const layer = ref<HTMLElement>(), ball = ref<HTMLButtonElement>(), heading = ref<HTMLElement>();
 let saved = initialPosition(),persist=true;
 try {const raw=localStorage.getItem(positionKey);persist=canPersist(raw);saved=readPosition(raw,localStorage.getItem(legacyKey))} catch { /* Storage is optional. */ }
 const area = reactive({left: 0, top: 0, width: innerWidth, height: innerHeight});
 const point = reactive(locate(saved, area)), docked = ref(saved.docked), expanded = ref(false), dragging = ref(false), repositioning = ref(false);
 const selected = shallowRef<View>(), views = shallowRef(props.host.views()), message = ref('');
-let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string} | undefined;
+let gesture: {id: number; x: number; y: number; startX: number; startY: number; viewport: string;caught:boolean;animated:boolean} | undefined;
 let suppressClick = false, sequence = 0, stopHint:(()=>void)|undefined, instance = ref('motion-view-0'), binding: Binding;
 let stopExperimental:(()=>void)|undefined,coordinateScale={x:1,y:1};
 let geometryObserver:ResizeObserver|undefined,observedDock:HTMLElement|undefined;
+const physics=new EdgePhysics(),edge=shallowRef(physics.snapshot()),trail=shallowRef<Point[]>([]);
+const media=matchMedia('(prefers-reduced-motion: reduce)');
+const reduce=()=>media.matches||(document.documentElement.hasAttribute('data-dol-midnight')&&!document.documentElement.hasAttribute('data-dgu-visualMotion'));
+const limits=()=>({left:area.left+12,top:area.top+12,right:area.left+area.width-68,bottom:area.top+area.height-68});
+let intent:Point|undefined,lastFrame=0,edgeFrames=0,edgePending=false;
+const edgeStyle=computed(()=>{
+ const q=edge.value.charge,horizontal=edge.value.wall==='left'||edge.value.wall==='right';
+ return {'--edge-sx':horizontal?1-q*.22:1+q*.12,'--edge-sy':horizontal?1+q*.12:1-q*.22};
+});
+const aimLine=computed(()=>{const s=edge.value,angle=s.aim,n=Math.cos(angle)*80,t=Math.sin(angle)*80;return{x:88+(s.wall==='left'?n:s.wall==='right'?-n:t),y:88+(s.wall==='top'?n:s.wall==='bottom'?-n:t)}});
+const trailPoints=computed(()=>trail.value.map(p=>`${p.x+28},${p.y+28}`).join(' '));
+function requestEdge(){if(scope.frame(edgeFrame))edgePending=true}
+function stopEdge(){scope.cancelFrame(edgeFrame);edgePending=false;edge.value=physics.stop();intent=undefined;trail.value=[];lastFrame=0}
+function edgeFrame(){
+ edgePending=false;
+ if(!scope.active())return;
+ edgeFrames++;
+ const now=performance.now();
+ if(gesture&&dragging.value&&intent){
+  const previous=edge.value.charge;edge.value=physics.update(intent,limits(),now);Object.assign(point,edge.value.point);
+  // The dwell needs a clock; stable charge does not. Pointer movement wakes it.
+  if(edge.value.wall&&!reduce()&&(edge.value.phase==='dragging'||edge.value.charge!==previous))requestEdge();
+ }else if(edge.value.phase==='flying'){
+  edge.value=physics.step(now-lastFrame,limits());lastFrame=now;Object.assign(point,edge.value.point);
+  trail.value=[...trail.value.slice(-5),{...point}];
+  if(edge.value.phase==='flying')requestEdge();else{trail.value=[];save()}
+ }
+}
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
 const menu = computed(() => {
  const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
@@ -52,6 +82,8 @@ function close(restoreFocus = true) {
  if (restoreFocus && ownsFocus) ball.value?.focus({preventScroll: true});
 }
 function cancel() {
+ const flying=edge.value.phase==='flying';stopEdge();
+ if(flying){docked.value=saved.docked;Object.assign(point,locate(saved,area));suppressClick=true}
  if (!gesture) return;
  const id = gesture.id; gesture = undefined; dragging.value = false; suppressClick = true;
  docked.value = saved.docked; Object.assign(point, locate(saved, area));
@@ -88,6 +120,7 @@ const viewportStamp = () => {const v = window.visualViewport; return [v?.width |
 function schedule() {if(!scope.active())return;cancel();scope.frame(sync)}
 function toggle(event: MouseEvent) {
  if (suppressClick && event.detail > 0) {suppressClick = false; return}
+ if(edge.value.phase==='flying'){stopEdge();save();return}
  suppressClick = false;
  if (!props.hostContext.binding().isCurrent()) return;
  if (docked.value) {clearHint();docked.value = false; save(); Object.assign(point, locate(saved, area)); return}
@@ -104,31 +137,46 @@ async function choose(view: View) {
 }
 function down(event: PointerEvent) {
  if (!event.isPrimary || event.button !== 0 || gesture) return;
- suppressClick = false; gesture = {id: event.pointerId, x: event.clientX, y: event.clientY, startX: point.x, startY: point.y, viewport: viewportStamp()};
+ const caught=edge.value.phase==='flying',shown=ball.value?.getBoundingClientRect(),root=layer.value?.getBoundingClientRect();
+ // A cancellation may still be returning visually. Regrab the displayed pose.
+ if(shown&&root&&shown.width>0){point.x=(shown.left-root.left)/coordinateScale.x;point.y=(shown.top-root.top)/coordinateScale.y;repositioning.value=true;void nextTick(()=>{if(scope.active()){ball.value?.getBoundingClientRect();scope.frame(settlePosition)}})}
+ if(caught){stopEdge();saved=savePosition(point,area,false)}
+ suppressClick = false; gesture = {id: event.pointerId, x: event.clientX, y: event.clientY, startX: point.x, startY: point.y, viewport: viewportStamp(),caught,animated:!reduce()};
+ if(props.edgeEnabled)edge.value=physics.begin(point,limits(),performance.now());
  ball.value?.setPointerCapture(event.pointerId);
 }
 function move(event: PointerEvent) {
  if (!gesture || event.pointerId !== gesture.id) return;
+ if(gesture.animated&&reduce()){cancel();return}
  const dx = (event.clientX - gesture.x)/coordinateScale.x, dy = (event.clientY - gesture.y)/coordinateScale.y;
  if (!dragging.value && Math.hypot(dx, dy) < 8) return;
  if (!dragging.value) {close(false); docked.value = false; dragging.value = true}
- point.x = clamp(gesture.startX + dx, area.left+12, area.left + area.width - 68);
- point.y = clamp(gesture.startY + dy, area.top + 12, area.top + area.height - 68);
+ intent={x:gesture.startX+dx,y:gesture.startY+dy};
+ if(props.edgeEnabled&&!reduce()){edge.value=physics.update(intent,limits(),performance.now());Object.assign(point,edge.value.point);if(edge.value.wall)requestEdge();else{scope.cancelFrame(edgeFrame);edgePending=false}}
+ else{point.x=clamp(intent.x,area.left+12,area.left+area.width-68);point.y=clamp(intent.y,area.top+12,area.top+area.height-68)}
 }
 function up(event: PointerEvent) {
  if (!gesture || gesture.id !== event.pointerId) return;
  // Resize delivery can lag pointerup; never commit coordinates from the old viewport.
  if (gesture.viewport !== viewportStamp()) {cancel(); schedule(); return}
- const moved = dragging.value; gesture = undefined; dragging.value = false;
- if (moved) {suppressClick=true;docked.value=false;save();Object.assign(point,locate(saved,area))}
+ // Media change delivery can lag pointerup, just like resize delivery.
+ if(gesture.animated&&reduce()){cancel();return}
+ const moved = dragging.value,caught=gesture.caught;
+ if(moved&&props.edgeEnabled&&intent&&!reduce())physics.update(intent,limits(),performance.now());
+ gesture = undefined; dragging.value = false;scope.cancelFrame(edgeFrame);edgePending=false;
+ if (moved) {
+  suppressClick=true;docked.value=false;edge.value=physics.release(performance.now(),reduce());intent=undefined;
+  if(edge.value.phase==='flying'){lastFrame=performance.now();requestEdge()}else{save();Object.assign(point,locate(saved,area))}
+ }else{stopEdge();if(caught){suppressClick=true;save()}}
  if (ball.value?.hasPointerCapture(event.pointerId)) ball.value.releasePointerCapture(event.pointerId);
 }
-function dock() {close(); docked.value = true; save(); Object.assign(point, locate(saved, area)); hint('已停靠，点击恢复')}
+function dock() {stopEdge();close(); docked.value = true; save(); Object.assign(point, locate(saved, area)); hint('已停靠，点击恢复')}
 function reset() {cancel(); close(); saved = initialPosition(); docked.value = false; Object.assign(point, locate(saved, area)); save(); hint('已恢复默认位置')}
 function key(event: KeyboardEvent) {
  if (event.isComposing || (event.target as HTMLElement).matches('input,textarea,select,[contenteditable="true"]')) return;
  if (event.key === 'Escape') {event.preventDefault(); event.stopPropagation(); cancel(); close(); return}
  if (event.target !== ball.value || !['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+ stopEdge();
  event.preventDefault(); close(false); docked.value = false;
  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') point.x=clamp(point.x+(event.key==='ArrowLeft'?-24:24),area.left+12,area.left+area.width-68);
  else point.y = clamp(point.y + (event.key === 'ArrowUp' ? -24 : 24), area.top + 12, area.top + area.height - 68);
@@ -140,6 +188,13 @@ function arm() {binding?.signal.removeEventListener('abort', interrupt); binding
 const stopScene = props.hostContext.onScene(()=>{arm();schedule()});
 function dockToggle(event:Event){if(event.target instanceof Element&&event.target.matches('.dcu-footer'))schedule()}
 const stopViews = props.host.onViews(() => {views.value = props.host.views(); if (selected.value && !views.value.some(view => view.mount === selected.value?.mount)) close()});
+onMounted(()=>{
+ if(layer.value){Object.defineProperty(layer.value,'edgeResearchState',{configurable:true,get:()=>({frames:edgeFrames,pending:edgePending,...physics.snapshot()})});scope.own(()=>{if(layer.value)Reflect.deleteProperty(layer.value,'edgeResearchState')})}
+ const visibility=()=>{if(document.hidden)interrupt()},preference=()=>{if(reduce())interrupt()};
+ document.addEventListener('visibilitychange',visibility);media.addEventListener('change',preference);
+ const flags=new MutationObserver(preference);flags.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-visualmotion']});
+ scope.own(()=>{flags.disconnect();document.removeEventListener('visibilitychange',visibility);media.removeEventListener('change',preference);stopEdge()});
+});
 onMounted(() => {sync(); arm();if(props.experimentalMotion&&layer.value)stopExperimental=props.experimentalMotion(layer.value);if(props.experimentalMotion&&layer.value){try{const resize=geometryObserver=new ResizeObserver(schedule);scope.own(()=>resize.disconnect());resize.observe(layer.value);if(observedDock)resize.observe(observedDock)}catch(error){console.warn('[MotionHub] geometry observer unavailable; viewport events remain active',error)}}if(props.officialPreferences)document.addEventListener('dol-floating-reset',reset); window.addEventListener('resize', schedule); window.addEventListener('blur', interrupt); window.addEventListener('pagehide', interrupt);
  document.addEventListener('toggle',dockToggle,true);window.visualViewport?.addEventListener('resize', schedule); window.visualViewport?.addEventListener('scroll', schedule); document.addEventListener('pointerdown', outside); document.addEventListener('focusin', outside)});
 scope.own(()=>stopExperimental?.());
@@ -150,7 +205,12 @@ onBeforeUnmount(scope.dispose);
 </script>
 
 <template>
- <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" @keydown="key">
+ <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-edge-prototype="edgeEnabled || undefined" :data-edge-phase="edge.phase" :data-edge-charge="edge.charge" :style="edgeStyle" @keydown="key">
+  <svg v-if="edge.phase==='charging'" class="edge-aim" width="176" height="176" :style="{left:`${point.x-60}px`,top:`${point.y-60}px`}" aria-hidden="true">
+   <circle cx="88" cy="88" r="34" class="edge-ring" :stroke-dasharray="`${edge.charge*214} 214`"/>
+   <line x1="88" y1="88" :x2="aimLine.x" :y2="aimLine.y"/><circle :cx="aimLine.x" :cy="aimLine.y" r="3"/>
+  </svg>
+  <svg v-if="edge.phase==='flying'" class="edge-trail" aria-hidden="true"><polyline :points="trailPoints"/></svg>
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
   :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--utility-x': `${menu.petalX===0?0:menu.width-64}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
@@ -177,9 +237,9 @@ onBeforeUnmount(scope.dispose);
    <footer><button type="button" @click="selected = undefined; expanded = true; ball?.focus({preventScroll: true})">返回工具</button><span>返回后继续游戏</span></footer>
   </section>
   <button ref="ball" type="button" class="sf-motion-ball" :class="{'is-dragging': dragging, 'is-docked': docked, 'is-open': expanded || !!selected}"
-   :aria-label="docked ? '恢复悬浮工具' : 'Kraft Work 自由工具'" title="点击展开；拖动后原地放下；方向键微调" :aria-expanded="expanded || !!selected" :style="{transform: `translate3d(${point.x}px, ${point.y}px, 0)`, transition: repositioning ? 'none' : undefined}"
-   @click="toggle" @pointerdown.stop="down" @pointermove.stop="move" @pointerup.stop="up" @pointercancel.stop="cancel" @lostpointercapture="cancel"
+   :aria-label="docked ? '恢复悬浮工具' : 'Kraft Work 自由工具'" title="点击展开；拖动后原地放下；持续顶边蓄力；方向键微调" :aria-expanded="expanded || !!selected" :style="{transform: `translate3d(${point.x}px, ${point.y}px, 0)`, transition: repositioning || edge.phase==='flying' ? 'none' : undefined}"
+   @click="toggle" @pointerdown.stop="down" @pointermove.stop="move" @pointerup.stop="up" @pointercancel.stop="cancel" @lostpointercapture="gesture && cancel()"
    @touchstart.stop @touchmove.stop @touchend.stop @touchcancel.stop><span aria-hidden="true"><svg v-if="officialPreferences" class="sf-motion-emblem" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 4 27 16 16 28 5 16 16 4Z"/><path d="m10 16 6-6 6 6-6 6-6-6Z"/><path d="M16 1v6m15 9h-6M16 31v-6M1 16h6"/></svg><template v-else>{{ docked ? '⋮' : '✦' }}</template></span></button>
-  <p class="sf-motion-feedback" role="status" :style="{left: `${clamp(point.x - 100, area.left + 12, area.left + area.width - 212)}px`, top: `${clamp(point.y + 80, area.top + 12, area.top + area.height - 38)}px`}">{{ dragging ? '松手原地放下' : message }}</p>
+  <p class="sf-motion-feedback" role="status" :style="{left: `${clamp(point.x - 100, area.left + 12, area.left + area.width - 212)}px`, top: `${clamp(point.y + 80, area.top + 12, area.top + area.height - 38)}px`}">{{ edge.phase==='charging' ? '沿边移动瞄准，松手弹射' : dragging ? '松手原地放下' : message }}</p>
  </div>
 </template>
