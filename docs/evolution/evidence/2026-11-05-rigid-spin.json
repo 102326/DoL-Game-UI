@@ -199,5 +199,17 @@
       "Isolated prototype vue-tsc PASS"
     ],
     "scope": "Original accepted sphere and click-open retained; previous launch physics and trail retained; still pending owner visual acceptance"
+  },
+  "ownerDecision": {
+    "date": "2026-11-05",
+    "status": "VISUAL_ACCEPTED",
+    "sourceCommit": "42700435d8607da5d298e00f1bb54239f62e3142",
+    "recordingRun": "1793885251493",
+    "quote": "可以,就这版,同步到github",
+    "scope": "Accepted original sphere appearance and click-open effects combined with new rigid spin charge, launch, gold trail and ricochet. Supersedes pending visual acceptance for this selected revision.",
+    "productionIntegration": "NOT_IMPLEMENTED",
+    "mainMerge": "NOT_PERFORMED",
+    "release": "NOT_PERFORMED",
+    "deviceAcceptance": "NOT_PERFORMED"
   }
 }
