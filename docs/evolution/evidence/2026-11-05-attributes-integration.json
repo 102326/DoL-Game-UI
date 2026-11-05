@@ -75,15 +75,353 @@
       "status": "UNVERIFIED",
       "individualPass": 38,
       "reason": "SourceChangedDuringExecution: lock and documentation were updated during the run; final frozen repeat required"
+    },
+    "unitFrozen": {
+      "status": "PASS",
+      "count": 38,
+      "reasonCodes": [],
+      "source": {
+        "head": "e1a47d25db601552236852106d4bbb140e5e01c7",
+        "tree": "6030ac02f94f0ed01c763fe523a87778fe8cc4c1",
+        "dirty": false,
+        "contentSha256": "6e8030f3888d9078a4baac6c13e7105329a156d0d248e393f574e0eff77bef4d",
+        "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      }
+    },
+    "packages": {
+      "status": "PASS",
+      "node": "26.12.1",
+      "runtime": {
+        "python": "3.12.14",
+        "zlibRuntime": "1.2.12"
+      },
+      "negativeTests": {
+        "status": "PASS",
+        "plan": [
+          "test_ci_packages.AdapterDeterminism.test_ignores_source_mtime_and_permissions",
+          "test_ci_packages.BuildEvidence.test_independent_local_commands_reuse_the_build_run_only_locally",
+          "test_ci_packages.BuildEvidence.test_stale_incomplete_receipts_and_report_limit",
+          "test_ci_packages.OptionalContracts.test_all_current_positive_and_precise_mutations",
+          "test_ci_packages.OptionalContracts.test_joint_manifest_corruption_and_incomplete_compilation",
+          "test_ci_packages.PackageChecks.test_rejects_broken_packages",
+          "test_ci_packages.SourceVersions.test_product_labels_are_not_a_frozen_ci_policy",
+          "test_ci_packages.SourceVersions.test_rejects_mismatches_in_independent_sources",
+          "test_ci_packages.ZipMetadata.test_metadata_drift_and_comparison_diagnostics"
+        ],
+        "testsRun": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "reproducibility": {
+        "status": "PASS",
+        "differences": []
+      },
+      "invocations": [
+        "cb6fbcd3-ebd7-4863-82a9-dc582db14058",
+        "e600b381-2575-4583-b5d1-c7eff66dce4b"
+      ],
+      "packages": [
+        {
+          "file": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip",
+          "sha256": "f1120c18c8e058b0647d84676b217d278557b66c3611d9643f8ebf3213510f1f",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip",
+          "sha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.2.mod.zip",
+          "sha256": "06f72b3d645a2274104a18bcdf01f2dfe5aed01390bb228bbeccc8a10f468c97",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.3.mod.zip",
+          "sha256": "4ac28818457876f56862d56c451541b7bd4278e9bacfee000a55ceb6dea5ff83",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip",
+          "sha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827",
+          "members": 4,
+          "byteIdentical": true
+        },
+        {
+          "file": "DoLGameUI-4.1.0.mod.zip",
+          "sha256": "ca982a24d1844a287fdfad5789e17459cadf09fb4f7252fe02b2a63b937936a1",
+          "members": 20,
+          "byteIdentical": true
+        },
+        {
+          "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.1.mod.zip",
+          "sha256": "3cd6e6cd517f92894a1d9f37d834e83c2b535e524049fcd9b58c73ccce92a260",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "StoneFreeHost-0.1.5-experimental.mod.zip",
+          "sha256": "c71ab706d6928d03099200c554ee6516cc852c711ff6216005633be97db6af08",
+          "members": 4,
+          "byteIdentical": true
+        },
+        {
+          "file": "CheatExtendedSoftWet-cheat extended-1.20.3-plus-v1.0.0.mod.zip",
+          "sha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d",
+          "members": 5,
+          "byteIdentical": true
+        }
+      ]
     }
   },
   "remote": {
-    "status": "PENDING_FROZEN_COMMIT"
+    "status": "PASS",
+    "runs": {
+      "standard": {
+        "id": 41975767742,
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41975767742",
+        "event": "workflow_dispatch",
+        "attempt": 1,
+        "conclusion": "success",
+        "headSha": "e1a47d25db601552236852106d4bbb140e5e01c7",
+        "dispatchToConclusionSeconds": 968.0,
+        "firstJobToLastJobSeconds": 963.0,
+        "jobs": [
+          {
+            "name": "validate",
+            "conclusion": "success",
+            "seconds": 930.0
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "seconds": 24.0
+          },
+          {
+            "name": "moody-gate",
+            "conclusion": "success",
+            "seconds": 2.0
+          }
+        ]
+      },
+      "research": {
+        "id": 41975771851,
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41975771851",
+        "event": "workflow_dispatch",
+        "attempt": 1,
+        "conclusion": "success",
+        "headSha": "e1a47d25db601552236852106d4bbb140e5e01c7",
+        "dispatchToConclusionSeconds": 671.0,
+        "firstJobToLastJobSeconds": 667.0,
+        "jobs": [
+          {
+            "name": "prototype",
+            "conclusion": "success",
+            "seconds": 642.0
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "seconds": 22.0
+          }
+        ]
+      }
+    },
+    "verifications": {
+      "standard": {
+        "schema": 1,
+        "identity": {
+          "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+          "source": {
+            "head": "e1a47d25db601552236852106d4bbb140e5e01c7",
+            "tree": "6030ac02f94f0ed01c763fe523a87778fe8cc4c1",
+            "dirty": false,
+            "contentSha256": "6e8030f3888d9078a4baac6c13e7105329a156d0d248e393f574e0eff77bef4d",
+            "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+          },
+          "run": {
+            "id": "41975767742-1-validate",
+            "attempt": "1",
+            "githubRunId": "41975767742",
+            "repository": "102326/DoL-Game-UI",
+            "ref": "refs/heads/perf/4.2-windows-device-followup",
+            "event": "workflow_dispatch",
+            "workflow": "Kraft Work CI",
+            "job": "validate",
+            "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41975767742"
+          },
+          "nonce": "ef6795edc023924c71a5a395d42b2d6e",
+          "profile": "standard",
+          "catalog": {
+            "version": "1.3.0",
+            "profile": "standard",
+            "depth": "standard",
+            "expectedLockSha256": "7b64e47512c7b6a291dcfa3ffb87a96e751df6079a88f67f8cd77cde779cf2ab",
+            "sha256": "62a0ecace2ac3452ef3c6b67470bf53271ffd77e83a6ed7dc25c2c5ab106fd5b"
+          },
+          "pr": null,
+          "environment": {
+            "orderSeed": null,
+            "runnerImage": "ubuntu26",
+            "runnerImageVersion": "20261101.186.1",
+            "platform": "linux",
+            "arch": "x64",
+            "deviceDepth": "standard",
+            "node": "v26.12.1",
+            "npm": "11.20.0",
+            "python": "Python 3.12.16",
+            "playwright": "1.63.0",
+            "browser": "Pinned Playwright Chromium (browser suite)"
+          }
+        },
+        "status": "PASS",
+        "assertionResult": "PASS",
+        "evidenceIntegrity": "COMPLETE",
+        "reasonCodes": [],
+        "problems": [],
+        "remoteVerificationMs": 39
+      },
+      "research": {
+        "schema": 1,
+        "identity": {
+          "projectId": "005d5d5f-6a83-42bb-a5e4-211033e5f03c",
+          "source": {
+            "head": "e1a47d25db601552236852106d4bbb140e5e01c7",
+            "tree": "6030ac02f94f0ed01c763fe523a87778fe8cc4c1",
+            "dirty": false,
+            "contentSha256": "6e8030f3888d9078a4baac6c13e7105329a156d0d248e393f574e0eff77bef4d",
+            "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+          },
+          "run": {
+            "id": "41975771851-1-research",
+            "attempt": "1",
+            "githubRunId": "41975771851",
+            "repository": "102326/DoL-Game-UI",
+            "ref": "refs/heads/perf/4.2-windows-device-followup",
+            "event": "workflow_dispatch",
+            "workflow": "Motion Evolution prototype",
+            "job": "prototype",
+            "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41975771851"
+          },
+          "nonce": "9eada05995302e5a6b2a50b38d3428c4",
+          "profile": "research",
+          "catalog": {
+            "version": "1.3.0",
+            "profile": "research",
+            "depth": "standard",
+            "expectedLockSha256": "7b64e47512c7b6a291dcfa3ffb87a96e751df6079a88f67f8cd77cde779cf2ab",
+            "sha256": "13136d6113e2148795580db574606f0cd02520fc213c493e0747906cd498e4e0"
+          },
+          "pr": null,
+          "environment": {
+            "orderSeed": null,
+            "runnerImage": "ubuntu26",
+            "runnerImageVersion": "20261026.180.1",
+            "platform": "linux",
+            "arch": "x64",
+            "deviceDepth": "standard",
+            "node": "v26.12.1",
+            "npm": "11.20.0",
+            "python": "Python 3.14.4",
+            "playwright": "1.63.0",
+            "browser": "Pinned Playwright Chromium (browser suite)"
+          }
+        },
+        "status": "PASS",
+        "assertionResult": "PASS",
+        "evidenceIntegrity": "COMPLETE",
+        "reasonCodes": [],
+        "problems": [],
+        "remoteVerificationMs": 534
+      }
+    },
+    "crossPlatform": {
+      "source": "e1a47d25db601552236852106d4bbb140e5e01c7",
+      "status": "PASS",
+      "scope": "Nine Mac and Actions ZIP bytes plus member content compared; not a guarantee for other toolchain versions",
+      "packages": [
+        {
+          "file": "DolOptimizationSoftWet-原版优化-1.1.1.2-plus-v1.0.3.mod.zip",
+          "sha256": "f1120c18c8e058b0647d84676b217d278557b66c3611d9643f8ebf3213510f1f",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.1.mod.zip",
+          "sha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "SmartPhoneSoftWet-SmartPhone Alpha-0.3.91-plus-v1.1.2.mod.zip",
+          "sha256": "06f72b3d645a2274104a18bcdf01f2dfe5aed01390bb228bbeccc8a10f468c97",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "ModHubSoftWet-ModHub-1.3.0-plus-v1.0.3.mod.zip",
+          "sha256": "4ac28818457876f56862d56c451541b7bd4278e9bacfee000a55ceb6dea5ff83",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip",
+          "sha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827",
+          "members": 4,
+          "byteIdentical": true
+        },
+        {
+          "file": "DoLGameUI-4.1.0.mod.zip",
+          "sha256": "ca982a24d1844a287fdfad5789e17459cadf09fb4f7252fe02b2a63b937936a1",
+          "members": 20,
+          "byteIdentical": true
+        },
+        {
+          "file": "ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.1.mod.zip",
+          "sha256": "3cd6e6cd517f92894a1d9f37d834e83c2b535e524049fcd9b58c73ccce92a260",
+          "members": 5,
+          "byteIdentical": true
+        },
+        {
+          "file": "StoneFreeHost-0.1.5-experimental.mod.zip",
+          "sha256": "c71ab706d6928d03099200c554ee6516cc852c711ff6216005633be97db6af08",
+          "members": 4,
+          "byteIdentical": true
+        },
+        {
+          "file": "CheatExtendedSoftWet-cheat extended-1.20.3-plus-v1.0.0.mod.zip",
+          "sha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d",
+          "members": 5,
+          "byteIdentical": true
+        }
+      ]
+    }
   },
   "limits": [
     "Controlled synthetic fixture only; no private game assets",
     "Not Android/WebView, Windows or actual game acceptance",
     "Not whole-game FPS/GPU/power improvement",
     "No main merge, release, Host API or gate migration"
-  ]
+  ],
+  "source": {
+    "head": "e1a47d25db601552236852106d4bbb140e5e01c7",
+    "tree": "6030ac02f94f0ed01c763fe523a87778fe8cc4c1",
+    "dirty": false,
+    "contentSha256": "6e8030f3888d9078a4baac6c13e7105329a156d0d248e393f574e0eff77bef4d",
+    "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+  },
+  "ciEfficiency": {
+    "runs": 2,
+    "remoteRepairRounds": 0,
+    "firstActionableFailure": null,
+    "note": "No remote failure; full standard and research dispatches on one frozen commit. Not a same-input speedup experiment."
+  },
+  "localRawEvidence": "tests/artifacts/evo42-attributes-e1a47d2 (ignored; not automatically available on another device)"
 }

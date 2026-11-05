@@ -5,16 +5,16 @@
 
 ## 2026-11-05 属性受力正式整合（负责人已采用）
 
-本批从0ebd710接续同一研发分支，负责人明确认可属性方向并授权正式整合；设置与八批性能工作仍同版。**仅属性新增受力，不推广社交/其他原生角色，不改业务、Host公共协议、正式版本或发行。**
+关联 P-A第二角色、P-C最小联合探针、E42-PERF-02重复读取防护。本批从0ebd710接续同一研发分支，负责人明确认可属性方向并授权正式整合；设置与八批性能工作仍同版。**仅属性新增受力，不推广社交/其他原生角色，不改业务、Host公共协议、正式版本或发行。**
 
 - 属性owner管理presentation生命周期，保留原生root、父节点、内容、事件和滚动。没有把隔离wrapper移入游戏；位置不持久化。标题空白处拖动、有限外壳应变、内芯滞后沿用已认可设置方案；关闭/切角色/禁用/替换/销毁/失焦/旋转及减少动态正确退出。
 - 前景原先只改变边框，会让以px定位的雨滴与缩放标题分离。当前只对属性受力角色使分离paint真正缩放，轮廓坐标逆换算；雨滴、水迹、裁切Canvas与窗口共享本地坐标。关闭能力后恢复原路径。正文仍保守保护，标题保留细粒度框，不用整片遮罩把雨景盖掉。
 - 同事件批12次pointermove合并为一帧translate/scale写入。发现自有动效样式触发天气读取，添加精确oldValue/最终style身份过滤；外部style及混合批仍刷新。设置接入同一过滤，既定物理参数保持。受控12次写入中旧天气模块读取12次，新模块0次；这不是整场游戏FPS结论。
 - 新 `attributes-material` 合同进入标准/研究catalog和Expected Lock，覆盖1280/390 × zoom1/1.25、真实原生单击、栏目滚动、雨雪、可见雨滴与轮廓几何小于1px、原生居中transform、捕获中断、静止不再写样式、关闭/替换/销毁、Stone Free关开、第三方变换及缺能力回退，以及原生淡入结束/取消后首次触摸准备恢复。C1薄映射补入真实新消费者，没有改变正式选测或门禁。
 
-**公司Mac已完成**：Node26.13.0、Chromium153.0.8010.12；`ci:check`、属性合同、settings-ci、foreground-plane、header-weather、weather-dom-writes及C1 candidate/shadow-plans通过。旧weather模块的逐帧读取反例退出非零（12 != 0）；旧wet-glass缺移动保护反例退出非零。1280/390原速录像已重新生成，拖动截图人工检查可见雨滴/正文/轮廓，没有整片隐藏雨区。录像及日志为本地忽略产物。完整标准/研究CI与新包身份正在冻结后执行，不能借用9e8430c的旧成功。
+**公司Mac已完成**：Node26.13.0、Chromium153.0.8010.12；`ci:check`、属性合同、settings-ci、foreground-plane、header-weather、weather-dom-writes及C1 candidate/shadow-plans通过。旧weather模块的逐帧读取反例退出非零（12 != 0）；旧wet-glass缺移动保护反例退出非零。1280/390原速录像已重新生成，拖动截图人工检查可见雨滴/正文/轮廓，没有整片隐藏雨区。录像及日志为本地忽略产物。完整[标准41975767742](https://github.com/102326/DoL-Game-UI/actions/runs/41975767742)和[研究41975771851](https://github.com/102326/DoL-Game-UI/actions/runs/41975771851)均首轮success，源码 `e1a47d25db601552236852106d4bbb140e5e01c7`；标准validate/独立核验/gate、研究执行/独立核验均通过。实际下载两份核验回执均PASS/COMPLETE、无问题，身份与Mac冻结源码一致。标准首job至末job 963 秒，研究 667 秒；2个workflow_dispatch Run、0轮远端修正，不是PR或同输入提速对照。Mac冻结后的38项unit整组PASS；Node26.12.1/Python3.12.14九包、9负例、两次独立构建通过，invocation不同。下载Actions九包与Mac成员内容及ZIP字节全部一致。主UI SHA `ca982a24d1844a287fdfad5789e17459cadf09fb4f7252fe02b2a63b937936a1`。技术版本仍4.1.0研发标识，不能冒充正式发行包；新包在标准Run的build Artifact，保存期7天。后续回执仅docs/JSON，未变实现沿用本次冻结证据。
 
-**首次问题保留**：新测试中局部变量reads遮蔽浏览器计数引发TS推断失败，已改名；设置scale先归一但内芯尚在弹回，断言改为真实结束marker退出，未延长固定sleep；演示CSS无条件touch-action:none掩盖回退，已移除；锁文件在测试仍编辑时报漂移，最终停止编辑后重生成并通过；第一次本机unit的38项逐项PASS，但与锁/文档收口重叠，整组因SourceChangedDuringExecution判UNVERIFIED、退出1，不计整组通过，冻结后重跑。独立审查发现的逐帧天气唤醒、整体雨区遮罩及能力退出后paint未复位均已修复并补回归；后续发现有限WAAPI淡入结束不发样式事件，已订阅完成/取消一次以恢复ready，无常驻轮询，销毁后不复活。其他初次工具/捕获/样式序列化问题留本地日志，没有重跑挑绿或删除失败断言。
+**首次问题保留**：新测试中局部变量reads遮蔽浏览器计数引发TS推断失败，已改名；设置scale先归一但内芯尚在弹回，断言改为真实结束marker退出，未延长固定sleep；演示CSS无条件touch-action:none掩盖回退，已移除；锁文件在测试仍编辑时报漂移，最终停止编辑后重生成并通过；第一次本机unit的38项逐项PASS，但与锁/文档收口重叠，整组因SourceChangedDuringExecution判UNVERIFIED、退出1，不计整组通过，冻结后重跑整组PASS。独立审查发现的逐帧天气唤醒、整体雨区遮罩及能力退出后paint未复位均已修复并补回归；后续发现有限WAAPI淡入结束不发样式事件，已订阅完成/取消一次以恢复ready，无常驻轮询，销毁后不复活。其他初次工具/捕获/样式序列化问题留本地日志，没有重跑挑绿或删除失败断言。
 
 当前证据索引：[属性整合摘要](evidence/2026-11-05-attributes-integration.json)。后续还需按最终冻结身份完成真实游戏与Windows/Android/WebView验收、4.1/最终候选可比性能判断；Hub方案未定案保持，不擅自删减4.2范围。
 
