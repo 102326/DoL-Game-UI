@@ -52,7 +52,7 @@ export function rigidSpin(root:HTMLElement,placement:PlacementMotion,acceptedPos
   surface.drive({energy,dt,angle:active&&oldPhase!=='charging'&&oldPhase!=='flying'?acceptedPose?.()?.angle:undefined});draws++;effects(now);previous={...s.point};lastPhysics=s.frames;oldPhase=s.phase;
   if(active||energy>.001||trail.length||hits.length)wake();else last=0;
  }
- function wake(){if(!dead&&!pending){pending=!!scope.frame(frame)}}
+ function wake(){if(!dead&&!pending&&!document.hidden&&!reduced()){pending=!!scope.frame(frame)}}
  function reset(){scope.cancelFrame(frame);pending=false;last=0;energy=0;trail=[];hits=[];oldPhase='idle';previous=undefined;root.removeAttribute('data-rigid-active');fx.clearRect(0,0,width,height)}
  scope.own(()=>{reset();body.remove();field.remove();root.removeAttribute('data-rigid-spin')});
  try{

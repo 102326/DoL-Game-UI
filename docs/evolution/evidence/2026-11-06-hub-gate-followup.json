@@ -79,10 +79,10 @@
     "standardObserved": "tentacle reading paragraph:6 of20202 pixels differ by at most1 RGB level, in dark background colors. protectedOverlap=0 does not prove pixel equality.",
     "researchObserved": "Reading screenshot byte comparisons fail; original pairs were not saved, so their pixel differences cannot be reconstructed.",
     "controls": "Diagnostic-only same-state visible/hidden alternation:12 images each under normal, ancestor backdrop disabled, ancestor gradient disabled; each group internally identical. Another heat same-state pair differed at1 background pixel by1 RGB level.",
-    "conclusion": "No reproducible contamination source attributed. Diagnostic PASS does not erase original FAIL. No pixel threshold, product weather quality or assertions changed."
+    "conclusion": "No reproducible contamination source attributed. Diagnostic PASS does not erase original FAIL. No pixel threshold, product weather quality or assertions changed.",
+    "linuxEvidence": "All corresponding standard/research weather and layout checks passed in7c31be2 Linux Actions. Original Windows failures remain recorded; they are not reclassified as passing or fully attributed."
   },
   "remote": {
-    "status": "BLOCKED_DISPATCH",
     "attempts": [
       {
         "workflow": "build.yml",
@@ -95,7 +95,60 @@
         "runId": null
       }
     ],
-    "readback": "No Run for5024c5f; Actions enabled. No downloaded Actions package or evidence for this source."
+    "initialDispatchStatus": "BLOCKED_DISPATCH",
+    "initialReadback": "No Run for5024c5f; Actions enabled. No downloaded Actions package or evidence for this source.",
+    "status": "FAILED_7c31be2_NEW_WAKE_FIX_PENDING_FREEZE",
+    "freeze": "7c31be2e7be06da2dce6800352f4f4c94afa1370",
+    "standard": {
+      "run": 42068519674,
+      "status": "FAIL",
+      "unit": {
+        "pass": 38,
+        "total": 38
+      },
+      "browser": {
+        "pass": 46,
+        "total": 47,
+        "failed": [
+          "evolution-owner-resources.cjs"
+        ]
+      },
+      "packages": "PASS including9negative tests and2independent builds",
+      "onlineVerifier": "FAIL / INCOMPLETE",
+      "artifactIds": [
+        13437026074,
+        13436711269,
+        13435109117
+      ],
+      "actualDownloadedDigestsVerified": true,
+      "indexedFileHashesVerified": 204
+    },
+    "research": {
+      "run": 42068531180,
+      "status": "FAIL",
+      "pass": 41,
+      "total": 42,
+      "failed": [
+        "evolution-owner-resources"
+      ],
+      "onlineVerifier": "FAIL / INCOMPLETE",
+      "artifactIds": [
+        13437096514,
+        13436876688
+      ],
+      "actualDownloadedDigestsVerified": true,
+      "indexedFileHashesVerified": 480,
+      "requiredResultOmitted": "research/evolution-owner-resources/result.json",
+      "seal": "INCOMPLETE"
+    },
+    "failureCause": "Both profiles fail the same disabled-motion pending=false assertion in hub-placement-integration. The observer reset() then unconditionally wake() queued a needless frame while motion was disabled. Dependent summary/verifier/gate failures are not separate product bugs.",
+    "packageReadback": {
+      "uncompressedMembersEqualAcrossWindowsAndActions": 9,
+      "zipBytesEqualAcrossPlatforms": false,
+      "localCompression": "Python3.14.9 / zlib1.3.1.zlib-ng",
+      "actionsCompression": "Python3.12.15 / zlib1.3.1",
+      "scope": "All9 package member bytes and paths identical; compressed ZIP bytes differ. Each environment passes its own exact independent double build. Remote UI SHA20d173363bd4b6e0e7eb9dba3295d34d5a72ec6e1161636523d51bfe517f0403 is distinct from local1d7e43a399ce18727b116696eae27513736ec32e5413d6ac71618d8b46eac230."
+    }
   },
   "pending": [
     "Freeze corrected source; full standard/research Actions and actual downloadable evidence",
@@ -120,7 +173,11 @@
     "tests/artifacts/ui42/hub-followup-ci-check.log",
     "tests/artifacts/ui42/hub-followup-framework-startup.log",
     "tests/artifacts/ui42/hub-followup-device-layouts.log",
-    "tests/artifacts/ui42/hub-placement-hidden-fixed.log"
+    "tests/artifacts/ui42/hub-placement-hidden-fixed.log",
+    "tests/artifacts/ui42/actions-7c31be2/standard-readback.json",
+    "tests/artifacts/ui42/actions-7c31be2/research-readback.json",
+    "tests/artifacts/ui42/hub-placement-wake-fixed.log",
+    "tests/artifacts/evolution/hub-placement-1793898770943"
   ],
   "limits": "No main merge, release, Host public protocol change or device operation. No full gate PASS.",
   "targetedFollowup": {
@@ -146,5 +203,13 @@
       "cause": "Unknown slow navigation; server port derived from actual listening address, no specific blocked request recorded. No retry/timeout change."
     },
     "scope": "Targeted checks after source corrections; not a new full profile PASS."
+  },
+  "wakeFix": {
+    "source": "src/ui/golden-spin/rigid-spin.ts",
+    "change": "Guard shared wake against document.hidden and reduced/disabled motion; preserve reset cleanup and frame-entry race checks.",
+    "independentReview": "No missing static-sphere or resume path identified; review is not execution proof.",
+    "validation": "PASS actual production placement1280/390 including mid-open disable, re-enable then charge/flight, hidden interruption, cleanup. Existing pending=false assertion unchanged.",
+    "sourceSha256Lf": "f3d7f368868341fc561351e825a72415091009bc325a0649cb958a6d26107f0c",
+    "newFullProfiles": "PENDING"
   }
 }
