@@ -1,45 +1,24 @@
-# Soft & Wet 4.1 — 当前交接
+# Soft & Wet 4.x — 当前交接
 
-更新：2026-11-02。总跟踪 [#31](https://github.com/102326/DoL-Game-UI/issues/31)。当前版本源码与制品已核对，负责人已验收效果并授权正式发布。
+更新：2026-11-04。4.1.0已发布。本分支只交付旧代封存与4.x文档分离，不含4.2原型实现。
 
-## 当前交付与发行输入
+## Current — 当前做什么
 
-- 产品运行输入冻结：`fdcda5e4c87b36754c60a202dc75ca9df7c340eb`，含最终界面修复与玩家文案。后续只有工程记录和输入测试夹具修复；最终 Tag 在 PR 门禁及合入后，根据真实源码树和包成员核对，不使用旧 HEAD 冒充最终源码。
-- 后续记录和测试夹具修复不改变产品、依赖或打包输入。其提交不能冒称被旧 Run 覆盖，相关运行代码证据可复用；合入 PR 必须取得当前检查。
-- [4.1 发布入口](https://github.com/102326/DoL-Game-UI/releases/tag/v4.1.0) · [玩家正文](RELEASE_4.1.0.md) · [安装与回退](INSTALL_4.1.md) · [最终制品记录](releases/4.1.0/RELEASE_RECORD.json)。公开操作结果以发布页与 Issue #31 的最终回执为准。
-- Assets 为九个 Mod ZIP 与 SHA256SUMS；截图和原速视频在仓库/页面展示，技术报告不作为玩家附件。原有4.0.x保持可回退，不覆盖旧附件。
+- 分支`docs/4x-legacy-main`，直接基于origin/main的c7d8bac67fd04d0a81e59cf4c49800a510a39a11。源研究线的清理提交2776773及文档复核0f0a31d保存在docs/4x-legacy-separation；此处只应用清理差异，不携带被否决的4.2原型。纯清理实现提交6cb4a4a已推送，后继仅补交付文档回执，最新HEAD以Git为准。准备独立PR取得自己的检查，尚未合main或发布。
+- [DoL-Game-UI-old](https://github.com/102326/DoL-Game-UI-old)已私有Archived只读，Actions关闭，归档HEAD61990df08986cf1cc9f8b9cd2ab998bb1b4863c4。26个旧Tag/17个旧分支对象一致，212份原文与25份Release正文已核对远端blob及SHA256。原仓库历史/Tag/Release/正式ZIP不改。
+- 清理198个旧代专属文件；其main基线字节与源研究清单逐项相同。14个共用/过渡说明先保存原文再改为4.x。当前指导：[文档入口](README.md)、[视觉合同](VISUAL_BASELINE_4X.md)、[Host](HOST_4X.md)、[UI API](UI_RUNTIME.md)。[迁移记录](LEGACY_ARCHIVE.md)/[机器清单](LEGACY_ARCHIVE.json)保留完整范围。
+- 本机源冻结2776773已通过ci:check、38项ci:unit、九包两轮独立构建/合同/负例及修改的视觉回归；其后只改非打包说明。main对照分支仍需自己的PR检查，不把源线结果冒签新HEAD。机器路径、Python入口和原日志在忽略的HANDOFF.local.md。
 
-## 当前 PR 门禁补修
+## Decided — 已经确定什么
 
-PR #34 的第一轮标准41351251748通过，研究41351251784在Hub停靠用例等待短暂的展开中状态超时；下游证据缺失为连锁结果，未写成通过。增加350ms驱动延迟的本地诊断复现旧夹具在菜单已经正常open时超时。已将观察预先挂在浏览器帧中，并在实际moving/q>0.9时调用一次原生停靠按钮；保留原有指针、键盘、触控、拖动与释放断言，增加在途样本与单次调用断言。修后正常和350ms延迟两组完整输入合同通过。发布继续等待更新后的PR检查，不重跑旧输入至绿。
+- 正式4.1入口：[发布](https://github.com/102326/DoL-Game-UI/releases/tag/v4.1.0)、[安装](INSTALL_4.1.md)、[最终记录](releases/4.1.0/RELEASE_RECORD.json)。已取得的Windows/Android/Actions证据保持各自原身份，不因本次封存重新宣布实机通过。
+- 4.x用自己的当前规范，旧代文档仅在old库追溯。实际Host/API/兼容包的独立版号与UI主版本不同；现役公共接口、early入口、4.x回归及必要历史反例保留。没有更改运行时、业务、依赖或公共协议。
+- 修改的测试仍检查现役配色、原节点/单次动作、语义色及窄屏布局；仅将旧样式本地存在性改为封存清单/迁出检查。Expected Lock只更新该项源码摘要与assertionSites21→31，catalog/规则/required checks不改。
+- 独立复核确认212原文及198删除路径匹配；已补回重写时遗漏的wardrobe API注册、getSlotSupport与业务边界，Lab说明改为4.x。Kit内三个原有相对链接按源码包根上下文使用，不更改其打包路径。
+- 4.2仍为未来研究，当前Study 02/03已被负责人否决。源码与研究记录在prototype/4.2-first-samples及#35，不属于本PR实现，也不授权继续采用或发布。未改变既有性能/CI研究优先级或门禁政策。
 
-## Delivered
+## Next — 下一步做什么
 
-- V1/default60/默认左对齐，Acrylic连续通透度，阅读三滑杆，设置双布局；官方及已适配兼容窗口共同跟随显示偏好。
-- 悬浮球双层扇形按钮独立悬空，三个辅助操作位于内圈，网格保持面板布局；金属球回旋、展开与收束保留。
-- 普通页面换页直接显示，删除620ms三维翻页及普通页淡入；只有UI设置分类保留20ms淡入。衣柜直接进入，分类无加载效果；商品选择波纹和穿戴反馈保留。
-- 修复服装店CSS内容宽度与脚本含内距宽度不一致，窄屏详情采用有界可滚动抽屉，宽屏回到侧栏。
-- 原生作弊/选项多箭头步进按钮至少44px方形、零文本内距、图标不换行，随字号/按钮比例变化；原生回调保持。
-- 保留已验天气与玻璃前景优化、ModHub1.9.2精确源规则缓存。游戏/存档语义、Host + UI双包与公共合同不变。
-- 更新 ModHubSoftWet1.0.3、ReOverfitsSoftWet1.0.1、SmartPhoneSoftWet1.1.2；Host与其它四包复用公开原字节，并与最终CI成员逐项相同。
-
-## Validated
-
-- 标准 [41349645327](https://github.com/102326/DoL-Game-UI/actions/runs/41349645327) 与研究 [41349649019](https://github.com/102326/DoL-Game-UI/actions/runs/41349649019)：精确 `fdcda5e`、Attempt1、success。两份独立验收均PASS/COMPLETE，标准moody-gate通过。
-- 本机下载并重算四个artifact：两份小型独立结果、标准检查与构建。196个标准索引文件、10个构建负载、九包CRC/元数据/依赖/许可/成员/负例/双构建通过，封存sourceAfter一致。124MB研究媒体由远端独立job完整验证，未本地重复全量下载。
-- CI主UI原ZIP SHA-256 `3d9f27a1dbdbccd986c83f8f795006f5afae0a40ceb6b24a458a4f0175b83025`；实机本地ZIP `89b66f3fb22ee4ded2e74259a3e499ecd4f8214be7b14b6a7006bc537ce93ca5`，容器压缩字节不同，全部20成员逐项相同。八个加载包与最终CI成员匹配，ReOverfits目标未安装。
-- Android17/WebView155，1363×876 CSS：原生作弊按钮44×44px、无临时补丁、无错误节点；尺寸采样未点击作弊动作，金额不变。服装店临界宽度详情边界/滚动、设置五分类20ms/单节/无残留inert、衣柜进入及三分类无页级动画通过。偏好与测试进度保留/恢复。
-- Windows Node26.12.1严格类型/Framework检查、定向原生动效/设置集成/商店/穿戴/历史反例通过；最终完整CI使用锁定Chromium。改动未影响部分继续沿技术报告复用有效Windows/Android证据，不把夹具当作真实游戏结算。
-- 当前真实截图与23.99秒Android原速录屏见 [媒体来源](media/softwet-4.1/provenance.json)。原UI API/DOM处理器及原生Passage切换用于演示；不是FPS或物理触控测量。
-
-## Known limitations / Additional coverage
-
-- [#33](https://github.com/102326/DoL-Game-UI/issues/33)的Ray衣柜四分之一预览/祭坛反馈仍缺版本与可靠复现，Unknown/open，未声称修复。
-- 本批没有穷举所有商品/穿戴/战斗结算、ModHub安装更新/排序、云端写入、文件选择、更多物理手机/iOS/WebView或长期功耗。ReOverfits核对制品和受控合同，未新增目标Mod实机覆盖。
-- ModHub只读克隆计算收益与短rAF结果不等于完整开窗/FPS或全部卡顿归因；A1无耗时收益、C3负结果和未采用的原版/Host候选保留原报告，不强行接入。
-
-## 历史与失败
-
-旧8d66038候选、验收ZIP与22秒视频保留历史身份，不代表本次最终运行代码。d5228d1双CI因新增按钮修复并入批次而主动取消，不算通过或产品失败。
-
-历史夹具超时、遗漏衣柜100ms入场、旧设置620ms断言、媒体查询选择器/外部按钮夹具问题及过早WebView连接均在[完整候选记录](evolution/EVO-4.1-CANDIDATE-2026-11-02.md)中保留；修复后针对性检查，不删除有效负例或重试至绿。旧验收包见[历史制品记录](evolution/EVO-4.1.0-PACKAGES-2026-11-02.json)。
+1. 此纯清理分支差异/链接检查与源码推送已完成；接续实际PR验证，运行结果和交付链接在Issue #35集中回执。成功后仍由负责人决定main合入。不要把docs/4x-legacy-separation的整个研究祖先合入main。
+2. 后续4.x任务先查新文档入口、当前源码与#35；回看旧资料时只作明确历史参考，不能把归档AGENTS或发布授权当作现行指令。4.2方向先对齐原作/适配/新增再提小样。
+3. 新设备先核对HEAD/工作区/远端、Node26.12.1/锁定依赖/实际浏览器与Python；本机日志、依赖、临时服务和私人材料不假定跨机存在。本次无Windows或真机必要验证，不新增或修改发布包。

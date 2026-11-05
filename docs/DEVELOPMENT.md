@@ -1,76 +1,19 @@
-# 开发与测试
+# Soft & Wet 4.x — 开发与测试
 
-当前正式双包与 CI 合同见 [Moody CI 专项](audits/MOODY-CI-V1.md)。下文游戏集成矩阵保留历史 2.7 / 0.5.11.9 专项语义；它的 `release` 名称不是当前正式双包或整机验收通过声明。
+当前正式UI4.1.0，4.2为独立研究。先读[HANDOFF](HANDOFF.md)和[4.x入口](README.md)，核对分支/HEAD、工作区、远端、实际Node/浏览器及锁定依赖。Node>=26.12.1 <27、Python3.10+；新设备用npm ci，不将旧设备结果算成本机通过。
 
-后续 UI 基础设施和对外接入须遵循 [UI Runtime 与兼容层边界](UI_INFRASTRUCTURE.md)。主动适配使用独立 Adapter，公共 API 接入保持自愿；2.1.0 已实现第一阶段只读查询和 Style Only Adapter；实际接入契约见 [UI Runtime](UI_RUNTIME.md)，不提前实现第三方组件 SDK。
+## 现役命令
 
-## 独立构建
+- `npm run build`：类型/字段合同、Vite主运行代码和early入口；内部保留构建入口不代表重新发行旧代产品。
+- `npm run ci:check`、`npm run ci:unit`：当前类型/源码/协议/负例合同。
+- `npm run ci:build`、`npm run ci:packages`：当前Framework及九个玩家包、ZIP/版本/依赖/双构建证据。`npm run package`复用当前玩家包生产器。UI版本来自package.json，Host与兼容包按独立版本生成。
+- `npm run ci:browser`与`node scripts/test-ci.cjs research`：现役标准/研究入口，完整集合及证据身份按[CI合同](CI.md)；不自行用子集参数替代门禁。
+- `npm run tooling:check`、`npm run framework:check`、`npm run lab:check`：分别用于相应工具/Host/组件改动。CTS/MTS先经tooling:build生成忽略的CJS/MJS。
 
-Node.js 26.12.1+（仅26.x）、Python 3.10+。运行 `npm ci`。`npm run build` 生成 legacy Core JS/CSS 与 early 入口；`npm test` 执行其独立构建和快速单元合同。`npm run package` 则检查当前源码、构建 Framework 并复用正式双包生产器，输出 `dist/framework/StoneFreeHost-0.1.5-experimental.mod.zip` 与 `dist/framework/DoLGameUI-3.0.4.mod.zip`，无需父工程；`scripts/package-legacy.py` 仅保留历史单包。`private: true` 仅禁止误发 npm，不构成发布授权。
+4.2隔离原型入口与定向检查见[研究README](https://github.com/102326/DoL-Game-UI/blob/c8eafe8278ab85b4243901aebeb5e52546c98512/prototypes/evolution42/README.md)，当前候选已被否决，留作历史复现。原型本机检查不自动进入现workflow，不能以旧远端成功签字。
 
-`npm test` 运行不需要游戏资源的状态接口、衣柜数据、性能采样器、绘图状态复制及 early API 行为检查；正式 ZIP 四补丁逐字节检查由 `tests/shop-pagination-package.test.cjs` 与标准包合同保留。当前标准入口是 `ci:check / ci:unit / ci:build / ci:packages / ci:browser`，研究流程是 `node scripts/test-ci.cjs research`；工作流负责共享 evidence ID、依赖与最终汇总。CI 不等于完整游戏回归。
+## 游戏资源与测试范围
 
-2.2 的 `npm run typecheck` 同时检查主包、独立 Adapter / 示例及两个 inject-early TS 入口。`npm run build` 在 Vite 之后将提前注入入口独立编译到 `dist/`，保留原 JS 文件名与加载顺序；打包时复核生成入口与公共 `types/ui.d.ts`，不向 ModLoader 提交可执行 TS。迁移边界和阶段证据见 [TypeScript 2.2](TYPESCRIPT_2.2.md)。
+`test:quick/test:release/test:perf`仍是现役保留的宿主回归入口，执行计划和所需资源由scripts/test-workflow.cts定义；带--plan可只列计划。其命名不等于正式发行门禁，也不保证适用当前任意游戏版本。需要实际资源的脚本不得自动下载游戏、读私人存档或通过跳过伪造通过；Windows/Android留实际现场。旧代专属演示和单包生产器已迁出，不再提供为开发入口。
 
-## 游戏集成测试
-
-### 三个日常入口
-
-在仓库目录运行：
-
-```sh
-npm run test:quick
-npm run test:quick -- layout
-npm run test:quick -- wardrobe shop
-npm run test:release
-npm run test:perf -- shop
-npm run test:perf -- wardrobe
-```
-
-- `test:quick`：一次现有构建（含类型与字段检查）和单元检查；可追加 `wardrobe / shop / saves / layout / combat`，只跑指定分组，避免每次全量。追加浏览器分组需要相应游戏资源或fixture。
-- `test:release`：构建与单元检查，再顺序跑核心衣柜操作/布局/预览生命周期、商店业务、存档往返与传输、缩放/弹窗/厨房、战斗操作/布局。属于代表性桌面回归，不覆盖所有模组或替代ADB验收。
-- `test:perf`：构建与单元检查，再调用现有shop/wardrobe暖缓存交错采样；不指定分组时两者均运行。固定资源和合成库存，不是冷启动或真机性能结论。
-- 三个入口均支持追加 `--plan`，只列计划与缺失资源，不构建或测试。缺资源时实际执行提前失败，不自动下载、生成或跳过。中途失败即停，报告明确后续未执行项，不自动重试。
-- 默认vanilla；设置 `DOL_WARDROBE_INTEGRATED=1` 后使用Lyra。两个环境分别运行，不将其称为任意模组组合验证。性能入口要求清除 `DOL_SHOP_LIFECYCLE_ONLY / DOL_SHOP_BANNER_CONTROL / DOL_SHOP_VERIFY_ARTIFACT`，防止把诊断模式当性能采样。
-- 汇总在 `tests/artifacts/workflow-<模式>-<时间戳>.json`，含源码版本、提交/是否有未提交改动、环境类型、每步结果/耗时、未执行项；单项脚本沿用已有截图与采样输出。错误正文在终端，汇总不收集私有环境变量或真实存档。
-- 只运行隔离桌面脚本，不连接ADB、不覆盖真实槽位、不安装/发布。会重建 `dist`；快速单元不再调用历史单包生产器。`releases/mods`与`releases/candidates`中的交付包保持不变。清除继承的DOL_RELEASE_DIR，避免验证误写发行目录。
-- 当前shop性能脚本会将ZIP的替换契约与工作树Twee重注册到隔离游戏，并非ModLoader完整加载证明。已知skybox异常必须有同variant无UI对照，否则失败；未知异常不豁免。对照生成和原证据复核仍按VALIDATION文档手动进行，不为让批次通过自动补对照。
-
-集成测试使用 Playwright，当前脚本配置为本机已安装的 Microsoft Edge（`channel: 'msedge'`）。先自行安装 Edge；需要生成夹具时还需 Tweego 和固定版本原版源码。
-
-| 变量 | 用途 |
-| --- | --- |
-| `DOL_UPSTREAM_SOURCE` | 原版源码 checkout，提交必须为 `41993d3f32476f0b1c8db730c159a50ffcdc2a65` |
-| `TWEEGO_BIN` | Tweego 可执行文件；默认尝试原版源码中的 Windows x64 工具 |
-| `DOL_TEST_WORKSPACE` | 集成游戏资源根目录，布局见下方；未设置时沿用开发工作区的父目录约定 |
-| `DOL_WARDROBE_INTEGRATED=1` | 选用 Lyra 集成游戏；未设置时选原版 |
-| `DOL_RELEASE_DIR` | 可选的额外 ZIP 输出目录 |
-
-资源目录布局：
-
-```text
-<DOL_TEST_WORKSPACE>/
-  releases/source-baseline-0.5.11.9/vanilla.html
-  upstream/game-0.5.11.9/Degrees of Lewdity.html
-  upstream/game-0.5.11.9/img/...
-```
-
-完整游戏与资源须自行取得，不提交到本仓库。`settings-lifecycle.test.cjs` 是旧版本比较测试，额外需要该工作区的 `releases/mods/DoLGameUI-0.5.2.mod.zip`；不属于独立默认测试。
-
-```sh
-python scripts/build-fixture.py
-node tests/acceptance.cjs
-node tests/unified.test.cjs
-node tests/shop.test.cjs
-node tests/experiments.test.cjs
-node tests/wardrobe-features.test.cjs
-node tests/wardrobe-operations.test.cjs
-```
-
-运行前创建 `tests/artifacts/`（用于截图和报告）。这些文件与 `tests/fixture.html` 均忽略提交。测试使用隔离新游戏/合成数据；不要将真实存档加入自动测试或公开仓库。
-
-## 绘图来源更新
-
-普通构建使用已提交的 `src/wardrobe/vendor/isolated-model.js`，不需要源码下载。只有重新生成派生绘图模块时才运行 `node scripts/vendor-wardrobe.cjs`；它读取 `DOL_UPSTREAM_SOURCE` 并检查提交。更新后重新生成并审查 `scripts/render-state-fields.cjs` 的字段清单，执行对应回归。不得把替换复制方式视为零风险。
-
-来源与许可必须随派生代码保留，见根目录的 `UPSTREAM-RENDERER-*` 文件。
+批量CI沿现政策，只在有意义集成/冻结边界跑整轮；保留required validate/moody-gate及source/artifact身份。先定向验证，再按实际风险扩大；失败保留首因，不重试至绿。发布仍需单独授权。

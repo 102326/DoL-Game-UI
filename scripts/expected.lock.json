@@ -1615,8 +1615,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "75a5548be24101c9e223b0fec96b44be2ec342469513c1e69f1f993ca3e913a1",
-      "assertionSites": 21
+      "sourceSha256": "3757ce0fcf8b63d335151be2b8d11c7a001ce4a2f2e986b9d5f76077fd9385ef",
+      "assertionSites": 31
     },
     {
       "entry": "tests/metrics-boundary.test.mts",

@@ -1,4 +1,4 @@
-"""Current paired player packages; the historical monolith is package-legacy.py."""
+"""Current 4.x paired player packages; historical monolith is sealed in DoL-Game-UI-old."""
 from pathlib import Path
 import runpy
 import sys
