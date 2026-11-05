@@ -14,6 +14,8 @@ import type {hubPreview as preview} from '../prototypes/evolution-integration/hu
 declare const DoLMidnightTheme:NonNullable<NonNullable<Parameters<typeof startTheme>[0]>['DoLMidnightTheme']>;
 declare let testCatchInput:{phase:string;targetIsBall:boolean;trusted:boolean;x:number;y:number;rect:{x:number;y:number;width:number;height:number}}|undefined;
 declare const testPlacementMotion:PlacementMotion;
+type InputSample={at:number;type:string;trusted:boolean;target:string;ballHit:boolean;pointer:{x:number;y:number;id:number;captured:boolean}|null;rect:{x:number;y:number;width:number;height:number};motion:ReturnType<PlacementMotion['read']>;hidden:boolean;reduced:boolean;visualMotion:boolean};
+declare let testPlacementInputs:InputSample[],stopPlacementInputs:()=>void;
 declare const hubPreview:typeof preview,testPlacementVisual:ReturnType<typeof rigidSpin>,testHubVisual:ReturnType<typeof sphereHub>,testPlacementRelease:()=>void;
 const key='SoftWet.MotionHub.freePosition.v1',legacyKey='StoneFreeMotionHub.position.v1';
 function must<T>(v:T|null|undefined):T{assert.ok(v);return v}
@@ -21,8 +23,9 @@ const ball=(p:playwright.Page)=>p.locator('.sf-motion-ball');
 const root=(p:playwright.Page)=>p.locator('.sf-motion-hub');
 const stored=(p:playwright.Page)=>p.evaluate(k=>localStorage.getItem(k),key);
 async function idle(p:playwright.Page){await p.waitForFunction(()=>document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-phase')==='idle')}
-async function down(p:playwright.Page){await ball(p).hover();const b=must(await ball(p).boundingBox());await p.mouse.move(b.x+b.width/2,b.y+b.height/2);await p.mouse.down()}
-async function charge(p:playwright.Page){await down(p);await p.mouse.move(2,500,{steps:5});await p.waitForFunction(()=>Number(document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-charge'))>=.999)}
+async function down(p:playwright.Page,grip=.5){const start=await p.evaluate(()=>performance.now());await ball(p).hover();const b=must(await ball(p).boundingBox());await p.mouse.move(b.x+b.width*grip,b.y+b.height/2);await p.mouse.down();const hit=must(await p.evaluate(()=>testPlacementInputs.filter(e=>e.type==='pointerdown').at(-1)));assert.ok(hit.at>=start&&hit.ballHit&&hit.trusted,'this placement pointer must freshly hit the ball')}
+// A central grip at x=2 has only .08px of full-charge margin; use a real interior grip with 14px more travel.
+async function charge(p:playwright.Page){await down(p,.75);await p.mouse.move(2,500,{steps:5});await p.waitForFunction(()=>Number(document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-charge'))>=.999)}
 async function verifyHubPlacement(browser:playwright.Browser){
  await import('./hub-placement.test.mts');
  const {createHubPreviewServer}=await import('../scripts/preview-evolution-hub.mjs');
@@ -32,7 +35,7 @@ async function verifyHubPlacement(browser:playwright.Browser){
   if(file.endsWith('/src/ui/golden-spin/hub-motion.ts'))return code.replace('export function sphereHub(', 'function actualSphereHub(')+'\nexport function sphereHub(root){return window.testHubVisual=actualSphereHub(root)}';
   if(file.endsWith('/framework/official-ui/hub.ts')){assert.equal(code.split('return visuals.dispose').length,2,'actual owner disposer must be unique');return code.replace('return visuals.dispose','return (window.testPlacementRelease=visuals.dispose)')}
  }}]);
- const out=path.resolve('tests/artifacts/evolution/hub-placement-'+Date.now()),rows:unknown[]=[],errors:string[]=[],failedRequests:{url:string;failure:string|null}[]=[],navigation:{width:number;gotoMs?:number;readyMs?:number}[]=[];fs.mkdirSync(out,{recursive:true});
+ const out=path.resolve('tests/artifacts/evolution/hub-placement-'+Date.now()),rows:unknown[]=[],inputEvidence:unknown[]=[],errors:string[]=[],failedRequests:{url:string;failure:string|null}[]=[],navigation:{width:number;gotoMs?:number;readyMs?:number}[]=[];fs.mkdirSync(out,{recursive:true});
  let page:playwright.Page|undefined,stage='startup',status='FAIL',failure:string|undefined;
  try{
   const address=must(server.httpServer?.address());if(typeof address==='string')throw Error('Missing preview address');
@@ -40,6 +43,10 @@ async function verifyHubPlacement(browser:playwright.Browser){
    stage=`${width} setup`;const p=page=await browser.newPage({viewport:{width,height:900}});p.setDefaultTimeout(10000);p.on('pageerror',e=>errors.push(e.message));p.on('requestfailed',r=>failedRequests.push({url:r.url(),failure:r.failure()?.errorText??null}));
    const old=JSON.stringify({side:'left',y:.58,docked:false});await p.addInitScript(({key,old})=>localStorage.setItem(key,old),{key:legacyKey,old});
    const timing:{width:number;gotoMs?:number;readyMs?:number}={width};navigation.push(timing);const started=Date.now();await p.goto(`http://127.0.0.1:${address.port}/`);timing.gotoMs=Date.now()-started;await ball(p).waitFor();timing.readyMs=Date.now()-started;
+   await p.evaluate(()=>{
+    testPlacementInputs=[];const record=(event:Event)=>{const b=document.querySelector('.sf-motion-ball');if(!(b instanceof HTMLElement))return;const r=b.getBoundingClientRect();testPlacementInputs.push({at:performance.now(),type:event.type,trusted:event.isTrusted,target:event.target instanceof Element?`${event.target.tagName}.${event.target.className}`:String(event.target),ballHit:event.target instanceof Node&&b.contains(event.target),pointer:event instanceof PointerEvent?{x:event.clientX,y:event.clientY,id:event.pointerId,captured:b.hasPointerCapture(event.pointerId)}:null,rect:{x:r.x,y:r.y,width:r.width,height:r.height},motion:testPlacementMotion.read(),hidden:document.hidden,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,visualMotion:document.documentElement.hasAttribute('data-dgu-visualMotion')});if(testPlacementInputs.length>200)testPlacementInputs.shift()};
+    const types=['pointerdown','pointermove','pointerup','pointercancel','lostpointercapture','blur','resize','visibilitychange'];for(const type of types)window.addEventListener(type,record,true);stopPlacementInputs=()=>{for(const type of types)window.removeEventListener(type,record,true)};
+   });
    const accepted=p.locator('.spin-hub-canvas:not(.rigid-spin-body)');assert.equal(await accepted.count(),1);assert.equal(await accepted.evaluate(n=>getComputedStyle(n).visibility),'visible');
    await ball(p).click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');assert.equal(await ball(p).getAttribute('aria-expanded'),'true');await p.screenshot({path:path.join(out,`${width}-menu.png`)});await ball(p).press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
    stage=`${width} disable motion during opening`;
@@ -56,7 +63,7 @@ async function verifyHubPlacement(browser:playwright.Browser){
    await p.evaluate(()=>{testCatchInput=undefined;document.addEventListener('pointerdown',e=>{const ball=document.querySelector('.sf-motion-ball')!,r=ball.getBoundingClientRect();testCatchInput={phase:testPlacementMotion.read().phase,targetIsBall:e.target instanceof Node&&ball.contains(e.target),trusted:e.isTrusted,x:e.clientX,y:e.clientY,rect:{x:r.x,y:r.y,width:r.width,height:r.height}}},{capture:true,once:true})});
    const moving=must(await ball(p).boundingBox());await p.mouse.move(moving.x+moving.width/2,moving.y+moving.height/2);await p.mouse.down();const caught=must(await p.evaluate(()=>testCatchInput));rows.push({width,catchInput:caught});assert.ok(caught.targetIsBall&&caught.trusted&&caught.phase==='flying','real pointer must hit the ongoing flight');assert.equal(await root(p).getAttribute('data-edge-phase'),'dragging','real pointer caught ongoing flight');await p.mouse.up();await idle(p);assert.equal(await ball(p).getAttribute('aria-expanded'),'false','catch does not open');
    for(const reason of ['escape','blur','resize','scene','reduced','hidden']){
-    stage=`${width} interrupt ${reason}`;await charge(p);const before=await stored(p);
+    stage=`${width} interrupt ${reason}`;console.log('Hub placement stage',stage);await charge(p);const before=await stored(p);
     if(reason==='escape')await p.keyboard.press('Escape');
     if(reason==='blur')await p.evaluate(()=>window.dispatchEvent(new Event('blur')));
     if(reason==='resize')await p.setViewportSize({width,height:880});
@@ -73,11 +80,11 @@ async function verifyHubPlacement(browser:playwright.Browser){
     const cleanup=await p.evaluate(()=>{const disconnect=ResizeObserver.prototype.disconnect;let threw=false,calls=0;ResizeObserver.prototype.disconnect=function(){disconnect.call(this);calls++;throw Error('controlled disconnect failure')};try{testPlacementRelease()}catch{threw=true}finally{ResizeObserver.prototype.disconnect=disconnect}return{threw,calls,baseDead:testHubVisual.inspect().dead,flightPending:testPlacementVisual.inspect().pending}});
     assert.ok(cleanup.threw&&cleanup.calls>0,'cleanup failure must remain visible');assert.equal(cleanup.baseDead,true,'base visual retires despite flight cleanup failure');assert.equal(cleanup.flightPending,false,'flight frame is cancelled');assert.equal(await p.locator('.spin-hub-canvas,.rigid-spin-field').count(),0,'both visual canvases and field are removed');await p.evaluate(()=>hubPreview.stop());rows.push({cleanupFailure:cleanup});
    }
-   rows.push({width,status:'PASS',frames:samples.length,bounces:Math.max(...samples.map(s=>s.bounces))});await p.close();page=undefined;
+   inputEvidence.push({width,inputs:await p.evaluate(()=>{stopPlacementInputs();return testPlacementInputs})});rows.push({width,status:'PASS',frames:samples.length,bounces:Math.max(...samples.map(s=>s.bounces))});await p.close();page=undefined;
   }
   assert.deepEqual(errors,[]);caseCheckpoint('entry');status='PASS';return rows;
- }catch(error){failure=error instanceof Error?error.stack:String(error);if(page)rows.push({failedCatchInput:await page.evaluate(()=>testCatchInput).catch(()=>undefined)});await page?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw error}
- finally{fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({status,stage,failure,rows,errors,failedRequests,navigation,node:process.version,browser:browser.version(),limits:'Controlled Chromium owner preview; no game or Android device'},null,2));console.log(out);await page?.close();await server.close()}
+ }catch(error){failure=error instanceof Error?error.stack:String(error);if(page){const diagnostic=await page.evaluate(()=>({catchInput:typeof testCatchInput==='undefined'?null:testCatchInput,inputs:typeof testPlacementInputs==='undefined'?[]:testPlacementInputs,motion:typeof testPlacementMotion==='undefined'?null:testPlacementMotion.read()})).catch(()=>null);rows.push({failedInput:diagnostic});console.error('Hub placement failure',JSON.stringify({stage,diagnostic}))}await page?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw error}
+ finally{fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({status,stage,failure,rows,inputEvidence,errors,failedRequests,navigation,node:process.version,browser:browser.version(),limits:'Controlled Chromium owner preview; bounded input diagnostics can affect scheduling; no game or Android device'},null,2));console.log(out);await page?.close();await server.close()}
 }
 export = {verifyHubPlacement};
 if(require.main===module)(async()=>{const browser=await playwright.chromium.launch(require('./browser-options.cjs'));try{await verifyHubPlacement(browser)}finally{await browser.close()}})().catch(error=>{console.error(error);process.exitCode=1});
