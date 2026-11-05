@@ -1,0 +1,695 @@
+{
+  "date": "2026-11-05",
+  "baseCommit": "1bfba14cf75e2401506c5b3159d5af515363b8d6",
+  "productCommitUnchanged": "e1a47d25db601552236852106d4bbb140e5e01c7",
+  "scope": "Research only; no product, workflow, catalog, dependency or release changes.",
+  "weather": {
+    "decision": "Do not adopt: negligible mixed timing; synchronous visible resize paint remains necessary. Dynamic layoutMoving path not covered.",
+    "measured": {
+      "artifact": "evo42-paused-resize/1793863645760/result.json",
+      "sha256": "40f0dee759e3078da76ef6a04974052342f9160e95c5232c53c024628aa6f7ee",
+      "status": "PASS",
+      "inputs": {
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+        "scripts/research/weather-paused-resize-probe.mts": "f2974051dd403a006ff87257b58d370fe134f7b444c9c56003e52485d39eecc1",
+        "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3"
+      },
+      "sources": {
+        "baseline": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+        "candidate": "2a0b1dff62bca6051525797c094474bc87e982d3da4b5128b99ec10535e0a245"
+      },
+      "fixtureHash": "cca8825e8c1931a61c38a0882346b217218302d9e7c4fa1621e4f5983fa368a9",
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "browser": "153.0.8010.12",
+      "scope": "Controlled real headerWeather/settingsWeather with translucent modal and reduced motion; repeated resize amplification, not real-game frequency, GPU or FPS.",
+      "proof": [
+        {
+          "scenario": "rain-same",
+          "variant": "baseline",
+          "drawsSync": 2,
+          "drawsAfter": 2,
+          "immediatePixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "afterPixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "screenshot": "7544cf9a651640f7554d15b575d7d15eef9059a284a7ba095c0e8e1b5991602b"
+        },
+        {
+          "scenario": "rain-same",
+          "variant": "candidate",
+          "drawsSync": 1,
+          "drawsAfter": 1,
+          "immediatePixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "afterPixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "screenshot": "7544cf9a651640f7554d15b575d7d15eef9059a284a7ba095c0e8e1b5991602b"
+        },
+        {
+          "scenario": "rain-resize",
+          "variant": "baseline",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "fbfd4d0d5483ba9026515a5ab84dd546cafdd064eb6048c0f0512cf8c4099712",
+          "afterPixel": "fbfd4d0d5483ba9026515a5ab84dd546cafdd064eb6048c0f0512cf8c4099712",
+          "screenshot": "6f9b270585fe599768a4162e73b52488f0e8ededc4c600c18a9fec11006bc9f4"
+        },
+        {
+          "scenario": "rain-resize",
+          "variant": "candidate",
+          "drawsSync": 2,
+          "drawsAfter": 2,
+          "immediatePixel": "fbfd4d0d5483ba9026515a5ab84dd546cafdd064eb6048c0f0512cf8c4099712",
+          "afterPixel": "fbfd4d0d5483ba9026515a5ab84dd546cafdd064eb6048c0f0512cf8c4099712",
+          "screenshot": "6f9b270585fe599768a4162e73b52488f0e8ededc4c600c18a9fec11006bc9f4"
+        },
+        {
+          "scenario": "snow-resize",
+          "variant": "baseline",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "afterPixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "screenshot": "7a24023c682473e7b0a7f6cd75e83fcd2ad123548aa039a4ee1422498fe08a80"
+        },
+        {
+          "scenario": "snow-resize",
+          "variant": "candidate",
+          "drawsSync": 2,
+          "drawsAfter": 2,
+          "immediatePixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "afterPixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "screenshot": "7a24023c682473e7b0a7f6cd75e83fcd2ad123548aa039a4ee1422498fe08a80"
+        },
+        {
+          "scenario": "scroll-resize",
+          "variant": "baseline",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "a7fed4a5b12c1036341499429fb6543f114a61d9bde88df97ce8e4c00a454c39",
+          "afterPixel": "a7fed4a5b12c1036341499429fb6543f114a61d9bde88df97ce8e4c00a454c39",
+          "screenshot": "b3efb10ad4693e96bebc1db3ae1a8ef146366708678bd3c225c51921faec85ca"
+        },
+        {
+          "scenario": "scroll-resize",
+          "variant": "candidate",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "a7fed4a5b12c1036341499429fb6543f114a61d9bde88df97ce8e4c00a454c39",
+          "afterPixel": "a7fed4a5b12c1036341499429fb6543f114a61d9bde88df97ce8e4c00a454c39",
+          "screenshot": "b3efb10ad4693e96bebc1db3ae1a8ef146366708678bd3c225c51921faec85ca"
+        },
+        {
+          "scenario": "rain-resume",
+          "variant": "baseline",
+          "drawsSync": 2,
+          "drawsAfter": 4,
+          "immediatePixel": "20681061e4e26069214054bbafd825e25dc7346b2631c017fdd8ede72aeab94c",
+          "afterPixel": "20681061e4e26069214054bbafd825e25dc7346b2631c017fdd8ede72aeab94c",
+          "screenshot": "0e8fa1cca44d29b5d71f53d7f09696a368361dcf6c66f0aafef6a80d6e04ede3"
+        },
+        {
+          "scenario": "rain-resume",
+          "variant": "candidate",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "20681061e4e26069214054bbafd825e25dc7346b2631c017fdd8ede72aeab94c",
+          "afterPixel": "20681061e4e26069214054bbafd825e25dc7346b2631c017fdd8ede72aeab94c",
+          "screenshot": "0e8fa1cca44d29b5d71f53d7f09696a368361dcf6c66f0aafef6a80d6e04ede3"
+        }
+      ],
+      "rows": [
+        {
+          "pair": 0,
+          "variant": "baseline",
+          "elapsed": 14.099999994039536,
+          "task": 0.015892
+        },
+        {
+          "pair": 0,
+          "variant": "candidate",
+          "elapsed": 14.599999994039536,
+          "task": 0.016166
+        },
+        {
+          "pair": 1,
+          "variant": "candidate",
+          "elapsed": 14.099999994039536,
+          "task": 0.015356999999999999
+        },
+        {
+          "pair": 1,
+          "variant": "baseline",
+          "elapsed": 14.400000005960464,
+          "task": 0.016041
+        },
+        {
+          "pair": 2,
+          "variant": "baseline",
+          "elapsed": 14.599999994039536,
+          "task": 0.016163999999999998
+        },
+        {
+          "pair": 2,
+          "variant": "candidate",
+          "elapsed": 14.400000005960464,
+          "task": 0.015749000000000003
+        },
+        {
+          "pair": 3,
+          "variant": "candidate",
+          "elapsed": 13.600000023841858,
+          "task": 0.014998
+        },
+        {
+          "pair": 3,
+          "variant": "baseline",
+          "elapsed": 14.5,
+          "task": 0.016218
+        },
+        {
+          "pair": 4,
+          "variant": "baseline",
+          "elapsed": 13.699999988079071,
+          "task": 0.015276
+        },
+        {
+          "pair": 4,
+          "variant": "candidate",
+          "elapsed": 14.800000011920929,
+          "task": 0.016181
+        }
+      ]
+    },
+    "additionalProof": {
+      "artifact": "evo42-paused-resize/1793863675788/result.json",
+      "sha256": "3d3ed82492bc1e1027b7ac0a66eb86cf2948b269b3c1b6f021703e73c3a4c112",
+      "status": "PASS",
+      "inputs": {
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+        "scripts/research/weather-paused-resize-probe.mts": "76c5e3ba9efcb5e2963e1f1853381c68c99a86f369ce97b2701b332930f8a69a",
+        "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3"
+      },
+      "sources": {
+        "baseline": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+        "candidate": "2a0b1dff62bca6051525797c094474bc87e982d3da4b5128b99ec10535e0a245"
+      },
+      "proof": [
+        {
+          "scenario": "rain-same",
+          "variant": "baseline",
+          "prePixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "drawsSync": 1,
+          "drawsAfter": 2,
+          "immediatePixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "afterPixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "screenshot": "7544cf9a651640f7554d15b575d7d15eef9059a284a7ba095c0e8e1b5991602b"
+        },
+        {
+          "scenario": "rain-same",
+          "variant": "candidate",
+          "prePixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "drawsSync": 1,
+          "drawsAfter": 1,
+          "immediatePixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "afterPixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "screenshot": "7544cf9a651640f7554d15b575d7d15eef9059a284a7ba095c0e8e1b5991602b"
+        },
+        {
+          "scenario": "rain-resize",
+          "variant": "baseline",
+          "prePixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "fbfd4d0d5483ba9026515a5ab84dd546cafdd064eb6048c0f0512cf8c4099712",
+          "afterPixel": "fbfd4d0d5483ba9026515a5ab84dd546cafdd064eb6048c0f0512cf8c4099712",
+          "screenshot": "6f9b270585fe599768a4162e73b52488f0e8ededc4c600c18a9fec11006bc9f4"
+        },
+        {
+          "scenario": "rain-resize",
+          "variant": "candidate",
+          "prePixel": "1a617ad43545ff272f6c5c18c6073286131ad51ace70f7a2d4102c53f581aa8d",
+          "drawsSync": 2,
+          "drawsAfter": 2,
+          "immediatePixel": "fbfd4d0d5483ba9026515a5ab84dd546cafdd064eb6048c0f0512cf8c4099712",
+          "afterPixel": "fbfd4d0d5483ba9026515a5ab84dd546cafdd064eb6048c0f0512cf8c4099712",
+          "screenshot": "6f9b270585fe599768a4162e73b52488f0e8ededc4c600c18a9fec11006bc9f4"
+        },
+        {
+          "scenario": "snow-resize",
+          "variant": "baseline",
+          "prePixel": "53f3c6d6a1a2cb86d769c6158db0d1dacc822aeaa7681822080a89da2823ae3e",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "afterPixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "screenshot": "7a24023c682473e7b0a7f6cd75e83fcd2ad123548aa039a4ee1422498fe08a80"
+        },
+        {
+          "scenario": "snow-resize",
+          "variant": "candidate",
+          "prePixel": "53f3c6d6a1a2cb86d769c6158db0d1dacc822aeaa7681822080a89da2823ae3e",
+          "drawsSync": 2,
+          "drawsAfter": 2,
+          "immediatePixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "afterPixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "screenshot": "7a24023c682473e7b0a7f6cd75e83fcd2ad123548aa039a4ee1422498fe08a80"
+        },
+        {
+          "scenario": "scroll-resize",
+          "variant": "baseline",
+          "prePixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "a7fed4a5b12c1036341499429fb6543f114a61d9bde88df97ce8e4c00a454c39",
+          "afterPixel": "a7fed4a5b12c1036341499429fb6543f114a61d9bde88df97ce8e4c00a454c39",
+          "screenshot": "b3efb10ad4693e96bebc1db3ae1a8ef146366708678bd3c225c51921faec85ca"
+        },
+        {
+          "scenario": "scroll-resize",
+          "variant": "candidate",
+          "prePixel": "05b71b3443e4d4063d9e1e4736b8c71a01d928c20d95a44cdd2074c39afa7706",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "a7fed4a5b12c1036341499429fb6543f114a61d9bde88df97ce8e4c00a454c39",
+          "afterPixel": "a7fed4a5b12c1036341499429fb6543f114a61d9bde88df97ce8e4c00a454c39",
+          "screenshot": "b3efb10ad4693e96bebc1db3ae1a8ef146366708678bd3c225c51921faec85ca"
+        },
+        {
+          "scenario": "rain-resume",
+          "variant": "baseline",
+          "prePixel": "78dcaaaa30a5d0506f97d1cea3d19f76b18e2118d85584969edc072a45f6d7bb",
+          "drawsSync": 2,
+          "drawsAfter": 4,
+          "immediatePixel": "20681061e4e26069214054bbafd825e25dc7346b2631c017fdd8ede72aeab94c",
+          "afterPixel": "20681061e4e26069214054bbafd825e25dc7346b2631c017fdd8ede72aeab94c",
+          "screenshot": "0e8fa1cca44d29b5d71f53d7f09696a368361dcf6c66f0aafef6a80d6e04ede3"
+        },
+        {
+          "scenario": "rain-resume",
+          "variant": "candidate",
+          "prePixel": "78dcaaaa30a5d0506f97d1cea3d19f76b18e2118d85584969edc072a45f6d7bb",
+          "drawsSync": 2,
+          "drawsAfter": 3,
+          "immediatePixel": "20681061e4e26069214054bbafd825e25dc7346b2631c017fdd8ede72aeab94c",
+          "afterPixel": "20681061e4e26069214054bbafd825e25dc7346b2631c017fdd8ede72aeab94c",
+          "screenshot": "0e8fa1cca44d29b5d71f53d7f09696a368361dcf6c66f0aafef6a80d6e04ede3"
+        }
+      ]
+    },
+    "identityNote": "Timing uses the first script hash. Later proof-only script added before/after visible-pixel assertions; no timing rows from it are claimed."
+  },
+  "ci": {
+    "remoteSelectedCost": {
+      "scope": "single-run descriptive cost; selected evidence rehashed against downloaded index; no local full remote verification or optimization comparison",
+      "runs": {
+        "standard": {
+          "id": 41975767742,
+          "source": "e1a47d25db601552236852106d4bbb140e5e01c7",
+          "run": {
+            "id": "41975767742-1-validate",
+            "attempt": "1",
+            "githubRunId": "41975767742",
+            "repository": "102326/DoL-Game-UI",
+            "ref": "refs/heads/perf/4.2-windows-device-followup",
+            "event": "workflow_dispatch",
+            "workflow": "Kraft Work CI",
+            "job": "validate",
+            "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41975767742"
+          },
+          "selectedFilesHashMatch": {
+            "identity.json": true,
+            "metrics.json": true,
+            "browser.json": true,
+            "fixtures/device-layouts.cjs/layout-report.json": true
+          },
+          "stages": [
+            {
+              "id": "dependencies",
+              "status": "PASS",
+              "milliseconds": 1457,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            },
+            {
+              "id": "check",
+              "status": "PASS",
+              "milliseconds": 42273,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            },
+            {
+              "id": "unit",
+              "status": "PASS",
+              "milliseconds": 44266,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            },
+            {
+              "id": "build",
+              "status": "PASS",
+              "milliseconds": 138533,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            },
+            {
+              "id": "packages",
+              "status": "PASS",
+              "milliseconds": 146310,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            },
+            {
+              "id": "browser-install",
+              "status": "PASS",
+              "milliseconds": 17922,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            },
+            {
+              "id": "browser",
+              "status": "PASS",
+              "milliseconds": 511708,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            }
+          ],
+          "top": [
+            {
+              "id": "device-layouts.cjs",
+              "milliseconds": 197468
+            },
+            {
+              "id": "settings-ci.cjs",
+              "milliseconds": 43636
+            },
+            {
+              "id": "evolution-owner-resources.cjs",
+              "milliseconds": 43458
+            },
+            {
+              "id": "ui-runtime-regressions.cjs",
+              "milliseconds": 26670
+            },
+            {
+              "id": "attributes-material.cjs",
+              "milliseconds": 21176
+            },
+            {
+              "id": "weather-special.cjs",
+              "milliseconds": 18779
+            },
+            {
+              "id": "framework-startup.cjs",
+              "milliseconds": 18503
+            },
+            {
+              "id": "header-weather.cjs",
+              "milliseconds": 12601
+            },
+            {
+              "id": "saves-viewport.cjs",
+              "milliseconds": 9790
+            },
+            {
+              "id": "combat-focused.cjs",
+              "milliseconds": 9440
+            },
+            {
+              "id": "evolution-panels.cjs",
+              "milliseconds": 8999
+            },
+            {
+              "id": "moody-historical-regressions.cjs",
+              "milliseconds": 8860
+            }
+          ],
+          "deviceGroups": {
+            "profile": {
+              "count": 48,
+              "milliseconds": 106885
+            },
+            "orientation": {
+              "count": 2,
+              "milliseconds": 3223
+            },
+            "scan": {
+              "count": 73,
+              "milliseconds": 84468
+            },
+            "negative": {
+              "count": 4,
+              "milliseconds": 843
+            }
+          }
+        },
+        "research": {
+          "id": 41975771851,
+          "source": "e1a47d25db601552236852106d4bbb140e5e01c7",
+          "run": {
+            "id": "41975771851-1-research",
+            "attempt": "1",
+            "githubRunId": "41975771851",
+            "repository": "102326/DoL-Game-UI",
+            "ref": "refs/heads/perf/4.2-windows-device-followup",
+            "event": "workflow_dispatch",
+            "workflow": "Motion Evolution prototype",
+            "job": "prototype",
+            "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41975771851"
+          },
+          "selectedFilesHashMatch": {
+            "identity.json": true,
+            "metrics.json": true,
+            "research.json": true
+          },
+          "stages": [
+            {
+              "id": "dependencies",
+              "status": "PASS",
+              "milliseconds": 1556,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            },
+            {
+              "id": "browser-install",
+              "status": "PASS",
+              "milliseconds": 18675,
+              "cache": {
+                "npm": "true"
+              },
+              "retry": {
+                "attempt": "1",
+                "automaticRetries": 0
+              }
+            }
+          ],
+          "top": [
+            {
+              "id": "evolution-rain-glass--runoff",
+              "milliseconds": 50127
+            },
+            {
+              "id": "evolution-weather-shower--force",
+              "milliseconds": 45519
+            },
+            {
+              "id": "source-check",
+              "milliseconds": 45201
+            },
+            {
+              "id": "evolution-owner-resources",
+              "milliseconds": 42933
+            },
+            {
+              "id": "settings-ci",
+              "milliseconds": 42918
+            },
+            {
+              "id": "evolution-weather-shower",
+              "milliseconds": 38758
+            },
+            {
+              "id": "evolution-weather-levels",
+              "milliseconds": 36568
+            },
+            {
+              "id": "evolution-weather-shower--scatter",
+              "milliseconds": 30333
+            },
+            {
+              "id": "evolution-weather-candidates",
+              "milliseconds": 29913
+            },
+            {
+              "id": "attributes-material",
+              "milliseconds": 21312
+            },
+            {
+              "id": "prototype-build",
+              "milliseconds": 19686
+            },
+            {
+              "id": "evolution-rain-glass--natural-trails",
+              "milliseconds": 18689
+            }
+          ]
+        }
+      },
+      "recommendation": "Measure device scan scene switch, scroll and layout snapshot separately; preserve all IDs, dimensions, actual assertions, failure controls and evidence. Compare isolated batching of locator scrolls only if attribution supports it; do not assume benefit or drop waits."
+    },
+    "probe": {
+      "artifact": "evo42-next-ci-cost/device-layout-probe.json",
+      "sha256": "50e8bdc59846fd650c0a8ff6fdbd395389a77e234e5a982c25b5f58dca30cf15",
+      "status": "PASS",
+      "scope": "isolated instrumented subset, not full device-layout PASS or comparative speed result",
+      "sourceCommit": "1bfba14cf75e2401506c5b3159d5af515363b8d6",
+      "node": "v26.13.0",
+      "browserVersion": "153.0.8010.12",
+      "playwright": "1.63.0",
+      "input": {
+        "manifestSha256": "c8f6ad54128d550d886847e8bf66756c3409e20c62445ac37f55ecf97e32d1d6",
+        "count": 573,
+        "keyFiles": {
+          "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34",
+          "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+          "scripts/research/device-layout-cost-probe.mts": "f840075f065fc3926700cde35753a110fdb8cb8796d79fd67a25fc8086e66bb1",
+          "tests/browser-options.cjs": "ba2900672fce2fa34c6016bc08ed74c24d31ba2871e67f1d1a16d73437732fb4",
+          "tests/device-case-plan.cjs": "8ee2e18378056cf1d0644f007d5571c75f04bb1b1c0b550afeccb5abf858500e",
+          "tests/device-layout-oracles.cjs": "f496ab0e3fb259371b3cf8ca5c8d790dfccb9e233bc5e61b6e3661c0162f1f82",
+          "tests/device-layout-oracles.cts": "da7a2cfcbd04ea0b9b9678bfd2cb6403fa287608e669f7d1257f0a14a4981a7a",
+          "tests/device-layouts.cts": "5bdf88fdf8bee890b77b8c9036667e32b7f88d15f2fa07c8ce7726eee789eb7a",
+          "tests/device-profiles.cjs": "d8df904a17e01e35084cdfc01e23d039e8859a929fcce83534ff889844855153",
+          "tests/device-profiles.cts": "affc12fe83bdbf8b4f2e2be621f34642f5cd324c399e258fecb78777c874f58d"
+        }
+      },
+      "widths": [
+        320,
+        600,
+        900,
+        1280
+      ],
+      "heights": [
+        390,
+        900
+      ],
+      "measurement": "hub/settings/saves are inclusive and contain scene, scroll, snapshot and assertion; scene includes its original two frames; scroll, snapshot and assertion are disjoint; do not add inclusive and nested times",
+      "limitations": "single Mac Chromium pass; viewport setup is outside sample total; instrumentation adds overhead; no game or real device"
+    },
+    "sceneTotalMilliseconds": 4080.496,
+    "partsMilliseconds": {
+      "hub": 2031.519,
+      "settings": 909.836,
+      "saves": 1138.871,
+      "scene": 899.119,
+      "scroll": 135.959,
+      "snapshot": 52.946,
+      "assert": 1.964
+    },
+    "decision": "No formal change. Scroll cost is small in this subset; investigate Hub interactions/readiness before batching scroll calls. This is attribution, not demonstrated acceleration."
+  },
+  "hub": {
+    "decision": "Independent direct-placement candidate; awaiting product adoption. Production sphere, menu and native actions retained.",
+    "behavior": {
+      "artifact": "evo42-hub-direct/1793864992227/result.json",
+      "sha256": "04384cf065653d979af4ec39936346ea0d64b4a5a6e47865029c631ed083a3fb",
+      "status": "PASS",
+      "scope": "controlled prototype only; not product/device acceptance",
+      "environment": {
+        "node": "v26.13.0",
+        "chromium": "153.0.8010.12"
+      },
+      "inputs": {
+        "prototypes/evolution-hub-free/FreeHub.vue": "8ef6d8f392db4c51af2a3db13b2bb28a650e71d6ca5715840b442c8d9f1c19e4",
+        "prototypes/evolution-hub-free/position.ts": "812961a8ba9be069e481ea112e96fd6e6764e6567bd586f4b23458bfcd88338b",
+        "prototypes/evolution-hub-free/owner.ts": "a19d924efc112844903a611ea4aa0af5ba541283db6c1290f1b2cef85ee2bd9b",
+        "prototypes/evolution-hub-free/main.ts": "1f2dc1b4282511ae387a7289dbec51a69383e4d95c59954e3432bcb5c75603aa",
+        "prototypes/evolution-hub-free/storage.ts": "6fcb7853ac70e01f185e6a8a3fe7e5ea9863e0410907963a64d2a53c29d9bb9a",
+        "prototypes/evolution-hub-free/index.html": "e6985411c3e0ad860f5c5b56cebc2245a07acb43abcef8a3ccd762e4004ee703",
+        "prototypes/evolution-hub-free/check.mts": "bf4c5b64bd261a16e0e4830015123da59846b71f7d002629142fc356e3fe5efe",
+        "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34"
+      },
+      "results": [
+        "1280 baseline: placement, original action, fan/grid hits",
+        "1280 free: placement, original action, fan/grid hits, read-only legacy, reload, cancel, nudge, explicit dock, rotation, reduced motion, hide/restore, unknown-version notice, storage isolation and disposal",
+        "390 baseline: placement, original action, fan/grid hits",
+        "390 free: placement, original action, fan/grid hits, read-only legacy, reload, cancel, nudge, explicit dock, rotation, reduced motion, hide/restore, unknown-version notice, storage isolation and disposal"
+      ],
+      "errors": []
+    },
+    "recording": {
+      "artifact": "evo42-hub-direct/1793864785478/recording.json",
+      "sha256": "57ed182f18ac5fe2cece20b9054656307f3fccd0f8619b551fad8cb588818fed",
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "node": "v26.13.0",
+      "cases": [
+        {
+          "width": 1280,
+          "variant": "baseline",
+          "errors": []
+        },
+        {
+          "width": 1280,
+          "variant": "free",
+          "errors": []
+        },
+        {
+          "width": 390,
+          "variant": "baseline",
+          "errors": []
+        },
+        {
+          "width": 390,
+          "variant": "free",
+          "errors": []
+        }
+      ],
+      "note": "Same operation script, viewport, waits and 1x playback; independent captures are not frame-synchronized or performance measurements.",
+      "sourceNote": "Recorded before the final disposal-only cleanup of page handlers. The displayed interaction and styles are unchanged; disposal regression is bound to the later behavior receipt."
+    },
+    "recordingScriptSha256": "d5672c61f9da137f09a07f1623cc4a5f020f69e8af402bf09c8f10c8ab1766f7"
+  },
+  "limits": [
+    "Mac Chromium, no game or device acceptance",
+    "Selected remote files rehashed against the artifact index; this turn did not redownload and independently verify the entire research artifact",
+    "Original full standard/research runs apply to unchanged e1a47d2 product inputs, not this new research code",
+    "Raw video/logs remain ignored local files; regenerate on another device"
+  ]
+}

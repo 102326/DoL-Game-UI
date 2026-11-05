@@ -1,13 +1,14 @@
 # Soft & Wet — 当前交接
 
-更新：2026-11-05。正式产品基线4.1.0，4.2为研发；**UI Mod本体性能 → CI优化 → 新UI设计**，兼容Mod专项后置。总跟踪[#35](https://github.com/102326/DoL-Game-UI/issues/35)，沿[计划V1.16](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)推进。
+更新：2026-11-05。正式产品基线4.1.0，4.2为研发；**UI Mod本体性能 → CI优化 → 新UI设计**，兼容Mod专项后置。总跟踪[#35](https://github.com/102326/DoL-Game-UI/issues/35)，沿[计划V1.17](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)推进。
 
 ## Current — 当前做什么
 
-- 分支 `perf/4.2-windows-device-followup`。本批实现冻结 `e1a47d25db601552236852106d4bbb140e5e01c7`；本页后续回执提交仅文档/JSON，不改变受测实现。当前HEAD与远端以接手机器的Git实查为准，不能把冻结SHA当成永远最新的HEAD。
+- 分支 `perf/4.2-windows-device-followup`。产品实现冻结 `e1a47d25db601552236852106d4bbb140e5e01c7`；从回执 `1bfba14` 接续的本批仅隔离研究/文档，产品与正式CI输入未改。当前HEAD与远端以Git实查为准，不把冻结SHA当成永远最新的HEAD；本批随提交推送，无故意保留的未同步源码。
 - **属性受力已获负责人采用并正式整合**，与已采用设置设计、八批性能修正同版。原生属性owner管理生命周期，保留root/父节点/内容/事件/滚动；不使用原型wrapper、不持久化位置。标题拖动、有限外壳应变、内芯滞后、前景共同缩放和原生回退已接入。没有推广到社交等未选择角色。
 - Mac定向合同、`ci:check`和冻结后的38项unit通过；九包、9负例、独立双构建通过。完整[标准41975767742](https://github.com/102326/DoL-Game-UI/actions/runs/41975767742)/[研究41975771851](https://github.com/102326/DoL-Game-UI/actions/runs/41975771851)首轮成功；下载核验PASS/COMPLETE、标准gate通过，Mac/Actions九包ZIP字节相同。主UI SHA `ca982a24d1844a287fdfad5789e17459cadf09fb4f7252fe02b2a63b937936a1`；两Run均workflow_dispatch，不冒称PR/实机验收。
 - [本批完整报告](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)、[身份与证据摘要](evolution/evidence/2026-11-05-attributes-integration.json)、[实际属性对照入口与复现](../prototypes/evolution-integration/attributes-material-README.md)。录像、完整日志、Mac包和私人档案是本机忽略产物；另一台设备按README重建，不假定已有。
+- 最新研究：[Hub原地放下候选](../prototypes/evolution-hub-free/README.md)完成Mac1280/390行为、偏好隔离、销毁及原速对照，待负责人采用；现役球体/菜单保持。暂停天气resize候选收益不稳定，不采用；CI设备扫描八子样本表明滚动约136ms/场景4.08s，不优先合并。详见[研究证据](evolution/evidence/2026-11-05-hub-and-cost-research.json)。新增代码只有本机定向证据；未触发新的全量CI，不用旧Run代签原型。
 
 ## Decided — 已经确定什么
 
@@ -22,6 +23,6 @@
 
 1. 接手先核对HEAD、工作区、远端、未推送内容、Node26（>=26.12.1 <27）、锁定依赖、Chromium及Python。用本批冻结源码和包摘要确认装入正确候选；技术包版本字段仍4.1.0，不等于正式4.1.0原包或4.2Release。
 2. 在具备游戏/Windows/Android WebView环境时验证新属性标题首次触摸、原生居中与缩放、雨雪拖动/中断/关闭/切角色及实际Mod组合。最终以相同版本/组合/偏好比较4.1与候选开窗、切页、Hub和雨雪持续成本，保留慢样本；普通用户净改善证据仍不足，不能宣布全部卡顿已解决。
-3. Hub自由悬浮方向保留，具体采用方案尚未定案；不得为了收口静默删除该项，也不擅自推广未认可原型。属性采用已决定，不再重复索取同一方向批准。完整P-C与全局自由布局未启动。
-4. CI后续仅沿现有C1–C4研究：14类完整profile影子对照、可信计划运输、缓存竞态/身份及端到端成本仍未闭合，不作为P1代码交付的额外自动前置。保留当前完整profile、独立双构建和下载核验。
+3. Hub原地放下候选待采用；按README启动完整路径并录制，不误开已作废旧首页。采用前不改正式位置存储或长期维护两套Hub。属性已采用，不重复索取批准。完整P-C与全局自由布局未启动。
+4. CI后续沿C1–C4：最新成本已提取，布局Hub操作/就绪更值得后续分段，滚动合并暂无依据。14类完整profile影子、可信运输、缓存竞态及端到端成本未闭合，不作为P1额外前置；保留完整profile/双构建/核验。没有新的本体收益证据时不重复采样已淘汰微优化。
 5. 无main合并、Release、版本冻结、保护规则或Host公共协议变更授权。#33 Ray组合没有新复现证据。自动证据限受控白名单；主动授权的私人存档仍隔离，不进公开Artifact。机器绝对路径仅写忽略的本地补充。
