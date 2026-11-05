@@ -1,0 +1,12 @@
+/* Controlled native-shell geometry only; material and navigation use production CSS. */
+.study a{color:#b7ceca}.study select{min-height:44px;background:#202a2d;color:inherit;border:1px solid #ffffff25;border-radius:8px;padding:6px}
+.study{padding:12px 18px;max-width:1000px}.study h1{font-size:18px;margin:0}.study p{margin:5px 0;font-size:13px}.study button{padding:6px 10px}
+#customOverlay{position:fixed;left:max(12px,calc((100vw - 880px)/2));top:100px;width:min(880px,calc(100vw - 24px));height:min(650px,calc(100dvh - 124px));z-index:10;overflow:hidden}
+#customOverlay.hidden{display:none!important}
+#attributes-motion-layer{position:fixed;inset:0;z-index:10;pointer-events:none}
+#attributes-motion-layer>#customOverlay{pointer-events:auto}
+#customOverlayTitle{display:flex;align-items:center;justify-content:space-between;min-height:56px;touch-action:none;cursor:grab}
+#customOverlayTitle button{min-width:44px;min-height:44px;color:inherit;background:transparent;border:0;font-size:24px}
+#customOverlayContent{min-height:0;overflow:auto}#customOverlayContent h2{grid-column:1/-1;font-size:18px}#customOverlayContent h3{font-size:15px}#customOverlayContent p{font-size:14px}
+#overlayTabs{display:flex;flex-wrap:wrap}#customOverlayContent button{min-height:44px;background:#263132;color:inherit;border:1px solid #ffffff20;border-radius:8px;padding:8px}
+@media(max-width:600px){#customOverlay{top:172px;height:calc(100dvh - 196px)}}

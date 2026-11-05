@@ -7,6 +7,7 @@
 ```powershell
 node prototypes/evolution42-ci-c1/candidate.mts <base-commit>
 node prototypes/evolution42-ci-c1/candidate.test.mts
+node prototypes/evolution42-ci-c1/policy-cache.test.mts
 node prototypes/evolution42-ci-c1/shadow-plans.test.mts
 node prototypes/evolution42-ci-c1/dependency-shadow.test.mts
 node prototypes/evolution42-ci-c1/standard-evidence.test.mts
@@ -20,6 +21,8 @@ node node_modules/typescript/bin/tsc --noEmit --strict --noUncheckedIndexedAcces
 
 `verify(root, expectedBaseRef, plan)`由调用方独立提供预期基线。identity包括base/head、Git差异、未跟踪文件、已识别路径的原始字节及策略输入。文件采集并非原子快照；除下述隐藏索引标志路径外，Git未识别为变更的路径和忽略文件不在原始字节扫描范围内。
 
+同一进程在候选模块加载后若发现策略输入发生变化，会拒绝重新生成计划，避免把新文件摘要与旧的模块缓存混用；核验也会拒绝。该检查不是原子加载证明，也不认证在候选模块加载之前已被其他模块缓存的策略。
+
 Git 索引中任意 assume-unchanged 或 skip-worktree 标志也触发完整 catalog 回退，并将标志和对应路径的原始字节、缺失或符号链接目标绑定到身份；无法读取则拒绝生成。完整 catalog 不包含所有独立入口。
 
 research前置使用现有catalog递归保留。standard计划保留unit的dependencies/check，以及browser的dependencies/check/build/packages/browser-install。最初的`shadow-run.mts`复用已有锁定依赖和浏览器，实际执行source-check、framework-build和映射消费者，没有执行fresh npm ci或独立双构建。下文standard专项单独补准备阶段；两者均不是完整标准/研究门禁。
@@ -29,6 +32,8 @@ research前置使用现有catalog递归保留。standard计划保留unit的depen
 2026-11-05，冻结当前工作区源码到新的本地Git快照，记录原HEAD/输入摘要及派生base/head，对三条源码做等价表示变更。快照复用已安装依赖，不包含游戏或私人存档，也不修改原工作区。通过现有`runResearch`、`runSuite`及`runCommand`执行12项：源码检查、Framework构建、设置、正式动效、动效生命周期、资源所有权、导航、面板、适配材质、设备布局、适配器及独立材质合同。使用现有`context()`及原生standard预算/报告路径；独立入口不冒称已被原catalog覆盖。
 
 八类S1–S8已固定并通过**计划级**检查，增删/改名和未知文件保守完整回退。这不是八轮完整执行；真正执行的是上述三路径组合样本。N1–N6最新固定为15个本地故障变体，覆盖漏消费者/前置、错误base/Attempt、同时删计划/结果、零断言和真实pageerror退出0、缺报告、取消/超时、进程收据ID/PID不符、顶层状态矛盾、缺布局覆盖报告及阶段曾观察到源码变化后又恢复。阶段原始状态/sourceAfter/原因也必须通过，不能只看最终文件恢复或各子进程退出0。
+
+其中 S7 仅以 RC 版本的 `package.json` 变更验证未知路径回退，S8 仅以未映射源码小修验证回退。候选没有 RC 阶段、冻结基线或封板后差异的可信输入：同一已映射源码差异仍按普通候选处理，因此这两项不证明 RC 或封板复测政策已实现。
 
 独立复核曾复现成功收据串用、顶层状态矛盾；又发现手工上下文没有收回standard必需布局报告，以及汇总可能覆盖阶段源码变化。均已补核验，旧结果按当时覆盖保留，不再作为最终影子结论。首次10/13负例、缺报告的中间结果和无结束回执的中断记录均保留。原始证据在本机忽略目录，跨机接续须另取。
 

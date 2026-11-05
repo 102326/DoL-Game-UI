@@ -1,0 +1,624 @@
+{
+  "baseCommit": "ae91732b33bf4a28a75cba856b5f2ec57f92b49e",
+  "date": "2026-11-05",
+  "scope": "Company Mac isolated research; no production or formal CI gate change",
+  "hiddenWrites": {
+    "decision": "not-adopted",
+    "resultSha256": "98d01a7f4aae2d0e2a04ec7864b3bff4d8c77b4b694b64cc3e1590f145e62cc6",
+    "result": {
+      "status": "PASS",
+      "ref": "ae91732b33bf4a28a75cba856b5f2ec57f92b49e",
+      "sourceHashes": {
+        "baseline": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee",
+        "candidate": "7472054ba5ba16ce2065be3a47b6e8e3e2e922997a71881526b17d328a962a3e"
+      },
+      "fixtureHash": "3d19b4e1a0eb38992f98aa28a96cf5c0028cd88f6051d402567d194536cfada8",
+      "inputs": {
+        "src/ui/weather/wet-glass.ts": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+        "scripts/research/weather-hidden-writes-probe.mts": "da269fbf8ce97a13c2ed9cf19aea1ceb0d96b62dd2299c87ec1d2f99a4530ea3"
+      },
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "scope": "Controlled production draw with two instances, fixed clock, synchronous draw and forced layout; no allocation, GPU, FPS, or real game claim.",
+      "proof": [
+        {
+          "name": "rain",
+          "screenshot": "5af3409fdb2c71000b7aea3be25e859887ce095ed2edb9a6feb6e15dc9693fde",
+          "canvas": [
+            "5371c9a0fc69f09374f276730a8932c85d56e8d4d053fadb0e56ba5dd4484d4b",
+            "ede5b0bcdc610fea322e677657552be60ce2ce87b30ab59a0ff5058a1a63e520"
+          ]
+        },
+        {
+          "name": "rain-snow",
+          "screenshot": "dfb8fc61a342289d24f8ecea993900cbfe962cab46f76f5e4e5e395c91d713a1",
+          "canvas": [
+            "3d192edbd70b7e17df4265317f4497c0e11761fa765b350021933b37c5d4f721",
+            "b63cd65a4d712b8d0d7352fb803a8def2754196c30666241f3199e0843970cc6"
+          ]
+        },
+        {
+          "name": "snow",
+          "screenshot": "53a96b6c0022c620847b996f22e10cc7c2c522b88250c2195769df993ca58b55",
+          "canvas": [
+            "5db51d77983cf77510242959a00ce89c635bff685721eec1ea964972d7f5898d",
+            "28e02502eaa49dcb79ea5e96a35400c19e11e6c1c00351540ab6a5cd99b65300"
+          ]
+        },
+        {
+          "name": "clear",
+          "screenshot": "1f6fc88e5d34746befbb818246b2aef3b2f6604b8d41baa0cdcdefc410b45275",
+          "canvas": [
+            "a9b5ba124f59a0ea3b214c347ebaf345d2299d1530e51bc35963ac97520731d8",
+            "a9b5ba124f59a0ea3b214c347ebaf345d2299d1530e51bc35963ac97520731d8"
+          ]
+        },
+        {
+          "name": "return-rain",
+          "screenshot": "ff718df142e4d2f305e656bde04a40261b6d1cab95284b244933ea4ebfb43a82",
+          "canvas": [
+            "6fcd8455b4f0fd3abd345a8a48ef75d613cb6bf640a164f10ffaf014443116ae",
+            "b39ca29a89307858cc6b4510a924f0e2085ea3c6860d83a8c513eef56a53c619"
+          ]
+        },
+        {
+          "name": "restore-external",
+          "screenshot": "1f6fc88e5d34746befbb818246b2aef3b2f6604b8d41baa0cdcdefc410b45275",
+          "canvas": [
+            "a9b5ba124f59a0ea3b214c347ebaf345d2299d1530e51bc35963ac97520731d8",
+            "a9b5ba124f59a0ea3b214c347ebaf345d2299d1530e51bc35963ac97520731d8"
+          ]
+        }
+      ],
+      "rows": [
+        {
+          "scenario": "snow",
+          "pair": 0,
+          "variant": "baseline",
+          "elapsed": 705.9000000059605,
+          "task": 0.7122809999999999
+        },
+        {
+          "scenario": "snow",
+          "pair": 0,
+          "variant": "candidate",
+          "elapsed": 707.4000000059605,
+          "task": 0.7141
+        },
+        {
+          "scenario": "snow",
+          "pair": 1,
+          "variant": "candidate",
+          "elapsed": 711.3999999761581,
+          "task": 0.720226
+        },
+        {
+          "scenario": "snow",
+          "pair": 1,
+          "variant": "baseline",
+          "elapsed": 708,
+          "task": 0.714339
+        },
+        {
+          "scenario": "snow",
+          "pair": 2,
+          "variant": "baseline",
+          "elapsed": 701.5,
+          "task": 0.7078549999999999
+        },
+        {
+          "scenario": "snow",
+          "pair": 2,
+          "variant": "candidate",
+          "elapsed": 735.7000000178814,
+          "task": 0.7430209999999999
+        },
+        {
+          "scenario": "snow",
+          "pair": 3,
+          "variant": "candidate",
+          "elapsed": 649.7999999821186,
+          "task": 0.655875
+        },
+        {
+          "scenario": "snow",
+          "pair": 3,
+          "variant": "baseline",
+          "elapsed": 674.3999999761581,
+          "task": 0.680861
+        },
+        {
+          "scenario": "snow",
+          "pair": 4,
+          "variant": "baseline",
+          "elapsed": 636.1999999880791,
+          "task": 0.642265
+        },
+        {
+          "scenario": "snow",
+          "pair": 4,
+          "variant": "candidate",
+          "elapsed": 748.1999999880791,
+          "task": 0.7545549999999999
+        },
+        {
+          "scenario": "snow",
+          "pair": 5,
+          "variant": "candidate",
+          "elapsed": 776.1000000238419,
+          "task": 0.782481
+        },
+        {
+          "scenario": "snow",
+          "pair": 5,
+          "variant": "baseline",
+          "elapsed": 730,
+          "task": 0.736469
+        },
+        {
+          "scenario": "clear",
+          "pair": 0,
+          "variant": "baseline",
+          "elapsed": 30.19999998807907,
+          "task": 0.031615000000000004
+        },
+        {
+          "scenario": "clear",
+          "pair": 0,
+          "variant": "candidate",
+          "elapsed": 23.900000005960464,
+          "task": 0.025233999999999996
+        },
+        {
+          "scenario": "clear",
+          "pair": 1,
+          "variant": "candidate",
+          "elapsed": 24.900000005960464,
+          "task": 0.025916000000000005
+        },
+        {
+          "scenario": "clear",
+          "pair": 1,
+          "variant": "baseline",
+          "elapsed": 29,
+          "task": 0.029993000000000002
+        },
+        {
+          "scenario": "clear",
+          "pair": 2,
+          "variant": "baseline",
+          "elapsed": 28.80000001192093,
+          "task": 0.030045999999999996
+        },
+        {
+          "scenario": "clear",
+          "pair": 2,
+          "variant": "candidate",
+          "elapsed": 24.700000017881393,
+          "task": 0.025804
+        },
+        {
+          "scenario": "clear",
+          "pair": 3,
+          "variant": "candidate",
+          "elapsed": 24.5,
+          "task": 0.025640000000000003
+        },
+        {
+          "scenario": "clear",
+          "pair": 3,
+          "variant": "baseline",
+          "elapsed": 28.299999982118607,
+          "task": 0.029289999999999997
+        },
+        {
+          "scenario": "clear",
+          "pair": 4,
+          "variant": "baseline",
+          "elapsed": 29.599999994039536,
+          "task": 0.030794000000000002
+        },
+        {
+          "scenario": "clear",
+          "pair": 4,
+          "variant": "candidate",
+          "elapsed": 25.400000005960464,
+          "task": 0.026770000000000002
+        },
+        {
+          "scenario": "clear",
+          "pair": 5,
+          "variant": "candidate",
+          "elapsed": 26.400000005960464,
+          "task": 0.027745
+        },
+        {
+          "scenario": "clear",
+          "pair": 5,
+          "variant": "baseline",
+          "elapsed": 36.099999994039536,
+          "task": 0.038215
+        }
+      ],
+      "errors": [],
+      "browser": "153.0.8010.12",
+      "graph": {
+        "src/ui/weather/wet-glass.ts": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee",
+        "src/ui/weather/edge-frost.ts": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+        "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+        "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+        "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+        "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+        "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+        "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+        "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+        "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+        "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+        "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+        "src/ui/foreground-plane.ts": "0f61afd3d16a858d6cc5ab599b0fd0bd4cb15717dc3ce746f67b162711ccadf2",
+        "src/ui/owned-overlay.ts": "c97532ccf1c227d68d3b8bb5961c17e8c466c0aeb9519eb638cc581a248b10a2",
+        "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+        "src/ui/foreground-plane.css": "e7ae030b7e31c474bec615def0725ea31210c0cae283f094f9649dc4afb6b42d"
+      }
+    },
+    "statistics": {
+      "snow": {
+        "baselineMedianTaskMs": 710.068,
+        "candidateMedianTaskMs": 731.6234999999999,
+        "pairedMedianDeltaMs": 20.526500000000055,
+        "candidateSlowerPairs": 5,
+        "pairs": 6
+      },
+      "clear": {
+        "baselineMedianTaskMs": 30.419999999999998,
+        "candidateMedianTaskMs": 25.860000000000003,
+        "pairedMedianDeltaMs": -4.159499999999996,
+        "candidateSlowerPairs": 0,
+        "pairs": 6
+      }
+    },
+    "typeRevision": {
+      "originalSourceSha256": "da269fbf8ce97a13c2ed9cf19aea1ceb0d96b62dd2299c87ec1d2f99a4530ea3",
+      "revisedSourceSha256": "0f84d4e9985d04186a81db26dedee28cb40ba26168d258f890699e82773c8d84",
+      "esbuildTransformOptions": {
+        "loader": "ts",
+        "format": "esm"
+      },
+      "originalAndRevisedOutputSha256": "a159b7c1f6de4c85ad137e354bf178708f3a85dd592cb5e20f84480028c98cf5",
+      "compiledOutputByteIdentical": true,
+      "originalResultUnchanged": true
+    },
+    "limitation": "Continuous clear draw loop is artificial: production settles and stops it. Snow 5/6 slower. No allocation/GPU/game claim."
+  },
+  "scalarProtection": {
+    "decision": "not-adopted; existing rejected candidate rediscovered after one repeat",
+    "resultSha256": "f31c35b8b84ebe16eeba86ee898dba92a741e066188a737b71ee4240737badcf",
+    "result": {
+      "status": "PASS",
+      "reference": "ae91732b33bf4a28a75cba856b5f2ec57f92b49e",
+      "candidateKind": "scalar-protection",
+      "comparedFile": "src/ui/weather/wet-glass.ts",
+      "sourceHashes": {
+        "baseline": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee",
+        "candidate": "d4e3e11ed629dd18ee67824091f01ace7063ca75aa69472cf12146165c51f519"
+      },
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "browser": "153.0.8010.12",
+      "scope": "Controlled Chromium fixed-clock header rain with per-frame forced layout flush. No game/device/GPU/FPS claim.",
+      "modelProof": [],
+      "proof": [
+        {
+          "name": "full-heavy",
+          "canvas": "d4856464ac4abb7b90166194b955ff45c2b38b307e2c14017d2acbdb5ceb200f",
+          "screenshot": "6421e340529d52a0ba9446a0d3e319c3cbd1a606cbaf9f97a11c29dd00ff143a",
+          "visible": 80
+        },
+        {
+          "name": "header-light",
+          "canvas": "b5c270ad221102ac80fe444849fb5deee3ad3b1b9ab1859deda5f069600fb8f3",
+          "screenshot": "17166ccd6c6e00ce6bb8b766b0448c4e061929224068c0870520716199db8615",
+          "visible": 12
+        },
+        {
+          "name": "header-heavy",
+          "canvas": "016b5c0d7581dd7ed0c74cc4769c124779366362219d3f4475f8be7293e6a1c8",
+          "screenshot": "c705d5242dfadc135495ab466fbcdeb00664711751efbc84c687e1d6d15ee4b1",
+          "visible": 22
+        },
+        {
+          "name": "rain-to-snow",
+          "canvas": "6727903e660aa1d02738dee0c28ce503449179f33f66a943e15095f48a7db8c2",
+          "screenshot": "f46e67d162a5220d0c0c1b20e462a84e00ca24404b2a26240af953f7460227f6",
+          "visible": 19
+        },
+        {
+          "name": "snow",
+          "canvas": "e259568138b8bcd13d0e16d15e8489a34f2e9d79e3faf1fe7a355f64dbe0a432",
+          "screenshot": "ee287acf07a0368f2805b97ad48104dbaf4f50d546470bec81950173076afda5",
+          "visible": 0
+        },
+        {
+          "name": "rain-return",
+          "canvas": "8beba7a449fbfcbfd97e469cb3602afe6c488c36949622abbc473700913deb84",
+          "screenshot": "02a56d255ac6066bf01711414e65419533fcb9ce058bd6d17bd3ade8e659607d",
+          "visible": 7
+        },
+        {
+          "name": "dry",
+          "canvas": "a677a53fb12ffd858fff79e961a1b450d840bee5867209b3a658b8561a4e9bd0",
+          "screenshot": "eb3f9c7a8b34cafda2d2c7c2e94c2c2075b072ee5a48979b135a3e625fc6b6af",
+          "visible": 0
+        }
+      ],
+      "rows": [
+        {
+          "pair": 0,
+          "variant": "baseline",
+          "elapsed": 408.69999998807907,
+          "metrics": {
+            "TaskDuration": 0.41571400000000003,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.043699,
+            "LayoutDuration": 0.037541000000000005,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 0,
+          "variant": "candidate",
+          "elapsed": 410.59999999403954,
+          "metrics": {
+            "TaskDuration": 0.41877300000000006,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.043676,
+            "LayoutDuration": 0.037184999999999996,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 1,
+          "variant": "candidate",
+          "elapsed": 398.2000000178814,
+          "metrics": {
+            "TaskDuration": 0.4011119999999999,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.041596999999999995,
+            "LayoutDuration": 0.035684999999999995,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 1,
+          "variant": "baseline",
+          "elapsed": 379.5,
+          "metrics": {
+            "TaskDuration": 0.38656799999999997,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.03893,
+            "LayoutDuration": 0.033526,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 2,
+          "variant": "baseline",
+          "elapsed": 487.2999999821186,
+          "metrics": {
+            "TaskDuration": 0.496337,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.059953000000000006,
+            "LayoutDuration": 0.046275,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 2,
+          "variant": "candidate",
+          "elapsed": 553.1000000238419,
+          "metrics": {
+            "TaskDuration": 0.555987,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.06900400000000001,
+            "LayoutDuration": 0.05150199999999999,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 3,
+          "variant": "candidate",
+          "elapsed": 435.7000000178814,
+          "metrics": {
+            "TaskDuration": 0.43818,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.048771999999999996,
+            "LayoutDuration": 0.040305999999999995,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 3,
+          "variant": "baseline",
+          "elapsed": 438.40000000596046,
+          "metrics": {
+            "TaskDuration": 0.445231,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.05081700000000001,
+            "LayoutDuration": 0.040508,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 4,
+          "variant": "baseline",
+          "elapsed": 430.90000000596046,
+          "metrics": {
+            "TaskDuration": 0.43814200000000003,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.048778,
+            "LayoutDuration": 0.039124,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 4,
+          "variant": "candidate",
+          "elapsed": 448.59999999403954,
+          "metrics": {
+            "TaskDuration": 0.45128099999999993,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.052354000000000005,
+            "LayoutDuration": 0.041338,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 5,
+          "variant": "candidate",
+          "elapsed": 472.09999999403954,
+          "metrics": {
+            "TaskDuration": 0.4807950000000001,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.055584999999999996,
+            "LayoutDuration": 0.043742,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        },
+        {
+          "pair": 5,
+          "variant": "baseline",
+          "elapsed": 478,
+          "metrics": {
+            "TaskDuration": 0.481638,
+            "ScriptDuration": 0,
+            "RecalcStyleDuration": 0.061605999999999994,
+            "LayoutDuration": 0.042949,
+            "RecalcStyleCount": 231,
+            "LayoutCount": 231
+          }
+        }
+      ],
+      "errors": []
+    },
+    "historicalRecord": "docs/evolution/EVO-4.1-PERF-SURVEY-2026-10-26.md"
+  },
+  "policyCache": {
+    "scope": "isolated cached policy exports; not a full profile or transport",
+    "node": "v26.13.0",
+    "command": "node prototypes/evolution42-ci-c1/policy-cache.test.mts",
+    "sourceSha256": {
+      "candidate.mts": "6a2c25fcc3ccbdf76a7c619a5ea0edc8e3b8b661ec8abd8a57f79175b725ea79",
+      "consumer-map.mts": "f219fedd4522b36fb4b76d0472167e78155d56f82521858cc29f7aefc850ef95",
+      "policy-cache.test.mts": "81baa2e058064b78ae4e6894905befd87c3739bd006657ace08ebb11a87018c8"
+    },
+    "red": "OLD_REPRODUCED: new policy hash, old consumers, accepted plan",
+    "green": "NEW_PASS: changed consumer policy rejected"
+  },
+  "attributes": {
+    "result": {
+      "sourceCommit": "ae91732b33bf4a28a75cba856b5f2ec57f92b49e",
+      "node": "v26.13.0",
+      "browser": "153.0.8010.12",
+      "sources": {
+        "prototypes/evolution-integration/attributes-material-preview.ts": "9a3ac8dc9ea303d7cbf1ef154943fb2ad152b51e09ce8720917d65f145c60d8f",
+        "prototypes/evolution-integration/attributes-material-study.ts": "bdd0bba3788859e0dd95a582fc4e0692e94b62f936aae9d824e56a02d7552b75",
+        "prototypes/evolution-integration/attributes-material.css": "332e74061d26eae0ccb63a8e49b5f741d5edf6e863dc1cd085c20ed0c90182a0",
+        "prototypes/evolution-integration/attributes-material.html": "78b4f45a476ebcadba7d104ecb0fc8fca26e2089f4fca568d185046f8d8751f0",
+        "prototypes/evolution-integration/attributes-material-check.mts": "0a060f0268177194bf914a2ea127d0e10db169c9c1e8edb6e4a4e7110a1661f9",
+        "src/theme/settings-material.ts": "8fc4b85e9c7ef36631116df4509614b01bb6bbba3204b2004b8e0677e192cf44",
+        "src/ui/native-overlay-navigation.ts": "48cf531a562f08c820a45ef9f8a927f3e8871aeecd8d1852c3efb5d0fd87baec",
+        "src/ui/foreground-plane.ts": "0f61afd3d16a858d6cc5ab599b0fd0bd4cb15717dc3ce746f67b162711ccadf2",
+        "src/ui/foreground-plane.css": "e7ae030b7e31c474bec615def0725ea31210c0cae283f094f9649dc4afb6b42d",
+        "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+        "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+        "src/characteristics/main.ts": "b2758d4c405b82232c66ddc2f60cfb64fc738e1c842b9ac00b30dcccd8db7e71",
+        "framework/official-ui/navigation.ts": "3a6307cd8c63592364a985283a1519c2490ca7a6c33f46b582a507379caa949a",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      },
+      "results": [
+        {
+          "width": 1280,
+          "variant": "baseline",
+          "status": "PASS"
+        },
+        {
+          "width": 1280,
+          "variant": "study",
+          "status": "PASS"
+        },
+        {
+          "width": 390,
+          "variant": "baseline",
+          "status": "PASS"
+        },
+        {
+          "width": 390,
+          "variant": "study",
+          "status": "PASS"
+        }
+      ],
+      "errors": [],
+      "scope": "Controlled actual characteristics owner and native fixture; selected key input hashes, not a complete module graph. Mirror outer-rectangle samples at three drag points, settled and post-scroll/snow; owned foreground DOM cleanup, not complete observer accounting. No game/device or visual acceptance."
+    },
+    "resultSha256": "f6d409e0217d5debbdbb022a676f041a7c49e58ae2f809f56a202188bca65ed8",
+    "sourceHashScope": "Selected key inputs, not complete module graph",
+    "negative": {
+      "command": "node prototypes/evolution-integration/attributes-material-check.mts --legacy-target",
+      "expected": "nonzero: foreground alignment at drag 0.25",
+      "logSha256": "a871edc9af234637d1a0910f6023b48623e1eb39b761b16f5d1df71f8077e5e5"
+    },
+    "comparison": {
+      "output": "tests/artifacts/ui42/attributes-material/comparison-1793851869427",
+      "viewportHeights": 900,
+      "widths": [
+        1280,
+        390
+      ],
+      "playbackRate": 1,
+      "sequence": "rain, title drag, settle, section navigation, snow, close/reopen",
+      "note": "Independent recordings of the same operation script; startup timing and browser frame pacing are not synchronized."
+    },
+    "media": {
+      "1280-baseline.webm": {
+        "sha256": "6947b5ecf7ae04f623af329dad24fc4c031948d4a36780d40538852bffc33e7b",
+        "bytes": 1241733
+      },
+      "1280-study.webm": {
+        "sha256": "6d4a909d27a2351d2819144998fdbee2dc7e3d0858196c7774fd04a0623bf174",
+        "bytes": 1150711
+      },
+      "390-baseline.webm": {
+        "sha256": "bf9c6b5d78428e3a522da35ac867211a7dec85b0a5dabc9f93c165a4891bde05",
+        "bytes": 536029
+      },
+      "390-study.webm": {
+        "sha256": "81ae5cdc1d2c0a64820d7d3a3c889c7c511435be72fef545d1c60e6e92778329",
+        "bytes": 568617
+      }
+    },
+    "mediaCheck": "1280 and 390 metadata loaded; both videos advance at playbackRate=1; no page errors. Independent startup timing differs."
+  },
+  "checks": {
+    "ciCheck": {
+      "command": "npm run ci:check",
+      "node": "26.12.1",
+      "exit": 0,
+      "logSha256": "e66e7fc04cb949f10ff7e91e0f859ed8b1ccc21651d0969aca6fe8341b6f39ed",
+      "note": "Previous completion status lost after tool-output truncation; rerun once with persisted exit receipt, not a failed test retry."
+    },
+    "directed": "C1 candidate/shadow-plans/policy-cache, strict C1 and research scripts; preview vue-tsc; 4 browser cases plus controlled negative",
+    "remote": "Prior 1d727d9 standard/research success applies to unchanged production inputs only; new isolated probes not tested by those runs."
+  }
+}

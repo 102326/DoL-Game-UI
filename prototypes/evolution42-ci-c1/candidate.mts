@@ -52,7 +52,10 @@ function parseDiff(data: Buffer): Change[] {
 const sourceRoot = fileURLToPath(new URL('../../', import.meta.url));
 const policyInputs = ['scripts/ci-catalog.cjs', 'scripts/ci-catalog.cts', 'scripts/ci/research-families.ts', 'scripts/ci/lock.ts', 'scripts/expected.lock.json', 'project-identity.json', 'prototypes/evolution42-ci-c1/candidate.mts', 'prototypes/evolution42-ci-c1/consumer-map.mts'];
 function policyHash(): string { return hash(JSON.stringify(policyInputs.map(p => [p, hash(readFileSync(path.join(sourceRoot, p)))]))); }
+const loadedPolicy = policyHash();
 export function candidate(root: string, baseRef: string) {
+ const policy = policyHash();
+ if (policy !== loadedPolicy) throw Error('policy changed after candidate module loaded');
  const head = text(git(root, 'rev-parse', '--verify', 'HEAD^{commit}'));
  const base = text(git(root, 'rev-parse', '--verify', `${baseRef}^{commit}`));
  const committed = git(root, 'diff', '--name-status', '-z', '-M', base, head, '--');
@@ -77,7 +80,7 @@ export function candidate(root: string, baseRef: string) {
    throw error;
   }
  });
- const identity = {base, head, policy: policyHash(), committed: hash(committed), staged: hash(git(root, 'diff', '--cached', '--binary', '--full-index', '--')), worktree: hash(git(root, 'diff', '--binary', '--full-index', '--')), untracked: hash(JSON.stringify(untrackedIdentity)), hidden: hash(JSON.stringify(hidden)), rawFiles: hash(JSON.stringify(rawFiles))};
+ const identity = {base, head, policy, committed: hash(committed), staged: hash(git(root, 'diff', '--cached', '--binary', '--full-index', '--')), worktree: hash(git(root, 'diff', '--binary', '--full-index', '--')), untracked: hash(JSON.stringify(untrackedIdentity)), hidden: hash(JSON.stringify(hidden)), rawFiles: hash(JSON.stringify(rawFiles))};
  const fallback = hidden.length > 0 || changes.length === 0 || changes.some(c => c.status !== 'M' || c.paths.some(p => !Object.hasOwn(mappings, p)));
  const entries = names.map(p => mappings[p]).filter((x): x is Mapping => x !== undefined);
  const standardConsumers = entries.flatMap(e => e.standard);
