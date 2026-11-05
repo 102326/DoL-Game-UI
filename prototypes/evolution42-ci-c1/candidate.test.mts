@@ -14,7 +14,7 @@ try {
  const acrylic = path.join(dir, 'src/theme/acrylic.ts'), hub = path.join(dir, 'src/ui/golden-spin/hub-motion.ts');
  writeFileSync(acrylic, 'original\n'); writeFileSync(hub, 'original\n');
  const motion = path.join(dir, 'framework/official-ui/motion.ts');
- writeFileSync(motion, 'original\n'); git('add', '.'); git('commit', '-qm', 'base');
+ writeFileSync(motion, 'original\n'); writeFileSync(path.join(dir, 'unknown-tracked.txt'), 'original\n'); git('add', '.'); git('commit', '-qm', 'base');
  const base = git('rev-parse', 'HEAD');
  writeFileSync(motion, 'committed\n'); git('add', '.'); git('commit', '-qm', 'change');
  const plan = candidate(dir, base);
@@ -61,6 +61,34 @@ try {
  writeFileSync(path.join(dir, 'unknown.txt'), 'unknown');
  assert.equal(candidate(dir, base).mode, 'full');
  rmSync(path.join(dir, 'unknown.txt')); git('reset', '--hard', '-q', 'HEAD');
+ // Index flags hide changes from Git diff. Both flags and unknown paths must widen scope,
+ // and the actual bytes must remain bound even while Git keeps hiding subsequent edits.
+ for (const [flag, clear, hiddenFile] of [
+  ['--assume-unchanged', '--no-assume-unchanged', acrylic],
+  ['--skip-worktree', '--no-skip-worktree', path.join(dir, 'unknown-tracked.txt')]
+ ] as const) {
+  const relative = path.relative(dir, hiddenFile);
+  git('update-index', flag, relative);
+  writeFileSync(hiddenFile, 'hidden first\n'); writeFileSync(motion, 'visible\n');
+  const hiddenPlan = candidate(dir, head);
+  assert.equal(hiddenPlan.mode, 'full'); assert(verify(dir, head, hiddenPlan));
+  writeFileSync(hiddenFile, 'hidden second\n');
+  assert(!verify(dir, head, hiddenPlan));
+  rmSync(hiddenFile);
+  const missingPlan = candidate(dir, head);
+  assert.equal(missingPlan.mode, 'full'); assert(verify(dir, head, missingPlan));
+  writeFileSync(hiddenFile, 'hidden second\n');
+  assert(!verify(dir, head, missingPlan));
+  git('update-index', clear, relative);
+  assert(!verify(dir, head, hiddenPlan));
+  const revealed = candidate(dir, head);
+  assert(revealed.changes.some(c => c.paths.includes(relative)));
+  assert.equal(revealed.mode, hiddenFile === acrylic ? 'review-candidate' : 'full');
+  git('reset', '--hard', '-q', 'HEAD');
+ }
+ writeFileSync(motion, 'visible\n');
+ assert.equal(candidate(dir, head).mode, 'review-candidate');
+ git('reset', '--hard', '-q', 'HEAD');
  renameSync(motion, path.join(dir, 'framework/official-ui/renamed.ts')); git('add', '-A');
  const renamed = candidate(dir, base); assert.equal(renamed.mode, 'full'); assert(renamed.changes.some(c => c.status.startsWith('R')));
  git('reset', '--hard', '-q', 'HEAD'); rmSync(motion);

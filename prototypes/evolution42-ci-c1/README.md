@@ -18,7 +18,9 @@ $ciSources = @(Get-ChildItem prototypes/evolution42-ci-c1 -Filter '*.mts' | ForE
 node node_modules/typescript/bin/tsc --noEmit --strict --noUncheckedIndexedAccess --skipLibCheck --target ES2022 --module preserve --moduleResolution bundler --allowImportingTsExtensions --types node @ciSources
 ```
 
-`verify(root, expectedBaseRef, plan)`由调用方独立提供预期基线。identity包括base/head、Git差异、未跟踪文件、已识别路径的原始字节及策略输入。文件采集并非原子快照；Git未识别为变更的路径和忽略文件不在原始字节扫描范围内。
+`verify(root, expectedBaseRef, plan)`由调用方独立提供预期基线。identity包括base/head、Git差异、未跟踪文件、已识别路径的原始字节及策略输入。文件采集并非原子快照；除下述隐藏索引标志路径外，Git未识别为变更的路径和忽略文件不在原始字节扫描范围内。
+
+Git 索引中任意 assume-unchanged 或 skip-worktree 标志也触发完整 catalog 回退，并将标志和对应路径的原始字节、缺失或符号链接目标绑定到身份；无法读取则拒绝生成。完整 catalog 不包含所有独立入口。
 
 research前置使用现有catalog递归保留。standard计划保留unit的dependencies/check，以及browser的dependencies/check/build/packages/browser-install。最初的`shadow-run.mts`复用已有锁定依赖和浏览器，实际执行source-check、framework-build和映射消费者，没有执行fresh npm ci或独立双构建。下文standard专项单独补准备阶段；两者均不是完整标准/研究门禁。
 

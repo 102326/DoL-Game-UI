@@ -59,13 +59,15 @@ export function candidate(root: string, baseRef: string) {
  const staged = git(root, 'diff', '--cached', '--name-status', '-z', '-M', '--');
  const worktree = git(root, 'diff', '--name-status', '-z', '-M', '--');
  const untracked = nul(git(root, 'ls-files', '--others', '--exclude-standard', '-z'));
+ // Lowercase marks assume-unchanged; S/s marks skip-worktree. Either can hide real changes.
+ const hidden = nul(git(root, 'ls-files', '-v', '-z')).filter(entry => /^[a-zS] /.test(entry));
  const changes = [...parseDiff(committed), ...parseDiff(staged), ...parseDiff(worktree), ...untracked.map(p => ({status: '?', paths: [p]}))];
  const untrackedIdentity = untracked.map(p => {
   const absolute = path.join(root, p), stat = lstatSync(absolute);
   return [p, stat.isSymbolicLink() ? `link:${readlinkSync(absolute)}` : `file:${hash(readFileSync(absolute))}`];
  });
  const names = [...new Set(changes.flatMap(c => c.paths))].sort();
- const rawFiles = names.filter(p => Object.hasOwn(mappings, p)).map(p => {
+ const rawFiles = [...new Set([...names.filter(p => Object.hasOwn(mappings, p)), ...hidden.map(entry => entry.slice(2))])].sort().map(p => {
   const absolute = path.join(root, p);
   try {
    const stat = lstatSync(absolute);
@@ -75,8 +77,8 @@ export function candidate(root: string, baseRef: string) {
    throw error;
   }
  });
- const identity = {base, head, policy: policyHash(), committed: hash(committed), staged: hash(git(root, 'diff', '--cached', '--binary', '--full-index', '--')), worktree: hash(git(root, 'diff', '--binary', '--full-index', '--')), untracked: hash(JSON.stringify(untrackedIdentity)), rawFiles: hash(JSON.stringify(rawFiles))};
- const fallback = changes.length === 0 || changes.some(c => c.status !== 'M' || c.paths.some(p => !Object.hasOwn(mappings, p)));
+ const identity = {base, head, policy: policyHash(), committed: hash(committed), staged: hash(git(root, 'diff', '--cached', '--binary', '--full-index', '--')), worktree: hash(git(root, 'diff', '--binary', '--full-index', '--')), untracked: hash(JSON.stringify(untrackedIdentity)), hidden: hash(JSON.stringify(hidden)), rawFiles: hash(JSON.stringify(rawFiles))};
+ const fallback = hidden.length > 0 || changes.length === 0 || changes.some(c => c.status !== 'M' || c.paths.some(p => !Object.hasOwn(mappings, p)));
  const entries = names.map(p => mappings[p]).filter((x): x is Mapping => x !== undefined);
  const standardConsumers = entries.flatMap(e => e.standard);
  const selectedStandard = fallback ? [...standard].sort() : standardPrerequisites(standardConsumers);
