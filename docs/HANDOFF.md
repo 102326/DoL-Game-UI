@@ -4,8 +4,8 @@
 
 ## Current — 当前做什么
 
-- **最新P1续批（2026-11-05）**：以ae91732为基点，同一研发分支完成两项性能候选淘汰（未改生产）、C1政策缓存身份修复、属性窗口隔离受力原型和1280/390原速对照。当前提交身份用 `git log -1` 核对；提交前工作已完整列入本批commit，远端同步由Issue #35回执确认。`ci:check`、定向类型/政策回归、四组合浏览器及旧前景脱节负例通过。新隔离脚本只获本机证据，不能套用旧Actions。见[本批报告](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)和[属性原型README](../prototypes/evolution-integration/attributes-material-README.md)。本机录像/原始日志未同步，其他设备按README再生成。
-- UI Mod 4.2优先级P1；开发包/独立性能Mod为P2。当前无本批代码阻断；未开始正式RC冻结。用户已确认方向保留，尚未选择的属性/Hub原型不擅自推广，也不自动成为发布前置。具体关键路径见[计划第七节](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md#七p1交付关键路径2026-11-05)。以下为此前已交付证据，不把历史源码号当作当前HEAD。
+- **最新P1续批（2026-11-05）**：以ae91732为基点，同一研发分支完成两项性能候选淘汰（未改生产）、C1政策缓存身份修复、属性窗口隔离受力原型和1280/390原速对照。本批提交 `78fe742b7698755db1927e7c7518a8e2d2f34548` 已推送；后续文档与全流程回执另记。`ci:check`、定向类型/政策回归、四组合浏览器及旧前景脱节负例通过。新隔离脚本只获本机证据，不能套用旧Actions。见[本批报告](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)和[属性原型README](../prototypes/evolution-integration/attributes-material-README.md)。本机录像/原始日志未同步，其他设备按README再生成。
+- UI Mod 4.2优先级P1；开发包/独立性能Mod为P2。当前无本批代码阻断；按用户最新澄清，已定新设计与性能优化须跑完整整合/CI/实机流程，不简化为局部检查。本机开始整合检查点全流程，仍不是最终RC冻结，普通用户净改善的可比证据不足是交付判断缺口。用户已确认方向保留，尚未选择的属性/Hub原型不擅自推广，也不自动成为发布前置。具体关键路径见[计划第七节](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md#七p1交付关键路径2026-11-05)。以下为此前已交付证据，不把历史源码号当作当前HEAD。
 
 - 当前分支`perf/4.2-windows-device-followup`；上一批源码`1d727d9be8b0a332a54f3f3498fe83045592e52f`已推送，后续仅docs/JSON回执。安全接续4b18069并保留60069f0设置整合与0b637e7影子成果。C1隐藏Git索引标志已补完整回退/身份回归；工具准备复用仍仅研究。本机ci:check、strict类型、候选/S1–S8计划及受控证据检查通过。[标准41961828827](https://github.com/102326/DoL-Game-UI/actions/runs/41961828827)和[研究41961826171](https://github.com/102326/DoL-Game-UI/actions/runs/41961826171)均在该源码首轮success，含独立证据核验和标准gate，均手动触发。标准15分11秒、研究9分45秒，2个Run、0轮远端修正；未做整轮CI提速对照。完整记录见[Mac接续报告](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md)，统一计划V1.15。当前无本批代码/CI阻断；本机独有原始日志不随Git。
 
