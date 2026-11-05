@@ -228,7 +228,7 @@ const visualListeners=new Set<()=>void>();
 const placement:PlacementMotion={read:()=>({...physics.snapshot(),frames:edgeFrames}),subscribe(listener){visualListeners.add(listener);return()=>visualListeners.delete(listener)}};
 scope.own(watch(edge,()=>{for(const notify of visualListeners)notify()}));scope.own(()=>visualListeners.clear());
 onMounted(()=>{
- const visibility=()=>{if(document.hidden)interrupt()},preference=()=>{if(reduce())interrupt()};
+ const visibility=()=>{if(document.hidden)cancel()},preference=()=>{if(reduce())cancel()};
  document.addEventListener('visibilitychange',visibility);media.addEventListener('change',preference);
  const flags=new MutationObserver(preference);flags.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-visualmotion']});
  scope.own(()=>{flags.disconnect();document.removeEventListener('visibilitychange',visibility);media.removeEventListener('change',preference);stopEdge()});

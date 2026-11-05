@@ -1,0 +1,150 @@
+{
+  "schema": "evo42-hub-gate-followup-v1",
+  "date": "2026-11-06",
+  "initialFreeze": "5024c5f5c5e3972dcddf2fbd3c6dd96f40fad014",
+  "status": "FIXES_VALIDATED_TARGETED_FULL_GATE_PENDING",
+  "initialWindows": {
+    "unit": {
+      "status": "ERROR",
+      "individualPass": 36,
+      "individualError": 2,
+      "errors": [
+        "research-evidence.test.cjs: file symlink EPERM",
+        "ci-evidence.test.cjs: file symlink EPERM"
+      ],
+      "sourceAfterDrift": true,
+      "driftReason": "Candidate snapshot was placed in a non-ignored build directory during the run; moved to ignored artifacts; frozen source fingerprint restored. The whole run is not PASS."
+    },
+    "browser": {
+      "status": "FAIL",
+      "pass": 41,
+      "fail": [
+        "framework-startup.cjs",
+        "weather-special.cjs"
+      ],
+      "error": [
+        "adapter-materials.cjs: remaining suite budget timeout"
+      ],
+      "notRun": [
+        "kraft-work-baseline.cjs",
+        "device-layouts.cjs",
+        "device-probe.cjs"
+      ],
+      "sourceAfterClean": true
+    },
+    "research": {
+      "status": "FAIL",
+      "pass": 37,
+      "fail": [
+        "golden-spin-hub-input",
+        "evolution-rain-glass",
+        "evolution-weather-levels",
+        "evolution-weather-shower--force",
+        "evolution-weather-shower--scatter"
+      ],
+      "sourceAfterClean": true
+    },
+    "packages": {
+      "status": "PASS",
+      "count": 9,
+      "negativeTests": 9,
+      "independentBuilds": 2,
+      "zipBytesEqual": true,
+      "uiSha256": "840707e0a64f5f44a9163b3b4135625db34f213a22f601b082c2a17b285c18df",
+      "scope": "Original5024c5f only; product fix below requires a new build identity."
+    }
+  },
+  "attributedFixes": [
+    {
+      "source": "framework/motion-hub/MotionHub.vue",
+      "problem": "Reduced/disabled motion and document-hidden listeners closed an opening menu, instead of preserving logical intent.",
+      "fix": "Cancel placement gestures/flight while retaining logical menu expansion; sphere/menu owner settles or pauses its own visuals.",
+      "validation": "Final full input and actual production placement checks PASS, including hidden/resume, hidden gesture cancellation and mid-open preference change. An intermediate placement run overlapped a subsequent source edit and is retained but not used as final evidence."
+    },
+    {
+      "source": "tests/golden-spin-hub-input.cts",
+      "problem": "Official Hub fixture retained the old automatic-docking expectation after approved free-placement integration.",
+      "fix": "Assert real drag closes menu, partial gesture is not persisted, release stays free and writes only its versioned position. Retain original mid-open native dock-once and restore assertions.",
+      "validation": "Targeted full input contract PASS; unchanged generic Host real pointer docking/cancel/restore contract also PASS."
+    },
+    {
+      "source": "tests/official-cleanup.cts",
+      "problem": "Vite load IDs use forward slashes, while Windows path.join supplied backslashes; real-entry fault injection was silently bypassed.",
+      "fix": "Normalize both full paths and assert each injection loaded exactly once. Retain all original retirement-order/error-isolation scenarios.",
+      "validation": "All12 actual-entry cleanup scenarios and full framework-startup contract PASS."
+    }
+  ],
+  "weatherInvestigation": {
+    "status": "UNKNOWN_UNRESOLVED",
+    "standardObserved": "tentacle reading paragraph:6 of20202 pixels differ by at most1 RGB level, in dark background colors. protectedOverlap=0 does not prove pixel equality.",
+    "researchObserved": "Reading screenshot byte comparisons fail; original pairs were not saved, so their pixel differences cannot be reconstructed.",
+    "controls": "Diagnostic-only same-state visible/hidden alternation:12 images each under normal, ancestor backdrop disabled, ancestor gradient disabled; each group internally identical. Another heat same-state pair differed at1 background pixel by1 RGB level.",
+    "conclusion": "No reproducible contamination source attributed. Diagnostic PASS does not erase original FAIL. No pixel threshold, product weather quality or assertions changed."
+  },
+  "remote": {
+    "status": "BLOCKED_DISPATCH",
+    "attempts": [
+      {
+        "workflow": "build.yml",
+        "result": "HTTP500",
+        "runId": null
+      },
+      {
+        "workflow": "golden-spin-prototype.yml",
+        "result": "HTTP500",
+        "runId": null
+      }
+    ],
+    "readback": "No Run for5024c5f; Actions enabled. No downloaded Actions package or evidence for this source."
+  },
+  "pending": [
+    "Freeze corrected source; full standard/research Actions and actual downloadable evidence",
+    "New source-bound nine packages/double build",
+    "Resolve or explicitly disposition the weather pixel failures based on evidence",
+    "New attributes/Hub real-game and device acceptance; final4.1 comparable performance"
+  ],
+  "inputSha256Lf": {
+    "framework/motion-hub/MotionHub.vue": "cc6881e46f395cf45babb673092e0c9cceaa124eee8c72ce05af5d5979447e56",
+    "tests/golden-spin-hub-input.cts": "80889ba02799ecdd97c800dc1761c77dfb5e972e387cd6b54f021bfd9b4bff4b",
+    "tests/official-cleanup.cts": "0be30c6c23e1de0dc343a659f6a2874e38a87a58d603f804c2c525add7b04a08",
+    "tests/hub-placement-integration.cts": "16c46ef13d37169a8a67e9f8454109ba1b2ee196732bb378a594151707c11ee5",
+    "scripts/expected.lock.json": "398574c05e4ab6df536f3ba2a00e7ab5a75d23d536d2360cb928c6c279334abd"
+  },
+  "privateEvidence": [
+    "tests/artifacts/ui42/hub-frozen-unit.log",
+    "tests/artifacts/ui42/hub-frozen-browser-identity-fixed.log",
+    "tests/artifacts/ui42/hub-frozen-research.log",
+    "tests/artifacts/ui42/weather-diagnosis",
+    "tests/artifacts/ui42/hub-input-hidden-fixed.log",
+    "tests/artifacts/evolution/hub-placement-1793896936753",
+    "tests/artifacts/ui42/hub-followup-ci-check.log",
+    "tests/artifacts/ui42/hub-followup-framework-startup.log",
+    "tests/artifacts/ui42/hub-followup-device-layouts.log",
+    "tests/artifacts/ui42/hub-placement-hidden-fixed.log"
+  ],
+  "limits": "No main merge, release, Host public protocol change or device operation. No full gate PASS.",
+  "targetedFollowup": {
+    "ciCheck": "PASS",
+    "testToolTypes": "PASS",
+    "fullGoldenSpinHubInput": "PASS including reduced/disabled motion, hidden/resume, real drag and native single dock",
+    "productionPlacement": "PASS at1280/390 including motion disable during actual opening, hidden gesture cancellation, flight and composed cleanup",
+    "genericHostMotion": "PASS original real pointer docking/restore/cancellation contract unchanged",
+    "officialCleanup": "PASS all12 scenarios, with entry/connect injection asserted exactly once",
+    "frameworkStartup": "PASS full startup, cleanup and native select contracts",
+    "adapterMaterials": "PASS",
+    "kraftWorkBaseline": "PASS",
+    "deviceProbe": "PASS controlled Chromium only",
+    "deviceLayouts": {
+      "status": "FAIL",
+      "scenarios": 127,
+      "pass": 125,
+      "errors": [
+        "profile:iphone-16e-portrait load>2500ms",
+        "profile:iphone-16e-landscape load>2500ms"
+      ],
+      "negativeControls": "4 rejected as expected",
+      "cause": "Unknown slow navigation; server port derived from actual listening address, no specific blocked request recorded. No retry/timeout change."
+    },
+    "scope": "Targeted checks after source corrections; not a new full profile PASS."
+  }
+}

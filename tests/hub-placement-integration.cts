@@ -7,8 +7,10 @@ import path = require('node:path');
 import playwright = require('playwright');
 import type {rigidSpin} from '../src/ui/golden-spin/rigid-spin';
 import type {sphereHub} from '../src/ui/golden-spin/hub-motion';
+import type {startTheme} from '../src/theme/controller';
 import type {hubPreview as preview} from '../prototypes/evolution-integration/hub-preview';
 
+declare const DoLMidnightTheme:NonNullable<NonNullable<Parameters<typeof startTheme>[0]>['DoLMidnightTheme']>;
 declare const hubPreview:typeof preview,testPlacementVisual:ReturnType<typeof rigidSpin>,testHubVisual:ReturnType<typeof sphereHub>,testPlacementRelease:()=>void;
 const key='SoftWet.MotionHub.freePosition.v1',legacyKey='StoneFreeMotionHub.position.v1';
 function must<T>(v:T|null|undefined):T{assert.ok(v);return v}
@@ -37,6 +39,9 @@ async function verifyHubPlacement(browser:playwright.Browser){
    const timing:{width:number;gotoMs?:number;readyMs?:number}={width};navigation.push(timing);const started=Date.now();await p.goto(`http://127.0.0.1:${address.port}/`);timing.gotoMs=Date.now()-started;await ball(p).waitFor();timing.readyMs=Date.now()-started;
    const accepted=p.locator('.spin-hub-canvas:not(.rigid-spin-body)');assert.equal(await accepted.count(),1);assert.equal(await accepted.evaluate(n=>getComputedStyle(n).visibility),'visible');
    await ball(p).click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');assert.equal(await ball(p).getAttribute('aria-expanded'),'true');await p.screenshot({path:path.join(out,`${width}-menu.png`)});await ball(p).press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+   stage=`${width} disable motion during opening`;
+   const changed=p.evaluate(()=>new Promise<number>((resolve,reject)=>{const started=performance.now();const sample=()=>{const s=testHubVisual.inspect();if(s.moving&&s.target===1&&s.q>0&&s.q<1){DoLMidnightTheme.setPreference('visualMotion',false);resolve(s.q)}else if(performance.now()-started>3000)reject(Error('Missing in-progress opening'));else requestAnimationFrame(sample)};requestAnimationFrame(sample)}));
+   await ball(p).click();const mid=await changed;assert.ok(mid>0&&mid<1);await p.waitForFunction(()=>{const s=testHubVisual.inspect();return s.phase==='open'&&!s.moving});assert.equal(await ball(p).getAttribute('aria-expanded'),'true','motion preference retains the menu intent');assert.equal((await p.evaluate(()=>testPlacementVisual.inspect())).pending,false);await ball(p).press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');await p.evaluate(()=>DoLMidnightTheme.setPreference('visualMotion',true));
    stage=`${width} direct placement`;await down(p);await p.mouse.move(width/2,600,{steps:5});await p.mouse.up();await idle(p);const placement=await stored(p);assert.ok(placement);assert.equal(await p.evaluate(k=>localStorage.getItem(k),legacyKey),old);const placed=must(await ball(p).boundingBox());assert.ok(Math.abs(placed.x+placed.width/2-width/2)<3&&Math.abs(placed.y+placed.height/2-600)<3);
    stage=`${width} charge and flight`;await charge(p);const charging=await p.evaluate(()=>testPlacementVisual.inspect());await p.screenshot({path:path.join(out,`${width}-charge.png`)});await p.waitForTimeout(150);assert.ok((await p.evaluate(()=>testPlacementVisual.inspect())).draws>charging.draws,'charging sphere spins');await p.mouse.move(2,550);await p.mouse.up();await p.waitForFunction(()=>document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-phase')==='flying');assert.equal(await ball(p).getAttribute('aria-expanded'),'false');await p.waitForFunction(()=>testPlacementVisual.inspect().trail>2);await p.screenshot({path:path.join(out,`${width}-flight.png`)});
    const samples=await p.evaluate(async()=>{const rows:{phase:string|null;trail:number;bounces:number;x:number;y:number;right:number;bottom:number}[]=[];const deadline=performance.now()+12000;while(performance.now()<deadline){await new Promise(requestAnimationFrame);const r=document.querySelector('.sf-motion-ball')!.getBoundingClientRect(),v=testPlacementVisual.inspect();rows.push({phase:document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-phase')??null,trail:v.trail,bounces:v.bounces,x:r.x,y:r.y,right:r.right,bottom:r.bottom});if(rows.at(-1)!.phase==='idle')break}return rows});
@@ -45,15 +50,16 @@ async function verifyHubPlacement(browser:playwright.Browser){
    stage=`${width} catch`;await charge(p);await p.mouse.up();await p.waitForFunction(()=>document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-phase')==='flying');
    await p.evaluate(async()=>{let last:DOMRect|undefined,lastTime=0;while(true){await new Promise(requestAnimationFrame);const h=document.querySelector('.sf-motion-hub');if(h?.getAttribute('data-edge-phase')!=='flying')throw Error('Flight settled before catch');const rect=document.querySelector('.sf-motion-ball')!.getBoundingClientRect(),now=performance.now();if(last&&now>lastTime&&Math.hypot(rect.x-last.x,rect.y-last.y)/(now-lastTime)*1000<500)return;last=rect;lastTime=now}});
    const moving=must(await ball(p).boundingBox());await p.mouse.move(moving.x+moving.width/2,moving.y+moving.height/2);await p.mouse.down();assert.equal(await root(p).getAttribute('data-edge-phase'),'dragging','real pointer caught ongoing flight');await p.mouse.up();await idle(p);assert.equal(await ball(p).getAttribute('aria-expanded'),'false','catch does not open');
-   for(const reason of ['escape','blur','resize','scene','reduced']){
+   for(const reason of ['escape','blur','resize','scene','reduced','hidden']){
     stage=`${width} interrupt ${reason}`;await charge(p);const before=await stored(p);
     if(reason==='escape')await p.keyboard.press('Escape');
     if(reason==='blur')await p.evaluate(()=>window.dispatchEvent(new Event('blur')));
     if(reason==='resize')await p.setViewportSize({width,height:880});
     if(reason==='scene')await p.evaluate(()=>{hubPreview.host.invalidateScene();hubPreview.host.sceneReady()});
     if(reason==='reduced')await p.emulateMedia({reducedMotion:'reduce'});
+    if(reason==='hidden')await p.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'))});
     await p.mouse.up();await idle(p);assert.equal(await stored(p),before,`${reason} cannot commit partial gesture`);
-    if(reason==='resize')await p.setViewportSize({width,height:900});if(reason==='reduced')await p.emulateMedia({reducedMotion:'no-preference'});
+    if(reason==='resize')await p.setViewportSize({width,height:900});if(reason==='reduced')await p.emulateMedia({reducedMotion:'no-preference'});if(reason==='hidden')await p.evaluate(()=>{Reflect.deleteProperty(document,'hidden');document.dispatchEvent(new Event('visibilitychange'))});
    }
    stage=`${width} native action`;await ball(p).click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');await p.locator('[data-motion-view$="native-social"]').click();assert.equal(await p.evaluate(()=>hubPreview.counts().native),1);await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
    stage=`${width} dispose`;await charge(p);await p.mouse.up();await p.waitForFunction(()=>document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-phase')==='flying');await p.evaluate(()=>hubPreview.stop());assert.equal(await p.locator('.sf-motion-hub,.rigid-spin-field,.spin-hub-canvas').count(),0);const dead=await p.evaluate(()=>testPlacementVisual.inspect());await p.evaluate(()=>{window.dispatchEvent(new Event('resize'));window.dispatchEvent(new Event('blur'));document.dispatchEvent(new Event('visibilitychange'))});await p.waitForTimeout(150);assert.equal((await p.evaluate(()=>testPlacementVisual.inspect())).draws,dead.draws);assert.equal(await p.locator('.sf-motion-hub,.rigid-spin-field,.spin-hub-canvas').count(),0);

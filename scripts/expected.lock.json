@@ -1003,8 +1003,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9cd09d0485b182cec1cc36f96ae6e78b02a3c7eb8fbc04bfdbea4748300035c3",
-      "assertionSites": 423,
+      "sourceSha256": "93da71dd01dea061c6e7036698423a5d171c06e2ea8e70668f00ff758727e392",
+      "assertionSites": 431,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1364,8 +1364,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "d3fdffbd5c21b2c8ac9e62dace85dc4fd3e37eb8e823d7dc3a8193f7c33045e2",
-      "assertionSites": 505
+      "sourceSha256": "4b23e93f4fdd3af1e996c8c9b4d97cd619e42ec9b9a5bdb9dde241d5defe7e59",
+      "assertionSites": 507
     },
     {
       "entry": "tests/framework.cjs",
@@ -1480,8 +1480,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "cbd877844326d5502ed51e41f1c3298bfed1165ec81e856bfad8b60576d496e5",
-      "assertionSites": 39
+      "sourceSha256": "80889ba02799ecdd97c800dc1761c77dfb5e972e387cd6b54f021bfd9b4bff4b",
+      "assertionSites": 46
     },
     {
       "entry": "tests/golden-spin-hub-lifecycle.cjs",
