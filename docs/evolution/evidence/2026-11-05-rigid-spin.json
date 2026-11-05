@@ -132,5 +132,72 @@
     "No formal CI or release changes",
     "Discrete 4ms collision approximation, 8s safety limit",
     "Owner visual acceptance pending"
-  ]
+  ],
+  "acceptedAppearanceRevision": {
+    "parent": "6bcd2a5bbf83c8d06f9809a3a49388d025742f1a",
+    "status": "PASS",
+    "inputs": {
+      "prototypes/evolution-hub-free/FreeHub.vue": "5cccd0e13acb0c01248026fa2dad9d38bd70900622413dc8c1b156a0b3e402ca",
+      "prototypes/evolution-hub-free/accepted-sphere.ts": "f8c550cd3c9ebd1c56901365e1a2edfedc6af33ffeef5ec2755cc20a6a4c102a",
+      "prototypes/evolution-hub-free/check.mts": "0804036a35d8118a35bc8342c1eb1c64fcf1494486abb6628031b5a7825d71ed",
+      "prototypes/evolution-hub-free/compare.html": "dea7c75ed3b70eca8f295ad54e40b81dea86d376e79d0e58060dbf4ac83cf8fe",
+      "prototypes/evolution-hub-free/edge-check.mts": "451f828b69cf191f76f0b8b6198905df8a506e10a76b169f705fefaf6a3eb94b",
+      "prototypes/evolution-hub-free/edge-physics-check.mts": "f859a7146048b86cf4d26248825548f0d0002982eeabfb4231901d845e243076",
+      "prototypes/evolution-hub-free/edge-physics.ts": "06d15aebe9a9e096cd9e9ccc8ae92262638424817ef45e3721b1be91088c54bf",
+      "prototypes/evolution-hub-free/edge.css": "de7dce5836425764b37447d829f060ee47f0db49f1ae85c5de16f89286e91525",
+      "prototypes/evolution-hub-free/index.html": "d410593ebf36d4a102ec0e4f692b4be8d6567da75ec8cf3c48a08e96d26ba97b",
+      "prototypes/evolution-hub-free/main.ts": "96b00e50819727f0ac0c67f1113c946c5824e8548b2b000dcea5eea1b3853b35",
+      "prototypes/evolution-hub-free/owner.ts": "56ee4e0fb01a9db1f2cb2463ddf5f73aaf6f1b491869d27d18c40f65381ebe65",
+      "prototypes/evolution-hub-free/position.ts": "812961a8ba9be069e481ea112e96fd6e6764e6567bd586f4b23458bfcd88338b",
+      "prototypes/evolution-hub-free/record.mts": "b2c24c8ed0d361990799ac0fb723fbc233bf499bf26363258dd89aa870a0eb26",
+      "prototypes/evolution-hub-free/rigid-check.mts": "0f3d5195f9051291f2ee8a88532969d14c291445928c827c4054ffae53115ee7",
+      "prototypes/evolution-hub-free/rigid-review.html": "06bd8a8973bae01f15d30b3a6ed8f93cd448ab428529a435b80c3ac0cea01dcf",
+      "prototypes/evolution-hub-free/rigid-spin.ts": "d8011c6f096fb8a45d847ead2bcf571ccb9c8a5b56377cdb86d77ba4272e6ff5",
+      "prototypes/evolution-hub-free/storage.ts": "6fcb7853ac70e01f185e6a8a3fe7e5ea9863e0410907963a64d2a53c29d9bb9a",
+      "dist/framework/official-ui/style.css": "caa88991cd8c19da7453f0d0f2ccf1bc4e608857a5b443665de25d435864fe34"
+    },
+    "rows": [
+      {
+        "width": 1280,
+        "status": "PASS",
+        "frames": 440,
+        "bounces": 5,
+        "peakSpeed": 3168.476299785463,
+        "pose": {
+          "w": 175,
+          "h": 174.99996948242188,
+          "scale": "none"
+        },
+        "scope": "charge rotation, rigid silhouette, gold trail data, sustained ricochet, decay, idle sleep, menu, dock visibility and reduced motion"
+      },
+      {
+        "width": 390,
+        "status": "PASS",
+        "frames": 402,
+        "bounces": 12,
+        "peakSpeed": 3184.899740277749,
+        "pose": {
+          "w": 175,
+          "h": 174.99996948242188,
+          "scale": "none"
+        },
+        "scope": "charge rotation, rigid silhouette, gold trail data, sustained ricochet, decay, idle sleep, menu, dock visibility and reduced motion"
+      },
+      {
+        "constructionRollback": {
+          "threw": true,
+          "active": 0,
+          "canvases": 0,
+          "marked": false
+        }
+      }
+    ],
+    "artifact": "tests/artifacts/rigid-spin/1793885251493",
+    "checks": [
+      "Original sphere drawing and particles source block identical",
+      "Original production open effect visible and changing pixels; flight overlay hidden during normal open",
+      "Isolated prototype vue-tsc PASS"
+    ],
+    "scope": "Original accepted sphere and click-open retained; previous launch physics and trail retained; still pending owner visual acceptance"
+  }
 }
