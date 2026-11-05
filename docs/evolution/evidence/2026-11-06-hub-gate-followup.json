@@ -211,5 +211,38 @@
     "validation": "PASS actual production placement1280/390 including mid-open disable, re-enable then charge/flight, hidden interruption, cleanup. Existing pending=false assertion unchanged.",
     "sourceSha256Lf": "f3d7f368868341fc561351e825a72415091009bc325a0649cb958a6d26107f0c",
     "newFullProfiles": "PENDING"
+  },
+  "e85Profiles": {
+    "source": "e85edf1ffeef77d95c165a37813ceafeec2391e9",
+    "standard": {
+      "run": 42073441881,
+      "status": "FAIL",
+      "unit": "38/38 PASS",
+      "browser": "46/47 PASS",
+      "failed": "evolution-owner-resources: catch idle != dragging",
+      "downloadedProducerArtifact": 13439290624,
+      "downloadedSha256": "c70d8fc857857ab13451f261c1e5e064c856aa74dc9207dc5700757f8e24c863"
+    },
+    "research": {
+      "run": 42073451651,
+      "status": "FAIL",
+      "failed": "evolution-owner-resources: catch idle != dragging",
+      "evidence": "Completed job failure log and API result read; full producer artifact not downloaded this round."
+    },
+    "wakeRegression": "Disabled-motion pending assertion passed before catch in both profiles; no waiting/assertion changes used."
+  },
+  "catchProbeFix": {
+    "productionSource": "Unchanged frome85edf1",
+    "observedFailure": "Single slowMo80 diagnostic: pointerdown occurred during flying but landed on BODY about35px outside the ball, then existing outside-input cancellation yielded idle. This reproduces the error shape; original CI lacks its exact hit-target trace.",
+    "change": "Read actual placement velocity rather than inferring it from net rectangle displacement across a bounce. Wait for natural coasting below90 CSSpx/s to provide routing margin, still catch ongoing flight using unchanged real mouse move/down/up. Capture actual target/isTrusted/before-phase/bounds, retain flying->dragging and closed-menu assertions. No clock pause, product-speed change, synthetic pointer or force click.",
+    "normal": "PASS1280/390, production placement full checks",
+    "slowMo80": "PASS once1280/390, same diagnostic driver; original failure preserved",
+    "privateEvidence": [
+      "tests/artifacts/ui42/hub-catch-diagnosis/slow-pointerdown.log",
+      "tests/artifacts/ui42/hub-catch-diagnosis/slow-pointerdown-fixed.log",
+      "tests/artifacts/evolution/hub-placement-1793900602223/result.json",
+      "tests/artifacts/evolution/hub-placement-1793900950723/result.json"
+    ],
+    "next": "New exact-source full standard/research profiles and package identity; not a full gate PASS."
   }
 }

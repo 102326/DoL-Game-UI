@@ -8,9 +8,12 @@ import playwright = require('playwright');
 import type {rigidSpin} from '../src/ui/golden-spin/rigid-spin';
 import type {sphereHub} from '../src/ui/golden-spin/hub-motion';
 import type {startTheme} from '../src/theme/controller';
+import type {PlacementMotion} from '../framework/motion-hub/placement-motion';
 import type {hubPreview as preview} from '../prototypes/evolution-integration/hub-preview';
 
 declare const DoLMidnightTheme:NonNullable<NonNullable<Parameters<typeof startTheme>[0]>['DoLMidnightTheme']>;
+declare let testCatchInput:{phase:string;targetIsBall:boolean;trusted:boolean;x:number;y:number;rect:{x:number;y:number;width:number;height:number}}|undefined;
+declare const testPlacementMotion:PlacementMotion;
 declare const hubPreview:typeof preview,testPlacementVisual:ReturnType<typeof rigidSpin>,testHubVisual:ReturnType<typeof sphereHub>,testPlacementRelease:()=>void;
 const key='SoftWet.MotionHub.freePosition.v1',legacyKey='StoneFreeMotionHub.position.v1';
 function must<T>(v:T|null|undefined):T{assert.ok(v);return v}
@@ -25,7 +28,7 @@ async function verifyHubPlacement(browser:playwright.Browser){
  const {createHubPreviewServer}=await import('../scripts/preview-evolution-hub.mjs');
  const server=await createHubPreviewServer(0,[{name:'observe-production-placement',enforce:'pre',transform(code:string,id:string){
   const file=id.replaceAll('\\','/');
-  if(file.endsWith('/src/ui/golden-spin/rigid-spin.ts'))return code.replace('export function rigidSpin(', 'function actualRigidSpin(')+'\nexport function rigidSpin(...args){return window.testPlacementVisual=actualRigidSpin(...args)}';
+  if(file.endsWith('/src/ui/golden-spin/rigid-spin.ts'))return code.replace('export function rigidSpin(', 'function actualRigidSpin(')+'\nexport function rigidSpin(...args){window.testPlacementMotion=args[1];return window.testPlacementVisual=actualRigidSpin(...args)}';
   if(file.endsWith('/src/ui/golden-spin/hub-motion.ts'))return code.replace('export function sphereHub(', 'function actualSphereHub(')+'\nexport function sphereHub(root){return window.testHubVisual=actualSphereHub(root)}';
   if(file.endsWith('/framework/official-ui/hub.ts')){assert.equal(code.split('return visuals.dispose').length,2,'actual owner disposer must be unique');return code.replace('return visuals.dispose','return (window.testPlacementRelease=visuals.dispose)')}
  }}]);
@@ -48,8 +51,10 @@ async function verifyHubPlacement(browser:playwright.Browser){
    assert.equal(samples.at(-1)?.phase,'idle');assert.ok(samples.some(s=>s.bounces>=2),'multiple collisions');assert.ok(samples.some(s=>s.trail>2),'flight produces trail');assert.ok(samples.every(s=>[s.x,s.y,s.right,s.bottom].every(Number.isFinite)&&s.x>=-.1&&s.y>=-.1&&s.right<=width+.1&&s.bottom<=900.1));
    await p.waitForFunction(()=>{const v=testPlacementVisual.inspect();return !v.pending&&v.trail===0&&v.hits===0});const resting=await p.evaluate(()=>testPlacementVisual.inspect());await p.waitForTimeout(150);assert.equal((await p.evaluate(()=>testPlacementVisual.inspect())).draws,resting.draws,'resting visual sleeps');
    stage=`${width} catch`;await charge(p);await p.mouse.up();await p.waitForFunction(()=>document.querySelector('.sf-motion-hub')?.getAttribute('data-edge-phase')==='flying');
-   await p.evaluate(async()=>{let last:DOMRect|undefined,lastTime=0;while(true){await new Promise(requestAnimationFrame);const h=document.querySelector('.sf-motion-hub');if(h?.getAttribute('data-edge-phase')!=='flying')throw Error('Flight settled before catch');const rect=document.querySelector('.sf-motion-ball')!.getBoundingClientRect(),now=performance.now();if(last&&now>lastTime&&Math.hypot(rect.x-last.x,rect.y-last.y)/(now-lastTime)*1000<500)return;last=rect;lastTime=now}});
-   const moving=must(await ball(p).boundingBox());await p.mouse.move(moving.x+moving.width/2,moving.y+moving.height/2);await p.mouse.down();assert.equal(await root(p).getAttribute('data-edge-phase'),'dragging','real pointer caught ongoing flight');await p.mouse.up();await idle(p);assert.equal(await ball(p).getAttribute('aria-expanded'),'false','catch does not open');
+   // A reversal can hide speed in two rectangles; use real velocity and leave a routing margin inside the hitbox.
+   await p.waitForFunction(()=>{const s=testPlacementMotion.read();return s.phase==='flying'&&Math.hypot(s.vx,s.vy)<90});
+   await p.evaluate(()=>{testCatchInput=undefined;document.addEventListener('pointerdown',e=>{const ball=document.querySelector('.sf-motion-ball')!,r=ball.getBoundingClientRect();testCatchInput={phase:testPlacementMotion.read().phase,targetIsBall:e.target instanceof Node&&ball.contains(e.target),trusted:e.isTrusted,x:e.clientX,y:e.clientY,rect:{x:r.x,y:r.y,width:r.width,height:r.height}}},{capture:true,once:true})});
+   const moving=must(await ball(p).boundingBox());await p.mouse.move(moving.x+moving.width/2,moving.y+moving.height/2);await p.mouse.down();const caught=must(await p.evaluate(()=>testCatchInput));rows.push({width,catchInput:caught});assert.ok(caught.targetIsBall&&caught.trusted&&caught.phase==='flying','real pointer must hit the ongoing flight');assert.equal(await root(p).getAttribute('data-edge-phase'),'dragging','real pointer caught ongoing flight');await p.mouse.up();await idle(p);assert.equal(await ball(p).getAttribute('aria-expanded'),'false','catch does not open');
    for(const reason of ['escape','blur','resize','scene','reduced','hidden']){
     stage=`${width} interrupt ${reason}`;await charge(p);const before=await stored(p);
     if(reason==='escape')await p.keyboard.press('Escape');
@@ -71,7 +76,7 @@ async function verifyHubPlacement(browser:playwright.Browser){
    rows.push({width,status:'PASS',frames:samples.length,bounces:Math.max(...samples.map(s=>s.bounces))});await p.close();page=undefined;
   }
   assert.deepEqual(errors,[]);caseCheckpoint('entry');status='PASS';return rows;
- }catch(error){failure=error instanceof Error?error.stack:String(error);await page?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw error}
+ }catch(error){failure=error instanceof Error?error.stack:String(error);if(page)rows.push({failedCatchInput:await page.evaluate(()=>testCatchInput).catch(()=>undefined)});await page?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw error}
  finally{fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({status,stage,failure,rows,errors,failedRequests,navigation,node:process.version,browser:browser.version(),limits:'Controlled Chromium owner preview; no game or Android device'},null,2));console.log(out);await page?.close();await server.close()}
 }
 export = {verifyHubPlacement};

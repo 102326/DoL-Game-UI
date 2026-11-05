@@ -1003,8 +1003,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "93da71dd01dea061c6e7036698423a5d171c06e2ea8e70668f00ff758727e392",
-      "assertionSites": 431,
+      "sourceSha256": "7e0dac24f893d982c65b338f64c9b29e1ab38fdce837dcee11164d696de817b0",
+      "assertionSites": 433,
       "rendererContexts": [
         "sphere:2d"
       ]
