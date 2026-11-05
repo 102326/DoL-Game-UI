@@ -2,6 +2,23 @@
 
 优先级：**UI Mod本体性能 → CI优化 → 新UI设计**。兼容Mod专项后置，共用路径继续保护已有消费者合同。当前接续分支为`perf/4.2-windows-device-followup`，最新CI研究见本文首节；第八批及以前的性能工作在其祖先分支`prototype/4.2-first-samples`完成，各批证据分别绑定，不用旧Run代签新整合。本文是研发交付记录，不是4.2发布验收。
 
+## 2026-11-05 整合检查点最终回执（P1全流程）
+
+负责人最新明确：已确定的新设计与性能优化一起完成整合、CI和实机流程；不只发局部性能修订，不跳过CI。本轮因此在已同步研究批次之后冻结 `9e8430c538ce47155883a4cd89e866a6e8e360fb`，完成公司Mac可执行的整合检查点。**不是最终4.2 RC或发布批准。**
+
+实际合版核对：从60069f0到本检查点，`src`、`framework`、`compat`及package/lock/project identity无变化。SettingsPanel实际引入已认可的settings-material，八批性能修正同在祖先链；属性受力仅prototype引用，尚未正式采用。当前正式运行差异相对v4.1.0包括同帧去重、冗余反馈与天气工作、备用预览及时启动、末项及时解锁、稳定霜层路径、三张位移图复用及设置运动，未为本轮研究删去既定设计。
+
+- **完整标准** [41967784364](https://github.com/102326/DoL-Game-UI/actions/runs/41967784364)：validate、evidence-verify、moody-gate首轮success；首job至最终16分05秒，validate15分40秒、独立核验18秒、gate2秒。
+- **完整研究** [41967788806](https://github.com/102326/DoL-Game-UI/actions/runs/41967788806)：prototype及独立核验首轮success；首job至最终10分38秒。两条均workflow_dispatch、同一9e8430c、attempt1；共2个Run、0轮远端修正。无失败型可行动反馈，不是同输入CI提速对照。
+- 两份实际下载的远端核验回执均 `PASS / COMPLETE`、无reasonCodes/problems，绑定同一源码内容摘要。它们验证各自完整profile，不自动覆盖目录中新增的独立C1/属性原型脚本；这些已有本机定向证据。
+- **Mac构建与制品**：Node26.12.1、Python3.12.14；`npm run ci:build` 和 `npm run ci:packages` 最终退出0。首次build已编译Framework但因进程PATH缺python退出127，保留原日志；仅加入本机已有Python路径后重做，未全局安装或改配置。
+- 九包合同、9负例及第二次独立完整构建通过；两轮invocation不同，成员/压缩字节/元数据/ZIP摘要一致。封存后逐一重算SHA256SUMS。下载本次Actions九包再比对，**九包成员内容和ZIP摘要与Mac完全一致**。此为本次环境的观测，不保证未来任意OS/zlib一致。
+- 本机主UI ZIP摘要 `6e477c55cbc5db85107a9bca00e0c3473901f9d914c9f0fbbe5c0a4ebdff6e42`。技术版本字段仍是研发基线4.1.0，不能冒充正式4.1.0或4.2发行包。包下载位于上述标准Run的 `kraft-work-build-9e8430c...` Artifact；保存期7天，到期按绑定源码重建。完整摘要与运行回执见[整合证据](evidence/2026-11-05-integrated-checkpoint.json)。
+
+另核对“选中导航背景已覆盖渐变但动画空转”的疑点：实际属性页computed style仍为使用sheen变量的渐变，选择器优先级使覆盖假设不成立；未删动画、未进行无意义性能试验。
+
+**交付判断**：本检查点工程验证闭环，工作未冒称4.2全部完成。最终普通用户4.1/候选可比性能证据仍不足，UI雪效和共同背景持续成本尚有负担；真实游戏代表操作/组合及必要Windows/Android/WebView验证必须接续。属性受力的视觉裁决、Hub未定具体方案也保留，不能因P1急迫擅自删范围或推广未认可原型。正式版本冻结、main合并及Release仍需后续明确授权。CI缓存/选测未接管正式门禁，完整C1–C4研究不是本次发布的自动前置。
+
 ## 2026-11-05 公司Mac续批：P1路径、候选淘汰与第二角色
 
 本批基点 `ae91732b33bf4a28a75cba856b5f2ec57f92b49e`，接续同一 `perf/4.2-windows-device-followup` 分支；开始时工作区干净、远端一致。实际生产代码、Host、依赖、workflow、catalog 和 Expected Lock 未改。脱敏原始采样、输入摘要及回执在[本批证据](evidence/2026-11-05-mac-continuation.json)。录像和完整日志留在忽略目录，不假定另一设备可访问。
