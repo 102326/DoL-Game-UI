@@ -1,0 +1,99 @@
+{
+  "schema": "evo42-hub-integration-v1",
+  "date": "2026-11-06",
+  "base": "7b02d83843f1a75fd0c164ac31c9564d534e11d7",
+  "branch": "perf/4.2-windows-device-followup",
+  "acceptedDesign": "42700435d8607da5d298e00f1bb54239f62e3142",
+  "scope": "Production Hub integration; no main merge, release or Host public protocol change",
+  "environment": {
+    "os": "Windows",
+    "node": "26.12.1",
+    "chromium": "158.0.4370.1"
+  },
+  "inputSha256Lf": {
+    "framework/motion-hub/MotionHub.vue": "adf83fa19d9e5be08ab52ac6160065185b1a2723eb289bbd0166c82e0fe99169",
+    "framework/motion-hub/direct-position.ts": "c513118d3a4e94f0a3e525dd60c4dd7a95373341bc52cff981c4466cb24c3d68",
+    "framework/motion-hub/edge-physics.ts": "06d15aebe9a9e096cd9e9ccc8ae92262638424817ef45e3721b1be91088c54bf",
+    "framework/motion-hub/edge.css": "7f23dc5e341816fe6c899087c1b06be88cd6459ce5f9155900ef6fdc7191408b",
+    "framework/motion-hub/placement-motion.ts": "4c4adbe34616d08d79e86a2962392636828a840a3998ddb0b06017561dc3a864",
+    "framework/official-ui/hub.ts": "400d5ba93e9a7d5740bcf7e603002bc489f202692acfa7da458295afc0c161b3",
+    "src/ui/golden-spin/sphere.ts": "5ce106480fd6346c2cb7589a93a003f4980e30e029bfdacabbae6f0c51e34ac0",
+    "src/ui/golden-spin/rigid-spin.ts": "c28e37dc026c458e3a429b2ce38b0b8880f2cee178814e3e70dae58ef0b76925",
+    "tests/hub-placement-integration.cts": "707ae44cb62afbbe8ebe10f6d576e33692449d47bcf078f067e73aaae913d115",
+    "tests/hub-placement.test.mts": "527cbc196d695c452966bfe9f34fd09e8d3b80529e84223a85dbf3e49d7d3bcc",
+    "tests/evolution-hub-integration.cts": "b33903b4848f1986833eb9662666a95865c56694bb9a405a5a7982827a1102e0",
+    "tests/evolution-owner-resources.cts": "98e705ee524eeeeb551858230454152198413b9477d3d866dd72260d339e2dde",
+    "scripts/expected.lock.json": "56f9b7482fb6fd2dfab172a82cefce13f9bc3452a51f11e6d6680ac20dc7667d"
+  },
+  "validated": {
+    "ciCheck": "PASS",
+    "testToolTypes": "PASS",
+    "frameworkBuild": "PASS",
+    "ownerResourceContract": "PASS including new placement and retained historical counterexamples",
+    "layouts": 48,
+    "placement": {
+      "status": "PASS",
+      "stage": "390 dispose",
+      "rows": [
+        {
+          "cleanupFailure": {
+            "threw": true,
+            "calls": 4,
+            "baseDead": true,
+            "flightPending": false
+          }
+        },
+        {
+          "width": 1280,
+          "status": "PASS",
+          "frames": 2100,
+          "bounces": 5
+        },
+        {
+          "width": 390,
+          "status": "PASS",
+          "frames": 1841,
+          "bounces": 12
+        }
+      ],
+      "errors": [],
+      "failedRequests": [],
+      "navigation": [
+        {
+          "width": 1280,
+          "gotoMs": 648,
+          "readyMs": 689
+        },
+        {
+          "width": 390,
+          "gotoMs": 122,
+          "readyMs": 134
+        }
+      ],
+      "node": "v26.12.1",
+      "browser": "158.0.4370.1",
+      "limits": "Controlled Chromium owner preview; no game or Android device"
+    }
+  },
+  "failureHistory": [
+    "Cold Vite dependency optimization exceeded the preview navigation budget; measured 9.515s dependency response and limited navigation to 20s without changing interaction budgets.",
+    "Transient menu arrival and close observation armed too late; observers now start before the triggering input and use actual DOM geometry. Native pointer/hold/action assertions remain.",
+    "Layout fixtures now write the production position key. Generic Host format and legacy read-only fallback remain.",
+    "Combined visual cleanup previously skipped base disposal after a throwing flight cleanup; existing visualScope now disposes both and preserves the failure. Injected disconnect failure confirms no canvas or pending flight remains.",
+    "Temporary CommonJS test transpilation broke dynamic import; official NodeNext tooling used. Generated lock retained LF and named composed-checkpoint requirements."
+  ],
+  "notValidated": [
+    "Frozen nine-package candidate and independent double build for this new batch",
+    "New full standard and research GitHub Actions",
+    "Integrated Hub and attributes in real game / Android WebView",
+    "Final comparable 4.1 versus candidate performance"
+  ],
+  "device": "Read-only environment capture completed; no new package installed, no game scene, preference or save mutation. Temporary transport released.",
+  "privateEvidence": [
+    "tests/artifacts/ui42/hub-final-ci-check.log",
+    "tests/artifacts/ui42/hub-final-owner-resources.log",
+    "tests/artifacts/evolution/hub-integration-1793894387675",
+    "tests/artifacts/evolution/hub-placement-1793894414356"
+  ],
+  "limits": "Controlled Windows Chromium checks are not Android, game-business, performance or owner integration acceptance. Prior attributes CI remains valid for its original source only."
+}

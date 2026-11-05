@@ -324,3 +324,4 @@ docs/HANDOFF.local.md
 /tests/wardrobe-preview-loading.cjs
 
 /tests/attributes-material.cjs
+/tests/hub-placement-integration.cjs

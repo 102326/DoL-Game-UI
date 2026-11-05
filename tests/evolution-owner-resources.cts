@@ -1,4 +1,4 @@
-// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"composed","includes":[{"prefix":"hub","source":"tests/evolution-hub-integration.cjs"}],"rendererContexts":["sphere:2d"]}
+// @ci-contract {"profiles":["standard","research"],"classification":"contract","granularity":"composed","includes":[{"prefix":"hub","source":"tests/evolution-hub-integration.cjs"},{"prefix":"placement","source":"tests/hub-placement-integration.cjs"}],"rendererContexts":["sphere:2d"]}
 // Real owners and components; controlled resources, no game variables or player saves.
 import assert = require('node:assert/strict');
 import fs = require('node:fs');
@@ -88,6 +88,8 @@ type Counterexample={kind:string;status:'REJECTED';assertion:string;checks?:unkn
   const hubModule:unknown=require('./evolution-hub-integration.cjs');if(!hubModule||typeof hubModule!=='object'||!('verifyHubIntegration' in hubModule)||typeof hubModule.verifyHubIntegration!=='function')throw Error('Missing Hub integration verifier');
   const verifyHubIntegration=hubModule.verifyHubIntegration as (browser:playwright.Browser,options?:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean})=>Promise<unknown>;
   const activeBrowser=browser;assert.ok(activeBrowser);hubIntegration.checks=await withCaseScope('hub',()=>verifyHubIntegration(activeBrowser));
+  const placement:typeof import('./hub-placement-integration.cts')=require('./hub-placement-integration.cjs');
+  await withCaseScope('placement',()=>placement.verifyHubPlacement(activeBrowser));
   function rejectCounterexample(error:unknown,kind:string,pattern:RegExp){if(!(error instanceof Error)||!('code' in error)||error.code!=='ERR_ASSERTION'||!pattern.test(error.message))return false;const details='hubIntegration' in error&&error.hubIntegration&&typeof error.hubIntegration==='object'?error.hubIntegration:{};hubIntegration.counterexamples.push({kind,status:'REJECTED',assertion:error.message,...details});return true}
   await assert.rejects(()=>verifyHubIntegration(activeBrowser,{unsafeConstruction:true}),error=>rejectCounterexample(error,'constructor-outside-cleanup',/constructor fallback must remove the already appended canvas/));
   await assert.rejects(()=>verifyHubIntegration(activeBrowser,{oldGeometry:true}),error=>rejectCounterexample(error,'frozen-MotionHub-d3f04ee',/restored Hub geometry must fit the resized hidden viewport|finite restored menu origin/));

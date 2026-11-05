@@ -997,10 +997,14 @@
         {
           "id": "hub:peer clock survives Hub teardown and throwing cleanup retires every owned node",
           "minimumAssertions": 1
+        },
+        {
+          "id": "placement:entry",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "0c9588b87f16c8f418c7e3790f725d822017accb477439e1d508997dd5a52aa3",
-      "assertionSites": 358,
+      "sourceSha256": "9cd09d0485b182cec1cc36f96ae6e78b02a3c7eb8fbc04bfdbea4748300035c3",
+      "assertionSites": 423,
       "rendererContexts": [
         "sphere:2d"
       ]
