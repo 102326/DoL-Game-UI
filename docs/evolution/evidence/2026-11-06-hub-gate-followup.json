@@ -2,7 +2,7 @@
   "schema": "evo42-hub-gate-followup-v1",
   "date": "2026-11-06",
   "initialFreeze": "5024c5f5c5e3972dcddf2fbd3c6dd96f40fad014",
-  "status": "FULL_CI_AND_DEVICE_CORE_VALIDATED_PERFORMANCE_ACCEPTANCE_PENDING",
+  "status": "CI_AND_CORE_DEVICE_VALIDATED_PERFORMANCE_CONCERNS_OPEN",
   "initialWindows": {
     "unit": {
       "status": "ERROR",
@@ -760,7 +760,7 @@
       "decision": "Keep full checks and two-build contract. Highest measured browser contributors are device layouts and composed owner/Hub tests; this sample alone does not justify removing checks, shortening product motion or enabling selected CI/cache. No new product hotspot was established."
     }
   },
-  "historyScope": "Earlier fields retain their original source and failed/pending observations. macContinuation20261106 is the current continuation; it does not reclassify historical failures.",
+  "historyScope": "Earlier fields, including pending, retain their original freeze observations. Current acceptance is performanceInterleaved20261106 and modHub201Acceptance; Mac continuation and original failures remain intact.",
   "finalProfiles": {
     "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
     "actionsSource": {
@@ -1082,5 +1082,327 @@
       "perf-candidate-1-ready.json": "4f039215a85a3c176f411d23729aab361e455bebca047cdcbdbdd52e2b7877b7",
       "perf-baseline-1-ready.json": "b79a2118e633deb8ac05be44122f8a56bd899d40175bfa05256c178d888cbe8a"
     }
+  },
+  "performanceInterleaved20261106": {
+    "status": "MEASUREMENT_COMPLETE_ACCEPTANCE_PENDING_CAUSE",
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "order": [
+      "candidate-1",
+      "baseline-1",
+      "candidate-2",
+      "baseline-2"
+    ],
+    "fixedInputsVerified": [
+      "same47Mods incl ModHub2.0.1",
+      "same order/hidden/preferences",
+      "same marked isolated scene",
+      "same UA/viewport/DPR",
+      "identical initial weather and rain/snow public getters"
+    ],
+    "method": "3opens/page/installation; DOM click synchronous return and rAF availability,750ms observation. Rain/snow4s each. rAF callback gaps are not GPU/displayFPS; CDP durations are seconds. CPU diagnostic cohorts excluded from timings.",
+    "runs": [
+      {
+        "label": "candidate-1",
+        "at": "2026-11-05T19:27:00.626Z",
+        "rawFile": "perf-candidate-1-ready.json",
+        "rawSha256": "4f039215a85a3c176f411d23729aab361e455bebca047cdcbdbdd52e2b7877b7",
+        "zipSha256": "97c5fd0540d0eabc7756ac43992371be1c051f24a2244caf0008ae00795a2be8",
+        "openingMedianMs": {
+          "属性": {
+            "synchronousHandler": 106.30000000447035,
+            "closeHitAvailable": 110.30000000447035,
+            "samples": 3
+          },
+          "社交": {
+            "synchronousHandler": 67.10000000149012,
+            "closeHitAvailable": 73.10000000149012,
+            "samples": 3
+          },
+          "界面设置": {
+            "synchronousHandler": 24.399999998509884,
+            "closeHitAvailable": 25.099999994039536,
+            "samples": 3
+          }
+        },
+        "weather": [
+          {
+            "kind": "rain",
+            "elapsedMs": 4000.2000000029802,
+            "rafCallbacks": 411,
+            "gapP95MsNearestRank": 20.399999998509884,
+            "gapMaxMs": 37.100000001490116,
+            "scriptDurationSeconds": 0.8718700000000004,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "rain",
+              "intensity": 1.6,
+              "temperature": 14.24,
+              "lightning": true,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          },
+          {
+            "kind": "snow",
+            "elapsedMs": 4004.2000000029802,
+            "rafCallbacks": 385,
+            "gapP95MsNearestRank": 22.80000000447035,
+            "gapMaxMs": 124,
+            "scriptDurationSeconds": 1.6374970000000006,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "snow",
+              "intensity": 1.6,
+              "temperature": -1.02,
+              "lightning": false,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          }
+        ]
+      },
+      {
+        "label": "baseline-1",
+        "at": "2026-11-05T19:35:03.401Z",
+        "rawFile": "perf-baseline-1-ready.json",
+        "rawSha256": "b79a2118e633deb8ac05be44122f8a56bd899d40175bfa05256c178d888cbe8a",
+        "zipSha256": "3d9f27a1dbdbccd986c83f8f795006f5afae0a40ceb6b24a458a4f0175b83025",
+        "openingMedianMs": {
+          "属性": {
+            "synchronousHandler": 105.20000000298023,
+            "closeHitAvailable": 107.89999999850988,
+            "samples": 3
+          },
+          "社交": {
+            "synchronousHandler": 36.400000005960464,
+            "closeHitAvailable": 38.400000005960464,
+            "samples": 3
+          },
+          "界面设置": {
+            "synchronousHandler": 22.700000002980232,
+            "closeHitAvailable": 22.80000000447035,
+            "samples": 3
+          }
+        },
+        "weather": [
+          {
+            "kind": "rain",
+            "elapsedMs": 4007.5,
+            "rafCallbacks": 479,
+            "gapP95MsNearestRank": 14.899999998509884,
+            "gapMaxMs": 29,
+            "scriptDurationSeconds": 0.721975,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "rain",
+              "intensity": 1.6,
+              "temperature": 14.24,
+              "lightning": true,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          },
+          {
+            "kind": "snow",
+            "elapsedMs": 4002.10000000149,
+            "rafCallbacks": 441,
+            "gapP95MsNearestRank": 17.299999997019768,
+            "gapMaxMs": 51.70000000298023,
+            "scriptDurationSeconds": 1.7089079999999996,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "snow",
+              "intensity": 1.6,
+              "temperature": -1.02,
+              "lightning": false,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          }
+        ]
+      },
+      {
+        "label": "candidate-2",
+        "at": "2026-11-06T14:40:10.518Z",
+        "rawFile": "perf-candidate-2-ready.json",
+        "rawSha256": "5510e69619838d5bc150a05734e7b07fe1317ee8fb070430cbf47d6204371ab1",
+        "zipSha256": "97c5fd0540d0eabc7756ac43992371be1c051f24a2244caf0008ae00795a2be8",
+        "openingMedianMs": {
+          "属性": {
+            "synchronousHandler": 103.8999999910593,
+            "closeHitAvailable": 105.8999999910593,
+            "samples": 3
+          },
+          "社交": {
+            "synchronousHandler": 64.3999999910593,
+            "closeHitAvailable": 68.09999999403954,
+            "samples": 3
+          },
+          "界面设置": {
+            "synchronousHandler": 25,
+            "closeHitAvailable": 25.5,
+            "samples": 3
+          }
+        },
+        "weather": [
+          {
+            "kind": "rain",
+            "elapsedMs": 4009.7000000029802,
+            "rafCallbacks": 400,
+            "gapP95MsNearestRank": 21.799999997019768,
+            "gapMaxMs": 34,
+            "scriptDurationSeconds": 0.9002969999999997,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "rain",
+              "intensity": 1.6,
+              "temperature": 14.24,
+              "lightning": true,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          },
+          {
+            "kind": "snow",
+            "elapsedMs": 4013.9000000059605,
+            "rafCallbacks": 374,
+            "gapP95MsNearestRank": 21.899999991059303,
+            "gapMaxMs": 104.6000000089407,
+            "scriptDurationSeconds": 1.6308090000000002,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "snow",
+              "intensity": 1.6,
+              "temperature": -1.02,
+              "lightning": false,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          }
+        ]
+      },
+      {
+        "label": "baseline-2",
+        "at": "2026-11-06T14:41:43.258Z",
+        "rawFile": "perf-baseline-2-ready.json",
+        "rawSha256": "5c009476a14ed4144742068d7c95676bfac88061e5cebef8f4ea69cf6eea709b",
+        "zipSha256": "3d9f27a1dbdbccd986c83f8f795006f5afae0a40ceb6b24a458a4f0175b83025",
+        "openingMedianMs": {
+          "属性": {
+            "synchronousHandler": 96,
+            "closeHitAvailable": 99.5,
+            "samples": 3
+          },
+          "社交": {
+            "synchronousHandler": 52.5,
+            "closeHitAvailable": 54.6000000089407,
+            "samples": 3
+          },
+          "界面设置": {
+            "synchronousHandler": 24.200000002980232,
+            "closeHitAvailable": 27,
+            "samples": 3
+          }
+        },
+        "weather": [
+          {
+            "kind": "rain",
+            "elapsedMs": 4002.2000000029802,
+            "rafCallbacks": 464,
+            "gapP95MsNearestRank": 16.600000008940697,
+            "gapMaxMs": 33.099999994039536,
+            "scriptDurationSeconds": 0.7029589999999999,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "rain",
+              "intensity": 1.6,
+              "temperature": 14.24,
+              "lightning": true,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          },
+          {
+            "kind": "snow",
+            "elapsedMs": 4025.7000000029802,
+            "rafCallbacks": 404,
+            "gapP95MsNearestRank": 21.69999998807907,
+            "gapMaxMs": 49.900000005960464,
+            "scriptDurationSeconds": 1.661066,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "snow",
+              "intensity": 1.6,
+              "temperature": -1.02,
+              "lightning": false,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          }
+        ]
+      }
+    ],
+    "finding": "Candidate social medians67.1/64.4ms versus official4.1 medians36.4/52.5ms. Rain rAFp95 higher in both candidate batches. Snow candidate maximum124/104.6ms versus51.7/49.9ms; second-pair p95 close. Settings approximately similar. Do not infer all windows regressed or claim net improvement.",
+    "diagnosis": {
+      "cpuProfiles": [
+        {
+          "label": "baseline",
+          "sha256": "421043e53665eaaa6511c9e9eb0c39ef095a9e3aa68f74015fd25c2f34f4f4ed",
+          "scope": "6social open/close cycles plus4s rain;1ms sampling overhead; not a replacement timing cohort"
+        },
+        {
+          "label": "candidate",
+          "sha256": "d8a928245de9f5e7148e380f158f55358ba10e8786e594814e0c9f0878a74b08",
+          "scope": "6social open/close cycles plus4s rain;1ms sampling overhead; not a replacement timing cohort"
+        }
+      ],
+      "observation": "Substantial native game drawImage/drawEffects/drawLayers and UI geometry/visibility work. Click-subtree sampled CPU does not reproduce consistent candidate-only increase. No upstream/UI cause established.",
+      "idleField": {
+        "sha256": "e48948e3a9d698afd6d201dc7022ffc23895441577989d48f607252b0eb6ea5d",
+        "order": [
+          "visible",
+          "hidden",
+          "hidden",
+          "visible"
+        ],
+        "result": "No stable gain from hiding idle full-viewport rigid-spin field.4batches and restoration succeeded. Temporary display diagnostic only; not adopted."
+      }
+    },
+    "limits": [
+      "2batches/package;candidate-first alternating order, not randomized/thermal-controlled",
+      "battery/lowpower/recording checkpoints retained; first candidate checkpoint preceded failed startup, not concurrent with successful sample",
+      "observed120Hz mode is not continuous refresh evidence",
+      "CPU sampling perturbs timings; total CPU alone cannot assign cause",
+      "only marked isolated slot loaded; no manual save overwrite; raw game state/screenshots remain private"
+    ],
+    "remaining": "Targeted forced-layout/render scheduling attribution for repeated social/rain differences before performance acceptance; preserve visuals. No runtime patch chosen without cause evidence.",
+    "restoration": {
+      "receiptSha256": "ef83e58cc7c22cbe144c4ea07c3a6c023f11da599acf241f3f2973692019fe67",
+      "finalStateSha256": "00a819b5ee63084342435f69ec7f62c199147dbb99118ab98b01d0ed9ffd5f3d",
+      "result": "native cold restart;20members verified;final index/47Mods/order/hidden/exact owned raw UI preferences/closed scene/zero error and temporary nodes verified;ownADB forwards empty"
+    }
+  },
+  "modHub201Acceptance": {
+    "status": "REPRESENTATIVE_PASS",
+    "source": "c9a4f2a",
+    "version": "2.0.1",
+    "adapter": "ModHubSoftWet1.0.3",
+    "receiptSha256": "b3d5836453f05fe4fcf90716ad6c8b1a1440a6e0122fc974dcb1e1d1728fefb2",
+    "checks": [
+      "native entry via CDP touch",
+      "manager full adapter fingerprint and no horizontal pane overflow",
+      "actual help tab touch and full match",
+      "native close leaves0foreground/error nodes",
+      "private manager/help screenshots visually reviewed"
+    ],
+    "coverage": "Representative manager/help presentation/input only; no installation/update/delete/reorder/AI/cloud actions. No broader version claim."
   }
 }
