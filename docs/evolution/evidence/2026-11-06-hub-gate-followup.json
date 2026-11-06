@@ -1404,5 +1404,274 @@
       "private manager/help screenshots visually reviewed"
     ],
     "coverage": "Representative manager/help presentation/input only; no installation/update/delete/reorder/AI/cloud actions. No broader version claim."
+  },
+  "performanceLocalization20261106": {
+    "status": "HOT_PATHS_IDENTIFIED_NO_RUNTIME_PATCH",
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "scope": "Short Chrome/WebView main-thread timelines and reversible isolated diagnostics; no full system trace, no manual save overwrite, no production edits.",
+    "traces": [
+      {
+        "label": "candidate",
+        "traceSha256": "ada438866f6d52ab8fdd9d06e7680a542104245a47861116a38832b949e51f1a",
+        "bytes": 36981494,
+        "receiptSha256": "c7604a500a0dd3744145b673b9d1806dea18dcbd6d968fc3149730c7c072e87b",
+        "loss": false,
+        "opens": [
+          {
+            "sample": 0,
+            "synchronousMs": 52.613,
+            "parseHtmlInclusiveMs": 13.979999999999995,
+            "styleMs": 9.27,
+            "layoutMs": 0.384,
+            "jqueryHandlerCallsMs": [],
+            "candidateUiCaptureCallsMs": []
+          },
+          {
+            "sample": 1,
+            "synchronousMs": 64.259,
+            "parseHtmlInclusiveMs": 16.168,
+            "styleMs": 14.488,
+            "layoutMs": 1.642,
+            "jqueryHandlerCallsMs": [
+              63.0,
+              0.107
+            ],
+            "candidateUiCaptureCallsMs": [
+              0.633
+            ]
+          },
+          {
+            "sample": 2,
+            "synchronousMs": 66.151,
+            "parseHtmlInclusiveMs": 16.098000000000017,
+            "styleMs": 13.004,
+            "layoutMs": 1.47,
+            "jqueryHandlerCallsMs": [
+              65.062,
+              0.109
+            ],
+            "candidateUiCaptureCallsMs": [
+              0.616
+            ]
+          }
+        ],
+        "rain": {
+          "intervalMs": 2506.778,
+          "sumsInclusiveMs": {
+            "FunctionCall": 562.3859999999991,
+            "UpdateLayoutTree": 323.80600000000015,
+            "Layout": 25.219,
+            "Paint": 194.56700000000023,
+            "Commit": 167.22900000000004,
+            "PrePaint": 51.70499999999999,
+            "ParseHTML": 0
+          },
+          "counts": {
+            "FunctionCall": 1396,
+            "UpdateLayoutTree": 139,
+            "Layout": 114,
+            "Paint": 867,
+            "Commit": 139,
+            "PrePaint": 139,
+            "ParseHTML": 0
+          }
+        }
+      },
+      {
+        "label": "baseline",
+        "traceSha256": "50f2151992ba7d3d61ad3776125a6807e52f25feed6745c69dc78ae2ff7303bb",
+        "bytes": 42026757,
+        "receiptSha256": "74e9b374d83f16a23900542113648feb7d91c1c6f02b556a796daac923883d7a",
+        "loss": false,
+        "opens": [
+          {
+            "sample": 0,
+            "synchronousMs": 71.928,
+            "parseHtmlInclusiveMs": 18.996999999999986,
+            "styleMs": 12.258,
+            "layoutMs": 0.472,
+            "jqueryHandlerCallsMs": [],
+            "candidateUiCaptureCallsMs": null
+          },
+          {
+            "sample": 1,
+            "synchronousMs": 48.046,
+            "parseHtmlInclusiveMs": 13.850999999999992,
+            "styleMs": 7.711,
+            "layoutMs": 1.174,
+            "jqueryHandlerCallsMs": [
+              47.492,
+              0.202
+            ],
+            "candidateUiCaptureCallsMs": null
+          },
+          {
+            "sample": 2,
+            "synchronousMs": 77.423,
+            "parseHtmlInclusiveMs": 20.09400000000001,
+            "styleMs": 15.156,
+            "layoutMs": 1.523,
+            "jqueryHandlerCallsMs": [
+              76.696,
+              0.17
+            ],
+            "candidateUiCaptureCallsMs": null
+          }
+        ],
+        "rain": {
+          "intervalMs": 2500.852,
+          "sumsInclusiveMs": {
+            "FunctionCall": 418.66699999999895,
+            "UpdateLayoutTree": 348.66700000000003,
+            "Layout": 16.987999999999992,
+            "Paint": 158.17399999999992,
+            "Commit": 94.38799999999996,
+            "PrePaint": 50.690000000000005,
+            "ParseHTML": 0
+          },
+          "counts": {
+            "FunctionCall": 2780,
+            "UpdateLayoutTree": 289,
+            "Layout": 145,
+            "Paint": 1277,
+            "Commit": 288,
+            "PrePaint": 288,
+            "ParseHTML": 0
+          }
+        }
+      }
+    ],
+    "observations": [
+      "Candidate social recorded64.26/66.15ms opens include63.0/65.062ms in native jQuery dispatch versus0.633/0.616ms in UI capture handler. Parsing13.98..16.17ms and style9.27..14.49ms are nested/inclusive, not additive to the handler total.",
+      "Forced style stacks lead from native widget/Wikifier/link-numbering through jQuery :hidden/:visible. This is a shared game+Mod+stylesheet path, not evidence of a vanilla-only fault or proof UI CSS has no influence.",
+      "Official4.1 trace social48.05..77.42ms overlaps candidate52.61..66.15ms. Earlier two cohorts remain unchanged; isolated time differences alone do not prove a candidate-specific regression.",
+      "Steady rain has0ParseHTML events in both intervals. Candidate observed layout roots include sf-foreground-paint; native sprite frame and UI-managed RAF work coexist with style,paint andcommit costs. No repeated passage/widget regeneration was observed; inclusive categories cannot be summed as exclusive CPU or GPU costs.",
+      "Small residual scale0.999853x1 observed; clearing it, removing lens backdrop filters, and pausing the reviewed native visual controller each lacked consistent ABBA gain. All were temporary diagnostics, not product choices.",
+      "Display snapshot reports120Hz and no perUIDoverride; it does not establish continuous cadence or prove refresh-rate switching caused the timing difference."
+    ],
+    "probes": [
+      {
+        "file": "near-identity-scale-diagnostic.json",
+        "sha256": "d929f7b22335d2544b3e83c3cd0150bbf5069b390df6c344462e1cb0da156d12",
+        "rows": [
+          {
+            "variant": false,
+            "callbacks": 119,
+            "gapMedianMs": 14.799999997019768,
+            "gapP95MsNearestRank": 50.900000005960464,
+            "maxMs": 72.90000000596046
+          },
+          {
+            "variant": true,
+            "callbacks": 137,
+            "gapMedianMs": 17.099999994039536,
+            "gapP95MsNearestRank": 40.1000000089407,
+            "maxMs": 66.40000000596046
+          },
+          {
+            "variant": true,
+            "callbacks": 127,
+            "gapMedianMs": 13.799999997019768,
+            "gapP95MsNearestRank": 45.29999999701977,
+            "maxMs": 90.1000000089407
+          },
+          {
+            "variant": false,
+            "callbacks": 138,
+            "gapMedianMs": 16.899999998509884,
+            "gapP95MsNearestRank": 38.29999999701977,
+            "maxMs": 57.5
+          }
+        ],
+        "disposition": "ABBA observations vary; no consistent causal benefit, not adopted"
+      },
+      {
+        "file": "rain-lens-diagnostic.json",
+        "sha256": "818cef3e115275bfb65bd514fd1a9811d748d6e8280a4bf779199ac911e2b80c",
+        "rows": [
+          {
+            "variant": false,
+            "callbacks": 110,
+            "gapMedianMs": 17.600000001490116,
+            "gapP95MsNearestRank": 51,
+            "maxMs": 74.19999998807907
+          },
+          {
+            "variant": true,
+            "callbacks": 153,
+            "gapMedianMs": 14.200000002980232,
+            "gapP95MsNearestRank": 30,
+            "maxMs": 53.20000000298023
+          },
+          {
+            "variant": true,
+            "callbacks": 153,
+            "gapMedianMs": 14.200000002980232,
+            "gapP95MsNearestRank": 37,
+            "maxMs": 47.29999999701977
+          },
+          {
+            "variant": false,
+            "callbacks": 165,
+            "gapMedianMs": 11.200000002980232,
+            "gapP95MsNearestRank": 37.20000000298023,
+            "maxMs": 72.29999999701977
+          }
+        ],
+        "disposition": "ABBA observations vary; no consistent causal benefit, not adopted"
+      },
+      {
+        "file": "native-animation-diagnostic.json",
+        "sha256": "8437141e871d9ba0ea4af4be5be81f6c57b90e05cded34aa1102313fd1393243",
+        "rows": [
+          {
+            "variant": false,
+            "callbacks": 111,
+            "gapMedianMs": 19,
+            "gapP95MsNearestRank": 46.80000001192093,
+            "maxMs": 56.599999994039536
+          },
+          {
+            "variant": true,
+            "callbacks": 162,
+            "gapMedianMs": 11.549999997019768,
+            "gapP95MsNearestRank": 41.69999998807907,
+            "maxMs": 51.70000000298023
+          },
+          {
+            "variant": true,
+            "callbacks": 138,
+            "gapMedianMs": 15.850000001490116,
+            "gapP95MsNearestRank": 42.70000000298023,
+            "maxMs": 58.400000005960464
+          },
+          {
+            "variant": false,
+            "callbacks": 159,
+            "gapMedianMs": 12.100000008940697,
+            "gapP95MsNearestRank": 40.8999999910593,
+            "maxMs": 53.20000000298023
+          }
+        ],
+        "disposition": "ABBA observations vary; no consistent causal benefit, not adopted"
+      }
+    ],
+    "retainedFailures": [
+      {
+        "file": "identity-scale-diagnostic.json",
+        "sha256": "0fe6f292e754b921334d37973eb1bdb6eb7a614a9a8bf42db166e14d767c8902",
+        "reason": "Exact identity guard rejected0.999853x1;finally restored scene. Separate approximate probe used explicit1CSSpx geometry bound;not an assertion weakening of the original test."
+      },
+      {
+        "operation": "read-only native animation inventory",
+        "reason": "Initial iterable assumption rejected WeakMap. Corrected observation uses reviewed per-canvas getter; no runtime mutation dispatched by failed inspection."
+      }
+    ],
+    "conclusion": "Social synchronous work is dominated by shared native generation/visibility evaluation; UI capture is small. Rain hot path is sustained rendering/style/composition, not observed content regeneration. Candidate-only incremental cause and an effective preserving-effects optimization remain unproven;performance acceptance stays pending.",
+    "next": "Use scoped renderer scheduling/composition evidence to distinguish native sprite work from UI glass updates, then trial a specific change only if it removes measured redundant work. Do not stop native animation or remove optics as production optimization from these probes.",
+    "restoration": {
+      "receiptSha256": "d9b261ca0159deb6b9aceba6d3dcbb5776ec31c1277f13f9e43f24e4bfbf8798",
+      "state": "candidate hash/fixed47Mods/order/hidden/exact owned raw UI preferences/Bedroom/closed windows/error0 checked; native animation playing; no diagnostic attribute;ownADB forwards empty"
+    }
   }
 }
