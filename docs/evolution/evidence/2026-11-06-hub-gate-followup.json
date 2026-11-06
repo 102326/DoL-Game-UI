@@ -1673,5 +1673,104 @@
       "receiptSha256": "d9b261ca0159deb6b9aceba6d3dcbb5776ec31c1277f13f9e43f24e4bfbf8798",
       "state": "candidate hash/fixed47Mods/order/hidden/exact owned raw UI preferences/Bedroom/closed windows/error0 checked; native animation playing; no diagnostic attribute;ownADB forwards empty"
     }
+  },
+  "offlineFollowup20261107": {
+    "date": "2026-11-07",
+    "scope": "Offline only: existing private Android traces plus controlled desktop Edge fixture; no ADB,device,App,install or new device sampling commands in this batch.",
+    "source": "c9a4f2a runtime unchanged; record HEAD2d45eb6 before this documentation update",
+    "runtimeChanged": false,
+    "desktopBrowser": "158.0.4370.1",
+    "containment": {
+      "status": "REJECTED_NO_STABLE_BENEFIT",
+      "candidate": "Set actual foreground-paint contain:paint in isolated page only",
+      "rawSha256": "b02c18fb2d2555bdd8c23fb1dc746948574945c9ad110d56d35f4e42a10a6637",
+      "fixedProofSha256": "8e20707e3d0cd85249ec72c593c3c229293f5b1587411d630205ba40b6cba412",
+      "fixedPngSha256": "cf92d1999598e152266e3e75f329096b87663da3d7ee548ab2fa72a90fe57b36",
+      "proof": "Frozen JS clock and paused CSS/WAAPI animations; before/after PNG bytes,root/paint/drop geometry and native button hit identical.",
+      "taskSeconds": {
+        "none": [
+          0.46157299999999996,
+          0.5174660000000002,
+          0.4841350000000002
+        ],
+        "paint": [
+          0.513962,
+          0.49080800000000013,
+          0.4861960000000001
+        ]
+      },
+      "taskMedianSeconds": {
+        "none": 0.4841350000000002,
+        "paint": 0.49080800000000013
+      },
+      "initialProofLimit": "First JS-clock-only proof left CSS animations running;81pixels differed on navigation contour. Retained original images and receipt; new CSS-paused proof is separate,not a rerun of a product failure.",
+      "decision": "No production CSS edit. Desktop TaskDuration is not Android/GPU evidence."
+    },
+    "fixedClock": {
+      "status": "BOUNDED_STATE_COMPARISON_PASS",
+      "rawSha256": "fb1d0ae669bef81bef6fd9218198e3f184c2f1fdc2e6c0e1481edfbada01a2ff",
+      "variants": "Same current production source and synthetic attributes fixture; native-navigation presentation versus approved attributes material owner. This is not a second official4.1 package comparison.",
+      "order": [
+        "baseline",
+        "study",
+        "study",
+        "baseline"
+      ],
+      "mode": "Same input viewport and fixed virtual clock2s after100ms warm geometry; virtual-clock timings are not real execution/FPS proof.",
+      "observed": {
+        "visibleDropsEach": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "sameDropIds": true,
+        "sameNodeCount": 244,
+        "sameCanvas": [
+          {
+            "width": 878,
+            "height": 320,
+            "style": "320px"
+          }
+        ],
+        "repeatedStateWithinVariantExact": true,
+        "crossVariantMaxLocalDropCssPxDifference": 0.54284
+      },
+      "interpretation": "No doubling of model population/owned DOM observed in this fixture. Cross-variant local drop coordinate/size difference reached0.54284CSSpx;do not claim exact model/phase equality. Does not settle device compositing or full game behavior."
+    },
+    "existingTraceAccounting": {
+      "method": "Merge RunTask intervals on original renderer main thread within retained rain marks before summing;do not sum inclusive FunctionCall/FireAnimationFrame/Style categories.",
+      "rows": [
+        {
+          "label": "candidate",
+          "traceSha256": "ada438866f6d52ab8fdd9d06e7680a542104245a47861116a38832b949e51f1a",
+          "intervalMs": 2506.778,
+          "nonoverlappingTaskBusyMs": 2193.438,
+          "busyPercent": 87.50028921587793,
+          "blocks": 1062,
+          "blockP95Ms": 18.268,
+          "blockMaxMs": 38.629,
+          "layoutRoots": {
+            "DIV class='sf-foreground-paint kw-heading-nav'": 114
+          }
+        },
+        {
+          "label": "baseline",
+          "traceSha256": "50f2151992ba7d3d61ad3776125a6807e52f25feed6745c69dc78ae2ff7303bb",
+          "intervalMs": 2500.852,
+          "nonoverlappingTaskBusyMs": 1730.978,
+          "busyPercent": 69.21553134691698,
+          "blocks": 1806,
+          "blockP95Ms": 6.399,
+          "blockMaxMs": 108.628,
+          "layoutRoots": {
+            "DIV class='sf-foreground-paint kw-heading-nav'": 145
+          }
+        }
+      ],
+      "limits": "One instrumented interval/source;not uninstrumented benchmark,whole-system CPU,GPU or causation proof. Both layout-root sets are foreground-paint. Main-thread saturation is observed;exclusive cause unresolved."
+    },
+    "next": "Stop rejected containment candidate. When assigned test device is free, investigate effective renderer/compositor scheduling with a bounded discriminating capture;keep accepted effects. Do not repeat these same ablations without new evidence.",
+    "restoration": "All desktop pages/browsers and owned local servers closed;private artifacts ignored;production,packages,CI gates and shared tablet unchanged."
   }
 }
