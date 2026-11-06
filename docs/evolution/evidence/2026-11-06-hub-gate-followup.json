@@ -2,7 +2,7 @@
   "schema": "evo42-hub-gate-followup-v1",
   "date": "2026-11-06",
   "initialFreeze": "5024c5f5c5e3972dcddf2fbd3c6dd96f40fad014",
-  "status": "C9_FULL_GATE_VERIFIED_MAC_CONTRACTS_PASS_WINDOWS_DEVICE_REPORTED_PERFORMANCE_PENDING",
+  "status": "FULL_CI_AND_DEVICE_CORE_VALIDATED_PERFORMANCE_ACCEPTANCE_PENDING",
   "initialWindows": {
     "unit": {
       "status": "ERROR",
@@ -179,7 +179,7 @@
     "tests/artifacts/ui42/hub-placement-wake-fixed.log",
     "tests/artifacts/evolution/hub-placement-1793898770943"
   ],
-  "limits": "No main merge, release or Host public protocol change. Device read-only preflight/backup complete; no new candidate install. No final full gate PASS yet.",
+  "limits": "Technical gates and core device behaviors validated; performance not yet accepted. No main merge, release or Host protocol change.",
   "targetedFollowup": {
     "ciCheck": "PASS",
     "testToolTypes": "PASS",
@@ -760,5 +760,327 @@
       "decision": "Keep full checks and two-build contract. Highest measured browser contributors are device layouts and composed owner/Hub tests; this sample alone does not justify removing checks, shortening product motion or enabling selected CI/cache. No new product hotspot was established."
     }
   },
-  "historyScope": "Earlier fields retain their original source and failed/pending observations. macContinuation20261106 is the current continuation; it does not reclassify historical failures."
+  "historyScope": "Earlier fields retain their original source and failed/pending observations. macContinuation20261106 is the current continuation; it does not reclassify historical failures.",
+  "finalProfiles": {
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "actionsSource": {
+      "head": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+      "tree": "d7e27c3ab0b228a13f50abbd5b8c1dcc9c4029af",
+      "dirty": false,
+      "contentSha256": "8fd84486aae21021217ccb7c3a5fdd6b4c12065afd4607668f21a1a5bc215402",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "localWindowsSource": {
+      "head": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+      "tree": "d7e27c3ab0b228a13f50abbd5b8c1dcc9c4029af",
+      "dirty": false,
+      "contentSha256": "013cf38b4b5c2c751086146b0eff649a5d55d0c93464bd1fb3f64e47fcc56037",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "standard": {
+      "run": 42087362215,
+      "jobs": [
+        {
+          "id": 127455958400,
+          "name": "validate",
+          "conclusion": "success"
+        },
+        {
+          "id": 127464045122,
+          "name": "evidence-verify",
+          "conclusion": "success"
+        },
+        {
+          "id": 127464264735,
+          "name": "moody-gate",
+          "conclusion": "success"
+        }
+      ],
+      "unit": "38/38 PASS",
+      "browser": "47/47 PASS",
+      "archives": [
+        {
+          "id": 13445430265,
+          "name": "kraft-work-checks-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "sha256": "b60defb1eea18fee8190cae09602286bbf0fa81c5b0d3884b18ab7346f51e032",
+          "bytes": 335683
+        },
+        {
+          "id": 13445085736,
+          "name": "kraft-work-build-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "sha256": "4c7920c16cde2680539edfa83d321001fb3d4fdb4e881c334d5a3514cc0de3a6",
+          "bytes": 373994
+        },
+        {
+          "id": 13445295477,
+          "name": "moody-remote-standard-42087362215-1",
+          "sha256": "55932ea4e9dc7578c6caa486fd9055e206a3ef8a166b55ac73b5968380e47e6d",
+          "bytes": 1052
+        }
+      ],
+      "indexedFiles": 204,
+      "verdict": "PASS / PASS / COMPLETE",
+      "seal": "SEALED",
+      "omitted": []
+    },
+    "research": {
+      "run": 42087371229,
+      "jobs": [
+        {
+          "id": 127455985494,
+          "name": "prototype",
+          "conclusion": "success"
+        },
+        {
+          "id": 127462658470,
+          "name": "evidence-verify",
+          "conclusion": "success"
+        }
+      ],
+      "checks": "42/42 PASS",
+      "archives": [
+        {
+          "id": 13444905484,
+          "archive": "research-checks.zip",
+          "size": 124158691,
+          "sha256": "c74b0581a623fa769bb95f4c430f6193aa6dffb081813f7fe4fa11eefd52fd24",
+          "apiDigestMatched": true,
+          "crcPassed": true,
+          "safeMemberPaths": true
+        },
+        {
+          "id": 13444332459,
+          "archive": "research-remote.zip",
+          "size": 1063,
+          "sha256": "2103242d094911421b40fbfaa8aa2687f3f3927ce2b19819d737f68c347b216e",
+          "apiDigestMatched": true,
+          "crcPassed": true,
+          "safeMemberPaths": true
+        }
+      ],
+      "indexSha256": "091adf71ce461ecd547936bd4ccd8c2b6767150182aee8b74800810563639cd5",
+      "indexedFiles": 481,
+      "verdict": "PASS / PASS / COMPLETE",
+      "seal": "SEALED",
+      "omitted": []
+    },
+    "packages": {
+      "status": "PASS",
+      "negativeTests": 9,
+      "independentBuilds": 2,
+      "allNineLocalVsActionsMembersEqual": true,
+      "zipCompression": "Windows Python3.14.9 zlib-ng and Actions Python3.12.15 native zlib produce distinct ZIP digests; do not mix identities.",
+      "comparisons": [
+        {
+          "name": "StoneFreeHost",
+          "remoteSha256": "c71ab706d6928d03099200c554ee6516cc852c711ff6216005633be97db6af08",
+          "localSha256": "15cdfe8fcee5ff7813a7f92efd5798b628edfb48975bcc15018d4c7b1354f7c9",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "DoLGameUI",
+          "remoteSha256": "0afa5254688e236764b303acbafeaa74e9f0df79b3e4dd32d3a2a9f9866e0829",
+          "localSha256": "97c5fd0540d0eabc7756ac43992371be1c051f24a2244caf0008ae00795a2be8",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "ModHubSoftWet",
+          "remoteSha256": "4ac28818457876f56862d56c451541b7bd4278e9bacfee000a55ceb6dea5ff83",
+          "localSha256": "4b584659b40a017c0cee7bee6b2d42aa4ed3334ba0e023ca6348d0e5b141e88d",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "MapleBirchSoftWet",
+          "remoteSha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00",
+          "localSha256": "5d210ba972772acb4d27c4a2378aff40010110ea705a3df5793a01a3247a1253",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "DolOptimizationSoftWet",
+          "remoteSha256": "f1120c18c8e058b0647d84676b217d278557b66c3611d9643f8ebf3213510f1f",
+          "localSha256": "16a6611d1e9c82d546378035b2599bf41ad5e87e328c006bcdf44ad3b357d35e",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "CheatExtendedSoftWet",
+          "remoteSha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d",
+          "localSha256": "508454241d04dc26363de26393510aa5f9cfb5ba5dcbbab62a25bcbff557a78b",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "ReOverfitsSoftWet",
+          "remoteSha256": "3cd6e6cd517f92894a1d9f37d834e83c2b535e524049fcd9b58c73ccce92a260",
+          "localSha256": "b7bfcf42bd60da0374efafde9d778ec9a154897ca7ccf6747181998c1daf2ba9",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "LyraMouthCompat051213",
+          "remoteSha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827",
+          "localSha256": "3e56e41f04e0c074f0ae53d7217bd87a4bb56be27160878b78ad65b593cc82f6",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "SmartPhoneSoftWet",
+          "remoteSha256": "06f72b3d645a2274104a18bcdf01f2dfe5aed01390bb228bbeccc8a10f468c97",
+          "localSha256": "8d68a5a43517c1ec249ac26d5b7243a6b99d22309d9f55f4634c47ffea8a01f0",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        }
+      ]
+    },
+    "candidateStage": "READY_FOR_AUTHORIZED_DEVICE_HANDOFF",
+    "device": "Core device behavior validated with retained helper failures/recovery; performance acceptance pending. Candidate restored and final Loader identity verified.",
+    "remainingRequired": "Complete controlled interleaved performance comparison and follow actual repeated regressions; representative ModHub2.0.1 manager/UI verification after owner update.",
+    "release": "No main merge, Tag, Release or Host public protocol change."
+  },
+  "deviceCheckpoint": {
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "loadedUiZipSha256": "97c5fd0540d0eabc7756ac43992371be1c051f24a2244caf0008ae00795a2be8",
+    "finalState": "Candidate restored after temporary official4.1 comparison; cold restart and all20 active Loader members/47Mod versions/order/preferences/title/errors checked; no own ADB forwards left.",
+    "functional": "Rain/snow attributes drag, touch scroll/tab/close; Hub fan/grid, free placement,charge1, trusted CDP-touch catch whileflying→dragging→idle, settings entry; motion disable/menu intent, master-off removesall Hub visuals and re-enable single set; actual Android Home/resume with fresh target binding passed.",
+    "scope": "CDP touch events on real WebView, not human finger latency. Initial core smoke usedModHub1.9.2; current final loaded combination and measured pair use user-updatedModHub2.0.1. Dedicated2.0.1 manager window not yet checked.",
+    "retainedFailures": [
+      "Immediate cold bootstrap read before readiness; no reinstall used.",
+      "First smoke finally sent touchCancel with noactive touch and was rejected before restore; independent raw preference/key/fixture restore then passed.",
+      "First lifecycle pointer guard Ball blocked, insufficient target diagnostics; subsequent hit-readiness check156.9983ms, motion/master lifecycle and restore passed.",
+      "First performance startup observation timedout with0samples; excluded.",
+      "Old ModHub1.9.2 comparison guard rejected newer2.0.1 before registration; no write; first actual candidate sample already2.0.1, boot/runtime versions then confirmed."
+    ],
+    "preferenceRecovery": "Exact original owned raw preferences and missingfreePositionkey verified after smoke; final cold boot main preferences equal original; preserves user-updatedModHub2.0.1.",
+    "rawEvidence": "Private ignored device-final-20261106; no game screenshots, saves, UI backups or raw player state uploaded."
+  },
+  "performanceFirstPair": {
+    "status": "PRELIMINARY_NOT_ACCEPTED",
+    "order": [
+      "candidate-1",
+      "baseline-1"
+    ],
+    "scope": "9programmatic opens and2four-second weather windows perUI; exact scene/preferences/47Mod list/viewport/UA/weather objects matched.",
+    "units": "All latencies/rAF gaps inms; CDP duration counters inseconds; rAF is callback scheduling, not GPU/display FPS. Close time is geometry hit availability, not physical touch response.",
+    "environment": "Same Android WebView,1363x876 CSS,DPR2.5,ModHub2.0.1,Host0.1.5-experimental; one120Hz display observation only, not continuous refresh proof. Temperature drift/order and onlyone pair limit conclusions. Candidate battery condition file originated before failed startup, not concurrent with successful sample.",
+    "candidate": {
+      "pages": {
+        "社交": {
+          "n": 3,
+          "handlerMedianMs": 67.1,
+          "closeGeometryHitMedianMs": 73.1
+        },
+        "界面设置": {
+          "n": 3,
+          "handlerMedianMs": 24.4,
+          "closeGeometryHitMedianMs": 25.1
+        },
+        "属性": {
+          "n": 3,
+          "handlerMedianMs": 106.3,
+          "closeGeometryHitMedianMs": 110.3
+        }
+      },
+      "weather": {
+        "rain": {
+          "elapsedMs": 4000.2000000029802,
+          "callbacks": 411,
+          "medianGapMs": 8.2,
+          "p95GapMs": 20.4,
+          "maxGapMs": 37.100000001490116,
+          "actualWeather": {
+            "name": "heavyPrecipitation",
+            "precipitation": "rain",
+            "intensity": 1.6,
+            "temperature": 14.24,
+            "lightning": true,
+            "overcast": 0.8,
+            "fog": 0,
+            "dayState": "dawn"
+          }
+        },
+        "snow": {
+          "elapsedMs": 4004.2000000029802,
+          "callbacks": 385,
+          "medianGapMs": 8.4,
+          "p95GapMs": 22.8,
+          "maxGapMs": 124,
+          "actualWeather": {
+            "name": "heavyPrecipitation",
+            "precipitation": "snow",
+            "intensity": 1.6,
+            "temperature": -1.02,
+            "lightning": false,
+            "overcast": 0.8,
+            "fog": 0,
+            "dayState": "dawn"
+          }
+        }
+      }
+    },
+    "baseline": {
+      "pages": {
+        "社交": {
+          "n": 3,
+          "handlerMedianMs": 36.4,
+          "closeGeometryHitMedianMs": 38.4
+        },
+        "界面设置": {
+          "n": 3,
+          "handlerMedianMs": 22.7,
+          "closeGeometryHitMedianMs": 22.8
+        },
+        "属性": {
+          "n": 3,
+          "handlerMedianMs": 105.2,
+          "closeGeometryHitMedianMs": 107.9
+        }
+      },
+      "weather": {
+        "rain": {
+          "elapsedMs": 4007.5,
+          "callbacks": 479,
+          "medianGapMs": 7.8,
+          "p95GapMs": 14.9,
+          "maxGapMs": 29,
+          "actualWeather": {
+            "name": "heavyPrecipitation",
+            "precipitation": "rain",
+            "intensity": 1.6,
+            "temperature": 14.24,
+            "lightning": true,
+            "overcast": 0.8,
+            "fog": 0,
+            "dayState": "dawn"
+          }
+        },
+        "snow": {
+          "elapsedMs": 4002.10000000149,
+          "callbacks": 441,
+          "medianGapMs": 8.2,
+          "p95GapMs": 17.3,
+          "maxGapMs": 51.70000000298023,
+          "actualWeather": {
+            "name": "heavyPrecipitation",
+            "precipitation": "snow",
+            "intensity": 1.6,
+            "temperature": -1.02,
+            "lightning": false,
+            "overcast": 0.8,
+            "fog": 0,
+            "dayState": "dawn"
+          }
+        }
+      }
+    },
+    "finding": "Candidate social handler median67.1ms vs36.4ms; rain/snow p95rAF20.4/22.8ms vs14.9/17.3ms; candidate snowmax124ms. Keep as potential regression needing interleaved confirmation, not claimed improvement or assigned cause.",
+    "next": "Second candidate/baseline pair under fixed inputs; investigate retained slow social/rain/snow ifrepeated.",
+    "sampleSha256": {
+      "perf-candidate-1-ready.json": "4f039215a85a3c176f411d23729aab361e455bebca047cdcbdbdd52e2b7877b7",
+      "perf-baseline-1-ready.json": "b79a2118e633deb8ac05be44122f8a56bd899d40175bfa05256c178d888cbe8a"
+    }
+  }
 }
