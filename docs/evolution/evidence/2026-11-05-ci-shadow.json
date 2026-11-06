@@ -893,5 +893,438 @@
       "No formal cache, workflow, catalog, Expected Lock, runtime product or release changes"
     ],
     "nextDecision": "Keep isolated candidate. Before expanding full-profile shadow or enabling selection, settle authoritative scope/RC/freeze inputs and an authorized platform transport path; do not infer authority from local PASS."
+  },
+  "macFinalBacklogAudit20261106": {
+    "baseCommit": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+    "scope": "Local standalone report retention and readback only; no five-stage/full-profile rerun or workflow migration",
+    "codeSha256": {
+      "prototypes/evolution42-ci-c1/standard-shadow.mts": "3edfdf277ee35963fb42bb48a8ed99ab7db71ef9e963aee917decb3644ebd5de",
+      "prototypes/evolution42-ci-c1/standalone-evidence.mts": "1207ef5a4f0339a647e10c69c6b7202c0eea2107b65d9dee6b11a2022a8f4671",
+      "prototypes/evolution42-ci-c1/standalone-evidence.test.mts": "95ac5ffdc993bf8bb5d4635b41dbf6908b0125436b386bbe29c35b75eab39913"
+    },
+    "runs": [
+      {
+        "sample": "run-4rp06m",
+        "rawReportSha256": "3cbcefdb6ebc547fdb335dc556b99ca07434f3209a6c790f52fee042d75660f1",
+        "scope": "controlled process receipt readback",
+        "source": {
+          "head": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+          "tree": "d94a9299aba38e60a595db2bd62c067db880e052",
+          "dirty": true,
+          "contentSha256": "f33062c448327dabcf18416b9804518568d9ac2b66121f268b71eb800e9fc333",
+          "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+        },
+        "entry": "controlled-inline-assertion",
+        "outcome": {
+          "status": "PASS",
+          "executionId": "66d35fbe1217d1ac507445c42ff59a4b",
+          "milliseconds": 177,
+          "assertions": 1,
+          "rawStatus": "passed",
+          "exitCode": 0,
+          "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "foreignEnvelopeRejected": "not-in-earlier-driver",
+        "legacyProblems": [
+          "StandaloneIncomplete:controlled-inline-assertion"
+        ],
+        "negativeResults": [
+          {
+            "id": "missing",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "duplicate",
+            "problems": [
+              "StandaloneResultSetMismatch"
+            ]
+          },
+          {
+            "id": "foreign-entry",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "missing-receipt",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "foreign-execution",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "foreign-pid",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "early-exit",
+            "problems": [
+              "StandaloneNoAssertions:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "zero-assertions",
+            "problems": [
+              "StandaloneNoAssertions:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "cancelled",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "timeout",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "failed",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "contradiction",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          }
+        ]
+      },
+      {
+        "sample": "run-dvGfQr",
+        "rawReportSha256": "a4cd2eda8933a960d6e6d753fb787725106e3cbe363426d98f7764cb763972be",
+        "scope": "actual standalone material receipt readback; not a full standard execution",
+        "source": {
+          "head": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+          "tree": "d94a9299aba38e60a595db2bd62c067db880e052",
+          "dirty": true,
+          "contentSha256": "e962a7af5b35b4fdea5cb0b28c88e72ffc90dc7683e04fcb05135e2783234192",
+          "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+        },
+        "entry": "tests/ui41-material.cjs",
+        "outcome": {
+          "status": "PASS",
+          "executionId": "1df5d434017ff32f6373568b61e5426e",
+          "milliseconds": 5813,
+          "assertions": 133,
+          "rawStatus": "passed",
+          "exitCode": 0,
+          "outputSha256": "79d4c465e39cf6359a4a885ff3e7991cf2fb1bc54ed6923397a0f9173ec80758"
+        },
+        "foreignEnvelopeRejected": "not-in-earlier-driver",
+        "legacyProblems": [
+          "StandaloneIncomplete:tests/ui41-material.cjs"
+        ],
+        "negativeResults": [
+          {
+            "id": "missing",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "duplicate",
+            "problems": [
+              "StandaloneResultSetMismatch"
+            ]
+          },
+          {
+            "id": "foreign-entry",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "missing-receipt",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "foreign-execution",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "foreign-pid",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "early-exit",
+            "problems": [
+              "StandaloneNoAssertions:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "zero-assertions",
+            "problems": [
+              "StandaloneNoAssertions:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "cancelled",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "timeout",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "failed",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "contradiction",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          }
+        ]
+      },
+      {
+        "sample": "run-zahy5z",
+        "rawReportSha256": "7a98f966ea1b3bebe4fddc51447a61b2a7eac8d4ff54f19834586c6b08a951e7",
+        "scope": "controlled process receipt readback",
+        "source": {
+          "head": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+          "tree": "d94a9299aba38e60a595db2bd62c067db880e052",
+          "dirty": true,
+          "contentSha256": "a0bd2bc2c6cea604ef9ebbc4051c3f6301888851028351f8e5403ed8d8135b79",
+          "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+        },
+        "entry": "controlled-inline-assertion",
+        "outcome": {
+          "status": "PASS",
+          "executionId": "9c953d018f60be1889afe30851866cd7",
+          "milliseconds": 287,
+          "assertions": 1,
+          "rawStatus": "passed",
+          "exitCode": 0,
+          "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "foreignEnvelopeRejected": true,
+        "legacyProblems": [
+          "StandaloneIncomplete:controlled-inline-assertion"
+        ],
+        "negativeResults": [
+          {
+            "id": "missing",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "duplicate",
+            "problems": [
+              "StandaloneResultSetMismatch"
+            ]
+          },
+          {
+            "id": "foreign-entry",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "missing-receipt",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "foreign-execution",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "foreign-pid",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "early-exit",
+            "problems": [
+              "StandaloneNoAssertions:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "zero-assertions",
+            "problems": [
+              "StandaloneNoAssertions:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "cancelled",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "timeout",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "failed",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "contradiction",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          }
+        ]
+      },
+      {
+        "sample": "run-TxGbQh",
+        "rawReportSha256": "68a09d64123c9bc2d86ced893ae14edcf486dfaeaa72fa60e5f9abbb92ba2782",
+        "scope": "actual standalone material receipt readback; not a full standard execution",
+        "source": {
+          "head": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+          "tree": "d94a9299aba38e60a595db2bd62c067db880e052",
+          "dirty": true,
+          "contentSha256": "a0bd2bc2c6cea604ef9ebbc4051c3f6301888851028351f8e5403ed8d8135b79",
+          "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+        },
+        "entry": "tests/ui41-material.cjs",
+        "outcome": {
+          "status": "PASS",
+          "executionId": "d1a93a337641f62d88a3c7f037a31102",
+          "milliseconds": 5591,
+          "assertions": 133,
+          "rawStatus": "passed",
+          "exitCode": 0,
+          "outputSha256": "554eb5ab94ebed29118ed77ab6b61ababf9a4fc5fc81f7890c3f0fe64e9653dc"
+        },
+        "foreignEnvelopeRejected": true,
+        "legacyProblems": [
+          "StandaloneIncomplete:tests/ui41-material.cjs"
+        ],
+        "negativeResults": [
+          {
+            "id": "missing",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "duplicate",
+            "problems": [
+              "StandaloneResultSetMismatch"
+            ]
+          },
+          {
+            "id": "foreign-entry",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "missing-receipt",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "foreign-execution",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "foreign-pid",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "early-exit",
+            "problems": [
+              "StandaloneNoAssertions:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "zero-assertions",
+            "problems": [
+              "StandaloneNoAssertions:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "cancelled",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "timeout",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "failed",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "contradiction",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          }
+        ]
+      }
+    ],
+    "verification": [
+      "Controlled process receipt disk roundtrip PASS",
+      "Actual ui41-material.cjs width 1280/390 receipt roundtrip PASS, 133 assertions",
+      "12 fixed negative rows rejected; old entry/status serializer rejected",
+      "Final driver wrong-attempt envelope rejected through existing readReport",
+      "All isolated C1 MTS strict/noUncheckedIndexedAccess typecheck PASS"
+    ],
+    "notExecuted": [
+      "Five preparation stages and complete standard-shadow after this change",
+      "New full standard/research Actions",
+      "14 full-profile paired scenarios",
+      "Selected Actions transport or cross-run evidence reuse"
+    ],
+    "historicalEvidence": "Earlier standard preparation, 17 consumer execution and 18 transport cases retain original source identities; not rewritten as final HEAD evidence"
   }
 }

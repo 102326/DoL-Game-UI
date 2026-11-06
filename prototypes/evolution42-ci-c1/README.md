@@ -75,3 +75,17 @@ node prototypes/evolution42-ci-c1/transport-shadow.mts <snapshot-checkout>
 本次还沿实际运行链发现旧人工映射漏掉四个现有research入口：Hub的`golden-spin-hub`、`golden-spin-hub-input`、`golden-spin-hub-lifecycle`通过`hub.html → HubApp.vue → prototype re-export`调用生产`sphereHub`；`motion-workspace`通过`windows-main.ts`调用正式窗口动效和主题控制器。后者对acrylic也保守保留，但不声称它有独立材质输出断言。已补单路径真实Git回归，旧映射首先在acrylic缺workspace处失败，修正后通过；这不代表全仓库消费者完备性已经证明。早期13项执行和对应运输结果绑定旧策略，修正后的新策略必须另建快照验证，不拼接旧报告冒充新执行。
 
 本批实际结果：旧策略13项执行＋18场景运输通过；发现上述映射缺口后另建新快照，补齐后的17项真实执行及同样18场景运输通过（2正向、16负向）。四个新增独立消费者均实际执行，不是只在计划数组中出现。完整research汇总仍为UNVERIFIED；八类计划检查、策略缓存旧错新拒绝、读取边界及严格TypeScript检查通过。结果及两轮源码/策略摘要见[既有CI影子证据](../../docs/evolution/evidence/2026-11-05-ci-shadow.json)的macSelectedTransport20261106；本机原始快照路径未同步，其他设备按上面命令重建。
+
+
+## 最后补项：独立检查回执保留
+
+标准影子脚本此前仅把独立材质检查的`entry/status`写入最终报告，运行时确实检查成功，但事后不能仅凭这两个字段重验断言和进程完成。本次改为保留完整`runCommand`结果，写入现有身份信封后通过`readReport`读回，并核对精确入口集合、原始完成状态、断言、executionId/PID和自然完成。复用现有状态核验；没有新增正式证据协议。
+
+```sh
+node prototypes/evolution42-ci-c1/standalone-evidence.test.mts
+node prototypes/evolution42-ci-c1/standalone-evidence.test.mts --material
+```
+
+实际材质合同（宽/窄视口）133次断言通过；文件读回两次正向、12个固定故障拒绝，旧状态摘要明确被拒绝。此处旧形式是按原序列化表达式重建的反例，没有声称重跑旧五阶段脚本失败。控制进程夹具也通过。最终目录MTS严格类型检查通过。历史标准影子报告保持原样，本次没有重跑五个准备阶段、双构建或完整标准影子，也没有把新记录格式写入旧结果。该读回只证明本地结果结构和进程回执，来源认证仍须外层控制器；不提供跨Run复用、整份标准影子远端认证或对抗同进程伪造的证明。
+
+当前准确接续条件见[现计划最后的Mac待办审查](../../docs/superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)。普通场景更大矩阵可在Mac执行，不能写成Windows阻塞；本轮没有据此无限扩跑。RC/封板输入、正式范围传播和平台执行入口则确实尚未接线。

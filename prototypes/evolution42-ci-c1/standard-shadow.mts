@@ -13,6 +13,8 @@ import {verifiedPass} from '../../scripts/ci/result-status.ts';
 import {sourceIdentity} from '../../scripts/ci/source.ts';
 import {candidate, verify} from './candidate.mts';
 import {verifyPreparation} from './standard-evidence.mts';
+import {standaloneProblems} from './standalone-evidence.mts';
+import type {StandaloneResult} from './standalone-evidence.mts';
 
 const root=path.resolve(fileURLToPath(new URL('../../',import.meta.url))),base=process.argv[2];
 assert(base,'Expected independently frozen base');
@@ -28,7 +30,7 @@ const browser=plan.standard.filter(id=>id.startsWith('browser.')).map(id=>id.sli
 assert.equal(plan.standard.length,stages.length+browser.length,'This bounded drill supports browser consumers only');
 const problems:string[]=[],stageResults:{id:string;status:unknown;reason?:string}[]=[];
 let browserReport:Awaited<ReturnType<typeof runSuite>>|undefined;
-const standalone:{entry:string;status:string}[]=[];
+const standalone:StandaloneResult[]=[];
 mkdirSync(path.join(ctx.dir,'orchestration'),{recursive:true});
 writeJson(path.join(ctx.dir,'selected-plan.json'),{schema:1,identity:ctx.identity,plan});
 try{
@@ -50,10 +52,14 @@ try{
   if(browserReport.status!=='PASS'||browserReport.reasonCodes.length||JSON.stringify(browserReport.sourceAfter)!==JSON.stringify(ctx.identity.source))problems.push('SelectedBrowserIncomplete');
   for(const entry of plan.standalone){
    const outcome=await runCommand(process.execPath,[entry],{cwd:root,log:path.join(ctx.dir,'orchestration',path.basename(entry)+'.log'),execution:'contract',requireAssertions:true,timeoutMs:120000,quiet:false});
-   standalone.push({entry,status:outcome.status});if(!verifiedPass(outcome,'contract'))problems.push('StandaloneIncomplete:'+entry);
+   standalone.push({entry,outcome});if(!verifiedPass(outcome,'contract'))problems.push('StandaloneIncomplete:'+entry);
   }
  }
 }catch(error){problems.push(error instanceof Error?error.message:String(error))}
+writeJson(path.join(ctx.dir,'standalone-results.json'),{schema:1,identity:ctx.identity,results:standalone});
+const savedStandalone=readReport(ctx,'standalone-results.json');
+if(savedStandalone?.schema!==1||JSON.stringify(savedStandalone.identity)!==JSON.stringify(ctx.identity))problems.push('StandaloneReportIdentity');
+problems.push(...standaloneProblems(plan.standalone,savedStandalone?.results));
 const sourceAfter=sourceIdentity(root);
 if(!verify(root,base,plan)||JSON.stringify(sourceAfter)!==JSON.stringify(ctx.identity.source))problems.push('PlanOrSourceChanged');
 // A selected result must still be refused by the unchanged full-profile summarizer.

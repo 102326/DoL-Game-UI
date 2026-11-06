@@ -392,3 +392,16 @@ Windows恢复后需要：先核对其本机HEAD/未推送差异；同步脱敏�
 实际验证命令：candidate.test.mts（先红后绿）、shadow-plans.test.mts、policy-cache.test.mts、transport-boundaries.test.mts、shadow-run.mts及transport-shadow.mts；全部位于prototypes/evolution42-ci-c1。全部该目录MTS按strict/noUncheckedIndexedAccess单独类型检查通过。真实执行复用现有锁依赖，没有新跑npm ci、独立双构建或全profile；原始日志/快照留本机，脱敏身份/结果/文件摘要追加[既有CI影子证据](evidence/2026-11-05-ci-shadow.json)的macSelectedTransport20261106。
 
 新代码未接入workflow/catalog/Expected Lock，产品运行代码及已认可视觉不变；c9完整CI只覆盖其原冻结输入，不冒称新研究提交已有远端整轮绿灯。未发现新的P1产品缺陷。余项分别依赖Windows原始样本、可信选择政策/平台入口或新的范围决策，逐项原因见[现计划Mac待办表](../superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)；不再为“继续”扩建无收益证据的缓存或重做UI。
+
+
+## 8. 最后剩余审查与独立回执补项
+
+接续f8b2a4c审查现有backlog，未重复球体认可/整合。发现标准影子脚本在执行独立材质合同后只保存entry/status，虽然运行时检查通过，历史最终报告不能独立重验进程身份与自然完成。本批保留完整runCommand结果，新增standalone-results.json沿用现有schema/identity信封，经readReport回读后验证精确入口、进程与断言。不会把旧简化报告补写成新格式，也不宣称旧实验是假绿或产品有缺陷。
+
+实际运行：`node prototypes/evolution42-ci-c1/standalone-evidence.test.mts`及其`--material`模式；后者使用原ui41-material.cjs、真实受控宽/窄浏览器合同，133断言通过。两次正向读回、12个固定行故障拒绝；按旧表达式产生的entry/status摘要拒绝。随后增加身份信封验证，再对最终驱动跑这两个入口，错误Attempt被原readReport拒绝；早期样本保留。全部该目录MTS以strict/noUncheckedIndexedAccess类型检查通过。最后材质命令耗时及源码/脚本摘要见[同一证据JSON的macFinalBacklogAudit20261106](evidence/2026-11-05-ci-shadow.json)。测试源码绑定f8b2a4c加显式dirty摘要；后续只增加文档/摘要，不把测试写成最终提交整轮CI。
+
+未重新执行五个准备阶段、独立双构建、完整standard-shadow、17项组合消费者或18运输场景；它们不受这个独立回执存储改动影响，保留各自原证据。新标准影子主脚本的回执接线经代码检查及严格类型检查，定向测试实际覆盖它调用的runCommand、身份写读与standaloneProblems；整条五阶段新脚本尚未重新端到端运行。无正式workflow/catalog/ExpectedLock/Host/产品改动。
+
+最后审查结论与每项真实接续条件已更新[计划V1.23末表](../superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)：普通更大Mac矩阵不是设备或审批阻塞，只在有新的漏选假设/消费者切片时值得继续；RC方向已明确，缺具体冻结源码/完整Run和独立阶段/范围输入的实现；现两workflow没有selected执行/接收参数，正式remote重算完整catalog，不能用现dispatch冒充新选测运输。标准失败续跑、跨轮证据继承、正式选测和平台执行入口的迁移仍需另批评审。准备缓存净收益尚不足，C4未发现可安全删除的同义防线，停止扩建。P1仍待Windows原始收据和可比性能样本；不将这些未知伪造成Mac结论。
+
+本批止点是已知具体的本地缺口已补齐、必要定向验证完成；不是宣布所有未来Mac研究已穷尽，也不是宣布4.2可发布。当前完整CI与已认可UI保持不变，后续优先接回P1现场性能证据。
