@@ -281,7 +281,7 @@ def check_package(path, name):
         expected['MODHUB-PERFORMANCE-NOTICE.txt'] = ROOT / 'MODHUB-PERFORMANCE-NOTICE.txt'
         for filename in ['ui.d.ts', 'wardrobe.d.ts']:
             expected['types/' + filename] = ROOT / 'dist/types' / filename
-        release_notes = [f'docs/RELEASE_{version}.md'] if (ROOT / f'docs/RELEASE_{version}.md').is_file() else []
+        release_notes = [doc for doc in [f'docs/RELEASE_{version}.md', f"docs/INSTALL_{'.'.join(version.split('.')[:2])}.md"] if (ROOT / doc).is_file()]
         for filename in ['docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', *release_notes, 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
             expected[filename] = ROOT / filename
         notices = []

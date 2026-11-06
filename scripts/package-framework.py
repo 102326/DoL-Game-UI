@@ -9,6 +9,7 @@ version = '0.1.4-experimental'
 host_version = '0.1.5-experimental'
 # Official product version is independent of the Host package/protocol.
 official_version = json.loads((root / 'package.json').read_text(encoding='utf-8'))['version']
+display_version = '.'.join(official_version.split('.')[:2])
 # Minimum includes the R15 scene bridge guarantees; SDK/package edits do not raise it.
 host_requirement = '>=0.1.2-experimental && <0.2.0'
 parser = argparse.ArgumentParser()
@@ -37,7 +38,7 @@ for directory, name in packages:
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
     package_version = official_version if directory == 'official-ui' else host_version if directory == 'host' else '0.1.5-experimental' if directory == 'motion-hub' else version
-    nickname = 'Soft & Wet 4.1' if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
+    nickname = f"Soft & Wet {display_version}" if directory == 'official-ui' else 'Stone Free Framework Host' if directory == 'host' else name + ' (Research)'
     boot = dict(name=name, version=package_version, nickName=nickname, scriptFileList=['index.js'],
                 styleFileList=['style.css'] if (base/'style.css').exists() else [],
                 tweeFileList=[], imgFileList=[], additionFile=['README.md', 'LICENSE'], dependenceInfo=dependencies)
@@ -57,7 +58,7 @@ for directory, name in packages:
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
     if directory == 'official-ui':
-        release_notes = [f'docs/RELEASE_{official_version}.md'] if (root / f'docs/RELEASE_{official_version}.md').is_file() else []
+        release_notes = [doc for doc in [f'docs/RELEASE_{official_version}.md', f'docs/INSTALL_{display_version}.md'] if (root / doc).is_file()]
         for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md',*release_notes]:
             files[doc] = (root/doc).read_bytes(); boot['additionFile'].append(doc)
         for declaration in ['ui.d.ts','wardrobe.d.ts']:

@@ -4,6 +4,8 @@
 
 ## Current — 当前做什么
 
+- **4.2发行前工程准备进行中。** 本批将主UI内部候选标识固定为4.2.0，Host仍为0.1.5-experimental、API/依赖合同不变；更新玩家说明与包内安装说明。4.2不是已发布或已通过性能验收。当前候选门禁见[发行准备表](evolution/EVO-4.2-RELEASE-GATE-2026-11-07.md)。最终构建输入变化，须重新绑定完整标准/研究CI与九包身份；不复用c9门禁充当新包门禁。平板仍供开发包使用，不操作设备。
+
 - **设置、属性与已认可Hub均已生产整合，不再待设计或重复接线。** 保留原球体/点击展开，采用自由放置、边缘蓄力、刚性弹射、短金色尾迹及连续碰撞；属性保持原生root、业务与滚动。分支 `perf/4.2-windows-device-followup`；本轮验证源码 `c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c`，运行实现自 `e85edf1` 未变。a740fea仅更新交接；本次另有隔离CI原型变更，以下单独绑定研究证据，不冒称完整CI跑在后续提交上。
 - **同一c9冻结源码双CI成功，已从Mac直接核验。** [标准42087362215](https://github.com/102326/DoL-Game-UI/actions/runs/42087362215)的validate、evidence-verify、moody-gate，以及[研究42087371229](https://github.com/102326/DoL-Game-UI/actions/runs/42087371229)的producer、evidence-verify均success。两份实际下载远端回执均PASS / assertion PASS / evidence COMPLETE。标准38/38 Unit、47/47 browser；Mac重算标准204项索引及原有整轮核验器通过。研究42/42来自[Windows公开回执](https://github.com/102326/DoL-Game-UI/issues/35#issuecomment-6666663022)，Mac核对在线jobs/小型核验回执，未重复下载124 MB完整研究制品。
 - **九包合同、9负例、独立双构建的标准CI证据通过。** Mac复算核对的是结果身份、结构和两轮一致性，精确ZIP合同仍由Python制品检查器负责；本批未另行重建或下载九包。Windows与Actions压缩实现可能不同，禁止混用ZIP摘要。历史失败与Windows原核验见[同一证据记录](evolution/evidence/2026-11-06-hub-gate-followup.json)。
