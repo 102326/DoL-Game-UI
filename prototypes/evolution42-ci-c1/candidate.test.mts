@@ -32,15 +32,20 @@ try {
  assert(!verify(dir, base, {...plan, identity: {...plan.identity, head: '0'.repeat(40)}}));
  assert(!verify(dir, base, {...plan, research: plan.research.slice(1)}));
  const head = git('rev-parse', 'HEAD');
- for (const [file, standalone] of [[acrylic, true], [hub, false]] as const) {
+ for (const [file, standalone, required] of [
+  [acrylic, true, ['research.motion-workspace']],
+  [hub, false, ['research.golden-spin-hub', 'research.golden-spin-hub-input', 'research.golden-spin-hub-lifecycle']],
+  [motion, false, ['research.motion-workspace']]
+ ] as const) {
   writeFileSync(file, 'changed\n');
   const scoped = candidate(dir, head);
   assert.equal(scoped.mode, 'review-candidate');
   assert(scoped.standard.includes('browser.evolution-owner-resources.cjs'));
-  assert(scoped.standard.includes('browser.device-layouts.cjs'));
+  if (file !== motion) assert(scoped.standard.includes('browser.device-layouts.cjs'));
   assert(scoped.research.includes('research.evolution-owner-resources'));
   assert.equal(scoped.standalone.includes('tests/ui41-material.cjs'), standalone);
   if (standalone) assert(!verify(dir, head, {...scoped, standalone: []}));
+  assert.deepEqual(required.filter(id => !scoped.research.includes(id)), [], `Missing consumers for ${path.relative(dir, file)}`);
   git('checkout', '--', path.relative(dir, file));
  }
  const otherBasePlan = candidate(dir, head);

@@ -381,3 +381,14 @@ CI42-S2新增`scripts/research/ci-selection-probe.mts`：读取现有catalog及�
 负责人协调对话2026-11-06转述：c9候选属性雨雪拖动/触控滚动/切栏/关闭、Hub布局/满蓄/真实抓取/设置、关闭动态菜单意图、UI关闭清理/重开唯一实例、原生后台恢复已通过。**原始Windows功能记录尚未同步，Mac没有重新验证这些实机结论。** 同ModHub2.0.1及其他Mod/偏好下已有一个候选和一个4.1样本，但尚不能形成最终净性能结论。候选已恢复的说法也是协调转述，最终收口文档、设备交还及ADB forward清理尚未确认。
 
 Windows恢复后需要：先核对其本机HEAD/未推送差异；同步脱敏的源码/包/环境绑定功能收据和原失败/恢复边界；在原设备核对成对计时、慢样本、输入及组合偏好后决定必要补采；确认设备交还和forward清理。私人原始数据保留在授权设备，不搬到公司Mac或公开Artifact。Mac日志/截图只是本机独有受控证据，路径见忽略的HANDOFF.local.md；公开JSON保留摘要和复现命令。main观察为32e391f，未合入；没有合并、发布、Host协议或保护规则变更。
+
+
+## 7. 2026-11-06继续处理Mac独立待办
+
+在a740fea之后继续C1/C3隔离研究，未止于同步。新增transport helper、真实执行驱动及读取边界检查；独立接收进程重新读入计划/报告/证据并复用现有核验器。源和策略、基线、Run/Attempt、三份摘要由本地控制器固定，包内自报锚点被拒绝。它证明本地受控运输，不认证真实平台，也不提供原子文件快照。
+
+实际消费链审查发现旧人工映射遗漏Hub三个独立合同与窗口工作区合同；先在旧映射上以单路径Git测试复现缺workspace，再补齐映射。旧策略13项真实执行与运输结果保留；最终新策略另建快照，17项命令全部通过，包括四个新补入口；两轮运输均18场景（2正向/16负向），同时删计划/结果、错身份/轮次、取消/重复结果、缺失/篡改证据及源码/策略漂移均被拒绝。完整research汇总仍为UNVERIFIED，未把子集升级成门禁。
+
+实际验证命令：candidate.test.mts（先红后绿）、shadow-plans.test.mts、policy-cache.test.mts、transport-boundaries.test.mts、shadow-run.mts及transport-shadow.mts；全部位于prototypes/evolution42-ci-c1。全部该目录MTS按strict/noUncheckedIndexedAccess单独类型检查通过。真实执行复用现有锁依赖，没有新跑npm ci、独立双构建或全profile；原始日志/快照留本机，脱敏身份/结果/文件摘要追加[既有CI影子证据](evidence/2026-11-05-ci-shadow.json)的macSelectedTransport20261106。
+
+新代码未接入workflow/catalog/Expected Lock，产品运行代码及已认可视觉不变；c9完整CI只覆盖其原冻结输入，不冒称新研究提交已有远端整轮绿灯。未发现新的P1产品缺陷。余项分别依赖Windows原始样本、可信选择政策/平台入口或新的范围决策，逐项原因见[现计划Mac待办表](../superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)；不再为“继续”扩建无收益证据的缓存或重做UI。

@@ -537,5 +537,361 @@
       "Whole repository consumer completeness",
       "Transient source mutation restored between phase snapshots"
     ]
+  },
+  "macSelectedTransport20261106": {
+    "scope": "Local controlled transport of actual selected execution; no formal gate, cache or product change",
+    "environment": {
+      "platform": "darwin arm64",
+      "node": "26.13.0",
+      "playwright": "1.63.0",
+      "chromium": "153.0.8010.12",
+      "dependencies": "Existing lock-matched installation linked into separately owned snapshots; not fresh npm ci"
+    },
+    "initialMapping": {
+      "origin": {
+        "head": "a740fea6e5f9d19d0611e19f7397fd6862bf9d73",
+        "tree": "f2fcb6ad9a5adaa3a062747a28836bb396a906eb",
+        "dirty": true,
+        "contentSha256": "0b3bb3e8629fe62abc656a6ba93f4e804ceba539db4694f6eb56b291971da99a",
+        "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      },
+      "derivedBase": "ad36ba551335b77a6f59f1b3a523977a884887ec",
+      "derivedHead": "5bd3bbb1a99e4faaf038b331d3382951afec0459",
+      "policy": "f37ddb571f4c8022437614912f232f3c5af5b8ec30f983ab081f80f238b87b00",
+      "execution": {
+        "count": 13,
+        "status": "PASS",
+        "problems": []
+      },
+      "transport": {
+        "status": "PASS",
+        "scope": "LOCAL_SELECTED_TRANSPORT_ONLY",
+        "positive": 2,
+        "rejected": 16,
+        "fullProfileStatus": "UNVERIFIED"
+      },
+      "rawEvidence": [
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942110821/checkout/tests/artifacts/consumer-shadow/shadow-result.json",
+          "sha256": "f939846212386a8177cfbc32b3245a1cb6d593a37a218a7c5304b3da204def87"
+        },
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942110821/checkout/tests/artifacts/transport-shadow-1793942520144/results.json",
+          "sha256": "3520c39ba549c812e3bf5ec07c8f7e62a4a694fe6a7e2bda394de29afee72b4d"
+        },
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942110821/checkout/tests/artifacts/transport-shadow-1793942520144/frozen-variants.json",
+          "sha256": "abb6280fb37d7d1916487d5d8527d50b7a83b2990ea03d094a542b8a24e72dfb"
+        }
+      ]
+    },
+    "finalMapping": {
+      "origin": {
+        "head": "a740fea6e5f9d19d0611e19f7397fd6862bf9d73",
+        "tree": "f2fcb6ad9a5adaa3a062747a28836bb396a906eb",
+        "dirty": true,
+        "contentSha256": "a2a07b795bb5bf5f79e3dea4200b356bf5270ea09e8bb15f9d11bd6ce2360e19",
+        "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      },
+      "derivedBase": "1e1b1a7cbb5ddcb3e3ac8c94330464b2b11ebbd9",
+      "derivedHead": "5eadce9beb1dc1a123b7147bc64dfeb130b09ccd",
+      "policy": "4d7b01d7abc644199835a2a80cc36b5dbee9eed7ae9999d1f0258f6a405078d3",
+      "execution": {
+        "count": 17,
+        "status": "PASS",
+        "problems": [],
+        "checks": [
+          {
+            "name": "source-check",
+            "status": "PASS"
+          },
+          {
+            "name": "golden-spin-hub",
+            "status": "PASS"
+          },
+          {
+            "name": "motion-workspace",
+            "status": "PASS"
+          },
+          {
+            "name": "golden-spin-hub-input",
+            "status": "PASS"
+          },
+          {
+            "name": "golden-spin-hub-lifecycle",
+            "status": "PASS"
+          },
+          {
+            "name": "framework-build",
+            "status": "PASS"
+          },
+          {
+            "name": "settings-ci",
+            "status": "PASS"
+          },
+          {
+            "name": "official-game-motion",
+            "status": "PASS"
+          },
+          {
+            "name": "source-motion-lifecycle",
+            "status": "PASS"
+          },
+          {
+            "name": "evolution-owner-resources",
+            "status": "PASS"
+          },
+          {
+            "name": "attributes-material",
+            "status": "PASS"
+          },
+          {
+            "name": "evolution-navigation",
+            "status": "PASS"
+          },
+          {
+            "name": "evolution-panels",
+            "status": "PASS"
+          },
+          {
+            "name": "shadow-adapter-materials",
+            "status": "PASS"
+          },
+          {
+            "name": "shadow-device-layouts",
+            "status": "PASS"
+          },
+          {
+            "name": "shadow-kraft-work-adapters",
+            "status": "PASS"
+          },
+          {
+            "name": "shadow-ui41-material",
+            "status": "PASS"
+          }
+        ]
+      },
+      "transport": {
+        "status": "PASS",
+        "scope": "LOCAL_SELECTED_TRANSPORT_ONLY",
+        "results": [
+          {
+            "id": "positive",
+            "status": "PASS",
+            "problems": [],
+            "exitCode": 0
+          },
+          {
+            "id": "missing-plan",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Transport verification failed: ENOENT: no such file or directory, lstat '<snapshot>/tests/artifacts/transport-shadow-1793943033647/received/plan.json'"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "malformed-json",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Invalid plan JSON: Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "self-asserted-anchor",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Error: AnchorInsideReceivedBundle"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "changed-plan-with-fixed-anchor",
+            "status": "UNVERIFIED",
+            "problems": [
+              "PlanDigestMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-base",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Plan mismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-head",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Source identity mismatch",
+              "Source changed during verification"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-attempt",
+            "status": "UNVERIFIED",
+            "problems": [
+              "StageResearchIncomplete:production",
+              "StageResearchIncomplete:hub",
+              "StageBrowserIncomplete",
+              "SourceOrRunMismatch",
+              "MissingLayoutCoverage"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-run",
+            "status": "UNVERIFIED",
+            "problems": [
+              "StageResearchIncomplete:production",
+              "StageResearchIncomplete:hub",
+              "StageBrowserIncomplete",
+              "SourceOrRunMismatch",
+              "MissingLayoutCoverage"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "joint-plan-result-deletion",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Plan mismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-report-identity",
+            "status": "UNVERIFIED",
+            "problems": [
+              "SourceOrRunMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "cancelled-report",
+            "status": "UNVERIFIED",
+            "problems": [
+              "ReportEnvelopeMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "duplicate-result",
+            "status": "UNVERIFIED",
+            "problems": [
+              "ResultSetMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "missing-evidence",
+            "status": "UNVERIFIED",
+            "problems": [
+              "EvidenceDigestMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "changed-evidence",
+            "status": "UNVERIFIED",
+            "problems": [
+              "EvidenceDigestMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "source-drift",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Plan mismatch",
+              "Source identity mismatch",
+              "Source changed during verification"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "policy-drift",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Plan mismatch",
+              "Source identity mismatch",
+              "Source changed during verification"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "restored-positive",
+            "status": "PASS",
+            "problems": [],
+            "exitCode": 0
+          }
+        ],
+        "fullProfileStatus": "UNVERIFIED",
+        "productionGateChanged": false,
+        "fullProfileRejectionDetails": [
+          "dependencies not executed by this reused-installation consumer drill",
+          "browser-install not executed by this reused-installation consumer drill",
+          "research-unit not selected",
+          "Research family evidence mismatch: hub (the selected subset is not the full hub family)"
+        ]
+      },
+      "rawEvidence": [
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942593697/checkout/tests/artifacts/consumer-shadow/shadow-result.json",
+          "sha256": "ff30a3f5d10af9b0efe742d496a8c1953dd048389db8ab9ba1b86cb1caadc4fe"
+        },
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942593697/checkout/tests/artifacts/transport-shadow-1793943033647/results.json",
+          "sha256": "7c434f0344be97fead082b8ac5e9bfa5ced57a52514cf214d83ba9596f131756"
+        },
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942593697/checkout/tests/artifacts/transport-shadow-1793943033647/frozen-variants.json",
+          "sha256": "3678190992c9de1086205bab07852bd9369add33420149fcd96533bf1fc5a6cc"
+        }
+      ]
+    },
+    "mappingFix": {
+      "firstRed": "candidate.test.mts exited1 for missing research.motion-workspace on the acrylic path; later assertions were not reached in that red run",
+      "green": "All three single-path mappings, existing candidate negatives, eight plan scenarios and policy-cache regression passed",
+      "addedResearchChecks": [
+        "golden-spin-hub",
+        "golden-spin-hub-input",
+        "golden-spin-hub-lifecycle",
+        "motion-workspace"
+      ],
+      "runtimeChains": [
+        "hub.html -> hub-main.ts -> HubApp.vue -> prototype re-export -> production sphereHub",
+        "windows.html -> windows-main.ts -> startOfficialMotion and startTheme -> acrylicParameters"
+      ],
+      "scope": "Acrylic includes workspace conservatively as a real initialization consumer, not an independent material-output assertion. This audit does not establish all-repository completeness."
+    },
+    "validation": [
+      "candidate.test.mts: old mapping RED, fixed mapping PASS",
+      "shadow-plans.test.mts: eight plan-only scenarios PASS",
+      "policy-cache.test.mts: old cache-mix reproduced, current rejection PASS",
+      "transport-boundaries.test.mts: size/bytes/enumeration/symlink/missing-anchor checks PASS",
+      "All prototypes/evolution42-ci-c1/*.mts strict TypeScript check PASS",
+      "New snapshot shadow-run: 17 real commands PASS, including four newly selected independent entries",
+      "Fresh receiver processes: 2 positive / 16 precise negative transport scenarios; original full research summary still UNVERIFIED for subset"
+    ],
+    "codeSha256": {
+      "prototypes/evolution42-ci-c1/candidate.test.mts": "0764edc42682702d77f5e1f27e2d92f037ec5cd2524dc64110362fb73ae7af47",
+      "prototypes/evolution42-ci-c1/consumer-map.mts": "c6932a4ca3c723923b2fb60cdecf214a2c763cc7d17b1e0a8e43f228229f964d",
+      "prototypes/evolution42-ci-c1/transport.mts": "d8337b35c5a1ceb73fd73167e6c28f57e24a14495638e56a487bfc990fa19d13",
+      "prototypes/evolution42-ci-c1/transport-shadow.mts": "434c2bb8ebd7791f3416677a297c938a4fd8014975962b47187030e2174a2e8d",
+      "prototypes/evolution42-ci-c1/transport-boundaries.test.mts": "b6b1fd53134c5fd4e00116eff7241c34395936c2853dd006b137ffcbe848d5d5"
+    },
+    "limitations": [
+      "Local controller anchors are outside the received package but not platform authenticated",
+      "No actual cross-Actions transport or PR base/head/merge authentication",
+      "Copied evidence and before/after checks are not an atomic snapshot or defense against a malicious controller",
+      "Unknown source paths retain the complete standard/research fallback; no complete influence graph",
+      "18 transport scenarios are not the earlier 14-category full-profile shadow matrix",
+      "No formal cache, workflow, catalog, Expected Lock, runtime product or release changes"
+    ],
+    "nextDecision": "Keep isolated candidate. Before expanding full-profile shadow or enabling selection, settle authoritative scope/RC/freeze inputs and an authorized platform transport path; do not infer authority from local PASS."
   }
 }

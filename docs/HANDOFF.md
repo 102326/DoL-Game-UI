@@ -1,16 +1,17 @@
 # Soft & Wet — 当前交接
 
-更新：2026-11-06（公司Mac接续）。正式产品基线4.1.0，4.2为研发；**UI Mod本体性能 → CI优化 → 新UI设计**。总跟踪[#35](https://github.com/102326/DoL-Game-UI/issues/35)，沿[计划V1.21](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)推进。
+更新：2026-11-06（公司Mac接续）。正式产品基线4.1.0，4.2为研发；**UI Mod本体性能 → CI优化 → 新UI设计**。总跟踪[#35](https://github.com/102326/DoL-Game-UI/issues/35)，沿[计划V1.22](superpowers/plans/2026-11-02-soft-wet-4.2-r1-review-plan.md)推进。
 
 ## Current — 当前做什么
 
-- **设置、属性与已认可Hub均已生产整合，不再待设计或重复接线。** 保留原球体/点击展开，采用自由放置、边缘蓄力、刚性弹射、短金色尾迹及连续碰撞；属性保持原生root、业务与滚动。分支 `perf/4.2-windows-device-followup`；本轮验证源码 `c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c`，运行实现自 `e85edf1` 未变。后续交接提交仅文档，不冒称CI直接跑在文档提交上。
+- **设置、属性与已认可Hub均已生产整合，不再待设计或重复接线。** 保留原球体/点击展开，采用自由放置、边缘蓄力、刚性弹射、短金色尾迹及连续碰撞；属性保持原生root、业务与滚动。分支 `perf/4.2-windows-device-followup`；本轮验证源码 `c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c`，运行实现自 `e85edf1` 未变。a740fea仅更新交接；本次另有隔离CI原型变更，以下单独绑定研究证据，不冒称完整CI跑在后续提交上。
 - **同一c9冻结源码双CI成功，已从Mac直接核验。** [标准42087362215](https://github.com/102326/DoL-Game-UI/actions/runs/42087362215)的validate、evidence-verify、moody-gate，以及[研究42087371229](https://github.com/102326/DoL-Game-UI/actions/runs/42087371229)的producer、evidence-verify均success。两份实际下载远端回执均PASS / assertion PASS / evidence COMPLETE。标准38/38 Unit、47/47 browser；Mac重算标准204项索引及原有整轮核验器通过。研究42/42来自[Windows公开回执](https://github.com/102326/DoL-Game-UI/issues/35#issuecomment-6666663022)，Mac核对在线jobs/小型核验回执，未重复下载124 MB完整研究制品。
 - **九包合同、9负例、独立双构建的标准CI证据通过。** Mac复算核对的是结果身份、结构和两轮一致性，精确ZIP合同仍由Python制品检查器负责；本批未另行重建或下载九包。Windows与Actions压缩实现可能不同，禁止混用ZIP摘要。历史失败与Windows原核验见[同一证据记录](evolution/evidence/2026-11-06-hub-gate-followup.json)。
 - **Mac接续合同已完成。** Node26.13.0 / npm11.20.0，锁文件未改、已装依赖一致，Playwright1.63.0 / Chromium153.0.8010.12。类型/Expected Lock、Framework构建、位置物理单元及实际owner整组通过：13个owner、12项H01、48布局、1280/390宽度的蓄力/弹射/可信接住/六种中断/休眠/销毁，四个历史反例仍精确拒绝。实际使用已安装headless shell；普通Chrome可执行路径缺失不等于该测试浏览器缺失。Python3.12.14用命令级PATH，不改全局。
 - **Windows功能实机已有通过记录，但本机尚未获得原始收口材料。** 来源为负责人协调对话2026-11-06转述：c9候选的属性雨雪拖动/触控滚动/切栏/关闭，Hub布局/蓄力/真实触控抓取/设置，关闭动态意图、UI禁用清理及重开唯一实例、原生后台恢复通过。此项明确为转述，不改写成Mac独立验收。候选与4.1各有一个同ModHub2.0.1及同组合/偏好样本，**最终净性能结论仍不足**。
 - **Windows最终收口未确认。** 据协调侧，离线前已恢复c9候选/偏好并原生重启核对身份；最终文档提交、设备完整释放和ADB forward清理未确认，可能存在未推送内容。Mac不覆盖、不补造原始结果，不接入私人游戏资产。下一轮仍需Windows同步脱敏收据并处理对照；不是重新从零做Hub整合。
-- 本批未发现新的需修产品缺陷；CI C0已更新同版成本（布局/owner整组占browser条目总和35.92%/19.50%），不据单次样本迁移选测或删除合同。远端main观察为 `32e391f8a3c3169746d2b1e646c68215a3097eb9`，本机未合入；本轮无产品代码、Host协议、main、Release或规则变更。详细命令/范围见[Mac续批记录](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md#6-2026-11-06公司mac接续c9冻结候选)。
+- **Mac又完成一批C1/C3隔离工作。** 新增真实计划/报告/证据的跨进程读回与外部固定锚点核验；修复人工映射漏掉的Hub三个独立研究入口及motion-workspace。旧映射先红，修正后17项真实组合执行通过，18运输场景为2正向通过/16负向拒绝，原完整research汇总仍拒绝子集。八类计划、策略缓存与有界读取回归通过。详见[影子证据](evolution/evidence/2026-11-05-ci-shadow.json)和[原型说明](../prototypes/evolution42-ci-c1/README.md)。仅本地受控运输，不是14类完整profile或真实Actions认证；未改正式选测/缓存/门禁。
+- 本批未发现新的需修产品缺陷；CI C0已更新同版成本（布局/owner整组占browser条目总和35.92%/19.50%），不据单次样本迁移选测或删除合同。远端main观察为 `32e391f8a3c3169746d2b1e646c68215a3097eb9`，本机未合入；本轮只改隔离研究与记录，无产品代码、Host协议、main、Release或规则变更。详细命令/范围见[Mac续批记录](evolution/EVO-4.2-LOCAL-REPORT-2026-11-04.md#6-2026-11-06公司mac接续c9冻结候选)。
 
 ## Decided — 已经确定什么
 
@@ -27,4 +28,4 @@
 2. Windows恢复后先检查未推送收口内容，再合并本轮文档更新；不要reset覆盖。补齐绑定c9源码/包身份的功能收据、原始失败与恢复边界、设备交还及ADB forward清理确认；私人原始材料留在获授权设备，不进公开Artifact。
 3. 性能第一：读取现有4.1/候选成对样本，核对同ModHub2.0.1、其他Mod/顺序/偏好、窗口/天气/冷暖状态及采样方法，保留慢样本和中断；不足时在游戏/Windows/Android上补针对性样本。现阶段不能宣称普通用户净改善或全部卡顿解决。Mac受控合同不能填补这项真实场景证据。
 4. 已认可范围的代码、双CI与Mac接续合同完成；没有新缺陷证据时不重复Hub设计/整合、已淘汰微优化或完整CI。后续实质源码变更才重跑受影响合同及必要门禁；未授权发布，不把功能通过扩大为正式RC。
-5. CI C1–C4/14场景影子/可信运输/缓存竞态仍为隔离研究，非P1额外前置；新样本支持继续归因布局与owner整组，不支持删断言、改产品速度或启用正式缓存。完整P-C、全局编辑器、Host扩容均未启动；#33 Ray无新复现证据。main/Release/保护规则另行授权。
+5. CI已补本地真实运输与四个已知漏选，仍不接管完整门禁。14类完整profile还缺可信范围/RC封板输入；真实Actions运输需另行批准执行入口；准备缓存只有有限环节收益，跨步骤权威与竞态未解决，不扩建正式缓存。C2既有调度/汇总验证保留，完整贯通随范围政策决定，均非P1额外前置。完整P-C、全局编辑器、Host扩容均未启动；#33 Ray无新复现证据。main/Release/保护规则另行授权。

@@ -56,3 +56,22 @@ node prototypes/evolution42-ci-c1/standard-shadow.mts <independently-frozen-base
 ## 仍需收敛
 
 人工消费者名单不等于全仓库完备影响图。普通RC/封板小修策略、完整标准/研究profile对照、跨Run/Attempt汇总、真实Actions上传/远端核验及可信选测计划分发仍须沿C2/C3研究。预期base由调用方提供，当前没有另行认证PR平台的base/merge。当前shadow不是远端认证器；不能将局部故障通过写成全部14类的完整profile对照完成。正式门禁仍保持完整执行。
+
+## 本地跨进程运输与消费者补全（2026-11-06）
+
+`transport-shadow.mts`读取一次**已完成的真实隔离执行**，先用原`verifyShadow`核验，再复制计划、报告和证据到新的接收目录；每个正向/故障样本由新的Node进程读回。外部控制器固定base、源码/策略、Run/Attempt、计划/报告摘要和证据目录摘要，接收方重新计算候选并复用原核验器。包内自带锚点不能代替独立调用方输入。这里只研究本地受控文件运输，不是新增正式CI协议、远端认证器或可复用缓存。
+
+```sh
+node prototypes/evolution42-ci-c1/transport-boundaries.test.mts
+node prototypes/evolution42-ci-c1/shadow-run.mts
+# 上一命令完整结束并输出PASS后，使用它刚创建的checkout；只对独占的快照执行：
+node prototypes/evolution42-ci-c1/transport-shadow.mts <snapshot-checkout>
+```
+
+驱动在执行前固定18个场景：初始/恢复后的两次正向，以及缺计划、损坏JSON、自带锚点、计划字节篡改、错base/head/attempt/run、同时删除计划和结果中的消费者、错报告身份、取消报告、重复结果、缺失/篡改证据、源码/策略漂移。用于验证语义拒绝的部分负例由控制器明确重锚，单独确认不是只靠字节摘要拒绝。源码/策略故障只修改独立快照并在finally恢复；禁止对共享工作树或并发使用中的快照运行。证据读取限制16 MiB/2000文件，拒绝符号链接与非普通文件；文件采集仍不是原子快照。
+
+接收目录的source/run不从生产者提供的绝对工作路径重建。调用方锚点来源、真实PR base/merge、跨Actions身份及传输权限仍未认证；拥有控制器和源码的同一恶意进程不在该隔离实验的防护范围。原完整research汇总器必须继续拒绝选测子集，不把本地运输PASS提升为完整gate。
+
+本次还沿实际运行链发现旧人工映射漏掉四个现有research入口：Hub的`golden-spin-hub`、`golden-spin-hub-input`、`golden-spin-hub-lifecycle`通过`hub.html → HubApp.vue → prototype re-export`调用生产`sphereHub`；`motion-workspace`通过`windows-main.ts`调用正式窗口动效和主题控制器。后者对acrylic也保守保留，但不声称它有独立材质输出断言。已补单路径真实Git回归，旧映射首先在acrylic缺workspace处失败，修正后通过；这不代表全仓库消费者完备性已经证明。早期13项执行和对应运输结果绑定旧策略，修正后的新策略必须另建快照验证，不拼接旧报告冒充新执行。
+
+本批实际结果：旧策略13项执行＋18场景运输通过；发现上述映射缺口后另建新快照，补齐后的17项真实执行及同样18场景运输通过（2正向、16负向）。四个新增独立消费者均实际执行，不是只在计划数组中出现。完整research汇总仍为UNVERIFIED；八类计划检查、策略缓存旧错新拒绝、读取边界及严格TypeScript检查通过。结果及两轮源码/策略摘要见[既有CI影子证据](../../docs/evolution/evidence/2026-11-05-ci-shadow.json)的macSelectedTransport20261106；本机原始快照路径未同步，其他设备按上面命令重建。
