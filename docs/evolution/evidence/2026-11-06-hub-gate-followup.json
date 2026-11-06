@@ -1772,5 +1772,15 @@
     },
     "next": "Stop rejected containment candidate. When assigned test device is free, investigate effective renderer/compositor scheduling with a bounded discriminating capture;keep accepted effects. Do not repeat these same ablations without new evidence.",
     "restoration": "All desktop pages/browsers and owned local servers closed;private artifacts ignored;production,packages,CI gates and shared tablet unchanged."
+  },
+  "releasePreparation20261107": {
+    "source": "5033626e4bcd1f0e6f9e2bb23a0771ed4f2891f9",
+    "record": "2026-11-07-release-preparation.json",
+    "standard": 42292957909,
+    "research": 42292962805,
+    "ci": "PASS_ACTUAL_ARTIFACT_READBACK",
+    "performance": "PENDING",
+    "newZipAndroid": "NOT_VALIDATED_DEVICE_RESERVED",
+    "releaseAuthorization": false
   }
 }
