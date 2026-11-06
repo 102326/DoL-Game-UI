@@ -2,7 +2,7 @@
   "schema": "evo42-hub-gate-followup-v1",
   "date": "2026-11-06",
   "initialFreeze": "5024c5f5c5e3972dcddf2fbd3c6dd96f40fad014",
-  "status": "FINAL_TEST_FIXES_VALIDATED_LOCAL_FULL_GATE_PENDING",
+  "status": "C9_FULL_GATE_VERIFIED_MAC_CONTRACTS_PASS_WINDOWS_DEVICE_REPORTED_PERFORMANCE_PENDING",
   "initialWindows": {
     "unit": {
       "status": "ERROR",
@@ -340,5 +340,425 @@
     "fix": "Preposition actual mouse before opening; native Enter opens while armed arrival observation leads to real mouse.down. Preserve held pressed/paused/target/moving/.68<q<.98,100ms frozen-pose and one native settings action assertions. Product timeline unchanged.",
     "diagnostics": "Reuse existing hubInputEvents/sidecar, add trusted/time/rect/capture-before-handler; write same failure object to result and stderr. Successful H01 concreteq/trusted values are not persisted; claim only assertions actually passed.",
     "validation": "Final complete normal and slowMo80 owner groups PASS; four original precise negative assertions still reject."
-  }
+  },
+  "macContinuation20261106": {
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "sourceWasCleanDuringChecks": true,
+    "changes": "Documentation and evidence receipts only; no product, test, protocol or workflow changes.",
+    "remoteVerified": [
+      {
+        "runId": 42087362215,
+        "profile": "standard",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/42087362215",
+        "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+        "event": "workflow_dispatch",
+        "jobs": [
+          {
+            "id": 127455958400,
+            "name": "validate",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 127464045122,
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 127464264735,
+            "name": "moody-gate",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ],
+        "remoteVerdict": {
+          "status": "PASS",
+          "assertionResult": "PASS",
+          "evidenceIntegrity": "COMPLETE",
+          "reasonCodes": []
+        },
+        "artifacts": [
+          {
+            "id": 13445430265,
+            "name": "kraft-work-checks-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+            "size_in_bytes": 335683,
+            "digest": "sha256:b60defb1eea18fee8190cae09602286bbf0fa81c5b0d3884b18ab7346f51e032",
+            "expired": false
+          },
+          {
+            "id": 13445295477,
+            "name": "moody-remote-standard-42087362215-1",
+            "size_in_bytes": 1052,
+            "digest": "sha256:55932ea4e9dc7578c6caa486fd9055e206a3ef8a166b55ac73b5968380e47e6d",
+            "expired": false
+          },
+          {
+            "id": 13445085736,
+            "name": "kraft-work-build-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+            "size_in_bytes": 373994,
+            "digest": "sha256:4c7920c16cde2680539edfa83d321001fb3d4fdb4e881c334d5a3514cc0de3a6",
+            "expired": false
+          }
+        ]
+      },
+      {
+        "runId": 42087371229,
+        "profile": "research",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/42087371229",
+        "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+        "event": "workflow_dispatch",
+        "jobs": [
+          {
+            "id": 127455985494,
+            "name": "prototype",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 127462658470,
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ],
+        "remoteVerdict": {
+          "status": "PASS",
+          "assertionResult": "PASS",
+          "evidenceIntegrity": "COMPLETE",
+          "reasonCodes": []
+        },
+        "artifacts": [
+          {
+            "id": 13444905484,
+            "name": "golden-spin-prototype-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+            "size_in_bytes": 124158691,
+            "digest": "sha256:c74b0581a623fa769bb95f4c430f6193aa6dffb081813f7fe4fa11eefd52fd24",
+            "expired": false
+          },
+          {
+            "id": 13444332459,
+            "name": "moody-remote-research-42087371229-1",
+            "size_in_bytes": 1063,
+            "digest": "sha256:2103242d094911421b40fbfaa8aa2687f3f3927ce2b19819d737f68c347b216e",
+            "expired": false
+          }
+        ]
+      }
+    ],
+    "downloadValidation": {
+      "standardIndexedFiles": 204,
+      "omitted": [],
+      "seal": "SEALED",
+      "checks": [
+        "standard archive size/API SHA256/CRC/safe member paths",
+        "204 indexed file sizes and SHA256 digests",
+        "both small remote-verification archives size/API SHA256/CRC/safe member paths",
+        "existing standard verifyRemote offline recomputation with current clean source and catalog"
+      ],
+      "offlineStandard": {
+        "status": "PASS",
+        "assertionResult": "PASS",
+        "evidenceIntegrity": "COMPLETE",
+        "problems": []
+      },
+      "anchorScope": "Downloaded API-authenticated archives; offline nonce comes from the downloaded authenticated remote result, manifest hash from the authenticated standard archive. This is a local recomputation, not a new GitHub gate or an independent transport trust root.",
+      "notRepeatedOnMac": [
+        "Full 124 MB research archive/member recomputation; online independent verifier success is directly checked",
+        "Downloading/rebuilding nine development ZIPs; standard package evidence was checked by the existing verifier, not a second Python ZIP contract implementation"
+      ]
+    },
+    "standardCheckCounts": {
+      "unit": 38,
+      "browser": 47,
+      "packageCount": 9,
+      "packageNegatives": 9,
+      "independentBuilds": 2
+    },
+    "researchCount": {
+      "reportedPass": 42,
+      "source": "Issue #35 comment 6666663022; online producer and independent verifier success directly checked; full research archive not downloaded on this Mac"
+    },
+    "mac": {
+      "platform": "darwin arm64",
+      "node": "26.13.0",
+      "npm": "11.20.0",
+      "python": "3.12.14 (command-local runtime; no global alias change)",
+      "playwright": "1.63.0",
+      "chromium": "153.0.8010.12 headless shell revision 1243",
+      "dependencies": "npm ls --all successful; 66 installed lock entries match versions; lockfile unchanged",
+      "commands": [
+        {
+          "command": "npm run ci:check",
+          "status": "PASS"
+        },
+        {
+          "command": "node scripts/build-framework.mjs",
+          "status": "PASS"
+        },
+        {
+          "command": "node --test tests/hub-placement.test.mts",
+          "status": "PASS"
+        },
+        {
+          "command": "node tests/evolution-owner-resources.cjs",
+          "status": "PASS"
+        }
+      ],
+      "owners": 13,
+      "hubChecks": 12,
+      "layoutCount": 48,
+      "placement": {
+        "widths": [
+          1280,
+          390
+        ],
+        "status": "PASS",
+        "coverage": [
+          "original sphere/menu and mid-open disabled-motion intent",
+          "direct placement and legacy storage preserved",
+          "full charge, launch, multiple collisions and trusted mid-flight catch",
+          "escape/blur/resize/scene/reduced/hidden cancellation",
+          "resting renderer sleep and teardown including throwing cleanup"
+        ]
+      },
+      "negativeControls": [
+        {
+          "kind": "constructor-outside-cleanup",
+          "status": "REJECTED",
+          "assertion": "constructor fallback must remove the already appended canvas\n\n1 !== 0\n"
+        },
+        {
+          "kind": "frozen-MotionHub-d3f04ee",
+          "status": "REJECTED",
+          "assertion": "restored Hub geometry must fit the resized hidden viewport"
+        },
+        {
+          "kind": "old-overflow-specificity",
+          "status": "REJECTED",
+          "assertion": "short viewport utility must scroll within safe bounds: {\"width\":756,\"height\":352,\"bottom\":21,\"rect\":{\"x\":479,\"y\":319,\"width\":59.328125,\"height\":44,\"right\":538.328125,\"bottom\":363},\"overflow\":\"visible\",\"scrollbar\":\"none\",\"scrollTop\":0,\"hit\":true}"
+        },
+        {
+          "kind": "old-preview-main-selector",
+          "status": "REJECTED",
+          "assertion": "preview styles must not collapse actual settings content: {\"viewport\":{\"width\":1280,\"height\":900},\"layout\":\"上下\",\"category\":\"阅读\",\"width\":32,\"available\":998,\"padding\":\"12px 16px 16px\",\"maxWidth\":\"760px\",\"marginLeft\":\"0px\",\"marginRight\":\"0px\",\"sectionWidth\":0}"
+        }
+      ],
+      "localEvidence": [
+        {
+          "file": "tests/artifacts/evolution/owners.json",
+          "sha256": "781bc70616fcab57f1c253e590b9e56010592debee3bbe67b274d75165d30054"
+        },
+        {
+          "file": "tests/artifacts/evolution/hub-placement-1793937458145/result.json",
+          "sha256": "9eead66da88c698549e4dc267d56fdb5b07f8b7e0a72d073dc949b1276a31f9e"
+        },
+        {
+          "file": "tests/artifacts/evolution/hub-integration-1793937430787/result.json",
+          "sha256": "96cde13bf6e617fcb0ba1a34a6df6e64df0586435f0913b6869210b94babde3d"
+        },
+        {
+          "file": "tests/artifacts/evolution/hub-integration-1793937430787/layout-matrix.json",
+          "sha256": "cfd073dc2f70b405fb3108aa03f5cc7bda414b91c71a595d03097ec0901ca360"
+        }
+      ],
+      "scope": "Controlled actual components without game assets. No new Mac real-game/device or overall performance acceptance."
+    },
+    "windowsRelay": {
+      "provenance": "Coordinator chat relay on 2026-11-06; raw Windows/device results have not been synchronized here. This is reported functional coverage, not independently re-executed or signed off by Mac.",
+      "sourceReported": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+      "functionalStatus": "REPORTED_PASS",
+      "reportedCoverage": [
+        "attributes in rain/snow: drag, touch scroll, tabs and close",
+        "Hub layouts, full charge, trusted touch catch and settings",
+        "disabled-motion menu intent, UI-off cleanup/reopen unique instance",
+        "native background/resume"
+      ],
+      "performance": "One candidate and one 4.1 baseline sample reported with ModHub 2.0.1 and matching other Mods/preferences; final net improvement not established. No raw numbers reproduced here.",
+      "handoff": "Candidate/preferences/native restart/loading identity reportedly restored before Windows went offline. Final closing documentation commit, full device release and ADB forward cleanup remain unconfirmed. Do not overwrite possible Windows unpushed work.",
+      "requiredToClose": [
+        "Windows final local HEAD/status/unpushed diff and closing commit",
+        "sanitized source/package/environment-bound functional receipts and original failure/recovery boundaries",
+        "matching baseline/candidate raw timing and slow samples, Mod list/preferences and collection procedure for comparison on Windows",
+        "device ownership and ADB forward cleanup confirmation; keep private original evidence on the authorized device"
+      ]
+    },
+    "ciC0CostRefresh": {
+      "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+      "profile": "standard",
+      "depth": "standard",
+      "stages": [
+        {
+          "id": "dependencies",
+          "status": "PASS",
+          "milliseconds": 1146,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "check",
+          "status": "PASS",
+          "milliseconds": 34269,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "unit",
+          "status": "PASS",
+          "milliseconds": 36579,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "build",
+          "status": "PASS",
+          "milliseconds": 109317,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "packages",
+          "status": "PASS",
+          "milliseconds": 117493,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "browser-install",
+          "status": "PASS",
+          "milliseconds": 15464,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "browser",
+          "status": "PASS",
+          "milliseconds": 516645,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        }
+      ],
+      "browserItemSumMs": 514849,
+      "topBrowser": [
+        {
+          "name": "device-layouts.cjs",
+          "milliseconds": 184957,
+          "sharePercent": 35.92
+        },
+        {
+          "name": "evolution-owner-resources.cjs",
+          "milliseconds": 100376,
+          "sharePercent": 19.5
+        },
+        {
+          "name": "settings-ci.cjs",
+          "milliseconds": 35373,
+          "sharePercent": 6.87
+        },
+        {
+          "name": "ui-runtime-regressions.cjs",
+          "milliseconds": 23731,
+          "sharePercent": 4.61
+        },
+        {
+          "name": "attributes-material.cjs",
+          "milliseconds": 17210,
+          "sharePercent": 3.34
+        }
+      ],
+      "jobs": [
+        {
+          "run": 42087362215,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "validate",
+          "status": "success",
+          "jobMs": 857000
+        },
+        {
+          "run": 42087362215,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "evidence-verify",
+          "status": "success",
+          "jobMs": 20000
+        },
+        {
+          "run": 42087362215,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "moody-gate",
+          "status": "success",
+          "jobMs": 3000
+        },
+        {
+          "run": 42087371229,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "prototype",
+          "status": "success",
+          "jobMs": 705000
+        },
+        {
+          "run": 42087371229,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "evidence-verify",
+          "status": "success",
+          "jobMs": 23000
+        }
+      ],
+      "currentPair": {
+        "runs": 2,
+        "attemptEach": 1,
+        "standardCreatedToGateMs": 892000,
+        "researchCreatedToVerifierMs": 735000,
+        "firstActionableFeedbackMs": null,
+        "wholeChangeIntegrationTimeMs": null,
+        "explanation": "Current successful pair only. Earlier failed revisions and repairs remain in this record; not a first-try claim or a performance comparison. Developer request/feedback timestamps are unavailable, so full change lead time cannot be inferred."
+      },
+      "decision": "Keep full checks and two-build contract. Highest measured browser contributors are device layouts and composed owner/Hub tests; this sample alone does not justify removing checks, shortening product motion or enabling selected CI/cache. No new product hotspot was established."
+    }
+  },
+  "historyScope": "Earlier fields retain their original source and failed/pending observations. macContinuation20261106 is the current continuation; it does not reclassify historical failures."
 }
