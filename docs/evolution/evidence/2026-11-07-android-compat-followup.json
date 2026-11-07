@@ -444,7 +444,15 @@
       "first clock guard omitted CDP request bounds; no samples accepted under it",
       "package independent-build gate rejected source change while a targeted test was added; no assertion relaxed",
       "first settings smoke expected official-window foreground on nested settings; corrected owner-specific smoke passed, original retained"
-    ]
+    ],
+    "fixedOpticsExperiment": {
+      "adopted": false,
+      "onlyIndexChanged": true,
+      "actualMemberVerificationAndRestore": true,
+      "clockGuardsPassed": true,
+      "reason": "B1 rendered many fewer frames; near-frame-count B2/A2 showed only small mixed changes, with known visual differences",
+      "productionBaselineRestored": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9"
+    }
   },
   "previousAndroidPackages": [
     {
@@ -487,5 +495,45 @@
         "modhub-soft-wet.js": "b07bcc4cb9afc974d269495c0c3c9b82a798cb81c24e2a50e86090c8e4cb4c6e"
       }
     }
-  ]
+  ],
+  "freeze89b0233": {
+    "source": "89b0233e7f903487fcac29ef1bbedb69dfb0dbd6",
+    "standard": {
+      "run": 42349719614,
+      "status": "FAIL",
+      "evidence": "INCOMPLETE",
+      "unit": [
+        38,
+        38
+      ],
+      "browser": [
+        46,
+        47
+      ],
+      "indexedFilesRehashed": 204,
+      "firstFailure": "header-weather.cjs:235 hidden native contour pauses: class; actual running, expected paused",
+      "downstreamFailuresAreConsequences": true
+    },
+    "research": {
+      "run": 42349722351,
+      "status": "PASS",
+      "evidence": "COMPLETE",
+      "research": [
+        42,
+        42
+      ],
+      "indexedFilesRehashed": 481
+    },
+    "ninePackagePayloadsMatchLocal": true,
+    "publicReleaseAllowed": false
+  },
+  "postFreezeCorrection": {
+    "baseSource": "89b0233e7f903487fcac29ef1bbedb69dfb0dbd6",
+    "change": "Empty contour animation:none shorthand reset computed play state; explicitly keep animation-play-state:paused while retaining zero CSS clocks",
+    "file": "src/theme/settings-workspace.css",
+    "fileSha256": "c8c2926e560303836dae7a298977c067556ef27d2adde444ee5162854e729c89",
+    "unchangedExistingHeaderWeatherContract": "PASS locally",
+    "orbitVisibilityAndRecoveryContract": "PASS locally",
+    "freshRemoteCI": "PENDING"
+  }
 }

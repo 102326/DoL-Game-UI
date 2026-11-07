@@ -81,3 +81,11 @@ Hub的有效修前反例是外部focus/pointer分别额外绘制1次，修后128
 最新c304中间包的单组导航暂停诊断合计CPU差约−0.59%，小于基线自身波动，应用CPU反升；未采用暂停，保留可见效果。源码变更期间的独立双构建按`CJ3C_SOURCE_CHANGED_BETWEEN_BUILDS`拒绝，源于补充special分支测试，需冻结后重跑，不能称包Gate已过。
 
 **剩余明确阻塞：持续雨效/玻璃合成开销尚未解决到可批准发行的程度。** 本批已减少空闲/不可见工作并取得小幅图形CPU改善，但不能据此宣布卡顿消失。当前允许形成工程候选、同步源码与验收材料；正式封包/发行须在性能处置及最终检查后再决定。
+
+### 89b0233远端核对及后续纠正
+
+研究42349722351的producer与独立核验全通过，实际下载两归档并重算481项索引；标准42349719614的38项unit通过、47项browser中46项通过，204项索引和九包载荷均读回一致，但运行及证据仍为FAIL/INCOMPLETE。唯一首失败是`header-weather.cjs:235`：隐藏native轮廓的computed animationPlayState为running而应为paused。源于本批empty owner的`animation:none!important` shorthand默认值，不是多个独立产品Bug；后续summary/verifier/gate正确拒绝。
+
+后续源码补`animation-play-state:paused!important`，保持隐藏零CSS时钟，同时满足原暂停/显示恢复契约。原header-weather与evolution-orbit本地通过，不删除或放宽原断言。该修复须用新冻结重跑完整CI，不能把89b的研究成功搬到后续源码。
+
+固定16px本地滤镜单元隔离实验完成原生6秒ABBA，四轮21成员、SVG输入和时钟均核对，最终恢复原85fee完整包及配置。B1帧数288，另外三轮482/493/488；不能把少出帧的CPU下降当收益。近帧数B2/A2应用CPU只差约1.85%，图形线程方向混合，又存在视觉差异，因此未采用。
