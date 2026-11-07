@@ -671,8 +671,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "d9c923581adc93e3be19bc954e9adee743d87920a31ef4dfcd4736b61ef27916",
-      "assertionSites": 417
+      "sourceSha256": "045d1f330e844980cc142423ec601c282e31c97fb7e0134dc1d91e940df3e2c3",
+      "assertionSites": 426
     },
     {
       "entry": "tests/attributes-material.cjs",

@@ -4,7 +4,7 @@
   "date": "2026-11-07",
   "baseSource": "cbd051821e7af2cd9302b915fb522bc5b91e560b",
   "previousFrozenSource": "5033626e4bcd1f0e6f9e2bb23a0771ed4f2891f9",
-  "status": "SCOPED_FUNCTIONAL_VALIDATION_PASSED_PERFORMANCE_PENDING",
+  "status": "OWNER_ACCEPTED_FINAL_RELEASE_CHECKS_PENDING",
   "releaseReady": false,
   "releaseAuthorization": true,
   "packages": [
@@ -99,7 +99,7 @@
     "8681 first cold-start smoke readiness limit expired before interactions; subsequent ready-document smoke passed all unchanged interaction assertions, original attempt retained"
   ],
   "performance": {
-    "status": "PENDING",
+    "status": "OWNER_ACCEPTED_REPRESENTATIVE_EXPERIENCE",
     "social": "Two traced real-touch capture-to-bubble intervals 79.766/99.083 ms; synchronous native visibility/Wikifier chain caused layout. Diagnostic tracing perturbs timings; this is not an untraced A/B or exclusion of UI style effects.",
     "rain": "Chrome diagnostic attributes recurring style work to drop/path geometry and navigation animation. Native system traces confirm actual late classifications and application-side graphics thread activity; GPU execution unmeasured.",
     "visibilityAba": {
@@ -237,7 +237,8 @@
         "No renderer damage rectangles or GPU execution time available",
         "No proven preserving-effects small patch; normal maps are already cached. Caching the dynamic backdrop would change semantics."
       ]
-    }
+    },
+    "currentDecision": "Owner accepts current device experience and requests stopping unproductive blind performance probes. Prior failures and sample variability remain recorded; no newly attributed cause is asserted."
   },
   "coverageLimits": [
     "ReOverfits not installed on this tablet; version/source/slot contract only",
@@ -833,9 +834,9 @@
     }
   ],
   "ownerReleaseAuthorization": {
-    "status": "APPROVED_CONDITIONAL",
-    "scope": "Soft & Wet 4.2, ordinary-player release description using previous format",
-    "condition": "Performance and final acceptance confirmed; current performance gate remains Pending/Blocked",
+    "status": "APPROVED_AFTER_PERFORMANCE_AND_MATERIAL_ACCEPTANCE",
+    "scope": "Soft & Wet 4.2",
+    "condition": "Final material/settings coverage, source, CI and artifact identity checks pass.",
     "executed": false
   },
   "engineeringStaging": {
@@ -849,5 +850,39 @@
     "otherPayloads": "published original Host and six adapters; ModHubSoftWet 1.0.4 selected original local ZIP; all members match current CI contracts",
     "assetsExcludeRawEvidenceAndMedia": true,
     "releaseReady": false
+  },
+  "acrylicCompositionCorrection": {
+    "baseSource": "282a52d8501b123bd805ec74682a380fab516b17",
+    "status": "LOCAL_BUILD_AND_TARGETED_ANDROID_PASSED_OWNER_VISUAL_REVIEW_PENDING",
+    "cause": "Nested :has() invalidated the official-owned-host branch. The native ancestor retained blur(3px), unlike settings and fully matched adapter portals.",
+    "change": "Flatten the shared ancestor selector without changing material-axis values, ownership fallback, input or weather effects.",
+    "packageSha256": "7f64675b72a43b9fd3dfc9ab2fb9ecc3239743a8d2f0a6ac4f83514b38a3c8cf",
+    "workingSourceHashes": {
+      "src\\theme\\workspace-theme.css": "6de858ba791e4c07d51580f8d591ddf531deb8899f9c9a94343350f828443c18",
+      "tests\\adapter-materials.cts": "045d1f330e844980cc142423ec601c282e31c97fb7e0134dc1d91e940df3e2c3"
+    },
+    "android": {
+      "loadedPackageMembersVerified": true,
+      "scenes": [
+        "settings",
+        "social",
+        "ModHub"
+      ],
+      "levels": [
+        60,
+        100
+      ],
+      "pageErrors": 0,
+      "preferencesRestored": true
+    },
+    "regression": {
+      "freshOldCss": "FAIL: official ancestor blur(3px), expected none",
+      "fixedCss": "PASS: official hosts, saves, full adapter and native fallback",
+      "rebuiltPackageAdapterSuite": "PASS",
+      "strictTypecheckAndBuild": "PASS",
+      "newFullCI": "NOT_RUN"
+    },
+    "compatibilityPackageRewriteRequired": false,
+    "ownerVisualAcceptance": "ACCEPTED"
   }
 }

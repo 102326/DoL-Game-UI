@@ -29,6 +29,28 @@ const cases=[
  let browser;
  try{
   await server.listen();const address=server.httpServer?.address();assert.ok(address&&typeof address!=='string');const port=address.port;browser=await chromium.launch(browserOptions);
+  // A valid shell selector inside another :has() silently loses its official branch.
+  const ancestor=await browser.newPage();
+  await ancestor.setContent('<html data-stone-free="4.2.0" data-dol-midnight data-dgu-acrylic-adjustment><body><div id="customOverlayContainer"><div id="customOverlay"></div></div></body></html>');
+  await ancestor.addStyleTag({content:'#customOverlayContainer{backdrop-filter:blur(3px);background:#08090b18}'});
+  await ancestor.addStyleTag({path:'src/theme/workspace-theme.css'});
+  for(const item of [
+   {className:'dgc-overlay',host:'dgc-host',attrs:{},expected:'none'},
+   {className:'dgs-overlay',host:'dgs-host',attrs:{},expected:'none'},
+   {className:'dgp-overlay',host:'dgp-host',attrs:{},expected:'none'},
+   {className:'',host:'',attrs:{'data-sf-workspace':'saves'},expected:'none'},
+   {className:'',host:'',attrs:{'data-dgu-adapter':'ModHubSoftWet','data-dgu-adapter-match':'full'},expected:'none'},
+   {className:'dgs-overlay',host:'',attrs:{},expected:'blur(3px)'},
+   {className:'dgs-overlay',host:'dgc-host',attrs:{},expected:'blur(3px)'},
+   {className:'',host:'',attrs:{'data-dgu-adapter':'ModHubSoftWet','data-dgu-adapter-match':'partial'},expected:'blur(3px)'}
+  ]){
+   await ancestor.locator('#customOverlay').evaluate((n,item)=>{n.setAttribute('class',item.className);for(const key of [...n.attributes].map(a=>a.name))if(key.startsWith('data-'))n.removeAttribute(key);for(const [key,value]of Object.entries(item.attrs))n.setAttribute(key,value);n.innerHTML=item.host?`<nav class="${item.host}"></nav>`:''},item);
+   assert.equal(await ancestor.locator('#customOverlayContainer').evaluate(n=>getComputedStyle(n).backdropFilter),item.expected,'known official and full adapter shells share the unfiltered backdrop; unknown hosts keep native rendering');
+  }
+  await ancestor.locator('#customOverlay').evaluate(n=>{n.setAttribute('class','dgs-overlay');n.innerHTML='<nav class="dgs-host"></nav>'});
+  await ancestor.locator('html').evaluate(n=>n.removeAttribute('data-dgu-acrylic-adjustment'));
+  assert.equal(await ancestor.locator('#customOverlayContainer').evaluate(n=>getComputedStyle(n).backdropFilter),'blur(3px)','leaving the material contract restores the native ancestor');
+  await ancestor.close();
   for(const item of cases){
    const page=await browser.newPage({viewport:{width:1100,height:800}}),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto('http://127.0.0.1:'+port+'/__adapter_material__');await page.evaluate(()=>Object.assign(window,{must:<T,>(node:T|null)=>{if(!node)throw Error('Missing adapter fixture');return node}}));

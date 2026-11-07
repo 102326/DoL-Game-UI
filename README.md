@@ -2,7 +2,7 @@
 
 [![最新版本](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest) ![适配基线](https://img.shields.io/badge/DoL-0.5.12.13-blue)
 
-> 4.2 正在准备中，性能验收尚未完成。公开稳定版请从[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)下载。
+> 从[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)下载 Soft & Wet 4.2。
 
 Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景融入半透明玻璃，重新组织衣柜、服装店、角色信息与常用窗口。
 
@@ -11,6 +11,10 @@ Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景�
 [4.x文档](docs/README.md) · [下载稳定版](https://github.com/102326/DoL-Game-UI/releases/latest) · [4.2 更新说明](docs/RELEASE_4.2.0.md) · [安装与升级](#安装与升级) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 > 普通玩家需要 **主 UI + Framework Host** 两个 ZIP。兼容包按自己安装的 Mod 选用，所有 `.mod.zip` 均无需解压。
+
+![Android 设置界面](assets/releases/4.2/android-settings.png)
+
+[观看 Windows 动态预览](https://raw.githubusercontent.com/102326/DoL-Game-UI/v4.2.0/assets/releases/4.2/soft-wet-4.2-windows.mp4) · [更多画面](docs/RELEASE_4.2.0.md#画面与动态预览)
 
 ## 核心体验
 
@@ -75,7 +79,7 @@ Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景�
 
 | 包 | 用途 |
 | --- | --- |
-| ModHubSoftWet | 模组管理器、市场、帮助中心与工具浮层 |
+| ModHubSoftWet 1.0.4 | 模组管理器、市场、帮助中心与工具浮层；需要主 UI 4.2 或更新 |
 | MapleBirchSoftWet | 云存档页面 |
 | DolOptimizationSoftWet | 存档页面、日期显示与衣柜叠穿管理 |
 | CheatExtendedSoftWet | Cheat Extended 外观 |
