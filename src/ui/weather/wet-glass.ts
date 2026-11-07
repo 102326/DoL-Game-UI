@@ -128,6 +128,8 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   });
  }
  function draw(s:Frame){
+  const sharedRain=s.wet>.002&&s.snow<=.002&&(s.specialAmount??0)<=.002;
+  if(layer.hasAttribute('data-shared-rain')!==sharedRain)layer.toggleAttribute('data-shared-rain',sharedRain);
   // Sample ambient rain at most 60Hz; keep its real-time clock and immediate layout/motion invalidations.
   if(shell.hasAttribute('data-sf-weather-material')&&document.documentElement.hasAttribute('data-dgu-visualmotion')&&!reduced.matches&&s.wet>.002&&s.snow<=.002&&(s.specialAmount??0)<=.002&&!dirty&&!wasMoving&&s.width===width&&s.height===height&&s.time>lastTime&&Math.floor(s.time*60)===Math.floor(lastTime*60))return;
   // WAAPI geometry changes do not emit mutations. Protect the moving workspace

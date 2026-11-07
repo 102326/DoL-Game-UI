@@ -689,8 +689,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8b5d63ee9a9c9a88995f2dc9d41ae544135e6a58882c1086f524ae4f2a6088e4",
-      "assertionSites": 65
+      "sourceSha256": "59c2d222cb72c2a767946f425aeefcd3ca9c26c6ea36d47dc1084f48382c3e8c",
+      "assertionSites": 73
     },
     {
       "entry": "tests/checkpoint-boundary.test.mts",
@@ -933,8 +933,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "5229475a7a9b59b6aad5e98d4e8de91c678c8670a4e068d11b332002bcfd2801",
-      "assertionSites": 20
+      "sourceSha256": "fceb0246e5de226b321c15357aa22e82e8fe9884e0fd837aa3924723bdd822fd",
+      "assertionSites": 23
     },
     {
       "entry": "tests/evolution-owner-resources.cjs",
@@ -1003,8 +1003,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "7e0b532998a3fdd0a21486b1635ed6c03a28e11350e0b37f68d4c53cd98ced59",
-      "assertionSites": 434,
+      "sourceSha256": "ad96fc3ff90b49f6cf58221456cc6842711c5501fa7952c47feb93d16f20c2ff",
+      "assertionSites": 450,
       "rendererContexts": [
         "sphere:2d"
       ]

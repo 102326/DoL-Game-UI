@@ -54,6 +54,16 @@ async function released(page:Page,label:string){
    await page.locator('[data-dgu-attributes-material]').waitFor();await page.waitForTimeout(300);
    await page.evaluate(({z,w})=>{document.documentElement.style.zoom=String(z);const shell=document.querySelector<HTMLElement>('#customOverlay')!;Object.assign(shell.style,{left:'50%',top:'50%',width:Math.min(880,w/z-80)+'px',height:Math.min(600,900/z-100)+'px',transform:'translate(-50%, -50%)'});Object.assign(window,{contractRoot:shell,contractParent:shell.parentNode,contractAction:document.querySelector('#native-action')})},{z:zoom,w:width});
    await frame(page);await page.locator('#weather').selectOption('rain');await rainGeometry(page,`${width}/${zoom} rain ready`);
+   await page.waitForFunction(()=>{const glass=document.querySelector('.sf-foreground-paint>.evo-glass-layer');return glass?.hasAttribute('data-shared-rain')&&getComputedStyle(glass).backdropFilter==='blur(0px)'});
+   if(width===1280&&zoom===1){
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await page.evaluate(()=>Object.assign(window,{Weather:{name:'rain',precipitation:'rain',precipitationIntensity:1.7,dayState:'day',bloodMoon:true}}));
+    await page.waitForFunction(()=>document.querySelector('.sf-weather-canvas')?.getAttribute('data-special')==='blood-moon'&&!document.querySelector('.evo-glass-layer')?.hasAttribute('data-shared-rain'));
+    assert.equal(await page.locator('.evo-glass-layer').evaluate(n=>getComputedStyle(n).backdropFilter),'none','special skies retain their original composition');
+    await page.evaluate(()=>Object.assign(window,{Weather:{name:'rain',precipitation:'rain',precipitationIntensity:1.7,dayState:'day'}}));
+    await page.waitForFunction(()=>document.querySelector('.evo-glass-layer')?.hasAttribute('data-shared-rain'));
+    await page.emulateMedia({reducedMotion:'no-preference'});
+   }
    await page.locator('#native-action').click();assert.equal(await page.evaluate(()=>attributesPreview.counts().actions),1);
    const before=await page.locator('#customOverlay').boundingBox();assert.ok(before);
    await drag(page);assert.equal(await page.locator('#customOverlay').getAttribute('data-dgu-material-moving'),'');await aligned(page,`${width}/${zoom} dragging`);await rainGeometry(page,`${width}/${zoom} dragging`);
@@ -62,6 +72,7 @@ async function released(page:Page,label:string){
    await page.mouse.up();await page.waitForFunction(()=>!document.querySelector('#customOverlay')?.hasAttribute('data-dgu-material-moving'));await aligned(page,`${width}/${zoom} settled`);
    const stable=await page.locator('#customOverlay').getAttribute('style');await page.waitForTimeout(150);assert.equal(await page.locator('#customOverlay').getAttribute('style'),stable,'idle stops writes');
    await page.getByRole('button',{name:'学业',exact:true}).click();await page.waitForFunction(()=>document.querySelector<HTMLElement>('#customOverlayContent')!.scrollTop>100);await page.locator('#weather').selectOption('snow');await page.waitForTimeout(200);await aligned(page,`${width}/${zoom} scroll and snow`);
+   assert.equal(await page.locator('.evo-glass-layer').evaluate(n=>getComputedStyle(n).backdropFilter),'none','snow retains its original composition');
    await page.evaluate(()=>attributesPreview.dispose());await released(page,'dispose restores styles');assert.equal(await page.locator('#customOverlay+.sf-foreground-host').count(),0,'dispose releases foreground');
    await page.locator('#native-action').click();assert.equal(await page.evaluate(()=>attributesPreview.counts().actions),2,'native action remains functional');
    results.push(`geometry ${width} zoom ${zoom}: real native nodes, rain/snow, scroll, drag, settle, disposal`);await page.close();

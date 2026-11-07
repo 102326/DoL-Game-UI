@@ -31,7 +31,7 @@ const limits=()=>({left:area.left+12,top:area.top+12,right:area.left+area.width-
 let intent:Point|undefined,lastFrame=0,edgeFrames=0,edgePending=false;
 const aimLine=computed(()=>{const s=edge.value,angle=s.aim,n=Math.cos(angle)*80,t=Math.sin(angle)*80;return{x:88+(s.wall==='left'?n:s.wall==='right'?-n:t),y:88+(s.wall==='top'?n:s.wall==='bottom'?-n:t)}});
 function requestEdge(){if(scope.frame(edgeFrame))edgePending=true}
-function stopEdge(){scope.cancelFrame(edgeFrame);edgePending=false;edge.value=physics.stop();intent=undefined;lastFrame=0}
+function stopEdge(){scope.cancelFrame(edgeFrame);edgePending=false;const stopped=physics.stop();if(edge.value.phase!=='idle')edge.value=stopped;intent=undefined;lastFrame=0}
 function edgeFrame(){
  edgePending=false;
  if(!scope.active())return;
