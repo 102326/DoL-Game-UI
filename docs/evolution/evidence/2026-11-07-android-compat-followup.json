@@ -6,12 +6,12 @@
   "previousFrozenSource": "5033626e4bcd1f0e6f9e2bb23a0771ed4f2891f9",
   "status": "SCOPED_FUNCTIONAL_VALIDATION_PASSED_PERFORMANCE_PENDING",
   "releaseReady": false,
-  "releaseAuthorization": false,
+  "releaseAuthorization": true,
   "packages": [
     {
       "name": "DoLGameUI",
       "version": "4.2.0",
-      "sha256": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9",
+      "sha256": "46d374c14b0ae225ae4c8eb8953a9b149d530ae7e502d8aa25ecfb246b9d7104",
       "members": {
         "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
         "MODHUB-PERFORMANCE-NOTICE.txt": "8bc1ab1c41af770ed48aaedfa8111faedf1901387c96a65ddc81c9c726fcc351",
@@ -27,7 +27,7 @@
         "index.js": "971158d12d5833879333bbfd56821ed4bc9ec40a4495bbc7b6dbb8bed3e5da0e",
         "modhub-performance.js": "feafd6a3372d557f3bb6eeabfa2cb33d828e48f2b033551f76b683f7ba861027",
         "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
-        "style.css": "210700ca96bfd89d47a8b67a880c5213d3ad93522b0a8883f52a3927c2ab31e5",
+        "style.css": "a83b89fdb7b56e0fc8cfa35a494622bad1b4776cdf3345aab1421ae23f89aaf2",
         "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
         "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
         "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
@@ -87,14 +87,16 @@
       "npm run ci:lock and generated-lock check",
       "git diff --check"
     ],
-    "fullCi": "Previous standard 42292957909 and research 42292962805 only validate 5033626. Current compatibility/source patch requires a new frozen batch before release; no inherited PASS."
+    "fullCi": "Source 8681ce90d822654345e860c747f266225cd12b06: standard 42352218805 and research 42352221945 PASS/COMPLETE; 204/481 indexed files independently rehashed, nine package contracts, 9 negatives and two independent builds passed; performance acceptance remains separate",
+    "previousFrozenFullCi": "Previous standard 42292957909 and research 42292962805 only validate 5033626. Current compatibility/source patch requires a new frozen batch before release; no inherited PASS."
   },
   "retainedFailures": [
     "Initial bootstrap CDP evaluate timed out; switched to bounded host-side readiness observations",
     "Initial social touch guard found sidebar target off-screen; subsequent actual scrolled touch passed",
     "Uncompressed ModHub backup exceeded CDP response budget before installation dispatch; DEFLATE backup passed without increasing transport cap",
     "First synthetic restore fixture lacked native fixed positioning and was occluded; corrected fixture passed",
-    "First Android master-off check incorrectly hardcoded native color31; actual native --850 resolves34 after master off. Followup compares original native rule and final smoke passed. No product rule or valid assertion was removed."
+    "First Android master-off check incorrectly hardcoded native color31; actual native --850 resolves34 after master off. Followup compares original native rule and final smoke passed. No product rule or valid assertion was removed.",
+    "8681 first cold-start smoke readiness limit expired before interactions; subsequent ready-document smoke passed all unchanged interaction assertions, original attempt retained"
   ],
   "performance": {
     "status": "PENDING",
@@ -320,6 +322,34 @@
     {
       "name": "virtual-clock-detach.json",
       "sha256": "5632be9366982b6bf8a24cfb1938aefbd3f1365b3b46fb9f0f490df5cca1a199"
+    },
+    {
+      "name": "final-8681-plan.json",
+      "sha256": "ca74a48118fa97fb96614fd26375fea5f4063d7c30c05cd519faa05bd57db8d4"
+    },
+    {
+      "name": "final-8681-installation.json",
+      "sha256": "62b3e8dcbb7ee457b76087adb0ec33830a5c69f034f68a3b8676a0fe4b626053"
+    },
+    {
+      "name": "final-8681-smoke.json",
+      "sha256": "15df2ce97c8ee861c821257181b68b52dbd9799b073685dfa8b89d494b095a12"
+    },
+    {
+      "name": "final-8681-smoke-ready.json",
+      "sha256": "5bb85470c520dfca4fb043199bfe8650c055f0f114f15b31631fb5da1905ea37"
+    },
+    {
+      "name": "rain-contourpause-native.json",
+      "sha256": "5e8cd64277ef92347fe94d30b742260142f0b88b0d07c3283450da0f3d6dd267"
+    },
+    {
+      "name": "actions-8681ce9/standard-readback.json",
+      "sha256": "1114f74cd284e7217542460114895a7796b809ea5fa13007ce96b42982e2f413"
+    },
+    {
+      "name": "actions-8681ce9/research-readback.json",
+      "sha256": "bab2826163203736052447f770bbfa61825aa38a812081ef6b07188516215458"
     }
   ],
   "performanceCandidate": {
@@ -387,21 +417,6 @@
       "visibleClocks": 2,
       "reappearanceAndForegroundRetirementContracts": "PASS"
     },
-    "currentAndroid": {
-      "uiZipSha256": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9",
-      "allUiMembersVerified": true,
-      "modhubRainShared": "blur(0px)",
-      "settingsRainShared": "none (existing nested presentation)",
-      "settingsRainSnowRainMarker": [
-        true,
-        false,
-        true
-      ],
-      "zeroWidthOwnerAnimations": 0,
-      "trustedClose": true,
-      "exactUiPreferencesOrderHiddenStorageRestored": true,
-      "errors": 0
-    },
     "ordinaryRainCompositionPredicate": "wet > .002, snow <= .002 and specialAmount <= .002; CSS applies only to separated foreground, not settings nested shell",
     "realClockNoUiAbba": {
       "clockChecks": "four cold-process samples passed request-bounded wall-clock checks",
@@ -452,7 +467,135 @@
       "clockGuardsPassed": true,
       "reason": "B1 rendered many fewer frames; near-frame-count B2/A2 showed only small mixed changes, with known visual differences",
       "productionBaselineRestored": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9"
-    }
+    },
+    "contourPauseDiagnostic": {
+      "adopted": false,
+      "appCpuMs": [
+        10694.74,
+        10472.4,
+        10278.21,
+        11274.77
+      ],
+      "actualAppFrames": [
+        458,
+        438,
+        410,
+        415
+      ],
+      "appLatePercent": [
+        19.87,
+        21.0,
+        22.44,
+        29.88
+      ],
+      "reason": "One short ABBA, baseline drift and varying frame/drop counts do not establish a reliable net benefit; visible focus remains unchanged",
+      "gpuExecutionValidated": false,
+      "identityLimit": "Raw receipt copied c304 label, no active ZIP members were captured in this diagnostic; actual 85fee reported by operator, not independently established by this receipt"
+    },
+    "combinedOpticsFeasibility": {
+      "adopted": false,
+      "scope": "isolated static desktop two-drop optical field, not production",
+      "reason": "External SVG field displaced real backdrop, but pixel/input sampling differs from independent lenses; no performance or device proof",
+      "additionalStaticResult": "Direct feImage plus feMerge removes field R/G mismatch in two 16x16 ROIs, but actual backdrop displacement still differs under same circular clip; no equivalent product renderer or performance benefit established"
+    },
+    "android89bCheckpoint": {
+      "uiZipSha256": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9",
+      "allUiMembersVerified": true,
+      "modhubRainShared": "blur(0px)",
+      "settingsRainShared": "none (existing nested presentation)",
+      "settingsRainSnowRainMarker": [
+        true,
+        false,
+        true
+      ],
+      "zeroWidthOwnerAnimations": 0,
+      "trustedClose": true,
+      "exactUiPreferencesOrderHiddenStorageRestored": true,
+      "errors": 0
+    },
+    "currentAndroid": {
+      "uiZipSha256": "46d374c14b0ae225ae4c8eb8953a9b149d530ae7e502d8aa25ecfb246b9d7104",
+      "allUiMembersVerified": true,
+      "memberCount": 21,
+      "changedMembersComparedWith89b": [
+        "style.css"
+      ],
+      "states": [
+        {
+          "label": "ModHub ordinary rain",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "blur(0px)",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [
+            "paused",
+            "paused",
+            "paused",
+            "paused"
+          ],
+          "emptyOrbits": [
+            [],
+            []
+          ],
+          "errors": 0
+        },
+        {
+          "label": "settings ordinary rain",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "none",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        },
+        {
+          "label": "settings snow",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "snow",
+          "shared": "none",
+          "marker": false,
+          "canvas": {
+            "weather": "snow",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        },
+        {
+          "label": "settings rain restored",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "none",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        }
+      ],
+      "exactUiPreferencesOrderHiddenStorageRestored": true,
+      "remainingPlanes": 0,
+      "errors": 0,
+      "firstColdStartReadinessAttempt": "9-second readiness limit expired before interactions; original failure retained; startup wait separated from unchanged 9-second interaction assertions in subsequent ready-document smoke"
+    },
+    "sourceSha256FrozenSource": "89b0233e7f903487fcac29ef1bbedb69dfb0dbd6; corrected CSS hash and source are separately recorded under postFreezeCorrection"
   },
   "previousAndroidPackages": [
     {
@@ -534,6 +677,177 @@
     "fileSha256": "c8c2926e560303836dae7a298977c067556ef27d2adde444ee5162854e729c89",
     "unchangedExistingHeaderWeatherContract": "PASS locally",
     "orbitVisibilityAndRecoveryContract": "PASS locally",
-    "freshRemoteCI": "PENDING"
+    "freshRemoteCI": {
+      "standard": {
+        "run": 42352218805,
+        "status": "PASS",
+        "evidence": "COMPLETE",
+        "unit": [
+          38,
+          38
+        ],
+        "browser": [
+          47,
+          47
+        ],
+        "indexedFilesRehashed": 204,
+        "ninePackageContracts": "PASS",
+        "negativeCases": 9,
+        "independentBuildReproducibility": "PASS"
+      },
+      "research": {
+        "run": 42352221945,
+        "status": "PASS",
+        "evidence": "COMPLETE",
+        "research": [
+          42,
+          42
+        ],
+        "indexedFilesRehashed": 481
+      }
+    },
+    "source": "8681ce90d822654345e860c747f266225cd12b06",
+    "android": {
+      "uiZipSha256": "46d374c14b0ae225ae4c8eb8953a9b149d530ae7e502d8aa25ecfb246b9d7104",
+      "allUiMembersVerified": true,
+      "memberCount": 21,
+      "changedMembersComparedWith89b": [
+        "style.css"
+      ],
+      "states": [
+        {
+          "label": "ModHub ordinary rain",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "blur(0px)",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [
+            "paused",
+            "paused",
+            "paused",
+            "paused"
+          ],
+          "emptyOrbits": [
+            [],
+            []
+          ],
+          "errors": 0
+        },
+        {
+          "label": "settings ordinary rain",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "none",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        },
+        {
+          "label": "settings snow",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "snow",
+          "shared": "none",
+          "marker": false,
+          "canvas": {
+            "weather": "snow",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        },
+        {
+          "label": "settings rain restored",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "none",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        }
+      ],
+      "exactUiPreferencesOrderHiddenStorageRestored": true,
+      "remainingPlanes": 0,
+      "errors": 0,
+      "firstColdStartReadinessAttempt": "9-second readiness limit expired before interactions; original failure retained; startup wait separated from unchanged 9-second interaction assertions in subsequent ready-document smoke"
+    }
+  },
+  "previousPerformanceAndroidPackages": [
+    {
+      "name": "DoLGameUI",
+      "version": "4.2.0",
+      "sha256": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "MODHUB-PERFORMANCE-NOTICE.txt": "8bc1ab1c41af770ed48aaedfa8111faedf1901387c96a65ddc81c9c726fcc351",
+        "README.md": "54bc7cb31a5ccf066fbf27e2c877aea80a026a7194dc9a69d82e4731805ff7ed",
+        "THIRD-PARTY-NOTICES.txt": "b59cbe1add88d81375c867e58b3a2af068adae49e3aecb241eb99ff422634ce3",
+        "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+        "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+        "boot.json": "611851fe4abe9d801d2b5a1760d0fc7c8711f813598998a205c9ae7a2649ad97",
+        "docs/INSTALL_4.2.md": "58502a57866c0087ed6fb026d1421b4e238c9fa7d68f023ae0cb7cf01d592adb",
+        "docs/OPTIONAL_ADAPTERS.md": "da29187d05ba8ed939e58f9626139f2b4789579b68d8dc3e5c1ad3e368545e38",
+        "docs/RELEASE_4.2.0.md": "61ea844c3c9a10f1b6da4bbf797d16b1ff6762c9332ffdf673237a057826de60",
+        "docs/UI_SETTINGS.md": "7581ea445e41f0829813b54c81134d1fe1547adbe8aec05aa336f2fc83827088",
+        "index.js": "971158d12d5833879333bbfd56821ed4bc9ec40a4495bbc7b6dbb8bed3e5da0e",
+        "modhub-performance.js": "feafd6a3372d557f3bb6eeabfa2cb33d828e48f2b033551f76b683f7ba861027",
+        "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+        "style.css": "210700ca96bfd89d47a8b67a880c5213d3ad93522b0a8883f52a3927c2ab31e5",
+        "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+        "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+        "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+        "twee/patch-resize.twee": "c2075700d7f1ab2dfacf2b35d69bfe9377ef5ec9c8a678222cf9e2cc9b2ce723",
+        "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+        "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+      }
+    },
+    {
+      "name": "ModHubSoftWet",
+      "version": "1.0.4",
+      "sha256": "329dca56a6beec608415579d52a9d17a91d398233cd7ab7795b73dee4f48f521",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "c6525a01faa5bbf9af960c6cc9b2d16a931670ae805545cfc7977dcc8513698e",
+        "boot.json": "97de5692be7e0cda1d051dfbf0753995fbddd24cc8ccc9989e3dfd896bac7887",
+        "modhub-soft-wet.css": "8273f4a8b9820db60d61b81d2d83945c3c7968136a50f6cb88c82daa4c19fa43",
+        "modhub-soft-wet.js": "b07bcc4cb9afc974d269495c0c3c9b82a798cb81c24e2a50e86090c8e4cb4c6e"
+      }
+    }
+  ],
+  "ownerReleaseAuthorization": {
+    "status": "APPROVED_CONDITIONAL",
+    "scope": "Soft & Wet 4.2, ordinary-player release description using previous format",
+    "condition": "Performance and final acceptance confirmed; current performance gate remains Pending/Blocked",
+    "executed": false
+  },
+  "engineeringStaging": {
+    "source": "8681ce90d822654345e860c747f266225cd12b06",
+    "classification": "ENGINEERING_NOT_RC",
+    "zipCount": 9,
+    "checksumFile": "SHA256SUMS.txt",
+    "ciOriginalUiSha256": "49a90bfe8ba26a9da869bbdb574d725b31662a249d106086a65d95fe5558dee3",
+    "androidLocalUiSha256": "46d374c14b0ae225ae4c8eb8953a9b149d530ae7e502d8aa25ecfb246b9d7104",
+    "all21UiMemberBytesMatch": true,
+    "otherPayloads": "published original Host and six adapters; ModHubSoftWet 1.0.4 selected original local ZIP; all members match current CI contracts",
+    "assetsExcludeRawEvidenceAndMedia": true,
+    "releaseReady": false
   }
 }
