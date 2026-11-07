@@ -1,0 +1,15 @@
+import '../../src/main';
+import '../../src/theme/stone-free.css';
+import '../../src/theme/dark-acrylic.css';
+import '../../src/theme/kraft-work-pages.css';
+import '../../src/theme/kraft-work-motion.css';
+import '../../src/theme/navigation-material.css';
+import {hubPreview} from './hub-preview';
+import '../evolution42-study04/style.css';
+const root:NonNullable<Parameters<typeof import('../../src/theme/controller').startTheme>[0]>=window;
+const theme=root.DoLMidnightTheme;
+if(!theme)throw Error('Missing settings owner');
+const button=document.querySelector<HTMLButtonElement>('#open');
+if(!button)throw Error('Missing preview entry');
+button.onclick=()=>theme.openSettings();theme.openSettings();
+window.addEventListener('pagehide',()=>hubPreview.dispose(),{once:true});

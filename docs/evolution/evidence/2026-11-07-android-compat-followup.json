@@ -1,0 +1,888 @@
+{
+  "schema": 1,
+  "kind": "4.2-android-compat-performance-followup",
+  "date": "2026-11-07",
+  "baseSource": "cbd051821e7af2cd9302b915fb522bc5b91e560b",
+  "previousFrozenSource": "5033626e4bcd1f0e6f9e2bb23a0771ed4f2891f9",
+  "status": "OWNER_ACCEPTED_FINAL_RELEASE_CHECKS_PENDING",
+  "releaseReady": false,
+  "releaseAuthorization": true,
+  "packages": [
+    {
+      "name": "DoLGameUI",
+      "version": "4.2.0",
+      "sha256": "46d374c14b0ae225ae4c8eb8953a9b149d530ae7e502d8aa25ecfb246b9d7104",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "MODHUB-PERFORMANCE-NOTICE.txt": "8bc1ab1c41af770ed48aaedfa8111faedf1901387c96a65ddc81c9c726fcc351",
+        "README.md": "54bc7cb31a5ccf066fbf27e2c877aea80a026a7194dc9a69d82e4731805ff7ed",
+        "THIRD-PARTY-NOTICES.txt": "b59cbe1add88d81375c867e58b3a2af068adae49e3aecb241eb99ff422634ce3",
+        "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+        "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+        "boot.json": "611851fe4abe9d801d2b5a1760d0fc7c8711f813598998a205c9ae7a2649ad97",
+        "docs/INSTALL_4.2.md": "58502a57866c0087ed6fb026d1421b4e238c9fa7d68f023ae0cb7cf01d592adb",
+        "docs/OPTIONAL_ADAPTERS.md": "da29187d05ba8ed939e58f9626139f2b4789579b68d8dc3e5c1ad3e368545e38",
+        "docs/RELEASE_4.2.0.md": "61ea844c3c9a10f1b6da4bbf797d16b1ff6762c9332ffdf673237a057826de60",
+        "docs/UI_SETTINGS.md": "7581ea445e41f0829813b54c81134d1fe1547adbe8aec05aa336f2fc83827088",
+        "index.js": "971158d12d5833879333bbfd56821ed4bc9ec40a4495bbc7b6dbb8bed3e5da0e",
+        "modhub-performance.js": "feafd6a3372d557f3bb6eeabfa2cb33d828e48f2b033551f76b683f7ba861027",
+        "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+        "style.css": "a83b89fdb7b56e0fc8cfa35a494622bad1b4776cdf3345aab1421ae23f89aaf2",
+        "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+        "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+        "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+        "twee/patch-resize.twee": "c2075700d7f1ab2dfacf2b35d69bfe9377ef5ec9c8a678222cf9e2cc9b2ce723",
+        "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+        "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+      }
+    },
+    {
+      "name": "ModHubSoftWet",
+      "version": "1.0.4",
+      "sha256": "329dca56a6beec608415579d52a9d17a91d398233cd7ab7795b73dee4f48f521",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "c6525a01faa5bbf9af960c6cc9b2d16a931670ae805545cfc7977dcc8513698e",
+        "boot.json": "97de5692be7e0cda1d051dfbf0753995fbddd24cc8ccc9989e3dfd896bac7887",
+        "modhub-soft-wet.css": "8273f4a8b9820db60d61b81d2d83945c3c7968136a50f6cb88c82daa4c19fa43",
+        "modhub-soft-wet.js": "b07bcc4cb9afc974d269495c0c3c9b82a798cb81c24e2a50e86090c8e4cb4c6e"
+      }
+    }
+  ],
+  "android": {
+    "status": "PASS_SCOPED",
+    "environment": "Owner-authorized isolated Android test App, 47-Mod combination; raw scene and device material remain private",
+    "loaded": "Native process restart and exact loaded file-member SHA-256 comparison for UI 4.2.0 and ModHubSoftWet 1.0.4; ModHub 2.0.2 author ZIP installed after baseline backup",
+    "checked": [
+      "ModHub 2.0.2 native management opened by trusted touch; full adapter match",
+      "Native help tab trusted touch",
+      "Restore dialog follows shared 0/60/100 Acrylic axis; original outer backdrop unchanged",
+      "Font/button/alignment, glass/motion and master-off native fallback",
+      "Original restore close and manager close trusted touch, no restore/create/install actions",
+      "Earlier selected CI UI/Host pair exact members, two settings layouts, real slider input and Hub touch/Escape",
+      "Marked test save load, real social/attributes sidebar touch opens/closes, no DOM error"
+    ],
+    "preserved": [
+      "Other Mod versions except author ModHub update and adapter update",
+      "Loader order and hidden list",
+      "Actual preferences and raw owned UI localStorage",
+      "Native restore handlers, backdrop, size and scroll ownership"
+    ],
+    "businessNotPerformed": [
+      "Restore point create/apply or configuration save",
+      "Mod market install/update/delete/sort workflows",
+      "Cloud writes or private game-save writes"
+    ],
+    "visualReview": "Actual final Android screenshot inspected; rounded panel/controls, native text/order and outer dimmer retained. Raw images remain private."
+  },
+  "validation": {
+    "targeted": [
+      "npm run build (includes typecheck)",
+      "npm run framework:check",
+      "node scripts/build-framework.mjs",
+      "node tests/ui-runtime-compat.cjs",
+      "node tests/adapter-materials.cjs",
+      "python -m unittest tests/test_ci_packages.py (9 passed)",
+      "check-ci-packages.all_packages() (nine actual packages passed)",
+      "npm run ci:lock and generated-lock check",
+      "git diff --check"
+    ],
+    "fullCi": "Source 8681ce90d822654345e860c747f266225cd12b06: standard 42352218805 and research 42352221945 PASS/COMPLETE; 204/481 indexed files independently rehashed, nine package contracts, 9 negatives and two independent builds passed; performance acceptance remains separate",
+    "previousFrozenFullCi": "Previous standard 42292957909 and research 42292962805 only validate 5033626. Current compatibility/source patch requires a new frozen batch before release; no inherited PASS."
+  },
+  "retainedFailures": [
+    "Initial bootstrap CDP evaluate timed out; switched to bounded host-side readiness observations",
+    "Initial social touch guard found sidebar target off-screen; subsequent actual scrolled touch passed",
+    "Uncompressed ModHub backup exceeded CDP response budget before installation dispatch; DEFLATE backup passed without increasing transport cap",
+    "First synthetic restore fixture lacked native fixed positioning and was occluded; corrected fixture passed",
+    "First Android master-off check incorrectly hardcoded native color31; actual native --850 resolves34 after master off. Followup compares original native rule and final smoke passed. No product rule or valid assertion was removed.",
+    "8681 first cold-start smoke readiness limit expired before interactions; subsequent ready-document smoke passed all unchanged interaction assertions, original attempt retained"
+  ],
+  "performance": {
+    "status": "OWNER_ACCEPTED_REPRESENTATIVE_EXPERIENCE",
+    "social": "Two traced real-touch capture-to-bubble intervals 79.766/99.083 ms; synchronous native visibility/Wikifier chain caused layout. Diagnostic tracing perturbs timings; this is not an untraced A/B or exclusion of UI style effects.",
+    "rain": "Chrome diagnostic attributes recurring style work to drop/path geometry and navigation animation. Native system traces confirm actual late classifications and application-side graphics thread activity; GPU execution unmeasured.",
+    "visibilityAba": {
+      "scope": "Same combination and native weather. Only UI canvas and glass-layer visibility hidden in B; layout and rain simulation continued. Not an adoption proposal.",
+      "seconds": [
+        9.993,
+        9.997,
+        9.99
+      ],
+      "appActualFrames": [
+        743,
+        762,
+        754
+      ],
+      "appLateFrames": [
+        146,
+        122,
+        150
+      ],
+      "renderThreadCpuMs": [
+        4047,
+        3480,
+        4698
+      ],
+      "chromeInProcGpCpuMs": [
+        4015,
+        2785,
+        4317
+      ],
+      "appMainCpuMs": [
+        1739,
+        1982,
+        1881
+      ],
+      "surfaceFlingerCpuSumMs": [
+        3090,
+        3779,
+        2735
+      ],
+      "frameTimelineParserErrors": [
+        14,
+        13,
+        12
+      ],
+      "discardedChunks": [
+        2,
+        3,
+        4
+      ],
+      "gpuSlices": [
+        0,
+        0,
+        0
+      ],
+      "interpretation": "B app graphics CPU and late proportion below both visible samples; main/SF CPU higher. One B and two jointly hidden layers cannot quantify stable benefit or each layer contribution. SF dropped slices are display frames, not app FPS."
+    },
+    "rejected": "Translate-only replacement had no stable six-group ABBA benefit and had pixel differences; never adopted. Existing visual effects retained.",
+    "next": "Performance remains pending. Any replacement of native drop backdrop composition must preserve real background/refraction/overlap and be proven on-device before adoption; no source performance patch justified by current data.",
+    "splitVisibility": {
+      "scope": "Fresh current 4.2.0 + ModHubSoftWet1.0.4 + ModHub2.0.2 group; A, canvas hidden, glass hidden, A. Simulation/native weather/layout retained.",
+      "appActualFrames": [
+        800,
+        752,
+        796,
+        716
+      ],
+      "appLateFrames": [
+        152,
+        134,
+        107,
+        150
+      ],
+      "appCpuSumMs": [
+        15942,
+        15739,
+        13412,
+        16238
+      ],
+      "renderThreadCpuMs": [
+        4977,
+        4451,
+        4283,
+        4867
+      ],
+      "chromeInProcGpCpuMs": [
+        4301,
+        4775,
+        2960,
+        4736
+      ],
+      "frameTimelineParserErrors": [
+        8,
+        9,
+        3,
+        18
+      ],
+      "discardedChunks": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "gpuSlices": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "interpretation": "Glass-hidden application graphics CPU and late proportion lower than visible endpoints; canvas-hidden total CPU near visible. Main/SF CPU higher for glass hidden. One round each and capture gaps limit causal/magnitude claims; A2 actual716 vs expected717. No visual suppression adopted."
+    },
+    "layerObservation": {
+      "status": "OBSERVED",
+      "sample": "Separate 3s LayerTree observation, not time-aligned to prior system traces",
+      "visibleAtInitialSnapshot": {
+        "drops": 4,
+        "wetPaths": 0,
+        "canvas": 1
+      },
+      "layerTreeEvents": 245,
+      "firstLayerCount": 40,
+      "lastLayerCount": 43,
+      "matchedFinalLayerReasons": [
+        "Three initially observed drop nodes mapped to final layers with BackdropFilter compositing reason",
+        "Canvas mapped to accelerated Canvas compositing reason"
+      ],
+      "paintCountsAtEnd": [
+        39,
+        219,
+        217
+      ],
+      "layerPaintedEvents": 0,
+      "limitations": [
+        "Paint counters are cumulative at end, not per-frame GPU timing or interval deltas",
+        "Visible/model membership may change between initial geometry and final LayerTree snapshot",
+        "No renderer damage rectangles or GPU execution time available",
+        "No proven preserving-effects small patch; normal maps are already cached. Caching the dynamic backdrop would change semantics."
+      ]
+    },
+    "currentDecision": "Owner accepts current device experience and requests stopping unproductive blind performance probes. Prior failures and sample variability remain recorded; no newly attributed cause is asserted."
+  },
+  "coverageLimits": [
+    "ReOverfits not installed on this tablet; version/source/slot contract only",
+    "Other six target versions reviewed against author releases, not every business flow replayed",
+    "No full current-source standard/research CI or final two-build candidate gate yet"
+  ],
+  "patchSourceSha256": {
+    "compat/modhub-soft-wet/modhub-soft-wet.ts": "b8326377e8982f383c1b41ba4f084301c702ea1f7164b7d9263c89d0526a4b6a",
+    "compat/modhub-soft-wet/modhub-soft-wet.css": "8273f4a8b9820db60d61b81d2d83945c3c7968136a50f6cb88c82daa4c19fa43",
+    "compat/modhub-soft-wet/boot.json": "97de5692be7e0cda1d051dfbf0753995fbddd24cc8ccc9989e3dfd896bac7887",
+    "src/theme/compat-settings.css": "0d144a2735e8b762d0fe3907fadd3266128b73aee2a80e13d5aad63254c7eb34",
+    "scripts/check-ci-packages.py": "cb5cddd48060c9fbe4bac7043913490a9e6c583a75a29ccc4b11b0a10a0277e1",
+    "tests/adapter-materials.cts": "d9c923581adc93e3be19bc954e9adee743d87920a31ef4dfcd4736b61ef27916",
+    "tests/ui-runtime.cts": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
+    "scripts/expected.lock.json": "87c8dca0cc8004f2b3aac8accf72bd9fa8f2a8659e6fe2015e9608c1a83e5892"
+  },
+  "privateReceipts": [
+    {
+      "name": "loaded-final.json",
+      "sha256": "c6c8a0d21767554742b2c65fce47ba3ef0c4ef3d4e4df77aef993a706c023f77"
+    },
+    {
+      "name": "game-input-followup.json",
+      "sha256": "a33ee919452ac2f17a0df08cdcb9c41418e1229401d035b3b575299c4926d448"
+    },
+    {
+      "name": "loaded-modhub-2.0.2.json",
+      "sha256": "200baebc5897253d8f76c6663c57c69e9b9994564b963f4ed1db7589a724941d"
+    },
+    {
+      "name": "loaded-compat-final.json",
+      "sha256": "cd1c47fd1f124e8a906187253035dd1b9400dc540aca8bb5c83f8a5bd008437e"
+    },
+    {
+      "name": "compat-final-smoke.json",
+      "sha256": "3f67bc5c103e42a5fc26f3969819dc6684a16176b6ece922344b93b06d42b041"
+    },
+    {
+      "name": "compat-followup-smoke.json",
+      "sha256": "49fd5b6afc7230a6ee3343448d6a25e1efb3306f3c1685a7521f1ccf340be7a4"
+    },
+    {
+      "name": "compat-native-fallback-followup.json",
+      "sha256": "99020cf4ff322ea5433331ff78ef21773e9ee68a7aa4e2b15e08806104f43212"
+    },
+    {
+      "name": "rain-render-aba.json",
+      "sha256": "45a89b3b4903e598e739fa11d2bff056548bd50a5748f8eef8f0b58214a86a54"
+    },
+    {
+      "name": "modhub-rain-system-receipt.json",
+      "sha256": "358be2402ca7b03d125ab819a5e4c7ba8f94c606e4b8a5e74d86fd3101616a7b"
+    },
+    {
+      "name": "rain-render-split.json",
+      "sha256": "3d7ccce86fed0934764a8cffd0c08e72adbe2f4d7810cb37af95bd04bbc0f8c3"
+    },
+    {
+      "name": "rain-layer-diagnostic.json",
+      "sha256": "43399cfec276c44dfa3e435a0fa640512d953354de8c678aa083baa931b3adff"
+    },
+    {
+      "name": "perf-quiescent-plan.json",
+      "sha256": "bb358f57ac47f0c4cd153a935d5dd0fc34c4870995b4437c1b563b8162dfdba7"
+    },
+    {
+      "name": "perf-quiescent-smoke-corrected.json",
+      "sha256": "67719b97f8523227f39faf5deca267f1306aac6bf0f37b83f011fb6e443d1c9e"
+    },
+    {
+      "name": "native-control-rain-bounded.json",
+      "sha256": "0ec98000759fc9a1a158c395a1aee57ea6c6d8b57ab933eff953820149284ff5"
+    },
+    {
+      "name": "rain-shared-native.json",
+      "sha256": "7b0ec6c5f79d576d076c0d2fe9e36e8fd9376dc55ed8e67c93a4771527c7ccdc"
+    },
+    {
+      "name": "rain-navpause-native.json",
+      "sha256": "3a51a072dbe5962af352eef7d27684811e21b57b57b1fb3504c3cf6bca141dfa"
+    },
+    {
+      "name": "virtual-clock-detach.json",
+      "sha256": "5632be9366982b6bf8a24cfb1938aefbd3f1365b3b46fb9f0f490df5cca1a199"
+    },
+    {
+      "name": "final-8681-plan.json",
+      "sha256": "ca74a48118fa97fb96614fd26375fea5f4063d7c30c05cd519faa05bd57db8d4"
+    },
+    {
+      "name": "final-8681-installation.json",
+      "sha256": "62b3e8dcbb7ee457b76087adb0ec33830a5c69f034f68a3b8676a0fe4b626053"
+    },
+    {
+      "name": "final-8681-smoke.json",
+      "sha256": "15df2ce97c8ee861c821257181b68b52dbd9799b073685dfa8b89d494b095a12"
+    },
+    {
+      "name": "final-8681-smoke-ready.json",
+      "sha256": "5bb85470c520dfca4fb043199bfe8650c055f0f114f15b31631fb5da1905ea37"
+    },
+    {
+      "name": "rain-contourpause-native.json",
+      "sha256": "5e8cd64277ef92347fe94d30b742260142f0b88b0d07c3283450da0f3d6dd267"
+    },
+    {
+      "name": "actions-8681ce9/standard-readback.json",
+      "sha256": "1114f74cd284e7217542460114895a7796b809ea5fa13007ce96b42982e2f413"
+    },
+    {
+      "name": "actions-8681ce9/research-readback.json",
+      "sha256": "bab2826163203736052447f770bbfa61825aa38a812081ef6b07188516215458"
+    }
+  ],
+  "performanceCandidate": {
+    "baseSource": "eaca091a30a7b74116b7a4693c7953942f9de370",
+    "status": "ANDROID_TARGETED_PASSED_PERFORMANCE_GATE_PENDING",
+    "hubIdle": {
+      "beforeExtraDrawsPerFocusPointer": [
+        1,
+        1
+      ],
+      "afterExtraDrawsPerFocusPointer": [
+        0,
+        0
+      ],
+      "widths": [
+        1280,
+        390
+      ],
+      "idleTrailRetainedAndCleared": true,
+      "fullExistingPlacementIntegration": "PASS"
+    },
+    "sharedOrdinaryRain": {
+      "appCpuDeltaPercent": [
+        -4.29,
+        -4.58
+      ],
+      "appPlusSfCpuDeltaPercent": [
+        -3.5,
+        -2.66
+      ],
+      "appLateDirectionConsistent": false,
+      "gpuExecutionValidated": false,
+      "secondGroupLastAInterruptedAndResumed": true,
+      "nativeCalibratedRaster": {
+        "stableBaselineAndRestore": true,
+        "candidateChangedPixels": 524,
+        "maxChannelDifference": 5,
+        "visibleDrops": 3,
+        "visibleWetPaths": 1
+      },
+      "snowSpecialAndNestedFallbackUnchanged": true
+    },
+    "rejected": [
+      "sub-layout-unit geometry quantization: no stable device benefit",
+      "SVG displacement output crop: no net device benefit"
+    ],
+    "clockCorrection": {
+      "virtualAdvanceSurvivesCdpDetach": true,
+      "nativeControlFirstAExcluded": true,
+      "newSamplesRequireColdProcessAndRequestBoundedClockCheck": true
+    },
+    "sourceSha256": {
+      "framework/motion-hub/MotionHub.vue": "a5845d0b7a6abf2ce7b6934ebeb662bf42a25c9069fe9517fdb91c9e9ee341fb",
+      "src/ui/OrbitFocus.vue": "e20cd6c00a28cb7d57cbdab86158a8e08b2aa9d48e58d90bead37334f70631d1",
+      "src/theme/settings-workspace.css": "1b4fb51ba190b83df46c8f10fd0d87fc8786a6ee50add4d7dda4043b90e15d5f",
+      "src/ui/foreground-plane.css": "78f080a15a09d727f2ba8ccb0b9c083990c711a872cee8a6a9fc09c49a979d33",
+      "src/ui/weather/wet-glass.ts": "f09e2c104c29ba36250a2d778900f64d8d69542349453901ffdb34176472b614",
+      "tests/attributes-material.cts": "59c2d222cb72c2a767946f425aeefcd3ca9c26c6ea36d47dc1084f48382c3e8c",
+      "tests/evolution-orbit.cts": "fceb0246e5de226b321c15357aa22e82e8fe9884e0fd837aa3924723bdd822fd",
+      "tests/hub-placement-integration.cts": "aaab2ce980be2b23050319bf29b9aeef727d9b3da27a5575feb1e2bbd2880c1c"
+    },
+    "emptyOrbit": {
+      "beforeHiddenClocks": 2,
+      "afterHiddenClocks": 0,
+      "visibleClocks": 2,
+      "reappearanceAndForegroundRetirementContracts": "PASS"
+    },
+    "ordinaryRainCompositionPredicate": "wet > .002, snow <= .002 and specialAmount <= .002; CSS applies only to separated foreground, not settings nested shell",
+    "realClockNoUiAbba": {
+      "clockChecks": "four cold-process samples passed request-bounded wall-clock checks",
+      "appCpuMs": [
+        8404,
+        2557,
+        2556,
+        6930
+      ],
+      "appLateActual": [
+        [
+          73,
+          415
+        ],
+        [
+          1,
+          263
+        ],
+        [
+          1,
+          233
+        ],
+        [
+          50,
+          486
+        ]
+      ],
+      "validInterpretation": "UI+five adapter/window workload costs more in this one ABBA; different window and presentation frequency prevent attributing difference to rain alone",
+      "gate": "PENDING"
+    },
+    "navigationPauseDiagnostic": {
+      "appCpuDeltaPercent": 2.35,
+      "appPlusSfCpuDeltaPercent": -0.59,
+      "adopted": false,
+      "reason": "No credible net benefit; visible animation preserved"
+    },
+    "retainedFailures": [
+      "uncalibrated screenshot JS-only pause left CSS moving; not an equivalence proof",
+      "virtual advance survives disconnect; affected first native-control A1 excluded",
+      "first clock guard omitted CDP request bounds; no samples accepted under it",
+      "package independent-build gate rejected source change while a targeted test was added; no assertion relaxed",
+      "first settings smoke expected official-window foreground on nested settings; corrected owner-specific smoke passed, original retained"
+    ],
+    "fixedOpticsExperiment": {
+      "adopted": false,
+      "onlyIndexChanged": true,
+      "actualMemberVerificationAndRestore": true,
+      "clockGuardsPassed": true,
+      "reason": "B1 rendered many fewer frames; near-frame-count B2/A2 showed only small mixed changes, with known visual differences",
+      "productionBaselineRestored": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9"
+    },
+    "contourPauseDiagnostic": {
+      "adopted": false,
+      "appCpuMs": [
+        10694.74,
+        10472.4,
+        10278.21,
+        11274.77
+      ],
+      "actualAppFrames": [
+        458,
+        438,
+        410,
+        415
+      ],
+      "appLatePercent": [
+        19.87,
+        21.0,
+        22.44,
+        29.88
+      ],
+      "reason": "One short ABBA, baseline drift and varying frame/drop counts do not establish a reliable net benefit; visible focus remains unchanged",
+      "gpuExecutionValidated": false,
+      "identityLimit": "Raw receipt copied c304 label, no active ZIP members were captured in this diagnostic; actual 85fee reported by operator, not independently established by this receipt"
+    },
+    "combinedOpticsFeasibility": {
+      "adopted": false,
+      "scope": "isolated static desktop two-drop optical field, not production",
+      "reason": "External SVG field displaced real backdrop, but pixel/input sampling differs from independent lenses; no performance or device proof",
+      "additionalStaticResult": "Direct feImage plus feMerge removes field R/G mismatch in two 16x16 ROIs, but actual backdrop displacement still differs under same circular clip; no equivalent product renderer or performance benefit established"
+    },
+    "android89bCheckpoint": {
+      "uiZipSha256": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9",
+      "allUiMembersVerified": true,
+      "modhubRainShared": "blur(0px)",
+      "settingsRainShared": "none (existing nested presentation)",
+      "settingsRainSnowRainMarker": [
+        true,
+        false,
+        true
+      ],
+      "zeroWidthOwnerAnimations": 0,
+      "trustedClose": true,
+      "exactUiPreferencesOrderHiddenStorageRestored": true,
+      "errors": 0
+    },
+    "currentAndroid": {
+      "uiZipSha256": "46d374c14b0ae225ae4c8eb8953a9b149d530ae7e502d8aa25ecfb246b9d7104",
+      "allUiMembersVerified": true,
+      "memberCount": 21,
+      "changedMembersComparedWith89b": [
+        "style.css"
+      ],
+      "states": [
+        {
+          "label": "ModHub ordinary rain",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "blur(0px)",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [
+            "paused",
+            "paused",
+            "paused",
+            "paused"
+          ],
+          "emptyOrbits": [
+            [],
+            []
+          ],
+          "errors": 0
+        },
+        {
+          "label": "settings ordinary rain",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "none",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        },
+        {
+          "label": "settings snow",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "snow",
+          "shared": "none",
+          "marker": false,
+          "canvas": {
+            "weather": "snow",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        },
+        {
+          "label": "settings rain restored",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "none",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        }
+      ],
+      "exactUiPreferencesOrderHiddenStorageRestored": true,
+      "remainingPlanes": 0,
+      "errors": 0,
+      "firstColdStartReadinessAttempt": "9-second readiness limit expired before interactions; original failure retained; startup wait separated from unchanged 9-second interaction assertions in subsequent ready-document smoke"
+    },
+    "sourceSha256FrozenSource": "89b0233e7f903487fcac29ef1bbedb69dfb0dbd6; corrected CSS hash and source are separately recorded under postFreezeCorrection"
+  },
+  "previousAndroidPackages": [
+    {
+      "name": "DoLGameUI",
+      "version": "4.2.0",
+      "sha256": "40b06704c8623d96a0bfe84d599d49b80dc2b21af4d78539be47b67d4adc106b",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "MODHUB-PERFORMANCE-NOTICE.txt": "8bc1ab1c41af770ed48aaedfa8111faedf1901387c96a65ddc81c9c726fcc351",
+        "README.md": "54bc7cb31a5ccf066fbf27e2c877aea80a026a7194dc9a69d82e4731805ff7ed",
+        "THIRD-PARTY-NOTICES.txt": "b59cbe1add88d81375c867e58b3a2af068adae49e3aecb241eb99ff422634ce3",
+        "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+        "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+        "boot.json": "611851fe4abe9d801d2b5a1760d0fc7c8711f813598998a205c9ae7a2649ad97",
+        "docs/INSTALL_4.2.md": "58502a57866c0087ed6fb026d1421b4e238c9fa7d68f023ae0cb7cf01d592adb",
+        "docs/OPTIONAL_ADAPTERS.md": "da29187d05ba8ed939e58f9626139f2b4789579b68d8dc3e5c1ad3e368545e38",
+        "docs/RELEASE_4.2.0.md": "61ea844c3c9a10f1b6da4bbf797d16b1ff6762c9332ffdf673237a057826de60",
+        "docs/UI_SETTINGS.md": "7581ea445e41f0829813b54c81134d1fe1547adbe8aec05aa336f2fc83827088",
+        "index.js": "01e97f0f44d1093c389c624b45b291ba9cb12af02274f294501860d9f45690cf",
+        "modhub-performance.js": "feafd6a3372d557f3bb6eeabfa2cb33d828e48f2b033551f76b683f7ba861027",
+        "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+        "style.css": "529834fcb2625aa32703275cae792c184c68e681a207f9abc350906e80f130e1",
+        "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+        "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+        "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+        "twee/patch-resize.twee": "c2075700d7f1ab2dfacf2b35d69bfe9377ef5ec9c8a678222cf9e2cc9b2ce723",
+        "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+        "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+      }
+    },
+    {
+      "name": "ModHubSoftWet",
+      "version": "1.0.4",
+      "sha256": "329dca56a6beec608415579d52a9d17a91d398233cd7ab7795b73dee4f48f521",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "c6525a01faa5bbf9af960c6cc9b2d16a931670ae805545cfc7977dcc8513698e",
+        "boot.json": "97de5692be7e0cda1d051dfbf0753995fbddd24cc8ccc9989e3dfd896bac7887",
+        "modhub-soft-wet.css": "8273f4a8b9820db60d61b81d2d83945c3c7968136a50f6cb88c82daa4c19fa43",
+        "modhub-soft-wet.js": "b07bcc4cb9afc974d269495c0c3c9b82a798cb81c24e2a50e86090c8e4cb4c6e"
+      }
+    }
+  ],
+  "freeze89b0233": {
+    "source": "89b0233e7f903487fcac29ef1bbedb69dfb0dbd6",
+    "standard": {
+      "run": 42349719614,
+      "status": "FAIL",
+      "evidence": "INCOMPLETE",
+      "unit": [
+        38,
+        38
+      ],
+      "browser": [
+        46,
+        47
+      ],
+      "indexedFilesRehashed": 204,
+      "firstFailure": "header-weather.cjs:235 hidden native contour pauses: class; actual running, expected paused",
+      "downstreamFailuresAreConsequences": true
+    },
+    "research": {
+      "run": 42349722351,
+      "status": "PASS",
+      "evidence": "COMPLETE",
+      "research": [
+        42,
+        42
+      ],
+      "indexedFilesRehashed": 481
+    },
+    "ninePackagePayloadsMatchLocal": true,
+    "publicReleaseAllowed": false
+  },
+  "postFreezeCorrection": {
+    "baseSource": "89b0233e7f903487fcac29ef1bbedb69dfb0dbd6",
+    "change": "Empty contour animation:none shorthand reset computed play state; explicitly keep animation-play-state:paused while retaining zero CSS clocks",
+    "file": "src/theme/settings-workspace.css",
+    "fileSha256": "c8c2926e560303836dae7a298977c067556ef27d2adde444ee5162854e729c89",
+    "unchangedExistingHeaderWeatherContract": "PASS locally",
+    "orbitVisibilityAndRecoveryContract": "PASS locally",
+    "freshRemoteCI": {
+      "standard": {
+        "run": 42352218805,
+        "status": "PASS",
+        "evidence": "COMPLETE",
+        "unit": [
+          38,
+          38
+        ],
+        "browser": [
+          47,
+          47
+        ],
+        "indexedFilesRehashed": 204,
+        "ninePackageContracts": "PASS",
+        "negativeCases": 9,
+        "independentBuildReproducibility": "PASS"
+      },
+      "research": {
+        "run": 42352221945,
+        "status": "PASS",
+        "evidence": "COMPLETE",
+        "research": [
+          42,
+          42
+        ],
+        "indexedFilesRehashed": 481
+      }
+    },
+    "source": "8681ce90d822654345e860c747f266225cd12b06",
+    "android": {
+      "uiZipSha256": "46d374c14b0ae225ae4c8eb8953a9b149d530ae7e502d8aa25ecfb246b9d7104",
+      "allUiMembersVerified": true,
+      "memberCount": 21,
+      "changedMembersComparedWith89b": [
+        "style.css"
+      ],
+      "states": [
+        {
+          "label": "ModHub ordinary rain",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "blur(0px)",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [
+            "paused",
+            "paused",
+            "paused",
+            "paused"
+          ],
+          "emptyOrbits": [
+            [],
+            []
+          ],
+          "errors": 0
+        },
+        {
+          "label": "settings ordinary rain",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "none",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        },
+        {
+          "label": "settings snow",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "snow",
+          "shared": "none",
+          "marker": false,
+          "canvas": {
+            "weather": "snow",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        },
+        {
+          "label": "settings rain restored",
+          "ui": "4.2.0",
+          "passage": "Bedroom",
+          "weather": "rain",
+          "shared": "none",
+          "marker": true,
+          "canvas": {
+            "weather": "storm",
+            "special": "none"
+          },
+          "emptyOrbitPlayStates": [],
+          "emptyOrbits": [],
+          "errors": 0
+        }
+      ],
+      "exactUiPreferencesOrderHiddenStorageRestored": true,
+      "remainingPlanes": 0,
+      "errors": 0,
+      "firstColdStartReadinessAttempt": "9-second readiness limit expired before interactions; original failure retained; startup wait separated from unchanged 9-second interaction assertions in subsequent ready-document smoke"
+    }
+  },
+  "previousPerformanceAndroidPackages": [
+    {
+      "name": "DoLGameUI",
+      "version": "4.2.0",
+      "sha256": "85fee2826f5fff1749d9fece5f05c0e917424be5013b362168fefb89637cd7a9",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "MODHUB-PERFORMANCE-NOTICE.txt": "8bc1ab1c41af770ed48aaedfa8111faedf1901387c96a65ddc81c9c726fcc351",
+        "README.md": "54bc7cb31a5ccf066fbf27e2c877aea80a026a7194dc9a69d82e4731805ff7ed",
+        "THIRD-PARTY-NOTICES.txt": "b59cbe1add88d81375c867e58b3a2af068adae49e3aecb241eb99ff422634ce3",
+        "UPSTREAM-RENDERER-LICENSE": "224266396581e902e6828d34924537b3d2f094355e6dbc74ceedcaa4196dc361",
+        "UPSTREAM-RENDERER-NOTICE.md": "c2bc9738115ec46b47856acd0c5d6dad4108c93528fa125b234194087643bccc",
+        "boot.json": "611851fe4abe9d801d2b5a1760d0fc7c8711f813598998a205c9ae7a2649ad97",
+        "docs/INSTALL_4.2.md": "58502a57866c0087ed6fb026d1421b4e238c9fa7d68f023ae0cb7cf01d592adb",
+        "docs/OPTIONAL_ADAPTERS.md": "da29187d05ba8ed939e58f9626139f2b4789579b68d8dc3e5c1ad3e368545e38",
+        "docs/RELEASE_4.2.0.md": "61ea844c3c9a10f1b6da4bbf797d16b1ff6762c9332ffdf673237a057826de60",
+        "docs/UI_SETTINGS.md": "7581ea445e41f0829813b54c81134d1fe1547adbe8aec05aa336f2fc83827088",
+        "index.js": "971158d12d5833879333bbfd56821ed4bc9ec40a4495bbc7b6dbb8bed3e5da0e",
+        "modhub-performance.js": "feafd6a3372d557f3bb6eeabfa2cb33d828e48f2b033551f76b683f7ba861027",
+        "shop-page-experiment.js": "99b65b1abe7d8f2fd01f3788915926bbf078d1817cdd2d763840e1b64a6aa268",
+        "style.css": "210700ca96bfd89d47a8b67a880c5213d3ad93522b0a8883f52a3927c2ab31e5",
+        "twee/patch-background.twee": "6e826542f4cde7c0c5d85beb7ae2655135f84343ec9a7427f910257ae360338f",
+        "twee/patch-list-mode.twee": "9c6bad53614c3879d74833f8496ade8e51c6d4900f9a44ae9a37c3ea6053ba5f",
+        "twee/patch-page-change.twee": "5b4ee6c8349b5580720199f00220afd36cfb7e53ee4077455356e6470b362bd5",
+        "twee/patch-resize.twee": "c2075700d7f1ab2dfacf2b35d69bfe9377ef5ec9c8a678222cf9e2cc9b2ce723",
+        "types/ui.d.ts": "ceb35d2676d997817ef04f7604551291485184c90dd4e3f600639261315cea80",
+        "types/wardrobe.d.ts": "5644336a327bbb3ad2677903c72c91f04548f22fe163a9bedaabd27badec9f93"
+      }
+    },
+    {
+      "name": "ModHubSoftWet",
+      "version": "1.0.4",
+      "sha256": "329dca56a6beec608415579d52a9d17a91d398233cd7ab7795b73dee4f48f521",
+      "members": {
+        "LICENSE": "9759c9137cc67d52b51aa9b68351088cd2dc12098deddc64c950d7acf3f72888",
+        "README.md": "c6525a01faa5bbf9af960c6cc9b2d16a931670ae805545cfc7977dcc8513698e",
+        "boot.json": "97de5692be7e0cda1d051dfbf0753995fbddd24cc8ccc9989e3dfd896bac7887",
+        "modhub-soft-wet.css": "8273f4a8b9820db60d61b81d2d83945c3c7968136a50f6cb88c82daa4c19fa43",
+        "modhub-soft-wet.js": "b07bcc4cb9afc974d269495c0c3c9b82a798cb81c24e2a50e86090c8e4cb4c6e"
+      }
+    }
+  ],
+  "ownerReleaseAuthorization": {
+    "status": "APPROVED_AFTER_PERFORMANCE_AND_MATERIAL_ACCEPTANCE",
+    "scope": "Soft & Wet 4.2",
+    "condition": "Final material/settings coverage, source, CI and artifact identity checks pass.",
+    "executed": false
+  },
+  "engineeringStaging": {
+    "source": "8681ce90d822654345e860c747f266225cd12b06",
+    "classification": "ENGINEERING_NOT_RC",
+    "zipCount": 9,
+    "checksumFile": "SHA256SUMS.txt",
+    "ciOriginalUiSha256": "49a90bfe8ba26a9da869bbdb574d725b31662a249d106086a65d95fe5558dee3",
+    "androidLocalUiSha256": "46d374c14b0ae225ae4c8eb8953a9b149d530ae7e502d8aa25ecfb246b9d7104",
+    "all21UiMemberBytesMatch": true,
+    "otherPayloads": "published original Host and six adapters; ModHubSoftWet 1.0.4 selected original local ZIP; all members match current CI contracts",
+    "assetsExcludeRawEvidenceAndMedia": true,
+    "releaseReady": false
+  },
+  "acrylicCompositionCorrection": {
+    "baseSource": "282a52d8501b123bd805ec74682a380fab516b17",
+    "status": "LOCAL_BUILD_AND_TARGETED_ANDROID_PASSED_OWNER_VISUAL_REVIEW_PENDING",
+    "cause": "Nested :has() invalidated the official-owned-host branch. The native ancestor retained blur(3px), unlike settings and fully matched adapter portals.",
+    "change": "Flatten the shared ancestor selector without changing material-axis values, ownership fallback, input or weather effects.",
+    "packageSha256": "7f64675b72a43b9fd3dfc9ab2fb9ecc3239743a8d2f0a6ac4f83514b38a3c8cf",
+    "workingSourceHashes": {
+      "src\\theme\\workspace-theme.css": "6de858ba791e4c07d51580f8d591ddf531deb8899f9c9a94343350f828443c18",
+      "tests\\adapter-materials.cts": "045d1f330e844980cc142423ec601c282e31c97fb7e0134dc1d91e940df3e2c3"
+    },
+    "android": {
+      "loadedPackageMembersVerified": true,
+      "scenes": [
+        "settings",
+        "social",
+        "ModHub"
+      ],
+      "levels": [
+        60,
+        100
+      ],
+      "pageErrors": 0,
+      "preferencesRestored": true
+    },
+    "regression": {
+      "freshOldCss": "FAIL: official ancestor blur(3px), expected none",
+      "fixedCss": "PASS: official hosts, saves, full adapter and native fallback",
+      "rebuiltPackageAdapterSuite": "PASS",
+      "strictTypecheckAndBuild": "PASS",
+      "newFullCI": "NOT_RUN"
+    },
+    "compatibilityPackageRewriteRequired": false,
+    "ownerVisualAcceptance": "ACCEPTED"
+  }
+}

@@ -14,6 +14,24 @@ type Frost=ReturnType<typeof frostSurface>;
 type FrostSnapshot=ReturnType<Frost['snapshot']>;
 type FrostFactory<T extends FrostSnapshot=FrostSnapshot>=(...args:Parameters<typeof frostSurface>)=>Omit<Frost,'snapshot'>&{snapshot:()=>T};
 let instance=0;
+// The three normal fields depend only on the fixed shape, not on a window,
+// weather, size or DPR. Share immutable encoded pixels; DOM/filter IDs stay owned.
+let displacementMaps:readonly string[]|undefined;
+function normalMaps():readonly string[]{
+ if(displacementMaps)return displacementMaps;
+ const maps:string[]=[];
+ for(let shape=0;shape<3;shape++){
+  const map=document.createElement('canvas');map.width=96;map.height=96;const c=map.getContext('2d')!,pixels=c.createImageData(96,96);
+  for(let y=0;y<96;y++)for(let x=0;x<96;x++){
+   const ny=(y-47.5)/48,nx=(x-47.5)/48/(1+ny*(shape-1)*.12),r=Math.hypot(nx,ny),fall=r<1?Math.sqrt(1-r*r):0,i=(y*96+x)*4;
+   pixels.data[i]=128+nx*fall*122;pixels.data[i+1]=128+ny*fall*122;pixels.data[i+2]=128;pixels.data[i+3]=255;
+  }
+  c.putImageData(pixels,0,0);maps.push(map.toDataURL());
+ }
+ // Publish only a complete set: a failed canvas/encoding attempt can retry.
+ return displacementMaps=Object.freeze(maps);
+}
+
 /** Native SVG displacement reads the browser's backdrop. No DOM capture or substitute texture. */
 export function wetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails:boolean,runoff:boolean,climate:boolean,withShower:boolean,withForce:boolean|'scatter',makeFrost:FrostFactory<T>,specialSkies?:boolean):ReturnType<typeof createWetGlass<T>>;
 export function wetGlass(canvas:HTMLCanvasElement,invalidate:()=>void,naturalTrails?:boolean,runoff?:boolean,climate?:boolean,withShower?:boolean,withForce?:boolean|'scatter',makeFrost?:FrostFactory,specialSkies?:boolean):ReturnType<typeof createWetGlass<FrostSnapshot>>;
@@ -32,16 +50,12 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
  const layer=document.createElement('div');layer.className='evo-material-layer evo-glass-layer';layer.setAttribute('aria-hidden','true');
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('width','0');svg.setAttribute('height','0');
  const prefix='evo-rain-'+(++instance),ids:string[]=[];
+ const maps=normalMaps();
  for(let shape=0;shape<3;shape++){
-  const map=document.createElement('canvas');map.width=96;map.height=96;const c=map.getContext('2d')!,pixels=c.createImageData(96,96);
-  for(let y=0;y<96;y++)for(let x=0;x<96;x++){
-   const ny=(y-47.5)/48,nx=(x-47.5)/48/(1+ny*(shape-1)*.12),r=Math.hypot(nx,ny),fall=r<1?Math.sqrt(1-r*r):0,i=(y*96+x)*4;
-   pixels.data[i]=128+nx*fall*122;pixels.data[i+1]=128+ny*fall*122;pixels.data[i+2]=128;pixels.data[i+3]=255;
-  }
-  c.putImageData(pixels,0,0);const id=prefix+'-'+shape;ids.push(id);
+  const id=prefix+'-'+shape;ids.push(id);
   const filter=document.createElementNS(ns,'filter');filter.id=id;
   for(const[k,v]of Object.entries({x:'-.5',y:'-.5',width:'2',height:'2',primitiveUnits:'objectBoundingBox','color-interpolation-filters':'sRGB'}))filter.setAttribute(k,v);
-  const image=document.createElementNS(ns,'feImage');for(const[k,v]of Object.entries({x:'0',y:'0',width:'1',height:'1',preserveAspectRatio:'none',result:'lens',href:map.toDataURL()}))image.setAttribute(k,v);
+  const image=document.createElementNS(ns,'feImage');for(const[k,v]of Object.entries({x:'0',y:'0',width:'1',height:'1',preserveAspectRatio:'none',result:'lens',href:maps[shape]!}))image.setAttribute(k,v);
   const displace=document.createElementNS(ns,'feDisplacementMap');for(const[k,v]of Object.entries({in:'SourceGraphic',in2:'lens',scale:'7.5',xChannelSelector:'R',yChannelSelector:'G'}))displace.setAttribute(k,v);
   filter.append(image,displace);svg.append(filter);
  }
@@ -54,7 +68,7 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
  let rainEnergy=1,rainAmount=1,showerDensity=0,showerSpeed=0,microVisible=0;const frost=climate?makeFrost(ctx,safe):undefined;
  let protectedBoxes:Box[]=[],frameProtection:Box[]=[],active:Box[]=[],dirty=true,width=0,height=0,rainHeight=0,lastTime=0,visibleFlow=0,wasMoving=false;
  let layoutAnimations:Animation[]=[];
- const mark=()=>{if(!scope.active())return;dirty=true;invalidate()};const observer=new MutationObserver(mark);scope.own(()=>observer.disconnect());observer.observe(shell,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-workspace-transition','data-settings-layout','open']});shell.addEventListener('scroll',mark,true);scope.own(()=>shell.removeEventListener('scroll',mark,true));
+ const mark=()=>{if(!scope.active())return;dirty=true;invalidate()};const observer=new MutationObserver(mark);scope.own(()=>observer.disconnect());observer.observe(shell,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-workspace-transition','data-settings-layout','open','data-dgu-material-moving']});shell.addEventListener('scroll',mark,true);scope.own(()=>shell.removeEventListener('scroll',mark,true));
  // Centered settings move protected labels/controls without resizing the shell.
  observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-options-centered']});
  const intersects=(a:Box,b:Box)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
@@ -114,16 +128,23 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   });
  }
  function draw(s:Frame){
+  const sharedRain=s.wet>.002&&s.snow<=.002&&(s.specialAmount??0)<=.002;
+  if(layer.hasAttribute('data-shared-rain')!==sharedRain)layer.toggleAttribute('data-shared-rain',sharedRain);
   // Sample ambient rain at most 60Hz; keep its real-time clock and immediate layout/motion invalidations.
   if(shell.hasAttribute('data-sf-weather-material')&&document.documentElement.hasAttribute('data-dgu-visualmotion')&&!reduced.matches&&s.wet>.002&&s.snow<=.002&&(s.specialAmount??0)<=.002&&!dirty&&!wasMoving&&s.width===width&&s.height===height&&s.time>lastTime&&Math.floor(s.time*60)===Math.floor(lastTime*60))return;
   // WAAPI geometry changes do not emit mutations. Protect the moving workspace
   // conservatively, then remeasure its final text/controls after cancellation or finish.
   if(dirty)layoutAnimations=shell.getAnimations({subtree:true}).filter(a=>a.effect instanceof KeyframeEffect&&a.effect.target instanceof Element&&a.effect.target.matches('.dmt-workspace-nav,.dmt-workspace-intro,.dmt-control-sheet,.dmt-reading-sample,.dmt-preview-lab,.dmt-workspace-section,#customOverlayContent'));
-  const movingLayout=layoutAnimations.some(a=>a.playState==='running');
-  if(dirty||specialSkies&&movingLayout||s.width!==width||s.height!==height||wasMoving&&!movingLayout)layout(s.width,s.height);
+  const animatedLayout=layoutAnimations.some(a=>a.playState==='running'),movingLayout=shell.hasAttribute('data-dgu-material-moving')||animatedLayout;
+  if(dirty||specialSkies&&animatedLayout||s.width!==width||s.height!==height||wasMoving&&!movingLayout)layout(s.width,s.height);
   frameProtection=protectedBoxes;
   const workspace=shell.querySelector('.dmt-workspace,#customOverlayContent');
-  if(movingLayout&&workspace){const r=workspace.getBoundingClientRect(),base=canvas.getBoundingClientRect(),scale=base.width/s.width||1;frameProtection=[...protectedBoxes,{x:(r.x-base.x)/scale-96,y:(r.y-base.y)/scale-48,width:r.width/scale+192,height:r.height/scale+96}]}
+  if(movingLayout&&workspace){
+   const base=canvas.getBoundingClientRect(),scale=base.width/s.width||1,scaleY=base.height/(canvas.clientHeight||s.height)||1,r=workspace.getBoundingClientRect();
+   // Header and navigation share the shell transform; their cached local boxes
+   // stay aligned. Only the counter-scaled, lagging core needs a broad guard.
+   frameProtection=[...protectedBoxes,{x:(r.x-base.x)/scale-96,y:(r.y-base.y)/scaleY-48,width:r.width/scale+192,height:r.height/scaleY+96}];
+  }
   wasMoving=movingLayout;
   const dt=Math.min(.05,Math.max(0,s.time-lastTime));lastTime=s.time;
   const humidity=s.wet*(1-s.snow*.8);rainEnergy=withForce?1.05+s.intensity*.85:1;rainAmount=climate?Math.min(2,s.intensity*(scatter?.8:withForce?1.4:1)):1;model.step(dt,humidity,rainAmount,rainEnergy);

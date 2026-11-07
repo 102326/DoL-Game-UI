@@ -21,6 +21,10 @@ export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:
     // excluded: it is a scene overlay, not part of the character's outfit.
     const candidates=document.querySelectorAll<HTMLCanvasElement>('#sidebar-img-container #img canvas.mainCanvas');
     const next=candidates.length===1?candidates[0]:null;
+    // No unambiguous native source exists yet: let the private renderer start
+    // now. Keep sampling so a late native canvas can still take over. An
+    // existing blank canvas retains its grace period while it is painting.
+    if(!finished&&!next)unavailable();
     let ready=false;
     try{
      if(next&&next.width>0&&next.height>0&&ctx&&sample){

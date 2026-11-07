@@ -13,6 +13,7 @@ import {visualScope} from '../ui/visual-scope';
 import AcrylicControls from './AcrylicControls.vue';
 import ReadingControls from './ReadingControls.vue';
 import ReadingSample from './ReadingSample.vue';
+import {settingsMaterial} from './settings-material';
 
 const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
 declare const __STONE_FREE_CONSUMER__:boolean;
@@ -29,6 +30,8 @@ function chooseLayout(value:'horizontal'|'vertical'){savedLayout.value=value;try
 watch(()=>props.state.message,()=>{layoutMessage.value=''});
 onMounted(()=>{
  const dialog=workspace.value?.closest('dialog');
+ const shell=dialog?.querySelector<HTMLElement>('.dmt-settings-shell'),header=shell?.querySelector<HTMLElement>('.dmt-settings-header');
+ if(official&&dialog&&shell&&header&&workspace.value){const material=settingsMaterial(shell,header,workspace.value,dialog);scope.own(material.dispose)}
  // Do not change the observed layout inside ResizeObserver delivery, or reflow a closed dialog.
  const measure=()=>{const width=workspace.value?.offsetWidth??0;if(dialog?.open&&!dialog.hasAttribute('data-sf-leaving')&&width>0)workspaceWidth.value=width},schedule=()=>scope.frame(measure);
  if(workspace.value&&typeof ResizeObserver==='function'){const resize=new ResizeObserver(schedule);scope.own(()=>resize.disconnect());resize.observe(workspace.value)}

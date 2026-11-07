@@ -10,7 +10,7 @@
 - `npm run ci:browser`与`node scripts/test-ci.cjs research`：现役标准/研究入口，完整集合及证据身份按[CI合同](CI.md)；不自行用子集参数替代门禁。
 - `npm run tooling:check`、`npm run framework:check`、`npm run lab:check`：分别用于相应工具/Host/组件改动。CTS/MTS先经tooling:build生成忽略的CJS/MJS。
 
-4.2隔离原型入口与定向检查见[研究README](https://github.com/102326/DoL-Game-UI/blob/c8eafe8278ab85b4243901aebeb5e52546c98512/prototypes/evolution42/README.md)，当前候选已被否决，留作历史复现。原型本机检查不自动进入现workflow，不能以旧远端成功签字。
+4.2隔离原型入口与定向检查见[研究README](../prototypes/evolution42/README.md)，当前候选已被否决，留作历史复现。原型本机检查不自动进入现workflow，不能以旧远端成功签字。
 
 ## 游戏资源与测试范围
 

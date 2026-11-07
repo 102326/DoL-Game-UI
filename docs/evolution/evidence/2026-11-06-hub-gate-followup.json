@@ -1,0 +1,1786 @@
+{
+  "schema": "evo42-hub-gate-followup-v1",
+  "date": "2026-11-06",
+  "initialFreeze": "5024c5f5c5e3972dcddf2fbd3c6dd96f40fad014",
+  "status": "CI_AND_CORE_DEVICE_VALIDATED_PERFORMANCE_CONCERNS_OPEN",
+  "initialWindows": {
+    "unit": {
+      "status": "ERROR",
+      "individualPass": 36,
+      "individualError": 2,
+      "errors": [
+        "research-evidence.test.cjs: file symlink EPERM",
+        "ci-evidence.test.cjs: file symlink EPERM"
+      ],
+      "sourceAfterDrift": true,
+      "driftReason": "Candidate snapshot was placed in a non-ignored build directory during the run; moved to ignored artifacts; frozen source fingerprint restored. The whole run is not PASS."
+    },
+    "browser": {
+      "status": "FAIL",
+      "pass": 41,
+      "fail": [
+        "framework-startup.cjs",
+        "weather-special.cjs"
+      ],
+      "error": [
+        "adapter-materials.cjs: remaining suite budget timeout"
+      ],
+      "notRun": [
+        "kraft-work-baseline.cjs",
+        "device-layouts.cjs",
+        "device-probe.cjs"
+      ],
+      "sourceAfterClean": true
+    },
+    "research": {
+      "status": "FAIL",
+      "pass": 37,
+      "fail": [
+        "golden-spin-hub-input",
+        "evolution-rain-glass",
+        "evolution-weather-levels",
+        "evolution-weather-shower--force",
+        "evolution-weather-shower--scatter"
+      ],
+      "sourceAfterClean": true
+    },
+    "packages": {
+      "status": "PASS",
+      "count": 9,
+      "negativeTests": 9,
+      "independentBuilds": 2,
+      "zipBytesEqual": true,
+      "uiSha256": "840707e0a64f5f44a9163b3b4135625db34f213a22f601b082c2a17b285c18df",
+      "scope": "Original5024c5f only; product fix below requires a new build identity."
+    }
+  },
+  "attributedFixes": [
+    {
+      "source": "framework/motion-hub/MotionHub.vue",
+      "problem": "Reduced/disabled motion and document-hidden listeners closed an opening menu, instead of preserving logical intent.",
+      "fix": "Cancel placement gestures/flight while retaining logical menu expansion; sphere/menu owner settles or pauses its own visuals.",
+      "validation": "Final full input and actual production placement checks PASS, including hidden/resume, hidden gesture cancellation and mid-open preference change. An intermediate placement run overlapped a subsequent source edit and is retained but not used as final evidence."
+    },
+    {
+      "source": "tests/golden-spin-hub-input.cts",
+      "problem": "Official Hub fixture retained the old automatic-docking expectation after approved free-placement integration.",
+      "fix": "Assert real drag closes menu, partial gesture is not persisted, release stays free and writes only its versioned position. Retain original mid-open native dock-once and restore assertions.",
+      "validation": "Targeted full input contract PASS; unchanged generic Host real pointer docking/cancel/restore contract also PASS."
+    },
+    {
+      "source": "tests/official-cleanup.cts",
+      "problem": "Vite load IDs use forward slashes, while Windows path.join supplied backslashes; real-entry fault injection was silently bypassed.",
+      "fix": "Normalize both full paths and assert each injection loaded exactly once. Retain all original retirement-order/error-isolation scenarios.",
+      "validation": "All12 actual-entry cleanup scenarios and full framework-startup contract PASS."
+    }
+  ],
+  "weatherInvestigation": {
+    "status": "UNKNOWN_UNRESOLVED",
+    "standardObserved": "tentacle reading paragraph:6 of20202 pixels differ by at most1 RGB level, in dark background colors. protectedOverlap=0 does not prove pixel equality.",
+    "researchObserved": "Reading screenshot byte comparisons fail; original pairs were not saved, so their pixel differences cannot be reconstructed.",
+    "controls": "Diagnostic-only same-state visible/hidden alternation:12 images each under normal, ancestor backdrop disabled, ancestor gradient disabled; each group internally identical. Another heat same-state pair differed at1 background pixel by1 RGB level.",
+    "conclusion": "No reproducible contamination source attributed. Diagnostic PASS does not erase original FAIL. No pixel threshold, product weather quality or assertions changed.",
+    "linuxEvidence": "All corresponding standard/research weather and layout checks passed in7c31be2 Linux Actions. Original Windows failures remain recorded; they are not reclassified as passing or fully attributed."
+  },
+  "remote": {
+    "attempts": [
+      {
+        "workflow": "build.yml",
+        "result": "HTTP500",
+        "runId": null
+      },
+      {
+        "workflow": "golden-spin-prototype.yml",
+        "result": "HTTP500",
+        "runId": null
+      }
+    ],
+    "initialDispatchStatus": "BLOCKED_DISPATCH",
+    "initialReadback": "No Run for5024c5f; Actions enabled. No downloaded Actions package or evidence for this source.",
+    "status": "FAILED_7c31be2_NEW_WAKE_FIX_PENDING_FREEZE",
+    "freeze": "7c31be2e7be06da2dce6800352f4f4c94afa1370",
+    "standard": {
+      "run": 42068519674,
+      "status": "FAIL",
+      "unit": {
+        "pass": 38,
+        "total": 38
+      },
+      "browser": {
+        "pass": 46,
+        "total": 47,
+        "failed": [
+          "evolution-owner-resources.cjs"
+        ]
+      },
+      "packages": "PASS including9negative tests and2independent builds",
+      "onlineVerifier": "FAIL / INCOMPLETE",
+      "artifactIds": [
+        13437026074,
+        13436711269,
+        13435109117
+      ],
+      "actualDownloadedDigestsVerified": true,
+      "indexedFileHashesVerified": 204
+    },
+    "research": {
+      "run": 42068531180,
+      "status": "FAIL",
+      "pass": 41,
+      "total": 42,
+      "failed": [
+        "evolution-owner-resources"
+      ],
+      "onlineVerifier": "FAIL / INCOMPLETE",
+      "artifactIds": [
+        13437096514,
+        13436876688
+      ],
+      "actualDownloadedDigestsVerified": true,
+      "indexedFileHashesVerified": 480,
+      "requiredResultOmitted": "research/evolution-owner-resources/result.json",
+      "seal": "INCOMPLETE"
+    },
+    "failureCause": "Both profiles fail the same disabled-motion pending=false assertion in hub-placement-integration. The observer reset() then unconditionally wake() queued a needless frame while motion was disabled. Dependent summary/verifier/gate failures are not separate product bugs.",
+    "packageReadback": {
+      "uncompressedMembersEqualAcrossWindowsAndActions": 9,
+      "zipBytesEqualAcrossPlatforms": false,
+      "localCompression": "Python3.14.9 / zlib1.3.1.zlib-ng",
+      "actionsCompression": "Python3.12.15 / zlib1.3.1",
+      "scope": "All9 package member bytes and paths identical; compressed ZIP bytes differ. Each environment passes its own exact independent double build. Remote UI SHA20d173363bd4b6e0e7eb9dba3295d34d5a72ec6e1161636523d51bfe517f0403 is distinct from local1d7e43a399ce18727b116696eae27513736ec32e5413d6ac71618d8b46eac230."
+    }
+  },
+  "pending": [
+    "Freeze corrected source; full standard/research Actions and actual downloadable evidence",
+    "New source-bound nine packages/double build",
+    "Resolve or explicitly disposition the weather pixel failures based on evidence",
+    "New attributes/Hub real-game and device acceptance; final4.1 comparable performance"
+  ],
+  "inputSha256Lf": {
+    "framework/motion-hub/MotionHub.vue": "cc6881e46f395cf45babb673092e0c9cceaa124eee8c72ce05af5d5979447e56",
+    "tests/golden-spin-hub-input.cts": "80889ba02799ecdd97c800dc1761c77dfb5e972e387cd6b54f021bfd9b4bff4b",
+    "tests/official-cleanup.cts": "0be30c6c23e1de0dc343a659f6a2874e38a87a58d603f804c2c525add7b04a08",
+    "tests/hub-placement-integration.cts": "16c46ef13d37169a8a67e9f8454109ba1b2ee196732bb378a594151707c11ee5",
+    "scripts/expected.lock.json": "398574c05e4ab6df536f3ba2a00e7ab5a75d23d536d2360cb928c6c279334abd"
+  },
+  "privateEvidence": [
+    "tests/artifacts/ui42/hub-frozen-unit.log",
+    "tests/artifacts/ui42/hub-frozen-browser-identity-fixed.log",
+    "tests/artifacts/ui42/hub-frozen-research.log",
+    "tests/artifacts/ui42/weather-diagnosis",
+    "tests/artifacts/ui42/hub-input-hidden-fixed.log",
+    "tests/artifacts/evolution/hub-placement-1793896936753",
+    "tests/artifacts/ui42/hub-followup-ci-check.log",
+    "tests/artifacts/ui42/hub-followup-framework-startup.log",
+    "tests/artifacts/ui42/hub-followup-device-layouts.log",
+    "tests/artifacts/ui42/hub-placement-hidden-fixed.log",
+    "tests/artifacts/ui42/actions-7c31be2/standard-readback.json",
+    "tests/artifacts/ui42/actions-7c31be2/research-readback.json",
+    "tests/artifacts/ui42/hub-placement-wake-fixed.log",
+    "tests/artifacts/evolution/hub-placement-1793898770943"
+  ],
+  "limits": "Technical gates and core device behaviors validated; performance not yet accepted. No main merge, release or Host protocol change.",
+  "targetedFollowup": {
+    "ciCheck": "PASS",
+    "testToolTypes": "PASS",
+    "fullGoldenSpinHubInput": "PASS including reduced/disabled motion, hidden/resume, real drag and native single dock",
+    "productionPlacement": "PASS at1280/390 including motion disable during actual opening, hidden gesture cancellation, flight and composed cleanup",
+    "genericHostMotion": "PASS original real pointer docking/restore/cancellation contract unchanged",
+    "officialCleanup": "PASS all12 scenarios, with entry/connect injection asserted exactly once",
+    "frameworkStartup": "PASS full startup, cleanup and native select contracts",
+    "adapterMaterials": "PASS",
+    "kraftWorkBaseline": "PASS",
+    "deviceProbe": "PASS controlled Chromium only",
+    "deviceLayouts": {
+      "status": "FAIL",
+      "scenarios": 127,
+      "pass": 125,
+      "errors": [
+        "profile:iphone-16e-portrait load>2500ms",
+        "profile:iphone-16e-landscape load>2500ms"
+      ],
+      "negativeControls": "4 rejected as expected",
+      "cause": "Unknown slow navigation; server port derived from actual listening address, no specific blocked request recorded. No retry/timeout change."
+    },
+    "scope": "Targeted checks after source corrections; not a new full profile PASS."
+  },
+  "wakeFix": {
+    "source": "src/ui/golden-spin/rigid-spin.ts",
+    "change": "Guard shared wake against document.hidden and reduced/disabled motion; preserve reset cleanup and frame-entry race checks.",
+    "independentReview": "No missing static-sphere or resume path identified; review is not execution proof.",
+    "validation": "PASS actual production placement1280/390 including mid-open disable, re-enable then charge/flight, hidden interruption, cleanup. Existing pending=false assertion unchanged.",
+    "sourceSha256Lf": "f3d7f368868341fc561351e825a72415091009bc325a0649cb958a6d26107f0c",
+    "newFullProfiles": "PENDING"
+  },
+  "e85Profiles": {
+    "source": "e85edf1ffeef77d95c165a37813ceafeec2391e9",
+    "standard": {
+      "run": 42073441881,
+      "status": "FAIL",
+      "unit": "38/38 PASS",
+      "browser": "46/47 PASS",
+      "failed": "evolution-owner-resources: catch idle != dragging",
+      "downloadedProducerArtifact": 13439290624,
+      "downloadedSha256": "c70d8fc857857ab13451f261c1e5e064c856aa74dc9207dc5700757f8e24c863"
+    },
+    "research": {
+      "run": 42073451651,
+      "status": "FAIL",
+      "failed": "evolution-owner-resources: catch idle != dragging",
+      "evidence": "Completed job failure log and API result read; full producer artifact not downloaded this round."
+    },
+    "wakeRegression": "Disabled-motion pending assertion passed before catch in both profiles; no waiting/assertion changes used."
+  },
+  "catchProbeFix": {
+    "productionSource": "Unchanged frome85edf1",
+    "observedFailure": "Single slowMo80 diagnostic: pointerdown occurred during flying but landed on BODY about35px outside the ball, then existing outside-input cancellation yielded idle. This reproduces the error shape; original CI lacks its exact hit-target trace.",
+    "change": "Read actual placement velocity rather than inferring it from net rectangle displacement across a bounce. Wait for natural coasting below90 CSSpx/s to provide routing margin, still catch ongoing flight using unchanged real mouse move/down/up. Capture actual target/isTrusted/before-phase/bounds, retain flying->dragging and closed-menu assertions. No clock pause, product-speed change, synthetic pointer or force click.",
+    "normal": "PASS1280/390, production placement full checks",
+    "slowMo80": "PASS once1280/390, same diagnostic driver; original failure preserved",
+    "privateEvidence": [
+      "tests/artifacts/ui42/hub-catch-diagnosis/slow-pointerdown.log",
+      "tests/artifacts/ui42/hub-catch-diagnosis/slow-pointerdown-fixed.log",
+      "tests/artifacts/evolution/hub-placement-1793900602223/result.json",
+      "tests/artifacts/evolution/hub-placement-1793900950723/result.json"
+    ],
+    "next": "New exact-source full standard/research profiles and package identity; not a full gate PASS."
+  },
+  "e3Profiles": {
+    "source": "e3a3f86f44b345bf1159c7fc09b231b7cb81bde0",
+    "standard": {
+      "run": 42080010743,
+      "unit": "38/38 PASS",
+      "browser": "46 PASS / 1 ERROR of47",
+      "error": "evolution-owner-resources: charge waitForFunction >10000ms inside interrupt loop",
+      "indexedFiles": 204,
+      "remoteVerdict": "ERROR / UNKNOWN / INCOMPLETE",
+      "archives": [
+        {
+          "id": 13441806861,
+          "name": "kraft-work-checks-e3a3f86f44b345bf1159c7fc09b231b7cb81bde0",
+          "sha256": "c29329bb7542b4b62520adbe6180472451aa8f0aba25a2ab270fec3fc1b5d332",
+          "bytes": 335167
+        },
+        {
+          "id": 13441432022,
+          "name": "kraft-work-build-e3a3f86f44b345bf1159c7fc09b231b7cb81bde0",
+          "sha256": "40c551331db64ef3e529263d4bf7b3c59f73a96cb8cae4d1042bbd67abf98770",
+          "bytes": 373988
+        },
+        {
+          "id": 13441112336,
+          "name": "moody-remote-standard-42080010743-1",
+          "sha256": "b3f944b2011df9879f567989d5a604141f94c8d0e200478b36c45f154e8e6850",
+          "bytes": 1203
+        }
+      ]
+    },
+    "research": {
+      "run": 42080020265,
+      "checks": "41 PASS / 1 ERROR of42",
+      "error": "Same charge helper and interrupt-loop stack; original failing width/reason not captured",
+      "indexedFiles": 480,
+      "remoteVerdict": "ERROR / UNKNOWN / INCOMPLETE",
+      "archives": [
+        {
+          "id": 13441761544,
+          "archive": "research-checks.zip",
+          "size": 124159022,
+          "sha256": "cefc07aa74e4260c9cafca2fe641aaaacdb062d200bd98c6e3f43614fc20137d",
+          "apiDigestMatched": true,
+          "crcPassed": true,
+          "safeMemberPaths": true
+        },
+        {
+          "id": 13441586088,
+          "archive": "research-remote.zip",
+          "size": 1248,
+          "sha256": "bb3895aee7c66f786ba28a81c6522978824a3e8c641cd35dd875e8982ba9b926",
+          "apiDigestMatched": true,
+          "crcPassed": true,
+          "safeMemberPaths": true
+        }
+      ]
+    },
+    "localNinePackages": "PASS; 9 negative tests and two independent exact ZIP builds; payloads identical to e85edf1",
+    "sourceIdentity": "Local Windows raw content960060c66961340eeea4a290d1d8711aa9ee2ef8ecfeb7c6771c43bd92cfc7f7; tree2e2073f5530df9e4d774e7cb836eae2286f9b870",
+    "device": "Read-only original UI backup/47-Mod inventory/marked test slot verified; no candidate installed"
+  },
+  "chargeProbeFollowup": {
+    "diagnosis": "Original helper targets x2 from a centered56px grip; at scale1/left12, max-depth threshold has about0.08px horizontal margin. This is a concrete fixture defect, not proof of original CI exact cause. Single stage/native-input instrumented normal diagnosis passed; cannot retroactively assign a failed CI subscene.",
+    "change": "Use actual75%-interior grip, preserving x2/charge>=.999/native input/product physics; bounded200-event log records stage, target, trusted flag, capture-before-handler, rect, velocity/charge, flags; failure stderr includes diagnostics.",
+    "validation": "Final full actual-owner group PASS normally and with slowMo80 on Node26.13.0/Chromium158.0.4370.1; tooling build/check and ci:check PASS. Four exact historical counterexamples remain rejected. Failed/interrupted previous attempts retained.",
+    "originalInterruptedEvidence": "tests/artifacts/ui42/hub-input-full-normal.log; hub-placement-1793902885094 has screenshots but no result.json",
+    "sourceScope": "Product source unchanged frome85edf1; tests only. No general timeout increase, removed scenario or relaxed threshold.",
+    "positiveEvidence": [
+      "tests/artifacts/ui42/hub-input-route-full-normal.log",
+      "tests/artifacts/evolution/hub-placement-1793904130064",
+      "tests/artifacts/ui42/hub-input-route-full-delayed.log",
+      "tests/artifacts/evolution/hub-placement-1793903967843"
+    ],
+    "negativeCalibration": {
+      "result": "PASS_NEGATIVE_CONTROL",
+      "input": "Trusted native pointer,49%-interior grip,x2; full-charge assertion unchanged",
+      "actualPhase": "charging",
+      "actualCharge": 0.9927529727711397,
+      "scope": "Proves concrete grip-depth failure mechanism, not original CI exact subscene",
+      "record": "tests/artifacts/ui42/hub-charge-calibration.json"
+    },
+    "environmentInterruption": {
+      "status": "INCOMPLETE_NOT_PASS",
+      "originalPid": "Not captured; cannot match MSI candidate62372",
+      "evidence": "Local original run exited1 without terminal result; coordinator reports MSI Restart Manager during old-version uninstall. Time correlation only; no independently proved specific terminated PID.",
+      "resumed": "System Node26.13.0/npm11.20.0 paths verified; fresh complete normal/delayed runs passed after installer completion was confirmed."
+    }
+  },
+  "arrivalRoutingFollowup": {
+    "failedAttempt": "tests/artifacts/ui42/hub-input-full-delayed-node2613.log",
+    "actualEvidence": "tests/artifacts/evolution/hub-integration-1793903525362/input-diagnosis.json",
+    "observed": "Real pointer hit correct tool; visual paused atq0.99462, beyond originalq<.98 acceptance. Product pause worked; driver was late.",
+    "fix": "Preposition actual mouse before opening; native Enter opens while armed arrival observation leads to real mouse.down. Preserve held pressed/paused/target/moving/.68<q<.98,100ms frozen-pose and one native settings action assertions. Product timeline unchanged.",
+    "diagnostics": "Reuse existing hubInputEvents/sidecar, add trusted/time/rect/capture-before-handler; write same failure object to result and stderr. Successful H01 concreteq/trusted values are not persisted; claim only assertions actually passed.",
+    "validation": "Final complete normal and slowMo80 owner groups PASS; four original precise negative assertions still reject."
+  },
+  "macContinuation20261106": {
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "sourceWasCleanDuringChecks": true,
+    "changes": "Documentation and evidence receipts only; no product, test, protocol or workflow changes.",
+    "remoteVerified": [
+      {
+        "runId": 42087362215,
+        "profile": "standard",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/42087362215",
+        "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+        "event": "workflow_dispatch",
+        "jobs": [
+          {
+            "id": 127455958400,
+            "name": "validate",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 127464045122,
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 127464264735,
+            "name": "moody-gate",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ],
+        "remoteVerdict": {
+          "status": "PASS",
+          "assertionResult": "PASS",
+          "evidenceIntegrity": "COMPLETE",
+          "reasonCodes": []
+        },
+        "artifacts": [
+          {
+            "id": 13445430265,
+            "name": "kraft-work-checks-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+            "size_in_bytes": 335683,
+            "digest": "sha256:b60defb1eea18fee8190cae09602286bbf0fa81c5b0d3884b18ab7346f51e032",
+            "expired": false
+          },
+          {
+            "id": 13445295477,
+            "name": "moody-remote-standard-42087362215-1",
+            "size_in_bytes": 1052,
+            "digest": "sha256:55932ea4e9dc7578c6caa486fd9055e206a3ef8a166b55ac73b5968380e47e6d",
+            "expired": false
+          },
+          {
+            "id": 13445085736,
+            "name": "kraft-work-build-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+            "size_in_bytes": 373994,
+            "digest": "sha256:4c7920c16cde2680539edfa83d321001fb3d4fdb4e881c334d5a3514cc0de3a6",
+            "expired": false
+          }
+        ]
+      },
+      {
+        "runId": 42087371229,
+        "profile": "research",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/42087371229",
+        "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+        "event": "workflow_dispatch",
+        "jobs": [
+          {
+            "id": 127455985494,
+            "name": "prototype",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 127462658470,
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ],
+        "remoteVerdict": {
+          "status": "PASS",
+          "assertionResult": "PASS",
+          "evidenceIntegrity": "COMPLETE",
+          "reasonCodes": []
+        },
+        "artifacts": [
+          {
+            "id": 13444905484,
+            "name": "golden-spin-prototype-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+            "size_in_bytes": 124158691,
+            "digest": "sha256:c74b0581a623fa769bb95f4c430f6193aa6dffb081813f7fe4fa11eefd52fd24",
+            "expired": false
+          },
+          {
+            "id": 13444332459,
+            "name": "moody-remote-research-42087371229-1",
+            "size_in_bytes": 1063,
+            "digest": "sha256:2103242d094911421b40fbfaa8aa2687f3f3927ce2b19819d737f68c347b216e",
+            "expired": false
+          }
+        ]
+      }
+    ],
+    "downloadValidation": {
+      "standardIndexedFiles": 204,
+      "omitted": [],
+      "seal": "SEALED",
+      "checks": [
+        "standard archive size/API SHA256/CRC/safe member paths",
+        "204 indexed file sizes and SHA256 digests",
+        "both small remote-verification archives size/API SHA256/CRC/safe member paths",
+        "existing standard verifyRemote offline recomputation with current clean source and catalog"
+      ],
+      "offlineStandard": {
+        "status": "PASS",
+        "assertionResult": "PASS",
+        "evidenceIntegrity": "COMPLETE",
+        "problems": []
+      },
+      "anchorScope": "Downloaded API-authenticated archives; offline nonce comes from the downloaded authenticated remote result, manifest hash from the authenticated standard archive. This is a local recomputation, not a new GitHub gate or an independent transport trust root.",
+      "notRepeatedOnMac": [
+        "Full 124 MB research archive/member recomputation; online independent verifier success is directly checked",
+        "Downloading/rebuilding nine development ZIPs; standard package evidence was checked by the existing verifier, not a second Python ZIP contract implementation"
+      ]
+    },
+    "standardCheckCounts": {
+      "unit": 38,
+      "browser": 47,
+      "packageCount": 9,
+      "packageNegatives": 9,
+      "independentBuilds": 2
+    },
+    "researchCount": {
+      "reportedPass": 42,
+      "source": "Issue #35 comment 6666663022; online producer and independent verifier success directly checked; full research archive not downloaded on this Mac"
+    },
+    "mac": {
+      "platform": "darwin arm64",
+      "node": "26.13.0",
+      "npm": "11.20.0",
+      "python": "3.12.14 (command-local runtime; no global alias change)",
+      "playwright": "1.63.0",
+      "chromium": "153.0.8010.12 headless shell revision 1243",
+      "dependencies": "npm ls --all successful; 66 installed lock entries match versions; lockfile unchanged",
+      "commands": [
+        {
+          "command": "npm run ci:check",
+          "status": "PASS"
+        },
+        {
+          "command": "node scripts/build-framework.mjs",
+          "status": "PASS"
+        },
+        {
+          "command": "node --test tests/hub-placement.test.mts",
+          "status": "PASS"
+        },
+        {
+          "command": "node tests/evolution-owner-resources.cjs",
+          "status": "PASS"
+        }
+      ],
+      "owners": 13,
+      "hubChecks": 12,
+      "layoutCount": 48,
+      "placement": {
+        "widths": [
+          1280,
+          390
+        ],
+        "status": "PASS",
+        "coverage": [
+          "original sphere/menu and mid-open disabled-motion intent",
+          "direct placement and legacy storage preserved",
+          "full charge, launch, multiple collisions and trusted mid-flight catch",
+          "escape/blur/resize/scene/reduced/hidden cancellation",
+          "resting renderer sleep and teardown including throwing cleanup"
+        ]
+      },
+      "negativeControls": [
+        {
+          "kind": "constructor-outside-cleanup",
+          "status": "REJECTED",
+          "assertion": "constructor fallback must remove the already appended canvas\n\n1 !== 0\n"
+        },
+        {
+          "kind": "frozen-MotionHub-d3f04ee",
+          "status": "REJECTED",
+          "assertion": "restored Hub geometry must fit the resized hidden viewport"
+        },
+        {
+          "kind": "old-overflow-specificity",
+          "status": "REJECTED",
+          "assertion": "short viewport utility must scroll within safe bounds: {\"width\":756,\"height\":352,\"bottom\":21,\"rect\":{\"x\":479,\"y\":319,\"width\":59.328125,\"height\":44,\"right\":538.328125,\"bottom\":363},\"overflow\":\"visible\",\"scrollbar\":\"none\",\"scrollTop\":0,\"hit\":true}"
+        },
+        {
+          "kind": "old-preview-main-selector",
+          "status": "REJECTED",
+          "assertion": "preview styles must not collapse actual settings content: {\"viewport\":{\"width\":1280,\"height\":900},\"layout\":\"上下\",\"category\":\"阅读\",\"width\":32,\"available\":998,\"padding\":\"12px 16px 16px\",\"maxWidth\":\"760px\",\"marginLeft\":\"0px\",\"marginRight\":\"0px\",\"sectionWidth\":0}"
+        }
+      ],
+      "localEvidence": [
+        {
+          "file": "tests/artifacts/evolution/owners.json",
+          "sha256": "781bc70616fcab57f1c253e590b9e56010592debee3bbe67b274d75165d30054"
+        },
+        {
+          "file": "tests/artifacts/evolution/hub-placement-1793937458145/result.json",
+          "sha256": "9eead66da88c698549e4dc267d56fdb5b07f8b7e0a72d073dc949b1276a31f9e"
+        },
+        {
+          "file": "tests/artifacts/evolution/hub-integration-1793937430787/result.json",
+          "sha256": "96cde13bf6e617fcb0ba1a34a6df6e64df0586435f0913b6869210b94babde3d"
+        },
+        {
+          "file": "tests/artifacts/evolution/hub-integration-1793937430787/layout-matrix.json",
+          "sha256": "cfd073dc2f70b405fb3108aa03f5cc7bda414b91c71a595d03097ec0901ca360"
+        }
+      ],
+      "scope": "Controlled actual components without game assets. No new Mac real-game/device or overall performance acceptance."
+    },
+    "windowsRelay": {
+      "provenance": "Coordinator chat relay on 2026-11-06; raw Windows/device results have not been synchronized here. This is reported functional coverage, not independently re-executed or signed off by Mac.",
+      "sourceReported": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+      "functionalStatus": "REPORTED_PASS",
+      "reportedCoverage": [
+        "attributes in rain/snow: drag, touch scroll, tabs and close",
+        "Hub layouts, full charge, trusted touch catch and settings",
+        "disabled-motion menu intent, UI-off cleanup/reopen unique instance",
+        "native background/resume"
+      ],
+      "performance": "One candidate and one 4.1 baseline sample reported with ModHub 2.0.1 and matching other Mods/preferences; final net improvement not established. No raw numbers reproduced here.",
+      "handoff": "Candidate/preferences/native restart/loading identity reportedly restored before Windows went offline. Final closing documentation commit, full device release and ADB forward cleanup remain unconfirmed. Do not overwrite possible Windows unpushed work.",
+      "requiredToClose": [
+        "Windows final local HEAD/status/unpushed diff and closing commit",
+        "sanitized source/package/environment-bound functional receipts and original failure/recovery boundaries",
+        "matching baseline/candidate raw timing and slow samples, Mod list/preferences and collection procedure for comparison on Windows",
+        "device ownership and ADB forward cleanup confirmation; keep private original evidence on the authorized device"
+      ]
+    },
+    "ciC0CostRefresh": {
+      "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+      "profile": "standard",
+      "depth": "standard",
+      "stages": [
+        {
+          "id": "dependencies",
+          "status": "PASS",
+          "milliseconds": 1146,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "check",
+          "status": "PASS",
+          "milliseconds": 34269,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "unit",
+          "status": "PASS",
+          "milliseconds": 36579,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "build",
+          "status": "PASS",
+          "milliseconds": 109317,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "packages",
+          "status": "PASS",
+          "milliseconds": 117493,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "browser-install",
+          "status": "PASS",
+          "milliseconds": 15464,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        },
+        {
+          "id": "browser",
+          "status": "PASS",
+          "milliseconds": 516645,
+          "cache": {
+            "npm": "true"
+          },
+          "retry": {
+            "attempt": "1",
+            "automaticRetries": 0
+          }
+        }
+      ],
+      "browserItemSumMs": 514849,
+      "topBrowser": [
+        {
+          "name": "device-layouts.cjs",
+          "milliseconds": 184957,
+          "sharePercent": 35.92
+        },
+        {
+          "name": "evolution-owner-resources.cjs",
+          "milliseconds": 100376,
+          "sharePercent": 19.5
+        },
+        {
+          "name": "settings-ci.cjs",
+          "milliseconds": 35373,
+          "sharePercent": 6.87
+        },
+        {
+          "name": "ui-runtime-regressions.cjs",
+          "milliseconds": 23731,
+          "sharePercent": 4.61
+        },
+        {
+          "name": "attributes-material.cjs",
+          "milliseconds": 17210,
+          "sharePercent": 3.34
+        }
+      ],
+      "jobs": [
+        {
+          "run": 42087362215,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "validate",
+          "status": "success",
+          "jobMs": 857000
+        },
+        {
+          "run": 42087362215,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "evidence-verify",
+          "status": "success",
+          "jobMs": 20000
+        },
+        {
+          "run": 42087362215,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "moody-gate",
+          "status": "success",
+          "jobMs": 3000
+        },
+        {
+          "run": 42087371229,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "prototype",
+          "status": "success",
+          "jobMs": 705000
+        },
+        {
+          "run": 42087371229,
+          "attempt": 1,
+          "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "event": "workflow_dispatch",
+          "job": "evidence-verify",
+          "status": "success",
+          "jobMs": 23000
+        }
+      ],
+      "currentPair": {
+        "runs": 2,
+        "attemptEach": 1,
+        "standardCreatedToGateMs": 892000,
+        "researchCreatedToVerifierMs": 735000,
+        "firstActionableFeedbackMs": null,
+        "wholeChangeIntegrationTimeMs": null,
+        "explanation": "Current successful pair only. Earlier failed revisions and repairs remain in this record; not a first-try claim or a performance comparison. Developer request/feedback timestamps are unavailable, so full change lead time cannot be inferred."
+      },
+      "decision": "Keep full checks and two-build contract. Highest measured browser contributors are device layouts and composed owner/Hub tests; this sample alone does not justify removing checks, shortening product motion or enabling selected CI/cache. No new product hotspot was established."
+    }
+  },
+  "historyScope": "Earlier fields, including pending, retain their original freeze observations. Current acceptance is performanceInterleaved20261106 and modHub201Acceptance; Mac continuation and original failures remain intact.",
+  "finalProfiles": {
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "actionsSource": {
+      "head": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+      "tree": "d7e27c3ab0b228a13f50abbd5b8c1dcc9c4029af",
+      "dirty": false,
+      "contentSha256": "8fd84486aae21021217ccb7c3a5fdd6b4c12065afd4607668f21a1a5bc215402",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "localWindowsSource": {
+      "head": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+      "tree": "d7e27c3ab0b228a13f50abbd5b8c1dcc9c4029af",
+      "dirty": false,
+      "contentSha256": "013cf38b4b5c2c751086146b0eff649a5d55d0c93464bd1fb3f64e47fcc56037",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "standard": {
+      "run": 42087362215,
+      "jobs": [
+        {
+          "id": 127455958400,
+          "name": "validate",
+          "conclusion": "success"
+        },
+        {
+          "id": 127464045122,
+          "name": "evidence-verify",
+          "conclusion": "success"
+        },
+        {
+          "id": 127464264735,
+          "name": "moody-gate",
+          "conclusion": "success"
+        }
+      ],
+      "unit": "38/38 PASS",
+      "browser": "47/47 PASS",
+      "archives": [
+        {
+          "id": 13445430265,
+          "name": "kraft-work-checks-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "sha256": "b60defb1eea18fee8190cae09602286bbf0fa81c5b0d3884b18ab7346f51e032",
+          "bytes": 335683
+        },
+        {
+          "id": 13445085736,
+          "name": "kraft-work-build-c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+          "sha256": "4c7920c16cde2680539edfa83d321001fb3d4fdb4e881c334d5a3514cc0de3a6",
+          "bytes": 373994
+        },
+        {
+          "id": 13445295477,
+          "name": "moody-remote-standard-42087362215-1",
+          "sha256": "55932ea4e9dc7578c6caa486fd9055e206a3ef8a166b55ac73b5968380e47e6d",
+          "bytes": 1052
+        }
+      ],
+      "indexedFiles": 204,
+      "verdict": "PASS / PASS / COMPLETE",
+      "seal": "SEALED",
+      "omitted": []
+    },
+    "research": {
+      "run": 42087371229,
+      "jobs": [
+        {
+          "id": 127455985494,
+          "name": "prototype",
+          "conclusion": "success"
+        },
+        {
+          "id": 127462658470,
+          "name": "evidence-verify",
+          "conclusion": "success"
+        }
+      ],
+      "checks": "42/42 PASS",
+      "archives": [
+        {
+          "id": 13444905484,
+          "archive": "research-checks.zip",
+          "size": 124158691,
+          "sha256": "c74b0581a623fa769bb95f4c430f6193aa6dffb081813f7fe4fa11eefd52fd24",
+          "apiDigestMatched": true,
+          "crcPassed": true,
+          "safeMemberPaths": true
+        },
+        {
+          "id": 13444332459,
+          "archive": "research-remote.zip",
+          "size": 1063,
+          "sha256": "2103242d094911421b40fbfaa8aa2687f3f3927ce2b19819d737f68c347b216e",
+          "apiDigestMatched": true,
+          "crcPassed": true,
+          "safeMemberPaths": true
+        }
+      ],
+      "indexSha256": "091adf71ce461ecd547936bd4ccd8c2b6767150182aee8b74800810563639cd5",
+      "indexedFiles": 481,
+      "verdict": "PASS / PASS / COMPLETE",
+      "seal": "SEALED",
+      "omitted": []
+    },
+    "packages": {
+      "status": "PASS",
+      "negativeTests": 9,
+      "independentBuilds": 2,
+      "allNineLocalVsActionsMembersEqual": true,
+      "zipCompression": "Windows Python3.14.9 zlib-ng and Actions Python3.12.15 native zlib produce distinct ZIP digests; do not mix identities.",
+      "comparisons": [
+        {
+          "name": "StoneFreeHost",
+          "remoteSha256": "c71ab706d6928d03099200c554ee6516cc852c711ff6216005633be97db6af08",
+          "localSha256": "15cdfe8fcee5ff7813a7f92efd5798b628edfb48975bcc15018d4c7b1354f7c9",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "DoLGameUI",
+          "remoteSha256": "0afa5254688e236764b303acbafeaa74e9f0df79b3e4dd32d3a2a9f9866e0829",
+          "localSha256": "97c5fd0540d0eabc7756ac43992371be1c051f24a2244caf0008ae00795a2be8",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "ModHubSoftWet",
+          "remoteSha256": "4ac28818457876f56862d56c451541b7bd4278e9bacfee000a55ceb6dea5ff83",
+          "localSha256": "4b584659b40a017c0cee7bee6b2d42aa4ed3334ba0e023ca6348d0e5b141e88d",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "MapleBirchSoftWet",
+          "remoteSha256": "ab2c8c41bce8ffee4a1ae4e226fa700671602dfe4546213d380adfc179d43e00",
+          "localSha256": "5d210ba972772acb4d27c4a2378aff40010110ea705a3df5793a01a3247a1253",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "DolOptimizationSoftWet",
+          "remoteSha256": "f1120c18c8e058b0647d84676b217d278557b66c3611d9643f8ebf3213510f1f",
+          "localSha256": "16a6611d1e9c82d546378035b2599bf41ad5e87e328c006bcdf44ad3b357d35e",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "CheatExtendedSoftWet",
+          "remoteSha256": "a1e9b85c10d78e94384632835b0faf13a0aa95ffff36933386118853f4925f6d",
+          "localSha256": "508454241d04dc26363de26393510aa5f9cfb5ba5dcbbab62a25bcbff557a78b",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "ReOverfitsSoftWet",
+          "remoteSha256": "3cd6e6cd517f92894a1d9f37d834e83c2b535e524049fcd9b58c73ccce92a260",
+          "localSha256": "b7bfcf42bd60da0374efafde9d778ec9a154897ca7ccf6747181998c1daf2ba9",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "LyraMouthCompat051213",
+          "remoteSha256": "ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827",
+          "localSha256": "3e56e41f04e0c074f0ae53d7217bd87a4bb56be27160878b78ad65b593cc82f6",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        },
+        {
+          "name": "SmartPhoneSoftWet",
+          "remoteSha256": "06f72b3d645a2274104a18bcdf01f2dfe5aed01390bb228bbeccc8a10f468c97",
+          "localSha256": "8d68a5a43517c1ec249ac26d5b7243a6b99d22309d9f55f4634c47ffea8a01f0",
+          "memberBytesEqual": true,
+          "zipBytesEqual": false
+        }
+      ]
+    },
+    "candidateStage": "READY_FOR_AUTHORIZED_DEVICE_HANDOFF",
+    "device": "Core device behavior validated with retained helper failures/recovery; performance acceptance pending. Candidate restored and final Loader identity verified.",
+    "remainingRequired": "Complete controlled interleaved performance comparison and follow actual repeated regressions; representative ModHub2.0.1 manager/UI verification after owner update.",
+    "release": "No main merge, Tag, Release or Host public protocol change."
+  },
+  "deviceCheckpoint": {
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "loadedUiZipSha256": "97c5fd0540d0eabc7756ac43992371be1c051f24a2244caf0008ae00795a2be8",
+    "finalState": "Candidate restored after temporary official4.1 comparison; cold restart and all20 active Loader members/47Mod versions/order/preferences/title/errors checked; no own ADB forwards left.",
+    "functional": "Rain/snow attributes drag, touch scroll/tab/close; Hub fan/grid, free placement,charge1, trusted CDP-touch catch whileflying→dragging→idle, settings entry; motion disable/menu intent, master-off removesall Hub visuals and re-enable single set; actual Android Home/resume with fresh target binding passed.",
+    "scope": "CDP touch events on real WebView, not human finger latency. Initial core smoke usedModHub1.9.2; current final loaded combination and measured pair use user-updatedModHub2.0.1. Dedicated2.0.1 manager window not yet checked.",
+    "retainedFailures": [
+      "Immediate cold bootstrap read before readiness; no reinstall used.",
+      "First smoke finally sent touchCancel with noactive touch and was rejected before restore; independent raw preference/key/fixture restore then passed.",
+      "First lifecycle pointer guard Ball blocked, insufficient target diagnostics; subsequent hit-readiness check156.9983ms, motion/master lifecycle and restore passed.",
+      "First performance startup observation timedout with0samples; excluded.",
+      "Old ModHub1.9.2 comparison guard rejected newer2.0.1 before registration; no write; first actual candidate sample already2.0.1, boot/runtime versions then confirmed."
+    ],
+    "preferenceRecovery": "Exact original owned raw preferences and missingfreePositionkey verified after smoke; final cold boot main preferences equal original; preserves user-updatedModHub2.0.1.",
+    "rawEvidence": "Private ignored device-final-20261106; no game screenshots, saves, UI backups or raw player state uploaded."
+  },
+  "performanceFirstPair": {
+    "status": "PRELIMINARY_NOT_ACCEPTED",
+    "order": [
+      "candidate-1",
+      "baseline-1"
+    ],
+    "scope": "9programmatic opens and2four-second weather windows perUI; exact scene/preferences/47Mod list/viewport/UA/weather objects matched.",
+    "units": "All latencies/rAF gaps inms; CDP duration counters inseconds; rAF is callback scheduling, not GPU/display FPS. Close time is geometry hit availability, not physical touch response.",
+    "environment": "Same Android WebView,1363x876 CSS,DPR2.5,ModHub2.0.1,Host0.1.5-experimental; one120Hz display observation only, not continuous refresh proof. Temperature drift/order and onlyone pair limit conclusions. Candidate battery condition file originated before failed startup, not concurrent with successful sample.",
+    "candidate": {
+      "pages": {
+        "社交": {
+          "n": 3,
+          "handlerMedianMs": 67.1,
+          "closeGeometryHitMedianMs": 73.1
+        },
+        "界面设置": {
+          "n": 3,
+          "handlerMedianMs": 24.4,
+          "closeGeometryHitMedianMs": 25.1
+        },
+        "属性": {
+          "n": 3,
+          "handlerMedianMs": 106.3,
+          "closeGeometryHitMedianMs": 110.3
+        }
+      },
+      "weather": {
+        "rain": {
+          "elapsedMs": 4000.2000000029802,
+          "callbacks": 411,
+          "medianGapMs": 8.2,
+          "p95GapMs": 20.4,
+          "maxGapMs": 37.100000001490116,
+          "actualWeather": {
+            "name": "heavyPrecipitation",
+            "precipitation": "rain",
+            "intensity": 1.6,
+            "temperature": 14.24,
+            "lightning": true,
+            "overcast": 0.8,
+            "fog": 0,
+            "dayState": "dawn"
+          }
+        },
+        "snow": {
+          "elapsedMs": 4004.2000000029802,
+          "callbacks": 385,
+          "medianGapMs": 8.4,
+          "p95GapMs": 22.8,
+          "maxGapMs": 124,
+          "actualWeather": {
+            "name": "heavyPrecipitation",
+            "precipitation": "snow",
+            "intensity": 1.6,
+            "temperature": -1.02,
+            "lightning": false,
+            "overcast": 0.8,
+            "fog": 0,
+            "dayState": "dawn"
+          }
+        }
+      }
+    },
+    "baseline": {
+      "pages": {
+        "社交": {
+          "n": 3,
+          "handlerMedianMs": 36.4,
+          "closeGeometryHitMedianMs": 38.4
+        },
+        "界面设置": {
+          "n": 3,
+          "handlerMedianMs": 22.7,
+          "closeGeometryHitMedianMs": 22.8
+        },
+        "属性": {
+          "n": 3,
+          "handlerMedianMs": 105.2,
+          "closeGeometryHitMedianMs": 107.9
+        }
+      },
+      "weather": {
+        "rain": {
+          "elapsedMs": 4007.5,
+          "callbacks": 479,
+          "medianGapMs": 7.8,
+          "p95GapMs": 14.9,
+          "maxGapMs": 29,
+          "actualWeather": {
+            "name": "heavyPrecipitation",
+            "precipitation": "rain",
+            "intensity": 1.6,
+            "temperature": 14.24,
+            "lightning": true,
+            "overcast": 0.8,
+            "fog": 0,
+            "dayState": "dawn"
+          }
+        },
+        "snow": {
+          "elapsedMs": 4002.10000000149,
+          "callbacks": 441,
+          "medianGapMs": 8.2,
+          "p95GapMs": 17.3,
+          "maxGapMs": 51.70000000298023,
+          "actualWeather": {
+            "name": "heavyPrecipitation",
+            "precipitation": "snow",
+            "intensity": 1.6,
+            "temperature": -1.02,
+            "lightning": false,
+            "overcast": 0.8,
+            "fog": 0,
+            "dayState": "dawn"
+          }
+        }
+      }
+    },
+    "finding": "Candidate social handler median67.1ms vs36.4ms; rain/snow p95rAF20.4/22.8ms vs14.9/17.3ms; candidate snowmax124ms. Keep as potential regression needing interleaved confirmation, not claimed improvement or assigned cause.",
+    "next": "Second candidate/baseline pair under fixed inputs; investigate retained slow social/rain/snow ifrepeated.",
+    "sampleSha256": {
+      "perf-candidate-1-ready.json": "4f039215a85a3c176f411d23729aab361e455bebca047cdcbdbdd52e2b7877b7",
+      "perf-baseline-1-ready.json": "b79a2118e633deb8ac05be44122f8a56bd899d40175bfa05256c178d888cbe8a"
+    }
+  },
+  "performanceInterleaved20261106": {
+    "status": "MEASUREMENT_COMPLETE_ACCEPTANCE_PENDING_CAUSE",
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "order": [
+      "candidate-1",
+      "baseline-1",
+      "candidate-2",
+      "baseline-2"
+    ],
+    "fixedInputsVerified": [
+      "same47Mods incl ModHub2.0.1",
+      "same order/hidden/preferences",
+      "same marked isolated scene",
+      "same UA/viewport/DPR",
+      "identical initial weather and rain/snow public getters"
+    ],
+    "method": "3opens/page/installation; DOM click synchronous return and rAF availability,750ms observation. Rain/snow4s each. rAF callback gaps are not GPU/displayFPS; CDP durations are seconds. CPU diagnostic cohorts excluded from timings.",
+    "runs": [
+      {
+        "label": "candidate-1",
+        "at": "2026-11-05T19:27:00.626Z",
+        "rawFile": "perf-candidate-1-ready.json",
+        "rawSha256": "4f039215a85a3c176f411d23729aab361e455bebca047cdcbdbdd52e2b7877b7",
+        "zipSha256": "97c5fd0540d0eabc7756ac43992371be1c051f24a2244caf0008ae00795a2be8",
+        "openingMedianMs": {
+          "属性": {
+            "synchronousHandler": 106.30000000447035,
+            "closeHitAvailable": 110.30000000447035,
+            "samples": 3
+          },
+          "社交": {
+            "synchronousHandler": 67.10000000149012,
+            "closeHitAvailable": 73.10000000149012,
+            "samples": 3
+          },
+          "界面设置": {
+            "synchronousHandler": 24.399999998509884,
+            "closeHitAvailable": 25.099999994039536,
+            "samples": 3
+          }
+        },
+        "weather": [
+          {
+            "kind": "rain",
+            "elapsedMs": 4000.2000000029802,
+            "rafCallbacks": 411,
+            "gapP95MsNearestRank": 20.399999998509884,
+            "gapMaxMs": 37.100000001490116,
+            "scriptDurationSeconds": 0.8718700000000004,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "rain",
+              "intensity": 1.6,
+              "temperature": 14.24,
+              "lightning": true,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          },
+          {
+            "kind": "snow",
+            "elapsedMs": 4004.2000000029802,
+            "rafCallbacks": 385,
+            "gapP95MsNearestRank": 22.80000000447035,
+            "gapMaxMs": 124,
+            "scriptDurationSeconds": 1.6374970000000006,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "snow",
+              "intensity": 1.6,
+              "temperature": -1.02,
+              "lightning": false,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          }
+        ]
+      },
+      {
+        "label": "baseline-1",
+        "at": "2026-11-05T19:35:03.401Z",
+        "rawFile": "perf-baseline-1-ready.json",
+        "rawSha256": "b79a2118e633deb8ac05be44122f8a56bd899d40175bfa05256c178d888cbe8a",
+        "zipSha256": "3d9f27a1dbdbccd986c83f8f795006f5afae0a40ceb6b24a458a4f0175b83025",
+        "openingMedianMs": {
+          "属性": {
+            "synchronousHandler": 105.20000000298023,
+            "closeHitAvailable": 107.89999999850988,
+            "samples": 3
+          },
+          "社交": {
+            "synchronousHandler": 36.400000005960464,
+            "closeHitAvailable": 38.400000005960464,
+            "samples": 3
+          },
+          "界面设置": {
+            "synchronousHandler": 22.700000002980232,
+            "closeHitAvailable": 22.80000000447035,
+            "samples": 3
+          }
+        },
+        "weather": [
+          {
+            "kind": "rain",
+            "elapsedMs": 4007.5,
+            "rafCallbacks": 479,
+            "gapP95MsNearestRank": 14.899999998509884,
+            "gapMaxMs": 29,
+            "scriptDurationSeconds": 0.721975,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "rain",
+              "intensity": 1.6,
+              "temperature": 14.24,
+              "lightning": true,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          },
+          {
+            "kind": "snow",
+            "elapsedMs": 4002.10000000149,
+            "rafCallbacks": 441,
+            "gapP95MsNearestRank": 17.299999997019768,
+            "gapMaxMs": 51.70000000298023,
+            "scriptDurationSeconds": 1.7089079999999996,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "snow",
+              "intensity": 1.6,
+              "temperature": -1.02,
+              "lightning": false,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          }
+        ]
+      },
+      {
+        "label": "candidate-2",
+        "at": "2026-11-06T14:40:10.518Z",
+        "rawFile": "perf-candidate-2-ready.json",
+        "rawSha256": "5510e69619838d5bc150a05734e7b07fe1317ee8fb070430cbf47d6204371ab1",
+        "zipSha256": "97c5fd0540d0eabc7756ac43992371be1c051f24a2244caf0008ae00795a2be8",
+        "openingMedianMs": {
+          "属性": {
+            "synchronousHandler": 103.8999999910593,
+            "closeHitAvailable": 105.8999999910593,
+            "samples": 3
+          },
+          "社交": {
+            "synchronousHandler": 64.3999999910593,
+            "closeHitAvailable": 68.09999999403954,
+            "samples": 3
+          },
+          "界面设置": {
+            "synchronousHandler": 25,
+            "closeHitAvailable": 25.5,
+            "samples": 3
+          }
+        },
+        "weather": [
+          {
+            "kind": "rain",
+            "elapsedMs": 4009.7000000029802,
+            "rafCallbacks": 400,
+            "gapP95MsNearestRank": 21.799999997019768,
+            "gapMaxMs": 34,
+            "scriptDurationSeconds": 0.9002969999999997,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "rain",
+              "intensity": 1.6,
+              "temperature": 14.24,
+              "lightning": true,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          },
+          {
+            "kind": "snow",
+            "elapsedMs": 4013.9000000059605,
+            "rafCallbacks": 374,
+            "gapP95MsNearestRank": 21.899999991059303,
+            "gapMaxMs": 104.6000000089407,
+            "scriptDurationSeconds": 1.6308090000000002,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "snow",
+              "intensity": 1.6,
+              "temperature": -1.02,
+              "lightning": false,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          }
+        ]
+      },
+      {
+        "label": "baseline-2",
+        "at": "2026-11-06T14:41:43.258Z",
+        "rawFile": "perf-baseline-2-ready.json",
+        "rawSha256": "5c009476a14ed4144742068d7c95676bfac88061e5cebef8f4ea69cf6eea709b",
+        "zipSha256": "3d9f27a1dbdbccd986c83f8f795006f5afae0a40ceb6b24a458a4f0175b83025",
+        "openingMedianMs": {
+          "属性": {
+            "synchronousHandler": 96,
+            "closeHitAvailable": 99.5,
+            "samples": 3
+          },
+          "社交": {
+            "synchronousHandler": 52.5,
+            "closeHitAvailable": 54.6000000089407,
+            "samples": 3
+          },
+          "界面设置": {
+            "synchronousHandler": 24.200000002980232,
+            "closeHitAvailable": 27,
+            "samples": 3
+          }
+        },
+        "weather": [
+          {
+            "kind": "rain",
+            "elapsedMs": 4002.2000000029802,
+            "rafCallbacks": 464,
+            "gapP95MsNearestRank": 16.600000008940697,
+            "gapMaxMs": 33.099999994039536,
+            "scriptDurationSeconds": 0.7029589999999999,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "rain",
+              "intensity": 1.6,
+              "temperature": 14.24,
+              "lightning": true,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          },
+          {
+            "kind": "snow",
+            "elapsedMs": 4025.7000000029802,
+            "rafCallbacks": 404,
+            "gapP95MsNearestRank": 21.69999998807907,
+            "gapMaxMs": 49.900000005960464,
+            "scriptDurationSeconds": 1.661066,
+            "actualWeather": {
+              "name": "heavyPrecipitation",
+              "precipitation": "snow",
+              "intensity": 1.6,
+              "temperature": -1.02,
+              "lightning": false,
+              "overcast": 0.8,
+              "fog": 0,
+              "dayState": "dawn"
+            }
+          }
+        ]
+      }
+    ],
+    "finding": "Candidate social medians67.1/64.4ms versus official4.1 medians36.4/52.5ms. Rain rAFp95 higher in both candidate batches. Snow candidate maximum124/104.6ms versus51.7/49.9ms; second-pair p95 close. Settings approximately similar. Do not infer all windows regressed or claim net improvement.",
+    "diagnosis": {
+      "cpuProfiles": [
+        {
+          "label": "baseline",
+          "sha256": "421043e53665eaaa6511c9e9eb0c39ef095a9e3aa68f74015fd25c2f34f4f4ed",
+          "scope": "6social open/close cycles plus4s rain;1ms sampling overhead; not a replacement timing cohort"
+        },
+        {
+          "label": "candidate",
+          "sha256": "d8a928245de9f5e7148e380f158f55358ba10e8786e594814e0c9f0878a74b08",
+          "scope": "6social open/close cycles plus4s rain;1ms sampling overhead; not a replacement timing cohort"
+        }
+      ],
+      "observation": "Substantial native game drawImage/drawEffects/drawLayers and UI geometry/visibility work. Click-subtree sampled CPU does not reproduce consistent candidate-only increase. No upstream/UI cause established.",
+      "idleField": {
+        "sha256": "e48948e3a9d698afd6d201dc7022ffc23895441577989d48f607252b0eb6ea5d",
+        "order": [
+          "visible",
+          "hidden",
+          "hidden",
+          "visible"
+        ],
+        "result": "No stable gain from hiding idle full-viewport rigid-spin field.4batches and restoration succeeded. Temporary display diagnostic only; not adopted."
+      }
+    },
+    "limits": [
+      "2batches/package;candidate-first alternating order, not randomized/thermal-controlled",
+      "battery/lowpower/recording checkpoints retained; first candidate checkpoint preceded failed startup, not concurrent with successful sample",
+      "observed120Hz mode is not continuous refresh evidence",
+      "CPU sampling perturbs timings; total CPU alone cannot assign cause",
+      "only marked isolated slot loaded; no manual save overwrite; raw game state/screenshots remain private"
+    ],
+    "remaining": "Targeted forced-layout/render scheduling attribution for repeated social/rain differences before performance acceptance; preserve visuals. No runtime patch chosen without cause evidence.",
+    "restoration": {
+      "receiptSha256": "ef83e58cc7c22cbe144c4ea07c3a6c023f11da599acf241f3f2973692019fe67",
+      "finalStateSha256": "00a819b5ee63084342435f69ec7f62c199147dbb99118ab98b01d0ed9ffd5f3d",
+      "result": "native cold restart;20members verified;final index/47Mods/order/hidden/exact owned raw UI preferences/closed scene/zero error and temporary nodes verified;ownADB forwards empty"
+    }
+  },
+  "modHub201Acceptance": {
+    "status": "REPRESENTATIVE_PASS",
+    "source": "c9a4f2a",
+    "version": "2.0.1",
+    "adapter": "ModHubSoftWet1.0.3",
+    "receiptSha256": "b3d5836453f05fe4fcf90716ad6c8b1a1440a6e0122fc974dcb1e1d1728fefb2",
+    "checks": [
+      "native entry via CDP touch",
+      "manager full adapter fingerprint and no horizontal pane overflow",
+      "actual help tab touch and full match",
+      "native close leaves0foreground/error nodes",
+      "private manager/help screenshots visually reviewed"
+    ],
+    "coverage": "Representative manager/help presentation/input only; no installation/update/delete/reorder/AI/cloud actions. No broader version claim."
+  },
+  "performanceLocalization20261106": {
+    "status": "HOT_PATHS_IDENTIFIED_NO_RUNTIME_PATCH",
+    "source": "c9a4f2ab2d1086c375b6b5e027aaccd85e3df06c",
+    "scope": "Short Chrome/WebView main-thread timelines and reversible isolated diagnostics; no full system trace, no manual save overwrite, no production edits.",
+    "traces": [
+      {
+        "label": "candidate",
+        "traceSha256": "ada438866f6d52ab8fdd9d06e7680a542104245a47861116a38832b949e51f1a",
+        "bytes": 36981494,
+        "receiptSha256": "c7604a500a0dd3744145b673b9d1806dea18dcbd6d968fc3149730c7c072e87b",
+        "loss": false,
+        "opens": [
+          {
+            "sample": 0,
+            "synchronousMs": 52.613,
+            "parseHtmlInclusiveMs": 13.979999999999995,
+            "styleMs": 9.27,
+            "layoutMs": 0.384,
+            "jqueryHandlerCallsMs": [],
+            "candidateUiCaptureCallsMs": []
+          },
+          {
+            "sample": 1,
+            "synchronousMs": 64.259,
+            "parseHtmlInclusiveMs": 16.168,
+            "styleMs": 14.488,
+            "layoutMs": 1.642,
+            "jqueryHandlerCallsMs": [
+              63.0,
+              0.107
+            ],
+            "candidateUiCaptureCallsMs": [
+              0.633
+            ]
+          },
+          {
+            "sample": 2,
+            "synchronousMs": 66.151,
+            "parseHtmlInclusiveMs": 16.098000000000017,
+            "styleMs": 13.004,
+            "layoutMs": 1.47,
+            "jqueryHandlerCallsMs": [
+              65.062,
+              0.109
+            ],
+            "candidateUiCaptureCallsMs": [
+              0.616
+            ]
+          }
+        ],
+        "rain": {
+          "intervalMs": 2506.778,
+          "sumsInclusiveMs": {
+            "FunctionCall": 562.3859999999991,
+            "UpdateLayoutTree": 323.80600000000015,
+            "Layout": 25.219,
+            "Paint": 194.56700000000023,
+            "Commit": 167.22900000000004,
+            "PrePaint": 51.70499999999999,
+            "ParseHTML": 0
+          },
+          "counts": {
+            "FunctionCall": 1396,
+            "UpdateLayoutTree": 139,
+            "Layout": 114,
+            "Paint": 867,
+            "Commit": 139,
+            "PrePaint": 139,
+            "ParseHTML": 0
+          }
+        }
+      },
+      {
+        "label": "baseline",
+        "traceSha256": "50f2151992ba7d3d61ad3776125a6807e52f25feed6745c69dc78ae2ff7303bb",
+        "bytes": 42026757,
+        "receiptSha256": "74e9b374d83f16a23900542113648feb7d91c1c6f02b556a796daac923883d7a",
+        "loss": false,
+        "opens": [
+          {
+            "sample": 0,
+            "synchronousMs": 71.928,
+            "parseHtmlInclusiveMs": 18.996999999999986,
+            "styleMs": 12.258,
+            "layoutMs": 0.472,
+            "jqueryHandlerCallsMs": [],
+            "candidateUiCaptureCallsMs": null
+          },
+          {
+            "sample": 1,
+            "synchronousMs": 48.046,
+            "parseHtmlInclusiveMs": 13.850999999999992,
+            "styleMs": 7.711,
+            "layoutMs": 1.174,
+            "jqueryHandlerCallsMs": [
+              47.492,
+              0.202
+            ],
+            "candidateUiCaptureCallsMs": null
+          },
+          {
+            "sample": 2,
+            "synchronousMs": 77.423,
+            "parseHtmlInclusiveMs": 20.09400000000001,
+            "styleMs": 15.156,
+            "layoutMs": 1.523,
+            "jqueryHandlerCallsMs": [
+              76.696,
+              0.17
+            ],
+            "candidateUiCaptureCallsMs": null
+          }
+        ],
+        "rain": {
+          "intervalMs": 2500.852,
+          "sumsInclusiveMs": {
+            "FunctionCall": 418.66699999999895,
+            "UpdateLayoutTree": 348.66700000000003,
+            "Layout": 16.987999999999992,
+            "Paint": 158.17399999999992,
+            "Commit": 94.38799999999996,
+            "PrePaint": 50.690000000000005,
+            "ParseHTML": 0
+          },
+          "counts": {
+            "FunctionCall": 2780,
+            "UpdateLayoutTree": 289,
+            "Layout": 145,
+            "Paint": 1277,
+            "Commit": 288,
+            "PrePaint": 288,
+            "ParseHTML": 0
+          }
+        }
+      }
+    ],
+    "observations": [
+      "Candidate social recorded64.26/66.15ms opens include63.0/65.062ms in native jQuery dispatch versus0.633/0.616ms in UI capture handler. Parsing13.98..16.17ms and style9.27..14.49ms are nested/inclusive, not additive to the handler total.",
+      "Forced style stacks lead from native widget/Wikifier/link-numbering through jQuery :hidden/:visible. This is a shared game+Mod+stylesheet path, not evidence of a vanilla-only fault or proof UI CSS has no influence.",
+      "Official4.1 trace social48.05..77.42ms overlaps candidate52.61..66.15ms. Earlier two cohorts remain unchanged; isolated time differences alone do not prove a candidate-specific regression.",
+      "Steady rain has0ParseHTML events in both intervals. Candidate observed layout roots include sf-foreground-paint; native sprite frame and UI-managed RAF work coexist with style,paint andcommit costs. No repeated passage/widget regeneration was observed; inclusive categories cannot be summed as exclusive CPU or GPU costs.",
+      "Small residual scale0.999853x1 observed; clearing it, removing lens backdrop filters, and pausing the reviewed native visual controller each lacked consistent ABBA gain. All were temporary diagnostics, not product choices.",
+      "Display snapshot reports120Hz and no perUIDoverride; it does not establish continuous cadence or prove refresh-rate switching caused the timing difference."
+    ],
+    "probes": [
+      {
+        "file": "near-identity-scale-diagnostic.json",
+        "sha256": "d929f7b22335d2544b3e83c3cd0150bbf5069b390df6c344462e1cb0da156d12",
+        "rows": [
+          {
+            "variant": false,
+            "callbacks": 119,
+            "gapMedianMs": 14.799999997019768,
+            "gapP95MsNearestRank": 50.900000005960464,
+            "maxMs": 72.90000000596046
+          },
+          {
+            "variant": true,
+            "callbacks": 137,
+            "gapMedianMs": 17.099999994039536,
+            "gapP95MsNearestRank": 40.1000000089407,
+            "maxMs": 66.40000000596046
+          },
+          {
+            "variant": true,
+            "callbacks": 127,
+            "gapMedianMs": 13.799999997019768,
+            "gapP95MsNearestRank": 45.29999999701977,
+            "maxMs": 90.1000000089407
+          },
+          {
+            "variant": false,
+            "callbacks": 138,
+            "gapMedianMs": 16.899999998509884,
+            "gapP95MsNearestRank": 38.29999999701977,
+            "maxMs": 57.5
+          }
+        ],
+        "disposition": "ABBA observations vary; no consistent causal benefit, not adopted"
+      },
+      {
+        "file": "rain-lens-diagnostic.json",
+        "sha256": "818cef3e115275bfb65bd514fd1a9811d748d6e8280a4bf779199ac911e2b80c",
+        "rows": [
+          {
+            "variant": false,
+            "callbacks": 110,
+            "gapMedianMs": 17.600000001490116,
+            "gapP95MsNearestRank": 51,
+            "maxMs": 74.19999998807907
+          },
+          {
+            "variant": true,
+            "callbacks": 153,
+            "gapMedianMs": 14.200000002980232,
+            "gapP95MsNearestRank": 30,
+            "maxMs": 53.20000000298023
+          },
+          {
+            "variant": true,
+            "callbacks": 153,
+            "gapMedianMs": 14.200000002980232,
+            "gapP95MsNearestRank": 37,
+            "maxMs": 47.29999999701977
+          },
+          {
+            "variant": false,
+            "callbacks": 165,
+            "gapMedianMs": 11.200000002980232,
+            "gapP95MsNearestRank": 37.20000000298023,
+            "maxMs": 72.29999999701977
+          }
+        ],
+        "disposition": "ABBA observations vary; no consistent causal benefit, not adopted"
+      },
+      {
+        "file": "native-animation-diagnostic.json",
+        "sha256": "8437141e871d9ba0ea4af4be5be81f6c57b90e05cded34aa1102313fd1393243",
+        "rows": [
+          {
+            "variant": false,
+            "callbacks": 111,
+            "gapMedianMs": 19,
+            "gapP95MsNearestRank": 46.80000001192093,
+            "maxMs": 56.599999994039536
+          },
+          {
+            "variant": true,
+            "callbacks": 162,
+            "gapMedianMs": 11.549999997019768,
+            "gapP95MsNearestRank": 41.69999998807907,
+            "maxMs": 51.70000000298023
+          },
+          {
+            "variant": true,
+            "callbacks": 138,
+            "gapMedianMs": 15.850000001490116,
+            "gapP95MsNearestRank": 42.70000000298023,
+            "maxMs": 58.400000005960464
+          },
+          {
+            "variant": false,
+            "callbacks": 159,
+            "gapMedianMs": 12.100000008940697,
+            "gapP95MsNearestRank": 40.8999999910593,
+            "maxMs": 53.20000000298023
+          }
+        ],
+        "disposition": "ABBA observations vary; no consistent causal benefit, not adopted"
+      }
+    ],
+    "retainedFailures": [
+      {
+        "file": "identity-scale-diagnostic.json",
+        "sha256": "0fe6f292e754b921334d37973eb1bdb6eb7a614a9a8bf42db166e14d767c8902",
+        "reason": "Exact identity guard rejected0.999853x1;finally restored scene. Separate approximate probe used explicit1CSSpx geometry bound;not an assertion weakening of the original test."
+      },
+      {
+        "operation": "read-only native animation inventory",
+        "reason": "Initial iterable assumption rejected WeakMap. Corrected observation uses reviewed per-canvas getter; no runtime mutation dispatched by failed inspection."
+      }
+    ],
+    "conclusion": "Social synchronous work is dominated by shared native generation/visibility evaluation; UI capture is small. Rain hot path is sustained rendering/style/composition, not observed content regeneration. Candidate-only incremental cause and an effective preserving-effects optimization remain unproven;performance acceptance stays pending.",
+    "next": "Use scoped renderer scheduling/composition evidence to distinguish native sprite work from UI glass updates, then trial a specific change only if it removes measured redundant work. Do not stop native animation or remove optics as production optimization from these probes.",
+    "restoration": {
+      "receiptSha256": "d9b261ca0159deb6b9aceba6d3dcbb5776ec31c1277f13f9e43f24e4bfbf8798",
+      "state": "candidate hash/fixed47Mods/order/hidden/exact owned raw UI preferences/Bedroom/closed windows/error0 checked; native animation playing; no diagnostic attribute;ownADB forwards empty"
+    }
+  },
+  "offlineFollowup20261107": {
+    "date": "2026-11-07",
+    "scope": "Offline only: existing private Android traces plus controlled desktop Edge fixture; no ADB,device,App,install or new device sampling commands in this batch.",
+    "source": "c9a4f2a runtime unchanged; record HEAD2d45eb6 before this documentation update",
+    "runtimeChanged": false,
+    "desktopBrowser": "158.0.4370.1",
+    "containment": {
+      "status": "REJECTED_NO_STABLE_BENEFIT",
+      "candidate": "Set actual foreground-paint contain:paint in isolated page only",
+      "rawSha256": "b02c18fb2d2555bdd8c23fb1dc746948574945c9ad110d56d35f4e42a10a6637",
+      "fixedProofSha256": "8e20707e3d0cd85249ec72c593c3c229293f5b1587411d630205ba40b6cba412",
+      "fixedPngSha256": "cf92d1999598e152266e3e75f329096b87663da3d7ee548ab2fa72a90fe57b36",
+      "proof": "Frozen JS clock and paused CSS/WAAPI animations; before/after PNG bytes,root/paint/drop geometry and native button hit identical.",
+      "taskSeconds": {
+        "none": [
+          0.46157299999999996,
+          0.5174660000000002,
+          0.4841350000000002
+        ],
+        "paint": [
+          0.513962,
+          0.49080800000000013,
+          0.4861960000000001
+        ]
+      },
+      "taskMedianSeconds": {
+        "none": 0.4841350000000002,
+        "paint": 0.49080800000000013
+      },
+      "initialProofLimit": "First JS-clock-only proof left CSS animations running;81pixels differed on navigation contour. Retained original images and receipt; new CSS-paused proof is separate,not a rerun of a product failure.",
+      "decision": "No production CSS edit. Desktop TaskDuration is not Android/GPU evidence."
+    },
+    "fixedClock": {
+      "status": "BOUNDED_STATE_COMPARISON_PASS",
+      "rawSha256": "fb1d0ae669bef81bef6fd9218198e3f184c2f1fdc2e6c0e1481edfbada01a2ff",
+      "variants": "Same current production source and synthetic attributes fixture; native-navigation presentation versus approved attributes material owner. This is not a second official4.1 package comparison.",
+      "order": [
+        "baseline",
+        "study",
+        "study",
+        "baseline"
+      ],
+      "mode": "Same input viewport and fixed virtual clock2s after100ms warm geometry; virtual-clock timings are not real execution/FPS proof.",
+      "observed": {
+        "visibleDropsEach": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "sameDropIds": true,
+        "sameNodeCount": 244,
+        "sameCanvas": [
+          {
+            "width": 878,
+            "height": 320,
+            "style": "320px"
+          }
+        ],
+        "repeatedStateWithinVariantExact": true,
+        "crossVariantMaxLocalDropCssPxDifference": 0.54284
+      },
+      "interpretation": "No doubling of model population/owned DOM observed in this fixture. Cross-variant local drop coordinate/size difference reached0.54284CSSpx;do not claim exact model/phase equality. Does not settle device compositing or full game behavior."
+    },
+    "existingTraceAccounting": {
+      "method": "Merge RunTask intervals on original renderer main thread within retained rain marks before summing;do not sum inclusive FunctionCall/FireAnimationFrame/Style categories.",
+      "rows": [
+        {
+          "label": "candidate",
+          "traceSha256": "ada438866f6d52ab8fdd9d06e7680a542104245a47861116a38832b949e51f1a",
+          "intervalMs": 2506.778,
+          "nonoverlappingTaskBusyMs": 2193.438,
+          "busyPercent": 87.50028921587793,
+          "blocks": 1062,
+          "blockP95Ms": 18.268,
+          "blockMaxMs": 38.629,
+          "layoutRoots": {
+            "DIV class='sf-foreground-paint kw-heading-nav'": 114
+          }
+        },
+        {
+          "label": "baseline",
+          "traceSha256": "50f2151992ba7d3d61ad3776125a6807e52f25feed6745c69dc78ae2ff7303bb",
+          "intervalMs": 2500.852,
+          "nonoverlappingTaskBusyMs": 1730.978,
+          "busyPercent": 69.21553134691698,
+          "blocks": 1806,
+          "blockP95Ms": 6.399,
+          "blockMaxMs": 108.628,
+          "layoutRoots": {
+            "DIV class='sf-foreground-paint kw-heading-nav'": 145
+          }
+        }
+      ],
+      "limits": "One instrumented interval/source;not uninstrumented benchmark,whole-system CPU,GPU or causation proof. Both layout-root sets are foreground-paint. Main-thread saturation is observed;exclusive cause unresolved."
+    },
+    "next": "Stop rejected containment candidate. When assigned test device is free, investigate effective renderer/compositor scheduling with a bounded discriminating capture;keep accepted effects. Do not repeat these same ablations without new evidence.",
+    "restoration": "All desktop pages/browsers and owned local servers closed;private artifacts ignored;production,packages,CI gates and shared tablet unchanged."
+  },
+  "releasePreparation20261107": {
+    "source": "5033626e4bcd1f0e6f9e2bb23a0771ed4f2891f9",
+    "record": "2026-11-07-release-preparation.json",
+    "standard": 42292957909,
+    "research": 42292962805,
+    "ci": "PASS_ACTUAL_ARTIFACT_READBACK",
+    "performance": "PENDING",
+    "newZipAndroid": "NOT_VALIDATED_DEVICE_RESERVED",
+    "releaseAuthorization": false
+  }
+}

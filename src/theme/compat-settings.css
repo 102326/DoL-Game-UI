@@ -1,6 +1,6 @@
 /* Reviewed adapters consume the same preferences; unknown/partial surfaces stay native. */
-html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay,#modHubManagerToolsMenu,.modhub-modal-backdrop,#phone-wrapper,#smartphone_debug,.CEDISPLAY):is(
- [data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=ModHubSoftWetTools],[data-dgu-adapter=ModHubSoftWetModal],
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay,#modHubManagerToolsMenu,.modhub-modal-backdrop,#modHubRestorePanelOverlay,#phone-wrapper,#smartphone_debug,.CEDISPLAY):is(
+ [data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=ModHubSoftWetTools],[data-dgu-adapter=ModHubSoftWetModal],[data-dgu-adapter=ModHubSoftWetRestore],
  [data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],
  [data-dgu-adapter=CheatExtendedSoftWet],[data-dgu-adapter=CheatExtendedInlineSoftWet],
  [data-dgu-adapter=SmartPhoneSoftWet],[data-dgu-adapter=SmartPhoneSoftWetDebug]
@@ -25,6 +25,7 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#custo
 html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(
  #modHubManagerToolsMenu[data-dgu-adapter=ModHubSoftWetTools][data-dgu-adapter-match=full],
  .modhub-modal-backdrop[data-dgu-adapter=ModHubSoftWetModal][data-dgu-adapter-match=full]>.modhub-modal-dialog,
+ #modHubRestorePanelOverlay[data-dgu-adapter=ModHubSoftWetRestore][data-dgu-adapter-match=full]>#modHubRestorePanel,
  #smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug][data-dgu-adapter-match=full]>#smart-phone-debug-container,
  #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet][data-dgu-adapter-match=full] #smart-phone-container
 ){
@@ -32,10 +33,11 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(
  &:is(html[data-dgu-visualGlass] *){backdrop-filter:var(--dgu-acrylic-axis-filter)!important;-webkit-backdrop-filter:var(--dgu-acrylic-axis-filter)!important}
  &:is(html:not([data-dgu-visualGlass]) *){background:#1d262b!important}
 }
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #modHubRestorePanelOverlay[data-dgu-adapter=ModHubSoftWetRestore][data-dgu-adapter-match=full]>#modHubRestorePanel{font-size:calc(1rem * var(--dgu-font-scale,1))}
 
 /* These are paint-only overrides; progress values and native handlers keep running. */
-html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay,#modHubManagerToolsMenu,.modhub-modal-backdrop,#phone-wrapper,#smartphone_debug,.CEDISPLAY):is(
- [data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=ModHubSoftWetTools],[data-dgu-adapter=ModHubSoftWetModal],
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay,#modHubManagerToolsMenu,.modhub-modal-backdrop,#modHubRestorePanelOverlay,#phone-wrapper,#smartphone_debug,.CEDISPLAY):is(
+ [data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=ModHubSoftWetTools],[data-dgu-adapter=ModHubSoftWetModal],[data-dgu-adapter=ModHubSoftWetRestore],
  [data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],
  [data-dgu-adapter=CheatExtendedSoftWet],[data-dgu-adapter=CheatExtendedInlineSoftWet],
  [data-dgu-adapter=SmartPhoneSoftWet],[data-dgu-adapter=SmartPhoneSoftWetDebug]

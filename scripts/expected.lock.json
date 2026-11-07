@@ -671,8 +671,26 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "98d4b6afb68b5fc875196352e09c6f488ad25be7cc428871cc9b10e681bfcfc2",
-      "assertionSites": 307
+      "sourceSha256": "045d1f330e844980cc142423ec601c282e31c97fb7e0134dc1d91e940df3e2c3",
+      "assertionSites": 426
+    },
+    {
+      "entry": "tests/attributes-material.cjs",
+      "sourceEntry": "tests/attributes-material.cts",
+      "profiles": [
+        "standard",
+        "research"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "59c2d222cb72c2a767946f425aeefcd3ca9c26c6ea36d47dc1084f48382c3e8c",
+      "assertionSites": 73
     },
     {
       "entry": "tests/checkpoint-boundary.test.mts",
@@ -915,8 +933,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "5229475a7a9b59b6aad5e98d4e8de91c678c8670a4e068d11b332002bcfd2801",
-      "assertionSites": 20
+      "sourceSha256": "fceb0246e5de226b321c15357aa22e82e8fe9884e0fd837aa3924723bdd822fd",
+      "assertionSites": 23
     },
     {
       "entry": "tests/evolution-owner-resources.cjs",
@@ -979,10 +997,14 @@
         {
           "id": "hub:peer clock survives Hub teardown and throwing cleanup retires every owned node",
           "minimumAssertions": 1
+        },
+        {
+          "id": "placement:entry",
+          "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "0c9588b87f16c8f418c7e3790f725d822017accb477439e1d508997dd5a52aa3",
-      "assertionSites": 358,
+      "sourceSha256": "ad96fc3ff90b49f6cf58221456cc6842711c5501fa7952c47feb93d16f20c2ff",
+      "assertionSites": 450,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1251,8 +1273,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "71be8b7618a537c04c70107dc719a8849f4b0f212e1caed83665b3a961d91191",
-      "assertionSites": 58
+      "sourceSha256": "4deeacff3433cbc4f8bfbf81e23b890c5163be9ba802ed6e456c34802404f0bf",
+      "assertionSites": 60
     },
     {
       "entry": "tests/framework-commands.cjs",
@@ -1342,8 +1364,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "d3fdffbd5c21b2c8ac9e62dace85dc4fd3e37eb8e823d7dc3a8193f7c33045e2",
-      "assertionSites": 505
+      "sourceSha256": "4b23e93f4fdd3af1e996c8c9b4d97cd619e42ec9b9a5bdb9dde241d5defe7e59",
+      "assertionSites": 507
     },
     {
       "entry": "tests/framework.cjs",
@@ -1458,8 +1480,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4896375b851ae7995c69ac7c4b101d9563b3522fa886156469ce4027d585a9fa",
-      "assertionSites": 39
+      "sourceSha256": "80889ba02799ecdd97c800dc1761c77dfb5e972e387cd6b54f021bfd9b4bff4b",
+      "assertionSites": 46
     },
     {
       "entry": "tests/golden-spin-hub-lifecycle.cjs",
@@ -1548,8 +1570,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "1a0888c34346029023fcc9ea24c20222f96b6ffba404c6c5e0f5b0b6036bd7da",
-      "assertionSites": 84
+      "sourceSha256": "82ee0654768381cec8ee5b18dc6647e6c1a901920c51e7b64ae18e0fed0cff89",
+      "assertionSites": 88
     },
     {
       "entry": "tests/integration-preview-pages.cjs",
@@ -1824,8 +1846,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "3a006eab82226fd83f955ca68328fa465b0e6e387fd75511e1661faedc336372",
-      "assertionSites": 133
+      "sourceSha256": "4b0c330bd1694cb17c87f0bdfa665a49c730693673c2002b44ccbe78b23719af",
+      "assertionSites": 136
     },
     {
       "entry": "tests/optimization-date.cjs",
@@ -2276,8 +2298,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "890e247fe61b923beb2c4ba13c4e0125d921354a14fbc969ebf44bb3b6502818",
-      "assertionSites": 282,
+      "sourceSha256": "05b6cd72489fdf02ef8e7b123ece5f018626490f945b3262dcc3588e6d7a8f80",
+      "assertionSites": 295,
       "rendererContexts": [
         "weather:2d"
       ]
@@ -2361,6 +2383,23 @@
       ],
       "sourceSha256": "b7ac5ac8767a021467a0812e677402eedc54d28eea4ce65ba7140628e91e70fe",
       "assertionSites": 19
+    },
+    {
+      "entry": "tests/sidebar-preview-recovery.cjs",
+      "sourceEntry": "tests/sidebar-preview-recovery.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "856d0e0f4dfdf9384244de1427f142f838a206f2180dec19055b409cd96c2903",
+      "assertionSites": 12
     },
     {
       "entry": "tests/smartphone-adapter.cjs",
@@ -2559,7 +2598,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "sourceSha256": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
       "assertionSites": 47,
       "evidence": "checkpoints"
     },
@@ -2577,7 +2616,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "sourceSha256": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
       "assertionSites": 9,
       "evidence": "checkpoints"
     },
@@ -2607,7 +2646,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "sourceSha256": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
       "assertionSites": 51,
       "evidence": "checkpoints"
     },
@@ -2654,7 +2693,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "sourceSha256": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
       "assertionSites": 42,
       "evidence": "checkpoints"
     },
@@ -2710,6 +2749,23 @@
       "assertionSites": 12
     },
     {
+      "entry": "tests/wardrobe-operation-yield.cjs",
+      "sourceEntry": "tests/wardrobe-operation-yield.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "4735b99b7d54d0d51b34607fe2df4280c95f4a6cc02614343258a3d1d7e9cafa",
+      "assertionSites": 9
+    },
+    {
       "entry": "tests/wardrobe-operations.test.cjs",
       "sourceEntry": "tests/wardrobe-operations.test.cts",
       "profiles": [
@@ -2759,6 +2815,23 @@
       ],
       "sourceSha256": "b04a1ab9a54842211ffa05d37a87aa736b333192ef86b5a5a54890c5fbe3637a",
       "assertionSites": 4
+    },
+    {
+      "entry": "tests/wardrobe-preview-loading.cjs",
+      "sourceEntry": "tests/wardrobe-preview-loading.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "d3f58182ab93094ec1bbb0d08dc211f7697e6b495aaab9118d93b778653248c4",
+      "assertionSites": 17
     },
     {
       "entry": "tests/wardrobe-slot-mappings.test.cjs",
@@ -2833,11 +2906,23 @@
           "minimumAssertions": 1
         },
         {
+          "id": "fixed glass maps reuse pixels with independent owners and atomic retry",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "stable frost reuses paths without caching changing weather",
+          "minimumAssertions": 1
+        },
+        {
           "id": "official rain stays in its header without compressing the model",
           "minimumAssertions": 1
         },
         {
           "id": "official rain coalesces sub-frame paints but immediately updates geometry",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "material drag protects moving content and remeasures the final position",
           "minimumAssertions": 1
         },
         {
@@ -2849,8 +2934,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "a75d1be5ea141ba9ee221d4cc523592919e990501b073b3ec92159644fc0c550",
-      "assertionSites": 40
+      "sourceSha256": "103b274a03ecce8ffb9770280a8e4e4860b5e71a776f162217900a390bc0c4c8",
+      "assertionSites": 67
     },
     {
       "entry": "tests/weather-review-pages.cjs",

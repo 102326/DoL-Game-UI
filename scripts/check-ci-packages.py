@@ -121,7 +121,8 @@ def adapter_policy(directory):
     mouth = directory == 'mouth-compat-051213'
     deps = [{'modName': target, 'version': requirement}]
     if not mouth:
-        deps.append({'modName': 'DoLGameUI', 'version': '>=3.0.2' if directory == 'smartphone-soft-wet' else '>=3.0.0'})
+        ui_requirement = {'modhub-soft-wet': '>=4.2.0', 'smartphone-soft-wet': '>=3.0.2'}.get(directory, '>=3.0.0')
+        deps.append({'modName': 'DoLGameUI', 'version': ui_requirement})
     deps.append({'modName': 'GameVersion', 'version': '=0.5.12.13'})
     if mouth:
         deps.append({'modName': 'maplebirch', 'version': '>=5.2.3 <6.0.0'})
@@ -281,7 +282,7 @@ def check_package(path, name):
         expected['MODHUB-PERFORMANCE-NOTICE.txt'] = ROOT / 'MODHUB-PERFORMANCE-NOTICE.txt'
         for filename in ['ui.d.ts', 'wardrobe.d.ts']:
             expected['types/' + filename] = ROOT / 'dist/types' / filename
-        release_notes = [f'docs/RELEASE_{version}.md'] if (ROOT / f'docs/RELEASE_{version}.md').is_file() else []
+        release_notes = [doc for doc in [f'docs/RELEASE_{version}.md', f"docs/INSTALL_{'.'.join(version.split('.')[:2])}.md"] if (ROOT / doc).is_file()]
         for filename in ['docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', *release_notes, 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
             expected[filename] = ROOT / filename
         notices = []

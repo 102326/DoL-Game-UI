@@ -1,0 +1,47 @@
+html{scrollbar-width:none}body{margin:0;min-height:100dvh;font:15px/1.55 system-ui;color:#e3e4e5;background:radial-gradient(ellipse at 83% 12%,#77837555,transparent 42%),radial-gradient(ellipse at 12% 74%,#776c5540,transparent 40%),repeating-linear-gradient(115deg,transparent 0 72px,#ffffff05 73px 74px),#14191c}
+.e42-review{max-width:940px;margin:auto;padding:52px 28px}.e42-review h1{font-size:clamp(30px,4vw,48px);letter-spacing:-.035em;line-height:1.15;margin:14px 0 20px}.e42-kicker{font-size:11px;letter-spacing:.16em;color:#b8c1c0}.e42-review>p{max-width:680px}.e42-review :is(button,select){color:inherit;font:inherit;background:#252d30;border:1px solid #ffffff21;border-radius:11px;min-height:44px;padding:8px 14px;cursor:pointer}.e42-pickers{display:flex;flex-wrap:wrap;gap:16px;margin:28px 0 14px}.e42-pickers label{display:flex;flex-direction:column;gap:6px;color:#c6ccce;font-size:12px}.e42-pickers select{font-size:14px}.e42-actions,#overlayButtons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.e42-note,footer{font-size:12px;color:#9fa9ad}#overlayButtons{opacity:.7}.e42-review .sample{margin-top:32px;max-width:640px;padding:24px;border:1px solid #ffffff1b;border-radius:20px;background:linear-gradient(130deg,#ffffff06,transparent)}.e42-review .sample p{margin:12px 0}.e42-review footer{margin-top:30px}
+[data-e42-material]{--e42-force-x:0;--e42-force-y:0;--e42-light-x:30%;--e42-light-y:0px;isolation:isolate}
+[data-e42-material] .dmt-settings-header,[data-e42-material] .dgshop-header{cursor:grab;touch-action:none}
+.e42-material-light{position:absolute;z-index:7;border-radius:inherit;pointer-events:none}
+.e42-material-light::after{content:'';position:absolute;inset:0;opacity:.45;background:radial-gradient(ellipse 230px 100px at var(--e42-light-x) var(--e42-light-y),#e8f7f31a,transparent 75%)}
+.e42-thread{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;opacity:0}
+.e42-thread path{fill:none;stroke:#d8e7eb;stroke-width:1;stroke-linecap:round;filter:drop-shadow(0 0 3px #e3f7fd44)}
+@media(max-width:600px){.e42-review{padding:28px 16px}.e42-pickers{gap:10px}.e42-pickers label{width:100%}.e42-review .sample{padding:16px}}
+
+/* Study 02: Claude Quartz layers on the real shell, with force-driven optical layers. */
+html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] :is(.dmt-settings-shell,.dgshop-host,.dgshop-content,.clothing-details)[data-e42-material]{
+ --e42-force-x:0;--e42-force-y:0;
+ background:radial-gradient(ellipse 85% 70% at 0 0,#e8d8ba12,transparent 65%),linear-gradient(126deg,#e8d8ba09,transparent 45%),var(--q-fill,rgba(20,24,27,.64))!important;
+ border:1px solid #92b4bf4d;outline:1px solid #b4cacb1a;outline-offset:-5px;
+ box-shadow:16px 26px 65px #03080d70,0 5px 18px #02060b40,inset 0 1px 1px #e8d8ba4a,inset -1px -1px #92b4bf30;
+}
+html[data-stone-free][data-dol-midnight] [data-e42-material] :is(.dmt-setting-card,.dmt-control-sheet){background:var(--q-well,rgba(9,14,18,.35));border-color:#070f193d;box-shadow:inset 0 2px 5px #02070d44,0 1px #e8d8ba0c}
+.e42-material-light,[data-e42-material=force]>.e42-material-light{inset:0!important;transform:none;box-shadow:none;border:0;background:none;overflow:hidden}
+.e42-material-light>i{position:absolute;pointer-events:none;display:block}
+.e42-rim{inset:0;border-radius:inherit;padding:1px;background:linear-gradient(126deg,#e8d8baaa,#e8d8ba16 25%,transparent 46%,transparent 62%,#92b4bf66);mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.e42-sheen{inset:-40%;opacity:.8;background:linear-gradient(126deg,transparent 38%,#e8d8ba0e 46%,#e8d8ba2b 49%,#e8d8ba08 53%,transparent 60%);mix-blend-mode:screen;transform:translate(calc(var(--e42-force-x)*-42px),calc(var(--e42-force-y)*-32px));}
+.e42-stress{inset:0;opacity:calc((abs(var(--e42-force-x)) + abs(var(--e42-force-y)))*.65);background:repeating-linear-gradient(110deg,transparent 0 12px,#e8d8ba22 14px,#92b4bf1a 17px,transparent 20px 30px);mask:linear-gradient(90deg,#000,transparent 16%,transparent 84%,#000)}
+.e42-free-hub .sf-motion-ball{transition:none!important}
+.e42-free-hub .sf-motion-rail{display:none}
+.e42-free-hub .e42-thread{z-index:4}
+.e42-thread circle{fill:#efdfad;stroke:#92b4bf;stroke-width:1}
+@media(prefers-reduced-motion:reduce){.e42-sheen,.e42-stress{transform:none!important;opacity:0!important}}
+
+html:not([data-dgu-visualGlass]) [data-e42-material]>.e42-material-light{display:none}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){html[data-stone-free][data-dol-midnight] :is(.dmt-settings-shell,.dgshop-host,.dgshop-content,.clothing-details)[data-e42-material]{background:#202529!important}[data-e42-material]>.e42-material-light{display:none}}
+
+/* Same study geometry for all shop variants; native catalog/detail layout remains the controller's. */
+html[data-e42-scene=shop] .e42-review{max-width:none;padding:16px}
+html[data-e42-scene=shop] .e42-review>:not(#story){display:none}
+html[data-e42-scene=shop] :is(#story,#passages,[data-independent-preview=shop]){margin:0;padding:0;max-width:none;width:auto}
+.e42-shop-back{min-height:44px;margin-bottom:12px;padding:8px 14px;background:#252d30;color:inherit;border:1px solid #ffffff21;border-radius:10px;cursor:pointer}
+[data-e42-role=shop-toolbar],[data-e42-role=shop-catalog]{position:relative;isolation:isolate;border-radius:20px}
+[data-e42-role=shop-detail] h3{cursor:grab;touch-action:none}
+/* Native shop rearranges direct children: use a pseudo layer, never inject a child it could take ownership of. */
+[data-e42-material][data-e42-role=shop-detail]::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;z-index:7;border:1px solid #92b4bf4d;box-shadow:inset 1px 1px #e8d8ba66,inset -1px -1px #92b4bf30;background:linear-gradient(126deg,transparent 38%,#e8d8ba10 46%,#e8d8ba29 49%,transparent 60%);background-position:calc(var(--e42-force-x)*-42px) calc(var(--e42-force-y)*-32px)}
+html:not([data-dgu-visualGlass]) [data-e42-role=shop-detail]::after{display:none}
+
+[data-e42-role=shop-detail]{position:relative}
+
+html[data-e42-scene=shop] .dgshop-content:not(.dgshop-narrow) .dgshop-layout{height:var(--e42-shop-room);min-height:0}

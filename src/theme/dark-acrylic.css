@@ -124,6 +124,7 @@ html[data-stone-free][data-dol-midnight] :is(.dgu-surface,[data-dgu-adapter][dat
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-setting-card.sf-material-reading{border-radius:16px!important}
 html[data-stone-free] #dol-midnight-controls :focus-visible{outline:1px solid #bdbdc280;outline-offset:3px}
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-settings-header{padding:22px 24px}
+[data-dgu-settings-material]>.dmt-settings-header{cursor:grab;touch-action:none}
 html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls input[type=checkbox],html[data-dol-midnight][data-dgu-acrylic-adjustment] .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=checkbox]:only-of-type):checked::before{background:#8eb0a4}
 html[data-stone-free][data-dol-midnight] #ui-bar{--dgu-sidebar-accent:#c9c9cd}
 html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-native .dcu-group label:has(input:checked){color:var(--sf-ink)!important;background:#ffffff0a!important;border-color:#ffffff16!important;box-shadow:none!important}

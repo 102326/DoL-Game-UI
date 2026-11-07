@@ -284,6 +284,15 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  media.addEventListener('change',motion);scope.own(()=>media.removeEventListener('change',motion));
  document.addEventListener('visibilitychange',visibility);scope.own(()=>document.removeEventListener('visibilitychange',visibility));resize();
  return {play,recover,pause(value:boolean){paused=value;visibility()},
+  drive(input:{energy:number;dt:number;angle?:number}){
+   if(dead)return;stop();
+   const heat=media.matches?0:Math.max(0,Math.min(1,input.energy));
+   if(input.angle!==undefined)angle=input.angle;
+   Object.assign(state,{speed:heat*68,charge:heat,energy:0,spread:0,pressure:0});
+   const dt=Math.max(0,Math.min(.05,input.dt));angle=(angle+state.speed*dt)%TAU;orbit=(orbit+(1.1+state.speed*.17)*dt)%TAU;
+   if(heat)stepMeteors(dt);else{meteors.length=0;emission=0}
+   setPhase(heat?'charge':'idle');draw();
+  },
   configure(options:{duration?:number;strength?:number}){duration=Math.max(.5,Math.min(2,options.duration??duration));strength=Math.max(.3,Math.min(1.3,options.strength??strength));draw()},
   // GSAP adds a circular private cache to its target; do not expose that as research state.
   inspect:()=>({phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,meteors:meteors.length,running:!!frame,dead,paused,reduced:media.matches,motionChanges,width,height}),

@@ -22,7 +22,13 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  function press(event:PointerEvent){if(!live()||!event.isPrimary||event.button!==0||!(event.target instanceof Element))return;const node=event.target.closest<HTMLElement>(pressSelector);if(!node||!visible(node)||node.matches(':disabled,[aria-disabled=true]'))return;clearPress();pressed={node,pointer:event.pointerId,before:node.getAttribute('data-kw-press')};node.setAttribute('data-kw-press',String(event.pointerId))}
  const live=()=>scope.active()&&isMasterEnabled()&&document.documentElement.hasAttribute('data-stone-free');
  const visible=(n:HTMLElement)=>!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert]');
- function later(callback:()=>void){scope.frame(()=>{if(live())callback()})}
+ // Preserve callback identity so observer deliveries share one current-state read per frame.
+ const guardedFrames=new WeakMap<()=>void,()=>void>();
+ function later(callback:()=>void){
+  let guarded=guardedFrames.get(callback);
+  if(!guarded){guarded=()=>{if(live())callback()};guardedFrames.set(callback,guarded)}
+  scope.frame(guarded);
+ }
  function settle(callback:()=>void){later(()=>later(callback))}
  const clearFrames=scope.cancelFrames;
  function cancelPresentation(preserveOpening?:HTMLElement){clearPress();motion.cancel(undefined,preserveOpening)}
@@ -107,7 +113,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(!origin?.hub||performance.now()-origin.time>100)origin={rect:node.getBoundingClientRect(),node,time:performance.now(),hub:!!node.closest('.sf-motion-petal'),bedroom:node.hasAttribute('data-kw-native'),expected};else if(expected)origin.expected=expected;
  }
  const ownWindowSelector='html[data-dgu-acrylic-adjustment] '+ownedOverlaySelector;
- function response(node:HTMLElement){if(node.dataset.kwNavControl==='tab'&&!node.closest(ownWindowSelector)){motion.animate(node,[{'--kw-heading-wave':-1,'--kw-heading-wave-opacity':0},{'--kw-heading-wave':-.2,'--kw-heading-wave-opacity':.8,offset:.35},{'--kw-heading-wave':1,'--kw-heading-wave-opacity':0}],720);return}motion.animate(node,[{boxShadow:'inset 0 0 0 1px #8cb3a666',backgroundColor:'#8cb3a617'},{boxShadow:getComputedStyle(node).boxShadow,backgroundColor:getComputedStyle(node).backgroundColor}],360)}
+ function response(node:HTMLElement){if(!motion.enabled())return;if(node.dataset.kwNavControl==='tab'&&!node.closest(ownWindowSelector)){motion.animate(node,[{'--kw-heading-wave':-1,'--kw-heading-wave-opacity':0},{'--kw-heading-wave':-.2,'--kw-heading-wave-opacity':.8,offset:.35},{'--kw-heading-wave':1,'--kw-heading-wave-opacity':0}],720);return}motion.animate(node,[{boxShadow:'inset 0 0 0 1px #8cb3a666',backgroundColor:'#8cb3a617'},{boxShadow:getComputedStyle(node).boxShadow,backgroundColor:getComputedStyle(node).backgroundColor}],360)}
  function click(event:MouseEvent){
   if(!live()||!(event.target instanceof Element))return;
   const detail=event.target.closest<HTMLElement>('#customOverlay.dgp-overlay[data-dgp-panel=traits] .foldoutHeader,#customOverlay.dgp-overlay[data-dgp-panel=feats] .feat');
@@ -133,7 +139,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   if(!live()||!(event.target instanceof Element))return;
   const node=event.target.closest<HTMLElement>('.sf-motion-petal');if(!node||!visible(node))return;
   if(event instanceof MouseEvent&&event.relatedTarget instanceof Node&&node.contains(event.relatedTarget))return;
-  const rect=node.getBoundingClientRect();if(previousPetal)motion.focus(previousPetal,rect);previousPetal=rect;
+  const rect=node.getBoundingClientRect();if(previousPetal&&(previousPetal.x!==rect.x||previousPetal.y!==rect.y||previousPetal.width!==rect.width||previousPetal.height!==rect.height))motion.focus(previousPetal,rect);previousPetal=rect;
  }
  function scene(){
   clearFrames();cancelPresentation();previousPetal=undefined;bedroom();settle(()=>{

@@ -1,0 +1,1330 @@
+{
+  "schema": 1,
+  "date": "2026-11-05",
+  "scope": "Local C1 consumer drill and controlled C2 scheduling; not a full profile or remote gate",
+  "source": {
+    "origin": {
+      "head": "65e39bcb136b27ae83dc051319f527a5d9a45d68",
+      "tree": "c7325f2b6d501b9f91bf225eb667ac42e5b44b0a",
+      "dirty": true,
+      "contentSha256": "837a86f26acbceed2c14e213eb904702066170692095b68b6cd4a807caa27109",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "derivedBase": "81e0c58a76178a139483f3ae486b65e36a4266dd",
+    "derivedSource": {
+      "head": "0541cdd88a42882a515503637a8266d0eae8ffd9",
+      "tree": "44ef2d6ec5f6db0f5029a2e9617960680dd3c1d4",
+      "dirty": false,
+      "contentSha256": "8de9a30f4ba4666b893a38e6c9fc5b773de80b7a5a6931a5d04a8ab9ab0edfbf",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "policySha256": "0da4a385cc0b2407ff56ef28d182f5d7762f2b5e3a5d88513d79a569ea89a7cf"
+  },
+  "environment": {
+    "orderSeed": null,
+    "runnerImage": null,
+    "runnerImageVersion": null,
+    "platform": "win32",
+    "arch": "x64",
+    "deviceDepth": "standard",
+    "node": "v26.12.1",
+    "npm": null,
+    "python": "Python 3.14.9",
+    "playwright": "1.63.0",
+    "browser": "Microsoft Edge (browser suite)"
+  },
+  "positive": {
+    "run": "shadow-d8702799-e488-44b9-8f16-7a61e36a3d7b",
+    "status": "PASS",
+    "problems": [],
+    "checks": [
+      {
+        "name": "source-check",
+        "status": "PASS",
+        "milliseconds": 27391
+      },
+      {
+        "name": "framework-build",
+        "status": "PASS",
+        "milliseconds": 4936
+      },
+      {
+        "name": "settings-ci",
+        "status": "PASS",
+        "milliseconds": 26272
+      },
+      {
+        "name": "official-game-motion",
+        "status": "PASS",
+        "milliseconds": 7544
+      },
+      {
+        "name": "source-motion-lifecycle",
+        "status": "PASS",
+        "milliseconds": 993
+      },
+      {
+        "name": "evolution-owner-resources",
+        "status": "PASS",
+        "milliseconds": 36798
+      },
+      {
+        "name": "evolution-navigation",
+        "status": "PASS",
+        "milliseconds": 4153
+      },
+      {
+        "name": "evolution-panels",
+        "status": "PASS",
+        "milliseconds": 7617
+      },
+      {
+        "name": "shadow-adapter-materials",
+        "status": "PASS",
+        "milliseconds": 6541
+      },
+      {
+        "name": "shadow-device-layouts",
+        "status": "PASS",
+        "milliseconds": 79151
+      },
+      {
+        "name": "shadow-kraft-work-adapters",
+        "status": "PASS",
+        "milliseconds": 1954
+      },
+      {
+        "name": "shadow-ui41-material",
+        "status": "PASS",
+        "milliseconds": 5636
+      }
+    ],
+    "researchPhases": {
+      "production.json": {
+        "status": "PASS",
+        "expected": [
+          "source-check",
+          "framework-build",
+          "settings-ci",
+          "official-game-motion",
+          "source-motion-lifecycle",
+          "evolution-owner-resources",
+          "evolution-navigation",
+          "evolution-panels"
+        ]
+      }
+    },
+    "browserPhase": "PASS",
+    "layoutCases": 127
+  },
+  "planOnly": [
+    {
+      "id": "S1",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S2",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S3",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S4",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S5",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S6",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S7",
+      "status": "PLAN_PASS"
+    },
+    {
+      "id": "S8",
+      "status": "PLAN_PASS"
+    }
+  ],
+  "controlledNegatives": {
+    "status": "PASS",
+    "ids": [
+      "N1-missing-consumer",
+      "N2-missing-prerequisite",
+      "N3-wrong-base",
+      "N3-wrong-attempt",
+      "N4-matching-plan-result-deletion",
+      "N5-zero-assertions-exit-zero",
+      "N5-real-browser-pageerror-exit-zero",
+      "N6-missing-report",
+      "N6-cancelled-process",
+      "N6-timed-out-process",
+      "N3-receipt-execution-id",
+      "N3-receipt-pid",
+      "N4-contradictory-top-status",
+      "N6-missing-layout-coverage",
+      "N3-observed-stage-source-drift"
+    ],
+    "normalReportRestored": true
+  },
+  "dependencyFixture": {
+    "scope": "source-less scheduling fixture, not product source validation",
+    "failureStatus": "FAIL",
+    "results": [
+      {
+        "id": "source-check",
+        "status": "FAIL",
+        "rawStatus": "failed",
+        "started": false
+      },
+      {
+        "id": "framework-build",
+        "status": "UNVERIFIED",
+        "rawStatus": "blocked",
+        "started": false
+      },
+      {
+        "id": "settings-ci",
+        "status": "UNVERIFIED",
+        "rawStatus": "blocked",
+        "started": false
+      },
+      {
+        "id": "prototype-check",
+        "status": "PASS",
+        "rawStatus": "passed",
+        "started": false
+      }
+    ],
+    "cancelStatus": "CANCELLED",
+    "cancelResults": [
+      "CANCELLED",
+      "CANCELLED"
+    ]
+  },
+  "preservedFailures": [
+    "Initial shadow lacked required layout evidence and is superseded",
+    "Receipt identity and envelope false-PASS reproduction retained",
+    "Observed stage source drift must survive aggregation even after files are restored",
+    "Interrupted run has no terminal receipt and is not PASS"
+  ],
+  "executingPrototypeSha256": {
+    "prototypes/evolution42-ci-c1/candidate.mts": "e2ede7e98c6a2d55b5947dbfef9ab772cadaa201cf9a913e2f446fcd445b4ac6",
+    "prototypes/evolution42-ci-c1/candidate.test.mts": "fb0c15ed237f728b3f9152bfda990ca91f944b9177142ec7e4d1913134ad09a7",
+    "prototypes/evolution42-ci-c1/consumer-map.mts": "d95e8a53a36149537dfe855a8094ebe23d77944ab8f7c122f8cf209d6456b1f0",
+    "prototypes/evolution42-ci-c1/dependency-shadow.test.mts": "a34b239888b4ae1757994fd65fda8d1805e984943ab2ebb1e0c7e5415f44f0c8",
+    "prototypes/evolution42-ci-c1/shadow-faults.mts": "89e44310597b7ecc0f34190d24d7e2966c8bd64300843b9e9f3ca59d4902e478",
+    "prototypes/evolution42-ci-c1/shadow-plans.test.mts": "13b3c42565539ab8f34e8a72d4cc2eb4b90928a18635e94c2fb166a56a066512",
+    "prototypes/evolution42-ci-c1/shadow-run.mts": "8eda5eff9b062c31b0df3bb5e2f0cf5dbb07ca70e4ee1744fdf3feeeab4c8d9b",
+    "prototypes/evolution42-ci-c1/shadow.mts": "e699b6459abb31d830ae737f34ab43adadd7d38563e7434c5671180aaac432ff"
+  },
+  "rawEvidenceSha256": {
+    "tests/artifacts/ui42/ci-shadow/1793818406590/provenance.json": "b2bf0d85a00e4d2ff19c8343ae3fa9071727d32e45a8b996795c91854a3f7ed3",
+    "tests/artifacts/ui42/ci-shadow/1793818406590/checkout/tests/artifacts/consumer-shadow/shadow-result.json": "931e25f0c6a3afa73841937afc6a03587e567e45633db4685bd6a506c79216f9",
+    "tests/artifacts/ui42/ci-shadow/1793818406590/checkout/tests/artifacts/ci/shadow-d8702799-e488-44b9-8f16-7a61e36a3d7b/faults-1793819014993/result.json": "f76903e40957c7bd0d42df17174db7ef6c2d7771b9a0cbec20a2246d61067936",
+    "tests/artifacts/ui42/ci-c1/plan-scenarios.json": "95d523d6719850000f9074ede56bdafcf2736f46e6a7e01dd6ff400d6223c492",
+    "tests/artifacts/ui42/ci-c1/dependency-shadow/run-0rjbEU/research.json": "089a09f3fd1e866ad0e04145a46e19952b4e272a957678c16805c7b09777ea17",
+    "tests/artifacts/ui42/ci-c1/dependency-shadow/run-0rjbEU/cancelled/research.json": "65ec116a5e9a38140c0bda7508b8c26bba1a3b70d7903f3a7df0033461210e49",
+    "tests/artifacts/ui42/ci-c1/interrupted-run.json": "3d56a077310080286821bf5da130073e6fb2ae3e99c68359dae9200f7862b7c1"
+  },
+  "productInputsUnchangedFromInstalledSettings": {
+    "src/theme/settings-material.ts": "8fc4b85e9c7ef36631116df4509614b01bb6bbba3204b2004b8e0677e192cf44",
+    "src/theme/SettingsPanel.vue": "c7241121f314a70378bd3bd6779fb00db1ec9cca9020173846a47fd13d57272d",
+    "src/theme/dark-acrylic.css": "56cad1e2ede24a34ce5f8c877d298dd66cd9581cde0501cdfd26ec57fcc1fb16",
+    "tests/settings-ci.cts": "8786b09f9a6d944835830588c949130b841c5d5214952f8ec9f07db6bf2dc952",
+    "scripts/expected.lock.json": "0ea26e5c9d1b130bfe92a9f0d20b71a0a45507197f8ed5ab1015a02cb4171ed8"
+  },
+  "notValidated": [
+    "Full standard/research profile comparison",
+    "Fresh preparation and independent dual build/download",
+    "Authenticated remote plan distribution and cross-Run/Attempt aggregation",
+    "Full repository impact graph"
+  ],
+  "formalGateChanged": false,
+  "published": false,
+  "standardAndTransportFollowup": {
+    "scope": "Native standard preparation and selected browser consumers; synthetic complete-profile transport contracts, no Actions gate migration",
+    "source": {
+      "head": "2e736e215b0385fd2664f245953e74a9e81f3ce2",
+      "tree": "33d597a1136306495aac46e52176cd7be12a332b",
+      "dirty": false,
+      "contentSha256": "30024bbda9b080ee50ffc57df71ec7aaf567882def8b953239c31555f3440e25",
+      "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+    },
+    "run": "standard-shadow-18943243-c6b1-4922-9da5-751a35a1dde2",
+    "nativeStages": [
+      {
+        "name": "dependencies",
+        "status": "PASS",
+        "milliseconds": 3727,
+        "exitCode": 0
+      },
+      {
+        "name": "check",
+        "status": "PASS",
+        "milliseconds": 25948,
+        "exitCode": 0
+      },
+      {
+        "name": "build",
+        "status": "PASS",
+        "milliseconds": 87390,
+        "exitCode": 0
+      },
+      {
+        "name": "packages",
+        "status": "PASS",
+        "milliseconds": 95674,
+        "exitCode": 0
+      },
+      {
+        "name": "browser-install",
+        "status": "PASS",
+        "milliseconds": 2038,
+        "exitCode": 0
+      }
+    ],
+    "browserConsumers": [
+      {
+        "name": "adapter-materials.cjs",
+        "status": "PASS",
+        "milliseconds": 6556
+      },
+      {
+        "name": "device-layouts.cjs",
+        "status": "PASS",
+        "milliseconds": 80523
+      },
+      {
+        "name": "evolution-navigation.cjs",
+        "status": "PASS",
+        "milliseconds": 4433
+      },
+      {
+        "name": "evolution-owner-resources.cjs",
+        "status": "PASS",
+        "milliseconds": 36342
+      },
+      {
+        "name": "evolution-panels.cjs",
+        "status": "PASS",
+        "milliseconds": 8624
+      },
+      {
+        "name": "kraft-work-adapters.cjs",
+        "status": "PASS",
+        "milliseconds": 2355
+      },
+      {
+        "name": "official-game-motion.cjs",
+        "status": "PASS",
+        "milliseconds": 7738
+      },
+      {
+        "name": "settings-ci.cjs",
+        "status": "PASS",
+        "milliseconds": 28468
+      },
+      {
+        "name": "source-motion-lifecycle.cjs",
+        "status": "PASS",
+        "milliseconds": 972
+      }
+    ],
+    "standalone": [
+      {
+        "entry": "tests/ui41-material.cjs",
+        "status": "PASS"
+      }
+    ],
+    "packageContracts": {
+      "packages": 9,
+      "builds": 2,
+      "negativeTests": {
+        "status": "PASS",
+        "plan": [
+          "test_ci_packages.AdapterDeterminism.test_ignores_source_mtime_and_permissions",
+          "test_ci_packages.BuildEvidence.test_independent_local_commands_reuse_the_build_run_only_locally",
+          "test_ci_packages.BuildEvidence.test_stale_incomplete_receipts_and_report_limit",
+          "test_ci_packages.OptionalContracts.test_all_current_positive_and_precise_mutations",
+          "test_ci_packages.OptionalContracts.test_joint_manifest_corruption_and_incomplete_compilation",
+          "test_ci_packages.PackageChecks.test_rejects_broken_packages",
+          "test_ci_packages.SourceVersions.test_product_labels_are_not_a_frozen_ci_policy",
+          "test_ci_packages.SourceVersions.test_rejects_mismatches_in_independent_sources",
+          "test_ci_packages.ZipMetadata.test_metadata_drift_and_comparison_diagnostics"
+        ],
+        "testsRun": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expectedFailures": 0,
+        "unexpectedSuccesses": 0
+      },
+      "reproducibility": {
+        "status": "PASS",
+        "differences": []
+      }
+    },
+    "layoutCases": 127,
+    "sourceUnchanged": true,
+    "finalPreparationRevalidation": {
+      "status": "PASS",
+      "problems": [],
+      "mode": "Final preparation verifier applied to preserved native-stage reports, not a rerun of those stages"
+    },
+    "fullProfileStatus": "UNVERIFIED",
+    "executionHarnessSha256": "3b5a59b2aac5be9595b4e0e65111ae7a39751453bb4df7886f70b5b85290ff09",
+    "finalHarnessSha256": "a9017ba1dfbdd3ce8974c4c3baaeacb69c2600d424a716de13c9b432912ba1cd",
+    "finalPreparationVerifierSha256": "e378eeb15bdd8f1938c6e3d3d33644c33c65cee4aa32c7cad9bc277882c610c4",
+    "harnessDifference": "During the frozen run, review added nested preparation evidence verification and corrected stage display. Final verifier was applied to preserved raw reports; preparation stages were not repeated.",
+    "remoteSynthetic": {
+      "scope": "Two synthetic complete standard profiles; not selected-profile support or actual cross-Actions transport",
+      "results": [
+        {
+          "name": "positive-a",
+          "status": "PASS",
+          "problems": []
+        },
+        {
+          "name": "positive-b",
+          "status": "PASS",
+          "problems": []
+        },
+        {
+          "name": "whole-package-cross-run",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "Source/catalog/profile/nonce mismatch"
+            }
+          ]
+        },
+        {
+          "name": "run-id-mismatch",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "Run identity mismatch: githubRunId"
+            }
+          ]
+        },
+        {
+          "name": "attempt-mismatch",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "Run identity mismatch: attempt"
+            }
+          ]
+        },
+        {
+          "name": "swapped-shard",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "checks/unit/adapter-build-boundary.test.cjs.json",
+              "reason": "Indexed size/hash mismatch"
+            },
+            {
+              "file": "checks/unit/adapter-build-boundary.test.cjs.json",
+              "reason": "Required file identity/schema mismatch"
+            },
+            {
+              "file": "summary.json",
+              "reason": "Uploaded result does not establish complete PASS"
+            }
+          ]
+        },
+        {
+          "name": "rewritten-index",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "Anchored manifest hash mismatch"
+            }
+          ]
+        },
+        {
+          "name": "pr-head",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "PR head/base/merge mismatch"
+            }
+          ]
+        },
+        {
+          "name": "pr-base",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "PR head/base/merge mismatch"
+            }
+          ]
+        },
+        {
+          "name": "pr-merge",
+          "status": "UNVERIFIED",
+          "problems": [
+            {
+              "file": "remote-artifact",
+              "reason": "PR head/base/merge mismatch"
+            }
+          ]
+        }
+      ]
+    },
+    "preparationContractNegatives": {
+      "scope": "synthetic preparation evidence contract, not actual package builds",
+      "status": "PASS",
+      "outcomes": [
+        {
+          "id": "failed-inner",
+          "problems": [
+            "PreparationEvidenceIncomplete:packages"
+          ]
+        },
+        {
+          "id": "missing-second-build",
+          "problems": [
+            "PreparationEvidenceIncomplete:packages"
+          ]
+        },
+        {
+          "id": "wrong-inner-identity",
+          "problems": [
+            "PreparationEvidenceIncomplete:packages"
+          ]
+        }
+      ]
+    },
+    "rawEvidenceSha256": {
+      "tests/artifacts/ui42/ci-standard/1793819647806/checkout/tests/artifacts/ci/standard-shadow-18943243-c6b1-4922-9da5-751a35a1dde2/standard-shadow.json": "b6c8e14ec40306ee0aa72d05d285b4ac0798256f00fb1ad8d8a1ad8a9ba9d238",
+      "tests/artifacts/ui42/ci-standard/1793819647806/checkout/tests/artifacts/ci/standard-shadow-18943243-c6b1-4922-9da5-751a35a1dde2/preparation-revalidation.json": "98dbfa841410ee04060237126941edc57980da6d2f21fb8ffe13aed8b0c19ddd",
+      "tests/artifacts/ui42/ci-standard/1793819647806/checkout/tests/artifacts/ci/standard-shadow-18943243-c6b1-4922-9da5-751a35a1dde2/package-contracts.json": "8257b55b8033eac8ce3ba035f955f5a9d252d1b145b2d815e02a565b4f84fe62",
+      "tests/artifacts/ui42/ci-standard/1793819647806/provenance.json": "da6f82a28b186d35af1691e79854a9dd0e1c9ce8157cadb6c4eb2c97858eaae4",
+      "tests/artifacts/ui42/ci-c1/remote-shadow/run-8xxMKH/frozen-variants.json": "1d148ba4a97756793be114740d3cd9406c0607b043d62ba2b5c20824f8b757a9",
+      "tests/artifacts/ui42/ci-c1/remote-shadow/run-8xxMKH/results.json": "9f6e107d77fc028cd8e3de8ba376bfec5fa94e0aef1bd5a4099d35bd5fbe6996",
+      "tests/artifacts/ui42/ci-c1/standard-evidence/run-rpgARG/result.json": "db85f2de7434cf2695b1852841cf07f5291b2fc95a01fde1aa689b7582612a1c",
+      "tests/artifacts/ui42/ci-c1/preparation-attempts.json": "cc8fb2eb59a768df67df4e27cf8707a32de437592b05ab6852b184bcb6f5a7ef"
+    },
+    "newPrototypeSha256": {
+      "prototypes/evolution42-ci-c1/standard-shadow.mts": "a9017ba1dfbdd3ce8974c4c3baaeacb69c2600d424a716de13c9b432912ba1cd",
+      "prototypes/evolution42-ci-c1/standard-evidence.mts": "e378eeb15bdd8f1938c6e3d3d33644c33c65cee4aa32c7cad9bc277882c610c4",
+      "prototypes/evolution42-ci-c1/standard-evidence.test.mts": "b58a3c2673a258c06acdbdb55f5b4be0c8176a2a51653a8ae86d1c2b175529c0",
+      "prototypes/evolution42-ci-c1/remote-shadow.test.mts": "87d11d0aa6e996aee799d3eb822699a86f9dde6bfee2b04ff993e785f4bbb9d9"
+    },
+    "preservedFailures": [
+      "Harness mixed into sample change correctly forced full fallback",
+      "Outer command wrapper needed generated policy before npm ci; tracked CLI bootstrap used instead",
+      "First remote test expected Run mismatch, but nonce was rejected earlier; added separate isolated Run and Attempt cases"
+    ],
+    "notValidated": [
+      "Full standard/research profile versus selected comparison",
+      "Actions upload/download with independent trusted selected plan",
+      "Entire Actions failure scheduling graph",
+      "Whole repository consumer completeness",
+      "Transient source mutation restored between phase snapshots"
+    ]
+  },
+  "macSelectedTransport20261106": {
+    "scope": "Local controlled transport of actual selected execution; no formal gate, cache or product change",
+    "environment": {
+      "platform": "darwin arm64",
+      "node": "26.13.0",
+      "playwright": "1.63.0",
+      "chromium": "153.0.8010.12",
+      "dependencies": "Existing lock-matched installation linked into separately owned snapshots; not fresh npm ci"
+    },
+    "initialMapping": {
+      "origin": {
+        "head": "a740fea6e5f9d19d0611e19f7397fd6862bf9d73",
+        "tree": "f2fcb6ad9a5adaa3a062747a28836bb396a906eb",
+        "dirty": true,
+        "contentSha256": "0b3bb3e8629fe62abc656a6ba93f4e804ceba539db4694f6eb56b291971da99a",
+        "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      },
+      "derivedBase": "ad36ba551335b77a6f59f1b3a523977a884887ec",
+      "derivedHead": "5bd3bbb1a99e4faaf038b331d3382951afec0459",
+      "policy": "f37ddb571f4c8022437614912f232f3c5af5b8ec30f983ab081f80f238b87b00",
+      "execution": {
+        "count": 13,
+        "status": "PASS",
+        "problems": []
+      },
+      "transport": {
+        "status": "PASS",
+        "scope": "LOCAL_SELECTED_TRANSPORT_ONLY",
+        "positive": 2,
+        "rejected": 16,
+        "fullProfileStatus": "UNVERIFIED"
+      },
+      "rawEvidence": [
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942110821/checkout/tests/artifacts/consumer-shadow/shadow-result.json",
+          "sha256": "f939846212386a8177cfbc32b3245a1cb6d593a37a218a7c5304b3da204def87"
+        },
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942110821/checkout/tests/artifacts/transport-shadow-1793942520144/results.json",
+          "sha256": "3520c39ba549c812e3bf5ec07c8f7e62a4a694fe6a7e2bda394de29afee72b4d"
+        },
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942110821/checkout/tests/artifacts/transport-shadow-1793942520144/frozen-variants.json",
+          "sha256": "abb6280fb37d7d1916487d5d8527d50b7a83b2990ea03d094a542b8a24e72dfb"
+        }
+      ]
+    },
+    "finalMapping": {
+      "origin": {
+        "head": "a740fea6e5f9d19d0611e19f7397fd6862bf9d73",
+        "tree": "f2fcb6ad9a5adaa3a062747a28836bb396a906eb",
+        "dirty": true,
+        "contentSha256": "a2a07b795bb5bf5f79e3dea4200b356bf5270ea09e8bb15f9d11bd6ce2360e19",
+        "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+      },
+      "derivedBase": "1e1b1a7cbb5ddcb3e3ac8c94330464b2b11ebbd9",
+      "derivedHead": "5eadce9beb1dc1a123b7147bc64dfeb130b09ccd",
+      "policy": "4d7b01d7abc644199835a2a80cc36b5dbee9eed7ae9999d1f0258f6a405078d3",
+      "execution": {
+        "count": 17,
+        "status": "PASS",
+        "problems": [],
+        "checks": [
+          {
+            "name": "source-check",
+            "status": "PASS"
+          },
+          {
+            "name": "golden-spin-hub",
+            "status": "PASS"
+          },
+          {
+            "name": "motion-workspace",
+            "status": "PASS"
+          },
+          {
+            "name": "golden-spin-hub-input",
+            "status": "PASS"
+          },
+          {
+            "name": "golden-spin-hub-lifecycle",
+            "status": "PASS"
+          },
+          {
+            "name": "framework-build",
+            "status": "PASS"
+          },
+          {
+            "name": "settings-ci",
+            "status": "PASS"
+          },
+          {
+            "name": "official-game-motion",
+            "status": "PASS"
+          },
+          {
+            "name": "source-motion-lifecycle",
+            "status": "PASS"
+          },
+          {
+            "name": "evolution-owner-resources",
+            "status": "PASS"
+          },
+          {
+            "name": "attributes-material",
+            "status": "PASS"
+          },
+          {
+            "name": "evolution-navigation",
+            "status": "PASS"
+          },
+          {
+            "name": "evolution-panels",
+            "status": "PASS"
+          },
+          {
+            "name": "shadow-adapter-materials",
+            "status": "PASS"
+          },
+          {
+            "name": "shadow-device-layouts",
+            "status": "PASS"
+          },
+          {
+            "name": "shadow-kraft-work-adapters",
+            "status": "PASS"
+          },
+          {
+            "name": "shadow-ui41-material",
+            "status": "PASS"
+          }
+        ]
+      },
+      "transport": {
+        "status": "PASS",
+        "scope": "LOCAL_SELECTED_TRANSPORT_ONLY",
+        "results": [
+          {
+            "id": "positive",
+            "status": "PASS",
+            "problems": [],
+            "exitCode": 0
+          },
+          {
+            "id": "missing-plan",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Transport verification failed: ENOENT: no such file or directory, lstat '<snapshot>/tests/artifacts/transport-shadow-1793943033647/received/plan.json'"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "malformed-json",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Invalid plan JSON: Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "self-asserted-anchor",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Error: AnchorInsideReceivedBundle"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "changed-plan-with-fixed-anchor",
+            "status": "UNVERIFIED",
+            "problems": [
+              "PlanDigestMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-base",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Plan mismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-head",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Source identity mismatch",
+              "Source changed during verification"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-attempt",
+            "status": "UNVERIFIED",
+            "problems": [
+              "StageResearchIncomplete:production",
+              "StageResearchIncomplete:hub",
+              "StageBrowserIncomplete",
+              "SourceOrRunMismatch",
+              "MissingLayoutCoverage"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-run",
+            "status": "UNVERIFIED",
+            "problems": [
+              "StageResearchIncomplete:production",
+              "StageResearchIncomplete:hub",
+              "StageBrowserIncomplete",
+              "SourceOrRunMismatch",
+              "MissingLayoutCoverage"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "joint-plan-result-deletion",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Plan mismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "wrong-report-identity",
+            "status": "UNVERIFIED",
+            "problems": [
+              "SourceOrRunMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "cancelled-report",
+            "status": "UNVERIFIED",
+            "problems": [
+              "ReportEnvelopeMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "duplicate-result",
+            "status": "UNVERIFIED",
+            "problems": [
+              "ResultSetMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "missing-evidence",
+            "status": "UNVERIFIED",
+            "problems": [
+              "EvidenceDigestMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "changed-evidence",
+            "status": "UNVERIFIED",
+            "problems": [
+              "EvidenceDigestMismatch"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "source-drift",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Plan mismatch",
+              "Source identity mismatch",
+              "Source changed during verification"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "policy-drift",
+            "status": "UNVERIFIED",
+            "problems": [
+              "Plan mismatch",
+              "Source identity mismatch",
+              "Source changed during verification"
+            ],
+            "exitCode": 2
+          },
+          {
+            "id": "restored-positive",
+            "status": "PASS",
+            "problems": [],
+            "exitCode": 0
+          }
+        ],
+        "fullProfileStatus": "UNVERIFIED",
+        "productionGateChanged": false,
+        "fullProfileRejectionDetails": [
+          "dependencies not executed by this reused-installation consumer drill",
+          "browser-install not executed by this reused-installation consumer drill",
+          "research-unit not selected",
+          "Research family evidence mismatch: hub (the selected subset is not the full hub family)"
+        ]
+      },
+      "rawEvidence": [
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942593697/checkout/tests/artifacts/consumer-shadow/shadow-result.json",
+          "sha256": "ff30a3f5d10af9b0efe742d496a8c1953dd048389db8ab9ba1b86cb1caadc4fe"
+        },
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942593697/checkout/tests/artifacts/transport-shadow-1793943033647/results.json",
+          "sha256": "7c434f0344be97fead082b8ac5e9bfa5ced57a52514cf214d83ba9596f131756"
+        },
+        {
+          "file": "tests/artifacts/ui42/ci-shadow/1793942593697/checkout/tests/artifacts/transport-shadow-1793943033647/frozen-variants.json",
+          "sha256": "3678190992c9de1086205bab07852bd9369add33420149fcd96533bf1fc5a6cc"
+        }
+      ]
+    },
+    "mappingFix": {
+      "firstRed": "candidate.test.mts exited1 for missing research.motion-workspace on the acrylic path; later assertions were not reached in that red run",
+      "green": "All three single-path mappings, existing candidate negatives, eight plan scenarios and policy-cache regression passed",
+      "addedResearchChecks": [
+        "golden-spin-hub",
+        "golden-spin-hub-input",
+        "golden-spin-hub-lifecycle",
+        "motion-workspace"
+      ],
+      "runtimeChains": [
+        "hub.html -> hub-main.ts -> HubApp.vue -> prototype re-export -> production sphereHub",
+        "windows.html -> windows-main.ts -> startOfficialMotion and startTheme -> acrylicParameters"
+      ],
+      "scope": "Acrylic includes workspace conservatively as a real initialization consumer, not an independent material-output assertion. This audit does not establish all-repository completeness."
+    },
+    "validation": [
+      "candidate.test.mts: old mapping RED, fixed mapping PASS",
+      "shadow-plans.test.mts: eight plan-only scenarios PASS",
+      "policy-cache.test.mts: old cache-mix reproduced, current rejection PASS",
+      "transport-boundaries.test.mts: size/bytes/enumeration/symlink/missing-anchor checks PASS",
+      "All prototypes/evolution42-ci-c1/*.mts strict TypeScript check PASS",
+      "New snapshot shadow-run: 17 real commands PASS, including four newly selected independent entries",
+      "Fresh receiver processes: 2 positive / 16 precise negative transport scenarios; original full research summary still UNVERIFIED for subset"
+    ],
+    "codeSha256": {
+      "prototypes/evolution42-ci-c1/candidate.test.mts": "0764edc42682702d77f5e1f27e2d92f037ec5cd2524dc64110362fb73ae7af47",
+      "prototypes/evolution42-ci-c1/consumer-map.mts": "c6932a4ca3c723923b2fb60cdecf214a2c763cc7d17b1e0a8e43f228229f964d",
+      "prototypes/evolution42-ci-c1/transport.mts": "d8337b35c5a1ceb73fd73167e6c28f57e24a14495638e56a487bfc990fa19d13",
+      "prototypes/evolution42-ci-c1/transport-shadow.mts": "434c2bb8ebd7791f3416677a297c938a4fd8014975962b47187030e2174a2e8d",
+      "prototypes/evolution42-ci-c1/transport-boundaries.test.mts": "b6b1fd53134c5fd4e00116eff7241c34395936c2853dd006b137ffcbe848d5d5"
+    },
+    "limitations": [
+      "Local controller anchors are outside the received package but not platform authenticated",
+      "No actual cross-Actions transport or PR base/head/merge authentication",
+      "Copied evidence and before/after checks are not an atomic snapshot or defense against a malicious controller",
+      "Unknown source paths retain the complete standard/research fallback; no complete influence graph",
+      "18 transport scenarios are not the earlier 14-category full-profile shadow matrix",
+      "No formal cache, workflow, catalog, Expected Lock, runtime product or release changes"
+    ],
+    "nextDecision": "Keep isolated candidate. Before expanding full-profile shadow or enabling selection, settle authoritative scope/RC/freeze inputs and an authorized platform transport path; do not infer authority from local PASS."
+  },
+  "macFinalBacklogAudit20261106": {
+    "baseCommit": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+    "scope": "Local standalone report retention and readback only; no five-stage/full-profile rerun or workflow migration",
+    "codeSha256": {
+      "prototypes/evolution42-ci-c1/standard-shadow.mts": "3edfdf277ee35963fb42bb48a8ed99ab7db71ef9e963aee917decb3644ebd5de",
+      "prototypes/evolution42-ci-c1/standalone-evidence.mts": "1207ef5a4f0339a647e10c69c6b7202c0eea2107b65d9dee6b11a2022a8f4671",
+      "prototypes/evolution42-ci-c1/standalone-evidence.test.mts": "95ac5ffdc993bf8bb5d4635b41dbf6908b0125436b386bbe29c35b75eab39913"
+    },
+    "runs": [
+      {
+        "sample": "run-4rp06m",
+        "rawReportSha256": "3cbcefdb6ebc547fdb335dc556b99ca07434f3209a6c790f52fee042d75660f1",
+        "scope": "controlled process receipt readback",
+        "source": {
+          "head": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+          "tree": "d94a9299aba38e60a595db2bd62c067db880e052",
+          "dirty": true,
+          "contentSha256": "f33062c448327dabcf18416b9804518568d9ac2b66121f268b71eb800e9fc333",
+          "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+        },
+        "entry": "controlled-inline-assertion",
+        "outcome": {
+          "status": "PASS",
+          "executionId": "66d35fbe1217d1ac507445c42ff59a4b",
+          "milliseconds": 177,
+          "assertions": 1,
+          "rawStatus": "passed",
+          "exitCode": 0,
+          "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "foreignEnvelopeRejected": "not-in-earlier-driver",
+        "legacyProblems": [
+          "StandaloneIncomplete:controlled-inline-assertion"
+        ],
+        "negativeResults": [
+          {
+            "id": "missing",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "duplicate",
+            "problems": [
+              "StandaloneResultSetMismatch"
+            ]
+          },
+          {
+            "id": "foreign-entry",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "missing-receipt",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "foreign-execution",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "foreign-pid",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "early-exit",
+            "problems": [
+              "StandaloneNoAssertions:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "zero-assertions",
+            "problems": [
+              "StandaloneNoAssertions:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "cancelled",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "timeout",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "failed",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "contradiction",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          }
+        ]
+      },
+      {
+        "sample": "run-dvGfQr",
+        "rawReportSha256": "a4cd2eda8933a960d6e6d753fb787725106e3cbe363426d98f7764cb763972be",
+        "scope": "actual standalone material receipt readback; not a full standard execution",
+        "source": {
+          "head": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+          "tree": "d94a9299aba38e60a595db2bd62c067db880e052",
+          "dirty": true,
+          "contentSha256": "e962a7af5b35b4fdea5cb0b28c88e72ffc90dc7683e04fcb05135e2783234192",
+          "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+        },
+        "entry": "tests/ui41-material.cjs",
+        "outcome": {
+          "status": "PASS",
+          "executionId": "1df5d434017ff32f6373568b61e5426e",
+          "milliseconds": 5813,
+          "assertions": 133,
+          "rawStatus": "passed",
+          "exitCode": 0,
+          "outputSha256": "79d4c465e39cf6359a4a885ff3e7991cf2fb1bc54ed6923397a0f9173ec80758"
+        },
+        "foreignEnvelopeRejected": "not-in-earlier-driver",
+        "legacyProblems": [
+          "StandaloneIncomplete:tests/ui41-material.cjs"
+        ],
+        "negativeResults": [
+          {
+            "id": "missing",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "duplicate",
+            "problems": [
+              "StandaloneResultSetMismatch"
+            ]
+          },
+          {
+            "id": "foreign-entry",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "missing-receipt",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "foreign-execution",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "foreign-pid",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "early-exit",
+            "problems": [
+              "StandaloneNoAssertions:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "zero-assertions",
+            "problems": [
+              "StandaloneNoAssertions:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "cancelled",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "timeout",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "failed",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "contradiction",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          }
+        ]
+      },
+      {
+        "sample": "run-zahy5z",
+        "rawReportSha256": "7a98f966ea1b3bebe4fddc51447a61b2a7eac8d4ff54f19834586c6b08a951e7",
+        "scope": "controlled process receipt readback",
+        "source": {
+          "head": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+          "tree": "d94a9299aba38e60a595db2bd62c067db880e052",
+          "dirty": true,
+          "contentSha256": "a0bd2bc2c6cea604ef9ebbc4051c3f6301888851028351f8e5403ed8d8135b79",
+          "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+        },
+        "entry": "controlled-inline-assertion",
+        "outcome": {
+          "status": "PASS",
+          "executionId": "9c953d018f60be1889afe30851866cd7",
+          "milliseconds": 287,
+          "assertions": 1,
+          "rawStatus": "passed",
+          "exitCode": 0,
+          "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "foreignEnvelopeRejected": true,
+        "legacyProblems": [
+          "StandaloneIncomplete:controlled-inline-assertion"
+        ],
+        "negativeResults": [
+          {
+            "id": "missing",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "duplicate",
+            "problems": [
+              "StandaloneResultSetMismatch"
+            ]
+          },
+          {
+            "id": "foreign-entry",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "missing-receipt",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "foreign-execution",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "foreign-pid",
+            "problems": [
+              "StandaloneReceiptIdentity:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "early-exit",
+            "problems": [
+              "StandaloneNoAssertions:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "zero-assertions",
+            "problems": [
+              "StandaloneNoAssertions:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "cancelled",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "timeout",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "failed",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          },
+          {
+            "id": "contradiction",
+            "problems": [
+              "StandaloneIncomplete:controlled-inline-assertion"
+            ]
+          }
+        ]
+      },
+      {
+        "sample": "run-TxGbQh",
+        "rawReportSha256": "68a09d64123c9bc2d86ced893ae14edcf486dfaeaa72fa60e5f9abbb92ba2782",
+        "scope": "actual standalone material receipt readback; not a full standard execution",
+        "source": {
+          "head": "f8b2a4c92ade451efc65cb87484155e170696ee6",
+          "tree": "d94a9299aba38e60a595db2bd62c067db880e052",
+          "dirty": true,
+          "contentSha256": "a0bd2bc2c6cea604ef9ebbc4051c3f6301888851028351f8e5403ed8d8135b79",
+          "lockSha256": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+        },
+        "entry": "tests/ui41-material.cjs",
+        "outcome": {
+          "status": "PASS",
+          "executionId": "d1a93a337641f62d88a3c7f037a31102",
+          "milliseconds": 5591,
+          "assertions": 133,
+          "rawStatus": "passed",
+          "exitCode": 0,
+          "outputSha256": "554eb5ab94ebed29118ed77ab6b61ababf9a4fc5fc81f7890c3f0fe64e9653dc"
+        },
+        "foreignEnvelopeRejected": true,
+        "legacyProblems": [
+          "StandaloneIncomplete:tests/ui41-material.cjs"
+        ],
+        "negativeResults": [
+          {
+            "id": "missing",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "duplicate",
+            "problems": [
+              "StandaloneResultSetMismatch"
+            ]
+          },
+          {
+            "id": "foreign-entry",
+            "problems": [
+              "StandaloneResultSetMismatch",
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "missing-receipt",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "foreign-execution",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "foreign-pid",
+            "problems": [
+              "StandaloneReceiptIdentity:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "early-exit",
+            "problems": [
+              "StandaloneNoAssertions:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "zero-assertions",
+            "problems": [
+              "StandaloneNoAssertions:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "cancelled",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "timeout",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "failed",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          },
+          {
+            "id": "contradiction",
+            "problems": [
+              "StandaloneIncomplete:tests/ui41-material.cjs"
+            ]
+          }
+        ]
+      }
+    ],
+    "verification": [
+      "Controlled process receipt disk roundtrip PASS",
+      "Actual ui41-material.cjs width 1280/390 receipt roundtrip PASS, 133 assertions",
+      "12 fixed negative rows rejected; old entry/status serializer rejected",
+      "Final driver wrong-attempt envelope rejected through existing readReport",
+      "All isolated C1 MTS strict/noUncheckedIndexedAccess typecheck PASS"
+    ],
+    "notExecuted": [
+      "Five preparation stages and complete standard-shadow after this change",
+      "New full standard/research Actions",
+      "14 full-profile paired scenarios",
+      "Selected Actions transport or cross-run evidence reuse"
+    ],
+    "historicalEvidence": "Earlier standard preparation, 17 consumer execution and 18 transport cases retain original source identities; not rewritten as final HEAD evidence"
+  }
+}

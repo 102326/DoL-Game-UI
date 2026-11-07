@@ -174,7 +174,7 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
   s.state.busy=true;s.original.inert=true;s.view!.actions.inert=true;s.view!.equipment.inert=true;s.view!.services.inert=true;
   const count=(inventory:Inventory)=>Object.values(inventory).reduce<number>((n:number,a:unknown)=>n+(Array.isArray(a)?a.length:0),0);
   try{
-   for(const e of plan.entries){
+   for(const [entryIndex,e] of plan.entries.entries()){
     const current=snapshot(root);
     if(active!==s||!isCurrentPassage(s)||!current||current.variables!==fresh.variables||current.inventory!==plan.inventory||current.location!==plan.location||current.variables.location!==gameLocation||JSON.stringify(current.inventory)!==expected||JSON.stringify(current.setup.clothes)!==definitions||JSON.stringify(current.worn)!==expectedWorn){reason='衣柜、服装定义或页面发生变化，剩余操作已停止';break}
     const index=(current.inventory as ClothingSlots)[e.slot]?.indexOf(e.raw)??-1;
@@ -201,8 +201,8 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
     expectedWorn=JSON.stringify(current.worn);
     if(plan.mode==='transfer')plan.targetFingerprint=JSON.stringify(targetData);
     s.state.progress=`已处理 ${done+skipped} / ${plan.entries.length} 项`;
-    // This business yield must settle so native mode restoration still runs after view exit.
-    await new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
+    // Yield between actions; the final action can restore native mode immediately.
+    if(entryIndex<plan.entries.length-1)await new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
    }
   }catch{reason='处理异常，剩余操作已停止'}
   finally{

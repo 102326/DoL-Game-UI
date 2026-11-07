@@ -1,6 +1,7 @@
 import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
+import {isMaterialTransformMutation} from '../../src/ui/material-motion-style';
 import {settingsWeather} from '../../src/ui/weather/settings';
 type WeatherKind='clear'|'cloud'|'rain'|'snow'|'storm'|'fog'|'unknown';
 type RainLevel='normal'|'light'|'heavy'|'severe';
@@ -61,14 +62,16 @@ export function headerWeather(){
  function refresh(){
   foreground=document.querySelector<HTMLElement>('dialog#dol-midnight-controls:modal,dialog[data-sf-workspace]:modal');
   stopTimer?.();stopTimer=undefined;if(!scope.active()||!surfaces.size||document.hidden)return;
-  if([...surfaces.values()].some(showing))state=readGameWeather();
-  for(const[key,s]of surfaces){if(!showing(s)){
+  // Sample geometry once before renderer/attribute writes can invalidate layout.
+  const shown=new Set([...surfaces.values()].filter(showing));
+  if(shown.size)state=readGameWeather();
+  for(const[key,s]of surfaces){if(!shown.has(s)){
     // A still-open settings owner can regain geometry without a new navigation intent.
     if(s.renderer&&s.header.isConnected&&s.parent.isConnected&&!s.header.closest('[data-sf-leaving],dialog:not([open])')){if(!s.suspended){s.suspended=true;s.renderer.pause(true)}continue}
     remove(key);continue;
-   }if(s.renderer){if(s.suspended){s.suspended=false;s.renderer.pause(false)}s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.dataset.special=state.special??'none';s.renderer.refresh()}else if(!s.static)paint(s,state)}
+   }if(s.renderer){if(s.suspended){s.suspended=false;s.renderer.pause(false)}if(s.node.dataset.weather!==state.kind)s.node.dataset.weather=state.kind;if(s.node.dataset.rain!==state.rain)s.node.dataset.rain=state.rain;const special=state.special??'none';if(s.node.dataset.special!==special)s.node.dataset.special=special;s.renderer.refresh()}else if(!s.static)paint(s,state)}
   // One shared low-frequency read, only while an owned header and document are visible.
-  if([...surfaces.values()].some(showing)&&!document.hidden)stopTimer=scope.timeout(refresh,[...surfaces.values()].some(s=>s.renderer)?500:2000);
+  if([...surfaces.values()].some(s=>shown.has(s))&&!document.hidden)stopTimer=scope.timeout(refresh,[...surfaces.values()].some(s=>s.renderer)?500:2000);
  }
  function set(key:string,header?:HTMLElement,parent?:HTMLElement){
   if(!scope.active())return;const old=surfaces.get(key);
@@ -87,7 +90,7 @@ export function headerWeather(){
     surfaces.set(key,s);
     if(s.renderer){
      const watch=visualScope();s.stopWatch=scope.own(()=>watch.dispose());const wake=()=>{if(scope.active()&&surfaces.get(key)===s)refresh()};
-     try{const resize=new ResizeObserver(wake);watch.own(()=>resize.disconnect());resize.observe(parent);const change=new MutationObserver(wake);watch.own(()=>change.disconnect());for(const node of new Set([header,parent,parent.closest('dialog')].filter((n):n is HTMLElement=>!!n)))change.observe(node,{attributes:true,attributeFilter:['style','class','hidden','open','inert']})}
+     try{const resize=new ResizeObserver(wake);watch.own(()=>resize.disconnect());resize.observe(parent);const change=new MutationObserver(records=>{if(records.some(record=>!isMaterialTransformMutation(record)))wake()});watch.own(()=>change.disconnect());for(const node of new Set([header,parent,parent.closest('dialog')].filter((n):n is HTMLElement=>!!n)))change.observe(node,{attributes:true,attributeOldValue:true,attributeFilter:['style','class','hidden','open','inert','data-dgu-material-moving']})}
      catch(error){remove(key);throw error}
     }return;
    }

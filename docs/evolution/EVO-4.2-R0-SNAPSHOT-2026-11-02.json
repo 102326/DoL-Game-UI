@@ -1,0 +1,1217 @@
+{
+  "schema": 1,
+  "kind": "evo42-r0-readonly-snapshot",
+  "date": "2026-11-02",
+  "timezoneForDisplay": "Asia/Shanghai",
+  "source": {
+    "main": "c7d8bac67fd04d0a81e59cf4c49800a510a39a11",
+    "releaseTag": "v4.1.0",
+    "releaseCommit": "9c26b0090fa21ea389c11f0471a79d5af45a577d",
+    "sameTree": true,
+    "branch": "docs/4.2-r0-research",
+    "newRuntimeTests": false
+  },
+  "collection": {
+    "recentRunLimit": 15,
+    "totalRunsAtCollection": 441,
+    "policyCommit": "82d48ff",
+    "policyCommittedAt": "2026-11-02T01:10:33+08:00",
+    "sampling": "Latest 15 only, all created after policy commit; not a census, causal comparison, billing or blocked-agent measurement"
+  },
+  "rulesets": [
+    {
+      "id": 25402407,
+      "name": "Moody Blues CI gate",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "~DEFAULT_BRANCH"
+          ]
+        }
+      },
+      "rules": [
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "validate",
+                "integration_id": 15368
+              },
+              {
+                "context": "moody-gate",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      ],
+      "bypassActors": [],
+      "currentUserCanBypass": "never",
+      "url": "https://github.com/102326/DoL-Game-UI/rules/25402407"
+    },
+    {
+      "id": 25352119,
+      "name": "jijizi",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "~DEFAULT_BRANCH"
+          ]
+        }
+      },
+      "rules": [
+        {
+          "type": "deletion"
+        },
+        {
+          "type": "non_fast_forward"
+        },
+        {
+          "type": "update"
+        }
+      ],
+      "bypassActors": [
+        {
+          "actor_id": null,
+          "actor_type": "DeployKey",
+          "bypass_mode": "always"
+        },
+        {
+          "actor_id": 5,
+          "actor_type": "RepositoryRole",
+          "bypass_mode": "always"
+        },
+        {
+          "actor_id": 1144995,
+          "actor_type": "Integration",
+          "bypass_mode": "always"
+        }
+      ],
+      "currentUserCanBypass": "always",
+      "url": "https://github.com/102326/DoL-Game-UI/rules/25352119"
+    }
+  ],
+  "runs": [
+    {
+      "id": 41401340265,
+      "name": "Kraft Work CI",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "c7d8bac67fd04d0a81e59cf4c49800a510a39a11",
+      "branch": "main",
+      "attempt": 1,
+      "createdAt": "2026-11-02T06:39:54Z",
+      "startedAt": "2026-11-02T06:39:54Z",
+      "updatedAt": "2026-11-02T06:51:46Z",
+      "approxWallSeconds": 712,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41401340265"
+    },
+    {
+      "id": 41352769456,
+      "name": "Kraft Work CI",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "9c26b0090fa21ea389c11f0471a79d5af45a577d",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T21:35:13Z",
+      "startedAt": "2026-11-01T21:35:13Z",
+      "updatedAt": "2026-11-01T21:48:54Z",
+      "approxWallSeconds": 821,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41352769456"
+    },
+    {
+      "id": 41352769411,
+      "name": "Motion Evolution prototype",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "9c26b0090fa21ea389c11f0471a79d5af45a577d",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T21:35:13Z",
+      "startedAt": "2026-11-01T21:35:13Z",
+      "updatedAt": "2026-11-01T21:44:07Z",
+      "approxWallSeconds": 534,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41352769411"
+    },
+    {
+      "id": 41351251784,
+      "name": "Motion Evolution prototype",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "headSha": "8daf1e1d747a1693899d7cf28fe0af2abea8e6df",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T21:17:33Z",
+      "startedAt": "2026-11-01T21:17:33Z",
+      "updatedAt": "2026-11-01T21:27:03Z",
+      "approxWallSeconds": 570,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41351251784"
+    },
+    {
+      "id": 41351251748,
+      "name": "Kraft Work CI",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "8daf1e1d747a1693899d7cf28fe0af2abea8e6df",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T21:17:33Z",
+      "startedAt": "2026-11-01T21:17:33Z",
+      "updatedAt": "2026-11-01T21:33:36Z",
+      "approxWallSeconds": 963,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41351251748"
+    },
+    {
+      "id": 41349649019,
+      "name": "Motion Evolution prototype",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "fdcda5e4c87b36754c60a202dc75ca9df7c340eb",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T20:59:37Z",
+      "startedAt": "2026-11-01T20:59:37Z",
+      "updatedAt": "2026-11-01T21:08:34Z",
+      "approxWallSeconds": 537,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41349649019"
+    },
+    {
+      "id": 41349645327,
+      "name": "Kraft Work CI",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "fdcda5e4c87b36754c60a202dc75ca9df7c340eb",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T20:59:34Z",
+      "startedAt": "2026-11-01T20:59:34Z",
+      "updatedAt": "2026-11-01T21:13:36Z",
+      "approxWallSeconds": 842,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41349645327"
+    },
+    {
+      "id": 41347629777,
+      "name": "Motion Evolution prototype",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headSha": "d5228d1dc22201f74fd494bedab5a4e0850f28fb",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T20:35:24Z",
+      "startedAt": "2026-11-01T20:35:24Z",
+      "updatedAt": "2026-11-01T20:42:25Z",
+      "approxWallSeconds": 421,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41347629777"
+    },
+    {
+      "id": 41347623864,
+      "name": "Kraft Work CI",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headSha": "d5228d1dc22201f74fd494bedab5a4e0850f28fb",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T20:35:20Z",
+      "startedAt": "2026-11-01T20:35:20Z",
+      "updatedAt": "2026-11-01T20:42:25Z",
+      "approxWallSeconds": 425,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41347623864"
+    },
+    {
+      "id": 41341592938,
+      "name": "Motion Evolution prototype",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "8d660382685230a8af74516c307fa97168e13913",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T19:24:44Z",
+      "startedAt": "2026-11-01T19:24:44Z",
+      "updatedAt": "2026-11-01T19:35:51Z",
+      "approxWallSeconds": 667,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41341592938"
+    },
+    {
+      "id": 41341589416,
+      "name": "Kraft Work CI",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "8d660382685230a8af74516c307fa97168e13913",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T19:24:41Z",
+      "startedAt": "2026-11-01T19:24:41Z",
+      "updatedAt": "2026-11-01T19:41:07Z",
+      "approxWallSeconds": 986,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41341589416"
+    },
+    {
+      "id": 41336944764,
+      "name": "Motion Evolution prototype",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "afa8457fbea3375c4f44942bf19211c913c9cb02",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T18:30:14Z",
+      "startedAt": "2026-11-01T18:30:14Z",
+      "updatedAt": "2026-11-01T18:41:09Z",
+      "approxWallSeconds": 655,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41336944764"
+    },
+    {
+      "id": 41336939223,
+      "name": "Kraft Work CI",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "afa8457fbea3375c4f44942bf19211c913c9cb02",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T18:30:11Z",
+      "startedAt": "2026-11-01T18:30:11Z",
+      "updatedAt": "2026-11-01T18:45:49Z",
+      "approxWallSeconds": 938,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41336939223"
+    },
+    {
+      "id": 41335001674,
+      "name": "Motion Evolution prototype",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "f2948555d7db22f4f96ceaa7da93ec62d42f9c4c",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T18:07:59Z",
+      "startedAt": "2026-11-01T18:07:59Z",
+      "updatedAt": "2026-11-01T18:18:48Z",
+      "approxWallSeconds": 649,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41335001674"
+    },
+    {
+      "id": 41334996695,
+      "name": "Kraft Work CI",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "failure",
+      "headSha": "f2948555d7db22f4f96ceaa7da93ec62d42f9c4c",
+      "branch": "feature/4.1-ui-material-hub",
+      "attempt": 1,
+      "createdAt": "2026-11-01T18:07:56Z",
+      "startedAt": "2026-11-01T18:07:56Z",
+      "updatedAt": "2026-11-01T18:23:48Z",
+      "approxWallSeconds": 952,
+      "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41334996695"
+    }
+  ],
+  "detailedJobs": [
+    {
+      "runId": 41401340265,
+      "url": "https://api.github.com/repos/102326/DoL-Game-UI/actions/runs/41401340265/jobs",
+      "jobs": [
+        {
+          "id": 125133610351,
+          "name": "validate",
+          "conclusion": "success",
+          "startedAt": "2026-11-02T06:39:58Z",
+          "completedAt": "2026-11-02T06:51:14Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:39:58Z",
+              "completedAt": "2026-11-02T06:39:59Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:39:59Z",
+              "completedAt": "2026-11-02T06:40:05Z",
+              "approxSeconds": 6
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:40:05Z",
+              "completedAt": "2026-11-02T06:40:10Z",
+              "approxSeconds": 5
+            },
+            {
+              "number": 4,
+              "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:40:10Z",
+              "completedAt": "2026-11-02T06:40:10Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 5,
+              "name": "CI gate and collaboration configuration",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:40:10Z",
+              "completedAt": "2026-11-02T06:40:10Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 6,
+              "name": "Record cache observation",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:40:10Z",
+              "completedAt": "2026-11-02T06:40:10Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 7,
+              "name": "Locked dependencies",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:40:10Z",
+              "completedAt": "2026-11-02T06:40:13Z",
+              "approxSeconds": 3
+            },
+            {
+              "number": 8,
+              "name": "TypeScript and Framework contracts",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:40:13Z",
+              "completedAt": "2026-11-02T06:40:40Z",
+              "approxSeconds": 27
+            },
+            {
+              "number": 9,
+              "name": "Business and source checks",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:40:40Z",
+              "completedAt": "2026-11-02T06:41:13Z",
+              "approxSeconds": 33
+            },
+            {
+              "number": 10,
+              "name": "Build Framework and nine current packages",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:41:13Z",
+              "completedAt": "2026-11-02T06:42:42Z",
+              "approxSeconds": 89
+            },
+            {
+              "number": 11,
+              "name": "ZIP contracts, negative cases and two-build comparison",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:42:42Z",
+              "completedAt": "2026-11-02T06:44:16Z",
+              "approxSeconds": 94
+            },
+            {
+              "number": 12,
+              "name": "Install pinned browser",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:44:16Z",
+              "completedAt": "2026-11-02T06:44:30Z",
+              "approxSeconds": 14
+            },
+            {
+              "number": 13,
+              "name": "Browser contracts, interactions, motion and compatibility",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:44:30Z",
+              "completedAt": "2026-11-02T06:51:07Z",
+              "approxSeconds": 397
+            },
+            {
+              "number": 14,
+              "name": "Build artifacts (not a Release)",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:07Z",
+              "completedAt": "2026-11-02T06:51:08Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 15,
+              "name": "Moody Blues whole-run evidence",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:08Z",
+              "completedAt": "2026-11-02T06:51:09Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 16,
+              "name": "Controlled test logs",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:09Z",
+              "completedAt": "2026-11-02T06:51:10Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 17,
+              "name": "Record actual evidence upload outcome",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:10Z",
+              "completedAt": "2026-11-02T06:51:10Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 32,
+              "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:10Z",
+              "completedAt": "2026-11-02T06:51:10Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 33,
+              "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:10Z",
+              "completedAt": "2026-11-02T06:51:12Z",
+              "approxSeconds": 2
+            },
+            {
+              "number": 34,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:12Z",
+              "completedAt": "2026-11-02T06:51:12Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 35,
+              "name": "Complete job",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:12Z",
+              "completedAt": "2026-11-02T06:51:12Z",
+              "approxSeconds": 0
+            }
+          ]
+        },
+        {
+          "id": 125137301312,
+          "name": "evidence-verify",
+          "conclusion": "success",
+          "startedAt": "2026-11-02T06:51:24Z",
+          "completedAt": "2026-11-02T06:51:40Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:24Z",
+              "completedAt": "2026-11-02T06:51:25Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:25Z",
+              "completedAt": "2026-11-02T06:51:31Z",
+              "approxSeconds": 6
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:31Z",
+              "completedAt": "2026-11-02T06:51:35Z",
+              "approxSeconds": 4
+            },
+            {
+              "number": 4,
+              "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:35Z",
+              "completedAt": "2026-11-02T06:51:36Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 5,
+              "name": "Verify actual downloaded evidence",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:36Z",
+              "completedAt": "2026-11-02T06:51:37Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 6,
+              "name": "Persist remote verification result",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:37Z",
+              "completedAt": "2026-11-02T06:51:38Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 11,
+              "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:38Z",
+              "completedAt": "2026-11-02T06:51:38Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 12,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:38Z",
+              "completedAt": "2026-11-02T06:51:38Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 13,
+              "name": "Complete job",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:38Z",
+              "completedAt": "2026-11-02T06:51:38Z",
+              "approxSeconds": 0
+            }
+          ]
+        },
+        {
+          "id": 125137444919,
+          "name": "moody-gate",
+          "conclusion": "success",
+          "startedAt": "2026-11-02T06:51:43Z",
+          "completedAt": "2026-11-02T06:51:45Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:43Z",
+              "completedAt": "2026-11-02T06:51:43Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 2,
+              "name": "Require actual validation success",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:43Z",
+              "completedAt": "2026-11-02T06:51:44Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 3,
+              "name": "Complete job",
+              "conclusion": "success",
+              "startedAt": "2026-11-02T06:51:44Z",
+              "completedAt": "2026-11-02T06:51:44Z",
+              "approxSeconds": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "runId": 41352769456,
+      "url": "https://api.github.com/repos/102326/DoL-Game-UI/actions/runs/41352769456/jobs",
+      "jobs": [
+        {
+          "id": 124986329608,
+          "name": "validate",
+          "conclusion": "success",
+          "startedAt": "2026-11-01T21:35:16Z",
+          "completedAt": "2026-11-01T21:48:24Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:17Z",
+              "completedAt": "2026-11-01T21:35:18Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:18Z",
+              "completedAt": "2026-11-01T21:35:25Z",
+              "approxSeconds": 7
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:25Z",
+              "completedAt": "2026-11-01T21:35:33Z",
+              "approxSeconds": 8
+            },
+            {
+              "number": 4,
+              "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:33Z",
+              "completedAt": "2026-11-01T21:35:33Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 5,
+              "name": "CI gate and collaboration configuration",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:33Z",
+              "completedAt": "2026-11-01T21:35:33Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 6,
+              "name": "Record cache observation",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:33Z",
+              "completedAt": "2026-11-01T21:35:33Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 7,
+              "name": "Locked dependencies",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:33Z",
+              "completedAt": "2026-11-01T21:35:35Z",
+              "approxSeconds": 2
+            },
+            {
+              "number": 8,
+              "name": "TypeScript and Framework contracts",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:35Z",
+              "completedAt": "2026-11-01T21:36:09Z",
+              "approxSeconds": 34
+            },
+            {
+              "number": 9,
+              "name": "Business and source checks",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:36:09Z",
+              "completedAt": "2026-11-01T21:36:48Z",
+              "approxSeconds": 39
+            },
+            {
+              "number": 10,
+              "name": "Build Framework and nine current packages",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:36:48Z",
+              "completedAt": "2026-11-01T21:38:39Z",
+              "approxSeconds": 111
+            },
+            {
+              "number": 11,
+              "name": "ZIP contracts, negative cases and two-build comparison",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:38:39Z",
+              "completedAt": "2026-11-01T21:40:41Z",
+              "approxSeconds": 122
+            },
+            {
+              "number": 12,
+              "name": "Install pinned browser",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:40:41Z",
+              "completedAt": "2026-11-01T21:41:02Z",
+              "approxSeconds": 21
+            },
+            {
+              "number": 13,
+              "name": "Browser contracts, interactions, motion and compatibility",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:41:02Z",
+              "completedAt": "2026-11-01T21:48:16Z",
+              "approxSeconds": 434
+            },
+            {
+              "number": 14,
+              "name": "Build artifacts (not a Release)",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:16Z",
+              "completedAt": "2026-11-01T21:48:18Z",
+              "approxSeconds": 2
+            },
+            {
+              "number": 15,
+              "name": "Moody Blues whole-run evidence",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:18Z",
+              "completedAt": "2026-11-01T21:48:19Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 16,
+              "name": "Controlled test logs",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:19Z",
+              "completedAt": "2026-11-01T21:48:20Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 17,
+              "name": "Record actual evidence upload outcome",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:20Z",
+              "completedAt": "2026-11-01T21:48:20Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 32,
+              "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:20Z",
+              "completedAt": "2026-11-01T21:48:20Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 33,
+              "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:20Z",
+              "completedAt": "2026-11-01T21:48:20Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 34,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:20Z",
+              "completedAt": "2026-11-01T21:48:21Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 35,
+              "name": "Complete job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:21Z",
+              "completedAt": "2026-11-01T21:48:21Z",
+              "approxSeconds": 0
+            }
+          ]
+        },
+        {
+          "id": 124989677420,
+          "name": "evidence-verify",
+          "conclusion": "success",
+          "startedAt": "2026-11-01T21:48:27Z",
+          "completedAt": "2026-11-01T21:48:48Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:29Z",
+              "completedAt": "2026-11-01T21:48:30Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:30Z",
+              "completedAt": "2026-11-01T21:48:36Z",
+              "approxSeconds": 6
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:36Z",
+              "completedAt": "2026-11-01T21:48:41Z",
+              "approxSeconds": 5
+            },
+            {
+              "number": 4,
+              "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:41Z",
+              "completedAt": "2026-11-01T21:48:42Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 5,
+              "name": "Verify actual downloaded evidence",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:42Z",
+              "completedAt": "2026-11-01T21:48:44Z",
+              "approxSeconds": 2
+            },
+            {
+              "number": 6,
+              "name": "Persist remote verification result",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:44Z",
+              "completedAt": "2026-11-01T21:48:45Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 11,
+              "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:45Z",
+              "completedAt": "2026-11-01T21:48:45Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 12,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:45Z",
+              "completedAt": "2026-11-01T21:48:46Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 13,
+              "name": "Complete job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:46Z",
+              "completedAt": "2026-11-01T21:48:46Z",
+              "approxSeconds": 0
+            }
+          ]
+        },
+        {
+          "id": 124989780892,
+          "name": "moody-gate",
+          "conclusion": "success",
+          "startedAt": "2026-11-01T21:48:51Z",
+          "completedAt": "2026-11-01T21:48:53Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:51Z",
+              "completedAt": "2026-11-01T21:48:52Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 2,
+              "name": "Require actual validation success",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:52Z",
+              "completedAt": "2026-11-01T21:48:52Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 3,
+              "name": "Complete job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:48:52Z",
+              "completedAt": "2026-11-01T21:48:52Z",
+              "approxSeconds": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "runId": 41352769411,
+      "url": "https://api.github.com/repos/102326/DoL-Game-UI/actions/runs/41352769411/jobs",
+      "jobs": [
+        {
+          "id": 124986329214,
+          "name": "prototype",
+          "conclusion": "success",
+          "startedAt": "2026-11-01T21:35:16Z",
+          "completedAt": "2026-11-01T21:43:40Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:17Z",
+              "completedAt": "2026-11-01T21:35:17Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:17Z",
+              "completedAt": "2026-11-01T21:35:23Z",
+              "approxSeconds": 6
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:23Z",
+              "completedAt": "2026-11-01T21:35:28Z",
+              "approxSeconds": 5
+            },
+            {
+              "number": 4,
+              "name": "Record cache observation",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:28Z",
+              "completedAt": "2026-11-01T21:35:28Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 5,
+              "name": "Run node scripts/test-ci.cjs stage dependencies",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:28Z",
+              "completedAt": "2026-11-01T21:35:31Z",
+              "approxSeconds": 3
+            },
+            {
+              "number": 6,
+              "name": "Run node scripts/test-ci.cjs stage browser-install",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:31Z",
+              "completedAt": "2026-11-01T21:35:45Z",
+              "approxSeconds": 14
+            },
+            {
+              "number": 7,
+              "name": "Required controlled research contracts",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:35:45Z",
+              "completedAt": "2026-11-01T21:43:31Z",
+              "approxSeconds": 466
+            },
+            {
+              "number": 8,
+              "name": "Research whole-run evidence",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:31Z",
+              "completedAt": "2026-11-01T21:43:33Z",
+              "approxSeconds": 2
+            },
+            {
+              "number": 9,
+              "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:33Z",
+              "completedAt": "2026-11-01T21:43:38Z",
+              "approxSeconds": 5
+            },
+            {
+              "number": 10,
+              "name": "Record actual evidence upload outcome",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:38Z",
+              "completedAt": "2026-11-01T21:43:38Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 19,
+              "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:38Z",
+              "completedAt": "2026-11-01T21:43:38Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 20,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:38Z",
+              "completedAt": "2026-11-01T21:43:38Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 21,
+              "name": "Complete job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:38Z",
+              "completedAt": "2026-11-01T21:43:38Z",
+              "approxSeconds": 0
+            }
+          ]
+        },
+        {
+          "id": 124988471645,
+          "name": "evidence-verify",
+          "conclusion": "success",
+          "startedAt": "2026-11-01T21:43:43Z",
+          "completedAt": "2026-11-01T21:44:07Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:44Z",
+              "completedAt": "2026-11-01T21:43:45Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:45Z",
+              "completedAt": "2026-11-01T21:43:50Z",
+              "approxSeconds": 5
+            },
+            {
+              "number": 3,
+              "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:50Z",
+              "completedAt": "2026-11-01T21:43:54Z",
+              "approxSeconds": 4
+            },
+            {
+              "number": 4,
+              "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:43:54Z",
+              "completedAt": "2026-11-01T21:44:02Z",
+              "approxSeconds": 8
+            },
+            {
+              "number": 5,
+              "name": "Verify actual downloaded evidence",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:44:02Z",
+              "completedAt": "2026-11-01T21:44:03Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 6,
+              "name": "Persist remote verification result",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:44:03Z",
+              "completedAt": "2026-11-01T21:44:04Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 11,
+              "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:44:04Z",
+              "completedAt": "2026-11-01T21:44:04Z",
+              "approxSeconds": 0
+            },
+            {
+              "number": 12,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:44:04Z",
+              "completedAt": "2026-11-01T21:44:05Z",
+              "approxSeconds": 1
+            },
+            {
+              "number": 13,
+              "name": "Complete job",
+              "conclusion": "success",
+              "startedAt": "2026-11-01T21:44:05Z",
+              "completedAt": "2026-11-01T21:44:05Z",
+              "approxSeconds": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "logObservations": [
+    {
+      "jobId": 125133610351,
+      "actualCheckoutShort": "c7d8bac",
+      "npmCacheHit": false,
+      "deviceLayoutsMs": 169048,
+      "profiles": 48,
+      "scanWidths": 73,
+      "orientationChanges": 2,
+      "negativeControls": 4,
+      "totalCases": 127,
+      "topBrowserEntries": [
+        {
+          "timestamp": "2026-11-02T06:51:06.3787441Z",
+          "id": "device-layouts.cjs",
+          "durationMs": 169048
+        },
+        {
+          "timestamp": "2026-11-02T06:45:42.3754732Z",
+          "id": "evolution-owner-resources.cjs",
+          "durationMs": 36994
+        },
+        {
+          "timestamp": "2026-11-02T06:46:56.1271659Z",
+          "id": "settings-ci.cjs",
+          "durationMs": 32856
+        },
+        {
+          "timestamp": "2026-11-02T06:45:05.3627454Z",
+          "id": "ui-runtime-regressions.cjs",
+          "durationMs": 20280
+        },
+        {
+          "timestamp": "2026-11-02T06:46:21.7743109Z",
+          "id": "framework-startup.cjs",
+          "durationMs": 14234
+        },
+        {
+          "timestamp": "2026-11-02T06:47:34.6353435Z",
+          "id": "weather-special.cjs",
+          "durationMs": 13167
+        },
+        {
+          "timestamp": "2026-11-02T06:47:21.4515083Z",
+          "id": "header-weather.cjs",
+          "durationMs": 11431
+        },
+        {
+          "timestamp": "2026-11-02T06:48:03.0463956Z",
+          "id": "combat-focused.cjs",
+          "durationMs": 8662
+        }
+      ]
+    },
+    {
+      "jobId": 124986329608,
+      "actualCheckoutShort": "43669b5",
+      "npmCacheHit": true,
+      "prHead": "9c26b0090fa21ea389c11f0471a79d5af45a577d",
+      "prBase": "ff428b4d385b79f6c14fada9a65301157978aa6f"
+    },
+    {
+      "jobId": 124986329214,
+      "actualCheckoutShort": "43669b5",
+      "npmCacheHit": true,
+      "meaning": "Stage API read; individual research case durations not re-extracted; report's historical per-family costs not recomputed"
+    }
+  ],
+  "tracking": [
+    {
+      "number": 31,
+      "state": "open",
+      "observedLatestStatus": "Body still says PR34 pending; API confirms merged, needs later tracking reconciliation"
+    },
+    {
+      "number": 32,
+      "state": "open",
+      "observedLatestStatus": "Body still refers to review-gated partial rollout; release code/docs are newer; not automatically closed"
+    },
+    {
+      "number": 33,
+      "state": "open",
+      "observedLatestStatus": "Ray wardrobe quarter view and altar overflow; no new reproduction or fix"
+    }
+  ],
+  "limits": [
+    "No new browser or game run",
+    "No full artifact download/revalidation",
+    "No live device/GPU/power benchmark",
+    "No platform rules changed",
+    "No causal CI speedup, billing or token claim",
+    "No remote issue edit or publication"
+  ]
+}

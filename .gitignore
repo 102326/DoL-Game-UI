@@ -315,3 +315,13 @@ docs/HANDOFF.local.md
 /tests/ui41-independent.cjs
 
 /tests/foreground-plane.cjs
+
+# Isolated 4.2 preview tool: single MTS source, optional generated bootstrap.
+/scripts/preview-evo42.mjs
+
+# Generated loading-regression tooling.
+/tests/wardrobe-operation-yield.cjs
+/tests/wardrobe-preview-loading.cjs
+
+/tests/attributes-material.cjs
+/tests/hub-placement-integration.cjs

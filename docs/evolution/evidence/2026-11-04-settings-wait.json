@@ -1,0 +1,739 @@
+{
+  "schema": 1,
+  "scope": "Isolated full settings contract comparison, not active CI replacement",
+  "overallStatus": "UNVERIFIED_INPUT_DRIFT",
+  "processExit": 1,
+  "head": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "browser": "153.0.8010.12",
+  "rawReportSha256": "10b8090a8a30b27a276146a2f583a80149dd152a12a605bf444ac77d13e58ed6",
+  "controlsPassed": true,
+  "inputsStable": false,
+  "changedInputs": [
+    "scripts/research/frost-geometry-probe.mts"
+  ],
+  "inputCount": 801,
+  "selectedInputHashes": {
+    "tests/settings-ci.cts": "4a738d2df10bd1ea6c100d927fac8d34026571faec9e87c4d12448d9d049efd9",
+    "tests/ui41-reading.cts": "07e25c15147b601efcc9c3a110f90b03a89e9df35be5dc783a95f9b54c0976d8",
+    "tests/evolution-settings-integration.cts": "73a322155066ebf7eb225e75474ee1e5a2947ca74f0acedbbd05be029dd240da",
+    "tests/evolution-weather-integration.cts": "cbaba62679d9edc587ae4e81a35b4ecd405fcfadef74fedb8862243ee864fb61",
+    "tests/moody-oracles.cts": "587f988a1d4ef169cf465c7d337676aa0ce60871408dda73f862911cf9a314a5",
+    "tests/browser-options.cts": "77145969629bf96de4fb28f4f60bd9e1e49961c8060dabd45140a5d4524f090a",
+    "src/theme/SettingsPanel.vue": "e3c456e2f00d2ef0d247613f3d967f9e4413c444738e8a3b7d29a2aa2d69508f",
+    "src/theme/controller.ts": "5106dc3617129e6614b1133cf81c0ca82b8ad88d7ea6b9bf18db743194c2f876",
+    "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+    "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+    "scripts/research/settings-wait-probe.mts": "dfef850a7d1e722a5e2778ce706d384ea30aea3df26255a40a8ebbd9e0a49baf"
+  },
+  "temporaryBuilds": {
+    "old": "1fb937863214a84bf3f1b0d721b652a307d79e077424a8a5082cdfe16b16a0f1",
+    "candidate": "684f9b620edc2ee2ca23d4c21cb772d9c9e068146edf07e6d82a865cce109f29",
+    "control": "7f9992722da50f271666b0b0877f2fe2d0ceaeb41eef714e7e81842a5b781776"
+  },
+  "results": [
+    {
+      "id": "never-target",
+      "exit": 1,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 3822
+    },
+    {
+      "id": "late-target",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 718
+    },
+    {
+      "id": "warmup-old",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 29509
+    },
+    {
+      "id": "warmup-candidate",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 27145
+    },
+    {
+      "id": "sample-1-candidate",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 27504
+    },
+    {
+      "id": "sample-1-old",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 28778
+    },
+    {
+      "id": "sample-2-old",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 28844
+    },
+    {
+      "id": "sample-2-candidate",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 27220
+    },
+    {
+      "id": "sample-3-candidate",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 26968
+    },
+    {
+      "id": "sample-3-old",
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "elapsedMs": 29078
+    }
+  ],
+  "notes": [
+    "All eight full contract processes exited zero, including two warmups. The never-target control intentionally exited one with TimeoutError; the delayed target succeeded.",
+    "Only frost-geometry-probe.mts changed in the conservative before/after input superset. Other recorded source, dependency, generated helper and CSS hashes matched. Overall process failure is retained.",
+    "The final probe excludes unrelated research files and records changedInputs/stoppedEarly; at that point the final script had not been rerun; see finalProbeVerification for its later single complete run.",
+    "First browser launch was blocked by macOS sandbox before the controls executed; separate failure report retained locally.",
+    "No official test, workflow, profile selection, required gate or Ruleset has been migrated by this experiment."
+  ],
+  "standardFailureFollowup": {
+    "run": 41818673539,
+    "source": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+    "status": "FAIL",
+    "failedEntry": "wardrobe-operation-yield.cjs",
+    "assertion": "last action restores without another frame",
+    "actual": {
+      "calls": 2,
+      "busy": false,
+      "mode": "wear",
+      "remaining": 0,
+      "frames": 1
+    },
+    "expectedFrames": 0,
+    "sourceOfObservedExtraCallback": "Unknown; not captured by this CI failure",
+    "controlledReproduction": "One deliberately queued unrelated RAF reproduces the old assertion failure while business state is fully restored.",
+    "testCorrection": "Release the known business callback and observe after its microtask in one browser task; assert completion and unrelated callback still pending/unexecuted.",
+    "legacyBusinessWaitNegative": "Restoring a final extra await for the multi-item action is rejected: busy=true, mode=delete.",
+    "localLogs": {
+      "old-unrelated": "85b00e2b2ca930299cbc9ccf257af86ae7fecd1ebfb4d0fe93ec3f3ce2661777",
+      "legacy-final-batch": "28bda728e09a77ae00df86a50f0bdaec1f27651e1429ebb224644d3c82eb11d4",
+      "fixed": "940fbc5ed2be80fb1cb8852f0b154b81847110d29e01bfcaa9b286a3b44ca6e1"
+    },
+    "gate": "First run correctly refused approval; corrected a23c08f full standard run 41821019023 passed validate, independent evidence verification and final gate."
+  },
+  "recordRole": "Initial comparison retained below; finalProbeVerification describes the final script run.",
+  "finalProbeVerification": {
+    "status": "PASS",
+    "processExit": 0,
+    "head": "a23c08fca33bc16f388db9a6abd1ab86a7c62273",
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "browser": "153.0.8010.12",
+    "rawReportSha256": "ccf09bc63f43bef823d706413a94e7f667fb9f9258d6c6a1d91dda2655ed4ed3",
+    "inputsStable": true,
+    "changedInputs": [],
+    "controlsPassed": true,
+    "stoppedEarly": false,
+    "temporaryBuilds": {
+      "old": "1fb937863214a84bf3f1b0d721b652a307d79e077424a8a5082cdfe16b16a0f1",
+      "candidate": "684f9b620edc2ee2ca23d4c21cb772d9c9e068146edf07e6d82a865cce109f29",
+      "control": "7f9992722da50f271666b0b0877f2fe2d0ceaeb41eef714e7e81842a5b781776"
+    },
+    "probeSha256": "c42ecab7b2a60e2dd50700cc6ee44d819be18953f7ee0de74873891f4212e2a3",
+    "results": [
+      {
+        "id": "never-target",
+        "exit": 1,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 3956
+      },
+      {
+        "id": "late-target",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 714
+      },
+      {
+        "id": "warmup-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 29301
+      },
+      {
+        "id": "warmup-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 26893
+      },
+      {
+        "id": "sample-1-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 27879
+      },
+      {
+        "id": "sample-1-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 30546
+      },
+      {
+        "id": "sample-2-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 28878
+      },
+      {
+        "id": "sample-2-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 29039
+      },
+      {
+        "id": "sample-3-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 33670
+      },
+      {
+        "id": "sample-3-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 31245
+      }
+    ],
+    "decision": "Contract and input-identity validation passed; whole-entry timing is variable and two of three measured pairs are slower for the candidate. No stable CI speedup established; no official wait migration.",
+    "initialReportPreserved": true
+  },
+  "remoteIntegration": {
+    "runs": [
+      {
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41818673539",
+        "headSha": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+        "createdAt": "2026-11-04T11:06:46Z",
+        "updatedAt": "2026-11-04T11:20:27Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "jobs": [
+          {
+            "name": "validate",
+            "status": "completed",
+            "conclusion": "failure",
+            "startedAt": "2026-11-04T11:06:51Z",
+            "completedAt": "2026-11-04T11:19:57Z"
+          },
+          {
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "failure",
+            "startedAt": "2026-11-04T11:20:04Z",
+            "completedAt": "2026-11-04T11:20:21Z"
+          },
+          {
+            "name": "moody-gate",
+            "status": "completed",
+            "conclusion": "failure",
+            "startedAt": "2026-11-04T11:20:24Z",
+            "completedAt": "2026-11-04T11:20:26Z"
+          }
+        ]
+      },
+      {
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41821019023",
+        "headSha": "a23c08fca33bc16f388db9a6abd1ab86a7c62273",
+        "createdAt": "2026-11-04T11:27:30Z",
+        "updatedAt": "2026-11-04T11:43:25Z",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "name": "validate",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:27:34Z",
+            "completedAt": "2026-11-04T11:43:00Z"
+          },
+          {
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:43:02Z",
+            "completedAt": "2026-11-04T11:43:19Z"
+          },
+          {
+            "name": "moody-gate",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:43:22Z",
+            "completedAt": "2026-11-04T11:43:24Z"
+          }
+        ]
+      },
+      {
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41818680303",
+        "headSha": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+        "createdAt": "2026-11-04T11:06:50Z",
+        "updatedAt": "2026-11-04T11:19:19Z",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "name": "prototype",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:06:58Z",
+            "completedAt": "2026-11-04T11:17:15Z"
+          },
+          {
+            "name": "evidence-verify",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T11:18:58Z",
+            "completedAt": "2026-11-04T11:19:16Z"
+          }
+        ]
+      }
+    ],
+    "standardRunCount": 2,
+    "researchRunCount": 1,
+    "testCorrectionRounds": 1,
+    "firstRecordedActionableFailureSeconds": 566,
+    "firstStandardDispatchToCorrectedConclusionSeconds": 2199,
+    "measurementBoundary": "CI delivery window including repair; not whole development time or controlled speedup comparison"
+  },
+  "phaseAttribution": {
+    "head": "cfd03500470b5e110d6941c8fa85c86c75e70ad2",
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "controlsPassed": true,
+    "phaseCoverage": true,
+    "inputsStable": true,
+    "changedInputs": [],
+    "stoppedEarly": false,
+    "temporaryBuilds": {
+      "old": "c1d514b6d8f6480575b5429b952f68d547376901f1760e650489b9315e2d15cf",
+      "candidate": "0adff6237a1a124791b620568f1092862e1b3f7c0ee2c9846e678eb09ccecfb8",
+      "control": "7f9992722da50f271666b0b0877f2fe2d0ceaeb41eef714e7e81842a5b781776"
+    },
+    "rawReportSha256": "c4c52acdcf920184e6601ce60d5979e28766baa8c6302b261316baf6b4155a01",
+    "probeSha256": "20d820d676960ae6decb69a19602a77eccecf0cce4f2a435a94d91df9a57ed3e",
+    "browser": "153.0.8010.12",
+    "inputCount": 798,
+    "selectedInputHashes": {
+      "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+      "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+      "scripts/research/settings-wait-probe.mts": "20d820d676960ae6decb69a19602a77eccecf0cce4f2a435a94d91df9a57ed3e",
+      "src/ui/weather/wet-glass.ts": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee",
+      "tests/settings-ci.cts": "4a738d2df10bd1ea6c100d927fac8d34026571faec9e87c4d12448d9d049efd9"
+    },
+    "results": [
+      {
+        "id": "never-target",
+        "exit": 1,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 4007,
+        "phases": null
+      },
+      {
+        "id": "late-target",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 789,
+        "phases": null
+      },
+      {
+        "id": "warmup-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 34630,
+        "phases": {
+          "layout": [
+            {
+              "label": "左右",
+              "waitMs": 754.0223330000003,
+              "attribute": "vertical",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            },
+            {
+              "label": "上下",
+              "waitMs": 753.1475409999998,
+              "attribute": "horizontal",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            }
+          ],
+          "startupMs": 369.392209,
+          "readingMs": 3389.631707999999,
+          "settingsMs": 6462.332582999999,
+          "weatherMs": 14258.186875,
+          "innerTotalMs": 34345.685459
+        }
+      },
+      {
+        "id": "warmup-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 41532,
+        "phases": {
+          "layout": [
+            {
+              "label": "左右",
+              "waitMs": 20.802208999999948,
+              "attribute": "vertical",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            },
+            {
+              "label": "上下",
+              "waitMs": 2.287667000000056,
+              "attribute": "horizontal",
+              "transition": false,
+              "animations": 10,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            }
+          ],
+          "startupMs": 508.212875,
+          "readingMs": 3535.077042,
+          "settingsMs": 9423.809750000002,
+          "weatherMs": 18693.438874999996,
+          "innerTotalMs": 41113.433292
+        }
+      },
+      {
+        "id": "sample-1-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 36107,
+        "phases": {
+          "layout": [
+            {
+              "label": "左右",
+              "waitMs": 31.29495799999995,
+              "attribute": "vertical",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            },
+            {
+              "label": "上下",
+              "waitMs": 6.548249999999825,
+              "attribute": "horizontal",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            }
+          ],
+          "startupMs": 637.647584,
+          "readingMs": 4056.2742500000004,
+          "settingsMs": 7776.501333999999,
+          "weatherMs": 15149.753375,
+          "innerTotalMs": 35644.540875
+        }
+      },
+      {
+        "id": "sample-1-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 34728,
+        "phases": {
+          "layout": [
+            {
+              "label": "左右",
+              "waitMs": 778.627958,
+              "attribute": "vertical",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            },
+            {
+              "label": "上下",
+              "waitMs": 752.4420410000002,
+              "attribute": "horizontal",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            }
+          ],
+          "startupMs": 603.879542,
+          "readingMs": 3514.1272910000007,
+          "settingsMs": 6991.948915999999,
+          "weatherMs": 14270.868125000005,
+          "innerTotalMs": 34243.320875
+        }
+      },
+      {
+        "id": "sample-2-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 43685,
+        "phases": {
+          "layout": [
+            {
+              "label": "左右",
+              "waitMs": 751.5957079999998,
+              "attribute": "vertical",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            },
+            {
+              "label": "上下",
+              "waitMs": 755.7267499999998,
+              "attribute": "horizontal",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            }
+          ],
+          "startupMs": 505.91545799999994,
+          "readingMs": 3806.757958,
+          "settingsMs": 7763.519,
+          "weatherMs": 20374.528208000003,
+          "innerTotalMs": 43273.118582999996
+        }
+      },
+      {
+        "id": "sample-2-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 32029,
+        "phases": {
+          "layout": [
+            {
+              "label": "左右",
+              "waitMs": 33.51774999999998,
+              "attribute": "vertical",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            },
+            {
+              "label": "上下",
+              "waitMs": 3.8531659999998737,
+              "attribute": "horizontal",
+              "transition": false,
+              "animations": 10,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            }
+          ],
+          "startupMs": 543.808167,
+          "readingMs": 3107.726584,
+          "settingsMs": 6023.949417000002,
+          "weatherMs": 13740.960375000002,
+          "innerTotalMs": 31545.661208
+        }
+      },
+      {
+        "id": "sample-3-candidate",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 31246,
+        "phases": {
+          "layout": [
+            {
+              "label": "左右",
+              "waitMs": 2.0690000000004147,
+              "attribute": "vertical",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            },
+            {
+              "label": "上下",
+              "waitMs": 2.424167000000125,
+              "attribute": "horizontal",
+              "transition": false,
+              "animations": 10,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            }
+          ],
+          "startupMs": 512.0312079999999,
+          "readingMs": 2880.6265000000003,
+          "settingsMs": 6907.476708,
+          "weatherMs": 13688.317457999998,
+          "innerTotalMs": 30850.239417
+        }
+      },
+      {
+        "id": "sample-3-old",
+        "exit": 0,
+        "signal": null,
+        "error": null,
+        "elapsedMs": 31699,
+        "phases": {
+          "layout": [
+            {
+              "label": "左右",
+              "waitMs": 751.5447079999999,
+              "attribute": "vertical",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            },
+            {
+              "label": "上下",
+              "waitMs": 759.2588329999999,
+              "attribute": "horizontal",
+              "transition": false,
+              "animations": 3,
+              "rect": {
+                "x": 182.5,
+                "y": 178.5,
+                "width": 998,
+                "height": 372
+              }
+            }
+          ],
+          "startupMs": 451.23825000000005,
+          "readingMs": 2879.991249999999,
+          "settingsMs": 5918.257708000001,
+          "weatherMs": 13582.630875000003,
+          "innerTotalMs": 31342.9895
+        }
+      }
+    ],
+    "decision": "Do not migrate this conditional-wait candidate to formal CI. Local wait segment shrinks, but full-contract cost is noisy and the target attribute is not a proven layout stability barrier. Preserve all existing formal waits and assertions.",
+    "observationLimits": [
+      "Both variants include one read-only layout/animation snapshot after each wait; getBoundingClientRect may cause layout. This is instrumented comparison, not uninstrumented CI timing.",
+      "Three baseline subtree animations were observed even after750ms; candidate sometimes10. This is an instantaneous signal, not proof of all animation completion or a product defect.",
+      "Warmup and all three pairs retained; paired total process times cannot isolate weather-stage variation from wait savings."
+    ],
+    "failedAttempts": [
+      {
+        "kind": "sandbox launch failure",
+        "result": "No valid browser measurement"
+      },
+      {
+        "kind": "input drift plus same-URL page reload",
+        "result": "Warmup baseline passed all six weather sections, then screenshot waited for missing canvas and timed out; pageerrors empty, canvas and owner empty. wet-glass source changed during run. Vite HMR is a plausible source of reload, not directly logged. Sample invalid; original drift-failure retained.",
+        "sha256": "2f54dfb849745fdc88a7584aa7110d87cb6fffdc2b4ef5dd7ae605d61591736b"
+      },
+      {
+        "kind": "premature retry interrupted",
+        "result": "Exit130 after controls; no new completed paired sample. Stopped for diagnosis."
+      },
+      {
+        "kind": "frozen followup",
+        "result": "Standalone weather integration passed before the one complete frozen attribution round."
+      }
+    ]
+  }
+}

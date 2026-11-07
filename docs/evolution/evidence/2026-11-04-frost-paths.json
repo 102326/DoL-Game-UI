@@ -1,0 +1,1656 @@
+{
+  "schema": 1,
+  "scope": "Controlled Chromium synchronous Canvas comparison; not game FPS, GPU, power or device validation",
+  "baseline": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+  "decision": "Only the actual production adaptive path is adopted; unconditional Path2D and trigonometry candidates are not adopted",
+  "limits": [
+    "Exact equality mainly benefits initially stable snow; exponential transition values often change every frame.",
+    "At most 144 deposits times 18 paths per material instance; peak native memory and multi-window device cost not measured.",
+    "Historical probe revisions have their recorded hashes; final script extends the same candidates and is not byte-identical to earlier harnesses.",
+    "First Chromium launch was blocked by the macOS sandbox before page execution; it is retained locally and not counted as a test pass.",
+    "Full raw proof records remain in ignored local artifacts; this export includes comparison aggregates and every timing sample."
+  ],
+  "runs": [
+    {
+      "status": "PASS",
+      "command": "node --experimental-strip-types scripts/research/frost-geometry-probe.mts",
+      "head": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+      "sources": {
+        "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+        "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+        "scripts/research/frost-geometry-probe.mts": "491c5740b3d23de63cf10bb4c6c463ed004f1f220a13ffc5054c54b8acb87faf"
+      },
+      "candidateHash": "a3148378d9a706c8040eda63d3297967260456bef6c5b080df9fe367027c78c0",
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "browser": "153.0.8010.12",
+      "notes": "60 consecutive draws amplify cost and do not represent normal frame frequency; timings measure synchronous JS/Canvas calls, not GPU completion or FPS.",
+      "rawReportSha256": "9c39e38e32eb6eba227d0144f9ec69f42b0ee1b6280babf0b83b86141e2131ef",
+      "pixelProof": {
+        "independentCases": 216,
+        "sequenceCases": 0,
+        "maxUnequalBytes": 0,
+        "maxDifference": 0,
+        "allSnapshotsEqual": true,
+        "pageErrors": []
+      },
+      "samplesIncludingWarmup": [
+        {
+          "pair": -2,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1,
+            0.800000011920929
+          ],
+          "draw60Ms": [
+            127.69999998807907,
+            126.59999999403954
+          ]
+        },
+        {
+          "pair": -1,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            0.699999988079071,
+            3.9000000059604645
+          ],
+          "draw60Ms": [
+            145,
+            124.5
+          ]
+        },
+        {
+          "pair": 0,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1,
+            1.2999999821186066
+          ],
+          "draw60Ms": [
+            120.40000000596046,
+            126.30000001192093
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.199999988079071,
+            1.300000011920929
+          ],
+          "draw60Ms": [
+            132.80000001192093,
+            144.5
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            7.299999982118607,
+            1.300000011920929
+          ],
+          "draw60Ms": [
+            114.40000000596046,
+            118.7999999821186
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.0999999940395355,
+            1
+          ],
+          "draw60Ms": [
+            118.09999999403954,
+            103.80000001192093
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.100000023841858,
+            1.199999988079071
+          ],
+          "draw60Ms": [
+            108.09999999403954,
+            114.2000000178814
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.300000011920929,
+            1
+          ],
+          "draw60Ms": [
+            122.69999998807907,
+            107.09999999403954
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.199999988079071,
+            1.5999999940395355
+          ],
+          "draw60Ms": [
+            113.80000001192093,
+            116.80000001192093
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.0999999940395355,
+            1
+          ],
+          "draw60Ms": [
+            129.90000000596046,
+            112.90000000596046
+          ]
+        }
+      ],
+      "mediansMs": {
+        "initializationMs": [
+          1.1500000059604645,
+          1.2499999850988388
+        ],
+        "draw60Ms": [
+          119.25,
+          115.50000001490116
+        ]
+      }
+    },
+    {
+      "status": "PASS",
+      "candidate": "path2d",
+      "command": "node --experimental-strip-types scripts/research/frost-geometry-probe.mts --path",
+      "head": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+      "sources": {
+        "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+        "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+        "scripts/research/frost-geometry-probe.mts": "4a446019a4ab10a539ca0a9014529b6855d5e77708fe660fcf3cecc49b8b60c1"
+      },
+      "candidateHash": "b8f332b77f5b10aba76764b0eca2e45d75f1bb41480020d056ece650d73969c1",
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "browser": "153.0.8010.12",
+      "notes": "60 consecutive draws amplify cost and do not represent normal frame frequency; timings measure synchronous JS/Canvas calls, not GPU completion or FPS.",
+      "rawReportSha256": "dc487d0827804c5ede337977c7477ee85a25c82ab81e50cb2dd5a6967a4b7984",
+      "pixelProof": {
+        "independentCases": 216,
+        "sequenceCases": 14,
+        "maxUnequalBytes": 0,
+        "maxDifference": 0,
+        "allSnapshotsEqual": true,
+        "pageErrors": []
+      },
+      "samplesIncludingWarmup": [
+        {
+          "pair": -2,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            0.9000000059604645,
+            0.7000000178813934
+          ],
+          "firstDrawMs": [
+            3.0999999940395355,
+            2.399999976158142
+          ],
+          "draw60Ms": [
+            120.09999999403954,
+            74.90000000596046
+          ],
+          "changing60Ms": [
+            127.09999999403954,
+            172.7000000178814
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": -1,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.4000000059604645,
+            0.9000000059604645
+          ],
+          "firstDrawMs": [
+            3.199999988079071,
+            2.5999999940395355
+          ],
+          "draw60Ms": [
+            130.09999999403954,
+            69.2999999821186
+          ],
+          "changing60Ms": [
+            127,
+            195.2000000178814
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": 0,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.7000000178813934,
+            1.600000023841858
+          ],
+          "firstDrawMs": [
+            1.899999976158142,
+            3
+          ],
+          "draw60Ms": [
+            110.10000002384186,
+            77.59999999403954
+          ],
+          "changing60Ms": [
+            119.59999999403954,
+            176.2999999821186
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.2000000178813934,
+            1
+          ],
+          "firstDrawMs": [
+            2.899999976158142,
+            2.7000000178813934
+          ],
+          "draw60Ms": [
+            125.60000002384186,
+            70.09999999403954
+          ],
+          "changing60Ms": [
+            126.19999998807907,
+            165.09999999403954
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            0.9000000059604645,
+            1.199999988079071
+          ],
+          "firstDrawMs": [
+            1.9000000059604645,
+            2.7000000178813934
+          ],
+          "draw60Ms": [
+            114.19999998807907,
+            77.39999997615814
+          ],
+          "changing60Ms": [
+            130.90000000596046,
+            171.10000002384186
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.5,
+            0.8999999761581421
+          ],
+          "firstDrawMs": [
+            3.0999999940395355,
+            2.4000000059604645
+          ],
+          "draw60Ms": [
+            115,
+            75.2000000178814
+          ],
+          "changing60Ms": [
+            131.40000000596046,
+            160.5
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1,
+            1.699999988079071
+          ],
+          "firstDrawMs": [
+            1.899999976158142,
+            3.5
+          ],
+          "draw60Ms": [
+            106.5,
+            79.09999999403954
+          ],
+          "changing60Ms": [
+            132.09999999403954,
+            170.10000002384186
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.199999988079071,
+            5.5
+          ],
+          "firstDrawMs": [
+            2.800000011920929,
+            2.5
+          ],
+          "draw60Ms": [
+            118.89999997615814,
+            73.39999997615814
+          ],
+          "changing60Ms": [
+            129.7000000178814,
+            168.60000002384186
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.2999999821186066,
+            5.199999988079071
+          ],
+          "firstDrawMs": [
+            2.600000023841858,
+            3.5999999940395355
+          ],
+          "draw60Ms": [
+            109,
+            115.5
+          ],
+          "changing60Ms": [
+            120,
+            253.80000001192093
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.199999988079071,
+            0.9000000059604645
+          ],
+          "firstDrawMs": [
+            2.800000011920929,
+            2.2999999821186066
+          ],
+          "draw60Ms": [
+            116.2999999821186,
+            71.30000001192093
+          ],
+          "changing60Ms": [
+            130.30000001192093,
+            168.40000000596046
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 8763,
+              "hits": 8460,
+              "paths": 157734
+            }
+          ]
+        }
+      ],
+      "mediansMs": {
+        "initializationMs": [
+          1.2000000029802322,
+          1.4000000059604645
+        ],
+        "firstDrawMs": [
+          2.7000000178813934,
+          2.7000000178813934
+        ],
+        "draw60Ms": [
+          114.59999999403954,
+          76.29999999701977
+        ],
+        "changing60Ms": [
+          130.00000001490116,
+          169.35000002384186
+        ]
+      }
+    },
+    {
+      "status": "PASS",
+      "candidate": "adaptive",
+      "command": "node --experimental-strip-types scripts/research/frost-geometry-probe.mts --adaptive",
+      "head": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+      "sources": {
+        "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+        "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+        "scripts/research/frost-geometry-probe.mts": "458a7b5d2b434b283e3773070e269c5816e7839d7e41a35bc3fa5c19bf211851"
+      },
+      "candidateHash": "b5f4fdcac61bcdd693a62d81cc07b245eb04ff2b455d0d5cadec57a57c9425ff",
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "browser": "153.0.8010.12",
+      "notes": "60 consecutive draws amplify cost and do not represent normal frame frequency; timings measure synchronous JS/Canvas calls, not GPU completion or FPS.",
+      "rawReportSha256": "d4a17f682c6e4f176630852c04d0eb48f49c23bd5d8af69a2dcdf8a693b8caa1",
+      "pixelProof": {
+        "independentCases": 216,
+        "sequenceCases": 42,
+        "maxUnequalBytes": 0,
+        "maxDifference": 0,
+        "allSnapshotsEqual": true,
+        "pageErrors": []
+      },
+      "samplesIncludingWarmup": [
+        {
+          "pair": -2,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.9000000059604645,
+            1
+          ],
+          "firstDrawMs": [
+            2.0999999940395355,
+            2.2999999821186066
+          ],
+          "draw60Ms": [
+            112.80000001192093,
+            80.90000000596046
+          ],
+          "changing60Ms": [
+            126.40000000596046,
+            140.09999999403954
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            143.40000000596046,
+            133.90000000596046
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": -1,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            5.9000000059604645,
+            0.9000000059604645
+          ],
+          "firstDrawMs": [
+            3.5,
+            2.7000000178813934
+          ],
+          "draw60Ms": [
+            121.59999999403954,
+            98.69999998807907
+          ],
+          "changing60Ms": [
+            139.69999998807907,
+            121.40000000596046
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            130.90000000596046,
+            111.5
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": 0,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.0999999940395355,
+            1.199999988079071
+          ],
+          "firstDrawMs": [
+            2.300000011920929,
+            3.199999988079071
+          ],
+          "draw60Ms": [
+            115.80000001192093,
+            82.10000002384186
+          ],
+          "changing60Ms": [
+            124.5,
+            129.69999998807907
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            122.60000002384186,
+            113.90000000596046
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.199999988079071,
+            1.699999988079071
+          ],
+          "firstDrawMs": [
+            3.100000023841858,
+            3.2000000178813934
+          ],
+          "draw60Ms": [
+            119.69999998807907,
+            72.39999997615814
+          ],
+          "changing60Ms": [
+            141.80000001192093,
+            132
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            136.5,
+            118.80000001192093
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1,
+            1.399999976158142
+          ],
+          "firstDrawMs": [
+            2.2999999821186066,
+            3.100000023841858
+          ],
+          "draw60Ms": [
+            117.59999999403954,
+            80.89999997615814
+          ],
+          "changing60Ms": [
+            134.90000000596046,
+            140.90000000596046
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            134.7000000178814,
+            117.40000000596046
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.300000011920929,
+            1
+          ],
+          "firstDrawMs": [
+            3.0999999940395355,
+            2.4000000059604645
+          ],
+          "draw60Ms": [
+            130.69999998807907,
+            76.90000000596046
+          ],
+          "changing60Ms": [
+            135.7000000178814,
+            119.7999999821186
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            135.19999998807907,
+            112.40000000596046
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.0999999940395355,
+            1.199999988079071
+          ],
+          "firstDrawMs": [
+            2.4000000059604645,
+            3.2000000178813934
+          ],
+          "draw60Ms": [
+            119.19999998807907,
+            83.90000000596046
+          ],
+          "changing60Ms": [
+            124.90000000596046,
+            139
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            131.90000000596046,
+            119.89999997615814
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.2000000178813934,
+            0.9000000059604645
+          ],
+          "firstDrawMs": [
+            3.5,
+            2.300000011920929
+          ],
+          "draw60Ms": [
+            120.19999998807907,
+            71.90000000596046
+          ],
+          "changing60Ms": [
+            131.59999999403954,
+            129.69999998807907
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            132.10000002384186,
+            117.19999998807907
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1,
+            1.4000000059604645
+          ],
+          "firstDrawMs": [
+            2.399999976158142,
+            3.0999999940395355
+          ],
+          "draw60Ms": [
+            115.10000002384186,
+            82.10000002384186
+          ],
+          "changing60Ms": [
+            131.19999998807907,
+            134.89999997615814
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            123.19999998807907,
+            112.10000002384186
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.2000000178813934,
+            7.5
+          ],
+          "firstDrawMs": [
+            3.0999999940395355,
+            2.5999999940395355
+          ],
+          "draw60Ms": [
+            124.19999998807907,
+            73
+          ],
+          "changing60Ms": [
+            134.30000001192093,
+            128.2999999821186
+          ],
+          "pathStats": [
+            null,
+            {
+              "builds": 573,
+              "hits": 11775,
+              "paths": 10314
+            }
+          ],
+          "mixed60Ms": [
+            132,
+            115.80000001192093
+          ],
+          "changingBuilds": [
+            0,
+            0
+          ]
+        }
+      ],
+      "mediansMs": {
+        "initializationMs": [
+          1.1499999910593033,
+          1.2999999821186066
+        ],
+        "firstDrawMs": [
+          2.75,
+          3.1000000089406967
+        ],
+        "draw60Ms": [
+          119.44999998807907,
+          78.8999999910593
+        ],
+        "changing60Ms": [
+          132.95000000298023,
+          130.84999999403954
+        ],
+        "mixed60Ms": [
+          132.05000001192093,
+          116.5
+        ]
+      }
+    },
+    {
+      "status": "PASS",
+      "candidate": "production",
+      "command": "node --experimental-strip-types scripts/research/frost-geometry-probe.mts --production",
+      "head": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+      "sources": {
+        "src/ui/weather/edge-frost.ts": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+        "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+        "scripts/research/frost-geometry-probe.mts": "2965983ce7182fc8d80b9b675e7560cad559a8cad970b3dac2aff753f58422f8"
+      },
+      "candidateHash": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "browser": "153.0.8010.12",
+      "notes": "60 consecutive draws amplify cost and do not represent normal frame frequency; timings measure synchronous JS/Canvas calls, not GPU completion or FPS.",
+      "baselineRef": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+      "baselineHash": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+      "noPath": false,
+      "rawReportSha256": "89afffbd94abbcf8d6d84d82db24b3a5c7e9816ac0e2c7b53b7afb10c8b6baa9",
+      "pixelProof": {
+        "independentCases": 216,
+        "sequenceCases": 42,
+        "maxUnequalBytes": 0,
+        "maxDifference": 0,
+        "allSnapshotsEqual": true,
+        "pageErrors": []
+      },
+      "samplesIncludingWarmup": [
+        {
+          "pair": -2,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.5,
+            1.199999988079071
+          ],
+          "firstDrawMs": [
+            2,
+            2.699999988079071
+          ],
+          "draw60Ms": [
+            109.69999998807907,
+            83.90000000596046
+          ],
+          "changing60Ms": [
+            126,
+            131
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            123.2000000178814,
+            116.7000000178814
+          ]
+        },
+        {
+          "pair": -1,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.4000000059604645,
+            0.9000000059604645
+          ],
+          "firstDrawMs": [
+            2.7999999821186066,
+            2.5
+          ],
+          "draw60Ms": [
+            129.7000000178814,
+            71.7999999821186
+          ],
+          "changing60Ms": [
+            137.19999998807907,
+            133.30000001192093
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            128.5,
+            118
+          ]
+        },
+        {
+          "pair": 0,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.0999999940395355,
+            1.199999988079071
+          ],
+          "firstDrawMs": [
+            1.800000011920929,
+            2.9000000059604645
+          ],
+          "draw60Ms": [
+            115.40000000596046,
+            82.59999999403954
+          ],
+          "changing60Ms": [
+            128.7999999821186,
+            127.09999999403954
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            122.90000000596046,
+            117.30000001192093
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            9,
+            1
+          ],
+          "firstDrawMs": [
+            3.300000011920929,
+            2.199999988079071
+          ],
+          "draw60Ms": [
+            114.5,
+            71.60000002384186
+          ],
+          "changing60Ms": [
+            130.2999999821186,
+            136.69999998807907
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            136.40000000596046,
+            111.09999999403954
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            4.800000011920929,
+            1.4000000059604645
+          ],
+          "firstDrawMs": [
+            2.4000000059604645,
+            2.800000011920929
+          ],
+          "draw60Ms": [
+            106.59999999403954,
+            79.7999999821186
+          ],
+          "changing60Ms": [
+            132.2999999821186,
+            135.30000001192093
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            134.40000000596046,
+            119.19999998807907
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.199999988079071,
+            0.9000000059604645
+          ],
+          "firstDrawMs": [
+            3.2000000178813934,
+            2.300000011920929
+          ],
+          "draw60Ms": [
+            123.19999998807907,
+            77.7999999821186
+          ],
+          "changing60Ms": [
+            131.5,
+            128.5
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            131.30000001192093,
+            109.80000001192093
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            0.8999999761581421,
+            1.199999988079071
+          ],
+          "firstDrawMs": [
+            2.2000000178813934,
+            4.300000011920929
+          ],
+          "draw60Ms": [
+            109.09999999403954,
+            93.19999998807907
+          ],
+          "changing60Ms": [
+            123.90000000596046,
+            152.90000000596046
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            121,
+            128.90000000596046
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.4000000059604645,
+            1.199999988079071
+          ],
+          "firstDrawMs": [
+            3.199999988079071,
+            2.4000000059604645
+          ],
+          "draw60Ms": [
+            128.09999999403954,
+            80.80000001192093
+          ],
+          "changing60Ms": [
+            129.59999999403954,
+            123.19999998807907
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            120,
+            116.90000000596046
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            0,
+            1
+          ],
+          "initializationMs": [
+            1.2000000178813934,
+            1.399999976158142
+          ],
+          "firstDrawMs": [
+            2.199999988079071,
+            2.9000000059604645
+          ],
+          "draw60Ms": [
+            113,
+            81.30000001192093
+          ],
+          "changing60Ms": [
+            129.5,
+            128.69999998807907
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            135.2000000178814,
+            112.80000001192093
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            1,
+            0
+          ],
+          "initializationMs": [
+            1.199999988079071,
+            1.0999999940395355
+          ],
+          "firstDrawMs": [
+            3.5,
+            2.5999999940395355
+          ],
+          "draw60Ms": [
+            118,
+            76.80000001192093
+          ],
+          "changing60Ms": [
+            134.60000002384186,
+            129.2999999821186
+          ],
+          "pathStats": [
+            null,
+            null
+          ],
+          "mixed60Ms": [
+            132.19999998807907,
+            120.80000001192093
+          ]
+        }
+      ],
+      "mediansMs": {
+        "initializationMs": [
+          1.2000000029802322,
+          1.199999988079071
+        ],
+        "firstDrawMs": [
+          2.7999999970197678,
+          2.7000000029802322
+        ],
+        "draw60Ms": [
+          114.95000000298023,
+          80.29999999701977
+        ],
+        "changing60Ms": [
+          129.94999998807907,
+          128.99999998509884
+        ],
+        "mixed60Ms": [
+          131.75,
+          117.1000000089407
+        ]
+      }
+    },
+    {
+      "status": "PASS",
+      "candidate": "production",
+      "command": "node --experimental-strip-types scripts/research/frost-geometry-probe.mts --production --no-path",
+      "head": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+      "sources": {
+        "src/ui/weather/edge-frost.ts": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+        "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+        "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+        "scripts/research/frost-geometry-probe.mts": "2965983ce7182fc8d80b9b675e7560cad559a8cad970b3dac2aff753f58422f8"
+      },
+      "candidateHash": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+      "node": "v26.13.0",
+      "platform": "darwin",
+      "browser": "153.0.8010.12",
+      "notes": "60 consecutive draws amplify cost and do not represent normal frame frequency; timings measure synchronous JS/Canvas calls, not GPU completion or FPS.",
+      "baselineRef": "ce25f59c3fd7d621c11c94b2dd8431676996f78a",
+      "baselineHash": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+      "noPath": true,
+      "rawReportSha256": "c34e6057635cce878b73647faf53eebf571df6660d877fbb76b7843d301e7ebd",
+      "pixelProof": {
+        "independentCases": 216,
+        "sequenceCases": 42,
+        "maxUnequalBytes": 0,
+        "maxDifference": 0,
+        "allSnapshotsEqual": true,
+        "pageErrors": []
+      },
+      "samplesIncludingWarmup": [],
+      "mediansMs": {}
+    }
+  ],
+  "nextCandidateObservation": {
+    "status": "PASS",
+    "head": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "scope": "Controlled clear-weather headerWeather/settingsWeather construction and disposal; synchronous owner construction/set/refresh timing, not whole UI opening, GPU, FPS or general benchmark.",
+    "browser": "153.0.8010.12",
+    "errors": [],
+    "rawReportSha256": "ec390f969ee1b6bb450fb0666219d153482217f671fdc586bdd5979ceaeafe0e",
+    "samples": [
+      {
+        "cycle": 0,
+        "ownerMs": 1.0999999940395355,
+        "setMs": 36.099999994039536,
+        "refreshMs": 0.5,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 1,
+        "ownerMs": 0,
+        "setMs": 7.300000011920929,
+        "refreshMs": 0.09999999403953552,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 2,
+        "ownerMs": 0,
+        "setMs": 7,
+        "refreshMs": 0.10000002384185791,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 3,
+        "ownerMs": 0.09999999403953552,
+        "setMs": 4.5999999940395355,
+        "refreshMs": 0,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 4,
+        "ownerMs": 0,
+        "setMs": 5.200000017881393,
+        "refreshMs": 0,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      }
+    ],
+    "decision": "Repeated clear-weather displacement-map construction confirmed; cost attributable to those maps and reuse/lazy-initialization tradeoffs unverified. No implementation.",
+    "inputsAfter": {
+      "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+      "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373",
+      "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+      "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+      "src/theme/settings-workspace.css": "034d998ffe285c1f0b1fb5b973134ed492cea2d440bb914a873f552268866746",
+      "src/ui/foreground-plane.css": "e7ae030b7e31c474bec615def0725ea31210c0cae283f094f9649dc4afb6b42d",
+      "src/ui/foreground-plane.ts": "0f61afd3d16a858d6cc5ab599b0fd0bd4cb15717dc3ce746f67b162711ccadf2",
+      "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+      "src/ui/owned-overlay.ts": "c97532ccf1c227d68d3b8bb5961c17e8c466c0aeb9519eb638cc581a248b10a2",
+      "src/ui/source-motion.ts": "e4330917e2dec9a2d6ece7b5782743c5974860765e96af61106d052d709be3e2",
+      "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+      "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+      "src/ui/weather/edge-frost.ts": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+      "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+      "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+      "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+      "src/ui/weather/settings.css": "508ba0477945d5ee915c3c479ad82cd3d334bbbeb46a019a05ce739636374bed",
+      "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+      "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+      "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+      "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+      "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+      "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+      "src/ui/weather/wet-glass.ts": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+      "tests/artifacts/weather-opening-observation/observe.mjs": "84258a376f420295fe3f0ca6f357fd4c3d7f938b10cb3de4483784b7a303e677"
+    },
+    "fixtureHash": "1079d5440a793991bca0690d3bd1da7592845af440bba27baf226d957edb7cae",
+    "fixture": {
+      "viewport": [
+        1000,
+        750
+      ],
+      "surface": [
+        800,
+        600
+      ],
+      "dpr": 1,
+      "reducedMotion": "reduce",
+      "inputCollection": "Vite module graph and listed CSS/lock files after observation; not a before/after identity assertion"
+    }
+  },
+  "openingAttributionProbe": {
+    "status": "PASS",
+    "head": "30ace2f916cd1ce8cd3a010ebb90da268cf243e4",
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "scope": "Controlled clear-weather headerWeather/settingsWeather construction and disposal; synchronous owner construction/set/refresh timing, not whole UI opening, GPU, FPS or general benchmark.",
+    "browser": "153.0.8010.12",
+    "originalWetHash": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+    "instrumentedWetHash": "a41cab778d8c617f327852bf0e5d0b2e8d6abd0eaa6fdf05c7335667799156c6",
+    "fixtureHash": "1079d5440a793991bca0690d3bd1da7592845af440bba27baf226d957edb7cae",
+    "inputs": {
+      "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+      "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373",
+      "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+      "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+      "src/theme/settings-workspace.css": "034d998ffe285c1f0b1fb5b973134ed492cea2d440bb914a873f552268866746",
+      "src/ui/foreground-plane.css": "e7ae030b7e31c474bec615def0725ea31210c0cae283f094f9649dc4afb6b42d",
+      "src/ui/foreground-plane.ts": "0f61afd3d16a858d6cc5ab599b0fd0bd4cb15717dc3ce746f67b162711ccadf2",
+      "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+      "src/ui/owned-overlay.ts": "c97532ccf1c227d68d3b8bb5961c17e8c466c0aeb9519eb638cc581a248b10a2",
+      "src/ui/source-motion.ts": "e4330917e2dec9a2d6ece7b5782743c5974860765e96af61106d052d709be3e2",
+      "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+      "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+      "src/ui/weather/edge-frost.ts": "f5e89f7098437e5848733062a524baf2a062ffed73d9523b0aeb5b76523c2925",
+      "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+      "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+      "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+      "src/ui/weather/settings.css": "508ba0477945d5ee915c3c479ad82cd3d334bbbeb46a019a05ce739636374bed",
+      "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+      "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+      "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+      "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+      "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+      "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+      "src/ui/weather/wet-glass.ts": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+      "tests/artifacts/weather-opening-observation/map-timing.mjs": "cdae8ae8ff5724bbb6c35a916c737c3eed4960bd947099cdc381cf400278d45d"
+    },
+    "errors": [],
+    "rawReportSha256": "0b1223e2d448b2c494da7862dcf210a20c33a42513888aa09f086a883673512b",
+    "samples": [
+      {
+        "cycle": 0,
+        "ownerMs": 1.5,
+        "setMs": 26.799999982118607,
+        "refreshMs": 0.5,
+        "mapMs": 12.199999988079071,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 1,
+        "ownerMs": 0,
+        "setMs": 7.100000023841858,
+        "refreshMs": 0.09999999403953552,
+        "mapMs": 4.5,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 2,
+        "ownerMs": 0.10000002384185791,
+        "setMs": 6.199999988079071,
+        "refreshMs": 0.09999999403953552,
+        "mapMs": 3.699999988079071,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 3,
+        "ownerMs": 0.09999999403953552,
+        "setMs": 3.9000000059604645,
+        "refreshMs": 0,
+        "mapMs": 1.2000000178813934,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      },
+      {
+        "cycle": 4,
+        "ownerMs": 0,
+        "setMs": 4.300000011920929,
+        "refreshMs": 0,
+        "mapMs": 1.4000000059604645,
+        "delta": {
+          "image96": 3,
+          "url96": 3
+        },
+        "after": {
+          "activePolls": 0,
+          "surfaces": []
+        },
+        "weather": "clear",
+        "ownedNodes": 0
+      }
+    ],
+    "limits": "Temporary Vite instrumentation around the whole 3-map/filter construction block, including image computation, encoding and filter DOM. Single diagnostic run; not an optimization comparison with the earlier run. reducedMotion reduce; inputs collected after run."
+  }
+}

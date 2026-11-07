@@ -40,7 +40,7 @@ onMounted(()=>{
 onBeforeUnmount(()=>{revision++;scope.dispose()});
 </script>
 <template>
-  <div ref="focus" class="dmt-orbit-focus" data-sf-orbit-owner="1" aria-hidden="true" :style="{left:bounds.left+'px',top:bounds.top+'px',width:bounds.width+'px',height:bounds.height+'px',borderRadius:bounds.radius+'px',visibility:bounds.width?'visible':'hidden'}">
+  <div ref="focus" class="dmt-orbit-focus" data-sf-orbit-owner="1" :data-sf-orbit-empty="bounds.width ? undefined : '1'" aria-hidden="true" :style="{left:bounds.left+'px',top:bounds.top+'px',width:bounds.width+'px',height:bounds.height+'px',borderRadius:bounds.radius+'px',visibility:bounds.width?'visible':'hidden'}">
    <svg :viewBox="`0 0 ${bounds.width} ${bounds.height}`" preserveAspectRatio="none"><rect class="dmt-orbit-base" x="1" y="1" :width="Math.max(0,bounds.width-2)" :height="Math.max(0,bounds.height-2)" :rx="bounds.radius" pathLength="100"/><rect class="dmt-orbit-flow" x="1" y="1" :width="Math.max(0,bounds.width-2)" :height="Math.max(0,bounds.height-2)" :rx="bounds.radius" pathLength="100"/><rect class="dmt-orbit-tail" x="1" y="1" :width="Math.max(0,bounds.width-2)" :height="Math.max(0,bounds.height-2)" :rx="bounds.radius" pathLength="100"/></svg>
   </div>
 </template>

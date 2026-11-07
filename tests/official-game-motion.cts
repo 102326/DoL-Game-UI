@@ -33,6 +33,52 @@ const {chromium}=playwright;
  const bundle=await build({configFile:false,logLevel:'error',plugins:[{name:'motion-test-entry',resolveId(id){if(id===entry)return resolved},load(id){if(process.argv.includes('--bad-backdrop-cleanup')&&id===path.resolve('framework/official-ui/motion.ts'))return fs.readFileSync(id,'utf8').replace('if(!active&&plane===old)','if(plane===old)');if(id===resolved)return "import {startOfficialMotion} from '/framework/official-ui/motion.ts';import {setMasterEnabled} from '/src/runtime/master.ts';import {registerWorkspaceSurface} from '/src/ui/workspace-surface.ts';window.registerTestSurface=registerWorkspaceSurface;window.startMotion=startOfficialMotion;window.setMaster=setMasterEnabled"}},vue()],build:{write:false,rollupOptions:{input:entry,output:{format:'iife',inlineDynamicImports:true}}}});
  if(!('output' in bundle))throw Error('Expected one Vite output');const chunk=bundle.output.find(n=>n.type==='chunk');if(!chunk||chunk.type!=='chunk')throw Error('Missing motion bundle');await p.addScriptTag({content:chunk.code});await p.evaluate(()=>{if(typeof startMotion!=='function'||typeof setMaster!=='function')throw Error('Missing motion exports')});
  await p.evaluate(()=>{Object.assign(window,{scene:()=>{},jQuery:()=>({on(_name:string,fn:()=>void){scene=fn},off(){scene=()=>{}}}),calls:{open:0,native:0,story:0,foreign:0}});must(document.querySelector<HTMLElement>('#overlayButtons button')).onclick=()=>{calls.open++;const n=must(document.querySelector<HTMLElement>('#customOverlay'));n.className='dgc-overlay';n.dataset.overlay='characteristics'};must(document.querySelector<HTMLElement>('.sf-motion-petal')).onclick=()=>must(document.querySelector<HTMLElement>('#overlayButtons button')).click();must(document.querySelector<HTMLElement>('#native-control')).onclick=()=>calls.native++;must(document.querySelector<HTMLElement>('[data-passage=Wardrobe]')).onclick=()=>calls.story++;must(document.querySelector<HTMLElement>('#foreign')).onclick=()=>calls.foreign++;const stop=startMotion();if(typeof stop!=='function')throw Error('Invalid motion disposer');Object.assign(window,{stopMotion:stop,original:must(document.querySelector<HTMLElement>('[data-passage=Wardrobe]'))})});
+ // Separate MutationObserver deliveries in one frame must share one overlay reconciliation.
+ const coalescedReads=await p.evaluate(async()=>{
+  await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+  const overlay=document.getElementById('customOverlay')!;
+  const lookup=document.getElementById;let reads=0;
+  document.getElementById=function(id:string){if(id==='customOverlay')reads++;return lookup.call(this,id)};
+  try{
+   for(let i=0;i<8;i++){overlay.dataset.dgpPanel=String(i);await Promise.resolve()}
+   await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+   return reads;
+  }finally{document.getElementById=lookup;delete overlay.dataset.dgpPanel}
+ });
+ console.log('Overlay reconciliation reads for 8 same-frame mutation deliveries:',coalescedReads);
+ assert.equal(coalescedReads,1,'same-frame overlay mutations coalesce into one current-state reconciliation');
+ const rescheduledReads=await p.evaluate(async()=>{
+  await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+  const overlay=document.getElementById('customOverlay')!,lookup=document.getElementById;let reads=0;
+  document.getElementById=function(id:string){if(id==='customOverlay')reads++;return lookup.call(this,id)};
+  try{
+   overlay.dataset.dgpPanel='cancelled';await Promise.resolve();
+   scene(); // Cancels the queued observer frame; scene itself settles after two frames.
+   overlay.dataset.dgpPanel='latest';await Promise.resolve();
+   await new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
+   const firstFrame=reads;
+   await new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
+   return{firstFrame,total:reads};
+  }finally{document.getElementById=lookup;delete overlay.dataset.dgpPanel}
+ });
+ assert.deepEqual(rescheduledReads,{firstFrame:1,total:2},'cancelled observer work can be scheduled again; scene retains its two-frame settle');
+ const redundantFeedback=await p.evaluate(()=>{
+  const first=document.querySelector<HTMLElement>('.sf-motion-petal')!,second=document.createElement('button');
+  second.className='sf-motion-petal';second.textContent='Feedback probe';second.style.cssText='position:fixed;left:400px;top:400px';first.parentElement!.append(second);
+  const animate=Element.prototype.animate,computed=window.getComputedStyle;let ghosts=0,reads=0;
+  Element.prototype.animate=function(frames,options){if(this.classList.contains('kw-moving-focus'))ghosts++;return animate.call(this,frames,options)};
+  window.getComputedStyle=function(node,pseudo){if(node===second)reads++;return computed.call(this,node,pseudo)};
+  try{
+   first.dispatchEvent(new PointerEvent('pointerover',{bubbles:true}));
+   first.dispatchEvent(new FocusEvent('focusin',{bubbles:true}));const same=ghosts;
+   second.dispatchEvent(new PointerEvent('pointerover',{bubbles:true}));const moved=ghosts;
+   second.dispatchEvent(new FocusEvent('focusin',{bubbles:true}));const repeated=ghosts;
+   document.documentElement.removeAttribute('data-dgu-visualMotion');second.click();
+   return{same,moved,repeated,disabledStyleReads:reads};
+  }finally{Element.prototype.animate=animate;window.getComputedStyle=computed;second.remove();document.documentElement.setAttribute('data-dgu-visualMotion','');scene()}
+ });
+ console.log('Redundant feedback probe:',redundantFeedback);
+ assert.deepEqual(redundantFeedback,{same:0,moved:1,repeated:1,disabledStyleReads:0},'same-target focus and disabled feedback must not create redundant animation/style work');
  const wardrobeEntry=await p.evaluate(async()=>{const node=document.createElement('section'),header=document.createElement('header');node.className='dgw-shell';header.textContent='Wardrobe';node.append(header);document.body.append(node);const before=document.documentElement.hasAttribute('data-dgu-acrylic-adjustment');document.documentElement.setAttribute('data-dgu-acrylic-adjustment','');let starts=0;const animate=node.animate;node.animate=function(frames,options){starts++;return animate.call(this,frames,options)};const release=registerTestSurface(node,header,'wardrobe');try{await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));return{starts,visible:!!node.getClientRects().length,transform:getComputedStyle(node).transform}}finally{release();node.remove();if(!before)document.documentElement.removeAttribute('data-dgu-acrylic-adjustment')}});assert.equal(wardrobeEntry.starts,0,'registered wardrobe surfaces enter without loading/fade effects');assert.equal(wardrobeEntry.visible,true);assert.equal(wardrobeEntry.transform,'none');
  await p.evaluate(()=>{document.body.insertAdjacentHTML('beforeend','<div id="dol-midnight-controls" style="position:fixed;top:5px;right:5px"><button id="press-control">State control</button><button id="disabled-control" disabled>Disabled</button></div>');Object.assign(window,{presses:0});must(document.querySelector<HTMLElement>('#press-control')).onclick=()=>presses++});
  const pressBox=await p.locator('#press-control').boundingBox();if(!pressBox)throw Error('Missing press box');await p.mouse.move(pressBox.x+10,pressBox.y+10);await p.mouse.down();assert.notEqual(await p.locator('#press-control').getAttribute('data-kw-press'),null);assert.equal(await p.evaluate(()=>presses),0,'press feedback never dispatches an action');await p.mouse.up();assert.equal(await p.locator('#press-control').getAttribute('data-kw-press'),null);assert.equal(await p.evaluate(()=>presses),1);

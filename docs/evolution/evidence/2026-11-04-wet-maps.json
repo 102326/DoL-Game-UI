@@ -1,0 +1,1004 @@
+{
+  "schema": 1,
+  "task": "E42-PERF-02 / fixed wet-glass normal maps",
+  "baselineRef": "cfd03500470b5e110d6941c8fa85c86c75e70ad2",
+  "headAtMeasurement": "cfd03500470b5e110d6941c8fa85c86c75e70ad2",
+  "baselineSourceSha256": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+  "measuredCandidateSha256": "ecce59a6f0e1eeebf1875fdf60d766cbd4d48807dd5d4942c92d952879255e88",
+  "finalCandidateSha256": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "browser": "153.0.8010.12",
+    "browserOptions": {
+      "headless": true,
+      "viewport": {
+        "width": 640,
+        "height": 480
+      },
+      "deviceScaleFactor": 1,
+      "reducedMotion": "reduce"
+    }
+  },
+  "scope": "Synchronous construction/disposal of actual wetGlass in a controlled 600x440 surface; not total UI opening, GPU completion or FPS. Eight alternating fresh-page pairs, six constructions/page. Cold retained; no warmup exclusion. Instrumented counts included equally.",
+  "medians": {
+    "baseline": {
+      "coldMs": 6.699999988079071,
+      "repeatMs": 1.5
+    },
+    "candidate": {
+      "coldMs": 6.6500000059604645,
+      "repeatMs": 0.19999998807907104
+    }
+  },
+  "samples": [
+    {
+      "pair": 0,
+      "variant": "baseline",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 20.80000001192093,
+          "disposeMs": 0.5999999940395355,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 4.800000011920929,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 2,
+          "createMs": 4,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 3,
+          "createMs": 1.699999988079071,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 4,
+          "createMs": 1.5999999940395355,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 5,
+          "createMs": 1.5,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        }
+      ]
+    },
+    {
+      "pair": 0,
+      "variant": "candidate",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 8.299999982118607,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 0.29999998211860657,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 2,
+          "createMs": 0.20000001788139343,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 3,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 4,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 5,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        }
+      ]
+    },
+    {
+      "pair": 1,
+      "variant": "candidate",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 5.5,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 0.30000001192092896,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 2,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 3,
+          "createMs": 0.20000001788139343,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 4,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 5,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        }
+      ]
+    },
+    {
+      "pair": 1,
+      "variant": "baseline",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 6.300000011920929,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 3.9000000059604645,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 2,
+          "createMs": 1.800000011920929,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 3,
+          "createMs": 1.5,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 4,
+          "createMs": 1.2999999821186066,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 5,
+          "createMs": 1.2000000178813934,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "variant": "baseline",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 7.200000017881393,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 3.899999976158142,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 2,
+          "createMs": 1.5,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 3,
+          "createMs": 1.300000011920929,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 4,
+          "createMs": 1.5999999940395355,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 5,
+          "createMs": 1.2000000178813934,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "variant": "candidate",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 6.4000000059604645,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 0.4000000059604645,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 2,
+          "createMs": 0.30000001192092896,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 3,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 4,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 5,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0.09999999403953552,
+          "image96": 0,
+          "url96": 0
+        }
+      ]
+    },
+    {
+      "pair": 3,
+      "variant": "candidate",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 7.4000000059604645,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 0.4000000059604645,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 2,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 3,
+          "createMs": 0.10000002384185791,
+          "disposeMs": 0.09999999403953552,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 4,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 5,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        }
+      ]
+    },
+    {
+      "pair": 3,
+      "variant": "baseline",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 6.799999982118607,
+          "disposeMs": 0.10000002384185791,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 3.5,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 2,
+          "createMs": 1.5,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 3,
+          "createMs": 1.399999976158142,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 4,
+          "createMs": 1.300000011920929,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 5,
+          "createMs": 1,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        }
+      ]
+    },
+    {
+      "pair": 4,
+      "variant": "baseline",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 6.199999988079071,
+          "disposeMs": 0.10000002384185791,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 3.899999976158142,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 2,
+          "createMs": 1.5,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 3,
+          "createMs": 1.5,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 4,
+          "createMs": 1.4000000059604645,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 5,
+          "createMs": 1.2000000178813934,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        }
+      ]
+    },
+    {
+      "pair": 4,
+      "variant": "candidate",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 7.199999988079071,
+          "disposeMs": 0.10000002384185791,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0.09999999403953552,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 2,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 3,
+          "createMs": 0.20000001788139343,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 4,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0.09999999403953552,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 5,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0.10000002384185791,
+          "image96": 0,
+          "url96": 0
+        }
+      ]
+    },
+    {
+      "pair": 5,
+      "variant": "candidate",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 6.9000000059604645,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 0.4000000059604645,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 2,
+          "createMs": 0.20000001788139343,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 3,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 4,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 5,
+          "createMs": 0.10000002384185791,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        }
+      ]
+    },
+    {
+      "pair": 5,
+      "variant": "baseline",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 6.899999976158142,
+          "disposeMs": 0.20000001788139343,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 3.5,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 2,
+          "createMs": 1.4000000059604645,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 3,
+          "createMs": 1.5999999940395355,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 4,
+          "createMs": 1.2000000178813934,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 5,
+          "createMs": 1.2999999821186066,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        }
+      ]
+    },
+    {
+      "pair": 6,
+      "variant": "baseline",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 6.300000011920929,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 3.699999988079071,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 2,
+          "createMs": 1.800000011920929,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 3,
+          "createMs": 2.2999999821186066,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 4,
+          "createMs": 2,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 5,
+          "createMs": 1.2999999821186066,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        }
+      ]
+    },
+    {
+      "pair": 6,
+      "variant": "candidate",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 5.5999999940395355,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 0.30000001192092896,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 2,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0.09999999403953552,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 3,
+          "createMs": 0.10000002384185791,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 4,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 5,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        }
+      ]
+    },
+    {
+      "pair": 7,
+      "variant": "candidate",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 5.800000011920929,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0.09999999403953552,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 2,
+          "createMs": 0.10000002384185791,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 3,
+          "createMs": 0.09999999403953552,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 4,
+          "createMs": 0.19999998807907104,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        },
+        {
+          "cycle": 5,
+          "createMs": 0.10000002384185791,
+          "disposeMs": 0,
+          "image96": 0,
+          "url96": 0
+        }
+      ]
+    },
+    {
+      "pair": 7,
+      "variant": "baseline",
+      "cycles": [
+        {
+          "cycle": 0,
+          "createMs": 6.5999999940395355,
+          "disposeMs": 0.09999999403953552,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 1,
+          "createMs": 4,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 2,
+          "createMs": 1.4000000059604645,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 3,
+          "createMs": 1.4000000059604645,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 4,
+          "createMs": 1.300000011920929,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        },
+        {
+          "cycle": 5,
+          "createMs": 1.399999976158142,
+          "disposeMs": 0,
+          "image96": 3,
+          "url96": 3
+        }
+      ]
+    }
+  ],
+  "proof": {
+    "baseline": {
+      "urls": [
+        "a6020dadc306e48861c4098d2ddf8e9f79cad48d53f6a1f0b163329191bc59e7",
+        "a197b09dfec9cac4ebc49fba67d5cac109dba3f2540ff421c95dbf95ad7a1224",
+        "fc7def8cd0ea0d7995a6c94e44d6b291ec767ded33765d83a258d8884bf14df3",
+        "a6020dadc306e48861c4098d2ddf8e9f79cad48d53f6a1f0b163329191bc59e7",
+        "a197b09dfec9cac4ebc49fba67d5cac109dba3f2540ff421c95dbf95ad7a1224",
+        "fc7def8cd0ea0d7995a6c94e44d6b291ec767ded33765d83a258d8884bf14df3"
+      ],
+      "pixels": "47150bffecb1444c2ebf8ac66153f06d5ad6aff4b2f1763959c53ac6756e8bcb",
+      "reopenedPixels": "47150bffecb1444c2ebf8ac66153f06d5ad6aff4b2f1763959c53ac6756e8bcb",
+      "afterDispose": 0,
+      "retry": {
+        "error": "injected map failure",
+        "afterFailure": {
+          "image96": 2,
+          "url96": 1,
+          "failAt": 2,
+          "layers": 0
+        },
+        "afterRetry": {
+          "image96": 5,
+          "url96": 4,
+          "failAt": 2,
+          "layers": 1,
+          "filters": 3
+        },
+        "afterDispose": 0
+      },
+      "urlLengths": [
+        10106,
+        10094,
+        10102
+      ],
+      "rainSnapshotSha256": "5064a1b9c12f33fb83b3b7b4d28ce34c4b0405eb5fc73bec42e76f4fac9bd654",
+      "screenshotSha256": "70d38332d5243a5f84d0a3a19fbf1d401460305b8638f846a953304400e40324"
+    },
+    "candidate": {
+      "urls": [
+        "a6020dadc306e48861c4098d2ddf8e9f79cad48d53f6a1f0b163329191bc59e7",
+        "a197b09dfec9cac4ebc49fba67d5cac109dba3f2540ff421c95dbf95ad7a1224",
+        "fc7def8cd0ea0d7995a6c94e44d6b291ec767ded33765d83a258d8884bf14df3",
+        "a6020dadc306e48861c4098d2ddf8e9f79cad48d53f6a1f0b163329191bc59e7",
+        "a197b09dfec9cac4ebc49fba67d5cac109dba3f2540ff421c95dbf95ad7a1224",
+        "fc7def8cd0ea0d7995a6c94e44d6b291ec767ded33765d83a258d8884bf14df3"
+      ],
+      "pixels": "47150bffecb1444c2ebf8ac66153f06d5ad6aff4b2f1763959c53ac6756e8bcb",
+      "reopenedPixels": "47150bffecb1444c2ebf8ac66153f06d5ad6aff4b2f1763959c53ac6756e8bcb",
+      "afterDispose": 0,
+      "retry": {
+        "error": "injected map failure",
+        "afterFailure": {
+          "image96": 2,
+          "url96": 1,
+          "failAt": 2,
+          "layers": 0
+        },
+        "afterRetry": {
+          "image96": 5,
+          "url96": 4,
+          "failAt": 2,
+          "layers": 1,
+          "filters": 3
+        },
+        "afterDispose": 0
+      },
+      "urlLengths": [
+        10106,
+        10094,
+        10102
+      ],
+      "rainSnapshotSha256": "5064a1b9c12f33fb83b3b7b4d28ce34c4b0405eb5fc73bec42e76f4fac9bd654",
+      "screenshotSha256": "70d38332d5243a5f84d0a3a19fbf1d401460305b8638f846a953304400e40324"
+    }
+  },
+  "finalProofInputs": {
+    "src/ui/weather/wet-glass.ts": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee",
+    "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb",
+    "scripts/research/wet-map-probe.mts": "d095f3667526d9514c9fd05972310a4804a5f6149c8f10e05feaf248373c078c"
+  },
+  "finalProofGraphInputs": {
+    "src/theme/kw-weather-shower.svg": "2d66ed6d4e72ea9218292387dd44ddaffdf355d65f131aec4a5ce196d47e6c4a",
+    "src/ui/foreground-plane.css": "e7ae030b7e31c474bec615def0725ea31210c0cae283f094f9649dc4afb6b42d",
+    "src/ui/foreground-plane.ts": "0f61afd3d16a858d6cc5ab599b0fd0bd4cb15717dc3ce746f67b162711ccadf2",
+    "src/ui/navigation-geometry.ts": "c267624ddf41381f802ad8b6ae54470dc2fecd6ca8435cc05cd3ad5d8f0a03a4",
+    "src/ui/owned-overlay.ts": "c97532ccf1c227d68d3b8bb5961c17e8c466c0aeb9519eb638cc581a248b10a2",
+    "src/ui/visual-scope.ts": "97d31555771c8c0ecaaa6d5999cfcbf94d7c87ff456b804c1a00ca1acf08342d",
+    "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/shower-force.svg": "8f8ed8653243308a74e0e8961866a7d9e2616c1626de28d1b8c3bac96a2eca7b",
+    "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+    "src/ui/weather/wet-glass.css": "ccfa1b0cf03a187d4ad68ecb5f40633179ee564aa7cfd562d99937a9846dc0c2",
+    "src/ui/weather/wet-glass.ts": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee"
+  },
+  "fixtureSha256": "b0ab378bffdf35529cce2072277dca5a3c0ff2367d7461084f31a1ad100059ef",
+  "identityFollowup": {
+    "originalMeasurement": "tests/artifacts/wet-map-probe/1793793316198/result.json",
+    "proofOnly": "tests/artifacts/wet-map-probe/1793793502495/result.json",
+    "originalSampleScriptHash": "93c3e6f3acf63c44d6452925f1270746d93e405f55551a6f9661b5fcfe7dc22d",
+    "finalScriptHash": "d095f3667526d9514c9fd05972310a4804a5f6149c8f10e05feaf248373c078c",
+    "sampleSourceHash": "ecce59a6f0e1eeebf1875fdf60d766cbd4d48807dd5d4942c92d952879255e88",
+    "reconstructedSampleSourceHash": "ecce59a6f0e1eeebf1875fdf60d766cbd4d48807dd5d4942c92d952879255e88",
+    "finalSourceHash": "6d000d35909b57993a07deb553e6c9a398a36824434352d910bb85db214087ee",
+    "esbuildJsEqual": true,
+    "esbuildJsHash": "d1072816843b5e14ba982424161287239777f948734abcc4cd701819a27854cd",
+    "originalIdentityLimit": "Only production source, lockfile and probe script checked before and after; module graph recorded at end only.",
+    "proofGraphInputs": 14,
+    "urlLengths": [
+      10106,
+      10094,
+      10102
+    ]
+  },
+  "limitations": [
+    "Initial timing run checked source/lock/probe before-after only, other graph inputs recorded at end. Later proof validates full 14 local module load/end hashes; does not retroactively upgrade initial timing identity.",
+    "Only production change after timing was TypeScript non-null assertion; esbuild output byte equality checked.",
+    "Three cached data URLs total 30302 ASCII characters. Engine string/decoded image memory and GPU cost not measured.",
+    "Cache is per module lifetime; first construction still builds three maps. Per-window SVG filters/IDs/DOM remain owned and disposed. No delayed first-rain preparation.",
+    "No Android/WebView or actual game performance claim."
+  ],
+  "localRegression": {
+    "current": "PASS, 9 existing+extended named cases",
+    "oldBaseline": "Expected FAIL: second owner must not re-encode fixed maps; actual8 expected5",
+    "cases": [
+      "second encoding failure retries complete map set",
+      "clear-to-first-rain immediate drops",
+      "two owners have unique live filters",
+      "disposal and reopening retain only immutable map strings"
+    ]
+  },
+  "remoteIntegration": {
+    "runs": [
+      {
+        "databaseId": 41826568142,
+        "headSha": "971e58f93e74d587e101573add430673d4d21536",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-11-04T12:07:34Z",
+        "updatedAt": "2026-11-04T12:23:18Z",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41826568142",
+        "profile": "standard",
+        "jobs": [
+          {
+            "name": "validate",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:07:38Z",
+            "completedAt": "2026-11-04T12:22:51Z"
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:22:54Z",
+            "completedAt": "2026-11-04T12:23:12Z"
+          },
+          {
+            "name": "moody-gate",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:23:14Z",
+            "completedAt": "2026-11-04T12:23:17Z"
+          }
+        ]
+      },
+      {
+        "databaseId": 41826583098,
+        "headSha": "971e58f93e74d587e101573add430673d4d21536",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-11-04T12:07:40Z",
+        "updatedAt": "2026-11-04T12:18:57Z",
+        "url": "https://github.com/102326/DoL-Game-UI/actions/runs/41826583098",
+        "profile": "research",
+        "jobs": [
+          {
+            "name": "prototype",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:07:44Z",
+            "completedAt": "2026-11-04T12:18:18Z"
+          },
+          {
+            "name": "evidence-verify",
+            "conclusion": "success",
+            "startedAt": "2026-11-04T12:18:21Z",
+            "completedAt": "2026-11-04T12:18:56Z"
+          }
+        ]
+      }
+    ],
+    "newRegressionObserved": "PASS fixed glass maps reuse pixels with independent owners and atomic retry; PASS weather-dom-writes.cjs (1647ms, exit=0, signal=null)",
+    "batchRuns": 2,
+    "remoteCorrectionRounds": 0,
+    "standardDispatchToConclusionSeconds": 944,
+    "verification": "Both workflows completed independent evidence verification; standard final moody-gate success. Local full artifact download/recompute not repeated.",
+    "limits": "These are integration timings, not controlled CI speed comparison. Research probes ran locally, not as new required CI entries."
+  }
+}

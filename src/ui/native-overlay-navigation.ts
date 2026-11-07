@@ -8,19 +8,23 @@ import {navigationScrollTop} from './navigation-geometry';
 import {navigationHeading,flashNavigationHeading} from './navigation-feedback';
 import {navigationMount} from './navigation-mount';
 
-type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:readonly (readonly [string,string])[];component:Component};
+type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:readonly (readonly [string,string])[];component:Component;presentation?:(shell:HTMLElement,core:HTMLElement)=>{refresh():void;dispose():void}};
 /** Internal adapter for this reviewed native family; never owns/rebuilds native content. */
 export function nativeOverlayNavigation(root:Window,options:Options,framework?:{host:Host;owner:Participant}){
  const key=`DoLGameUI.${options.kind}.enabled`,state=reactive({sections:[] as {id:string;label:string}[]}),motion=sourceMotion();
  const scope=visualScope();scope.own(()=>motion.dispose());let enabled=true,failed=false,generation=0,intent=0;
  let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,hadClass=false,decorated:HTMLElement|null=null;
+ let presentation:ReturnType<NonNullable<Options['presentation']>>|undefined;
  const life=framework?navigationMount(framework.owner,options.claimKey,release):undefined;
  const counts={mounts:0,scans:0,failures:0};
  try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference remains available. */}
  function release(){
+  const previousPresentation=presentation;presentation=undefined;
+  try{previousPresentation?.dispose()}finally{
   generation++;intent++;motion.cancel();content?.scrollTo({top:content.scrollTop,behavior:'instant'});
   unmountUI(app);app=undefined;life?.release();host?.remove();host=null;
   if(decorated&&!hadClass)decorated.classList.remove(options.prefix+'-overlay');decorated=null;content=null;
+  }
  }
  function recover(){failed=true;counts.failures++;release();document.dispatchEvent(new Event(`dol-ui-${options.kind}-change`))}
  function go(id:string){
@@ -59,8 +63,9 @@ export function nativeOverlayNavigation(root:Window,options:Options,framework?:{
      if(scope.active()&&!life.exited()&&!failed)recover();return;
     }
    }else setup(host);
-   decorated=overlay;overlay.classList.add(options.prefix+'-overlay');
+   decorated=overlay;overlay.classList.add(options.prefix+'-overlay');presentation=options.presentation?.(overlay,pane);
   }
+  presentation?.refresh();
   counts.scans++;
   const sections=options.groups.filter(([id])=>content!.querySelector(`#${id}`)).map(([id,label])=>({id,label}));
   if(JSON.stringify(state.sections)!==JSON.stringify(sections))state.sections.splice(0,state.sections.length,...sections);

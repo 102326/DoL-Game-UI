@@ -30,7 +30,7 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
  const server=await createServer({configFile:path.resolve('vite.golden-spin.config.ts'),plugins:baseline?[{name:'frozen-hub-input-baseline',enforce:'pre',load(id){if(id.replaceAll('\\','/').endsWith('/prototypes/golden-spin-b/hub-motion.ts'))return old}}]:[],server:{port:5184,strictPort:true}});await server.listen();
  const browser=await chromium.launch(process.platform==='win32'?{channel:'msedge',headless:true}:{headless:true});
  type PointerEvidence={before:{x:number;y:number;pointer:string;tab:number;hit:boolean};press:HubState;held:HubState;after:HubState;native:number;calls:string[];sameNode:boolean};
-  const evidence:{baseline:boolean;revision:string;checks:string[];errors:string[];pointer?:PointerEvidence;keyboard?:{before:HubState;held:HubState};reversal?:Awaited<ReturnType<typeof reverseHub>>;dock?:{before:HubState;native:number};failure?:string;state?:HubState|null}={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p:playwright.Page|undefined;
+  const evidence:{baseline:boolean;revision:string;checks:string[];errors:string[];opening?:{tool:number;utility:number;settled:number}[];pointer?:PointerEvidence;keyboard?:{before:HubState;held:HubState};reversal?:Awaited<ReturnType<typeof reverseHub>>;dock?:{before:HubState;native:number};failure?:string;state?:HubState|null}={baseline,revision:baseline?revision:'working tree',checks:[],errors:[]};let p:playwright.Page|undefined;
  const check=async(name:string,fn:()=>Promise<void>)=>{await runCase(name,fn);evidence.checks.push(name);console.log('PASS',name)};
  try{
   p=await browser.newPage({viewport:{width:1280,height:900},hasTouch:true});const page=p;page.on('pageerror',e=>evidence.errors.push(e.message));
@@ -40,6 +40,25 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
   const mid=()=>page.waitForFunction(()=>{const s=goldenSpinLab.controller.inspect();return s.moving&&s.q>.68&&s.q<.96});
   const keyboardTool=async()=>{await ball.focus();for(let i=0;i<10;i++){await page.keyboard.press('Shift+Tab');if(await tool.evaluate(n=>n===document.activeElement))return}throw Error('native keyboard traversal did not reach the tool')};
   await check('H3 visible moving tool accepts a real pointer once without moving beneath the press',async()=>{
+   evidence.opening=[];
+   for(let i=0;i<3;i++){
+    evidence.opening.push(await page.evaluate(async()=>{
+     const ball=document.querySelector<HTMLButtonElement>('.sf-motion-ball')!,tool=document.querySelector<HTMLButtonElement>('[data-motion-view$="interface-settings"]')!,utility=document.querySelector<HTMLButtonElement>('.sf-motion-utilities button')!;
+     const start=performance.now(),sample={tool:-1,utility:-1,settled:-1};ball.click();
+     await new Promise<void>((resolve,reject)=>{
+      const frame=()=>{const elapsed=performance.now()-start,s=goldenSpinLab.controller.inspect();
+       const ready=(node:HTMLElement)=>{const r=node.getBoundingClientRect();return !node.closest('[inert]')&&getComputedStyle(node).pointerEvents!=='none'&&node.tabIndex>=0&&node.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))};
+       if(sample.tool<0&&ready(tool))sample.tool=elapsed;
+       if(sample.utility<0&&ready(utility))sample.utility=elapsed;
+       if(s.phase==='open'){sample.settled=elapsed;resolve()}else if(elapsed>2000)reject(Error('Opening timing probe did not settle'));else requestAnimationFrame(frame);
+      };requestAnimationFrame(frame);
+     });return sample;
+    }));
+    await ball.press('Escape');await closed();
+   }
+   console.log('Instrumented opening readiness milliseconds:',JSON.stringify(evidence.opening));
+   // Diagnostic only: a busy main thread can expose readiness and settlement in the same sampled frame.
+
    await tool.evaluate(n=>{Object.assign(window,{originalTool:n,nativeToolClicks:0});n.addEventListener('click',()=>nativeToolClicks++)});
    await ball.click();await mid();
    const before=await tool.evaluate(n=>{const r=n.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2,pointer:getComputedStyle(n).pointerEvents,tab:n.tabIndex,hit:n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}});
@@ -70,12 +89,17 @@ const baseline=process.argv.includes('--baseline'),revision='5a656c602cdf5d9bf56
    const settled=await inspect();await page.waitForTimeout(120);assert.equal((await inspect()).sphere.draws,settled.sphere.draws);
   });
   await check('H3 H4 drag during opening closes safely, then dock and restore work during the next opening',async()=>{
-   await ball.click();await mid();const r=must(await ball.boundingBox());await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.down();await page.mouse.move(4,r.y+70,{steps:6});await page.mouse.up();await closed();
-   assert.ok(await ball.evaluate(n=>n.classList.contains('is-docked')));await ball.click();assert.ok(await ball.evaluate(n=>!n.classList.contains('is-docked')));
+   const storedBefore=await page.evaluate(()=>({free:localStorage.getItem('SoftWet.MotionHub.freePosition.v1'),legacy:localStorage.getItem('StoneFreeMotionHub.position.v1')}));
+   await ball.click();await mid();const r=must(await ball.boundingBox());await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.down();await page.mouse.move(300,450,{steps:6});
+   assert.ok(await ball.evaluate(n=>n.classList.contains('is-dragging')),'real drag interrupts the opening');await closed();assert.equal(await nav.getAttribute('inert'),'');
+   assert.deepEqual(await page.evaluate(()=>({free:localStorage.getItem('SoftWet.MotionHub.freePosition.v1'),legacy:localStorage.getItem('StoneFreeMotionHub.position.v1')})),storedBefore,'unfinished drag cannot persist');
+   await page.mouse.up();await closed();assert.equal(await ball.evaluate(n=>n.classList.contains('is-docked')),false,'official ordinary drop stays free');assert.equal(await ball.getAttribute('aria-expanded'),'false','release click cannot reopen the menu');
+   await page.waitForFunction(()=>{const b=document.querySelector('.sf-motion-ball')!.getBoundingClientRect();return Math.abs(b.x+b.width/2-300)<2&&Math.abs(b.y+b.height/2-450)<2});
+   const freeRaw=must(await page.evaluate(()=>localStorage.getItem('SoftWet.MotionHub.freePosition.v1'))),free:unknown=JSON.parse(freeRaw);assert.notEqual(freeRaw,storedBefore.free);assert.ok(free&&typeof free==='object'&&'version'in free&&free.version===1&&'docked'in free&&free.docked===false,'drop commits the versioned free position');assert.equal(await page.evaluate(()=>localStorage.getItem('StoneFreeMotionHub.position.v1')),storedBefore.legacy);
    // Arm before the click: driver latency can otherwise miss the short in-flight state.
    await page.evaluate(()=>{Object.assign(window,{dockOpeningSample:null,dockOpeningFrame:0,dockOpeningClicks:0});const sample=()=>{const before=goldenSpinLab.controller.inspect();if(before.moving&&before.target===1&&before.q>.9){const dock=[...document.querySelectorAll<HTMLButtonElement>('.sf-motion-utilities button')].find(n=>n.textContent?.trim()==='停靠侧边');if(!dock)throw Error('Missing native dock control');dock.addEventListener('click',()=>dockOpeningClicks++,{once:true});dockOpeningSample=before;dock.click()}else dockOpeningFrame=requestAnimationFrame(sample)};dockOpeningFrame=requestAnimationFrame(sample)});
    try{await ball.click();await page.waitForFunction(()=>dockOpeningSample);evidence.dock=await page.evaluate(()=>{if(!dockOpeningSample)throw Error('Missing dock opening sample');return{before:dockOpeningSample,native:dockOpeningClicks}});assert.ok(evidence.dock.before.moving&&evidence.dock.before.target===1&&evidence.dock.before.q>.9,'dock activation is captured during the actual opening');assert.equal(evidence.dock.native,1,'one native dock activation')}finally{await page.evaluate(()=>cancelAnimationFrame(dockOpeningFrame))}
-   await closed();assert.ok(await ball.evaluate(n=>n.classList.contains('is-docked')));await ball.click();
+   await closed();assert.ok(await ball.evaluate(n=>n.classList.contains('is-docked')));await ball.click();assert.equal(await ball.evaluate(n=>n.classList.contains('is-docked')),false,'explicit dock still restores');
   });
   await check('H4 narrow touch and zoom preserve targets; active reduced/disabled motion settles immediately',async()=>{
    await page.setViewportSize({width:390,height:844});await page.waitForTimeout(100);await ball.tap();await mid();const touchTarget=must(await tool.boundingBox()),prior=await page.evaluate(()=>nativeToolClicks);await page.touchscreen.tap(touchTarget.x+touchTarget.width/2,touchTarget.y+touchTarget.height/2);await closed();assert.equal(await page.evaluate(()=>nativeToolClicks),prior+1);await page.getByRole('button',{name:'返回工具',exact:true}).click();await open();const r=must(await nav.boundingBox());assert.ok(r.x>=0&&r.x+r.width<=390);await page.screenshot({path:path.join(out,'narrow.png')});await ball.press('Escape');await closed();

@@ -3,7 +3,7 @@ import {featherSnow} from './snow-material';
 type Box={x:number;y:number;width:number;height:number};
 type Safe=(box:Box,padding?:number)=>boolean;
 
-/** Settings-only frost glaze. R11's original feather study stays unchanged. */
+/** Shared owned-window frost glaze; the original feather layer stays unchanged. */
 export function frostedFeatherSnow(ctx:CanvasRenderingContext2D,safe:Safe){
  const feather=featherSnow(ctx,safe);
  let seed=0x107ac9;
@@ -13,6 +13,11 @@ export function frostedFeatherSnow(ctx:CanvasRenderingContext2D,safe:Safe){
   side:i%4,t:random(),depth:15+random()**2*29,span:24+random()*68,opacity:.18+random()*.2,
   grains:Array.from({length:18},()=>({x:random()**2,y:random(),size:.35+random()*1.1,angle:random()*Math.PI}))
  }));
+ // Cache local paths only after geometry repeats. Rebuilding Path2D on every
+ // changing weather frame costs more than direct drawing. Each deposit owns
+ // at most one entry; protection and the current canvas transform stay live.
+ const canCache=typeof Path2D==='function';
+ const cache=new WeakMap<typeof deposits[number],{snow:number;depth:number;span:number;grains?:{style:string;path:Path2D}[]}>();
  let edgeFrostBounds:Box[]=[];
 
  function draw(snow:number,time:number,width:number,height:number){
@@ -45,13 +50,27 @@ export function frostedFeatherSnow(ctx:CanvasRenderingContext2D,safe:Safe){
     ctx.fillStyle=glaze;ctx.fillRect(0,0,1,2);ctx.restore();
     // Tiny uneven facets connect the thin glaze to the existing fern crystals.
     ctx.lineWidth=.5;
-    for(const g of p.grains){
+    const entry=canCache?cache.get(p):undefined;
+    if(entry&&entry.snow===snow&&entry.depth===depth&&entry.span===span){
+     entry.grains??=p.grains.map(g=>{
+      const x=1+g.x*(depth-2),y=1+g.y*(span-2),r=g.size*(.4+.6*snow);
+      const alpha=snow*(1-g.x)*.46,style=`rgba(236,249,255,${alpha})`;
+      const dx=Math.cos(g.angle)*r,dy=Math.sin(g.angle)*r;
+      const path=new Path2D();path.moveTo(x-dx,y-dy);path.lineTo(x+dx,y+dy);
+      path.moveTo(x+dy*.65,y-dx*.65);path.lineTo(x-dy*.65,y+dx*.65);
+      return{style,path};
+     });
+     for(const g of entry.grains){ctx.strokeStyle=g.style;ctx.stroke(g.path)}
+    }else{
+     if(canCache)cache.set(p,{snow,depth,span});
+     for(const g of p.grains){
      const x=1+g.x*(depth-2),y=1+g.y*(span-2),r=g.size*(.4+.6*snow);
      const alpha=snow*(1-g.x)*.46;
      ctx.strokeStyle=`rgba(236,249,255,${alpha})`;
      const dx=Math.cos(g.angle)*r,dy=Math.sin(g.angle)*r;
      ctx.beginPath();ctx.moveTo(x-dx,y-dy);ctx.lineTo(x+dx,y+dy);
      ctx.moveTo(x+dy*.65,y-dx*.65);ctx.lineTo(x-dy*.65,y+dx*.65);ctx.stroke();
+     }
     }
     ctx.restore();
    }

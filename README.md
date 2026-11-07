@@ -1,18 +1,20 @@
-# Soft & Wet 4.1
+# Soft & Wet 4.2
 
 [![最新版本](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest) ![适配基线](https://img.shields.io/badge/DoL-0.5.12.13-blue)
 
-**快速流畅，华丽精致，感知舒服。**
+> 从[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)下载 Soft & Wet 4.2。
 
 Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景融入半透明玻璃，重新组织衣柜、服装店、角色信息与常用窗口。
 
-4.1 加入可自由调节的玻璃通透度、更细致的阅读设置和悬空排列的扇形工具菜单，同时简化换页、改善动态窗口的绘制开销，让界面更轻快。
+4.2 为设置、属性窗口和悬浮工具加入手势反馈，并减少部分重复的界面工作。
 
-[4.x文档](docs/README.md) · [下载 4.1](https://github.com/102326/DoL-Game-UI/releases/tag/v4.1.0) · [安装与升级](#安装与升级) · [动态预览](#画面与动态预览) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
+[4.x文档](docs/README.md) · [下载稳定版](https://github.com/102326/DoL-Game-UI/releases/latest) · [4.2 更新说明](docs/RELEASE_4.2.0.md) · [安装与升级](#安装与升级) · [反馈问题](https://github.com/102326/DoL-Game-UI/issues)
 
 > 普通玩家需要 **主 UI + Framework Host** 两个 ZIP。兼容包按自己安装的 Mod 选用，所有 `.mod.zip` 均无需解压。
 
-![Android 实机：Soft & Wet 4.1 界面设置](docs/media/softwet-4.1/android-settings.png)
+![Android 设置界面](assets/releases/4.2/android-settings.png)
+
+[观看 Windows 动态预览](https://raw.githubusercontent.com/102326/DoL-Game-UI/v4.2.0/assets/releases/4.2/soft-wet-4.2-windows.mp4) · [更多画面](docs/RELEASE_4.2.0.md#画面与动态预览)
 
 ## 核心体验
 
@@ -28,17 +30,19 @@ Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景�
 
 设置继续提供上下、左右两种布局，修改立即生效并自动保存。普通页面直接切换，设置分类只保留短促淡入；衣柜直接进入，减少等待。
 
+设置和属性窗口可从标题空白处拖动，玻璃外壳随手势产生轻微受力和回弹；按钮、输入框和正文滚动保留原有操作。
+
 ### 回旋驱动的 Floating Hub
 
 金属球体加速回旋，纹理、光照与残影带出工具菜单。**扇形模式的主按钮独立悬浮，停靠、重置与隐藏放在内圈**；网格模式保留整齐的面板布局。
 
-支持拖动、停靠、快捷工具与快速反向。新安装默认显示，已有隐藏偏好保留，可在界面设置中找回入口。
+拖动球体后可原地放下；持续顶住屏幕边缘蓄力，沿边移动调整方向，松手后球体带着短金色尾迹弹出并碰撞反弹。飞行中可以直接接住；停靠、快捷工具和找回入口继续可用，已有隐藏偏好保留。
 
 ### 玻璃随天气变化
 
 窗口响应 DoL 游戏内天气：雨珠与细雨、雪粒与霜羽、日照与云影，都成为玻璃上的环境反馈。血月、异世界及极端冷热也有各自的气氛，雨中血月保留普通雨滴。
 
-4.1 优化动态装饰与玻璃表面的绘制方式，保留天气的表现力。关闭动画或使用系统减少动态效果时，仍可正常操作。
+4.2 合并同一帧的连续拖动更新，减少重复天气状态写入，并复用稳定霜层路径和固定雨珠位移图。关闭动画或使用系统减少动态效果时，仍可正常操作。
 
 ### 衣柜、服装店与常用窗口
 
@@ -54,19 +58,6 @@ Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景�
 
 购买、穿戴、战斗结算与存档继续使用原游戏及对应 Mod 的规则。原版优化的叠穿项目可在衣柜中查看和管理。
 
-## 画面与动态预览
-
-[Android 实机动态预览](docs/media/softwet-4.1/android-preview.mp4)
-
-<details>
-<summary>更多画面：衣柜与商品详情</summary>
-
-![衣柜](docs/media/softwet-4.1/android-wardrobe.png)
-
-![服装店详情抽屉](docs/media/softwet-4.1/android-shop.png)
-
-</details>
-
 ## 安装与升级
 
 | 项目 | 要求 |
@@ -78,17 +69,17 @@ Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景�
 | 平台 | Windows 浏览器、Android WebView |
 
 1. 保留需要的存档和原版本安装包。
-2. 从[发布页](https://github.com/102326/DoL-Game-UI/releases/tag/v4.1.0)下载 **Framework Host** 与 **DoLGameUI**，导入 Loader，不要解压。
+2. 从[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)下载 **Framework Host** 与 **DoLGameUI**，导入 Loader，不要解压。
 3. 每个 Mod 只启用一个版本。Host 放在主 UI 前，兼容包放在目标 Mod 与 UI 后。
 4. 重启游戏，打开“界面设置”调整通透度、阅读与悬浮工具。
 
-已有显示偏好会继续保留。`StoneFreeHost` 是 Framework Host 的安装包名称。详细步骤见[安装、升级与回退](docs/INSTALL_4.1.md)。
+已有显示偏好会继续保留。`StoneFreeHost` 是 Framework Host 的安装包名称。4.2 的详细步骤见[安装、升级与回退](docs/INSTALL_4.2.md)。
 
 ## 可选兼容包
 
 | 包 | 用途 |
 | --- | --- |
-| ModHubSoftWet | 模组管理器、市场、帮助中心与工具浮层 |
+| ModHubSoftWet 1.0.4 | 模组管理器、市场、帮助中心与工具浮层；需要主 UI 4.2 或更新 |
 | MapleBirchSoftWet | 云存档页面 |
 | DolOptimizationSoftWet | 存档页面、日期显示与衣柜叠穿管理 |
 | CheatExtendedSoftWet | Cheat Extended 外观 |
@@ -96,13 +87,13 @@ Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景�
 | SmartPhoneSoftWet | 万能手机 Alpha 外观 |
 | LyraMouthCompat051213 | 指定 Lyra 环境的嘴部资源适配 |
 
-没有安装目标 Mod，就不需要对应兼容包。CE 原作者版与独立维护的 rebuild.30 只能启用一个；万能手机适配包用于 Alpha。具体版本与下载统一见[发布页](https://github.com/102326/DoL-Game-UI/releases/tag/v4.1.0)。
+没有安装目标 Mod，就不需要对应兼容包。CE 原作者版与独立维护的 rebuild.30 只能启用一个；万能手机适配包用于 Alpha。具体版本与下载统一见[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)。
 
 ## 设置、回退与反馈
 
 各页面可以独立切回原版，总开关会保留显示偏好。需要整包回退时，恢复保存的旧包与顺序并重启；无需清空存档或 App 数据。
 
-遇到显示或操作问题，请到 [GitHub Issues](https://github.com/102326/DoL-Game-UI/issues) 附上版本、设备、复现步骤和截图。开发资料见[UI 接入文档](docs/UI_RUNTIME.md)、[构建与 CI](docs/CI.md)和[验证记录](docs/evolution/EVO-4.1-CANDIDATE-2026-11-02.md)。
+遇到显示或操作问题，请到 [GitHub Issues](https://github.com/102326/DoL-Game-UI/issues) 附上版本、设备、复现步骤和截图。开发资料见[UI 接入文档](docs/UI_RUNTIME.md)、[构建与 CI](docs/CI.md)和[当前交接](docs/HANDOFF.md)。
 
 ## 许可与致谢
 

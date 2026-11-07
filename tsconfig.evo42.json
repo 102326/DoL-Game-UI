@@ -1,0 +1,4 @@
+{
+ "extends":"./tsconfig.json",
+ "include":["prototypes/evolution42/**/*.ts","prototypes/evolution42/**/*.vue"]
+}

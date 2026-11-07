@@ -1,0 +1,388 @@
+{
+  "scope": "Single controlled diagnostic capture; 3 seconds per scenario; CDP CPU sampling overhead included. Not FPS, GPU, real-game or physical-device acceptance. Source hashes cover listed inputs only. No before/after optimization comparison. Raw probe and full snapshots remain local ignored artifacts.",
+  "sourceHead": "37c334f12abe7ed16d0a59f44f220f5c88ba8270",
+  "node": "v26.13.0",
+  "browser": "153.0.8010.12",
+  "platform": "darwin",
+  "arch": "arm64",
+  "listedInputsStable": true,
+  "inputs": {
+    "framework/official-ui/weather.ts": "b0ea7d3989efb3cdfe3c8fe4c1dabd86dc82907f342bbb5f4ffd37f23dcd3373",
+    "src/ui/weather/surface.ts": "379eb93605d0dee6fe9d611cdc5bb6c1375d91690400269525ed02ec1ababac3",
+    "src/ui/weather/settings.ts": "1a08943166c78b22674de53795f7c2d37876cc6163df9f95b33fc7ded7252f0e",
+    "src/ui/weather/blood-moon.ts": "3c2da3b5428952e0088de8d103ff6297ee73b267e44b2ba0c2d63ebfc33497f6",
+    "src/ui/weather/edge-frost.ts": "c6be70c8bc7b24e86562f8ddab02648933a05d2a29669d2d3d9a32e1dc612dee",
+    "src/ui/weather/frost.ts": "2b8091de5986ca261d1b64e305d789f5d8ceee9ecc2e6f3ff515270af4530964",
+    "src/ui/weather/rain-model.ts": "e229e6a38d3c3ce96655f0d932d03ce21e2ad36f436e1b71410dfeb3fbc6d9b9",
+    "src/ui/weather/scattered-shower.ts": "8c4eaba3c65e27e6ec77e931ea56ecc8ec7cff3fe3cc4c5b5b1dd926ed40d903",
+    "src/ui/weather/snow-material.ts": "48ef3faa84ad3be2df24bdfc68904463c71035c52b6164bda49c144d6dc04fe0",
+    "src/ui/weather/special-atmosphere.ts": "0da5e16e71faec082078520a5be726e45b7447bf319f2c10c535883f02d4f24b",
+    "src/ui/weather/wet-glass.ts": "7e8f21cd9c4252166470df35c20d8eb94b6d85666cc78b912e4f4d0b1a5e85b7",
+    "src/ui/weather/settings.css": "508ba0477945d5ee915c3c479ad82cd3d334bbbeb46a019a05ce739636374bed",
+    "dist/framework/official-ui/style.css": "fa6bf0c6b89d21a91c69339484f8620f29df30fa36f4d72e4c055c9f32bb08fb",
+    "package-lock.json": "21d63786e7cd595ad7e2544e41b7ed09e98e66647532dabe1d955ec363be2aeb"
+  },
+  "localProbeSha256": "eb49bee8b20e200b1d0d8a63facda82d558da5c6d7d7036b5d90c635e58ff21d",
+  "scenarios": [
+    {
+      "scenario": "clear",
+      "viewport": {
+        "width": 1000,
+        "height": 750,
+        "dpr": 1
+      },
+      "surface": {
+        "width": 800,
+        "height": 600
+      },
+      "frameDelta": 0,
+      "readDelta": 6,
+      "activeFrames": 0,
+      "ownerPolls": 1,
+      "hiddenFramesStable": true,
+      "hiddenActiveFrames": 0,
+      "hiddenOwnerPolls": 0,
+      "disposedOwnedNodes": 0,
+      "metricsSeconds": {
+        "LayoutDuration": 0,
+        "RecalcStyleDuration": 0,
+        "ScriptDuration": 0.002466,
+        "TaskDuration": 0.043292
+      },
+      "cpuProfile": {
+        "samples": 1973,
+        "durationUs": 3039472,
+        "hotspots": [
+          {
+            "name": "(idle)",
+            "url": "",
+            "line": 0,
+            "samples": 1969
+          },
+          {
+            "name": "(program)",
+            "url": "",
+            "line": 0,
+            "samples": 2
+          },
+          {
+            "name": "querySelector",
+            "url": "",
+            "line": 0,
+            "samples": 1
+          },
+          {
+            "name": "getClientRects",
+            "url": "",
+            "line": 0,
+            "samples": 1
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "rain",
+      "viewport": {
+        "width": 1000,
+        "height": 750,
+        "dpr": 1
+      },
+      "surface": {
+        "width": 800,
+        "height": 600
+      },
+      "frameDelta": 184,
+      "readDelta": 6,
+      "activeFrames": 1,
+      "ownerPolls": 1,
+      "hiddenFramesStable": true,
+      "hiddenActiveFrames": 0,
+      "hiddenOwnerPolls": 0,
+      "disposedOwnedNodes": 0,
+      "metricsSeconds": {
+        "LayoutDuration": 0.016844,
+        "RecalcStyleDuration": 0.077647,
+        "ScriptDuration": 0.170452,
+        "TaskDuration": 0.445003
+      },
+      "cpuProfile": {
+        "samples": 2007,
+        "durationUs": 3032726,
+        "hotspots": [
+          {
+            "name": "(idle)",
+            "url": "",
+            "line": 0,
+            "samples": 1751
+          },
+          {
+            "name": "(program)",
+            "url": "",
+            "line": 0,
+            "samples": 168
+          },
+          {
+            "name": "draw",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 96,
+            "samples": 22
+          },
+          {
+            "name": "(anonymous)",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 230,
+            "samples": 19
+          },
+          {
+            "name": "(anonymous)",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 75,
+            "samples": 13
+          },
+          {
+            "name": "(garbage collector)",
+            "url": "",
+            "line": 0,
+            "samples": 5
+          },
+          {
+            "name": "step",
+            "url": "/src/ui/weather/rain-model.ts",
+            "line": 36,
+            "samples": 5
+          },
+          {
+            "name": "(anonymous)",
+            "url": "/src/ui/visual-scope.ts",
+            "line": 48,
+            "samples": 4
+          },
+          {
+            "name": "stroke",
+            "url": "",
+            "line": 0,
+            "samples": 3
+          },
+          {
+            "name": "(anonymous)",
+            "url": "/src/ui/weather/rain-model.ts",
+            "line": 119,
+            "samples": 2
+          },
+          {
+            "name": "(anonymous)",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 52,
+            "samples": 2
+          },
+          {
+            "name": "(anonymous)",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 94,
+            "samples": 2
+          },
+          {
+            "name": "(anonymous)",
+            "url": "/src/ui/weather/rain-model.ts",
+            "line": 139,
+            "samples": 2
+          },
+          {
+            "name": "valid",
+            "url": "/src/ui/weather/surface.ts",
+            "line": 19,
+            "samples": 1
+          },
+          {
+            "name": "requestAnimationFrame",
+            "url": "",
+            "line": 0,
+            "samples": 1
+          },
+          {
+            "name": "tick",
+            "url": "/src/ui/weather/surface.ts",
+            "line": 33,
+            "samples": 1
+          },
+          {
+            "name": "rainSafe",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 55,
+            "samples": 1
+          },
+          {
+            "name": "release",
+            "url": "/src/ui/visual-scope.ts",
+            "line": 17,
+            "samples": 1
+          },
+          {
+            "name": "safe",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 50,
+            "samples": 1
+          },
+          {
+            "name": "banks",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 81,
+            "samples": 1
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "snow",
+      "viewport": {
+        "width": 1000,
+        "height": 750,
+        "dpr": 1
+      },
+      "surface": {
+        "width": 800,
+        "height": 600
+      },
+      "frameDelta": 182,
+      "readDelta": 6,
+      "activeFrames": 1,
+      "ownerPolls": 1,
+      "hiddenFramesStable": true,
+      "hiddenActiveFrames": 0,
+      "hiddenOwnerPolls": 0,
+      "disposedOwnedNodes": 0,
+      "metricsSeconds": {
+        "LayoutDuration": 0,
+        "RecalcStyleDuration": 0,
+        "ScriptDuration": 0.411324,
+        "TaskDuration": 1.54385
+      },
+      "cpuProfile": {
+        "samples": 1996,
+        "durationUs": 3018754,
+        "hotspots": [
+          {
+            "name": "(idle)",
+            "url": "",
+            "line": 0,
+            "samples": 1021
+          },
+          {
+            "name": "(program)",
+            "url": "",
+            "line": 0,
+            "samples": 732
+          },
+          {
+            "name": "draw",
+            "url": "/src/ui/weather/edge-frost.ts",
+            "line": 20,
+            "samples": 114
+          },
+          {
+            "name": "stroke",
+            "url": "",
+            "line": 0,
+            "samples": 42
+          },
+          {
+            "name": "(garbage collector)",
+            "url": "",
+            "line": 0,
+            "samples": 13
+          },
+          {
+            "name": "moveTo",
+            "url": "",
+            "line": 0,
+            "samples": 10
+          },
+          {
+            "name": "draw",
+            "url": "/src/ui/weather/snow-material.ts",
+            "line": 18,
+            "samples": 9
+          },
+          {
+            "name": "fillRect",
+            "url": "",
+            "line": 0,
+            "samples": 6
+          },
+          {
+            "name": "draw",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 96,
+            "samples": 6
+          },
+          {
+            "name": "addColorStop",
+            "url": "",
+            "line": 0,
+            "samples": 6
+          },
+          {
+            "name": "lineTo",
+            "url": "",
+            "line": 0,
+            "samples": 6
+          },
+          {
+            "name": "(anonymous)",
+            "url": "/src/ui/weather/wet-glass.ts",
+            "line": 230,
+            "samples": 5
+          },
+          {
+            "name": "save",
+            "url": "",
+            "line": 0,
+            "samples": 3
+          },
+          {
+            "name": "clip",
+            "url": "",
+            "line": 0,
+            "samples": 3
+          },
+          {
+            "name": "createLinearGradient",
+            "url": "",
+            "line": 0,
+            "samples": 2
+          },
+          {
+            "name": "restore",
+            "url": "",
+            "line": 0,
+            "samples": 2
+          },
+          {
+            "name": "fillRect",
+            "url": "",
+            "line": 0,
+            "samples": 2
+          },
+          {
+            "name": "createRadialGradient",
+            "url": "",
+            "line": 0,
+            "samples": 2
+          },
+          {
+            "name": "createRadialGradient",
+            "url": "",
+            "line": 0,
+            "samples": 1
+          },
+          {
+            "name": "restore",
+            "url": "",
+            "line": 0,
+            "samples": 1
+          }
+        ]
+      }
+    }
+  ]
+}

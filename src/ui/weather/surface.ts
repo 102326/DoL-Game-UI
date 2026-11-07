@@ -9,6 +9,7 @@ export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement
  const context=canvas.getContext('2d');if(!context)throw Error('Canvas unavailable; static Acrylic remains usable');
  const scope=visualScope(),reduced=matchMedia('(prefers-reduced-motion: reduce)'),parent=canvas.parentElement!;
  let frame=false,stopPoll:(()=>void)|undefined,last=0,time=0,reads=0,width=0,height=0,dpr=1,frames=0,paused=false,paintMs=0;
+ let appliedSize:{width:number;height:number;dpr:number}|undefined;
  let target=read(),wet=0,snow=0,light=1,night=0,intensity=1,specialAmount=target.special&&target.special!=='none'?1:0,special:WeatherSpecial=target.special??'none';
  const material=makeMaterial(()=>request(true));scope.own(()=>material.dispose());
  const targets=()=>({wet:target.kind==='rain'||target.kind==='storm'?1:0,snow:target.kind==='snow'?1:0,intensity:climate?({light:.32,normal:.65,heavy:1,severe:1.5}[target.rain]):1,light:target.kind==='clear'?1:target.kind==='unknown'?0:.25,night:target.night?1:0});
@@ -26,7 +27,13 @@ export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement
  }
  function refresh(){if(!scope.active()||document.hidden)return;reads++;const next=read(),changed=JSON.stringify(next)!==JSON.stringify(target);target=next;if(changed)request()}
  function poll(){stopPoll?.();stopPoll=undefined;if(!scope.active()||document.hidden)return;refresh();stopPoll=scope.timeout(poll,500)}
- function resized(){if(!scope.active()||document.hidden)return;width=parent.clientWidth;height=parent.matches('.passage.dgp-overlay,[data-sf-workspace]')?Math.min(parent.clientHeight,window.innerHeight):parent.clientHeight;if(parent.matches('.passage.dgp-overlay,[data-sf-workspace]'))canvas.style.height=height+'px';dpr=devicePixelRatio||1;if(!valid()){cancel();last=0;return}canvas.width=Math.max(1,Math.round(width*dpr));canvas.height=Math.max(1,Math.round(height*dpr));context!.setTransform(dpr,0,0,dpr,0,0);draw();request(true)}
+ function resized(){if(!scope.active()||document.hidden)return;width=parent.clientWidth;height=parent.matches('.passage.dgp-overlay,[data-sf-workspace]')?Math.min(parent.clientHeight,window.innerHeight):parent.clientHeight;if(parent.matches('.passage.dgp-overlay,[data-sf-workspace]'))canvas.style.height=height+'px';dpr=devicePixelRatio||1;if(!valid()){cancel();last=0;return}const pixels={width:Math.max(1,Math.round(width*dpr)),height:Math.max(1,Math.round(height*dpr)),dpr};
+  // The material may crop its backing store to the header. Compare applied targets,
+  // not canvas.height, so unchanged layout notifications do not expand and recrop it.
+  if(!appliedSize||pixels.width!==appliedSize.width||pixels.height!==appliedSize.height||dpr!==appliedSize.dpr){
+   canvas.width=pixels.width;canvas.height=pixels.height;context!.setTransform(dpr,0,0,dpr,0,0);appliedSize=pixels;
+  }
+  draw();request(true)}
  function visibility(){if(!scope.active())return;if(document.hidden){cancel();stopPoll?.();stopPoll=undefined;last=0}else{if(!managedPoll)poll();else refresh();resized()}}
  function motionChanged(){if(!scope.active())return;cancel();last=0;request(true)}
  try{
