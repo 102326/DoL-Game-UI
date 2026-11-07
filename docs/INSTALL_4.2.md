@@ -22,6 +22,8 @@ DoL适配基线为0.5.12.13，ModLoader需2.100.0或更新，TweeReplacer需1.0.
 
 设置和属性窗口从标题空白处拖动，正文仍可滚动。系统减少动态效果及关闭动画时保留相同操作入口。
 
+使用ModHub时，同时更新ModHubSoftWet 1.0.4；该包的时间点还原窗口样式需要主UI 4.2或更新版本。其它兼容包按附件选装。
+
 兼容包用途见[可选兼容包](OPTIONAL_ADAPTERS.md)。Cheat Extended原作者版与独立维护的rebuild.30二选一；万能手机兼容包用于Alpha，Lyra嘴部资源包按指定游戏环境安装。
 
 ## 回退

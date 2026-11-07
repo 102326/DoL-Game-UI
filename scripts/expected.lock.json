@@ -671,8 +671,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "98d4b6afb68b5fc875196352e09c6f488ad25be7cc428871cc9b10e681bfcfc2",
-      "assertionSites": 307
+      "sourceSha256": "d9c923581adc93e3be19bc954e9adee743d87920a31ef4dfcd4736b61ef27916",
+      "assertionSites": 417
     },
     {
       "entry": "tests/attributes-material.cjs",
@@ -2598,7 +2598,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "sourceSha256": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
       "assertionSites": 47,
       "evidence": "checkpoints"
     },
@@ -2616,7 +2616,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "sourceSha256": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
       "assertionSites": 9,
       "evidence": "checkpoints"
     },
@@ -2646,7 +2646,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "sourceSha256": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
       "assertionSites": 51,
       "evidence": "checkpoints"
     },
@@ -2693,7 +2693,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9fcee68f7237d710360efe04b4edb0158b7549978a673b060191b41ae7a8cc2e",
+      "sourceSha256": "c42ebe4ce98fce58d0286baabdf84cf5f5927d354e249e954d534b3609c3d50d",
       "assertionSites": 42,
       "evidence": "checkpoints"
     },

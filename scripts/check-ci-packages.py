@@ -121,7 +121,8 @@ def adapter_policy(directory):
     mouth = directory == 'mouth-compat-051213'
     deps = [{'modName': target, 'version': requirement}]
     if not mouth:
-        deps.append({'modName': 'DoLGameUI', 'version': '>=3.0.2' if directory == 'smartphone-soft-wet' else '>=3.0.0'})
+        ui_requirement = {'modhub-soft-wet': '>=4.2.0', 'smartphone-soft-wet': '>=3.0.2'}.get(directory, '>=3.0.0')
+        deps.append({'modName': 'DoLGameUI', 'version': ui_requirement})
     deps.append({'modName': 'GameVersion', 'version': '=0.5.12.13'})
     if mouth:
         deps.append({'modName': 'maplebirch', 'version': '>=5.2.3 <6.0.0'})

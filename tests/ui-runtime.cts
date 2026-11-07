@@ -205,7 +205,7 @@ const browser=await chromium.launch(require('./browser-options.cjs'));try{
  await p.evaluate(()=>DoLGameUI.destroy());await settle(p);assert.equal(await p.locator('[data-dgu-adapter],[data-dgu-role]').count(),0);await inject();
  assert.equal(await p.evaluate(()=>MapleBirchSoftWet.getDiagnostics().status),'active','independent package rebinds to new Core');checkpoint('destroy-reinject');
  const peerAdapters=await p.evaluate(()=>DoLGameUI.ui.getAdapterDiagnostics().filter(d=>d.id!=='MapleBirchSoftWet').map(d=>d.id).sort());
- assert.deepEqual(peerAdapters,['ModHubSoftWet','ModHubSoftWetModal','ModHubSoftWetTools'],'ModHub owns management, tools and modal adapters');
+ assert.deepEqual(peerAdapters,['ModHubSoftWet','ModHubSoftWetModal','ModHubSoftWetRestore','ModHubSoftWetTools'],'ModHub owns management, tools, modal and restore adapters');
  await p.evaluate(()=>MapleBirchSoftWet.destroy());await settle(p);assert.equal(await p.locator('[data-dgu-adapter="MapleBirchSoftWet"]').count(),0);assert.deepEqual(await p.evaluate(()=>DoLGameUI.ui.getAdapterDiagnostics().map(d=>d.id).sort()),peerAdapters,'disposing MapleBirch removes only its adapter and preserves every peer');
  assert.equal(await p.evaluate(()=>JSON.stringify(V)===beforeV),true);checkpoint('peer-preservation');assert.deepEqual(errors,[]);await p.close();
  }
