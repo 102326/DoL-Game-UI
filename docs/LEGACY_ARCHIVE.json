@@ -1767,5 +1767,14 @@
     "actionsEnabled": false,
     "visibility": "private",
     "archived": true
-  }
+  },
+  "mainDeliveryBase": "c7d8bac67fd04d0a81e59cf4c49800a510a39a11",
+  "mainRemovedFileBytesMatchInventory": true,
+  "additionalOriginalsFromHistoricalTrees": [
+    {
+      "path": "component-lab/README.md",
+      "archiveRef": "history/local/main",
+      "blob": "8e6be5ad1bf94c0fea4ab921e6d9877da015e2ad"
+    }
+  ]
 }
