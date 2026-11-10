@@ -1,15 +1,15 @@
 import {gsap} from 'gsap';
 import {visualScope} from '../visual-scope';
-import {createSphere} from './sphere';
+import {createSphere,type HubAppearance} from './sphere';
 
 /** Shared visual adapter: MotionHub owns tool activation, native layout and logical open state. */
-export function sphereHub(root:HTMLElement) {
+export function sphereHub(root:HTMLElement,appearance:HubAppearance='metal') {
  const scope=visualScope();let dead=false;
  try{
  const ball=root.querySelector<HTMLButtonElement>('.sf-motion-ball')!;
  const orbit=root.querySelector<HTMLElement>('.sf-motion-orbit')!;
  const canvas=document.createElement('canvas');canvas.className='spin-hub-canvas';canvas.setAttribute('aria-hidden','true');ball.append(canvas);scope.own(()=>canvas.remove());
- const makeSphere=()=>{const visual=createSphere(canvas,phase=>{root.dataset.spinBall=phase});visual.configure({duration:.65});return visual};
+ const makeSphere=()=>{const visual=createSphere(canvas,phase=>{root.dataset.spinBall=phase},appearance);visual.configure({duration:.65});return visual};
  let sphere:ReturnType<typeof createSphere>;
  const media=matchMedia('(prefers-reduced-motion: reduce)');
  type Property={value:string;priority:string;written:string;writtenPriority:string};
@@ -115,11 +115,11 @@ export function sphereHub(root:HTMLElement) {
  const focus=()=>{holdInput();schedule()};
  const leave=()=>settleMotion();
  const flags=new MutationObserver(preference);
- scope.own(()=>{for(const node of [...saved.keys()])restore(node);for(const node of [...tabs.keys()])restoreTab(node);root.removeAttribute('data-spin-hub');delete root.dataset.spinPhase;delete root.dataset.spinBall});
+ scope.own(()=>{for(const node of [...saved.keys()])restore(node);for(const node of [...tabs.keys()])restoreTab(node);root.removeAttribute('data-spin-hub');root.removeAttribute('data-diamond-hub');delete root.dataset.spinPhase;delete root.dataset.spinBall});
  scope.own(()=>{stop();press=undefined;scope.cancelFrame(relayout);frame=0});
  scope.own(()=>observer.disconnect());scope.own(()=>flags.disconnect());scope.own(()=>resize.disconnect());
  sphere=makeSphere();scope.own(()=>sphere.destroy());
- root.setAttribute('data-spin-hub','');measure();target=state.q=expanded()?1:0;render();holdInput();
+ root.setAttribute('data-spin-hub','');root.toggleAttribute('data-diamond-hub',appearance==='diamond');measure();target=state.q=expanded()?1:0;render();holdInput();
  observer.observe(orbit,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
  observer.observe(ball,{attributes:true,attributeFilter:['class','style']});
  flags.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-visualmotion']});

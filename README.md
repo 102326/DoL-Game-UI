@@ -1,8 +1,10 @@
-# Soft & Wet 4.2
+# Soft & Wet 4.5（研发中）
 
 [![最新版本](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest) ![适配基线](https://img.shields.io/badge/DoL-0.5.12.13-blue)
 
 > 从[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)下载 Soft & Wet 4.2。
+
+当前研发版本为 **4.5.0**：Floating Hub 采用双菱形玻璃入口，保留现有工具菜单、自由放置及边缘蓄力弹射。普通菜单点击不再启动金属球的长演出；未合并、未发布。见[4.5研发记录](docs/RELEASE_4.5.0.md)。下方图片与视频仍为已发布4.2实测。
 
 Soft & Wet 为 Degrees of Lewdity 带来黑灰 Acrylic 界面，让游戏背景融入半透明玻璃，重新组织衣柜、服装店、角色信息与常用窗口。
 

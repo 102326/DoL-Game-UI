@@ -4,9 +4,10 @@ import {visualScope} from '../visual-scope';
 type Phase = 'idle' | 'charge' | 'release' | 'afterglow' | 'return' | 'reduced' | 'disposed';
 const TAU = Math.PI * 2;
 const PHI = (1 + Math.sqrt(5)) / 2;
+export type HubAppearance = 'metal' | 'diamond';
 
 /** Accepted metal sphere; owns only visual resources, never game actions. */
-export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) => void) {
+export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) => void, appearance:HubAppearance='metal') {
  const scope=visualScope();
  const ctx = canvas.getContext('2d');
  if (!ctx) throw new Error('Canvas 2D is unavailable');
@@ -44,6 +45,17 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   if (dead||width<4||height<4) return;
   draws++;
   c.clearRect(0,0,width,height);
+  if(appearance==='diamond'){
+   // The actual glass surface belongs to CSS so it can sample the DOM backdrop.
+   // Only the emblem rotates under physical charge/flight; the hitbox stays rigid.
+   c.save();c.translate(width*.5,height*.48);c.rotate(angle);
+   const heat=state.charge;
+   const color=heat>.01?`rgba(255,225,145,${.8+heat*.2})`:'#d9e9ed';
+   stroke([[0,-12],[11,0],[0,12],[-11,0],[0,-12]],color,1.5);
+   stroke([[0,-6],[6,0],[0,6],[-6,0],[0,-6]],color,1.5);
+   for(const points of [[[0,-15],[0,-9]],[[15,0],[9,0]],[[0,15],[0,9]],[[-15,0],[-9,0]]] as Array<Array<[number,number]>>)stroke(points,color,1.5);
+   c.restore();return;
+  }
   const radius = Math.min(82, width * .16, height * .21);
   const x = width * .5, y = height * .48;
   const energy = state.energy * strength, heat = state.charge;
@@ -249,9 +261,10 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  }
  function wake() {if(paused||document.hidden){timeline?.pause();return}if(!dead&&!frame&&!document.hidden&&!paused&&!media.matches){last=0;frame=Number(scope.frame(tick))}}
  function stop() {timeline?.kill();timeline=undefined;scope.cancelFrame(tick);frame=0;last=0}
- function reduced() {stop();meteors.length=0;emission=0;Object.assign(state,{speed:0,charge:.18,energy:.28,spread:.45,pressure:0});setPhase('reduced');draw()}
+ function reduced() {stop();meteors.length=0;emission=0;Object.assign(state,{speed:0,charge:appearance==='diamond'?0:.18,energy:appearance==='diamond'?0:.28,spread:.45,pressure:0});setPhase('reduced');draw()}
  function play() {
   if(dead)return;
+  if(appearance==='diamond'){stop();setPhase('idle');draw();return}
   if(media.matches){reduced();return}
   stop();setPhase('charge');
   timeline=gsap.timeline({onComplete(){timeline=undefined;meteors.length=0;emission=0;setPhase('idle');draw()}});
@@ -267,6 +280,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  }
  function recover() {
   if(dead)return;
+  if(appearance==='diamond'){stop();Object.assign(state,{speed:0,charge:0,energy:0});setPhase('idle');draw();return}
   if(media.matches){stop();meteors.length=0;emission=0;Object.assign(state,{speed:0,charge:0,energy:0,spread:0,pressure:0});setPhase('idle');draw();return}
   stop();setPhase('return');
   timeline=gsap.timeline({onComplete(){timeline=undefined;meteors.length=0;emission=0;setPhase('idle');draw()}})
@@ -290,12 +304,12 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
    if(input.angle!==undefined)angle=input.angle;
    Object.assign(state,{speed:heat*68,charge:heat,energy:0,spread:0,pressure:0});
    const dt=Math.max(0,Math.min(.05,input.dt));angle=(angle+state.speed*dt)%TAU;orbit=(orbit+(1.1+state.speed*.17)*dt)%TAU;
-   if(heat)stepMeteors(dt);else{meteors.length=0;emission=0}
+   if(heat&&appearance==='metal')stepMeteors(dt);else{meteors.length=0;emission=0}
    setPhase(heat?'charge':'idle');draw();
   },
   configure(options:{duration?:number;strength?:number}){duration=Math.max(.5,Math.min(2,options.duration??duration));strength=Math.max(.3,Math.min(1.3,options.strength??strength));draw()},
   // GSAP adds a circular private cache to its target; do not expose that as research state.
-  inspect:()=>({phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,meteors:meteors.length,running:!!frame,dead,paused,reduced:media.matches,motionChanges,width,height}),
+  inspect:()=>({appearance,phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,meteors:meteors.length,running:!!frame,dead,paused,reduced:media.matches,motionChanges,width,height}),
   destroy(){if(dead)return;dead=true;scope.dispose()}
  };
  }catch(error){dead=true;try{scope.dispose()}catch(cleanup){throw new AggregateError([error,cleanup],'Sphere construction failed')}throw error}

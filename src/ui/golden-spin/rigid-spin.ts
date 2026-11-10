@@ -1,10 +1,10 @@
 import {visualScope} from '../visual-scope';
 import type {Point} from '../../../framework/motion-hub/edge-physics';
 import type {PlacementMotion} from '../../../framework/motion-hub/placement-motion';
-import {createSphere} from './sphere';
+import {createSphere,type HubAppearance} from './sphere';
 
 /** Presentation-only rigid sphere and short-lived world-space trail. No position or input ownership. */
-export function rigidSpin(root:HTMLElement,placement:PlacementMotion,acceptedPose?:()=>{angle:number}|undefined){
+export function rigidSpin(root:HTMLElement,placement:PlacementMotion,acceptedPose?:()=>{angle:number}|undefined,appearance:HubAppearance='metal'){
  const scope=visualScope(),ball=root.querySelector<HTMLButtonElement>('.sf-motion-ball')!;
  const body=document.createElement('canvas'),field=document.createElement('canvas');
  body.className='spin-hub-canvas rigid-spin-body';field.className='rigid-spin-field';body.setAttribute('aria-hidden','true');field.setAttribute('aria-hidden','true');
@@ -56,7 +56,7 @@ export function rigidSpin(root:HTMLElement,placement:PlacementMotion,acceptedPos
  function reset(){scope.cancelFrame(frame);pending=false;last=0;energy=0;trail=[];hits=[];oldPhase='idle';previous=undefined;root.removeAttribute('data-rigid-active');fx.clearRect(0,0,width,height)}
  scope.own(()=>{reset();body.remove();field.remove();root.removeAttribute('data-rigid-spin')});
  try{
- surface=createSphere(body,()=>{});scope.own(()=>surface.destroy());
+ surface=createSphere(body,()=>{},appearance);scope.own(()=>surface.destroy());
  scope.own(placement.subscribe(wake));
  const flags=new MutationObserver(()=>{if(reduced())reset();wake()});scope.own(()=>flags.disconnect());flags.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-visualmotion']});
  const size=new ResizeObserver(resize);scope.own(()=>size.disconnect());size.observe(root);
