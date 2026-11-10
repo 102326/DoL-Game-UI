@@ -40,7 +40,7 @@ export function startOfficialHub(host:Host,owner:Participant){
   const p=root.DoLFloatingTools?.getPreferences();
   if(isMasterEnabled()&&p?.enabled&&!p.hidden){
    if(mode!==p.mode){mounted?.dispose();mounted=undefined;mode=p.mode}
-   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement,placement?:PlacementMotion)=>{const visual=isolate('Hub visual',()=>sphereHub(root));const flight=visual&&placement?isolate('Hub placement',()=>rigidSpin(root,placement,()=>visual?.sphere.inspect())):undefined;const visuals=visualScope();visuals.own(()=>visual?.destroy());visuals.own(()=>flight?.destroy());return visuals.dispose},dismiss:()=>root.DoLFloatingTools?.hide()}});
+   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement,placement?:PlacementMotion)=>{const visual=isolate('Hub visual',()=>sphereHub(root,'diamond'));const flight=visual&&placement?isolate('Hub placement',()=>rigidSpin(root,placement,()=>visual?.sphere.inspect(),'diamond')):undefined;const visuals=visualScope();visuals.own(()=>visual?.destroy());visuals.own(()=>flight?.destroy());return visuals.dispose},dismiss:()=>root.DoLFloatingTools?.hide()}});
   }else{mounted?.dispose();mounted=undefined}
  }
  document.addEventListener('dol-floating-change',sync);document.addEventListener('dol-ui-master-change',sync);sync();

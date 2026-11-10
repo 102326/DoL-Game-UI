@@ -37,3 +37,18 @@ html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-official][
 /* Keep wheel, touch and keyboard scrolling without a visible scrollbar rail. */
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit{scrollbar-width:none}
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit::-webkit-scrollbar{width:0;height:0}
+
+/* 4.5 selected diamond glass entry. Shared placement, native tools and menu motion stay owned above. */
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-motion-ball{
+ border:1px solid #dcefff50!important;border-radius:50%!important;color:#d9e9ed;
+ background:linear-gradient(145deg,#bddff345,#202932c9)!important;
+ backdrop-filter:blur(22px)!important;-webkit-backdrop-filter:blur(22px)!important;
+ box-shadow:0 12px 30px #0005,inset 0 1px #ffffff40!important;
+ transition:width 60ms,height 60ms,border-radius 60ms;
+}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-docked{border-radius:16px!important}
+html[data-stone-free] .sf-motion-hub[data-diamond-hub] .sf-motion-ball::before{display:block;inset:-5px;border:1px solid #b7e0ff40;opacity:0;transform:none;transition:opacity 60ms}
+html[data-stone-free] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-open::before{opacity:1}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball:focus-visible{outline:2px solid #dcece8;outline-offset:3px}
+html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-diamond-hub] .sf-motion-ball{background:#28323b!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+@supports not (backdrop-filter:blur(1px)){html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-motion-ball{background:#28323b!important}}
