@@ -81,6 +81,7 @@ async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstructi
   step='menu background fades with its owned shell and disappears on close';
   for(const glass of [true,false]){
    await p.evaluate(value=>DoLMidnightTheme.setPreference('visualGlass',value),glass);await ball.click();await open();
+   assert.equal(await ball.evaluate(n=>getComputedStyle(n,'::before').borderRadius),'50%','expanded glass outline remains circular instead of inheriting generic button corners');
    const material=await nav.evaluate(n=>{const s=getComputedStyle(n);return{color:s.backgroundColor,image:s.backgroundImage,filter:s.backdropFilter,shadow:s.boxShadow}});
    assert.deepEqual(material,{color:'rgba(0, 0, 0, 0)',image:'none',filter:'none',shadow:'none'},'the menu base must not redraw the animated shell');
    const collecting=p.waitForFunction(()=>{const s=testHubVisual.inspect();return s.moving&&s.q>0&&s.q<.25});await ball.click();await collecting;

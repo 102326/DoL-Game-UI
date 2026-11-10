@@ -47,7 +47,7 @@ html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-mo
  transition:width 60ms,height 60ms,border-radius 60ms;
 }
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-docked{border-radius:16px!important}
-html[data-stone-free] .sf-motion-hub[data-diamond-hub] .sf-motion-ball::before{display:block;inset:-5px;border:1px solid #b7e0ff40;opacity:0;transform:none;transition:opacity 60ms}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball::before{display:block;inset:-5px;border:1px solid #b7e0ff40;border-radius:inherit!important;opacity:0;transform:none;transition:opacity 60ms}
 html[data-stone-free] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-open::before{opacity:1}
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball:focus-visible{outline:2px solid #dcece8;outline-offset:3px}
 html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-diamond-hub] .sf-motion-ball{background:#28323b!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
