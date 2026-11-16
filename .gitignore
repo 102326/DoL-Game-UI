@@ -325,3 +325,7 @@ docs/HANDOFF.local.md
 
 /tests/attributes-material.cjs
 /tests/hub-placement-integration.cjs
+
+# Standalone surface entry/tooling: TS sources are authoritative.
+/scripts/build-standalone-surfaces.mjs
+/tests/standalone-surfaces.cjs

@@ -12,6 +12,8 @@
 
 ## 自愿浮层
 
+独立宿主的显式窄接线见[Standalone Surface研究入口](STANDALONE_SURFACES.md)。它复用同一窗口工厂，不通过启动全局UI取得接口，也不替代下列现役全局API合同。
+
 `openModal(request)`、`openDrawer(request)`接受id/title、消费者自己的HTMLElement和onClose，返回只读handle或null；handle提供`close()`及`isOpen()`。消费者保有业务与节点语义，不能通过显示API重试交易或保存。onClose原因包含api/button/escape/backdrop/disabled/destroyed/failed/native；同一窗口的关闭清理应幂等。`openInspector()`只提供诊断入口。
 
 ```ts

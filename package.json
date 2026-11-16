@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "surfaces:build": "npm run tooling:build && node scripts/build-standalone-surfaces.mjs",
     "framework:check": "vue-tsc --noEmit -p tsconfig.framework.json",
     "framework:build": "npm run tooling:build && npm run framework:check && node scripts/build-framework.mjs && python scripts/package-framework.py",
     "framework:test": "node tests/framework.cjs",

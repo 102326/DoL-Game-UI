@@ -2497,6 +2497,39 @@
       "assertionSites": 22
     },
     {
+      "entry": "tests/standalone-surfaces.cjs",
+      "sourceEntry": "tests/standalone-surfaces.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "checkpoint",
+      "cases": [
+        {
+          "id": "pure import and isolated instance styles",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "real modal close reopen and caller content identity",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "two owners dispose independently without destroying content",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "null throw and lost style paths clean without a second surface",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "target realm constructors and capability recovery",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "59590417cad56df6a8c73c6a5652e2855f5200d037f304e0293a8e2dda9dde09",
+      "assertionSites": 31
+    },
+    {
       "entry": "tests/startup-cache.test.cjs",
       "sourceEntry": "tests/startup-cache.test.cts",
       "profiles": [

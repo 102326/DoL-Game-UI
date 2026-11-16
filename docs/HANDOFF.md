@@ -2,6 +2,8 @@
 
 更新：2026-11-10。稳定版4.2.0已发布；负责人要求后续采用菱形玻璃球，研发版本改为 **4.5.0** 并同步GitHub。本批不合并main、不创建Tag、不发布Release。
 
+**2026-11-16 E32窄接线更新：** 当前工作分支为 `research/e32-standalone-surfaces`，在同一原目录由4.5的`4a0724d`安全分出；`feature/4.5-diamond-glass-hub`仍保留原HEAD。独立窗口工厂、实例样式与realm绑定、定向验证及接入说明已完成，见[入口交付](STANDALONE_SURFACES.md)。不启动全局UI，不改Hub、Host协议或产品版本。完整Actions/Loader端到端尚未执行，不能借用下列4.5历史CI结果。生成物、详细日志仅本机；接手需重建或核对来源SHA。后续先由Loader以真实入口验证中性页面的开关重开、失败可见提示、JSON下载和释放。
+
 ## Current — 当前做什么
 
 - 分支：`feature/4.5-diamond-glass-hub`，由最新`origin/main`的`02092463506749d7198fa5c61579ae91be58f68a`建立；保留原4.2研发分支及全部发布历史。当前HEAD以Git实际查询为准，本交接随本批提交。
