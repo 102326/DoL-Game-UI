@@ -36,6 +36,8 @@ Windows本批使用Node 26.13.0与本机Edge 158.0.4370.26的中性页面。工�
 
 旧提交 `039f6a2` 的[标准 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44332917545) 与[研究 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44332917565) 均在恢复停靠后发现静态菱形申请金属动效帧。修复让静态绘制继续由尺寸和配置变化驱动。Windows 资源回归通过，并能拒绝恢复旧行为的反例。 修复提交 `b2714f5` 的[标准 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44337509578)及[研究 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44337509843)均通过。
 
+标准 CI 在 `e516225` 的 ModHub 材质比较提前取样。[失败记录](https://github.com/102326/DoL-Game-UI/actions/runs/44354074598)使用的合成提交为 `66ef28a`。Windows 中性夹具重现了同一对数值：将关闭过的确认窗重新插入后，恢复面板已经 full，确认窗尚无适配标记，仍为透明且无模糊。下一帧重新识别确认窗后，两面同为 rgba(46,47,50,.94) 和 24px 模糊。测试现在先等确认窗自己的完整适配标记，再比较 0、100、60 三档；未修改产品材质。
+
 ## Next — 当前小批之后
 
 1. 接续时先检查状态与唯一工作树，再正常fetch并以当前远端头核对，避免与其它机器双写。继续使用同一4.5分支，不在旧main叠改或创建重复工作区。
