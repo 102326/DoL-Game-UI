@@ -9,7 +9,8 @@ import SettingsPanel from './SettingsPanel.vue';
 import '../ui/owned-select.css';
 import {isOpenSelectEscape} from '../ui/native-select';
 import {defaults,type Preferences,type PreferenceKey,type SettingsState} from './preferences';
-import {isMasterEnabled,setMasterEnabled} from '../runtime/master';
+import {pageEnabled, requestPage, type PageKey} from './page-preferences';
+import {initMaster,isMasterEnabled,setMasterEnabled} from '../runtime/master';
 import {acrylicParameters} from './acrylic';
 import {createReadingLayout} from './reading-layout';
 import {readingRanges} from './preferences';
@@ -49,6 +50,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  let shopPageExperimentApi:Runtime['DoLShopPageExperiment']|undefined,shopPageExperimentApplied:boolean|undefined,shopPageExperimentError=false,wardrobeHiddenListApi:Runtime['DoLWardrobeUI']|undefined,wardrobeHiddenListApplied:boolean|undefined;
  const {preferences}=store.model;
  const reading=createReadingLayout();scope.own(()=>reading.destroy());
+ initMaster(preferences);
  setMasterEnabled(preferences.enabled);
  const state=reactive<SettingsState>({preferences,get appearance(){return store.model.appearance},scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:store.storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
  let appliedAppearance: Appearance | undefined, appearanceEnabled = false;
@@ -175,17 +177,18 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   document.documentElement.toggleAttribute('data-dgu-compact-controls',state.preferences.enabled&&state.preferences.mobileCompactControls&&compactViewport());
   reading.refresh();
  }
- function setPanel(kind:PanelKind,value:boolean){root.DoLPanelsUI?.setEnabled(kind,value);sync()}
- function setSaves(value:boolean){root.DoLSavesUI?.setEnabled(value);sync()}
- function setShop(value:boolean){root.DoLShopUI?.setEnabled(value);sync()}
- function setSocial(value:boolean){root.DoLSocialUI?.setEnabled(value);sync()}
- function setCharacteristics(value:boolean){root.DoLCharacteristicsUI?.setEnabled(value);sync()}
- function setCombat(value:boolean){root.DoLCombatUI?.setEnabled(value);sync()}
- function setWardrobe(value:boolean){root.DoLWardrobeUI?.setEnabled(value);sync();if(state.wardrobe!==value)state.message='衣柜正在处理操作，请完成后再切换。'}
+ function setPage(page:PageKey,value:boolean){
+  requestPage(root,page,value);
+  sync();
+  if(page==='wardrobe'&&root.DoLWardrobeUI?.isBusy?.()&&state.wardrobe!==value)
+   state.message='衣柜正在处理操作，请完成后再切换。';
+  else if(pageEnabled(root,page)===undefined)state.message='此界面模块当前不可用，已保留原选择。';
+  else if(store.pages.isUnsaved(page))state.message='当前页面已应用；偏好无法保存，重启后可能恢复默认。';
+ }
  function setMaster(value:boolean){
-  if(state.preferences.enabled===value)return;
+  if(state.preferences.enabled===value){if(store.storageError)persist();return}
   if(root.DoLWardrobeUI?.isBusy?.()){state.message='衣柜正在处理操作，请完成后再切换。';return}
-  setMasterEnabled(value);state.preferences.enabled=value;
+  setMasterEnabled(value);
   for(const name of ['DoLSavesUI','DoLShopUI','DoLPanelsUI','DoLSocialUI','DoLCharacteristicsUI','DoLWardrobeUI','DoLCombatUI'] as const)isolate(name,()=>root[name]?.refresh?.());
   apply();persist();
   if(!store.storageError)state.message=value?'Soft & Wet 界面已启用。':'已回到原版界面；显示偏好已保留。';
@@ -229,7 +232,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   ++transition;motion.cancel();
   document.documentElement.removeAttribute('data-dgu-settings-open');unmountUI(app);controls?.remove();controls=document.createElement('dialog');controls.id='dol-midnight-controls';controls.setAttribute('aria-labelledby','dol-midnight-title');
   const host=document.createElement('div');host.className='dmt-settings-shell';controls.append(host);document.body.append(controls);
-  app=createApp(SettingsPanel,{state,onSaves:setSaves,onPreference:setPreference,onAppearance:setAppearance,onCombat:setCombat,onWardrobe:setWardrobe,onCharacteristics:setCharacteristics,onSocial:setSocial,onPanel:setPanel,onShop:setShop,onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
+  app=createApp(SettingsPanel,{state,onSaves:(value:boolean)=>setPage('saves',value),onPreference:setPreference,onAppearance:setAppearance,onCombat:(value:boolean)=>setPage('combat',value),onWardrobe:(value:boolean)=>setPage('wardrobe',value),onCharacteristics:(value:boolean)=>setPage('characteristics',value),onSocial:(value:boolean)=>setPage('social',value),onPanel:setPage,onShop:(value:boolean)=>setPage('shop',value),onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
   // Native modal hit testing does not stop delegated game handlers from receiving our controls' events.
   for(const type of ['click','input','change','pointerdown','pointerup','touchstart','touchend','keyup'])controls.addEventListener(type,event=>event.stopPropagation());
   controls.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Escape'&&!isOpenSelectEscape(event)){event.preventDefault();closeSettings()}});

@@ -23,7 +23,7 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
  const revision='34f4217e8e3278b44623bf20e9df692a771f6f90',files=['src/theme/controller.ts','src/theme/SettingsPanel.vue','src/ui/source-motion.ts'];
  const old=baseline?Object.fromEntries(files.map(f=>[f,cp.execFileSync('git',['show',revision+':'+f],{encoding:'utf8'})])):{};
  const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;
- const server=await createServer({configFile:false,plugins:[vue(),{name:'settings-integration-source',enforce:'pre',load(id){const f=files.find(f=>id.replaceAll('\\','/').endsWith('/'+f));if(f&&baseline)return old[f]},configureServer(s){s.middlewares.use('/__settings_integration__',(_q,r)=>{r.setHeader('Content-Type','text/html');r.end(`<!doctype html><html data-stone-free><body><button id="native">Native page action</button><script type="module">(${setupFixture.toString()})()</script></body></html>`)})}}],server:{host:'127.0.0.1',port:0},logLevel:'error'});
+ const server=await createServer({configFile:false,plugins:[vue(),{name:'settings-integration-source',enforce:'pre',load(id){const f=files.find(f=>id.replaceAll('\\','/').endsWith('/'+f));if(f&&baseline)return old[f]},configureServer(s){s.middlewares.use('/__neutral_integration__',(_q,r)=>{r.setHeader('Content-Type','text/html');r.end('<!doctype html><html data-stone-free><body></body></html>')});s.middlewares.use('/__settings_integration__',(_q,r)=>{r.setHeader('Content-Type','text/html');r.end(`<!doctype html><html data-stone-free><body><button id="native">Native page action</button><script type="module">(${setupFixture.toString()})()</script></body></html>`)})}}],server:{host:'127.0.0.1',port:0},logLevel:'error'});
  const checks:Array<{name:string;status:'PASS'|'FAIL';detail?:unknown;error?:string;errors?:string[]}>=[],failures:Array<{name:string;status:'FAIL';error:string;errors:string[]}>=[],out=path.resolve('tests/artifacts/evolution/settings-integration-'+Date.now());fs.mkdirSync(out,{recursive:true});let page:playwright.Page;
  const check=async(name:string,fn:()=>Promise<unknown>)=>{const errors:string[]=[];page=await browser.newPage({viewport:{width:1280,height:900}});const address=must(must(server.httpServer).address());if(typeof address==='string')throw Error('Expected TCP settings address');page.on('pageerror',e=>errors.push(e.message));try{
   await page.goto('http://127.0.0.1:'+address.port+'/__settings_integration__');await page.waitForFunction(()=>typeof theme!=='undefined');await page.addStyleTag({path:'dist/framework/official-ui/style.css'});
@@ -193,6 +193,101 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   });
   assert.deepEqual(migration,{initial:100,session:125,persisted:100,retried:125,font:'Georgia',center:true,marker:true});
   return{viewports:[1280,390],nativeOutsideScope:true,adapterMatchComparison:true,migration};
+ });
+ if(!baseline)await check('P01 requested page choices survive failure, retry and emergency recovery',async()=>{
+  // Start the real application on an empty document: no game content or state.
+  await page.goto(new URL('/__neutral_integration__',page.url()).href);
+  await page.evaluate(()=>{localStorage.clear();localStorage.setItem('DoLGameUI.saves.enabled','false');localStorage.setItem('DoLGameUI.journal.enabled','false');localStorage.setItem('DoLCombatUI.enabled.v1','false')});
+  await page.addScriptTag({type:'module',content:"import {startGameUI} from '/src/main.ts'; window.restartGameUI=startGameUI; startGameUI();"});
+  await page.waitForFunction(()=>typeof Reflect.get(window,'DoLGameUI')?.getRequestedPreferences==='function');
+  const read=()=>page.evaluate(()=>{const api=Reflect.get(window,'DoLGameUI');return{requested:api.getRequestedPreferences(),effective:api.getPreferences()}});
+  let state=await read();
+  for(const key of ['savesEnabled','journalEnabled','combatEnabled']){assert.equal(state.requested[key],false);assert.equal(state.effective[key],false)}
+  for(const key of ['savesEnabled','shopEnabled','combatEnabled','wardrobeEnabled','characteristicsEnabled','socialEnabled','journalEnabled','traitsEnabled','statisticsEnabled','featsEnabled','cheatsEnabled','attitudesEnabled','settingsEnabled'])assert.equal(typeof state.requested[key],'boolean',key+' must always expose a requested boolean');
+  await page.evaluate(()=>Reflect.get(window,'DoLGameUI').setPreference('journalEnabled',true));
+  assert.equal(await page.evaluate(()=>localStorage.getItem('DoLGameUI.journal.enabled')),'true');
+  await page.evaluate(()=>Reflect.get(window,'DoLGameUI').openSettings());
+  await page.getByRole('button',{name:'页面',exact:true}).click();await page.locator('.dmt-page-switches summary').click();
+  await page.getByLabel('启用新版存档界面',{exact:true}).check();
+  state=await read();assert.equal(state.requested.savesEnabled,true);assert.equal(state.effective.savesEnabled,true);
+  assert.equal(await page.evaluate(()=>localStorage.getItem('DoLGameUI.saves.enabled')),'true');
+  const panelFailure=await page.evaluate(()=>{
+   const api=Reflect.get(window,'DoLGameUI'), panels=Reflect.get(window,'DoLPanelsUI');
+   const overlay=document.createElement('section'),body=document.createElement('div');
+   overlay.id='customOverlay';overlay.dataset.overlay='journal';
+   body.id='customOverlayContent';body.textContent='Neutral sample';
+   overlay.append(body);document.body.append(overlay);
+   const place=body.before;
+   try{
+    body.before=()=>{throw Error('synthetic mount failure')};
+    panels.refresh();
+   }finally{body.before=place}
+   const request=api.getRequestedPreferences().journalEnabled;
+   const effective=api.getPreferences().journalEnabled;
+   const disk=localStorage.getItem('DoLGameUI.journal.enabled');
+   api.setPreference('journalEnabled',true);
+   const mounted=!!overlay.querySelector('.dgp-host');
+   const recovered=api.getPreferences().journalEnabled;
+   overlay.remove();panels.refresh();
+   return {request,effective,disk,mounted,recovered};
+  });
+  assert.deepEqual(panelFailure,{request:true,effective:false,disk:'true',mounted:true,recovered:true});
+  const retry=await page.evaluate(()=>{
+   const api=Reflect.get(window,'DoLGameUI'),set=Storage.prototype.setItem;
+   try{
+    Storage.prototype.setItem=function(key,value){
+     if(key==='DoLCombatUI.enabled.v1')throw Error('synthetic write failure');
+     return set.call(this,key,value);
+    };
+    api.setPreference('combatEnabled',true);
+   }finally{Storage.prototype.setItem=set}
+   const before=localStorage.getItem('DoLCombatUI.enabled.v1');
+   api.setPreference('combatEnabled',true);
+   return{before,after:localStorage.getItem('DoLCombatUI.enabled.v1'),requested:api.getRequestedPreferences().combatEnabled};
+  });
+  assert.deepEqual(retry,{before:'false',after:'true',requested:true});
+  const boundaries=await page.evaluate(()=>{
+   const api=Reflect.get(window,'DoLGameUI'),wardrobe=Reflect.get(window,'DoLWardrobeUI');
+   const busy=wardrobe.isBusy, set=Storage.prototype.setItem;
+   let writes=0;
+   try{
+    wardrobe.isBusy=()=>true;
+    Storage.prototype.setItem=function(key,value){writes++;return set.call(this,key,value)};
+    api.setPreference('enabled',false);
+    api.setPreference('wardrobeEnabled',false);
+   }finally{wardrobe.isBusy=busy;Storage.prototype.setItem=set}
+   const {enabled,wardrobeEnabled}=api.getRequestedPreferences();
+   const saves=Reflect.get(window,'DoLSavesUI');
+   try{
+    Reflect.deleteProperty(window,'DoLSavesUI');
+    api.setPreference('savesEnabled',false);
+    return {enabled,wardrobeEnabled,writes,requested:api.getRequestedPreferences().savesEnabled,effective:api.getPreferences().savesEnabled};
+   }finally{Reflect.set(window,'DoLSavesUI',saves)}
+  });
+  assert.deepEqual(boundaries,{enabled:true,wardrobeEnabled:true,writes:0,requested:true,effective:undefined});
+  const emergency=await page.evaluate(()=>{
+   Reflect.get(window,'DoLGameUI').destroy();
+   const restart=Reflect.get(window,'restartGameUI'),create=document.createElement;
+   try{
+    document.createElement=function(tag:string,options?:ElementCreationOptions){
+     if(tag==='dialog')throw Error('synthetic settings dialog construction failure');
+     return create.call(this,tag,options);
+    };
+    restart();
+   }finally{document.createElement=create}
+   const recovery=document.querySelector<HTMLButtonElement>('#dol-ui-recovery');
+   if(!recovery||Reflect.get(window,'DoLMidnightTheme'))throw Error('Missing emergency fallback');
+   recovery.click();
+   const saved=JSON.parse(localStorage.getItem('DoLMidnightTheme.preferences.v1')!);
+   Reflect.get(window,'DoLGameUI').destroy();restart();
+   const api=Reflect.get(window,'DoLGameUI');
+   const restarted=api.getPreferences().enabled;
+   api.setPreference('enabled',true);
+   return {persisted:saved.enabled,restarted,restored:api.getRequestedPreferences().enabled};
+  });
+  assert.deepEqual(emergency,{persisted:false,restarted:false,restored:true});
+  await page.evaluate(()=>Reflect.get(window,'DoLGameUI').destroy());
+  return{panelFailure,retry,emergency};
  });
  await check('S01 approved shell and page timing, real input and single material surface',async()=>{
    const first=await page.evaluate(()=>{theme.openSettings();const shell=settingsNode('.dmt-settings-shell'),a=settingsAnimations.find(x=>x.node===shell),control=settingsNode<HTMLElement>('[aria-label="手机紧凑按钮间距"]'),before=theme.getPreferences().mobileCompactControls;control.click();return{duration:a?frameEffect(a.animation).getTiming().duration:undefined,easing:a?frameEffect(a.animation).getTiming().easing:undefined,inert:!!control.closest('[inert]'),updated:theme.getPreferences().mobileCompactControls!==before,proxyCount:document.querySelectorAll('.dmt-open-material,.rf-stage,.dmt-settings-context,.dmt-settings-material').length,transform:getComputedStyle(shell).transform,backdrop:getComputedStyle(shell).backdropFilter,alpha:Number(getComputedStyle(shell).backgroundColor.match(/[\d.]+/g)?.[3]??1)}});

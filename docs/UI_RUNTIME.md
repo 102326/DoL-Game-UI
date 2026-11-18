@@ -4,6 +4,12 @@
 
 下列呈现接口接入先检查`window.DoLGameUI?.ui?.apiVersion === 1`及所需方法；衣柜命名空间独立，见后文。缺失、禁用、结构不匹配时继续使用消费者自己的原界面，不创建强制Host/UI依赖。
 
+## 产品偏好查询
+
+`DoLGameUI.getRequestedPreferences()` 返回主题与页面开关的用户选择快照。页面沿用原存储键；存储不可写时返回本次会话已接受的选择。总开关关闭保留各页选择。`getPreferences()` 沿用原页面状态语义：模块缺席为 undefined，页面发生故障后可为 false。页面的返回值单独于总开关，不表示此时窗口已经显示。两个查询都不执行重试。
+
+`setPreference(key,value)` 和设置界面经同一页面 setter；忙碌的衣柜可拒绝，缺席模块不会接受新选择，故障后的显式启用可重试。Host API 不参与偏好存储。
+
 ## 查询与Style Adapter
 
 `getTheme()`、`getVisualTier()`、`getCapabilities()`、`getDiagnostics()`和`getAdapterDiagnostics()`读取当前能力/诊断；`rescan()`请求重新识别，不改变游戏场景或业务状态。档位名是现有兼容接口，不是切换旧代主题。

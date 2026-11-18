@@ -1,3 +1,4 @@
+import {createPagePreferences} from './page-preferences';
 import {reactive} from 'vue';
 import {defaults, readingRanges, type PreferenceKey} from './preferences';
 import {emptyAppearance, readAppearance} from './appearance';
@@ -41,5 +42,5 @@ export function createThemePreferences(root: Window) {
   }
   if(value?._scaleBaseline26!==true||value?._readingBaseline41!==true||retiredEnabled)save();
  }catch{storageError=true}
- return {model, save, get storageError() { return storageError }};
+ return {model, pages:createPagePreferences(root), save, get storageError() { return storageError }};
 }

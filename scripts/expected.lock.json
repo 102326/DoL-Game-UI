@@ -2246,6 +2246,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings:P01 requested page choices survive failure, retry and emergency recovery",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings:S01 approved shell and page timing, real input and single material surface",
           "minimumAssertions": 1
         },
@@ -2302,8 +2306,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "731669720def633d5be07e6d26b39ab561d426040f6a4f519d15b4a882e1e1e8",
-      "assertionSites": 347,
+      "sourceSha256": "8c72b74ea816c8287fb782ceea57abdbdf34665201d28ae85ad7e3af46ec79e3",
+      "assertionSites": 374,
       "rendererContexts": [
         "weather:2d"
       ]

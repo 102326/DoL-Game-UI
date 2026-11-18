@@ -1,3 +1,4 @@
+import {createPagePreferences,type PagePreferences} from '../theme/page-preferences';
 import {visualScope} from '../ui/visual-scope';
 import {isolate,unmountUI,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
@@ -13,17 +14,15 @@ import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,MountHandle,Claim} from '../../framework/contracts';
 export interface CombatFramework {host:Host;owner:Participant}
 
-export function startCombat(framework?:CombatFramework){
-const KEY='DoLCombatUI.enabled.v1';
+export function startCombat(framework?:CombatFramework,pagePrefs:PagePreferences=createPagePreferences(window)){
 const runtime=window as NativeEventsHost & {DoLCombatUI?:CombatControls};
 interface Docked {node:HTMLElement;anchor:Comment;slot:HTMLElement}
 interface Region {list:HTMLElement;anchor:Comment;host?:HTMLElement}
 interface Session {focusPreference?:boolean;regions:Region[];list:HTMLElement;anchor:Comment;host:HTMLElement;appHost?:HTMLElement;toggle:HTMLButtonElement;app?:App;owned?:Readonly<MountHandle>;claim?:Readonly<Claim>;binding?:ReturnType<Host['binding']>;releasing?:boolean;model:CombatModel;source:ReturnType<typeof createCombatSource>;groups:Map<string,HTMLElement>;decorated:Set<HTMLElement>;separators:Map<Text,string>;dock:HTMLElement;docked:Docked[];resizeOwner?:()=>void;spacer?:HTMLElement;edited:Set<string>;positions:Map<string,number>;editor?:HTMLElement}
-const scope=visualScope();let active:Session|undefined,enabled=true;
+const scope=visualScope();let active:Session|undefined;const enabled=()=>pagePrefs.get('combat');
 const theme=()=>(window as Window & {DoLMidnightTheme?:{getPreferences:()=>{combatFocused?:boolean};setPreference?:(key:'combatFocused',value:boolean)=>void}}).DoLMidnightTheme;
 const focusRequested=()=>!!theme()?.getPreferences().combatFocused;
 let actionLists:ReturnType<typeof wrapActionLists>|undefined;
-try{enabled=localStorage.getItem(KEY)!=='false'}catch{/* optional preference */}
 function clearDecorations(s:Session){for(const el of s.decorated){el.classList.remove('dcu-group');el.removeAttribute('data-dcu-title');el.removeAttribute('data-dcu-active');el.removeAttribute('data-dcu-selected');el.removeAttribute('data-dcu-dense');el.removeAttribute('data-dcu-unavailable');el.removeAttribute('data-dcu-folded');el.removeAttribute('data-dcu-edited')}s.decorated.clear();for(const [node,text]of s.separators)if(node.isConnected&&node.data==='')node.data=text;s.separators.clear()}
 function applyFocus(s:Session){
  for(const [key,el] of s.groups){
@@ -43,7 +42,7 @@ function restoreDock(s:Session){
 }
 function release(s:Session){if(s.releasing)return;s.releasing=true;s.resizeOwner?.();s.resizeOwner=undefined;clearDecorations(s);restoreDock(s);for(const region of s.regions){if(region.list.isConnected&&(s.host.contains(region.list)||region.host?.contains(region.list)))restoreNative(region.list,region.anchor,s.host.closest('.passage'),true);region.host?.remove();region.host=undefined}s.spacer?.remove();s.spacer=undefined;unmountUI(s.app);s.app=undefined;s.owned?.dispose();s.owned=undefined;s.appHost=undefined;s.claim?.release();s.claim=undefined;s.host.remove();s.editor=undefined;s.groups.clear();s.releasing=false}
 function disposeSession(){const s=active;if(!s)return;release(s);s.source.destroy();s.toggle.remove();for(const region of s.regions)region.anchor.remove();active=undefined;actionLists?.restore();actionLists=undefined}
-function setEnabled(value:boolean){if(value===enabled&&!failed)return;failed=false;enabled=value;try{localStorage.setItem(KEY,String(value))}catch{}if(active&&actionLists&&!enabled)disposeSession();if(active){release(active);active.toggle.hidden=enabled;active.toggle.textContent='启用新版战斗面板';if(enabled)mount(active)}document.dispatchEvent(new Event("dol-ui-combat-change"));schedule()}
+function setEnabled(value:boolean){if(!scope.active())return;if(value===enabled()&&!failed){if(pagePrefs.isUnsaved('combat'))pagePrefs.set('combat',value);return}failed=false;pagePrefs.set('combat',value);if(active&&actionLists&&!enabled())disposeSession();if(active){release(active);active.toggle.hidden=enabled();active.toggle.textContent='启用新版战斗面板';if(enabled())mount(active)}document.dispatchEvent(new Event("dol-ui-combat-change"));schedule()}
 function readGroups(s:Session){
  // Measure native business visibility with only our presentation fold suspended.
  // Native hidden/disabled/style rules remain intact; validate() still rejects folded controls.
@@ -54,7 +53,7 @@ function readGroups(s:Session){
  for(const el of s.decorated)if(!s.regions.some(r=>r.list.contains(el)))s.decorated.delete(el);
  for(const node of s.separators.keys())if(!s.regions.some(r=>r.list.contains(node)))s.separators.delete(node);
  for(const g of snapshot.groups){const child=s.source.group(g.key);if(!child)continue;s.groups.set(g.key,child);
-  if(enabled){if(!child.classList.contains('dcu-group'))child.classList.add('dcu-group');if(child.dataset.dcuTitle!==g.title)child.dataset.dcuTitle=g.title;child.toggleAttribute('data-dcu-active',s.model.activeKey===g.key);child.toggleAttribute('data-dcu-selected',!!g.selected);child.toggleAttribute('data-dcu-dense',g.available>8);child.toggleAttribute('data-dcu-unavailable',g.available===0);s.decorated.add(child);
+  if(enabled()){if(!child.classList.contains('dcu-group'))child.classList.add('dcu-group');if(child.dataset.dcuTitle!==g.title)child.dataset.dcuTitle=g.title;child.toggleAttribute('data-dcu-active',s.model.activeKey===g.key);child.toggleAttribute('data-dcu-selected',!!g.selected);child.toggleAttribute('data-dcu-dense',g.available>8);child.toggleAttribute('data-dcu-unavailable',g.available===0);s.decorated.add(child);
    const walk=document.createTreeWalker(child,NodeFilter.SHOW_TEXT);let n:Node|null;while((n=walk.nextNode())){const t=n as Text;if(/^[\s|\u00a0]*\|[\s|\u00a0]*$/.test(t.data)){if(!s.separators.has(t))s.separators.set(t,t.data);t.data=''}}
   }
  }
@@ -122,12 +121,12 @@ function update(){
  // Original struggle scenes deliberately emit several listContainer IDs.
  // Keep each region in place rather than gathering narrative into one panel.
  let lists=[...document.querySelectorAll<HTMLElement>('#passages .passage:not(.passage-out) [id="listContainer"],#passages .passage:not(.passage-out) [data-dcu-action-list]')].filter(visible);
- if(actionLists&&enabled){
+ if(actionLists&&enabled()){
   const page=lists[0]?.closest('.passage');
   const added=page&&[...page.querySelectorAll<HTMLInputElement>('input[type=radio]')].some(input=>input.name&&input.parentElement?.tagName==='LABEL'&&!input.closest('[data-dcu-action-list],#listContainer'));
   if(added){disposeSession();lists=[]}
  }
- if(!lists.length&&enabled){disposeSession();const page=[...document.querySelectorAll<HTMLElement>('#passages .passage:not(.passage-out)')].find(page=>page.querySelector('#masturbationButtons'));if(page){actionLists=wrapActionLists(page);lists=actionLists.lists.filter(visible)}}
+ if(!lists.length&&enabled()){disposeSession();const page=[...document.querySelectorAll<HTMLElement>('#passages .passage:not(.passage-out)')].find(page=>page.querySelector('#masturbationButtons'));if(page){actionLists=wrapActionLists(page);lists=actionLists.lists.filter(visible)}}
  const passage=lists[0]?.closest('.passage');
  if(!lists.length||lists.some(list=>list.closest('.passage')!==passage||lists.some(other=>other!==list&&other.contains(list)))){disposeSession();return}
  if(active&&(active.regions.length!==lists.length||active.regions.some((r,i)=>r.list!==lists[i]))){
@@ -138,9 +137,9 @@ function update(){
  }
  if(!active){
   const regions=lists.map(list=>{const anchor=document.createComment('DoLCombatUI original list position');list.before(anchor);return{list,anchor}});
-  const first=regions[0];if(!first)throw Error('Missing combat region');const {list,anchor}=first;const toggle=document.createElement('button');toggle.type='button';toggle.className='dcu-toggle';toggle.hidden=enabled;toggle.textContent='启用新版战斗面板';toggle.onclick=()=>setEnabled(!enabled);anchor.parentNode!.insertBefore(toggle,anchor);
+  const first=regions[0];if(!first)throw Error('Missing combat region');const {list,anchor}=first;const toggle=document.createElement('button');toggle.type='button';toggle.className='dcu-toggle';toggle.hidden=enabled();toggle.textContent='启用新版战斗面板';toggle.onclick=()=>setEnabled(!enabled());anchor.parentNode!.insertBefore(toggle,anchor);
   const source=createCombatSource(lists,()=>scope.active()&&isMasterEnabled()&&(!framework||!!active?.binding?.isCurrent())&&list.isConnected&&list.closest('.passage')===document.querySelector('#passages .passage:not(.passage-out)'));
-  active={regions,list,anchor,toggle,host:document.createElement('div'),source,model:reactive({groups:[],unknown:0,selectedGroups:0,availableActions:0,phase:'selecting',message:''}),groups:new Map(),decorated:new Set(),separators:new Map(),dock:document.createElement('div'),docked:[],edited:new Set(),positions:new Map()};if(enabled)mount(active)
+  active={regions,list,anchor,toggle,host:document.createElement('div'),source,model:reactive({groups:[],unknown:0,selectedGroups:0,availableActions:0,phase:'selecting',message:''}),groups:new Map(),decorated:new Set(),separators:new Map(),dock:document.createElement('div'),docked:[],edited:new Set(),positions:new Map()};if(enabled())mount(active)
  }
  if(active)sync(active)
 }
@@ -148,11 +147,11 @@ function schedule(){scope.frame(scan)}
 // Owned rain optics change style each frame without changing combat inputs.
 const observer=new MutationObserver(records=>{if(records.some(r=>{const el=r.target instanceof Element?r.target:r.target.parentElement;if(r.type==='attributes'&&r.attributeName==='style'&&el?.matches('[data-sf-weather-material]>.evo-material-layer.evo-glass-layer>i:is(.evo-glass-drop,.evo-wet-path)'))return false;return !!el?.closest('.dcu-native,.dcu-dock-native')||!el?.closest('.dcu-root')}))schedule()});
 function nativeClick(event:Event){
- const s=active;if(!enabled||failed||!s?.app||!(event.target instanceof Element)||(!s.host.contains(event.target)&&!s.regions.some(r=>r.list.contains(event.target as Node))))return;
+ const s=active;if(!enabled()||failed||!s?.app||!(event.target instanceof Element)||(!s.host.contains(event.target)&&!s.regions.some(r=>r.list.contains(event.target as Node))))return;
  const target=event.target,continuation=target.closest<HTMLElement>('#next a,#next button,button#next,#skip a,#stop a');
  if(!s.source.validate(target)||(continuation&&!s.source.beginContinue(continuation))){event.preventDefault();event.stopImmediatePropagation();s.model.message='原动作已隐藏、禁用或更新。本次未操作，请使用当前控件。';schedule()}else s.model.message='';
 }
-function focusAction(e:Event){if(!active||!enabled||!(e.target instanceof Element))return;const group=e.target.closest('.dcu-group');if(group)for(const [key,el] of active.groups)if(el===group){focusGroup(active,key);break}}
+function focusAction(e:Event){if(!active||!enabled()||!(e.target instanceof Element))return;const group=e.target.closest('.dcu-group');if(group)for(const [key,el] of active.groups)if(el===group){focusGroup(active,key);break}}
 function change(e:Event){const s=active;if(!s||!s.regions.some(r=>r.list.contains(e.target as Node)))return;
  if(e.type==='change'&&e.isTrusted&&e.target instanceof Element&&s.source.validate(e.target))for(const [key,el]of s.groups)if(el.contains(e.target)){s.edited.add(key);break}
  schedule();
@@ -161,6 +160,6 @@ let observedRoot:HTMLElement|undefined;function observeScope(){const target=docu
 function start(){if(!scope.active())return;observeScope();if(failed&&document.querySelector('#passages .passage:not(.passage-out)')!==failedPassage){failed=false;failedPassage=null}document.addEventListener('toggle',schedule,true);document.addEventListener('click',nativeClick,true);document.addEventListener('focusin',focusAction);document.addEventListener('pointerdown',focusAction);document.addEventListener('change',change);document.addEventListener('input',change);window.addEventListener('resize',schedule);window.addEventListener('scroll',schedule,true);window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);if(runtime.jQuery)runtime.jQuery(document).on(':passageend.dcu :storyready.dcu',schedule);schedule()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 scope.own(()=>observer.disconnect());
-runtime.DoLCombatUI={version:'0.2.0',getEnabled:()=>enabled&&!failed,refresh:scan,setEnabled,destroy(){scope.dispose();document.removeEventListener('toggle',schedule,true);document.removeEventListener('click',nativeClick,true);document.removeEventListener('focusin',focusAction);document.removeEventListener('pointerdown',focusAction);document.removeEventListener('change',change);document.removeEventListener('input',change);window.removeEventListener('resize',schedule);window.removeEventListener('scroll',schedule,true);window.visualViewport?.removeEventListener('resize',schedule);window.visualViewport?.removeEventListener('scroll',schedule);document.removeEventListener('DOMContentLoaded',start);runtime.jQuery?.(document).off('.dcu');disposeSession();delete runtime.DoLCombatUI}};
+runtime.DoLCombatUI={version:'0.2.0',getEnabled:()=>enabled()&&!failed,refresh:scan,setEnabled,destroy(){scope.dispose();document.removeEventListener('toggle',schedule,true);document.removeEventListener('click',nativeClick,true);document.removeEventListener('focusin',focusAction);document.removeEventListener('pointerdown',focusAction);document.removeEventListener('change',change);document.removeEventListener('input',change);window.removeEventListener('resize',schedule);window.removeEventListener('scroll',schedule,true);window.visualViewport?.removeEventListener('resize',schedule);window.visualViewport?.removeEventListener('scroll',schedule);document.removeEventListener('DOMContentLoaded',start);runtime.jQuery?.(document).off('.dcu');disposeSession();delete runtime.DoLCombatUI}};
 
 }

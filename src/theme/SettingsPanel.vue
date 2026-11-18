@@ -99,7 +99,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
    </section>
 
    <section v-else-if="category==='pages'" class="dmt-workspace-section" aria-labelledby="dmt-pages-heading">
-    <div class="dmt-workspace-intro"><p class="dmt-eyebrow">页面</p><h3 id="dmt-pages-heading">选择使用哪些 Soft &amp; Wet 页面</h3><p>每项可以单独切回原版；偏好自动保存。</p></div>
+    <div class="dmt-workspace-intro"><p class="dmt-eyebrow">页面</p><h3 id="dmt-pages-heading">选择使用哪些 Soft &amp; Wet 页面</h3><p>开关显示各模块的当前状态。故障回退会保留你的选择，可以再次启用重试。</p></div>
     <details class="dmt-setting-card dmt-control-sheet dmt-page-switches"><summary><strong>各页面与兼容开关</strong><span>按页面切回原版</span></summary>
      <SettingsToggle label="启用新版存档界面" :checked="state.saves" @change="onSaves"/>
      <SettingsToggle label="启用新版服装店" :checked="state.shop" @change="onShop"/>
