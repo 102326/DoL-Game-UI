@@ -17,7 +17,7 @@
 
 ## Decided — 已经确定什么
 
-- 第三批在 Mac 中性 Chromium 夹具通过设置 9 项、Hub 13 项（含 48 组布局）。覆盖左右对齐、390／1280 CSS px、默认／150% 缩放、窄矮窗口及弹窗降级和退出。150% 时，旧全局样式把未接管按钮的内边距从 2px／3px 改成 12px／18px；新样式保留原值。Hub 调用方文字和选择行为由调用方持有。
+- 第三批在 Mac 中性 Chromium 夹具通过设置 9 项、Hub 13 项（含 48 组布局）。覆盖左右对齐、390／1280 CSS px、默认／150% 缩放、窄矮窗口及弹窗降级和退出。150% 时，旧全局样式把未接管按钮的内边距从 2px／3px 改成 12px／18px；新样式保留原值。Hub 调用方文字和选择行为由调用方持有。初次 [研究 PR 检查](https://github.com/102326/DoL-Game-UI/actions/runs/44279224938) 揭示 150% 网格行容不下折行标题。在 Mac 以长标签复现后，改为按文字实际高度排列，保留菜单内部滚动及原有命中断言。
 
 - 以 `3728e9f` 为第二批父提交。Mac Node 26 中性 Chromium 夹具验证模块缺席、衣柜忙态零写入、面板挂载失败保留开启选择、同值重试恢复、存储失败重试、主题初始化失败的恢复按钮和跨重启关闭。已有字体与延迟弹窗回归同轮运行。衣柜忙态由受控接口注入，真实业务操作留实机。复现用 `npm run ci:check`、`node scripts/build-framework.mjs`、`node tests/evolution-settings-integration.cjs`（8 项）与 `node tests/ui41-settings-retirement.cjs`。
 

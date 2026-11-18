@@ -180,9 +180,14 @@ async function scaledControls(p:playwright.Page){
   await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
   const nav=p.locator('.sf-motion-orbit');
   assert.equal(await nav.evaluate(n=>n.classList.contains('is-grid')),mode==='grid');
+  if(mode==='grid'){
+   // A wrapped label must determine row height regardless of the platform font.
+   const label=nav.locator('.sf-motion-petal:not([data-motion-view$="interface-settings"]) .sf-motion-tool-label').first();
+   await label.evaluate(n=>{n.textContent='Workspace display preferences'});
+  }
   for(const button of await nav.locator('button').all()){
    await button.evaluate(n=>n.scrollIntoView({block:'nearest'}));
-   const data=await button.evaluate(n=>{const r=n.getBoundingClientRect(),s=getComputedStyle(n),text=n.querySelector('span'),t=text?.getBoundingClientRect();return{width:r.width,height:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,font:parseFloat(getComputedStyle(text??n).fontSize),buttonFont:s.fontSize,rootFont:getComputedStyle(document.documentElement).getPropertyValue('--dgu-font-scale'),rootHit:getComputedStyle(document.documentElement).getPropertyValue('--dgu-control-hit'),hit:n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),textFits:!t||(t.left>=r.left-1&&t.right<=r.right+1&&t.top>=r.top-1&&t.bottom<=r.bottom+1),scroll:n.scrollWidth<=n.clientWidth+1}});
+   const data=await button.evaluate(n=>{const r=n.getBoundingClientRect(),s=getComputedStyle(n),text=n.querySelector('span'),t=text?.getBoundingClientRect();return{width:r.width,height:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,font:parseFloat(getComputedStyle(text??n).fontSize),label:text?.textContent,labelBounds:t?.toJSON(),buttonFont:s.fontSize,rootFont:getComputedStyle(document.documentElement).getPropertyValue('--dgu-font-scale'),rootHit:getComputedStyle(document.documentElement).getPropertyValue('--dgu-control-hit'),hit:n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),textFits:!t||(t.left>=r.left-1&&t.right<=r.right+1&&t.top>=r.top-1&&t.bottom<=r.bottom+1),scroll:n.scrollWidth<=n.clientWidth+1}});
    assert.ok(data.width>=66&&data.height>=66&&data.left>=0&&data.right<=1280&&data.top>=0&&data.bottom<=900&&data.hit&&data.textFits&&data.scroll,JSON.stringify({mode,...data}));
    assert.ok(data.font>=17,JSON.stringify({mode,...data}));
   }
