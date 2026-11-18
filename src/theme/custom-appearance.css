@@ -99,3 +99,14 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-font] .dgw-root :is(.dgw
 html[data-stone-free][data-dol-midnight][data-sw-custom-font][data-dgu-acrylic-adjustment] :is(#customOverlay,.passage).dgp-overlay:has(>.dgp-host) :is(.settingsGrid,#traitListsSearch,#featTypes) label>select:only-of-type:not([multiple]):not([size]){
  font-family:var(--sw-custom-font)!important;
 }
+
+/* The Host View keeps its own content. The official Hub supplies the surrounding chrome. */
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-sheet{
+ background-color:var(--sw-custom-glass)!important;
+}
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-sheet > main{
+ background-color:var(--sw-custom-panel);
+}
+html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[data-official] .sf-motion-sheet :is(
+ header,footer,header button,footer button,.sf-reference-copy,.sf-reference-origin
+){font-family:var(--sw-custom-font)!important}
