@@ -43,11 +43,14 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#custo
  &[data-dgu-adapter=CheatExtendedInlineSoftWet] .CEDISPLAY_setting{background:var(--q-well)!important}
 }
 
-/* The reviewed install portal retains its native handlers and scrolls inside the dialog. */
-html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] .modhub-modal-backdrop[data-dgu-adapter=ModHubSoftWetModal][data-dgu-adapter-match=full]>.modhub-modal-dialog{
+/* Both reviewed dialogs keep their native header and actions outside the scroll owner. */
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(
+ .modhub-modal-backdrop[data-dgu-adapter=ModHubSoftWetModal][data-dgu-adapter-match=full]>.modhub-modal-dialog,
+ #modHubRestorePanelOverlay[data-dgu-adapter=ModHubSoftWetRestore][data-dgu-adapter-match=full]>#modHubRestorePanel
+){
  box-sizing:border-box;max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);display:flex;flex-direction:column;min-height:0;
- & .modhub-modal-body{min-height:0;overflow:auto;overflow-wrap:anywhere}
- & .modhub-modal-footer{display:flex;flex-wrap:wrap;gap:var(--dgu-control-py,7px)}
+ & :is(.modhub-modal-body,.modhub-restore-panel-body){min-height:0;overflow:auto;overflow-wrap:anywhere}
+ & :is(.modhub-modal-footer,.modhub-restore-panel-footer){display:flex;flex-wrap:wrap;gap:var(--dgu-control-py,7px)}
 }
 
 /* Portaled dialogs and the virtual phone sample only their existing outer face. */
@@ -62,7 +65,7 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(
  &:is(html[data-dgu-visualGlass] *){backdrop-filter:var(--dgu-acrylic-axis-filter)!important;-webkit-backdrop-filter:var(--dgu-acrylic-axis-filter)!important}
  &:is(html:not([data-dgu-visualGlass]) *){background:var(--sw-custom-background,#1d262b)!important}
 }
-html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #modHubRestorePanelOverlay[data-dgu-adapter=ModHubSoftWetRestore][data-dgu-adapter-match=full]>#modHubRestorePanel{font-size:calc(1rem * var(--dgu-font-scale,1))}
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #modHubRestorePanelOverlay[data-dgu-adapter=ModHubSoftWetRestore][data-dgu-adapter-match=full]>#modHubRestorePanel{font-size:calc(1rem * var(--dgu-font-scale,1));&:is(html[data-sw-custom-font] *){font-family:var(--sw-custom-font)}}
 
 /* These are paint-only overrides; progress values and native handlers keep running. */
 html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#customOverlay,#modHubManagerToolsMenu,.modhub-modal-backdrop,#modHubRestorePanelOverlay,#phone-wrapper,#smartphone_debug,.CEDISPLAY):is(

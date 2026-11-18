@@ -2250,6 +2250,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings:M03 registered manager, tools and restore surfaces",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings:R01 owned form geometry and unowned control boundaries",
           "minimumAssertions": 1
         },
@@ -2314,8 +2318,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "d3530bd09526475b4bd516fa8eb888ff7f8370cc1aa58ec2982ecd8a39e3374c",
-      "assertionSites": 422,
+      "sourceSha256": "85dfd2fec1890d778e86b98f653a8dfdcae7447c6326f74cc1880b40a9b6e6c6",
+      "assertionSites": 460,
       "rendererContexts": [
         "weather:2d"
       ]

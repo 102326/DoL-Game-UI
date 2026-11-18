@@ -218,6 +218,7 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   assert.deepEqual(migration,{initial:100,session:125,persisted:100,retried:125,font:'Georgia',center:true,marker:true});
   return{viewports:[1280,390],nativeOutsideScope:true,adapterMatchComparison:true,migration};
  });
+ if(!baseline)await check('M03 registered manager, tools and restore surfaces',()=>verifyManagerSurfaces(page));
  if(!baseline)await check('R01 owned form geometry and unowned control boundaries',async()=>{
   await open();
   await page.getByRole('button',{name:'材质',exact:true}).click();
@@ -394,3 +395,136 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
 }
 module.exports={verifySettingsIntegration};
 if(require.main===module)(async()=>{const browser=await playwright.chromium.launch(browserOptions);try{await verifySettingsIntegration(browser,{baseline:process.argv.includes('--baseline')})}finally{await browser.close()}})().catch(e=>{receipt.terminalFailure(e);process.exitCode=1});
+
+async function verifyManagerSurfaces(page:playwright.Page){
+ const main='#customOverlay',tools='#modHubManagerToolsMenu',restore='#modHubRestorePanelOverlay';
+ const full=async(root:string,id:string)=>page.locator(root+'[data-dgu-adapter="'+id+'"][data-dgu-adapter-match=full]').waitFor();
+ await page.evaluate(()=>theme.openSettings());
+ await page.getByRole('button',{name:'材质',exact:true}).click();
+ await page.getByLabel('本机字体',{exact:true}).fill('Georgia');
+ await page.getByRole('button',{name:'应用并保存'}).click();
+ await page.locator('.dmt-close').click();
+ await page.waitForFunction(()=>!document.querySelector<HTMLDialogElement>('dialog')?.open);
+ const filler='<p>'+'ContinuousSampleName'.repeat(8)+'</p>';
+ await page.addStyleTag({content:[
+  '#customOverlay{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(720px,95vw)}#modHubManagerToolsMenu{position:fixed;width:230px;z-index:20}',
+  '.modhub-manager-tool-row{display:flex}.modhub-manager-tool-action{flex:1}.modhub-manager-tool-pin{flex:none}',
+  '#modHubRestorePanelOverlay{position:fixed;inset:0;display:grid;place-items:center;z-index:30}',
+  '#modHubRestorePanel{font:16px/1.6 sans-serif;width:min(720px,95vw);overflow:hidden}.modhub-restore-panel-body{overflow:auto}',
+ ].join('\n')});
+ await page.locator('body').evaluate((body,filler)=>{
+  body.insertAdjacentHTML('beforeend','<div id="customOverlay" data-overlay="modloader"><header id="customOverlayTitle"><div id="overlayTabs" class="modhub-modloader-tabs"><button id="main-action">Workspace preferences and notifications</button><button>Overview</button><button>History</button></div><button id="main-close">Close</button></header><div id="customOverlayContent"><div id="modHubModManageContainer" class="modhub-container"><button id="modHubManagerToolsBtn" aria-haspopup="menu" aria-expanded="false">Tools</button><div class="modhub-btn-group"><button class="btn-delete"><span class="red">Warning</span></button></div><span id="caller-text" style="font:17px monospace">Caller status</span>'+filler.repeat(20)+'</div></div></div>');
+  const main=settingsNode<HTMLElement>('#customOverlay');
+  settingsNode<HTMLElement>('#main-action').onclick=()=>nativeCalls++;
+  settingsNode<HTMLElement>('#main-close').onclick=()=>{main.hidden=true;settingsNode<HTMLElement>('#native').focus()};
+ },filler);
+ await page.addStyleTag({path:'compat/modhub-soft-wet/modhub-soft-wet.css'});
+ await page.addScriptTag({type:'module',content:[
+  "import {createUiRuntime} from '/src/runtime/ui.ts';",
+  "window.modUtils={getMod:name=>name==='ModHub'?{version:'2.0.2'}:undefined,getSemVerTools:()=>({parseVersion:v=>({version:v}),parseRange:r=>r,satisfies:(v,r)=>v==='2.0.2'&&r==='>=1.3.0'})};",
+  "window.probeRuntime=createUiRuntime(window,()=>theme.getPreferences());window.DoLGameUI={ui:probeRuntime.api};",
+  "await import('/compat/modhub-soft-wet/modhub-soft-wet.ts');",
+ ].join('\n')});
+ await full(main,'ModHubSoftWet');
+ const warning=page.locator('.btn-delete .red'),warningColor=await warning.evaluate(n=>getComputedStyle(n).color);
+ const menuRows=Array.from({length:24},(_,i)=>'<div class="modhub-manager-tool-row" role="none"><button class="modhub-manager-tool-action" role="menuitem" tabindex="-1">'+(i===0?'Workspace preferences and notifications':'Sample '+i)+'</button><button class="modhub-manager-tool-pin" data-modhub-pin-tool="sample" aria-label="Pin" tabindex="-1">+</button></div>').join('');
+ await page.locator('#modHubModManageContainer').evaluate((n,rows)=>n.insertAdjacentHTML('afterbegin','<div id="modHubManagerToolsMenu" class="modhub-manager-tools-menu" role="menu" hidden>'+rows+'</div>'),menuRows);
+ // Load only the archived menu positioning, keyboard and dismissal function.
+ const vendor=fs.readFileSync('docs/evolution/perf-4.1-evidence-20261026/vendor/modhub-manager.js','utf8');
+ const start=vendor.indexOf('function modHubBindManagerTools(container)'),end=vendor.indexOf('\nwindow.modHubRenderModManageUI',start);
+ assert.ok(start>=0&&end>start);
+ await page.addScriptTag({content:vendor.slice(start,end)+'\nmodHubBindManagerTools(document.getElementById("modHubModManageContainer"));'});
+ await page.locator('.modhub-manager-tool-action').first().evaluate(n=>n.addEventListener('click',()=>nativeCalls++));
+ const trigger=page.locator('#modHubManagerToolsBtn'),menu=page.locator(tools);
+ const openTools=async()=>{await trigger.click();await full('body>'+tools,'ModHubSoftWetTools')};
+ const restoreHTML='<div id="modHubRestorePanelOverlay" class="modhub-restore-panel-overlay"><section id="modHubRestorePanel" class="modhub-restore-panel" role="dialog" aria-modal="true"><header class="modhub-restore-panel-header">Review</header><div class="modhub-restore-panel-body"><button id="restore-action">Workspace preferences and notifications</button>'+filler.repeat(20)+'</div><footer class="modhub-restore-panel-footer"><button id="restore-close">Close</button></footer></section></div>';
+ await page.locator('body').evaluate((n,html)=>{
+  n.insertAdjacentHTML('beforeend',html);
+  const panel=settingsNode<HTMLElement>('#modHubRestorePanelOverlay');
+  settingsNode<HTMLElement>('#restore-action').onclick=()=>nativeCalls++;
+  settingsNode<HTMLElement>('#restore-close').onclick=()=>{panel.remove();settingsNode<HTMLElement>('#modHubManagerToolsBtn').focus()};
+  Reflect.set(window,'detachedRestore',panel);
+ },restoreHTML);
+ const releasedRestore=()=>page.waitForFunction(()=>!Reflect.get(window,'detachedRestore').hasAttribute('data-dgu-adapter'));
+ const removeRestore=async()=>{await page.locator(restore).evaluate(n=>n.remove());await releasedRestore()};
+ const addRestore=async()=>{await page.evaluate(()=>document.body.append(Reflect.get(window,'detachedRestore')));await full(restore,'ModHubSoftWetRestore')};
+ await full(restore,'ModHubSoftWetRestore');
+ await removeRestore();
+ const samples:Array<{root:string;width:number;scale:number;center:boolean;glass:boolean;hitHeight:number;scroll:boolean}>=[];
+ async function sample(root:string,action:string,scroll:string,scale:number,center:boolean,glass:boolean){
+  const surface=page.locator(root),control=page.locator(action).first(),body=page.locator(scroll);
+  await control.scrollIntoViewIfNeeded();
+  const geometry=await surface.evaluate(n=>{const r=n.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,w:innerWidth,h:innerHeight,font:getComputedStyle(n).fontSize,family:getComputedStyle(n).fontFamily,glass:getComputedStyle(n).backdropFilter}});
+  assert.ok(geometry.left>=-1&&geometry.right<=geometry.w+1&&geometry.top>=-1&&geometry.bottom<=geometry.h+1,root+' '+JSON.stringify(geometry));
+  assert.match(geometry.family,/Georgia/,root);assert.equal(geometry.font,scale===100?'16px':'24px',root);
+  assert.equal(geometry.glass!=='none',glass,root+' glass '+geometry.glass);
+  const metrics=await control.evaluate(n=>{const r=n.getBoundingClientRect(),s=getComputedStyle(n);return {height:r.height,family:s.fontFamily,font:s.fontSize,align:s.textAlign,hit:n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),wrap:n.scrollWidth<=n.clientWidth+1}});
+  assert.match(metrics.family,/Georgia/,action);assert.equal(metrics.font,scale===100?'13px':'19.5px',action);assert.equal(metrics.align,center?'center':'left',action);
+  assert.ok(metrics.height>=44*scale/100&&metrics.hit&&metrics.wrap,action+' '+JSON.stringify(metrics));
+  const scrollable=await body.evaluate(n=>{const el=n as HTMLElement,original=el.scrollTop;el.scrollTop=el.scrollHeight;const moved=el.scrollTop>0;el.scrollTop=original;return {moved,noOverflow:el.scrollWidth<=el.clientWidth+1}});
+  assert.ok(scrollable.moved&&scrollable.noOverflow,scroll+' '+JSON.stringify(scrollable));
+  samples.push({root,width:geometry.w,scale,center,glass,hitHeight:metrics.height,scroll:scrollable.moved});
+ }
+ for(const width of [1280,390]){
+  await page.setViewportSize({width,height:width===390?340:800});
+  for(const scale of [100,150]){
+   const center=scale===150,glass=width===390?center:!center;
+   await page.evaluate(({scale,center,glass})=>{theme.setPreference('fontScale',scale);theme.setPreference('buttonScale',scale);theme.setPreference('centerOptions',center);theme.setPreference('visualGlass',glass)},{scale,center,glass});
+   await sample(main,'#main-action','#customOverlayContent',scale,center,glass);
+   await openTools();await sample(tools,'.modhub-manager-tool-action',tools,scale,center,glass);
+   await page.keyboard.press('Escape');
+   assert.ok(await trigger.evaluate(n=>n===document.activeElement));assert.ok(await menu.isHidden());
+   await addRestore();await sample('#modHubRestorePanel','#restore-action','.modhub-restore-panel-body',scale,center,glass);
+   await page.locator('#restore-close').click();await releasedRestore();assert.ok(await trigger.evaluate(n=>n===document.activeElement));
+  }
+ }
+ assert.equal(await warning.evaluate(n=>getComputedStyle(n).color),warningColor);
+ assert.equal(await page.locator('#caller-text').evaluate(n=>getComputedStyle(n).fontFamily),'monospace');
+ await page.locator('#main-action').click();await openTools();
+ await menu.getByRole('menuitem').first().click();assert.ok(await menu.isHidden());
+ await addRestore();await page.locator('#restore-action').click();assert.equal(await page.evaluate(()=>nativeCalls),3);
+ // Retain actual native nodes and handlers across recognition changes.
+ async function drift(root:string,id:string,required:string,safe:string){
+  const host=page.locator(root),control=host.locator('button').first();
+  const requiredNode=await page.locator(required).elementHandle(),safeNode=await page.locator(safe).elementHandle();
+  assert.ok(requiredNode&&safeNode);
+  // Remove the fingerprint without replacing native nodes.
+  for(const node of [requiredNode,safeNode]){
+   await node.evaluate(n=>{Reflect.set(n,'savedIdentity',[n.getAttribute('id'),n.getAttribute('class')]);n.removeAttribute('id');n.removeAttribute('class')});
+   if(node===requiredNode)await page.locator(root+'[data-dgu-adapter-match=partial]').waitFor();
+   else await page.waitForFunction(selector=>!settingsNode(selector).hasAttribute('data-dgu-adapter'),root);
+   assert.doesNotMatch(await control.evaluate(n=>getComputedStyle(n).fontFamily),/Georgia/);
+  }
+  for(const node of [safeNode,requiredNode])await node.evaluate(n=>{
+   const [id,cls]=Reflect.get(n,'savedIdentity');if(id!==null)n.setAttribute('id',id);if(cls!==null)n.setAttribute('class',cls);
+  });
+  await full(root,id);
+ }
+ await drift(restore,'ModHubSoftWetRestore','.modhub-restore-panel-footer','#modHubRestorePanel');
+ await removeRestore();await drift(main,'ModHubSoftWet','#modHubModManageContainer','#overlayTabs');
+ await openTools();
+ const row=menu.locator('.modhub-manager-tool-row').first();await row.evaluate(n=>n.classList.remove('modhub-manager-tool-row'));
+ await page.locator(tools+'[data-dgu-adapter-match=partial]').waitFor();
+ assert.doesNotMatch(await menu.getByRole('menuitem').first().evaluate(n=>getComputedStyle(n).fontFamily),/Georgia/);
+ // The menu's safe fingerprint is :scope. Losing its scope releases it to idle.
+ await menu.evaluate(n=>n.classList.remove('modhub-manager-tools-menu'));await page.waitForFunction(()=>!settingsNode('#modHubManagerToolsMenu').hasAttribute('data-dgu-adapter'));
+ await menu.evaluate(n=>{n.classList.add('modhub-manager-tools-menu');n.firstElementChild!.classList.add('modhub-manager-tool-row')});
+ // Native close and reopen rediscover the same node after its scope was lost.
+ await page.keyboard.press('Escape');await openTools();
+ // Short lists preserve their intrinsic height and keyboard destination.
+ await menu.evaluate(n=>{for(const extra of [...n.children].slice(2))extra.remove()});
+ await menu.getByRole('menuitem').first().focus();await page.keyboard.press('End');
+ assert.ok(await menu.getByRole('menuitem').last().evaluate(n=>n===document.activeElement));
+ assert.ok(await menu.evaluate(n=>{
+  const last=n.lastElementChild!.getBoundingClientRect(),box=n.getBoundingClientRect();
+  return last.bottom<=box.bottom&&box.bottom-last.bottom<=12;
+ }),'short menu should end after its final row');
+ await page.keyboard.press('Escape');await page.locator('#main-close').click();await page.waitForFunction(()=>!settingsNode('#customOverlay').hasAttribute('data-dgu-adapter'));
+ assert.ok(await page.locator('#native').evaluate(n=>n===document.activeElement));
+ await page.locator(main).evaluate(n=>{(n as HTMLElement).hidden=false});await full(main,'ModHubSoftWet');
+ await openTools();await addRestore();
+ await page.evaluate(()=>{Reflect.get(window,'ModHubSoftWet').destroy();Reflect.get(window,'probeRuntime').destroy()});
+ for(const root of [main,tools,restore])assert.equal(await page.locator(root).getAttribute('data-dgu-adapter'),null);
+ for(const action of ['#main-action','.modhub-manager-tool-action','#restore-action'])assert.doesNotMatch(await page.locator(action).first().evaluate(n=>getComputedStyle(n).fontFamily),/Georgia/);
+ return {surfaces:['manager','tools','restore'],samples,neutralActions:3};
+}
