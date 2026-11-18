@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, shallowRef} from 'vue';
+import {computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, shallowRef, watchEffect} from 'vue';
 import {visualScope} from '../../src/ui/visual-scope';
 const scope=visualScope();
 import type {Binding, Host, MountContext, View} from '../contracts';
@@ -22,13 +22,50 @@ let suppressClick = false, sequence = 0, stopHint:(()=>void)|undefined, instance
 let stopExperimental:(()=>void)|undefined,coordinateScale={x:1,y:1};
 let geometryObserver:ResizeObserver|undefined,observedDock:HTMLElement|undefined;
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
+const orbit=ref<HTMLElement>();
+if(props.previewLayout==='drawer')onMounted(()=>{
+ const root=layer.value!,entry=ball.value!;
+ const hovered=ref(false),focused=ref(false),used=ref(false);
+ const enter=(event:PointerEvent)=>{used.value=true;hovered.value=event.pointerType!=='touch'};
+ const leave=()=>{hovered.value=false};
+ const focus=()=>{used.value=true;focused.value=true};
+ const blur=(event:FocusEvent)=>{focused.value=event.relatedTarget instanceof Node && root.contains(event.relatedTarget)};
+ entry.addEventListener('pointerenter',enter);entry.addEventListener('pointerleave',leave);
+ root.addEventListener('focusin',focus);root.addEventListener('focusout',blur);
+ scope.own(()=>{
+  entry.removeEventListener('pointerenter',enter);entry.removeEventListener('pointerleave',leave);
+  root.removeEventListener('focusin',focus);root.removeEventListener('focusout',blur);
+ });
+ scope.own(watchEffect(onCleanup=>{
+  const gap=Math.min(point.x-area.left,area.left+area.width-point.x-56);
+  if(!used.value||gap>32||hovered.value||focused.value||expanded.value||selected.value||dragging.value||docked.value)return;
+  onCleanup(scope.timeout(()=>{
+   if(!document.hidden && !gesture && props.hostContext.binding().isCurrent())dock();
+  },2000));
+ }));
+});
+const drawerLeft=computed(()=>point.x+28<area.left+area.width/2);
+const drawerUp=computed(()=>point.y+(docked.value?36:28)>area.top+area.height/2);
 const menu = computed(() => {
  const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
  const rows=Math.ceil((count-(hasSettings?1:0))/2),officialHeight=24+(hasSettings?58:0)+rows*66+(rows+(hasSettings?1:0))*6+57;
  if(props.previewLayout){
-  const list=props.previewLayout==='list';
-  const height=24+(list?count:Math.ceil(count/2))*((list?44:66)+6)+57;
-  return menuLayout(point,area,count,true,docked.value?38:56,height);
+  const drawer=props.previewLayout==='drawer';
+  const height=drawer?12+count*54:24+count*50+57;
+  const box=menuLayout(point,area,count,true,docked.value?38:56,height);
+  if(drawer){
+   const centerX=point.x+28;
+   // The first icon center is 6px of inset plus half its 40px width from the outer edge.
+   const left=drawerLeft.value;
+   const anchor=left?centerX-26:centerX+26;
+   box.width=Math.min(box.width,left?area.left+area.width-anchor:anchor-area.left);
+   box.x=left?anchor:anchor-box.width;
+   const edge=drawerUp.value?point.y-4:point.y+56+4;
+   const available=drawerUp.value?edge-area.top-6:area.top+area.height-6-edge;
+   box.height=Math.max(0,Math.min(height,available));
+   box.y=drawerUp.value?edge-box.height:edge;
+  }
+  return box;
  }
  const fan=props.officialPreferences&&props.preferredMode==='fan';
  return menuLayout(point,area,count,props.preferredMode==='grid'||count>3&&!fan,docked.value?38:56,props.officialPreferences?officialHeight:undefined,fan);
@@ -100,7 +137,10 @@ function toggle(event: MouseEvent) {
  if (!props.hostContext.binding().isCurrent()) return;
  if (docked.value) {clearHint();docked.value = false; save(); Object.assign(point, locate(saved, area)); return}
  clearHint();
- if (selected.value || expanded.value) close(); else expanded.value = true;
+ if (selected.value || expanded.value) close(); else {
+  expanded.value=true;
+  if(props.previewLayout==='drawer')void nextTick(()=>{if(orbit.value)orbit.value.scrollTop=0});
+ }
 }
 async function choose(view: View) {
  if (!props.hostContext.binding().isCurrent()) return;
@@ -202,12 +242,12 @@ onBeforeUnmount(scope.dispose);
 </script>
 
 <template>
- <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-preview-menu="previewLayout" @keydown="key">
+ <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-preview-menu="previewLayout" :data-drawer-up="previewLayout==='drawer' && drawerUp || undefined" :data-drawer-left="previewLayout==='drawer' && drawerLeft || undefined" @keydown="key">
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
-  <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
+  <nav ref="orbit" class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
   :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--utility-x': `${menu.petalX===0?0:menu.width-64}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
    <button v-for="(view, index) in views" :key="`${view.owner}:${view.id}`" type="button" class="sf-motion-petal" :data-motion-view="`${view.owner}:${view.id}`"
-    :style="{'--i': index, '--x': `${petalOffset(index).x}px`, '--y': `${petalOffset(index).y}px`}" @click="choose(view)">
+    :style="{'--i': index, '--step':previewLayout==='drawer' ? (index/Math.max(1,views.length-1))**1.65 : undefined, '--x': `${petalOffset(index).x}px`, '--y': `${petalOffset(index).y}px`}" @click="choose(view)">
     <svg v-if="officialPreferences" class="sf-motion-tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
      <path v-if="view.id==='interface-settings'" d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6m-6 0v6"/>
      <path v-else-if="view.id==='native-saves'" d="M5 3h12l3 3v15H4V3h1Zm3 0v7h8V3M8 21v-7h8v7"/>
@@ -216,7 +256,7 @@ onBeforeUnmount(scope.dispose);
      <path v-else d="m12 2 10 10-10 10L2 12 12 2Zm0 5v6m0 3v1"/>
     </svg><span v-else aria-hidden="true">{{ ['◉', '◈', '⇄'][index % 3] }}</span><span class="sf-motion-tool-label">{{ view.title }}</span>
    </button>
-   <div class="sf-motion-utilities">
+   <div v-if="previewLayout!=='drawer'" class="sf-motion-utilities">
     <button type="button" @click="dock"><svg v-if="officialPreferences" :style="{transform:side==='left'?'scaleX(-1)':undefined}" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 4v16M4 12h11m-4-4 4 4-4 4"/></svg><span>停靠侧边</span></button>
     <button type="button" @click="reset"><svg v-if="officialPreferences" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8a8 8 0 1 1-1 7M5 3v5h5"/><circle cx="12" cy="12" r="2"/></svg><span>恢复位置</span></button>
     <button type="button" @click="dismiss"><svg v-if="officialPreferences" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.5 5.2c4.8-.7 8.2 3 10.5 6.8a17 17 0 0 1-3.1 3.8M6.1 6.1A20 20 0 0 0 1 12c3 5 7 8 11 7a11 11 0 0 0 3.2-.8"/><path d="M10 10a3 3 0 0 0 4 4"/></svg><span>隐藏工具</span></button>
