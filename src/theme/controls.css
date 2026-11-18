@@ -36,7 +36,7 @@
 /* Reading scale belongs to the native text surface. Compatible overlays opt in
    through their own adapter; an arbitrary body portal has no layout contract. */
 html[data-dgu-font-scaled] :is(#passages,#ui-dialog-body,#customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves])){font-size:calc(1rem * var(--dgu-font-scale,1))}
-html[data-dgu-buttons-scaled] :is(.dgw-root,.dgshop-toolbar,.dcu-root,.dgs-host,.dgp-host,.dgc-host,.dgu-inspector,.dgu-surface-header,.dgs-navigation,.dgw-reference-compare,.dgshop-reference-comparison) :is(button,input[type=button],input[type=submit]):not(#ui-bar *){
+html[data-dgu-buttons-scaled] :is(.dgw-root,.dgshop-toolbar,.dcu-root,.dgs-host,.dgp-host,.dgc-host,.dgu-inspector,.dgu-surface-header,.dgs-navigation,.dgw-reference-compare,.dgshop-reference-comparison) :is(button,input[type=button],input[type=submit]):not(#ui-bar *):not(:where(.dgw-exits,.dgw-preserved,.dgw-services,.dgw-actions,.dgw-equipment,.dgw-warmth-content,.dgw-detail-native) *){
  padding:var(--dgu-control-py) var(--dgu-control-px);min-height:var(--dgu-control-hit);box-sizing:border-box;max-width:100%;white-space:normal;overflow-wrap:anywhere;
 }
 :is(#dol-midnight-controls input[type=range],.dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=range]:only-of-type){width:50%;min-width:0;accent-color:var(--dgu-accent)}

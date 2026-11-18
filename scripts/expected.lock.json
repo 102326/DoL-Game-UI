@@ -2250,6 +2250,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings:W02 wardrobe owner, details drawer and reference surfaces",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings:M03 registered manager, tools and restore surfaces",
           "minimumAssertions": 1
         },
@@ -2318,8 +2322,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "85dfd2fec1890d778e86b98f653a8dfdcae7447c6326f74cc1880b40a9b6e6c6",
-      "assertionSites": 460,
+      "sourceSha256": "10c3550c35e3f458ae3f9caf0d2b3dd01bee3011acdf410aa248d05c5ca426ca",
+      "assertionSites": 461,
       "rendererContexts": [
         "weather:2d"
       ]

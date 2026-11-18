@@ -12,6 +12,7 @@ import browserOptions = require('./browser-options.cjs');
 import receipt = require('../scripts/ci-process-receipt.cjs');
 import evidence = require('./moody-fixture-evidence.cjs');
 import oracles = require('./moody-oracles.cjs');
+import wardrobeSurfaces = require('./wardrobe-surfaces-probe.cjs');
 import type {Preferences,PreferenceKey} from '../src/theme/preferences';
 type Theme={openSettings():void;setPreference(key:PreferenceKey,value:boolean|number):void;getPreferences():Preferences;destroy():void};
 type SettingsAnimation={node:Element;frames:Keyframe[]|PropertyIndexedKeyframes|null;options:number|KeyframeAnimationOptions|undefined;animation:Animation};
@@ -218,6 +219,9 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   assert.deepEqual(migration,{initial:100,session:125,persisted:100,retried:125,font:'Georgia',center:true,marker:true});
   return{viewports:[1280,390],nativeOutsideScope:true,adapterMatchComparison:true,migration};
  });
+ if(!baseline)await check('W02 wardrobe owner, details drawer and reference surfaces',async()=>{
+  const samples=await wardrobeSurfaces(page);assert.equal(samples.length,4);return samples;
+ });
  if(!baseline)await check('M03 registered manager, tools and restore surfaces',()=>verifyManagerSurfaces(page));
  if(!baseline)await check('R01 owned form geometry and unowned control boundaries',async()=>{
   await open();
@@ -390,7 +394,7 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
    await page.evaluate(()=>Reflect.set(HTMLDialogElement.prototype,'showModal',undefined));await open();assert.equal(await page.locator('dialog').evaluate(n=>n.classList.contains('dmt-modeless')),true);const before=await page.evaluate(()=>theme.getPreferences().mobileCompactControls);await page.getByLabel('手机紧凑按钮间距',{exact:true}).click();assert.equal(await page.evaluate(()=>theme.getPreferences().mobileCompactControls),!before);await close();await closed();
    await page.evaluate(()=>{theme.openSettings();const dialog=settingsNode<HTMLDialogElement>('dialog'),shell=settingsNode('.dmt-settings-shell'),animation=lastAnimation(settingsAnimations.filter(x=>x.node===shell)).animation;Object.assign(window,{oldDialog:dialog,oldShell:shell,retiredShellAnimation:animation});retiredShellAnimation.pause();retiredShellAnimation.currentTime=40;oldDialog.remove()});await page.waitForFunction(()=>document.querySelector('dialog')&&document.querySelector('dialog')!==oldDialog);assert.equal(await page.evaluate(()=>retiredShellAnimation.playState),'idle','replacement must cancel retired shell animation');await open();assert.equal(await page.locator('.dmt-close').evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),true);await close();await closed();assert.equal(await page.evaluate(()=>nativeCalls),0);return{fallback:true,retiredCancelled:true};
  });
- const hashes=Object.fromEntries([...files,...(baseline?[]:['src/theme/preference-store.ts','framework/motion-hub/style.css']),'src/theme/settings-workspace.css','src/theme/acrylic-v1.css','tests/evolution-settings-integration.cjs'].map(f=>[f,crypto.createHash('sha256').update(old[f]??fs.readFileSync(f)).digest('hex')]));const result={baseline,source:baseline?revision:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),workingTree:!baseline,hashes,css:{source:'current production build; baseline freezes TS/Vue behavior only',sha256:crypto.createHash('sha256').update(fs.readFileSync('dist/framework/official-ui/style.css')).digest('hex')},runtime:{platform:process.platform,node:process.version,chromium:browser.version()},checks};fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(result,null,2));console.log('Settings integration evidence',out);if(failures.length){const error=new Error(failures.length+' settings integration checks failed');Object.assign(error,{settingsIntegrationEvidence:true});throw error}return result;
+ const hashes=Object.fromEntries([...files,...(baseline?[]:['src/theme/preference-store.ts','framework/motion-hub/style.css','tests/wardrobe-surfaces-probe.cts','src/wardrobe/WardrobePanel.vue','src/wardrobe/ReferenceDock.vue','src/wardrobe/extras.ts','src/wardrobe/reference.css','src/wardrobe/style.css']),'src/theme/settings-workspace.css','src/theme/acrylic-v1.css','tests/evolution-settings-integration.cjs'].map(f=>[f,crypto.createHash('sha256').update(old[f]??fs.readFileSync(f)).digest('hex')]));const result={baseline,source:baseline?revision:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),workingTree:!baseline,hashes,css:{source:'current production build; baseline freezes TS/Vue behavior only',sha256:crypto.createHash('sha256').update(fs.readFileSync('dist/framework/official-ui/style.css')).digest('hex')},runtime:{platform:process.platform,node:process.version,chromium:browser.version()},checks};fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(result,null,2));console.log('Settings integration evidence',out);if(failures.length){const error=new Error(failures.length+' settings integration checks failed');Object.assign(error,{settingsIntegrationEvidence:true});throw error}return result;
  }finally{await server.close()}
 }
 module.exports={verifySettingsIntegration};

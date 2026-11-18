@@ -91,7 +91,7 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-font] :is(
  #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves]),
  .passage.dgp-overlay:has(>.dgp-host),.dgw-root,.dgw-reference-chip,.dgw-reference-compare,.dgshop-host,.dgshop-content,.dcu-shell,.sf-motion-hub[data-official] .sf-motion-orbit,
  dialog.dgu-surface:is([data-sf-workspace=drawer],:has(>.dgu-surface-content>.dgu-inspector))
-) :where(button,select,textarea,input:not([type=checkbox],[type=radio],[type=color],[type=range]),.dgshop-transaction,.dgshop-reference-comparison){
+) :where(button,select,textarea,input:not([type=checkbox],[type=radio],[type=color],[type=range]),.dgshop-transaction,.dgshop-reference-comparison):not(:where(.dgw-exits,.dgw-preserved,.dgw-services,.dgw-actions,.dgw-equipment,.dgw-warmth-content,.dgw-detail-native) *){
  font-family:var(--sw-custom-font)!important;
 }
 

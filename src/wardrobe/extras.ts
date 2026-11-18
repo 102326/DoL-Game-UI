@@ -22,7 +22,7 @@ export function createWardrobeExtras(root:WardrobeDataHost){
   if(!surfaces.available())return false;
   closeDetails();
   const current:Detail={details,summary,content:document.createElement('div'),nodes:[...details.childNodes].filter(node=>node!==summary),wasOpen:details.open};
-  detail=current;current.content.append(...current.nodes);
+  detail=current;current.content.className='dgw-detail-native';current.content.append(...current.nodes);
   const handle=surfaces.openDrawer({id:'wardrobe-item-details',title:summary.textContent?.trim()||'衣物详情与特质',content:current.content,onClose:()=>restore(current)});
   if(!handle){restore(current);details.open=!current.wasOpen;return false}
   current.handle=handle;const dialog=current.content.closest<HTMLDialogElement>('dialog.dgu-surface');if(dialog)current.releaseSurface=registerWorkspaceSurface(dialog,dialog.querySelector<HTMLElement>('.dgu-surface-header')??dialog,'drawer');return true;
