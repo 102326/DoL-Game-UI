@@ -78,7 +78,18 @@ export function startFloatingTools(root:Root=window,renderSurface=true){
   locked=false;schedule();
  }
  function guard(event:MouseEvent){if(menuSuppressClick&&event.detail>0){menuSuppressClick=false;event.preventDefault();event.stopImmediatePropagation()}}
- function setPreference(key:keyof FloatingPreferences,value:unknown){if(!Object.hasOwn(p,key))return;if((key==='enabled'||key==='hidden')&&typeof value!=='boolean')return;if((key==='x'||key==='y')&&(typeof value!=='number'||!Number.isFinite(value)))return;if(key==='mode'&&value!=='fan'&&value!=='grid')return;if(key==='tools'&&!Array.isArray(value))return;const next=readFloatingPreferences(JSON.stringify({...p,[key]:value}));p=next;persist();if(state.open)close(false);refresh()}
+ function setPreference(key:keyof FloatingPreferences,value:unknown){
+  if(key==='hubLayout'){
+   if(value!=='list'&&value!=='drawer')return;
+  }else if(!Object.hasOwn(p,key))return;
+  if((key==='enabled'||key==='hidden')&&typeof value!=='boolean')return;
+  if((key==='x'||key==='y')&&(typeof value!=='number'||!Number.isFinite(value)))return;
+  if(key==='mode'&&value!=='fan'&&value!=='grid')return;
+  if(key==='tools'&&!Array.isArray(value))return;
+  const next=readFloatingPreferences(JSON.stringify({...p,[key]:value}));
+  if(key==='mode')delete next.hubLayout;
+  p=next;persist();if(state.open)close(false);refresh();
+ }
  function setPosition(axis:'x'|'y',value:number){if(!Number.isFinite(value))return;p[axis]=Math.max(0,Math.min(1,value));state.intentX=p.x;state.intentY=p.y;persist();position()}
  function listen(target:EventTarget,type:string,callback:EventListener){target.addEventListener(type,callback);liveScope.own(()=>target.removeEventListener(type,callback))}
  function resize(){if(gesture)finish(true);position()}

@@ -10,7 +10,7 @@
 
 ## Current scope
 
-- The owner selected the existing 4.5 double-diamond center. The fine-line star is a historical comparison. Trial the short settle and highlight on the double diamond with list and drawer layouts in the neutral Hub before product integration.
+- The owner selected the existing 4.5 double-diamond center. The fine-line star is a historical comparison. List and arc drawer share the accepted double diamond, short settle and highlight. Keep existing fan/grid choices and position when offering the new layouts.
 - Reuse existing position, menu, drag/drop, explicit docking and lifecycle ownership. Do not restart the old metal-sphere charge/flight effect or the rejected Study 02/03 designs. Earlier 4.2 delivery/performance priorities are historical, not the current work order.
 - From 4.5 onward, SmartPhone/万能手机 is outside the maintained compatibility scope. Do not expand 4.5 work for it; do not indiscriminately delete its historical package or shared contracts.
 - Use bounded neutral prototypes and existing skills/tests. Start debugging with the minimum useful, nonsensitive information; expand only for a concrete failure. Keep required gates, batch full CI at integration points, and avoid new generic frameworks or parallel tracking tables for a small pilot. Do not open the real game automatically.

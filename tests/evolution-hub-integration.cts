@@ -166,10 +166,58 @@ async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstructi
   await p.goto('http://127.0.0.1:'+address.port+'/',{timeout:20000});
   await p.waitForSelector('.sf-motion-ball');
   await scaledControls(p);done(step);
+  step='saved settings drive official list and arc owners';await savedLayouts(p);done(step);
   assert.deepEqual(errors,[]);await p.evaluate(()=>hubPreview.dispose());
  }catch(error){if(p){inputFailure=await p.evaluate(()=>({events:Reflect.get(window,'hubInputEvents'),counts:hubPreview.counts(),visual:testHubVisual.inspect(),dialogOpen:document.querySelector('dialog')?.open})).catch(()=>({unavailable:true}));fs.writeFileSync(path.join(out,'input-diagnosis.json'),JSON.stringify(inputFailure,null,2));console.error('Hub integration failure',JSON.stringify({step,inputFailure}))}if(!(error instanceof Error))throw error;checks.push({name:step,status:'FAIL',error:error.message});Object.assign(error,{hubIntegration:{checks,executedOverrides:overrides,inputFailure}});await p?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw error}
  finally{const files=cp.execFileSync('git',['ls-files','--cached','--others','--exclude-standard','src/ui/golden-spin','framework/official-ui/hub.ts','framework/motion-hub','tests/evolution-hub-integration.cjs','scripts/preview-evolution-hub.mjs'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({source:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),workingTree:true,executedOverrides:overrides,faultInjection:unsafeConstruction?'constructor-outside-cleanup':oldGeometry?'frozen-MotionHub-d3f04ee':oldScroll?'old-overflow-specificity':oldPreviewStyle?'old-preview-main-selector':null,runtime:{platform:process.platform,node:process.version,chromium:browser.version()},checks,errors,inputFailure,hashes:Object.fromEntries(files.map(f=>[f,crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex')]))},null,2));console.log('Hub evidence',out);await p?.close();await server.close()}
  return checks;
+}
+async function savedLayouts(p:playwright.Page){
+ const ball=p.locator('.sf-motion-ball'),hub=p.locator('.sf-motion-hub'),nav=p.locator('.sf-motion-orbit');
+ const settings=async()=>{await p.locator('#dol-midnight-sidebar-button').click();await p.locator('.dmt-workspace-nav').getByRole('button',{name:'入口',exact:true}).click()};
+ const select=p.getByLabel('悬浮球展开模式',{exact:true}),enabled=p.getByLabel('启用悬浮球',{exact:true});
+ const key='SoftWet.MotionHub.freePosition.v1';
+ await p.evaluate(()=>hubPreview.floating.setPreference('mode','grid'));
+ await p.setViewportSize({width:390,height:370});
+ await p.emulateMedia({reducedMotion:'reduce'});
+ await settings();assert.equal(await select.inputValue(),'grid');
+ await select.selectOption('list');
+ await enabled.uncheck();await hub.waitFor({state:'detached'});
+ await enabled.check();await p.locator('[data-tool-layout="list"]').waitFor({state:'attached'});
+ await p.locator('.dmt-close').click();await ball.click();
+ assert.equal(await nav.evaluate(n=>getComputedStyle(n).gridTemplateColumns.split(' ').length),1);
+ assert.equal(await nav.locator('.sf-motion-utilities button').count(),3);
+ await ball.press('Escape');await settings();await select.selectOption('drawer');
+ for(const [x,y] of [[0,0],[1,1]] as const){
+  const position=JSON.stringify({version:1,x,y,side:x?'right':'left',docked:false});
+  await p.evaluate(([key,value])=>localStorage.setItem(key,value),[key,position] as const);
+  await p.reload();await p.locator('[data-tool-layout="drawer"]').waitFor();
+  assert.equal(await p.evaluate(()=>hubPreview.floating.getPreferences().mode),'grid');
+  assert.equal(await p.evaluate(k=>localStorage.getItem(k),key),position);
+  await ball.click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+  assert.equal(await nav.locator('.sf-motion-utilities').count(),0);
+  const first=must(await nav.locator('.sf-motion-tool-icon').first().boundingBox()),b=must(await ball.boundingBox());
+  assert.ok(Math.abs(first.x+first.width/2-b.x-b.width/2)<1 && (y?first.y+first.height<=b.y:first.y>=b.y+b.height),'arc anchors first icon above or below the entry');
+  const last=nav.locator('[data-motion-view]').last();await last.scrollIntoViewIfNeeded();await last.click();
+  assert.equal(await p.evaluate(()=>hubPreview.counts().native),1);
+ }
+ await p.evaluate(()=>DoLMidnightTheme.setPreference('enabled',false));await hub.waitFor({state:'detached'});
+ await p.evaluate(()=>DoLMidnightTheme.setPreference('enabled',true));await p.locator('[data-tool-layout="drawer"]').waitFor();
+ await p.emulateMedia({reducedMotion:'no-preference'});
+ await p.evaluate(()=>DoLMidnightTheme.setPreference('visualMotion',false));
+ await ball.focus();await p.mouse.move(190,5);
+ await ball.evaluate(n=>n.blur());await ball.focus();
+ await p.waitForTimeout(2100);
+ assert.equal(await ball.evaluate(n=>n.classList.contains('is-docked')),false,'regaining focus cancels idle docking');
+ await ball.evaluate(n=>n.blur());await p.locator('.sf-motion-ball.is-docked').waitFor();
+ assert.equal(await ball.evaluate(n=>n.getAnimations().length),0,'dock snaps when UI motion is off');
+ await ball.click();await p.locator('.sf-motion-ball:not(.is-docked)').waitFor();
+ await ball.press('Enter');await ball.press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+ assert.equal(await ball.evaluate(n=>n===document.activeElement),true);
+ await settings();assert.equal(await select.inputValue(),'drawer');
+ await select.selectOption('grid');assert.equal(await hub.getAttribute('data-tool-layout'),null);
+ assert.equal(await p.evaluate(()=>hubPreview.floating.getPreferences().hubLayout),undefined);
+ await p.locator('.dmt-close').click();
 }
 async function actualMenuLayout(p:playwright.Page,out:string){
  // Measure the rendered controls, including theme CSS and the sphere adapter.

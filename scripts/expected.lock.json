@@ -1007,12 +1007,16 @@
           "minimumAssertions": 1
         },
         {
+          "id": "hub:saved settings drive official list and arc owners",
+          "minimumAssertions": 1
+        },
+        {
           "id": "placement:entry",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "383a743426f9bfcdffa17803f9c865e31181e509dc496a05488e0138e40e4df5",
-      "assertionSites": 452,
+      "sourceSha256": "c6c078564b5c827925ad335e4a65d576f64fa73ee4a381f346bcfab6fcab705d",
+      "assertionSites": 466,
       "rendererContexts": [
         "sphere:2d"
       ]

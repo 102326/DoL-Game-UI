@@ -37,8 +37,10 @@ export function startOfficialHub(host:Host,owner:Participant,previewLayout?:'lis
   if(!scope.active())return;
   const p=root.DoLFloatingTools?.getPreferences();
   if(isMasterEnabled()&&p?.enabled&&!p.hidden){
-   if(mode!==p.mode){mounted?.dispose();mounted=undefined;mode=p.mode}
-   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,previewLayout,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement)=>{
+   const toolLayout=previewLayout??p.hubLayout;
+   const selected=toolLayout??p.mode;
+   if(mode!==selected){mounted?.dispose();mounted=undefined;mode=selected}
+   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,toolLayout,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement)=>{
     const visual=isolate('Hub visual',()=>sphereHub(root,'diamond'));
     const dispose=()=>visual?.destroy();
     return dispose;

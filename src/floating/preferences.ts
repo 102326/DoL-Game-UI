@@ -1,6 +1,7 @@
 export const toolIds=['settings','inspector','move'] as const;
 export type ToolId=typeof toolIds[number];
-export type FloatingPreferences={enabled:boolean;hidden:boolean;mode:'fan'|'grid';x:number;y:number;tools:ToolId[]};
+export type HubLayout='list'|'drawer';
+export type FloatingPreferences={enabled:boolean;hidden:boolean;mode:'fan'|'grid';hubLayout?:HubLayout;x:number;y:number;tools:ToolId[]};
 export type FloatingApi={getPreferences():FloatingPreferences;setPreference(key:keyof FloatingPreferences,value:unknown):void;show():void;hide():void;resetPosition():void;refresh():void;destroy():void};
 export const floatingKey='DoLGameUI.stoneFree.floating.v1';
 export const floatingDefaults:FloatingPreferences={enabled:true,hidden:false,mode:'fan',x:.88,y:.45,tools:[...toolIds]};
@@ -10,6 +11,7 @@ export function readFloatingPreferences(raw:string|null):FloatingPreferences{
  try{if(!raw||raw.length>2048)return p;const v:unknown=JSON.parse(raw);if(!record(v))return p;
   for(const k of ['enabled','hidden'] as const)if(typeof v[k]==='boolean')p[k]=v[k];
   if(v.mode==='fan'||v.mode==='grid')p.mode=v.mode;
+  if(v.hubLayout==='list'||v.hubLayout==='drawer')p.hubLayout=v.hubLayout;
   for(const k of ['x','y'] as const)if(typeof v[k]==='number'&&Number.isFinite(v[k]))p[k]=Math.max(0,Math.min(1,v[k]));
   if(Array.isArray(v.tools))p.tools=[...new Set<ToolId>(v.tools.filter((id:unknown):id is ToolId=>toolIds.some(tool=>tool===id)))];
  }catch{/* Invalid settings never prevent the game from opening. */}

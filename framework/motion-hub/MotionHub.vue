@@ -7,7 +7,7 @@ import ViewOutlet from '../workspace/ViewOutlet.vue';
 import {clamp,menuLayout,positionKey as legacyKey,initialPosition as initialLegacy,readPosition as readLegacy,locate as locateLegacy,type Area} from './geometry';
 import {locate as locateDirect,readPosition as readDirect,savePosition,positionKey as directKey,canPersist,type Position} from './direct-position';
 
-const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';previewLayout?:'list'|'drawer';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>;experimentalMotion?:(root:HTMLElement)=>()=>void}>();
+const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';toolLayout?:'list'|'drawer';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>;experimentalMotion?:(root:HTMLElement)=>()=>void}>();
 const layer = ref<HTMLElement>(), ball = ref<HTMLButtonElement>(), heading = ref<HTMLElement>();
 const positionKey=props.officialPreferences?directKey:legacyKey;
 const initialPosition=():Position=>({...initialLegacy(),version:1,x:1});
@@ -23,7 +23,7 @@ let stopExperimental:(()=>void)|undefined,coordinateScale={x:1,y:1};
 let geometryObserver:ResizeObserver|undefined,observedDock:HTMLElement|undefined;
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
 const orbit=ref<HTMLElement>();
-if(props.previewLayout==='drawer')onMounted(()=>{
+if(props.toolLayout==='drawer')onMounted(()=>{
  const root=layer.value!,entry=ball.value!;
  const hovered=ref(false),focused=ref(false),used=ref(false);
  const enter=(event:PointerEvent)=>{used.value=true;hovered.value=event.pointerType!=='touch'};
@@ -49,8 +49,8 @@ const drawerUp=computed(()=>point.y+(docked.value?36:28)>area.top+area.height/2)
 const menu = computed(() => {
  const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
  const rows=Math.ceil((count-(hasSettings?1:0))/2),officialHeight=24+(hasSettings?58:0)+rows*66+(rows+(hasSettings?1:0))*6+57;
- if(props.previewLayout){
-  const drawer=props.previewLayout==='drawer';
+ if(props.toolLayout){
+  const drawer=props.toolLayout==='drawer';
   const height=drawer?12+count*54:24+count*50+57;
   const box=menuLayout(point,area,count,true,docked.value?38:56,height);
   if(drawer){
@@ -139,7 +139,7 @@ function toggle(event: MouseEvent) {
  clearHint();
  if (selected.value || expanded.value) close(); else {
   expanded.value=true;
-  if(props.previewLayout==='drawer')void nextTick(()=>{if(orbit.value)orbit.value.scrollTop=0});
+  if(props.toolLayout==='drawer')void nextTick(()=>{if(orbit.value)orbit.value.scrollTop=0});
  }
 }
 async function choose(view: View) {
@@ -242,12 +242,12 @@ onBeforeUnmount(scope.dispose);
 </script>
 
 <template>
- <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-preview-menu="previewLayout" :data-drawer-up="previewLayout==='drawer' && drawerUp || undefined" :data-drawer-left="previewLayout==='drawer' && drawerLeft || undefined" @keydown="key">
+ <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-tool-layout="toolLayout" :data-drawer-up="toolLayout==='drawer' && drawerUp || undefined" :data-drawer-left="toolLayout==='drawer' && drawerLeft || undefined" @keydown="key">
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav ref="orbit" class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
   :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--utility-x': `${menu.petalX===0?0:menu.width-64}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
    <button v-for="(view, index) in views" :key="`${view.owner}:${view.id}`" type="button" class="sf-motion-petal" :data-motion-view="`${view.owner}:${view.id}`"
-    :style="{'--i': index, '--step':previewLayout==='drawer' ? (index/Math.max(1,views.length-1))**1.65 : undefined, '--x': `${petalOffset(index).x}px`, '--y': `${petalOffset(index).y}px`}" @click="choose(view)">
+    :style="{'--i': index, '--step':toolLayout==='drawer' ? (index/Math.max(1,views.length-1))**1.65 : undefined, '--x': `${petalOffset(index).x}px`, '--y': `${petalOffset(index).y}px`}" @click="choose(view)">
     <svg v-if="officialPreferences" class="sf-motion-tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
      <path v-if="view.id==='interface-settings'" d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6m-6 0v6"/>
      <path v-else-if="view.id==='native-saves'" d="M5 3h12l3 3v15H4V3h1Zm3 0v7h8V3M8 21v-7h8v7"/>
@@ -256,7 +256,7 @@ onBeforeUnmount(scope.dispose);
      <path v-else d="m12 2 10 10-10 10L2 12 12 2Zm0 5v6m0 3v1"/>
     </svg><span v-else aria-hidden="true">{{ ['◉', '◈', '⇄'][index % 3] }}</span><span class="sf-motion-tool-label">{{ view.title }}</span>
    </button>
-   <div v-if="previewLayout!=='drawer'" class="sf-motion-utilities">
+   <div v-if="toolLayout!=='drawer'" class="sf-motion-utilities">
     <button type="button" @click="dock"><svg v-if="officialPreferences" :style="{transform:side==='left'?'scaleX(-1)':undefined}" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 4v16M4 12h11m-4-4 4 4-4 4"/></svg><span>停靠侧边</span></button>
     <button type="button" @click="reset"><svg v-if="officialPreferences" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8a8 8 0 1 1-1 7M5 3v5h5"/><circle cx="12" cy="12" r="2"/></svg><span>恢复位置</span></button>
     <button type="button" @click="dismiss"><svg v-if="officialPreferences" class="sf-motion-utility-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.5 5.2c4.8-.7 8.2 3 10.5 6.8a17 17 0 0 1-3.1 3.8M6.1 6.1A20 20 0 0 0 1 12c3 5 7 8 11 7a11 11 0 0 0 3.2-.8"/><path d="M10 10a3 3 0 0 0 4 4"/></svg><span>隐藏工具</span></button>
