@@ -1,13 +1,14 @@
 # Soft & Wet 4.5 跨设备交接
 
-2026-11-18，公司 Mac 收尾。当前状态为等待负责人接续。
+2026-11-18，公司 Mac 交接已由 Windows 在现有4.5分支接续。本批先处理指导修正和中性Hub工程试点。
 
 ## Current — 从哪里接手
 
-- 研发分支 `feature/4.5-diamond-glass-hub`，目标分支 `main`，[PR #38](https://github.com/102326/DoL-Game-UI/pull/38) 为 Draft。最后一个改动产品代码的提交为 `fd35a737a4add0cf7f6c7f482e8021075f47e927`。本次收尾仅更新这份交接；远端分支头包含本文件。
+- 研发分支 `feature/4.5-diamond-glass-hub`，目标分支 `main`，[PR #38](https://github.com/102326/DoL-Game-UI/pull/38) 为 Draft。Windows经正常fetch从交接头 `1f1df13e047c344874e392296434ab8068d9edb7` 接续，最后一个改动产品运行代码的提交仍为 `fd35a737a4add0cf7f6c7f482e8021075f47e927`。本批修改指导与针对性回归，不重复实施下面五批成果。
 - 研发版本为 4.5.0，已发布的稳定版为 4.2.0。当前入口为蓝灰菱形玻璃，支持自由拖放和主动停靠。设置支持五种颜色和本机字体的预览、保存及恢复默认外观。架构取舍见[4.5 研发记录](RELEASE_4.5.0.md)，既有外观见[视觉基线](VISUAL_BASELINE_4X.md)。
 - **公司 Mac 独有、未提交**：`scripts/build-standalone-surfaces.mjs`、`tests/standalone-surfaces.cjs` 已原样保留。它们不在远端交付中。忽略目录里的截图、原始日志及设计转交包也只在本机；跨设备验证可使用下表的 Actions 证据。
-- **设计偏好待定**：负责人目前偏向 Claude 的 C 方案，希望中间组件大一些。设计附件另存，待负责人提供并确认版本及方向后再处理。
+- **设计偏好待定**：负责人目前偏向Claude的C方案，希望中心整体更大；尚未定稿。原稿身份、已转达描述及正式文件缺口见[4.5研发记录](RELEASE_4.5.0.md#2026-11-18-windows-c参考准备)。核对原源码和截图后再改变正式外观，不能按描述声称已对齐。
+- **范围更新**：4.5不再为万能手机Mod扩大兼容开发。已有历史包及共享合同不在本批删除范围。
 
 ## Decided — 五批代码与证据
 
@@ -23,9 +24,19 @@
 
 设置的请求值和页面运行状态分别查询，忙态、故障重试及原版回退继续由各页面决定。外部调用见 [UI Runtime](UI_RUNTIME.md#产品偏好查询)。Host 公共协议、正式发行、保护规则及 bypass 均沿用既有安排。
 
-## Next — 家庭设备接手
+## Windows工程试点
 
-1. 先用 `git status --short --branch` 和 `git worktree list` 检查家庭设备独有工作，再执行 `git fetch origin --prune`。在干净的研发分支用 `git merge --ff-only origin/feature/4.5-diamond-glass-hub` 同步；若已分叉，先保留本机提交。用 `git rev-parse HEAD` 对照 PR 头，并确认包含上面的代码提交。
+`UI45_WINDOWS_RESUME_20261118_C_PILOT` 仅处理一次。保留Mac两份未同步文件的缺失状态，不生成替代文件。仓库指导已移除过时的4.2优先级约束，并区分现行实现、Claude参考与用户待定偏好。
+
+新增回归复用 `tests/evolution-hub-integration.cts`：从真实Canvas像素检查中心与按钮中心一致，绘制层不拦截输入；覆盖自由悬浮、绘制表面尺寸变化、停靠与恢复。一次初始检查在关闭动画未完成时过早断言静止，失败现场保留；修正为等待现有关闭完成状态，不降低静止或命中要求。该检查不等同于C造型实现或视觉验收。
+
+Windows本批使用Node 26.13.0与本机Edge 158.0.4370.26的中性页面。工具链严格类型检查与生成、Framework构建、Hub 14项检查及其中48组布局通过；新增绘制检查覆盖四种状态。Expected Lock只新增该检查并更新源码身份，原断言与反例保留。PR检查由本批推送触发，具体状态从[PR #38 Checks](https://github.com/102326/DoL-Game-UI/pull/38/checks)按提交核对，不以Mac旧成功代签。
+
+本批没有运行真实游戏、设备或包安装，也没有视觉定稿、main合并或发布。正式原稿不可读仍是采用C前的具体输入缺口；不影响本批工程回归完成。
+
+## Next — 当前小批之后
+
+1. 接续时先检查状态与唯一工作树，再正常fetch并以当前远端头核对，避免与其它机器双写。继续使用同一4.5分支，不在旧main叠改或创建重复工作区。
 2. 核对本机 Node 26、锁定依赖、浏览器和实际加载的 UI／Host／兼容包版本。需要复算时，在锁定依赖就绪后依次运行 `npm run ci:check`、`node scripts/build-framework.mjs`、`node tests/evolution-settings-integration.cjs`、`node tests/wardrobe-details-drawer.cjs`、`node tests/evolution-hub-integration.cjs`。本地证据由各脚本生成。
 3. Windows、Android WebView、原生选择器与触控、真实多 Mod 加载及渲染仍待验。针对 Ray 美化，优先在相同配置下比较侧栏完整画面与衣柜预览，记录包版本、视口和复现步骤。实际安装、恢复及库存业务的验收另需安全样本。
-4. 商店、战斗窗口保留为后续候选，Host 扩展仍属调查。实现、视觉定稿与发布分别等负责人安排。
+4. C造型实施前先从正式可读原文件核对实际源码和截图；再沿现有Hub实现可回退小步，协调放大中心星与菱线。商店、战斗窗口保留为后续候选，Host扩展仍属调查，不自动扩成下一批。视觉定稿与发布仍需负责人安排。

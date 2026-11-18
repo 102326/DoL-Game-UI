@@ -41,6 +41,50 @@ function observeArrivalPointer(p:playwright.Page){
   throw Error('No observed arrival geometry');
  });
 }
+async function entryGlyphGeometry(p:playwright.Page){
+ const ball=p.locator('.sf-motion-ball'),canvas=ball.locator('canvas.spin-hub-canvas');
+ async function check(label:string){
+  await p.waitForFunction(()=>{const state=testHubVisual.inspect();return state.phase==='closed'&&!state.sphere.running});
+  await p.waitForFunction(()=>{
+   const canvas=document.querySelector('.spin-hub-canvas');
+   return canvas&&Math.abs(testHubVisual.inspect().sphere.width-canvas.getBoundingClientRect().width)<.5;
+  });
+  const geometry=await canvas.evaluate(node=>{
+   if(!(node instanceof HTMLCanvasElement)||!node.parentElement)throw Error('Missing actual Hub canvas owner');
+   const context=node.getContext('2d');if(!context)throw Error('Missing actual Hub drawing');
+   const pixels=context.getImageData(0,0,node.width,node.height).data;
+   let left=node.width,right=-1,top=node.height,bottom=-1;
+   for(let i=3;i<pixels.length;i+=4)if(pixels[i]){
+    const pixel=(i-3)/4,x=pixel%node.width,y=Math.floor(pixel/node.width);
+    left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+   }
+   const rect=node.getBoundingClientRect(),owner=node.parentElement.getBoundingClientRect();
+   return{painted:right>=left&&bottom>=top,
+    x:rect.left+(left+right+1)/2/node.width*rect.width,
+    y:rect.top+(top+bottom+1)/2/node.height*rect.height,
+    ownerX:owner.x+owner.width/2,ownerY:owner.y+owner.height/2,
+    hit:node.parentElement.contains(document.elementFromPoint(owner.x+owner.width/2,owner.y+owner.height/2)),
+    decoration:getComputedStyle(node).pointerEvents};
+  });
+  assert.ok(geometry.painted,label+' keeps a visible central mark');
+  assert.ok(Math.abs(geometry.x-geometry.ownerX)<=1&&Math.abs(geometry.y-geometry.ownerY)<=1,label+' central mark stays aligned: '+JSON.stringify(geometry));
+  assert.ok(geometry.hit,label+' owner keeps the central hit');
+  assert.equal(geometry.decoration,'none',label+' drawing cannot intercept input');
+  assert.equal(await p.evaluate(()=>testHubVisual.inspect().sphere.running),false,label+' stays idle without a drawing loop');
+ }
+ await check('floating');
+ const size=await canvas.evaluate(node=>node.getBoundingClientRect().width);
+ try{
+  await canvas.evaluate((node,size)=>{node.style.width=size+'px';node.style.height=size+'px'},size*1.2);
+  await check('larger drawing surface');
+ }finally{await canvas.evaluate(node=>{node.style.removeProperty('width');node.style.removeProperty('height')})}
+ await ball.click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+ await p.getByRole('button',{name:'停靠侧边',exact:true}).click();
+ await p.waitForFunction(()=>document.querySelector('.sf-motion-ball')?.classList.contains('is-docked'));
+ await check('docked');
+ await ball.click();await p.waitForFunction(()=>!document.querySelector('.sf-motion-ball')?.classList.contains('is-docked'));
+ await check('restored');
+}
 async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstruction=false,oldGeometry=false,oldScroll=false,previewLayoutOnly=false,oldPreviewStyle=false,layoutOnly=false}:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean;layoutOnly?:boolean}={}){
  const {createHubPreviewServer}=await import('../scripts/preview-evolution-hub.mjs');
  const overrides:Record<string,string>={};
@@ -77,6 +121,7 @@ async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstructi
   if(unsafeConstruction){step='constructor boundary counterexample';await p.evaluate(()=>{hubPreview.stop();Object.assign(window,{nativeResizeObserver:ResizeObserver,ResizeObserver:class{constructor(){throw Error('controlled observer constructor failure')}}});hubPreview.remount()});await p.waitForSelector('.sf-motion-ball');await p.evaluate(()=>Object.assign(window,{ResizeObserver:nativeResizeObserver}));assert.equal(await p.locator('.spin-hub-canvas').count(),0,'constructor fallback must remove the already appended canvas');return checks}
   if(oldScroll){step='short viewport scroll counterexample';await shortMenu(p);return checks}
   if(oldGeometry){step='frozen hidden geometry counterexample';await p.evaluate(()=>document.body.classList.add('ui-open'));await p.setViewportSize({width:900,height:700});await p.waitForTimeout(100);await p.evaluate(()=>document.body.classList.remove('ui-open'));await p.waitForTimeout(120);const r=must(await ball.boundingBox());assert.ok(r.x>=0&&r.x+r.width<=900,'restored Hub geometry must fit the resized hidden viewport');assert.ok(!/NaN|Infinity/.test(await nav.getAttribute('style')??''),'finite restored menu origin');return checks}
+  step='central glyph geometry and ownership across resize and docking';await entryGlyphGeometry(p);done(step);
   await p.evaluate(()=>hubPreview.floating.setPreference('mode','grid'));
   step='menu background fades with its owned shell and disappears on close';
   for(const glass of [true,false]){

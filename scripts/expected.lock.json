@@ -955,6 +955,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "hub:central glyph geometry and ownership across resize and docking",
+          "minimumAssertions": 1
+        },
+        {
           "id": "hub:menu background fades with its owned shell and disappears on close",
           "minimumAssertions": 1
         },
@@ -1007,8 +1011,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "2200d20a30ed8be3c1296d186723c5e60eb4ef0b37ec44a6a012afec5195ba49",
-      "assertionSites": 444,
+      "sourceSha256": "9cf3d8298158d746d0c98b8ffe6b5b36d69d068cef0e872f21caedbdfa5ed6a6",
+      "assertionSites": 449,
       "rendererContexts": [
         "sphere:2d"
       ]
