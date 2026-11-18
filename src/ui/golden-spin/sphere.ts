@@ -47,10 +47,8 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   c.clearRect(0,0,width,height);
   if(appearance==='diamond'){
    // The actual glass surface belongs to CSS so it can sample the DOM backdrop.
-   // Only the emblem rotates under physical charge/flight; the hitbox stays rigid.
-   c.save();c.translate(width*.5,height*.48);c.rotate(angle);
-   const heat=state.charge;
-   const color=heat>.01?`rgba(255,225,145,${.8+heat*.2})`:'#d9e9ed';
+   c.save();c.translate(width*.5,height*.48);
+   const color='#d9e9ed';
    stroke([[0,-12],[11,0],[0,12],[-11,0],[0,-12]],color,1.5);
    stroke([[0,-6],[6,0],[0,6],[-6,0],[0,-6]],color,1.5);
    for(const points of [[[0,-15],[0,-9]],[[15,0],[9,0]],[[0,15],[0,9]],[[-15,0],[-9,0]]] as Array<Array<[number,number]>>)stroke(points,color,1.5);
@@ -298,15 +296,6 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  media.addEventListener('change',motion);scope.own(()=>media.removeEventListener('change',motion));
  document.addEventListener('visibilitychange',visibility);scope.own(()=>document.removeEventListener('visibilitychange',visibility));resize();
  return {play,recover,pause(value:boolean){paused=value;visibility()},
-  drive(input:{energy:number;dt:number;angle?:number}){
-   if(dead)return;stop();
-   const heat=media.matches?0:Math.max(0,Math.min(1,input.energy));
-   if(input.angle!==undefined)angle=input.angle;
-   Object.assign(state,{speed:heat*68,charge:heat,energy:0,spread:0,pressure:0});
-   const dt=Math.max(0,Math.min(.05,input.dt));angle=(angle+state.speed*dt)%TAU;orbit=(orbit+(1.1+state.speed*.17)*dt)%TAU;
-   if(heat&&appearance==='metal')stepMeteors(dt);else{meteors.length=0;emission=0}
-   setPhase(heat?'charge':'idle');draw();
-  },
   configure(options:{duration?:number;strength?:number}){duration=Math.max(.5,Math.min(2,options.duration??duration));strength=Math.max(.3,Math.min(1.3,options.strength??strength));draw()},
   // GSAP adds a circular private cache to its target; do not expose that as research state.
   inspect:()=>({appearance,phase,speed:state.speed,charge:state.charge,energy:state.energy,spread:state.spread,pressure:state.pressure,angle,orbit,draws,meteors:meteors.length,running:!!frame,dead,paused,reduced:media.matches,motionChanges,width,height}),
