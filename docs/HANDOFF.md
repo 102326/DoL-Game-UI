@@ -7,7 +7,7 @@
 - 研发分支 `feature/4.5-diamond-glass-hub`，目标分支 `main`，[PR #38](https://github.com/102326/DoL-Game-UI/pull/38) 为 Draft。Windows经正常fetch从交接头 `1f1df13e047c344874e392296434ab8068d9edb7` 接续，随后在 Windows 修复了静态入口恢复可见时多申请一帧的问题。
 - 研发版本为 4.5.0，已发布的稳定版为 4.2.0。当前入口为蓝灰菱形玻璃，支持自由拖放和主动停靠。设置支持五种颜色和本机字体的预览、保存及恢复默认外观。架构取舍见[4.5 研发记录](RELEASE_4.5.0.md)，既有外观见[视觉基线](VISUAL_BASELINE_4X.md)。
 - **公司 Mac 独有、未提交**：`scripts/build-standalone-surfaces.mjs`、`tests/standalone-surfaces.cjs` 已原样保留。它们不在远端交付中。忽略目录里的截图、原始日志及设计转交包也只在本机；跨设备验证可使用下表的 Actions 证据。
-- **设计偏好待定**：负责人目前偏向Claude的C方案，希望中心整体更大；尚未定稿。原稿源码、截图与比例见[4.5研发记录](RELEASE_4.5.0.md#2026-11-18-windows-c参考准备)。核对原源码和截图后再改变正式外观，不能按描述声称已对齐。
+- **当前入口方向**：保留 4.5 双菱形，沿用短回摆和提亮。列表及抽屉已接入中性预览，等负责人比较。
 - **范围更新**：4.5不再为万能手机Mod扩大兼容开发。已有历史包及共享合同不在本批删除范围。
 
 ## Decided — 五批代码与证据
@@ -41,4 +41,4 @@ Windows本批使用Node 26.13.0与本机Edge 158.0.4370.26的中性页面。工�
 1. 接续时先检查状态与唯一工作树，再正常fetch并以当前远端头核对，避免与其它机器双写。继续使用同一4.5分支，不在旧main叠改或创建重复工作区。
 2. 核对本机 Node 26、锁定依赖、浏览器和实际加载的 UI／Host／兼容包版本。需要复算时，在锁定依赖就绪后依次运行 `npm run ci:check`、`node scripts/build-framework.mjs`、`node tests/evolution-settings-integration.cjs`、`node tests/wardrobe-details-drawer.cjs`、`node tests/evolution-hub-integration.cjs`。本地证据由各脚本生成。
 3. Windows、Android WebView、原生选择器与触控、真实多 Mod 加载及渲染仍待验。针对 Ray 美化，优先在相同配置下比较侧栏完整画面与衣柜预览，记录包版本、视口和复现步骤。实际安装、恢复及库存业务的验收另需安全样本。
-4. 负责人可在[中性预览](RELEASE_4.5.0.md#2026-11-18-windows-c参考准备)比较 C 的 46% 和 56% 试样。Windows Edge 已验证两档均居中、命中原按钮，展开后菱线提亮，回摆结束后静止，减少动态时直接显示展开状态。当前待决定的是中心图案的尺寸。商店、战斗窗口保留为后续候选，Host扩展仍属调查，不自动扩成下一批。视觉定稿与发布仍需负责人安排。
+4. 在 Hub 中性预览地址后加 `?menu` 默认查看列表，或加 `?menu=drawer` 查看抽屉。页面可直接切换两种布局。原有设置、位置和五个工具继续由实际组件管理。Windows Edge 中性验证覆盖 1024×768 和 390×420、工具单次调用、Escape 收回及减少动态。下一步由负责人试用后决定是否接入正式设置。

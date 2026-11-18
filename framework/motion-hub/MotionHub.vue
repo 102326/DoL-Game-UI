@@ -7,7 +7,7 @@ import ViewOutlet from '../workspace/ViewOutlet.vue';
 import {clamp,menuLayout,positionKey as legacyKey,initialPosition as initialLegacy,readPosition as readLegacy,locate as locateLegacy,type Area} from './geometry';
 import {locate as locateDirect,readPosition as readDirect,savePosition,positionKey as directKey,canPersist,type Position} from './direct-position';
 
-const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>;experimentalMotion?:(root:HTMLElement)=>()=>void}>();
+const props = defineProps<{host: Host; hostContext: MountContext; dismiss: () => void;preferredMode?:'fan'|'grid';previewLayout?:'list'|'drawer';officialPreferences?:boolean;directActions?:Record<string,()=>string|void>;experimentalMotion?:(root:HTMLElement)=>()=>void}>();
 const layer = ref<HTMLElement>(), ball = ref<HTMLButtonElement>(), heading = ref<HTMLElement>();
 const positionKey=props.officialPreferences?directKey:legacyKey;
 const initialPosition=():Position=>({...initialLegacy(),version:1,x:1});
@@ -25,6 +25,11 @@ const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'rig
 const menu = computed(() => {
  const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
  const rows=Math.ceil((count-(hasSettings?1:0))/2),officialHeight=24+(hasSettings?58:0)+rows*66+(rows+(hasSettings?1:0))*6+57;
+ if(props.previewLayout){
+  const list=props.previewLayout==='list';
+  const height=24+(list?count:Math.ceil(count/2))*((list?44:66)+6)+57;
+  return menuLayout(point,area,count,true,docked.value?38:56,height);
+ }
  const fan=props.officialPreferences&&props.preferredMode==='fan';
  return menuLayout(point,area,count,props.preferredMode==='grid'||count>3&&!fan,docked.value?38:56,props.officialPreferences?officialHeight:undefined,fan);
 });
@@ -197,7 +202,7 @@ onBeforeUnmount(scope.dispose);
 </script>
 
 <template>
- <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" @keydown="key">
+ <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-preview-menu="previewLayout" @keydown="key">
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
   :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--utility-x': `${menu.petalX===0?0:menu.width-64}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">
