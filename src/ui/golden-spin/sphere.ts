@@ -257,7 +257,8 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   // The first RAF may precede GSAP's first tick; isActive() is false during that gap.
   if(timeline)frame=Number(scope.frame(tick));
  }
- function wake() {if(paused||document.hidden){timeline?.pause();return}if(!dead&&!frame&&!document.hidden&&!paused&&!media.matches){last=0;frame=Number(scope.frame(tick))}}
+ // Static glyphs redraw on resize/configuration, not through the metal animation clock.
+ function wake() {if(appearance==='diamond')return;if(paused||document.hidden){timeline?.pause();return}if(!dead&&!frame&&!document.hidden&&!paused&&!media.matches){last=0;frame=Number(scope.frame(tick))}}
  function stop() {timeline?.kill();timeline=undefined;scope.cancelFrame(tick);frame=0;last=0}
  function reduced() {stop();meteors.length=0;emission=0;Object.assign(state,{speed:0,charge:appearance==='diamond'?0:.18,energy:appearance==='diamond'?0:.28,spread:.45,pressure:0});setPhase('reduced');draw()}
  function play() {

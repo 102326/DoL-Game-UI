@@ -45,6 +45,8 @@ async function entryGlyphGeometry(p:playwright.Page){
  const ball=p.locator('.sf-motion-ball'),canvas=ball.locator('canvas.spin-hub-canvas');
  async function check(label:string){
   await p.waitForFunction(()=>{const state=testHubVisual.inspect();return state.phase==='closed'&&!state.sphere.running});
+  const resumed=await p.evaluate(()=>{document.dispatchEvent(new Event('visibilitychange'));return testHubVisual.inspect().sphere.running});
+  assert.equal(resumed,false,label+' static visibility must not schedule a metal frame');
   await p.waitForFunction(()=>{
    const canvas=document.querySelector('.spin-hub-canvas');
    return canvas&&Math.abs(testHubVisual.inspect().sphere.width-canvas.getBoundingClientRect().width)<.5;
@@ -85,7 +87,7 @@ async function entryGlyphGeometry(p:playwright.Page){
  await ball.click();await p.waitForFunction(()=>!document.querySelector('.sf-motion-ball')?.classList.contains('is-docked'));
  await check('restored');
 }
-async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstruction=false,oldGeometry=false,oldScroll=false,previewLayoutOnly=false,oldPreviewStyle=false,layoutOnly=false}:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean;layoutOnly?:boolean}={}){
+async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstruction=false,oldGeometry=false,oldScroll=false,previewLayoutOnly=false,oldPreviewStyle=false,layoutOnly=false,oldStaticWake=false}:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean;layoutOnly?:boolean;oldStaticWake?:boolean}={}){
  const {createHubPreviewServer}=await import('../scripts/preview-evolution-hub.mjs');
  const overrides:Record<string,string>={};
  const oldPreviewCSS='main{max-width:760px;margin:auto;padding:40px 24px}';
@@ -99,6 +101,11 @@ async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstructi
  }
  const server:ViteDevServer=await createHubPreviewServer(0,[{name:'observe-actual-visual',enforce:'pre',transform(code:string,id:string){
   const file=id.replaceAll('\\','/');
+   if(oldStaticWake&&file.endsWith('/src/ui/golden-spin/sphere.ts')){
+    const guard="function wake() {if(appearance==='diamond')return;";
+    assert.equal(code.split(guard).length,2,'static wake counterexample must replace the actual guard');
+    const old=code.replace(guard,'function wake() {');overrides['src/ui/golden-spin/sphere.ts']=crypto.createHash('sha256').update(old).digest('hex');return old;
+   }
   if(oldScroll&&file.endsWith('/src/ui/golden-spin/hub.css'))return oldScrollCSS(code,'src/ui/golden-spin/hub.css');
   if(oldGeometry&&file.endsWith('/framework/motion-hub/MotionHub.vue')){const frozen=fs.readFileSync(path.join(__dirname,'fixtures/evolution-h01-MotionHub-d3f04ee.vue'),'utf8');overrides['framework/motion-hub/MotionHub.vue']=crypto.createHash('sha256').update(frozen).digest('hex');assert.equal(overrides['framework/motion-hub/MotionHub.vue'],'7cafc9ef5c93caa53c4c3684757e163e48fcdc42a78f051fd039705e90c2b324','frozen d3f04ee fixture identity');return frozen}
   if(file.endsWith('/framework/official-ui/hub.ts')){assert.equal(code.split('return dispose;').length,2);return code.replace('return dispose;', 'return (window.testHubRelease=dispose);')}
@@ -291,4 +298,4 @@ async function shortMenu(p:playwright.Page){
  await p.evaluate(()=>shortPeer.dispose());const cdp=await p.context().newCDPSession(p);await cdp.send('Emulation.setSafeAreaInsetsOverride',{insets:{top:0,right:0,bottom:0,left:0}});await cdp.detach();await p.setViewportSize({width:1280,height:900});
 }
 module.exports={verifyHubIntegration};
-if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifyHubIntegration(browser,{unsafeConstruction:process.argv.includes('--unsafe-construction'),oldGeometry:process.argv.includes('--old-geometry'),oldScroll:process.argv.includes('--old-scroll'),previewLayoutOnly:process.argv.includes('--preview-layout'),oldPreviewStyle:process.argv.includes('--old-preview-style'),layoutOnly:process.argv.includes('--layout-only')})}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});
+if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifyHubIntegration(browser,{unsafeConstruction:process.argv.includes('--unsafe-construction'),oldGeometry:process.argv.includes('--old-geometry'),oldScroll:process.argv.includes('--old-scroll'),previewLayoutOnly:process.argv.includes('--preview-layout'),oldPreviewStyle:process.argv.includes('--old-preview-style'),layoutOnly:process.argv.includes('--layout-only'),oldStaticWake:process.argv.includes('--old-static-wake')})}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

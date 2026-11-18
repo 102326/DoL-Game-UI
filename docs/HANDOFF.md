@@ -4,10 +4,10 @@
 
 ## Current — 从哪里接手
 
-- 研发分支 `feature/4.5-diamond-glass-hub`，目标分支 `main`，[PR #38](https://github.com/102326/DoL-Game-UI/pull/38) 为 Draft。Windows经正常fetch从交接头 `1f1df13e047c344874e392296434ab8068d9edb7` 接续，最后一个改动产品运行代码的提交仍为 `fd35a737a4add0cf7f6c7f482e8021075f47e927`。本批修改指导与针对性回归，不重复实施下面五批成果。
+- 研发分支 `feature/4.5-diamond-glass-hub`，目标分支 `main`，[PR #38](https://github.com/102326/DoL-Game-UI/pull/38) 为 Draft。Windows经正常fetch从交接头 `1f1df13e047c344874e392296434ab8068d9edb7` 接续，随后在 Windows 修复了静态入口恢复可见时多申请一帧的问题。
 - 研发版本为 4.5.0，已发布的稳定版为 4.2.0。当前入口为蓝灰菱形玻璃，支持自由拖放和主动停靠。设置支持五种颜色和本机字体的预览、保存及恢复默认外观。架构取舍见[4.5 研发记录](RELEASE_4.5.0.md)，既有外观见[视觉基线](VISUAL_BASELINE_4X.md)。
 - **公司 Mac 独有、未提交**：`scripts/build-standalone-surfaces.mjs`、`tests/standalone-surfaces.cjs` 已原样保留。它们不在远端交付中。忽略目录里的截图、原始日志及设计转交包也只在本机；跨设备验证可使用下表的 Actions 证据。
-- **设计偏好待定**：负责人目前偏向Claude的C方案，希望中心整体更大；尚未定稿。原稿身份、已转达描述及正式文件缺口见[4.5研发记录](RELEASE_4.5.0.md#2026-11-18-windows-c参考准备)。核对原源码和截图后再改变正式外观，不能按描述声称已对齐。
+- **设计偏好待定**：负责人目前偏向Claude的C方案，希望中心整体更大；尚未定稿。原稿源码、截图与比例见[4.5研发记录](RELEASE_4.5.0.md#2026-11-18-windows-c参考准备)。核对原源码和截图后再改变正式外观，不能按描述声称已对齐。
 - **范围更新**：4.5不再为万能手机Mod扩大兼容开发。已有历史包及共享合同不在本批删除范围。
 
 ## Decided — 五批代码与证据
@@ -32,11 +32,13 @@
 
 Windows本批使用Node 26.13.0与本机Edge 158.0.4370.26的中性页面。工具链严格类型检查与生成、Framework构建、Hub 14项检查及其中48组布局通过；新增绘制检查覆盖四种状态。Expected Lock只新增该检查并更新源码身份，原断言与反例保留。PR检查由本批推送触发，具体状态从[PR #38 Checks](https://github.com/102326/DoL-Game-UI/pull/38/checks)按提交核对，不以Mac旧成功代签。
 
-本批没有运行真实游戏、设备或包安装，也没有视觉定稿、main合并或发布。正式原稿不可读仍是采用C前的具体输入缺口；不影响本批工程回归完成。
+本批没有运行真实游戏、设备或包安装，也没有视觉定稿、main合并或发布。负责人已提供完整原包，Windows 已核对源码和截图。
+
+旧提交 `039f6a2` 的[标准 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44332917545) 与[研究 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44332917565) 均在恢复停靠后发现静态菱形申请金属动效帧。修复让静态绘制继续由尺寸和配置变化驱动。Windows 资源回归通过，并能拒绝恢复旧行为的反例。
 
 ## Next — 当前小批之后
 
 1. 接续时先检查状态与唯一工作树，再正常fetch并以当前远端头核对，避免与其它机器双写。继续使用同一4.5分支，不在旧main叠改或创建重复工作区。
 2. 核对本机 Node 26、锁定依赖、浏览器和实际加载的 UI／Host／兼容包版本。需要复算时，在锁定依赖就绪后依次运行 `npm run ci:check`、`node scripts/build-framework.mjs`、`node tests/evolution-settings-integration.cjs`、`node tests/wardrobe-details-drawer.cjs`、`node tests/evolution-hub-integration.cjs`。本地证据由各脚本生成。
 3. Windows、Android WebView、原生选择器与触控、真实多 Mod 加载及渲染仍待验。针对 Ray 美化，优先在相同配置下比较侧栏完整画面与衣柜预览，记录包版本、视口和复现步骤。实际安装、恢复及库存业务的验收另需安全样本。
-4. C造型实施前先从正式可读原文件核对实际源码和截图；再沿现有Hub实现可回退小步，协调放大中心星与菱线。商店、战斗窗口保留为后续候选，Host扩展仍属调查，不自动扩成下一批。视觉定稿与发布仍需负责人安排。
+4. 用现有中性 Hub 预览比较原稿比例和中心星、菱线同步放大的效果。商店、战斗窗口保留为后续候选，Host扩展仍属调查，不自动扩成下一批。视觉定稿与发布仍需负责人安排。
