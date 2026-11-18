@@ -68,6 +68,9 @@ html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-preview-menu] {
  }
 }
 @media (prefers-reduced-motion:no-preference) {
+ html[data-stone-free][data-dol-midnight][data-dgu-visualMotion] .sf-motion-hub[data-preview-menu="drawer"] .sf-motion-ball.is-docked {
+  transition:transform 180ms cubic-bezier(.2,.7,.3,1), width 180ms ease-out, height 180ms ease-out, border-radius 180ms ease-out;
+ }
  html[data-dgu-visualMotion] .sf-motion-hub[data-preview-menu] .sf-motion-ball.is-open .spin-hub-canvas {
   transform-origin:50% 48%;
   animation:preview-diamond-settle 200ms cubic-bezier(.2,.7,.3,1);
