@@ -70,7 +70,8 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   const defaultSheet=await sheet.evaluate(n=>getComputedStyle(n).backgroundColor);
   await page.evaluate(()=>{
    document.body.insertAdjacentHTML('beforeend',
-    '<section class="sf-motion-hub" data-official><div class="sf-motion-orbit"><button class="sf-motion-petal" id="owned-hub">Tool</button></div></section>'+
+    '<section class="sf-motion-hub" data-official><div class="sf-motion-orbit"><button class="sf-motion-petal" id="owned-hub">Tool</button></div>'+
+    '<section class="sf-motion-sheet"><header id="owned-hub-heading">Detail</header><main><div class="sf-view-outlet"><header id="external-view-heading" style="font-family:monospace">Example</header></div></main></section></section>'+
     '<section class="dgw-root" id="owned-wardrobe"></section><section class="dgshop-host" id="owned-shop"></section>'+
     '<dialog class="dgu-surface" data-sf-workspace="drawer" id="owned-drawer"></dialog>'+
     '<section id="customOverlay" class="dgc-overlay"><div class="dgc-host"></div><button id="owned-overlay">Attribute</button></section>');
@@ -93,6 +94,8 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   assert.match(await hubFill(),/\/ 0\.6\)/);
   await page.evaluate(()=>theme.setPreference('visualGlass',false));assert.equal(await hubFill(),panelFill);
   await page.evaluate(()=>theme.setPreference('visualGlass',true));
+  assert.match(await getFont('#owned-hub-heading'),/Missing Family Contract/);
+  assert.equal(await getFont('#external-view-heading'),'monospace');
   assert.equal(await getFont('#native'),nativeFont);
   assert.notEqual(await sheet.evaluate(n=>getComputedStyle(n).backgroundColor),defaultSheet);
   await page.locator('#customOverlay').evaluate(n=>{n.removeAttribute('class');n.setAttribute('data-dgu-adapter','ModHubSoftWet');n.setAttribute('data-dgu-adapter-match','partial')});

@@ -107,6 +107,8 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[d
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-sheet > main{
  background-color:var(--sw-custom-panel);
 }
-html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[data-official] .sf-motion-sheet :is(
- header,footer,header button,footer button,.sf-reference-copy,.sf-reference-origin
-){font-family:var(--sw-custom-font)!important}
+html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[data-official] .sf-motion-sheet > :is(header,footer),
+html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[data-official] .sf-motion-sheet > :is(header,footer) button,
+html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[data-official] .sf-motion-sheet .sf-view-outlet [data-sf-owner=SoftWetOfficialUI] :is(.sf-reference-copy,.sf-reference-origin){
+ font-family:var(--sw-custom-font)!important;
+}
