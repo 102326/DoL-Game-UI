@@ -5,6 +5,15 @@ import {startFloatingTools} from '../../src/floating/main';
 import {nativeNavigation} from '../../framework/official-ui/navigation';
 import {startOfficialMotion} from '../../framework/official-ui/motion';
 
+import './entry-c.css';
+
+const entry = new URLSearchParams(location.search).get('entry');
+if (entry === 'c46' || entry === 'c56') {
+ document.documentElement.dataset.previewEntry = entry;
+ const heading = document.querySelector('#hub-preview-scene h1');
+ if (heading) heading.textContent = entry === 'c46' ? '细线入口 · 原稿比例 46%' : '细线入口 · 放大试样 56%';
+}
+
 const root:NonNullable<Parameters<typeof startTheme>[0]>=window;
 startTheme(root);
 const theme=root.DoLMidnightTheme;if(!theme)throw Error('Missing settings preview owner');

@@ -34,11 +34,11 @@ Windows本批使用Node 26.13.0与本机Edge 158.0.4370.26的中性页面。工�
 
 本批没有运行真实游戏、设备或包安装，也没有视觉定稿、main合并或发布。负责人已提供完整原包，Windows 已核对源码和截图。
 
-旧提交 `039f6a2` 的[标准 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44332917545) 与[研究 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44332917565) 均在恢复停靠后发现静态菱形申请金属动效帧。修复让静态绘制继续由尺寸和配置变化驱动。Windows 资源回归通过，并能拒绝恢复旧行为的反例。
+旧提交 `039f6a2` 的[标准 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44332917545) 与[研究 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44332917565) 均在恢复停靠后发现静态菱形申请金属动效帧。修复让静态绘制继续由尺寸和配置变化驱动。Windows 资源回归通过，并能拒绝恢复旧行为的反例。 修复提交 `b2714f5` 的[标准 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44337509578)及[研究 CI](https://github.com/102326/DoL-Game-UI/actions/runs/44337509843)均通过。
 
 ## Next — 当前小批之后
 
 1. 接续时先检查状态与唯一工作树，再正常fetch并以当前远端头核对，避免与其它机器双写。继续使用同一4.5分支，不在旧main叠改或创建重复工作区。
 2. 核对本机 Node 26、锁定依赖、浏览器和实际加载的 UI／Host／兼容包版本。需要复算时，在锁定依赖就绪后依次运行 `npm run ci:check`、`node scripts/build-framework.mjs`、`node tests/evolution-settings-integration.cjs`、`node tests/wardrobe-details-drawer.cjs`、`node tests/evolution-hub-integration.cjs`。本地证据由各脚本生成。
 3. Windows、Android WebView、原生选择器与触控、真实多 Mod 加载及渲染仍待验。针对 Ray 美化，优先在相同配置下比较侧栏完整画面与衣柜预览，记录包版本、视口和复现步骤。实际安装、恢复及库存业务的验收另需安全样本。
-4. 用现有中性 Hub 预览比较原稿比例和中心星、菱线同步放大的效果。商店、战斗窗口保留为后续候选，Host扩展仍属调查，不自动扩成下一批。视觉定稿与发布仍需负责人安排。
+4. 负责人可在[中性预览](RELEASE_4.5.0.md#2026-11-18-windows-c参考准备)比较 C 的 46% 和 56% 试样。Windows Edge 已验证两档均居中、命中原按钮，展开后菱线提亮，回摆结束后静止，减少动态时直接显示展开状态。当前待决定的是中心图案的尺寸。商店、战斗窗口保留为后续候选，Host扩展仍属调查，不自动扩成下一批。视觉定稿与发布仍需负责人安排。

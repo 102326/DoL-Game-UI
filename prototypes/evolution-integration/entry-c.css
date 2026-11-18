@@ -1,0 +1,82 @@
+/* Fine-line mark adapted from the round-one floating entry reference.
+MIT License
+
+Copyright (c) 2026 DoLWorkbench contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+/* Neutral Hub preview only. Both masks use the same viewBox and rotation origin. */
+html[data-preview-entry] {
+ --entry-size: 46%;
+}
+html[data-preview-entry="c56"] {
+ --entry-size: 56%;
+}
+html[data-preview-entry][data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-motion-ball {
+ background: linear-gradient(160deg, #363a3d, #2a2d30 58%, #232528) !important;
+ border-color: #202225 !important;
+ box-shadow: inset 0 1px #fff1, inset 0 -1px #16191c, 0 2px 5px #0003 !important;
+ backdrop-filter: none !important;
+}
+html[data-preview-entry] .sf-motion-hub[data-diamond-hub] .sf-motion-ball .spin-hub-canvas { visibility: hidden }
+html[data-preview-entry][data-stone-free] .sf-motion-hub[data-official] .sf-motion-ball .sf-motion-emblem {
+ display: none;
+}
+html[data-preview-entry][data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-ball::before {
+ display: none;
+}
+html[data-preview-entry][data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-ball > span {
+ position: absolute;
+ inset: 0;
+ width: var(--entry-size);
+ aspect-ratio: 1;
+ height: auto;
+ margin: auto;
+ pointer-events: none;
+ visibility: visible;
+ transition: none;
+ transform: none;
+}
+html[data-preview-entry] .sf-motion-hub[data-diamond-hub] .sf-motion-ball > span::before,
+html[data-preview-entry] .sf-motion-hub[data-diamond-hub] .sf-motion-ball > span::after {
+ content: "";
+ position: absolute;
+ inset: 0;
+ mask: var(--entry-mask) center / contain no-repeat;
+}
+html[data-preview-entry] .sf-motion-hub[data-diamond-hub] .sf-motion-ball > span::before {
+ --entry-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='27 27 46 46'%3E%3Cpath d='M54.95 31.95l13.1 13.1m0 9.9-13.1 13.1m-9.9 0-13.1-13.1m0-9.9 13.1-13.1' fill='none' stroke='black' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+ background: #c8d0d4;
+ opacity: .36;
+}
+html[data-preview-entry] .sf-motion-hub[data-diamond-hub] .sf-motion-ball > span::after {
+ --entry-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='27 27 46 46'%3E%3Cpath d='M50 27Q51.16 38.95 52.69 47.31Q61.05 48.84 73 50Q61.05 51.16 52.69 52.69Q51.16 61.05 50 73Q48.84 61.05 47.31 52.69Q38.95 51.16 27 50Q38.95 48.84 47.31 47.31Q48.84 38.95 50 27Z'/%3E%3C/svg%3E");
+ background: linear-gradient(135deg, #d6dadc, #aab0b3);
+}
+html[data-preview-entry] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-open > span::before { opacity: .7 }
+html[data-preview-entry] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-open > span::after { background: linear-gradient(135deg, #eef0f0, #c0c5c8) }
+@media (prefers-reduced-motion: no-preference) {
+ html[data-preview-entry][data-dgu-visualMotion] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-open > span {
+  animation: entry-c-settle 200ms cubic-bezier(.2,.7,.3,1);
+ }
+}
+@keyframes entry-c-settle {
+ 0%, 100% { transform: none }
+ 45% { transform: rotate(10deg) scale(1.03) }
+}
