@@ -17,6 +17,28 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#custo
  & :is(.modhub-section,.modhub-item,.modhub-market-card,.modhub-help-section,.modhub-help-result,.settingsToggleItemWide,.savesListRow,.CEDISPLAY_setting){padding-block:calc(8px + var(--dgu-ui-extra-gap,0px) * .5)!important}
  & :is(.modhub-btn-group,.maplebirch-cloud-save-actions,.CE-category-bar,.CE-subtab-bar,.footer-actions){gap:calc(6px + var(--dgu-ui-extra-gap,0px) * .5)!important}
  & label{ text-align:var(--dgu-option-text-align,left) }
+ &:is(html[data-sw-custom-colors] *){
+  --q-fill:var(--sw-custom-glass);
+  --q-well:var(--sw-custom-panel);
+  --sf-ink:var(--sw-custom-text);
+  --sf-muted:var(--sw-custom-muted);
+  --kw-island:var(--sw-custom-panel);
+  --dgu-surface:var(--sw-custom-background)!important;
+  --dgu-panel:var(--sw-custom-panel)!important;
+  --dgu-card:var(--sw-custom-panel)!important;
+  --dgu-hover:var(--sw-custom-hover)!important;
+  --dgu-accent:var(--sw-custom-accent)!important;
+  --dgu-text:var(--sw-custom-text)!important;
+  --dgu-secondary:var(--sw-custom-muted)!important;
+  --dgu-on-accent:var(--sw-custom-on-accent)!important;
+  &:is(#customOverlay):is(html:not([data-dgu-visualGlass]) *){background-color:var(--sw-custom-background)!important}
+  & :is([data-dgu-role~=title],.modhub-manager-tool-action,.modhub-modal-header,.modhub-restore-panel-header){color:var(--sw-custom-text)}
+ }
+ &:not([data-dgu-adapter=SmartPhoneSoftWet]):is(html[data-sw-custom-font] *),
+ &:not([data-dgu-adapter=SmartPhoneSoftWet]):is(html[data-sw-custom-font] *) :where(button,input[type=button],input[type=submit],select,textarea,summary),
+ &[data-dgu-adapter=SmartPhoneSoftWet]:is(html[data-sw-custom-font] *) :where(.phone-tool-bar,.phone-app-icon){
+  font-family:var(--sw-custom-font)!important;
+ }
  & .modhub-sticky-toolbar{background:var(--q-fill)!important}
  &[data-dgu-adapter=CheatExtendedInlineSoftWet] .CEDISPLAY_setting{background:var(--q-well)!important}
 }
@@ -31,7 +53,7 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(
 ){
  background:var(--q-fill)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
  &:is(html[data-dgu-visualGlass] *){backdrop-filter:var(--dgu-acrylic-axis-filter)!important;-webkit-backdrop-filter:var(--dgu-acrylic-axis-filter)!important}
- &:is(html:not([data-dgu-visualGlass]) *){background:#1d262b!important}
+ &:is(html:not([data-dgu-visualGlass]) *){background:var(--sw-custom-background,#1d262b)!important}
 }
 html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] #modHubRestorePanelOverlay[data-dgu-adapter=ModHubSoftWetRestore][data-dgu-adapter-match=full]>#modHubRestorePanel{font-size:calc(1rem * var(--dgu-font-scale,1))}
 

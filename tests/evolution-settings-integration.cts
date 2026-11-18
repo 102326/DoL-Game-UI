@@ -58,6 +58,70 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   await page.evaluate(()=>theme.setPreference('visualGlass',false));assert.equal((await sample()).blur,'none');assert.equal((await sample()).fill,'rgb(29, 38, 43)');
   await page.evaluate(()=>theme.destroy());assert.equal(await page.locator('html').getAttribute('data-dgu-acrylic-adjustment'),null);return{owned,adapters:4,unknownProtected:3,nativeCalls:1};
  });
+ if(!baseline)await check('M02 custom appearance previews, applies, persists, and resets within owned UI',async()=>{
+  await open();await page.getByRole('button',{name:'材质',exact:true}).click();
+  const color=page.getByLabel('强调色',{exact:true}),font=page.getByLabel('本机字体',{exact:true});
+  const save=page.getByRole('button',{name:'应用并保存'}),reset=page.getByRole('button',{name:'恢复默认外观'});
+  const root=page.locator('html'),sheet=page.locator('.sw-appearance'),sample=page.locator('.sw-appearance-sample');
+  const getFont=(selector:string)=>page.locator(selector).evaluate(n=>getComputedStyle(n).fontFamily);
+  const nativeFont=await getFont('#native');
+  const cssColor=(selector:string)=>page.locator(selector).evaluate(n=>getComputedStyle(n).getPropertyValue('--dgu-accent').trim());
+  const defaultColor=await cssColor('#dol-midnight-controls');
+  const defaultSheet=await sheet.evaluate(n=>getComputedStyle(n).backgroundColor);
+  await page.evaluate(()=>{
+   document.body.insertAdjacentHTML('beforeend',
+    '<section class="sf-motion-hub" data-official><div class="sf-motion-orbit"><button class="sf-motion-petal" id="owned-hub">Tool</button></div></section>'+
+    '<section class="dgw-root" id="owned-wardrobe"></section><section class="dgshop-host" id="owned-shop"></section>'+
+    '<dialog class="dgu-surface" data-sf-workspace="drawer" id="owned-drawer"></dialog>'+
+    '<section id="customOverlay" class="dgc-overlay"><div class="dgc-host"></div><button id="owned-overlay">Attribute</button></section>');
+  });
+  await color.fill('#ffd979');await page.getByLabel('面板',{exact:true}).fill('#ffffff');
+  await font.fill('Georgia; color:red');assert.ok(await save.isDisabled());
+  await font.fill('Missing Family Contract');
+  assert.match(await sample.evaluate(n=>getComputedStyle(n).fontFamily),/Missing Family Contract.*system-ui/);
+  assert.equal(await root.getAttribute('data-sw-custom-colors'),null);
+  assert.equal(await cssColor('#dol-midnight-controls'),defaultColor);
+  assert.notEqual(await sample.getByRole('status').count(),0);
+  const effective=await sample.evaluate(n=>getComputedStyle(n).getPropertyValue('--sample-panel').trim());
+  assert.notEqual(effective,'#ffffff');
+  await save.click();assert.notEqual(await root.getAttribute('data-sw-custom-colors'),null);
+  for(const selector of ['.dmt-settings-shell','#owned-hub','#owned-wardrobe','#owned-shop','#owned-overlay','#owned-drawer']){
+   assert.equal(await cssColor(selector),'#ffd979');assert.match(await getFont(selector),/Missing Family Contract.*system-ui/);
+  }
+  const hubFill=()=>page.locator('#owned-hub').evaluate(n=>getComputedStyle(n).backgroundColor);
+  const panelFill=await sample.locator('.sw-appearance-sample-panel').evaluate(n=>getComputedStyle(n).backgroundColor);
+  assert.match(await hubFill(),/\/ 0\.6\)/);
+  await page.evaluate(()=>theme.setPreference('visualGlass',false));assert.equal(await hubFill(),panelFill);
+  await page.evaluate(()=>theme.setPreference('visualGlass',true));
+  assert.equal(await getFont('#native'),nativeFont);
+  assert.notEqual(await sheet.evaluate(n=>getComputedStyle(n).backgroundColor),defaultSheet);
+  await page.locator('#customOverlay').evaluate(n=>{n.removeAttribute('class');n.setAttribute('data-dgu-adapter','ModHubSoftWet');n.setAttribute('data-dgu-adapter-match','partial')});
+  assert.notEqual(await cssColor('#owned-overlay'),'#ffd979');assert.doesNotMatch(await getFont('#owned-overlay'),/Missing Family Contract/);
+  await page.locator('#customOverlay').evaluate(n=>n.setAttribute('data-dgu-adapter-match','full'));
+  assert.equal(await cssColor('#owned-overlay'),'#ffd979');
+  await page.evaluate(()=>{
+   document.body.insertAdjacentHTML('beforeend',
+    '<div class="modhub-modal-backdrop" data-dgu-adapter="ModHubSoftWetModal" data-dgu-adapter-match="full">'+
+    '<div class="modhub-modal-dialog" id="owned-modhub-modal"><button id="owned-modhub-close">Close</button></div></div>');
+  });
+  assert.equal(await cssColor('#owned-modhub-modal'),'#ffd979');
+  assert.match(await getFont('#owned-modhub-close'),/Missing Family Contract/);
+  assert.match(await page.locator('#owned-modhub-modal').evaluate(n=>getComputedStyle(n).backgroundColor),/\/ 0\.43\)/);
+  await page.reload();await page.waitForFunction(()=>typeof theme!=='undefined');await page.addStyleTag({path:'dist/framework/official-ui/style.css'});
+  await open();await page.getByRole('button',{name:'材质',exact:true}).click();
+  assert.equal(await font.inputValue(),'Missing Family Contract');assert.equal(await color.inputValue(),'#ffd979');
+  await page.setViewportSize({width:390,height:844});
+  assert.ok(await sheet.evaluate(n=>n.scrollWidth<=n.clientWidth+1),'appearance controls must fit on a phone-width viewport');
+  await reset.click();assert.equal(await root.getAttribute('data-sw-custom-colors'),null);
+  assert.equal(await root.getAttribute('data-sw-custom-font'),null);
+  assert.equal(await cssColor('#dol-midnight-controls'),defaultColor);
+  assert.equal(await sheet.evaluate(n=>getComputedStyle(n).backgroundColor),defaultSheet);
+  assert.equal(await font.inputValue(),'');
+  await font.fill('Georgia');await save.click();
+  await page.evaluate(()=>theme.destroy());
+  assert.equal(await root.evaluate(n=>(n as HTMLElement).style.getPropertyValue('--sw-custom-font')),'');
+  return{viewports:[1280,390],nativeOutsideScope:true,adapterMatchComparison:true};
+ });
  await check('S01 approved shell and page timing, real input and single material surface',async()=>{
    const first=await page.evaluate(()=>{theme.openSettings();const shell=settingsNode('.dmt-settings-shell'),a=settingsAnimations.find(x=>x.node===shell),control=settingsNode<HTMLElement>('[aria-label="手机紧凑按钮间距"]'),before=theme.getPreferences().mobileCompactControls;control.click();return{duration:a?frameEffect(a.animation).getTiming().duration:undefined,easing:a?frameEffect(a.animation).getTiming().easing:undefined,inert:!!control.closest('[inert]'),updated:theme.getPreferences().mobileCompactControls!==before,proxyCount:document.querySelectorAll('.dmt-open-material,.rf-stage,.dmt-settings-context,.dmt-settings-material').length,transform:getComputedStyle(shell).transform,backdrop:getComputedStyle(shell).backdropFilter,alpha:Number(getComputedStyle(shell).backgroundColor.match(/[\d.]+/g)?.[3]??1)}});
   assert.equal(first.duration,100);assert.equal(first.easing,'linear');assert.equal(first.inert,false);assert.equal(first.updated,true);assert.equal(first.proxyCount,0);assert.equal(first.transform,'none');assert.match(first.backdrop,/blur\(24px\)/);assert.ok(Math.abs(first.alpha-.43)<.001,'accepted60% material remains visible without a preview marker');await page.waitForTimeout(130);

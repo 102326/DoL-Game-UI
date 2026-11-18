@@ -11,11 +11,13 @@ import SettingsNavigation from './SettingsNavigation.vue';
 import {sourceMotion} from '../ui/source-motion';
 import {visualScope} from '../ui/visual-scope';
 import AcrylicControls from './AcrylicControls.vue';
+import AppearanceControls from './AppearanceControls.vue';
+import type {Appearance} from './appearance';
 import ReadingControls from './ReadingControls.vue';
 import ReadingSample from './ReadingSample.vue';
 import {settingsMaterial} from './settings-material';
 
-const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
+const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onAppearance:(value:Appearance)=>void;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
 declare const __STONE_FREE_CONSUMER__:boolean;
 const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
 // Approved material controls follow the existing official-consumer boundary.
@@ -84,6 +86,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
      <p>当前主体材质默认使用完整表现。关闭动画或系统减少动态效果时，操作仍会立即完成。</p>
     </div>
     <SettingsPreview :state="state"/>
+    <AppearanceControls v-if="state.appearance" :appearance="state.appearance" @apply="onAppearance"/>
    </section>
 
    <section v-else-if="category==='entry'" class="dmt-workspace-section" aria-labelledby="dmt-entry-heading">

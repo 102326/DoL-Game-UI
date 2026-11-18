@@ -2242,6 +2242,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings:M02 custom appearance previews, applies, persists, and resets within owned UI",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings:S01 approved shell and page timing, real input and single material surface",
           "minimumAssertions": 1
         },
@@ -2298,8 +2302,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "05b6cd72489fdf02ef8e7b123ece5f018626490f945b3262dcc3588e6d7a8f80",
-      "assertionSites": 295,
+      "sourceSha256": "898eab8ba153dc1851e96ab6a80b1479f4cee13a60ce206f9e2fb6208776cb30",
+      "assertionSites": 333,
       "rendererContexts": [
         "weather:2d"
       ]
