@@ -8,12 +8,12 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#custo
  --kw-island:var(--q-well);
  font-size:calc(1rem * var(--dgu-font-scale,1));
  & :is(button,input[type=button],input[type=submit],summary,.phone-tool-bar>span){
-  box-sizing:border-box;max-width:100%;min-height:max(44px,calc(44px * var(--dgu-button-scale,1)))!important;
-  padding:calc(7px * var(--dgu-button-scale,1)) calc(11px * var(--dgu-button-scale,1))!important;
-  font-size:calc(13px * var(--dgu-font-scale,1))!important;text-align:var(--dgu-option-text-align,left)!important;
+  box-sizing:border-box;max-width:100%;min-height:var(--dgu-control-hit,44px)!important;
+  padding:var(--dgu-control-py,7px) var(--dgu-control-px,11px)!important;
+  font-size:var(--dgu-control-font,13px)!important;text-align:var(--dgu-option-text-align,left)!important;
   white-space:normal;overflow-wrap:anywhere;
  }
- & :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]),select,textarea){font-size:calc(13px * var(--dgu-font-scale,1));max-width:100%;box-sizing:border-box}
+ & :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]),select,textarea){font-size:var(--dgu-control-font,13px);max-width:100%;box-sizing:border-box}
  & :is(.modhub-section,.modhub-item,.modhub-market-card,.modhub-help-section,.modhub-help-result,.settingsToggleItemWide,.savesListRow,.CEDISPLAY_setting){padding-block:calc(8px + var(--dgu-ui-extra-gap,0px) * .5)!important}
  & :is(.modhub-btn-group,.maplebirch-cloud-save-actions,.CE-category-bar,.CE-subtab-bar,.footer-actions){gap:calc(6px + var(--dgu-ui-extra-gap,0px) * .5)!important}
  & label{ text-align:var(--dgu-option-text-align,left) }
@@ -35,12 +35,19 @@ html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is(#custo
   & :is([data-dgu-role~=title],.modhub-manager-tool-action,.modhub-modal-header,.modhub-restore-panel-header){color:var(--sw-custom-text)}
  }
  &:not([data-dgu-adapter=SmartPhoneSoftWet]):is(html[data-sw-custom-font] *),
- &:not([data-dgu-adapter=SmartPhoneSoftWet]):is(html[data-sw-custom-font] *) :where(button,input[type=button],input[type=submit],select,textarea,summary),
+ &:not([data-dgu-adapter=SmartPhoneSoftWet]):is(html[data-sw-custom-font] *) :where(button,input:not([type]),input:is([type=text],[type=number],[type=search],[type=button],[type=submit]),select,textarea,summary),
  &[data-dgu-adapter=SmartPhoneSoftWet]:is(html[data-sw-custom-font] *) :where(.phone-tool-bar,.phone-app-icon){
   font-family:var(--sw-custom-font)!important;
  }
  & .modhub-sticky-toolbar{background:var(--q-fill)!important}
  &[data-dgu-adapter=CheatExtendedInlineSoftWet] .CEDISPLAY_setting{background:var(--q-well)!important}
+}
+
+/* The reviewed install portal retains its native handlers and scrolls inside the dialog. */
+html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] .modhub-modal-backdrop[data-dgu-adapter=ModHubSoftWetModal][data-dgu-adapter-match=full]>.modhub-modal-dialog{
+ box-sizing:border-box;max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);display:flex;flex-direction:column;min-height:0;
+ & .modhub-modal-body{min-height:0;overflow:auto;overflow-wrap:anywhere}
+ & .modhub-modal-footer{display:flex;flex-wrap:wrap;gap:var(--dgu-control-py,7px)}
 }
 
 /* Portaled dialogs and the virtual phone sample only their existing outer face. */

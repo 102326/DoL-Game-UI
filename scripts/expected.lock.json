@@ -999,12 +999,16 @@
           "minimumAssertions": 1
         },
         {
+          "id": "hub:scaled Hub controls, scrolling and caller ownership",
+          "minimumAssertions": 1
+        },
+        {
           "id": "placement:entry",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "1137b384d23c670fafae8c2d285cdbae37bf952325044acf43a70ecdb5497db8",
-      "assertionSites": 427,
+      "sourceSha256": "c1b49f7a5966002d94f3a0829b41ba5f0936bb574df39387c1a4cccb073cf62e",
+      "assertionSites": 444,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -2246,6 +2250,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings:R01 owned form geometry and unowned control boundaries",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings:P01 requested page choices survive failure, retry and emergency recovery",
           "minimumAssertions": 1
         },
@@ -2306,8 +2314,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "8c72b74ea816c8287fb782ceea57abdbdf34665201d28ae85ad7e3af46ec79e3",
-      "assertionSites": 374,
+      "sourceSha256": "d3530bd09526475b4bd516fa8eb888ff7f8370cc1aa58ec2982ecd8a39e3374c",
+      "assertionSites": 422,
       "rendererContexts": [
         "weather:2d"
       ]

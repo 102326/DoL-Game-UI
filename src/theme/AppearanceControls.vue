@@ -69,7 +69,7 @@ function setColor(role: ColorRole, value: string) {
 .sw-appearance-colors label{display:flex;min-width:0;align-items:center;justify-content:space-between;gap:4px;padding:3px 6px;border:1px solid #ffffff12;border-radius:8px}
 .sw-appearance-colors input{width:44px;min-height:44px;flex:none;padding:3px;border-radius:8px;background:transparent;border:0;cursor:pointer}
 .sw-appearance-font{display:grid;gap:4px;margin-top:12px}
-.sw-appearance-font input{width:100%;min-width:0;min-height:44px;font:inherit;padding:6px 10px}
+.sw-appearance-font input{width:100%;min-width:0;min-height:var(--dgu-control-hit,44px);font:inherit;padding:var(--dgu-control-py,6px) var(--dgu-control-px,10px)}
 .sw-appearance-fields p{margin:6px 0 0;font-size:.85em}
 .sw-appearance-sample{display:grid;align-content:start;gap:8px;min-width:0;overflow-wrap:anywhere;padding:12px;border:1px solid #ffffff20;border-radius:12px;background:var(--sample-bg);color:var(--sample-text)}
 .sw-appearance-sample-panel{display:grid;gap:5px;padding:10px;border-radius:8px;background:var(--sample-panel)}

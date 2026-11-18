@@ -107,6 +107,13 @@ async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstructi
   step='partial visual construction failure preserves classic actual Hub';await p.evaluate(()=>{hubPreview.stop();const observe=ResizeObserver.prototype.observe;Object.assign(window,{restoreObserve:()=>{ResizeObserver.prototype.observe=observe}});ResizeObserver.prototype.observe=function(node,...args){if(node.matches?.('.spin-hub-canvas'))throw Error('controlled sphere constructor failure');return observe.call(this,node,...args)};hubPreview.remount()});await p.waitForSelector('.sf-motion-hub');await p.waitForTimeout(100);await p.evaluate(()=>restoreObserve());assert.equal(await p.locator('[data-spin-hub],.spin-hub-canvas').count(),0);const nativeBefore=await p.evaluate(()=>hubPreview.counts().native);await ball.click();await p.locator('[data-motion-view$="native-social"]').click();assert.equal(await p.evaluate(()=>hubPreview.counts().native),nativeBefore+1);done(step);
   step='observer constructor failure leaves no appended canvas';await p.evaluate(()=>{hubPreview.stop();Object.assign(window,{nativeResizeObserver:ResizeObserver,ResizeObserver:class{constructor(){throw Error('controlled observer constructor failure')}}});hubPreview.remount()});await p.waitForSelector('.sf-motion-ball');await p.evaluate(()=>Object.assign(window,{ResizeObserver:nativeResizeObserver}));assert.equal(await p.locator('.spin-hub-canvas').count(),0,'constructor fallback must remove the already appended canvas');await ball.click();await p.locator('[data-motion-view$="native-social"]').click();done(step);
   step='peer clock survives Hub teardown and throwing cleanup retires every owned node';await p.evaluate(()=>hubPreview.remount());await p.waitForSelector('.spin-hub-canvas');await ball.click();await open();await p.evaluate(async()=>{const {createSphere}=await import('../src/ui/golden-spin/sphere.ts');const canvas=document.createElement('canvas');canvas.style.cssText='width:200px;height:200px';document.body.append(canvas);Object.assign(window,{peerSphere:createSphere(canvas,()=>{})});peerSphere.play();Object.assign(window,{peerCanvas:canvas})});await p.waitForTimeout(100);const peerState=await p.evaluate(()=>peerSphere.inspect());const retired=await p.evaluate(()=>{Object.assign(window,{retiredHub:testHubVisual});const disconnect=ResizeObserver.prototype.disconnect;ResizeObserver.prototype.disconnect=function(){disconnect.call(this);throw Error('controlled disconnect failure')};let rejected=false;try{testHubRelease()}catch{rejected=true}finally{ResizeObserver.prototype.disconnect=disconnect}return{rejected,state:testHubVisual.inspect()}});assert.equal(retired.rejected,true);assert.ok(retired.state.dead&&retired.state.sphere.dead&&!retired.state.moving&&!retired.state.framePending&&!retired.state.sphere.running);assert.equal(await p.locator('[data-spin-hub],.spin-hub-canvas').count(),0);await p.waitForTimeout(120);const peerAfter=await p.evaluate(()=>peerSphere.inspect());assert.notEqual(peerAfter.angle,peerState.angle,'peer frame continues');assert.notEqual(peerAfter.speed,peerState.speed,'peer GSAP timeline continues; no global ticker stop');await p.evaluate(()=>{peerSphere.destroy();peerCanvas.remove();hubPreview.stop()});done(step);
+  await p.evaluate(()=>hubPreview.dispose());await p.close();
+  step='scaled Hub controls, scrolling and caller ownership';
+  p=await browser.newPage({viewport:{width:1280,height:900}});
+  p.on('pageerror',error=>errors.push(error.message));p.setDefaultTimeout(5000);
+  await p.goto('http://127.0.0.1:'+address.port+'/',{timeout:20000});
+  await p.waitForSelector('.sf-motion-ball');
+  await scaledControls(p);done(step);
   assert.deepEqual(errors,[]);await p.evaluate(()=>hubPreview.dispose());
  }catch(error){if(p){inputFailure=await p.evaluate(()=>({events:Reflect.get(window,'hubInputEvents'),counts:hubPreview.counts(),visual:testHubVisual.inspect(),dialogOpen:document.querySelector('dialog')?.open})).catch(()=>({unavailable:true}));fs.writeFileSync(path.join(out,'input-diagnosis.json'),JSON.stringify(inputFailure,null,2));console.error('Hub integration failure',JSON.stringify({step,inputFailure}))}if(!(error instanceof Error))throw error;checks.push({name:step,status:'FAIL',error:error.message});Object.assign(error,{hubIntegration:{checks,executedOverrides:overrides,inputFailure}});await p?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw error}
  finally{const files=cp.execFileSync('git',['ls-files','--cached','--others','--exclude-standard','src/ui/golden-spin','framework/official-ui/hub.ts','framework/motion-hub','tests/evolution-hub-integration.cjs','scripts/preview-evolution-hub.mjs'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({source:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),workingTree:true,executedOverrides:overrides,faultInjection:unsafeConstruction?'constructor-outside-cleanup':oldGeometry?'frozen-MotionHub-d3f04ee':oldScroll?'old-overflow-specificity':oldPreviewStyle?'old-preview-main-selector':null,runtime:{platform:process.platform,node:process.version,chromium:browser.version()},checks,errors,inputFailure,hashes:Object.fromEntries(files.map(f=>[f,crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex')]))},null,2));console.log('Hub evidence',out);await p?.close();await server.close()}
@@ -165,6 +172,44 @@ async function actualMenuLayout(p:playwright.Page,out:string){
  }
  await p.setViewportSize({width:1280,height:900});await p.evaluate(()=>{hubPreview.stop();localStorage.removeItem('StoneFreeMotionHub.position.v1');localStorage.removeItem('SoftWet.MotionHub.freePosition.v1');hubPreview.floating.setPreference('mode','fan');hubPreview.remount()});
  await p.emulateMedia({reducedMotion:'no-preference'});fs.writeFileSync(path.join(out,'layout-matrix.json'),JSON.stringify(boxes,null,2));console.log('PASS actual Hub layout matrix',boxes.length,'rendered layouts');
+}
+async function scaledControls(p:playwright.Page){
+ await p.evaluate(()=>{DoLMidnightTheme.setPreference('fontScale',150);DoLMidnightTheme.setPreference('buttonScale',150)});
+ for(const mode of ['fan','grid'] as const){
+  await p.evaluate(value=>hubPreview.floating.setPreference('mode',value),mode);
+  await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+  const nav=p.locator('.sf-motion-orbit');
+  assert.equal(await nav.evaluate(n=>n.classList.contains('is-grid')),mode==='grid');
+  for(const button of await nav.locator('button').all()){
+   await button.evaluate(n=>n.scrollIntoView({block:'nearest'}));
+   const data=await button.evaluate(n=>{const r=n.getBoundingClientRect(),s=getComputedStyle(n),text=n.querySelector('span'),t=text?.getBoundingClientRect();return{width:r.width,height:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,font:parseFloat(getComputedStyle(text??n).fontSize),buttonFont:s.fontSize,rootFont:getComputedStyle(document.documentElement).getPropertyValue('--dgu-font-scale'),rootHit:getComputedStyle(document.documentElement).getPropertyValue('--dgu-control-hit'),hit:n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),textFits:!t||(t.left>=r.left-1&&t.right<=r.right+1&&t.top>=r.top-1&&t.bottom<=r.bottom+1),scroll:n.scrollWidth<=n.clientWidth+1}});
+   assert.ok(data.width>=66&&data.height>=66&&data.left>=0&&data.right<=1280&&data.top>=0&&data.bottom<=900&&data.hit&&data.textFits&&data.scroll,JSON.stringify({mode,...data}));
+   assert.ok(data.font>=17,JSON.stringify({mode,...data}));
+  }
+  assert.ok(await p.locator('.sf-motion-ball').evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),'sphere center remains reachable');
+  await p.locator('.sf-motion-ball').press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+  if(mode==='fan'){
+   const sphere=p.locator('.sf-motion-ball'),box=must(await sphere.boundingBox());await p.mouse.move(box.x+box.width/2,box.y+box.height/2);await p.mouse.down();await p.mouse.move(40,box.y+box.height/2,{steps:5});await p.mouse.up();await sphere.click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+   assert.equal(await nav.evaluate(n=>n.classList.contains('is-grid')),false);
+   for(const control of await p.locator('.sf-motion-orbit button,.sf-motion-ball').all())assert.ok(await control.evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),'left fan control center remains reachable');
+   await sphere.press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+  }
+ }
+ await p.evaluate(()=>{Object.assign(window,{peer:hubPreview.host.register('scale-boundary')});peer.provideView({id:'caller',title:'Independent view',setup(c){c.element.innerHTML='<header><button style=\"font-size:23px;min-height:48px\">Caller action</button></header><p>Selectable caller text</p>';return()=>{}}})});
+ await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+ const caller=p.locator('[data-motion-view="scale-boundary:caller"]');await caller.evaluate(n=>n.scrollIntoView({block:'nearest'}));await caller.click();
+ const owned=p.getByRole('button',{name:'Caller action'});await owned.waitFor();assert.equal(await owned.evaluate(n=>getComputedStyle(n).fontSize),'23px');
+ assert.equal(await p.getByText('Selectable caller text').evaluate(n=>getComputedStyle(n).userSelect),'auto');
+ await p.locator('.sf-motion-sheet > header > button').click();await p.evaluate(()=>peer.dispose());
+ await p.setViewportSize({width:390,height:320});await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+ const nav=p.locator('.sf-motion-orbit'),utility=p.getByRole('button',{name:'停靠侧边',exact:true});await utility.evaluate(n=>n.scrollIntoView({block:'nearest'}));
+ assert.equal(await nav.evaluate(n=>getComputedStyle(n).scrollbarWidth),'none');assert.ok(await utility.evaluate(n=>{const r=n.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}));
+ await p.locator('.sf-motion-ball').press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+ await p.evaluate(()=>{DoLMidnightTheme.setPreference('fontScale',50);DoLMidnightTheme.setPreference('buttonScale',50)});
+ await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+ for(const button of await p.locator('.sf-motion-orbit button').all())assert.ok(await button.evaluate(n=>{const r=n.getBoundingClientRect();return r.width>=44&&r.height>=44}));
+ await p.evaluate(()=>{DoLMidnightTheme.setPreference('fontScale',100);DoLMidnightTheme.setPreference('buttonScale',100)});
+ console.log('PASS actual Hub scaled fan/grid controls, scrolling and caller boundary');
 }
 async function previewLayout(p:playwright.Page,{oldPreviewCSS=null}:{oldPreviewCSS?:string|null}={}){
  // Recreate the reported selector leak without replacing settings or game code.

@@ -129,26 +129,50 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
    await import('/compat/modhub-soft-wet/modhub-soft-wet.ts');
   `});
   await page.waitForFunction(()=>!!Reflect.get(window,'ModHubSoftWet'));
+  await close();await closed();
   await page.evaluate(()=>{
    document.body.insertAdjacentHTML('beforeend',
-    '<div class="modhub-modal-backdrop"><div class="modhub-modal-dialog" id="owned-modhub-modal" role="dialog" aria-modal="true">'+
-    '<header class="modhub-modal-header">Install</header><div class="modhub-modal-body">Sample</div>'+
-    '<footer class="modhub-modal-footer"><button id="owned-modhub-close">Close</button></footer></div></div>');
+    '<div class="modhub-modal-backdrop" id="portal-full" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center">'+
+    '<div class="modhub-modal-dialog" id="owned-modhub-modal" role="dialog" aria-modal="true" style="width:600px">'+
+    '<header class="modhub-modal-header">Install</header><div class="modhub-modal-body"><input id="portal-text" type="text"><input id="portal-number" type="number"><p>'+('LongSampleContent'.repeat(400))+'</p></div>'+
+    '<footer class="modhub-modal-footer"><button id="owned-modhub-close">Install sample</button><button>Cancel sample</button></footer></div></div>');
+   document.getElementById('owned-modhub-close')!.onclick=()=>nativeCalls++;
   });
-  await page.waitForSelector('.modhub-modal-backdrop[data-dgu-adapter-match=full]');
+  await page.waitForSelector('#portal-full[data-dgu-adapter-match=full]');
   assert.equal(await cssColor('#owned-modhub-modal'),'#ffd979');
-  assert.match(await getFont('#owned-modhub-close'),/Missing Family Contract/);
+  for(const selector of ['#owned-modhub-close','#portal-text','#portal-number'])assert.match(await getFont(selector),/Missing Family Contract/);
   assert.match(await page.locator('#owned-modhub-modal').evaluate(n=>getComputedStyle(n).backgroundColor),/\/ 0\.43\)/);
   assert.equal(await fontSize('#owned-modhub-close'),'19.5px');
-  await page.evaluate(()=>theme.setPreference('fontScale',100));
+  await page.evaluate(()=>theme.setPreference('buttonScale',150));
+  for(const width of [1280,390]){
+   await page.setViewportSize({width,height:844});
+   const geometry=await page.locator('#owned-modhub-modal').evaluate(n=>{const dialog=n.getBoundingClientRect(),body=n.querySelector('.modhub-modal-body')!,button=n.querySelector('button')!.getBoundingClientRect();return{left:dialog.left,right:dialog.right,top:dialog.top,bottom:dialog.bottom,buttonHeight:button.height,bodyScroll:body.scrollHeight>body.clientHeight,overflow:n.scrollWidth>n.clientWidth+1}});
+   assert.ok(geometry.left>=0&&geometry.right<=width&&geometry.top>=0&&geometry.bottom<=844);
+   assert.ok(geometry.buttonHeight>=66&&!geometry.overflow&&geometry.bodyScroll);
+  }
+  await page.evaluate(()=>theme.setPreference('visualGlass',false));
+  assert.equal(await page.locator('#owned-modhub-modal').evaluate(n=>getComputedStyle(n).backdropFilter),'none');
+  await page.locator('#owned-modhub-close').click();assert.equal(await page.evaluate(()=>nativeCalls),1);
+  await page.evaluate(()=>{const footer=document.querySelector('.modhub-modal-footer')!;Reflect.set(window,'portalFooter',footer);footer.remove()});
+  await page.waitForSelector('#portal-full[data-dgu-adapter-match=partial]');
+  assert.doesNotMatch(await getFont('#portal-text'),/Missing Family Contract/);
+  await page.locator('#owned-modhub-modal').evaluate(n=>n.classList.remove('modhub-modal-dialog'));
+  await page.waitForFunction(()=>Reflect.get(window,'ModHubSoftWet').getDiagnostics().components.modal.status==='unknown');
+  assert.equal(await page.locator('#portal-full').getAttribute('data-dgu-adapter'),null);
+  assert.doesNotMatch(await getFont('#portal-text'),/Missing Family Contract/);
+  await page.locator('#owned-modhub-modal').evaluate(n=>{n.classList.add('modhub-modal-dialog');n.append(Reflect.get(window,'portalFooter'))});
+  await page.waitForSelector('#portal-full[data-dgu-adapter-match=full]');
+  assert.match(await getFont('#portal-text'),/Missing Family Contract/);
+  await page.evaluate(()=>{theme.setPreference('visualGlass',true);theme.setPreference('buttonScale',100);theme.setPreference('fontScale',100)});
   assert.equal(await fontSize('#owned-hub-heading h2'),'21px');
   assert.equal(await fontSize('#owned-modhub-close'),'13px');
   await page.evaluate(()=>{
    Reflect.get(window,'ModHubSoftWet').destroy();Reflect.get(window,'probeRuntime').destroy();
    theme.setPreference('fontScale',150);
   });
-  assert.equal(await page.locator('.modhub-modal-backdrop').getAttribute('data-dgu-adapter'),null);
-  await close();await closed();
+  assert.equal(await page.locator('#portal-full').getAttribute('data-dgu-adapter'),null);
+  assert.doesNotMatch(await getFont('#portal-text'),/Missing Family Contract/);
+  await page.locator('#portal-full').evaluate(n=>n.remove());
   await page.setViewportSize({width:390,height:844});
   const detail=page.locator('.sf-motion-sheet');
   await detail.evaluate(n=>{
@@ -193,6 +217,57 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   });
   assert.deepEqual(migration,{initial:100,session:125,persisted:100,retried:125,font:'Georgia',center:true,marker:true});
   return{viewports:[1280,390],nativeOutsideScope:true,adapterMatchComparison:true,migration};
+ });
+ if(!baseline)await check('R01 owned form geometry and unowned control boundaries',async()=>{
+  await open();
+  await page.getByRole('button',{name:'材质',exact:true}).click();
+  await page.getByLabel('本机字体',{exact:true}).fill('Georgia');
+  await page.getByRole('button',{name:'应用并保存'}).click();
+  await page.getByRole('button',{name:'阅读',exact:true}).click();
+  const own=page.getByRole('combobox',{name:'选项文字对齐',exact:true});
+  await own.waitFor();
+  await page.evaluate(()=>{
+   const overlay=document.createElement('section');
+   overlay.id='customOverlay';overlay.dataset.overlay='options';
+   overlay.innerHTML='<div id="customOverlayContent"><div class="settingsGrid"><div class="settingsToggleItem"><label>示例设置<select><option>Primary</option><option>Alternate</option></select></label></div></div></div>';
+   const outside=document.createElement('button');
+   outside.id='caller-control';outside.style.cssText='padding:2px 3px;min-height:17px';
+   document.body.append(overlay,outside);
+  });
+  await page.addScriptTag({type:'module',content:"import {startPanels} from '/src/panels/main.ts';window.rolePanels=startPanels(window);"});
+  await page.locator('#customOverlay.dgp-overlay>.dgp-host').waitFor({state:'attached'});
+  const native=page.locator('#customOverlayContent select');
+  const geom=(locator:playwright.Locator)=>locator.evaluate(node=>{
+   const style=getComputedStyle(node),box=node.getBoundingClientRect();
+   return {hit:box.height,font:parseFloat(style.fontSize),family:style.fontFamily,padding:style.padding,min:style.minHeight};
+  });
+  const outside=page.locator('#caller-control'),before=await geom(outside);
+  for(const width of [390,1280]){
+   await page.setViewportSize({width,height:844});
+   for(const scale of [100,150]){
+    await page.evaluate(scale=>{
+     theme.setPreference('buttonScale',scale);theme.setPreference('fontScale',scale);
+     theme.setPreference('visualGlass',false);
+    },scale);
+    const after=await geom(outside);
+    assert.equal(after.padding,before.padding,'unowned button padding');assert.equal(after.min,before.min,'unowned hit area');
+    for(const center of [false,true]){
+     await page.evaluate(center=>theme.setPreference('centerOptions',center),center);
+     for(const control of [own,native]){
+      const size=await geom(control);
+      assert.ok(size.hit>=44*scale/100,'select hit area '+JSON.stringify({width,scale,center,size}));
+      assert.equal(size.font,13*scale/100,'control typography');assert.match(size.family,/Georgia/);
+     }
+    }
+    await page.locator('.dmt-close').click({trial:true});
+   }
+  }
+  await close();await closed();
+  await native.evaluate(node=>node.addEventListener('change',()=>node.setAttribute('data-calls',String(Number(node.getAttribute('data-calls'))+1))));
+  await native.selectOption({label:'Alternate'});assert.equal(await native.getAttribute('data-calls'),'1');
+  await page.evaluate(()=>{Reflect.get(window,'rolePanels').destroy();theme.destroy()});
+  assert.equal(await page.locator('#customOverlay.dgp-overlay').count(),0);
+  assert.equal((await geom(outside)).padding,before.padding);
  });
  if(!baseline)await check('P01 requested page choices survive failure, retry and emergency recovery',async()=>{
   // Start the real application on an empty document: no game content or state.
