@@ -59,6 +59,12 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   await page.evaluate(()=>theme.destroy());assert.equal(await page.locator('html').getAttribute('data-dgu-acrylic-adjustment'),null);return{owned,adapters:4,unknownProtected:3,nativeCalls:1};
  });
  if(!baseline)await check('M02 custom appearance previews, applies, persists, and resets within owned UI',async()=>{
+  // Represent a ready event host. Late-host recovery runs separate mount passes.
+  await page.evaluate(()=>{
+   theme.destroy();
+   Object.assign(window,{jQuery:()=>({on(){},off(){}})});
+   remount();
+  });
   await open();await page.getByRole('button',{name:'材质',exact:true}).click();
   const color=page.getByLabel('强调色',{exact:true}),font=page.getByLabel('本机字体',{exact:true});
   const save=page.getByRole('button',{name:'应用并保存'}),reset=page.getByRole('button',{name:'恢复默认外观'});
@@ -71,11 +77,21 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   await page.evaluate(()=>{
    document.body.insertAdjacentHTML('beforeend',
     '<section class="sf-motion-hub" data-official><div class="sf-motion-orbit"><button class="sf-motion-petal" id="owned-hub">Tool</button></div>'+
-    '<section class="sf-motion-sheet"><header id="owned-hub-heading">Detail</header><main><div class="sf-view-outlet"><header id="external-view-heading" style="font-family:monospace">Example</header></div></main></section></section>'+
+    '<section class="sf-motion-sheet"><header id="owned-hub-heading"><div><h2>Detail</h2></div><button>Close</button></header><main><div class="sf-view-outlet"><header id="external-view-heading" style="font-family:monospace">Example</header></div></main></section></section>'+
     '<section class="dgw-root" id="owned-wardrobe"></section><section class="dgshop-host" id="owned-shop"></section>'+
     '<dialog class="dgu-surface" data-sf-workspace="drawer" id="owned-drawer"></dialog>'+
     '<section id="customOverlay" class="dgc-overlay"><div class="dgc-host"></div><button id="owned-overlay">Attribute</button></section>');
   });
+  const unrelated=await page.evaluateHandle(()=>{
+   const calls={saves:0,layout:0};
+   Object.assign(window,{DoLSavesUI:{getEnabled:()=>true,setV2:()=>calls.saves++},DMTLayout:{sync:()=>calls.layout++,destroy:()=>{}}});
+   return calls;
+  });
+  const fontSize=(selector:string)=>page.locator(selector).evaluate(n=>getComputedStyle(n).fontSize);
+  const callerSize=await fontSize('#external-view-heading');
+  await page.evaluate(()=>theme.setPreference('fontScale',150));
+  assert.equal(await fontSize('#owned-hub-heading h2'),'31.5px');
+  assert.equal(await fontSize('#external-view-heading'),callerSize);
   await color.fill('#ffd979');await page.getByLabel('面板',{exact:true}).fill('#ffffff');
   await font.fill('Georgia; color:red');assert.ok(await save.isDisabled());
   await font.fill('Missing Family Contract');
@@ -89,6 +105,7 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   for(const selector of ['.dmt-settings-shell','#owned-hub','#owned-wardrobe','#owned-shop','#owned-overlay','#owned-drawer']){
    assert.equal(await cssColor(selector),'#ffd979');assert.match(await getFont(selector),/Missing Family Contract.*system-ui/);
   }
+  assert.deepEqual(await unrelated.jsonValue(),{saves:0,layout:0},'font and appearance edits must skip unrelated page updates');
   const hubFill=()=>page.locator('#owned-hub').evaluate(n=>getComputedStyle(n).backgroundColor);
   const panelFill=await sample.locator('.sw-appearance-sample-panel').evaluate(n=>getComputedStyle(n).backgroundColor);
   assert.match(await hubFill(),/\/ 0\.6\)/);
@@ -102,19 +119,54 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   assert.notEqual(await cssColor('#owned-overlay'),'#ffd979');assert.doesNotMatch(await getFont('#owned-overlay'),/Missing Family Contract/);
   await page.locator('#customOverlay').evaluate(n=>n.setAttribute('data-dgu-adapter-match','full'));
   assert.equal(await cssColor('#owned-overlay'),'#ffd979');
+  await page.addScriptTag({type:'module',content:`
+   import {createUiRuntime} from '/src/runtime/ui.ts';
+   window.modUtils={getMod:name=>name==='ModHub'?{version:'1.8.0'}:undefined,getSemVerTools:()=>({
+    parseVersion:version=>({version}),parseRange:range=>range,satisfies:(v,r)=>v==='1.8.0'&&r==='>=1.3.0'
+   })};
+   window.probeRuntime=createUiRuntime(window,()=>theme.getPreferences());
+   window.DoLGameUI={ui:probeRuntime.api};
+   await import('/compat/modhub-soft-wet/modhub-soft-wet.ts');
+  `});
+  await page.waitForFunction(()=>!!Reflect.get(window,'ModHubSoftWet'));
   await page.evaluate(()=>{
    document.body.insertAdjacentHTML('beforeend',
-    '<div class="modhub-modal-backdrop" data-dgu-adapter="ModHubSoftWetModal" data-dgu-adapter-match="full">'+
-    '<div class="modhub-modal-dialog" id="owned-modhub-modal"><button id="owned-modhub-close">Close</button></div></div>');
+    '<div class="modhub-modal-backdrop"><div class="modhub-modal-dialog" id="owned-modhub-modal" role="dialog" aria-modal="true">'+
+    '<header class="modhub-modal-header">Install</header><div class="modhub-modal-body">Sample</div>'+
+    '<footer class="modhub-modal-footer"><button id="owned-modhub-close">Close</button></footer></div></div>');
   });
+  await page.waitForSelector('.modhub-modal-backdrop[data-dgu-adapter-match=full]');
   assert.equal(await cssColor('#owned-modhub-modal'),'#ffd979');
   assert.match(await getFont('#owned-modhub-close'),/Missing Family Contract/);
   assert.match(await page.locator('#owned-modhub-modal').evaluate(n=>getComputedStyle(n).backgroundColor),/\/ 0\.43\)/);
+  assert.equal(await fontSize('#owned-modhub-close'),'19.5px');
+  await page.evaluate(()=>theme.setPreference('fontScale',100));
+  assert.equal(await fontSize('#owned-hub-heading h2'),'21px');
+  assert.equal(await fontSize('#owned-modhub-close'),'13px');
+  await page.evaluate(()=>{
+   Reflect.get(window,'ModHubSoftWet').destroy();Reflect.get(window,'probeRuntime').destroy();
+   theme.setPreference('fontScale',150);
+  });
+  assert.equal(await page.locator('.modhub-modal-backdrop').getAttribute('data-dgu-adapter'),null);
+  await close();await closed();
+  await page.setViewportSize({width:390,height:844});
+  const detail=page.locator('.sf-motion-sheet');
+  await detail.evaluate(n=>{
+   n.classList.add('is-open');Object.assign((n as HTMLElement).style,{left:'10px',top:'20px',width:'350px',height:'430px'});
+   n.querySelector('h2')!.textContent='ContinuousLongHeading'.repeat(3);
+   n.querySelector('main')!.append('Sample content '.repeat(350));
+  });
+  const detailClose=detail.locator(':scope > header > button');
+  await detailClose.click({trial:true,timeout:3000});
+  assert.ok(await detail.evaluate(n=>n.scrollWidth<=n.clientWidth+1));
+  assert.ok(await detail.locator('main').evaluate(n=>n.clientHeight>0&&n.scrollHeight>n.clientHeight));
   await page.reload();await page.waitForFunction(()=>typeof theme!=='undefined');await page.addStyleTag({path:'dist/framework/official-ui/style.css'});
   await open();await page.getByRole('button',{name:'材质',exact:true}).click();
   assert.equal(await font.inputValue(),'Missing Family Contract');assert.equal(await color.inputValue(),'#ffd979');
   await page.setViewportSize({width:390,height:844});
   assert.ok(await sheet.evaluate(n=>n.scrollWidth<=n.clientWidth+1),'appearance controls must fit on a phone-width viewport');
+  assert.equal(await page.evaluate(()=>theme.getPreferences().fontScale),150);
+  assert.ok(await page.locator('.dmt-close').evaluate(n=>{const b=n.getBoundingClientRect();return n.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2))}));
   await reset.click();assert.equal(await root.getAttribute('data-sw-custom-colors'),null);
   assert.equal(await root.getAttribute('data-sw-custom-font'),null);
   assert.equal(await cssColor('#dol-midnight-controls'),defaultColor);
@@ -123,7 +175,24 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
   await font.fill('Georgia');await save.click();
   await page.evaluate(()=>theme.destroy());
   assert.equal(await root.evaluate(n=>(n as HTMLElement).style.getPropertyValue('--sw-custom-font')),'');
-  return{viewports:[1280,390],nativeOutsideScope:true,adapterMatchComparison:true};
+  const migration=await page.evaluate(()=>{
+   const key='DoLMidnightTheme.preferences.v1';
+   localStorage.setItem(key,JSON.stringify({fontScale:135,appearance:{font:'Georgia'},centerOptions:true}));
+   remount();
+   const initial=theme.getPreferences().fontScale;
+   const setItem=Storage.prototype.setItem;
+   try{
+    Storage.prototype.setItem=()=>{throw Error('synthetic storage failure')};
+    theme.setPreference('fontScale',125);
+   }finally{Storage.prototype.setItem=setItem}
+   const session=theme.getPreferences().fontScale, persisted=JSON.parse(localStorage.getItem(key)!).fontScale;
+   theme.setPreference('fontScale',125);
+   const saved=JSON.parse(localStorage.getItem(key)!);
+   theme.destroy();
+   return{initial,session,persisted,retried:saved.fontScale,font:saved.appearance.font,center:saved.centerOptions,marker:saved._scaleBaseline26};
+  });
+  assert.deepEqual(migration,{initial:100,session:125,persisted:100,retried:125,font:'Georgia',center:true,marker:true});
+  return{viewports:[1280,390],nativeOutsideScope:true,adapterMatchComparison:true,migration};
  });
  await check('S01 approved shell and page timing, real input and single material surface',async()=>{
    const first=await page.evaluate(()=>{theme.openSettings();const shell=settingsNode('.dmt-settings-shell'),a=settingsAnimations.find(x=>x.node===shell),control=settingsNode<HTMLElement>('[aria-label="手机紧凑按钮间距"]'),before=theme.getPreferences().mobileCompactControls;control.click();return{duration:a?frameEffect(a.animation).getTiming().duration:undefined,easing:a?frameEffect(a.animation).getTiming().easing:undefined,inert:!!control.closest('[inert]'),updated:theme.getPreferences().mobileCompactControls!==before,proxyCount:document.querySelectorAll('.dmt-open-material,.rf-stage,.dmt-settings-context,.dmt-settings-material').length,transform:getComputedStyle(shell).transform,backdrop:getComputedStyle(shell).backdropFilter,alpha:Number(getComputedStyle(shell).backgroundColor.match(/[\d.]+/g)?.[3]??1)}});
@@ -150,7 +219,7 @@ async function verifySettingsIntegration(browser:playwright.Browser,{baseline=fa
    await page.evaluate(()=>Reflect.set(HTMLDialogElement.prototype,'showModal',undefined));await open();assert.equal(await page.locator('dialog').evaluate(n=>n.classList.contains('dmt-modeless')),true);const before=await page.evaluate(()=>theme.getPreferences().mobileCompactControls);await page.getByLabel('手机紧凑按钮间距',{exact:true}).click();assert.equal(await page.evaluate(()=>theme.getPreferences().mobileCompactControls),!before);await close();await closed();
    await page.evaluate(()=>{theme.openSettings();const dialog=settingsNode<HTMLDialogElement>('dialog'),shell=settingsNode('.dmt-settings-shell'),animation=lastAnimation(settingsAnimations.filter(x=>x.node===shell)).animation;Object.assign(window,{oldDialog:dialog,oldShell:shell,retiredShellAnimation:animation});retiredShellAnimation.pause();retiredShellAnimation.currentTime=40;oldDialog.remove()});await page.waitForFunction(()=>document.querySelector('dialog')&&document.querySelector('dialog')!==oldDialog);assert.equal(await page.evaluate(()=>retiredShellAnimation.playState),'idle','replacement must cancel retired shell animation');await open();assert.equal(await page.locator('.dmt-close').evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),true);await close();await closed();assert.equal(await page.evaluate(()=>nativeCalls),0);return{fallback:true,retiredCancelled:true};
  });
- const hashes=Object.fromEntries([...files,'src/theme/settings-workspace.css','src/theme/acrylic-v1.css','tests/evolution-settings-integration.cjs'].map(f=>[f,crypto.createHash('sha256').update(old[f]??fs.readFileSync(f)).digest('hex')]));const result={baseline,source:baseline?revision:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),workingTree:!baseline,hashes,css:{source:'current production build; baseline freezes TS/Vue behavior only',sha256:crypto.createHash('sha256').update(fs.readFileSync('dist/framework/official-ui/style.css')).digest('hex')},runtime:{platform:process.platform,node:process.version,chromium:browser.version()},checks};fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(result,null,2));console.log('Settings integration evidence',out);if(failures.length){const error=new Error(failures.length+' settings integration checks failed');Object.assign(error,{settingsIntegrationEvidence:true});throw error}return result;
+ const hashes=Object.fromEntries([...files,...(baseline?[]:['src/theme/preference-store.ts','framework/motion-hub/style.css']),'src/theme/settings-workspace.css','src/theme/acrylic-v1.css','tests/evolution-settings-integration.cjs'].map(f=>[f,crypto.createHash('sha256').update(old[f]??fs.readFileSync(f)).digest('hex')]));const result={baseline,source:baseline?revision:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),workingTree:!baseline,hashes,css:{source:'current production build; baseline freezes TS/Vue behavior only',sha256:crypto.createHash('sha256').update(fs.readFileSync('dist/framework/official-ui/style.css')).digest('hex')},runtime:{platform:process.platform,node:process.version,chromium:browser.version()},checks};fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(result,null,2));console.log('Settings integration evidence',out);if(failures.length){const error=new Error(failures.length+' settings integration checks failed');Object.assign(error,{settingsIntegrationEvidence:true});throw error}return result;
  }finally{await server.close()}
 }
 module.exports={verifySettingsIntegration};

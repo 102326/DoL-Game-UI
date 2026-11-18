@@ -31,3 +31,13 @@ html[data-dol-midnight]:not([data-dgu-visualGlass]) .sf-motion-hub :is(.sf-motio
 
 /* Optional official-sphere decoration; legacy/fallback Hub keeps its text-only actions. */
 .sf-motion-hub .sf-motion-utility-icon{display:none}
+
+/* Scale the official detail chrome. The view outlet retains its caller's typography. */
+html[data-dgu-font-scaled] .sf-motion-hub[data-official] .sf-motion-sheet {
+ & > header > div { min-width:0; }
+ & > header h2 { font-size:calc(21px * var(--dgu-font-scale)); overflow-wrap:anywhere; }
+ & > header small { font-size:calc(9px * var(--dgu-font-scale)); }
+ & > header > button { flex-shrink:0; font-size:calc(24px * var(--dgu-font-scale)); }
+ & > footer > button { font-size:calc(14px * var(--dgu-font-scale)); }
+ & > footer > span { font-size:calc(11px * var(--dgu-font-scale)); }
+}

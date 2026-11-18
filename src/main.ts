@@ -11,6 +11,7 @@ import {startWardrobe,type WardrobeFramework} from './wardrobe/main';
 import {startCombat,type CombatControls} from './combat/main';
 import type {PreferenceKey} from './theme/preferences';
 import {startLayout} from './theme/layout';
+import {createThemePreferences} from './theme/preference-store';
 import {startTheme} from './theme/controller';
 import {initMaster,isMasterEnabled,setMasterEnabled} from './runtime/master';
 import './theme/kraft-work-native.css';
@@ -37,7 +38,8 @@ const runtime=window as Runtime;
 declare const __STONE_FREE_CONSUMER__:boolean;
 export function startGameUI(wardrobeFramework?:WardrobeFramework & ShopFramework){
 if(!runtime.DoLGameUI){
- initMaster(runtime);
+ const themePreferences=createThemePreferences(runtime);
+ initMaster(themePreferences.model.preferences.enabled);
  const start=<K extends keyof StartedApis>(name:K,factory:()=>StartedApis[K]|void)=>{const api=isolate(name,factory,()=>{try{runtime[name]?.destroy?.()}finally{delete runtime[name]}});if(api)runtime[name]=api as Runtime[K]};
  for(const name of ['DoLCombatUI','DoLMidnightTheme','DMTLayout'] as const)isolate(name,()=>runtime[name]?.destroy?.());
  start('DoLWardrobeUI',()=>startWardrobe(runtime,wardrobeFramework));
@@ -46,7 +48,7 @@ if(!runtime.DoLGameUI){
  start('DoLPanelsUI',()=>startPanels(runtime,wardrobeFramework));
  start('DoLShopUI',()=>startShop(runtime,wardrobeFramework));
  start('DoLSavesUI',()=>startSaves(runtime,wardrobeFramework));
- start('DoLCombatUI',()=>startCombat(wardrobeFramework));start('DMTLayout',()=>startLayout());start('DoLMidnightTheme',()=>startTheme());
+ start('DoLCombatUI',()=>startCombat(wardrobeFramework));start('DMTLayout',()=>startLayout());start('DoLMidnightTheme',()=>startTheme(runtime,themePreferences));
  let floating:ReturnType<typeof startFloatingTools>|undefined;
  let uiRuntime:ReturnType<typeof createUiRuntime>|undefined;
  runtime.DoLGameUI={version:'2.7.0',openSettings:()=>runtime.DoLMidnightTheme?.openSettings(),
