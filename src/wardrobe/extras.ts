@@ -15,7 +15,7 @@ export function createWardrobeExtras(root:WardrobeDataHost){
   current.releaseSurface?.();current.releaseSurface=undefined;
   current.details.append(...current.nodes);current.details.open=current.wasOpen;
   if(detail===current)detail=undefined;
-  if(current.summary.isConnected)current.summary.focus({preventScroll:true});
+  if(current.summary.isConnected&&(document.activeElement===document.body||document.activeElement===current.summary))current.summary.focus({preventScroll:true});
  }
  function closeDetails(){detail?.handle?.close()}
  function openDetails(details:HTMLDetailsElement,summary:HTMLElement){
@@ -38,6 +38,7 @@ export function createWardrobeExtras(root:WardrobeDataHost){
   const v=s.variables,w=s.worn,item=w[slot],d=item&&descriptor(s,slot,item);
   const key=JSON.stringify([slot,w,v.upperTucked,v.lowerTucked,v.bellyTucked,v.facelayer,v.wardrobeDefaults]);
   if(signatures.get(equipment)!==key){
+   const returnFocus=!!detail&&equipment.contains(detail.details)&&(detail.summary===document.activeElement||!!detail.content.closest('dialog')?.contains(document.activeElement));
    if(detail&&equipment.contains(detail.details))closeDetails();
    const macros:string[]=[];
    if(item&&item.name!=='naked'&&d){
@@ -58,6 +59,7 @@ export function createWardrobeExtras(root:WardrobeDataHost){
     if(slot==='face')macros.push('<div class="toggleAltLink"><<toggleFaceLayer "wardrobe">></div>');
    }
    write(equipment,macros.join(' '));
+   if(returnFocus&&document.activeElement===document.body)equipment.querySelector<HTMLElement>('.dgw-item-details > summary')?.focus({preventScroll:true});
    if(d){const description=document.createElement('p');description.className='dgw-muted';description.textContent=d.cn_description??d.description??'';equipment.prepend(description)}
    equipment.onclick=event=>{const summary=event.target instanceof Element?event.target.closest<HTMLElement>('details.dgw-item-details > summary'):null;if(summary&&equipment.contains(summary)&&surfaces.available()){event.preventDefault();openDetails(summary.parentElement as HTMLDetailsElement,summary)}scope.frame(refresh)};
    signatures.set(equipment,key);

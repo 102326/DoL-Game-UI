@@ -2777,8 +2777,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9ea467f137897482e7733cbf95e1d02026e0eb16e7f0fe76057404a5b8c0096b",
-      "assertionSites": 12
+      "sourceSha256": "4f13f6e2817f954c42071dd9c55248961ff06c319f93577a474c9770f130b963",
+      "assertionSites": 54
     },
     {
       "entry": "tests/wardrobe-operation-yield.cjs",
