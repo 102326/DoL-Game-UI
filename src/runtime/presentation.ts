@@ -25,6 +25,7 @@ export function mountUI(app:App,node:HTMLElement,recover:()=>void){
  };
  try{const view=app.mount(node);if(failed)throw failure;return view}finally{mounting=false}
 }
-export function supportsDialog(){
- return typeof HTMLDialogElement!=='undefined'&&typeof HTMLDialogElement.prototype.showModal==='function'&&typeof HTMLDialogElement.prototype.close==='function';
+export function supportsDialog(root?:Window){
+ const Dialog=root?root.document.defaultView?.HTMLDialogElement:globalThis.HTMLDialogElement;
+ return typeof Dialog==='function'&&typeof Dialog.prototype.showModal==='function'&&typeof Dialog.prototype.close==='function';
 }

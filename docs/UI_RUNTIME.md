@@ -40,3 +40,20 @@ const surface = ui?.apiVersion === 1 && ui.getCapabilities().surfaces
 映射只扩展展示语义，不接受业务状态、任意回调、操作执行器或库存镜像，不代替原生穿戴链。槽位作者必须保证既有wear_<slot>/updatewardrobe及整理操作真实可用；私有库存或专属操作应保留原入口，不假装原生业务。注册/撤销刷新分类并取消尚未执行的整理确认；已开始的原业务按既有流程结束，不擅自重试。
 
 `getSlotSupport()`返回冻结的slot/label/mapping/canDisplay/operationContract/reason记录，不暴露库存、节点或游戏变量。reason包含native-slot、mapped、registration-required、target-not-detected、unsupported-version、missing-native-data、wardrobe-unavailable；operationContract区分vanilla、author-declared-native、unreviewed。canDisplay只表示展示结构条件，不能证明当前操作可用；author-declared-native只是作者声明，仍须校验当前页面、原对象和索引的新鲜度，不代表Core审过所有第三方业务。
+
+## 可选的独立窗口入口
+
+使用 Node 26 和锁定依赖运行 `npm run surfaces:build`。构建入口为 `src/runtime/standalone-surfaces.ts`，可向加载器提供 `dist/standalone-ui/index.js`。同目录包含 TypeScript 声明、许可与 `SOURCE.json`。跨设备交付请在干净的指定提交构建，核对来源 HEAD、dirty 标志和入口 SHA-256。完整 UI 和 Host 保持原有启动方式。
+
+```ts
+import {createStandaloneSurfaces} from './standalone-ui/index.js';
+
+// 在消费者激活时创建；结束时由同一消费者调用 surfaces.dispose()。
+const surfaces = createStandaloneSurfaces(window);
+const panel = document.createElement('section');
+const handle = surfaces.openModal({id: 'inspector', title: '检查器', content: panel});
+```
+
+导入没有挂载副作用。工厂按传入 Window 创建实例，独立持有样式和容器。调用方传入同一文档内尚未挂载的内容节点。同一实例重复打开相同 ID 和种类返回原句柄，改换种类须先关闭。用 `handle?.close()` 关闭后，可用原节点重开；节点状态、监听及业务数据归消费者。实例 `dispose()` 幂等，释放后需要重新创建实例。其它实例独立工作。
+
+可用性由 `available()` 查询。能力不足时打开返回 `null`，原生打开失败会归还内容并通知 `onClose('failed')`；参数不合法会抛错。加载器自行选择默认呈现和失败提示。Sticky Fingers E35 的显式构建参数使用上述 JS 文件路径。运行 `npm run surfaces:test` 可复核产物导入及中性节点的所有权与生命周期。
