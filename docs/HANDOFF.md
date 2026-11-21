@@ -2,6 +2,21 @@
 
 2026-11-19，4.5 研发分支已在 Windows 接入 Hub 设置。本批从 `69cfe8a` 接续，核对服装商店的一次读取。
 
+## 4.5 商店与窗口候选 · 2026-11-21
+
+候选产品源码 `bdcddcf` 含商店布局 `1a1ec11` 和固定窗口尺寸。双包经同一次构建生成，通过独立 Android 测试 App 的 ModHub 原子导入；重载后 Loader 版本与已装包 SHA-256 均已核对。
+
+| 包 | SHA-256 |
+| --- | --- |
+| DoLGameUI 4.5.0 | `39eca800dc758ced92b39b7d12b216b64e008d6789057173dce5ca8242f6361f` |
+| StoneFreeHost 0.1.5-experimental | `acced8a6c23309977d39a4993c83cd05c5a8c1fdcc8df5a62a634473ea770bcc` |
+
+M367FC，独立 App 0.5.12.13，WebView 157.0.8103.52，ModHub 2.0.2、ModHubSoftWet 1.0.4。真实服装店点击商品卡，在 1363 CSS px 宽的平板视口显示右栏，在同一 WebView 模拟的 390 CSS px 视口（收起原生侧栏）显示底部抽屉；均显示配色和购买控件，关闭抽屉后焦点回到商品。宽屏商品对比关闭后回焦“对比当前”。未执行购买。
+
+平板六次设置分类选择、特质与成就往返、ModHub 帮助／说明／管理连续切换，外框均为 1000×800 CSS px。特质、成就和管理长页可滚动，测得正文无横向溢出。这里检查布局与操作，不计帧时。Windows Edge 159 中性商店、设置材质、集合页、Hub 集成与适配器材质用例通过。商品对比测试最初因缺少 Playwright 默认 Chromium 无法启动；改为使用项目现有浏览器配置后，两个宽度共 12 个焦点用例通过。独立手机、完整交易与衣柜旧计时未纳入本批。
+
+悬浮入口由真实设置页切换列表／弧线，弧线经整个 WebView 重载后，设置回读与实际 Hub 标记均为 drawer；随后实开列表确认 list。测试结束恢复了原布局、隐藏状态和位置，候选留在独立测试版。
+
 ## 4.5 设置一致性 · 2026-11-21
 
 衣柜批次 `2bde491` 的 [Kraft Work CI](https://github.com/102326/DoL-Game-UI/actions/runs/44884157043) 与 [Motion Evolution](https://github.com/102326/DoL-Game-UI/actions/runs/44884157044) 均通过。

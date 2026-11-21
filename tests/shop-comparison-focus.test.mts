@@ -4,6 +4,7 @@ import {test} from 'node:test';
 import {build} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import {chromium} from 'playwright';
+import browserOptions from './browser-options.cjs';
 import type {Host,Participant} from '../framework/contracts.ts';
 
 type Scenario='normal'|'replaced'|'removed'|'no-item'|'navigate'|'dispose';
@@ -25,7 +26,7 @@ test('shop comparison closes to a single live focus destination',async()=>{
  if(!files||!('output' in files))throw Error('Missing in-memory build');
  const script=files.output.find(file=>file.type==='chunk'),style=files.output.find(file=>file.type==='asset'&&file.fileName.endsWith('.css'));
  if(script?.type!=='chunk'||style?.type!=='asset'||typeof style.source!=='string')throw Error('Missing shop component bundle or CSS');
- const browser=await chromium.launch();
+ const browser=await chromium.launch(browserOptions);
  const results:Result[]=[];
  try{
   for(const width of [1280,390])for(const scenario of ['normal','replaced','removed','no-item','navigate','dispose'] as const){
