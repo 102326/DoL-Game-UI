@@ -11,10 +11,10 @@ import {startWardrobe,type WardrobeFramework} from './wardrobe/main';
 import {startCombat,type CombatControls} from './combat/main';
 import type {PreferenceKey} from './theme/preferences';
 import {startLayout} from './theme/layout';
-import {pageEnabled, pageKeys, requestPage, type RequestedPages} from './theme/page-preferences';
-import {createThemePreferences} from './theme/preference-store';
+import {pageEnabled, refreshPages, pageKeys, requestPage, type RequestedPages} from './theme/page-preferences';
+import {startThemePreferences} from './theme/preference-store';
 import {startTheme} from './theme/controller';
-import {initMaster,isMasterEnabled,setMasterEnabled} from './runtime/master';
+import {isMasterEnabled,setMasterEnabled} from './runtime/master';
 import './theme/kraft-work-native.css';
 import './theme/controls.css';
 import './theme/layout.css';
@@ -39,8 +39,7 @@ const runtime=window as Runtime;
 declare const __STONE_FREE_CONSUMER__:boolean;
 export function startGameUI(wardrobeFramework?:WardrobeFramework & ShopFramework){
 if(!runtime.DoLGameUI){
- const themePreferences=createThemePreferences(runtime);
- initMaster(themePreferences.model.preferences);
+ const themePreferences=startThemePreferences(runtime);
  const start=<K extends keyof StartedApis>(name:K,factory:()=>StartedApis[K]|void)=>{const api=isolate(name,factory,()=>{try{runtime[name]?.destroy?.()}finally{delete runtime[name]}});if(api)runtime[name]=api as Runtime[K]};
  for(const name of ['DoLCombatUI','DoLMidnightTheme','DMTLayout'] as const)isolate(name,()=>runtime[name]?.destroy?.());
  start('DoLWardrobeUI',()=>startWardrobe(runtime,wardrobeFramework,themePreferences.pages));
@@ -65,7 +64,7 @@ if(!runtime.DoLGameUI){
    if(key!=='enabled'||value!==false||runtime.DoLWardrobeUI?.isBusy?.())return;
    setMasterEnabled(false);
    themePreferences.save();
-   for(const name of ['DoLSavesUI','DoLShopUI','DoLPanelsUI','DoLSocialUI','DoLCharacteristicsUI','DoLWardrobeUI','DoLCombatUI'] as const)isolate(name,()=>runtime[name]?.refresh?.());
+   refreshPages(runtime);
    for(const name of [...document.documentElement.attributes].map(a=>a.name))if(name.startsWith('data-dgu-')||name.startsWith('data-dol-midnight'))document.documentElement.removeAttribute(name);
   },
   destroy(){isolate('floating tools cleanup',()=>floating?.destroy());isolate('UI runtime cleanup',()=>uiRuntime?.destroy());for(const name of ['DoLSavesUI','DoLShopUI','DoLPanelsUI','DoLSocialUI','DoLCharacteristicsUI','DoLWardrobeUI','DoLCombatUI','DoLMidnightTheme','DMTLayout'] as const){isolate(name,()=>runtime[name]?.destroy?.());delete runtime[name]}document.getElementById('dol-ui-recovery')?.remove();delete runtime.DoLGameUI}
