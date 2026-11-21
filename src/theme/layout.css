@@ -108,6 +108,11 @@ html[data-dol-midnight][data-dmt-layout] #ui-bar:not(.stowed) {
     }
 }
 
+/* Stable workspace size at a given viewport. Long pages scroll inside the shell. */
+:root {
+    --dgu-window-height: min(800px, calc(100dvh - 24px));
+}
+
 /* Full-viewport overlays retain their native visibility controls. */
 html[data-dol-midnight][data-dmt-layout] .customOverlayContainer:not(:has([data-overlay="modloader"])) {
     position: fixed;
@@ -123,9 +128,14 @@ html[data-dol-midnight][data-dmt-layout] .customOverlay:not([data-overlay="modlo
     width: min(1000px, 100%);
     max-width: min(1000px, 100vw);
     height: min(800px, calc(100vh - 24px));
-    height: min(800px, calc(100dvh - 24px));
+    height: var(--dgu-window-height);
     max-height: 100%;
     margin: auto;
+}
+
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #customOverlay[data-overlay=modloader][data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] {
+    width: min(1000px, 100%);
+    height: var(--dgu-window-height);
 }
 
 html[data-dol-midnight][data-dmt-layout] .customOverlay:not([data-overlay="modloader"]):not([hidden]):not(.hidden) #customOverlayTitle {

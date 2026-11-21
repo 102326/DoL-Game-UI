@@ -1,5 +1,6 @@
 import type {PanelKind} from '../panels/types';
 import {acrylicDefault} from './acrylic';
+import type {Appearance} from './appearance';
 export const readingDefaults={readingLineScale:100,readingBlockGap:0,readingWidth:0};
 export const readingRanges={
  readingLineScale:{min:100,max:160,step:5,label:'正文行距',description:'100%跟随原版；调大后文字行距更宽松。'},
@@ -11,4 +12,4 @@ export const defaults={...readingDefaults,enabled:true,combatFocused:false,story
 // Retired flags remain false for existing preference readers; they no longer activate runtime code.
 export type Preferences=typeof defaults;
 export type PreferenceKey=keyof Preferences;
-export interface SettingsState {preferences:Preferences;scaleMax:150;saves:boolean;combat:boolean;wardrobe:boolean;characteristics:boolean;social:boolean;shop:boolean;shopPageExperimentAvailable:boolean;panels:Record<PanelKind,boolean>;message:string}
+export interface SettingsState {preferences:Preferences;appearance:Appearance;scaleMax:150;saves:boolean;combat:boolean;wardrobe:boolean;characteristics:boolean;social:boolean;shop:boolean;shopPageExperimentAvailable:boolean;panels:Record<PanelKind,boolean>;message:string}

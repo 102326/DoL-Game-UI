@@ -1,0 +1,2 @@
+#hub-preview-scene nav a { display:inline-flex; align-items:center; min-height:44px; padding:0 16px; color:#b4c8c3 }
+#hub-preview-scene nav a[aria-current] { color:white; text-decoration-thickness:2px }

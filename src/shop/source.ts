@@ -27,24 +27,27 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
   const panels=list?.querySelectorAll<HTMLElement>('.clothing-details');
   return {list,details:panels?.length===1?panels[0]:null};
  }
- function fingerprint(){
-  const {details}=context(),v=facts().variables;
-  return JSON.stringify({
+ // A projection can reuse its detail node. Action guards resolve the live node again.
+ function readQuote({details}=context()){
+  const controls=details?[...details.querySelectorAll(purchaseSelector)]:[];
+  const v=facts().variables;
+  const fingerprint=JSON.stringify({
    selection:v&&['location','clothingShopSlot','clothes_choice','colouraction','accessorycolouraction','patternaction','buyMultiple','money'].map(k=>v[k]),
    returnTo:(v?.wardrobes as {shopReturn?:unknown}|undefined)?.shopReturn,
    definition:facts().definition,
-   controls:details&&[...details.querySelectorAll(purchaseSelector)].map(n=>[text(n),n.getAttribute('class'),n.getAttribute('aria-disabled'),n.closest('.disabled')!==null]),
+   controls:details&&controls.map(n=>[text(n),n.getAttribute('class'),n.getAttribute('aria-disabled'),n.closest('.disabled')!==null]),
    price:details&&[...details.querySelectorAll('.buy-buttons .gold')].map(n=>text(n)),
    inputs:details&&[...details.querySelectorAll<HTMLInputElement>('input,select')].map(n=>[n.id,n.value,n.disabled])
   });
+  return {controls,fingerprint};
  }
  function quantityBase(){const f=facts(),v=f.variables;return JSON.stringify({selection:v&&['location','clothingShopSlot','clothes_choice','colouraction','accessorycolouraction','patternaction','money'].map(k=>v[k]),returnTo:(v?.wardrobes as {shopReturn?:unknown}|undefined)?.shopReturn,definition:f.definition})}
  function read(){
   if(disposed||!current())return null;
   const native=context();
-  bound=native.details?[...native.details.querySelectorAll(purchaseSelector)]:[];
-  const f=facts(),quote=fingerprint();
-  for(const control of bound)if(!bindings.has(control))bindings.set(control,{quote,base:quantityBase(),variables:f.variables,definition:f.definition});
+  const f=facts(),quote=readQuote(native);
+  bound=quote.controls;
+  for(const control of bound)if(!bindings.has(control))bindings.set(control,{quote:quote.fingerprint,base:quantityBase(),variables:f.variables,definition:f.definition});
   if(selected&&!selected.isConnected){
    // Native selection can rebuild the catalog. Reassociate only an unambiguous display;
    // this highlight is never used to identify a purchase or dispatch business.
@@ -80,7 +83,7 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
   const control=purchaseControl(target);
   if(!control||!shop.contains(control))return 'native';
   const f=facts(),binding=bindings.get(control);
-  if(disposed||!current()||consumed.has(control)||!bound.includes(control)||!binding||f.variables!==binding.variables||f.definition!==binding.definition||fingerprint()!==binding.quote)return 'stale';
+  if(disposed||!current()||consumed.has(control)||!bound.includes(control)||!binding||f.variables!==binding.variables||f.definition!==binding.definition||readQuote().fingerprint!==binding.quote)return 'stale';
   // Claim only this dispatch. A native replacement supplies a fresh control/quote.
   for(const node of bound)consumed.add(node);
   return 'valid';
@@ -88,7 +91,7 @@ export function createShopSource(shop:HTMLElement,current:()=>boolean,facts:()=>
  function quantityChanged(input:HTMLInputElement){
   if(disposed||!current()||!shop.contains(input)||!input.matches('#buy-multiple-slider input[type=range]')||shop.querySelectorAll('#buy-multiple-slider input[type=range]').length!==1)return false;
   const f=facts(),amount=f.variables?.buyMultiple;if(typeof amount!=='number'||!Number.isInteger(amount)||amount<1||amount>10||Number(input.value)!==amount)return false;
-  const base=quantityBase(),quote=fingerprint();let updated=false;
+  const base=quantityBase(),quote=readQuote().fingerprint;let updated=false;
   for(const control of bound){const b=bindings.get(control);if(control.isConnected&&!consumed.has(control)&&b&&b.base===base&&b.variables===f.variables&&b.definition===f.definition){bindings.set(control,{...b,quote});updated=true}}
   return updated;
  }

@@ -1,5 +1,4 @@
 import {sphereHub} from '../../src/ui/golden-spin/hub-motion';
-import {rigidSpin} from '../../src/ui/golden-spin/rigid-spin';
 import '../../src/ui/golden-spin/hub.css';
 import {isolate} from '../../src/runtime/presentation';
 import {visualScope} from '../../src/ui/visual-scope';
@@ -10,10 +9,9 @@ import '../motion-hub/style.css';
 import {isMasterEnabled} from '../../src/runtime/master';
 import type {FloatingApi} from '../../src/floating/main';
 import type {UiApi} from '../../src/public/ui';
-import type {PlacementMotion} from '../motion-hub/placement-motion';
 
 /** The existing opt-in floating preference also controls the official public-view Hub. */
-export function startOfficialHub(host:Host,owner:Participant){
+export function startOfficialHub(host:Host,owner:Participant,previewLayout?:'list'|'drawer'){
  const scope=visualScope();let mounted:Readonly<MountHandle>|undefined;
  const root=window as Window & {DoLFloatingTools?:FloatingApi};
  let mode='';
@@ -39,8 +37,14 @@ export function startOfficialHub(host:Host,owner:Participant){
   if(!scope.active())return;
   const p=root.DoLFloatingTools?.getPreferences();
   if(isMasterEnabled()&&p?.enabled&&!p.hidden){
-   if(mode!==p.mode){mounted?.dispose();mounted=undefined;mode=p.mode}
-   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement,placement?:PlacementMotion)=>{const visual=isolate('Hub visual',()=>sphereHub(root));const flight=visual&&placement?isolate('Hub placement',()=>rigidSpin(root,placement,()=>visual?.sphere.inspect())):undefined;const visuals=visualScope();visuals.own(()=>visual?.destroy());visuals.own(()=>flight?.destroy());return visuals.dispose},dismiss:()=>root.DoLFloatingTools?.hide()}});
+   const toolLayout=previewLayout??p.hubLayout;
+   const selected=toolLayout??p.mode;
+   if(mode!==selected){mounted?.dispose();mounted=undefined;mode=selected}
+   if(!mounted)mounted=mountVue(owner,{id:'official-hub',parent:document.body,lifetime:'persistent',load:()=>MotionHub,props:{host,toolLayout,preferredMode:p.mode,officialPreferences:true,directActions,experimentalMotion:(root:HTMLElement)=>{
+    const visual=isolate('Hub visual',()=>sphereHub(root,'diamond'));
+    const dispose=()=>visual?.destroy();
+    return dispose;
+   },dismiss:()=>root.DoLFloatingTools?.hide()}});
   }else{mounted?.dispose();mounted=undefined}
  }
  document.addEventListener('dol-floating-change',sync);document.addEventListener('dol-ui-master-change',sync);sync();

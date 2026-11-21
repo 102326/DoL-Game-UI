@@ -6,14 +6,14 @@ html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-ball::before,html
 .sf-motion-ball.is-docked .spin-hub-canvas{width:125px;height:125px}
 /* Only grid has a shared shell; fan controls each own their floating surface. */
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-spin-hub] .sf-motion-orbit{transform:none;clip-path:none;opacity:1;transition:none;overflow:visible;background:transparent!important;backdrop-filter:none!important;box-shadow:none!important;border-color:transparent!important;isolation:isolate}
-html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-petal{left:var(--x);top:var(--y);transform:none;width:136px;min-height:58px}
-html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities{left:var(--utility-x);top:calc(50% - 78px);bottom:auto;right:auto;width:64px;display:flex;flex-direction:column;gap:12px;margin:0;padding:0;border:0}
+html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-petal{left:var(--x);top:var(--y);transform:none;width:136px;min-height:max(58px,var(--dgu-control-hit,44px))}
+html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities{left:var(--utility-x);top:calc(50% - (3 * var(--dgu-control-hit,44px) + 24px) / 2);bottom:auto;right:auto;width:max(64px,var(--dgu-control-hit,44px));display:flex;flex-direction:column;gap:12px;margin:0;padding:0;border:0}
 /* Quieter secondary actions: unchanged hitboxes, shared fan/grid icon-label balance. */
-html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-utilities button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:44px;padding:5px 4px;border:1px solid #d3d8d51c;border-radius:12px;background:linear-gradient(145deg,#ffffff08,transparent 72%),#242629d6;box-shadow:inset 0 1px #ffffff08,0 4px 12px #0002;color:#c8cece;font-size:11.5px;font-weight:500;line-height:1.2;text-align:center;white-space:nowrap}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-utilities button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:var(--dgu-control-hit,44px);min-height:var(--dgu-control-hit,44px);padding:5px 4px;border:1px solid #d3d8d51c;border-radius:12px;background:linear-gradient(145deg,#ffffff08,transparent 72%),#242629d6;box-shadow:inset 0 1px #ffffff08,0 4px 12px #0002;color:#c8cece;font-size:calc(11.5px * var(--dgu-font-scale,1));font-weight:500;line-height:1.2;text-align:center;white-space:normal;overflow-wrap:anywhere}
 html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-utility-icon{display:block;flex:none;width:15px;height:15px;color:#a5b5b1;pointer-events:none}
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-utilities button:hover{background:linear-gradient(145deg,#ffffff0c,transparent 72%),#303336eb;border-color:#cbd8d13d;color:#edf0ee}
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-utilities button:focus-visible{outline:2px solid #a8bdb5;outline-offset:3px}
-html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities button{flex:none;width:64px;height:44px;min-height:44px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities button{flex:none;width:100%;height:auto;min-height:var(--dgu-control-hit,44px);font-size:calc(11.5px * var(--dgu-font-scale,1));white-space:normal;overflow-wrap:anywhere;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 /* The inner column is at x=0 or x=206; bend its middle toward the outer tools. */
 html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-orbit:not(.is-grid) .sf-motion-utilities button:nth-child(2){position:relative;left:clamp(-8px,calc(8px - var(--utility-x)),8px)}
 html[data-stone-free] .sf-motion-hub[data-official][data-spin-hub] .sf-motion-tool-label{flex:1;min-width:0;width:100%;text-align:var(--dgu-option-text-align,left)}
@@ -37,3 +37,99 @@ html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-official][
 /* Keep wheel, touch and keyboard scrolling without a visible scrollbar rail. */
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit{scrollbar-width:none}
 html[data-stone-free] .sf-motion-hub[data-spin-hub] .sf-motion-orbit::-webkit-scrollbar{width:0;height:0}
+
+/* 4.5 selected diamond glass entry. Shared placement, native tools and menu motion stay owned above. */
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-motion-ball{
+ border:1px solid #dcefff50!important;border-radius:50%!important;color:#d9e9ed;
+ background:linear-gradient(145deg,#bddff345,#202932c9)!important;
+ backdrop-filter:blur(22px)!important;-webkit-backdrop-filter:blur(22px)!important;
+ box-shadow:0 12px 30px #0005,inset 0 1px #ffffff40!important;
+ transition:width 60ms,height 60ms,border-radius 60ms;
+}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-docked{border-radius:16px!important}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball::before{display:block;inset:-5px;border:1px solid #b7e0ff40;border-radius:inherit!important;opacity:0;transform:none;transition:opacity 60ms}
+html[data-stone-free] .sf-motion-hub[data-diamond-hub] .sf-motion-ball.is-open::before{opacity:1}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball:focus-visible{outline:2px solid #dcece8;outline-offset:3px}
+html[data-stone-free]:not([data-dgu-visualGlass]) .sf-motion-hub[data-diamond-hub] .sf-motion-ball{background:#28323b!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+@supports not (backdrop-filter:blur(1px)){html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-diamond-hub] .sf-motion-ball{background:#28323b!important}}
+
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-tool-layout] {
+ .sf-motion-orbit.is-grid .sf-motion-petal[data-motion-view] {
+  grid-column:auto;
+  background:transparent;
+ }
+ &[data-tool-layout="list"] .sf-motion-orbit.is-grid {
+  grid-template-columns:minmax(0,1fr);
+  .sf-motion-petal[data-motion-view] {
+   flex-direction:row;
+   justify-content:flex-start;
+   min-height:var(--dgu-control-hit,44px);
+   padding:6px 12px;
+   gap:12px;
+   border-bottom:1px solid #ffffff0e;
+   .sf-motion-tool-label { flex:1; text-align:start }
+  }
+ }
+ &[data-tool-layout="drawer"] .sf-motion-orbit.is-grid {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
+  padding:6px;
+  border:0;
+  border-radius:0;
+  &::before { content:none }
+  .sf-motion-petal[data-motion-view] {
+   flex:none;
+   width:auto;
+   max-width:calc(100% - 60px);
+   min-height:max(48px,var(--dgu-control-hit,44px));
+   flex-direction:row-reverse;
+   gap:6px;
+   margin-right:calc(var(--step) * 56px);
+   padding:0;
+   background:transparent;
+   border:0;
+   .sf-motion-tool-icon {
+    box-sizing:border-box;
+    width:40px;
+    height:40px;
+    padding:9px;
+    border:1px solid #b4c4c638;
+    border-radius:13px;
+    background:linear-gradient(145deg,#42494b,#232829);
+    box-shadow:0 2px 6px #0004;
+   }
+   .sf-motion-tool-label {
+    width:auto;
+    flex:0 1 auto;
+    padding:3px 7px;
+    border-radius:7px;
+    background:#252829ed;
+    text-align:center;
+   }
+  }
+ }
+ &[data-drawer-up] .sf-motion-orbit.is-grid { flex-direction:column-reverse }
+ &[data-drawer-left] .sf-motion-orbit.is-grid {
+  align-items:flex-start;
+  .sf-motion-petal[data-motion-view] {
+   flex-direction:row;
+   margin-right:0;
+   margin-left:calc(var(--step) * 56px);
+  }
+ }
+}
+@media (prefers-reduced-motion:no-preference) {
+ html[data-stone-free][data-dol-midnight][data-dgu-visualMotion] .sf-motion-hub[data-tool-layout="drawer"] .sf-motion-ball.is-docked {
+  transition:transform 180ms cubic-bezier(.2,.7,.3,1), width 180ms ease-out, height 180ms ease-out, border-radius 180ms ease-out;
+ }
+ html[data-dgu-visualMotion] .sf-motion-hub[data-tool-layout] .sf-motion-ball.is-open .spin-hub-canvas {
+  transform-origin:50% 48%;
+  animation:hub-diamond-settle 200ms cubic-bezier(.2,.7,.3,1);
+ }
+}
+@keyframes hub-diamond-settle {
+ 0%,100% { transform:translate(-50%,-48%); filter:brightness(1) }
+ 45% { transform:translate(-50%,-48%) rotate(10deg); filter:brightness(1.45) }
+}

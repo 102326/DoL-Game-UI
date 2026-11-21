@@ -1,7 +1,7 @@
 /* Both layouts share the same live controls and material; only their geometry changes. */
 html[data-stone-free] #dol-midnight-controls .dmt-layout-choice{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 24px 14px;border-bottom:1px solid #ffffff08}
 html[data-stone-free] #dol-midnight-controls .dmt-layout-choice>span{font-size:12px;color:var(--sf-muted);margin-right:8px}
-html[data-stone-free] #dol-midnight-controls .dmt-layout-choice button{min-height:44px;padding:7px 16px;background:transparent;border-color:transparent;box-shadow:none}
+html[data-stone-free] #dol-midnight-controls .dmt-layout-choice button{min-height:var(--dgu-control-hit);padding:7px 16px;background:transparent;border-color:transparent;box-shadow:none}
 html[data-stone-free] #dol-midnight-controls .dmt-layout-choice button[aria-pressed=true]{background:#8baea312;border-color:#8baea338;color:#d3e1db}
 html[data-stone-free] #dol-midnight-controls .dmt-layout-choice small{flex:1 1 200px;font-size:11px;color:var(--sf-muted)}
 html[data-stone-free] #dol-midnight-controls .dmt-controls-content.dmt-workspace{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:22px;padding:0 24px 24px}
@@ -9,7 +9,7 @@ html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-settings-layout
 html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-settings-layout=vertical] .dmt-workspace-nav{grid-template-columns:minmax(0,1fr);position:sticky;top:0;gap:8px;border-bottom:0;padding:12px 0}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{container-type:inline-size}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-width:0;padding:10px 0 14px;border-bottom:1px solid #ffffff0b}
-html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:flex-start;min-height:44px;padding:9px 12px;border-color:transparent;border-radius:11px;background:transparent;color:var(--sf-muted,#aaa9ad);text-align:left}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:flex-start;min-height:var(--dgu-control-hit);padding:9px 12px;border-color:transparent;border-radius:11px;background:transparent;color:var(--sf-muted,#aaa9ad);text-align:left}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{background:rgba(12,14,15,.2);box-shadow:none;color:var(--sf-ink,#e6e6e8)}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{display:grid;min-width:0;min-height:18rem}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{grid-area:1/1;align-self:start;display:grid;gap:14px;min-width:0;width:100%;backface-visibility:hidden;transform-origin:center top}
@@ -36,14 +36,14 @@ html[data-stone-free] #dol-midnight-controls .dmt-preview-reference{display:grid
 html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating{position:absolute;z-index:2;right:10px;bottom:10px;width:min(190px,calc(100% - 20px));min-height:104px}
 html[data-stone-free] #dol-midnight-controls .dmt-preview-reference :is(span,small){font-size:11px;color:var(--sf-muted,#aaa9ad)}
 html[data-stone-free] #dol-midnight-controls .dmt-preview-reference strong{font-size:14px;color:var(--sf-ink,#e6e6e8)}
-html[data-stone-free] #dol-midnight-controls :is(.dmt-reading-sample,.dmt-preview-reading,.dmt-preview-reference) button{min-height:44px!important}
+html[data-stone-free] #dol-midnight-controls :is(.dmt-reading-sample,.dmt-preview-reading,.dmt-preview-reference) button{min-height:var(--dgu-control-hit)!important}
 html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating{box-shadow:0 12px 32px #0005;transition:box-shadow .24s ease,border-color .24s ease}
 html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating.is-focused{border-color:var(--sf-change,#d2d2d4)}
 html[data-stone-free] #dol-midnight-controls .dmt-preview-status{margin:0;min-height:1.5em}
 @media(max-width:680px){
  html[data-stone-free] #dol-midnight-controls .dmt-controls-content.dmt-workspace{grid-template-columns:minmax(0,1fr);gap:14px;padding:0 16px 16px}
  html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
- html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:center;min-height:44px;padding:7px 5px;text-align:center}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:center;min-height:var(--dgu-control-hit);padding:7px 5px;text-align:center}
  html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{box-shadow:none}
  html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{min-height:0}
  html[data-stone-free] #dol-midnight-controls .dmt-workspace-section>.dmt-setting-card{padding:4px 0 12px}

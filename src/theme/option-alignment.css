@@ -26,7 +26,6 @@ html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dmt-a
 
 html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row > input[type=range] {height: 44px}
 html[data-dol-midnight][data-dgu-options-centered] #dol-midnight-controls .dgu-setting-row > select {
-    min-height: 44px;
     padding-inline: 2rem;
     text-align: center;
     text-align-last: center;

@@ -1,3 +1,4 @@
+import {createPagePreferences,type PagePreferences} from '../theme/page-preferences';
 import {visualScope} from './visual-scope';
 import {createApp,reactive,type Component,type App} from 'vue';
 import type {Host,Participant} from '../../framework/contracts';
@@ -8,16 +9,15 @@ import {navigationScrollTop} from './navigation-geometry';
 import {navigationHeading,flashNavigationHeading} from './navigation-feedback';
 import {navigationMount} from './navigation-mount';
 
-type Options={kind:string;prefix:string;marker:string;claimKey:string;groups:readonly (readonly [string,string])[];component:Component;presentation?:(shell:HTMLElement,core:HTMLElement)=>{refresh():void;dispose():void}};
+type Options={kind:'social'|'characteristics';prefix:string;marker:string;claimKey:string;groups:readonly (readonly [string,string])[];component:Component;presentation?:(shell:HTMLElement,core:HTMLElement)=>{refresh():void;dispose():void}};
 /** Internal adapter for this reviewed native family; never owns/rebuilds native content. */
-export function nativeOverlayNavigation(root:Window,options:Options,framework?:{host:Host;owner:Participant}){
- const key=`DoLGameUI.${options.kind}.enabled`,state=reactive({sections:[] as {id:string;label:string}[]}),motion=sourceMotion();
- const scope=visualScope();scope.own(()=>motion.dispose());let enabled=true,failed=false,generation=0,intent=0;
+export function nativeOverlayNavigation(root:Window,options:Options,framework?:{host:Host;owner:Participant},pagePrefs:PagePreferences=createPagePreferences(root)){
+ const state=reactive({sections:[] as {id:string;label:string}[]}),motion=sourceMotion();
+ const scope=visualScope();scope.own(()=>motion.dispose());let failed=false,generation=0,intent=0;const enabled=()=>pagePrefs.get(options.kind);
  let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,hadClass=false,decorated:HTMLElement|null=null;
  let presentation:ReturnType<NonNullable<Options['presentation']>>|undefined;
  const life=framework?navigationMount(framework.owner,options.claimKey,release):undefined;
  const counts={mounts:0,scans:0,failures:0};
- try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference remains available. */}
  function release(){
   const previousPresentation=presentation;presentation=undefined;
   try{previousPresentation?.dispose()}finally{
@@ -47,7 +47,7 @@ export function nativeOverlayNavigation(root:Window,options:Options,framework?:{
   const next=document.getElementById('customOverlay');
   if(next!==overlay){release();overlay=next;observer.disconnect();if(overlay)observer.observe(overlay,{attributes:true,attributeFilter:['data-overlay','class'],childList:true,subtree:true})}
   const pane=overlay?.querySelector<HTMLElement>('#customOverlayContent')??null;
-  if(!isMasterEnabled()||!enabled||failed||life?.exited()||!overlay||overlay.classList.contains('hidden')||overlay.dataset.overlay!==options.kind||!pane?.querySelector('#'+options.marker)){
+  if(!isMasterEnabled()||!enabled()||failed||life?.exited()||!overlay||overlay.classList.contains('hidden')||overlay.dataset.overlay!==options.kind||!pane?.querySelector('#'+options.marker)){
    if(host||life?.active())release();return;
   }
   if(content!==pane||!host?.isConnected||!!life&&!life.current()){
@@ -73,9 +73,9 @@ export function nativeOverlayNavigation(root:Window,options:Options,framework?:{
  function schedule(){scope.frame(refresh)}
  const observer=new MutationObserver(records=>{if(records.some(r=>!(host?.contains(r.target)||r.target===host)&&!(r.type==='attributes'&&r.target!==overlay)))schedule()});
  const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay)schedule()});
- function setEnabled(value:boolean){if(!scope.active())return;failed=false;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* No gameplay write. */}refresh();document.dispatchEvent(new Event(`dol-ui-${options.kind}-change`))}
+ function setEnabled(value:boolean){if(!scope.active())return;failed=false;pagePrefs.set(options.kind,!!value);refresh();document.dispatchEvent(new Event(`dol-ui-${options.kind}-change`))}
  discovery.observe(document.body,{childList:true,subtree:true});refresh();
 
  scope.own(()=>discovery.disconnect());scope.own(()=>observer.disconnect());
- return{getEnabled:()=>enabled&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts,implementation:'native-overlay-navigation/v1',consumer:options.kind,mountContract:life?.implementation??'classic',generation,mounted:!!host?.isConnected}),destroy(){if(!scope.active())return;scope.dispose();release();overlay=null}};
+ return{getEnabled:()=>enabled()&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts,implementation:'native-overlay-navigation/v1',consumer:options.kind,mountContract:life?.implementation??'classic',generation,mounted:!!host?.isConnected}),destroy(){if(!scope.active())return;scope.dispose();release();overlay=null}};
 }

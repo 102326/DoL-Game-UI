@@ -1,3 +1,4 @@
+import {createPagePreferences,type PagePreferences} from '../theme/page-preferences';
 import {visualScope} from '../ui/visual-scope';
 import {createApp,reactive,type App} from 'vue';
 import Navigation from './Navigation.vue';
@@ -26,9 +27,8 @@ const selectors:Record<PanelKind,string>={
  feats:'#featTypes,#featsList'
 };
 const fixedLabels:Record<string,string>={journalNotesTextarea:'笔记编辑',moneyButton:'详细统计',spoilerWarning:'额外统计提示',featTypes:'筛选与排序',featsList:'成就列表'};
-export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Participant}):PanelControls{
- const preferences:Record<PanelKind,boolean>={journal:true,traits:true,statistics:true,feats:true,cheats:true,attitudes:true,settings:true};
- for(const kind of Object.keys(preferences) as PanelKind[])try{preferences[kind]=root.localStorage.getItem(`DoLGameUI.${kind}.enabled`)!=='false'}catch{/* Session fallback. */}
+export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Participant},pagePrefs:PagePreferences=createPagePreferences(root)):PanelControls{
+ const failed=new Set<PanelKind>();
  let overlay:HTMLElement|null=null,content:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,active:PanelKind|undefined;const scope=visualScope();
  let targets:HTMLElement[]=[];
  const state=reactive<NavigationState>({title:'',sections:[]});
@@ -65,12 +65,12 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
  function recover(kind:PanelKind,error:unknown,inline=false,parent:HTMLElement|null=inline?passage:overlay){
   if(!isMasterEnabled()){if(inline)releasePassage();else release();return}
   counts.failures++;lastFailure=String(error);console.warn('DoLGameUI panel reverted',kind,error);
-  preferences[kind]=false;try{root.localStorage.setItem(`DoLGameUI.${kind}.enabled`,'false')}catch{}
+  failed.add(kind);
   if(inline)releasePassage();else release();
   // Native insurance control lives outside the Vue host; cleanup never owns it.
   if(parent?.isConnected){
    parent.querySelector('.dgp-recovery')?.remove();
-   const button=document.createElement('button');button.type='button';button.className='dgp-recovery';button.textContent=`返回原版${titles[kind]}`;
+   const button=document.createElement('button');button.type='button';button.className='dgp-recovery';button.dataset.dgpRecovery=kind;button.textContent=`返回原版${titles[kind]}`;
    button.addEventListener('click',()=>{setEnabled(kind,false);button.remove()});parent.prepend(button);
   }
   document.dispatchEvent(new Event('dol-ui-panels-change'));
@@ -91,7 +91,7 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   seenPassage=next;
   const name=next?.dataset.passage??'';
   const kind:PanelKind|undefined=['Attitudes','Livestock Attitudes'].includes(name)?'attitudes':['Settings','Livestock Settings'].includes(name)?'settings':undefined;
-  if(!isMasterEnabled()||!next||!kind||!preferences[kind]||passageLife?.exited()){if(passage)releasePassage();return}
+  if(!isMasterEnabled()||!next||!kind||(!pagePrefs.get(kind)||failed.has(kind))||passageLife?.exited()){if(passage)releasePassage();return}
   if(passage!==next||!passageHost?.isConnected||!!passageLife&&!passageLife.current()){
    releasePassage();if(passageLife&&!passageLife.acquire())return;passage=next;restorePassage=decorate(passage,kind);passageState.title=titles[kind];passageState.sections=[];
    passageHost=document.createElement('div');passageHost.className='dgp-host';passage.prepend(passageHost);
@@ -118,7 +118,7 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   if(next!==overlay){release();observer.disconnect();overlay=next;if(overlay)observer.observe(overlay,watch)}
   const kind=panelKeys[overlay?.dataset.overlay??''];
   const body=overlay?.querySelector<HTMLElement>('#customOverlayContent')??null;
-  if(!isMasterEnabled()||!kind||!preferences[kind]||!body||overlay?.classList.contains('hidden')||overlayLife?.exited()){if(host)release();return}
+  if(!isMasterEnabled()||!kind||(!pagePrefs.get(kind)||failed.has(kind))||!body||overlay?.classList.contains('hidden')||overlayLife?.exited()){if(host)release();return}
   if(active!==kind||content!==body||!host?.isConnected||!!overlayLife&&!overlayLife.current()){
    release();if(overlayLife&&!overlayLife.acquire())return;active=kind;content=body;host=document.createElement('div');host.className='dgp-host';body.before(host);
    state.title=titles[kind];state.sections=[];
@@ -157,12 +157,12 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
  const observer=new MutationObserver(records=>changed(records)),passageObserver=new MutationObserver(records=>changed(records,true));
  // Discover only root replacement; never watch the entire document subtree.
  const discovery=new MutationObserver(()=>{if(document.getElementById('customOverlay')!==overlay||document.querySelector('#passages .passage:last-child')!==seenPassage)schedule()});
- function setEnabled(kind:PanelKind,value:boolean){if(!scope.active()||!Object.hasOwn(preferences,kind))return;preferences[kind]=!!value;try{root.localStorage.setItem(`DoLGameUI.${kind}.enabled`,String(!!value))}catch{/* Display changes still apply. */}refresh();document.dispatchEvent(new Event('dol-ui-panels-change'))}
+ function setEnabled(kind:PanelKind,value:boolean){if(!scope.active()||!Object.hasOwn(titles,kind))return;failed.delete(kind);document.querySelectorAll<HTMLElement>('.dgp-recovery').forEach(button=>{if(button.dataset.dgpRecovery===kind)button.remove()});pagePrefs.set(kind,!!value);refresh();document.dispatchEvent(new Event('dol-ui-panels-change'))}
  const overlayParent=document.getElementById('customOverlay')?.parentElement,passages=document.getElementById('passages');
  if(overlayParent)discovery.observe(overlayParent,{childList:true});
  if(passages)discovery.observe(passages,{childList:true});
  root.jQuery?.(document).on(':passageend.dolPanels',schedule);refresh();
 
  scope.own(()=>discovery.disconnect());scope.own(()=>observer.disconnect());scope.own(()=>passageObserver.disconnect());
- return {getEnabled:(kind:PanelKind)=>preferences[kind],setEnabled,refresh,getLifecycleCounts:()=>({...counts,mountContract:overlayLife?.implementation??'classic'}),getLastFailure:()=>lastFailure,destroy(){scope.dispose();root.jQuery?.(document).off(':passageend.dolPanels',schedule);release();releasePassage();document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
+ return {getEnabled:(kind:PanelKind)=>pagePrefs.get(kind)&&!failed.has(kind),setEnabled,refresh,getLifecycleCounts:()=>({...counts,mountContract:overlayLife?.implementation??'classic'}),getLastFailure:()=>lastFailure,destroy(){scope.dispose();root.jQuery?.(document).off(':passageend.dolPanels',schedule);release();releasePassage();document.querySelectorAll('.dgp-recovery').forEach(n=>n.remove());overlay=null}};
 }

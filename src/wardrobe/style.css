@@ -151,3 +151,10 @@ html[data-dol-midnight][data-dmt-layout] #passages:has(.dgw-shell){max-width:90r
  .dgw-candidate .dgw-header{flex-wrap:wrap}
  .dgw-candidate .dgw-header-actions{margin-left:auto}
 }
+
+/* Only the shell belongs to the wardrobe. Keep its borrowed detail nodes intact. */
+html[data-dol-midnight] dialog.dgu-surface[open]:has(> .dgu-surface-content > .dgw-detail-native){
+ display:flex;flex-direction:column;overflow:hidden;
+ & > .dgu-surface-header{flex:none}
+ & > .dgu-surface-content{min-height:0;overflow:auto;overscroll-behavior:contain}
+}

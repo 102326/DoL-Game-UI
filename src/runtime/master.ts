@@ -1,11 +1,8 @@
-let enabled=true;
-
-export function initMaster(root:Window){
- enabled=true;
- try{
-  const raw=root.localStorage.getItem('DoLMidnightTheme.preferences.v1');
-  if(raw&&raw.length<=2048){const value=JSON.parse(raw);if(typeof value?.enabled==='boolean')enabled=value.enabled}
- }catch{/* Use the theme default when storage is unavailable. */}
+// Independent page entry points start enabled until a theme snapshot is bound.
+let requested = {enabled:true};
+export function initMaster(preferences: {enabled:boolean}) { requested=preferences }
+export function isMasterEnabled() { return requested.enabled }
+export function setMasterEnabled(value:boolean) {
+ requested.enabled=value;
+ if(typeof document!=='undefined')document.dispatchEvent(new Event('dol-ui-master-change'));
 }
-export function isMasterEnabled(){return enabled}
-export function setMasterEnabled(value:boolean){enabled=value;if(typeof document!=='undefined')document.dispatchEvent(new Event('dol-ui-master-change'))}

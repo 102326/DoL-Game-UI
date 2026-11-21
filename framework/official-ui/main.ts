@@ -11,6 +11,7 @@ import '../../src/theme/dark-acrylic.css';
 import '../../src/theme/kraft-work-pages.css';
 import '../../src/theme/kraft-work-motion.css';
 import '../../src/theme/navigation-material.css';
+import '../../src/theme/custom-appearance.css';
 
 // The official package consumes the same public Host as an independent author.
 const notice=startupNotice();

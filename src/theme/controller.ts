@@ -9,10 +9,13 @@ import SettingsPanel from './SettingsPanel.vue';
 import '../ui/owned-select.css';
 import {isOpenSelectEscape} from '../ui/native-select';
 import {defaults,type Preferences,type PreferenceKey,type SettingsState} from './preferences';
-import {isMasterEnabled,setMasterEnabled} from '../runtime/master';
+import {pageEnabled, requestPage, type PageKey} from './page-preferences';
+import {initMaster,isMasterEnabled,setMasterEnabled} from '../runtime/master';
 import {acrylicParameters} from './acrylic';
 import {createReadingLayout} from './reading-layout';
 import {readingRanges} from './preferences';
+import {acrylicPreference, createThemePreferences, preferenceScale} from './preference-store';
+import {appearanceFont, appearancePalette, colorRoles, readAppearance, type Appearance} from './appearance';
 import type {startLayout} from './layout';
 // Only UI controls used here; native game state remains outside this host contract.
 type PageControls={getEnabled():boolean;setEnabled(value:boolean):void;refresh?:()=>void};
@@ -35,40 +38,42 @@ type Runtime=Window & {
  };
 };
 declare const __STONE_FREE_CONSUMER__:boolean;
-export function startTheme(root:Runtime=window as Runtime){
+export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<typeof createThemePreferences>){
  if(root.DoLMidnightTheme)return;
- const KEY='DoLMidnightTheme.preferences.v1';
+ const store=loaded??createThemePreferences(root);
  const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
  const scope=visualScope(),motion=sourceMotion();scope.own(()=>motion.dispose());let transition=0;
  const settingsPanel=()=>controls?.querySelector<HTMLElement>('.dmt-settings-shell')??controls;
  const compactViewport=()=>root.innerWidth<=600||Math.min(root.screen.width,root.screen.height)<=600;
  const scaleMax=150;
  let controls:HTMLDialogElement|undefined,app:App|undefined,expanded:HTMLButtonElement|undefined,lastFocus:HTMLElement|null=null,bar:HTMLElement|null=null,jqAttached=false;
- let storageError=false,shopPageExperimentApi:Runtime['DoLShopPageExperiment']|undefined,shopPageExperimentApplied:boolean|undefined,shopPageExperimentError=false,wardrobeHiddenListApi:Runtime['DoLWardrobeUI']|undefined,wardrobeHiddenListApplied:boolean|undefined;
- const preferences:Preferences={...defaults};
+ let shopPageExperimentApi:Runtime['DoLShopPageExperiment']|undefined,shopPageExperimentApplied:boolean|undefined,shopPageExperimentError=false,wardrobeHiddenListApi:Runtime['DoLWardrobeUI']|undefined,wardrobeHiddenListApplied:boolean|undefined;
+ const {preferences}=store.model;
  const reading=createReadingLayout();scope.own(()=>reading.destroy());
- // Store the migration marker with its values so a partial write cannot reset later choices.
- try{
-  const raw=root.localStorage.getItem(KEY);
-  if(raw&&raw.length>2048)throw Error('Invalid preference length');
-  const value=raw?JSON.parse(raw) as (Partial<Record<PreferenceKey,unknown>> & {_scaleBaseline26?:unknown;_readingBaseline41?:unknown}) | null:null;
-  for(const key of Object.keys(defaults) as PreferenceKey[]){
-   const v=value?.[key];
-   if(key==='readingLineScale'||key==='readingBlockGap'||key==='readingWidth'){if(typeof v==='number'&&Number.isFinite(v)){const range=readingRanges[key];preferences[key]=Math.max(range.min,Math.min(range.max,Math.round(v)))}}
-   else if(key==='visualTier'){ if(typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=2)preferences[key]=v}
-   else if(key==='acrylicTransparency'){if(typeof v==='number'&&Number.isFinite(v))preferences[key]=Math.max(0,Math.min(100,Math.round(v)))}
-   else if(key==='fontScale'||key==='buttonScale'){if(typeof v==='number'&&Number.isFinite(v))preferences[key]=Math.max(50,Math.min(150,Math.round(v)))}
-   else if(typeof v==='boolean')preferences[key]=v;
-  }
-  const retiredEnabled=preferences.statusPreview||preferences.startupCacheLazy||preferences.storyActions||preferences.compactStats||preferences.comfortable||preferences.wideReading;
-  preferences.statusPreview=false;preferences.startupCacheLazy=false;preferences.storyActions=false;preferences.compactStats=false;preferences.comfortable=false;preferences.wideReading=false;
-  if(value?._scaleBaseline26!==true){
-   preferences.fontScale=100;preferences.buttonScale=100;
-  }
-  if(value?._scaleBaseline26!==true||value?._readingBaseline41!==true||retiredEnabled)root.localStorage.setItem(KEY,JSON.stringify({...preferences,_scaleBaseline26:true,_readingBaseline41:true}));
- }catch{storageError=true}
+ initMaster(preferences);
  setMasterEnabled(preferences.enabled);
- const state=reactive<SettingsState>({preferences,scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
+ const state=reactive<SettingsState>({preferences,get appearance(){return store.model.appearance},scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:store.storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
+ let appliedAppearance: Appearance | undefined, appearanceEnabled = false;
+ function updateAppearance(enabled: boolean) {
+  if (appliedAppearance === state.appearance && enabled === appearanceEnabled) return;
+  appliedAppearance = state.appearance;
+  appearanceEnabled = enabled;
+  const html = document.documentElement;
+  const hasColors = enabled && colorRoles.some(role => !!state.appearance.colors[role]);
+  const hasFont = enabled && !!state.appearance.font;
+  const palette = hasColors ? appearancePalette(state.appearance.colors).palette : undefined;
+  const colors = [...colorRoles, 'hover', 'onAccent'] as const;
+  for (const role of colors) {
+   const property = `--sw-custom-${role === 'onAccent' ? 'on-accent' : role}`;
+   if (palette) html.style.setProperty(property, palette[role]);
+   else html.style.removeProperty(property);
+  }
+  if (hasFont) html.style.setProperty('--sw-custom-font', appearanceFont(state.appearance.font));
+  else html.style.removeProperty('--sw-custom-font');
+  html.toggleAttribute('data-sw-custom-colors', hasColors);
+  html.toggleAttribute('data-sw-custom-font', hasFont);
+ }
+ scope.own(() => updateAppearance(false));
 
  const counts={mounts:0,queued:0};
  function syncShopPageExperiment(){
@@ -77,7 +82,7 @@ export function startTheme(root:Runtime=window as Runtime){
   state.shopPageExperimentAvailable=!!api&&typeof api.setEnabled==='function'&&!shopPageExperimentError;
   if(!state.shopPageExperimentAvailable){shopPageExperimentApplied=undefined;return}
   const enabled=isMasterEnabled()&&state.preferences.shopPageExperiment;
-  if(shopPageExperimentApplied!==enabled){try{api!.setEnabled!(enabled);shopPageExperimentApplied=enabled}catch{shopPageExperimentError=true;state.shopPageExperimentAvailable=false;shopPageExperimentApplied=undefined;if(!storageError)state.message='商店分页实验接口不可用；请关闭此项或重启后重试。'}}
+  if(shopPageExperimentApplied!==enabled){try{api!.setEnabled!(enabled);shopPageExperimentApplied=enabled}catch{shopPageExperimentError=true;state.shopPageExperimentAvailable=false;shopPageExperimentApplied=undefined;if(!store.storageError)state.message='商店分页实验接口不可用；请关闭此项或重启后重试。'}}
  }
  function sync(){
   state.saves=!!root.DoLSavesUI?.getEnabled();
@@ -89,6 +94,7 @@ export function startTheme(root:Runtime=window as Runtime){
  }
  function apply(){
   const html=document.documentElement,visualTier=official?2:state.preferences.visualTier;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?visualTier:0));
+  updateAppearance(official && state.preferences.enabled);
   for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
   html.toggleAttribute('data-dgu-acrylic-adjustment',state.preferences.enabled&&official);
@@ -96,8 +102,9 @@ export function startTheme(root:Runtime=window as Runtime){
   html.toggleAttribute('data-dgu-options-centered',state.preferences.enabled&&state.preferences.centerOptions);
   html.style.setProperty('--dgu-option-text-align',state.preferences.enabled&&state.preferences.centerOptions?'center':'left');
   html.style.setProperty('--dgu-ui-extra-gap',`${state.preferences.enabled?state.preferences.readingBlockGap:0}px`);
- const fontScale=Math.min(state.scaleMax,state.preferences.fontScale),buttonScale=Math.min(state.scaleMax,state.preferences.buttonScale);
- document.documentElement.toggleAttribute('data-dgu-font-scaled',isMasterEnabled()&&fontScale!==100);document.documentElement.style.setProperty('--dgu-font-scale',String((isMasterEnabled()?fontScale:100)/100));document.documentElement.style.setProperty('--dgu-button-scale',String((isMasterEnabled()?buttonScale:100)/100));document.documentElement.toggleAttribute('data-dgu-buttons-scaled',isMasterEnabled()&&buttonScale!==100);isolate('saves layout',()=>root.DoLSavesUI?.setV2?.(isMasterEnabled()&&state.preferences.savesV2));
+  applyFontScale();
+  const buttonScale=Math.min(state.scaleMax,state.preferences.buttonScale);
+  document.documentElement.style.setProperty('--dgu-button-scale',String((isMasterEnabled()?buttonScale:100)/100));document.documentElement.toggleAttribute('data-dgu-buttons-scaled',isMasterEnabled()&&buttonScale!==100);isolate('saves layout',()=>root.DoLSavesUI?.setV2?.(isMasterEnabled()&&state.preferences.savesV2));
   experiments.wardrobePaged=isMasterEnabled()&&state.preferences.wardrobePaged;experiments.shopDeferredPaint=isMasterEnabled()&&state.preferences.shopDeferredPaint;
   document.documentElement.toggleAttribute('data-dol-shop-deferred-paint',experiments.shopDeferredPaint);
   state.preferences.showCompact=false;state.preferences.collapsedStats=false;
@@ -108,23 +115,84 @@ export function startTheme(root:Runtime=window as Runtime){
   isolate('layout',()=>root.DMTLayout?.sync({...state.preferences,enabled:isMasterEnabled()}));
   sync();
  }
- function persist(){apply();try{root.localStorage.setItem(KEY,JSON.stringify({...state.preferences,_scaleBaseline26:true,_readingBaseline41:true}));storageError=false}catch{storageError=true}state.message=storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请关闭此项或重启后重试。':'显示设置已保存。'}
- function setPreference(key:PreferenceKey,value:boolean|number){if(!scope.active()||!Object.hasOwn(defaults,key)||key==='statusPreview'||key==='startupCacheLazy'||key==='storyActions'||key==='compactStats'||key==='comfortable'||key==='wideReading')return;if(key==='enabled'){if(typeof value==='boolean')setMaster(value);return}if(key==='readingLineScale'||key==='readingBlockGap'||key==='readingWidth'){if(typeof value!=='number'||!Number.isFinite(value))return;const range=readingRanges[key];state.preferences[key]=Math.max(range.min,Math.min(range.max,Math.round(value)))}else if(key==='visualTier'){if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;state.preferences[key]=value}else if(key==='acrylicTransparency'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(0,Math.min(100,Math.round(value)))}else if(key==='fontScale'||key==='buttonScale'){if(typeof value!=='number'||!Number.isFinite(value))return;state.preferences[key]=Math.max(50,Math.min(150,Math.round(value)))}else{if(typeof value!=='boolean')return;state.preferences[key]=value}persist();if(key==='combatFocused')isolate('combat presentation',()=>root.DoLCombatUI?.refresh?.());if(key==='shopPageExperiment'&&!storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。'}
- function resizeScale(){apply()}
- function setPanel(kind:PanelKind,value:boolean){root.DoLPanelsUI?.setEnabled(kind,value);sync()}
- function setSaves(value:boolean){root.DoLSavesUI?.setEnabled(value);sync()}
- function setShop(value:boolean){root.DoLShopUI?.setEnabled(value);sync()}
- function setSocial(value:boolean){root.DoLSocialUI?.setEnabled(value);sync()}
- function setCharacteristics(value:boolean){root.DoLCharacteristicsUI?.setEnabled(value);sync()}
- function setCombat(value:boolean){root.DoLCombatUI?.setEnabled(value);sync()}
- function setWardrobe(value:boolean){root.DoLWardrobeUI?.setEnabled(value);sync();if(state.wardrobe!==value)state.message='衣柜正在处理操作，请完成后再切换。'}
- function setMaster(value:boolean){
-  if(state.preferences.enabled===value)return;
-  if(root.DoLWardrobeUI?.isBusy?.()){state.message='衣柜正在处理操作，请完成后再切换。';return}
-  setMasterEnabled(value);state.preferences.enabled=value;
-  for(const name of ['DoLSavesUI','DoLShopUI','DoLPanelsUI','DoLSocialUI','DoLCharacteristicsUI','DoLWardrobeUI','DoLCombatUI'] as const)isolate(name,()=>root[name]?.refresh?.());
+ function applyFontScale(){
+  const scale=isMasterEnabled()?state.preferences.fontScale:100;
+  const html=document.documentElement;
+  html.toggleAttribute('data-dgu-font-scaled',scale!==100);
+  html.style.setProperty('--dgu-font-scale',String(scale/100));
+ }
+ function persist(){
+  store.save();
+  state.message=store.storageError?'当前页面已应用；偏好无法保存，重启后可能恢复默认。':shopPageExperimentError?'商店分页实验接口不可用；请关闭此项或重启后重试。':'显示设置已保存。';
+ }
+ function setAppearance(value:Appearance) {
+  if(!scope.active()||!official)return;
+  const next=readAppearance(value), current=store.model.appearance;
+  if(next.font!==current.font || colorRoles.some(role=>next.colors[role]!==current.colors[role])){
+   store.model.appearance=next;
+   updateAppearance(state.preferences.enabled);
+   if(next.font!==current.font)reading.refresh();
+  }
   persist();
-  if(!storageError)state.message=value?'Soft & Wet 界面已启用。':'已回到原版界面；显示偏好已保留。';
+ }
+ function setPreference(key:PreferenceKey,value:boolean|number){
+  if(!scope.active()||!Object.hasOwn(defaults,key)||['statusPreview','startupCacheLazy','storyActions','compactStats','comfortable','wideReading'].includes(key))return;
+  if(key==='enabled'){
+   if(typeof value==='boolean')setMaster(value);
+   return;
+  }
+  if(key==='fontScale'){
+   const scale=preferenceScale(value);
+   if(scale===undefined)return;
+   if(state.preferences.fontScale===scale&&!store.storageError)return;
+   state.preferences.fontScale=scale;
+   applyFontScale();
+   reading.refresh();
+   persist();
+   return;
+  }
+  if(key==='readingLineScale'||key==='readingBlockGap'||key==='readingWidth'){
+   if(typeof value!=='number'||!Number.isFinite(value))return;
+   const range=readingRanges[key];
+   state.preferences[key]=Math.max(range.min,Math.min(range.max,Math.round(value)));
+  }else if(key==='visualTier'){
+   if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;
+   state.preferences[key]=value;
+  }else if(key==='acrylicTransparency'){
+   const amount=acrylicPreference(value);
+   if(amount===undefined)return;
+   state.preferences[key]=amount;
+  }else if(key==='buttonScale'){
+   const scale=preferenceScale(value);
+   if(scale===undefined)return;
+   state.preferences.buttonScale=scale;
+  }else{
+   if(typeof value!=='boolean')return;
+   state.preferences[key]=value;
+  }
+  apply();persist();
+  if(key==='combatFocused')isolate('combat presentation',()=>root.DoLCombatUI?.refresh?.());
+  if(key==='shopPageExperiment'&&!store.storageError&&!shopPageExperimentError)state.message='商店分页实验将在下次进入或重建商店列表时生效。';
+ }
+ function resizeScale(){
+  document.documentElement.toggleAttribute('data-dgu-compact-controls',state.preferences.enabled&&state.preferences.mobileCompactControls&&compactViewport());
+  reading.refresh();
+ }
+ function setPage(page:PageKey,value:boolean){
+  requestPage(root,page,value);
+  sync();
+  if(page==='wardrobe'&&root.DoLWardrobeUI?.isBusy?.()&&state.wardrobe!==value)
+   state.message='衣柜正在处理操作，请完成后再切换。';
+  else if(pageEnabled(root,page)===undefined)state.message='此界面模块当前不可用，已保留原选择。';
+  else if(store.pages.isUnsaved(page))state.message='当前页面已应用；偏好无法保存，重启后可能恢复默认。';
+ }
+ function setMaster(value:boolean){
+  if(state.preferences.enabled===value){if(store.storageError)persist();return}
+  if(root.DoLWardrobeUI?.isBusy?.()){state.message='衣柜正在处理操作，请完成后再切换。';return}
+  setMasterEnabled(value);
+  for(const name of ['DoLSavesUI','DoLShopUI','DoLPanelsUI','DoLSocialUI','DoLCharacteristicsUI','DoLWardrobeUI','DoLCombatUI'] as const)isolate(name,()=>root[name]?.refresh?.());
+  apply();persist();
+  if(!store.storageError)state.message=value?'Soft & Wet 界面已启用。':'已回到原版界面；显示偏好已保留。';
  }
  function finishClose(){
   document.documentElement.removeAttribute('data-dgu-settings-open');if(!controls)return;controls.removeAttribute('data-sf-leaving');
@@ -165,7 +233,7 @@ export function startTheme(root:Runtime=window as Runtime){
   ++transition;motion.cancel();
   document.documentElement.removeAttribute('data-dgu-settings-open');unmountUI(app);controls?.remove();controls=document.createElement('dialog');controls.id='dol-midnight-controls';controls.setAttribute('aria-labelledby','dol-midnight-title');
   const host=document.createElement('div');host.className='dmt-settings-shell';controls.append(host);document.body.append(controls);
-  app=createApp(SettingsPanel,{state,onSaves:setSaves,onPreference:setPreference,onCombat:setCombat,onWardrobe:setWardrobe,onCharacteristics:setCharacteristics,onSocial:setSocial,onPanel:setPanel,onShop:setShop,onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
+  app=createApp(SettingsPanel,{state,onSaves:(value:boolean)=>setPage('saves',value),onPreference:setPreference,onAppearance:setAppearance,onCombat:(value:boolean)=>setPage('combat',value),onWardrobe:(value:boolean)=>setPage('wardrobe',value),onCharacteristics:(value:boolean)=>setPage('characteristics',value),onSocial:(value:boolean)=>setPage('social',value),onPanel:setPage,onShop:(value:boolean)=>setPage('shop',value),onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
   // Native modal hit testing does not stop delegated game handlers from receiving our controls' events.
   for(const type of ['click','input','change','pointerdown','pointerup','touchstart','touchend','keyup'])controls.addEventListener(type,event=>event.stopPropagation());
   controls.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Escape'&&!isOpenSelectEscape(event)){event.preventDefault();closeSettings()}});

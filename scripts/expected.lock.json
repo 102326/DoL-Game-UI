@@ -671,7 +671,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "045d1f330e844980cc142423ec601c282e31c97fb7e0134dc1d91e940df3e2c3",
+      "sourceSha256": "4758d60259661259bdc32150853005b324c861bb5722b9a8d8f340f2809d9984",
       "assertionSites": 426
     },
     {
@@ -955,6 +955,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "hub:central glyph geometry and ownership across resize and docking",
+          "minimumAssertions": 1
+        },
+        {
           "id": "hub:menu background fades with its owned shell and disappears on close",
           "minimumAssertions": 1
         },
@@ -999,12 +1003,20 @@
           "minimumAssertions": 1
         },
         {
+          "id": "hub:scaled Hub controls, scrolling and caller ownership",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "hub:saved settings drive official list and arc owners",
+          "minimumAssertions": 1
+        },
+        {
           "id": "placement:entry",
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "ad96fc3ff90b49f6cf58221456cc6842711c5501fa7952c47feb93d16f20c2ff",
-      "assertionSites": 450,
+      "sourceSha256": "c6c078564b5c827925ad335e4a65d576f64fa73ee4a381f346bcfab6fcab705d",
+      "assertionSites": 466,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -2242,6 +2254,26 @@
           "minimumAssertions": 1
         },
         {
+          "id": "settings:M02 custom appearance previews, applies, persists, and resets within owned UI",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:W02 wardrobe owner, details drawer and reference surfaces",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:M03 registered manager, tools and restore surfaces",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:R01 owned form geometry and unowned control boundaries",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "settings:P01 requested page choices survive failure, retry and emergency recovery",
+          "minimumAssertions": 1
+        },
+        {
           "id": "settings:S01 approved shell and page timing, real input and single material surface",
           "minimumAssertions": 1
         },
@@ -2298,8 +2330,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "05b6cd72489fdf02ef8e7b123ece5f018626490f945b3262dcc3588e6d7a8f80",
-      "assertionSites": 295,
+      "sourceSha256": "10c3550c35e3f458ae3f9caf0d2b3dd01bee3011acdf410aa248d05c5ca426ca",
+      "assertionSites": 461,
       "rendererContexts": [
         "weather:2d"
       ]
@@ -2364,8 +2396,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "daa69a33fa5d5d561b81a349ee63aa93059044d7f13884a35b9f3eb67b8545ea",
-      "assertionSites": 27
+      "sourceSha256": "6e3ec1e27bfe01c220c52738fdcea53ab166ce317247a976bb57b12bfbc1ab51",
+      "assertionSites": 31
     },
     {
       "entry": "tests/shop-source.test.cjs",
@@ -2745,8 +2777,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9ea467f137897482e7733cbf95e1d02026e0eb16e7f0fe76057404a5b8c0096b",
-      "assertionSites": 12
+      "sourceSha256": "4f13f6e2817f954c42071dd9c55248961ff06c319f93577a474c9770f130b963",
+      "assertionSites": 54
     },
     {
       "entry": "tests/wardrobe-operation-yield.cjs",

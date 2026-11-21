@@ -1,3 +1,4 @@
+import {createPagePreferences,type PagePreferences} from '../theme/page-preferences';
 import {visualScope} from '../ui/visual-scope';
 import {isOpenSelectEscape} from '../ui/native-select';
 import {isolate,mountUI,unmountUI,restoreNative} from '../runtime/presentation';
@@ -15,9 +16,8 @@ type Runtime=NativeEventsHost & {SugarCube?:{
  State?:{passage?:string;variables?:Record<string,unknown> & {shopClothingFilter?:{gender?:{female:boolean;male:boolean;neutral:boolean};active?:boolean}}};
  Wikifier?:new(output:HTMLElement|null,source:string)=>unknown;
 }};
-export function startShop(root:Runtime,framework?:ShopFramework){
- const scope=visualScope();const key='DoLGameUI.shop.enabled';let enabled=true;
- try{enabled=root.localStorage.getItem(key)!=='false'}catch{/* Session preference. */}
+export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePreferences=createPagePreferences(root)){
+ const scope=visualScope();const enabled=()=>pagePrefs.get('shop');
  let shop:HTMLElement|null=null,host:HTMLElement|null=null,app:App|undefined,frameworkBinding:Binding|undefined,frameworkMount:Readonly<MountHandle>|undefined;
  let browseTools:HTMLElement|null=null;
  let backdrop:HTMLButtonElement|null=null;
@@ -51,14 +51,15 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   }
   shop?.classList.toggle('dgshop-fixed-details',open&&(!capable||popoverUnavailable));
  }
- function resizeLayout(){if(!shop)return;const style=getComputedStyle(shop),width=shop.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);state.narrow=width<800;state.compact=width<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop();syncRipple()}
+ const phoneLayout=window.matchMedia('(max-width:600px), (pointer:coarse) and (max-height:480px) and (max-width:960px)');
+ function resizeLayout(){if(!shop)return;const style=getComputedStyle(shop),width=shop.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);state.narrow=phoneLayout.matches;state.compact=width<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop();syncRipple()}
  function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;shop?.classList.toggle('dgshop-categories-open',state.categoriesOpen)}
  function scheduleResize(){motion.cancel();selectionMotion=undefined;clearRipple();scope.frame(resizeLayout)}
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
  function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
  function restore(){releasePopover();shop?.classList.remove('dgshop-fixed-details');for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();referenceMount=null;state.comparisonTarget=null;state.comparisonOrigin=null;state.comparisonB=null;details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
- function release(){motion.cancel();selectionMotion=undefined;clearRipple();transactionCheck?.();transactionCheck=undefined;quantityCheck?.();quantityCheck=undefined;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;releaseResize?.();releaseResize=undefined;scope.cancelFrame(resizeLayout);source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null;popoverUnavailable=false}
+ function release(){scope.cancelFrame(restoreComparisonFocus);motion.cancel();selectionMotion=undefined;clearRipple();transactionCheck?.();transactionCheck=undefined;quantityCheck?.();quantityCheck=undefined;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;releaseResize?.();releaseResize=undefined;scope.cancelFrame(resizeLayout);source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null;popoverUnavailable=false}
  function arrangeEntry(){
   if(entry?.isConnected)return;
   if(!shop)return;
@@ -85,11 +86,30 @@ export function startShop(root:Runtime,framework?:ShopFramework){
    const row=box('dgshop-entry-category',entry);move(icon,row);move(link,row);
   }
  }
- function toggle(open=!state.open){if(!open){motion.cancel();selectionMotion=undefined}state.open=open;details?.classList.toggle('dgshop-detail-open',open);syncBackdrop();if(!open){const target=focusReturn?.isConnected?focusReturn:catalog?.querySelector<HTMLElement>('.dgshop-selected a')??host?.querySelector<HTMLElement>('button');target?.focus({preventScroll:true})}else if(open&&state.narrow)close?.focus({preventScroll:true})}
+ function setDetailOpen(open:boolean){if(!open){motion.cancel();selectionMotion=undefined}state.open=open;details?.classList.toggle('dgshop-detail-open',open);syncBackdrop()}
+ function toggle(open=!state.open){setDetailOpen(open);if(!open){const target=focusReturn?.isConnected?focusReturn:catalog?.querySelector<HTMLElement>('.dgshop-selected a')??host?.querySelector<HTMLElement>('button');target?.focus({preventScroll:true})}else if(open&&state.narrow)close?.focus({preventScroll:true})}
  function pinReference(){const item=source?.read()?.selected;if(!item||!current())return;const rect=catalog?.querySelector('.dgshop-selected')?.getBoundingClientRect();state.comparisonOrigin=rect?{left:rect.left,top:rect.top,width:rect.width,height:rect.height}:null;state.referenceA=copyShopItem(item);framework?.rememberProduct?.(state.referenceA);state.comparisonB=null}
  function compareReference(origin:HTMLElement){const item=source?.read()?.selected;if(!state.referenceA||!item||!current())return;const bounds=origin.isConnected?origin.getBoundingClientRect():null;state.comparisonOrigin=bounds?{left:bounds.left,top:bounds.top,width:bounds.width,height:bounds.height}:null;state.comparisonB=copyShopItem(item);if(detailBody)detailBody.scrollTop=0;if(state.narrow)toggle(true)}
  function clearReference(){state.referenceA=null;state.comparisonB=null}
- function closeComparison(){const target=focusReturn?.isConnected&&current()?focusReturn:host?.querySelector<HTMLElement>('[data-shop-compare]');state.comparisonB=null;if(state.narrow)toggle(false);scope.frame(()=>{if(target?.isConnected&&current())target.focus({preventScroll:true})})}
+ function restoreComparisonFocus(){
+  if(!current()||!host||!shop||state.comparisonB)return;
+  const candidates=[
+   host.querySelector<HTMLElement>('[data-shop-compare]'),
+   focusReturn&&shop.contains(focusReturn)?focusReturn:null,
+   catalog?.querySelector<HTMLElement>('.dgshop-selected a'),
+   host.querySelector<HTMLElement>('.dgshop-reference-chip'),
+  ];
+  for(const candidate of candidates){
+   if(!candidate?.isConnected)continue;
+   candidate.focus({preventScroll:true});
+   if(document.activeElement===candidate)return;
+  }
+ }
+ function closeComparison(){
+  state.comparisonB=null;
+  if(state.narrow)setDetailOpen(false);
+  scope.frame(restoreComparisonFocus);
+ }
  let failed=false;
  function recover(){failed=true;release();observe();document.dispatchEvent(new Event('dol-ui-shop-change'))}
  function refresh(){isolate('shop',update,recover)}
@@ -99,7 +119,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   if(framework&&!binding?.isCurrent()){if(host)release();observe();return}
   const next=document.querySelector<HTMLElement>('.passage #clothingShop-div');
   if(next!==shop){release();shop=next}
-  if(!isMasterEnabled()||!enabled||failed||!shop){if(shop&&!isMasterEnabled())entered.add(shop);if(host)release();observe();return}
+  if(!isMasterEnabled()||!enabled()||failed||!shop){if(shop&&!isMasterEnabled())entered.add(shop);if(host)release();observe();return}
   if(shop.querySelectorAll('#clothes-list').length>1||shop.querySelectorAll('.clothing-details').length>1){release();observe();return}
   if(!host?.isConnected){host=document.createElement('div');host.className='dgshop-host';shop.before(host);shop.classList.add('dgshop-content');source=createShopSource(shop,current,facts);resizeLayout();if(typeof ResizeObserver!=='undefined'){const observed=shop,resize=new ResizeObserver(()=>{if(shop===observed&&host?.isConnected)scheduleResize()});releaseResize=scope.own(()=>resize.disconnect());resize.observe(shop)}
    const mountApp=(parent:HTMLElement)=>{app=createApp(Toolbar,{state,toggle:()=>toggle(),toggleCategories,setDefaultGender,pinReference,compareReference,clearReference,closeComparison});mountUI(app,parent,recover);counts.mounts++};
@@ -118,7 +138,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
    if(state.defaultGender!=='game'){
     const enteredShop=shop;
     // Native linkifyDivs queues ready callbacks. Refresh after them to avoid double binding.
-    root.jQuery!(()=>{if(!scope.active()||!isMasterEnabled()||!enabled||shop!==enteredShop||!enteredShop.isConnected)return;observer.disconnect();applyDefaultGender();schedule()});
+    root.jQuery!(()=>{if(!scope.active()||!isMasterEnabled()||!enabled()||shop!==enteredShop||!enteredShop.isConnected)return;observer.disconnect();applyDefaultGender();schedule()});
    }
   }
   if(nextList!==list||!catalog?.isConnected){
@@ -165,7 +185,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   observe();
  }
  function applyDefaultGender(){
-  if(!isMasterEnabled()||!enabled||state.defaultGender==='game'||!shop?.querySelector('#clothes-list'))return false;
+  if(!isMasterEnabled()||!enabled()||state.defaultGender==='game'||!shop?.querySelector('#clothes-list'))return false;
   const engine=root.SugarCube;const filter=engine?.State?.variables?.shopClothingFilter;
   if(!filter?.gender||typeof engine?.Wikifier!=='function')return false;
   filter.gender.female=state.defaultGender!=='male'&&state.defaultGender!=='male-only';filter.gender.male=state.defaultGender!=='female'&&state.defaultGender!=='female-only';filter.gender.neutral=state.defaultGender!=='female-only'&&state.defaultGender!=='male-only';filter.active=true;
@@ -211,7 +231,7 @@ export function startShop(root:Runtime,framework?:ShopFramework){
   }
   updateSelected(items);counts.fastPaths++;return true;
  }
- function click(event:Event){if(!isMasterEnabled()||!enabled||failed||!shop?.contains(event.target as Node)||!(event.target instanceof Element))return;
+ function click(event:Event){if(!isMasterEnabled()||!enabled()||failed||!shop?.contains(event.target as Node)||!(event.target instanceof Element))return;
   const original=purchaseControl(event.target as Element),purchase=original?.matches('#buy-send-home .buy-button-inner.buy-multiple a.link-internal')?original:null;
   if(framework&&purchase&&(state.transactionStatus==='pending'||state.transactionStatus==='unknown')){event.preventDefault();event.stopImmediatePropagation();state.transactionMessage='上一笔结果仍未确认。请先核对原版界面，不要重复购买。';return}
   const validity=isolate('shop binding',()=>source?.guard(event.target as Element),recover);
@@ -237,9 +257,12 @@ export function startShop(root:Runtime,framework?:ShopFramework){
  function escape(event:KeyboardEvent){if(event.key==='Escape'&&!isOpenSelectEscape(event)&&state.open&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false)}
  const observer=new MutationObserver(records=>{if(!isolate('shop mutation',()=>fastPath(records),recover))schedule()});
  const discovery=new MutationObserver(()=>{if(document.querySelector('.passage #clothingShop-div')!==shop)schedule()});
- function setEnabled(value:boolean){if(!scope.active())return;failed=false;enabled=!!value;try{root.localStorage.setItem(key,String(enabled))}catch{/* Session preference. */}refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}
+ function setEnabled(value:boolean){if(!scope.active())return;failed=false;pagePrefs.set('shop',!!value);refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}
  document.addEventListener('input',quantity,true);document.addEventListener('change',quantity,true);document.addEventListener('click',click,true);document.addEventListener('keydown',escape);discovery.observe(document.body,{childList:true,subtree:true});refresh();
 
+ const updatePhoneLayout=()=>{if(host?.isConnected)scheduleResize()};
+ phoneLayout.addEventListener('change',updatePhoneLayout);
+ scope.own(()=>phoneLayout.removeEventListener('change',updatePhoneLayout));
  scope.own(()=>observer.disconnect());scope.own(()=>discovery.disconnect());
- return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){scope.dispose();document.removeEventListener('input',quantity,true);document.removeEventListener('change',quantity,true);document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};
+ return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled()&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){scope.dispose();document.removeEventListener('input',quantity,true);document.removeEventListener('change',quantity,true);document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};
 }

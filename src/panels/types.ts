@@ -1,3 +1,4 @@
+import type {PagePreferences} from '../theme/page-preferences';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant} from '../../framework/contracts';
 import type {navigationMount} from '../ui/navigation-mount';
@@ -11,4 +12,4 @@ export interface PanelControls {
  getLastFailure():string;
  destroy():void;
 }
-export type StartPanels=(root:NativeEventsHost,framework?:{host:Host;owner:Participant})=>PanelControls;
+export type StartPanels=(root:NativeEventsHost,framework?:{host:Host;owner:Participant},pagePrefs?:PagePreferences)=>PanelControls;

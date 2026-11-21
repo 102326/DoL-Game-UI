@@ -47,9 +47,8 @@
 .dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) .numberStepperContainer{margin:4px 0}
 @media(pointer:coarse){.dgp-overlay:is([data-dgp-panel=cheats],[data-dgp-panel=attitudes],[data-dgp-panel=settings]) :is(input[type=button],button,select){min-height:44px}}
 
-/* Traits: rendered content determines height; large collections still scroll. */
-html[data-dol-midnight][data-dmt-layout] #customOverlay.dgp-overlay[data-dgp-panel=traits]{width:min(840px,100%);height:auto;max-height:calc(100dvh - 24px)}
-#customOverlay.dgp-overlay[data-dgp-panel=traits] #customOverlayContent{flex:0 1 auto;padding:16px 20px 24px;border:0}
+/* The traits body scrolls inside the shared window. */
+#customOverlay.dgp-overlay[data-dgp-panel=traits] #customOverlayContent{flex:1 1 auto;padding:16px 20px 24px;border:0}
 #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitListsSearch + br,
 #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists > br{display:none}
 #customOverlay.dgp-overlay[data-dgp-panel=traits] #traitLists :is(.traitList,.traitListReducedText){border:0;border-radius:0;background:none;margin:20px 0 0}

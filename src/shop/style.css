@@ -37,7 +37,7 @@
 .dgshop-eyebrow{font-size:calc(.7rem * var(--dgu-font-scale,1));letter-spacing:.16em;color:var(--dgu-secondary)}
 .dgshop-close-detail{display:none}
 .dgshop-host .dgshop-open-detail{display:block}
-.dgshop-content .dgshop-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(320px,2fr);grid-template-rows:auto minmax(0,1fr);gap:16px;align-items:start}
+.dgshop-content .dgshop-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(min(320px,47%),2fr);grid-template-rows:auto minmax(0,1fr);gap:16px;align-items:start}
 .dgshop-native-header{grid-column:1/-1;position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-height:44px;font-size:.85em}
 /* Keep the native V1 legend and toggle; anchor it below the adapted toolbar. */
 .dgshop-content .dgshop-native-header > .shop-legend{top:calc(100% + 8px)}
@@ -86,7 +86,7 @@
 .dgshop-content .dgshop-detail-body .colour-options-div:not(.pattern) .colour-button:not(:has(.bg-custom,.bg-random)):has(.colour-name-span-highcontrast):not(.active) .colour-name-span-highcontrast{font-size:0}
 .dgshop-content .dgshop-detail-body .colour-button>div{min-width:32px;box-sizing:border-box}
 @media(min-width:1600px){.dgshop-content .dgshop-catalog .clothing-item{width:calc(50% - 8px);margin:4px}}
-@container clothing-shop (max-width:799px){
+@media (max-width:600px), (pointer:coarse) and (max-height:480px) and (max-width:960px){
  .dgshop-content .dgshop-layout{grid-template-columns:minmax(0,1fr)}
  .dgshop-catalog{max-height:none;min-height:0;overflow:visible;scrollbar-gutter:auto;padding:0}
  .dgshop-content .dgshop-layout>.clothing-details{display:none;position:fixed;inset:auto 12px 12px;height:min(80dvh,820px);min-height:0;z-index:120;border:1px solid #ffffff28;box-shadow:0 -10px 50px #0009}
@@ -108,17 +108,17 @@
 .dgshop-content .dgshop-layout>.clothing-details{height:calc(100dvh - 230px)}
 .dgshop-catalog{max-height:calc(100dvh - 230px)}
 .dgshop-content .dgshop-native-header .no-click-overlay{z-index:10000}
-@container clothing-shop (max-width:799px){.dgshop-content .dgshop-layout>.clothing-details{height:min(80dvh,820px);z-index:2000}.dgshop-catalog{max-height:none}}
+@media (max-width:600px), (pointer:coarse) and (max-height:480px) and (max-width:960px){.dgshop-content .dgshop-layout>.clothing-details{height:min(80dvh,820px);z-index:2000}.dgshop-catalog{max-height:none}}
 
 .dgshop-content .clothing-details:not(:has(.clothing-colours-div)) .dgshop-detail-body::before{content:"选择一件商品，查看配色与购买方式";display:block;padding:48px 12px;color:var(--dgu-secondary);text-align:center}
-@container clothing-shop (min-width:800px){
+@media (width > 600px){
  .dgshop-content .dgshop-layout{height:calc(100dvh - 210px);min-height:350px;grid-template-rows:auto minmax(0,1fr)}
  .dgshop-content .dgshop-layout>.clothing-details{height:100%;min-height:0;box-sizing:border-box}
  .dgshop-catalog{height:100%;max-height:none;min-height:0;box-sizing:border-box}
 }
 
 .dgshop-browse-tools{position:sticky;top:0;z-index:2;background:var(--dgu-surface);padding-top:4px;padding-bottom:2px}
-@container clothing-shop (max-width:799px){.dgshop-browse-tools{position:static}}
+@media (max-width:600px), (pointer:coarse) and (max-height:480px) and (max-width:960px){.dgshop-browse-tools{position:static}}
 
 /* Native list replacement must not apply browser anchoring on top of restored scroll. */
 .dgshop-catalog{overflow-anchor:none}
@@ -149,8 +149,8 @@
 .dgshop-content .dgshop-purchase .try-buttons{display:flex;font-size:.9em;gap:8px}
 .dgshop-content .dgshop-purchase .try-button{flex:1 1 110px;min-height:44px;margin:0;padding:6px 10px;align-items:center;justify-content:center;line-height:1.35}
 .dgshop-content .dgshop-native-header .button-back-to-shop{padding:0 14px;min-height:44px;box-sizing:border-box}
-@container clothing-shop (min-width:800px){.dgshop-content .dgshop-layout{height:calc(100dvh - 165px);grid-template-rows:auto auto minmax(0,1fr)}}
-@container clothing-shop (max-width:799px){.dgshop-content .dgshop-layout{grid-template-rows:auto auto auto}.dgshop-browse-tools{gap:10px}.dgshop-content .dgshop-browse-tools #shopCategories{flex-basis:100%}.dgshop-content .dgshop-browse-tools .optionsBar{flex-basis:100%}}
+@media (width > 600px){.dgshop-content .dgshop-layout{height:calc(100dvh - 165px);grid-template-rows:auto auto minmax(0,1fr)}}
+@media (max-width:600px), (pointer:coarse) and (max-height:480px) and (max-width:960px){.dgshop-content .dgshop-layout{grid-template-rows:auto auto auto}.dgshop-browse-tools{gap:10px}.dgshop-content .dgshop-browse-tools #shopCategories{flex-basis:100%}.dgshop-content .dgshop-browse-tools .optionsBar{flex-basis:100%}}
 
 .dgshop-toolbar{flex-wrap:wrap}
 .dgshop-default-filter{display:flex;align-items:center;gap:8px;margin-left:auto;font-size:.85em;color:var(--dgu-secondary)}
@@ -219,7 +219,7 @@
 .dgshop-content .dgshop-catalog #shop-pagination>.shop-pages-number{display:flex!important;flex:0 1 auto;align-items:center;justify-content:center;text-align:center;min-width:0;margin:0;white-space:normal;overflow-wrap:anywhere;font-size:.85em}
 .dgshop-content .dgshop-catalog #shop-pagination .btn-pagination{flex:1 1 0;min-width:0}
 
-/* Layout follows this original shop root, including an expanded game sidebar. */
+/* Keep the catalog controls responsive even when the desktop sidebar is expanded. */
 .dgshop-content{container-type:inline-size;container-name:clothing-shop}
 .dgshop-content:not(.dgshop-has-details) .dgshop-layout{grid-template-columns:minmax(0,1fr)}
 .dgshop-content:not(.dgshop-has-details) .dgshop-layout>.clothing-details{display:none}

@@ -41,7 +41,53 @@ function observeArrivalPointer(p:playwright.Page){
   throw Error('No observed arrival geometry');
  });
 }
-async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstruction=false,oldGeometry=false,oldScroll=false,previewLayoutOnly=false,oldPreviewStyle=false,layoutOnly=false}:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean;layoutOnly?:boolean}={}){
+async function entryGlyphGeometry(p:playwright.Page){
+ const ball=p.locator('.sf-motion-ball'),canvas=ball.locator('canvas.spin-hub-canvas');
+ async function check(label:string){
+  await p.waitForFunction(()=>{const state=testHubVisual.inspect();return state.phase==='closed'&&!state.sphere.running});
+  const resumed=await p.evaluate(()=>{document.dispatchEvent(new Event('visibilitychange'));return testHubVisual.inspect().sphere.running});
+  assert.equal(resumed,false,label+' static visibility must not schedule a metal frame');
+  await p.waitForFunction(()=>{
+   const canvas=document.querySelector('.spin-hub-canvas');
+   return canvas&&Math.abs(testHubVisual.inspect().sphere.width-canvas.getBoundingClientRect().width)<.5;
+  });
+  const geometry=await canvas.evaluate(node=>{
+   if(!(node instanceof HTMLCanvasElement)||!node.parentElement)throw Error('Missing actual Hub canvas owner');
+   const context=node.getContext('2d');if(!context)throw Error('Missing actual Hub drawing');
+   const pixels=context.getImageData(0,0,node.width,node.height).data;
+   let left=node.width,right=-1,top=node.height,bottom=-1;
+   for(let i=3;i<pixels.length;i+=4)if(pixels[i]){
+    const pixel=(i-3)/4,x=pixel%node.width,y=Math.floor(pixel/node.width);
+    left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+   }
+   const rect=node.getBoundingClientRect(),owner=node.parentElement.getBoundingClientRect();
+   return{painted:right>=left&&bottom>=top,
+    x:rect.left+(left+right+1)/2/node.width*rect.width,
+    y:rect.top+(top+bottom+1)/2/node.height*rect.height,
+    ownerX:owner.x+owner.width/2,ownerY:owner.y+owner.height/2,
+    hit:node.parentElement.contains(document.elementFromPoint(owner.x+owner.width/2,owner.y+owner.height/2)),
+    decoration:getComputedStyle(node).pointerEvents};
+  });
+  assert.ok(geometry.painted,label+' keeps a visible central mark');
+  assert.ok(Math.abs(geometry.x-geometry.ownerX)<=1&&Math.abs(geometry.y-geometry.ownerY)<=1,label+' central mark stays aligned: '+JSON.stringify(geometry));
+  assert.ok(geometry.hit,label+' owner keeps the central hit');
+  assert.equal(geometry.decoration,'none',label+' drawing cannot intercept input');
+  assert.equal(await p.evaluate(()=>testHubVisual.inspect().sphere.running),false,label+' stays idle without a drawing loop');
+ }
+ await check('floating');
+ const size=await canvas.evaluate(node=>node.getBoundingClientRect().width);
+ try{
+  await canvas.evaluate((node,size)=>{node.style.width=size+'px';node.style.height=size+'px'},size*1.2);
+  await check('larger drawing surface');
+ }finally{await canvas.evaluate(node=>{node.style.removeProperty('width');node.style.removeProperty('height')})}
+ await ball.click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+ await p.getByRole('button',{name:'停靠侧边',exact:true}).click();
+ await p.waitForFunction(()=>document.querySelector('.sf-motion-ball')?.classList.contains('is-docked'));
+ await check('docked');
+ await ball.click();await p.waitForFunction(()=>!document.querySelector('.sf-motion-ball')?.classList.contains('is-docked'));
+ await check('restored');
+}
+async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstruction=false,oldGeometry=false,oldScroll=false,previewLayoutOnly=false,oldPreviewStyle=false,layoutOnly=false,oldStaticWake=false}:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean;layoutOnly?:boolean;oldStaticWake?:boolean}={}){
  const {createHubPreviewServer}=await import('../scripts/preview-evolution-hub.mjs');
  const overrides:Record<string,string>={};
  const oldPreviewCSS='main{max-width:760px;margin:auto;padding:40px 24px}';
@@ -55,28 +101,39 @@ async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstructi
  }
  const server:ViteDevServer=await createHubPreviewServer(0,[{name:'observe-actual-visual',enforce:'pre',transform(code:string,id:string){
   const file=id.replaceAll('\\','/');
+   if(oldStaticWake&&file.endsWith('/src/ui/golden-spin/sphere.ts')){
+    const guard="function wake() {if(appearance==='diamond')return;";
+    assert.equal(code.split(guard).length,2,'static wake counterexample must replace the actual guard');
+    const old=code.replace(guard,'function wake() {');overrides['src/ui/golden-spin/sphere.ts']=crypto.createHash('sha256').update(old).digest('hex');return old;
+   }
   if(oldScroll&&file.endsWith('/src/ui/golden-spin/hub.css'))return oldScrollCSS(code,'src/ui/golden-spin/hub.css');
   if(oldGeometry&&file.endsWith('/framework/motion-hub/MotionHub.vue')){const frozen=fs.readFileSync(path.join(__dirname,'fixtures/evolution-h01-MotionHub-d3f04ee.vue'),'utf8');overrides['framework/motion-hub/MotionHub.vue']=crypto.createHash('sha256').update(frozen).digest('hex');assert.equal(overrides['framework/motion-hub/MotionHub.vue'],'7cafc9ef5c93caa53c4c3684757e163e48fcdc42a78f051fd039705e90c2b324','frozen d3f04ee fixture identity');return frozen}
-  if(file.endsWith('/framework/official-ui/hub.ts')){assert.equal(code.split('return visuals.dispose').length,2);return code.replace('return visuals.dispose','return (window.testHubRelease=visuals.dispose)')}
-  if(file.endsWith('/src/ui/golden-spin/hub-motion.ts')){const actual=unsafeConstruction?code.replace(' try{\n const ball=', ' const ball=').replace(' sphere=makeSphere();',' try{\n sphere=makeSphere();'):code;if(unsafeConstruction)overrides['src/ui/golden-spin/hub-motion.ts']=crypto.createHash('sha256').update(actual).digest('hex');return actual.replace('export function sphereHub(', 'function actualSphereHub(')+'\nexport function sphereHub(root){return window.testHubVisual=actualSphereHub(root)}'}
+  if(file.endsWith('/framework/official-ui/hub.ts')){assert.equal(code.split('return dispose;').length,2);return code.replace('return dispose;', 'return (window.testHubRelease=dispose);')}
+  if(file.endsWith('/src/ui/golden-spin/hub-motion.ts')){const actual=unsafeConstruction?code.replace(' try{\n const ball=', ' const ball=').replace(' sphere=makeSphere();',' try{\n sphere=makeSphere();'):code;if(unsafeConstruction)overrides['src/ui/golden-spin/hub-motion.ts']=crypto.createHash('sha256').update(actual).digest('hex');return actual.replace('export function sphereHub(', 'function actualSphereHub(')+'\nexport function sphereHub(...args){return window.testHubVisual=actualSphereHub(...args)}'}
  },configureServer(server){if(oldScroll)server.middlewares.use((req,res,next)=>{if((req.url??'').split('?')[0]!=='/dist/framework/official-ui/style.css')return next();res.setHeader('Content-Type','text/css');res.end(oldScrollCSS(fs.readFileSync('dist/framework/official-ui/style.css','utf8'),'dist/framework/official-ui/style.css'))})}}]);
  const out=path.resolve('tests/artifacts/evolution/hub-integration-'+Date.now()),checks:HubCheck[]=[],errors:string[]=[];fs.mkdirSync(out,{recursive:true});let p:playwright.Page|undefined,inputFailure:unknown,step='actual official registration';
  const done=(name:string)=>{caseCheckpoint(name);checks.push({name,status:'PASS'});console.log('PASS H01',name)};
  try{
   p=await browser.newPage({viewport:{width:1280,height:900}});p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(5000);const address=must(server.httpServer?.address());if(typeof address==='string')throw Error('Missing Hub TCP address');// Source-preview dependency optimization is setup; interaction deadlines below remain 5s.
   await p.goto('http://127.0.0.1:'+address.port+'/',{timeout:20000});await p.waitForSelector('.sf-motion-ball');
-  assert.equal(await p.locator('.sf-motion-hub[data-official][data-spin-hub] canvas.spin-hub-canvas:not(.rigid-spin-body)').count(),1,'actual official Hub must use one accepted idle/menu sphere');
+  assert.equal(await p.locator('.sf-motion-hub[data-official][data-spin-hub] canvas.spin-hub-canvas').count(),1,'actual official Hub must use one accepted idle/menu sphere');
+  assert.equal(await p.locator('.sf-motion-hub[data-diamond-hub]').count(),1,'official Hub uses the selected diamond glass appearance');
   const ball=p.locator('.sf-motion-ball'),nav=p.locator('.sf-motion-orbit'),tool=p.locator('[data-motion-view="SoftWetOfficialUI:interface-settings"]');
   const state=()=>must(p).evaluate(()=>testHubVisual.inspect()),open=()=>must(p).waitForFunction(()=>testHubVisual.inspect().phase==='open'),closed=()=>must(p).waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+  assert.equal((await state()).sphere.appearance,'diamond');
+  assert.equal((await state()).sphere.running,false,'static diamond must not run an idle drawing loop');
+  await ball.focus();assert.equal(await ball.evaluate(n=>getComputedStyle(n).outlineWidth),'2px','diamond keyboard focus must not inherit the old metal outline');await ball.evaluate(n=>n.blur());
   done(step);
   if(layoutOnly){step='actual rendered fan/grid layout matrix';await actualMenuLayout(p,out);return checks}
   if(unsafeConstruction){step='constructor boundary counterexample';await p.evaluate(()=>{hubPreview.stop();Object.assign(window,{nativeResizeObserver:ResizeObserver,ResizeObserver:class{constructor(){throw Error('controlled observer constructor failure')}}});hubPreview.remount()});await p.waitForSelector('.sf-motion-ball');await p.evaluate(()=>Object.assign(window,{ResizeObserver:nativeResizeObserver}));assert.equal(await p.locator('.spin-hub-canvas').count(),0,'constructor fallback must remove the already appended canvas');return checks}
   if(oldScroll){step='short viewport scroll counterexample';await shortMenu(p);return checks}
   if(oldGeometry){step='frozen hidden geometry counterexample';await p.evaluate(()=>document.body.classList.add('ui-open'));await p.setViewportSize({width:900,height:700});await p.waitForTimeout(100);await p.evaluate(()=>document.body.classList.remove('ui-open'));await p.waitForTimeout(120);const r=must(await ball.boundingBox());assert.ok(r.x>=0&&r.x+r.width<=900,'restored Hub geometry must fit the resized hidden viewport');assert.ok(!/NaN|Infinity/.test(await nav.getAttribute('style')??''),'finite restored menu origin');return checks}
+  step='central glyph geometry and ownership across resize and docking';await entryGlyphGeometry(p);done(step);
   await p.evaluate(()=>hubPreview.floating.setPreference('mode','grid'));
   step='menu background fades with its owned shell and disappears on close';
   for(const glass of [true,false]){
    await p.evaluate(value=>DoLMidnightTheme.setPreference('visualGlass',value),glass);await ball.click();await open();
+   assert.equal(await ball.evaluate(n=>getComputedStyle(n,'::before').borderRadius),'50%','expanded glass outline remains circular instead of inheriting generic button corners');
    const material=await nav.evaluate(n=>{const s=getComputedStyle(n);return{color:s.backgroundColor,image:s.backgroundImage,filter:s.backdropFilter,shadow:s.boxShadow}});
    assert.deepEqual(material,{color:'rgba(0, 0, 0, 0)',image:'none',filter:'none',shadow:'none'},'the menu base must not redraw the animated shell');
    const collecting=p.waitForFunction(()=>{const s=testHubVisual.inspect();return s.moving&&s.q>0&&s.q<.25});await ball.click();await collecting;
@@ -92,20 +149,75 @@ async function verifyHubIntegration(browser:playwright.Browser,{unsafeConstructi
   await ball.focus();await p.mouse.move(b.x,b.y);const arriving=p.waitForFunction((from:number)=>{const s=testHubVisual.inspect();return s.target===1&&s.moving&&s.q>=from&&s.q<.98},b.from);
   await Promise.all([p.keyboard.press('Enter'),arriving.then(()=>must(p).mouse.down())]);
   const held=await state();assert.ok(held.pressed&&held.paused&&held.target===1&&held.moving&&held.q>.68&&held.q<.98,'real pointer must press the tool during arrival');await p.waitForTimeout(100);assert.equal((await state()).q,held.q);await p.mouse.up();await p.waitForSelector('.dmt-settings-shell');assert.equal(await p.evaluate(()=>hubPreview.counts().settings),1);assert.equal(await p.locator('.sf-weather-canvas').count(),1);await p.locator('.dmt-close').click();await p.waitForFunction(()=>{const dialog=document.querySelector('dialog');if(!dialog)throw Error('Missing settings dialog');return !dialog.open});await closed();done(step);
-  step='actual glass preference gates the new shell';await p.evaluate(()=>{hubPreview.floating.setPreference('mode','grid');DoLMidnightTheme.setPreference('visualGlass',false)});await ball.click();await open();assert.equal(await nav.evaluate(n=>getComputedStyle(n,'::before').backdropFilter),'none','new Hub shell must respect disabled glass');await p.evaluate(()=>DoLMidnightTheme.setPreference('visualGlass',true));assert.match(await nav.evaluate(n=>getComputedStyle(n,'::before').backdropFilter),/blur/);
+  step='actual glass preference gates the new shell';await p.evaluate(()=>{hubPreview.floating.setPreference('mode','grid');DoLMidnightTheme.setPreference('visualGlass',false)});await ball.click();await open();assert.equal(await nav.evaluate(n=>getComputedStyle(n,'::before').backdropFilter),'none','new Hub shell must respect disabled glass');assert.equal(await ball.evaluate(n=>getComputedStyle(n).backdropFilter),'none','diamond surface respects disabled glass');assert.equal((await state()).sphere.running,false,'opening a menu does not start a decorative sphere loop');assert.equal((await state()).sphere.meteors,0);await p.evaluate(()=>DoLMidnightTheme.setPreference('visualGlass',true));assert.match(await nav.evaluate(n=>getComputedStyle(n,'::before').backdropFilter),/blur/);
   for(const amount of [0,100,60]){await p.evaluate(value=>DoLMidnightTheme.setPreference('acrylicTransparency',value),amount);const plane=await nav.evaluate(n=>({base:getComputedStyle(n).backgroundColor,fill:getComputedStyle(n,'::before').backgroundColor,filter:getComputedStyle(n,'::before').backdropFilter}));assert.equal(plane.base,'rgba(0, 0, 0, 0)','axis cannot reintroduce a second grid sampling owner');if(amount===0)assert.match(plane.fill,/46, 47, 50/);if(amount===100)assert.equal(plane.filter,'none');if(amount===60)assert.equal(plane.fill,'rgba(25, 28, 28, 0.72)','default preserves the accepted actual grid shell')}
   await ball.press('Escape');await closed();await p.evaluate(()=>hubPreview.floating.setPreference('mode','fan'));done(step);
   step='native whitelist single action, unavailable fallback and third-party view';await ball.click();await open();await p.locator('[data-motion-view$="native-social"]').click();assert.equal(await p.evaluate(()=>hubPreview.counts().native),1);await closed();await p.locator('#overlayButtons>.macro-button').last().evaluate(n=>{if(!(n instanceof HTMLButtonElement))throw Error('Missing native action button');n.disabled=true});await ball.click();await open();await p.locator('[data-motion-view$="native-attributes"]').click();assert.equal(await p.evaluate(()=>hubPreview.counts().native),1);assert.match(await p.locator('.sf-motion-feedback').innerText(),/不可用/);await closed();await p.evaluate(()=>{Object.assign(window,{peer:hubPreview.host.register('independent')});peer.provideView({id:'peer',title:'独立视图',setup(c){c.element.textContent='Peer view';return()=>Object.assign(window,{peerCleaned:true})}})});await ball.click();await open();await p.locator('[data-motion-view="independent:peer"]').click();await p.getByText('Peer view',{exact:true}).waitFor();await p.evaluate(()=>peer.dispose());assert.equal(await p.evaluate(()=>peerCleaned),true);await closed();done(step);
   step='keyboard, latest intent, drag cancel and docking';await ball.focus();await ball.press('Enter');await open();await p.locator('[data-motion-view$="runtime-inspector"]').focus();await p.keyboard.press('Enter');assert.equal(await p.evaluate(()=>hubPreview.counts().inspector),1);await closed();await ball.click();await p.waitForFunction(()=>testHubVisual.inspect().q>.5);await ball.press('Escape');await closed();assert.equal(await ball.evaluate(n=>n===document.activeElement),true);await ball.press('ArrowLeft');await ball.click();await open();await p.getByRole('button',{name:'停靠侧边',exact:true}).click();await closed();assert.equal(await ball.evaluate(n=>n.classList.contains('is-docked')),true);await ball.click();assert.equal(await ball.evaluate(n=>n.classList.contains('is-docked')),false);const before=await p.evaluate(()=>localStorage.getItem('StoneFreeMotionHub.position.v1')),r=must(await ball.boundingBox());await p.mouse.move(r.x+r.width/2,r.y+r.height/2);await p.mouse.down();await p.mouse.move(300,400,{steps:5});await p.evaluate(()=>window.dispatchEvent(new Event('blur')));await p.mouse.up();assert.equal(await p.evaluate(()=>localStorage.getItem('StoneFreeMotionHub.position.v1')),before);done(step);
   step='zoom, rotation, finite geometry and reachable tools';await actualMenuLayout(p,out);await shortMenu(p);for(const [width,height,zoom]of [[390,844,1],[844,390,1],[1280,900,1.25],[1280,900,.8]] as const){await p.setViewportSize({width,height});await p.evaluate(z=>{document.body.style.zoom=String(z);window.dispatchEvent(new Event('resize'))},zoom);await p.waitForTimeout(120);if(await ball.getAttribute('aria-expanded')!=='true')await ball.click();await open();for(const n of [ball,nav]){const b=must(await n.boundingBox());assert.ok(b.x>=-1&&b.y>=-1&&b.x+b.width<=width+1&&b.y+b.height<=height+1,JSON.stringify({width,height,zoom,b}))}assert.ok(await p.locator('.sf-motion-petal').evaluateAll(ns=>ns.every(n=>{const r=n.getBoundingClientRect();return !/NaN|Infinity/.test(n.style.transform)&&n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})));await ball.press('Escape');await closed()}await p.evaluate(()=>document.body.style.zoom='');done(step);
-  step='hidden scene, zero-size, motion preference and owner release';await p.setViewportSize({width:1280,height:900});await ball.click();await p.waitForFunction(()=>testHubVisual.inspect().q>.6);await p.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));hubPreview.host.invalidateScene();hubPreview.host.sceneReady()});const hidden=await state();await p.waitForTimeout(150);assert.equal((await state()).sphere.draws,hidden.sphere.draws);assert.equal((await state()).q,hidden.q);await p.evaluate(()=>{Reflect.deleteProperty(document,'hidden');document.dispatchEvent(new Event('visibilitychange'))});await closed();await p.emulateMedia({reducedMotion:'reduce'});await ball.click();await open();assert.equal((await state()).moving,false);assert.equal((await state()).sphere.running,false);await ball.press('Escape');await closed();await p.emulateMedia({reducedMotion:'no-preference'});await p.evaluate(()=>document.body.classList.add('ui-open'));await p.waitForTimeout(100);assert.equal((await state()).geometryValid,false);await p.setViewportSize({width:900,height:700});await p.waitForTimeout(100);await p.evaluate(()=>{hubPreview.host.invalidateScene();hubPreview.host.sceneReady();document.body.classList.remove('ui-open')});await p.waitForFunction(()=>testHubVisual.inspect().geometryValid);const recovery=await p.evaluate(async()=>{const samples=[];for(let i=0;i<6;i++){await new Promise(requestAnimationFrame);const ball=document.querySelector('.sf-motion-ball');if(!ball)throw Error('Missing Hub ball');const r=ball.getBoundingClientRect();samples.push({x:r.x,y:r.y,right:r.right,bottom:r.bottom})}return samples});assert.ok(recovery.every(r=>r.x>=0&&r.y>=0&&r.right<=900&&r.bottom<=700),'recovery frames must not animate from outside viewport: '+JSON.stringify(recovery));const restored=must(await ball.boundingBox());assert.ok(restored.x>=0&&restored.y>=0&&restored.x+restored.width<=900&&restored.y+restored.height<=700,'restored Hub geometry must fit the resized hidden viewport: '+JSON.stringify(restored));assert.ok(!/NaN|Infinity/.test(await nav.getAttribute('style')??''),'finite restored menu origin');await ball.click();await open();await p.evaluate(()=>{Object.assign(window,{retiredHub:testHubVisual});hubPreview.stop()});const dead=await p.evaluate(()=>retiredHub.inspect());assert.ok(dead.dead&&dead.sphere.dead&&!dead.moving&&!dead.sphere.running);await p.evaluate(()=>{window.dispatchEvent(new Event('resize'));document.dispatchEvent(new Event('visibilitychange'))});await p.waitForTimeout(150);assert.equal((await p.evaluate(()=>retiredHub.inspect())).renders,dead.renders);assert.equal(await p.locator('.spin-hub-canvas').count(),0);await p.evaluate(()=>hubPreview.remount());await p.waitForSelector('.spin-hub-canvas');assert.equal(await p.locator('.spin-hub-canvas:not(.rigid-spin-body)').count(),1);assert.equal(await p.locator('.rigid-spin-body').count(),1);done(step);
+  step='hidden scene, zero-size, motion preference and owner release';await p.setViewportSize({width:1280,height:900});await ball.click();await p.waitForFunction(()=>testHubVisual.inspect().q>.6);await p.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));hubPreview.host.invalidateScene();hubPreview.host.sceneReady()});const hidden=await state();await p.waitForTimeout(150);assert.equal((await state()).sphere.draws,hidden.sphere.draws);assert.equal((await state()).q,hidden.q);await p.evaluate(()=>{Reflect.deleteProperty(document,'hidden');document.dispatchEvent(new Event('visibilitychange'))});await closed();await p.emulateMedia({reducedMotion:'reduce'});await ball.click();await open();assert.equal((await state()).moving,false);assert.equal((await state()).sphere.running,false);await ball.press('Escape');await closed();await p.emulateMedia({reducedMotion:'no-preference'});await p.evaluate(()=>document.body.classList.add('ui-open'));await p.waitForTimeout(100);assert.equal((await state()).geometryValid,false);await p.setViewportSize({width:900,height:700});await p.waitForTimeout(100);await p.evaluate(()=>{hubPreview.host.invalidateScene();hubPreview.host.sceneReady();document.body.classList.remove('ui-open')});await p.waitForFunction(()=>testHubVisual.inspect().geometryValid);const recovery=await p.evaluate(async()=>{const samples=[];for(let i=0;i<6;i++){await new Promise(requestAnimationFrame);const ball=document.querySelector('.sf-motion-ball');if(!ball)throw Error('Missing Hub ball');const r=ball.getBoundingClientRect();samples.push({x:r.x,y:r.y,right:r.right,bottom:r.bottom})}return samples});assert.ok(recovery.every(r=>r.x>=0&&r.y>=0&&r.right<=900&&r.bottom<=700),'recovery frames must not animate from outside viewport: '+JSON.stringify(recovery));const restored=must(await ball.boundingBox());assert.ok(restored.x>=0&&restored.y>=0&&restored.x+restored.width<=900&&restored.y+restored.height<=700,'restored Hub geometry must fit the resized hidden viewport: '+JSON.stringify(restored));assert.ok(!/NaN|Infinity/.test(await nav.getAttribute('style')??''),'finite restored menu origin');await ball.click();await open();await p.evaluate(()=>{Object.assign(window,{retiredHub:testHubVisual});hubPreview.stop()});const dead=await p.evaluate(()=>retiredHub.inspect());assert.ok(dead.dead&&dead.sphere.dead&&!dead.moving&&!dead.sphere.running);await p.evaluate(()=>{window.dispatchEvent(new Event('resize'));document.dispatchEvent(new Event('visibilitychange'))});await p.waitForTimeout(150);assert.equal((await p.evaluate(()=>retiredHub.inspect())).renders,dead.renders);assert.equal(await p.locator('.spin-hub-canvas').count(),0);await p.evaluate(()=>hubPreview.remount());await p.waitForSelector('.spin-hub-canvas');assert.equal(await p.locator('.spin-hub-canvas').count(),1);assert.equal(await p.locator('.rigid-spin-body,.rigid-spin-field').count(),0);done(step);
   step='partial visual construction failure preserves classic actual Hub';await p.evaluate(()=>{hubPreview.stop();const observe=ResizeObserver.prototype.observe;Object.assign(window,{restoreObserve:()=>{ResizeObserver.prototype.observe=observe}});ResizeObserver.prototype.observe=function(node,...args){if(node.matches?.('.spin-hub-canvas'))throw Error('controlled sphere constructor failure');return observe.call(this,node,...args)};hubPreview.remount()});await p.waitForSelector('.sf-motion-hub');await p.waitForTimeout(100);await p.evaluate(()=>restoreObserve());assert.equal(await p.locator('[data-spin-hub],.spin-hub-canvas').count(),0);const nativeBefore=await p.evaluate(()=>hubPreview.counts().native);await ball.click();await p.locator('[data-motion-view$="native-social"]').click();assert.equal(await p.evaluate(()=>hubPreview.counts().native),nativeBefore+1);done(step);
   step='observer constructor failure leaves no appended canvas';await p.evaluate(()=>{hubPreview.stop();Object.assign(window,{nativeResizeObserver:ResizeObserver,ResizeObserver:class{constructor(){throw Error('controlled observer constructor failure')}}});hubPreview.remount()});await p.waitForSelector('.sf-motion-ball');await p.evaluate(()=>Object.assign(window,{ResizeObserver:nativeResizeObserver}));assert.equal(await p.locator('.spin-hub-canvas').count(),0,'constructor fallback must remove the already appended canvas');await ball.click();await p.locator('[data-motion-view$="native-social"]').click();done(step);
   step='peer clock survives Hub teardown and throwing cleanup retires every owned node';await p.evaluate(()=>hubPreview.remount());await p.waitForSelector('.spin-hub-canvas');await ball.click();await open();await p.evaluate(async()=>{const {createSphere}=await import('../src/ui/golden-spin/sphere.ts');const canvas=document.createElement('canvas');canvas.style.cssText='width:200px;height:200px';document.body.append(canvas);Object.assign(window,{peerSphere:createSphere(canvas,()=>{})});peerSphere.play();Object.assign(window,{peerCanvas:canvas})});await p.waitForTimeout(100);const peerState=await p.evaluate(()=>peerSphere.inspect());const retired=await p.evaluate(()=>{Object.assign(window,{retiredHub:testHubVisual});const disconnect=ResizeObserver.prototype.disconnect;ResizeObserver.prototype.disconnect=function(){disconnect.call(this);throw Error('controlled disconnect failure')};let rejected=false;try{testHubRelease()}catch{rejected=true}finally{ResizeObserver.prototype.disconnect=disconnect}return{rejected,state:testHubVisual.inspect()}});assert.equal(retired.rejected,true);assert.ok(retired.state.dead&&retired.state.sphere.dead&&!retired.state.moving&&!retired.state.framePending&&!retired.state.sphere.running);assert.equal(await p.locator('[data-spin-hub],.spin-hub-canvas').count(),0);await p.waitForTimeout(120);const peerAfter=await p.evaluate(()=>peerSphere.inspect());assert.notEqual(peerAfter.angle,peerState.angle,'peer frame continues');assert.notEqual(peerAfter.speed,peerState.speed,'peer GSAP timeline continues; no global ticker stop');await p.evaluate(()=>{peerSphere.destroy();peerCanvas.remove();hubPreview.stop()});done(step);
+  await p.evaluate(()=>hubPreview.dispose());await p.close();
+  step='scaled Hub controls, scrolling and caller ownership';
+  p=await browser.newPage({viewport:{width:1280,height:900}});
+  p.on('pageerror',error=>errors.push(error.message));p.setDefaultTimeout(5000);
+  await p.goto('http://127.0.0.1:'+address.port+'/',{timeout:20000});
+  await p.waitForSelector('.sf-motion-ball');
+  await scaledControls(p);done(step);
+  step='saved settings drive official list and arc owners';await savedLayouts(p);done(step);
   assert.deepEqual(errors,[]);await p.evaluate(()=>hubPreview.dispose());
  }catch(error){if(p){inputFailure=await p.evaluate(()=>({events:Reflect.get(window,'hubInputEvents'),counts:hubPreview.counts(),visual:testHubVisual.inspect(),dialogOpen:document.querySelector('dialog')?.open})).catch(()=>({unavailable:true}));fs.writeFileSync(path.join(out,'input-diagnosis.json'),JSON.stringify(inputFailure,null,2));console.error('Hub integration failure',JSON.stringify({step,inputFailure}))}if(!(error instanceof Error))throw error;checks.push({name:step,status:'FAIL',error:error.message});Object.assign(error,{hubIntegration:{checks,executedOverrides:overrides,inputFailure}});await p?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw error}
  finally{const files=cp.execFileSync('git',['ls-files','--cached','--others','--exclude-standard','src/ui/golden-spin','framework/official-ui/hub.ts','framework/motion-hub','tests/evolution-hub-integration.cjs','scripts/preview-evolution-hub.mjs'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({source:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),workingTree:true,executedOverrides:overrides,faultInjection:unsafeConstruction?'constructor-outside-cleanup':oldGeometry?'frozen-MotionHub-d3f04ee':oldScroll?'old-overflow-specificity':oldPreviewStyle?'old-preview-main-selector':null,runtime:{platform:process.platform,node:process.version,chromium:browser.version()},checks,errors,inputFailure,hashes:Object.fromEntries(files.map(f=>[f,crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex')]))},null,2));console.log('Hub evidence',out);await p?.close();await server.close()}
  return checks;
+}
+async function savedLayouts(p:playwright.Page){
+ const ball=p.locator('.sf-motion-ball'),hub=p.locator('.sf-motion-hub'),nav=p.locator('.sf-motion-orbit');
+ const settings=async()=>{await p.locator('#dol-midnight-sidebar-button').click();await p.locator('.dmt-workspace-nav').getByRole('button',{name:'入口',exact:true}).click()};
+ const select=p.getByLabel('悬浮球展开模式',{exact:true}),enabled=p.getByLabel('启用悬浮球',{exact:true});
+ const key='SoftWet.MotionHub.freePosition.v1';
+ await p.evaluate(()=>hubPreview.floating.setPreference('mode','grid'));
+ await p.setViewportSize({width:390,height:370});
+ await p.emulateMedia({reducedMotion:'reduce'});
+ await settings();assert.equal(await select.inputValue(),'grid');
+ await select.selectOption('list');
+ await enabled.uncheck();await hub.waitFor({state:'detached'});
+ await enabled.check();await p.locator('[data-tool-layout="list"]').waitFor({state:'attached'});
+ await p.locator('.dmt-close').click();await ball.click();
+ assert.equal(await nav.evaluate(n=>getComputedStyle(n).gridTemplateColumns.split(' ').length),1);
+ assert.equal(await nav.locator('.sf-motion-utilities button').count(),3);
+ await ball.press('Escape');await settings();await select.selectOption('drawer');
+ for(const [x,y] of [[0,0],[1,1]] as const){
+  const position=JSON.stringify({version:1,x,y,side:x?'right':'left',docked:false});
+  await p.evaluate(([key,value])=>localStorage.setItem(key,value),[key,position] as const);
+  await p.reload();await p.locator('[data-tool-layout="drawer"]').waitFor();
+  assert.equal(await p.evaluate(()=>hubPreview.floating.getPreferences().mode),'grid');
+  assert.equal(await p.evaluate(k=>localStorage.getItem(k),key),position);
+  await ball.click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+  assert.equal(await nav.locator('.sf-motion-utilities').count(),0);
+  const first=must(await nav.locator('.sf-motion-tool-icon').first().boundingBox()),b=must(await ball.boundingBox());
+  assert.ok(Math.abs(first.x+first.width/2-b.x-b.width/2)<1 && (y?first.y+first.height<=b.y:first.y>=b.y+b.height),'arc anchors first icon above or below the entry');
+  const last=nav.locator('[data-motion-view]').last();await last.scrollIntoViewIfNeeded();await last.click();
+  assert.equal(await p.evaluate(()=>hubPreview.counts().native),1);
+ }
+ await p.evaluate(()=>DoLMidnightTheme.setPreference('enabled',false));await hub.waitFor({state:'detached'});
+ await p.evaluate(()=>DoLMidnightTheme.setPreference('enabled',true));await p.locator('[data-tool-layout="drawer"]').waitFor();
+ await p.emulateMedia({reducedMotion:'no-preference'});
+ await p.evaluate(()=>DoLMidnightTheme.setPreference('visualMotion',false));
+ await ball.focus();await p.mouse.move(190,5);
+ await ball.evaluate(n=>n.blur());await ball.focus();
+ await p.waitForTimeout(2100);
+ assert.equal(await ball.evaluate(n=>n.classList.contains('is-docked')),false,'regaining focus cancels idle docking');
+ await ball.evaluate(n=>n.blur());await p.locator('.sf-motion-ball.is-docked').waitFor();
+ assert.equal(await ball.evaluate(n=>n.getAnimations().length),0,'dock snaps when UI motion is off');
+ await ball.click();await p.locator('.sf-motion-ball:not(.is-docked)').waitFor();
+ await ball.press('Enter');await ball.press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+ assert.equal(await ball.evaluate(n=>n===document.activeElement),true);
+ await settings();assert.equal(await select.inputValue(),'drawer');
+ await select.selectOption('grid');assert.equal(await hub.getAttribute('data-tool-layout'),null);
+ assert.equal(await p.evaluate(()=>hubPreview.floating.getPreferences().hubLayout),undefined);
+ await p.locator('.dmt-close').click();
 }
 async function actualMenuLayout(p:playwright.Page,out:string){
  // Measure the rendered controls, including theme CSS and the sphere adapter.
@@ -161,6 +273,49 @@ async function actualMenuLayout(p:playwright.Page,out:string){
  await p.setViewportSize({width:1280,height:900});await p.evaluate(()=>{hubPreview.stop();localStorage.removeItem('StoneFreeMotionHub.position.v1');localStorage.removeItem('SoftWet.MotionHub.freePosition.v1');hubPreview.floating.setPreference('mode','fan');hubPreview.remount()});
  await p.emulateMedia({reducedMotion:'no-preference'});fs.writeFileSync(path.join(out,'layout-matrix.json'),JSON.stringify(boxes,null,2));console.log('PASS actual Hub layout matrix',boxes.length,'rendered layouts');
 }
+async function scaledControls(p:playwright.Page){
+ await p.evaluate(()=>{DoLMidnightTheme.setPreference('fontScale',150);DoLMidnightTheme.setPreference('buttonScale',150)});
+ for(const mode of ['fan','grid'] as const){
+  await p.evaluate(value=>hubPreview.floating.setPreference('mode',value),mode);
+  await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+  const nav=p.locator('.sf-motion-orbit');
+  assert.equal(await nav.evaluate(n=>n.classList.contains('is-grid')),mode==='grid');
+  if(mode==='grid'){
+   // A wrapped label must determine row height regardless of the platform font.
+   const label=nav.locator('.sf-motion-petal:not([data-motion-view$="interface-settings"]) .sf-motion-tool-label').first();
+   await label.evaluate(n=>{n.textContent='Workspace display preferences'});
+  }
+  for(const button of await nav.locator('button').all()){
+   await button.evaluate(n=>n.scrollIntoView({block:'nearest'}));
+   const data=await button.evaluate(n=>{const r=n.getBoundingClientRect(),s=getComputedStyle(n),text=n.querySelector('span'),t=text?.getBoundingClientRect();return{width:r.width,height:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,font:parseFloat(getComputedStyle(text??n).fontSize),label:text?.textContent,labelBounds:t?.toJSON(),buttonFont:s.fontSize,rootFont:getComputedStyle(document.documentElement).getPropertyValue('--dgu-font-scale'),rootHit:getComputedStyle(document.documentElement).getPropertyValue('--dgu-control-hit'),hit:n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)),textFits:!t||(t.left>=r.left-1&&t.right<=r.right+1&&t.top>=r.top-1&&t.bottom<=r.bottom+1),scroll:n.scrollWidth<=n.clientWidth+1}});
+   assert.ok(data.width>=66&&data.height>=66&&data.left>=0&&data.right<=1280&&data.top>=0&&data.bottom<=900&&data.hit&&data.textFits&&data.scroll,JSON.stringify({mode,...data}));
+   assert.ok(data.font>=17,JSON.stringify({mode,...data}));
+  }
+  assert.ok(await p.locator('.sf-motion-ball').evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),'sphere center remains reachable');
+  await p.locator('.sf-motion-ball').press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+  if(mode==='fan'){
+   const sphere=p.locator('.sf-motion-ball'),box=must(await sphere.boundingBox());await p.mouse.move(box.x+box.width/2,box.y+box.height/2);await p.mouse.down();await p.mouse.move(40,box.y+box.height/2,{steps:5});await p.mouse.up();await sphere.click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+   assert.equal(await nav.evaluate(n=>n.classList.contains('is-grid')),false);
+   for(const control of await p.locator('.sf-motion-orbit button,.sf-motion-ball').all())assert.ok(await control.evaluate(n=>{const r=n.getBoundingClientRect();return n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),'left fan control center remains reachable');
+   await sphere.press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+  }
+ }
+ await p.evaluate(()=>{Object.assign(window,{peer:hubPreview.host.register('scale-boundary')});peer.provideView({id:'caller',title:'Independent view',setup(c){c.element.innerHTML='<header><button style=\"font-size:23px;min-height:48px\">Caller action</button></header><p>Selectable caller text</p>';return()=>{}}})});
+ await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+ const caller=p.locator('[data-motion-view="scale-boundary:caller"]');await caller.evaluate(n=>n.scrollIntoView({block:'nearest'}));await caller.click();
+ const owned=p.getByRole('button',{name:'Caller action'});await owned.waitFor();assert.equal(await owned.evaluate(n=>getComputedStyle(n).fontSize),'23px');
+ assert.equal(await p.getByText('Selectable caller text').evaluate(n=>getComputedStyle(n).userSelect),'auto');
+ await p.locator('.sf-motion-sheet > header > button').click();await p.evaluate(()=>peer.dispose());
+ await p.setViewportSize({width:390,height:320});await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+ const nav=p.locator('.sf-motion-orbit'),utility=p.getByRole('button',{name:'停靠侧边',exact:true});await utility.evaluate(n=>n.scrollIntoView({block:'nearest'}));
+ assert.equal(await nav.evaluate(n=>getComputedStyle(n).scrollbarWidth),'none');assert.ok(await utility.evaluate(n=>{const r=n.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&n.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}));
+ await p.locator('.sf-motion-ball').press('Escape');await p.waitForFunction(()=>testHubVisual.inspect().phase==='closed');
+ await p.evaluate(()=>{DoLMidnightTheme.setPreference('fontScale',50);DoLMidnightTheme.setPreference('buttonScale',50)});
+ await p.locator('.sf-motion-ball').click();await p.waitForFunction(()=>testHubVisual.inspect().phase==='open');
+ for(const button of await p.locator('.sf-motion-orbit button').all())assert.ok(await button.evaluate(n=>{const r=n.getBoundingClientRect();return r.width>=44&&r.height>=44}));
+ await p.evaluate(()=>{DoLMidnightTheme.setPreference('fontScale',100);DoLMidnightTheme.setPreference('buttonScale',100)});
+ console.log('PASS actual Hub scaled fan/grid controls, scrolling and caller boundary');
+}
 async function previewLayout(p:playwright.Page,{oldPreviewCSS=null}:{oldPreviewCSS?:string|null}={}){
  // Recreate the reported selector leak without replacing settings or game code.
  if(oldPreviewCSS)await p.addStyleTag({content:oldPreviewCSS});
@@ -191,4 +346,4 @@ async function shortMenu(p:playwright.Page){
  await p.evaluate(()=>shortPeer.dispose());const cdp=await p.context().newCDPSession(p);await cdp.send('Emulation.setSafeAreaInsetsOverride',{insets:{top:0,right:0,bottom:0,left:0}});await cdp.detach();await p.setViewportSize({width:1280,height:900});
 }
 module.exports={verifyHubIntegration};
-if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifyHubIntegration(browser,{unsafeConstruction:process.argv.includes('--unsafe-construction'),oldGeometry:process.argv.includes('--old-geometry'),oldScroll:process.argv.includes('--old-scroll'),previewLayoutOnly:process.argv.includes('--preview-layout'),oldPreviewStyle:process.argv.includes('--old-preview-style'),layoutOnly:process.argv.includes('--layout-only')})}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});
+if(require.main===module)(async()=>{const browser=await require('playwright').chromium.launch(require('./browser-options.cjs'));try{await verifyHubIntegration(browser,{unsafeConstruction:process.argv.includes('--unsafe-construction'),oldGeometry:process.argv.includes('--old-geometry'),oldScroll:process.argv.includes('--old-scroll'),previewLayoutOnly:process.argv.includes('--preview-layout'),oldPreviewStyle:process.argv.includes('--old-preview-style'),layoutOnly:process.argv.includes('--layout-only'),oldStaticWake:process.argv.includes('--old-static-wake')})}finally{await browser.close()}})().catch(e=>{require('../scripts/ci-process-receipt.cjs').terminalFailure(e);process.exitCode=1});

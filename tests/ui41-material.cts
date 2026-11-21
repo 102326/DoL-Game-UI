@@ -19,6 +19,11 @@ function must<T>(value:T|null|undefined):T{if(value==null)throw Error('Missing m
  for(const [width,height] of [[1280,900],[390,844]] as const){
   const page=await browser.newPage({viewport:{width,height}});await page.emulateMedia({reducedMotion:'reduce'});page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);await page.waitForFunction(()=>!!document.querySelector<HTMLDialogElement>('dialog')?.open);
+  const shell=page.locator('.dmt-settings-shell'),initialRect=await shell.boundingBox();
+  for(const name of ['页面','高级','阅读','入口','材质']){
+   await page.getByRole('button',{name,exact:true}).click();
+   assert.deepEqual(await shell.boundingBox(),initialRect,'switching settings categories preserves the window rectangle');
+  }
   await page.getByRole('button',{name:'材质',exact:true}).click();
   const slider=page.getByRole('slider',{name:'Acrylic 通透度',exact:true});await slider.waitFor();
   const sample=(legacy=false)=>page.evaluate(legacy=>{const root=document.documentElement;if(legacy)root.removeAttribute('data-dgu-acrylic-adjustment');try{const n=document.querySelector<HTMLElement>('.dmt-settings-shell'),label=document.querySelector<HTMLElement>('.dmt-acrylic-control strong'),well=document.querySelector<HTMLElement>('.dmt-control-sheet');if(!n||!label||!well)throw Error('Missing material nodes');const c=getComputedStyle(n),r=n.getBoundingClientRect();return{background:c.backgroundColor,blur:c.backdropFilter,well:getComputedStyle(well).backgroundColor,textOpacity:getComputedStyle(label).opacity,textColor:getComputedStyle(label).color,opacity:c.opacity,rect:{x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom}}}finally{if(legacy)root.setAttribute('data-dgu-acrylic-adjustment','')}},legacy);

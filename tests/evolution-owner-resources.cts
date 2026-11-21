@@ -86,7 +86,7 @@ type Counterexample={kind:string;status:'REJECTED';assertion:string;checks?:unkn
    await page.waitForTimeout(60);assert.deepEqual(errors,[],kind);console.log('PASS actual owner resources and late teardown:',kind);await page.close();
   }
   const hubModule:unknown=require('./evolution-hub-integration.cjs');if(!hubModule||typeof hubModule!=='object'||!('verifyHubIntegration' in hubModule)||typeof hubModule.verifyHubIntegration!=='function')throw Error('Missing Hub integration verifier');
-  const verifyHubIntegration=hubModule.verifyHubIntegration as (browser:playwright.Browser,options?:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean})=>Promise<unknown>;
+  const verifyHubIntegration=hubModule.verifyHubIntegration as (browser:playwright.Browser,options?:{unsafeConstruction?:boolean;oldGeometry?:boolean;oldScroll?:boolean;previewLayoutOnly?:boolean;oldPreviewStyle?:boolean;oldStaticWake?:boolean})=>Promise<unknown>;
   const activeBrowser=browser;assert.ok(activeBrowser);hubIntegration.checks=await withCaseScope('hub',()=>verifyHubIntegration(activeBrowser));
   const placement:typeof import('./hub-placement-integration.cts')=require('./hub-placement-integration.cjs');
   await withCaseScope('placement',()=>placement.verifyHubPlacement(activeBrowser));
@@ -95,6 +95,7 @@ type Counterexample={kind:string;status:'REJECTED';assertion:string;checks?:unkn
   await assert.rejects(()=>verifyHubIntegration(activeBrowser,{oldGeometry:true}),error=>rejectCounterexample(error,'frozen-MotionHub-d3f04ee',/restored Hub geometry must fit the resized hidden viewport|finite restored menu origin/));
   await assert.rejects(()=>verifyHubIntegration(activeBrowser,{oldScroll:true}),error=>rejectCounterexample(error,'old-overflow-specificity',/short viewport utility must scroll within safe bounds/));
   await assert.rejects(()=>verifyHubIntegration(activeBrowser,{previewLayoutOnly:true,oldPreviewStyle:true}),error=>rejectCounterexample(error,'old-preview-main-selector',/preview styles must not collapse actual settings content/));
-  console.log('PASS H01 exact constructor, frozen-geometry, short-scroll and preview-style counterexamples rejected');
+  await assert.rejects(()=>verifyHubIntegration(activeBrowser,{oldStaticWake:true}),error=>rejectCounterexample(error,'static-glyph-metal-wake',/static visibility must not schedule a metal frame|static diamond must not run an idle drawing loop/));
+  console.log('PASS H01 exact constructor, frozen-geometry, short-scroll, preview-style and static-wake counterexamples rejected');
  }finally{fs.mkdirSync('tests/artifacts/evolution',{recursive:true});fs.writeFileSync('tests/artifacts/evolution/owners'+(baseline?'-baseline':'')+'.json',JSON.stringify({baseline,revision,results,hubIntegration},null,2));await browser?.close();await server.close()}
 })().catch(error=>{receipt.terminalFailure(error);process.exitCode=1});
