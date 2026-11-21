@@ -9,6 +9,11 @@ export function preferenceScale(value: unknown) {
   ? Math.max(50, Math.min(150, Math.round(value))) : undefined;
 }
 
+export function acrylicPreference(value: unknown) {
+ return typeof value === 'number' && Number.isFinite(value)
+  ? Math.max(0, Math.min(100, Math.round(value))) : undefined;
+}
+
 /** One snapshot and one writer for the existing theme storage envelope. */
 export function createThemePreferences(root: Window) {
  const model = reactive({preferences: {...defaults}, appearance: emptyAppearance()});
@@ -31,7 +36,10 @@ export function createThemePreferences(root: Window) {
    const v=value?.[key];
    if(key==='readingLineScale'||key==='readingBlockGap'||key==='readingWidth'){if(typeof v==='number'&&Number.isFinite(v)){const range=readingRanges[key];preferences[key]=Math.max(range.min,Math.min(range.max,Math.round(v)))}}
    else if(key==='visualTier'){ if(typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=2)preferences[key]=v}
-   else if(key==='acrylicTransparency'){if(typeof v==='number'&&Number.isFinite(v))preferences[key]=Math.max(0,Math.min(100,Math.round(v)))}
+   else if(key==='acrylicTransparency'){
+    const amount=acrylicPreference(v);
+    if(amount!==undefined)preferences[key]=amount;
+   }
    else if(key==='fontScale'||key==='buttonScale'){const scale=preferenceScale(v);if(scale!==undefined)preferences[key]=scale}
    else if(typeof v==='boolean')preferences[key]=v;
   }

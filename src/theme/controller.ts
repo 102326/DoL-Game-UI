@@ -14,7 +14,7 @@ import {initMaster,isMasterEnabled,setMasterEnabled} from '../runtime/master';
 import {acrylicParameters} from './acrylic';
 import {createReadingLayout} from './reading-layout';
 import {readingRanges} from './preferences';
-import {createThemePreferences, preferenceScale} from './preference-store';
+import {acrylicPreference, createThemePreferences, preferenceScale} from './preference-store';
 import {appearanceFont, appearancePalette, colorRoles, readAppearance, type Appearance} from './appearance';
 import type {startLayout} from './layout';
 // Only UI controls used here; native game state remains outside this host contract.
@@ -159,8 +159,9 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
    if(typeof value!=='number'||!Number.isInteger(value)||value<0||value>2)return;
    state.preferences[key]=value;
   }else if(key==='acrylicTransparency'){
-   if(typeof value!=='number'||!Number.isFinite(value))return;
-   state.preferences[key]=Math.max(0,Math.min(100,Math.round(value)));
+   const amount=acrylicPreference(value);
+   if(amount===undefined)return;
+   state.preferences[key]=amount;
   }else if(key==='buttonScale'){
    const scale=preferenceScale(value);
    if(scale===undefined)return;
