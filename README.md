@@ -1,10 +1,10 @@
-# Soft & Wet 4.5
+# Soft & Wet 4.5.1
 
 [![最新版本](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest) ![适配基线](https://img.shields.io/badge/DoL-0.5.12.13-blue)
 
 服装店现在会按屏幕宽度显示商品：平板和电脑在右侧查看衣服与配色，手机从底部打开详情，返回后可以继续挑选。双菱形悬浮入口新增列表和弧形抽屉，设置、特质、成就与 ModHub 切换内容时也能保持窗口大小。
 
-[下载稳定版](https://github.com/102326/DoL-Game-UI/releases/latest) · [4.5 更新说明](docs/RELEASE_4.5.0.md) · [安装与升级](docs/INSTALL_4.5.md)
+[下载稳定版](https://github.com/102326/DoL-Game-UI/releases/latest) · [4.5.1 更新说明](docs/RELEASE_4.5.1.md) · [安装与升级](docs/INSTALL_4.5.md)
 
 > 普通玩家需要 **主 UI + Framework Host** 两个 ZIP。兼容包按自己安装的 Mod 选用，所有 `.mod.zip` 均无需解压。
 

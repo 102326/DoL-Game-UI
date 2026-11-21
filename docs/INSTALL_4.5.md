@@ -1,6 +1,6 @@
 # Soft & Wet 4.5 安装与升级
 
-- **首次安装**：下载 `StoneFreeHost-0.1.5-experimental.mod.zip` 和 `DoLGameUI-4.5.0.mod.zip`，直接导入 Loader，将 Host 排在主 UI 前，再重新启动游戏。
+- **首次安装**：下载 `StoneFreeHost-0.1.5-experimental.mod.zip` 和 `DoLGameUI-4.5.1.mod.zip`，直接导入 Loader，将 Host 排在主 UI 前，再重新启动游戏。
 - **从 4.2 升级**：保留原包作备份，用 4.5 主 UI 替换旧 UI。如果已有随 4.2 提供的 Host 0.1.5-experimental，可以继续使用。
 - **已有选装包**：按已安装的目标 Mod 替换 ModHub、MapleBirch、原版优化、Cheat Extended 或 ReOverfits 的对应兼容包，放在目标 Mod 和主 UI 之后。同名包只启用一份。指定 Lyra 的嘴部资源包可沿用。
 

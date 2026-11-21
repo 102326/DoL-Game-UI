@@ -1,4 +1,4 @@
-# Soft & Wet 4.5
+# Soft & Wet 4.5.1
 
 黑灰 Acrylic、可调通透度、悬浮工具与玻璃天气，让 DoL 的常用窗口更清楚、更轻快。
 
@@ -18,7 +18,7 @@
 
 已有显示偏好继续保留。页面可单独切回原版，总开关保留设置入口。整包回退时恢复原包与加载顺序并重启，无需清空存档或App数据。
 
-说明见包内 `docs/UI_SETTINGS.md`、`docs/OPTIONAL_ADAPTERS.md`、`docs/INSTALL_4.5.md` 和 `docs/RELEASE_4.5.0.md`。反馈与下载：[GitHub](https://github.com/102326/DoL-Game-UI)。
+包内文档：[安装与升级](docs/INSTALL_4.5.md) · [4.5.1 更新说明](docs/RELEASE_4.5.1.md) · [设置说明](docs/UI_SETTINGS.md) · [选装包](docs/OPTIONAL_ADAPTERS.md)。反馈与下载：[GitHub](https://github.com/102326/DoL-Game-UI)。
 
 ## 许可
 
