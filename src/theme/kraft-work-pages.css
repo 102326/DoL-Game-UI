@@ -47,9 +47,7 @@ html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay :is(.trait,.
  html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay :is(.trait,.feat):hover{border-color:#9eabb02e!important;box-shadow:inset 0 0 0 1px #9eabb012,0 8px 22px #0003!important}
 }
 
-/* Traits share the character shell width, but small collections need less height.
-   auto-fill leaves a spare column instead of stretching one trait across the page. */
-html[data-stone-free][data-dol-midnight][data-dmt-layout] #customOverlay.dgp-overlay[data-dgp-panel=traits]{width:min(1000px,100%);height:auto;min-height:min(560px,70dvh);max-height:calc(100dvh - 24px)}
+/* auto-fill leaves a spare column instead of stretching one trait across the page. */
 html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=feats])>.dgp-host{padding:4px 12px}
 html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay:is([data-dgp-panel=traits],[data-dgp-panel=feats]) .dgp-navigation select{max-width:18rem}
 html[data-stone-free][data-dol-midnight] #customOverlay.dgp-overlay[data-dgp-panel=traits] #customOverlayContent{flex:1 1 auto;padding:12px 20px 24px}
