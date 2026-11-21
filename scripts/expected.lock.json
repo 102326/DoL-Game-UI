@@ -382,6 +382,13 @@
       "standalone adapter may copy the resource primitive but cannot bundle Runtime or other modules",
       "adapter build rejects malformed script lists before emitting code"
     ],
+    "adapter-lifecycle.test.mts": [
+      "ModHub retries, rebinds and cleans up",
+      "MapleBirch retries, rebinds and cleans up",
+      "Cheat Extended retries, rebinds and cleans up",
+      "Optimization keeps its current instance after reload",
+      "ReOverfits keeps its current instance after reload"
+    ],
     "checkpoint-boundary.test.mts": [
       "checkpoint writer preserves identity and appends only in its declared directory",
       "checkpoint writer rejects stale identities and malformed reports without overwriting them"
@@ -656,6 +663,38 @@
       ],
       "sourceSha256": "79ddf2c795f52bb293df9244a8d7d510f2b2fad80fca9b94d16788701b61155a",
       "assertionSites": 8
+    },
+    {
+      "entry": "tests/adapter-lifecycle.test.mts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "native",
+      "cases": [
+        {
+          "id": "ModHub retries, rebinds and cleans up",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "MapleBirch retries, rebinds and cleans up",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "Cheat Extended retries, rebinds and cleans up",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "Optimization keeps its current instance after reload",
+          "minimumAssertions": 1
+        },
+        {
+          "id": "ReOverfits keeps its current instance after reload",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "55063148e1caf29d68c279f0f199514db8b15160f03ee2ffb9dc3117fd605723",
+      "assertionSites": 21
     },
     {
       "entry": "tests/adapter-materials.cjs",
@@ -1376,8 +1415,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4b23e93f4fdd3af1e996c8c9b4d97cd619e42ec9b9a5bdb9dde241d5defe7e59",
-      "assertionSites": 507
+      "sourceSha256": "9b0fc5f1bbfc3918b4aee34b09694e58fe083c1a4cdd2fb37be605a48880df06",
+      "assertionSites": 523
     },
     {
       "entry": "tests/framework.cjs",

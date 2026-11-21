@@ -1,4 +1,4 @@
-"""Check/rebuild the two player and seven maintained optional packages; never publish."""
+"""Check/rebuild the two player and seven optional packages (including historical SmartPhone); never publish."""
 from pathlib import Path, PurePosixPath
 import hashlib
 import json
@@ -212,7 +212,7 @@ def build_packages():
                'runId': identity['run']['id'],
                'packages': [{key: item[key] for key in ['name', 'file', 'sha256']} for item in packages]}
     write_json(ROOT / 'dist/CJ3C_BUILD_RECEIPT.json', receipt)
-    print('PASS CJ3C build receipt: two players + seven current optional packages; legacy Lyra excluded')
+    print('PASS CJ3C build receipt: two players + six supported optional packages + historical SmartPhone; legacy Lyra excluded')
 
 
 def archive_snapshot(path):

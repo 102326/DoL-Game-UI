@@ -59,7 +59,22 @@ const root=path.resolve(__dirname,'..');
      const active=new Set<EventListenerOrEventListenerObject>(),add=ctx.signal.addEventListener.bind(ctx.signal),remove=ctx.signal.removeEventListener.bind(ctx.signal);ctx.signal.addEventListener=(t:string,f:EventListenerOrEventListenerObject,o?:boolean|AddEventListenerOptions)=>{if(t==='abort')active.add(f);return add(t,f,o)};ctx.signal.removeEventListener=(t:string,f:EventListenerOrEventListenerObject,o?:boolean|EventListenerOptions)=>{active.delete(f);return remove(t,f,o)};const a=ctx.binding(),same=ctx.binding();for(let i=0;i<50;i++)ctx.binding();if([...active].length!==1)throw Error('unbounded owner listeners');DoLUiHost.invalidateScene();const sceneAborted=a.signal.aborted;if([...active].length!==0)throw Error('scene abort listeners leaked');DoLUiHost.sceneReady();const b=ctx.binding();mount.dispose();const ownerAborted=b.signal.aborted;if([...active].length!==0)throw Error('mount abort listeners leaked');const already=ctx.binding();owner.dispose();return{same:a.signal===same.signal,sceneAborted,ownerAborted,already:already.signal.aborted,current:a.isCurrent()||b.isCurrent()};
     });assert.deepEqual(signals,{same:true,sceneAborted:true,ownerAborted:true,already:true,current:false});
    }
-   if(mode==='host-stopped'){await page.evaluate(()=>DoLUiHost.dispose());await page.locator('#soft-wet-startup-notice').waitFor();assert.match(await page.locator('#soft-wet-startup-notice').textContent()??'',/停止/);await page.evaluate(()=>StoneFree_host.installHost());await page.waitForFunction(()=>!document.getElementById('soft-wet-startup-notice'));assert.equal(await page.evaluate(()=>DoLGameUI.version),version)}
+   if(mode==='host-stopped'){
+    const retired=await page.evaluateHandle(()=>DoLGameUI);
+    await page.evaluate(()=>DoLUiHost.dispose());
+    const notice=page.locator('#soft-wet-startup-notice');await notice.waitFor();assert.match(await notice.textContent()??'',/停止/);
+    await page.evaluate(()=>StoneFree_host.installHost());
+    await page.waitForFunction(()=>!document.getElementById('soft-wet-startup-notice'));
+    assert.equal(await page.evaluate(()=>DoLGameUI.version),version);
+    assert.equal(await page.evaluate(old=>{
+     const current=DoLGameUI;
+     old.destroy();
+     return current!==old && typeof DoLGameUI!=='undefined' && DoLGameUI===current;
+    },retired),true,'retired UI handle must not disconnect the replacement Host consumer');
+    await retired.dispose();
+    await page.evaluate(()=>DoLGameUI.openSettings());
+    assert.equal(await page.locator('#dol-midnight-controls[open]').count(),1);
+   }
    if(mode==='disabled')assert.equal(await page.evaluate(()=>DoLGameUI.getPreferences().enabled),false);
    await page.evaluate(()=>StoneFree_official_ui.dispose());assert.equal(await page.locator('#soft-wet-startup-notice,#dol-midnight-sidebar-button').count(),0);assert.deepEqual(errors,[]);await page.close();caseCheckpoint(mode);
   }

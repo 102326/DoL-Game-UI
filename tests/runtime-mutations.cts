@@ -7,7 +7,7 @@ const edits:Record<string,readonly [string,string,string]>={
  privacy:['src/runtime/ui.ts','primary: selector(hit.primary), matched: selector(hit.matched)','primary: hit.primary, matched: hit.matched'],
  events:['src/runtime/ui.ts','if (events.length > 32) events.shift()','if (events.length > 3200) events.shift()'],
  surfaces:['src/runtime/surfaces.ts',"if (existing.kind !== kind) throw new TypeError('Surface id already has a different kind');",'/* controlled missing kind guard */'],
- rebind:['compat/maplebirch-soft-wet/maplebirch-soft-wet.ts','if (owner === ui) return;','if (owner === ui || handle?.getDiagnostics().status === "disposed") return;']
+ rebind:['compat/maplebirch-soft-wet/maplebirch-soft-wet.ts','if (owner === ui && handle) return;','if (owner === ui || handle?.getDiagnostics().status === "disposed") return;']
 };
 if(mutation)assert.ok(mutation==='identity'||Object.hasOwn(edits,mutation),'Unknown controlled mutation');
 const selected=mutation?edits[mutation]:undefined;
