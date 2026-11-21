@@ -23,4 +23,18 @@ if(!bundle)throw Error('Missing sidebar bundle');
   const pending=new AbortController();const cancelled=Mirror.mirrorSidebar(host,pending.signal,()=>failed++,recovered);pending.abort();
   return {animated,stopped:copy.toDataURL()===stopped,cancelled:await cancelled===null,failed,original:source.isConnected};
  });assert.deepEqual(result,{animated:true,stopped:true,cancelled:true,failed:0,original:true});console.log('PASS delayed canvas, in-place animation, abort cleanup, pending cancellation, original retained');
+ await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+1000));
+ const setup=()=>page.evaluate(async()=>{
+  const source=document.querySelector('canvas.mainCanvas'),host=document.querySelector('#preview');
+  if(!(source instanceof HTMLCanvasElement)||!(host instanceof HTMLElement))throw Error('Missing canvas fixture');
+  const ctx=source.getContext('2d')!;ctx.fillStyle='red';ctx.fillRect(0,0,32,32);
+  const copy=await Mirror.mirrorSidebar(host,new AbortController().signal,()=>{},()=>{},true);
+  if(!copy)throw Error('Missing wear mirror');host.replaceChildren(copy);
+  ctx.fillStyle='blue';ctx.fillRect(0,0,32,32);
+ });
+ const pixel=()=>page.locator('#preview canvas').evaluate(n=>(n as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,1,1).data[2]);
+ await setup();assert.equal(await pixel(),0);
+ await page.clock.runFor(64);assert.equal(await pixel(),255,'confirmed wear copies a late in-place repaint before the regular sample');
+ await page.evaluate(()=>{const c=document.querySelector<HTMLCanvasElement>('canvas.mainCanvas')!.getContext('2d')!;c.clearRect(0,0,32,32)});
+ await page.clock.runFor(62);assert.equal(await pixel(),0,'regular sample remains on its original cadence');
  }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
