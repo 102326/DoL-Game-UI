@@ -2,15 +2,30 @@
 
 [![最新版本](https://img.shields.io/github/v/release/102326/DoL-Game-UI)](https://github.com/102326/DoL-Game-UI/releases/latest) ![适配基线](https://img.shields.io/badge/DoL-0.5.12.13-blue)
 
-服装店现在会按屏幕宽度显示商品：平板和电脑在右侧查看衣服与配色，手机从底部打开详情，返回后可以继续挑选。双菱形悬浮入口新增列表和弧形抽屉，设置、特质、成就与 ModHub 切换内容时也能保持窗口大小。
+Soft & Wet 是《Degrees of Lewdity》的界面 Mod。它给游戏窗口换上可调通透度的黑灰玻璃，为衣柜和服装店整理了挑选、配色和预览界面。穿戴、购买和存档仍由游戏及对应 Mod 处理。
 
-[下载稳定版](https://github.com/102326/DoL-Game-UI/releases/latest) · [4.5.1 更新说明](docs/RELEASE_4.5.1.md) · [安装与升级](docs/INSTALL_4.5.md)
+**[下载最新正式版](https://github.com/102326/DoL-Game-UI/releases/latest)** · [4.5.1 完整更新说明](https://github.com/102326/DoL-Game-UI/releases/tag/v4.5.1) · [安装、升级与回退指南](docs/INSTALL_4.5.md)
 
-> 普通玩家需要 **主 UI + Framework Host** 两个 ZIP。兼容包按自己安装的 Mod 选用，所有 `.mod.zip` 均无需解压。
+## 安装 4.5.1
+
+- **第一次安装**　下载 [Framework Host](https://github.com/102326/DoL-Game-UI/releases/download/v4.5.1/StoneFreeHost-0.1.5-experimental.mod.zip) 和 [Soft & Wet 主 UI](https://github.com/102326/DoL-Game-UI/releases/download/v4.5.1/DoLGameUI-4.5.1.mod.zip)。两个 ZIP 直接导入 Loader，无需解压。把 Host 排在主 UI 前，再重启游戏。
+- **从 4.2 升级**　备份旧包，用 4.5.1 主 UI 替换旧 UI。随 4.2 安装的 Host 0.1.5-experimental 可以继续用，原有显示偏好也会保留。
+- **已经装了兼容包**　ModHub、MapleBirch、原版优化、Cheat Extended 和 ReOverfits 各有对应更新，只下载自己用到的包，排在目标 Mod 和主 UI 之后。指定 Lyra 的嘴部资源包可以沿用。
+
+## 4.5.1 有哪些变化
+
+- **逛服装店时可以接着挑。** 宽屏上，点一件衣服就能在列表右侧查看款式和配色，再点另一件比较。手机窄屏从底部打开详情，收起后回到刚才的位置。
+- **悬浮工具有两种展开方式。** 双菱形入口可以拖动、贴边。在侧栏「界面设置」里选列表或弧形抽屉。选弧形时，工具会从入口上方或下方依次排向屏幕内侧。
+- **颜色和字体可以先试再存。** 在「界面设置 → 材质 → 颜色与字体」里调整底色、面板、文字和强调色，或填入本机字体名称。看过预览再点「应用并保存」，也可以单独恢复默认外观。
+- **切页和键盘操作更连贯。** 设置、特质、成就和 ModHub 切页时保持窗口大小，长内容在窗口内滚动。用键盘切换衣柜详情后，焦点会落回新衣物的详情入口。
+
+## 画面预览
+
+下面是 4.2 的 Android 设置界面与 Windows 动态演示，可用来了解玻璃材质和天气效果。
 
 ![4.2 Android 设置界面](assets/releases/4.2/android-settings.png)
 
-[观看 4.2 Windows 动态预览](https://raw.githubusercontent.com/102326/DoL-Game-UI/v4.2.0/assets/releases/4.2/soft-wet-4.2-windows.mp4) · [更多画面](docs/RELEASE_4.2.0.md#画面与动态预览)
+[观看 Windows 动态预览](https://raw.githubusercontent.com/102326/DoL-Game-UI/v4.2.0/assets/releases/4.2/soft-wet-4.2-windows.mp4) · [更多预览画面](docs/RELEASE_4.2.0.md#画面与动态预览)
 
 ## 核心体验
 
@@ -28,15 +43,11 @@
 
 设置和属性窗口可从标题空白处拖动，玻璃外壳随手势产生轻微受力和回弹；按钮、输入框和正文滚动保留原有操作。
 
-### 双菱形悬浮入口
-
-在「界面设置」里选择列表或弧形抽屉。抽屉从球的上方或下方展开，按钮沿弧线排向屏幕内侧。拖动后可原地放下，已有布局和位置偏好保留。
-
 ### 玻璃随天气变化
 
 窗口响应 DoL 游戏内天气：雨珠与细雨、雪粒与霜羽、日照与云影，都成为玻璃上的环境反馈。血月、异世界及极端冷热也有各自的气氛，雨中血月保留普通雨滴。
 
-4.2 合并同一帧的连续拖动更新，减少重复天气状态写入，并复用稳定霜层路径和固定雨珠位移图。关闭动画或使用系统减少动态效果时，仍可正常操作。
+关闭动画或开启系统的「减少动态效果」后，窗口仍可照常操作。
 
 ### 衣柜、服装店与常用窗口
 
@@ -52,7 +63,7 @@
 
 购买、穿戴、战斗结算与存档继续使用原游戏及对应 Mod 的规则。原版优化的叠穿项目可在衣柜中查看和管理。
 
-## 安装与升级
+## 运行要求
 
 | 项目 | 要求 |
 | --- | --- |
@@ -61,13 +72,6 @@
 | TweeReplacer | **1.0.0 或更新** |
 | Framework Host | **0.1.2-experimental 至 0.2.0 之前**；推荐使用本版附带包 |
 | 平台 | Windows 浏览器、Android WebView |
-
-1. 保留需要的存档和原版本安装包。
-2. 从[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)下载 **Framework Host** 与 **DoLGameUI**，导入 Loader，不要解压。
-3. 每个 Mod 只启用一个版本。Host 放在主 UI 前，兼容包放在目标 Mod 与 UI 后。
-4. 重启游戏，打开“界面设置”调整通透度、阅读与悬浮工具。
-
-已有显示偏好会继续保留。`StoneFreeHost` 是 Framework Host 的安装包名称。4.5 的详细步骤见[安装、升级与回退](docs/INSTALL_4.5.md)。
 
 ## 可选兼容包
 
@@ -80,7 +84,7 @@
 | ReOverfitsSoftWet | 额外服装槽位接入 |
 | LyraMouthCompat051213 | 指定 Lyra 环境的嘴部资源适配 |
 
-没有安装目标 Mod，就不需要对应兼容包。CE 原作者版与独立维护的 rebuild.30 只能启用一个；万能手机外观包仅保留历史版本。具体版本与下载统一见[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)。
+没有安装目标 Mod，就不需要对应兼容包。CE 原作者版与独立维护的 rebuild.30 只能启用一个。具体版本与下载统一见[最新发布页](https://github.com/102326/DoL-Game-UI/releases/latest)。
 
 ## 设置、回退与反馈
 
