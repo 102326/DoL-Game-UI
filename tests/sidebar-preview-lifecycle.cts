@@ -24,17 +24,30 @@ if(!bundle)throw Error('Missing sidebar bundle');
   return {animated,stopped:copy.toDataURL()===stopped,cancelled:await cancelled===null,failed,original:source.isConnected};
  });assert.deepEqual(result,{animated:true,stopped:true,cancelled:true,failed:0,original:true});console.log('PASS delayed canvas, in-place animation, abort cleanup, pending cancellation, original retained');
  await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+1000));
- const setup=()=>page.evaluate(async()=>{
-  const source=document.querySelector('canvas.mainCanvas'),host=document.querySelector('#preview');
-  if(!(source instanceof HTMLCanvasElement)||!(host instanceof HTMLElement))throw Error('Missing canvas fixture');
-  const ctx=source.getContext('2d')!;ctx.fillStyle='red';ctx.fillRect(0,0,32,32);
-  const copy=await Mirror.mirrorSidebar(host,new AbortController().signal,()=>{},()=>{},true);
-  if(!copy)throw Error('Missing wear mirror');host.replaceChildren(copy);
-  ctx.fillStyle='blue';ctx.fillRect(0,0,32,32);
+ // Simulate two confirmed choices on a single native canvas. The final paint
+ // arrives after the first sampling interval, without a DOM mutation.
+ const stoppedMirror=await page.evaluateHandle(async()=>{
+  const source=document.querySelector<HTMLCanvasElement>('canvas.mainCanvas')!;
+  const host=document.querySelector<HTMLElement>('#preview')!;
+  const ctx=source.getContext('2d')!;
+  const first=new AbortController();
+  ctx.fillStyle='red';ctx.fillRect(0,0,32,32);
+  const obsolete=await Mirror.mirrorSidebar(host,first.signal,()=>{},()=>{});
+  if(!obsolete)throw Error('First choice has no mirror');
+  host.replaceChildren(obsolete);
+  first.abort();
+  const latest=await Mirror.mirrorSidebar(host,new AbortController().signal,()=>{},()=>{});
+  if(!latest)throw Error('Second choice has no mirror');
+  host.replaceChildren(latest);
+  setTimeout(()=>{ctx.fillStyle='blue';ctx.fillRect(0,0,32,32)},180);
+  return obsolete;
  });
  const pixel=()=>page.locator('#preview canvas').evaluate(n=>(n as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,1,1).data[2]);
- await setup();assert.equal(await pixel(),0);
- await page.clock.runFor(64);assert.equal(await pixel(),255,'confirmed wear copies a late in-place repaint before the regular sample');
- await page.evaluate(()=>{const c=document.querySelector<HTMLCanvasElement>('canvas.mainCanvas')!.getContext('2d')!;c.clearRect(0,0,32,32)});
- await page.clock.runFor(62);assert.equal(await pixel(),0,'regular sample remains on its original cadence');
+ await page.clock.runFor(179);assert.equal(await pixel(),0,'old pixels persist until the native painter runs');
+ await page.clock.runFor(151);
+ assert.equal(await page.locator('canvas.mainCanvas').evaluate(n=>(n as HTMLCanvasElement).getContext('2d')!.getImageData(0,0,1,1).data[2]),255);
+ assert.equal(await pixel(),255,'the active mirror must converge to the final outfit');
+ assert.equal(await stoppedMirror.evaluate(n=>n.getContext('2d')!.getImageData(0,0,1,1).data[2]),0,'retired mirror must not consume subsequent paints');
+ await stoppedMirror.dispose();
+ console.log('PASS late final paint reaches the active mirror only');
  }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

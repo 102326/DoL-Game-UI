@@ -1,6 +1,6 @@
 import {visualScope} from '../ui/visual-scope';
 /** Copy the native full-character canvas; never move it or rerun its renderer. */
-export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:()=>void,onRecovered:(canvas:HTMLCanvasElement)=>void,afterWear=false):Promise<HTMLCanvasElement|null>{
+export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:()=>void,onRecovered:(canvas:HTMLCanvasElement)=>void):Promise<HTMLCanvasElement|null>{
  return new Promise(resolve=>{
   const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
   const probe=document.createElement('canvas');probe.width=probe.height=16;
@@ -14,9 +14,6 @@ export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:
   function stop(){scope.dispose()}
   function abort(){stop();if(!finished){finished=true;resolve(null)}}
   function unavailable(){if(!finished){finished=true;resolve(null)}else if(mirrored)onUnavailable();mirrored=false}
-  // The native renderer can repaint the same canvas just after a confirmed wear.
-  // Split only the first visible sampling interval; keep the steady cadence.
-  const firstIntervals=afterWear?[48,77]:[];
   function tick(){
    if(!scope.active())return;
    if(!finished||(!document.hidden&&visible)){
@@ -50,8 +47,7 @@ export function mirrorSidebar(host:HTMLElement,signal:AbortSignal,onUnavailable:
    }
    // Bounded sampling also observes in-place canvas animation, which a DOM
    // MutationObserver cannot see. Pause copies while the preview is offscreen.
-   if(!mirrored)firstIntervals.length=0;
-   scope.timeout(tick,mirrored?(firstIntervals.shift()??125):500);
+   scope.timeout(tick,mirrored?125:500);
   }
   signal.addEventListener('abort',abort,{once:true});scope.own(()=>signal.removeEventListener('abort',abort));scope.own(()=>observer.disconnect());
   if(signal.aborted)abort();else tick();

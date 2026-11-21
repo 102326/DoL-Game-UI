@@ -74,7 +74,7 @@ export function startWardrobe(root:WardrobeDataHost,framework?:WardrobeFramework
    finally{if(valid()&&attempt===revision)s.state.loading=false}
   }
   s.state.canWear=false;s.state.loading=true;s.state.previewStatus='正在生成完整穿搭…';s.view!.preview?.replaceChildren();
-  const mirrored=s.view!.preview?await mirrorSidebar(s.view!.preview,controller.signal,()=>{void fallback()},show,!!s.wearOrigin):null;
+  const mirrored=s.view!.preview?await mirrorSidebar(s.view!.preview,controller.signal,()=>{void fallback()},show):null;
   if(!valid())return;
   if(mirrored)show(mirrored);else await fallback();
  }
