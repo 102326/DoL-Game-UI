@@ -2396,8 +2396,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "daa69a33fa5d5d561b81a349ee63aa93059044d7f13884a35b9f3eb67b8545ea",
-      "assertionSites": 27
+      "sourceSha256": "6e3ec1e27bfe01c220c52738fdcea53ab166ce317247a976bb57b12bfbc1ab51",
+      "assertionSites": 31
     },
     {
       "entry": "tests/shop-source.test.cjs",
