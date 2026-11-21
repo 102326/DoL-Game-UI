@@ -51,7 +51,8 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   }
   shop?.classList.toggle('dgshop-fixed-details',open&&(!capable||popoverUnavailable));
  }
- function resizeLayout(){if(!shop)return;const style=getComputedStyle(shop),width=shop.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);state.narrow=width<800;state.compact=width<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop();syncRipple()}
+ const phoneLayout=window.matchMedia('(max-width:600px), (pointer:coarse) and (max-height:480px) and (max-width:960px)');
+ function resizeLayout(){if(!shop)return;const style=getComputedStyle(shop),width=shop.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);state.narrow=phoneLayout.matches;state.compact=width<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop();syncRipple()}
  function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;shop?.classList.toggle('dgshop-categories-open',state.categoriesOpen)}
  function scheduleResize(){motion.cancel();selectionMotion=undefined;clearRipple();scope.frame(resizeLayout)}
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
@@ -259,6 +260,9 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
  function setEnabled(value:boolean){if(!scope.active())return;failed=false;pagePrefs.set('shop',!!value);refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}
  document.addEventListener('input',quantity,true);document.addEventListener('change',quantity,true);document.addEventListener('click',click,true);document.addEventListener('keydown',escape);discovery.observe(document.body,{childList:true,subtree:true});refresh();
 
+ const updatePhoneLayout=()=>{if(host?.isConnected)scheduleResize()};
+ phoneLayout.addEventListener('change',updatePhoneLayout);
+ scope.own(()=>phoneLayout.removeEventListener('change',updatePhoneLayout));
  scope.own(()=>observer.disconnect());scope.own(()=>discovery.disconnect());
  return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled()&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){scope.dispose();document.removeEventListener('input',quantity,true);document.removeEventListener('change',quantity,true);document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};
 }

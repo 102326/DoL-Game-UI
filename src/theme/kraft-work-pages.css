@@ -101,7 +101,8 @@ html[data-stone-free][data-dgu-visualMotion] #customOverlay.dgp-overlay:not(.hid
 @keyframes kw-shop-flow{from{transform:translate(-10%,-7%) rotate(-12deg) scale(.86)}to{transform:translate(12%,10%) rotate(12deg) scale(1.08)}}
 @keyframes kw-shop-breathe{0%,100%{background:#3174ad0e;opacity:.325}45%{background:#466eaa24;opacity:.475}75%{background:#71629420;opacity:.4}}
 html[data-stone-free] .dgshop-detail-body,html[data-stone-free] .dgshop-purchase{position:relative;left:0}
-html[data-stone-free] .dgshop-content .clothing-details.dgshop-detail-open{animation:none!important}
+html[data-stone-free] .dgshop-content:not(.dgshop-narrow) .clothing-details.dgshop-detail-open,
+html:not([data-dgu-visualMotion]) .dgshop-content .clothing-details.dgshop-detail-open{animation:none!important}
 html:not([data-dgu-visualMotion]) .kw-shop-ripple{display:none}
 @media(prefers-reduced-motion:reduce){.kw-shop-ripple{display:none!important}.kw-shop-ripple,.kw-shop-ripple *{animation:none!important}}
 html:not([data-dgu-visualMotion]) .kw-shop-ripple,html:not([data-dgu-visualMotion]) .kw-shop-ripple *{animation:none!important}
