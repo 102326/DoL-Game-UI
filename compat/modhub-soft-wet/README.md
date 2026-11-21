@@ -1,4 +1,4 @@
-# ModHubSoftWet 1.0.4
+# ModHubSoftWet 1.0.5
 
 为 ModHub 管理器、市场、说明、日志和帮助中心提供 Soft & Wet 4.x 外观。已识别的更多工具菜单、安装弹窗和时间点还原窗口也跟随主 UI 的 Acrylic、通透度及适用设置。
 

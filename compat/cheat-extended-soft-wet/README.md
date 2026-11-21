@@ -1,4 +1,4 @@
-# Cheat Extended · Kraft Work 外观兼容 1.0.0
+# Cheat Extended · Kraft Work 外观兼容 1.0.1
 
 主要适配原作者 chris81605 的 Cheat Extended 1.20.3.1。另行覆盖 102326 独立维护的 1.20.3.1-rebuild.30；后者不是原作者发行版。两版技术名均为 `cheat extended`，只能启用其中一个。
 

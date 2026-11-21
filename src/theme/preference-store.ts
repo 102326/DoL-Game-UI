@@ -1,21 +1,49 @@
 import {createPagePreferences} from './page-preferences';
+import {initMaster} from '../runtime/master';
 import {reactive} from 'vue';
-import {defaults, readingRanges, type PreferenceKey} from './preferences';
+import {defaults, readingRanges, type PreferenceKey, type Preferences} from './preferences';
 import {emptyAppearance, readAppearance} from './appearance';
 
 const KEY = 'DoLMidnightTheme.preferences.v1';
-export function preferenceScale(value: unknown) {
- return typeof value === 'number' && Number.isFinite(value)
-  ? Math.max(50, Math.min(150, Math.round(value))) : undefined;
-}
+const retiredKeys = new Set<PreferenceKey>([
+ 'statusPreview', 'startupCacheLazy', 'storyActions', 'compactStats', 'comfortable', 'wideReading',
+]);
 
-export function acrylicPreference(value: unknown) {
- return typeof value === 'number' && Number.isFinite(value)
-  ? Math.max(0, Math.min(100, Math.round(value))) : undefined;
+const numericRanges = {
+ ...readingRanges,
+ fontScale: {min: 50, max: 150},
+ buttonScale: {min: 50, max: 150},
+ acrylicTransparency: {min: 0, max: 100},
+};
+
+/** Stored values and live requests follow the same rules. Callers own persistence and effects. */
+export function writePreference(preferences: Preferences, key: PreferenceKey, value: unknown): boolean {
+ if (retiredKeys.has(key)) return false;
+ switch (key) {
+  case 'visualTier':
+   if (typeof value !== 'number' || !Number.isInteger(value) || value < 0 || value > 2) return false;
+   preferences[key] = value;
+   break;
+  case 'readingLineScale':
+  case 'readingBlockGap':
+  case 'readingWidth':
+  case 'fontScale':
+  case 'buttonScale':
+  case 'acrylicTransparency': {
+   if (typeof value !== 'number' || !Number.isFinite(value)) return false;
+   const range = numericRanges[key];
+   preferences[key] = Math.max(range.min, Math.min(range.max, Math.round(value)));
+   break;
+  }
+  default:
+   if (typeof value !== 'boolean') return false;
+   preferences[key] = value;
+ }
+ return true;
 }
 
 /** One snapshot and one writer for the existing theme storage envelope. */
-export function createThemePreferences(root: Window) {
+export function startThemePreferences(root: Window) {
  const model = reactive({preferences: {...defaults}, appearance: emptyAppearance()});
  const {preferences} = model;
  let storageError = false;
@@ -33,22 +61,14 @@ export function createThemePreferences(root: Window) {
   const value=raw?JSON.parse(raw) as (Partial<Record<PreferenceKey,unknown>> & {appearance?:unknown;_scaleBaseline26?:unknown;_readingBaseline41?:unknown}) | null:null;
   model.appearance = readAppearance(value?.appearance);
   for(const key of Object.keys(defaults) as PreferenceKey[]){
-   const v=value?.[key];
-   if(key==='readingLineScale'||key==='readingBlockGap'||key==='readingWidth'){if(typeof v==='number'&&Number.isFinite(v)){const range=readingRanges[key];preferences[key]=Math.max(range.min,Math.min(range.max,Math.round(v)))}}
-   else if(key==='visualTier'){ if(typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=2)preferences[key]=v}
-   else if(key==='acrylicTransparency'){
-    const amount=acrylicPreference(v);
-    if(amount!==undefined)preferences[key]=amount;
-   }
-   else if(key==='fontScale'||key==='buttonScale'){const scale=preferenceScale(v);if(scale!==undefined)preferences[key]=scale}
-   else if(typeof v==='boolean')preferences[key]=v;
+   writePreference(preferences,key,value?.[key]);
   }
-  const retiredEnabled=preferences.statusPreview||preferences.startupCacheLazy||preferences.storyActions||preferences.compactStats||preferences.comfortable||preferences.wideReading;
-  preferences.statusPreview=false;preferences.startupCacheLazy=false;preferences.storyActions=false;preferences.compactStats=false;preferences.comfortable=false;preferences.wideReading=false;
+  const retiredEnabled = [...retiredKeys].some(key => value?.[key] === true);
   if(value?._scaleBaseline26!==true){
    preferences.fontScale=100;preferences.buttonScale=100;
   }
   if(value?._scaleBaseline26!==true||value?._readingBaseline41!==true||retiredEnabled)save();
  }catch{storageError=true}
+ initMaster(preferences);
  return {model, pages:createPagePreferences(root), save, get storageError() { return storageError }};
 }

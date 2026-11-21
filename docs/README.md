@@ -3,7 +3,7 @@
 本仓库当前文档只负责4.x。1.x、2.x、3.x产品源码、历史设计与实施资料已迁往[独立封存仓库](https://github.com/102326/DoL-Game-UI-old)；它们不再是4.x的现行指导。
 
 - [当前交接](HANDOFF.md)：实际分支、源码/结果身份、未完成工作。
-- [4.5 更新说明](RELEASE_4.5.0.md)、[4.5 安装与升级](INSTALL_4.5.md)。
+- [4.5.1 更新说明](RELEASE_4.5.1.md)、[4.5 安装与升级](INSTALL_4.5.md)。
 - [4.x视觉与交互合同](VISUAL_BASELINE_4X.md)：现役默认、4.5已有成果与待定参考的边界；历史4.2实验不覆盖当前裁决。
 - [UI公共接口](UI_RUNTIME.md)、[Host与资源所有权](HOST_4X.md)、[职责边界](UI_INFRASTRUCTURE.md)。
 - [设置说明](UI_SETTINGS.md)、[兼容包](OPTIONAL_ADAPTERS.md)、[4.2安装](INSTALL_4.2.md)、[4.2发行准备](evolution/EVO-4.2-RELEASE-GATE-2026-11-07.md)。

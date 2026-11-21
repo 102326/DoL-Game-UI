@@ -1,4 +1,4 @@
-# DolOptimizationSoftWet 1.0.3
+# DolOptimizationSoftWet 1.0.4
 
 本次为本地研究候选，随当前测试组合检查 原版优化 1.1.2.1；最终真机覆盖和制品身份以本轮验证报告为准，尚未公开发布。
 

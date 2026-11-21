@@ -1,6 +1,33 @@
 # Soft & Wet 4.x UI Runtime — API v1
 
-适用于当前4.1源码及4.2研究的稳定UI接入层。事实源是[src/public/ui.ts](../src/public/ui.ts)、[src/public/wardrobe.ts](../src/public/wardrobe.ts)及运行实现；UI产品版本4.x与`apiVersion: 1`、diagnostics schema1分别管理。
+玩家安装的两个包分别是 Framework Host（技术名 `StoneFreeHost`）和 `DoLGameUI`。Host 管理参与者和挂载资源，主 UI 管理玩家设置、页面呈现和公开接口。4.5 沿用 UI API v1；外部类型定义见 [UI](../src/public/ui.ts) 和[衣柜](../src/public/wardrobe.ts)。
+
+## 从启动到退出
+
+```mermaid
+flowchart TD
+    Loader["ModLoader"] -->|先加载| Host["StoneFreeHost"]
+    Loader -->|后加载| Entry["DoLGameUI 正式入口"]
+    Host -->|已就绪或 ready 通知| Entry
+    Entry -->|注册参与者，申请区域| Host
+    Entry --> Core["startGameUI · 页面、设置、呈现 API"]
+    Pref["界面设置或 setPreference"] --> Store["主题与页面偏好"]
+    Store -->|应用设置、刷新页面| Core
+    Loader --> Target["目标 Mod · 原生数据和操作"]
+    Loader --> Adapter["可选兼容包"]
+    Adapter -->|目标版本及节点匹配| Target
+    Adapter -->|注册样式角色或衣槽| Core
+    Host -->|stopped| Release["正式入口释放本次挂载"]
+    Release -->|清理订阅、界面和参与者| Host
+    Core -->|新 API 就绪，适配包重新绑定| Adapter
+    Loader -. Inspector 可单独导入 .-> Factory["createStandaloneSurfaces"]
+    Factory -. 调用方持有并释放 .-> Instance["独立窗口实例"]
+```
+
+1. **启动。** [Host](../framework/host.ts) 发出就绪通知。[正式入口](../framework/official-ui/main.ts) 通过 [connectConsumer](../framework/connect.ts) 同时处理 Host 已在场和稍后到场两种顺序。拿到官方区域后，[startGameUI](../src/main.ts) 创建一次主题与页面偏好，传给商店、衣柜等页面，再发布呈现 API。重复的就绪通知沿用当前实例。
+2. **改设置。** 设置面板将输入交给[主题控制器](../src/theme/controller.ts)。例如修改字号，应从[偏好模型](../src/theme/preferences.ts)和[读写与取值范围](../src/theme/preference-store.ts)入手；页面启停则走[页面偏好](../src/theme/page-preferences.ts)和原页面 setter。模块接受请求后更新界面，关闭总开关仍保留各页选择。兼容窗口通过已注册的角色使用主 UI 的样式。设置导航方向、悬浮菜单布局和停靠坐标各有自己的持有者。
+3. **加兼容包。** 可从 [MapleBirch 外观包](../compat/maplebirch-soft-wet/maplebirch-soft-wet.ts) 起步。在同目录 `boot.json` 声明目标与最低 UI 版本，在代码中描述可辨认的节点和角色。首次加载及 `dol-ui-runtime-ready` 到来时尝试注册，保存返回的句柄；已成功绑定同一 API 时直接返回，更换 API 时释放旧句柄。原控件继续处理业务。新增包还要接入[包结构检查](../scripts/check-ci-packages.py)和[CI 制品清单](../scripts/ci/contracts.ts)。衣槽扩展走下文的 wardrobe API；指定 Lyra 嘴部资源直接走 MapleBirch 的角色层注册，独立于 UI。
+4. **退出。** Host 停止时，正式入口按本次挂载释放动效、Hub、引用面板、主 UI 与参与者。页面负责归还借用的原生节点，适配包负责注销自己的监听、句柄和显示标记。旧实例再次收到销毁调用后直接返回，重建后的实例可以继续工作。Loader 单独使用 Inspector 时，走文末的独立工厂，调用方持有并释放自己的实例。
 
 下列呈现接口接入先检查`window.DoLGameUI?.ui?.apiVersion === 1`及所需方法；衣柜命名空间独立，见后文。缺失、禁用、结构不匹配时继续使用消费者自己的原界面，不创建强制Host/UI依赖。
 

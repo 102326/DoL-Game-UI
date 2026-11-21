@@ -1,4 +1,4 @@
-# ReOverfitsSoftWet 1.0.1
+# ReOverfitsSoftWet 1.0.2
 
 ReOverfits 扩展衣槽接入，复用主 UI 的衣柜、预览与原操作；本包不另建衣柜。
 

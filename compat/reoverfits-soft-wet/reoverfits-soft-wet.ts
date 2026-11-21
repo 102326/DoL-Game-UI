@@ -77,9 +77,10 @@ import type {VersionToolsHost} from '../../src/runtime/target-version';
  themeObserver.observe(document.documentElement, {attributes:true, attributeFilter:['data-dol-midnight']});
  document.addEventListener('dol-ui-runtime-ready', schedule);
  scope.own(()=>observer.disconnect());scope.own(()=>themeObserver.disconnect());
+ let destroyed = false;
  Object.assign(host, {ReOverfitsSoftWet:Object.freeze({
-  getDiagnostics:() => Object.freeze({adapterVersion:'1.0.0', target:'ReOverfits', targetVersion:host.modUtils?.getMod('ReOverfits')?.version ?? '', supportedVersions:['>=4.1.1'], level:'UI Model Extension', reason}),
-  destroy() {scope.dispose(); document.removeEventListener('dol-ui-runtime-ready', schedule); mapping?.destroy(); mapping = undefined; owner = undefined; restore(); delete host.ReOverfitsSoftWet}
+  getDiagnostics:() => Object.freeze({adapterVersion:'1.0.2', target:'ReOverfits', targetVersion:host.modUtils?.getMod('ReOverfits')?.version ?? '', supportedVersions:['>=4.1.1'], level:'UI Model Extension', reason}),
+  destroy() {if (destroyed) return; destroyed = true; scope.dispose(); document.removeEventListener('dol-ui-runtime-ready', schedule); mapping?.destroy(); mapping = undefined; owner = undefined; restore(); delete host.ReOverfitsSoftWet}
  })});
  refresh();
 })();

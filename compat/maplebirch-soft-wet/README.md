@@ -1,4 +1,4 @@
-# MapleBirchSoftWet 1.0.1
+# MapleBirchSoftWet 1.0.2
 
 本次为本地研究候选，随当前测试组合检查 MapleBirch 5.5.4；最终真机覆盖和制品身份以本轮验证报告为准，尚未公开发布。
 

@@ -38,7 +38,12 @@ const disconnect=connectConsumer(host=>{
  try{
   if(!owner.claim('region','soft-wet-official-ui')){release();return release}
   ui=startGameUI({host,owner,rememberReference:shelf.remember,rememberProduct:shelf.rememberProduct});if(!ui)throw Error('Official UI unavailable');
-  destroyUi=ui.destroy;ui.destroy=()=>{disconnect();notice.dispose()};ui.version=visualVersion;html.setAttribute('data-stone-free',visualVersion);stopHub=startOfficialHub(host,owner);stopMotion=isolate('official motion',()=>startOfficialMotion());return release;
+  destroyUi=ui.destroy;
+  ui.destroy=()=>{
+   if(released)return;
+   disconnect();notice.dispose();
+  };
+  ui.version=visualVersion;html.setAttribute('data-stone-free',visualVersion);stopHub=startOfficialHub(host,owner);stopMotion=isolate('official motion',()=>startOfficialMotion());return release;
  }catch(error){try{release()}catch(cleanupError){throw new AggregateError([error,cleanupError],'Official UI initialization and cleanup failed')}throw error}
 },window,notice.set);
 export function dispose(){disconnect();notice.dispose()}

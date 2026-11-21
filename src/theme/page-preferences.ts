@@ -1,3 +1,4 @@
+import {isolate} from '../runtime/presentation';
 import type {PanelKind} from '../panels/types';
 
 export const pageModules = {
@@ -57,4 +58,11 @@ export function requestPage(root: RuntimePages, page: PageKey, value: boolean) {
  }
  if (isSingle(page)) root[pageModules[page]]?.setEnabled(value);
  else root.DoLPanelsUI?.setEnabled(page, value);
+}
+
+/** Refresh in the same order on normal master changes and on emergency recovery. */
+export function refreshPages(root: Partial<Record<keyof RuntimePages, {refresh?():void}>>) {
+ for (const name of ['DoLSavesUI','DoLShopUI','DoLPanelsUI','DoLSocialUI','DoLCharacteristicsUI','DoLWardrobeUI','DoLCombatUI'] as const) {
+  isolate(name, () => root[name]?.refresh?.());
+ }
 }
