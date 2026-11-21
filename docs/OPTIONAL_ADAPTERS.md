@@ -8,13 +8,13 @@
 
 | 包 | 作用与边界 |
 | --- | --- |
-| ModHubSoftWet | 管理器、市场、说明、日志、帮助及已识别工具／确认／时间点还原浮层外观 |
-| MapleBirchSoftWet | 云存档页面，云端操作仍由原 Mod 执行 |
-| DolOptimizationSoftWet | 存档卡片、描述编辑与分页，结构匹配时接入作者叠穿管理；无效日期只在能确认时间时修正显示 |
-| CheatExtendedSoftWet | 原作者 CE 与单列支持的独立 rebuild.30 外观；二者技术名相同，只启用一个 |
-| ReOverfitsSoftWet | 额外衣槽接入主衣柜与商店，不另建衣柜 |
-| SmartPhoneSoftWet | 原 SmartPhone Alpha 外壳、已识别普通组件及 debug 窗口；保留作者壁纸，不铺天气，不适用 Omega |
-| LyraMouthCompat051213 | 指定 Lyra 嘴部资源，无独立界面，也不依赖主 UI |
+| ModHubSoftWet 1.0.5 | 管理器、市场、说明、日志、帮助及已识别工具／确认／时间点还原浮层外观 |
+| MapleBirchSoftWet 1.0.2 | 云存档页面，云端操作仍由原 Mod 执行 |
+| DolOptimizationSoftWet 1.0.4 | 存档卡片、描述编辑与分页，结构匹配时接入作者叠穿管理；无效日期只在能确认时间时修正显示 |
+| CheatExtendedSoftWet 1.0.1 | 原作者 CE 与单列支持的独立 rebuild.30 外观；二者技术名相同，只启用一个 |
+| ReOverfitsSoftWet 1.0.2 | 额外衣槽接入主衣柜与商店，不另建衣柜 |
+| SmartPhoneSoftWet （历史） | 原 SmartPhone Alpha 外壳、已识别普通组件及 debug 窗口；保留作者壁纸，不铺天气，不适用 Omega |
+| LyraMouthCompat051213 1.0.0 | 指定 Lyra 嘴部资源，无独立界面，也不依赖主 UI |
 
 具体包版本和依赖以对应发行附件、`boot.json` 为准。常规最低目标为 ModHub 1.3.0、MapleBirch 5.2.3、原版优化 1.1.1.2、CE 1.20.3、ReOverfits 4.1.1；最低声明不等于任意未来版本都通过。SmartPhone 当前明确接受 Alpha 0.3.91／0.3.91.1；嘴部资源限定 Lyra `0.5.12.13-1.0.1a-1004.1-goose-ucb` 与 MapleBirch `>=5.2.3 <6.0.0` 稳定系列。
 

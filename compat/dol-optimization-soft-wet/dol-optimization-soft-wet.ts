@@ -12,7 +12,7 @@ declare const window: Window & {
  if (window.DolOptimizationSoftWet) return;
  const wardrobe=createOptimizationWardrobe(window);
  const spec: StyleAdapter = {
-  id: "DolOptimizationSoftWet", version: "1.0.3",
+  id: "DolOptimizationSoftWet", version: "1.0.4",
   target: {name: "原版优化", versions: [">=1.1.1.2"]},
   scope: ['#customOverlay'],
   fingerprint: {
@@ -43,11 +43,12 @@ declare const window: Window & {
   } catch {reason = "registration-failed"}
  }
  document.addEventListener("dol-ui-runtime-ready", attach);
+ let destroyed = false;
  window.DolOptimizationSoftWet = Object.freeze({
   getDiagnostics: () => handle?.getDiagnostics() ?? Object.freeze({status: "inactive", reason}),
   getWardrobeDiagnostics: wardrobe.getDiagnostics,
   getDateDiagnostics: dates.getDiagnostics,
-  destroy() {dates.destroy();wardrobe.destroy();document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); handle = null; owner = null; delete window.DolOptimizationSoftWet}
+  destroy() {if (destroyed) return; destroyed = true; dates.destroy();wardrobe.destroy();document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); handle = null; owner = null; delete window.DolOptimizationSoftWet}
  });
  attach();
 })();

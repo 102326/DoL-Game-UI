@@ -2,7 +2,7 @@
 
 - **首次安装**：下载 `StoneFreeHost-0.1.5-experimental.mod.zip` 和 `DoLGameUI-4.5.0.mod.zip`，直接导入 Loader，将 Host 排在主 UI 前，再重新启动游戏。
 - **从 4.2 升级**：保留原包作备份，用 4.5 主 UI 替换旧 UI。如果已有随 4.2 提供的 Host 0.1.5-experimental，可以继续使用。
-- **使用 ModHub 外观包**：重新导入4.5 发布页的 `ModHubSoftWet`，即使旧包也显示 1.0.4。本次更新调整了窄屏页签与工具菜单。其余兼容包按已安装的目标 Mod 选用，放在目标 Mod 与 UI 之后。每个同名 Mod 只启用一份。
+- **已有选装包**：按已安装的目标 Mod 替换 ModHub、MapleBirch、原版优化、Cheat Extended 或 ReOverfits 的对应兼容包，放在目标 Mod 和主 UI 之后。同名包只启用一份。指定 Lyra 的嘴部资源包可沿用。
 
 从侧栏进入「界面设置」即可更换悬浮工具的布局。弧形抽屉里的工具从球的上方或下方依次展开；想收起入口时，可在设置中关闭悬浮球。
 

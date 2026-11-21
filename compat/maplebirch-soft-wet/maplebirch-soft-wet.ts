@@ -10,7 +10,7 @@ declare const window: Window & {
  "use strict";
  if (window.MapleBirchSoftWet) return;
  const spec: StyleAdapter = {
-  id: "MapleBirchSoftWet", version: "1.0.1", target: {name: "maplebirch", versions: [">=5.2.3"]},
+  id: "MapleBirchSoftWet", version: "1.0.2", target: {name: "maplebirch", versions: [">=5.2.3"]},
   scope: ['#customOverlay[data-overlay="saves"]'],
   attributes: ['data-cloud-save-field'],
   fingerprint: {
@@ -30,9 +30,10 @@ declare const window: Window & {
  };
  let owner: Partial<UiApi> | null | undefined = null;
  let handle: Readonly<AdapterHandle> | null = null, reason = "runtime-unavailable";
+ let destroyed = false;
  function attach() {
   const ui = window.DoLGameUI?.ui;
-  if (owner === ui) return;
+  if (owner === ui && handle) return;
   handle?.destroy(); owner = ui; handle = null; reason = ui ? "runtime-api-unsupported" : "runtime-unavailable";
   if (ui?.apiVersion !== 1 || typeof ui.getCapabilities !== "function" || typeof ui.registerStyleAdapter !== "function") return;
   try {if (!ui.getCapabilities().styleAdapters) {reason = "style-adapter-unavailable"; return}} catch {reason = "runtime-capability-failed"; return}
@@ -41,7 +42,7 @@ declare const window: Window & {
  document.addEventListener("dol-ui-runtime-ready", attach);
  window.MapleBirchSoftWet = Object.freeze({
   getDiagnostics: () => handle?.getDiagnostics() ?? Object.freeze({status: "inactive", reason}),
-  destroy() {document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); handle = null; owner = null; delete window.MapleBirchSoftWet}
+  destroy() {if (destroyed) return; destroyed = true; document.removeEventListener("dol-ui-runtime-ready", attach); handle?.destroy(); handle = null; owner = null; delete window.MapleBirchSoftWet}
  });
  attach();
 })();

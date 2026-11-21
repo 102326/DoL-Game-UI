@@ -46,6 +46,14 @@ await p.addStyleTag({path:path.join(__dirname,'../dist/game-ui.css')});await p.a
  await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});assert.deepEqual(await prefs(),[125,75],'future upgrade marker prevents another reset');
  await p.evaluate(()=>DoLGameUI.destroy());await p.reload();await p.evaluate(()=>localStorage.clear());await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});assert.deepEqual(await prefs(),[100,100],'new installation defaults');
  assert.equal(await p.evaluate(preferenceSnapshot).then(value=>value.stored._scaleBaseline26),true);
+ // The saved envelope and a live API request must interpret fractional, retired and invalid values alike.
+ const input={readingLineScale:123.6,readingBlockGap:-3,readingWidth:101,acrylicTransparency:61.5,visualTier:1.5,wideReading:true};
+ const readValues=()=>p.evaluate(()=>{const v=DoLGameUI.getRequestedPreferences();return [v.readingLineScale,v.readingBlockGap,v.readingWidth,v.acrylicTransparency,v.visualTier,v.wideReading]});
+ await p.evaluate(input=>{for(const [key,value] of Object.entries(input))DoLGameUI.setPreference(key,value)},input);
+ assert.deepEqual(await readValues(),[124,0,100,62,1,false]);
+ await p.evaluate(input=>{DoLGameUI.destroy();localStorage.setItem('DoLMidnightTheme.preferences.v1',JSON.stringify({_scaleBaseline26:true,_readingBaseline41:true,...input}))},input);
+ await p.addScriptTag({path:path.join(__dirname,'../dist/game-ui.js')});
+ assert.deepEqual(await readValues(),[124,0,100,62,1,false]);
  await p.evaluate(()=>DoLGameUI.destroy());assert.equal(await p.evaluate(()=>document.documentElement.style.getPropertyValue('--dgu-font-scale')),'');
  console.log('PASS saved versus applied scales: resize, restart, unrelated save, settings, restore, master toggle, validation and teardown');
 }finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});

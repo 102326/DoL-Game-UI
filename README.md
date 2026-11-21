@@ -73,7 +73,7 @@
 
 | 包 | 用途 |
 | --- | --- |
-| ModHubSoftWet 1.0.4 | 模组管理器、市场、帮助中心与工具浮层；需要主 UI 4.2 或更新 |
+| ModHubSoftWet | 模组管理器、市场、帮助中心与工具浮层；需要主 UI 4.2 或更新 |
 | MapleBirchSoftWet | 云存档页面 |
 | DolOptimizationSoftWet | 存档页面、日期显示与衣柜叠穿管理 |
 | CheatExtendedSoftWet | Cheat Extended 外观 |
