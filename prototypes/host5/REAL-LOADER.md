@@ -13,7 +13,17 @@ Windows Chrome 157.0.8103.79，独立临时 Profile，DoL 0.5.12.13、Loader 2.1
 | 重新导入观测台、卸载原工作台并重载 | 天气能力和观测台视图仍注册。此时没有展示入口，玩家不能单独打开观测台。 |
 | 在上一组合加入替代工作台并重载 | 从「侧边工作台」打开，两块画布恢复，雨雪切换、关闭回焦、重开和清理均通过。观测台可随展示入口迁移。 |
 
-实际包版本和核对的文件数为 StoneFreeHost 0.1.5-experimental（4）、StoneFreeWorkspace 0.1.4-experimental（6）、Host5Atmosphere 0.1.0-prototype（5）、Host5Observatory 0.1.0-prototype（4）。替代入口为 StoneFreeAlternateWorkspace 0.1.4-experimental。原工作台直接关闭对话框，本轮验到关闭后重开，仍缺带退场时序的中途反向。天气由预览命令驱动。
+实际包版本和核对的文件数为 StoneFreeHost 0.1.5-experimental（4）、StoneFreeWorkspace 0.1.4-experimental（6）、Host5Atmosphere 0.1.0-prototype（5）、Host5Observatory 0.1.0-prototype（4）。替代入口为 StoneFreeAlternateWorkspace 0.1.4-experimental。在基线 `0d128b9`，原工作台直接关闭对话框，只验到关闭后重开。天气由预览命令驱动。
+
+### 关闭中途重开
+
+研究工作台使用 [Host 消费端过渡工具](../../framework/motion/reversible-transition.ts)。组件仍负责打开原生 dialog、决定哪些元素能响应快捷键、持有场景 binding 和模态认领。首次打开时挂载视图，进场与退场共用一条 180 ms 的 WAAPI 时间线。点击关闭后，原按钮变为「重新打开」，焦点留在窗口内；点击它或按工作台的 K 会从当前画面反向。Escape 始终请求关闭。到达退场终点才关闭 dialog、释放临时视图及模态认领，并在焦点仍在窗口内时归还入口或先前控件。切页失效、主动释放工作区和卸载直接结束这一代。常驻入口、区域与快捷键由原有所有者保留。
+
+Windows 复用了上述同一份发行 HTML、独立 Chrome Profile、发行 Host、天气提供者和观测台。原生导入新 StoneFreeWorkspace 后重载，从 Loader 回读了工作台全部六个文件。包仍为研究版 0.1.4-experimental，以 SHA-256 `21b1349c2411edc756277dd22c0b365b3dee39d2daabffd50743ac99f46a3a19` 区别于前次包。在复验入口的最新文档绑定上执行 `reversal` 即可单跑此项。
+
+- 真实键盘 K 在退场中重新打开。随后在同一动画的 65、115、75、105 ms 四个位置逐次点击按钮，方向依次为负、正、负、正。翻转瞬间时间、计算透明度与位移连续，dialog、画布节点及 Host 挂载身份相同。这四个时间是测试指定的播放位置。
+- 最终 Escape 后，全部挂载和认领列表恢复到打开前，焦点回到入口。系统减少动态、退出中改为减少动态、单独屏蔽该 dialog 的 animate 方法时均到达正确终态。
+- Windows Edge 的工作台定向回归另验了主工作台与替代工作台协商、场景立即失效、卸载与布局偏好。旧用例曾在按下 Escape 后立刻操作背景，此时退场仍在进行；用例现等待原生 dialog 关闭再检查原有焦点与背景行为。真实 Loader 的反向采样针对主工作台，未测 Android、屏幕实际呈现耗时或视觉偏好。
 
 ## #42 · 真实游戏侧栏与原作者 CE
 

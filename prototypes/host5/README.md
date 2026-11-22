@@ -29,6 +29,6 @@
 
 ## 接续判断
 
-后续的[真实 Loader 核对](REAL-LOADER.md)已覆盖独立分包导入、工作台替换、侧栏折叠、真实切页和原作者 CE 状态栏按钮。可选的 CE 菜单图标仍缺启用该入口的真实配置。特效下一轮应选择一种确有美术价值的效果，对照现有后端与 GPU 或预渲染路径，并测真实输入到显示。当前面板立即关闭，重开有入场效果；连续关闭运动、视频解码和 Android 表现尚待验证。Host 只管理 UI 能力和相关资源，Mod 调度及底层性能工作沿用各项目的归属。
+后续的[真实 Loader 核对](REAL-LOADER.md)已覆盖独立分包导入、工作台替换、侧栏折叠、真实切页和原作者 CE 状态栏按钮。可选的 CE 菜单图标仍缺启用该入口的真实配置。特效下一轮应选择一种确有美术价值的效果，对照现有后端与 GPU 或预渲染路径，并测真实输入到显示。工作台现支持[退场中反向与降级](REAL-LOADER.md#关闭中途重开)，Windows 已验。视频解码和 Android 表现待验。Host 只管理 UI 能力和相关资源，Mod 调度及底层性能工作沿用各项目的归属。
 
 全目录严格类型检查可运行 `npx tsc -p prototypes/host5/tsconfig.json`。另有[特效定向检查](effects/README.md)及[侧栏定向检查](sidebar/README.md)。研究记录沿用 [#41](https://github.com/102326/DoL-Game-UI/issues/41) 和 [#42](https://github.com/102326/DoL-Game-UI/issues/42)。

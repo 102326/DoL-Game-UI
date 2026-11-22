@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {ref, shallowRef, computed, onMounted, onUnmounted, nextTick} from 'vue';
+import {ref, shallowRef, computed, onMounted, onBeforeUnmount, nextTick} from 'vue';
 import type {Binding, Claim, Host, MountContext, Participant, View} from '../contracts';
 import {defaultLayout, readLayout, saveLayout} from './preferences';
+import {reversibleTransition} from '../motion/reversible-transition';
 import ViewOutlet from './ViewOutlet.vue';
 const props = defineProps<{host: Host; owner: Participant; hostContext: MountContext; alternate?: boolean}>();
 const title = props.alternate ? '侧边工作台' : '信息工作台';
@@ -11,7 +12,7 @@ try {storage = window.localStorage} catch {/* Storage is optional; the current l
 const preferences = ref(storage ? readLayout(storage, storageKey) : defaultLayout());
 const views = shallowRef<readonly View[]>([]), region = shallowRef<Readonly<Claim> | null>(null);
 const dialog = ref<HTMLDialogElement>(), opener = ref<HTMLButtonElement>();
-const opened = ref(false), editing = ref(false), message = ref(''), releasing = ref(false);
+const opened = ref(false), closing = ref(false), editing = ref(false), message = ref(''), releasing = ref(false);
 let shortcut: Readonly<Claim> | null = null, modal: Readonly<Claim> | null = null;
 let previousFocus: HTMLElement | null = null, opening: Binding | undefined;
 const instanceIds = new Map<string, string>(); let sequence = 0;
@@ -40,14 +41,32 @@ function setVisible(view: View, event: Event) {
  if (!(event.target instanceof HTMLInputElement)) return;
  preferences.value.hidden = event.target.checked ? preferences.value.hidden.filter(id => id !== key(view)) : [...new Set([...preferences.value.hidden, key(view)])].slice(0, 100); persist();
 }
-function close() {
+const transition = reversibleTransition([
+ {opacity: 0, transform: 'translateY(6px)'},
+ {opacity: 1, transform: 'translateY(0)'},
+], 180, shown => {if (!shown) finishClose()});
+
+function finishClose() {
+ transition.cancel();
+ opening?.signal.removeEventListener('abort', finishClose); opening = undefined;
  const hadFocus = dialog.value?.contains(document.activeElement);
- opening?.signal.removeEventListener('abort', close); opening = undefined;
+ const returnTo = previousFocus?.isConnected ? previousFocus : opener.value;
+ previousFocus = null;
  if (dialog.value?.open) dialog.value.close();
- opened.value = false; modal?.release(); modal = null;
- if (hadFocus && previousFocus?.isConnected) previousFocus.focus({preventScroll: true});
+ opened.value = false; closing.value = false;
+ modal?.release(); modal = null;
+ if (hadFocus && returnTo?.isConnected) returnTo.focus({preventScroll: true});
 }
-function nativeClose() {if (!dialog.value?.open) close()}
+function close() {
+ if (!dialog.value?.open || closing.value) return;
+ closing.value = true;
+ transition.to(dialog.value, false);
+}
+function nativeClose() {if (!dialog.value?.open) finishClose()}
+function toggle() {
+ if (opened.value && !closing.value) close();
+ else open();
+}
 function acquire() {
  if (releasing.value) return false;
  if (region.value?.isCurrent()) return true;
@@ -59,12 +78,21 @@ function acquire() {
 }
 async function release() {
  if (releasing.value) return;
- releasing.value = true; close(); await nextTick();
+ releasing.value = true; finishClose(); await nextTick();
  shortcut?.release(); shortcut = null; region.value?.release(); region.value = null;
  releasing.value = false; message.value = '已释放区域和快捷键。';
 }
 function open() {
- if (dialog.value?.open || !acquire()) return;
+ const surface = dialog.value;
+ if (!surface || releasing.value) return;
+ if (surface.open) {
+  if (closing.value && opening?.isCurrent()) {
+   closing.value = false;
+   transition.to(surface, true);
+  }
+  return;
+ }
+ if (!acquire()) return;
  const binding = props.hostContext.binding();
  if (!binding.isCurrent()) {message.value = '场景正在更新，请稍后再打开。'; return}
  if (!props.alternate) {
@@ -73,10 +101,11 @@ function open() {
  }
  previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
  try {
-  if (props.alternate) dialog.value!.show(); else dialog.value!.showModal();
+  if (props.alternate) surface.show(); else surface.showModal();
   opened.value = true;
-  opening = binding; opening.signal.addEventListener('abort', close, {once: true});
- } catch {close(); message.value = '此浏览器暂不支持工作台浮层。'}
+  opening = binding; opening.signal.addEventListener('abort', finishClose, {once: true});
+  transition.to(surface, true);
+ } catch {finishClose(); message.value = '此浏览器暂不支持工作台浮层。'}
 }
 function keydown(event: KeyboardEvent) {
  if (event.defaultPrevented || event.repeat || event.isComposing || event.keyCode === 229 || event.altKey || event.ctrlKey || event.metaKey
@@ -84,19 +113,19 @@ function keydown(event: KeyboardEvent) {
   || event.target.closest('[data-sf-owner]') !== props.hostContext.element) return;
  if (props.alternate && event.key === 'Escape' && opened.value) {event.preventDefault(); close(); return}
  if (event.key !== 'k' || !shortcut?.isCurrent()) return;
- event.preventDefault(); if (opened.value) close(); else open();
+ event.preventDefault(); toggle();
 }
 function rescan() {views.value = props.host.views()}
 const stop = props.host.onViews(rescan);
 onMounted(() => {rescan(); acquire()});
-onUnmounted(() => {close(); stop(); shortcut?.release(); region.value?.release()});
+onBeforeUnmount(() => {finishClose(); stop(); shortcut?.release(); region.value?.release()});
 </script>
 <template>
  <section class="sf-workspace-entry" :class="{'sf-alternate': alternate}" :data-region-state="region ? 'active' : 'busy'" @keydown="keydown">
   <button ref="opener" type="button" @click="open">{{title}}</button>
   <span class="sf-entry-message" role="status">{{message}}</span>
   <dialog ref="dialog" class="sf-workspace" :aria-label="title" :aria-modal="!alternate" :class="{'sf-workspace-stack': alternate, 'sf-workspace-compact': preferences.density === 'compact'}" @cancel.prevent="close" @close="nativeClose">
-   <header><div><small>STONE FREE · 实验工作台</small><h2>{{title}}</h2></div><button type="button" @click="close">关闭</button></header>
+   <header><div><small>STONE FREE · 实验工作台</small><h2>{{title}}</h2></div><button type="button" @click="toggle">{{closing ? '重新打开' : '关闭'}}</button></header>
    <nav aria-label="工作台工具"><button type="button" :aria-pressed="editing" @click="editing = !editing">{{editing ? '完成编辑' : '编辑布局'}}</button><label>密度<select v-model="preferences.density" @change="persist"><option value="comfortable">舒适</option><option value="compact">紧凑</option></select></label></nav>
    <p class="sf-workspace-note">内容由自愿接入的 Mod 提供，原游戏保持原状。</p>
    <div v-if="editing" class="sf-layout-options">

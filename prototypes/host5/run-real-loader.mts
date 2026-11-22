@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import {readFile,realpath} from 'node:fs/promises';
 import {dirname,join,relative,resolve,sep} from 'node:path';
+import {createHash} from 'node:crypto';
+import {checkWorkspaceReversal} from './check-workspace-reversal.mts';
 import {chromium} from 'playwright';
 import {describeZip,importZip,checkLoaded} from './real-loader.mts';
 import {checkRealWorkspace} from './real-workspace.mts';
@@ -14,6 +16,11 @@ const approved = new Map([
   ['StoneFreeAlternateWorkspace','ceb16bcad6a2b37a9c0076057ec4e869ba45b125cf4b64774dcf06194db54890'],
   ['maplebirch','d926f6188c4abb950d1f5f4657a1b142613dc5613a47004876f8f26793b99f76'],
   ['cheat extended','980ba672661b0171923343dd03a242670fd3553208438355b5270e101ab8e134']
+]);
+// The two research workspace ZIPs keep the experimental package identity across builds.
+const reversalBuilds = new Map([
+  ['StoneFreeWorkspace','21b1349c2411edc756277dd22c0b365b3dee39d2daabffd50743ac99f46a3a19'],
+  ['StoneFreeAlternateWorkspace','5535253121b9a0fa07fa93ab7d0bfe0cf67a339ddc638531e437b6a2be7d06c0']
 ]);
 const [record,action,...args]=process.argv.slice(2);
 assert.ok(record && action,'Expected an owned host.json and action');
@@ -56,20 +63,17 @@ try {
     case 'verify': {
       assert.ok(args.length);
       for (const path of args) {
-        const sha=approved.get(describeZip(path).name);
-        assert.ok(sha,'Unreviewed package');
-        if(action==='import')console.log(await importZip(page,path,sha));
-        else {
-          const {createHash}=await import('node:crypto');
-          assert.equal(createHash('sha256').update(await readFile(path)).digest('hex'),sha);
-        }
+        const name = describeZip(path).name;
+        const sha = createHash('sha256').update(await readFile(path)).digest('hex');
+        assert.ok(sha === approved.get(name) || sha === reversalBuilds.get(name), 'Unreviewed package');
+        if(action==='import') console.log(await importZip(page,path,sha));
       }
       if(action==='verify') console.log(await checkLoaded(page,args));
       break;
     }
     case 'remove': {
       const [name]=args;
-      assert.ok(name && args.length===1 && ['Host5Observatory','StoneFreeWorkspace','cheat extended'].includes(name));
+      assert.ok(name && args.length===1 && ['Host5Observatory','StoneFreeWorkspace','StoneFreeAlternateWorkspace','cheat extended'].includes(name));
       console.log(await page.evaluate(async name=>{
         type Controller={listModIndexDB():Promise<string[]>;removeModIndexDB(n:string):Promise<unknown>};
         const u=(window as Window & {modUtils?:{getModLoadController():Controller}}).modUtils;
@@ -87,6 +91,8 @@ try {
       assert.ok(mode && ['both','direct','alternate'].includes(mode));
       console.log(await checkRealWorkspace(page,mode!=='direct',mode==='alternate'?'侧边工作台':'信息工作台'));break;
     }
+    case 'reversal':
+      console.log(await checkWorkspaceReversal(page));break;
     case 'sidebar': {
       assert.ok(args.length===2 || args.length===0);
       const links: [] | [string,string] = args.length ? [args[0]!,args[1]!] : [];
