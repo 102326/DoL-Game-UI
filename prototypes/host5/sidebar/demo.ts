@@ -1,0 +1,10 @@
+import {createHost} from '../../../framework/host';
+import {createSidebar} from './sidebar';
+const host = createHost(window), sidebar = createSidebar(host, 'SidebarDemo', document);
+const get = (selector: string): HTMLElement => document.querySelector<HTMLElement>(selector)!;
+get('#enable').onclick = () => {get('#status').textContent = sidebar.setEnabled(true) ? 'Layout enabled' : 'Native fallback'};
+get('#disable').onclick = () => {sidebar.setEnabled(false); get('#status').textContent = 'Native layout'};
+get('#ui-bar-toggle').onclick = () => get('#ui-bar').classList.toggle('stowed');
+let count = 0;
+get('#mod').onclick = () => {get('#mod').textContent = `Simulated Mod (${++count})`};
+window.addEventListener('pagehide', () => {sidebar.dispose(); host.dispose()}, {once:true});

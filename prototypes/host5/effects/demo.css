@@ -1,0 +1,85 @@
+:root {
+  font-family:system-ui,sans-serif;
+  color:#1c2734;
+  background:#eef2f5;
+}
+
+body {
+  margin:0;
+}
+
+main {
+  max-width:1000px;
+  margin:auto;
+  padding:24px;
+}
+
+nav {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+button {
+  font:inherit;
+  cursor:pointer;
+}
+
+nav button,#scene-content button {
+  padding:8px 12px;
+}
+
+button:focus-visible {
+  outline:3px solid #172c86;
+  outline-offset:3px;
+}
+
+.demo-stage {
+  position:relative;
+  margin-top:24px;
+  min-height:470px;
+}
+
+.demo-stage section {
+  min-height:400px;
+  padding:20px;
+  background:#fff;
+  border-radius:16px;
+}
+
+.demo-stage aside {
+  position:absolute;
+  z-index:1;
+  right:20px;
+  top:72px;
+  width:min(42%, 400px);
+  pointer-events:none;
+}
+
+.demo-stage aside h2 {
+  margin:0 0 8px;
+}
+
+.demo-stage aside #panel {
+  pointer-events:auto;
+}
+
+#scene-content {
+  max-width:48%;
+  min-height:140px;
+}
+
+#scene-content h2 {
+  margin-top:0;
+}
+
+@media(max-width:600px) {
+  .demo-stage aside {
+    top:220px;
+    right:12px;
+    width:min(80%, 350px);
+  }
+  #scene-content {
+    max-width:100%;
+  }
+}
