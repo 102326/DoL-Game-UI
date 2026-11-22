@@ -1,0 +1,33 @@
+# 5.0 原型在发行 Loader 中的接入
+
+Windows Chrome 157.0.8103.79，独立临时 Profile，DoL 0.5.12.13、Loader 2.101.1。固定发行 HTML 为 64,576,232 字节，SHA-256 为 `9ecc02d91e481054bed564a4fe1975dd5c2e38edc051e9fac350ae5bebe282a5`。正文只挂载这一份 HTML。该环境适合查导入、脚本和真实交互，未测全部游戏图片或帧时。
+
+## #41 · 工作台和观测台
+
+用原生 Loader GUI 的文件导入方法导入原 ZIP，整页重载，从 Loader 回读实际顺序、版本、声明依赖和包内文件摘要。基础发行页自带 23 个包，以下每组都核实未加载 DoLGameUI。各包精确 SHA-256 固定在[复验入口](run-real-loader.mts)。
+
+| 实际安装组合（依次接在发行包之后） | 真实操作和观察 |
+| --- | --- |
+| Host、工作台、天气能力、观测台 | 工作台直接挂载一份天气画面，另一份由观测台挂载。点雨再点雪，两块画布均显示雪状态。关闭回焦入口，重开仍是雪，再关闭后天气挂载数为零、Host 错误数为零。 |
+| 卸载观测台、重载，保留 Host、工作台、天气能力 | 观测台控件消失。剩下的一块画布仍可拖动、关闭和重开。 |
+| 重新导入观测台、卸载原工作台并重载 | 天气能力和观测台视图仍注册。此时没有展示入口，玩家不能单独打开观测台。 |
+| 在上一组合加入替代工作台并重载 | 从「侧边工作台」打开，两块画布恢复，雨雪切换、关闭回焦、重开和清理均通过。观测台可随展示入口迁移。 |
+
+实际包版本和核对的文件数为 StoneFreeHost 0.1.5-experimental（4）、StoneFreeWorkspace 0.1.4-experimental（6）、Host5Atmosphere 0.1.0-prototype（5）、Host5Observatory 0.1.0-prototype（4）。替代入口为 StoneFreeAlternateWorkspace 0.1.4-experimental。原工作台直接关闭对话框，本轮验到关闭后重开，仍缺带退场时序的中途反向。天气由预览命令驱动。
+
+## #42 · 真实游戏侧栏与原作者 CE
+
+单独导入原作者 Cheat Extended 1.20.4 后，启动被它自己的缺少 MapleBirch 提示挡住。验证侧栏时先导入 MapleBirch 5.6.2，再导入 CE 并重载，两包分别在位置 27、28（从 0 起计），核对了 151、103 个文件。没有使用云存档或账户。
+
+在真实游戏文档内将侧栏布局原型挂到已启动的发行 Host 上。该原型通过诊断入口注入，尚未作为独立侧栏 ZIP 导入。真实 StoryCaption 原文已含 CE 的条件宏。点击原生链接从 Start2 经 Orphanage Intro 到 Bedroom，侧栏与折叠按钮对象保持，原生收起和展开正常。在卧室另行聚焦 CE「作弊拓展」，启用布局后按钮和焦点保持。两次点击执行其自带处理函数，状态翻转后恢复；撤回布局时仍是 CE 当时的按钮，焦点保留，原型的挂载和认领数均回到零。
+
+该配置实际显示的是 CE 状态栏按钮。另一个由设置控制的 CE 菜单图标没有出现，其弹窗未验。rebuild.30 的中性证据仍见[侧栏研究](sidebar/README.md)，本次真实混装使用原作者版。
+
+## 复验顺序
+
+1. 在仓库根目录使用 Paisley Park 的 `pc-start`，指定上述 HTML、独立输出目录 `tests/artifacts/host5-real-loader/<本轮目录>`、本地 HTTP 端口 19753 和新建的自有 Chrome Profile。保留工具生成的绑定记录。只连接这台测试浏览器。
+2. 以 `node prototypes/host5/run-real-loader.mts <绑定记录> <操作> [参数]` 驱动。先用 `import` 按表中顺序提供 ZIP 路径，执行 `reload` 后用 `pc-bind` 为新文档生成绑定。等 Loader 完成启动，用 `verify` 传入该组 ZIP，再用 `workspace both` 走原工作台双视图。两个研究 ZIP 可按[分包说明](workspace-weather/README.md)生成。
+3. `remove Host5Observatory`、重载、重新绑定及核对后运行 `workspace direct`。重新导入观测台并移除 `StoneFreeWorkspace`，重载检查视图注册与展示入口。再导入替代工作台、重载、核验并执行 `workspace alternate`。
+4. 按依赖顺序装好 MapleBirch、CE，重载和重新绑定。通过原生界面到达 Start2 后，给 `sidebar` 传入两个实际可见的 passage 链接选择器（依次指向 Orphanage Intro 和 Bedroom）。在卧室再执行无参数 `sidebar` 检查 CE 按钮。所有检查完成后用 `stop` 关闭自有 Chrome，并核对该 Profile 进程和 HTTP 监听已释放。
+
+本轮实测结束后，独立实例正常退出，Profile 所属 Chrome 进程和 19753 监听均为零。
