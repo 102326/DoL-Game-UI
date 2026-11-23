@@ -2,6 +2,15 @@
 
 ## #41 · 设置窗口开合
 
+**候选混装复验（产品源码 `cbec4e6`）**。Windows 独立 Chrome 157.0.8103.79 在中性页执行 ZIP 中 `boot.json` 声明的常规脚本和样式，均从正式设置按钮进入。两组复用 UI ZIP `b9c64c259d3da16144bd26f6d30b5fdcbf80679e23beaa301be9a4e4b1c0d6b6`。两个 Host 的包内版本均为 `0.1.5-experimental`。
+
+| Host 来源 | ZIP SHA-256 | 实际结果 |
+| --- | --- | --- |
+| [v4.5.2 官方附件](https://github.com/102326/DoL-Game-UI/releases/expanded_assets/v4.5.2) | `6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8` | 无 `panelEffects`。正常淡入淡出，关闭中点重开延续当前透明度，Escape 回焦。 |
+| 本地候选 | `a85ecb8d0fe10ad8ade3b50882f7b4c630ff2e7ceed5452e1dd61c3a1f8a4d25` | 有 `panelEffects.track`，中点重开沿用同一播放器并回焦。独立面板占满配额时，设置同步打开和关闭，自身 `animate` 调用 0 次；邻窗播放器、进度及关闭操作正常。 |
+
+复跑：使用 `node scripts/build-framework.mts` 和 `python scripts/package-framework.py --players-only` 构建一次候选，将官方附件另存目录，再执行 `node prototypes/host5/panel-budget/settings-mixed.mts <官方Host.zip> <候选Host.zip> <候选UI.zip>`。首次检查在原生动画完成时过早读取邻窗的 hidden 状态；最终回归等待邻窗真正隐藏再检查 DOM。覆盖范围为桌面设置入口，未运行游戏或 Loader 导入流程。
+
 在 `8811bf6` 上，正式设置入口绑定本次启动的 Host。反向时保留面板轨道，最终关闭时释放；表单、偏好和焦点仍由设置控制器负责。Windows 独立 Chrome 157 加载本地构建的 Host 和完整 UI：[入口回归](../prototypes/host5/panel-budget/settings-entry.mts)在关闭中点重开后沿用同一播放器，Escape 最终关闭时轨道创建/释放为 1/1，焦点回到侧栏按钮。隐藏可选能力的兼容夹具走原淡入淡出，减少动态时开合直接到位。[完整表单检查](../prototypes/host5/panel-budget/full-form.mts)验证玻璃开关及相邻面板保持可用。本批仅在桌面中性页面验收。
 
 ## #41 · Windows 跨 Mod Inspector
