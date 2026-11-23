@@ -1,5 +1,11 @@
 # Soft & Wet 4.5 跨设备交接
 
+## 4.5.1 手机 ModHub 主窗口宽度 · 2026-11-23
+
+本地分支 `fix/4.5.1-modhub-mobile-overlay-width` 基于 `v4.5.1`（`d643674`）。在有侧栏偏移的原生容器中，完整匹配 ModHubSoftWet 后，主 UI 的百分比宽度把 390 CSS px 下的窗口压到 108 px。窄屏现沿用 ModHub 的原生左右边界，桌面保留既有宽度。兼容包仍为 1.0.5。
+
+Mac 中性 Chromium 页面载入 ModHub 2.0.3 样式和生产构建的 UI 样式，在 320、390、400、430、870 CSS px 下，普通窗口均与原生宽度一致，全屏窗口占满视口。仓库回归命令为 `npm run tooling:build && node tests/overlay-manager-layout.cjs`。4.5.2 紧急修复按负责人授权跳过远端 CI。另以中性夹具验证 MapleBirch、原版优化、Cheat Extended 的窗口，以及 ReOverfits 映射与 Lyra 嘴部资源合同。Host 和六个选装 ZIP 复用 4.5.1 的同摘要文件。反馈者实际 ModHub 版本、手机 WebView 与现场复验仍待确认。
+
 ## 4.5 兼容包与挂载释放 · 2026-11-22
 
 五个维护中的代码适配包都已修复旧句柄重复销毁时误删新入口的问题。ModHub 额外覆盖四组注册中途失败的回退和重试；MapleBirch 在首次能力未就绪或注册失败后可重试。正式 UI 也有独立反例：Host 重启后调用上代 UI 的 `destroy()` 会断开新 UI；修复后新实例仍能打开设置。审查中未发现需要再次合并的偏好写入者。各包版本和目标见[选装说明](OPTIONAL_ADAPTERS.md)，源码职责、设置刷新、释放顺序及扩展示例见[运行结构图](UI_RUNTIME.md)。
