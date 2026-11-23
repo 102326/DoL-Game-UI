@@ -20,6 +20,8 @@ B 先退出、或 B 重挂后 A 再退出，粒子场租约均剩 1；最后一�
 
 ## 复跑与边界
 
+Windows Chrome 157 在 `0b953f0` 上复现了更新通知中断：首个监听器成功接收初始晴天，随后在晴转雨时同步抛错。provider 目标已为雨，后注册的 Canvas 仍显示晴，下一帧没有绘制，像素保持透明。逐个隔离更新回调后，同一例记录一条固定诊断，健康 Canvas 收到雨、恢复逐帧绘制并读到非透明像素。首次订阅失败仍直接返回异常；通知期间退订或销毁，待通知的订阅仍会被跳过。此例覆盖共享 provider 的同步更新分发。正式设置 Canvas 由天气管理器刷新并直接读取 `phase.sample`，不经过这个监听器集合。
+
 ```sh
 node_modules/.bin/tsc -p prototypes/host5/tsconfig.json
 node prototypes/host5/effects/check-late-join.mts

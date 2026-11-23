@@ -51,7 +51,8 @@ export function createWeather(host: Readonly<Host>, referenceTime = frameTime) {
    phase.set(next);
    weather = next;
    for (const listener of [...listeners]) {
-    if (listeners.has(listener)) listener(next);
+    if (!listeners.has(listener)) continue;
+    try {listener(next)} catch {console.warn('[EffectsWeather] Weather update listener failed')}
    }
   },
   dispose() {listeners.clear(); field = undefined; owner.dispose()}

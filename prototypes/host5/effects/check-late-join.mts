@@ -14,6 +14,8 @@ const address=server.httpServer!.address();assert.ok(address&&typeof address==='
 const browser=await chromium.launch(process.env.HOST5_CHROME ? {channel:'chrome'} : {});
 try{
  const page=await browser.newPage();const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ const providerWarnings:string[]=[];
+ page.on('console',message=>{if(message.type()==='warning'&&message.text().startsWith('[EffectsWeather]'))providerWarnings.push(message.text())});
  await page.goto('http://127.0.0.1:'+address.port+'/receivers');
  const result=await page.evaluate(async()=>{
   const load=(path:string)=>import(/* @vite-ignore */path);
@@ -82,10 +84,32 @@ try{
   notifying.reader.subscribe(()=>{if(disposeOnNotify)notifying.dispose()});
   notifying.reader.subscribe(()=>{if(disposeOnNotify)afterDispose++});disposeOnNotify=true;notifying.set('rain');
   const disposeDuringNotify=afterDispose===0&&notifying.reader.count()===0;
+  const updates=effects.createWeather(host,()=>time);
+  const noticesBeforeError:string[]=[];
+  const stop=updates.reader.subscribe(next=>{
+   noticesBeforeError.push(next);
+   if(next==='rain')throw Error('controlled update failure');
+  });
+  const healthy=effects.mountEffects(host,'HealthyCanvas',a,updates.reader,'canvas');
+  const canvas=a.querySelector('canvas')!,ctx=canvas.getContext('2d')!;
+  await frame(); // Let the sunny painter finish its initial frame and go idle.
+  let draws=0;
+  const clear=ctx.clearRect.bind(ctx);
+  ctx.clearRect=(...args)=>{draws++;clear(...args)};
+  const hasPixels=()=>ctx.getImageData(0,0,canvas.width,canvas.height).data.some((v,i)=>i%4===3&&v>0);
+  await frame();const idle=draws===0&&!hasPixels();
+  let escaped=false;
+  try{updates.set('rain')}catch(error){if(!(error instanceof Error)||error.message!=='controlled update failure')throw error;escaped=true}
+  const beforeFrame=draws;time+=225;await frame();
+  const updateFailure={noticesBeforeError,idle,escaped,target:updates.reader.get(),visible:canvas.parentElement!.dataset.weather,
+   resumed:draws>beforeFrame,painted:hasPixels()};
+  stop();healthy.dispose();updates.dispose();
   host.dispose();
-  return {readerBoundary,separateLease,separateSubscriptions,throwingListener,immediateDispose,unsubscribeDuringNotify,disposeDuringNotify,disposed,initial,targetOnly,joined,differentRenderers,reversed,later,remount,aSurvived,redirected,returning,usersAfterB,usersAfterA,empty,kept,recreated,
+  return {updateFailure,readerBoundary,separateLease,separateSubscriptions,throwingListener,immediateDispose,unsubscribeDuringNotify,disposeDuringNotify,disposed,initial,targetOnly,joined,differentRenderers,reversed,later,remount,aSurvived,redirected,returning,usersAfterB,usersAfterA,empty,kept,recreated,
    painters:document.querySelectorAll('svg').length,claims:host.getDiagnostics().claims.length};
  });
+ assert.deepEqual(result.updateFailure,{noticesBeforeError:['sunny','rain'],idle:true,escaped:false,target:'rain',visible:'rain',resumed:true,painted:true});
+ assert.deepEqual(providerWarnings,['[EffectsWeather] Weather update listener failed']);
  assert.deepEqual(result.initial,result.joined);assert.notEqual(result.targetOnly.snow,result.joined.snow);
  assert.deepEqual(result.joined.drop,[40.5,128.25]);assert.deepEqual(result.joined.flake,[8.1,16.875]);
  assert.equal(result.joined.rain,.5);assert.equal(result.joined.snow,.5);assert.deepEqual(result.joined.size,[260,180]);
