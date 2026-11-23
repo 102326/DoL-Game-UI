@@ -36,11 +36,11 @@ type Runtime=Window & {
  };
 };
 declare const __STONE_FREE_CONSUMER__:boolean;
-export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<typeof startThemePreferences>, presentation:'modal'|'modeless'='modal'){
+export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<typeof startThemePreferences>, presentation:'modal'|'modeless'='modal', host=root.DoLUiHost){
  if(root.DoLMidnightTheme)return;
  const store=loaded??startThemePreferences(root);
  const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
- const scope=visualScope(),motion=settingsFade(()=>root.DoLUiHost?.panelEffects);scope.own(()=>motion.dispose());let transition=0;
+ const scope=visualScope(),motion=settingsFade(host?.panelEffects);scope.own(motion.dispose);let transition=0;
  const settingsPanel=()=>controls?.querySelector<HTMLElement>('.dmt-settings-shell')??controls;
  const compactViewport=()=>root.innerWidth<=600||Math.min(root.screen.width,root.screen.height)<=600;
  const scaleMax=150;
@@ -93,7 +93,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   const html=document.documentElement,visualTier=official?2:state.preferences.visualTier;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?visualTier:0));
   updateAppearance(official && state.preferences.enabled);
   let glass=!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'));
-  try{const preset=root.DoLUiHost?.layerPresets?.surface;if(official&&preset)glass=preset.resolve(state.preferences.visualGlass?'acrylic':'static',root.CSS)==='acrylic'}catch{/* Existing settings CSS remains the fallback. */}
+  try{const preset=host?.layerPresets?.surface;if(official&&preset)glass=preset.resolve(state.preferences.visualGlass?'acrylic':'static',root.CSS)==='acrylic'}catch{/* Existing settings CSS remains the fallback. */}
   for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||glass));
   if(!html.hasAttribute('data-dgu-visualMotion'))motion.cancel();
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
@@ -175,6 +175,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   if(!store.storageError)state.message=value?'Soft & Wet 界面已启用。':'已回到原版界面；显示偏好已保留。';
  }
  function finishClose(){
+  motion.dispose();
   document.documentElement.removeAttribute('data-dgu-settings-open');if(!controls)return;controls.removeAttribute('data-sf-leaving');
   const restore=presentation==='modal'||controls.contains(document.activeElement);
   if(controls.open&&typeof controls.close==='function')controls.close();else controls.removeAttribute('open');
@@ -218,7 +219,11 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   // Native modal hit testing does not stop delegated game handlers from receiving our controls' events.
   for(const type of ['click','input','change','pointerdown','pointerup','touchstart','touchend','keyup'])controls.addEventListener(type,event=>event.stopPropagation());
   controls.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Escape'&&!isOpenSelectEscape(event)){event.preventDefault();closeSettings()}});
-  controls.addEventListener('close',()=>{if(!controls?.open){document.documentElement.removeAttribute('data-dgu-settings-open');++transition;motion.cancel();controls?.removeAttribute('data-sf-leaving')}});
+  controls.addEventListener('close',event=>{
+   if(!scope.active()||event.target!==controls||controls.open)return;
+   document.documentElement.removeAttribute('data-dgu-settings-open');++transition;
+   motion.dispose();controls.removeAttribute('data-sf-leaving');
+  });
   controls.addEventListener('cancel',event=>{event.preventDefault();closeSettings()});
   controls.addEventListener('click',event=>{if(event.target===controls)closeSettings()});
  }

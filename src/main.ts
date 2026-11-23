@@ -48,7 +48,8 @@ if(!runtime.DoLGameUI){
  start('DoLPanelsUI',()=>startPanels(runtime,wardrobeFramework,themePreferences.pages));
  start('DoLShopUI',()=>startShop(runtime,wardrobeFramework,themePreferences.pages));
  start('DoLSavesUI',()=>startSaves(runtime,wardrobeFramework,themePreferences.pages));
- start('DoLCombatUI',()=>startCombat(wardrobeFramework,themePreferences.pages));start('DMTLayout',()=>startLayout());start('DoLMidnightTheme',()=>startTheme(runtime,themePreferences));
+ start('DoLCombatUI',()=>startCombat(wardrobeFramework,themePreferences.pages));start('DMTLayout',()=>startLayout());
+ start('DoLMidnightTheme',()=>startTheme(runtime,themePreferences,'modal',wardrobeFramework?.host));
  let floating:ReturnType<typeof startFloatingTools>|undefined;
  let uiRuntime:ReturnType<typeof createUiRuntime>|undefined;
  runtime.DoLGameUI={version:'2.7.0',openSettings:()=>runtime.DoLMidnightTheme?.openSettings(),

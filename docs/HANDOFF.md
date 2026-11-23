@@ -1,5 +1,9 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · 设置窗口开合
+
+在 `8811bf6` 上，正式设置入口绑定本次启动的 Host。反向时保留面板轨道，最终关闭时释放；表单、偏好和焦点仍由设置控制器负责。Windows 独立 Chrome 157 加载本地构建的 Host 和完整 UI：[入口回归](../prototypes/host5/panel-budget/settings-entry.mts)在关闭中点重开后沿用同一播放器，Escape 最终关闭时轨道创建/释放为 1/1，焦点回到侧栏按钮。隐藏可选能力的兼容夹具走原淡入淡出，减少动态时开合直接到位。[完整表单检查](../prototypes/host5/panel-budget/full-form.mts)验证玻璃开关及相邻面板保持可用。本批仅在桌面中性页面验收。
+
 ## #41 · Windows 跨 Mod Inspector
 
 从 UI `2812d48` 接续，以 Loader E39 `1bea13e7` 的真实 mainline 和 Inspector，在独立桌面 Chrome 验过单独打开、与 Settings 共存、关闭重开、订阅及分别释放。两方只清理自己的资源，输入和焦点归属通过。变动限于中性研究夹具及记录。[固定输入、实测与复跑](../prototypes/host5/panel-budget/sticky/README.md#e39--windows-桌面-modeless-接入)
