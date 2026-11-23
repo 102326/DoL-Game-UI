@@ -53,3 +53,24 @@ Android 17（API 37），Google WebView 157.0.8103.52，使用[独立离线测�
 | Home 后返回可见 | 908.8 | 4 / 0 | 无活动反馈轨 | 输入框，面板打开 |
 
 在 Home 造成的 hidden 事件中，原对象 2 和 3 已进入 idle。回到前台沿用同一文档，只启动新的云层动画，面板仍有约 330 × 124 CSS px 的布局。此次没有发生进程重建，也没有采集屏幕呈现时延。首版测试壳拦截了自己的本地页面导航，失败发生在输入操作之前；移除该拦截后完成表中这一轮。
+
+## Android 面板实时模糊对照
+
+用同一个离线 APK，在每次启动时通过字符串 extra `material` 选择 `live` 或 `static`。两组均挂载原来的 scrim，保留 `rgba(24, 32, 43, 0.5)` 底色。唯一不同的样式是 scrim 的 `backdrop-filter`，分别为 `blur(8px)` 和 `none`。云层及面板按原速播放，面板展开与收起仍使用原来的按钮。材质对照有独立的观测入口，不加载键盘实验的减速脚本。
+
+1. 运行 `node prototypes/host5/composition/build-tablet-page.mts --material-ab`，得到 `tests/artifacts/host5-acrylic-ab/index.html`。运行 `node prototypes/host5/composition/material-probe-check.mts` 可在独立桌面 Chrome 检查两组的样式、控件、几何及采样输出。
+2. 按[离线测试壳的构建说明](android/README.md)把该页面装入一个 APK。每组启动全新 Activity，例如 `adb shell am start -S -n org.dolui.host5.neutralprobe/.ProbeActivity --es material live`。在同一隔离设备按 live、static、static、live 顺序运行，点一次展开，等待上一笔记录完成，再点原位置收起。
+3. `Host5Probe` 日志中，每个 `action` 保存该次点击之后约 400 ms 内相邻 rAF 时间戳之差（毫秒）；`firstCallbackMs` 是 DOM click 时间戳到首个 rAF 回调的时间。打开和收起分开读，收起期间包括反馈结束后面板已隐藏的帧。无效或被打断的动作以 `invalid` 标记并保留。
+
+### 家用平板结果
+
+Android 17、Google WebView 157.0.8103.52，视口 1363 × 909 CSS px，面板 330 × 123.92 CSS px。先启动一次定位按钮，没有点击；正式四轮均重新启动同一 APK，前台就绪后等待 1000 ms，在同一坐标点开、等待 1100 ms 再点收起。八次均为有焦点的可信点击，无窗口中断，云层速率 +1，面板展开 +1、收起 −1。[逐动作的 385 个 rAF 间隔及页面、APK 摘要](android/material-ab-result.json)
+
+| 顺序、材质 | 间隔数（展开 / 收起） | 最大 rAF 间隔（展开 / 收起，ms） | DOM click 到首个 rAF 回调（展开 / 收起，ms） |
+| --- | --- | --- | --- |
+| 1 · 实时模糊 | 46 / 48 | 25.0 / 8.4 | 10.0 / 9.3 |
+| 2 · 静态材质 | 48 / 49 | 8.5 / 8.4 | 10.9 / 10.4 |
+| 3 · 静态材质 | 48 / 48 | 8.4 / 8.4 | 12.2 / 12.8 |
+| 4 · 实时模糊 | 48 / 50 | 25.0 / 8.4 | 7.8 / 11.1 |
+
+各动作的 rAF 间隔中位数均为 8.3 ms，P95（最近秩）均为 8.4 ms。两次实时模糊展开都在第三个间隔读到 25 ms；样本保留第 4 轮首个 0.114 ms 的短间隔。每种材质只有两次展开，无法据此归因 GPU 合成开销，产品默认沿用现值。本轮没有与点击对应的屏幕呈现时间戳。

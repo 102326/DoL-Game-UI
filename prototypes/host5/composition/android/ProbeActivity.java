@@ -20,7 +20,12 @@ public final class ProbeActivity extends Activity {
   setContentView(view);
   try (InputStream input = getAssets().open("index.html"); ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
    byte[] buffer = new byte[8192]; int n; while ((n = input.read(buffer)) != -1) bytes.write(buffer, 0, n);
-   view.loadDataWithBaseURL("https://host5.invalid/", bytes.toString("UTF-8"), "text/html", "UTF-8", null);
+   String html = bytes.toString("UTF-8");
+   String material = getIntent().getStringExtra("material");
+   if ("live".equals(material) || "static".equals(material)) {
+    html = html.replaceFirst("<html ", "<html data-material=\"" + material + "\" ");
+   }
+   view.loadDataWithBaseURL("https://host5.invalid/", html, "text/html", "UTF-8", null);
   } catch (IOException e) { throw new IllegalStateException("Missing probe asset", e); }
  }
 }
