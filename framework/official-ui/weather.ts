@@ -3,6 +3,7 @@ import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {isMaterialTransformMutation} from '../../src/ui/material-motion-style';
 import {settingsWeather} from '../../src/ui/weather/settings';
+import {precipitationPhase} from '../motion/precipitation-phase';
 type WeatherKind='clear'|'cloud'|'rain'|'snow'|'storm'|'fog'|'unknown';
 type RainLevel='normal'|'light'|'heavy'|'severe';
 export type WeatherSpecial='none'|'blood-moon'|'tentacle'|'heat'|'cold';
@@ -34,9 +35,13 @@ export function readGameWeather(root:WeatherHost=window as Window & WeatherHost)
  }catch{return{kind:'unknown',night:false,rain:'normal'}}
 }
 
-export function headerWeather(){
+export function headerWeather(phase=precipitationPhase()){
  type Surface={header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;material:boolean;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
  const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=sourceMotion();scope.own(()=>motion.dispose());let stopTimer:(()=>void)|undefined,state=readGameWeather(),foreground:HTMLElement|null=null;
+ function syncPhase(immediate:boolean){
+  phase.set(state.kind==='snow'?'snow':state.kind==='rain'||state.kind==='storm'?'rain':'sunny',immediate);
+ }
+ syncPhase(true);
  const visible=(n:HTMLElement)=>n.isConnected&&!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert],[data-sf-leaving]');
  function clean(tasks:Array<()=>void>){const errors:unknown[]=[];for(const task of tasks)try{task()}catch(error){errors.push(error)}if(errors.length)throw new AggregateError(errors,'Weather cleanup failed')}
  function remove(key:string){const s=surfaces.get(key);if(!s)return;surfaces.delete(key);s.revision++;clean([()=>motion.cancel(s.node),()=>s.renderer?.dispose(),()=>s.stopWatch?.(),()=>s.node.remove(),()=>{if(s.materialAttribute!==undefined){if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');else s.parent.setAttribute('data-sf-weather-material',s.materialAttribute)}},()=>{if(!surfaces.size){const stop=stopTimer;stopTimer=undefined;stop?.()}}])}
@@ -64,7 +69,7 @@ export function headerWeather(){
   stopTimer?.();stopTimer=undefined;if(!scope.active()||!surfaces.size||document.hidden)return;
   // Sample geometry once before renderer/attribute writes can invalidate layout.
   const shown=new Set([...surfaces.values()].filter(showing));
-  if(shown.size)state=readGameWeather();
+  if(shown.size){state=readGameWeather();syncPhase(false)}
   for(const[key,s]of surfaces){if(!shown.has(s)){
     // A still-open settings owner can regain geometry without a new navigation intent.
     if(s.renderer&&s.header.isConnected&&s.parent.isConnected&&!s.header.closest('[data-sf-leaving],dialog:not([open])')){if(!s.suspended){s.suspended=true;s.renderer.pause(true)}continue}
@@ -80,12 +85,14 @@ export function headerWeather(){
   const liveSettings=material&&header?.isConnected&&parent?.isConnected&&!header.closest('[data-sf-leaving],dialog:not([open])');
   if(!header||!parent||!visible(header)&&!liveSettings){remove(key);return}
   if(!surfaces.has(key)){
+   // A change during an unobserved interval has no known transition start.
+   if(!surfaces.size){state=readGameWeather();syncPhase(true)}
    if(material){
     const canvas=document.createElement('canvas');canvas.className='sf-weather-canvas';canvas.setAttribute('aria-hidden','true');parent.prepend(canvas);
     const s:Surface={header,parent,node:canvas,key:'',revision:0,material,materialAttribute:parent.getAttribute('data-sf-weather-material')};
     // Establish absolute positioning before the material measures text/control geometry.
     parent.setAttribute('data-sf-weather-material','');
-    try{s.renderer=settingsWeather(canvas,()=>state)}
+    try{s.renderer=settingsWeather(canvas,()=>state,key==='settings'?phase.sample:undefined)}
     catch(error){canvas.remove();if(s.materialAttribute===null)parent.removeAttribute('data-sf-weather-material');else parent.setAttribute('data-sf-weather-material',s.materialAttribute!);s.static=true;console.warn('Window weather unavailable; keeping static Acrylic',error)}
     surfaces.set(key,s);
     if(s.renderer){

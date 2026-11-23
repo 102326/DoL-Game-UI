@@ -1,11 +1,12 @@
 import {visualScope} from '../visual-scope';
 import type {readGameWeather,WeatherSpecial} from '../../../framework/official-ui/weather';
 type Weather=ReturnType<typeof readGameWeather>;
+export type SamplePrecipitation=()=>{rain:number;snow:number};
 export type WeatherFrame={wet:number;snow:number;light:number;night:number;time:number;width:number;height:number;dpr:number;intensity:number;kind:string;special?:WeatherSpecial;specialAmount?:number};
 type Material<Snapshot extends object>={draw:(s:WeatherFrame)=>void;count:number;snapshot:()=>Snapshot;dispose:()=>void;layoutMoving?:()=>boolean;shower?:(value:boolean)=>void};
 
 /** Shared owned clock. Production can supply the owner's shared polling source. */
-export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement,read:()=>Weather,makeMaterial:(invalidate:()=>void)=>Material<Snapshot>,{pace=1,climate=false,managedPoll=false,respectMotion=false}={}){
+export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement,read:()=>Weather,makeMaterial:(invalidate:()=>void)=>Material<Snapshot>,{pace=1,climate=false,managedPoll=false,respectMotion=false}={},samplePrecipitation?:SamplePrecipitation){
  const context=canvas.getContext('2d');if(!context)throw Error('Canvas unavailable; static Acrylic remains usable');
  const scope=visualScope(),reduced=matchMedia('(prefers-reduced-motion: reduce)'),parent=canvas.parentElement!;
  let frame=false,stopPoll:(()=>void)|undefined,last=0,time=0,reads=0,width=0,height=0,dpr=1,frames=0,paused=false,paintMs=0;
@@ -17,11 +18,19 @@ export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement
  const dynamic=()=>!reduced.matches&&(!respectMotion||document.documentElement.hasAttribute('data-dgu-visualmotion'));
  const valid=()=>width>0&&height>0&&Number.isFinite(width+height+dpr);
  function cancel(){scope.cancelFrame(tick);frame=false}
- function draw(){if(!scope.active()||!valid())return;const start=performance.now();material.draw({wet,snow,light,night,time,width,height,dpr,intensity,kind:target.kind,special,specialAmount});paintMs=performance.now()-start}
+ function draw(){if(!scope.active()||!valid())return;const start=performance.now();
+  if(samplePrecipitation){
+   if(dynamic()){const phase=samplePrecipitation();wet=phase.rain;snow=phase.snow}
+   else{const to=targets();wet=to.wet;snow=to.snow}
+  }
+  material.draw({wet,snow,light,night,time,width,height,dpr,intensity,kind:target.kind,special,specialAmount});paintMs=performance.now()-start}
  function request(geometryOnly=false){if(scope.active()&&!document.hidden&&valid()&&(!paused||geometryOnly))frame=scope.frame(tick)||frame}
  function tick(){frame=false;if(!scope.active()||document.hidden||!valid())return;const now=performance.now(),dt=paused||!dynamic()?0:last?Math.min(.05,(now-last)/1000):0;last=now;time+=dt;frames++;
   const to=targets(),step=(a:number,b:number,tau:number)=>a+(b-a)*(1-Math.exp(-dt/(tau*pace)));
-  if(!dynamic()){wet=to.wet;snow=to.snow;light=to.light;night=to.night;intensity=to.intensity}else{wet=step(wet,to.wet,2.2);snow=step(snow,to.snow,3.1);light=step(light,to.light,2.8);night=step(night,to.night,2.8);intensity=step(intensity,to.intensity,.9)}
+  if(!dynamic()){wet=to.wet;snow=to.snow;light=to.light;night=to.night;intensity=to.intensity}else{
+   if(!samplePrecipitation){wet=step(wet,to.wet,2.2);snow=step(snow,to.snow,3.1)}
+   light=step(light,to.light,2.8);night=step(night,to.night,2.8);intensity=step(intensity,to.intensity,.9)
+  }
   const specialTarget=target.special&&target.special!=='none'?1:0;if(specialTarget)special=target.special!;specialAmount=dynamic()?step(specialAmount,specialTarget,1.4):specialTarget;
   draw();if(material.layoutMoving?.())request(true);else if(!paused&&dynamic()&&(wet>.002||snow>.002||specialAmount>.002||specialTarget||Math.abs(wet-to.wet)+Math.abs(snow-to.snow)+Math.abs(light-to.light)+Math.abs(night-to.night)+Math.abs(intensity-to.intensity)>.002))request();
  }

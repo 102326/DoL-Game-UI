@@ -1,13 +1,10 @@
 import {createParticleField, createPrecipitation} from '../precipitation';
 import type {Host, MountContext} from '../../../framework/contracts';
+import {precipitationPhase, duration, frameTime, weightsFor, type Precipitation as Weather} from '../../../framework/motion/precipitation-phase';
 
-type Weather = 'sunny' | 'rain' | 'snow';
 const palette = {sunny: [247,202,108], rain: [110,157,190], snow: [220,235,244]} as const;
 
-const duration = 450;
-const weightsFor = (weather: Weather) => ({rain: Number(weather === 'rain'), snow: Number(weather === 'snow')});
 type Weights = ReturnType<typeof weightsFor>;
-const frameTime = () => Number(document.timeline.currentTime ?? performance.now());
 function sampleColor({rain, snow}: Weights) {
  const sunny = 1 - rain - snow;
  const channels = ([0,1,2] as const).map(i => Math.round(palette.sunny[i]*sunny + palette.rain[i]*rain + palette.snow[i]*snow));
@@ -22,14 +19,10 @@ export function createWeather(host: Readonly<Host>, referenceTime = frameTime) {
  let field: ReturnType<typeof createParticleField> | undefined;
  let leases = 0;
  let weather: Weather = 'sunny';
- let start = -duration, from = weightsFor(weather), target = weightsFor(weather);
- function sample(time = referenceTime()) {
-  const progress = Math.max(0, Math.min(1, (time-start)/duration));
-  return {time, rain: from.rain+(target.rain-from.rain)*progress, snow: from.snow+(target.snow-from.snow)*progress, progress};
- }
+ const phase = precipitationPhase(referenceTime);
  const listeners = new Set<(weather: Weather) => void>();
  const reader = Object.freeze({
-  get: () => weather, sample,
+  get: () => weather, sample:phase.sample,
   fieldUsers: () => leases,
   leaseField() {
    if (!claim.isCurrent()) throw new Error('Weather provider has been released');
@@ -55,10 +48,7 @@ export function createWeather(host: Readonly<Host>, referenceTime = frameTime) {
   reader,
   set(next: Weather) {
    if (!claim.isCurrent()) return;
-   const time = referenceTime();
-   from = sample(time);
-   start = time;
-   target = weightsFor(next);
+   phase.set(next);
    weather = next;
    for (const listener of [...listeners]) {
     if (listeners.has(listener)) listener(next);
