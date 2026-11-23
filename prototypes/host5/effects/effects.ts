@@ -2,19 +2,35 @@ import {createParticleField, createPrecipitation} from '../precipitation';
 import type {Host, MountContext} from '../../../framework/contracts';
 
 type Weather = 'sunny' | 'rain' | 'snow';
-const colors: Record<Weather, string> = {sunny: '#f7ca6c', rain: '#6e9dbe', snow: '#dcebf4'};
+const palette = {sunny: [247,202,108], rain: [110,157,190], snow: [220,235,244]} as const;
+
+const duration = 450;
+const weightsFor = (weather: Weather) => ({rain: Number(weather === 'rain'), snow: Number(weather === 'snow')});
+type Weights = ReturnType<typeof weightsFor>;
+const frameTime = () => Number(document.timeline.currentTime ?? performance.now());
+function sampleColor({rain, snow}: Weights) {
+ const sunny = 1 - rain - snow;
+ const channels = ([0,1,2] as const).map(i => Math.round(palette.sunny[i]*sunny + palette.rain[i]*rain + palette.snow[i]*snow));
+ return 'rgb(' + channels.join(', ') + ')';
+}
 
 /** One Host claim owns the shared state; consumers only subscribe to it. */
-export function createWeather(host: Readonly<Host>) {
+export function createWeather(host: Readonly<Host>, referenceTime = frameTime) {
  const owner = host.register('EffectsWeather');
  const claim = owner.claim('region', 'EffectsWeather');
  if (!claim) {owner.dispose(); throw new Error('Weather resource already owned')}
  let field: ReturnType<typeof createParticleField> | undefined;
  let leases = 0;
  let weather: Weather = 'sunny';
+ let start = -duration, from = weightsFor(weather), target = weightsFor(weather);
+ function sample(time = referenceTime()) {
+  const progress = Math.max(0, Math.min(1, (time-start)/duration));
+  return {time, rain: from.rain+(target.rain-from.rain)*progress, snow: from.snow+(target.snow-from.snow)*progress, progress};
+ }
  const listeners = new Set<(weather: Weather) => void>();
  return {
-  get: () => weather,
+  get: () => weather, sample,
+  fieldUsers: () => leases,
   leaseField() {
    if (!claim.isCurrent()) throw new Error('Weather provider has been released');
    const current = field ??= createParticleField();
@@ -26,7 +42,7 @@ export function createWeather(host: Readonly<Host>) {
     if (--leases === 0) field = undefined;
    }};
   },
-  set(next: Weather) {if (!claim.isCurrent()) return; weather = next; for (const listener of [...listeners]) listener(next)},
+  set(next: Weather) {if (!claim.isCurrent()) return; const time=referenceTime(); from=sample(time); start=time; target=weightsFor(next); weather = next; for (const listener of [...listeners]) listener(next)},
   subscribe(listener: (weather: Weather) => void) {
    if (!claim.isCurrent()) throw new Error('Weather provider has been released');
    listener(weather); listeners.add(listener); return () => {listeners.delete(listener)}},
@@ -48,13 +64,6 @@ function setup(context: MountContext, shared: ReturnType<typeof createWeather>, 
  const lease = shared.leaseField();
  context.onCleanup(lease.release);
  const precipitation = createPrecipitation(root, backend, lease.field);
- type Weights = {rain: number; snow: number};
- let weights: Weights = {rain: 0, snow: 0}, from: Weights = {...weights}, target: Weights = {...weights}, started = performance.now();
- function sample(now: number) {
-  const t = Math.min(1, Math.max(0, (now - started) / 450));
-  weights = {rain: from.rain + (target.rain - from.rain) * t, snow: from.snow + (target.snow - from.snow) * t};
-  return t;
- }
  const label = root.querySelector<HTMLElement>('.weather-label')!;
  const ability = root.querySelector<HTMLButtonElement>('.ability')!;
  let frame = 0, disposed = false, shift = 0, origin = 0, pointer: number | null = null;
@@ -64,7 +73,6 @@ function setup(context: MountContext, shared: ReturnType<typeof createWeather>, 
  function watchScene() {
   const captured = binding;
   captured.signal.addEventListener('abort', () => {
-   sample(performance.now()); from = {...weights}; target = {...weights};
    cancelAnimationFrame(frame); frame = 0;
    const color = getComputedStyle(root).backgroundColor;
    transition?.cancel(); transition = undefined; root.style.backgroundColor = color;
@@ -73,25 +81,37 @@ function setup(context: MountContext, shared: ReturnType<typeof createWeather>, 
  }
  watchScene();
  // WAAPI owns only background-color; canvas has its own requestAnimationFrame clock.
- function apply(next: Weather) {
+ function apply(next: Weather, joining = false) {
   if (!binding.isCurrent()) return;
-  const previous = getComputedStyle(root).backgroundColor;
+  const point = shared.sample();
+  const previous = joining ? sampleColor(point) : getComputedStyle(root).backgroundColor;
   transition?.cancel(); label.textContent = next; root.dataset.weather = next;
-  root.style.backgroundColor = colors[next];
-  if (!reducedMotion.matches) transition = root.animate([{backgroundColor: previous}, {backgroundColor: colors[next]}], {duration: 450, easing: 'ease-out'});
-  sample(performance.now()); from = {...weights}; target = {rain: next === 'rain' ? 1 : 0, snow: next === 'snow' ? 1 : 0}; started = performance.now();
-  if (reducedMotion.matches) {cancelAnimationFrame(frame); frame = 0; weights = {...target}; from = {...weights}; precipitation.paint(0, weights)}
-  else if (!frame) frame = requestAnimationFrame(draw);
+  const endpoint = sampleColor(weightsFor(next));
+  root.style.backgroundColor = endpoint;
+  if (reducedMotion.matches) {
+   cancelAnimationFrame(frame); frame = 0; precipitation.paint(0, weightsFor(next));
+   return;
+  }
+  // A late mount starts at the current mix and has only the remaining interval.
+  // An interrupted local animation resumes from its actual painted color.
+  const remaining = duration * (1-point.progress);
+  if (remaining > 0 || previous !== endpoint) {
+   transition = root.animate([{backgroundColor: previous}, {backgroundColor: endpoint}], {duration:remaining || duration, easing:'linear'});
+   transition.startTime = frameTime();
+  }
+  precipitation.paint(point.time, point);
+  if (!frame) frame = requestAnimationFrame(draw);
  }
- const unsubscribe = shared.subscribe(apply);
+ let first = true;
+ const unsubscribe = shared.subscribe(next => {apply(next, first); first = false});
  const motionChanged = () => {if (reducedMotion.matches) {settling?.cancel(); settling = undefined; showShift(0)} apply(shared.get())};
  reducedMotion.addEventListener('change', motionChanged);
  context.onScene(() => {binding = context.binding(); watchScene(); apply(shared.get())});
- function draw(time: number) {
+ function draw() {
   if (disposed || !binding.isCurrent()) {frame = 0; return}
-  const done = sample(time);
-  precipitation.paint(time, weights);
-  if (done === 1 && target.rain === 0 && target.snow === 0) frame = 0;
+  const point = shared.sample();
+  precipitation.paint(point.time, point);
+  if (point.progress === 1 && !point.rain && !point.snow) frame = 0;
   else frame = requestAnimationFrame(draw);
  }
  function showShift(value: number) {

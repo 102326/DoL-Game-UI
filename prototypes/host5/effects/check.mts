@@ -21,7 +21,12 @@ try {
  assert.equal(await page.locator('[data-page="one"]').count(), 1);
  await page.getByRole('button', {name:'Rain', exact:true}).click();
  await page.evaluate(() => {window.testOverlay = document.querySelector('#panel .effects-surface')!; window.testPage = document.querySelector('#scene-content article')!; window.testPageEffect = document.querySelector('#page .effects-surface')!});
- const oldShift = await page.locator('#panel .effects-surface').getAttribute('data-shift');
+ // Invalidation freezes the displayed transform, including an unfinished entry.
+ const oldShift = await page.locator('#panel .effects-surface').evaluate(el => {
+  const move=el.getAnimations().find(a=>(a.effect as KeyframeEffect).getKeyframes().some(k=>k.transform));
+  if(move){move.pause();move.currentTime=120}
+  return String(Math.round(new DOMMatrixReadOnly(getComputedStyle(el).transform).m41));
+ });
  await page.getByRole('button', {name:'New scene'}).click();
  assert.equal(await page.locator('[data-page="two"]').count(), 1);
  assert.equal(await page.evaluate(() => window.testPage !== document.querySelector('#scene-content article')), true);
