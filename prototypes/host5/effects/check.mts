@@ -3,7 +3,7 @@ import {chromium, type Browser} from 'playwright';
 import assert from 'node:assert/strict';
 import type {Host} from '../../../framework/contracts';
 import type {createWeather} from './effects';
-declare global {interface Window {effectsDemo: {host: Readonly<Host>; shared: ReturnType<typeof createWeather>; page: {dispose(): void}}; testOverlay?: Element; testPage?: Element; testPageEffect?: Element}}
+declare global {interface Window {effectsDemo: {host: Readonly<Host>; shared: ReturnType<typeof createWeather>['reader']; page: {dispose(): void}}; testOverlay?: Element; testPage?: Element; testPageEffect?: Element}}
 const server = await createServer({configFile: false, server: {host: '127.0.0.1', port: 0}});
 let browser: Browser | undefined;
 try {
@@ -105,11 +105,11 @@ try {
  // Color continuity across both weather interruption and generation invalidation.
  const colors = await page.evaluate(() => {
   const el = document.querySelector<HTMLElement>('#panel .effects-surface')!;
-  window.effectsDemo.shared.set('rain');
+  document.querySelector<HTMLButtonElement>('[data-weather="rain"]')!.click();
   let animation = el.getAnimations().find(a => (a.effect as KeyframeEffect).getKeyframes().some(k => k.backgroundColor))!;
   animation.pause(); animation.currentTime = 180;
   const mid = getComputedStyle(el).backgroundColor;
-  window.effectsDemo.shared.set('snow');
+  document.querySelector<HTMLButtonElement>('[data-weather="snow"]')!.click();
   const interrupted = getComputedStyle(el).backgroundColor;
   animation = el.getAnimations().find(a => (a.effect as KeyframeEffect).getKeyframes().some(k => k.backgroundColor))!;
   animation.pause(); animation.currentTime = 100;

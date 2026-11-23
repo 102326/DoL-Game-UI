@@ -11,7 +11,7 @@ const server=await createServer({configFile:false,server:{host:'127.0.0.1',port:
  })}}]});
 await server.listen();
 const address=server.httpServer!.address();assert.ok(address&&typeof address==='object');
-const browser=await chromium.launch();
+const browser=await chromium.launch(process.env.HOST5_CHROME ? {channel:'chrome'} : {});
 try{
  const page=await browser.newPage();const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:'+address.port+'/receivers');
@@ -22,7 +22,21 @@ try{
   const budget=(await load('/framework/motion/panel-budget.ts')).createPanelBudget(window) as ReturnType<typeof createPanelBudget>;
   let time=0;
   const shared=effects.createWeather(host,()=>time), a=document.querySelector<HTMLElement>('#a')!,b=document.querySelector<HTMLElement>('#b')!;
-  const mount=(id:string,parent:HTMLElement)=>effects.mountEffects(host,id,parent,shared,'svg');
+  const reader=shared.reader;
+  const readerBoundary=Object.isFrozen(reader)&&!('set' in reader)&&!('dispose' in reader)&&!Reflect.set(reader,'set',()=>{});
+  const firstLease=reader.leaseField(),secondLease=reader.leaseField();
+  firstLease.release();firstLease.release();const separateLease=reader.fieldUsers()===1;
+  secondLease.release();
+  let notices=0;const listener=()=>{notices++};
+  const unsubscribeA=reader.subscribe(listener),unsubscribeB=reader.subscribe(listener);
+  unsubscribeA();shared.set('sunny');const separateSubscriptions=notices===3&&reader.count()===1;
+  unsubscribeB();let threw=false;try{reader.subscribe(()=>{throw Error('listener')})}catch{threw=true}
+  const throwingListener=threw&&reader.count()===0;
+  let notify=false,secondNotices=0,unsubscribeSecond=()=>{};
+  const unsubscribeFirst=reader.subscribe(()=>{if(notify)unsubscribeSecond()});
+  unsubscribeSecond=reader.subscribe(()=>{if(notify)secondNotices++});notify=true;shared.set('sunny');
+  const unsubscribeDuringNotify=secondNotices===0;unsubscribeFirst();
+  const mount=(id:string,parent:HTMLElement)=>effects.mountEffects(host,id,parent,shared.reader,'svg');
   const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
   const observed=(parent:HTMLElement)=>{
    const svg=parent.querySelector('svg')!,groups=svg.querySelectorAll('g');
@@ -38,7 +52,7 @@ try{
   const otherHost=(await load('/framework/host.ts')).createHost(window) as ReturnType<typeof createHost>;
   const privateWeather=effects.createWeather(otherHost,()=>time);
   privateWeather.set('snow');
-  const wrong=effects.mountEffects(otherHost,'OnlyTarget',b,privateWeather,'svg');const targetOnly=observed(b);
+  const wrong=effects.mountEffects(otherHost,'OnlyTarget',b,privateWeather.reader,'svg');const targetOnly=observed(b);
   wrong.dispose();privateWeather.dispose();otherHost.dispose();
 
   let B=mount('PanelWeather',b);
@@ -48,17 +62,28 @@ try{
   const closing=track.to(signal,false);
   const reversed=closing===opening&&opening.playbackRate<0&&before===getComputedStyle(signal).transform;
   time=765;await frame();const later=[observed(a),observed(b)];
-  B.dispose();const usersAfterB=shared.fieldUsers();B=mount('PanelWeather',b);
+  B.dispose();const usersAfterB=reader.fieldUsers();B=mount('PanelWeather',b);
   const remount=[observed(a),observed(b)],aSurvived=aNode===a.querySelector('svg');
   shared.set('rain');const redirected=[observed(a),observed(b)];
   time=990;await frame();const returning=[observed(a),observed(b)];
   // Probe a field identity, immediately returning the extra lease before changing ownership.
-  const probe=shared.leaseField(),original=probe.field;probe.release();
-  A.dispose();const survivor=shared.leaseField(),kept=survivor.field===original;survivor.release();
-  const usersAfterA=shared.fieldUsers();B.dispose();const empty=shared.fieldUsers();
-  const next=shared.leaseField(),recreated=next.field!==original;next.release();
-  track.release();budget.dispose();shared.dispose();host.dispose();
-  return {initial,targetOnly,joined,differentRenderers,reversed,later,remount,aSurvived,redirected,returning,usersAfterB,usersAfterA,empty,kept,recreated,
+  const probe=reader.leaseField(),original=probe.field;probe.release();
+  A.dispose();const survivor=reader.leaseField(),kept=survivor.field===original;survivor.release();
+  const usersAfterA=reader.fieldUsers();B.dispose();const empty=reader.fieldUsers();
+  const next=reader.leaseField(),recreated=next.field!==original;next.release();
+  track.release();budget.dispose();shared.dispose();
+  let leaseRejected=false,subscribeRejected=false;
+  try{reader.leaseField()}catch{leaseRejected=true}
+  try{reader.subscribe(()=>{})}catch{subscribeRejected=true}
+  shared.set('sunny');const disposed=leaseRejected&&subscribeRejected&&reader.get()==='rain'&&reader.count()===0;
+  const disposable=effects.createWeather(host,()=>time);disposable.reader.subscribe(()=>disposable.dispose());
+  const immediateDispose=disposable.reader.count()===0;
+  const notifying=effects.createWeather(host,()=>time);let disposeOnNotify=false,afterDispose=0;
+  notifying.reader.subscribe(()=>{if(disposeOnNotify)notifying.dispose()});
+  notifying.reader.subscribe(()=>{if(disposeOnNotify)afterDispose++});disposeOnNotify=true;notifying.set('rain');
+  const disposeDuringNotify=afterDispose===0&&notifying.reader.count()===0;
+  host.dispose();
+  return {readerBoundary,separateLease,separateSubscriptions,throwingListener,immediateDispose,unsubscribeDuringNotify,disposeDuringNotify,disposed,initial,targetOnly,joined,differentRenderers,reversed,later,remount,aSurvived,redirected,returning,usersAfterB,usersAfterA,empty,kept,recreated,
    painters:document.querySelectorAll('svg').length,claims:host.getDiagnostics().claims.length};
  });
  assert.deepEqual(result.initial,result.joined);assert.notEqual(result.targetOnly.snow,result.joined.snow);
@@ -67,7 +92,7 @@ try{
  for(const pair of [result.later,result.remount,result.redirected,result.returning])assert.deepEqual(pair[0],pair[1]);
  assert.deepEqual(result.later,result.remount);assert.deepEqual(result.redirected,result.later);
  assert.ok(Math.abs(result.later[0]!.snow-.7)<1e-8 && Math.abs(result.returning[0]!.snow-.35)<1e-8);
- assert.ok(result.reversed&&result.aSurvived&&result.differentRenderers&&result.kept&&result.recreated);
+ assert.ok(result.readerBoundary&&result.separateLease&&result.separateSubscriptions&&result.throwingListener&&result.immediateDispose&&result.unsubscribeDuringNotify&&result.disposeDuringNotify&&result.disposed&&result.reversed&&result.aSurvived&&result.differentRenderers&&result.kept&&result.recreated);
  assert.deepEqual([result.usersAfterB,result.usersAfterA,result.empty,result.painters,result.claims],[1,1,0,0,0]);assert.deepEqual(errors,[]);
  const live=await page.evaluate(async()=>{
   const load=(p:string)=>import(/* @vite-ignore */p);
@@ -75,11 +100,11 @@ try{
   const effects=await load('/prototypes/host5/effects/effects.ts') as {createWeather:typeof createWeather;mountEffects:typeof mountEffects};
   const shared=effects.createWeather(host);
   const a=document.querySelector<HTMLElement>('#a')!,b=document.querySelector<HTMLElement>('#b')!;
-  const A=effects.mountEffects(host,'LiveA',a,shared,'svg');
+  const A=effects.mountEffects(host,'LiveA',a,shared.reader,'svg');
   const nextFrame=()=>new Promise<void>(r=>requestAnimationFrame(()=>r()));
-  shared.set('rain');while(shared.sample().progress<1)await nextFrame();
-  shared.set('snow');while(shared.sample().progress<.45)await nextFrame();
-  const B=effects.mountEffects(host,'LiveB',b,shared,'svg');
+  shared.set('rain');while(shared.reader.sample().progress<1)await nextFrame();
+  shared.set('snow');while(shared.reader.sample().progress<.45)await nextFrame();
+  const B=effects.mountEffects(host,'LiveB',b,shared.reader,'svg');
   const read=(n:HTMLElement)=>({snow:Number(n.querySelectorAll('g')[1]!.getAttribute('fill-opacity'))/.85,
    x:n.querySelector('circle')!.getAttribute('cx'),y:n.querySelector('circle')!.getAttribute('cy')});
   const pair=[read(a),read(b)];B.dispose();A.dispose();shared.dispose();host.dispose();return pair;

@@ -21,7 +21,7 @@ connectConsumer(host => {
       }});
     }
     provider.provideView({id: 'surface', title: '天气效果', setup(context) {
-      const surface = mountEffects(host, `AtmosphereSurface${++sequence}`, context.element, shared);
+      const surface = mountEffects(host, `AtmosphereSurface${++sequence}`, context.element, shared.reader);
       context.onCleanup(surface.dispose);
     }});
   } catch (error) {

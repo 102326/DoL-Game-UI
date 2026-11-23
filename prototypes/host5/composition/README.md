@@ -34,3 +34,22 @@ node prototypes/host5/panel-budget/preview.mts
 ```
 
 同一预览服务下访问 `/prototypes/host5/composition/`；`?play=independent` 切换到独立对照。[逐轮记录](mac-result.json)
+
+## 平板软键盘和 Home 返回
+
+执行 `node prototypes/host5/composition/build-tablet-page.mts`，即可将上面的场景、样式和[观测脚本](tablet-probe.ts)打成单个离线文件 `tests/artifacts/host5-tablet-page/index.html`。同一文件可在独立桌面浏览器或测试 WebView 中打开。页面只记录焦点所属元素，不采集输入内容。
+
+点一次「键盘观测」会在键盘弹出前打开面板并记录云层、面板的原始动画对象。为使两条轨道覆盖手动操作的时间，观测页将当时的播放速率分别设为 0.1 和 0.001。关闭键盘，再按 Home 并返回该测试应用。每条 `SW41` 记录包含文档时间原点、事件名、布局与视觉视口尺寸（CSS px）、焦点、轨道对象编号和时间（ms）。`raf:` 是事件后的首个可观测绘制前回调。返回后时间原点相同表示沿用原文档；重新出现 boot 且时间原点改变表示新文档，编号只在各自文档内可比。
+
+### 家用平板单次观测
+
+Android 17（API 37），Google WebView 157.0.8103.52，使用[独立离线测试壳](android/README.md)。页面 SHA-256 为 `0e81129da49acd89bdd2163fd3ecf4dc2ee65c15c0dca2a96ed9b4d4e05e360f`。Android 输入法状态确认键盘已显示，按返回键后已收起。初次加载的 resize 单独计算。键盘打开、关闭各触发一次 `visualViewport.resize` 和一次 `window.resize`，整个操作期间 `innerWidth/Height` 和根元素的 client 尺寸均为 1363 × 909 CSS px，视觉视口宽约 1363.2 px，缩放始终为 1。
+
+| 首个 rAF 读数 | 视觉视口高度（CSS px） | 云层对象 / 进度（ms） | 面板反馈对象 / 进度（ms） | 焦点与面板 |
+| --- | ---: | --- | --- | --- |
+| 输入框获焦，键盘展开前 | 908.8 | 2 / 4451.69 | 3 / 0 | 输入框，面板打开 |
+| 键盘打开的 resize 后 | 508 | 2 / 4460.02 | 3 / 0.07 | 输入框，面板打开 |
+| 键盘收起的 resize 后 | 908.8 | 2 / 5303.35 | 3 / 8.50 | 输入框，面板打开 |
+| Home 后返回可见 | 908.8 | 4 / 0 | 无活动反馈轨 | 输入框，面板打开 |
+
+在 Home 造成的 hidden 事件中，原对象 2 和 3 已进入 idle。回到前台沿用同一文档，只启动新的云层动画，面板仍有约 330 × 124 CSS px 的布局。此次没有发生进程重建，也没有采集屏幕呈现时延。首版测试壳拦截了自己的本地页面导航，失败发生在输入操作之前；移除该拦截后完成表中这一轮。

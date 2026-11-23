@@ -28,7 +28,7 @@ export function createWeather(host: Readonly<Host>, referenceTime = frameTime) {
   return {time, rain: from.rain+(target.rain-from.rain)*progress, snow: from.snow+(target.snow-from.snow)*progress, progress};
  }
  const listeners = new Set<(weather: Weather) => void>();
- return {
+ const reader = Object.freeze({
   get: () => weather, sample,
   fieldUsers: () => leases,
   leaseField() {
@@ -42,22 +42,40 @@ export function createWeather(host: Readonly<Host>, referenceTime = frameTime) {
     if (--leases === 0) field = undefined;
    }};
   },
-  set(next: Weather) {if (!claim.isCurrent()) return; const time=referenceTime(); from=sample(time); start=time; target=weightsFor(next); weather = next; for (const listener of [...listeners]) listener(next)},
   subscribe(listener: (weather: Weather) => void) {
    if (!claim.isCurrent()) throw new Error('Weather provider has been released');
-   listener(weather); listeners.add(listener); return () => {listeners.delete(listener)}},
-  count: () => listeners.size,
+   const subscription = (next: Weather) => listener(next);
+   listener(weather);
+   if (claim.isCurrent()) listeners.add(subscription);
+   return () => {listeners.delete(subscription)};
+  },
+  count: () => listeners.size
+ });
+ return {
+  reader,
+  set(next: Weather) {
+   if (!claim.isCurrent()) return;
+   const time = referenceTime();
+   from = sample(time);
+   start = time;
+   target = weightsFor(next);
+   weather = next;
+   for (const listener of [...listeners]) {
+    if (listeners.has(listener)) listener(next);
+   }
+  },
   dispose() {listeners.clear(); field = undefined; owner.dispose()}
  };
 }
 
-export function mountEffects(host: Readonly<Host>, id: string, parent: HTMLElement, shared: ReturnType<typeof createWeather>, backend: 'canvas' | 'svg' = 'canvas') {
+type WeatherReader = ReturnType<typeof createWeather>['reader'];
+export function mountEffects(host: Readonly<Host>, id: string, parent: HTMLElement, shared: WeatherReader, backend: 'canvas' | 'svg' = 'canvas') {
  const participant = host.register(id);
  const handle = participant.mount({id: 'surface', parent, lifetime: 'persistent', setup(context) {setup(context, shared, backend)}});
  return {handle, dispose: () => participant.dispose()};
 }
 
-function setup(context: MountContext, shared: ReturnType<typeof createWeather>, backend: 'canvas' | 'svg') {
+function setup(context: MountContext, shared: WeatherReader, backend: 'canvas' | 'svg') {
  const root = context.element;
  root.className = 'effects-surface';
  root.innerHTML = `<div class="effects-content"><span class="weather-label"></span><button class="ability" type="button">Drag surface</button><p>Drag the surface, reverse direction, then release.</p></div>`;

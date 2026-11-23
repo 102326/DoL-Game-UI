@@ -16,6 +16,8 @@
 
 B 先退出、或 B 重挂后 A 再退出，粒子场租约均剩 1；最后一方退出变为 0，再申请得到新的粒子场。provider 主动销毁后剩余 Host claim 为零。这里验证了引用与挂载释放，未测 GPU 内存。
 
+消费者接收独立冻结的只读天气接口，可订阅、采样并取得及释放自己的粒子场租约；写入和销毁只留在 provider 对象。迟加入回归同时检查运行时接口不含写入或销毁能力、订阅及租约的独立释放，以及首次通知时抛错或销毁的清理。
+
 ## 复跑与边界
 
 ```sh
@@ -23,5 +25,7 @@ node_modules/.bin/tsc -p prototypes/host5/tsconfig.json
 node prototypes/host5/effects/check-late-join.mts
 node prototypes/host5/effects/check.mts
 ```
+
+迟加入脚本默认使用 Playwright 的 Chromium；如使用本机安装的 Chrome，可设置环境变量 `HOST5_CHROME=1`。
 
 [固定时点和自然帧读数](late-join-result.json)。旧回归曾在入场位移尚未结束时读到目标 0、切场却冻结在实际显示位置 4。现固定正在播放的入场位置，从计算变换读取预期值，核对切场冻结的画面；原有色彩连续、输入打断与清理检查通过。Windows 和 Android WebView 上仍需观察真实帧节奏、动态偏好切换与后台恢复。此次未验证设备显示同步或多个绘制器的性能收益。
