@@ -1,5 +1,9 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · Host 组合表现切片（公司 Mac）
+
+从 `87aa02c` 接续。[云层、实时材质与可中断前台反馈](../prototypes/host5/composition/README.md)已完成中性同画面对照。两位参与者独立释放，实验默认只作用于原型。下一步用家庭设备检查实际呈现与合成开销；60% 候选和预算默认值仍待独立裁决。结果仅在本地研究分支。
+
 ## #41 · 外部只读 Inspector（公司 Mac）
 
 [真实 Sticky Fingers 接入、固定输入与复跑](../prototypes/host5/panel-budget/sticky/README.md)。公司 Mac 上已验证 E32 延续至 E35 的真实实现与 Host modeless 桥；正式抽屉与原 runner 独立通过。家庭设备接续需先核对 E39 固定输入。研究仅保存在本机。
