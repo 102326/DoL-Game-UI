@@ -1,5 +1,18 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · Windows 同页从后台返回
+
+产品源码 `6aef33c`。Chrome 157.0.8103.79 的独立临时 Profile 加载同一个中性 SugarCube 故事和正式 Host/UI 构建。使用原生标签切换，记录可信的 hidden/visible 事件；天气输入来自夹具，浏览器时钟自然运行。两次返回均保留原文档、Canvas 和有效 Host 绑定。两段隐藏期间天气绘制、天气读取和待执行的 500 ms 轮询均为 0，返回后各恢复一个轮询。
+
+| 实际隐藏时长 | 返回时首次 Canvas 绘制 | 首次 rAF 内的天气绘制 |
+| --- | --- | --- |
+| 123 ms | 转场已过 148.9 ms，读取到 14.4 ms 的旧相位 | 读到 157.2 ms，接续雨转雪 |
+| 1214.6 ms | 转场已过 1434.0 ms，仍画 200.0 ms 的雨雪混合 | 已达全雪，边缘 alpha 0.300 |
+
+首笔绘制的时效断言在两个样本上均失败，首个动画帧内的绘制已跟上。可见性回调同步调用 `resized()` 绘制，此时 `document.timeline.currentTime` 仍停在上一个渲染帧。本轮只记录 Canvas 像素与调用时刻；哪一笔实际呈现到了屏幕、页面销毁重建以及系统挂起均未测。
+
+复跑已有构建后执行 `node prototypes/host5/panel-budget/weather/background-return.mts <上游ZIP路径>`。脚本关闭 Playwright 的焦点模拟，并屏蔽其他桌面窗口遮挡对测试可见性的干扰。普通自动化上下文的预检未产生 hidden 事件；两次准备阶段超时，未计入样本。[同页返回回归](../prototypes/host5/panel-budget/weather/background-return.mts)
+
 ## #41 · Passage 切页时接续雨雪
 
 Windows 独立 Chrome 157.0.8103.79 加载正式 Host/UI 构建和四段无游戏素材的中性故事。点击故事链接，由 SugarCube 2.37.3+10338 实际发出从 `:passageinit` 到 `:passageend` 的五个事件。夹具仅提供天气输入、标记可承载天气的标题区，并将天气采样时钟固定在雨转雪的第 225/450 ms。
