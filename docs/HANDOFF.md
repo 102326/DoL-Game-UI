@@ -2,7 +2,7 @@
 
 ## #41 · 5.0 面板共享预算研究（公司 Mac）
 
-本地分支 `research/5.0-panel-budget` 从远端 `12081fb` 接续，未推送。可从[第一刀记录、复跑与中性预览](../prototypes/host5/panel-budget/README.md)接手。设置和独立检查器已共用 Host 播放接口。4.5.2 的窄屏修复与回归已带入该研究工作树。接下来先比较天气长期占用与面板抢占，再决定是否扩大接入范围。#42 独立接续。
+本地分支 `research/5.0-panel-budget` 从远端 `12081fb` 接续，未推送。可从[第一刀记录、复跑与中性预览](../prototypes/host5/panel-budget/README.md)接手。设置和独立检查器已共用 Host 播放接口。4.5.2 的窄屏修复与回归已带入该研究工作树。[天气播放 A/B/C 对照](../prototypes/host5/panel-budget/weather/README.md)已在公司 Mac 完成。按需名额能保留淡入，但首次可观测变化没有提前；沿用共享默认。后续优先核对真实 WebView 的输入到呈现轨迹。#42 独立接续。
 
 
 ## 5.0 研究分支 · 2026-11-23
