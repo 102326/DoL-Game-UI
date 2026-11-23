@@ -92,7 +92,7 @@ export function headerWeather(phase=precipitationPhase()){
     const s:Surface={header,parent,node:canvas,key:'',revision:0,material,materialAttribute:parent.getAttribute('data-sf-weather-material')};
     // Establish absolute positioning before the material measures text/control geometry.
     parent.setAttribute('data-sf-weather-material','');
-    try{s.renderer=settingsWeather(canvas,()=>state,key==='settings'?phase.sample:undefined)}
+    try{s.renderer=settingsWeather(canvas,()=>state,key==='settings'||key==='passage'?phase.sample:undefined)}
     catch(error){canvas.remove();if(s.materialAttribute===null)parent.removeAttribute('data-sf-weather-material');else parent.setAttribute('data-sf-weather-material',s.materialAttribute!);s.static=true;console.warn('Window weather unavailable; keeping static Acrylic',error)}
     surfaces.set(key,s);
     if(s.renderer){

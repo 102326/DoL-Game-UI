@@ -1,5 +1,13 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · Passage 切页时接续雨雪
+
+Windows 独立 Chrome 157.0.8103.79 加载正式 Host/UI 构建和四段无游戏素材的中性故事。点击故事链接，由 SugarCube 2.37.3+10338 实际发出从 `:passageinit` 到 `:passageend` 的五个事件。夹具仅提供天气输入、标记可承载天气的标题区，并将天气采样时钟固定在雨转雪的第 225/450 ms。
+
+修复前，新 Passage 的 Canvas 首次绘制直接采用全雪权重（边缘 alpha 0.300）。接入 UI 天气所有者已有的相位读取函数后，首次绘制取得雨雪各半的 0.234，并读到非透明像素。Host 代次从 2 到 3，旧绑定失效、旧 Canvas 脱离后重绘 0 次。旧页新增的两个 resize/visibilitychange 监听均已移除；前后页各有一个 500 ms 轮询，句柄已更换。退出到无天气页后轮询归零，1150 ms 内天气读取增量为 0。这轮验证覆盖桌面引擎导航及 Canvas 绘制；未测屏幕呈现时间、游戏内容或系统后台恢复。
+
+复跑时先运行 `node scripts/build-framework.mts`，再运行 `node prototypes/host5/panel-budget/weather/passage-lifecycle.mts <上游ZIP路径>`。脚本校验输入摘要，原包无需解压。[SugarCube v2.37.3 的 Twine 2.1 local ZIP](https://github.com/tmedwards/sugarcube-2/releases/tag/v2.37.3) · [回归源码](../prototypes/host5/panel-budget/weather/passage-lifecycle.mts)
+
 ## #41 · 设置窗口接续雨雪过渡
 
 从 `9a2b315` 接续。天气管理器持有原型已有的 450 ms 降水混合时间线，设置 Canvas 在首次绘制和后续绘制时只读取当前权重。现有材料、粒子模拟和窗口资源仍由各窗口持有。没有窗口观察期间发生的天气变化缺少起始时间，再次打开时直接采用当前天气。
