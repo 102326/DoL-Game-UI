@@ -1,3 +1,5 @@
+import type {SurfaceMotion, SurfaceOutcome} from '../contracts';
+
 /** Experimental Host service. A track writes animation properties on one caller-owned layer. */
 export function createPanelBudget(root: Window, limit = 1) {
  const active = new Map<HTMLElement, () => void>();
@@ -9,13 +11,11 @@ export function createPanelBudget(root: Window, limit = 1) {
   reduced?.addEventListener('change', policyChanged);
   root.document.addEventListener('visibilitychange', policyChanged);
   root.addEventListener('pagehide', stopAll);
-  root.addEventListener('resize', stopAll);
  }
  function unlisten() {
   reduced?.removeEventListener('change', policyChanged);
   root.document.removeEventListener('visibilitychange', policyChanged);
   root.removeEventListener('pagehide', stopAll);
-  root.removeEventListener('resize', stopAll);
  }
  function track(frames: Keyframe[], enter: number, exit: number) {
   let layer: HTMLElement | undefined, animation: Animation | undefined, released = false;
@@ -47,10 +47,44 @@ export function createPanelBudget(root: Window, limit = 1) {
    animation.playbackRate = shown ? 1 : -enter / exit;
    animation.play();
    const running = animation;
-   running.onfinish = running.oncancel = () => {if (running === animation) cancel()};
+   running.onfinish = () => {if (running === animation && running.playState === 'finished') cancel()};
+   running.oncancel = () => {if (running === animation && running.playState === 'idle') cancel()};
    return running;
   }
   return {to, cancel, release() {released = true; cancel()}};
  }
  return {track, activeCount: () => active.size, dispose() {disposed = true; stopAll()}};
+}
+
+// Requests have their own completion even when reversal reuses the underlying play cycle.
+export function surfaceMotion(budget: Pick<ReturnType<typeof createPanelBudget>, 'track'>): Readonly<SurfaceMotion> {
+ return Object.freeze({track(frames: Keyframe[], enter: number, exit: number) {
+  const track = budget.track(frames, enter, exit);
+  let cycle: Promise<Animation> | undefined;
+  let resolveRequest: ((status: SurfaceOutcome) => void) | undefined;
+  function settle(status: SurfaceOutcome) {
+   resolveRequest?.(status);
+   resolveRequest = undefined;
+  }
+  function cancel() {
+   cycle = undefined;
+   settle('cancelled');
+   track.cancel();
+  }
+  function to(node: HTMLElement, shown: boolean, initial?: number) {
+   settle('cancelled');
+   const player = track.to(node, shown, initial);
+   if (!player) return;
+   const pending = player.finished;
+   if (pending !== cycle) {
+    cycle = pending;
+    const end = (status: SurfaceOutcome) => {
+     if (cycle === pending) {cycle = undefined; settle(status)}
+    };
+    pending.then(() => end('finished'), () => end('cancelled'));
+   }
+   return {finished: new Promise<SurfaceOutcome>(resolve => {resolveRequest = resolve})};
+  }
+  return {to, cancel, release() {cancel(); track.release()}};
+ }});
 }

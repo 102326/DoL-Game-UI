@@ -92,7 +92,9 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  function apply(){
   const html=document.documentElement,visualTier=official?2:state.preferences.visualTier;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?visualTier:0));
   updateAppearance(official && state.preferences.enabled);
-  for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
+  let glass=!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'));
+  try{const preset=root.DoLUiHost?.layerPresets?.surface;if(official&&preset)glass=preset.resolve(state.preferences.visualGlass?'acrylic':'static',root.CSS)==='acrylic'}catch{/* Existing settings CSS remains the fallback. */}
+  for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||glass));
   if(!html.hasAttribute('data-dgu-visualMotion'))motion.cancel();
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
   html.toggleAttribute('data-dgu-acrylic-adjustment',state.preferences.enabled&&official);
@@ -200,11 +202,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   if(opening||reversing)fadeSettings(1,opening?0:undefined);
   controls.querySelector<HTMLButtonElement>('.dmt-close')?.focus({preventScroll:true});
  }
- let releaseMaterial:(()=>void)|undefined;
- function detachMaterial(){releaseMaterial?.();releaseMaterial=undefined}
- scope.own(detachMaterial);
  function nativeSettings(){
-  detachMaterial();
   ++transition;motion.cancel();unmountUI(app);app=undefined;if(!controls)return;controls.removeAttribute('data-sf-leaving');
   const text=document.createElement('p');text.textContent='界面设置暂不可用，可以关闭主题并继续使用原版。';
   const fallback=document.createElement('button');fallback.type='button';fallback.textContent='恢复原版界面';fallback.onclick=()=>{setMaster(false);closeSettings()};
@@ -213,21 +211,10 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
 
  }
  function buildControls(){
-  detachMaterial();
   ++transition;motion.cancel();
   document.documentElement.removeAttribute('data-dgu-settings-open');unmountUI(app);controls?.remove();controls=document.createElement('dialog');controls.id='dol-midnight-controls';controls.setAttribute('aria-labelledby','dol-midnight-title');
   const host=document.createElement('div');host.className='dmt-settings-shell';controls.append(host);document.body.append(controls);
   app=createApp(SettingsPanel,{state,onSaves:(value:boolean)=>setPage('saves',value),onPreference:setPreference,onAppearance:setAppearance,onCombat:(value:boolean)=>setPage('combat',value),onWardrobe:(value:boolean)=>setPage('wardrobe',value),onCharacteristics:(value:boolean)=>setPage('characteristics',value),onSocial:(value:boolean)=>setPage('social',value),onPanel:setPage,onShop:(value:boolean)=>setPage('shop',value),onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
-  const provider=root.DoLUiHost,preset=provider?.layerPresets?.acrylicScrim;
-  if(official && provider && preset && app && host.isConnected){
-   const parent=controls;
-   isolate('settings material',()=>{
-    const owner=provider.register('SoftWetSettingsMaterial');
-    releaseMaterial=()=>owner.dispose();
-    const layer=owner.mount({id:'scrim',lifetime:'persistent',parent,setup:preset});
-    if(!layer.isCurrent())detachMaterial();
-   },detachMaterial);
-  }
   // Native modal hit testing does not stop delegated game handlers from receiving our controls' events.
   for(const type of ['click','input','change','pointerdown','pointerup','touchstart','touchend','keyup'])controls.addEventListener(type,event=>event.stopPropagation());
   controls.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Escape'&&!isOpenSelectEscape(event)){event.preventDefault();closeSettings()}});

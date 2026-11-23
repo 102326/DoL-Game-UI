@@ -18,6 +18,11 @@ export interface MountContext {
  onCleanup(callback: Cleanup): void;
  onScene(callback: () => void): Cleanup;
 }
+export type MaterialMode = 'acrylic' | 'static';
+export interface SurfacePreset {
+ resolve(mode: MaterialMode, css?: Pick<typeof CSS, 'supports'>): MaterialMode;
+ setup(mode: MaterialMode): MountRequest['setup'];
+}
 export interface MountRequest {
  id: string;
  parent: HTMLElement;
@@ -74,10 +79,22 @@ export interface Participant {
  provideView(view: ViewContribution): Cleanup;
  dispose(): void;
 }
+// Optional foreground playback. Callers keep ownership of visibility, focus and the final state.
+export type SurfaceOutcome = 'finished' | 'cancelled';
+export interface SurfacePlayback {
+ readonly finished: Promise<SurfaceOutcome>;
+}
+export interface SurfaceMotion {
+ track(frames: Keyframe[], enter: number, exit: number): {
+  to(node: HTMLElement, shown: boolean, initial?: number): SurfacePlayback | undefined;
+  cancel(): void;
+  release(): void;
+ };
+}
 export interface Host {
  /** Optional local material recipe. Participant.mount retains ownership and cleanup. */
- readonly layerPresets?: Readonly<{acrylicScrim: MountRequest['setup']}>;
- readonly panelEffects?: Pick<ReturnType<typeof import('./motion/panel-budget').createPanelBudget>, 'track'>;
+ readonly layerPresets?: Readonly<{acrylicScrim?: MountRequest['setup']; surface?: Readonly<SurfacePreset>}>;
+ readonly panelEffects?: Readonly<SurfaceMotion>;
  readonly protocolVersion: typeof PROTOCOL;
  register(id: string): Readonly<Participant>;
  binding(): Binding;

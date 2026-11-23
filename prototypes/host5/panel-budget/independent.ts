@@ -1,17 +1,19 @@
-import type {Host} from '../../../framework/contracts';
+import type {Host, MaterialMode} from '../../../framework/contracts';
 
 /** A standalone DOM consumer; imports no UI runtime or theme styles. */
-export function attachInspector(host: Readonly<Host>, parent: HTMLElement) {
+export function attachInspector(host: Readonly<Host>, parent: HTMLElement, mode:MaterialMode='acrylic') {
  const owner = host.register('IndependentInspector');
  const mounted = owner.mount({id: 'panel', parent, lifetime: 'persistent', setup(context) {
   const shadow = context.element.attachShadow({mode: 'open'});
-  shadow.innerHTML = '<style>:host{display:block;min-width:0}article{padding:8px;background:#41454a;color:white}button{font:inherit}</style><button type="button" aria-expanded="false">Inspector</button><article hidden><button class="grip" style="touch-action:none">Move</button> Local surface</article>';
+  shadow.innerHTML = '<style>:host{display:block;min-width:0}article{padding:8px;background:#41454a;color:white}article:has(>[data-sf-mount="scrim"]){background:transparent}button{font:inherit}</style><button type="button" aria-expanded="false">Inspector</button><article hidden><button class="grip" style="touch-action:none">Move</button> Local surface</article>';
   const opener = shadow.querySelector('button')!, layer = shadow.querySelector('article')!;
-  const preset=host.layerPresets?.acrylicScrim;
+  const preset=host.layerPresets?.surface;
   if(preset){
    layer.style.position='relative';layer.style.isolation='isolate';
-   const material=owner.mount({id:'scrim',parent:layer,lifetime:'persistent',setup:preset});
-   context.onCleanup(material.dispose);
+   try{
+    const material=owner.mount({id:'scrim',parent:layer,lifetime:'persistent',setup:preset.setup(mode)});
+    context.onCleanup(material.dispose);
+   }catch{/* The panel's own opaque background is the fallback. */}
   }
   const track = host.panelEffects?.track([{opacity: 0}, {opacity: 1}], 100, 80);
   const grip = layer.querySelector<HTMLButtonElement>('.grip')!;

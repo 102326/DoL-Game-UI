@@ -1,15 +1,15 @@
 import type {Participant} from '../../../framework/contracts';
 import {createHost} from '../../../framework/host';
-import {acrylicScrim} from '../../../framework/materials/acrylic-scrim';
-import {createPanelBudget} from '../../../framework/motion/panel-budget';
+import {surface as material} from '../../../framework/materials/acrylic-scrim';
+import {createPanelBudget,surfaceMotion} from '../../../framework/motion/panel-budget';
 import {sourceMotion} from '../../../src/ui/source-motion';
 import {cloudTexture} from './cloud';
 
 const stage=document.querySelector<HTMLElement>('#stage')!, toggle=document.querySelector<HTMLButtonElement>('#toggle')!,
  weather=document.querySelector<HTMLButtonElement>('#weather')!, fx=document.querySelector<HTMLButtonElement>('#fx')!;
 const integrated=new URLSearchParams(location.search).get('play')!=='independent';
-const budget=createPanelBudget(window,3);
-const host=Object.freeze({...createHost(window,{acrylicScrim}),panelEffects:budget});
+const foreground=createPanelBudget(window), atmosphere=createPanelBudget(window,2);
+const host=Object.freeze({...createHost(window,{surface:material}),panelEffects:surfaceMotion(foreground)});
 const preference=matchMedia('(prefers-reduced-motion: reduce)');
 let effects=true,cloudy=false,shown=false;
 const enabled=()=>effects&&!preference.matches&&!document.hidden;
@@ -26,11 +26,11 @@ function independent(motion:ReturnType<typeof sourceMotion>,frames:Keyframe[],du
   return anim;
  },release:cancel,cancel};
 }
-type TrackFactory=(frames:Keyframe[],duration:number)=>ReturnType<typeof independent>;
-function surface(id:string,kind:string,setup:(el:HTMLElement,own:(fn:()=>void)=>void,track:TrackFactory,owner?:Readonly<Participant>)=>void){
+type TrackFactory=(frames:Keyframe[],duration:number)=>{to(node:HTMLElement,shown:boolean,initial?:number): {readonly finished: Promise<unknown>} | undefined; cancel():void; release():void};
+function surface(id:string,kind:string,play: TrackFactory,setup:(el:HTMLElement,own:(fn:()=>void)=>void,track:TrackFactory,owner?:Readonly<Participant>)=>void){
  if(integrated){
   const owner=host.register(id);
-  try{owner.mount({id:'surface',parent:stage,lifetime:'persistent',setup(c){c.element.className=kind;setup(c.element,c.onCleanup,(frames,ms)=>host.panelEffects.track(frames,ms,ms),owner)}})}
+  try{owner.mount({id:'surface',parent:stage,lifetime:'persistent',setup(c){c.element.className=kind;setup(c.element,c.onCleanup,play,owner)}})}
   catch(e){owner.dispose();throw e}
   return owner.dispose;
  }
@@ -40,7 +40,7 @@ function surface(id:string,kind:string,setup:(el:HTMLElement,own:(fn:()=>void)=>
 }
 let refreshSky=()=>{},refreshPanel=()=>{},changeWeather=()=>{},changePanel=()=>{};
 function mountSky(){
- return surface('CloudField','sky',(el,own,localTrack)=>{
+ return surface('CloudField','sky',(frames,ms)=>atmosphere.track(frames,ms,ms),(el,own,localTrack)=>{
   const drift=document.createElement('div'),dense=document.createElement('div'),texture=cloudTexture();
   drift.className='drift';dense.className='dense';drift.append(texture,dense);el.append(drift);
   const travel=localTrack([{transform:'translateX(-10%)'},{transform:'translateX(10%)'}],8800);
@@ -63,13 +63,13 @@ function mountSky(){
  });
 }
 function mountPanel(){
- return surface('ControlPanel','panel',(el,own,localTrack,owner)=>{
+ return surface('ControlPanel','panel',(frames,ms)=>host.panelEffects.track(frames,ms,ms),(el,own,localTrack,owner)=>{
   el.innerHTML='<h2>显示设置</h2><div class="signal"></div><label><input type="checkbox">增强对比度</label>';
   const signal=el.querySelector<HTMLElement>('.signal')!;
   // The shell and controls appear synchronously. A separate decorative layer can reverse.
   const track=localTrack([{transform:'scaleX(.12)'},{transform:'scaleX(1)'}],150);
   if(owner){
-   owner.mount({id:'scrim',parent:el,lifetime:'persistent',setup:host.layerPresets!.acrylicScrim});
+   owner.mount({id:'scrim',parent:el,lifetime:'persistent',setup:material.setup('acrylic')});
   }else{
    const material=document.createElement('div');
    material.inert=true;material.style.cssText='position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;background:var(--sf-scrim-tint);backdrop-filter:blur(var(--sf-scrim-blur))';
@@ -96,10 +96,10 @@ toggle.onclick=()=>{shown=!shown;toggle.setAttribute('aria-expanded',String(show
 weather.onclick=()=>{cloudy=!cloudy;weather.setAttribute('aria-pressed',String(cloudy));changeWeather()};
 fx.onclick=()=>{effects=!effects;fx.setAttribute('aria-pressed',String(effects));fx.textContent=effects?'效果开启':'效果关闭';refresh()};
 preference.addEventListener('change',refresh);document.addEventListener('visibilitychange',refresh);
-// The budget cancels spatial effects on resize. Resume from a clean state after that event.
+// The legacy control cancels on resize. Host tracks use relative geometry and CSS reflows each surface in place.
 let resize=0;const resized=()=>{cancelAnimationFrame(resize);resize=requestAnimationFrame(refresh)};
-window.addEventListener('resize',resized);
-const scene={sky,panel,counts:()=>({tracks:budget.activeCount(),mounts:host.getDiagnostics().mounts.length,participants:host.getDiagnostics().participants.length}),
- dispose(){cancelAnimationFrame(resize);window.removeEventListener('resize',resized);document.removeEventListener('visibilitychange',refresh);preference.removeEventListener('change',refresh);sky(false);panel(false);budget.dispose();host.dispose();toggle.onclick=weather.onclick=fx.onclick=null}};
+if(!integrated)window.addEventListener('resize',resized);
+const scene={sky,panel,counts:()=>({tracks:foreground.activeCount()+atmosphere.activeCount(),mounts:host.getDiagnostics().mounts.length,participants:host.getDiagnostics().participants.length}),
+ dispose(){cancelAnimationFrame(resize);window.removeEventListener('resize',resized);document.removeEventListener('visibilitychange',refresh);preference.removeEventListener('change',refresh);sky(false);panel(false);foreground.dispose();atmosphere.dispose();host.dispose();toggle.onclick=weather.onclick=fx.onclick=null}};
 declare global{interface Window{composition:typeof scene}}
 window.composition=scene;

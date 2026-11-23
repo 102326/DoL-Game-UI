@@ -5,7 +5,7 @@ import {build} from 'esbuild';
 
 const server = await createLabServer();
 await server.listen();
-const browser = await chromium.launch();
+const browser = await chromium.launch({channel:process.env.HOST5_BROWSER || undefined});
 try {
  const address=server.httpServer!.address(); assert.ok(address && typeof address==='object');
  const origin='http://127.0.0.1:'+address.port, results=[];
@@ -25,7 +25,28 @@ try {
    const button=shadow?.querySelector('button'), layer=shadow?.querySelector('article');
    function check(ok:unknown,why:string){if(!ok)throw Error(why)}
    if(mode==='independent'){
-    button!.click();check(layer!.getAnimations().length===1,'independent animates without UI');remove!();
+    // A consumer may await completion after release. Neither the receipt nor its value grants player control.
+    const track=host!.panelEffects!.track([{opacity:0},{opacity:1}],100,80);
+    const playback=track.to(button!,true);
+    check(playback && !(playback instanceof Animation) && !('cancel' in playback),'private player');
+    button!.getAnimations()[0]!.currentTime=50;
+    const exit=track.to(button!,false)!;
+    check(await playback!.finished==='cancelled','superseded open request must not report completion of the subsequent close');
+    check(await exit.finished==='finished','new target completes');
+    const interrupted=track.to(button!,true)!;
+    track.release();
+    check(await interrupted.finished==='cancelled','released cycle settles later reads');
+    button!.click();
+    const opening=layer!.getAnimations()[0];
+    check(opening,'independent animates without UI');
+    opening!.currentTime=50;
+    const midpoint=getComputedStyle(layer!).opacity;
+    button!.click();
+    check(layer!.getAnimations()[0]===opening && opening!.playbackRate<0,'independent reverses the live track');
+    button!.click();
+    check(layer!.getAnimations()[0]===opening && opening!.playbackRate>0 &&
+     midpoint===getComputedStyle(layer!).opacity && !layer!.hidden,'independent reopens at midpoint');
+    remove!();
     check(!layer!.isConnected&&!layer!.getAnimations().length,'dispose during flight');
     check(!host!.getDiagnostics().mounts.length,'host releases mount');host!.dispose();
     return {mode};

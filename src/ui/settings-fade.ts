@@ -1,8 +1,8 @@
 import {sourceMotion} from './source-motion';
 import {fadeWindow} from './window-fade';
-import type {createPanelBudget} from '../../framework/motion/panel-budget';
+import type {SurfaceMotion} from '../../framework/contracts';
 
-type Budget = Pick<ReturnType<typeof createPanelBudget>, 'track'>;
+type Budget = Readonly<SurfaceMotion>;
 /** Settings owns its dialog, preferences and endpoints. Older Hosts retain native playback. */
 export function settingsFade(resolve: () => Budget | undefined) {
  let host: Budget | undefined, track: ReturnType<Budget['track']> | undefined;

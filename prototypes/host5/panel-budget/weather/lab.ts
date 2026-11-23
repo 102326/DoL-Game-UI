@@ -1,5 +1,5 @@
 import {createHost} from '../../../../framework/host';
-import {createPanelBudget} from '../../../../framework/motion/panel-budget';
+import {createPanelBudget,surfaceMotion} from '../../../../framework/motion/panel-budget';
 import {startTheme} from '../../../../src/theme/controller';
 import {attachInspector} from '../independent';
 
@@ -20,7 +20,7 @@ function activation(e: Event) {
 window.addEventListener('click',activation,true);
 const base = createHost(window);
 // Lab-only routing; a single extra concurrency slot exists only for direct activation.
-const host = {...base,panelEffects:{track(frames:Keyframe[],enter:number,exit:number){
+const host = {...base,panelEffects:surfaceMotion({track(frames:Keyframe[],enter:number,exit:number){
  const normal=shared.track(frames,enter,exit), reserved=direct.track(frames,enter,exit);
  let running:Animation|undefined, lane=normal;
  return {to(node:HTMLElement,shown:boolean,initial?:number){
@@ -31,7 +31,7 @@ const host = {...base,panelEffects:{track(frames:Keyframe[],enter:number,exit:nu
   running=entry==='instant' ? undefined : lane.to(node,shown,startAt);
   lastGrant=!!running;return running;
  },cancel(){normal.cancel();reserved.cancel()},release(){normal.release();reserved.release()}};
-}}};
+}})};
 window.DoLUiHost=host;
 const cloud=document.querySelector<HTMLElement>('#cloud')!;
 const weather=shared.track([{transform:'translateX(-12px)'},{transform:'translateX(12px)'}],8000,8000);
