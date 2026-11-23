@@ -134,8 +134,14 @@ html[data-dol-midnight][data-dmt-layout] .customOverlay:not([data-overlay="modlo
 }
 
 html[data-stone-free][data-dol-midnight][data-dmt-layout] #customOverlay[data-overlay=modloader][data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] {
-    width: min(1000px, 100%);
     height: var(--dgu-window-height);
+}
+
+/* On phones the native insets span the viewport beyond the sidebar-offset parent. */
+@media (min-width: 900px) {
+    html[data-stone-free][data-dol-midnight][data-dmt-layout] #customOverlay[data-overlay=modloader][data-dgu-adapter=ModHubSoftWet][data-dgu-adapter-match=full] {
+        width: min(1000px, 100%);
+    }
 }
 
 html[data-dol-midnight][data-dmt-layout] .customOverlay:not([data-overlay="modloader"]):not([hidden]):not(.hidden) #customOverlayTitle {

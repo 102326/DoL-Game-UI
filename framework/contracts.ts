@@ -75,6 +75,7 @@ export interface Participant {
  dispose(): void;
 }
 export interface Host {
+ readonly panelEffects?: Pick<ReturnType<typeof import('./motion/panel-budget').createPanelBudget>, 'track'>;
  readonly protocolVersion: typeof PROTOCOL;
  register(id: string): Readonly<Participant>;
  binding(): Binding;

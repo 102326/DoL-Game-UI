@@ -1,5 +1,5 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {"types": ["node", "vite/client"], "allowImportingTsExtensions": true},
-  "include": ["*.mts", "workspace-weather/*.ts", "workspace-weather/*.mts", "effects/*.ts", "effects/*.mts", "sidebar/*.ts", "sidebar/*.mts"]
+  "include": ["*.mts", "panel-budget/*.ts", "panel-budget/*.mts", "workspace-weather/*.ts", "workspace-weather/*.mts", "effects/*.ts", "effects/*.mts", "sidebar/*.ts", "sidebar/*.mts"]
 }

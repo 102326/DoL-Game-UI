@@ -1,3 +1,4 @@
+import {createPanelBudget} from './motion/panel-budget';
 import {createHost} from './host';
 import {PROTOCOL} from './contracts';
 
@@ -7,7 +8,7 @@ export function installHost(root: NativeWindow = window) {
  // Unknown implementations are never replaced or disposed by this package.
  try {if ('DoLUiHost' in root || typeof root.MutationObserver !== 'function' || typeof AbortController !== 'function') return null}
  catch {return null}
- const core = createHost(root), doc = root.document;
+ const core = createHost(root), doc = root.document, panelEffects = createPanelBudget(root);
  let bridge: ReturnType<NonNullable<NativeWindow['jQuery']>> | undefined, closed = false, retry=0;
  const deadline=Date.now()+30000;
  // Public API availability is separate from a synchronized game scene.
@@ -35,11 +36,11 @@ export function installHost(root: NativeWindow = window) {
   if (closed) return; closed = true;
   root.clearTimeout(retry);doc.removeEventListener('DOMContentLoaded', bind); root.removeEventListener('load', bind);
   try{bridge?.off('.stoneFreeHost')}catch{/* Broken host events must not prevent core disposal. */}
-  core.dispose(); try {if (root.DoLUiHost === host) delete root.DoLUiHost} catch {}
+  panelEffects.dispose(); core.dispose(); try {if (root.DoLUiHost === host) delete root.DoLUiHost} catch {}
   doc.dispatchEvent(new Event('stone-free-host-stopped'));
  }
- const host = Object.freeze({...core, dispose});
- try {root.DoLUiHost = host} catch {core.dispose(); return null}
+ const host = Object.freeze({...core, panelEffects: Object.freeze({track: panelEffects.track}), dispose});
+ try {root.DoLUiHost = host} catch {panelEffects.dispose(); core.dispose(); return null}
  try {bind();if(closed)return null;doc.addEventListener('DOMContentLoaded', bind); root.addEventListener('load', bind)}
  catch {try {dispose()} catch {} return null}
  doc.dispatchEvent(new CustomEvent('stone-free-host-ready', {detail: {protocolVersion: PROTOCOL}}));

@@ -1,7 +1,6 @@
 import {visualScope} from '../ui/visual-scope';
 import {isolate,mountUI,unmountUI,supportsDialog} from '../runtime/presentation';
-import {sourceMotion} from '../ui/source-motion';
-import {fadeWindow} from '../ui/window-fade';
+import {settingsFade} from '../ui/settings-fade';
 import {experiments} from '../runtime/experiments';
 import type {PanelKind} from '../panels/main';
 import {createApp,reactive,type App} from 'vue';
@@ -41,7 +40,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  if(root.DoLMidnightTheme)return;
  const store=loaded??startThemePreferences(root);
  const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
- const scope=visualScope(),motion=sourceMotion();scope.own(()=>motion.dispose());let transition=0;
+ const scope=visualScope(),motion=settingsFade(()=>root.DoLUiHost?.panelEffects);scope.own(()=>motion.dispose());let transition=0;
  const settingsPanel=()=>controls?.querySelector<HTMLElement>('.dmt-settings-shell')??controls;
  const compactViewport=()=>root.innerWidth<=600||Math.min(root.screen.width,root.screen.height)<=600;
  const scaleMax=150;
@@ -94,6 +93,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   const html=document.documentElement,visualTier=official?2:state.preferences.visualTier;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?visualTier:0));
   updateAppearance(official && state.preferences.enabled);
   for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
+  if(!html.hasAttribute('data-dgu-visualMotion'))motion.cancel();
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
   html.toggleAttribute('data-dgu-acrylic-adjustment',state.preferences.enabled&&official);
   for(const [key,value] of Object.entries(acrylicParameters(state.preferences.acrylicTransparency)))html.style.setProperty(key,value);
@@ -179,7 +179,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  }
  function fadeSettings(target:0|1,initial?:number){
   const panel=settingsPanel();if(!official||!panel)return;
-  return fadeWindow(motion,panel,target,initial);
+  return motion.to(panel,target,initial);
  }
  function closeSettings(){
   if(!controls?.open||controls.hasAttribute('data-sf-leaving'))return;
