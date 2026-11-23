@@ -1,5 +1,9 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · 面板首帧接续（公司 Mac）
+
+研究分支在 `b87dbfe` 后完成同天气负载的三组中性对照。[首帧实验、复跑和家庭设备接续](../prototypes/host5/panel-budget/weather/ENTRY.md)。候选只调整新开面板的播放起点，半关重开继续原轨道；保留原生产预算。请在家庭 Windows 和 Android 比较实际呈现，再决定是否采用。当前研究仅在公司 Mac 本地。
+
 ## #41 · 5.0 面板共享预算研究（公司 Mac）
 
 本地分支 `research/5.0-panel-budget` 从远端 `12081fb` 接续，未推送。可从[第一刀记录、复跑与中性预览](../prototypes/host5/panel-budget/README.md)接手。设置和独立检查器已共用 Host 播放接口。4.5.2 的窄屏修复与回归已带入该研究工作树。[天气播放 A/B/C 对照](../prototypes/host5/panel-budget/weather/README.md)已在公司 Mac 完成。按需名额能保留淡入，但首次可观测变化没有提前；沿用共享默认。后续优先核对真实 WebView 的输入到呈现轨迹。#42 独立接续。

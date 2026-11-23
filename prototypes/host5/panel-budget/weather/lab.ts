@@ -3,7 +3,10 @@ import {createPanelBudget} from '../../../../framework/motion/panel-budget';
 import {startTheme} from '../../../../src/theme/controller';
 import {attachInspector} from '../independent';
 
-const mode = new URLSearchParams(location.search).get('mode') ?? 'A';
+const params = new URLSearchParams(location.search);
+const mode = params.get('mode') ?? 'A';
+const entry = params.get('entry');
+if (entry && (mode !== 'C' || !['instant','fade','visible'].includes(entry))) throw Error('Invalid entry experiment');
 if (!['A','B','C'].includes(mode)) throw Error('Unknown condition');
 const shared = createPanelBudget(window), direct = createPanelBudget(window);
 let click: Event | undefined, lastGrant = false;
@@ -22,7 +25,10 @@ const host = {...base,panelEffects:{track(frames:Keyframe[],enter:number,exit:nu
  let running:Animation|undefined, lane=normal;
  return {to(node:HTMLElement,shown:boolean,initial?:number){
   if(!running || running.playState!=='running')lane=shared.activeCount() && mode==='C' && click?.eventPhase ? reserved : normal;
-  running=lane.to(node,shown,initial);
+  // Both consumers use a linear opacity track. The offset is read only when
+  // starting a new animation; an in-flight reversal keeps its current time.
+  const startAt = entry==='visible' && shown ? .6 : initial;
+  running=entry==='instant' ? undefined : lane.to(node,shown,startAt);
   lastGrant=!!running;return running;
  },cancel(){normal.cancel();reserved.cancel()},release(){normal.release();reserved.release()}};
 }}};
@@ -60,7 +66,7 @@ const frames:number[]=[];
 let frame=0;
 function watch(now:number){frames.push(now);frame=requestAnimationFrame(watch)}
 frame=requestAnimationFrame(watch);
-type Sample={action:string;kind:string;inputStart:number;clickStart:number;grant:boolean;dispatchMs:number;inputToClickEndMs:number;nextRafMs:number;followingRafMs:number;firstVisualChangeMs:number|null;opacityAtFirstRaf:string;hiddenAtFirstRaf:boolean};
+type Sample={action:string;kind:string;inputStart:number;clickStart:number;grant:boolean;dispatchMs:number;inputToClickEndMs:number;nextRafMs:number;followingRafMs:number;firstVisualChangeMs:number|null;opacityFrames?:number[];opacityAtFirstRaf:string;hiddenAtFirstRaf:boolean};
 const samples:Sample[]=[];
 let inputStart=0,kind='',entered=0;
 for(const control of [start,close,toggle]){
@@ -72,19 +78,21 @@ for(const control of [start,close,toggle]){
   const article=toggle.getRootNode() as ShadowRoot;
   const layer=control===toggle?article.querySelector('article')!:document.querySelector<HTMLElement>('.dmt-settings-shell')!;
   const end=performance.now();
-  const s={action:control===start?'settings-open':control===close?'settings-close':toggle.getAttribute('aria-expanded')==='true'?'inspect-open':'inspect-close',
+  const s:Sample={action:control===start?'settings-open':control===close?'settings-close':toggle.getAttribute('aria-expanded')==='true'?'inspect-open':'inspect-close',
    kind,inputStart,clickStart:e.timeStamp,grant:lastGrant,dispatchMs:end-entered,inputToClickEndMs:end-inputStart,
    nextRafMs:0,followingRafMs:0,firstVisualChangeMs:null as number|null,opacityAtFirstRaf:'',hiddenAtFirstRaf:false};
+  if(entry && s.action.endsWith('-open'))s.opacityFrames=[];
   let tick=0;
   function observeFrame(){
    tick++;
    const elapsed=performance.now()-s.inputStart;
    const opacity=getComputedStyle(layer).opacity, hidden=!layer.getClientRects().length;
+   s.opacityFrames?.push(hidden ? 0 : Number(opacity));
    const changed=s.action.endsWith('-open') ? !hidden && Number(opacity)>.01 : hidden || Number(opacity)<.99;
    if(changed && s.firstVisualChangeMs===null)s.firstVisualChangeMs=elapsed;
    if(tick===1){s.nextRafMs=elapsed;s.opacityAtFirstRaf=opacity;s.hiddenAtFirstRaf=hidden}
    if(tick===2)s.followingRafMs=elapsed;
-   if(tick>=2 && (changed || tick>=10))samples.push(s);else requestAnimationFrame(observeFrame);
+   if(tick>=2 && (changed || tick>=10) && (!s.opacityFrames || Number(opacity)>=.999 || tick>=15))samples.push(s);else requestAnimationFrame(observeFrame);
   }
   requestAnimationFrame(observeFrame);
  });

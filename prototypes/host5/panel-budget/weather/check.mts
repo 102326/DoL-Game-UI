@@ -3,15 +3,19 @@ import {writeFile} from 'node:fs/promises';
 import {chromium} from 'playwright';
 import {createLabServer} from '../server.mts';
 import type {} from './lab.ts';
+const entryStudy=process.argv.includes('--entry');
+const conditions=entryStudy?['instant','fade','visible']:['A','B','C'];
 const server=await createLabServer();await server.listen();
 const address=server.httpServer!.address();assert.ok(address&&typeof address==='object');
 const browser=await chromium.launch(), blocks=[];
 try {
- for(const order of ['ABC','BCA','CAB']){
-  for(const mode of order){
+ for(let rotation=0;rotation<3;rotation++){
+  const order=conditions.slice(rotation).concat(conditions.slice(0,rotation));
+  for(const condition of order){
+   const mode=entryStudy?'C':condition;
    const page=await browser.newPage({viewport:{width:390,height:820},reducedMotion:'no-preference'});
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
-   await page.goto('http://127.0.0.1:'+address.port+'/prototypes/host5/panel-budget/weather/?mode='+mode);
+   await page.goto('http://127.0.0.1:'+address.port+'/prototypes/host5/panel-budget/weather/?mode='+mode+(entryStudy?'&entry='+condition:''));
    await page.waitForFunction(()=>!!window.weatherLab);
    const start=page.locator('#start'),close=page.getByRole('button',{name:'Close',exact:true}),toggle=page.getByRole('button',{name:'Inspector',exact:true});
    if(mode==='C'){
@@ -40,8 +44,18 @@ try {
     return {samples:l.samples,entries:l.entries,frameGaps:gaps,supported:l.supported,sky:{...l.sky(),now:performance.now()},counts:l.counts()};
    });
    assert.equal(data.samples.length,16);
-   assert.ok(data.samples.every(s=>s.grant===(mode!=='B') && s.inputToClickEndMs>=0 && s.followingRafMs>=s.nextRafMs));
+   assert.ok(data.samples.every(s=>s.grant===(mode!=='B' && condition!=='instant') && s.inputToClickEndMs>=0 && s.followingRafMs>=s.nextRafMs));
    assert.equal(data.samples.filter(s=>s.kind==='keydown').length,8);
+   if(entryStudy){
+    const openings=data.samples.filter(s=>s.action.endsWith('-open'));
+    for(const sample of openings){
+     const values=sample.opacityFrames!;
+     assert.ok(values.at(-1)!>=.999,'opening reaches full opacity');
+     assert.ok(values.every((v,i)=>!i || v>=values[i-1]!-.001),'no backward jumps');
+     if(condition==='visible')assert.ok(values[0]!>=.59,'already visible in first rAF');
+     if(condition==='instant')assert.ok(values.every(v=>v===1),'immediate presentation');
+    }
+   }
    if(mode!=='A'){
     assert.equal(data.sky.legs,initial.legs,'no weather restart during inputs');
     assert.equal(data.sky.rate,1);
@@ -66,13 +80,14 @@ try {
    }
    await page.evaluate(()=>window.weatherLab.dispose());
    assert.deepEqual(await page.evaluate(()=>window.weatherLab.counts()),{shared:0,direct:0});
-   assert.deepEqual(errors,[]);blocks.push({mode,order,geometry,initial,...data});await page.close();
+   assert.deepEqual(errors,[]);blocks.push({mode,condition,order,geometry,initial,...data});await page.close();
   }
  }
  const receipt={browser:browser.version(),node:process.version,platform:process.platform,viewport:[390,820],blocks};
- if(process.argv[2])await writeFile(process.argv[2],JSON.stringify(receipt)+'\n');
- for(const mode of 'ABC'){
-  const sets=blocks.filter(b=>b.mode===mode), samples=sets.flatMap(b=>b.samples);
+ const output=process.argv.slice(2).find(arg=>!arg.startsWith('--'));
+ if(output)await writeFile(output,JSON.stringify(receipt)+'\n');
+ for(const mode of conditions){
+  const sets=blocks.filter(b=>b.condition===mode), samples=sets.flatMap(b=>b.samples);
   const p=(ns:number[],q:number)=>Number([...ns].sort((a,b)=>a-b)[Math.ceil(ns.length*q)-1]?.toFixed(2));
   const dist=(ns:number[])=>[p(ns,.5),p(ns,.95)];
   const matched=sets.flatMap(b=>b.samples.flatMap(s=>b.entries.filter(e=>e.name===s.kind&&Math.abs(e.start-s.inputStart)<.51)));
