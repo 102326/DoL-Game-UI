@@ -1,5 +1,9 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · Windows 跨 Mod Inspector
+
+从 UI `2812d48` 接续，以 Loader E39 `1bea13e7` 的真实 mainline 和 Inspector，在独立桌面 Chrome 验过单独打开、与 Settings 共存、关闭重开、订阅及分别释放。两方只清理自己的资源，输入和焦点归属通过。变动限于中性研究夹具及记录。[固定输入、实测与复跑](../prototypes/host5/panel-budget/sticky/README.md#e39--windows-桌面-modeless-接入)
+
 ## #41 · Android 面板材质对照
 
 在 `3bd99a5` 的隔离中性页上单独选择实时模糊或静态材质。家用平板四轮交错共八次展开/收起，385 个绘制前 rAF 间隔，各动作 P95 均为 8.4 ms；两次实时模糊展开均出现一个 25 ms 间隔。保留当前默认，实际屏幕反馈延迟未测。独立 APK 已卸载。[操作条件、逐轮数据与复跑入口](../prototypes/host5/composition/README.md#android-面板实时模糊对照)
@@ -22,7 +26,7 @@
 
 ## #41 · 外部只读 Inspector（公司 Mac）
 
-[真实 Sticky Fingers 接入、固定输入与复跑](../prototypes/host5/panel-budget/sticky/README.md)。公司 Mac 上已验证 E32 延续至 E35 的真实实现与 Host modeless 桥；正式抽屉与原 runner 独立通过。家庭设备接续需先核对 E39 固定输入。研究仅保存在本机。
+[真实 Sticky Fingers 接入、固定输入与复跑](../prototypes/host5/panel-budget/sticky/README.md)。公司 Mac 上已验证 E32 延续至 E35 的真实实现与 Host modeless 桥，正式抽屉与原 runner 独立通过。家庭 Windows 的 E39 结果见上方接续记录。
 
 ## #41 · 两个面板共用局部材质（公司 Mac）
 

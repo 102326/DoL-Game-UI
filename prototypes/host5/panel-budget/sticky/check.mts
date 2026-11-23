@@ -7,29 +7,39 @@ import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import {chromium} from 'playwright';
 import {createLabServer} from '../server.mts';
+import {buildE39,checkE39,e39} from './e39.mts';
 const root=process.cwd(),loader=process.env.SF_LOADER_ROOT, entry=process.env.SF_INSPECTOR_SURFACE_ENTRY;
 assert.ok(loader&&entry,'Set SF_LOADER_ROOT and SF_INSPECTOR_SURFACE_ENTRY to absolute paths');
+const fixedE39=process.argv.includes('--e39');
 const git=(...args:string[])=>execFileSync('git',['-C',loader,...args],{encoding:'utf8'}).trim();
-assert.equal(git('rev-parse','HEAD:experiments/native-contract'),'b20026a569c36208aca1f9f65a25fa2c4df42bf2');
-assert.equal(git('status','--porcelain','--','experiments/native-contract'),'');
+if(!fixedE39){
+ assert.equal(git('rev-parse','HEAD:experiments/native-contract'),'b20026a569c36208aca1f9f65a25fa2c4df42bf2');
+ assert.equal(git('status','--porcelain','--','experiments/native-contract'),'');
+}
 const sha=(data:Buffer)=>createHash('sha256').update(data).digest('hex');
 const source=JSON.parse(await readFile(path.join(path.dirname(entry),'SOURCE.json'),'utf8'));
 assert.equal(sha(await readFile(entry)),source.output.sha256);
 assert.equal(source.output.sha256,'a3174c0f25c6739f9e8a531ef3ac9c004293a94d1266b916f3e9e39d3eeacb71');
 for(const [name,expected] of Object.entries(source.inputs))assert.equal(sha(await readFile(path.join(root,name))),expected);
-const work=await mkdtemp(path.join(tmpdir(),'sw-sticky-')), adapter=path.join(work,'provider.ts');
-await writeFile(adapter,`import {createStandaloneSurfaces as official} from ${JSON.stringify(entry)};
+const factory=`import {createStandaloneSurfaces as official} from ${JSON.stringify(entry)};
 import {inspectorFactory} from ${JSON.stringify(path.resolve('prototypes/host5/panel-budget/sticky/bridge.ts'))};
-export function createStandaloneSurfaces(root){return inspectorFactory(root,official)}`);
-process.chdir(loader);let built;
-try{const {buildMainline}=await import(pathToFileURL(path.join(loader,'experiments/native-contract/build-mainline.ts')).href);built=await buildMainline(adapter)}finally{process.chdir(root)}
+export function createStandaloneSurfaces(root){return inspectorFactory(root,official)}`;
+let built;
+if(fixedE39) built=await buildE39(loader,factory);
+else {
+ const work=await mkdtemp(path.join(tmpdir(),'sw-sticky-')), adapter=path.join(work,'provider.ts');
+ await writeFile(adapter,factory);
+ process.chdir(loader);
+ try{const {buildMainline}=await import(pathToFileURL(path.join(loader,'experiments/native-contract/build-mainline.ts')).href);built=await buildMainline(adapter)}finally{process.chdir(root)}
+}
 const js=(built.outputFiles.find((x:{path:string})=>x.path.endsWith('.js'))??built.outputFiles[0]).text;
 const css=built.outputFiles.find((x:{path:string})=>x.path.endsWith('.css'))?.text;
 const server=await createLabServer();await server.listen();
 const address=server.httpServer!.address();assert.ok(address&&typeof address==='object');
-const browser=await chromium.launch();
+const browser=await chromium.launch(fixedE39?{channel:'chrome'}:{});
 try{
- for(const [mode,width] of [['window',1150],['plain',1150],['drawer',1150],['window',390]] as const){
+ const cases=fixedE39?[['e39',1150] as const]:[['window',1150],['plain',1150],['drawer',1150],['window',390]] as const;
+ for(const [mode,width] of cases){
   const page=await browser.newPage({viewport:{width,height:780},reducedMotion:mode==='plain'?'reduce':'no-preference'});
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('http://127.0.0.1:'+address.port+'/prototypes/host5/panel-budget/sticky/?'+mode);
@@ -39,6 +49,12 @@ try{
   if(css)await page.addStyleTag({content:css});
   await page.addScriptTag({content:js});
   await evaluate(`window.__sfBoot(()=>{document.querySelector('#passages').innerHTML='<div class="passage">SF_E16_ANCHOR</div>';document.dispatchEvent(new Event(':storyready.sfNativeMainline'))},()=>{});void 0`);
+  if(mode==='e39'){
+   await checkE39(page);
+   assert.deepEqual(errors,[]);
+   await page.close();
+   continue;
+  }
   const ordinary=page.locator('#ordinary'),open=page.locator('#sf-native-inspector-open'),settings=page.locator('#dol-midnight-controls');
   await page.locator('#settings').click();await open.click();
   const panel=page.locator('#sf-native-inspector'),dialog=page.locator('dialog').filter({has:panel});
@@ -90,5 +106,5 @@ try{
   await evaluate('SFNativeMainline.dispose();void 0');assert.deepEqual(errors,[]);
   await page.close();console.log('PASS real mainline',mode,width);
  }
- console.log(browser.version(),source.output.sha256,git('rev-parse','HEAD'));
+ console.log(browser.version(),source.output.sha256,fixedE39?e39:git('rev-parse','HEAD'));
 }finally{await browser.close();await server.close()}
