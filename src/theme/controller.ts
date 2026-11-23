@@ -36,7 +36,7 @@ type Runtime=Window & {
  };
 };
 declare const __STONE_FREE_CONSUMER__:boolean;
-export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<typeof startThemePreferences>){
+export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<typeof startThemePreferences>, presentation:'modal'|'modeless'='modal'){
  if(root.DoLMidnightTheme)return;
  const store=loaded??startThemePreferences(root);
  const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
@@ -174,8 +174,9 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  }
  function finishClose(){
   document.documentElement.removeAttribute('data-dgu-settings-open');if(!controls)return;controls.removeAttribute('data-sf-leaving');
+  const restore=presentation==='modal'||controls.contains(document.activeElement);
   if(controls.open&&typeof controls.close==='function')controls.close();else controls.removeAttribute('open');
-  if(lastFocus?.isConnected)lastFocus.focus({preventScroll:true});lastFocus=null;
+  if(restore&&lastFocus?.isConnected)lastFocus.focus({preventScroll:true});lastFocus=null;
  }
  function fadeSettings(target:0|1,initial?:number){
   const panel=settingsPanel();if(!official||!panel)return;
@@ -194,7 +195,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   ++transition;controls.removeAttribute('data-sf-leaving');
   if(opening){
    lastFocus=document.activeElement as HTMLElement;document.documentElement.setAttribute('data-dgu-settings-open','');
-   if(supportsDialog())controls.showModal();else{controls.classList.add('dmt-modeless');controls.setAttribute('open','')}
+   if(supportsDialog()){if(presentation==='modeless')controls.show();else controls.showModal()}else{controls.classList.add('dmt-modeless');controls.setAttribute('open','')}
   }
   if(opening||reversing)fadeSettings(1,opening?0:undefined);
   controls.querySelector<HTMLButtonElement>('.dmt-close')?.focus({preventScroll:true});

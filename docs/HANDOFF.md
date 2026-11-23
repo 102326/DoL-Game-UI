@@ -1,5 +1,9 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · 外部只读 Inspector（公司 Mac）
+
+[真实 Sticky Fingers 接入、固定输入与复跑](../prototypes/host5/panel-budget/sticky/README.md)。公司 Mac 上已验证 E32 延续至 E35 的真实实现与 Host modeless 桥；正式抽屉与原 runner 独立通过。家庭设备接续需先核对 E39 固定输入。研究仅保存在本机。
+
 ## #41 · 两个面板共用局部材质（公司 Mac）
 
 从本地 `ca8903f` 接续。[材质切片、复跑及家庭设备检查](../prototypes/host5/panel-budget/material/README.md)。仅实验 Host 注入预设，设置与独立面板复用现有 mount 所有权。60% 起步候选留待家庭设备验收。研究提交仅本机可用。
