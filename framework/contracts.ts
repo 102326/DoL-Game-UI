@@ -75,6 +75,8 @@ export interface Participant {
  dispose(): void;
 }
 export interface Host {
+ /** Optional local material recipe. Participant.mount retains ownership and cleanup. */
+ readonly layerPresets?: Readonly<{acrylicScrim: MountRequest['setup']}>;
  readonly panelEffects?: Pick<ReturnType<typeof import('./motion/panel-budget').createPanelBudget>, 'track'>;
  readonly protocolVersion: typeof PROTOCOL;
  register(id: string): Readonly<Participant>;

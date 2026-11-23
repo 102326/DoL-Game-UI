@@ -1,0 +1,172 @@
+[
+  {
+    "browser": "153.0.8010.12",
+    "width": 320,
+    "metrics": [
+      {
+        "mode": "fallback",
+        "rect": [
+          19,
+          369,
+          282,
+          82
+        ],
+        "control": [
+          38,
+          388,
+          60.90625,
+          44
+        ],
+        "pixels": {
+          "contrast": 48,
+          "mean": 72
+        },
+        "peerContrast": 48
+      },
+      {
+        "mode": "material",
+        "rect": [
+          19,
+          369,
+          282,
+          82
+        ],
+        "control": [
+          38,
+          388,
+          60.90625,
+          44
+        ],
+        "pixels": {
+          "contrast": 0,
+          "mean": 58
+        },
+        "peerContrast": 0
+      },
+      {
+        "mode": "nohost",
+        "rect": [
+          19,
+          369,
+          282,
+          82
+        ],
+        "control": [
+          38,
+          388,
+          60.90625,
+          44
+        ],
+        "pixels": {
+          "contrast": 48,
+          "mean": 72
+        }
+      },
+      {
+        "mode": "failed",
+        "rect": [
+          19,
+          369,
+          282,
+          82
+        ],
+        "control": [
+          38,
+          388,
+          60.90625,
+          44
+        ],
+        "pixels": {
+          "contrast": 48,
+          "mean": 72
+        },
+        "peerContrast": 48
+      }
+    ]
+  },
+  {
+    "browser": "153.0.8010.12",
+    "width": 390,
+    "metrics": [
+      {
+        "mode": "fallback",
+        "rect": [
+          19,
+          369,
+          352,
+          82
+        ],
+        "control": [
+          38,
+          388,
+          60.90625,
+          44
+        ],
+        "pixels": {
+          "contrast": 48,
+          "mean": 72
+        },
+        "peerContrast": 48
+      },
+      {
+        "mode": "material",
+        "rect": [
+          19,
+          369,
+          352,
+          82
+        ],
+        "control": [
+          38,
+          388,
+          60.90625,
+          44
+        ],
+        "pixels": {
+          "contrast": 0,
+          "mean": 58
+        },
+        "peerContrast": 0
+      },
+      {
+        "mode": "nohost",
+        "rect": [
+          19,
+          369,
+          352,
+          82
+        ],
+        "control": [
+          38,
+          388,
+          60.90625,
+          44
+        ],
+        "pixels": {
+          "contrast": 48,
+          "mean": 72
+        }
+      },
+      {
+        "mode": "failed",
+        "rect": [
+          19,
+          369,
+          352,
+          82
+        ],
+        "control": [
+          38,
+          388,
+          60.90625,
+          44
+        ],
+        "pixels": {
+          "contrast": 48,
+          "mean": 72
+        },
+        "peerContrast": 48
+      }
+    ]
+  }
+]

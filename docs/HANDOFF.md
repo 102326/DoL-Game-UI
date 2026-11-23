@@ -1,5 +1,9 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · 两个面板共用局部材质（公司 Mac）
+
+从本地 `ca8903f` 接续。[材质切片、复跑及家庭设备检查](../prototypes/host5/panel-budget/material/README.md)。仅实验 Host 注入预设，设置与独立面板复用现有 mount 所有权。60% 起步候选留待家庭设备验收。研究提交仅本机可用。
+
 ## #41 · 面板首帧接续（公司 Mac）
 
 研究分支在 `b87dbfe` 后完成同天气负载的三组中性对照。[首帧实验、复跑和家庭设备接续](../prototypes/host5/panel-budget/weather/ENTRY.md)。候选只调整新开面板的播放起点，半关重开继续原轨道；保留原生产预算。请在家庭 Windows 和 Android 比较实际呈现，再决定是否采用。当前研究仅在公司 Mac 本地。

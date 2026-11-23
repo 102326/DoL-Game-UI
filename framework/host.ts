@@ -26,7 +26,7 @@ function snapshot(value: Json): Json {
 }
 
 /** No Vue, theme, State, storage, global input handlers or third-party DOM rewrites. */
-export function createHost(root: Window & Pick<typeof globalThis, 'MutationObserver' | 'HTMLElement'>): Readonly<Host> {
+export function createHost(root: Window & Pick<typeof globalThis, 'MutationObserver' | 'HTMLElement'>, layerPresets?: Host['layerPresets']): Readonly<Host> {
  if (typeof AbortController !== 'function') throw new Error('AbortController is required by this experimental Host');
  const doc = root.document;
  let disposed = false, scenePending = false, generation = 0, scene = new AbortController();
@@ -183,6 +183,7 @@ export function createHost(root: Window & Pick<typeof globalThis, 'MutationObser
   return Object.freeze(participant);
  }
  const api: Host = {
+  ...(layerPresets && {layerPresets:Object.freeze({...layerPresets})}),
   protocolVersion: PROTOCOL, register, binding,
   getCapabilities: () => Object.freeze({views: !disposed, commands: !disposed}),
   commands(schema: string) {
