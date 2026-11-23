@@ -11,6 +11,9 @@ export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement
  const scope=visualScope(),reduced=matchMedia('(prefers-reduced-motion: reduce)'),parent=canvas.parentElement!;
  let frame=false,stopPoll:(()=>void)|undefined,last=0,time=0,reads=0,width=0,height=0,dpr=1,frames=0,paused=false,paintMs=0;
  let appliedSize:{width:number;height:number;dpr:number}|undefined;
+ // Chrome may still expose the last visible document timeline in visibilitychange.
+ // Let the first resumed animation frame sample the shared precipitation phase.
+ let awaitingVisibleFrame=!!samplePrecipitation&&document.hidden;
  let target=read(),wet=0,snow=0,light=1,night=0,intensity=1,specialAmount=target.special&&target.special!=='none'?1:0,special:WeatherSpecial=target.special??'none';
  const material=makeMaterial(()=>request(true));scope.own(()=>material.dispose());
  const targets=()=>({wet:target.kind==='rain'||target.kind==='storm'?1:0,snow:target.kind==='snow'?1:0,intensity:climate?({light:.32,normal:.65,heavy:1,severe:1.5}[target.rain]):1,light:target.kind==='clear'?1:target.kind==='unknown'?0:.25,night:target.night?1:0});
@@ -32,6 +35,7 @@ export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement
    light=step(light,to.light,2.8);night=step(night,to.night,2.8);intensity=step(intensity,to.intensity,.9)
   }
   const specialTarget=target.special&&target.special!=='none'?1:0;if(specialTarget)special=target.special!;specialAmount=dynamic()?step(specialAmount,specialTarget,1.4):specialTarget;
+  awaitingVisibleFrame=false;
   draw();if(material.layoutMoving?.())request(true);else if(!paused&&dynamic()&&(wet>.002||snow>.002||specialAmount>.002||specialTarget||Math.abs(wet-to.wet)+Math.abs(snow-to.snow)+Math.abs(light-to.light)+Math.abs(night-to.night)+Math.abs(intensity-to.intensity)>.002))request();
  }
  function refresh(){if(!scope.active()||document.hidden)return;reads++;const next=read(),changed=JSON.stringify(next)!==JSON.stringify(target);target=next;if(changed)request()}
@@ -42,8 +46,9 @@ export function weatherSurface<Snapshot extends object>(canvas:HTMLCanvasElement
   if(!appliedSize||pixels.width!==appliedSize.width||pixels.height!==appliedSize.height||dpr!==appliedSize.dpr){
    canvas.width=pixels.width;canvas.height=pixels.height;context!.setTransform(dpr,0,0,dpr,0,0);appliedSize=pixels;
   }
-  draw();request(true)}
- function visibility(){if(!scope.active())return;if(document.hidden){cancel();stopPoll?.();stopPoll=undefined;last=0}else{if(!managedPoll)poll();else refresh();resized()}}
+  if(!awaitingVisibleFrame||!dynamic())draw();
+  request(true)}
+ function visibility(){if(!scope.active())return;if(document.hidden){awaitingVisibleFrame=!!samplePrecipitation;cancel();stopPoll?.();stopPoll=undefined;last=0}else{if(!managedPoll)poll();else refresh();resized()}}
  function motionChanged(){if(!scope.active())return;cancel();last=0;request(true)}
  try{
   const resize=new ResizeObserver(resized);scope.own(()=>resize.disconnect());resize.observe(parent);
