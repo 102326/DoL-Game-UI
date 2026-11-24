@@ -1,5 +1,19 @@
 # Soft & Wet 4.5 跨设备交接
 
+## 5.0 · 组合主题实包验收
+
+候选由 `ec770f9` 的运行时代码构建。Mac Chrome 157.0.8103.79 中性页面逐包读取 boot.json 并按清单加载脚本和样式，每次重载都重新装入同一组 ZIP。公开 v4.5.2 附件以 GitHub Release 的 SHA-256 核对。候选沿用既有文件名，以摘要区分。
+
+| 验收输入 | SHA-256 |
+| --- | --- |
+| v4.5.2 公开 Host | `6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8` |
+| 候选 Host | `3ad4fc0986447b478993c5d2d75aed1a98da1392015fa28f2dda85630c3302de` |
+| 两组共用的候选 UI | `140de05ed7625f69615c003039eb6384c654765f941821f29a73cecf78269680` |
+
+公开 Host 的 theme 属性与 apply 均缺席，主题来源为 0。原选色器应用强调色、重载保留、恢复默认及再次重载通过。候选 Host 暴露 apply 和一个主题来源。青灰应用后侧栏和独立检查器的底色均为 `#202732`、对应强调色均为 `#92bad5`，草稿、取消、保存、恢复和重载通过。无本体独立消费者及两种 Host 的既有设置动效回归均通过。验收限于中性浏览器实包加载，平板手感和游戏 Loader 导入分别待验。
+
+复跑：构建 framework 并用 `python3 scripts/package-framework.py --players-only` 打包，运行 `node prototypes/host5/theme/sidebar-check.mts <公开Host.zip> <候选Host.zip> <候选UI.zip>`。无参数模式属于源码夹具。现有动效对照使用 `panel-budget/settings-mixed.mts` 和相同三包。
+
 ## 5.0 · 组合主题接入正式设置和侧栏
 
 从本地 `32fa6e7` 接续。石墨灰和青灰进入正式材质页的草稿、取消与保存路径。公司 Mac 中性页面验证侧栏和独立检查器同屏应用，青灰底色为 `#202732`、强调色为 `#92bad5`。保存后重开、恢复默认后重开、真实旧 Host 的原选色流程与不加载本体的独立消费者均通过。[复跑入口](../prototypes/host5/README.md#50-后续计划--外观自定义)。保留本地研究提交，待批量同步。

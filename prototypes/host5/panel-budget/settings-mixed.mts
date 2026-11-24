@@ -1,33 +1,8 @@
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
-import {readFileSync} from 'node:fs';
+import {loadPackage,readPackage} from './package-input.mts';
 import {chromium, type Page} from 'playwright';
 import type {GameUiControls} from '../../../src/runtime/game-controls';
 import {createLabServer} from './server.mts';
-
-function readPackage(path: string, expectedName: string) {
- const bytes = readFileSync(path);
- const data: {name:string; version:string; scripts:string[]; styles:string[]} = JSON.parse(
-  execFileSync('python', ['-c', `
-import io, json, sys, zipfile
-with zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read())) as z:
-    assert z.testzip() is None
-    boot = json.loads(z.read('boot.json'))
-    def members(key):
-        return [z.read(p).decode('utf-8-sig') for p in boot[key]]
-    print(json.dumps(dict(name=boot['name'], version=boot['version'],
-        scripts=members('scriptFileList'), styles=members('styleFileList'))))
-`], {input:bytes, encoding:'utf8', maxBuffer:8*1024*1024}));
- assert.equal(data.name, expectedName);
- assert.ok(data.scripts.length);
- return {...data, sha:createHash('sha256').update(bytes).digest('hex')};
-}
-
-async function load(page: Page, pkg: ReturnType<typeof readPackage>) {
- for (const content of pkg.styles) await page.addStyleTag({content});
- for (const content of pkg.scripts) await page.addScriptTag({content});
-}
 
 async function checkBudget(page: Page) {
  const peer = await page.evaluateHandle(async () => {
@@ -82,7 +57,7 @@ try {
   const errors:string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto(`http://127.0.0.1:${address.port}/panel-test`);
-  await load(page, host);
+  await loadPackage(page, host);
   const capability = await page.evaluate(() => {
    const host = window.DoLUiHost!;
    host.sceneReady();
@@ -90,7 +65,7 @@ try {
   });
   const current = host === candidate;
   assert.deepEqual(capability,{present:current,track:current ? 'function' : 'undefined'});
-  await load(page, ui);
+  await loadPackage(page, ui);
   const opener = page.locator('#dol-midnight-sidebar-button');
   await opener.focus();
   const opened = await opener.evaluate(el => {
