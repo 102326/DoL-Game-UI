@@ -13,6 +13,7 @@ import {isMasterEnabled,setMasterEnabled} from '../runtime/master';
 import {acrylicParameters} from './acrylic';
 import {createReadingLayout} from './reading-layout';
 import {startThemePreferences, writePreference} from './preference-store';
+import {decodeLocalFont,fontRecord,importedFamily} from './local-font';
 import {appearanceFont, appearancePalette, colorRoles, readAppearance, type Appearance} from './appearance';
 import type {startLayout} from './layout';
 // Only UI controls used here; native game state remains outside this host contract.
@@ -57,7 +58,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   appearanceEnabled = enabled;
   const html = document.documentElement;
   const hasColors = enabled && colorRoles.some(role => !!state.appearance.colors[role]);
-  const hasFont = enabled && !!state.appearance.font;
+  const hasFont = enabled && (!!activeFont || !!state.appearance.font);
   const palette = hasColors ? appearancePalette(state.appearance.colors).palette : undefined;
   const colors = [...colorRoles, 'hover', 'onAccent'] as const;
   for (const role of colors) {
@@ -65,7 +66,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
    if (palette) html.style.setProperty(property, palette[role]);
    else html.style.removeProperty(property);
   }
-  if (hasFont) html.style.setProperty('--sw-custom-font', appearanceFont(state.appearance.font));
+  if (hasFont) html.style.setProperty('--sw-custom-font', (activeFont ? `'${importedFamily}', ` : '') + appearanceFont(state.appearance.font));
   else html.style.removeProperty('--sw-custom-font');
   if(official&&host?.theme){
    if(publish)host.theme.apply(hasColors?state.appearance.colors:{});
@@ -74,7 +75,42 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   html.toggleAttribute('data-sw-custom-colors', hasColors);
   html.toggleAttribute('data-sw-custom-font', hasFont);
  }
- scope.own(() => updateAppearance(false,false));
+ let activeFont: FontFace | undefined;
+ let hasSavedFont=false;
+ function useFont(face?:FontFace,name?:string) {
+  if(activeFont) document.fonts.delete(activeFont);
+  activeFont=face;
+  if(face) document.fonts.add(face);
+  state.importedFontName=name;
+  appliedAppearance=undefined;
+  updateAppearance(state.preferences.enabled,false);
+  reading.refresh();
+ }
+ const fontReady=official && typeof indexedDB!=='undefined' ? fontRecord().then(async file=>{
+  if(!file || !scope.active())return;
+  hasSavedFont=true;
+  const face=await decodeLocalFont(file,importedFamily);
+  if(scope.active())useFont(face,file.name);
+ }).catch(()=>{if(scope.active())state.message='已使用系统字体。无法读取保存的字体文件。'}) : Promise.resolve();
+ let fontWrite=fontReady;
+ function saveFont(file: File|null) {
+  const task=fontWrite.then(async ()=>{
+   if(!scope.active())throw new Error('设置已经关闭。');
+   if(!file && !hasSavedFont)return;
+   // Persist an owned copy: the user's original file may move after import.
+   const copy=file ? new File([await file.arrayBuffer()],file.name,{type:'font/ttf'}) : null;
+   const face=copy ? await decodeLocalFont(copy,importedFamily) : undefined;
+   await fontRecord(copy);
+   hasSavedFont=!!copy;
+   if(scope.active())useFont(face,file?.name);
+  });
+  fontWrite=task.catch(()=>{});
+  return task;
+ }
+ scope.own(() => {
+  if(activeFont)document.fonts.delete(activeFont);
+  updateAppearance(false,false);
+ });
 
  const counts={mounts:0,queued:0};
  function syncShopPageExperiment(){
@@ -219,7 +255,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   ++transition;motion.cancel();
   document.documentElement.removeAttribute('data-dgu-settings-open');unmountUI(app);controls?.remove();controls=document.createElement('dialog');controls.id='dol-midnight-controls';controls.setAttribute('aria-labelledby','dol-midnight-title');
   const host=document.createElement('div');host.className='dmt-settings-shell';controls.append(host);document.body.append(controls);
-  app=createApp(SettingsPanel,{state,onSaves:(value:boolean)=>setPage('saves',value),onPreference:setPreference,onAppearance:setAppearance,onCombat:(value:boolean)=>setPage('combat',value),onWardrobe:(value:boolean)=>setPage('wardrobe',value),onCharacteristics:(value:boolean)=>setPage('characteristics',value),onSocial:(value:boolean)=>setPage('social',value),onPanel:setPage,onShop:(value:boolean)=>setPage('shop',value),onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
+  app=createApp(SettingsPanel,{state,onSaves:(value:boolean)=>setPage('saves',value),onPreference:setPreference,onAppearance:setAppearance,onSaveFont:official?saveFont:undefined,onCombat:(value:boolean)=>setPage('combat',value),onWardrobe:(value:boolean)=>setPage('wardrobe',value),onCharacteristics:(value:boolean)=>setPage('characteristics',value),onSocial:(value:boolean)=>setPage('social',value),onPanel:setPage,onShop:(value:boolean)=>setPage('shop',value),onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
   // Native modal hit testing does not stop delegated game handlers from receiving our controls' events.
   for(const type of ['click','input','change','pointerdown','pointerup','touchstart','touchend','keyup'])controls.addEventListener(type,event=>event.stopPropagation());
   controls.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Escape'&&!isOpenSelectEscape(event)){event.preventDefault();closeSettings()}});

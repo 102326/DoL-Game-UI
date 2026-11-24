@@ -1,5 +1,15 @@
 # Soft & Wet 4.5 跨设备交接
 
+## 5.0 · 设置导入本地 TTF
+
+入口为「界面设置 → 材质 → 导入本地 TTF」。点选文件只改变预览。应用后，字体文件的独立副本保存在当前浏览器来源的 IndexedDB；缺字时继续用原有本机字体链。移除文件可以保留其它外观选项，「恢复默认外观」同时还原颜色与字体。
+
+Windows Chrome 157 隔离 Profile，实际 DoL 0.5.12.13 / Loader 2.101.1。Host 和 UI 各装入一份，顺序索引 23、24；核对全部 4、21 个包成员。Host ZIP SHA-256 为 `8118a86069ed97fc057e5e00bc5bef1079515e33b1e8e6e8bea4149717e9e62b`，本次 UI ZIP 为 `eeca63424b101e747219e4e8f2115b6ddd984481a7582c2067bcdf9ba5d8882b`。
+
+通过设置文件控件选择本机 Consolas 的临时副本。Chrome 字形记录显示预览行中有 10 个字形取自导入字体、8 个取自 Microsoft YaHei UI，其间窗口标题仍为默认字体。取消预览、拒绝无效文件、保存均通过。删除选入的临时文件，完全关闭并重启 Chrome 后，设置标题使用同一导入字体。恢复默认后再冷启动，标题回到 Microsoft YaHei UI，保存的字体记录数为 0。自动化向真实文件控件提供文件；未操作 Windows 原生文件对话框或 Android 文件选择器。
+
+中性复跑使用同一[字形与重启检查](../prototypes/host5/theme/ttf-check.mts)。构建 framework 后运行 `node prototypes/host5/theme/ttf-check.mts "<缺少中文字形的本机 TTF 文件>"`，使用独立临时 Chrome Profile。字体文件不随仓库或 Mod 分发。
+
 ## #41 · 平板下拉实测（2026-11-25）
 
 M367FC 横屏，独立无网络 APK，ADB 注入 touchscreen swipe，每组一笔。在 `fe11c12397622d548ec80d074111dedbe1f368c3` 的设置构建和手势页上只附加起手余量观察。三次均从实验手柄起手，标题栏持有指针捕获直至松手前。下表使用 WebView 的 CSS px，窗口位移取松手处理前与按下时的外框上缘之差，正值向下。

@@ -12,4 +12,4 @@ export const defaults={...readingDefaults,enabled:true,combatFocused:false,story
 // Retired flags remain false for existing preference readers; they no longer activate runtime code.
 export type Preferences=typeof defaults;
 export type PreferenceKey=keyof Preferences;
-export interface SettingsState {themePresets?:import('../../framework/materials/theme').ThemeCapability['presets'];preferences:Preferences;appearance:Appearance;scaleMax:150;saves:boolean;combat:boolean;wardrobe:boolean;characteristics:boolean;social:boolean;shop:boolean;shopPageExperimentAvailable:boolean;panels:Record<PanelKind,boolean>;message:string}
+export interface SettingsState {importedFontName?:string;themePresets?:import('../../framework/materials/theme').ThemeCapability['presets'];preferences:Preferences;appearance:Appearance;scaleMax:150;saves:boolean;combat:boolean;wardrobe:boolean;characteristics:boolean;social:boolean;shop:boolean;shopPageExperimentAvailable:boolean;panels:Record<PanelKind,boolean>;message:string}
