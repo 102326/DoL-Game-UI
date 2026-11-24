@@ -33,6 +33,21 @@ Windows 复用了上述同一份发行 HTML、独立 Chrome Profile、发行 Hos
 
 该配置实际显示的是 CE 状态栏按钮。另一个由设置控制的 CE 菜单图标没有出现，其弹窗未验。rebuild.30 的中性证据仍见[侧栏研究](sidebar/README.md)，本次真实混装使用原作者版。
 
+### Android · 接管、切页与撤回
+
+M367FC，Lyra 独立测试副本 0.5.12.13，已装 StoneFreeHost 0.1.5-experimental、DoLGameUI 4.5.1 和 MapleBirch 5.6.2。通过原生 Loader 临时导入原作者 CE 1.20.4（ZIP SHA-256 `980ba672661b0171923343dd03a242670fd3553208438355b5270e101ab8e134`）。侧栏使用 `d4ccc13` 的 [createSidebar](sidebar/sidebar.ts)，在实际文档内调用现有 Host。按钮使用 WebView 注入触摸。
+
+| 观察点 | 接管前 | 接管中 | 撤回后 |
+| --- | --- | --- | --- |
+| 原生折叠按钮 | 折叠、展开 | 折叠、展开 | 折叠、展开 |
+| CE 状态按钮，两次点击 | 0 → 1 → 0 | 0 → 1 → 0 | 0 → 1 → 0 |
+| 侧栏正文左内边距（CSS px） | 24 | 12 | 24 |
+| 本原型的挂载 / 区域认领 | 0 / 0 | 1 / 1 | 0 / 0 |
+
+从 Start2 的原生「继续」进入 Orphanage Intro。只在这次切页收到一次 `:passageend`，实际 StoryCaption 的 `processText` 和 CE 的 `CEstatebox.handler` 各执行一次。接管和撤回两步的增量均为零。侧栏根节点与折叠按钮保持原对象，撤回后接管标记消失。观察计数仅覆盖上述调用。复测时在页面内临时包装这两个原函数，转发原参数、返回值和异常，在结束时恢复。首次检查把 CE 按钮引用记在 CE 自身的两次操作之前，比较失败；改在每次接管或撤回的紧前、紧后取引用，两次均保持同一按钮。
+
+独立副本原有 CE 为 rebuild.30。临时切换前后比对原包字节（SHA-256 `92db93acb221731334d72ef0922adf5c5f777550f621f09cc51b609236b91e89`）及 15 项侧载顺序。还原后再次启动，实际加载的版本回到 1.20.3.1-rebuild.30，核对原摘要和顺序一致，平板已返回桌面。该副本实际装入的 UI 主脚本 `index.js` SHA-256 为 `74b7cee661420171637e29cbda58f32774639006a4c5374b7152efcb63c74732`，与平板 TTF 候选的 `5138d79bba9aa536b8be13d60b0a425dc8c8c13ef4970678bb2f09e5b083e6af` 不同，因此未从 Lyra 选取字体。未安装测试 APK 或复制临时字体。
+
 ## 复验顺序
 
 1. 在仓库根目录使用 Paisley Park 的 `pc-start`，指定上述 HTML、独立输出目录 `tests/artifacts/host5-real-loader/<本轮目录>`、本地 HTTP 端口 19753 和新建的自有 Chrome Profile。保留工具生成的绑定记录。只连接这台测试浏览器。
