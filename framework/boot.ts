@@ -1,3 +1,4 @@
+import {createTheme} from './materials/theme';
 import {createPanelBudget, surfaceMotion} from './motion/panel-budget';
 import {surface} from './materials/acrylic-scrim';
 import {createHost} from './host';
@@ -40,7 +41,15 @@ export function installHost(root: NativeWindow = window) {
   panelEffects.dispose(); core.dispose(); try {if (root.DoLUiHost === host) delete root.DoLUiHost} catch {}
   doc.dispatchEvent(new Event('stone-free-host-stopped'));
  }
- const host = Object.freeze({...core, panelEffects: surfaceMotion(panelEffects), dispose});
+ const themes=createTheme(core,doc);
+ const host = Object.freeze({...core,
+  get theme(){return closed?undefined:themes.activate()},
+  sources(schema:string){
+   if(schema==='host5.theme'&&!closed)themes.activate();
+   return core.sources(schema);
+  },
+  panelEffects:surfaceMotion(panelEffects),dispose});
+
  try {root.DoLUiHost = host} catch {panelEffects.dispose(); core.dispose(); return null}
  try {bind();if(closed)return null;doc.addEventListener('DOMContentLoaded', bind); root.addEventListener('load', bind)}
  catch {try {dispose()} catch {} return null}

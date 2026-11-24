@@ -21,6 +21,7 @@ export function mountConsumer(host:Host,id:string,parent:HTMLElement){
    const result=await source?.read(ctx.binding());
    if(result?.ok&&ticket===revision&&ctx.isCurrent())paint(node,result.value);
   }
+  ctx.onScene(refresh);
   document.addEventListener('host5-theme-applied',refresh);
   ctx.onCleanup(()=>document.removeEventListener('host5-theme-applied',refresh));
   await refresh();

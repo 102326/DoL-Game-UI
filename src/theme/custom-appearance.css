@@ -112,3 +112,13 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[dat
 html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[data-official] .sf-motion-sheet .sf-view-outlet [data-sf-owner=SoftWetOfficialUI] :is(.sf-reference-copy,.sf-reference-origin){
  font-family:var(--sw-custom-font)!important;
 }
+
+html[data-stone-free][data-dol-midnight][data-dmt-layout][data-sw-sidebar-theme] #ui-bar{
+ --dgu-sidebar-bg:var(--sw-custom-background);--dgu-sidebar-panel:var(--sw-custom-panel);
+ --dgu-sidebar-text:var(--sw-custom-text);--dgu-sidebar-muted:var(--sw-custom-muted);
+ --dgu-sidebar-hover:var(--sw-custom-hover);--dgu-sidebar-accent:var(--sw-custom-accent);
+ background-color:var(--dgu-sidebar-bg);
+}
+html[data-stone-free][data-dol-midnight][data-dmt-layout][data-sw-sidebar-theme] #ui-bar :is(#overlayButtons,#startCaption) #dol-midnight-sidebar-button{
+ color:var(--sw-custom-accent);
+}

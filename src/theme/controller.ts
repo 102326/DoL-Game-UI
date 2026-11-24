@@ -49,9 +49,9 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  const {preferences}=store.model;
  const reading=createReadingLayout();scope.own(()=>reading.destroy());
  setMasterEnabled(preferences.enabled);
- const state=reactive<SettingsState>({preferences,get appearance(){return store.model.appearance},scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:store.storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
+ const state=reactive<SettingsState>({preferences,themePresets:official?host?.theme?.presets:undefined,get appearance(){return store.model.appearance},scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:store.storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
  let appliedAppearance: Appearance | undefined, appearanceEnabled = false;
- function updateAppearance(enabled: boolean) {
+ function updateAppearance(enabled: boolean,publish=true) {
   if (appliedAppearance === state.appearance && enabled === appearanceEnabled) return;
   appliedAppearance = state.appearance;
   appearanceEnabled = enabled;
@@ -67,10 +67,14 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   }
   if (hasFont) html.style.setProperty('--sw-custom-font', appearanceFont(state.appearance.font));
   else html.style.removeProperty('--sw-custom-font');
+  if(official&&host?.theme){
+   if(publish)host.theme.apply(hasColors?state.appearance.colors:{});
+   html.toggleAttribute('data-sw-sidebar-theme',hasColors);
+  }
   html.toggleAttribute('data-sw-custom-colors', hasColors);
   html.toggleAttribute('data-sw-custom-font', hasFont);
  }
- scope.own(() => updateAppearance(false));
+ scope.own(() => updateAppearance(false,false));
 
  const counts={mounts:0,queued:0};
  function syncShopPageExperiment(){

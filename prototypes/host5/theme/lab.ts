@@ -1,12 +1,13 @@
 import '../../../framework/boot';
-import {preview,publishTheme,type Preset} from './provider';
+import {resolveTheme} from '../../../framework/materials/theme';
 import {paint,mountConsumer} from './consumer';
 const host=window.DoLUiHost!;
 host.sceneReady();
-const provider=publishTheme(host);
+const provider=host.theme!;
+provider.apply(provider.presets.graphite);
 const select=document.querySelector('select')!;
-const draft=()=>select.value as Preset;
-const update=()=>paint(document.querySelector('#preview')!,preview(draft()));
+const draft=()=>provider.presets[select.value as keyof typeof provider.presets];
+const update=()=>paint(document.querySelector('#preview')!,resolveTheme(draft()));
 select.onchange=update;update();
 document.querySelector<HTMLButtonElement>('#apply')!.onclick=()=>provider.apply(draft());
 const remove=document.querySelector<HTMLButtonElement>('#remove')!;

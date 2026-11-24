@@ -92,6 +92,7 @@ export interface SurfaceMotion {
  };
 }
 export interface Host {
+ readonly theme?: Readonly<import('./materials/theme').ThemeCapability>;
  /** Optional local material recipe. Participant.mount retains ownership and cleanup. */
  readonly layerPresets?: Readonly<{acrylicScrim?: MountRequest['setup']; surface?: Readonly<SurfacePreset>}>;
  readonly panelEffects?: Readonly<SurfaceMotion>;

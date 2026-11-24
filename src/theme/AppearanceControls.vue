@@ -3,7 +3,7 @@ import {computed, ref, watch} from 'vue';
 import GameButton from '../ui/GameButton.vue';
 import {appearanceFont, appearancePalette, colorDefaults, colorRoles, emptyAppearance, fontPattern, readAppearance, type Appearance, type ColorRole} from './appearance';
 
-const props = defineProps<{appearance: Appearance}>();
+const props = defineProps<{appearance: Appearance;presets?:Readonly<Record<string,Appearance['colors']>>}>();
 const emit = defineEmits<{apply: [appearance: Appearance]}>();
 const draft = ref(readAppearance(props.appearance));
 watch(() => props.appearance, value => {draft.value = readAppearance(value)});
@@ -28,6 +28,9 @@ function setColor(role: ColorRole, value: string) {
  <div class="dmt-setting-card dmt-control-sheet sw-appearance">
   <div class="sw-appearance-fields">
    <h3>颜色与字体</h3>
+   <div v-if="presets" class="dmt-workspace-actions" aria-label="暗色预设">
+    <GameButton v-for="(colors,id) in presets" :key="id" @click="draft.colors={...colors}">{{ id==='slate'?'青灰':'石墨灰' }}</GameButton>
+   </div>
    <div class="sw-appearance-colors">
     <label v-for="role in colorRoles" :key="role">
      <span>{{ labels[role] }}</span>
@@ -56,7 +59,8 @@ function setColor(role: ColorRole, value: string) {
   </div>
   <div class="dmt-workspace-actions sw-appearance-actions">
    <GameButton :disabled="!fontValid || !dirty" @click="emit('apply', readAppearance(draft))">应用并保存</GameButton>
-   <GameButton @click="emit('apply', emptyAppearance())">恢复默认外观</GameButton>
+   <GameButton v-if="presets" :disabled="!dirty" @click="draft=readAppearance(appearance)">取消试色</GameButton>
+   <GameButton @click="draft=emptyAppearance();emit('apply', emptyAppearance())">恢复默认外观</GameButton>
   </div>
  </div>
 </template>
