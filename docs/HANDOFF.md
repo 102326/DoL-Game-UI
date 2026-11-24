@@ -1,5 +1,25 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · 平板下拉复测入口（等待设备）
+
+Windows 的 ADB 服务启动后，两次 `adb devices -l` 均无设备。本轮短拉、正常下拉、贴底下拉的触点位移、窗口位移、起手余量和关闭次数均未测。未安装测试 APK，也没有本轮设备端安装需要清理。
+
+1. 从 `fe11c12397622d548ec80d074111dedbe1f368c3` 的源码生成原手势页，依次运行 `node scripts/build-framework.mts` 和 `node prototypes/host5/panel-budget/build-touch-page.mts`。Host、UI、CSS 与手势探针均取该提交，避免拾取现有 dist 中后续的主题构建。为新 APK 单独复制生成的 HTML，在副本的 `</body>` 前插入[余量观测片段](../prototypes/host5/panel-budget/edge-room.html)全文。它只在实验手柄按下时记录可视视口下缘与窗口下缘之差，单位为 CSS px。
+2. 按[隔离 APK 说明](../prototypes/host5/composition/android/README.md)将该副本作为唯一页面打包。记录页面与 APK 的 SHA-256。确认平板在线、已解锁且空闲，目标包名 `org.dolui.host5.neutralprobe` 未安装，再安装本轮包。打开实验手柄选项，经「界面设置」打开面板；固定方向、视口及缩放，等入场结束。
+3. 从手柄分别竖直短拉约 24 CSS px、正常下拉约 76 CSS px；每组开始前让面板回到相同初始位置。第三组先用标题空白处将面板拖到下边界，再从手柄下拉约 76 CSS px。分别记实测起点余量；若面板原位已受限，照记实际余量，不将其写作有充足行程的对照。注入坐标按设备实际几何换算，最终以网页事件读数为准。
+4. 采集本轮应用 PID 的 `Host5Probe` 日志。每笔以 `grip-start-room.bottomGap` 记起手余量；用同一指针 `pointerup.before` 减 `pointerdown.before` 的 `pointer.xy` 和 `rect`，分别得触点与窗口位移。按该笔到下一次操作之间的原生 dialog `close` 事件计数，手工复位单列。正式拖动预留 8 CSS px 底边，实验手柄按触点净下移 ≥56 CSS px 且大于横移绝对值的 1.5 倍判定关闭。三组预期关闭次数依次为 0、1、1，实测再填。ADB 输入标为设备注入，物理手指体验另记。结束卸载本轮安装的包并核对包名已消失。
+
+## 5.0 · Windows 发行 Loader 组合主题验收
+
+在 `dfe0ab8` 用 `node scripts/build-framework.mts` 和 `python scripts/package-framework.py --players-only` 重建双包。Windows Chrome 157.0.8103.79 使用新的独立 Profile，加载 DoL 0.5.12.13 / Loader 2.101.1 发行 HTML（SHA-256 `9ecc02d91e481054bed564a4fe1975dd5c2e38edc051e9fac350ae5bebe282a5`）。从 Loader GUI 的文件导入入口依次加入下列 ZIP，关闭浏览器再启动。每次启动均回读实际装入的清单、版本、依赖、全部文件名和成员 SHA-256，顺序索引从 0 起。
+
+| Windows 重建包 | ZIP SHA-256 | Loader 索引 / 文件数 |
+| --- | --- | --- |
+| StoneFreeHost-0.1.5-experimental.mod.zip | `8118a86069ed97fc057e5e00bc5bef1079515e33b1e8e6e8bea4149717e9e62b` | 23 / 4 |
+| DoLGameUI-4.5.1.mod.zip | `ce56ae1108cbed00792c2004afef52315a4578f0c5242a5321c496cd156bf671` | 24 / 21 |
+
+两个技术身份各一份。测试只从侧栏「界面设置」进入「材质」，未主动读取 Host 主题能力。初始侧栏底色 / 设置入口文字色为 `#1c1d20` / `#e6e7eb`；点「青灰」时侧栏仍为默认色，点「应用并保存」后变为 `#202732` / `#92bad5`。关闭 Chrome 后用同一 Profile 重启，首次打开设置前侧栏已是青灰。点「恢复默认外观」后两色还原，再次冷启动仍为默认，设置中的强调色输入值也恢复为 `#c9c9cd`。以上颜色取自实际节点的计算样式。平板边缘下拉和 TTF 留待独立验收。
+
 ## 5.0 · 组合主题实包验收
 
 候选由 `ec770f9` 的运行时代码构建。Mac Chrome 157.0.8103.79 中性页面逐包读取 boot.json 并按清单加载脚本和样式，每次重载都重新装入同一组 ZIP。公开 v4.5.2 附件以 GitHub Release 的 SHA-256 核对。候选沿用既有文件名，以摘要区分。
