@@ -1,0 +1,10 @@
+<!doctype html><html lang="zh-CN" data-stone-free><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Host 组合主题对照</title>
+<style>
+*{box-sizing:border-box}body{color-scheme:dark;background:#17181a;color:#dedee1;font:1rem/1.5 system-ui;margin:clamp(1rem,5vw,4rem)}
+main{max-width:56rem;margin:auto}.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:.75rem;margin:1rem 0}
+.sample{padding:1rem;border-radius:12px;background:var(--theme-panel);color:var(--theme-text);border-top:3px solid var(--theme-detail)}
+.sample span{background:var(--theme-accent);color:var(--theme-onAccent);padding:.2rem .5rem;border-radius:.3rem}.sample small{color:var(--theme-error)}
+button,select{padding:.55rem;font:inherit}
+</style><main><h1>组合主题</h1><label>预览预设 <select><option value="graphite">石墨灰</option><option value="slate">青灰</option></select></label> <button id="apply">应用预设</button>
+<div class="panels"><article id="preview" class="sample"><strong>预览</strong><p>界面已就绪</p><span>已选中</span> <small>错误提示</small></article><section id="a" aria-label="工作台"></section><section id="b" aria-label="独立检查器"></section></div>
+<button id="remove">卸载工作台</button></main><script type="module" src="./lab.ts"></script></html>
