@@ -1,5 +1,11 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · TTF 收口与 Android 启动器覆盖
+
+`809d84e` 实现字体预览、应用与恢复默认。`8cf73b3` 的产品差异仅在设置弹窗的取消事件处理：文件输入冒泡的取消由输入控件处理，弹窗自身的取消仍沿原关闭路径回焦。下列两节分别记录 Android 系统选文件和 Windows 实际 Loader 的结果。Android 修复包上已覆盖取消后继续操作、预览、保存后冷启动和恢复默认后冷启动。
+
+另核对了平板上已有的 Lyra 独立测试启动器（`com.vrelnir.dol.lyra.uicompat051213`，0.5.12.13，versionCode 512）。已安装包的 Cordova `SystemWebChromeClient.onShowFileChooser` 通过 `FileChooserParams.createIntent` 发起系统选择，结果回调解析后交还 WebView。离线测试 APK 则直接使用文档选择器，并提供专用的只读测试字体位置。两者具备相同的 WebView 回调入口，原生实现不同。本轮启动独立副本后，执行交互前发现前台已切到其它应用，随即停止设备操作。Lyra 中通过候选设置页实际打开选择器、取消或选回 TTF 的端到端结果仍未验证。
+
 ## 5.0 · 平板通过系统选择器导入 TTF
 
 M367FC 横屏，独立离线 WebView 测试 APK，使用候选 Host 和 UI ZIP 的实际脚本与样式。通过系统「更多 → 查看更多文件」进入 Android DocumentsUI，从「SoftWet TTF QA」只读位置选择系统自带的 DroidSansMono.ttf。选择操作使用设备注入触控。详见[夹具与复测步骤](../prototypes/host5/composition/android/README.md#local-ttf-picker)。
