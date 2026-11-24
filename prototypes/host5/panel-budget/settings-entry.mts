@@ -67,7 +67,9 @@ try {
     }
     if (!exit || !dialog.open || !dialog.hasAttribute('data-sf-leaving')) throw Error('Expected in-flight exit');
     const atReverse = point();
-    (window as Window & {DoLGameUI:GameUiControls}).DoLGameUI.openSettings();
+    const ui=(window as Window & {DoLGameUI?:GameUiControls}).DoLGameUI;
+    if(!ui)throw Error('Official settings entry unavailable');
+    ui.openSettings();
     return {before,first,atReverse,reopened:point(),sameTrack:shell.getAnimations()[0] === exit && exit.playbackRate > 0};
    });
    console.log('Dragged settings', {initial,...samples});

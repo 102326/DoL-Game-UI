@@ -15,15 +15,28 @@ host.sceneReady();
 const dialog=()=>document.querySelector<HTMLDialogElement>('#dol-midnight-controls');
 const opener=()=>document.querySelector<HTMLButtonElement>('#dol-midnight-sidebar-button');
 const ids=new WeakMap<Animation,number>();let nextId=0,frame=0;
+function region(node:Element){
+ if(node.closest('#pull-grip'))return 'grip';
+ if(node.closest('.dmt-close'))return 'close';
+ if(node.closest('.dmt-settings-header'))return 'title';
+ return 'form';
+}
+const starts=new Map<number,Element>();
 function record(event:string,pointer?:PointerEvent){
  const panel=dialog(),shell=panel?.querySelector<HTMLElement>('.dmt-settings-shell');
  const header=shell?.querySelector('.dmt-settings-header');
  if(!panel||!shell||!header)return;
  const box=shell.getBoundingClientRect(),player=shell.getAnimations()[0],focus=document.activeElement;
  if(player&&!ids.has(player))ids.set(player,++nextId);
+ const target=pointer?.target instanceof Element?pointer.target:undefined;
+ const start=pointer&&starts.get(pointer.pointerId);
+ const owner=pointer&&[header,target,start,...pointer.composedPath()].find(
+  (node):node is Element=>node instanceof Element&&node.hasPointerCapture(pointer.pointerId));
  console.info('SW41 '+JSON.stringify({event,t:performance.now(),open:panel.open,leaving:panel.hasAttribute('data-sf-leaving'),
   rect:[box.x,box.y],track:player?{id:ids.get(player),ms:player.currentTime,rate:player.playbackRate}:null,
   pointer:pointer?{id:pointer.pointerId,type:pointer.pointerType,trusted:pointer.isTrusted,xy:[pointer.clientX,pointer.clientY],
+   origin:start?region(start):null,target:target?region(target):null,
+   capture:owner?{region:region(owner),tag:owner.localName,header:owner===header}:null,
    headerCapture:header.hasPointerCapture(pointer.pointerId)}:null,
   focus:focus===opener()?'opener':focus?.matches('.dmt-close')?'close':panel.contains(focus)?'panel':'outside',
   acquired,released}));
@@ -37,10 +50,16 @@ for(const event of ['pointerdown','pointermove','pointerup','pointercancel','got
  window.addEventListener(event,e=>{
   const pointer=e as PointerEvent;
   const header=dialog()?.querySelector('.dmt-settings-header');
-  if(!header||!pointer.composedPath().includes(header))return;
+  const target=pointer.target;
+  if(!(target instanceof Element)||!header||!dialog()?.contains(target))return;
+  if(event==='pointerdown')starts.set(pointer.pointerId,target);
   record(event+'.before',pointer);
   // Sample after the consumer's handler even when it stops bubbling on move.
-  header.addEventListener(event,()=>{record(event+'.after',pointer);nextFrame()},{once:true});
+  const receiver=header.contains(target)?header:target;
+  receiver.addEventListener(event,()=>{
+   record(event+'.after',pointer);nextFrame();
+   if(event==='pointerup'||event==='pointercancel')starts.delete(pointer.pointerId);
+  },{once:true});
  },true);
 }
 document.addEventListener('click',e=>{

@@ -8,7 +8,7 @@ try {
  const page=await browser.newPage({viewport:{width:1280,height:800},hasTouch:true});
  const errors:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));
- const records:{event:string;open:boolean;leaving:boolean;rect:number[];focus:string;acquired:number;released:number}[]=[];
+ const records:{pointer:{origin:string;target:string;capture:{region:string;header:boolean}|null}|null;event:string;open:boolean;leaving:boolean;rect:number[];focus:string;acquired:number;released:number}[]=[];
  page.on('console',msg=>{if(msg.text().startsWith('SW41 '))records.push(JSON.parse(msg.text().slice(5)))});
  await page.goto(pathToFileURL(resolve('tests/artifacts/host5-settings-touch/index.html')).href);
  const cdp=await page.context().newCDPSession(page);
@@ -44,6 +44,12 @@ try {
  for(const d of [12,32,60,90])await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:scroll.x,y:scroll.y-d}]});
  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
  assert.ok(await scroller.evaluate(n=>n.scrollTop)>scroll.top,'form receives native scrolling');
+ for(const origin of ['title','grip']){
+  assert.ok(records.some(r=>r.event==='pointermove.after'&&r.pointer?.origin===origin&&
+   r.pointer.target==='title'&&r.pointer.capture?.header),origin+' drag captured by header');
+ }
+ assert.ok(records.some(r=>r.event==='pointerdown.after'&&r.pointer?.origin==='form'&&
+  r.pointer.target==='form'&&r.pointer.capture?.region==='form'),'form has its own touch capture');
  const offset=records.length;
  await swipe(grip,2,76);
  await dialog.waitFor({state:'hidden'});
@@ -63,7 +69,9 @@ try {
     if(!exit||exit.playbackRate>=0){el.setAttribute('data-test-reversal','failed');return}
     exit.currentTime=Number(exit.effect!.getTiming().duration)/2;
     const before=shell.getBoundingClientRect();
-    (window as Window & {DoLGameUI:{openSettings():void}}).DoLGameUI.openSettings();
+    const ui=(window as Window & {DoLGameUI?:{openSettings():void}}).DoLGameUI;
+    if(!ui)throw Error('Official settings entry unavailable');
+    ui.openSettings();
     const after=shell.getBoundingClientRect();
     el.setAttribute('data-test-reversal',String(shell.getAnimations()[0]===exit&&exit.playbackRate>0&&
      Math.hypot(after.x-before.x,after.y-before.y)<1));
