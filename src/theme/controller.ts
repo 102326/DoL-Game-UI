@@ -264,7 +264,10 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
    document.documentElement.removeAttribute('data-dgu-settings-open');++transition;
    motion.dispose();controls.removeAttribute('data-sf-leaving');
   });
-  controls.addEventListener('cancel',event=>{event.preventDefault();closeSettings()});
+  controls.addEventListener('cancel',event=>{
+   if(event.target!==event.currentTarget)return;
+   event.preventDefault();closeSettings();
+  });
   controls.addEventListener('click',event=>{if(event.target===controls)closeSettings()});
  }
  function target(){return document.getElementById('overlayButtons')||document.getElementById('startCaption')||document.getElementById('menu')||document.body}

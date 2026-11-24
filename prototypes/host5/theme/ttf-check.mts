@@ -56,6 +56,12 @@ export async function checkLocalTtf(page:Page,restartAtMaterial:()=>Promise<Page
  try {
   await copyFile(source,copy);
   const baseline=await renderedFonts(page,title);
+  // WebView bubbles the native picker's cancellation from the file input.
+  assert.ok(await file().evaluate(input=>{
+   input.dispatchEvent(new Event('cancel',{bubbles:true}));
+   const dialog=input.closest('dialog');
+   return dialog?.open && !dialog.hasAttribute('data-sf-leaving');
+  }));
   await file().setInputFiles({name:'invalid.ttf',mimeType:'font/ttf',buffer:Buffer.from('invalid font file')});
   await page.getByText('文件不是支持的 TrueType 字体。',{exact:true}).waitFor();
   assert.ok(await button('应用并保存').isDisabled());

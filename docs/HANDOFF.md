@@ -1,5 +1,13 @@
 # Soft & Wet 4.5 跨设备交接
 
+## 5.0 · 平板通过系统选择器导入 TTF
+
+M367FC 横屏，独立离线 WebView 测试 APK，使用候选 Host 和 UI ZIP 的实际脚本与样式。通过系统「更多 → 查看更多文件」进入 Android DocumentsUI，从「SoftWet TTF QA」只读位置选择系统自带的 DroidSansMono.ttf。选择操作使用设备注入触控。详见[夹具与复测步骤](../prototypes/host5/composition/android/README.md#local-ttf-picker)。
+
+首次取消时，文件输入的 `cancel` 冒泡给设置弹窗，原 UI 连同设置一起关闭。修复后再从选择器返回，只有输入控件收到取消，设置保持打开，保存按钮仍禁用，字体记录为 0。设置窗口自身仍可用 Escape 关闭并回焦。
+
+修复包实测：预览行中 10 个字形使用 Droid Sans Mono，8 个保留 MiSans VF；保存前标题仍为默认字体。应用后强制停止并重新启动测试进程，标题仍使用导入字体，记录为 1。恢复默认并再次冷启动，标题回到 MiSans VF，记录为 0。修复后 UI ZIP SHA-256 为 `5aba158d041eeade7c803f43f985590b8bf4fd38220acfbadc2de0f1f92059e3`，测试 APK 为 `cfd9f9556a5aa7e6f2fed6e31ba09c96920494a3ee8ce811a8ec43f8475ad795`。结束时比对设备端 APK 摘要并卸载，平板回到桌面。当前证据覆盖该隔离宿主，玩家 APK 的原生文件选择实现另行确认。
+
 ## 5.0 · 设置导入本地 TTF
 
 入口为「界面设置 → 材质 → 导入本地 TTF」。点选文件只改变预览。应用后，字体文件的独立副本保存在当前浏览器来源的 IndexedDB；缺字时继续用原有本机字体链。移除文件可以保留其它外观选项，「恢复默认外观」同时还原颜色与字体。
