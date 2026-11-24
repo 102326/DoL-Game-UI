@@ -53,3 +53,36 @@ document.addEventListener('close',e=>{if(e.target===dialog()){record('close');ne
 document.querySelector('#cue')!.addEventListener('click',()=>setTimeout(()=>{
  const button=opener();if(button&&!dialog()?.open){button.focus();button.click()}
 },1000));
+
+// Optional neutral-page affordance. The real title handler owns pointer capture,
+// shell displacement and release; this fixture only recognizes close intent.
+const option=document.querySelector<HTMLInputElement>('#pull-option')!;
+let detach:(()=>void)|undefined;
+function syncPullHandle(){
+ detach?.();detach=undefined;
+ const panel=dialog(),header=panel?.querySelector<HTMLElement>('.dmt-settings-header');
+ if(!option.checked||!panel||!header)return;
+ const mark=document.createElement('span');
+ mark.id='pull-grip';mark.textContent='↓ 下拉收起';
+ mark.style.cssText='display:grid;place-items:center;min-height:44px;touch-action:none;user-select:none';
+ header.insertBefore(mark,header.querySelector('.dmt-close'));
+ let start:{id:number;x:number;y:number}|undefined;
+ const begin=(e:PointerEvent)=>{
+  if(start||e.target!==mark||e.pointerType!=='touch'||!e.isPrimary||!header.hasPointerCapture(e.pointerId))return;
+  start={id:e.pointerId,x:e.clientX,y:e.clientY};
+ };
+ const finish=(e:PointerEvent)=>{
+  if(!start||e.pointerId!==start.id)return;
+  const dx=e.clientX-start.x,dy=e.clientY-start.y;start=undefined;
+  if(e.type==='pointerup'&&dy>=56&&dy>Math.abs(dx)*1.5&&panel.open&&!panel.hasAttribute('data-sf-leaving'))
+   header.querySelector<HTMLButtonElement>('.dmt-close')?.click();
+ };
+ header.addEventListener('pointerdown',begin);
+ const ends=['pointerup','pointercancel','lostpointercapture'] as const;
+ for(const type of ends)header.addEventListener(type,finish);
+ detach=()=>{header.removeEventListener('pointerdown',begin);for(const type of ends)header.removeEventListener(type,finish);mark.remove()};
+}
+option.addEventListener('change',syncPullHandle);
+document.addEventListener('click',e=>{
+ if(e.target instanceof Element&&e.target.closest('#dol-midnight-sidebar-button'))queueMicrotask(syncPullHandle);
+},true);
