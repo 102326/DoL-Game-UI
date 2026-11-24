@@ -1,5 +1,11 @@
 # Soft & Wet 4.5 跨设备交接
 
+## #41 · 设置窗口从拖后位置关闭（Mac 本地，待同步）
+
+从平板回执 `9d0f58b6` 快进接续。Mac Chrome 157 的中性页面加载正式 Host、设置 UI 和样式。鼠标拖动真实标题栏后，旧版关闭前横坐标 194，离场首个 rAF 采样为 140 CSS px。材质观察器把离场标记当成已经关闭，提前清零了位移。现保留离场姿态，真正关闭时清零；离场期间通过公开入口重开可以接续原轨道。
+
+复跑 `node scripts/build-framework.mts` 后执行 `node prototypes/host5/panel-budget/settings-entry.mts`。修复后关闭前、首个离场采样、反向前后均为 (194, 19.35) CSS px；最终正常关闭后位移归零、焦点回到入口，Host 轨道申请/释放 1/1。旧 Host 回退与减少动态路径也通过。这里测的是绘制前布局；平板修复后呈现与物理手指输入留待家庭设备复验。
+
 ## #41 · 设置标题栏平板基线（设备注入）
 
 以 `dd331ac` 的离线页和正式 Host/UI 构建，在 M367FC 平板横屏运行独立中性 WebView APK。APK SHA-256 为 `7aea1a29c721be860b4d1ceae07fb17b8410aae04daa1591d0316be6a56116c1`。输入来自 ADB 的 Android touchscreen tap/swipe。WebView 收到 trusted touch 事件；本次没有物理手指输入。

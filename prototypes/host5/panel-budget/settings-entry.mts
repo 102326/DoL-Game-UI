@@ -41,6 +41,43 @@ try {
   const shell = dialog.locator('.dmt-settings-shell');
   const close = dialog.getByRole('button', {name:'关闭', exact:true});
   await page.waitForFunction(() => !document.querySelector('.dmt-settings-shell')!.getAnimations().length);
+  if (mode === 'host') {
+   const title = dialog.locator('#dol-midnight-title');
+   const box = await title.boundingBox();
+   assert.ok(box);
+   const initial = await shell.evaluate(el => el.getBoundingClientRect().x);
+   const x = box.x + box.width / 2, y = box.y + box.height / 2;
+   await page.mouse.move(x,y);
+   await page.mouse.down();
+   await page.mouse.move(x+54,y+10,{steps:4});
+   await page.mouse.up();
+   await page.waitForFunction(() => !document.querySelector('.dmt-settings-shell')!.hasAttribute('data-dgu-material-moving'));
+   const samples = await close.evaluate(async el => {
+    const dialog = el.closest('dialog')!, shell = dialog.querySelector<HTMLElement>('.dmt-settings-shell')!;
+    const point = () => {const {x,y} = shell.getBoundingClientRect(); return {x,y}};
+    const frame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    const before = point();
+    (el as HTMLButtonElement).click();
+    const exit = shell.getAnimations()[0];
+    await frame();
+    const first = point();
+    if (exit) {
+     const duration = Number(exit.effect!.getTiming().duration);
+     for (let i=0; i<5 && Number(exit.currentTime)>=duration; i++) await frame();
+    }
+    if (!exit || !dialog.open || !dialog.hasAttribute('data-sf-leaving')) throw Error('Expected in-flight exit');
+    const atReverse = point();
+    (window as Window & {DoLGameUI:GameUiControls}).DoLGameUI.openSettings();
+    return {before,first,atReverse,reopened:point(),sameTrack:shell.getAnimations()[0] === exit && exit.playbackRate > 0};
+   });
+   console.log('Dragged settings', {initial,...samples});
+   assert.ok(samples.before.x-initial > 45,'real title drag moves the settings shell');
+   for (const point of [samples.first,samples.atReverse,samples.reopened]) {
+    assert.ok(Math.hypot(point.x-samples.before.x,point.y-samples.before.y)<1,'drag position survives exit and reversal');
+   }
+   assert.ok(samples.sameTrack);
+   await page.waitForFunction(() => !document.querySelector('.dmt-settings-shell')!.getAnimations().length);
+  }
   // Drive the real close handler and reopen API within one task. Seek halfway
   // through closing so browser scheduling cannot turn a reversal into a fresh open.
   const transition = await close.evaluate((el, mode) => {
@@ -72,6 +109,7 @@ try {
   const ownership = await counts.jsonValue();
   const expected = mode === 'legacy' ? 0 : 1;
   assert.deepEqual(ownership,{created:expected, released:expected});
+  if (mode === 'host') assert.equal(await shell.evaluate(el => parseFloat(getComputedStyle(el).translate)),0,'true close clears drag offset');
   assert.deepEqual(errors,[]);
   console.log(browser.version(), mode, transition, ownership, 'focus returned');
   await page.close();

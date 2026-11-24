@@ -8,6 +8,7 @@ export function settingsMaterial(shell:HTMLElement,handle:HTMLElement,core:HTMLE
  function marking(value:boolean){if(moving===value)return;moving=value;if(value)shell.setAttribute('data-dgu-material-moving','');else if(previousMoving===null)shell.removeAttribute('data-dgu-material-moving');else shell.setAttribute('data-dgu-material-moving',previousMoving)}
  const before={translate:shell.style.translate,scale:shell.style.scale,coreTranslate:core.style.translate,coreScale:core.style.scale};
  let drag:{id:number;x:number;y:number;t:number}|undefined,x=0,y=0,tx=0,ty=0,fx=0,fy=0,cx=0,cy=0,vx=0,vy=0,last=0;
+ const leaving=()=>dialog.open&&dialog.hasAttribute('data-sf-leaving');
  const visible=()=>scope.active()&&dialog.open&&!dialog.hasAttribute('data-sf-leaving')&&!document.hidden;
  const animated=()=>visible()&&!media.matches&&root.hasAttribute('data-dgu-visualMotion');
  function paint(){
@@ -15,6 +16,7 @@ export function settingsMaterial(shell:HTMLElement,handle:HTMLElement,core:HTMLE
   writeMaterialTransform(shell,`${x}px ${y}px`,`${sx} ${sy}`);core.style.scale=`${1/sx} ${1/sy}`;core.style.translate=`${cx}px ${cy}px`;
  }
  function settle(){
+  if(leaving())return;
   if(!animated()){reset();return}
   const now=performance.now(),dt=last?Math.min(.05,(now-last)/1000):1/60;last=now;
   const steps=Math.ceil(dt*120),h=dt/steps,w=2*Math.PI*3.4;
@@ -36,7 +38,9 @@ export function settingsMaterial(shell:HTMLElement,handle:HTMLElement,core:HTMLE
   handle.setPointerCapture(e.pointerId);e.preventDefault();marking(true);drag={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now()};
  }
  function move(e:PointerEvent){
-  if(!drag||e.pointerId!==drag.id)return;e.stopPropagation();if(!visible()){reset();return}
+  if(!drag||e.pointerId!==drag.id)return;e.stopPropagation();
+  if(leaving()){end();return}
+  if(!visible()){reset();return}
   const rect=shell.getBoundingClientRect(),sx=1+(fx-fy)*.022;
   const zoom=rect.width/(shell.offsetWidth*sx);if(!Number.isFinite(zoom)||zoom<=0)return;
   const viewport=window.visualViewport,left=viewport?.offsetLeft??0,top=viewport?.offsetTop??0;
@@ -54,7 +58,14 @@ export function settingsMaterial(shell:HTMLElement,handle:HTMLElement,core:HTMLE
  for(const type of ['blur','resize','pagehide'])listen(window,type,reset);
  if(window.visualViewport)listen(window.visualViewport,'resize',reset);
  listen(document,'visibilitychange',reset);listen(media,'change',reset);
- const observer=new MutationObserver(()=>{if(!visible()||!animated())reset()});
+ const observer=new MutationObserver(()=>{
+  // The shell stays on screen throughout its exit. Keep its last painted pose
+  // until the dialog actually closes, including when the exit reverses.
+  if(leaving()){
+   end();scope.cancelFrame(settle);last=0;return;
+  }
+  if(!animated())reset();else if(moving)scope.frame(settle);
+ });
  observer.observe(dialog,{attributes:true,attributeFilter:['open','data-sf-leaving']});
  observer.observe(root,{attributes:true,attributeFilter:['data-dgu-visualmotion']});scope.own(()=>observer.disconnect());
  shell.setAttribute('data-dgu-settings-material','');
