@@ -1,35 +1,43 @@
-/* Opt-in appearance for the official UI. Compatibility portals extend the existing adapter scope in compat-settings.css. */
+/* Palette projection for official surfaces and reviewed, fully matched compatibility roots. */
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
  #dol-midnight-controls,#dol-midnight-controls>.dmt-settings-shell,
  #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves]),
  .passage.dgp-overlay:has(>.dgp-host),.dgw-root,.dgw-reference-chip,.dgw-reference-compare,.dgshop-host,.dgshop-content,.dcu-root,.dcu-shell,.sf-motion-hub[data-official],
  :is(.dgc-host,.dgs-host,.dgp-host)>.dgu-surface,
  dialog.dgu-surface:is([data-sf-workspace=drawer],:has(>.dgu-surface-content>.dgu-inspector))
+),
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment] [data-dgu-adapter-match=full]:is(
+ #customOverlay:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet]),
+ #modHubManagerToolsMenu[data-dgu-adapter=ModHubSoftWetTools],.modhub-modal-backdrop[data-dgu-adapter=ModHubSoftWetModal],
+ #modHubRestorePanelOverlay[data-dgu-adapter=ModHubSoftWetRestore],.CEDISPLAY[data-dgu-adapter=CheatExtendedInlineSoftWet],
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet],#smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug]
 ){
  --sw-owned-surface:var(--sw-custom-shell,var(--sw-custom-background));
  --sw-owned-panel:var(--sw-custom-panel);
- --sw-owned-accent:var(--sw-custom-accent);
- --sw-owned-detail:var(--sw-custom-muted);
- --sf-main:var(--sw-custom-background);
- --sf-reading:var(--sw-custom-panel);
+ --q-fill:var(--sw-custom-glass);
+ --q-well:var(--sw-owned-panel);
  --sf-ink:var(--sw-custom-text);
  --sf-muted:var(--sw-custom-muted);
- --sf-edit:var(--sw-custom-accent);
- --kw-shell:var(--sw-custom-glass);
- --dgu-acrylic-base:var(--sw-custom-glass);
- --kw-island:var(--sw-custom-panel);
- --kw-slider:var(--sw-custom-accent);
- --dgu-surface:var(--sw-custom-background)!important;
- --dgu-panel:var(--sw-custom-panel)!important;
- --dgu-card:var(--sw-custom-panel)!important;
+ --kw-island:var(--sw-owned-panel);
+ --dgu-surface:var(--sw-owned-surface)!important;
+ --dgu-panel:var(--sw-owned-panel)!important;
+ --dgu-card:var(--sw-owned-panel)!important;
  --dgu-hover:var(--sw-custom-hover)!important;
- --dgu-selected:var(--sw-custom-hover)!important;
+ --dgu-accent:var(--sw-custom-accent)!important;
  --dgu-text:var(--sw-custom-text)!important;
  --dgu-secondary:var(--sw-custom-muted)!important;
- --dgu-accent:var(--sw-custom-accent)!important;
  --dgu-on-accent:var(--sw-custom-on-accent)!important;
- --q-fill:var(--sw-custom-glass);
- --q-well:var(--sw-custom-panel);
+ &:not([data-dgu-adapter^=SmartPhone]){
+  --sw-owned-accent:var(--sw-custom-accent);
+  --sw-owned-detail:var(--sw-custom-muted);
+  --sf-main:var(--sw-custom-background);
+  --sf-reading:var(--sw-custom-panel);
+  --sf-edit:var(--sw-custom-accent);
+  --kw-shell:var(--sw-custom-glass);
+  --dgu-acrylic-base:var(--sw-custom-glass);
+  --kw-slider:var(--sw-custom-accent);
+  --dgu-selected:var(--sw-custom-hover)!important;
+ }
 }
 
 /* Keep the existing material sampling and transparency on the outer glass. */
@@ -42,7 +50,7 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors]{--sw-custom-glas
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors]:not([data-dgu-visualGlass]) :is(
  #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves]),
  .dgw-shell,.dgshop-host,.dgshop-content,.dcu-shell
-){background-color:var(--sw-custom-background)!important}
+){background-color:var(--sw-owned-surface)!important}
 
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] dialog.dgu-surface:is([data-sf-workspace=drawer],:has(>.dgu-surface-content>.dgu-inspector)){
  background-color:var(--sw-custom-glass);

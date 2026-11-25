@@ -74,5 +74,29 @@ try{
   document.body.append(box);return [...box.querySelectorAll('dialog,.clothing-details')].map(n=>getComputedStyle(n).backgroundColor);
  });
  assert.deepEqual(surfaces,['rgb(32, 39, 50)','rgb(50, 40, 53)']);
- console.log(JSON.stringify({observations,focus,surfaces}));
+ const workspaceRoles=await p.evaluate(()=>{
+  const box=document.createElement('div');
+  document.body.append(box);
+  try{
+   const cases=[
+    ['attributes','<div id="customOverlay" class="dgc-overlay"><nav class="dgc-host"></nav></div>'],
+    ['social','<div id="customOverlay" class="dgs-overlay"><nav class="dgs-host"></nav></div>'],
+    ['panels','<div id="customOverlay" class="dgp-overlay"><nav class="dgp-host"></nav></div>'],
+    ['saves','<div id="customOverlay" data-sf-workspace="saves"></div>'],
+    ['wardrobe','<div class="dgw-root"></div>'],
+    ['combat','<div class="dcu-root"></div>'],
+    ['shop','<div class="dgshop-content"></div>'],
+    ['unclaimed','<div id="customOverlay" class="dgp-overlay"></div>'],
+   ] as const;
+   return cases.map(([id,markup])=>{
+    box.innerHTML=markup;
+    const style=getComputedStyle(box.firstElementChild!);
+    return [id,style.getPropertyValue('--sw-owned-surface').trim(),style.getPropertyValue('--sw-owned-panel').trim()] as const;
+   });
+  }finally{box.remove()}
+ });
+ for(const [id,base,panel] of workspaceRoles){
+  assert.deepEqual([base,panel],id==='unclaimed'?['','']:['#202732','#322835'],id);
+ }
+ console.log(JSON.stringify({observations,focus,surfaces,workspaceRoles}));
 }finally{await browser.close();await server.close()}
