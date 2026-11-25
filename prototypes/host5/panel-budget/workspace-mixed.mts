@@ -19,7 +19,7 @@ try{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:'+address.port+'/panel-test');
  await page.evaluate(()=>{
-  document.body.innerHTML='<div id="sky"></div><aside id="ui-bar"><div id="overlayButtons"><button class="link-internal macro-button" id="native-open">Attributes</button><button class="link-internal macro-button" id="social-open">Social</button></div></aside><div id="customOverlayContainer"><section id="customOverlay" class="hidden" data-overlay="characteristics"><header id="customOverlayTitle">Workspace <button id="native-close">Close</button></header><div id="customOverlayContent"><section id="characteristics-display"><h3 id="base-characteristics">Group</h3><button id="action">Neutral action</button></section></div></section></div>';
+  document.body.innerHTML='<div id="sky"></div><aside id="ui-bar"><div id="overlayButtons"><button class="link-internal macro-button" id="native-open">Attributes</button><button class="link-internal macro-button" id="social-open">Social</button></div></aside><div id="customOverlayContainer"><section id="customOverlay" class="hidden" data-overlay="characteristics"><header id="customOverlayTitle" tabindex="-1">Workspace <button id="native-close">Close</button></header><div id="customOverlayContent"><section id="characteristics-display"><h3 id="base-characteristics">Group</h3><button id="action">Neutral action</button></section></div></section></div>';
   const el=(s:string)=>document.querySelector<HTMLElement>(s)!;
   const overlay=el('#customOverlay');
   const content=el('#customOverlayContent'),attributes=content.firstElementChild!;
@@ -55,6 +55,8 @@ try{
   const x=box.x+34,y=box.y+12;
   await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x+42,y+17,{steps:4});await frames(page);
  }
+ // High contrast stripes make a lost backdrop blur observable in actual pixels.
+ await page.locator('#sky').evaluate(n=>{(n as HTMLElement).style.background='repeating-linear-gradient(90deg,#fff 0 4px,#000 4px 8px)';n.getAnimations().forEach(a=>a.pause())});
  await opener.click();await settle('.dmt-settings-shell');
  assert.equal(await settings.locator('.dmt-settings-shell').getAttribute('data-neutral-plays'),'1');
  await drag('.dmt-settings-header');
@@ -67,10 +69,36 @@ try{
   exit.pause();exit.currentTime=45;
   await new Promise<void>(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r())));
   const leaving=shell.getBoundingClientRect().x;
-  (window as Window & {DoLGameUI?:GameUiControls}).DoLGameUI!.openSettings();
-  return {jump:Math.abs(before-leaving),reverseJump:Math.abs(leaving-shell.getBoundingClientRect().x),same:shell.getAnimations().includes(exit),rate:exit.playbackRate};
+  return {jump:Math.abs(before-leaving)};
  });
- await page.mouse.up();assert.ok(reversal.jump<1&&reversal.reverseJump<1&&reversal.same&&reversal.rate>0,JSON.stringify(reversal));
+ await page.mouse.up();
+ const shell=settings.locator('.dmt-settings-shell');
+ const clip=await shell.boundingBox();assert.ok(clip);
+ const screenshot=()=>page.screenshot({animations:'allow',clip});
+ const freeze=()=>page.evaluateHandle(()=>document.getAnimations().filter(a=>a.playState==='running').map(a=>{a.pause();return a}));
+ const frozenBefore=await freeze();await frames(page);const exitPixels=await screenshot();const exitRepeat=await screenshot();
+ await shell.evaluate(n=>(n as HTMLElement).style.setProperty('backdrop-filter','none','important'));await frames(page);const exitNegative=await screenshot();
+ await shell.evaluate(n=>(n as HTMLElement).style.removeProperty('backdrop-filter'));await frames(page);const exitRestored=await screenshot();
+ const reversed=await settings.evaluate(node=>{
+  const shell=node.querySelector<HTMLElement>('.dmt-settings-shell')!,exit=shell.getAnimations().find(a=>a.id==='sf-surface-track')!,before=shell.getBoundingClientRect().x;
+  (window as Window & {DoLGameUI?:GameUiControls}).DoLGameUI!.openSettings();
+  const result={jump:Math.abs(before-shell.getBoundingClientRect().x),same:shell.getAnimations().includes(exit),rate:exit.playbackRate};exit.pause();exit.currentTime=45;return result;
+ });
+ const frozenAfter=await freeze();await frames(page);const reversePixels=await screenshot();const reverseRepeat=await screenshot();
+ await shell.evaluate(n=>(n as HTMLElement).style.setProperty('backdrop-filter','none','important'));
+ await frames(page);const negativePixels=await screenshot();const negativeRepeat=await screenshot();
+ await shell.evaluate(n=>(n as HTMLElement).style.removeProperty('backdrop-filter'));
+ const pixelDiff=async(a:Buffer,b:Buffer)=>page.evaluate(async ([left,right]:[string,string])=>{
+  const decode=async(data:string)=>{const image=new Image();image.src='data:image/png;base64,'+data;await image.decode();const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;const ctx=canvas.getContext('2d')!;ctx.drawImage(image,0,0);return ctx.getImageData(0,0,canvas.width,canvas.height)};
+  const x=await decode(left),y=await decode(right);if(x.width!==y.width||x.height!==y.height)throw Error('screenshot geometry differs');let sum=0;for(let i=0;i<x.data.length;i+=4)for(let j=0;j<3;j++)sum+=Math.abs(x.data[i+j]!-y.data[i+j]!);return sum/(x.width*x.height*3);
+ },[a.toString('base64'),b.toString('base64')] as [string,string]);
+ const pixels={exitNoise:await pixelDiff(exitPixels,exitRepeat),reverseNoise:await pixelDiff(reversePixels,reverseRepeat),negativeNoise:await pixelDiff(negativePixels,negativeRepeat),sameProgress:await pixelDiff(exitRepeat,reversePixels),exitNoBlur:await pixelDiff(exitRepeat,exitNegative),exitRestored:await pixelDiff(exitRepeat,exitRestored),noBlur:await pixelDiff(reverseRepeat,negativePixels),noBlurRepeat:await pixelDiff(reversePixels,negativeRepeat)};
+ assert.ok(reversal.jump<1&&reversed.jump<1&&reversed.same&&reversed.rate>0,JSON.stringify({reversal,reversed}));
+ assert.ok(Math.min(pixels.exitNoBlur,pixels.noBlur,pixels.noBlurRepeat)>5 && pixels.exitNoBlur>Math.max(pixels.exitNoise,pixels.exitRestored)*2 && Math.min(pixels.noBlur,pixels.noBlurRepeat)>Math.max(pixels.reverseNoise,pixels.negativeNoise)*2,JSON.stringify(pixels));
+ await shell.evaluate(n=>n.getAnimations().find(a=>a.id==='sf-surface-track')!.play());
+ await frozenBefore.evaluate(players=>players.forEach(player=>{if(player.playState==='paused')player.play()}));await frozenBefore.dispose();
+ await frozenAfter.evaluate(players=>players.forEach(player=>{if(player.playState==='paused')player.play()}));await frozenAfter.dispose();
+ await ambient.evaluate(({player})=>player.play());
  await page.keyboard.press('Escape');await settings.waitFor({state:'hidden'});
  assert.ok(await opener.evaluate(n=>n===document.activeElement));
  await native.click();await page.locator('#customOverlay[data-dgu-attributes-drag-ready]').waitFor();
@@ -101,8 +129,24 @@ try{
   return player.playbackRate>0&&plane.isConnected&&plane.getAnimations().includes(player);
  });
  assert.ok(nativeReverse,'native owner reopened while the same surviving scrim reversed');
- await page.locator('#native-close').click();await page.waitForFunction(()=>!document.querySelector('.kw-context-plane'));
+ // Switch kind through the real social opener while the previous owner's exit is still in flight.
+ await page.locator('#native-close').click();
+ const oldExit=await page.evaluateHandle(async()=>{
+  for(let i=0;i<8;i++){
+   const exit=document.querySelector('.kw-context-plane')?.getAnimations().find(a=>a.id==='sf-surface-track'&&a.playbackRate<0);
+   if(exit){exit.pause();exit.currentTime=45;return exit}
+   await new Promise<void>(r=>requestAnimationFrame(()=>r()));
+  }
+  throw Error('No old exit to switch during');
+ });
  await page.locator('#social-open').click();await page.locator('[data-dgu-workspace-drag-ready]').waitFor();
+ await oldExit.evaluate(exit=>{if(exit.playState!=='idle')exit.play()});await oldExit.dispose();
+ await page.locator('#customOverlayTitle').evaluate(n=>(n as HTMLElement).focus());
+ await page.waitForTimeout(700);
+ assert.equal(await overlay.getAttribute('data-overlay'),'social');
+ assert.ok(await overlay.isVisible());
+ assert.ok(await page.locator('#customOverlayTitle').evaluate(n=>document.activeElement===n));
+ assert.ok(await page.locator('.kw-context-plane').count(),'old exit must not remove the new owner scrim');
  await drag('#customOverlayTitle');
  assert.ok(await overlay.evaluate(n=>parseFloat((n as HTMLElement).style.translate)>20));
  const cancelled=await page.locator('#customOverlayTitle').evaluate(title=>{
@@ -162,5 +206,5 @@ try{
   await story.mouse.up();await story.close();
   console.log('SugarCube 2.37.3 neutral passage change during held settings drag:',crossed);
  }
- console.log(browser.version(),{host:host.sha,ui:ui.sha,reversal,nativeReverse,cancelled,socialOwnerReleased:true,nativeActions:2,ambientContinued:true,cleanup:true});
+ console.log(browser.version(),{host:host.sha,ui:ui.sha,reversal,reversed,pixels,nativeReverse,cancelled,socialOwnerReleased:true,nativeActions:2,ambientContinued:true,cleanup:true});
 }finally{await browser.close();await server.close()}

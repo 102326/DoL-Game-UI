@@ -4,15 +4,15 @@ import {sourceMotion} from '../../src/ui/source-motion';
 import {panelDrag} from '../../src/ui/panel-drag';
 import {refreshForeground} from '../../src/ui/foreground-plane';
 import {panelFade} from '../../src/ui/panel-fade';
-import type {Host} from '../contracts';
+import type {Host,Participant} from '../contracts';
 import {headerWeather} from './weather';
 import {isMasterEnabled} from '../../src/runtime/master';
 import type {NativeEventsHost} from '../../src/runtime/sugarcube';
 import {nativeNavigation,adaptedOverlaySelector,nativeEntryKinds} from './navigation';
 
 /** Presentation only: never cancel an event, dispatch an action or read game variables. */
-export function startOfficialMotion(root:NativeEventsHost=window,host?:Host){
- const scope=visualScope(),motion=sourceMotion(),navigation=nativeNavigation(headerWeather(undefined,host?.environmentEffects)),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
+export function startOfficialMotion(root:NativeEventsHost=window,host?:Host,owner?:Participant){
+ const scope=visualScope(),motion=sourceMotion(),navigation=nativeNavigation(headerWeather(undefined,host?.environmentEffects,owner,host?.layerPresets?.driftingTexture)),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
  const panel=panelFade(host?.panelEffects),backdrop=panelFade(host?.panelEffects);
  scope.own(panel.dispose);scope.own(backdrop.dispose);
  let scrimEpoch=0;

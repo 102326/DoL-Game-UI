@@ -1,3 +1,4 @@
+import {driftingTexture} from './materials/drifting-texture';
 import {createTheme} from './materials/theme';
 import {createPanelBudget, surfaceMotion} from './motion/panel-budget';
 import {surface} from './materials/acrylic-scrim';
@@ -10,7 +11,9 @@ export function installHost(root: NativeWindow = window) {
  // Unknown implementations are never replaced or disposed by this package.
  try {if ('DoLUiHost' in root || typeof root.MutationObserver !== 'function' || typeof AbortController !== 'function') return null}
  catch {return null}
- const core = createHost(root, {surface}), doc = root.document, panelEffects = createPanelBudget(root), environmentEffects = createPanelBudget(root);
+ const doc=root.document,panelEffects=createPanelBudget(root),environmentEffects=createPanelBudget(root);
+ const ambient=surfaceMotion(environmentEffects);
+ const core=createHost(root,{surface,driftingTexture:driftingTexture(ambient)});
  let bridge: ReturnType<NonNullable<NativeWindow['jQuery']>> | undefined, closed = false, retry=0;
  const deadline=Date.now()+30000;
  // Public API availability is separate from a synchronized game scene.
@@ -48,7 +51,7 @@ export function installHost(root: NativeWindow = window) {
    if(schema==='host5.theme'&&!closed)themes.activate();
    return core.sources(schema);
   },
-  panelEffects:surfaceMotion(panelEffects),environmentEffects:surfaceMotion(environmentEffects),dispose});
+  panelEffects:surfaceMotion(panelEffects),environmentEffects:ambient,dispose});
 
  try {root.DoLUiHost = host} catch {environmentEffects.dispose(); panelEffects.dispose(); core.dispose(); return null}
  try {bind();if(closed)return null;doc.addEventListener('DOMContentLoaded', bind); root.addEventListener('load', bind)}

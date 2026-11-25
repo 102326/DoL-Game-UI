@@ -1,6 +1,7 @@
 import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
-import type {SurfaceMotion} from '../contracts';
+import {cloudLayer} from './cloud-layer';
+import type {SurfaceMotion,Host,Participant} from '../contracts';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {isMaterialTransformMutation} from '../../src/ui/material-motion-style';
 import {settingsWeather} from '../../src/ui/weather/settings';
@@ -36,8 +37,8 @@ export function readGameWeather(root:WeatherHost=window as Window & WeatherHost)
  }catch{return{kind:'unknown',night:false,rain:'normal'}}
 }
 
-export function headerWeather(phase=precipitationPhase(),environment?:SurfaceMotion){
- type Surface={fade?:ReturnType<SurfaceMotion['track']>;header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;material:boolean;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
+export function headerWeather(phase=precipitationPhase(),environment?:SurfaceMotion,owner?:Participant,drift?:NonNullable<Host['layerPresets']>['driftingTexture']){
+ type Surface={cloudFailed?:boolean;cloud?:ReturnType<typeof cloudLayer>;fade?:ReturnType<SurfaceMotion['track']>;header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;material:boolean;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
  const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=environment?undefined:sourceMotion();scope.own(()=>motion?.dispose());let stopTimer:(()=>void)|undefined,state=readGameWeather(),foreground:HTMLElement|null=null;
  function syncPhase(immediate:boolean){
   phase.set(state.kind==='snow'?'snow':state.kind==='rain'||state.kind==='storm'?'rain':'sunny',immediate);
@@ -45,11 +46,11 @@ export function headerWeather(phase=precipitationPhase(),environment?:SurfaceMot
  syncPhase(true);
  const visible=(n:HTMLElement)=>n.isConnected&&!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert],[data-sf-leaving]');
  function clean(tasks:Array<()=>void>){const errors:unknown[]=[];for(const task of tasks)try{task()}catch(error){errors.push(error)}if(errors.length)throw new AggregateError(errors,'Weather cleanup failed')}
- function remove(key:string){const s=surfaces.get(key);if(!s)return;surfaces.delete(key);s.revision++;clean([()=>s.fade?.release(),()=>motion?.cancel(s.node),()=>s.renderer?.dispose(),()=>s.stopWatch?.(),()=>s.node.remove(),()=>{if(s.materialAttribute!==undefined){if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');else s.parent.setAttribute('data-sf-weather-material',s.materialAttribute)}},()=>{if(!surfaces.size){const stop=stopTimer;stopTimer=undefined;stop?.()}}])}
+ function remove(key:string){const s=surfaces.get(key);if(!s)return;surfaces.delete(key);s.revision++;clean([()=>s.cloud?.dispose(),()=>s.fade?.release(),()=>motion?.cancel(s.node),()=>s.renderer?.dispose(),()=>s.stopWatch?.(),()=>s.node.remove(),()=>{if(s.materialAttribute!==undefined){if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');else s.parent.setAttribute('data-sf-weather-material',s.materialAttribute)}},()=>{if(!surfaces.size){const stop=stopTimer;stopTimer=undefined;stop?.()}}])}
  function clear(){clean([...surfaces.keys()].map(key=>()=>remove(key)))}
  // Keep legacy CSS peers on their established shared update contract; only
  // complete Canvas renderers suspend behind an owned modal.
- const showing=(s:Surface)=>visible(s.header)&&(!s.renderer||(!foreground||foreground===s.parent||foreground.contains(s.parent))&&s.parent.clientWidth>0&&s.parent.clientHeight>0);
+ const showing=(s:Surface)=>visible(s.header)&&(!s.material||(!foreground||foreground===s.parent||foreground.contains(s.parent))&&s.parent.clientWidth>0&&s.parent.clientHeight>0);
  const headerRegions=':scope>.dgc-host,:scope>.dgs-host,:scope>.dgp-host,.modhub-sticky-toolbar,.CE-category-bar,.CE-subtab-bar';
  function fitHeader(s:Surface){
   if(s.renderer||s.static)return;
@@ -72,22 +73,66 @@ export function headerWeather(phase=precipitationPhase(),environment?:SurfaceMot
   const exit=s.node.dataset.weather&&s.node.dataset.weather!=='unknown'?transition(false,opacity):undefined;
   if(exit)void exit.finished.then(apply,apply);else apply();
  }
+ function syncMaterial(key:string,s:Surface){
+  const cloudy=owner&&drift&&state.kind==='cloud'&&(!state.special||state.special==='none');
+  if(cloudy&&!s.cloudFailed){
+   if(!s.cloud?.isCurrent()){
+    s.cloud?.dispose();
+    try{s.cloud=cloudLayer(s.parent,key,owner,drift)}
+    catch(error){console.warn('Cloud layer unavailable; retaining window material',error)}
+    s.cloudFailed=!s.cloud?.isCurrent();
+   }
+   if(s.cloud?.isCurrent()){
+    if(!s.parent.hasAttribute('data-sf-weather-material'))s.parent.setAttribute('data-sf-weather-material','');
+    if(s.renderer){s.renderer.dispose();s.renderer=undefined}
+    s.cloud.update(!document.hidden&&document.documentElement.hasAttribute('data-dgu-visualMotion'));
+    return;
+   }
+  }
+  s.cloud?.dispose();s.cloud=undefined;
+  if(s.static)return;
+  if(!s.renderer){
+   const canvas=document.createElement('canvas');canvas.className='sf-weather-canvas';canvas.setAttribute('aria-hidden','true');
+   s.parent.prepend(canvas);s.node=canvas;
+   try{s.renderer=settingsWeather(canvas,()=>state,key==='settings'||key==='passage'?phase.sample:undefined)}
+   catch(error){
+    canvas.remove();s.static=true;
+    if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');
+    else if(s.materialAttribute!==undefined)s.parent.setAttribute('data-sf-weather-material',s.materialAttribute);
+    console.warn('Window weather unavailable; keeping static Acrylic',error);return;
+   }
+  }
+  if(s.suspended)s.renderer.pause(false);
+  if(s.node.dataset.weather!==state.kind)s.node.dataset.weather=state.kind;
+  if(s.node.dataset.rain!==state.rain)s.node.dataset.rain=state.rain;
+  const special=state.special??'none';if(s.node.dataset.special!==special)s.node.dataset.special=special;
+  s.renderer.refresh();
+ }
  function refresh(){
   foreground=document.querySelector<HTMLElement>('dialog#dol-midnight-controls:modal,dialog[data-sf-workspace]:modal');
-  stopTimer?.();stopTimer=undefined;if(!scope.active()||!surfaces.size||document.hidden)return;
-  // Sample geometry once before renderer/attribute writes can invalidate layout.
+  stopTimer?.();stopTimer=undefined;if(!scope.active()||!surfaces.size)return;
+  if(document.hidden){for(const s of surfaces.values())s.cloud?.update(false);return}
   const shown=new Set([...surfaces.values()].filter(showing));
   if(shown.size){state=readGameWeather();syncPhase(false)}
-  for(const[key,s]of surfaces){if(!shown.has(s)){
-    // A still-open settings owner can regain geometry without a new navigation intent.
-    if(s.renderer&&s.header.isConnected&&s.parent.isConnected&&!s.header.closest('[data-sf-leaving],dialog:not([open])')){if(!s.suspended){s.suspended=true;s.renderer.pause(true)}continue}
+  for(const[key,s]of surfaces){
+   if(!shown.has(s)){
+    if(s.cloud&&s.header.closest('dialog[open][data-sf-leaving]'))continue;
+    if(s.material&&s.header.isConnected&&s.parent.isConnected&&!s.header.closest('[data-sf-leaving],dialog:not([open])')){
+     if(!s.suspended){s.suspended=true;s.cloud?.update(false);s.renderer?.pause(true)}
+     continue;
+    }
     remove(key);continue;
-   }if(s.renderer){if(s.suspended){s.suspended=false;s.renderer.pause(false)}if(s.node.dataset.weather!==state.kind)s.node.dataset.weather=state.kind;if(s.node.dataset.rain!==state.rain)s.node.dataset.rain=state.rain;const special=state.special??'none';if(s.node.dataset.special!==special)s.node.dataset.special=special;s.renderer.refresh()}else if(!s.static)paint(s,state)}
-  // One shared low-frequency read, only while an owned header and document are visible.
-  if([...surfaces.values()].some(s=>shown.has(s))&&!document.hidden)stopTimer=scope.timeout(refresh,[...surfaces.values()].some(s=>s.renderer)?500:2000);
+   }
+   if(s.material){syncMaterial(key,s);s.suspended=false}else paint(s,state);
+  }
+  if(shown.size)stopTimer=scope.timeout(refresh,[...shown].some(s=>s.material)?500:2000);
  }
  function set(key:string,header?:HTMLElement,parent?:HTMLElement){
   if(!scope.active())return;const old=surfaces.get(key);
+  const html=document.documentElement;
+  if(html.hasAttribute('data-dgu-weather-off')||owner&&drift&&!html.hasAttribute('data-dgu-visualGlass')){remove(key);return}
+  // The still-open modal keeps its own texture during a reversible exit.
+  if(!header&&old?.cloud&&old.header.closest('dialog[open][data-sf-leaving]'))return;
   const material=key==='settings'||!!parent?.matches('html[data-stone-free][data-dol-midnight][data-dgu-acrylic-adjustment] :is('+ownedOverlaySelector+',.passage.dgp-overlay:has(>.dgp-host),[data-sf-workspace])');
   if(old&&(old.header!==header||old.parent!==parent||old.material!==material))remove(key);
   const liveSettings=material&&header?.isConnected&&parent?.isConnected&&!header.closest('[data-sf-leaving],dialog:not([open])');
@@ -96,18 +141,18 @@ export function headerWeather(phase=precipitationPhase(),environment?:SurfaceMot
    // A change during an unobserved interval has no known transition start.
    if(!surfaces.size){state=readGameWeather();syncPhase(true)}
    if(material){
-    const canvas=document.createElement('canvas');canvas.className='sf-weather-canvas';canvas.setAttribute('aria-hidden','true');parent.prepend(canvas);
-    const s:Surface={header,parent,node:canvas,key:'',revision:0,material,materialAttribute:parent.getAttribute('data-sf-weather-material')};
-    // Establish absolute positioning before the material measures text/control geometry.
-    parent.setAttribute('data-sf-weather-material','');
-    try{s.renderer=settingsWeather(canvas,()=>state,key==='settings'||key==='passage'?phase.sample:undefined)}
-    catch(error){canvas.remove();if(s.materialAttribute===null)parent.removeAttribute('data-sf-weather-material');else parent.setAttribute('data-sf-weather-material',s.materialAttribute!);s.static=true;console.warn('Window weather unavailable; keeping static Acrylic',error)}
-    surfaces.set(key,s);
-    if(s.renderer){
+    const s:Surface={header,parent,node:document.createElement('span'),key:'',revision:0,material,materialAttribute:parent.getAttribute('data-sf-weather-material')};
+    parent.setAttribute('data-sf-weather-material','');surfaces.set(key,s);
+    try{
+     syncMaterial(key,s);
      const watch=visualScope();s.stopWatch=scope.own(()=>watch.dispose());const wake=()=>{if(scope.active()&&surfaces.get(key)===s)refresh()};
-     try{const resize=new ResizeObserver(wake);watch.own(()=>resize.disconnect());resize.observe(parent);const change=new MutationObserver(records=>{if(records.some(record=>!isMaterialTransformMutation(record)))wake()});watch.own(()=>change.disconnect());for(const node of new Set([header,parent,parent.closest('dialog')].filter((n):n is HTMLElement=>!!n)))change.observe(node,{attributes:true,attributeOldValue:true,attributeFilter:['style','class','hidden','open','inert','data-dgu-material-moving']})}
-     catch(error){remove(key);throw error}
-    }return;
+     const resize=new ResizeObserver(wake);watch.own(()=>resize.disconnect());resize.observe(parent);
+     const change=new MutationObserver(records=>{if(records.some(record=>!isMaterialTransformMutation(record)))wake()});
+     watch.own(()=>change.disconnect());
+     for(const node of new Set([header,parent,parent.closest('dialog')].filter((n):n is HTMLElement=>!!n))){
+      change.observe(node,{attributes:true,attributeOldValue:true,attributeFilter:['style','class','hidden','open','inert','data-dgu-material-moving']});
+     }
+    }catch(error){remove(key);throw error}return;
    }
    const node=document.createElement('span');node.className='kw-heading-weather';node.setAttribute('aria-hidden','true');const lightning=document.createElement('span');lightning.className='kw-weather-lightning';const atmosphere=document.createElement('span');atmosphere.className='kw-weather-atmosphere';const shower=document.createElement('span');shower.className='kw-weather-shower';node.append(shower,lightning,atmosphere);
    // Sample once per window: bounded, staggered droplets, with no per-frame game reads.
@@ -125,5 +170,5 @@ export function headerWeather(phase=precipitationPhase(),environment?:SurfaceMot
   surfaces.get(key)?.syncHeader?.();
  }
  document.addEventListener('visibilitychange',refresh);scope.own(()=>document.removeEventListener('visibilitychange',refresh));
- return{set,refresh,snapshot:()=>({activePolls:stopTimer?1:0,surfaces:[...surfaces].map(([id,s])=>({id,material:s.renderer?'glass-scatter':s.static?'static':'legacy',state:s.renderer?.snapshot()}))}),clear,dispose(){clean([()=>scope.dispose(),clear])}};
+ return{set,refresh,snapshot:()=>({activePolls:stopTimer?1:0,surfaces:[...surfaces].map(([id,s])=>({id,material:s.cloud?'cloud-texture':s.renderer?'glass-scatter':s.static?'static':'legacy',state:s.renderer?.snapshot()}))}),clear,dispose(){clean([()=>scope.dispose(),clear])}};
 }

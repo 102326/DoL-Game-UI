@@ -24,7 +24,13 @@ async function aligned(page:Page,label:string){
  assert.ok(boxes.every(value=>Math.abs(value)<1),`${label}: ${JSON.stringify(boxes)}`);
 }
 async function rainGeometry(page:Page,label:string){
- await page.waitForFunction(()=>[...document.querySelectorAll<HTMLElement>('.sf-foreground-paint .evo-glass-drop')].some(node=>{const s=getComputedStyle(node),r=node.getBoundingClientRect(),clip=node.closest('.sf-foreground-paint')!.getBoundingClientRect();return s.display!=='none'&&s.visibility==='visible'&&Number(s.opacity)>.01&&r.width>0&&r.height>0&&r.left>=clip.left&&r.top>=clip.top&&r.right<=clip.right&&r.bottom<=clip.bottom}),null,{timeout:10000});
+ await page.waitForFunction(()=>[...document.querySelectorAll<HTMLElement>('.sf-foreground-paint .evo-glass-drop')].some(node=>{const s=getComputedStyle(node),r=node.getBoundingClientRect(),clip=node.closest('.sf-foreground-paint')!.getBoundingClientRect();return s.display!=='none'&&s.visibility==='visible'&&Number(s.opacity)>.01&&r.width>0&&r.height>0&&r.left>=clip.left&&r.top>=clip.top&&r.right<=clip.right&&r.bottom<=clip.bottom}),null,{timeout:10000}).catch(async error=>{
+  const sample=await page.evaluate(()=>{
+   const nodes=[...document.querySelectorAll<HTMLElement>('.sf-foreground-paint .evo-glass-drop')];
+   return {hidden:document.hidden,moving:!!document.querySelector('[data-dgu-material-moving]'),total:nodes.length,painted:nodes.filter(n=>getComputedStyle(n).display!=='none'&&Number(getComputedStyle(n).opacity)>.01).length};
+  });
+  throw new Error(label+' rain visibility '+JSON.stringify(sample),{cause:error});
+ });
  const geometry=await page.evaluate(()=>{
   const shell=document.querySelector<HTMLElement>('#customOverlay')!,paint=document.querySelector<HTMLElement>('#customOverlay+.sf-foreground-host .sf-foreground-paint')!;
   const root=shell.getBoundingClientRect(),ps=getComputedStyle(paint),ss=getComputedStyle(shell),pr=paint.getBoundingClientRect();

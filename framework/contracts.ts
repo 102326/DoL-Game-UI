@@ -94,7 +94,12 @@ export interface SurfaceMotion {
 export interface Host {
  readonly theme?: Readonly<import('./materials/theme').ThemeCapability>;
  /** Optional local material recipe. Participant.mount retains ownership and cleanup. */
- readonly layerPresets?: Readonly<{acrylicScrim?: MountRequest['setup']; surface?: Readonly<SurfacePreset>}>;
+ readonly layerPresets?: Readonly<{
+  acrylicScrim?: MountRequest['setup'];
+  surface?: Readonly<SurfacePreset>;
+  /** Apply a budgeted ping-pong transform to a caller-styled child. The mount owns cleanup. */
+  driftingTexture?: (context:MountContext,texture:HTMLElement,distancePercent:number,durationMs:number)=>(moving:boolean)=>void;
+ }>;
  readonly panelEffects?: Readonly<SurfaceMotion>;
  /** Decorative transitions never take foreground playback capacity. */
  readonly environmentEffects?: Readonly<SurfaceMotion>;

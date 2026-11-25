@@ -43,7 +43,7 @@ const disconnect=connectConsumer(host=>{
    if(released)return;
    disconnect();notice.dispose();
   };
-  ui.version=visualVersion;html.setAttribute('data-stone-free',visualVersion);stopHub=startOfficialHub(host,owner);stopMotion=isolate('official motion',()=>startOfficialMotion(window,host));return release;
+  ui.version=visualVersion;html.setAttribute('data-stone-free',visualVersion);stopHub=startOfficialHub(host,owner);stopMotion=isolate('official motion',()=>startOfficialMotion(window,host,owner));return release;
  }catch(error){try{release()}catch(cleanupError){throw new AggregateError([error,cleanupError],'Official UI initialization and cleanup failed')}throw error}
 },window,notice.set);
 export function dispose(){disconnect();notice.dispose()}

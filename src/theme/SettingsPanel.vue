@@ -79,6 +79,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
     <div class="dmt-workspace-intro"><p class="dmt-eyebrow">材质</p><h3 id="dmt-material-heading">看见层次如何变化</h3><p>预览会使用当前材质与动效设置。预览操作不会改动游戏内容。</p></div>
     <div class="dmt-setting-card dmt-control-sheet dmt-material-controls">
      <SettingsToggle label="玻璃模糊" description="柔化界面后方的背景细节。" :checked="state.preferences.visualGlass" @change="onPreference('visualGlass',$event)"/>
+     <SettingsToggle v-if="official" label="窗口天气" description="在窗口边缘显示当前天气，关闭后保留界面材质。" :checked="state.preferences.windowWeather" @change="onPreference('windowWeather',$event)"/>
      <AcrylicControls v-if="official" :value="state.preferences.acrylicTransparency" :disabled="!state.preferences.visualGlass" @change="onPreference('acrylicTransparency',$event)"/>
      <SettingsToggle label="交互与进入动画" description="控制窗口和切换动效；系统减少动态效果设置优先。" :checked="state.preferences.visualMotion" @change="onPreference('visualMotion',$event)"/>
      <SettingsToggle label="交互层次反馈" description="只调整选中项的额外层次反馈；不改变主体配色或游戏状态" :checked="state.preferences.visualGlow" @change="onPreference('visualGlow',$event)"/>

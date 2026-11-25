@@ -8,7 +8,7 @@ export const readingRanges={
  readingWidth:{min:0,max:100,step:5,label:'正文宽度',description:'从原版宽度逐渐放宽到可用空间；窄屏或原本已铺满时变化较小。'},
 };
 export type ReadingKey=keyof typeof readingDefaults;
-export const defaults={...readingDefaults,enabled:true,combatFocused:false,storyActions:false,comfortable:false,mobileCompactControls:false,centerOptions:false,acrylicTransparency:acrylicDefault,showCompact:false,layout:true,compactStats:false,wideReading:false,collapsedStats:false,statusPreview:false,wardrobePaged:true,wardrobeHiddenList:false,shopDeferredPaint:false,shopPageExperiment:false,startupCacheLazy:false,savesV2:false,fontScale:100,buttonScale:100,visualTier:1,visualGlass:true,visualMotion:true,visualGlow:true,visualPattern:false};
+export const defaults={...readingDefaults,enabled:true,combatFocused:false,storyActions:false,comfortable:false,mobileCompactControls:false,centerOptions:false,acrylicTransparency:acrylicDefault,showCompact:false,layout:true,compactStats:false,wideReading:false,collapsedStats:false,statusPreview:false,wardrobePaged:true,wardrobeHiddenList:false,shopDeferredPaint:false,shopPageExperiment:false,startupCacheLazy:false,savesV2:false,fontScale:100,buttonScale:100,visualTier:1,visualGlass:true,visualMotion:true,windowWeather:true,visualGlow:true,visualPattern:false};
 // Retired flags remain false for existing preference readers; they no longer activate runtime code.
 export type Preferences=typeof defaults;
 export type PreferenceKey=keyof Preferences;
