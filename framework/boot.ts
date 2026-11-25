@@ -13,7 +13,7 @@ export function installHost(root: NativeWindow = window) {
  catch {return null}
  const doc=root.document,panelEffects=createPanelBudget(root),environmentEffects=createPanelBudget(root);
  const ambient=surfaceMotion(environmentEffects);
- const core=createHost(root,{surface,driftingTexture:driftingTexture(ambient)});
+ const core=createHost(root,{surface,driftingTexture:driftingTexture(environmentEffects)});
  let bridge: ReturnType<NonNullable<NativeWindow['jQuery']>> | undefined, closed = false, retry=0;
  const deadline=Date.now()+30000;
  // Public API availability is separate from a synchronized game scene.

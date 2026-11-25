@@ -27,7 +27,7 @@ await withVisibleBrowser(async browser=>{
    pending.add(id);return id;
   };
   win.clearTimeout=id=>{if(id!==undefined)pending.delete(id);cancel(id)};
-  Object.assign(window,{Weather:{get name(){reads++;if(kind==='snow'&&start<0)start=Number(document.timeline.currentTime);return kind},
+  Object.assign(window,{Weather:{get name(){reads++;return kind},
    get precipitation(){return kind},dayState:'day'}});
   const events:{state:string;trusted:boolean;reads:number;draws:number;at:number}[]=[];
   document.addEventListener('visibilitychange',e=>{
@@ -56,7 +56,19 @@ await withVisibleBrowser(async browser=>{
   };
   let canvas:Element|null,binding:ReturnType<NonNullable<Window['DoLUiHost']>['binding']>;
   return {
-   snow(){canvas=document.querySelector('.sf-weather-canvas');binding=window.DoLUiHost!.binding();kind='snow'},
+   rain(){kind='rain'},
+   snow(){
+    canvas=document.querySelector('.sf-weather-canvas')!;
+    binding=window.DoLUiHost!.binding();
+    // Timestamp this renderer's adoption. Other consumers may read game weather before its poll.
+    start=-1;
+    const observer=new MutationObserver(()=>{
+     if(canvas?.getAttribute('data-weather')!=='snow')return;
+     start=Number(document.timeline.currentTime);observer.disconnect();
+    });
+    observer.observe(canvas,{attributes:true,attributeFilter:['data-weather']});
+    kind='snow';
+   },
    snapshot(){return {start,reads,draws,polls:pending.size,events,frames,rafFrames,hidden:document.hidden,
     same:!!canvas&&canvas===document.querySelector('.sf-weather-canvas')&&binding.isCurrent()}}
   };
@@ -72,12 +84,20 @@ await withVisibleBrowser(async browser=>{
  await page.getByRole('link',{name:'Page A'}).evaluate(link=>(link as HTMLElement).click());
  const canvas=page.locator('.sf-weather-canvas');
  await canvas.waitFor();
- await probe.evaluate(p=>p.snow());
- await page.waitForFunction(()=>document.querySelector('.sf-weather-canvas')?.getAttribute('data-weather')==='snow');
  // Short return discriminates a continuing blend from a jump to all snow.
  // Long return crosses two polling deadlines while Chrome holds the tab hidden.
  const stale:string[]=[];
  for(const [index,wait] of [100,1200].entries()){
+  // Each tab switch starts during its own rain-to-snow transition. Otherwise
+  // the second observation also includes the duration of the first trial.
+  if(index){
+   await probe.evaluate(p=>p.rain());
+   await page.waitForFunction(()=>document.querySelector('.sf-weather-canvas')?.getAttribute('data-weather')==='rain');
+   const settling=await page.evaluate(()=>Number(document.timeline.currentTime));
+   await page.waitForFunction(t=>Number(document.timeline.currentTime)-t>=450,settling);
+  }
+  await probe.evaluate(p=>p.snow());
+  await page.waitForFunction(p=>p.snapshot().start>=0,probe,{polling:10});
   await cover.bringToFront();
   await page.waitForFunction(()=>document.hidden,undefined,{polling:25});
   const hidden=await probe.evaluate(p=>p.snapshot());
@@ -92,7 +112,7 @@ await withVisibleBrowser(async browser=>{
   assert.ok(hide?.trusted&&show?.trusted&&hide.state==='hidden'&&show.state==='visible');
   assert.deepEqual([show.reads-hide.reads,show.draws-hide.draws],[0,0]);
   assert.ok(result.same&&result.polls===1);
-  assert.ok(hide.at-result.start>0&&hide.at-result.start<450);
+  assert.ok(hide.at-result.start>0&&hide.at-result.start<450,JSON.stringify({index,start:result.start,hide,show}));
   console.log({chrome:browser.version(),hiddenMs:show.at-hide.at,hidePhaseMs:hide.at-result.start,
    same:result.same,hiddenDraws:show.draws-hide.draws,hiddenReads:show.reads-hide.reads,polls:[idle.polls,result.polls]});
   for(const [stage,paint] of [['first paint',result.frames[index]],['first rAF paint',result.rafFrames[index]]] as const){

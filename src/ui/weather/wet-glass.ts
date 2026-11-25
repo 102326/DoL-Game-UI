@@ -154,6 +154,7 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   if(canvas.height!==pixels){canvas.height=pixels;ctx.setTransform(s.dpr,0,0,s.dpr,0,0)}
   if(canvas.style.height!==paintHeight+'px')canvas.style.height=paintHeight+'px';
   const state=model.snapshot();active=[];visibleFlow=0;ctx.clearRect(0,0,width,height);
+  const skyTime=s.environmentTime??s.time;
   const special=s.special??'none',amount=s.specialAmount??0;
   if(specialSkies&&special==='blood-moon'&&amount>.002){
    blood??=bloodMoonSky();blood.draw(ctx,s,protectedBoxes);
@@ -161,12 +162,12 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
    atmosphere??=specialAtmosphere();atmosphere.draw(ctx,s,protectedBoxes);
   }else if(special!=='none'&&amount>.002){
    const color=({'blood-moon':'171,45,51',tentacle:'125,68,175',heat:'211,139,65',cold:'133,189,215'} as const)[special];
-   const x=width*(.76+Math.sin(s.time*.12)*.035),y=Math.min(90,height*.16),radius=Math.min(width*.3,height*.34);
+   const x=width*(.76+Math.sin(skyTime*.12)*.035),y=Math.min(90,height*.16),radius=Math.min(width*.3,height*.34);
    const halo=ctx.createRadialGradient(x,y,0,x,y,radius);halo.addColorStop(0,`rgba(${color},${amount*.38})`);halo.addColorStop(.45,`rgba(${color},${amount*.16})`);halo.addColorStop(1,'transparent');ctx.fillStyle=halo;ctx.fillRect(0,0,width,height);
    if(special==='blood-moon'){
     const r=Math.min(28,width*.035),moon=ctx.createRadialGradient(x-r*.3,y-r*.3,1,x,y,r);moon.addColorStop(0,`rgba(224,132,118,${amount*.7})`);moon.addColorStop(.7,`rgba(140,40,47,${amount*.65})`);moon.addColorStop(1,`rgba(57,13,24,${amount*.25})`);ctx.fillStyle=moon;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
    }
-   const shadow=ctx.createRadialGradient(width*(.55+Math.sin(s.time*.17)*.12),height*.16,0,width*.55,height*.16,width*.48);shadow.addColorStop(0,`rgba(4,6,12,${amount*(.14+Math.sin(s.time*.3)*.05)})`);shadow.addColorStop(1,'transparent');ctx.fillStyle=shadow;ctx.fillRect(0,0,width,height*.7);
+   const shadow=ctx.createRadialGradient(width*(.55+Math.sin(skyTime*.17)*.12),height*.16,0,width*.55,height*.16,width*.48);shadow.addColorStop(0,`rgba(4,6,12,${amount*(.14+Math.sin(skyTime*.3)*.05)})`);shadow.addColorStop(1,'transparent');ctx.fillStyle=shadow;ctx.fillRect(0,0,width,height*.7);
    for(const p of frameProtection)ctx.clearRect(p.x-7,p.y-7,p.width+14,p.height+14);
   }
   // Reuse the owned 3.x shower artwork and down-right tile motion. Draw first,
@@ -218,7 +219,7 @@ function createWetGlass<T extends FrostSnapshot>(canvas:HTMLCanvasElement,invali
   });
   ctx.restore();
   const rim=ctx.createLinearGradient(0,0,width,height);rim.addColorStop(0,`rgba(184,209,214,${humidity*.28+s.snow*.3})`);rim.addColorStop(.3,'transparent');rim.addColorStop(1,`rgba(130,166,182,${humidity*.16+s.snow*.3})`);ctx.strokeStyle=rim;ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(1.5,1.5,width-3,height-3,21);ctx.stroke();
-  if(frost)frost.draw(s.snow,s.time,width,height);
+  if(frost)frost.draw(s.snow,skyTime,width,height);
   else if(s.snow>.01){ctx.strokeStyle=`rgba(207,230,238,${s.snow*.4})`;ctx.lineWidth=.5;for(let i=0;i<50;i++){const y=i*height/50,edge=i%2?width-2:2,sign=i%2?-1:1,len=(4+(i*19%17))*s.snow;ctx.beginPath();ctx.moveTo(edge,y);ctx.lineTo(edge+sign*len,y-len*.5);ctx.lineTo(edge+sign*len*.65,y-len*.8);ctx.stroke()}}
  }
  const releaseForeground=foregroundPlane(shell,[layer,canvas]);if(releaseForeground)scope.own(releaseForeground);
