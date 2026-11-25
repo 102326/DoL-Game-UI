@@ -74,6 +74,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   }
   html.toggleAttribute('data-sw-custom-colors', hasColors);
   html.toggleAttribute('data-sw-custom-font', hasFont);
+  document.dispatchEvent(new Event('dol-ui-appearance-change'));
  }
  let activeFont: FontFace | undefined;
  let hasSavedFont=false;

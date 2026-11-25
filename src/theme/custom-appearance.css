@@ -122,3 +122,18 @@ html[data-stone-free][data-dol-midnight][data-dmt-layout][data-sw-sidebar-theme]
 html[data-stone-free][data-dol-midnight][data-dmt-layout][data-sw-sidebar-theme] #ui-bar :is(#overlayButtons,#startCaption) #dol-midnight-sidebar-button{
  color:var(--sw-custom-accent);
 }
+
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-ball{
+ --sw-hub-glyph:var(--sw-custom-accent);
+ --sw-hub-solid:var(--sw-custom-background);
+ --sw-hub-light:var(--sw-custom-panel);
+ --sw-hub-shade:var(--sw-custom-background);
+ --sw-hub-rim:var(--sw-custom-muted);
+}
+@supports (color:color-mix(in srgb,white,transparent)){
+ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-ball{
+  --sw-hub-light:color-mix(in srgb,var(--sw-custom-accent) 27%,transparent);
+  --sw-hub-shade:color-mix(in srgb,var(--sw-custom-background) 79%,transparent);
+  --sw-hub-rim:color-mix(in srgb,var(--sw-custom-muted) 50%,transparent);
+ }
+}

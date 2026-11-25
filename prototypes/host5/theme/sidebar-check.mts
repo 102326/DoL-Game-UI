@@ -1,3 +1,4 @@
+import {checkDiamond} from './hub-check.mts';
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import {readFileSync} from 'node:fs';
@@ -61,6 +62,7 @@ try{
     peer:document.querySelector('#peer .sample')?css('#peer .sample').backgroundColor:null,
     chip:document.querySelector('#peer span')?css('#peer span').backgroundColor:null};
   });
+  if(!legacy)await checkDiamond(page);
   const storage=()=>page.evaluate(()=>JSON.stringify({...localStorage}));
   const baseline=await snapshot(),previous=await storage();
   const sample=()=>page.locator('.sw-appearance-sample-panel').evaluate(n=>getComputedStyle(n).backgroundColor);
