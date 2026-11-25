@@ -130,3 +130,5 @@ html[data-stone-free] #dol-midnight-controls button:disabled{opacity:.4;cursor:d
 .kw-object-relay img{position:absolute;width:48px;height:48px;object-fit:contain;top:calc(50% - 24px);left:calc(50% - 24px);image-rendering:pixelated;pointer-events:none}
 
 /* Filled stage material; native window geometry and input remain real throughout. */
+
+[data-dgu-workspace-material][data-dgu-workspace-drag-ready]>#customOverlayTitle{cursor:grab;touch-action:none}

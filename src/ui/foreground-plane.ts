@@ -82,7 +82,7 @@ export function foregroundPlane(root:HTMLElement,parts:readonly HTMLElement[]){
   if(!box){nested();return}
   // Material motion keeps DOM drops, cropped canvas and contours in the same
   // local coordinates as the original shell, including its independent zoom.
-  const material=root.hasAttribute('data-dgu-attributes-material'),paintWidth=material?cssWidth-borderX:box.width,paintHeight=material?cssHeight-borderY:box.height;
+  const material=root.matches('[data-dgu-attributes-material],[data-dgu-workspace-material]'),paintWidth=material?cssWidth-borderX:box.width,paintHeight=material?cssHeight-borderY:box.height;
   const scaleX=box.width/paintWidth,scaleY=box.height/paintHeight;
   if(![paintWidth,paintHeight,scaleX,scaleY].every(n=>Number.isFinite(n)&&n>0)){nested();return}
   Object.assign(paint.style,{left:box.left+'px',top:box.top+'px',width:paintWidth+'px',height:paintHeight+'px',transformOrigin:'0 0',scale:material?`${scaleX} ${scaleY}`:''});

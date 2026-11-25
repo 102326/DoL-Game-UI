@@ -35,7 +35,7 @@ export function createPanelBudget(root: Window, limit = 1) {
        !(enter > 0 && exit > 0)) {cancel(); return}
    if (!animation) {
     if (active.size >= limit || active.has(node)) return;
-    try { animation = node.animate(frames, {duration: enter, easing: 'linear'}); }
+    try { animation = node.animate(frames, {duration: enter, easing: 'linear',id:'sf-surface-track'}); }
     catch {return}
     layer = node;
     if (!active.size) listen();

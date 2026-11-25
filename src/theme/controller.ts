@@ -1,6 +1,6 @@
 import {visualScope} from '../ui/visual-scope';
 import {isolate,mountUI,unmountUI,supportsDialog} from '../runtime/presentation';
-import {settingsFade} from '../ui/settings-fade';
+import {panelFade} from '../ui/panel-fade';
 import {experiments} from '../runtime/experiments';
 import type {PanelKind} from '../panels/main';
 import {createApp,reactive,type App} from 'vue';
@@ -41,7 +41,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  if(root.DoLMidnightTheme)return;
  const store=loaded??startThemePreferences(root);
  const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
- const scope=visualScope(),motion=settingsFade(host?.panelEffects);scope.own(motion.dispose);let transition=0;
+ const scope=visualScope(),motion=panelFade(host?.panelEffects);scope.own(motion.dispose);let transition=0;
  const settingsPanel=()=>controls?.querySelector<HTMLElement>('.dmt-settings-shell')??controls;
  const compactViewport=()=>root.innerWidth<=600||Math.min(root.screen.width,root.screen.height)<=600;
  const scaleMax=150;

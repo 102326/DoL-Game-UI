@@ -3,8 +3,8 @@ import {fadeWindow} from './window-fade';
 import type {SurfaceMotion} from '../../framework/contracts';
 
 type Budget = Readonly<SurfaceMotion>;
-/** Settings owns its dialog, preferences and endpoints. Older Hosts retain native playback. */
-export function settingsFade(host: Budget | undefined) {
+/** Each consumer owns visibility, focus and final placement. Older Hosts retain local playback. */
+export function panelFade(host: Budget | undefined) {
  let track: ReturnType<Budget['track']> | undefined;
  let fallback: ReturnType<typeof sourceMotion> | undefined;
  function cancel() {track?.cancel(); fallback?.cancel()}

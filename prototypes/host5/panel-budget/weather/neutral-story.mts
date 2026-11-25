@@ -7,7 +7,7 @@ export function neutralWeatherStory(zip:string|undefined){
  assert.ok(zip,'Pass the upstream sugarcube-2.37.3-for-twine-2.1-local.zip');
  const bytes = readFileSync(zip);
  assert.equal(createHash('sha256').update(bytes).digest('hex'),'da00a8c15ec4e88a9e231a3ff6c516c57055f84231bb999f869ed34ade353dab');
- const format = execFileSync('python',['-c',"import sys,io,zipfile;sys.stdout.buffer.write(zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read())).read('sugarcube-2/format.js'))"],{input:bytes,encoding:'utf8'});
+ const format = execFileSync(process.platform==='win32'?'python':'python3',['-c',"import sys,io,zipfile;sys.stdout.buffer.write(zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read())).read('sugarcube-2/format.js'))"],{input:bytes,encoding:'utf8'});
  const prefix='window.storyFormat(';
  assert.ok(format.startsWith(prefix) && format.trimEnd().endsWith(');'));
  const {source,version}=JSON.parse(format.trimEnd().slice(prefix.length,-2)) as {source:string;version:string};

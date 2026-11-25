@@ -1,14 +1,21 @@
 import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
 import {sourceMotion} from '../../src/ui/source-motion';
-import {fadeWindow} from '../../src/ui/window-fade';
+import {panelDrag} from '../../src/ui/panel-drag';
+import {refreshForeground} from '../../src/ui/foreground-plane';
+import {panelFade} from '../../src/ui/panel-fade';
+import type {Host} from '../contracts';
+import {headerWeather} from './weather';
 import {isMasterEnabled} from '../../src/runtime/master';
 import type {NativeEventsHost} from '../../src/runtime/sugarcube';
 import {nativeNavigation,adaptedOverlaySelector,nativeEntryKinds} from './navigation';
 
 /** Presentation only: never cancel an event, dispatch an action or read game variables. */
-export function startOfficialMotion(root:NativeEventsHost=window){
- const scope=visualScope(),motion=sourceMotion(),navigation=nativeNavigation(),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
+export function startOfficialMotion(root:NativeEventsHost=window,host?:Host){
+ const scope=visualScope(),motion=sourceMotion(),navigation=nativeNavigation(headerWeather(undefined,host?.environmentEffects)),marked=new Map<HTMLElement,string|null>(),entries=new Map<HTMLElement,string|null>();
+ const panel=panelFade(host?.panelEffects),backdrop=panelFade(host?.panelEffects);
+ scope.own(panel.dispose);scope.own(backdrop.dispose);
+ let scrimEpoch=0;
  let overlay:HTMLElement|null=null,active:HTMLElement|null=null,presented:HTMLElement|null=null,activeKind='',plane:HTMLElement|undefined;
  scope.own(()=>motion.dispose());scope.own(()=>navigation.dispose());
  let origin:{rect:DOMRect;node:HTMLElement;time:number;hub:boolean;bedroom:boolean;expected?:string}|undefined,returnTo:HTMLElement|null=null;
@@ -31,7 +38,7 @@ export function startOfficialMotion(root:NativeEventsHost=window){
  }
  function settle(callback:()=>void){later(()=>later(callback))}
  const clearFrames=scope.cancelFrames;
- function cancelPresentation(preserveOpening?:HTMLElement){clearPress();motion.cancel(undefined,preserveOpening)}
+ function cancelPresentation(preserveOpening?:HTMLElement){clearPress();motion.cancel();if(!preserveOpening)panel.cancel()}
  function clearMarks(){for(const [nodes,attribute]of [[marked,'data-kw-native'],[entries,'data-kw-entry']] as const){for(const [node,value]of nodes)if(value===null)node.removeAttribute(attribute);else node.setAttribute(attribute,value);nodes.clear()}}
  function sidebar(){
   const roots=[...document.querySelectorAll<HTMLElement>('#ui-bar #overlayButtons,#ui-bar #startCaption')];
@@ -67,44 +74,66 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   plane?.toggleAttribute('data-kw-settings-family',!!node?.matches(ownedOverlaySelector));
  }
  function scrim(open:boolean,enter=true,initial=0){
+  const epoch=++scrimEpoch;
   if(open){
    if(!plane){plane=document.createElement('div');plane.className='kw-context-plane';plane.setAttribute('aria-hidden','true');document.body.append(plane)}
    markScrimFamily(active);
-   if(enter)fadeWindow(motion,plane,1,initial);else motion.cancel(plane);
+   if(enter)backdrop.to(plane,1,initial);else backdrop.cancel();
    document.documentElement.setAttribute('data-kw-character-layer','');
   }else{
    document.documentElement.removeAttribute('data-kw-character-layer');const old=plane;if(!old)return;
-   const animation=fadeWindow(motion,old,0,initial);
-   const remove=()=>{if(!active&&plane===old){old.remove();plane=undefined}};
+   const animation=backdrop.to(old,0,initial);
+   const remove=()=>{if(epoch===scrimEpoch&&!active&&plane===old){old.remove();plane=undefined}};
    if(animation)void animation.finished.then(remove,remove);else remove();
   }
  }
- function known(n:HTMLElement){return n.matches('.dgc-overlay,.dgs-overlay,.dgp-overlay,.dgs-native-tools,[data-sf-workspace=saves],'+adaptedOverlaySelector)&&visible(n)&&!n.classList.contains('hidden')}
+ function known(n:HTMLElement){return (!n.hasAttribute('data-dgu-adapter')||n.dataset.dguAdapterMatch==='full')&&(n.matches(ownedOverlaySelector)||n.matches('#customOverlay.dgs-native-tools'))&&visible(n)}
+ // Native owners provide the controls and visibility. Only a matched native shell
+ // with a distinct title and content can lend its title to the drag controller.
+ const draggableShell='#customOverlay:not([data-dgu-adapter]):is(.dgs-overlay[data-overlay=social]:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),[data-sf-workspace=saves],.dgs-native-tools)';
+ let drag:{shell:HTMLElement;title:HTMLElement;content:HTMLElement;kind:string;dispose:()=>void}|undefined;
+ function syncDrag(shell:HTMLElement|null){
+  const enabled=()=>!!host?.panelEffects&&!!shell&&live()&&visible(shell)&&shell.matches(draggableShell)&&document.documentElement.hasAttribute('data-dgu-acrylic-adjustment');
+  const title=enabled()?shell?.querySelector<HTMLElement>(':scope>#customOverlayTitle'):null;
+  const content=title?shell?.querySelector<HTMLElement>(':scope>#customOverlayContent'):null;
+  const kind=shell?.dataset.overlay??'';
+  if(drag&&drag.shell===shell&&drag.title===title&&drag.content===content&&drag.kind===kind)return;
+  drag?.dispose();drag=undefined;
+  if(shell&&title&&content){
+   const handle=panelDrag(shell,title,content,{eligible:enabled,lifecycle:shell,marker:'data-dgu-workspace-material',readyMarker:'data-dgu-workspace-drag-ready',onPaint:()=>refreshForeground(shell)});
+   drag={shell,title,content,kind,dispose:handle.dispose};
+  }
+ }
+ scope.own(()=>syncDrag(null));
  function beginExpected(){
   if(!live()||!origin?.expected||performance.now()-origin.time>=1000)return;
   const node=document.getElementById('customOverlay');
   if(!node||node===presented||node.hidden||node.classList.contains('hidden')||node.dataset.overlay!==origin.expected)return;
   // Start before the first paint; a late adapter match must never fade an already visible window again.
-  presented=node;fadeWindow(motion,node,1,0);
+  if(!known(node)){
+   // Retain legacy early-open timing. The Host path waits for actual ownership.
+   if(node.hasAttribute('data-dgu-adapter')||host?.panelEffects)return;
+  }
+  presented=node;panel.to(node,1,0);
  }
  function syncOverlay(){
   if(!scope.active())return;
   const next=document.getElementById('customOverlay');
-  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{childList:true,attributes:true,attributeFilter:['class','hidden','inert','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match']})}
+  if(next!==overlay){observer.disconnect();overlay=next;if(presented!==next)presented=null;if(overlay)observer.observe(overlay,{childList:true,attributes:true,attributeFilter:['class','hidden','inert','data-overlay','data-dgp-panel','data-dgu-adapter','data-dgu-adapter-match','data-sf-workspace']})}
   const shown=live()&&overlay&&visible(overlay);if(!shown)presented=null;
   const nextActive=live()&&overlay&&known(overlay)?overlay:null;
+  syncDrag(nextActive);
   navigation.refresh();
   if(plane&&nextActive)markScrimFamily(nextActive);
   const kind=nextActive?.dataset.overlay??'';if(nextActive===active&&kind===activeKind)return;
   const old=active,adopting=!active&&!!nextActive&&presented===nextActive,opacity=plane?Number(getComputedStyle(plane).opacity):0;active=nextActive;activeKind=kind;cancelPresentation(adopting?nextActive??undefined:undefined);
   if(active){
-   const entering=presented!==active;presented=active;scrim(true,entering,opacity);const from=origin&&performance.now()-origin.time<1000?origin:undefined;
+   const entering=presented!==active;presented=active;if(entering)panel.to(active,1,0);scrim(true,entering||adopting,opacity);const from=origin&&performance.now()-origin.time<1000?origin:undefined;
    if(entering||adopting)returnTo=from?.hub?document.querySelector<HTMLElement>('.sf-motion-ball'):from?.node??null;
-   if(entering)fadeWindow(motion,active,1,0);
    const focus=active.querySelector<HTMLElement>('.dgc-host button,.dgs-host button,.dgp-host button');
    if(focus&&!active.contains(document.activeElement))focus.focus({preventScroll:true});
   }else{
-   if(old&&!shown){motion.cancel(old);const target=returnTo;if(target?.isConnected&&visible(target)){if(document.activeElement===document.body||old.contains(document.activeElement))target.focus({preventScroll:true})}}
+   if(old&&!shown){panel.cancel();const target=returnTo;if(target?.isConnected&&visible(target)){if(document.activeElement===document.body||old.contains(document.activeElement))target.focus({preventScroll:true})}}
    scrim(false,true,opacity);if(!shown)returnTo=null;
   }
  }
@@ -124,8 +153,6 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   const passage=node.closest('.passage');
   settle(()=>{
    if(passage&&!passage.isConnected)return;
-
-
    syncOverlay();
   });
  }
@@ -142,17 +169,23 @@ export function startOfficialMotion(root:NativeEventsHost=window){
   const rect=node.getBoundingClientRect();if(previousPetal&&(previousPetal.x!==rect.x||previousPetal.y!==rect.y||previousPetal.width!==rect.width||previousPetal.height!==rect.height))motion.focus(previousPetal,rect);previousPetal=rect;
  }
  function scene(){
-  clearFrames();cancelPresentation();previousPetal=undefined;bedroom();settle(()=>{
+  backdrop.cancel();clearFrames();cancelPresentation();previousPetal=undefined;bedroom();settle(()=>{
    syncOverlay();const header=document.querySelector<HTMLElement>('.dgshop-host');
    if(header&&origin?.bedroom&&performance.now()-origin.time<1000)motion.focus(origin.rect,header.getBoundingClientRect());
   });
  }
- function enabled(){navigation.refresh();if(live())scene();else{clearFrames();cancelPresentation();clearMarks();active=presented=null;activeKind='';origin=undefined;returnTo=null;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
- function resize(){cancelPresentation()}
+ function enabled(){navigation.refresh();if(live())scene();else{syncDrag(null);clearFrames();cancelPresentation();backdrop.cancel();clearMarks();active=presented=null;activeKind='';origin=undefined;returnTo=null;previousPetal=undefined;plane?.remove();plane=undefined;document.documentElement.removeAttribute('data-kw-character-layer')}}
+ function resize(){cancelPresentation();backdrop.cancel()}
  const observer=new MutationObserver(records=>{
-  if(!records.some(record=>record.type==='attributes'||[...record.addedNodes,...record.removedNodes].some(node=>node instanceof Element&&node.matches('.dgc-host,.dgs-host,.dgp-host'))))return;
+  if(!records.some(record=>record.type==='attributes'||[...record.addedNodes,...record.removedNodes].some(node=>node instanceof Element&&node.matches('.dgc-host,.dgs-host,.dgp-host,#customOverlayTitle,#customOverlayContent'))))return;
   beginExpected();later(syncOverlay);
  });scope.own(()=>observer.disconnect());
+ const motionPolicy=new MutationObserver(()=>{
+  syncDrag(active);
+  if(!document.documentElement.hasAttribute('data-dgu-visualMotion')){panel.cancel();backdrop.cancel()}
+ });
+ motionPolicy.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-visualmotion','data-dgu-acrylic-adjustment']});
+ scope.own(()=>motionPolicy.disconnect());
  const sidebarObserver=new MutationObserver(()=>later(sidebar));scope.own(()=>sidebarObserver.disconnect());
  const blur=()=>clearPress();
  const parent=document.getElementById('customOverlay')?.parentElement;

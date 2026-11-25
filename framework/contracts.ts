@@ -96,6 +96,8 @@ export interface Host {
  /** Optional local material recipe. Participant.mount retains ownership and cleanup. */
  readonly layerPresets?: Readonly<{acrylicScrim?: MountRequest['setup']; surface?: Readonly<SurfacePreset>}>;
  readonly panelEffects?: Readonly<SurfaceMotion>;
+ /** Decorative transitions never take foreground playback capacity. */
+ readonly environmentEffects?: Readonly<SurfaceMotion>;
  readonly protocolVersion: typeof PROTOCOL;
  register(id: string): Readonly<Participant>;
  binding(): Binding;

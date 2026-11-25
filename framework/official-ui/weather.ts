@@ -1,5 +1,6 @@
 import {ownedOverlaySelector} from '../../src/ui/owned-overlay';
 import {visualScope} from '../../src/ui/visual-scope';
+import type {SurfaceMotion} from '../contracts';
 import {sourceMotion} from '../../src/ui/source-motion';
 import {isMaterialTransformMutation} from '../../src/ui/material-motion-style';
 import {settingsWeather} from '../../src/ui/weather/settings';
@@ -35,16 +36,16 @@ export function readGameWeather(root:WeatherHost=window as Window & WeatherHost)
  }catch{return{kind:'unknown',night:false,rain:'normal'}}
 }
 
-export function headerWeather(phase=precipitationPhase()){
- type Surface={header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;material:boolean;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
- const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=sourceMotion();scope.own(()=>motion.dispose());let stopTimer:(()=>void)|undefined,state=readGameWeather(),foreground:HTMLElement|null=null;
+export function headerWeather(phase=precipitationPhase(),environment?:SurfaceMotion){
+ type Surface={fade?:ReturnType<SurfaceMotion['track']>;header:HTMLElement;parent:HTMLElement;node:HTMLElement;key:string;revision:number;material:boolean;renderer?:ReturnType<typeof settingsWeather>;materialAttribute?:string|null;static?:boolean;suspended?:boolean;stopWatch?:()=>void;syncHeader?:()=>void};
+ const scope=visualScope(),surfaces=new Map<string,Surface>(),motion=environment?undefined:sourceMotion();scope.own(()=>motion?.dispose());let stopTimer:(()=>void)|undefined,state=readGameWeather(),foreground:HTMLElement|null=null;
  function syncPhase(immediate:boolean){
   phase.set(state.kind==='snow'?'snow':state.kind==='rain'||state.kind==='storm'?'rain':'sunny',immediate);
  }
  syncPhase(true);
  const visible=(n:HTMLElement)=>n.isConnected&&!!n.getClientRects().length&&!n.closest('.hidden,[hidden],[inert],[data-sf-leaving]');
  function clean(tasks:Array<()=>void>){const errors:unknown[]=[];for(const task of tasks)try{task()}catch(error){errors.push(error)}if(errors.length)throw new AggregateError(errors,'Weather cleanup failed')}
- function remove(key:string){const s=surfaces.get(key);if(!s)return;surfaces.delete(key);s.revision++;clean([()=>motion.cancel(s.node),()=>s.renderer?.dispose(),()=>s.stopWatch?.(),()=>s.node.remove(),()=>{if(s.materialAttribute!==undefined){if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');else s.parent.setAttribute('data-sf-weather-material',s.materialAttribute)}},()=>{if(!surfaces.size){const stop=stopTimer;stopTimer=undefined;stop?.()}}])}
+ function remove(key:string){const s=surfaces.get(key);if(!s)return;surfaces.delete(key);s.revision++;clean([()=>s.fade?.release(),()=>motion?.cancel(s.node),()=>s.renderer?.dispose(),()=>s.stopWatch?.(),()=>s.node.remove(),()=>{if(s.materialAttribute!==undefined){if(s.materialAttribute===null)s.parent.removeAttribute('data-sf-weather-material');else s.parent.setAttribute('data-sf-weather-material',s.materialAttribute)}},()=>{if(!surfaces.size){const stop=stopTimer;stopTimer=undefined;stop?.()}}])}
  function clear(){clean([...surfaces.keys()].map(key=>()=>remove(key)))}
  // Keep legacy CSS peers on their established shared update contract; only
  // complete Canvas renderers suspend behind an owned modal.
@@ -58,10 +59,17 @@ export function headerWeather(phase=precipitationPhase()){
   if(s.node.style.height!==value)s.node.style.height=value;
  }
  function paint(s:Surface,state:ReturnType<typeof readGameWeather>){
-  const key=state.kind+':'+state.night+':'+state.rain+':'+state.special;if(s.key===key)return;s.key=key;const revision=++s.revision,opacity=parseFloat(getComputedStyle(s.node).opacity);motion.cancel(s.node);
-  const apply=()=>{if(!scope.active()||s.revision!==revision||!s.node.isConnected)return;s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.dataset.special=state.special??'none';s.node.toggleAttribute('data-night',state.night);if(state.kind!=='unknown'||state.special&&state.special!=='none')motion.animate(s.node,[{opacity:0},{opacity:parseFloat(getComputedStyle(s.node).opacity)}],480)};
+  const key=state.kind+':'+state.night+':'+state.rain+':'+state.special;if(s.key===key)return;s.key=key;const revision=++s.revision,opacity=parseFloat(getComputedStyle(s.node).opacity);s.fade?.release();motion?.cancel(s.node);
+  function transition(shown:boolean,peak:number){
+   if(!environment)return motion?.animate(s.node,shown?[{opacity:0},{opacity:peak}]:[{opacity:peak},{opacity:0}],shown?480:180);
+   if(!document.documentElement.hasAttribute('data-dgu-visualMotion')||!(peak>0))return;
+   s.fade?.release();
+   s.fade=environment.track([{opacity:0},{opacity:peak}],480,180);
+   return s.fade.to(s.node,shown);
+  }
+  const apply=()=>{if(!scope.active()||s.revision!==revision||!s.node.isConnected)return;s.node.dataset.weather=state.kind;s.node.dataset.rain=state.rain;s.node.dataset.special=state.special??'none';s.node.toggleAttribute('data-night',state.night);if(state.kind!=='unknown'||state.special&&state.special!=='none')transition(true,parseFloat(getComputedStyle(s.node).opacity))};
   // Retire the old paint before changing it; never keep two particle systems alive.
-  const exit=s.node.dataset.weather&&s.node.dataset.weather!=='unknown'?motion.animate(s.node,[{opacity},{opacity:0}],180):undefined;
+  const exit=s.node.dataset.weather&&s.node.dataset.weather!=='unknown'?transition(false,opacity):undefined;
   if(exit)void exit.finished.then(apply,apply);else apply();
  }
  function refresh(){
