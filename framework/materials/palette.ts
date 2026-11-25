@@ -1,9 +1,9 @@
 export const colorDefaults = {
- background: '#242426',
- panel: '#272729',
- text: '#e6e6e8',
- muted: '#aaa9ad',
- accent: '#c9c9cd',
+ background: '#14161a',
+ panel: '#252a32',
+ text: '#e6e9ee',
+ muted: '#939ca8',
+ accent: '#93b5ca',
 };
 export type ColorRole = keyof typeof colorDefaults;
 export const colorRoles = Object.keys(colorDefaults) as ColorRole[];
@@ -56,6 +56,12 @@ export function appearancePalette(colors: Partial<Record<ColorRole,string>>) {
  return {palette, adjusted: colorRoles.some(role => colors[role] && wanted[role] !== palette[role])};
 }
 
-export function readingSurface(panel:string,text:string){
- return hex(mix(rgb(panel),rgb(text),.05));
+/** Intermediate solid surfaces between the chosen canvas and panel. */
+export function materialSurfaces(background:string,panel:string){
+ const base=rgb(background),face=rgb(panel);
+ return {
+  canvas:background, reading:background,
+  rail:hex(mix(base,face,.42)),
+  well:hex(background===panel?mix(face,black,.18):mix(base,face,.50)),
+ };
 }

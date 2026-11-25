@@ -12,7 +12,7 @@ html[data-stone-free] :is(.sf-material-float.is-focused,[data-preview-state="foc
 /* Let real game content participate in settings, with a stable reading area inside. */
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls>.dmt-settings-shell{background:#222326;border:1px solid #ffffff13;box-shadow:inset 0 1px #ffffff08,0 28px 80px #0006}
 html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls>.dmt-settings-shell{background:linear-gradient(132deg,#ffffff06,transparent 44%),rgba(29,31,35,.38);backdrop-filter:blur(24px) saturate(.9);-webkit-backdrop-filter:blur(24px) saturate(.9)}
-html[data-stone-free] #dol-midnight-controls::backdrop{background:transparent;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+html[data-stone-free] #dol-midnight-controls::backdrop{background:rgb(6 9 13 / .32);backdrop-filter:none;-webkit-backdrop-filter:none}
 html[data-stone-free] #dol-midnight-controls .dmt-settings-header{background:transparent;border-color:#ffffff14}
 /* Focused combat keeps native controls stable; only owned presentation folds are hidden. */
 html[data-stone-free][data-dol-midnight] .dcu-shell{position:relative;border:1px solid #ffffff16;background:transparent;box-shadow:none}
@@ -70,7 +70,7 @@ html[data-stone-free] .dcu-shell[data-focused] .dcu-editor-heading{position:stat
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-controls-content.dmt-workspace{background:transparent;box-shadow:none}
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-settings-header{background:transparent;backdrop-filter:none;padding:22px 24px 12px;border-bottom:0}
 html[data-stone-free] #dol-midnight-controls .dmt-settings-header h2{font-size:24px;margin:4px 0 0}
-html[data-stone-free][data-dol-midnight] #dol-midnight-controls::backdrop{background:transparent;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls::backdrop{background:rgb(6 9 13 / .32);backdrop-filter:none;-webkit-backdrop-filter:none}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-section>.dmt-setting-card{grid-column:auto}
 html[data-stone-free] #dol-midnight-controls :focus-visible{outline:2px solid #c9c9cd;outline-offset:3px}
 html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating.is-focused{border-color:#ffffff24}
@@ -83,9 +83,9 @@ html[data-stone-free][data-dol-midnight] #passages .dcu-shell .dcu-native label:
 /* These are our settings islands, not an opaque second dialog. */
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-control-sheet{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
 html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{transform-origin:50% 50%;overflow:hidden}
-html[data-stone-free] #dol-midnight-controls::backdrop{transition:backdrop-filter 460ms,background-color 460ms}
-@starting-style{html[data-stone-free] #dol-midnight-controls::backdrop{backdrop-filter:blur(0);background:transparent}}
-html[data-stone-free] #dol-midnight-controls[data-sf-leaving]::backdrop{backdrop-filter:blur(0);background:transparent}
+html[data-stone-free] #dol-midnight-controls::backdrop{transition:background-color 160ms}
+@starting-style{html[data-stone-free] #dol-midnight-controls::backdrop{background:transparent}}
+html[data-stone-free] #dol-midnight-controls[data-sf-leaving]::backdrop{background:transparent}
 html[data-stone-free] .dcu-shell[data-focused] .dcu-editor{position:relative;isolation:isolate}
 html[data-stone-free] .dcu-editor-plane{position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:linear-gradient(120deg,#ffffff08,transparent 55%),#2020226b;border:1px solid #ffffff08}
 /* Tool surfaces expand from the ball, while controls finish at stable hitboxes. */
@@ -114,7 +114,7 @@ html[data-stone-free][data-dol-midnight] :is(.dgu-surface,[data-dgu-adapter][dat
 html[data-stone-free][data-dol-midnight] .dgshop-content .dgshop-purchase .buy-buttons>.buy-button:has(>.buy-button-inner:not(.disabled)){box-shadow:inset 0 -2px #c9c9cd60}
 html[data-stone-free][data-dol-midnight] .dgs-host .dgs-item[aria-pressed=true]::after{content:none;animation:none}
 html[data-stone-free][data-dol-midnight] .dgs-host .dgs-item[aria-pressed=true]{background:#2d2d30;box-shadow:inset 2px 0 #c9c9cd;outline:none;animation:none}
-html[data-stone-free][data-dol-midnight] #dol-midnight-controls :is(input[type=checkbox],input[type=range]){accent-color:#c9c9cd}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls :is(input[type=checkbox],input[type=range]){accent-color:var(--sw-accent,#c9c9cd)}
 html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls input[type=checkbox],html[data-dol-midnight][data-dgu-acrylic-adjustment] .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=checkbox]:only-of-type):checked{background:#2c4943!important;border-color:#6d918666!important;box-shadow:none!important}
 html[data-stone-free] .sf-motion-hub .sf-motion-ball.is-dragging{transition:none}
 html[data-stone-free]:not([data-dgu-visualMotion]) .sf-motion-hub *::before{transition:none!important;animation:none!important}
@@ -144,10 +144,14 @@ html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-preview-sta
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-preview-reading.sf-material-reading{background:rgb(29 30 33 / .36)}
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-preview-reference.sf-material-reference{background:rgb(41 39 45 / .5);border-color:#ffffff14}
 html[data-stone-free][data-dol-midnight][data-dgu-visualGlass] #dol-midnight-controls .dmt-preview-reference.is-floating{background:rgb(41 39 45 / .4);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:#9c8fa933}
-html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{background:#ffffff05}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{background:var(--sw-well-solid,#ffffff05)}
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-settings-footer{background:linear-gradient(transparent,#ffffff03);border-top:1px solid #ffffff0b;box-shadow:none}
 html[data-stone-free][data-dol-midnight] #dol-midnight-controls .dmt-preview-reference.is-focused{box-shadow:0 18px 40px #0005;border-color:#9c8fa944}
-html[data-stone-free][data-dol-midnight] #dol-midnight-controls :focus-visible{outline:1px solid #87a99d99;outline-offset:3px}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls :focus-visible{outline:1px solid var(--sw-accent,#87a99d99);outline-offset:3px}
 html[data-stone-free]:not([data-dgu-visualGlass]) #dol-midnight-controls .dmt-preview-stage{background:#19191c;backdrop-filter:none;-webkit-backdrop-filter:none}
 html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls input[type=checkbox],html[data-dol-midnight][data-dgu-acrylic-adjustment] .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=checkbox]:only-of-type)::before{transition:none}
 @media(prefers-reduced-motion:reduce){html[data-stone-free] :is(#dol-midnight-controls input[type=checkbox],html[data-dol-midnight][data-dgu-acrylic-adjustment] .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=checkbox]:only-of-type),html[data-stone-free] :is(#dol-midnight-controls input[type=checkbox],html[data-dol-midnight][data-dgu-acrylic-adjustment] .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=checkbox]:only-of-type)::before{transition:none}}
+
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls>.dmt-settings-shell{--kw-slider:var(--sw-accent,#9a91ad)}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls input[type=checkbox]:checked{background:var(--sw-well-solid,#2c4943)!important;border-color:var(--sw-accent,#6d918666)!important}
+html[data-stone-free][data-dol-midnight] #dol-midnight-controls input[type=checkbox]:checked::before{background:var(--sw-accent,#8eb0a4)}

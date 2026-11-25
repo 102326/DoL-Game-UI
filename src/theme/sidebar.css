@@ -67,3 +67,6 @@ html[data-dol-midnight][data-dmt-layout] #overlayButtons>.sidebarButtonSplit:not
 /* Compact native status marks: no numeric interpretation or Mod button takeover. */
 html[data-dol-midnight][data-dmt-layout] #ui-bar.stowed #mobileStats>.stat:not(.time)>mouse {border-bottom:0}
 html[data-dol-midnight][data-dmt-layout] #ui-bar.stowed #mobileStats>.stat:not(.time)>mouse::after {content:'';display:block;width:12px;height:2px;border-radius:1px;background:currentColor;opacity:.4;margin:2px auto 0;pointer-events:none}
+
+/* Keep recognized native entries in one rail. Split native controls retain their grouping. */
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #overlayButtons>button[data-kw-entry]{grid-column:1/-1}

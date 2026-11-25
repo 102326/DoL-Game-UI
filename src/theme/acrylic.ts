@@ -10,6 +10,7 @@ export function acrylicParameters(value:number){
  // The clear endpoint restores 4.0.1's unblurred face. Alpha alone does not
  // describe perceived transparency: the V1 midpoint still scatters its backdrop.
  return {
+  '--sw-shell-alpha':String(blend(.95,.72,.38)),
   '--dgu-acrylic-axis-float':`rgb(${rgb([46,47,50],[28,39,43],[41,41,44])} / ${floatAlpha})`,
   '--dgu-acrylic-axis-grid':`rgb(${rgb([46,47,50],[25,28,28],[41,41,44])} / ${gridAlpha})`,
   '--dgu-acrylic-axis-utility':`rgb(${rgb([46,47,50],[36,38,41],[41,41,44])} / ${utilityAlpha})`,

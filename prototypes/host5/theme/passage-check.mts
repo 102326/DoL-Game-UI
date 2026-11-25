@@ -30,9 +30,10 @@ try {
  await settings.getByRole('slider',{name:'段落与选项间距',exact:true}).press('ArrowRight');
  await close();
  const themed=await sample();
- assert.equal(themed.page,'rgb(32, 39, 50)');assert.notEqual(themed.surface,themed.page);
+ assert.equal(themed.page,'rgb(18, 23, 28)');assert.equal(themed.surface,themed.page);
+ assert.equal(before.page,before.surface);
  assert.notEqual(themed.surface,before.surface);
- assert.equal(themed.link,'rgb(146, 186, 213)');assert.equal(themed.ink,'rgb(242, 220, 174)');
+ assert.equal(themed.link,'rgb(142, 192, 216)');assert.equal(themed.ink,'rgb(242, 220, 174)');
  // Removing the ownership marker exposes the same unstyled text to the normal link cascade.
  const peer=page.locator('#inherited-peer');
  const withoutOwner=await peer.evaluate(n=>{

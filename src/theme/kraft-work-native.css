@@ -20,7 +20,7 @@ html[data-dol-midnight] {
     --tooltip-border: #4a4a50;
     color: var(--000);
     color-scheme: dark;
-    background-color: var(--900);
+    background-color: var(--sw-page-surface,var(--900));
 }
 
 html[data-dol-midnight] body {

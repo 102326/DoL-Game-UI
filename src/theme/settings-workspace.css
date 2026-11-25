@@ -2,7 +2,7 @@
 html[data-stone-free] #dol-midnight-controls .dmt-layout-choice{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 24px 14px;border-bottom:1px solid #ffffff08}
 html[data-stone-free] #dol-midnight-controls .dmt-layout-choice>span{font-size:12px;color:var(--sf-muted);margin-right:8px}
 html[data-stone-free] #dol-midnight-controls .dmt-layout-choice button{min-height:var(--dgu-control-hit);padding:7px 16px;background:transparent;border-color:transparent;box-shadow:none}
-html[data-stone-free] #dol-midnight-controls .dmt-layout-choice button[aria-pressed=true]{background:#8baea312;border-color:#8baea338;color:#d3e1db}
+html[data-stone-free] #dol-midnight-controls .dmt-layout-choice button[aria-pressed=true]{background:var(--sw-well-solid,#8baea312);border-color:var(--sw-accent,#8baea338);color:var(--sw-ink,#d3e1db)}
 html[data-stone-free] #dol-midnight-controls .dmt-layout-choice small{flex:1 1 200px;font-size:11px;color:var(--sf-muted)}
 html[data-stone-free] #dol-midnight-controls .dmt-controls-content.dmt-workspace{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:22px;padding:0 24px 24px}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-settings-layout=vertical]{grid-template-columns:140px minmax(0,1fr);gap:22px}
@@ -10,7 +10,7 @@ html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-settings-layout
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{container-type:inline-size}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-width:0;padding:10px 0 14px;border-bottom:1px solid #ffffff0b}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:flex-start;min-height:var(--dgu-control-hit);padding:9px 12px;border-color:transparent;border-radius:11px;background:transparent;color:var(--sf-muted,#aaa9ad);text-align:left}
-html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{background:rgba(12,14,15,.2);box-shadow:none;color:var(--sf-ink,#e6e6e8)}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{background:var(--sw-well-solid,rgba(12,14,15,.2));box-shadow:inset 2px 0 var(--sw-accent,var(--dgu-accent,#c9c9cd));color:var(--sw-ink,var(--sf-ink,#e6e6e8))}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{display:grid;min-width:0;min-height:18rem}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{grid-area:1/1;align-self:start;display:grid;gap:14px;min-width:0;width:100%;backface-visibility:hidden;transform-origin:center top}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro{padding:2px 2px 4px}
@@ -85,7 +85,7 @@ html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{animation:none}
 /* Accepted settings V2.3: real stationary shell, no separate material proxy. */
 html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{background:linear-gradient(125deg,#bfd4df12,transparent 55%),#24262aee!important;border:1px solid #d4ece42b!important;box-shadow:inset 0 1px #e5f2f329,0 24px 80px #0006!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html[data-stone-free][data-dgu-visualGlass] #dol-midnight-controls>.dmt-settings-shell{background:linear-gradient(130deg,#e3f3ff14,transparent 56%),#24262ad9!important}
-html[data-stone-free] #dol-midnight-controls::backdrop{background:var(--dgu-workspace-context-background,transparent)!important;backdrop-filter:var(--dgu-workspace-context-filter,none)!important;-webkit-backdrop-filter:var(--dgu-workspace-context-filter,none)!important;transition:none}
+html[data-stone-free] #dol-midnight-controls::backdrop{background:var(--dgu-workspace-context-background,transparent)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transition:none}
 html[data-stone-free] #dol-midnight-controls .dmt-workspace-section{transform-style:preserve-3d}
 
 html[data-stone-free] .dgu-orbit-nav{position:relative}
@@ -99,3 +99,6 @@ html[data-stone-free] #dol-midnight-controls .dmt-reading-demo-note{font-size:11
 /* Help text may wrap; keep range tracks on a shared axis in the left layout. */
 html:not([data-dgu-options-centered]) #dol-midnight-controls .dgu-setting-row:has(>input[type=range])>span{flex:1;max-width:none;min-width:0}
 html:not([data-dgu-options-centered]) #dol-midnight-controls .dgu-setting-row>input[type=range]{flex:0 0 46%}
+
+/* The settings selection contour follows the same accent as its controls. */
+html[data-stone-free] #dol-midnight-controls :is(.dmt-orbit-base,.dmt-orbit-flow,.dmt-orbit-tail){stroke:var(--sw-accent,var(--dgu-accent,#c9c9cd))}

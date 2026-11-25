@@ -55,9 +55,9 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  let appliedAppearance: Appearance | undefined, appearanceEnabled = false;
  const html=document.documentElement;
  type Palette=ReturnType<typeof appearancePalette>['palette'];
- type SurfacePalette=Palette & Partial<Pick<NonNullable<typeof theme>['current']['palette'],'canvas'|'rail'|'reading'|'shell'|'floating'>>;
+ type SurfacePalette=Palette & Partial<Pick<NonNullable<typeof theme>['current']['palette'],'canvas'|'rail'|'reading'|'well'|'shell'|'floating'>>;
  function paintColors(palette?:SurfacePalette){
-  const roles=[...colorRoles,'hover','onAccent','canvas','rail','reading','shell','floating'] as const;
+  const roles=[...colorRoles,'hover','onAccent','canvas','rail','reading','well','shell','floating'] as const;
   for(const role of roles){
    const property='--sw-custom-'+(role==='onAccent'?'on-accent':role);
    const value=palette?.[role];

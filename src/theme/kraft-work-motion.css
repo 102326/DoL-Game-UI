@@ -23,8 +23,8 @@ html[data-stone-free] .sf-motion-hub .sf-motion-ball>span{transition:transform 4
 
 /* This whitelist is tagged only after checking the direct Bedroom link contract. */
 html[data-stone-free] #passages a[data-kw-native]{text-decoration-thickness:1px;text-underline-offset:4px;border-radius:5px}
-html[data-stone-free] #passages a[data-kw-native]:focus-visible{outline:1px solid #8fb6a699;outline-offset:4px}
-html[data-stone-free] #passages a[data-kw-native]:active{background:#8fb6a617;box-shadow:inset 0 -1px #8fb6a677}
+html[data-stone-free] #passages a[data-kw-native]:focus-visible{outline:1px solid var(--sw-accent);outline-offset:4px}
+html[data-stone-free] #passages a[data-kw-native]:active{background:var(--sw-edge);box-shadow:inset 0 -1px var(--sw-accent)}
 
 /* Stable controls, expressive material: no transforms on native fixed ancestors. */
 html[data-stone-free] :is(.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){transition:background-color 220ms,border-color 220ms,box-shadow 280ms}
@@ -73,14 +73,14 @@ html[data-stone-free]:not([data-dgu-visualMotion]) .sf-motion-hub[data-official]
 @media(prefers-reduced-motion:reduce){html[data-stone-free] .sf-motion-hub[data-official] :is(.sf-motion-orbit,.sf-motion-emblem){transition:none!important;animation:none!important;transform:none}}
 
 /* Native reading links keep their text flow; only reviewed navigation gets a material cue. */
-html[data-stone-free] #passages a[data-kw-native]{padding:3px 2px;background:transparent;box-shadow:inset 0 -1px #91aba42b;line-height:1.9}
+html[data-stone-free] #passages a[data-kw-native]{padding:3px 2px;background:transparent;box-shadow:inset 0 -1px transparent;line-height:1.9}
 html[data-stone-free][data-dgu-visualMotion] #passages a[data-kw-native]{transition:background-color 240ms,box-shadow 300ms,color 240ms}
-html[data-stone-free] #passages a[data-kw-native]:is(:hover,:focus-visible){background:#8baea30d;box-shadow:inset 0 -1px #91aba480}
-html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry],html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button{background:transparent;border:0;border-bottom:1px solid #ffffff09;border-radius:11px;color:var(--sf-ink);box-shadow:none}
+html[data-stone-free] #passages a[data-kw-native]:is(:hover,:focus-visible){background:var(--sw-edge);box-shadow:inset 0 -1px var(--sw-accent)}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry],html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button{background:transparent;border:0;border-bottom:1px solid #ffffff09;border-radius:11px;color:var(--dgu-sidebar-text);box-shadow:none}
 html[data-stone-free] #ui-bar [data-kw-entry]::before{content:"";display:inline-block;flex:none;width:4px;height:4px;margin-right:10px;border-radius:50%;background:#8baea370}
 html[data-stone-free][data-dgu-visualMotion] #ui-bar [data-kw-entry]{transition:background-color 240ms,box-shadow 320ms,border-color 240ms}
-html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry]:is(:hover,:focus-visible),html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button:is(:hover,:focus-visible){background:#8baea310;box-shadow:inset 2px 0 #8baea366;border-color:#ffffff0e}
-html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry]:focus,html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button:focus{outline:1px solid #8baea380;outline-offset:2px}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry]:is(:hover,:focus-visible),html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button:is(:hover,:focus-visible){background:var(--sw-nav-highlight);box-shadow:inset 2px 0 var(--sw-accent);border-color:#ffffff0e}
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #overlayButtons button.link-internal[data-kw-entry]:focus,html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar #dol-midnight-sidebar-button:focus{outline:2px solid var(--sw-nav-focus);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){html[data-stone-free] :is(#ui-bar [data-kw-entry],#passages a[data-kw-native]){transition:none}}
 
 /* R5 review studies are opt-in, non-persistent, and limited to the Hub chain. */
@@ -105,15 +105,15 @@ html[data-stone-free][data-kw-hub-study][data-dgu-visualMotion] .sf-motion-ball:
 
 /* Caption markers are assigned only to the reviewed native/official/Mod entry contracts.
    Their actual nodes, order, shortcuts and handlers remain untouched. */
-html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry]{display:flex;align-items:center;justify-content:flex-start;text-align:left;min-height:44px;padding:9px 12px;background:transparent!important;border:0!important;border-bottom:1px solid transparent!important;border-radius:11px!important;box-shadow:none!important;color:var(--sf-ink)}
-html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry]:is(:hover,:focus){background:var(--sw-nav-highlight,#8baea310)!important;box-shadow:inset 0 0 0 1px #8baea333!important;outline:1px solid #8baea344;outline-offset:1px}
-html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry].macro-button-selected{background:var(--sw-nav-highlight,#8baea315)!important;box-shadow:inset 0 0 0 1px #8baea33d!important}
+html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry]{display:flex;align-items:center;justify-content:flex-start;text-align:left;min-height:44px;padding:9px 12px;background:transparent!important;border:0!important;border-bottom:1px solid transparent!important;border-radius:11px!important;box-shadow:none!important;color:var(--dgu-sidebar-text)}
+html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry]:is(:hover,:focus){background:var(--sw-nav-highlight,#8baea310)!important;box-shadow:none!important;outline:1px solid var(--sw-nav-focus);outline-offset:1px}
+html[data-stone-free][data-dol-midnight] #ui-bar :is(#startCaption,#overlayButtons) button[data-kw-entry].macro-button-selected{background:var(--sw-nav-highlight,#8baea315)!important;box-shadow:inset 2px 0 var(--sw-nav-focus)!important}
 
 /* Shared states for our controls, not a global button/link/input reset. */
 html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){--kw-control-accent:#8baea3;transition:background-color 220ms,border-color 240ms,box-shadow 280ms;color:var(--sf-ink)}
 html[data-stone-free][data-dol-midnight] :is(.dgc-navigation,.dgs-navigation,.dgp-navigation) button{background:#ffffff02!important;border:1px solid transparent!important;box-shadow:none!important;border-radius:11px!important}
-html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab):not(:disabled,[aria-disabled=true]):is(:hover,:focus-visible){background-color:#8baea311!important;box-shadow:inset 0 1px #ffffff0a!important;border-color:#8baea33b!important;outline:1px solid #8baea35c;outline-offset:2px}
-html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab):not(:disabled,[aria-disabled=true]):is(:active,[data-kw-press]){background-color:#8baea324!important;box-shadow:inset 0 0 0 1px #8baea352!important}
+html[data-stone-free][data-dol-midnight] :is(.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button):not(:disabled,[aria-disabled=true]):is(:hover,:focus-visible){background-color:#8baea311!important;box-shadow:inset 0 1px #ffffff0a!important;border-color:#8baea33b!important;outline:1px solid #8baea35c;outline-offset:2px}
+html[data-stone-free][data-dol-midnight] :is(.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button):not(:disabled,[aria-disabled=true]):is(:active,[data-kw-press]){background-color:#8baea324!important;box-shadow:inset 0 0 0 1px #8baea352!important}
 html[data-stone-free][data-dol-midnight] :is(.dgc-navigation,.dgs-navigation) button[aria-pressed=true]{background:#8baea314!important;box-shadow:inset 0 -2px #8baea37a!important;color:#d2e1db}
 html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab):is(:disabled,[aria-disabled=true]){opacity:.4;cursor:default;box-shadow:none!important}
 html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgw-slots button,.dgshop-content .category-tab)[aria-busy=true]{cursor:progress;border-style:dashed}
@@ -121,7 +121,8 @@ html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgw-
 html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls button,.dgc-navigation button,.dgs-navigation button,.dgp-navigation button,.dgw-slots button,.dcu-arrangement button,.dgshop-content .category-tab){transition:none!important}
 html[data-stone-free]:not([data-dgu-visualMotion]) :is(#dol-midnight-controls input[type=checkbox],html[data-dol-midnight][data-dgu-acrylic-adjustment] .dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=checkbox]:only-of-type){transition:none!important}
 
-html[data-stone-free][data-dol-midnight] :is(#ui-bar button[data-kw-entry],.sf-motion-hub[data-official] button)[data-kw-press]{background-color:#8baea324!important;box-shadow:inset 0 0 0 1px #8baea352!important}
+html[data-stone-free][data-dol-midnight] #ui-bar button[data-kw-entry][data-kw-press]{background-color:var(--sw-nav-highlight)!important;box-shadow:inset 2px 0 var(--sw-nav-focus)!important}
+html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] button[data-kw-press]{background-color:#8baea324!important;box-shadow:inset 0 0 0 1px #8baea352!important}
 /* The settings window remains available when the theme is off; disabled still means unavailable. */
 html[data-stone-free] #dol-midnight-controls button:disabled{opacity:.4;cursor:default;box-shadow:none!important}
 
@@ -132,3 +133,7 @@ html[data-stone-free] #dol-midnight-controls button:disabled{opacity:.4;cursor:d
 /* Filled stage material; native window geometry and input remain real throughout. */
 
 [data-dgu-workspace-material][data-dgu-workspace-drag-ready]>#customOverlayTitle{cursor:grab;touch-action:none}
+
+/* Settings and shop use their inherited theme accent for interactive feedback. */
+html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgshop-content .category-tab):not(:disabled,[aria-disabled=true]):is(:hover,:focus-visible){background-color:var(--sw-well-solid,#8baea311)!important;box-shadow:none!important;border-color:var(--sw-accent,#8baea33b)!important;outline:1px solid var(--sw-accent,#8baea35c);outline-offset:2px}
+html[data-stone-free][data-dol-midnight] :is(#dol-midnight-controls button,.dgshop-content .category-tab):not(:disabled,[aria-disabled=true]):is(:active,[data-kw-press]){background-color:var(--sw-well-solid,#8baea324)!important;box-shadow:inset 0 0 0 1px var(--sw-accent,#8baea352)!important}

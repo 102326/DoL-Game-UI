@@ -29,7 +29,7 @@ try{
   if(!solo)assert.deepEqual(await sample('#a .sample'),initial);
   await page.locator('#apply').click();
   assert.deepEqual(await sample(peer),draft);
-  assert.equal(draft[3],'rgb(146, 186, 213)');
+  assert.equal(draft[3],'rgb(142, 192, 216)');
   const node=await page.locator(peer).elementHandle();assert.ok(node);
   if(!solo){
    assert.deepEqual(await sample('#a .sample'),draft);

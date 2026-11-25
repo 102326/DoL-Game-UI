@@ -28,16 +28,16 @@ export async function checkDiamond(page:Page){
  await button('青灰').click();assert.deepEqual(await sample(),original);
  await button('应用并保存').click();
  const themed=await sample();
- assert.equal(themed.ink,'146,186,213');assert.equal(themed.mask,original.mask);
+ assert.equal(themed.ink,'142,192,216');assert.equal(themed.mask,original.mask);
  assert.notEqual(themed.background,original.background);assert.notEqual(themed.rim,original.rim);
  await glass.uncheck();
  const opaque=await sample();
- assert.equal(opaque.blur,'none');assert.equal(opaque.background,'none');assert.equal(opaque.solid,'rgb(32, 39, 50)');
+ assert.equal(opaque.blur,'none');assert.equal(opaque.background,'none');assert.equal(opaque.solid,'rgb(18, 23, 28)');
  assert.equal(opaque.ink,themed.ink);
  await button('关闭').click();await dialog.waitFor({state:'hidden'});
  for(let i=0;i<20&&!await ball.evaluate(el=>el.matches(':focus-visible'));i++)await page.keyboard.press('Tab');
  const focus=await ball.evaluate(el=>({active:el===document.activeElement,color:getComputedStyle(el).outlineColor,width:getComputedStyle(el).outlineWidth}));
- assert.deepEqual(focus,{active:true,color:'rgb(146, 186, 213)',width:'2px'});
+ assert.deepEqual(focus,{active:true,color:'rgb(142, 192, 216)',width:'2px'});
  await page.keyboard.press('Enter');assert.equal(await ball.getAttribute('aria-expanded'),'true');
  await page.waitForFunction(()=>{
   const el=document.querySelector('.sf-motion-ball.is-open');

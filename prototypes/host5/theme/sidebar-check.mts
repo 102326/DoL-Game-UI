@@ -88,15 +88,15 @@ try{
    await button('取消试色').click();assert.equal(await sample(),oldDraft);
    assert.deepEqual(await snapshot(),baseline);assert.equal(await storage(),previous);
    await button('青灰').click();await button('应用并保存').click();
-   await page.waitForFunction(()=>getComputedStyle(document.querySelector('#dol-midnight-sidebar-button')!).color==='rgb(146, 186, 213)');
+   await page.waitForFunction(()=>getComputedStyle(document.querySelector('#dol-midnight-sidebar-button')!).color==='rgb(142, 192, 216)');
    const applied=await snapshot();
-   assert.deepEqual(applied,{sidebar:'rgb(32, 39, 50)',peer:'rgb(32, 39, 50)',entry:'rgb(146, 186, 213)',chip:'rgb(146, 186, 213)'});
+   assert.deepEqual(applied,{sidebar:'rgb(25, 32, 39)',peer:'rgb(34, 45, 55)',entry:'rgb(142, 192, 216)',chip:'rgb(142, 192, 216)'});
    await navigate(true);await open();assert.deepEqual(await snapshot(),applied);
   }
   await button('恢复默认外观').click();await page.waitForFunction(color=>getComputedStyle(document.querySelector('#dol-midnight-sidebar-button')!).color===color,baseline.entry);assert.deepEqual(await snapshot(),baseline);
   await navigate(true);await open();assert.deepEqual(await snapshot(),baseline);
   assert.equal(await page.locator('html').evaluate(n=>n.hasAttribute('data-sw-custom-colors')),false);
-  assert.equal(await page.getByLabel('强调色',{exact:true}).inputValue(),'#c9c9cd');
+  assert.equal(await page.getByLabel('强调色',{exact:true}).inputValue(),'#93b5ca');
   if(inputs)console.log('Host',legacy?inputs.release.sha:inputs.candidate.sha,'UI',inputs.ui.sha);
   assert.deepEqual(errors,[]);console.log(browser.version(),legacy?'legacy settings':'sidebar + inspector','apply, reset, reload verified');
   await page.close();

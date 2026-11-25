@@ -14,13 +14,13 @@ const inputs = await Promise.all([tweePath, oldPath, hostPath, uiPath].map(path 
 assert.deepEqual(inputs.map(data => createHash('sha256').update(data).digest('hex')), [
   '291b83e9f3ea584cf7223e6701abb8e7a345026df746dc57a755c28f33ae308b',
   '6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8',
-  '1070dba995d3e2638824257f4c8283e017e9438baf53c674348f184130d76138',
-  '0e5e651c2b071eef8bd3daddf25e88dedece49c94ffcc265b5160d24efd09aed',
+  '2625f7e183a6db23a2dadb0c90d00c73c82ef9b3cc1c0e5316544b5d7b1578fc',
+  '140082c80529507895335281433f31bb5cccb6d8f05b9b034d5573de09f9e47c',
 ]);
 const [twee, oldHost, host, ui] = inputs.map(data => data.toString('base64'));
 const order = ['TweeReplacer', 'StoneFreeHost', 'DoLGameUI'];
 const oldScript = '86b828ae8aa2f389f17ac10eb887752d2972cdfddf172c06a8237e25a43ef7bd';
-const newScript = 'e6f24046c8715f772500ce53f99326d49417cd2207da45bb691e01b773715abf';
+const newScript = '245cb6cfdc62f215bb167c6d36a0dc22efde44f25ccc80f32f674f43b6ff25fd';
 const server = createServer((req, res) => {
   if (req.url !== '/') {
     res.writeHead(404).end();
