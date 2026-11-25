@@ -65,16 +65,30 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   shop?.classList.toggle('dgshop-fixed-details',open&&(!capable||popoverUnavailable));
  }
  let viewport:ReturnType<typeof adaptiveViewport>|undefined;
+ let settledListAnchor:ReturnType<typeof layoutAnchor>;
+ let lastClientWidth=0,lastViewportWidth=0,lastScale=0;
+ function recordListPosition(event:Event){
+  const scroller=event.target;
+  if(!catalog?.isConnected||!shop||(scroller!==document&&!(scroller instanceof Element&&scroller.contains(catalog))))return;
+  // A viewport change can also dispatch scrollend before the new layout is applied.
+  if(shop.clientWidth!==lastClientWidth||innerWidth!==lastViewportWidth)return;
+  const bounds=catalog.getBoundingClientRect();
+  settledListAnchor=bounds.bottom>0&&bounds.top<innerHeight?layoutAnchor(catalog,'.clothing-item'):undefined;
+ }
  function resizeLayout(){
   if(!shop||!viewport)return;
-  const style=getComputedStyle(shop),width=shop.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
+  const style=getComputedStyle(shop),clientWidth=shop.clientWidth,width=clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
   if(!(width>0))return;
   const scale=Math.max(1,parseFloat(style.getPropertyValue('--dgu-font-scale'))||1);
   const {short,visual,inset}=viewport.measure(width);
   const narrow=width<660*scale,changed=narrow!==state.narrow||short!==shop.classList.contains('dgshop-short');
+  if(narrow===state.narrow&&(clientWidth!==lastClientWidth||innerWidth!==lastViewportWidth||scale!==lastScale))settledListAnchor=undefined;
+  lastClientWidth=clientWidth;lastViewportWidth=innerWidth;lastScale=scale;
   const focused=document.activeElement instanceof HTMLElement?document.activeElement:null;
   const detailFocus=focused&&details?.contains(focused)?focused:null;
-  const restoreList=changed&&layoutAnchor(catalog,'.clothing-item');
+  // A width change can rewrap the old layout before ResizeObserver gets a turn.
+  const restoreList=changed&&(narrow!==state.narrow&&settledListAnchor?.isCurrent()
+   ?settledListAnchor:layoutAnchor(catalog,'.clothing-item'));
   const restoreDetail=changed&&layoutAnchor(details,'.dgshop-detail-body > *,.dgshop-purchase a,.dgshop-purchase button',detailFocus);
   if(changed&&detailFocus&&state.hasDetails)state.open=true;
   state.narrow=narrow;state.compact=width<=480*scale;
@@ -84,8 +98,9 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   details?.classList.toggle('dgshop-detail-open',state.open&&state.hasDetails);
   syncBackdrop();
   if(changed){
-   if(restoreList)restoreList();
-   if(restoreDetail)restoreDetail();
+   settledListAnchor=undefined;
+   if(restoreList)restoreList.restore();
+   if(restoreDetail)restoreDetail.restore();
    if(detailFocus&&detailFocus!==document.activeElement){
     const target=detailFocus.getClientRects().length?detailFocus:details?.querySelector<HTMLElement>('.buy-buttons a,.try-button,button:not(.dgshop-close-detail)');
     target?.focus({preventScroll:true});
@@ -110,7 +125,7 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   if(node.isConnected&&target&&!node.contains(target)&&moveFocusedSubtree(node,target,anchor.isConnected?anchor:null))anchor.remove();
   else restoreNative(node,anchor,shop);
  }
- function restore(){releasePopover();shop?.classList.remove('dgshop-fixed-details');for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restorePosition(node,anchor)}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
+ function restore(){settledListAnchor=undefined;releasePopover();shop?.classList.remove('dgshop-fixed-details');for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restorePosition(node,anchor)}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
  function release(){transactionCheck?.();transactionCheck=undefined;quantityCheck?.();quantityCheck=undefined;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;viewport?.dispose();viewport=undefined;shop?.style.removeProperty('--dgshop-visual-height');shop?.style.removeProperty('--dgshop-ime-inset');releaseResize?.();releaseResize=undefined;scope.cancelFrame(resizeLayout);source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-short','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null;popoverUnavailable=false}
  function arrangeEntry(){
@@ -145,6 +160,7 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
  function recover(){failed=true;release();observe();document.dispatchEvent(new Event('dol-ui-shop-change'))}
  function refresh(){isolate('shop',update,recover)}
  function update(){
+  settledListAnchor=undefined;
   if(!scope.active())return;observer.disconnect();
   const binding=framework?.host.binding();
   if(framework&&!binding?.isCurrent()){if(host)release();observe();return}
@@ -265,7 +281,12 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   schedule();
  }
  function quantity(event:Event){const input=event.target;if(!(input instanceof HTMLInputElement)||!input.matches('#buy-multiple-slider input[type=range]')||!shop?.contains(input)||!current())return;quantityCheck?.();quantityCheck=scope.timeout(()=>{quantityCheck=undefined;isolate('shop quantity quote',()=>source?.quantityChanged(input),recover)},0)}
- function escape(event:KeyboardEvent){if(event.key==='Escape'&&!isOpenSelectEscape(event)&&state.open&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false)}
+ function escape(event:KeyboardEvent){
+  // Leave composition cancellation and shortcuts to the editor that owns them.
+  if(event.key!=='Escape'||event.defaultPrevented||event.isComposing||event.keyCode===229||
+     event.ctrlKey||event.altKey||event.shiftKey||event.metaKey)return;
+  if(state.open&&!isOpenSelectEscape(event)&&!document.querySelector('dialog[open],#customOverlay:not(.hidden)')&&!shop?.querySelector('.no-click-overlay:not(.hidden)'))toggle(false);
+ }
  const observer=new MutationObserver(records=>{if(!isolate('shop mutation',()=>fastPath(records),recover))schedule()});
  const discovery=new MutationObserver(()=>{if(document.querySelector('.passage #clothingShop-div')!==shop)schedule()});
  function setEnabled(value:boolean){if(!scope.active())return;failed=false;pagePrefs.set('shop',!!value);refresh();document.dispatchEvent(new Event('dol-ui-shop-change'))}
@@ -273,6 +294,8 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
 
  const updatePhoneLayout=()=>{if(host?.isConnected)scheduleResize()};
  document.addEventListener('dol-ui-font-scale-change',updatePhoneLayout);
+ document.addEventListener('scrollend',recordListPosition,true);
+ scope.own(()=>document.removeEventListener('scrollend',recordListPosition,true));
  scope.own(()=>document.removeEventListener('dol-ui-font-scale-change',updatePhoneLayout));
  scope.own(()=>observer.disconnect());scope.own(()=>discovery.disconnect());
  return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled()&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){scope.dispose();document.removeEventListener('input',quantity,true);document.removeEventListener('change',quantity,true);document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};

@@ -2410,8 +2410,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6d1bd6f3b34f90f3331d624b8cea3f756c6c28cb87f35a9b98f8d672925f4f83",
-      "assertionSites": 77
+      "sourceSha256": "22c8ccb451a50dfed0de78091e07cf924663de5cb26ada908005a8f25ba44f55",
+      "assertionSites": 105
     },
     {
       "entry": "tests/shop-early-api.test.cjs",

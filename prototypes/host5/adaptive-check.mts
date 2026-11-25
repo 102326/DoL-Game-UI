@@ -81,6 +81,12 @@ try {
  const onPage=await offset(true);assert.ok(Math.abs(onPage-initial)<4,JSON.stringify({initial,onPage}));
  await shop.evaluate(n=>(n as HTMLElement).style.removeProperty('width'));await frames();
  const restored=await offset(false);assert.ok(Math.abs(restored-initial)<4,JSON.stringify({initial,restored}));
+ // Resizing the actual viewport also rewraps titles before ResizeObserver runs.
+ await catalog.evaluate(n=>n.scrollBy(0,1));await frames();
+ const beforeResize=await offset(false);
+ await p.setViewportSize({width:550,height:700});await frames();
+ const afterResize=await offset(true);
+ assert.ok(Math.abs(afterResize-beforeResize)<4,JSON.stringify({beforeResize,afterResize}));
  await p.setViewportSize({width:390,height:700});await frames();
  await shop.locator('#item-12 a').click();await details.locator('#buy').waitFor();
  await p.waitForFunction(()=>document.querySelector('.clothing-details')?.matches(':popover-open'));

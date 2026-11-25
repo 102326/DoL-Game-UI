@@ -23,6 +23,94 @@ function must<T>(v: T | null | undefined): T {
   if (v == null) throw Error('Missing shop fixture');
   return v;
 }
+async function checkShortViewport(page: playwright.Page) {
+  const shop = page.locator('#clothingShop-div');
+  const drawer = shop.locator('.clothing-details');
+  const item = shop.locator('.dgshop-selected a');
+  const note = drawer.getByLabel('Note');
+  const search = shop.locator('#textbox--shopnamefiltertextbox');
+  const selection = (field: playwright.Locator) => field.evaluate(node => {
+    if (!(node instanceof HTMLInputElement)) throw Error('Expected native input');
+    return [document.activeElement === node, node.value, node.selectionStart, node.selectionEnd];
+  });
+  async function resize(width: number, height: number, short: boolean) {
+    await page.setViewportSize({width, height});
+    await page.waitForFunction(({width, height, short}) => {
+      const n = document.querySelector<HTMLElement>('#clothingShop-div');
+      return innerWidth === width && innerHeight === height && visualViewport?.height === height &&
+        n?.style.getPropertyValue('--dgshop-visual-height') === height + 'px' &&
+        n.classList.contains('dgshop-short') === short;
+    }, {width, height, short});
+  }
+  await shop.evaluate(n => n.style.setProperty('--dgu-font-scale', '1.2'));
+  await resize(390, 700, false);
+  const selectedTitle = await item.innerText();
+  await note.fill('example');
+  await page.keyboard.press('Control+a');
+  for (const height of [501, 499, 444]) {
+    await resize(390, height, false);
+    assert.deepEqual(await selection(note), [true, 'example', 0, 7]);
+    assert.ok(await drawer.evaluate(n => n.matches(':popover-open')));
+  }
+  const metrics = await page.context().newCDPSession(page);
+  try {
+    for (const [width, height, angle, type] of [
+      [915, 412, 90, 'landscapePrimary'], [390, 700, 0, 'portraitPrimary'],
+    ] as const) {
+      await metrics.send('Emulation.setDeviceMetricsOverride', {
+        width, height, mobile:false, deviceScaleFactor:1, screenOrientation:{type, angle},
+      });
+      await page.waitForFunction(({width, height, angle}) =>
+        innerWidth === width && innerHeight === height && screen.orientation.angle === angle &&
+        visualViewport?.height === height &&
+        document.querySelector<HTMLElement>('#clothingShop-div')?.style.getPropertyValue('--dgshop-visual-height') === height + 'px',
+        {width, height, angle});
+      assert.equal(await shop.evaluate(n => n.classList.contains('dgshop-short')), angle === 90);
+      assert.equal(await drawer.evaluate(n => n.matches(':popover-open')), angle === 0);
+      assert.ok(await drawer.isVisible());
+      assert.deepEqual(await selection(note), [true, 'example', 0, 7]);
+      assert.equal(await item.innerText(), selectedTitle);
+    }
+  } finally {
+    await metrics.send('Emulation.clearDeviceMetricsOverride');
+    await metrics.detach();
+  }
+  await resize(390, 700, false);
+  await resize(390, 444, false);
+  await page.keyboard.press('Control+Escape');
+  assert.deepEqual(await selection(note), [true, 'example', 0, 7], 'modified Escape belongs to the editor/system');
+  // These synthetic key events distinguish IME ownership and an editor which consumed Escape.
+  for (const flags of [{isComposing:true}, {keyCode:229}, {defaultPrevented:true}]) {
+    await note.evaluate((n, flags) => {
+      const key = new KeyboardEvent('keydown', {key:'Escape', bubbles:true, cancelable:true, ...flags});
+      if (flags.defaultPrevented) key.preventDefault();
+      n.dispatchEvent(key);
+    }, flags);
+    assert.deepEqual(await selection(note), [true, 'example', 0, 7]);
+    assert.ok(await drawer.evaluate(n => n.matches(':popover-open')));
+  }
+  await page.keyboard.press('Escape');
+  assert.ok(await item.evaluate(n => n === document.activeElement), 'plain Escape returns to the selected item');
+  assert.equal(await item.innerText(), selectedTitle);
+  assert.ok(!await drawer.evaluate(n => n.matches(':popover-open')));
+  await resize(390, 700, false);
+  await search.focus();
+  await page.keyboard.press('Control+a');
+  const value = await search.inputValue();
+  assert.ok(value.length > 0);
+  for (const height of [500, 499, 444, 700]) {
+    await resize(390, height, false);
+    assert.deepEqual(await selection(search), [true, value, 0, value.length]);
+  }
+  await page.keyboard.press('Tab');
+  assert.ok(!await search.evaluate(n => n === document.activeElement));
+  await resize(390, 500, false);
+  await resize(390, 499, true);
+  await resize(390, 444, true);
+  assert.ok(!await drawer.evaluate(n => n.matches(':popover-open')));
+  await shop.evaluate(n => n.style.removeProperty('--dgu-font-scale'));
+  await resize(1100, 800, false);
+}
 (async () => {
   const [{ createServer }, { default: vue }] = await Promise.all([import('vite'), import('@vitejs/plugin-vue')]);
 
@@ -67,7 +155,7 @@ function must<T>(v: T | null | undefined): T {
         }),
       );
       await page.evaluate(async (arm) => {
-        document.body.innerHTML = `<div id="passages"><div class="passage" data-passage="Clothing Shop"><div id="clothingShop-div"><div id="clothes-list"><div class="optionsBar"><div class="searchGroup"><label class="searchBar">Search <input id="textbox--shopnamefiltertextbox" type="text"></label></div></div><div id="shop-list-pages">${Array.from({ length: 40 }, (_, i) => `<div class="clothing-item"><span class="clothing-name"><a class="link-internal">Item ${i}</a></span></div>`).join('')}</div><div class="clothing-details"><p>Fixture detail</p><div class="buy-buttons"><a class="link-internal" tabindex="0">Buy</a></div></div></div></div></div></div>`;
+        document.body.innerHTML = `<div id="passages"><div class="passage" data-passage="Clothing Shop"><div id="clothingShop-div"><div id="clothes-list"><div class="optionsBar"><div class="searchGroup"><label class="searchBar">Search <input id="textbox--shopnamefiltertextbox" type="text"></label></div></div><div id="shop-list-pages">${Array.from({ length: 40 }, (_, i) => `<div class="clothing-item"><span class="clothing-name"><a class="link-internal" tabindex="0">Item ${i}</a></span></div>`).join('')}</div><div class="clothing-details"><p>Fixture detail</p><label>Note <input type="text"></label><div class="buy-buttons"><a class="link-internal" tabindex="0">Buy</a></div></div></div></div></div></div>`;
         Object.assign(window, {
           SugarCube: {
             State: {
@@ -244,6 +332,7 @@ function must<T>(v: T | null | undefined): T {
           );
         }
       }
+      if (arm === 'ui') await checkShortViewport(page);
       await input.focus();
       if (arm === 'ui-fallback') {
         generation = await page.evaluate(() => window.generation);
