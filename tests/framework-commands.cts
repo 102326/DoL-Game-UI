@@ -91,8 +91,8 @@ const checks:string[]=[],check=async(name:string,fn:()=>Promise<void>)=>{await f
     await panel.getByRole('button',{name:'关闭',exact:true}).click();await side.getByRole('button',{name:'侧边工作台',exact:true}).click();
    }
    await p.setViewportSize({width:1100,height:850});await panel.screenshot({path:path.join(dir,'side-workspace.png')});
-   await panel.getByRole('button',{name:'关闭',exact:true}).focus();await p.keyboard.press('Escape');assert.equal(await panel.evaluate(n=>n instanceof HTMLDialogElement&&n.open),false);
-   await side.getByRole('button',{name:'侧边工作台',exact:true}).click();await p.locator('#foreign').focus();await p.keyboard.press('Escape');assert.equal(await panel.evaluate(n=>n instanceof HTMLDialogElement&&n.open),true);
+   await panel.getByRole('button',{name:'关闭',exact:true}).focus();await p.keyboard.press('Escape');await p.waitForFunction(()=>{const n=document.querySelector('[data-sf-owner="AlternateWorkspace"] dialog');return n instanceof HTMLDialogElement&&!n.open});
+   await side.getByRole('button',{name:'侧边工作台',exact:true}).click();await p.locator('#foreign').focus();await p.keyboard.press('Escape');await p.waitForTimeout(250);assert.equal(await panel.evaluate(n=>n instanceof HTMLDialogElement&&n.open),true);
    await p.evaluate(()=>DoLUiHost.invalidateScene());await p.waitForFunction(()=>{const n=document.querySelector('[data-sf-owner="AlternateWorkspace"] dialog');return n instanceof HTMLDialogElement&&!n.open});await p.evaluate(()=>DoLUiHost.sceneReady());
    assert.equal(await p.locator('#foreign').inputValue(),'native input remains usable');
   });

@@ -256,6 +256,36 @@ html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls .
  background:var(--sw-well-solid)!important;
 }
 html[data-stone-free][data-dol-midnight][data-sw-theme] #ui-bar #dol-midnight-sidebar-button:hover {background:var(--sw-custom-hover)}
+/* SugarCube's own title and navigation, while the Host supplies the active palette. */
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #title > #story-title,
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #startCaption > :is(h3,h4):not([class]),
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#menu-core > li > a,#ui-bar-toggle,#ui-bar-history [id|=history]) {
+ color:var(--sw-custom-text);
+}
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#ui-bar-toggle,#ui-bar-history [id|=history]) {
+ background-color:var(--sw-custom-panel);border-color:var(--sw-edge);
+}
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#menu-core > li > a,#ui-bar-toggle,#ui-bar-history [id|=history]):hover {
+ background-color:var(--sw-custom-hover);border-color:var(--sw-custom-focus);
+}
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #ui-bar-history [id|=history]:disabled {
+ color:var(--sw-custom-muted);background-color:transparent;border-color:var(--sw-edge);
+}
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#menu-core > li > a,#ui-bar-toggle,#ui-bar-history [id|=history]):focus-visible {
+ outline:2px solid var(--sw-custom-focus);outline-offset:2px;
+}
+/* Native Start and settings controls; selected gold buttons retain their native paint. */
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #passages > .passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) :is(
+ #startOptions > .containerStart > .buttonSettings > .buttonStart > button.link-internal.macro-button,
+ #startOptions > .containerStart > .buttonSettings > button.link-internal.macro-button,
+ #settingsOptions > .containerStart > .buttonStart > button.link-internal.macro-button,
+ #settingsExit > div > button.link-internal.macro-button
+):not(:where([data-sf-owner] *,[data-dgu-adapter] *,dialog *,.dgw-root *,.dgshop-content *,.dgshop-host *,.dgp-host *,.dgs-host *,.dgc-host *,.dcu-root *)) {
+ background:var(--sw-custom-panel);color:var(--sw-custom-text);border-color:var(--sw-edge);
+ &:hover:enabled {background:var(--sw-custom-hover);border-color:var(--sw-custom-focus)}
+ &:focus-visible {outline:2px solid var(--sw-custom-focus);outline-offset:2px}
+ &:disabled {color:var(--sw-custom-muted);background:var(--sw-custom-well);border-color:var(--sw-edge)}
+}
 html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(.optionsBar,.clothing-item,.clothing-details,.filters-div,.options-div,.shop-legend,.dgshop-purchase) {
  background:var(--sw-well-solid);border-color:var(--sw-edge);
 }
