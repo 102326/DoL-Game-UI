@@ -262,6 +262,8 @@ html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #startCa
 html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#menu-core > li > a,#ui-bar-toggle,#ui-bar-history [id|=history]) {
  color:var(--sw-custom-text);
 }
+/* The game paints the chevron itself on the pseudo-element. */
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #ui-bar-toggle::before {color:currentColor}
 html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#ui-bar-toggle,#ui-bar-history [id|=history]) {
  background-color:var(--sw-custom-panel);border-color:var(--sw-edge);
 }
