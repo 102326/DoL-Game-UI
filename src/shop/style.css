@@ -207,3 +207,10 @@
 .dgshop-content.dgshop-short:not(.dgshop-narrow) .dgshop-layout>.clothing-details{overflow:auto;display:block}
 .dgshop-content.dgshop-short:not(.dgshop-narrow) .dgshop-detail-body,.dgshop-content.dgshop-short:not(.dgshop-narrow) .dgshop-purchase{overflow:visible;max-height:none}
 .dgshop-content.dgshop-short:not(.dgshop-narrow):not(.dgshop-has-details) .dgshop-layout>.clothing-details{display:none}
+
+/* Native shop wrappers retain dark game backgrounds and ink under light presets. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(#shopCategories,.category-group,#clothes-list,.clothing-shop-page,.searchGroup,.searchBar,.itemsPerPageLabel,.shop-pages-number){background:transparent;color:var(--sw-custom-text)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .searchGroup>button:where([class="link-internal macro-button"],[class="macro-button link-internal"]):not([style],[data-sf-owner],[data-dgu-adapter]):not(:has([data-sf-owner],[data-dgu-adapter])){background:var(--sw-custom-panel);border-color:var(--sw-edge);color:var(--sw-custom-text)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(.dgshop-native-header,.dgshop-purchase,#shop-pagination) a:where([class="link-internal macro-link"],[class="macro-link link-internal"]):not([style],[data-sf-owner],[data-dgu-adapter]):not(:has([data-sf-owner],[data-dgu-adapter])){color:var(--sw-custom-link)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-detail-body>span.gold:not([style],[data-sf-owner],[data-dgu-adapter]){color:var(--sw-custom-price)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .mannequin-gender-textbutton:not([style],[data-sf-owner],[data-dgu-adapter]):not(:has([data-sf-owner],[data-dgu-adapter])){color:var(--sw-custom-link)}

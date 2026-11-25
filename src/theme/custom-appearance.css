@@ -288,6 +288,29 @@ html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #passages > .pas
  &:focus-visible {outline:2px solid var(--sw-custom-focus);outline-offset:2px}
  &:disabled {color:var(--sw-custom-muted);background:var(--sw-custom-well);border-color:var(--sw-edge)}
 }
+html[data-stone-free][data-dol-midnight][data-sw-theme] #passages > .passage.dgp-overlay[data-dgp-panel=settings]:not([data-dgu-adapter]):has(> .dgp-host) {
+ background-color:var(--sw-page-surface);
+}
+/* Native actions moved into the wardrobe keep their own semantic markings. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgw-root .dgw-actions > .wardrobe-action > a:where([class="link-internal macro-link"],[class="macro-link link-internal"]):not([data-sf-owner],[style]):not(:has([data-sf-owner])) {
+ color:var(--sw-custom-link);
+ &:hover {text-decoration:underline}
+ &:focus-visible {outline:2px solid var(--sw-custom-focus);outline-offset:2px}
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgw-root .dgw-tools > input[type=search],
+html[data-stone-free][data-dol-midnight][data-sw-theme] #customOverlay[data-overlay=saves]:not([data-dgu-adapter]) #saveList > .dgs-host .dgs-search > input[type=search] {
+ background:var(--sw-custom-panel);color:var(--sw-ink);border-color:var(--sw-edge);
+ &::placeholder {color:var(--sw-muted);opacity:1}
+ &:focus-visible {outline:2px solid var(--sw-custom-focus);outline-offset:2px}
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #customOverlay[data-overlay=saves]:not([data-dgu-adapter]) #saveList > .dgs-host .dgs-list {
+ color:var(--sw-ink);
+ & .dgs-item small {color:var(--sw-muted)}
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #customOverlay[data-overlay=saves]:not([data-dgu-adapter]) #saveList > .dgs-host .dgs-list {
+ color:var(--sw-ink);
+ & .dgs-item small {color:var(--sw-muted)}
+}
 html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(.optionsBar,.clothing-item,.clothing-details,.filters-div,.options-div,.shop-legend,.dgshop-purchase) {
  background:var(--sw-well-solid);border-color:var(--sw-edge);
 }
