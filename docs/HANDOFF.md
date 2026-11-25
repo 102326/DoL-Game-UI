@@ -1,5 +1,19 @@
 # Soft & Wet 4.5 跨设备交接
 
+## 5.0 · 正式窗口的 Acrylic 与慢云合成（#41）
+
+**Current**　研究基线 `f24a0df`。设置面板和已认领的原生属性窗口从各自正式入口使用同一套慢云与实时 Acrylic。普通阴天启用自制云纹；特殊天空、雨和雪沿用已有渲染。设置的材质页提供“窗口天气”开关。Host 管理环境播放与挂载的释放，正文、窗口动作、焦点与天气意图仍归接入方。关闭玻璃时两个窗口回到实色。
+
+**Decided**　公司 Mac 的 Chrome 使用同一对候选 ZIP。固定画面后仅去掉云纹，两个窗口顶部各观察到三万以上像素发生变化；160 px 高采样区内，云带下方无超出阈值的像素差。切换 Chrome 标签可使慢云停播并恢复；设置反向保留原图层，原生窗口在模态关闭后恢复环境播放。真实中性 Passage 换页释放旧节点。故意阻止云层删除时，即使 Host 注册数归零，DOM 残留检查仍能检出。前景播放、原生按钮操作、减少动态、玻璃开关和未完整匹配的适配器分别验过。
+
+设置离场与反向期间的高对比条纹均测到模糊，与关闭模糊的参考图相比，平均每色道差约 21–23；两个采样点的横向跳变均为 0 CSS px。属性离场遮罩仍在时复用同一原生窗口打开社交，旧回调完成后新窗口的焦点与遮罩均保留。以上为指定帧采样。属性拖动的既有雨滴几何回归曾一次超时；新旧天气控制对照未能重现，最终四组宽度／缩放通过。保留原断言，已为再次失败增加可见雨滴数及拖动状态诊断。
+
+**复跑**　`node scripts/build-framework.mts` 和 `python3 scripts/package-framework.py --players-only` 生成候选。用 `node prototypes/host5/composition/official-surfaces.mts <候选Host.zip> <候选UI.zip> <通用SugarCube-2.37.3.zip>` 核对表面与换页；同一命令附加 `--retain-layer` 应因残留失败。用公开 v4.5.2 Host 替换第一个输入并附加 `--legacy` 复查回退。高对比背景与属性转社交复用 `prototypes/host5/panel-budget/workspace-mixed.mts`，传相同的三个候选／引擎输入。
+
+**玩家包**　继续交付研究用双 ZIP。固定版本的真实 Loader 经 IndexedDB 验过干净安装和替换公开旧 Host 后重载；两种路径都从侧栏实际打开设置并以 Escape 关闭。新旧 Host 同名同版本，升级须验证实际装入的脚本。三包 SHA-256、脚本摘要、固定输入与复跑步骤见[独立安装验证](../prototypes/host5/package-check/README.md)。
+
+**Next**　家用 Windows 平板及 Android WebView 用同一双包复验持续云层下的拖动、设置离场重开、属性切社交、系统键盘和横竖屏、切后台再返回。看实际正文可读性、触控响应和帧呈现，核实真实游戏结构、Loader 图形导入与 GameVersion。这批定向结果不能给出设备性能或发布结论。
+
 ## 5.0 · 正式窗口动效整合（#41）
 
 **Current**　研究分支 `research/5.0-host-prototypes`。本批从 `ff40108` 继续，包含下节的 Passage 继承修复。公司 Mac 使用正式候选 ZIP、Chrome 157.0.8103.79、Node 26.13.0 和中性页面。包内版本沿用研究基线。
