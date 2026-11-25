@@ -13,6 +13,19 @@ import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,Binding,MountHandle} from '../../framework/contracts';
 export interface ShopFramework {host:Host;owner:Participant}
+// The native filter redraw focuses its replacement before our layout pass runs.
+// A normal DOM insertion would blur it again and dismiss the on-screen keyboard.
+function moveFocusedSubtree(node:Node,target:HTMLElement,before:Node|null):boolean{
+ const focused=node.ownerDocument?.activeElement;
+ if(!(focused instanceof HTMLElement)||!node.contains(focused)||!target.isConnected)return false;
+ if('moveBefore' in target&&typeof target.moveBefore==='function'){
+  target.moveBefore(node,before);
+ }else{
+  target.insertBefore(node,before);
+  if(focused.isConnected&&document.activeElement===document.body)focused.focus({preventScroll:true});
+ }
+ return true;
+}
 type Runtime=NativeEventsHost & {SugarCube?:{
  State?:{passage?:string;variables?:Record<string,unknown> & {shopClothingFilter?:{gender?:{female:boolean;male:boolean;neutral:boolean};active?:boolean}}};
  Wikifier?:new(output:HTMLElement|null,source:string)=>unknown;
@@ -83,8 +96,21 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
  function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;shop?.classList.toggle('dgshop-categories-open',state.categoriesOpen)}
  function scheduleResize(){scope.frame(resizeLayout)}
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
- function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
- function restore(){releasePopover();shop?.classList.remove('dgshop-fixed-details');for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
+ function move(node:Node,target:HTMLElement){
+  if(node.parentNode===target)return;
+  if(!moves.has(node)){
+   const anchor=document.createComment('shop-ui-position');
+   node.parentNode?.insertBefore(anchor,node);
+   moves.set(node,anchor);
+  }
+  if(!moveFocusedSubtree(node,target,null))target.append(node);
+ }
+ function restorePosition(node:Node,anchor:Comment){
+  const target=anchor.isConnected?anchor.parentElement:shop;
+  if(node.isConnected&&target&&!node.contains(target)&&moveFocusedSubtree(node,target,anchor.isConnected?anchor:null))anchor.remove();
+  else restoreNative(node,anchor,shop);
+ }
+ function restore(){releasePopover();shop?.classList.remove('dgshop-fixed-details');for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restorePosition(node,anchor)}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
  function release(){transactionCheck?.();transactionCheck=undefined;quantityCheck?.();quantityCheck=undefined;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;viewport?.dispose();viewport=undefined;shop?.style.removeProperty('--dgshop-visual-height');shop?.style.removeProperty('--dgshop-ime-inset');releaseResize?.();releaseResize=undefined;scope.cancelFrame(resizeLayout);source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-short','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null;popoverUnavailable=false}
  function arrangeEntry(){

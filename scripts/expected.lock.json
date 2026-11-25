@@ -2397,6 +2397,23 @@
       ]
     },
     {
+      "entry": "tests/shop-composition-fixture.cjs",
+      "sourceEntry": "tests/shop-composition-fixture.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "6d1bd6f3b34f90f3331d624b8cea3f756c6c28cb87f35a9b98f8d672925f4f83",
+      "assertionSites": 77
+    },
+    {
       "entry": "tests/shop-early-api.test.cjs",
       "sourceEntry": "tests/shop-early-api.test.cts",
       "profiles": [
