@@ -182,7 +182,8 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   const scale=isMasterEnabled()?state.preferences.fontScale:100;
   const html=document.documentElement;
   html.toggleAttribute('data-dgu-font-scaled',scale!==100);
-  html.style.setProperty('--dgu-font-scale',String(scale/100));
+  const value=String(scale/100);
+  if(html.style.getPropertyValue('--dgu-font-scale')!==value){html.style.setProperty('--dgu-font-scale',value);document.dispatchEvent(new Event('dol-ui-font-scale-change'))}
  }
  function persist(){
   store.save();

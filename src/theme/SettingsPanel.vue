@@ -15,6 +15,7 @@ import AppearanceControls from './AppearanceControls.vue';
 import type {Appearance} from './appearance';
 import ReadingControls from './ReadingControls.vue';
 import ReadingSample from './ReadingSample.vue';
+import {adaptiveViewport} from '../ui/adaptive-viewport';
 import {settingsMaterial} from './settings-material';
 
 const props=defineProps<{state:SettingsState;onPreference:(key:PreferenceKey,value:boolean|number)=>void;onAppearance:(value:Appearance)=>void;onSaveFont?:(file:File|null)=>Promise<void>;onSaves:(value:boolean)=>void;onCombat:(value:boolean)=>void;onCharacteristics:(value:boolean)=>void;onSocial:(value:boolean)=>void;onShop:(value:boolean)=>void;onPanel:(kind:PanelKind,value:boolean)=>void;onWardrobe:(value:boolean)=>void;onClose:()=>void;onRecovery:(enabled:boolean)=>void}>();
@@ -26,8 +27,10 @@ const categories=[{id:'reading',label:'阅读'},{id:'material',label:'材质'},{
 // Private display choice: not a public preference/API or a responsive-mode truth.
 const layoutKey='DoLGameUI.settingsLayout.v1',savedLayout=ref<'horizontal'|'vertical'>('horizontal'),layoutMessage=ref('');
 try{if(localStorage.getItem(layoutKey)==='vertical')savedLayout.value='vertical'}catch{layoutMessage.value='设置布局暂不能读取，本次使用上下布局。'}
-const scope=visualScope(),workspace=ref<HTMLElement>(),workspaceWidth=ref(0);
-const effectiveLayout=computed(()=>savedLayout.value==='vertical'&&workspaceWidth.value>=760*Math.max(1,props.state.preferences.fontScale/100)?'vertical':'horizontal');
+const scope=visualScope(),workspace=ref<HTMLElement>(),workspaceWidth=ref(0),shortWindow=ref(false);
+const scale=computed(()=>Math.max(1,props.state.preferences.fontScale/100));
+const sidePreview=computed(()=>workspaceWidth.value>=860*scale.value&&!shortWindow.value);
+const effectiveLayout=computed(()=>savedLayout.value==='vertical'&&workspaceWidth.value>=620*scale.value?'vertical':'horizontal');
 function chooseLayout(value:'horizontal'|'vertical'){savedLayout.value=value;try{localStorage.setItem(layoutKey,value);layoutMessage.value='设置布局已保存。'}catch{layoutMessage.value='本次布局已应用；当前无法保存布局选择。'}}
 watch(()=>props.state.message,()=>{layoutMessage.value=''});
 onMounted(()=>{
@@ -35,7 +38,17 @@ onMounted(()=>{
  const shell=dialog?.querySelector<HTMLElement>('.dmt-settings-shell'),header=shell?.querySelector<HTMLElement>('.dmt-settings-header');
  if(official&&dialog&&shell&&header&&workspace.value){const material=settingsMaterial(shell,header,workspace.value,dialog);scope.own(material.dispose)}
  // Do not change the observed layout inside ResizeObserver delivery, or reflow a closed dialog.
- const measure=()=>{const width=workspace.value?.offsetWidth??0;if(dialog?.open&&!dialog.hasAttribute('data-sf-leaving')&&width>0)workspaceWidth.value=width},schedule=()=>scope.frame(measure);
+ const schedule=()=>scope.frame(measure);
+ const viewport=dialog&&adaptiveViewport(dialog,schedule);
+ if(viewport)scope.own(viewport.dispose);
+ function measure(){
+  const width=workspace.value?.offsetWidth??0;
+  if(!dialog?.open||dialog.hasAttribute('data-sf-leaving')||!width||!viewport||!shell)return;
+  const {short,visual,inset}=viewport.measure(width);
+  workspaceWidth.value=width;shortWindow.value=short;
+  shell.style.setProperty('--dmt-visible-height',visual+'px');
+  dialog.style.setProperty('--dmt-ime-inset',inset+'px');
+ }
  if(workspace.value&&typeof ResizeObserver==='function'){const resize=new ResizeObserver(schedule);scope.own(()=>resize.disconnect());resize.observe(workspace.value)}
  if(dialog){const visibility=new MutationObserver(()=>{if(!dialog.open||dialog.hasAttribute('data-sf-leaving'))motion.cancel();else schedule()});scope.own(()=>visibility.disconnect());visibility.observe(dialog,{attributes:true,attributeFilter:['open','data-sf-leaving']})}schedule();
 });
@@ -59,7 +72,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
  <header class="dmt-settings-header cu:flex cu:items-center cu:justify-between cu:gap-4"><div><p class="dmt-eyebrow">SOFT &amp; WET</p><h2 id="dol-midnight-title">界面设置</h2></div><GameButton class="dmt-close" @click="onClose">关闭</GameButton></header>
 
  <div v-if="official" class="dmt-layout-choice" role="group" aria-label="设置布局"><span>设置布局</span><GameButton type="button" :aria-pressed="savedLayout==='horizontal'" @click="chooseLayout('horizontal')">上下</GameButton><GameButton type="button" :aria-pressed="savedLayout==='vertical'" @click="chooseLayout('vertical')">左右</GameButton><small v-if="savedLayout!==effectiveLayout">空间较窄，暂用上下布局；保留左右选择。</small></div>
- <div v-if="official" ref="workspace" class="dmt-controls-content dmt-workspace" :data-settings-layout="effectiveLayout" :data-settings-layout-choice="savedLayout">
+ <div v-if="official" ref="workspace" class="dmt-controls-content dmt-workspace" :data-settings-layout="effectiveLayout" :data-side-preview="sidePreview || undefined" :data-short-window="shortWindow || undefined" :data-settings-layout-choice="savedLayout">
   <SettingsNavigation :items="categories" :active="category" :layout="effectiveLayout" @select="selectCategory"/>
   <main class="dmt-workspace-page" :aria-label="categories.find(item=>item.id===category)?.label">
    <Transition :css="false" @enter="enterTask" @leave="leaveTask" @enter-cancelled="cancelTask" @leave-cancelled="cancelTask">

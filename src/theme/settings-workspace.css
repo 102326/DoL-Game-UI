@@ -41,8 +41,8 @@ html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating{
 html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating.is-focused{border-color:var(--sf-change,#d2d2d4)}
 html[data-stone-free] #dol-midnight-controls .dmt-preview-status{margin:0;min-height:1.5em}
 @media(max-width:680px){
- html[data-stone-free] #dol-midnight-controls .dmt-controls-content.dmt-workspace{grid-template-columns:minmax(0,1fr);gap:14px;padding:0 16px 16px}
- html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+ html[data-stone-free] #dol-midnight-controls .dmt-controls-content.dmt-workspace[data-settings-layout=horizontal]{grid-template-columns:minmax(0,1fr);gap:14px;padding:0 16px 16px}
+ html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-settings-layout=horizontal] .dmt-workspace-nav{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
  html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button{justify-content:center;min-height:var(--dgu-control-hit);padding:7px 5px;text-align:center}
  html[data-stone-free] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{box-shadow:none}
  html[data-stone-free] #dol-midnight-controls .dmt-workspace-page{min-height:0}
@@ -50,15 +50,12 @@ html[data-stone-free] #dol-midnight-controls .dmt-preview-status{margin:0;min-he
 }
 @media(min-width:980px){
  html[data-stone-free] #dol-midnight-controls>.dmt-settings-shell{width:min(1000px,calc(100vw - 32px))}
- html[data-stone-free] #dol-midnight-controls .dmt-workspace-reading,html[data-stone-free] #dol-midnight-controls .dmt-workspace-material{grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr);align-items:start;gap:18px 28px}
- html[data-stone-free] #dol-midnight-controls .dmt-workspace-intro{grid-column:1/-1}
- html[data-stone-free] #dol-midnight-controls .dmt-reading-sample{align-self:start;position:sticky;top:12px;margin-top:8px}
- html[data-stone-free] #dol-midnight-controls .dmt-material-controls{align-self:start}
 }
-@container(max-width:680px){
- html[data-stone-free] #dol-midnight-controls :is(.dmt-workspace-reading,.dmt-workspace-material){grid-template-columns:minmax(0,1fr);gap:18px}
- html[data-stone-free] #dol-midnight-controls .dmt-reading-sample{position:static}
-}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-side-preview] :is(.dmt-workspace-reading,.dmt-workspace-material){grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr);align-items:start;gap:18px 28px}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-side-preview] .dmt-workspace-intro{grid-column:1/-1}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-side-preview] .dmt-reading-sample{align-self:start;position:sticky;top:12px;margin-top:8px}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-side-preview] .dmt-material-controls{align-self:start}
+html[data-stone-free] #dol-midnight-controls .dmt-workspace[data-short-window] .dmt-workspace-nav{padding-block:4px}
 @media(max-width:420px){html[data-stone-free] #dol-midnight-controls .dmt-preview-stage{grid-template-columns:minmax(0,1fr);padding-bottom:124px}html[data-stone-free] #dol-midnight-controls .dmt-preview-reference.is-floating{right:8px;bottom:8px;width:min(190px,calc(100% - 16px))}}
 @media(prefers-reduced-motion:reduce){html[data-stone-free] #dol-midnight-controls :is(.dmt-preview-reference,.dmt-workspace-nav button){transition:none}}
 

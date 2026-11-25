@@ -1,17 +1,19 @@
 import {createPagePreferences,type PagePreferences} from '../theme/page-preferences';
+import {adaptiveViewport} from '../ui/adaptive-viewport';
+import {layoutAnchor} from './layout-anchor';
 import {visualScope} from '../ui/visual-scope';
 import {isOpenSelectEscape} from '../ui/native-select';
 import {isolate,mountUI,unmountUI,restoreNative} from '../runtime/presentation';
 import {createApp,reactive,type App} from 'vue';
 import Toolbar from './Toolbar.vue';
-import {createShopSource,copyShopItem,purchaseControl,type ShopFacts} from './source';
+import {createShopSource,purchaseControl,type ShopFacts} from './source';
 import './style.css';
 import {purchaseWitness,purchaseResult} from './transaction';
 import {sourceMotion} from '../ui/source-motion';
 import {isMasterEnabled} from '../runtime/master';
 import type {NativeEventsHost} from '../runtime/sugarcube';
 import type {Host,Participant,Binding,MountHandle} from '../../framework/contracts';
-export interface ShopFramework {host:Host;owner:Participant;rememberProduct?:(item:Readonly<{title:string;price:string;owned:string}>)=>void}
+export interface ShopFramework {host:Host;owner:Participant}
 type Runtime=NativeEventsHost & {SugarCube?:{
  State?:{passage?:string;variables?:Record<string,unknown> & {shopClothingFilter?:{gender?:{female:boolean;male:boolean;neutral:boolean};active?:boolean}}};
  Wikifier?:new(output:HTMLElement|null,source:string)=>unknown;
@@ -32,9 +34,9 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
  const labels=new Map<HTMLElement,string|null>();
  const restoredScroll=new WeakMap<HTMLElement,number>();
  const moves=new Map<Node,Comment>();const owned=new Set<HTMLElement>();
- let scrollTop=0,focusReturn:HTMLElement|null=null,source:ReturnType<typeof createShopSource>|undefined,referenceMount:HTMLElement|null=null,referenceSequence=0;
+ let scrollTop=0,focusReturn:HTMLElement|null=null,source:ReturnType<typeof createShopSource>|undefined;
  let releaseResize:(()=>void)|undefined,transactionCheck:(()=>void)|undefined,quantityCheck:(()=>void)|undefined;
- const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'',referenceEnabled:!!framework,referenceA:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonB:null as Readonly<{title:string;price:string;owned:string}>|null,comparisonTarget:null as string|null,comparisonOrigin:null as {left:number;top:number;width:number;height:number}|null,transactionStatus:'' as ''|'pending'|'confirmed'|'unknown',transactionMessage:'',defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
+ const state=reactive({hasDetails:false,isEntry:false,open:false,narrow:false,compact:false,categoriesOpen:false,selectedTitle:'',transactionStatus:'' as ''|'pending'|'confirmed'|'unknown',transactionMessage:'',defaultGender,message:''});const counts={mounts:0,scans:0,fastPaths:0};
  function current(){const passage=shop?.closest<HTMLElement>('.passage');return scope.active()&&(!frameworkBinding||frameworkBinding.isCurrent())&&!!shop?.isConnected&&!!passage&&!passage.classList.contains('passage-out')&&document.querySelector('#passages .passage:not(.passage-out)')===passage&&(!root.SugarCube?.State?.passage||root.SugarCube.State.passage===passage.dataset.passage)}
  function facts():ShopFacts{const variables=root.SugarCube?.State?.variables;const clothes=(root as unknown as {setup?:{clothes?:Record<string,unknown[]>}}).setup?.clothes;return {variables,definition:clothes?.[String(variables?.clothingShopSlot)]?.[Number(variables?.clothes_choice)]}}
  let detailPopover:HTMLElement|undefined,popoverUnavailable=false;
@@ -51,15 +53,43 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   }
   shop?.classList.toggle('dgshop-fixed-details',open&&(!capable||popoverUnavailable));
  }
- const phoneLayout=window.matchMedia('(max-width:600px), (pointer:coarse) and (max-height:480px) and (max-width:960px)');
- function resizeLayout(){if(!shop)return;const style=getComputedStyle(shop),width=shop.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);state.narrow=phoneLayout.matches;state.compact=width<=480;shop.classList.toggle('dgshop-narrow',state.narrow);shop.classList.toggle('dgshop-compact',state.compact);syncBackdrop();syncRipple()}
+ let viewport:ReturnType<typeof adaptiveViewport>|undefined;
+ function resizeLayout(){
+  if(!shop||!viewport)return;
+  const style=getComputedStyle(shop),width=shop.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
+  if(!(width>0))return;
+  const scale=Math.max(1,parseFloat(style.getPropertyValue('--dgu-font-scale'))||1);
+  const {short,visual,inset}=viewport.measure(width);
+  const narrow=width<660*scale,changed=narrow!==state.narrow||short!==shop.classList.contains('dgshop-short');
+  const focused=document.activeElement instanceof HTMLElement?document.activeElement:null;
+  const detailFocus=focused&&details?.contains(focused)?focused:null;
+  const restoreList=changed&&layoutAnchor(catalog,'.clothing-item');
+  const restoreDetail=changed&&layoutAnchor(details,'.dgshop-detail-body > *,.dgshop-purchase a,.dgshop-purchase button',detailFocus);
+  if(changed&&detailFocus&&state.hasDetails)state.open=true;
+  state.narrow=narrow;state.compact=width<=480*scale;
+  shop.classList.toggle('dgshop-narrow',narrow);shop.classList.toggle('dgshop-short',short);
+  shop.classList.toggle('dgshop-compact',state.compact);
+  shop.style.setProperty('--dgshop-visual-height',visual+'px');shop.style.setProperty('--dgshop-ime-inset',inset+'px');
+  details?.classList.toggle('dgshop-detail-open',state.open&&state.hasDetails);
+  syncBackdrop();
+  if(changed){
+   if(restoreList)restoreList();
+   if(restoreDetail)restoreDetail();
+   if(detailFocus&&detailFocus!==document.activeElement){
+    const target=detailFocus.getClientRects().length?detailFocus:details?.querySelector<HTMLElement>('.buy-buttons a,.try-button,button:not(.dgshop-close-detail)');
+    target?.focus({preventScroll:true});
+   }
+   if(catalog&&!narrow){scrollTop=catalog.scrollTop;restoredScroll.set(catalog,scrollTop)}
+  }
+  syncRipple();
+ }
  function toggleCategories(){state.categoriesOpen=!state.categoriesOpen;shop?.classList.toggle('dgshop-categories-open',state.categoriesOpen)}
  function scheduleResize(){motion.cancel();selectionMotion=undefined;clearRipple();scope.frame(resizeLayout)}
  function box(className:string,parent:HTMLElement){const el=document.createElement('div');el.className=className;parent.append(el);owned.add(el);return el}
  function move(node:Node,target:HTMLElement){if(node.parentNode===target)return;if(!moves.has(node)){const anchor=document.createComment('shop-ui-position');node.parentNode?.insertBefore(anchor,node);moves.set(node,anchor)}target.append(node)}
- function restore(){releasePopover();shop?.classList.remove('dgshop-fixed-details');for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();referenceMount=null;state.comparisonTarget=null;state.comparisonOrigin=null;state.comparisonB=null;details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
+ function restore(){releasePopover();shop?.classList.remove('dgshop-fixed-details');for(const [el,title] of labels){if(title===null)el.removeAttribute('title');else el.title=title}labels.clear();for(const [node,anchor] of moves){restoreNative(node,anchor,shop)}moves.clear();for(const el of owned){el.remove()}owned.clear();details?.classList.remove('dgshop-detail-open');list?.classList.remove('dgshop-layout');shop?.querySelectorAll('.dgshop-selected').forEach(e=>e.classList.remove('dgshop-selected'));list=null;details=null;catalog=null;browseTools=null;header=null;detailBody=null;footer=null;close=null}
  function clearEntry(){for(const el of entryBreaks)el.classList.remove('dgshop-entry-gap');entryBreaks.clear();entry=null;shop?.classList.remove('dgshop-entry')}
- function release(){scope.cancelFrame(restoreComparisonFocus);motion.cancel();selectionMotion=undefined;clearRipple();transactionCheck?.();transactionCheck=undefined;quantityCheck?.();quantityCheck=undefined;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;releaseResize?.();releaseResize=undefined;scope.cancelFrame(resizeLayout);source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.referenceA=null;state.comparisonB=null;state.comparisonOrigin=null;state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null;popoverUnavailable=false}
+ function release(){motion.cancel();selectionMotion=undefined;clearRipple();transactionCheck?.();transactionCheck=undefined;quantityCheck?.();quantityCheck=undefined;const owned=frameworkMount;frameworkMount=undefined;frameworkBinding=undefined;viewport?.dispose();viewport=undefined;shop?.style.removeProperty('--dgshop-visual-height');shop?.style.removeProperty('--dgshop-ime-inset');releaseResize?.();releaseResize=undefined;scope.cancelFrame(resizeLayout);source?.destroy();source=undefined;clearEntry();unmountUI(app);app=undefined;restore();owned?.dispose();host?.remove();host=null;shop?.classList.remove('dgshop-content','dgshop-narrow','dgshop-short','dgshop-has-details','dgshop-categories-open','dgshop-compact');state.hasDetails=false;state.open=false;state.categoriesOpen=false;state.selectedTitle='';state.transactionStatus='';state.transactionMessage='';scrollTop=0;focusReturn=null;popoverUnavailable=false}
  function arrangeEntry(){
   if(entry?.isConnected)return;
   if(!shop)return;
@@ -88,28 +118,6 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
  }
  function setDetailOpen(open:boolean){if(!open){motion.cancel();selectionMotion=undefined}state.open=open;details?.classList.toggle('dgshop-detail-open',open);syncBackdrop()}
  function toggle(open=!state.open){setDetailOpen(open);if(!open){const target=focusReturn?.isConnected?focusReturn:catalog?.querySelector<HTMLElement>('.dgshop-selected a')??host?.querySelector<HTMLElement>('button');target?.focus({preventScroll:true})}else if(open&&state.narrow)close?.focus({preventScroll:true})}
- function pinReference(){const item=source?.read()?.selected;if(!item||!current())return;const rect=catalog?.querySelector('.dgshop-selected')?.getBoundingClientRect();state.comparisonOrigin=rect?{left:rect.left,top:rect.top,width:rect.width,height:rect.height}:null;state.referenceA=copyShopItem(item);framework?.rememberProduct?.(state.referenceA);state.comparisonB=null}
- function compareReference(origin:HTMLElement){const item=source?.read()?.selected;if(!state.referenceA||!item||!current())return;const bounds=origin.isConnected?origin.getBoundingClientRect():null;state.comparisonOrigin=bounds?{left:bounds.left,top:bounds.top,width:bounds.width,height:bounds.height}:null;state.comparisonB=copyShopItem(item);if(detailBody)detailBody.scrollTop=0;if(state.narrow)toggle(true)}
- function clearReference(){state.referenceA=null;state.comparisonB=null}
- function restoreComparisonFocus(){
-  if(!current()||!host||!shop||state.comparisonB)return;
-  const candidates=[
-   host.querySelector<HTMLElement>('[data-shop-compare]'),
-   focusReturn&&shop.contains(focusReturn)?focusReturn:null,
-   catalog?.querySelector<HTMLElement>('.dgshop-selected a'),
-   host.querySelector<HTMLElement>('.dgshop-reference-chip'),
-  ];
-  for(const candidate of candidates){
-   if(!candidate?.isConnected)continue;
-   candidate.focus({preventScroll:true});
-   if(document.activeElement===candidate)return;
-  }
- }
- function closeComparison(){
-  state.comparisonB=null;
-  if(state.narrow)setDetailOpen(false);
-  scope.frame(restoreComparisonFocus);
- }
  let failed=false;
  function recover(){failed=true;release();observe();document.dispatchEvent(new Event('dol-ui-shop-change'))}
  function refresh(){isolate('shop',update,recover)}
@@ -121,8 +129,8 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   if(next!==shop){release();shop=next}
   if(!isMasterEnabled()||!enabled()||failed||!shop){if(shop&&!isMasterEnabled())entered.add(shop);if(host)release();observe();return}
   if(shop.querySelectorAll('#clothes-list').length>1||shop.querySelectorAll('.clothing-details').length>1){release();observe();return}
-  if(!host?.isConnected){host=document.createElement('div');host.className='dgshop-host';shop.before(host);shop.classList.add('dgshop-content');source=createShopSource(shop,current,facts);resizeLayout();if(typeof ResizeObserver!=='undefined'){const observed=shop,resize=new ResizeObserver(()=>{if(shop===observed&&host?.isConnected)scheduleResize()});releaseResize=scope.own(()=>resize.disconnect());resize.observe(shop)}
-   const mountApp=(parent:HTMLElement)=>{app=createApp(Toolbar,{state,toggle:()=>toggle(),toggleCategories,setDefaultGender,pinReference,compareReference,clearReference,closeComparison});mountUI(app,parent,recover);counts.mounts++};
+  if(!host?.isConnected){host=document.createElement('div');host.className='dgshop-host';shop.before(host);shop.classList.add('dgshop-content');source=createShopSource(shop,current,facts);viewport=adaptiveViewport(shop,()=>scope.frame(resizeLayout));resizeLayout();if(typeof ResizeObserver!=='undefined'){const observed=shop,resize=new ResizeObserver(()=>{if(shop===observed&&host?.isConnected)scheduleResize()});releaseResize=scope.own(()=>resize.disconnect());resize.observe(shop)}
+   const mountApp=(parent:HTMLElement)=>{app=createApp(Toolbar,{state,toggle:()=>toggle(),toggleCategories,setDefaultGender});mountUI(app,parent,recover);counts.mounts++};
    if(framework){frameworkBinding=binding;const mountBinding=binding;frameworkMount=framework.owner.mount({id:'shop',parent:host,lifetime:'passage',setup(context){context.onCleanup(()=>{if(frameworkBinding===mountBinding)release()});mountApp(context.element)}})}else mountApp(host);
   }
   counts.scans++;
@@ -131,7 +139,7 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   for(const el of owned)if(!el.isConnected)owned.delete(el);
   const context=source!.context(),nextList=context.list,nextDetails=context.details;
   state.isEntry=!nextList;
-  if(!nextList||!nextDetails){if(list){clearEntry();restore()}state.hasDetails=false;state.comparisonB=null;arrangeEntry();observe();return}
+  if(!nextList||!nextDetails){if(list){clearEntry();restore()}state.hasDetails=false;arrangeEntry();observe();return}
   if(entry){clearEntry();restore()}
   if(!entered.has(shop)){
    entered.add(shop);
@@ -162,19 +170,16 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
    if(owned.has(node as HTMLElement)||node.nodeType===Node.COMMENT_NODE)continue;
    move(node,node instanceof HTMLElement&&node.matches('.buy-buttons,.try-buttons')?footer!:detailBody!);
   }
-  if(framework&&detailBody){if(!referenceMount?.isConnected||referenceMount.parentElement!==detailBody){referenceMount=box('dgshop-reference-mount',detailBody);detailBody.prepend(referenceMount);referenceMount.id=`dgshop-reference-${++referenceSequence}`;state.comparisonTarget=`#${referenceMount.id}`}}
-  else{referenceMount=null;state.comparisonTarget=null;state.comparisonB=null}
   for(const el of details.querySelectorAll<HTMLElement>('.colour-button'))if(!labels.has(el)){labels.set(el,el.getAttribute('title'));el.title=el.textContent?.trim()??''}
   for(const el of labels.keys())if(!el.isConnected)labels.delete(el);
   source!.reconcileSelection();
   const projection=source!.read();state.hasDetails=projection?.hasDetails??false;state.selectedTitle=projection?.selected?.title??'';shop.classList.toggle('dgshop-has-details',state.hasDetails);
-  if(!projection?.selected)state.comparisonB=null;
   footer!.hidden=!footer!.querySelector('.buy-buttons,.try-buttons');
   details.classList.toggle('dgshop-detail-open',state.open&&state.hasDetails);
   syncBackdrop();
   // Catalog replacement after purchase/search must not jump back to the page top.
   // Native pages arrive incrementally: a temporary clamp must not erase the saved position.
-  catalog!.scrollTop=scrollTop;restoredScroll.set(catalog!,catalog!.scrollTop);
+  if(!state.narrow){catalog!.scrollTop=scrollTop;restoredScroll.set(catalog!,catalog!.scrollTop)}
   updateSelected(catalog!.querySelectorAll<HTMLElement>('.clothing-item'));
   if(selectionMotion){
    const pending=selectionMotion;selectionMotion=undefined;
@@ -250,7 +255,7 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
   motion.cancel();const rect=target.getBoundingClientRect(),pointer=event instanceof MouseEvent&&event.detail>0;
   selectionMotion={rect,point:{x:pointer?Math.max(0,Math.min(100,(event.clientX-rect.left)/Math.max(rect.width,1)*100)):50,y:pointer?Math.max(0,Math.min(100,(event.clientY-rect.top)/Math.max(rect.height,1)*100)):50},category:!target.matches('.clothing-item')};
   state.message='';if(state.transactionStatus==='confirmed'){state.transactionStatus='';state.transactionMessage=''}
-  if(target.matches('.clothing-item')){selectionMotion.display=source?.select(target);focusReturn=target.querySelector('a');state.open=true;if(state.comparisonB){const item=source?.read()?.selected,rect=target.getBoundingClientRect();if(item){state.comparisonOrigin={left:rect.left,top:rect.top,width:rect.width,height:rect.height};state.comparisonB=copyShopItem(item)}}}else{scrollTop=0;source?.clearSelection();state.open=false}
+  if(target.matches('.clothing-item')){selectionMotion.display=source?.select(target);focusReturn=target.querySelector('a');state.open=true;}else{scrollTop=0;source?.clearSelection();state.open=false}
   schedule();
  }
  function quantity(event:Event){const input=event.target;if(!(input instanceof HTMLInputElement)||!input.matches('#buy-multiple-slider input[type=range]')||!shop?.contains(input)||!current())return;quantityCheck?.();quantityCheck=scope.timeout(()=>{quantityCheck=undefined;isolate('shop quantity quote',()=>source?.quantityChanged(input),recover)},0)}
@@ -261,8 +266,8 @@ export function startShop(root:Runtime,framework?:ShopFramework,pagePrefs:PagePr
  document.addEventListener('input',quantity,true);document.addEventListener('change',quantity,true);document.addEventListener('click',click,true);document.addEventListener('keydown',escape);discovery.observe(document.body,{childList:true,subtree:true});refresh();
 
  const updatePhoneLayout=()=>{if(host?.isConnected)scheduleResize()};
- phoneLayout.addEventListener('change',updatePhoneLayout);
- scope.own(()=>phoneLayout.removeEventListener('change',updatePhoneLayout));
+ document.addEventListener('dol-ui-font-scale-change',updatePhoneLayout);
+ scope.own(()=>document.removeEventListener('dol-ui-font-scale-change',updatePhoneLayout));
  scope.own(()=>observer.disconnect());scope.own(()=>discovery.disconnect());
  return {getDefaultGender:()=>state.defaultGender,setDefaultGender,getEnabled:()=>enabled()&&!failed,setEnabled,refresh,getLifecycleCounts:()=>({...counts}),destroy(){scope.dispose();document.removeEventListener('input',quantity,true);document.removeEventListener('change',quantity,true);document.removeEventListener('click',click,true);document.removeEventListener('keydown',escape);release();shop=null}};
 }

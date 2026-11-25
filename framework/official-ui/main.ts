@@ -37,7 +37,7 @@ const disconnect=connectConsumer(host=>{
  };
  try{
   if(!owner.claim('region','soft-wet-official-ui')){release();return release}
-  ui=startGameUI({host,owner,rememberReference:shelf.remember,rememberProduct:shelf.rememberProduct});if(!ui)throw Error('Official UI unavailable');
+  ui=startGameUI({host,owner,rememberReference:shelf.remember});if(!ui)throw Error('Official UI unavailable');
   destroyUi=ui.destroy;
   ui.destroy=()=>{
    if(released)return;
