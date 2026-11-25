@@ -1,5 +1,10 @@
 <!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>侧栏与独立检查器</title>
 <link rel="stylesheet" href="/dist/framework/official-ui/style.css">
-<style>body{margin:0;background:#151619;color:#ddd;font:16px system-ui}#ui-bar{position:fixed;inset:0 auto 0 0;width:16rem;padding:1rem}#peer{position:fixed;right:1rem;top:1rem}.sample{padding:.75rem;background:var(--theme-panel);color:var(--theme-text)}.sample span{background:var(--theme-accent);color:var(--theme-onAccent)}.sample small{color:var(--theme-error)}</style>
-<body><aside id="ui-bar"><h2>工作台</h2><div id="overlayButtons"></div></aside><aside id="peer" aria-label="独立检查器"></aside>
+<style>body{margin:0;background:#151619;color:#ddd;font:16px system-ui}#ui-bar{position:fixed;inset:0 auto 0 0;width:16rem;padding:1rem}#peer{position:fixed;right:1rem;top:1rem}.sample{padding:.75rem;background:var(--theme-panel);color:var(--theme-text)}.sample span{background:var(--theme-accent);color:var(--theme-onAccent)}.sample small{color:var(--theme-error)}#story{margin:5rem 19rem 0;max-width:42rem}.neutral-warning{color:#eea844}.independent{background:#423442;color:#ffccee;font:16px/1.2 monospace}</style>
+<body><aside id="ui-bar"><h2>工作台</h2><div id="overlayButtons"><button id="native-en" class="macro-button link-internal">Saves</button><button id="native-zh" class="macro-button link-internal">存档</button></div></aside><aside id="peer" aria-label="独立检查器"></aside>
+<main id="story"><div id="passages"><article class="passage"><div id="passage-content">
+<p id="native-prose">Reading 样本 <span class="neutral-warning">Warning</span></p>
+<a class="link-internal macro-link" data-passage="Next" href="#next">Next 下一页</a>
+<section data-sf-owner="NeutralPeer" class="independent"><p>Independent 独立</p></section>
+</div></article></div></main>
 <script src="/dist/framework/host/index.js"></script><script type="module" src="./sidebar.ts"></script></body></html>

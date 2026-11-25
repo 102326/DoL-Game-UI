@@ -56,6 +56,15 @@ export async function checkLocalTtf(page:Page,restartAtMaterial:()=>Promise<Page
  try {
   await copyFile(source,copy);
   const baseline=await renderedFonts(page,title);
+  const contentFonts=async()=>Promise.all(['#native-prose','#native-en','#native-zh','.independent p'].map(s=>renderedFonts(page,s)));
+  const originalContent=await contentFonts();
+  const checkContent=async()=>{
+   const [prose,english,chinese,island]=await contentFonts();
+   const imported=preview.find(f=>f.isCustomFont)!.postScriptName;
+   assert.ok(prose!.some(f=>f.isCustomFont&&f.postScriptName===imported)&&prose!.some(f=>!f.isCustomFont),'prose uses both Latin TTF and Chinese fallback');
+   assert.ok(english!.some(f=>f.isCustomFont&&f.postScriptName===imported),JSON.stringify({english,style:await page.locator('#native-en').evaluate(n=>[getComputedStyle(n).fontFamily,n.outerHTML])}));
+   assert.ok(chinese!.every(f=>!f.isCustomFont));assert.deepEqual(island,originalContent[3]);
+  };
   // WebView bubbles the native picker's cancellation from the file input.
   assert.ok(await file().evaluate(input=>{
    input.dispatchEvent(new Event('cancel',{bubbles:true}));
@@ -76,15 +85,19 @@ export async function checkLocalTtf(page:Page,restartAtMaterial:()=>Promise<Page
   await button('应用并保存').click();
   await page.getByText('已应用 · sample.ttf',{exact:false}).waitFor();
   assert.ok(await isCustom(title));
+  await checkContent();
   await rm(copy);
   page=await restartAtMaterial();
   await page.getByText('已应用 · sample.ttf',{exact:false}).waitFor();
+  await checkContent();
   const restored=await renderedFonts(page,title);
   assert.ok(restored.some(f=>f.isCustomFont && preview.some(p=>p.postScriptName===f.postScriptName && p.isCustomFont)));
   await button('恢复默认外观').click();
   await page.waitForFunction(()=>!document.documentElement.hasAttribute('data-sw-custom-font'));
   assert.deepEqual(await renderedFonts(page,title),baseline);
+  assert.deepEqual(await contentFonts(),originalContent);
   page=await restartAtMaterial();
+  assert.deepEqual(await contentFonts(),originalContent);
   assert.deepEqual(await renderedFonts(page,title),baseline);
   assert.equal(await isCustom(sample),false);
   assert.equal(await page.getByRole('button',{name:'移除导入字体'}).count(),0);

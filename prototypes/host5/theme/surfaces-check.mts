@@ -10,9 +10,11 @@ try{
  const dialog=p.locator('#dol-midnight-controls'),btn=(name:string)=>dialog.getByRole('button',{name,exact:true});
  const settings=()=>p.locator('#dol-midnight-sidebar-button').click();
  const close=async()=>{await btn('关闭').click();await dialog.waitFor({state:'hidden'})};
- await p.locator('#overlayButtons').evaluate(n=>n.insertAdjacentHTML('afterbegin','<button class="macro-button link-internal">Saves</button>'));
- await settings();await btn('材质').click();await btn('青灰').click();await btn('应用并保存').click();await dialog.getByLabel('玻璃模糊',{exact:true}).uncheck();
+ await settings();await btn('材质').click();await btn('青灰').click();await btn('应用并保存').click();
  const observations=[];
+ for(const glass of [true,false]){
+ await btn('材质').click();
+ await dialog.getByLabel('玻璃模糊',{exact:true}).setChecked(glass);
  for(const layout of ['drawer','list','fan']){
   await btn('入口').click();await dialog.getByLabel('悬浮球展开模式').selectOption(layout);await close();
   const hub=p.locator('.sf-motion-hub[data-official]'),ball=hub.locator('.sf-motion-ball');
@@ -20,34 +22,39 @@ try{
    const result=await ball.evaluateHandle(el=>{
     let resolve!:(s:string)=>void;
     const promise=new Promise<string>(r=>resolve=r);
-    el.addEventListener('click',()=>requestAnimationFrame(function sample(){
-     const root=el.closest<HTMLElement>('.sf-motion-hub')!;
-     if(root.dataset.spinPhase==='moving')resolve(getComputedStyle(root.querySelector('.sf-motion-petal')!).backgroundColor);
-     else resolve(root.dataset.spinPhase??'unknown');
-    }),{once:true});return {promise};
+    const root=el.closest<HTMLElement>('.sf-motion-hub')!;
+    const observer=new MutationObserver(()=>{
+     if(root.dataset.spinPhase!=='moving')return;
+     observer.disconnect();
+     resolve(getComputedStyle(root.querySelector('.sf-motion-petal')!).backgroundColor);
+    });
+    observer.observe(root,{attributes:true,attributeFilter:['data-spin-phase']});
+    return {promise};
    });
    await ball.click();
-   const moving=await result.evaluate(r=>r.promise);await result.dispose();
+   const moving=await Promise.race([result.evaluate(r=>r.promise),new Promise<never>((_,reject)=>{setTimeout(()=>reject(Error('missing moving phase')),3000).unref()})]);await result.dispose();
    await p.waitForFunction(phase=>document.querySelector<HTMLElement>('.sf-motion-hub')?.dataset.spinPhase===phase,open?'open':'closed');
    return moving;
   }
   const opening=await toggle(true);
   const styles=await hub.evaluate(root=>{
    const css=(q:string,pseudo?:string)=>getComputedStyle(root.querySelector(q)!,pseudo);
-   return {row:css('.sf-motion-petal').backgroundColor,icon:css('.sf-motion-tool-icon').color,label:css('.sf-motion-tool-label').color,
+   const paint=(token:string)=>{const probe=document.createElement('i');probe.style.color='var('+token+')';root.querySelector('.sf-motion-orbit')!.append(probe);try{return getComputedStyle(probe).color}finally{probe.remove()}};
+   return {float:paint('--dgu-acrylic-axis-float'),grid:paint('--dgu-acrylic-axis-grid'),row:css('.sf-motion-petal').backgroundColor,icon:css('.sf-motion-tool-icon').color,label:css('.sf-motion-tool-label').color,
     tools:root.querySelector('.sf-motion-utility-icon')?css('.sf-motion-utility-icon').color:null,
     plate:css('.sf-motion-orbit','::before').backgroundColor,plateContent:css('.sf-motion-orbit','::before').content};
   });
   const closing=await toggle(false);
-  const row=layout==='fan'?'rgb(32, 39, 50)':'rgba(0, 0, 0, 0)';
+  const row=layout==='fan'?(glass?styles.float:'rgb(32, 39, 50)'):'rgba(0, 0, 0, 0)';
   assert.deepEqual([opening,styles.row,closing],[row,row,row],layout+' row through transition');
   assert.equal(styles.plateContent,layout==='list'?'""':'none');
-  if(layout==='list')assert.equal(styles.plate,'rgb(32, 39, 50)');
+  if(layout==='list')assert.equal(styles.plate,glass?styles.grid:'rgb(32, 39, 50)');
   assert.equal(styles.icon,'rgb(146, 186, 213)');
   if(layout!=='drawer')assert.equal(styles.tools,styles.icon);
   assert.equal(styles.label,'rgb(230, 230, 232)');
-  observations.push({layout,opening,...styles,closing});
+  observations.push({glass,layout,opening,...styles,closing});
   await settings();
+ }
  }
  await close();
  const native=p.locator('#overlayButtons [data-kw-entry=native-caption]').first();

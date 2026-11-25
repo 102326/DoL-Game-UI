@@ -147,3 +147,36 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #ui-bar [data-kw
  --sw-nav-focus:var(--sw-custom-accent);
  --sw-nav-highlight:var(--sw-custom-hover);
 }
+
+/* Native reading surfaces. Avoid inheriting typography through third-party regions. */
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors] {
+ --sw-page-surface:var(--sw-custom-background);
+}
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay){
+ --sw-prose-surface:var(--sw-custom-panel,#1f1f1f);
+ @supports (color:color-mix(in srgb,white,black)){
+  --sw-prose-surface:color-mix(in srgb,var(--sw-custom-panel,#1f1f1f) 94%,var(--sw-custom-text,#1f1f1f));
+ }
+}
+#passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) {
+ &,
+ &>p:not([class]),
+ &>#passage-content:not([data-sf-owner],[data-dgu-adapter])>p:not([class]){
+  &:not([data-sf-owner],[data-dgu-adapter]):not(:has([data-sf-owner],[data-dgu-adapter],dialog,.dgw-root,.dgshop-content,.dgshop-host,.dgp-host,.dgs-host,.dgc-host,.dcu-root)){
+   :root[data-sw-custom-colors] & {color:var(--sw-custom-text)}
+   :root[data-sw-custom-font] & {font-family:var(--sw-custom-font)}
+  }
+ }
+}
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) {
+ & :is(a.link-internal[data-passage],a.link-internal.macro-link):not(:where([data-sf-owner] *,[data-dgu-adapter] *,dialog *,.dgw-root *,.dgshop-content *,.dgshop-host *,.dgp-host *,.dgs-host *,.dgc-host *,.dcu-root *)):where([class="link-internal"],[class="link-internal macro-link"],[class="macro-link link-internal"]){
+  color:var(--sw-custom-accent);
+  text-decoration:underline;
+  text-underline-offset:.15em;
+  &:focus-visible {outline:2px solid var(--sw-custom-accent);outline-offset:2px}
+ }
+}
+html[data-stone-free][data-dol-midnight][data-sw-custom-font] #ui-bar :is([data-kw-entry=native-caption],#dol-midnight-sidebar-button,#sidebar-look-description) {
+ --sw-sidebar-font:var(--sw-custom-font);
+ font-family:var(--sw-sidebar-font);
+}

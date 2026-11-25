@@ -24,7 +24,7 @@ html[data-dol-midnight] {
 }
 
 html[data-dol-midnight] body {
-    background: var(--900);
+    background: var(--sw-page-surface,var(--900));
     color: var(--000);
 }
 
@@ -322,7 +322,7 @@ html[data-dol-midnight] #customOverlay[data-overlay="canvasModel"] #customOverla
 
 /* Surface treatment does not change dialog positioning, visibility or content layout. */
 html[data-dol-midnight] #passages > .passage {
-    background-color:#1f1f1f;
+    background-color:var(--sw-prose-surface,#1f1f1f);
     border:1px solid var(--700);
     border-radius:14px;
     padding:clamp(12px,2.5vw,24px);

@@ -50,17 +50,21 @@ export function createReadingLayout(){
   if(!active()){disconnect();return}
   const container=document.getElementById('passages');if(!container){observe(null);return}if(container.closest(excluded)){disconnect();return}observe(container);
   const writes:Array<[HTMLElement,string,string]>=[];
-  const passages=[...container.children].filter((n):n is HTMLElement=>n instanceof HTMLElement&&n.matches('.passage')&&!n.matches(excluded)&&!n.querySelector(excluded));
+  const passages=[...container.children].filter((n):n is HTMLElement=>n instanceof HTMLElement&&n.matches('.passage')&&!n.matches(excluded));
   for(const passage of passages){
+   const mixed=!!passage.querySelector(excluded);
+   // In a mixed passage, leave islands and their ancestors at native metrics.
+   const ownMetrics=(node:Element)=>!mixed||(!node.closest(excluded)&&!node.querySelector(excluded));
    if(options.readingLineScale!==100){
     for(const node of [passage,...passage.querySelectorAll<HTMLElement>('p,li,h1,h2,h3,h4,h5,h6,blockquote,dd,dt')]){
+     if(!ownMetrics(node))continue;
      const style=getComputedStyle(node),line=normalLineHeight(style),font=parseFloat(style.fontSize);
      if(line!==undefined&&Number.isFinite(font)&&font>0)writes.push([node,'line-height',String(line/font*options.readingLineScale/100)]);
     }
    }
    if(options.readingBlockGap){
     for(const child of passage.querySelectorAll('p,ul,ol,.options,.optionsBar,.options-list')){
-     if(!(child instanceof HTMLElement)||child.matches(excluded)||!child.matches('p,ul,ol,.options,.optionsBar,.options-list'))continue;
+     if(!(child instanceof HTMLElement)||!ownMetrics(child))continue;
      const style=getComputedStyle(child),margin=parseFloat(style.marginBlockEnd);
      if(Number.isFinite(margin))writes.push([child,'margin-block-end',`${margin+options.readingBlockGap}px`]);
      if(child.matches('.options,.optionsBar,.options-list')&&/^(inline-)?(flex|grid)$/.test(style.display)){

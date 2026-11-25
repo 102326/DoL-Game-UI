@@ -10,3 +10,14 @@ if(new URLSearchParams(location.search).has('legacy')&&'theme' in host){
 const entry=document.createElement('script');
 entry.src='/dist/framework/official-ui/index.js';
 document.body.append(entry);
+
+// A native navigation action replaces the passage, as it would in the host page.
+const passages=document.querySelector('#passages')!;
+const passageTemplate=passages.firstElementChild!.cloneNode(true);
+passages.addEventListener('click',event=>{
+ if(!(event.target instanceof Element)||!event.target.closest('a[data-passage="Next"]'))return;
+ event.preventDefault();
+ const next=passageTemplate.cloneNode(true) as HTMLElement;
+ next.querySelector('#native-prose')!.prepend('Next · ');
+ passages.replaceChildren(next);
+});
