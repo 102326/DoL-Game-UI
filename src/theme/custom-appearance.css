@@ -6,6 +6,10 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
  :is(.dgc-host,.dgs-host,.dgp-host)>.dgu-surface,
  dialog.dgu-surface:is([data-sf-workspace=drawer],:has(>.dgu-surface-content>.dgu-inspector))
 ){
+ --sw-owned-surface:var(--sw-custom-background);
+ --sw-owned-panel:var(--sw-custom-panel);
+ --sw-owned-accent:var(--sw-custom-accent);
+ --sw-owned-detail:var(--sw-custom-muted);
  --sf-main:var(--sw-custom-background);
  --sf-reading:var(--sw-custom-panel);
  --sf-ink:var(--sw-custom-text);
@@ -73,7 +77,7 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[d
   --dgu-acrylic-axis-grid:color-mix(in srgb,var(--sw-custom-background) calc(var(--sw-acrylic-grid-alpha,.72) * 100%),transparent);
  }
 }
-html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment] .sf-motion-hub[data-official] .sf-motion-orbit.is-grid .sf-motion-petal{
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment] .sf-motion-hub[data-official]:not([data-tool-layout]) .sf-motion-orbit.is-grid .sf-motion-petal{
  background-color:var(--dgu-acrylic-axis-float)!important;
 }
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment]:not([data-dgu-visualGlass]) .sf-motion-hub[data-official] .sf-motion-orbit:not(.is-grid) :is(.sf-motion-petal,.sf-motion-utilities button){
@@ -136,4 +140,10 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[d
   --sw-hub-shade:color-mix(in srgb,var(--sw-custom-background) 79%,transparent);
   --sw-hub-rim:color-mix(in srgb,var(--sw-custom-muted) 50%,transparent);
  }
+}
+
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #ui-bar [data-kw-entry=native-caption]{
+ --sf-ink:var(--sw-custom-text);--sf-muted:var(--sw-custom-muted);
+ --sw-nav-focus:var(--sw-custom-accent);
+ --sw-nav-highlight:var(--sw-custom-hover);
 }
