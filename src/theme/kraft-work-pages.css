@@ -96,7 +96,7 @@ html[data-stone-free][data-dgu-visualMotion] #customOverlay.dgp-overlay:not(.hid
 }
 @media(prefers-reduced-motion:reduce){html[data-stone-free] #customOverlay.dgp-overlay :is(#featsList .feat,#traitLists .trait){animation:none!important;transition:none!important;transform:none!important}}
 
-/* Selection stays on the actual native card. One owned, input-inert flow plane per selection. */
+/* The wardrobe still uses this flow plane; shop selection uses the native card and theme accent. */
 .kw-shop-ripple{position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:inherit;pointer-events:none!important;user-select:none;animation:kw-shop-breathe 8s ease-in-out infinite}
 .kw-shop-stream{position:absolute;inset:-70%;background:radial-gradient(ellipse at 30% 35%,#4686bd45,transparent 45%),radial-gradient(ellipse at 70% 60%,#8475b43b,transparent 40%),repeating-radial-gradient(ellipse at 20% 80%,transparent 0 22px,#5ca8d71b 27px,transparent 34px 58px);animation:kw-shop-flow 10s ease-in-out infinite alternate;pointer-events:none}
 .kw-shop-ring{position:absolute;left:var(--kw-ripple-x,50%);top:var(--kw-ripple-y,50%);width:var(--kw-ripple-size,900px);height:var(--kw-ripple-size,900px);border-radius:50%;background:radial-gradient(circle,transparent 35%,#5c9bd325 46%,#9b8fce35 52%,transparent 63%);opacity:0;transform:translate(-50%,-50%) scale(0);pointer-events:none}
