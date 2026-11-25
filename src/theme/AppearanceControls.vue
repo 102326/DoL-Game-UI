@@ -4,7 +4,7 @@ import GameButton from '../ui/GameButton.vue';
 import {appearanceFont, appearancePalette, colorDefaults, colorRoles, emptyAppearance, fontPattern, readAppearance, type Appearance, type ColorRole} from './appearance';
 
 import {decodeLocalFont, importedFamily} from './local-font';
-const props = defineProps<{appearance: Appearance;presets?:Readonly<Record<string,Appearance['colors']>>;importedName?:string;onSaveFont?:(file:File|null)=>Promise<void>}>();
+const props = defineProps<{appearance: Appearance;previewTheme?:typeof appearancePalette;presets?:Readonly<Record<string,Appearance['colors']>>;importedName?:string;onSaveFont?:(file:File|null)=>Promise<void>}>();
 const emit = defineEmits<{apply: [appearance: Appearance]}>();
 const draft = ref(readAppearance(props.appearance));
 const selection = shallowRef<File|null>();
@@ -46,7 +46,7 @@ watch(() => props.appearance, value => {draft.value = readAppearance(value)});
 const labels: Record<ColorRole, string> = {background:'界面底色',panel:'面板',text:'主要文字',muted:'次要文字',accent:'强调色'};
 const validatedFont = computed(() => draft.value.font.trim());
 const fontValid = computed(() => !validatedFont.value || fontPattern.test(validatedFont.value));
-const sample = computed(() => appearancePalette(draft.value.colors));
+const sample = computed(() => (props.previewTheme??appearancePalette)(draft.value.colors));
 const sampleStyle = computed(() => {
  const p = sample.value.palette;
  return {'--sample-bg':p.background,'--sample-panel':p.panel,'--sample-text':p.text,'--sample-muted':p.muted,

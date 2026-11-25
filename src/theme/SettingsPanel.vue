@@ -86,7 +86,7 @@ function inspectRuntime(){try{(window as Window & {DoLGameUI?:{ui?:Pick<UiApi,'o
      <p>当前主体材质默认使用完整表现。关闭动画或系统减少动态效果时，操作仍会立即完成。</p>
     </div>
     <SettingsPreview :state="state"/>
-    <AppearanceControls v-if="state.appearance" :appearance="state.appearance" :presets="state.themePresets" :imported-name="state.importedFontName" :on-save-font="onSaveFont" @apply="onAppearance"/>
+    <AppearanceControls v-if="state.appearance" :appearance="state.appearance" :presets="state.themePresets" :preview-theme="state.previewTheme" :imported-name="state.importedFontName" :on-save-font="onSaveFont" @apply="onAppearance"/>
    </section>
 
    <section v-else-if="category==='entry'" class="dmt-workspace-section" aria-labelledby="dmt-entry-heading">

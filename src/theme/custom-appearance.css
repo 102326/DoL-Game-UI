@@ -118,7 +118,7 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[dat
 }
 
 html[data-stone-free][data-dol-midnight][data-dmt-layout][data-sw-sidebar-theme] #ui-bar{
- --dgu-sidebar-bg:var(--sw-custom-background);--dgu-sidebar-panel:var(--sw-custom-panel);
+ --dgu-sidebar-bg:var(--sw-custom-rail,var(--sw-custom-background));--dgu-sidebar-panel:var(--sw-custom-panel);
  --dgu-sidebar-text:var(--sw-custom-text);--dgu-sidebar-muted:var(--sw-custom-muted);
  --dgu-sidebar-hover:var(--sw-custom-hover);--dgu-sidebar-accent:var(--sw-custom-accent);
  background-color:var(--dgu-sidebar-bg);
@@ -150,12 +150,12 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #ui-bar [data-kw
 
 /* Native reading surfaces. Avoid inheriting typography through third-party regions. */
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] {
- --sw-page-surface:var(--sw-custom-background);
+ --sw-page-surface:var(--sw-custom-canvas,var(--sw-custom-background));
 }
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay){
- --sw-prose-surface:var(--sw-custom-panel,#1f1f1f);
+ --sw-prose-surface:var(--sw-custom-reading,var(--sw-custom-panel,#1f1f1f));
  @supports (color:color-mix(in srgb,white,black)){
-  --sw-prose-surface:color-mix(in srgb,var(--sw-custom-panel,#1f1f1f) 94%,var(--sw-custom-text,#1f1f1f));
+  --sw-prose-surface:var(--sw-custom-reading,color-mix(in srgb,var(--sw-custom-panel,#1f1f1f) 94%,var(--sw-custom-text,#1f1f1f)));
  }
 }
 #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) {

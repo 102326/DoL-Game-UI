@@ -50,30 +50,51 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  const {preferences}=store.model;
  const reading=createReadingLayout();scope.own(()=>reading.destroy());
  setMasterEnabled(preferences.enabled);
- const state=reactive<SettingsState>({preferences,themePresets:official?host?.theme?.presets:undefined,get appearance(){return store.model.appearance},scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:store.storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
+ const theme=official&&typeof host?.theme?.preview==='function'?host.theme:undefined;
+ const state=reactive<SettingsState>({preferences,themePresets:theme?.presets,previewTheme:theme?.preview,get appearance(){return store.model.appearance},scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:store.storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
  let appliedAppearance: Appearance | undefined, appearanceEnabled = false;
- function updateAppearance(enabled: boolean,publish=true) {
-  if (appliedAppearance === state.appearance && enabled === appearanceEnabled) return;
-  appliedAppearance = state.appearance;
-  appearanceEnabled = enabled;
-  const html = document.documentElement;
-  const hasColors = enabled && colorRoles.some(role => !!state.appearance.colors[role]);
-  const hasFont = enabled && (!!activeFont || !!state.appearance.font);
-  const palette = hasColors ? appearancePalette(state.appearance.colors).palette : undefined;
-  const colors = [...colorRoles, 'hover', 'onAccent'] as const;
-  for (const role of colors) {
-   const property = `--sw-custom-${role === 'onAccent' ? 'on-accent' : role}`;
-   if (palette) html.style.setProperty(property, palette[role]);
-   else html.style.removeProperty(property);
+ const html=document.documentElement;
+ type Palette=ReturnType<typeof appearancePalette>['palette'];
+ type SurfacePalette=Palette & Partial<Pick<NonNullable<typeof theme>['current']['palette'],'canvas'|'rail'|'reading'>>;
+ function paintColors(palette?:SurfacePalette){
+  const roles=[...colorRoles,'hover','onAccent','canvas','rail','reading'] as const;
+  for(const role of roles){
+   const property='--sw-custom-'+(role==='onAccent'?'on-accent':role);
+   const value=palette?.[role];
+   if(value)html.style.setProperty(property,value);else html.style.removeProperty(property);
   }
+  html.toggleAttribute('data-sw-custom-colors',!!palette);
+  html.toggleAttribute('data-sw-sidebar-theme',!!theme&&!!palette);
+ }
+ if(theme){
+  const refresh=()=>{
+   if(!appearanceEnabled)return;
+   paintColors(theme.current.active?theme.current.palette:undefined);
+   document.dispatchEvent(new Event('dol-ui-appearance-change'));
+  };
+  document.addEventListener('host5-theme-applied',refresh);
+  scope.own(()=>document.removeEventListener('host5-theme-applied',refresh));
+ }
+ function updateAppearance(enabled:boolean,publish=true){
+  if(appliedAppearance===state.appearance && enabled===appearanceEnabled)return;
+  const colorsChanged=enabled!==appearanceEnabled||!appliedAppearance||
+   colorRoles.some(role=>appliedAppearance?.colors[role]!==state.appearance.colors[role]);
+  appliedAppearance=state.appearance;
+  appearanceEnabled=enabled;
+  const hasFont=enabled&&(!!activeFont||!!state.appearance.font);
   if (hasFont) html.style.setProperty('--sw-custom-font', (activeFont ? `'${importedFamily}', ` : '') + appearanceFont(state.appearance.font));
   else html.style.removeProperty('--sw-custom-font');
-  if(official&&host?.theme){
-   if(publish)host.theme.apply(hasColors?state.appearance.colors:{});
-   html.toggleAttribute('data-sw-sidebar-theme',hasColors);
+  html.toggleAttribute('data-sw-custom-font',hasFont);
+  if(theme){
+   if(!enabled)paintColors();
+   if(publish&&colorsChanged){
+    theme.apply(enabled?state.appearance.colors:{});
+    if(enabled)return; // The synchronous Host event already notified this consumer.
+   }
+  }else{
+   const hasColors=enabled&&colorRoles.some(role=>!!state.appearance.colors[role]);
+   paintColors(hasColors?appearancePalette(state.appearance.colors).palette:undefined);
   }
-  html.toggleAttribute('data-sw-custom-colors', hasColors);
-  html.toggleAttribute('data-sw-custom-font', hasFont);
   document.dispatchEvent(new Event('dol-ui-appearance-change'));
  }
  let activeFont: FontFace | undefined;

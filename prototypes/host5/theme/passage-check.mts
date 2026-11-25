@@ -41,5 +41,19 @@ try {
  await open();await button('阅读').click();await button('恢复原版排版').click();
  await button('材质').click();await button('恢复默认外观').click();await close();
  assert.deepEqual(await sample(),before);
+ // A second Host writer changes the resolved palette without changing product preferences.
+ const saved=await page.evaluate(()=>JSON.stringify({...localStorage}));
+ await page.evaluate(()=>window.DoLUiHost!.theme!.apply({background:'#17212b',accent:'#e0bd89'}));
+ const shared=await sample();
+ assert.equal(shared.page,'rgb(23, 33, 43)');
+ assert.equal(shared.link,'rgb(224, 189, 137)');
+ assert.deepEqual(shared.island,before.island);
+ assert.equal(await page.evaluate(()=>JSON.stringify({...localStorage})),saved);
+ await page.evaluate(()=>{const controller=Reflect.get(window,'DoLMidnightTheme');controller.destroy()});
+ assert.equal(await page.locator('html').getAttribute('data-sw-custom-colors'),null);
+ assert.equal(await page.locator('#peer .sample span').evaluate(n=>getComputedStyle(n).backgroundColor),'rgb(224, 189, 137)');
+ await page.evaluate(()=>window.DoLUiHost!.theme!.apply({accent:'#91d1b9'}));
+ assert.equal(await page.locator('html').evaluate(n=>n.style.getPropertyValue('--sw-custom-accent')),'');
+ assert.equal(await page.locator('#peer .sample span').evaluate(n=>getComputedStyle(n).backgroundColor),'rgb(145, 209, 185)');
  console.log(JSON.stringify({before,themed,nativeNavigation:true,restored:true}));
 }finally{await browser.close();await server.close()}
