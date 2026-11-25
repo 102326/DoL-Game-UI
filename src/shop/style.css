@@ -214,3 +214,11 @@ html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .searchG
 html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(.dgshop-native-header,.dgshop-purchase,#shop-pagination) a:where([class="link-internal macro-link"],[class="macro-link link-internal"]):not([style],[data-sf-owner],[data-dgu-adapter]):not(:has([data-sf-owner],[data-dgu-adapter])){color:var(--sw-custom-link)}
 html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-detail-body>span.gold:not([style],[data-sf-owner],[data-dgu-adapter]){color:var(--sw-custom-price)}
 html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .mannequin-gender-textbutton:not([style],[data-sf-owner],[data-dgu-adapter]):not(:has([data-sf-owner],[data-dgu-adapter])){color:var(--sw-custom-link)}
+
+/* Native white navigation sprites need dark ink on the two light presets. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] #clothingShop-div.dgshop-content :is(
+ #shopCategories .category-tab>img.icon:is([src^="img/ui/clothes/categories/"][src$=".png"],[src^="blob:"][ml-src^="img/ui/clothes/categories/"][ml-src$=".png"]),
+ .filters-button>.button-icon>img:is([src="img/ui/filter.png"],[src^="blob:"][ml-src="img/ui/filter.png"]),
+ .clothingshop-options-button>.button-icon>img:is([src="img/ui/options.png"],[src^="blob:"][ml-src="img/ui/options.png"]),
+ .shop-legend-button>.button-icon>img:is([src="img/ui/help.png"],[src^="blob:"][ml-src="img/ui/help.png"])
+):not([style],[data-sf-owner],[data-dgu-adapter]):not(:where([data-sf-owner] *,[data-dgu-adapter] *)){filter:brightness(.2)}

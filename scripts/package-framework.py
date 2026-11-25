@@ -6,12 +6,13 @@ from shop_package import add_shop_patches
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
 version = '0.1.4-experimental'
-host_version = '0.1.5-experimental'
+host_version = '1.0.0-rc.1'
 # Official product version is independent of the Host package/protocol.
 official_version = json.loads((root / 'package.json').read_text(encoding='utf-8'))['version']
 display_version = '.'.join(official_version.split('.')[:2])
 # Minimum includes the R15 scene bridge guarantees; SDK/package edits do not raise it.
 host_requirement = '>=0.1.2-experimental && <0.2.0'
+official_host_requirement = '=1.0.0-rc.1'
 parser = argparse.ArgumentParser()
 parser.add_argument('--players-only', action='store_true', help='Package only the paired Host and official UI')
 args = parser.parse_args()
@@ -34,7 +35,7 @@ for directory, name in packages:
     base = out / directory
     dependencies = [{'modName': 'ModLoader', 'version': '>=2.100.0'}]
     if directory != 'host':
-        dependencies.append({'modName': 'StoneFreeHost', 'version': host_requirement})
+        dependencies.append({'modName': 'StoneFreeHost', 'version': official_host_requirement if directory == 'official-ui' else host_requirement})
     if directory == 'soft-wet-surface':
         dependencies.append({'modName': 'DoLGameUI', 'version': '>=2.7.0'})
     package_version = official_version if directory == 'official-ui' else host_version if directory == 'host' else '0.1.5-experimental' if directory == 'motion-hub' else version
@@ -58,7 +59,7 @@ for directory, name in packages:
         boot['additionFile'].append('THIRD-PARTY-NOTICES.txt')
         files['boot.json'] = json.dumps(boot, ensure_ascii=False, indent=2).encode()
     if directory == 'official-ui':
-        release_notes = [doc for doc in [f'docs/RELEASE_{official_version}.md', f'docs/INSTALL_{display_version}.md'] if (root / doc).is_file()]
+        release_notes = [f'docs/RELEASE_{official_version}.md', f'docs/INSTALL_{display_version}.md']
         for doc in ['docs/UI_SETTINGS.md','docs/OPTIONAL_ADAPTERS.md',*release_notes]:
             files[doc] = (root/doc).read_bytes(); boot['additionFile'].append(doc)
         for declaration in ['ui.d.ts','wardrobe.d.ts']:

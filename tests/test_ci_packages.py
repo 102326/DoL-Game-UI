@@ -54,7 +54,9 @@ class PackageChecks(unittest.TestCase):
             checks.check_package(original, name)
             with zipfile.ZipFile(original) as archive:
                 clean = {key: archive.read(key) for key in archive.namelist()}
-            for defect in ['version', 'license', 'dependency', 'entry', 'payload', 'unsafe', 'extra', 'duplicate']:
+            defects = ['version', 'license', 'dependency', 'entry', 'payload', 'unsafe', 'extra', 'duplicate']
+            if name == 'DoLGameUI': defects += ['release-doc', 'install-doc']
+            for defect in defects:
                 with self.subTest(package=name, defect=defect), tempfile.TemporaryDirectory() as tmp:
                     files = dict(clean)
                     if defect == 'version':
@@ -63,6 +65,10 @@ class PackageChecks(unittest.TestCase):
                         files['boot.json'] = json.dumps(boot).encode()
                     elif defect == 'license':
                         del files['LICENSE']
+                    elif defect == 'release-doc':
+                        del files[f'docs/RELEASE_{checks.component_version(name)}.md']
+                    elif defect == 'install-doc':
+                        del files[f"docs/INSTALL_{'.'.join(checks.component_version(name).split('.')[:2])}.md"]
                     elif defect == 'dependency':
                         boot = json.loads(files['boot.json'])
                         boot['dependenceInfo'][0]['version'] = '*'
@@ -80,7 +86,7 @@ class PackageChecks(unittest.TestCase):
                     reason = {'version': 'Wrong Mod identity', 'license': 'Missing referenced member', 'dependency': 'Dependency policy drift',
                               'entry': 'Missing referenced member', 'payload': 'Member differs from build/source input',
                               'unsafe': 'Unsafe ZIP path', 'extra': 'Missing or unexpected ZIP member',
-                              'duplicate': 'Duplicate ZIP member'}[defect]
+                              'duplicate': 'Duplicate ZIP member', 'release-doc': 'Missing referenced member', 'install-doc': 'Missing referenced member'}[defect]
                     with self.assertRaisesRegex(AssertionError, reason):
                         checks.check_package(target, name)
 
@@ -147,10 +153,10 @@ class SourceVersions(unittest.TestCase):
             data['version'] = version
             (self.root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
             self.write_component_version('core', '7.8.9')
-            self.write_component_version('host', '0.1.9-experimental')
+            self.write_component_version('host', '1.0.0-rc.1')
             with self.subTest(version=version):
                 result = checks.check_version_sources(self.root)
-                self.assertEqual((result['ui'], result['core'], result['hostPackage']), (version, '7.8.9', '0.1.9-experimental'))
+                self.assertEqual((result['ui'], result['core'], result['hostPackage']), (version, '7.8.9', '1.0.0-rc.1'))
                 self.assertEqual(result['projectId'], project)
                 self.assertEqual(result['officialRuntime'], version)
         # No README or version-named release file was copied into this fixture.
@@ -171,14 +177,13 @@ class SourceVersions(unittest.TestCase):
                 if defect == 'protocol':
                     (self.root / 'framework/contracts.ts').write_text(self.originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"), encoding='utf-8')
                 if defect == 'range':
-                    (self.root / 'scripts/package-framework.py').write_text(self.originals['scripts/package-framework.py'].replace("host_requirement = '>=0.1.2-experimental && <0.2.0'", "host_requirement = '*'"), encoding='utf-8')
+                    (self.root / 'scripts/package-framework.py').write_text(self.originals['scripts/package-framework.py'].replace("official_host_requirement = '=1.0.0-rc.1'", "official_host_requirement = '*'"), encoding='utf-8')
                 with self.assertRaisesRegex(AssertionError, reason):
                     checks.check_version_sources(self.root)
-        for version, supported in [('0.1.1-experimental', False), ('0.1.2-alpha', False),
-                                    ('0.1.2-experimental', True), ('0.1.2', True),
-                                    ('0.1.10-experimental', True), ('0.2.0', False),
-                                    ('0.1.2-experimental.0+build.01', True),
-                                    ('0.1.9-experimental.01', False), ('0.1.9+bad..metadata', False)]:
+        for version, supported in [('0.1.5-experimental', False), ('1.0.0-rc.0', False),
+                                   ('1.0.0-rc.1', True), ('1.0.0-rc.2', False),
+                                   ('1.0.0', False), ('2.0.0', False),
+                                   ('1.0.0-rc.01', False), ('1.0.0+bad..metadata', False)]:
             self.restore()
             self.write_component_version('host', version)
             with self.subTest(host=version):

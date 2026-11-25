@@ -1847,8 +1847,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6e30d3f2435c554d0837478d96cfc03cbf187815f214e61e4d4e07a6eb013556",
-      "assertionSites": 45
+      "sourceSha256": "ddaf242d871f985a1e5de8864f5a560d2547a034c4092f25d11e39a214e5e5cc",
+      "assertionSites": 51
     },
     {
       "entry": "tests/native-tooling.test.mts",
