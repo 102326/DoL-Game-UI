@@ -15,7 +15,7 @@ assert.deepEqual(inputs.map(data => createHash('sha256').update(data).digest('he
   '291b83e9f3ea584cf7223e6701abb8e7a345026df746dc57a755c28f33ae308b',
   '6f221a29f9a042e9c5f32b4b9be9894d6941df4bebd29a5d326a44a8377cb8b8',
   '2625f7e183a6db23a2dadb0c90d00c73c82ef9b3cc1c0e5316544b5d7b1578fc',
-  '29689259d7e395a9a98e44eadbc7c67bcc9c4ddff92b247b5b5ff14ef8fa27d0',
+  '59c981dd4ed693e37f64228a0df4a7941412928da62506ae6bdf9b347c62957d',
 ]);
 const [twee, oldHost, host, ui] = inputs.map(data => data.toString('base64'));
 const order = ['TweeReplacer', 'StoneFreeHost', 'DoLGameUI'];

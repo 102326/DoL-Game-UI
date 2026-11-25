@@ -710,8 +710,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4758d60259661259bdc32150853005b324c861bb5722b9a8d8f340f2809d9984",
-      "assertionSites": 426
+      "sourceSha256": "33a5e53660ea62134b0eff6b382154398ea024db1096bde3f79f2aa86f3142e6",
+      "assertionSites": 431
     },
     {
       "entry": "tests/attributes-material.cjs",
@@ -728,7 +728,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "59c2d222cb72c2a767946f425aeefcd3ca9c26c6ea36d47dc1084f48382c3e8c",
+      "sourceSha256": "6f37722bb7bb4f9deb846f32a68f05e6fb2f34e63790f17bda3d49043ccad801",
       "assertionSites": 73
     },
     {
@@ -994,6 +994,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "hub:prism counter-rotation, one-shot ripple and reduced drag",
+          "minimumAssertions": 1
+        },
+        {
           "id": "hub:central glyph geometry and ownership across resize and docking",
           "minimumAssertions": 1
         },
@@ -1054,8 +1058,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c6c078564b5c827925ad335e4a65d576f64fa73ee4a381f346bcfab6fcab705d",
-      "assertionSites": 466,
+      "sourceSha256": "c9bca87f5fffdebc97032787b01950e5f22fb63f63937044f0656e47d45deeb1",
+      "assertionSites": 471,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1897,7 +1901,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4b0c330bd1694cb17c87f0bdfa665a49c730693673c2002b44ccbe78b23719af",
+      "sourceSha256": "26454d4a63c424105af8c5cbf5552eb71c1cf6cb1ddde1e82eb49a8250732525",
       "assertionSites": 136
     },
     {
@@ -2435,8 +2439,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6e3ec1e27bfe01c220c52738fdcea53ab166ce317247a976bb57b12bfbc1ab51",
-      "assertionSites": 31
+      "sourceSha256": "a34d9eb1453be84e7fbbb35c3786d70d6885e290180000706a423c883a54b792",
+      "assertionSites": 24
     },
     {
       "entry": "tests/shop-source.test.cjs",

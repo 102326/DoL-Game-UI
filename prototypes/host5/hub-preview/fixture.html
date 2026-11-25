@@ -1,0 +1,47 @@
+<!doctype html><html lang="zh-CN" data-stone-free>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中性悬浮工具工作台</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#15181c;color:#e3e8eb;font:16px/1.6 system-ui}
+#ui-bar{padding:12px 18px;background:#252a2e}#overlayButtons{display:flex;gap:8px;flex-wrap:wrap}
+#ui-bar.stowed #overlayButtons{display:none}
+#story{max-width:720px;margin:auto;padding:24px}button{font:inherit;cursor:pointer}
+</style>
+<!--package-styles-->
+<body>
+<aside id="ui-bar" class="stowed"><button type="button" id="ui-bar-toggle" aria-label="切换侧栏">☰</button><div id="overlayButtons">
+<div class="sidebarButtonSplit"><button class="link-internal macro-button">存档</button></div>
+<button class="link-internal macro-button">社交</button><button class="link-internal macro-button">属性</button>
+</div></aside>
+<main id="story"><div id="passages"><article class="passage" data-passage="Neutral">
+<h1>中性工作台</h1><p>点击悬浮入口展开，再拖动到左右两侧；菜单保留真实交互。</p>
+<p>展开侧栏后，原生入口提供中性回执。可从悬浮菜单打开真实的界面设置。</p>
+<output id="action-status" role="status"></output>
+</article></div></main>
+<script>
+// An ephemeral store gives the real Hub its normal persistence semantics inside an opaque iframe.
+const data = new Map();
+Object.defineProperty(window, 'localStorage', {value:{
+ get length(){return data.size}, key(i){return [...data.keys()][i] ?? null},
+ getItem(key){return data.has(String(key)) ? data.get(String(key)) : null},
+ setItem(key,value){data.set(String(key),String(value))},
+ removeItem(key){data.delete(String(key))}, clear(){data.clear()}
+}});
+document.querySelector('#ui-bar-toggle').addEventListener('click', () => document.querySelector('#ui-bar').classList.toggle('stowed'));
+document.querySelectorAll('#overlayButtons button').forEach(button => button.addEventListener('click', () => {
+ document.querySelector('#action-status').textContent = button.textContent + '：中性操作已触发';
+}));
+window.addEventListener('message', event => {
+ if (event.source !== parent || event.data?.type !== 'hub-preview') return;
+ const {key,value} = event.data;
+ if (key === 'glass') window.DoLGameUI.setPreference('visualGlass', value);
+ if (key === 'motion') window.DoLGameUI.setPreference('visualMotion', value);
+ if (key === 'layout') {
+  if (value === 'fan' || value === 'grid') window.DoLFloatingTools.setPreference('mode', value);
+  else window.DoLFloatingTools.setPreference('hubLayout', value);
+ }
+});
+</script>
+<!--boot-->
+<script>parent.postMessage({type:'hub-preview-ready'}, '*');</script>
+</body></html>

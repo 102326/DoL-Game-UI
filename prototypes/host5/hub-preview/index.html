@@ -1,0 +1,32 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>悬浮工具 · 中性实包预览</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#11161b;color:#e6eaed;font:14px/1.45 system-ui}
+header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid #48535c}
+h1{font-size:18px;margin:0}select{font:inherit;padding:5px}p{margin:0;padding:8px 16px;color:#c2cbd0}
+#stage{overflow:auto;padding:0 16px 16px}iframe{box-sizing:content-box;display:block;background:#15181c;border:1px solid #66727b}
+details{padding:8px 16px;overflow-wrap:anywhere}
+</style>
+<header><h1>悬浮工具 · 中性预览</h1>
+<label>视口 <select id="size"><option value="390x760">窄竖 390 × 760</option><option value="844x390">宽横 844 × 390</option></select></label>
+<label>菜单 <select id="layout" disabled><option value="fan">扇形</option><option value="list">列表</option><option value="drawer">弧线</option><option value="grid">网格</option></select></label>
+<label>玻璃 <select id="glass" disabled><option value="on">开启</option><option value="off">关闭</option></select></label>
+<label>动效 <select id="motion" disabled><option value="on">开启</option><option value="off">减少</option></select></label>
+</header>
+<p>直接点击、拖动悬浮入口；将它移至左侧或右侧，在列表或扇形菜单中选择「停靠侧边」；弧线会在靠边并停止交互后自动停靠。中性按钮只显示回执。</p>
+<div id="stage"><iframe title="真实悬浮入口及中性页面" sandbox="allow-scripts"></iframe></div>
+<details><summary>候选来源与双包 SHA-256</summary>__IDENTITY__ · Host / UI：__PAIR__</details>
+<script>
+const frame = document.querySelector('iframe');
+const controls = ['layout','glass','motion'].map(id => document.getElementById(id));
+function resize(){const [width,height]=document.querySelector('#size').value.split('x').map(Number);frame.style.width=width+'px';frame.style.height=height+'px'}
+document.querySelector('#size').onchange=resize;resize();
+controls.forEach(control => control.onchange = () => {
+ const value = control.id === 'layout' ? control.value : control.value === 'on';
+ frame.contentWindow.postMessage({type:'hub-preview',key:control.id,value}, '*');
+});
+window.addEventListener('message', event => {
+ if (event.source === frame.contentWindow && event.data?.type === 'hub-preview-ready') controls.forEach(control => control.disabled=false);
+});
+frame.srcdoc=__FIXTURE__;
+</script></html>
