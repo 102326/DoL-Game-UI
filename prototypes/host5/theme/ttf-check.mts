@@ -57,13 +57,21 @@ export async function checkLocalTtf(page:Page,restartAtMaterial:()=>Promise<Page
   await copyFile(source,copy);
   const baseline=await renderedFonts(page,title);
   const contentFonts=async()=>Promise.all(['#native-prose','#native-en','#native-zh','.independent p'].map(s=>renderedFonts(page,s)));
-  const originalContent=await contentFonts();
+  const inherited='#inherited-peer';
+  const inheritedSample=async()=>({
+   color:await page.locator(inherited).evaluate(n=>getComputedStyle(n).color),
+   family:await page.locator(inherited).evaluate(n=>getComputedStyle(n).fontFamily),
+   glyphs:await renderedFonts(page,inherited),
+  });
+  const originalContent=await contentFonts(),originalInherited=await inheritedSample();
   const checkContent=async()=>{
    const [prose,english,chinese,island]=await contentFonts();
+   assert.equal(await page.locator('#native-prose').evaluate(n=>getComputedStyle(n).color),'rgb(242, 220, 174)');
    const imported=preview.find(f=>f.isCustomFont)!.postScriptName;
    assert.ok(prose!.some(f=>f.isCustomFont&&f.postScriptName===imported)&&prose!.some(f=>!f.isCustomFont),'prose uses both Latin TTF and Chinese fallback');
    assert.ok(english!.some(f=>f.isCustomFont&&f.postScriptName===imported),JSON.stringify({english,style:await page.locator('#native-en').evaluate(n=>[getComputedStyle(n).fontFamily,n.outerHTML])}));
    assert.ok(chinese!.every(f=>!f.isCustomFont));assert.deepEqual(island,originalContent[3]);
+   assert.deepEqual(await inheritedSample(),originalInherited,'unstyled inline owner retains family and rendered glyphs');
   };
   // WebView bubbles the native picker's cancellation from the file input.
   assert.ok(await file().evaluate(input=>{
@@ -81,10 +89,24 @@ export async function checkLocalTtf(page:Page,restartAtMaterial:()=>Promise<Page
   assert.deepEqual(await renderedFonts(page,title),baseline);
   await button('取消试色').click();
   assert.equal(await isCustom(sample),false);
+  await page.getByLabel('主要文字',{exact:true}).fill('#f2dcae');
   await file().setInputFiles(copy);
   await button('应用并保存').click();
   await page.getByText('已应用 · sample.ttf',{exact:false}).waitFor();
   assert.ok(await isCustom(title));
+  await checkContent();
+  // The paragraph is eligible for the imported font as soon as its only owner disappears.
+  const peer=page.locator(inherited);
+  const owner=await peer.getAttribute('data-sf-owner');assert.ok(owner);
+  await peer.evaluate(n=>n.removeAttribute('data-sf-owner'));
+  try{
+   const exposed=await inheritedSample();
+   assert.notEqual(exposed.family,originalInherited.family);
+   assert.ok(exposed.glyphs.some(f=>f.isCustomFont&&f.postScriptName===preview.find(p=>p.isCustomFont)!.postScriptName));
+  }finally{await peer.evaluate((n,id)=>n.setAttribute('data-sf-owner',id),owner)}
+  await button('关闭').click();await peer.click();
+  await page.waitForFunction(()=>document.querySelector('#native-prose')?.textContent?.startsWith('Next'));
+  await page.locator('#dol-midnight-sidebar-button').click();await button('材质').click();
   await checkContent();
   await rm(copy);
   page=await restartAtMaterial();
@@ -96,8 +118,10 @@ export async function checkLocalTtf(page:Page,restartAtMaterial:()=>Promise<Page
   await page.waitForFunction(()=>!document.documentElement.hasAttribute('data-sw-custom-font'));
   assert.deepEqual(await renderedFonts(page,title),baseline);
   assert.deepEqual(await contentFonts(),originalContent);
+  assert.deepEqual(await inheritedSample(),originalInherited);
   page=await restartAtMaterial();
   assert.deepEqual(await contentFonts(),originalContent);
+  assert.deepEqual(await inheritedSample(),originalInherited);
   assert.deepEqual(await renderedFonts(page,title),baseline);
   assert.equal(await isCustom(sample),false);
   assert.equal(await page.getByRole('button',{name:'移除导入字体'}).count(),0);

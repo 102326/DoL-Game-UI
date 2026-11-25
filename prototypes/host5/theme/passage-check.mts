@@ -19,11 +19,11 @@ try {
   const prose=css('#native-prose'),link=css('a[data-passage]'),island=css('.independent p');
   return {page:css('body').backgroundColor,surface:css('.passage').backgroundColor,ink:prose.color,
    line:prose.lineHeight,gap:prose.marginBlockEnd,link:link.color,underline:link.textDecorationLine,
-   warning:css('.neutral-warning').color,island:[island.color,island.lineHeight,island.marginBlockEnd,css('.independent').backgroundColor]};
+   inherited:css('#inherited-peer').color,warning:css('.neutral-warning').color,island:[island.color,island.lineHeight,island.marginBlockEnd,css('.independent').backgroundColor]};
  });
  await open();await button('材质').click();
  const before=await sample();
- await button('青灰').click();await button('应用并保存').click();
+ await button('青灰').click();await settings.getByLabel('主要文字',{exact:true}).fill('#f2dcae');await button('应用并保存').click();
  await settings.getByLabel('玻璃模糊',{exact:true}).uncheck();
  await button('阅读').click();
  await settings.getByRole('slider',{name:'正文行距',exact:true}).press('End');
@@ -32,10 +32,19 @@ try {
  const themed=await sample();
  assert.equal(themed.page,'rgb(32, 39, 50)');assert.notEqual(themed.surface,themed.page);
  assert.notEqual(themed.surface,before.surface);
- assert.equal(themed.link,'rgb(146, 186, 213)');assert.equal(themed.ink,'rgb(230, 230, 232)');
+ assert.equal(themed.link,'rgb(146, 186, 213)');assert.equal(themed.ink,'rgb(242, 220, 174)');
+ // Removing the ownership marker exposes the same unstyled text to the normal link cascade.
+ const peer=page.locator('#inherited-peer');
+ const withoutOwner=await peer.evaluate(n=>{
+  const owner=n.getAttribute('data-sf-owner')!;
+  n.removeAttribute('data-sf-owner');
+  try{return getComputedStyle(n).color}finally{n.setAttribute('data-sf-owner',owner)}
+ });
+ assert.equal(withoutOwner,themed.link);assert.notEqual(withoutOwner,before.inherited);
+ assert.equal(themed.inherited,before.inherited,'an unstyled owned descendant keeps its native inherited color');
  assert.equal(themed.underline,'underline');assert.equal(themed.warning,before.warning);assert.deepEqual(themed.island,before.island);
  assert.notEqual(themed.line,before.line);assert.equal(parseFloat(themed.gap),parseFloat(before.gap)+2);
- await page.locator('a[data-passage]').click();
+ await peer.click();
  await page.waitForFunction(()=>document.querySelector('#native-prose')?.textContent?.startsWith('Next')&&!!document.querySelector<HTMLElement>('#native-prose')?.style.lineHeight);
  assert.deepEqual(await sample(),themed);
  await open();await button('阅读').click();await button('恢复原版排版').click();

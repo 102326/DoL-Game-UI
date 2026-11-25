@@ -177,7 +177,9 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #passages>.passa
 }
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) {
  & :is(a.link-internal[data-passage],a.link-internal.macro-link):not(:where([data-sf-owner] *,[data-dgu-adapter] *,dialog *,.dgw-root *,.dgshop-content *,.dgshop-host *,.dgp-host *,.dgs-host *,.dgc-host *,.dcu-root *)):where([class="link-internal"],[class="link-internal macro-link"],[class="macro-link link-internal"]){
-  color:var(--sw-custom-accent);
+  /* A plain inline owner may inherit its native link color. Keep the mixed
+     link's native ink while retaining the link affordances on the whole hit area. */
+  &:not([data-sf-owner]):not(:has([data-sf-owner])) {color:var(--sw-custom-accent)}
   text-decoration:underline;
   text-underline-offset:.15em;
   &:focus-visible {outline:2px solid var(--sw-custom-accent);outline-offset:2px}
