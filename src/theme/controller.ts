@@ -55,9 +55,12 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  let appliedAppearance: Appearance | undefined, appearanceEnabled = false;
  const html=document.documentElement;
  type Palette=ReturnType<typeof appearancePalette>['palette'];
- type SurfacePalette=Palette & Partial<Pick<NonNullable<typeof theme>['current']['palette'],'canvas'|'rail'|'reading'|'well'|'shell'|'floating'>>;
- function paintColors(palette?:SurfacePalette){
-  const roles=[...colorRoles,'hover','onAccent','canvas','rail','reading','well','shell','floating'] as const;
+ type SurfacePalette=Palette & Partial<Pick<NonNullable<typeof theme>['current']['palette'],'canvas'|'rail'|'reading'|'well'|'shell'|'floating'|'error'|'warning'|'price'|'success'|'link'|'focus'>>;
+ function paintColors(palette?:SurfacePalette,mode?:'mist'|'porcelain',glassMin?:number){
+  if(mode&&glassMin!==undefined)html.style.setProperty('--sw-custom-glass-min',String(glassMin));
+  else html.style.removeProperty('--sw-custom-glass-min');
+  if(palette&&mode)html.setAttribute('data-sw-theme',mode);else html.removeAttribute('data-sw-theme');
+  const roles=[...colorRoles,'hover','onAccent','canvas','rail','reading','well','shell','floating','error','warning','price','success','link','focus'] as const;
   for(const role of roles){
    const property='--sw-custom-'+(role==='onAccent'?'on-accent':role);
    const value=palette?.[role];
@@ -69,7 +72,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  if(theme){
   const refresh=()=>{
    if(!appearanceEnabled)return;
-   paintColors(theme.current.active?theme.current.palette:undefined);
+   paintColors(theme.current.active?theme.current.palette:undefined,theme.current.mode,theme.current.glassMin);
    document.dispatchEvent(new Event('dol-ui-appearance-change'));
   };
   document.addEventListener('host5-theme-applied',refresh);
@@ -78,7 +81,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  function updateAppearance(enabled:boolean,publish=true){
   if(appliedAppearance===state.appearance && enabled===appearanceEnabled)return;
   const colorsChanged=enabled!==appearanceEnabled||!appliedAppearance||
-   colorRoles.some(role=>appliedAppearance?.colors[role]!==state.appearance.colors[role]);
+   appliedAppearance?.themeMode!==state.appearance.themeMode||colorRoles.some(role=>appliedAppearance?.colors[role]!==state.appearance.colors[role]);
   appliedAppearance=state.appearance;
   appearanceEnabled=enabled;
   const hasFont=enabled&&(!!activeFont||!!state.appearance.font);
@@ -88,7 +91,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   if(theme){
    if(!enabled)paintColors();
    if(publish&&colorsChanged){
-    theme.apply(enabled?state.appearance.colors:{});
+    theme.apply(enabled?state.appearance.colors:{},enabled?state.appearance.themeMode:undefined);
     if(enabled)return; // The synchronous Host event already notified this consumer.
    }
   }else{
@@ -192,7 +195,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  function setAppearance(value:Appearance) {
   if(!scope.active()||!official)return;
   const next=readAppearance(value), current=store.model.appearance;
-  if(next.font!==current.font || colorRoles.some(role=>next.colors[role]!==current.colors[role])){
+  if(next.font!==current.font || next.themeMode!==current.themeMode || colorRoles.some(role=>next.colors[role]!==current.colors[role])){
    store.model.appearance=next;
    updateAppearance(state.preferences.enabled);
    if(next.font!==current.font)reading.refresh();

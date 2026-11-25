@@ -208,3 +208,94 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-font] #ui-bar :is([data-
  --sw-sidebar-font:var(--sw-custom-font);
  font-family:var(--sw-sidebar-font);
 }
+
+/* Light presets only affect surfaces owned by the official UI. The glass face retains a contrast floor on dark backdrops while following
+   the existing material slider. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] {
+ --sw-edge:rgb(30 43 55 / .16);
+ --sw-top-edge:rgb(255 255 255 / .85);
+ --sw-owned-select-scheme:light;
+ --sw-owned-select-bg:var(--sw-custom-panel);
+ --sw-owned-select-ink:var(--sw-custom-text);
+ --sw-owned-select-hover:var(--sw-custom-hover);
+ --sw-owned-select-muted:var(--sw-custom-muted);
+ --sw-shell-glass:var(--sw-shell-solid);
+ --sw-well-glass:var(--sw-well-solid);
+ --sw-custom-glass:var(--sw-shell-solid);
+}
+@supports (background:color-mix(in srgb,white,transparent)) {
+ html[data-stone-free][data-dol-midnight][data-sw-theme][data-dgu-visualGlass] {
+  --sw-shell-glass:color-mix(in srgb,var(--sw-shell-solid) calc((var(--sw-custom-glass-min) + (.98 - var(--sw-custom-glass-min)) * clamp(0, (var(--sw-shell-alpha,.72) - .38) / .57, 1)) * 100%),transparent);
+  --sw-custom-glass:var(--sw-shell-glass);
+ }
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] :is(#dol-midnight-controls,.dgshop-host,.dgshop-content) {
+ --kw-control:var(--sw-custom-panel);
+ --kw-control-hover:var(--sw-custom-hover);
+ --kw-control-pressed:var(--sw-custom-hover);
+ --dgu-border:var(--sw-edge);
+ --dgu-danger:var(--sw-custom-error);
+ --dgu-danger-border:var(--sw-custom-error);
+ --dgu-warning:var(--sw-custom-warning);
+ --dgu-success:var(--sw-custom-success);
+ --dgu-success-surface:color-mix(in srgb,var(--sw-custom-success) 10%,var(--sw-custom-panel));
+ color-scheme:light;
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] :is(#ui-bar,#dol-midnight-controls,.dgshop-host,.dgshop-content) {
+ scrollbar-color:var(--sw-custom-muted) var(--sw-custom-well);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls :is(button,select,input:not([type=checkbox],[type=radio],[type=range],[type=color]),option) {
+ background:var(--sw-custom-panel);color:var(--sw-custom-text);border-color:var(--sw-edge);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls button:hover {background:var(--sw-custom-hover)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls :is(.dmt-reading-sample,.dmt-preview-lab) {
+ background:var(--sw-custom-reading)!important;border-color:var(--sw-edge)!important;color:var(--sw-custom-text);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls .dmt-control-sheet {
+ --dgu-workspace-well-border:1px solid var(--sw-edge);
+ background:var(--sw-well-solid)!important;
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #ui-bar #dol-midnight-sidebar-button:hover {background:var(--sw-custom-hover)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(.optionsBar,.clothing-item,.clothing-details,.filters-div,.options-div,.shop-legend,.dgshop-purchase) {
+ background:var(--sw-well-solid);border-color:var(--sw-edge);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(input[type=text],input[type=number],select,option,.category-tab,.btn-pagination,.button-back-to-shop,.filters-button,.clothingshop-options-button,.shop-legend-button,.try-button,.buy-button,.filter-button,.options-button) {
+ background:var(--sw-custom-panel);border-color:var(--sw-edge);color:var(--sw-custom-text);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(.category-tab.active,.dgshop-selected) {background:var(--sw-custom-hover)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-catalog .clothing-price,
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-native-header>.green {color:var(--sw-custom-price);border-color:var(--sw-custom-price)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] body>.dgshop-detail-backdrop {background:rgb(20 28 38 / .42)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details {background:var(--sw-custom-panel);box-shadow:0 16px 48px #18202c55}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball .spin-prism-shell {
+ border-color:var(--sw-edge);
+ background:radial-gradient(circle at 30% 24%,#ffffffa0,transparent 46%),radial-gradient(circle at 74% 80%,var(--sw-hub-light),transparent 46%),var(--sw-custom-floating);
+ box-shadow:0 10px 28px #18233055,0 0 0 2px var(--sw-hub-rim),inset 0 1.5px 2px #fffd,inset 0 -2px 5px #52687833;
+}
+@supports (background:color-mix(in srgb,white,transparent)) {
+ html[data-stone-free][data-dol-midnight][data-sw-theme][data-dgu-visualGlass] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball .spin-prism-shell {
+  background:radial-gradient(circle at 30% 24%,#ffffff9c,transparent 46%),radial-gradient(circle at 74% 80%,var(--sw-hub-light),transparent 46%),color-mix(in srgb,var(--sw-custom-floating) calc((var(--sw-custom-glass-min) + (.98 - var(--sw-custom-glass-min)) * clamp(0, (var(--sw-shell-alpha,.72) - .38) / .57, 1)) * 100%),transparent);
+ }
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) :is(a.link-internal[data-passage],a.link-internal.macro-link):not(:where([data-sf-owner] *,[data-dgu-adapter] *,dialog *,.dgw-root *,.dgshop-content *,.dgshop-host *,.dgp-host *,.dgs-host *,.dgc-host *,.dcu-root *)):where([class="link-internal"],[class="link-internal macro-link"],[class="macro-link link-internal"]):not([data-sf-owner]):not(:has([data-sf-owner])) {color:var(--sw-custom-link)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] :is(#dol-midnight-controls,#ui-bar,.dgshop-host,.dgshop-content,.sf-motion-hub[data-official]) :focus-visible {outline-color:var(--sw-custom-focus)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-host .dgshop-transaction[data-transaction-status=unknown] {color:var(--sw-custom-warning)}
+
+/* Raised catalog cards sit over the recessed shop well; swatch fills stay native. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-catalog .clothing-item:not(.dgshop-selected) {background:var(--sw-custom-panel);box-shadow:0 1px 3px rgb(24 35 48 / .09)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-catalog .clothing-item:not(.dgshop-selected):hover {background:var(--sw-custom-hover)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-host .dgshop-transaction[data-transaction-status=confirmed] {color:var(--sw-custom-success)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dcu-root {--dgu-combat-warning:var(--sw-custom-warning)}
+/* The material preview contains its own sample planes; inherited dark planes
+   otherwise leave dark preset ink on a dark preview. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls :is(.dmt-preview-stage.sf-material-main,.dmt-preview-reading,.dmt-preview-reference.sf-material-reference) {
+ background:var(--sw-custom-well);border-color:var(--sw-edge);color:var(--sw-custom-text);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls .dmt-preview-reference.sf-material-reference {background:var(--sw-custom-panel)}
+
+/* Keep the native amber warning ink legible on a light reading surface.
+   Only plain native paragraphs and their immediate inline marker are owned. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay)>#passage-content:not([data-sf-owner],[data-dgu-adapter])>p:not([class],[data-sf-owner],[data-dgu-adapter])>span.orange:not([data-sf-owner],[data-dgu-adapter]):not(:has(*)) {
+ background-color:#26282b;
+ border-radius:.18em;
+}

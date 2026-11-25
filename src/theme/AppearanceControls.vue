@@ -46,15 +46,19 @@ watch(() => props.appearance, value => {draft.value = readAppearance(value)});
 const labels: Record<ColorRole, string> = {background:'界面底色',panel:'面板',text:'主要文字',muted:'次要文字',accent:'强调色'};
 const validatedFont = computed(() => draft.value.font.trim());
 const fontValid = computed(() => !validatedFont.value || fontPattern.test(validatedFont.value));
-const sample = computed(() => (props.previewTheme??appearancePalette)(draft.value.colors));
+const sample = computed(() => (props.previewTheme??appearancePalette)(draft.value.colors,draft.value.themeMode));
 const sampleStyle = computed(() => {
  const p = sample.value.palette;
  return {'--sample-bg':p.background,'--sample-panel':p.panel,'--sample-text':p.text,'--sample-muted':p.muted,
-  '--sample-accent':p.accent,'--sample-on-accent':p.onAccent,
+  '--sample-accent':p.accent,'--sample-on-accent':p.onAccent,'--sample-error':p.error??'#ffb0b0',
   fontFamily:(preview.value ? '"SoftWet TTF Preview", ' : selection.value!==null && props.importedName ? `"${importedFamily}", ` : '')+appearanceFont(fontValid.value ? validatedFont.value : '')};
 });
-const dirty = computed(() => selection.value!==undefined || validatedFont.value !== props.appearance.font
+const dirty = computed(() => draft.value.themeMode!==props.appearance.themeMode || selection.value!==undefined || validatedFont.value !== props.appearance.font
  || colorRoles.some(role => draft.value.colors[role] !== props.appearance.colors[role]));
+function choosePreset(id:string,colors:Appearance['colors']){
+ draft.value.colors={...colors};
+ draft.value.themeMode=id==='mist'||id==='porcelain'?id:undefined;
+}
 function setColor(role: ColorRole, value: string) {
  if (/^#[0-9a-f]{6}$/i.test(value)) draft.value.colors[role] = value.toLowerCase();
 }
@@ -64,8 +68,8 @@ function setColor(role: ColorRole, value: string) {
  <div class="dmt-setting-card dmt-control-sheet sw-appearance">
   <div class="sw-appearance-fields">
    <h3>颜色与字体</h3>
-   <div v-if="presets" class="dmt-workspace-actions" aria-label="暗色预设">
-    <GameButton v-for="(colors,id) in presets" :key="id" @click="draft.colors={...colors}">{{ id==='slate'?'青灰':'石墨灰' }}</GameButton>
+   <div v-if="presets" class="dmt-workspace-actions" aria-label="颜色预设">
+    <GameButton v-for="(colors,id) in presets" :key="id" @click="choosePreset(String(id),colors)">{{ id==='slate'?'青灰':id==='mist'?'雾白玻璃':id==='porcelain'?'暖瓷':'石墨灰' }}</GameButton>
    </div>
    <div class="sw-appearance-colors">
     <label v-for="role in colorRoles" :key="role">
@@ -101,7 +105,7 @@ function setColor(role: ColorRole, value: string) {
     <small>中文、Latin 123 与次要文字</small>
     <div class="sw-appearance-states"><span>已选中</span><span>焦点</span><span>错误提示</span></div>
    </div>
-   <small v-if="sample.adjusted" role="status">部分颜色已校正，以保持暗色材质和文字对比。</small>
+   <small v-if="sample.adjusted" role="status">部分颜色已校正，以保持表面和文字对比。</small>
   </div>
   <div class="dmt-workspace-actions sw-appearance-actions">
    <GameButton :disabled="saving || loading || !fontValid || !dirty" @click="applyDraft()">应用并保存</GameButton>
@@ -128,6 +132,6 @@ function setColor(role: ColorRole, value: string) {
 .sw-appearance-states span{padding:3px 6px;border-radius:4px}
 .sw-appearance-states span:first-child{background:var(--sample-accent);color:var(--sample-on-accent)}
 .sw-appearance-states span:nth-child(2){outline:1px solid var(--sample-accent)}
-.sw-appearance-states span:last-child{color:#ffb0b0}
+.sw-appearance-states span:last-child{color:var(--sample-error)}
 .sw-appearance-actions{grid-column:1/-1;margin:0;flex-wrap:wrap}
 </style>
