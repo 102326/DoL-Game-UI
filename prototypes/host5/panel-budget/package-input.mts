@@ -1,25 +1,25 @@
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
-import {readFileSync} from 'node:fs';
 import type {Page} from 'playwright';
 
 export function readPackage(path: string, expectedName: string) {
- const bytes = readFileSync(path);
- const data: {name:string; version:string; scripts:string[]; styles:string[]} = JSON.parse(
+ // Read and hash one ZIP snapshot in the parser; only decoded output crosses the pipe.
+ const data: {sha:string; name:string; version:string; scripts:string[]; styles:string[]} = JSON.parse(
   execFileSync(process.platform==='win32'?'python':'python3', ['-c', `
-import io, json, sys, zipfile
-with zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read())) as z:
+import hashlib, io, json, sys, zipfile
+from pathlib import Path
+snapshot = Path(sys.argv[1]).read_bytes()
+with zipfile.ZipFile(io.BytesIO(snapshot)) as z:
     assert z.testzip() is None
     boot = json.loads(z.read('boot.json'))
     def members(key):
         return [z.read(p).decode('utf-8-sig') for p in boot[key]]
-    print(json.dumps(dict(name=boot['name'], version=boot['version'],
+    print(json.dumps(dict(sha=hashlib.sha256(snapshot).hexdigest(), name=boot['name'], version=boot['version'],
         scripts=members('scriptFileList'), styles=members('styleFileList'))))
-`], {input:bytes, encoding:'utf8', maxBuffer:8*1024*1024}));
+`, path], {encoding:'utf8', maxBuffer:8*1024*1024}));
  assert.equal(data.name, expectedName);
  assert.ok(data.scripts.length);
- return {...data, sha:createHash('sha256').update(bytes).digest('hex')};
+ return data;
 }
 
 export async function loadPackage(page: Page, pkg: ReturnType<typeof readPackage>) {
