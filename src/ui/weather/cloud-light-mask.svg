@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 96" preserveAspectRatio="none">
+  <defs>
+    <radialGradient id="bloom"><stop stop-color="white"/><stop offset=".44" stop-color="white" stop-opacity=".62"/><stop offset="1" stop-color="white" stop-opacity="0"/></radialGradient>
+    <linearGradient id="bank" x2="0" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="white" stop-opacity="0"/><stop offset=".44" stop-color="white" stop-opacity=".12"/>
+      <stop offset=".63" stop-color="white" stop-opacity=".88"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="154" cy="0" rx="125" ry="60" fill="url(#bloom)"/>
+  <ellipse cx="396" cy="-6" rx="69" ry="51" fill="url(#bloom)"/>
+  <path fill="url(#bank)" d="M-36 6C50 49 92 2 140 12S202 44 251 26S324 2 344 7C295 10 284 52 222 57S144 20 99 33S12 66-36 47Z"/>
+  <path fill="url(#bank)" opacity=".7" d="M244 11C301 35 330 40 373 19S443 7 507 17L507 37C440 19 427 24 377 46S285 50 244 11Z"/>
+</svg>

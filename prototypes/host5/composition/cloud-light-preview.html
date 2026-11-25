@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>云隙光 · 表面效果对照</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#13171b;color:#eef1f4;font:15px/1.45 system-ui}
+header{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:12px 20px;border-bottom:1px solid #465059}
+h1{font-size:18px;margin:0}nav{display:flex;gap:6px;flex-wrap:wrap}
+button{font:inherit;background:#222a30;color:#e1e6e9;padding:7px 14px;border:1px solid #465059;border-radius:6px;cursor:pointer}
+button[aria-pressed=true]{background:#cedee6;color:#16242e}button:focus-visible{outline:2px solid #b9d6e6;outline-offset:2px}
+iframe{width:100%;height:82vh;min-height:350px;display:block;border:0}details{padding:8px 20px;color:#bec6cc;overflow-wrap:anywhere}
+</style>
+<header><h1>云隙光</h1><nav aria-label="材质对照">
+<button data-mode="base">现行慢云</button><button data-mode="light" aria-pressed="true">候选云光</button>
+<button data-mode="still">静帧云光</button><button data-mode="solid">实色</button>
+</nav></header>
+<iframe title="设置与属性 · 中性工作台" sandbox="allow-scripts"></iframe>
+<details><summary>候选双包 SHA-256 · Host / UI</summary>__PAIR__</details>
+<script>
+ const frame=document.querySelector('iframe');
+ const controls=[...document.querySelectorAll('[data-mode]')];
+ controls.forEach(button=>{button.disabled=true;button.onclick=()=>{
+   frame.contentWindow.postMessage({mode:button.dataset.mode},'*');
+   controls.forEach(other=>other.setAttribute('aria-pressed',String(other===button)));
+ }});
+ window.addEventListener('message',event=>{
+   if(event.source===frame.contentWindow && event.data==='cloud-study-ready') controls.forEach(button=>button.disabled=false);
+ });
+ frame.srcdoc=__FIXTURE__;
+</script></html>

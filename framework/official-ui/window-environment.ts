@@ -67,7 +67,8 @@ export function windowEnvironment(parent: HTMLElement, key: string, read: () => 
   return {
    kind, current,
    sync() {
-    moving?.(!document.hidden && document.documentElement.hasAttribute('data-dgu-visualmotion'));
+    const root = parent.ownerDocument.documentElement;
+    moving?.(!parent.ownerDocument.hidden && root.hasAttribute('data-dgu-visualmotion') && root.dataset.swCloudStudy !== 'still');
     if (canvas && renderer) {
      const state = read();
      for (const [name, value] of Object.entries({weather: state.kind, rain: state.rain, special: state.special ?? 'none'})) {

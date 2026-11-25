@@ -5,7 +5,7 @@ import {neutralWeatherStory} from '../panel-budget/weather/neutral-story.mts';
 import {withVisibleBrowser} from '../panel-budget/weather/visible-browser.mts';
 import {loadPackage,readPackage} from '../panel-budget/package-input.mts';
 
-async function cloudPixels(page:Page,shell:Locator){
+async function cloudPixels(page:Page,shell:Locator,compareLighting=false){
  const cloud=shell.locator(':scope>.sf-cloud-layer'),rect=await shell.boundingBox();
  assert.ok(rect);
  const clip={x:Math.ceil(rect.x+8),y:Math.ceil(rect.y+8),width:Math.floor(rect.width-16),height:Math.min(160,Math.floor(rect.height-16))};
@@ -16,9 +16,12 @@ async function cloudPixels(page:Page,shell:Locator){
  const frozen=await page.evaluateHandle(()=>{const running=document.getAnimations().filter(a=>a.playState==='running');running.forEach(a=>a.pause());return running});
  await page.evaluate(()=>new Promise<void>(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r()))));
  const before=await image();
- await cloud.locator('.sf-cloud-texture').evaluate(n=>{(n as HTMLElement).style.backgroundImage='none'});
+ const paint=cloud.locator('.sf-cloud-texture');
+ if(compareLighting) await page.evaluate(()=>delete document.documentElement.dataset.swCloudStudy);
+ else await paint.evaluate(n=>{(n as HTMLElement).style.backgroundImage='none'});
  const hidden=await image();
- await cloud.locator('.sf-cloud-texture').evaluate(n=>{(n as HTMLElement).style.removeProperty('background-image')});
+ if(compareLighting) await page.evaluate(()=>{document.documentElement.dataset.swCloudStudy='light'});
+ else await paint.evaluate(n=>{(n as HTMLElement).style.removeProperty('background-image')});
  await frozen.evaluate(list=>list.forEach(a=>{if(a.playState==='paused')a.play()}));await frozen.dispose();
  return page.evaluate(async({before,hidden,bandEnd})=>{
   async function decode(src:string){
@@ -36,6 +39,7 @@ async function cloudPixels(page:Page,shell:Locator){
  },{before,hidden,bandEnd});
 }
 
+const compareLighting=process.argv.includes('--cloud-light');
 const [hostZip,uiZip,storyZip]=process.argv.slice(2);
 assert.ok(hostZip&&uiZip,'Pass candidate Host and UI player ZIPs');
 const host=readPackage(hostZip,'StoneFreeHost'),ui=readPackage(uiZip,'DoLGameUI');
@@ -55,6 +59,7 @@ await withVisibleBrowser(async browser=>{
   const action=document.querySelector<HTMLButtonElement>('#action')!;
   action.onclick=()=>action.dataset.count=String(Number(action.dataset.count??0)+1);
  });
+ if(compareLighting) await page.evaluate(()=>{document.documentElement.dataset.swCloudStudy='light'});
  await loadPackage(page,host);await page.evaluate(()=>window.DoLUiHost!.sceneReady());await loadPackage(page,ui);
  await page.addStyleTag({content:'.hidden{display:none!important}#customOverlay{position:fixed;inset:160px auto auto 250px;width:670px;height:400px}#customOverlayTitle{min-height:48px}'});
  const settings=page.locator('#dol-midnight-controls');
@@ -99,7 +104,20 @@ await withVisibleBrowser(async browser=>{
  });
  assert.ok(composition.texture&&composition.blur.includes('blur(')&&composition.inert&&composition.hit&&composition.band>0&&composition.band<=composition.body*.23+1,JSON.stringify(composition));
  await page.locator('#action').click();assert.equal(await page.locator('#action').getAttribute('data-count'),'1');
- const nativePixels=await cloudPixels(page,native);assert.ok(nativePixels.rim>50&&nativePixels.body===0,JSON.stringify(nativePixels));
+ const nativePixels=await cloudPixels(page,native,compareLighting);assert.ok(nativePixels.rim>50&&nativePixels.body===0,JSON.stringify(nativePixels));
+ if(compareLighting){
+  const texture=native.locator('.sf-cloud-texture');
+  const prior=await texture.elementHandle();assert.ok(prior);
+  const on=await texture.evaluate(n=>({mask:getComputedStyle(n,'::after').maskImage,
+   clip:getComputedStyle(n.parentElement!).maskComposite,players:n.getAnimations().length}));
+  assert.ok(on.mask.includes('data:image/svg+xml') && on.clip.split(',').every(mode=>mode.trim()==='intersect') && on.players===1,
+   'lit bank must use the packaged mask and one environment player: '+JSON.stringify({...on,mask:on.mask.slice(0,80)}));
+  await page.evaluate(()=>{document.documentElement.dataset.swCloudStudy='still'});
+  await page.waitForFunction(n=>n.getAnimations().length===0,prior);
+  assert.equal(await prior.evaluate(n=>n.isConnected&&getComputedStyle(n,'::after').content!=='none'),true);
+  await page.evaluate(()=>{document.documentElement.dataset.swCloudStudy='light'});await motion('native');
+  assert.ok(await prior.evaluate(n=>n.isConnected));assert.ok(await phaseError('native')<1);
+ }
  const oldTexture=await native.locator('.sf-cloud-texture').elementHandle();assert.ok(oldTexture);
  // Count synchronous foreground admission at the real click, before its short track can finish.
  await opener.evaluate(n=>n.addEventListener('click',()=>n.setAttribute('data-probe-enter',String(document.querySelector('.dmt-settings-shell')!.getAnimations().some(a=>a.id==='sf-surface-track'))),{once:true}));
@@ -114,7 +132,7 @@ await withVisibleBrowser(async browser=>{
  assert.equal(await opener.getAttribute('data-probe-enter'),'true');await motion('settings');
  assert.equal(await oldTexture.evaluate(n=>n.getAnimations().length),0);
  assert.ok(await settingsShell.evaluate(n=>getComputedStyle(n).backdropFilter.includes('blur(')));
- const settingsPixels=await cloudPixels(page,settingsShell);assert.ok(settingsPixels.rim>50&&settingsPixels.body===0,JSON.stringify(settingsPixels));
+ const settingsPixels=await cloudPixels(page,settingsShell,compareLighting);assert.ok(settingsPixels.rim>50&&settingsPixels.body===0,JSON.stringify(settingsPixels));
  const texture=await settings.locator('.sf-cloud-texture').elementHandle();assert.ok(texture);
  // The isolated headed profile has normal tab visibility and no focus emulation.
  const cover=await context.newPage();await cover.bringToFront();
@@ -225,6 +243,7 @@ await withVisibleBrowser(async browser=>{
   await story.route('**/*',r=>r.request().url()===storyUrl?r.fulfill({contentType:'text/html',body:html}):r.abort());
   await story.goto(storyUrl);await story.getByRole('link',{name:'Page A'}).waitFor();
   await story.evaluate(()=>Object.assign(window,{Weather:{name:'heavyClouds',precipitation:'none',overcast:.9}})&&true);
+  if(compareLighting) await story.evaluate(()=>{document.documentElement.dataset.swCloudStudy='light'});
   await loadPackage(story,host);await loadPackage(story,ui);
   await story.getByRole('link',{name:'Page A'}).click();
   const layer=story.locator('[data-sf-mount="cloud.passage"]');await layer.waitFor({state:'attached'});

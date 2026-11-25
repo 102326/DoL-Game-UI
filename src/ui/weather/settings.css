@@ -32,3 +32,18 @@
  position:absolute;inset:0 -14%;pointer-events:none;opacity:.38;
  background:url('./slow-cloud.png') center/100% 100% no-repeat;
 }
+
+/* Study only. The Host moves one leased texture; a stationary aperture lights the moving bank.
+   Both paints sit inside the existing header clip and require no additional animation player. */
+@supports (mask-composite:intersect) and (mask-image:linear-gradient(#000,transparent)) {
+html:is([data-sw-cloud-study="light"],[data-sw-cloud-study="still"]) .sf-cloud-texture::after {
+ content:""; position:absolute; inset:0; pointer-events:none;
+ background:linear-gradient(110deg,#edf3f4 8%,var(--sw-accent,#93b5ca) 55%,#ecedef 88%);
+ mask:url('./cloud-light-mask.svg') center/100% 100% no-repeat;
+}
+html:is([data-sw-cloud-study="light"],[data-sw-cloud-study="still"]) [data-sf-weather-material]>.sf-cloud-layer[data-sf-mount] {
+ mask-image:linear-gradient(to bottom,#000 0%,#000b 45%,transparent),
+            radial-gradient(ellipse at 30% 0%,#000 0%,#0006 57%,#000b 100%);
+ mask-composite:intersect;
+}
+}

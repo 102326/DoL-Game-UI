@@ -78,6 +78,6 @@ export function nativeNavigation(weather=headerWeather()){
  const passageObserver=new MutationObserver(records=>{if(records.some(r=>r.type==='attributes'||[...r.addedNodes,...r.removedNodes].some(n=>n instanceof Element&&n.matches('.passage,.dgp-host'))))schedule()});scope.own(()=>passageObserver.disconnect());
  function watchPassage(){const root=document.getElementById('passages'),last=root?.querySelector<HTMLElement>('.passage:last-child')??null;if(root===passageRoot&&last===watchedPassage)return;passageObserver.disconnect();passageRoot=root;watchedPassage=last;if(root)passageObserver.observe(root,{childList:true});if(last)passageObserver.observe(last,{childList:true,attributes:true,attributeFilter:['class','hidden','data-dgp-panel']})}
  const policy=new MutationObserver(schedule);policy.observe(document.documentElement,{attributes:true,attributeFilter:['data-dgu-weather-off','data-dgu-visualglass','data-dgu-visualmotion']});scope.own(()=>policy.disconnect());
- const visibility=new MutationObserver(schedule);visibility.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['data-dgu-settings-open','data-dgu-adapter','data-dgu-adapter-match']});
+ const visibility=new MutationObserver(schedule);visibility.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['data-sw-cloud-study','data-dgu-settings-open','data-dgu-adapter','data-dgu-adapter-match']});
  scope.own(()=>visibility.disconnect());return{refresh,dispose:scope.dispose};
 }

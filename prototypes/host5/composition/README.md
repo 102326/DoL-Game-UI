@@ -74,3 +74,15 @@ Android 17、Google WebView 157.0.8103.52，视口 1363 × 909 CSS px，面板 3
 | 4 · 实时模糊 | 48 / 50 | 25.0 / 8.4 | 7.8 / 11.1 |
 
 各动作的 rAF 间隔中位数均为 8.3 ms，P95（最近秩）均为 8.4 ms。两次实时模糊展开都在第三个间隔读到 25 ms；样本保留第 4 轮首个 0.114 ms 的短间隔。每种材质只有两次展开，无法据此归因 GPU 合成开销，产品默认沿用现值。本轮没有与点击对应的屏幕呈现时间戳。
+
+### 云隙光候选
+
+在阴天且玻璃可用时，打开属性或从侧栏打开设置。预览顶端可在打开的窗口内切换现行、候选、静帧和实色。预览使用正式 Host、UI 双包，在自造中性内容上运行；文件无需联网。正式界面的默认路径仍为现行慢云，研究页用根属性 `data-sw-cloud-study="light"` 或 `"still"` 选择候选。两档共享相同的云纹与光口；静帧停止环境播放器，前景控件继续响应。
+
+```sh
+node prototypes/host5/composition/cloud-light-preview.mts "$HOST_ZIP" "$UI_ZIP" cloud-light.html
+node prototypes/host5/composition/cloud-light-preview-check.mts cloud-light.html
+node prototypes/host5/composition/official-surfaces.mts "$HOST_ZIP" "$UI_ZIP" "$NEUTRAL_SUGARCUBE_FORMAT_ZIP" --cloud-light
+```
+
+最后一项比较同一冻结相位下的实际顶边与下方正文像素。移除 `--cloud-light` 可复跑现行纹理的开关对照。中性 SugarCube 格式 ZIP 的固定身份见[双包安装复核](../package-check/README.md)。交互、暂停与清理断言独立于像素计数。
