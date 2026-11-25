@@ -11,6 +11,7 @@ function preview(colors:Colors){
  return Object.freeze({active:Object.keys(input).length>0,adjusted,palette:Object.freeze({
   ...palette,detail:palette.muted,error:'#ffb0b0',
   canvas:palette.background,rail:palette.background,reading:readingSurface(palette.panel,palette.text),
+  shell:palette.background,floating:palette.panel,
  })});
 }
 export interface ThemeCapability {

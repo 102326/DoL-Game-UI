@@ -6,7 +6,7 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
  :is(.dgc-host,.dgs-host,.dgp-host)>.dgu-surface,
  dialog.dgu-surface:is([data-sf-workspace=drawer],:has(>.dgu-surface-content>.dgu-inspector))
 ){
- --sw-owned-surface:var(--sw-custom-background);
+ --sw-owned-surface:var(--sw-custom-shell,var(--sw-custom-background));
  --sw-owned-panel:var(--sw-custom-panel);
  --sw-owned-accent:var(--sw-custom-accent);
  --sw-owned-detail:var(--sw-custom-muted);
@@ -33,14 +33,13 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
 }
 
 /* Keep the existing material sampling and transparency on the outer glass. */
-html[data-stone-free][data-dol-midnight][data-sw-custom-colors]{--sw-custom-glass:var(--sw-custom-background)}
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors]{--sw-custom-glass:var(--sw-custom-shell,var(--sw-custom-background))}
 @supports (background:color-mix(in srgb, black, transparent)){
  html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-visualGlass]{
-  --sw-custom-glass:color-mix(in srgb,var(--sw-custom-background) calc(var(--dgu-acrylic-axis-shell-alpha,.43) * 100%),transparent);
+  --sw-custom-glass:color-mix(in srgb,var(--sw-custom-shell,var(--sw-custom-background)) calc(var(--dgu-acrylic-axis-shell-alpha,.43) * 100%),transparent);
  }
 }
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors]:not([data-dgu-visualGlass]) :is(
- #dol-midnight-controls>.dmt-settings-shell,
  #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves]),
  .dgw-shell,.dgshop-host,.dgshop-content,.dcu-shell
 ){background-color:var(--sw-custom-background)!important}
@@ -58,7 +57,6 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
  .sf-motion-hub[data-official] :is(.sf-motion-petal,.sf-motion-utilities button)
 ){color:var(--sw-custom-text)}
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #dol-midnight-controls :is(.dmt-eyebrow,.dmt-workspace-intro>p:last-child,.dmt-control-sheet .dgu-setting-description,.dmt-settings-footer,.sw-appearance-fields p){color:var(--sw-custom-muted)}
-html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #dol-midnight-controls .dmt-control-sheet{background-color:var(--sw-custom-panel)!important}
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
  #dol-midnight-controls :is(.dmt-workspace-nav button:focus-visible,.dmt-control-sheet :focus-visible),
  .sf-motion-hub[data-official] :is(.sf-motion-petal,.sf-motion-utilities button):focus-visible
@@ -66,22 +64,23 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{border-color:var(--sw-custom-accent)}
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #dol-midnight-controls input[type=checkbox]:checked::before{background:var(--sw-custom-accent)}
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-orbit{
- --dgu-acrylic-axis-float:var(--sw-custom-panel);
- --dgu-acrylic-axis-utility:var(--sw-custom-panel);
- --dgu-acrylic-axis-grid:var(--sw-custom-background);
+ --sw-float-face:var(--sw-custom-floating,var(--sw-owned-panel));
+ --dgu-acrylic-axis-float:var(--sw-float-face);
+ --dgu-acrylic-axis-utility:var(--sw-float-face);
+ --dgu-acrylic-axis-grid:var(--sw-owned-surface);
 }
 @supports (background:color-mix(in srgb, black, transparent)){
  html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-visualGlass] .sf-motion-hub[data-official] .sf-motion-orbit{
-  --dgu-acrylic-axis-float:color-mix(in srgb,var(--sw-custom-panel) calc(var(--sw-acrylic-float-alpha,.6) * 100%),transparent);
-  --dgu-acrylic-axis-utility:color-mix(in srgb,var(--sw-custom-panel) calc(var(--sw-acrylic-utility-alpha,.84) * 100%),transparent);
-  --dgu-acrylic-axis-grid:color-mix(in srgb,var(--sw-custom-background) calc(var(--sw-acrylic-grid-alpha,.72) * 100%),transparent);
+  --dgu-acrylic-axis-float:color-mix(in srgb,var(--sw-float-face) calc(var(--sw-acrylic-float-alpha,.6) * 100%),transparent);
+  --dgu-acrylic-axis-utility:color-mix(in srgb,var(--sw-float-face) calc(var(--sw-acrylic-utility-alpha,.84) * 100%),transparent);
+  --dgu-acrylic-axis-grid:color-mix(in srgb,var(--sw-owned-surface) calc(var(--sw-acrylic-grid-alpha,.72) * 100%),transparent);
  }
 }
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment] .sf-motion-hub[data-official]:not([data-tool-layout]) .sf-motion-orbit.is-grid .sf-motion-petal{
  background-color:var(--dgu-acrylic-axis-float)!important;
 }
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment]:not([data-dgu-visualGlass]) .sf-motion-hub[data-official] .sf-motion-orbit:not(.is-grid) :is(.sf-motion-petal,.sf-motion-utilities button){
- background-color:var(--sw-custom-panel)!important;
+ background-color:var(--sw-float-face)!important;
 }
 
 html[data-stone-free][data-dol-midnight][data-sw-custom-font] :is(

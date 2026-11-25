@@ -10,11 +10,15 @@ try{
  const dialog=p.locator('#dol-midnight-controls'),btn=(name:string)=>dialog.getByRole('button',{name,exact:true});
  const settings=()=>p.locator('#dol-midnight-sidebar-button').click();
  const close=async()=>{await btn('关闭').click();await dialog.waitFor({state:'hidden'})};
- await settings();await btn('材质').click();await btn('青灰').click();await btn('应用并保存').click();
+ await settings();await btn('材质').click();await btn('青灰').click();await dialog.getByLabel('面板',{exact:true}).fill('#322835');await btn('应用并保存').click();
  const observations=[];
  for(const glass of [true,false]){
  await btn('材质').click();
  await dialog.getByLabel('玻璃模糊',{exact:true}).setChecked(glass);
+ const shell=await dialog.locator('.dmt-settings-shell').evaluate(node=>getComputedStyle(node).backgroundColor);
+ if(!glass)assert.equal(shell,'rgb(32, 39, 50)');
+ const well=await dialog.locator('.dmt-control-sheet:visible').first().evaluate(node=>getComputedStyle(node).backgroundColor);
+ assert.equal(well,'rgb(50, 40, 53)');
  for(const layout of ['drawer','list','fan']){
   await btn('入口').click();await dialog.getByLabel('悬浮球展开模式').selectOption(layout);await close();
   const hub=p.locator('.sf-motion-hub[data-official]'),ball=hub.locator('.sf-motion-ball');
@@ -45,7 +49,7 @@ try{
     plate:css('.sf-motion-orbit','::before').backgroundColor,plateContent:css('.sf-motion-orbit','::before').content};
   });
   const closing=await toggle(false);
-  const row=layout==='fan'?(glass?styles.float:'rgb(32, 39, 50)'):'rgba(0, 0, 0, 0)';
+  const row=layout==='fan'?(glass?styles.float:'rgb(50, 40, 53)'):'rgba(0, 0, 0, 0)';
   assert.deepEqual([opening,styles.row,closing],[row,row,row],layout+' row through transition');
   assert.equal(styles.plateContent,layout==='list'?'""':'none');
   if(layout==='list')assert.equal(styles.plate,glass?styles.grid:'rgb(32, 39, 50)');
@@ -69,6 +73,6 @@ try{
   const box=document.createElement('div');box.innerHTML='<dialog open class="dgu-surface" data-sf-workspace="drawer">Neutral</dialog><section class="dgshop-content dgshop-narrow" data-sf-workspace="shop"><div class="dgshop-layout"><div class="clothing-details">Detail</div></div></section>';
   document.body.append(box);return [...box.querySelectorAll('dialog,.clothing-details')].map(n=>getComputedStyle(n).backgroundColor);
  });
- assert.deepEqual(surfaces,['rgb(32, 39, 50)','rgb(32, 39, 50)']);
+ assert.deepEqual(surfaces,['rgb(32, 39, 50)','rgb(50, 40, 53)']);
  console.log(JSON.stringify({observations,focus,surfaces}));
 }finally{await browser.close();await server.close()}
