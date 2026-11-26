@@ -81,7 +81,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  function updateAppearance(enabled:boolean,publish=true){
   if(appliedAppearance===state.appearance && enabled===appearanceEnabled)return;
   const colorsChanged=enabled!==appearanceEnabled||!appliedAppearance||
-   appliedAppearance?.themeMode!==state.appearance.themeMode||colorRoles.some(role=>appliedAppearance?.colors[role]!==state.appearance.colors[role]);
+   colorRoles.some(role=>appliedAppearance?.colors[role]!==state.appearance.colors[role]);
   appliedAppearance=state.appearance;
   appearanceEnabled=enabled;
   const hasFont=enabled&&(!!activeFont||!!state.appearance.font);
@@ -91,7 +91,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   if(theme){
    if(!enabled)paintColors();
    if(publish&&colorsChanged){
-    theme.apply(enabled?state.appearance.colors:{},enabled?state.appearance.themeMode:undefined);
+    theme.apply(enabled?state.appearance.colors:{});
     if(enabled)return; // The synchronous Host event already notified this consumer.
    }
   }else{
@@ -195,7 +195,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  function setAppearance(value:Appearance) {
   if(!scope.active()||!official)return;
   const next=readAppearance(value), current=store.model.appearance;
-  if(next.font!==current.font || next.themeMode!==current.themeMode || colorRoles.some(role=>next.colors[role]!==current.colors[role])){
+  if(next.font!==current.font || colorRoles.some(role=>next.colors[role]!==current.colors[role])){
    store.model.appearance=next;
    updateAppearance(state.preferences.enabled);
    if(next.font!==current.font)reading.refresh();

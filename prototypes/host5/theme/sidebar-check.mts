@@ -1,3 +1,4 @@
+import {lightDesigns} from '../../../framework/materials/palette.ts';
 import {checkDiamond} from './hub-check.mts';
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
@@ -97,6 +98,33 @@ try{
   await navigate(true);await open();assert.deepEqual(await snapshot(),baseline);
   assert.equal(await page.locator('html').evaluate(n=>n.hasAttribute('data-sw-custom-colors')),false);
   assert.equal(await page.getByLabel('强调色',{exact:true}).inputValue(),'#93b5ca');
+  if(!legacy){
+   const key='DoLMidnightTheme.preferences.v1';
+   const envelope={_scaleBaseline26:true,_readingBaseline41:true,readingBlockGap:7,fontScale:120,visualGlass:false};
+   const edited={...lightDesigns.mist.colors,accent:'#765432'};
+   const states=[
+    {saved:{themeMode:'mist',colors:lightDesigns.mist.colors},expected:{}},
+    {saved:{themeMode:'porcelain',colors:lightDesigns.porcelain.colors},expected:{}},
+    {saved:{themeMode:'mist',colors:edited},expected:edited},
+    {saved:{colors:{accent:'#765432'}},expected:{accent:'#765432'}},
+   ];
+   for(const {saved,expected} of states){
+    await page.evaluate(({key,value})=>localStorage.setItem(key,JSON.stringify(value)),{key,value:{...envelope,appearance:{...saved,font:'Georgia'}}});
+    for(let i=0;i<2;i++){
+     await navigate(true);await open();
+     const state=await page.evaluate(key=>({persisted:JSON.parse(localStorage.getItem(key)!),
+      mode:document.documentElement.getAttribute('data-sw-theme'),active:document.documentElement.hasAttribute('data-sw-custom-colors'),
+      glass:document.documentElement.hasAttribute('data-dgu-visualGlass'),
+      font:getComputedStyle(document.querySelector('#native-prose')!).fontFamily}),key);
+     assert.deepEqual(state.persisted,{...envelope,appearance:{colors:expected,font:'Georgia'}});
+     assert.equal(state.mode,null);assert.equal(state.active,Object.keys(expected).length>0);
+     assert.equal(state.glass,false);assert.match(state.font,/Georgia/);
+     assert.deepEqual(await page.locator('[aria-label="颜色预设"] button').allTextContents(),['石墨灰','青灰']);
+     if(!state.active)assert.deepEqual(await snapshot(),baseline);
+    }
+   }
+   console.log('Player palette migration: both retired presets, edited palette, custom accent, font and other preferences survive two openings');
+  }
   if(inputs)console.log('Host',legacy?inputs.release.sha:inputs.candidate.sha,'UI',inputs.ui.sha);
   assert.deepEqual(errors,[]);console.log(browser.version(),legacy?'legacy settings':'sidebar + inspector','apply, reset, reload verified');
   await page.close();

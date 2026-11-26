@@ -2,7 +2,7 @@ import {createPagePreferences} from './page-preferences';
 import {initMaster} from '../runtime/master';
 import {reactive} from 'vue';
 import {defaults, readingRanges, type PreferenceKey, type Preferences} from './preferences';
-import {emptyAppearance, readAppearance} from './appearance';
+import {emptyAppearance, readAppearance, retiredPreset} from './appearance';
 
 const KEY = 'DoLMidnightTheme.preferences.v1';
 const retiredKeys = new Set<PreferenceKey>([
@@ -68,6 +68,9 @@ export function startThemePreferences(root: Window) {
    preferences.fontScale=100;preferences.buttonScale=100;
   }
   if(value?._scaleBaseline26!==true||value?._readingBaseline41!==true||retiredEnabled)save();
+  else if(value && retiredPreset(value.appearance)){
+   root.localStorage.setItem(KEY,JSON.stringify({...value,appearance:model.appearance}));
+  }
  }catch{storageError=true}
  initMaster(preferences);
  return {model, pages:createPagePreferences(root), save, get storageError() { return storageError }};

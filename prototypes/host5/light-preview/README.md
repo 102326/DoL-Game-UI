@@ -2,7 +2,7 @@
 
 解压交接附件，用 Chrome 或 Edge 直接打开 `index.html`。顶部可在静水暗玻、雾白玻璃、暖瓷之间切换，可选 390 或 1120 CSS px，并开关玻璃。点“界面设置”可在“材质”中试色、取消或保存。点“商品详情”可在中性商品上使用购买、试穿或返回。预览通过候选双包自带的 JS 和 CSS 运行，正文、商品与回执均为中性夹具。离线页面的偏好仅供当前预览使用。持久化由有独立存储的实包回归验证。
 
-在原研究分支手动运行 Kraft Work CI，勾选 `offline_theme_preview`，从该次运行下载 `softwet-offline-theme-<commit>`。附件包含上述页面、生成它的双包和 SHA256SUMS.txt，保留 14 天。也可用 Node 26、Python 3 和仓库锁定依赖在本地重建：
+历史浅色对照固定在 [d00931b](https://github.com/102326/DoL-Game-UI/commit/d00931b2ae20e3531f99fd5d4d6e5ca281324085)。该版的[离线附件](https://github.com/102326/DoL-Game-UI/actions/runs/45612561753/artifacts/15021626127)保留 14 天。重建请使用该提交的源码和锁定依赖。当前 5.0 玩家设置已收回两款浅色入口。
 
 ```sh
 npm ci

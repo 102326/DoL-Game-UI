@@ -1,6 +1,18 @@
 # Soft & Wet 开发交接
 
-## Soft & Wet 5.0 — Stone Free 候选
+## 5.0 玩家候选 · Mac 接续 Windows（2026-11-26）
+
+**基线与范围。** Mac 的研究分支从 `d00931b` 快进八笔到 [草稿 PR #43](https://github.com/102326/DoL-Game-UI/pull/43) 的 `ce591fe5334b2b1830e0129c0a8fcf7fc3b6603e`。该 head 的[标准 PR CI](https://github.com/102326/DoL-Game-UI/actions/runs/45691064796)通过，[研究运行 #240](https://github.com/102326/DoL-Game-UI/actions/runs/45691064803)失败。后者的研究摘要绑定 PR 合并测试提交 `f078f4a`。以下 Mac 改动与证据在其后，本次本地提交待同步。
+
+**玩家外观。** 负责人反馈真实游戏的深底原生组件在浅底上难读，5.0 暂缓雾白玻璃、暖瓷。玩家设置保留静水暗玻默认、石墨灰、青灰、自定义配色与字体。读取早期 RC 偏好时，仅识别这两款的明确模式标记：原预设回默认深色；若有手调色值，保留输入并用原深色策略派生可读色。字体、其他偏好和未标记的自定义色保留。浅色研究与旧附件见[历史复跑入口](../prototypes/host5/light-preview/README.md)。
+
+**本地证据。** 在中性页从正式设置入口验证两款旧预设、手调色、原有自定义色连续两次重开，核对持久化、字体、玻璃及字号。Mac Chrome 158 的双菱形实包入口鼠标点击无外框，键盘仍在可见表冠绘制 2 px 焦点环。研究夹具的旧球实测鼠标点击曾匹配项目的非菱形 `:focus` 规则，得到 1 px 实线；改为 `:focus-visible` 后，`node tests/golden-spin-hub.cjs` 八项通过，含独立页面的 Tab 检查。`npm run ci:check`、Host 原型类型检查通过。本机未运行游戏。实包设置复跑命令为 `node prototypes/host5/theme/sidebar-check.mts <公开4.5.2-Host.zip> <本批Host.zip> <本批UI.zip>`。
+
+**包身份。** 本地 Host 1.0.0-rc.1 SHA-256 为 `4be60751a9d3c401a5b6d8c5d1e12d3a72acc14b17977004dd25332aa30aebb1`，UI 5.0.0 为 `7c9c70ab695d9045be646416dbbf5b6a9c48694c775ac91a3165804eaa7bbbd8`。UI 要求 `=1.0.0-rc.1`。检查过新包内 README、安装说明、设置说明和发行说明。下节的八包清单和 Windows/Android 结论绑定原 Windows RC，勿套用到同名的新 UI ZIP。
+
+**下一轮正式验收。** 定稿目标为 UI 5.0.0 + Stone Free Host 1.0.0。冻结源码时同步更新 Host manifest、UI 精确依赖、包内外安装及发行文案，重打双包、复核成员、文件名与 SHA-256，另存正式批次清单。家庭实际 Loader 做干净新装、4.5.2 升级、RC → 正式及回退；重点从 RC 换掉同名同版本 UI ZIP，核对每个技术 ID 唯一、顺序 Host → UI、冷启动实载成员摘要、只换 UI 时依赖告警及成对替换后消失，再确认字体、深色、自定义色与悬浮位置。同步新提交后分别看标准与研究 CI；目前没有本地修复对应的远端通过记录。
+
+## Windows 5.0 — Stone Free 原 RC 候选
 
 首个正式 Host 的版本目标是 1.0.0。本批使用 StoneFreeHost 1.0.0-rc.1 和 DoLGameUI 5.0.0，主 UI 的 boot 要求 `=1.0.0-rc.1`。两个技术 ID 和 Host 协议沿用。六个选装包的字节与 4.5.2 附件一致。[八包 SHA-256](releases/5.0.0-rc.1/SHA256SUMS.txt) · [安装与回退](INSTALL_5.0.md) · [玩家公告](RELEASE_5.0.0.md)
 

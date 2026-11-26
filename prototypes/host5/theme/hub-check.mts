@@ -25,6 +25,12 @@ export async function checkDiamond(page:Page){
  assert.equal(opaque.blur,'none');assert.match(opaque.background,/radial-gradient/);
  assert.equal(opaque.ink,themed.ink);
  await button('关闭').click();await dialog.waitFor({state:'hidden'});
+ await ball.click();
+ assert.equal(await ball.getAttribute('aria-expanded'),'true');
+ assert.deepEqual(await ball.evaluate(el=>[el.matches(':focus-visible'),getComputedStyle(el).outlineStyle,
+  getComputedStyle(el.querySelector('.spin-prism-shell')!).outlineStyle]),[false,'none','none']);
+ await ball.click();
+ assert.equal(await ball.getAttribute('aria-expanded'),'false');
  for(let i=0;i<20&&!await ball.evaluate(el=>el.matches(':focus-visible'));i++)await page.keyboard.press('Tab');
  const focus=await ball.evaluate(el=>{const shell=el.querySelector('.spin-prism-shell')!;return {active:el===document.activeElement,color:getComputedStyle(shell).outlineColor,width:getComputedStyle(shell).outlineWidth}});
  assert.deepEqual(focus,{active:true,color:'rgb(142, 192, 216)',width:'2px'});

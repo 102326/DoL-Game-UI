@@ -46,19 +46,16 @@ watch(() => props.appearance, value => {draft.value = readAppearance(value)});
 const labels: Record<ColorRole, string> = {background:'界面底色',panel:'面板',text:'主要文字',muted:'次要文字',accent:'强调色'};
 const validatedFont = computed(() => draft.value.font.trim());
 const fontValid = computed(() => !validatedFont.value || fontPattern.test(validatedFont.value));
-const sample = computed(() => (props.previewTheme??appearancePalette)(draft.value.colors,draft.value.themeMode));
+const sample = computed(() => (props.previewTheme??appearancePalette)(draft.value.colors));
 const sampleStyle = computed(() => {
  const p = sample.value.palette;
  return {'--sample-bg':p.background,'--sample-panel':p.panel,'--sample-text':p.text,'--sample-muted':p.muted,
   '--sample-accent':p.accent,'--sample-on-accent':p.onAccent,'--sample-error':p.error??'#ffb0b0',
   fontFamily:(preview.value ? '"SoftWet TTF Preview", ' : selection.value!==null && props.importedName ? `"${importedFamily}", ` : '')+appearanceFont(fontValid.value ? validatedFont.value : '')};
 });
-const dirty = computed(() => draft.value.themeMode!==props.appearance.themeMode || selection.value!==undefined || validatedFont.value !== props.appearance.font
+const dirty = computed(() => selection.value!==undefined || validatedFont.value !== props.appearance.font
  || colorRoles.some(role => draft.value.colors[role] !== props.appearance.colors[role]));
-function choosePreset(id:string,colors:Appearance['colors']){
- draft.value.colors={...colors};
- draft.value.themeMode=id==='mist'||id==='porcelain'?id:undefined;
-}
+const playerPresets = [{id:'graphite',label:'石墨灰'},{id:'slate',label:'青灰'}] as const;
 function setColor(role: ColorRole, value: string) {
  if (/^#[0-9a-f]{6}$/i.test(value)) draft.value.colors[role] = value.toLowerCase();
 }
@@ -69,7 +66,9 @@ function setColor(role: ColorRole, value: string) {
   <div class="sw-appearance-fields">
    <h3>颜色与字体</h3>
    <div v-if="presets" class="dmt-workspace-actions" aria-label="颜色预设">
-    <GameButton v-for="(colors,id) in presets" :key="id" @click="choosePreset(String(id),colors)">{{ id==='slate'?'青灰':id==='mist'?'雾白玻璃':id==='porcelain'?'暖瓷':'石墨灰' }}</GameButton>
+    <template v-for="preset in playerPresets" :key="preset.id">
+     <GameButton v-if="presets[preset.id]" @click="draft.colors={...presets[preset.id]}">{{ preset.label }}</GameButton>
+    </template>
    </div>
    <div class="sw-appearance-colors">
     <label v-for="role in colorRoles" :key="role">
