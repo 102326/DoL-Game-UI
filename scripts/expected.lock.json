@@ -710,8 +710,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "33a5e53660ea62134b0eff6b382154398ea024db1096bde3f79f2aa86f3142e6",
-      "assertionSites": 431
+      "sourceSha256": "680d4039bed6b6d68a7575fa3aa56b652bb50bd9014abb7d3be9dcea9296a445",
+      "assertionSites": 433
     },
     {
       "entry": "tests/attributes-material.cjs",

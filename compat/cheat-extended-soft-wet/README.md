@@ -1,16 +1,18 @@
-# Cheat Extended · Kraft Work 外观兼容 1.0.1
+# Cheat Extended · Kraft Work 外观兼容 1.0.2
 
-主要适配原作者 chris81605 的 Cheat Extended 1.20.3.1。另行覆盖 102326 独立维护的 1.20.3.1-rebuild.30；后者不是原作者发行版。两版技术名均为 `cheat extended`，只能启用其中一个。
+主要适配原作者 chris81605 的 Cheat Extended。另行覆盖 102326 独立维护的 1.20.3.1-rebuild.30；后者不是原作者发行版。两版技术名均为 `cheat extended`，只能启用其中一个。
 
-原作：https://github.com/chris81605/Degrees-of-Lewdity_Cheat_Extended 。本次核对作者 main 为 c36b23a6ab1899c7f780faa63945fe6e199a6355。兼容包不包含或替代原作，不改变原作许可证或署名。
+原作：https://github.com/chris81605/Degrees-of-Lewdity_Cheat_Extended 。兼容包不包含或替代原作，不改变原作许可证或署名。
 
 ## 安装
 
 需要 DoL 0.5.12.13、Soft & Wet 3.0 — Kraft Work，以及 Cheat Extended 1.20.3 系列或更新；界面接口基线为原作者 1.20.3.1，独立维护 rebuild.30 另行验证并明确兼容。加载顺序为 Host、UI、目标 Cheat Extended、本兼容包，重启后使用。不要同时安装原作者版和 rebuild.30。
 
-加载器最低声明使用 >=1.20.3，避免其四段预发布比较将 rebuild.30 错判为低于 1.20.3.1；真正是否应用外观仍由运行时版本与结构检查决定。最低声明不等于所有后续版本都支持。运行时使用最低版本及完整两级目录结构校验，不把原作者后续稳定版本精确锁死。实测为原作者 1.20.3.1 与 rebuild.30；未来版本和 Modernization／CE-R1 未验收，结构不匹配时退让。DoLCheatReboot 使用不同技术身份，不在本包范围。
+加载器最低声明使用 >=1.20.3，避免其四段预发布比较将 rebuild.30 错判为低于 1.20.3.1；真正是否应用外观仍由运行时版本与结构检查决定。最低声明不等于所有后续版本都支持。运行时使用最低版本及完整两级目录结构校验，不把原作者后续稳定版本精确锁死。内嵌「物品與衣櫃」在原作者 1.20.4 与 rebuild.30 上验证；未来版本和 Modernization／CE-R1 未验收，结构不匹配时退让。DoLCheatReboot 使用不同技术身份，不在本包范围。
 
 ## 变化与边界
+
+1.0.2 修复从原版作弊窗口切入「模组作弊」时，内嵌分类和内容区有时没有套用外观的问题。
 
 1.0.0 同步 Kraft Work 3.x 的单层 Acrylic、内容材质和交互反馈；没有新增作弊功能。
 
