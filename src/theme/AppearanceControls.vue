@@ -1,24 +1,61 @@
 <script setup lang="ts">
-import {computed, ref, watch} from 'vue';
+import {computed, onBeforeUnmount, ref, shallowRef, watch} from 'vue';
 import GameButton from '../ui/GameButton.vue';
 import {appearanceFont, appearancePalette, colorDefaults, colorRoles, emptyAppearance, fontPattern, readAppearance, type Appearance, type ColorRole} from './appearance';
 
-const props = defineProps<{appearance: Appearance}>();
+import {decodeLocalFont, importedFamily} from './local-font';
+const props = defineProps<{appearance: Appearance;previewTheme?:typeof appearancePalette;presets?:Readonly<Record<string,Appearance['colors']>>;importedName?:string;onSaveFont?:(file:File|null)=>Promise<void>}>();
 const emit = defineEmits<{apply: [appearance: Appearance]}>();
 const draft = ref(readAppearance(props.appearance));
+const selection = shallowRef<File|null>();
+const preview = shallowRef<FontFace>();
+const loading = ref(false), saving = ref(false), notice = ref('');
+let generation = 0;
+function clearSelection() {
+ generation++;
+ if(preview.value)document.fonts.delete(preview.value);
+ preview.value=undefined;selection.value=undefined;loading.value=false;notice.value='';
+}
+onBeforeUnmount(clearSelection);
+async function selectFile(event: Event) {
+ const input=event.currentTarget as HTMLInputElement;
+ const file=input.files?.[0]; input.value='';
+ if(!file)return;
+ clearSelection();const ticket=generation;
+ loading.value=true;
+ try {
+  const face=await decodeLocalFont(file,'SoftWet TTF Preview');
+  if(ticket!==generation)return;
+  document.fonts.add(face);preview.value=face;selection.value=file;
+ } catch(error) {
+  if(ticket===generation)notice.value=error instanceof Error?error.message:'无法预览字体。';
+ } finally {if(ticket===generation)loading.value=false}
+}
+function cancelDraft(){clearSelection();draft.value=readAppearance(props.appearance)}
+async function applyDraft(reset=false) {
+ const value=reset?emptyAppearance():readAppearance(draft.value);
+ const file=reset?null:selection.value;
+ saving.value=true;notice.value='';
+ try {
+  if(file!==undefined && props.onSaveFont)await props.onSaveFont(file);
+  emit('apply',value);clearSelection();draft.value=value;
+ } catch {notice.value='字体未保存。请检查本地存储空间和浏览器权限后重试。'}
+ finally {saving.value=false}
+}
 watch(() => props.appearance, value => {draft.value = readAppearance(value)});
 const labels: Record<ColorRole, string> = {background:'界面底色',panel:'面板',text:'主要文字',muted:'次要文字',accent:'强调色'};
 const validatedFont = computed(() => draft.value.font.trim());
 const fontValid = computed(() => !validatedFont.value || fontPattern.test(validatedFont.value));
-const sample = computed(() => appearancePalette(draft.value.colors));
+const sample = computed(() => (props.previewTheme??appearancePalette)(draft.value.colors));
 const sampleStyle = computed(() => {
  const p = sample.value.palette;
  return {'--sample-bg':p.background,'--sample-panel':p.panel,'--sample-text':p.text,'--sample-muted':p.muted,
-  '--sample-accent':p.accent,'--sample-on-accent':p.onAccent,
-  fontFamily:appearanceFont(fontValid.value ? validatedFont.value : '')};
+  '--sample-accent':p.accent,'--sample-on-accent':p.onAccent,'--sample-error':p.error??'#ffb0b0',
+  fontFamily:(preview.value ? '"SoftWet TTF Preview", ' : selection.value!==null && props.importedName ? `"${importedFamily}", ` : '')+appearanceFont(fontValid.value ? validatedFont.value : '')};
 });
-const dirty = computed(() => validatedFont.value !== props.appearance.font
+const dirty = computed(() => selection.value!==undefined || validatedFont.value !== props.appearance.font
  || colorRoles.some(role => draft.value.colors[role] !== props.appearance.colors[role]));
+const playerPresets = [{id:'graphite',label:'石墨灰'},{id:'slate',label:'青灰'}] as const;
 function setColor(role: ColorRole, value: string) {
  if (/^#[0-9a-f]{6}$/i.test(value)) draft.value.colors[role] = value.toLowerCase();
 }
@@ -28,6 +65,11 @@ function setColor(role: ColorRole, value: string) {
  <div class="dmt-setting-card dmt-control-sheet sw-appearance">
   <div class="sw-appearance-fields">
    <h3>颜色与字体</h3>
+   <div v-if="presets" class="dmt-workspace-actions" aria-label="颜色预设">
+    <template v-for="preset in playerPresets" :key="preset.id">
+     <GameButton v-if="presets[preset.id]" @click="draft.colors={...presets[preset.id]}">{{ preset.label }}</GameButton>
+    </template>
+   </div>
    <div class="sw-appearance-colors">
     <label v-for="role in colorRoles" :key="role">
      <span>{{ labels[role] }}</span>
@@ -44,6 +86,16 @@ function setColor(role: ColorRole, value: string) {
     <option value="Noto Serif CJK SC"/><option value="Georgia"/><option value="Verdana"/><option value="Menlo"/>
    </datalist>
    <p id="sw-local-font-help">{{ fontValid ? '填写已安装的字体名称。缺少字体或字形时会使用系统字体。' : '请填写一个字体名称，可用文字、数字、空格、点、下划线和连字符。' }}</p>
+   <template v-if="onSaveFont">
+    <label class="sw-appearance-font"><span>导入本地 TTF</span>
+     <input type="file" accept=".ttf,font/ttf" :disabled="saving" @change="selectFile">
+    </label>
+    <p>选好文件后先看右侧或下方预览，应用后字体保存在当前浏览器。缺少的字形沿用本机字体。</p>
+    <p v-if="selection || (selection!==null && importedName)">{{ selection ? '待应用' : '已应用' }} · {{ selection?.name ?? importedName }}
+     <GameButton :disabled="saving" @click="clearSelection();selection=importedName?null:undefined">移除导入字体</GameButton>
+    </p>
+    <p role="status">{{ loading ? '正在读取字体…' : notice }}</p>
+   </template>
   </div>
   <div class="sw-appearance-sample" :style="sampleStyle" aria-label="颜色与字体预览">
    <strong>外观预览</strong>
@@ -52,11 +104,12 @@ function setColor(role: ColorRole, value: string) {
     <small>中文、Latin 123 与次要文字</small>
     <div class="sw-appearance-states"><span>已选中</span><span>焦点</span><span>错误提示</span></div>
    </div>
-   <small v-if="sample.adjusted" role="status">部分颜色已校正，以保持暗色材质和文字对比。</small>
+   <small v-if="sample.adjusted" role="status">部分颜色已校正，以保持表面和文字对比。</small>
   </div>
   <div class="dmt-workspace-actions sw-appearance-actions">
-   <GameButton :disabled="!fontValid || !dirty" @click="emit('apply', readAppearance(draft))">应用并保存</GameButton>
-   <GameButton @click="emit('apply', emptyAppearance())">恢复默认外观</GameButton>
+   <GameButton :disabled="saving || loading || !fontValid || !dirty" @click="applyDraft()">应用并保存</GameButton>
+   <GameButton v-if="presets || onSaveFont" :disabled="saving || (!dirty && !loading)" @click="cancelDraft">取消试色</GameButton>
+   <GameButton :disabled="saving" @click="applyDraft(true)">恢复默认外观</GameButton>
   </div>
  </div>
 </template>
@@ -78,6 +131,6 @@ function setColor(role: ColorRole, value: string) {
 .sw-appearance-states span{padding:3px 6px;border-radius:4px}
 .sw-appearance-states span:first-child{background:var(--sample-accent);color:var(--sample-on-accent)}
 .sw-appearance-states span:nth-child(2){outline:1px solid var(--sample-accent)}
-.sw-appearance-states span:last-child{color:#ffb0b0}
+.sw-appearance-states span:last-child{color:var(--sample-error)}
 .sw-appearance-actions{grid-column:1/-1;margin:0;flex-wrap:wrap}
 </style>

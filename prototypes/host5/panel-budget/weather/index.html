@@ -1,0 +1,7 @@
+<!doctype html><html lang="zh-CN" data-stone-free><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>慢云与面板</title><style>
+:root{color-scheme:dark;font:16px/1.5 system-ui;background:#21242a}body{margin:0;padding:16px}main{position:relative;max-width:32rem;margin:auto}button{font:inherit;padding:.5em}
+#sky{height:100px;overflow:hidden;contain:strict;position:relative;background:#3b424b;border-radius:8px}
+#cloud{position:absolute;inset:-12px -48px;background:radial-gradient(ellipse at 25% 50%,#252b36 6%,transparent 39%),radial-gradient(ellipse at 65% 65%,#575d67 9%,transparent 45%),radial-gradient(ellipse at 90% 30%,#2c313a 14%,transparent 53%);transform:translateX(-12px)}
+dialog{box-sizing:border-box;width:min(28rem,calc(100vw - 24px))}
+</style><main><div id="sky" aria-label="天气"><div id="cloud"></div></div><button id="start">打开面板</button><div id="inspector"></div></main><script type="module" src="./lab.ts"></script></html>

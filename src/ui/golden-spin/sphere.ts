@@ -48,7 +48,7 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
   if(appearance==='diamond'){
    // The actual glass surface belongs to CSS so it can sample the DOM backdrop.
    c.save();c.translate(width*.5,height*.48);
-   const color='#d9e9ed';
+   const color=getComputedStyle(canvas).getPropertyValue('--sw-hub-glyph').trim()||'#d9e9ed';
    stroke([[0,-12],[11,0],[0,12],[-11,0],[0,-12]],color,1.5);
    stroke([[0,-6],[6,0],[0,6],[-6,0],[0,-6]],color,1.5);
    for(const points of [[[0,-15],[0,-9]],[[15,0],[9,0]],[[0,15],[0,9]],[[-15,0],[-9,0]]] as Array<Array<[number,number]>>)stroke(points,color,1.5);
@@ -293,6 +293,9 @@ export function createSphere(canvas: HTMLCanvasElement, changed: (phase: Phase) 
  scope.own(()=>setPhase('disposed'));
  scope.own(()=>{stop();meteors.length=0;emission=0});
  try{
+ if(appearance==='diamond'){
+  document.addEventListener('dol-ui-appearance-change',draw);scope.own(()=>document.removeEventListener('dol-ui-appearance-change',draw));
+ }
  const observer=new ResizeObserver(resize);scope.own(()=>observer.disconnect());observer.observe(canvas);
  media.addEventListener('change',motion);scope.own(()=>media.removeEventListener('change',motion));
  document.addEventListener('visibilitychange',visibility);scope.own(()=>document.removeEventListener('visibilitychange',visibility));resize();

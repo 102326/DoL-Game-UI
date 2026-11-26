@@ -1,0 +1,46 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Soft &amp; Wet · 主题预览</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#21262c;color:#e8edf0;font:15px/1.4 system-ui}
+header{padding:12px 20px;display:flex;gap:12px 22px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0}nav{display:flex;gap:5px;flex-wrap:wrap}button,select{font:inherit;color:inherit;background:#30373e;border:1px solid #69737e;border-radius:6px;padding:6px 10px;cursor:pointer}
+button[aria-pressed=true]{outline:2px solid #c8d8e3;outline-offset:1px}button:focus-visible,select:focus-visible{outline:2px solid #e9d99f;outline-offset:2px}
+i{display:inline-block;width:.8em;height:.8em;border-radius:50%;margin-right:6px;border:1px solid #8999a6;vertical-align:baseline}
+#framebox{overflow:auto;background:#101317;text-align:center}iframe{border:0;background:#14161a;height:760px;vertical-align:top}
+#status{margin:0;color:#f8c9b6}details{padding:8px 20px;color:#c3cbd2;overflow-wrap:anywhere}
+</style><header><h1>主题预览</h1><nav aria-label="配色">
+<button data-preset="dark" aria-pressed="true"><i style="background:#14161a"></i>静水暗玻</button>
+<button data-preset="mist" aria-pressed="false"><i style="background:#edf2f7"></i>雾白玻璃</button>
+<button data-preset="porcelain" aria-pressed="false"><i style="background:#f1efea"></i>暖瓷</button></nav>
+<label>视口 <select id="size"><option value="1120">宽屏 1120 × 760</option><option value="390">窄屏 390 × 760</option></select></label>
+<label>玻璃 <select id="glass"><option value="on">开启</option><option value="off">关闭</option></select></label>
+<button id="settings">界面设置</button><button id="shop">商品详情</button>
+<p id="status" role="status"></p></header>
+<div id="framebox"><iframe title="正文、侧栏、设置与商店" sandbox="allow-scripts"></iframe></div>
+<details><summary>候选双包 SHA-256 · Host / UI</summary>__PAIR__</details>
+<script>
+const frame=document.querySelector('iframe'), presets=[...document.querySelectorAll('[data-preset]')];
+const controls=[...presets,...['#glass','#shop','#settings'].map(s=>document.querySelector(s))];
+function enable(enabled){controls.forEach(el=>el.disabled=!enabled)}
+function send(action,value){enable(false);frame.contentWindow.postMessage({type:'sw-review',action,value},'*')}
+window.addEventListener('message',event=>{
+ if(event.source!==frame.contentWindow)return;
+ if(event.data?.type==='sw-review-state'){
+  presets.forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.preset===event.data.preset)));
+  document.querySelector('#glass').value=event.data.glass;
+  return;
+ }
+ if(event.data?.type!=='sw-review-result')return;
+ const {preset,error}=event.data;
+ document.querySelector('#status').textContent=error || '';
+ if(preset) presets.forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.preset===preset)));
+ enable(true);
+});
+const size=document.querySelector('#size');
+size.onchange=()=>{frame.style.width=size.value+'px'};
+presets.forEach(el=>el.onclick=()=>send('preset',el.dataset.preset));
+document.querySelector('#glass').onchange=event=>send('glass',event.target.value);
+document.querySelector('#settings').onclick=()=>send('settings');
+document.querySelector('#shop').onclick=()=>send('shop');
+enable(false);size.onchange();frame.srcdoc=__FIXTURE__;
+</script></html>

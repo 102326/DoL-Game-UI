@@ -45,3 +45,6 @@ html[data-dgu-font-scaled] .sf-motion-hub[data-official] .sf-motion-sheet {
 /* Official Hub chrome owns these controls; view outlet content remains caller-owned. */
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-sheet > :is(header,footer) > button{min-width:var(--dgu-control-hit,44px);min-height:var(--dgu-control-hit,44px)}
 html[data-stone-free][data-dol-midnight] .sf-motion-hub[data-official] .sf-motion-sheet > footer{flex-wrap:wrap}
+
+/* Official dock keeps a full-size, reachable control; its artwork alone recedes. */
+.sf-motion-hub[data-official] .sf-motion-ball.is-docked{width:56px;height:56px;border-radius:50%}

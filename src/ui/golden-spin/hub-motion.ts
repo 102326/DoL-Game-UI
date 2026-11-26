@@ -1,6 +1,7 @@
 import {gsap} from 'gsap';
 import {visualScope} from '../visual-scope';
 import {createSphere,type HubAppearance} from './sphere';
+import {createPrism} from './prism';
 
 /** Shared visual adapter: MotionHub owns tool activation, native layout and logical open state. */
 export function sphereHub(root:HTMLElement,appearance:HubAppearance='metal') {
@@ -8,9 +9,10 @@ export function sphereHub(root:HTMLElement,appearance:HubAppearance='metal') {
  try{
  const ball=root.querySelector<HTMLButtonElement>('.sf-motion-ball')!;
  const orbit=root.querySelector<HTMLElement>('.sf-motion-orbit')!;
- const canvas=document.createElement('canvas');canvas.className='spin-hub-canvas';canvas.setAttribute('aria-hidden','true');ball.append(canvas);scope.own(()=>canvas.remove());
- const makeSphere=()=>{const visual=createSphere(canvas,phase=>{root.dataset.spinBall=phase},appearance);visual.configure({duration:.65});return visual};
- let sphere:ReturnType<typeof createSphere>;
+ const canvas=appearance==='metal'?document.createElement('canvas'):undefined;
+ if(canvas){canvas.className='spin-hub-canvas';canvas.setAttribute('aria-hidden','true');ball.append(canvas);scope.own(()=>canvas.remove())}
+ const makeSphere=()=>{const visual=canvas?createSphere(canvas,phase=>{root.dataset.spinBall=phase},appearance):createPrism(ball,phase=>{root.dataset.spinBall=phase});visual.configure({duration:.65});return visual};
+ let sphere:ReturnType<typeof makeSphere>;
  const media=matchMedia('(prefers-reduced-motion: reduce)');
  type Property={value:string;priority:string;written:string;writtenPriority:string};
  const saved=new Map<HTMLElement,Map<string,Property>>(),tabs=new Map<HTMLElement,string|null>();

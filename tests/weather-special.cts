@@ -44,6 +44,8 @@ declare const must:<T>(value:T|null|undefined)=>T;
    const snap=()=>page.evaluate(()=>must(must(owner.snapshot().surfaces.find(s=>s.id==='settings')).state));
   assert.equal((await snap()).specialSkiesEnabled,true,'Actual settings enable the accepted sky renderer');assert.deepEqual((await snap()).specialSkyModels,[],'Ordinary settings do not eagerly create special textures');
    await page.evaluate(()=>{skyCanvases=[];originalCreateElement=document.createElement;document.createElement=new Proxy(originalCreateElement,{apply(target,thisArg,args){const node:unknown=Reflect.apply(target,thisArg,args);if(!(node instanceof HTMLElement))throw Error('Unexpected created element');if(args[0]==='canvas'){if(!(node instanceof HTMLCanvasElement))throw Error('Expected canvas');skyCanvases.push(node)}return node}})});
+  const waitProtection=()=>page.waitForFunction(()=>{const sample=must(document.querySelector('.dmt-reading-sample')).getBoundingClientRect(),canvas=must(document.querySelector('.sf-weather-canvas')).getBoundingClientRect(),s=must(must(owner.snapshot().surfaces.find(s=>s.id==='settings')).state);return s.protected.some(p=>Math.abs(p.x-(sample.x-canvas.x))<1&&Math.abs(p.y-(sample.y-canvas.y))<1&&Math.abs(p.width-sample.width)<1&&Math.abs(p.height-sample.height)<1)});
+  await page.locator('.dmt-reading-sample').scrollIntoViewIfNeeded();await waitProtection();
   // Compare every actual paragraph; the card's fractional rounded corner changes one RGB level when composited.
   const paragraphPixels=async()=>{const paragraphs=page.locator('.dmt-reading-demo p');assert.equal(await paragraphs.count(),2,'both reading sample paragraphs are protected');return Promise.all([0,1].map(i=>paragraphs.nth(i).screenshot()))};
   const reading=await paragraphPixels(),close=await page.locator('.dmt-close').screenshot(),plain=await page.locator('.sf-weather-canvas').screenshot();
@@ -51,6 +53,11 @@ declare const must:<T>(value:T|null|undefined)=>T;
    await page.evaluate(special=>{sample.bloodMoon=special==='blood-moon';SugarCube.State.variables.location=special==='tentacle'?'tentworld':'home';sample.temperature=special==='heat'?35:special==='cold'?-20:20;sample.Temperature.isExtreme=()=>special==='heat'||special==='cold';owner.refresh()},special);
     await page.waitForFunction(special=>must(must(owner.snapshot().surfaces.find(s=>s.id==='settings')).state).target.special===special&&must(must(owner.snapshot().surfaces.find(s=>s.id==='settings')).state).specialAmount===1,special);
     await page.waitForFunction(special=>document.querySelector<HTMLElement>('#peer>.kw-heading-weather')?.dataset.special===special,special);
+   if(special==='blood-moon'){
+    const scroll=await page.locator('.dmt-workspace').evaluate(n=>{const old=n.scrollTop;n.scrollTop=old+60;return {old,now:n.scrollTop}});
+    assert.notEqual(scroll.now,scroll.old,'active weather test exercises real scrolling');
+    await waitProtection();await page.locator('.dmt-workspace').evaluate((n,old)=>n.scrollTop=old,scroll.old);await waitProtection();
+   }
    const readingNow=await paragraphPixels();for(let i=0;i<reading.length;i++){if(!readingNow[i]!.equals(reading[i]!)){fs.writeFileSync(path.join(out,'reading-before-'+i+'.png'),reading[i]!);fs.writeFileSync(path.join(out,'reading-after-'+i+'.png'),readingNow[i]!);fs.writeFileSync(path.join(out,'failure-state.json'),JSON.stringify(await snap(),null,2));await page.screenshot({path:path.join(out,'failure.png')})}assert.ok(readingNow[i]!.equals(reading[i]!),special+' preserves reading paragraph '+i+' pixels')}assert.ok((await page.locator('.dmt-close').screenshot()).equals(close),special+' preserves close pixels');
    const canvas=await page.locator('.sf-weather-canvas').screenshot();assert.ok(!canvas.equals(plain),special+' paints a real atmosphere');fs.writeFileSync(path.join(out,special+'.png'),await page.locator('.dmt-settings-shell').screenshot());
    assert.equal(await page.locator('#peer .kw-weather-atmosphere').evaluate(n=>getComputedStyle(n).display),'block');assert.equal(await page.locator('#peer .kw-weather-atmosphere').evaluate(n=>getComputedStyle(n).pointerEvents),'none');

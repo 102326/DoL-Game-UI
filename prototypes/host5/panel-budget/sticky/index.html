@@ -1,0 +1,9 @@
+<!doctype html><html lang="zh-CN" data-stone-free><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>独立检查器接入</title>
+<style>
+:root{font:16px/1.5 system-ui;color-scheme:dark;background:#25282d}button{padding:6px}dialog[open]:not(:modal){position:fixed;margin:0;box-sizing:border-box;overflow:auto;background:#343840;color:white}
+#dol-midnight-controls[open]{inset:65px auto auto 8px;width:38vw}
+dialog[data-sticky-window]{inset:65px 8px auto auto;width:55vw;max-height:65vh}
+html:not([data-plain]) dialog[data-sticky-window]{background:#343840d9;backdrop-filter:blur(4px);animation:appear 80ms ease-out}
+@keyframes appear{from{opacity:.8}to{opacity:1}}
+#sf-native-inspector-open{z-index:1}
+</style><button id="settings">设置</button><button id="modal">模态窗口</button><div id="shared"><button id="ordinary">普通操作</button></div><dialog id="native"><button>完成</button></dialog><section id="passages"></section><tw-storydata hidden><tw-passagedata name="Start">SF_E16_ANCHOR</tw-passagedata></tw-storydata><script type="module" src="./lab.ts"></script></html>

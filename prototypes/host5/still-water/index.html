@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soft &amp; Wet 实包中性对照</title>
+<style>
+  body { margin: 0; background: #11151a; color: #e0e4e8; font: 14px system-ui }
+  header { padding: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap }
+  select { font: inherit; padding: .4em }
+  #source { padding: 0 12px 12px; overflow-wrap: anywhere }
+  #frames { overflow: auto }
+  iframe { display: none; border: 0; background: #151619; height: 760px }
+  iframe.active { display: block }
+</style>
+<header>
+  <strong>实包对照</strong>
+  <label>版本 <select id="version"></select></label>
+  <label>尺寸 <select id="size">
+    <option value="1280">宽屏 1280 × 760</option><option value="390">窄屏 390 × 760</option>
+  </select></label>
+  <label>三版同步玻璃 <select id="glass" disabled><option value="on">开启</option><option value="off">关闭</option></select></label>
+  <label>三版配色 <select id="colors" disabled><option value="default">各版出厂默认</option><option value="shared">统一自定义色</option></select></label>
+  <span id="color-status" role="status"></span>
+</header>
+<div id="source"></div>
+<div id="frames"></div>
+<script>
+  const manifests = __MANIFEST__;
+  const version = document.querySelector('#version');
+  const size = document.querySelector('#size');
+  const glass = document.querySelector('#glass');
+  const colors = document.querySelector('#colors');
+  const status = document.querySelector('#color-status');
+  const source = document.querySelector('#source');
+  const frames = [];
+  let ready = 0;
+  const pending = new Set();
+  let failures = [];
+
+  for (const [i, manifest] of manifests.entries()) {
+    version.add(new Option(manifest.label, String(i)));
+    const frame = document.createElement('iframe');
+    frame.src = i + '.html';
+    frame.title = manifest.label;
+    frame.setAttribute('sandbox', 'allow-scripts');
+    frame.addEventListener('load', () => {
+      if (++ready === manifests.length) glass.disabled = colors.disabled = false;
+    }, {once: true});
+    frames.push(frame);
+    document.querySelector('#frames').append(frame);
+  }
+
+  function render() {
+    const selected = Number(version.value);
+    frames.forEach((frame, i) => {
+      frame.classList.toggle('active', i === selected);
+      frame.style.width = size.value + 'px';
+    });
+    const selectedVersion = manifests[selected];
+    source.textContent = selectedVersion.label + ' | Host SHA-256 ' + selectedVersion.host + ' | UI SHA-256 ' + selectedVersion.ui;
+  }
+
+  window.addEventListener('message', event => {
+    if (!pending.has(event.source)) return;
+    const {type, mode, applied, message} = event.data || {};
+    if (type !== 'sync-colors-result' && type !== 'sync-colors-error') return;
+    pending.delete(event.source);
+    if (type === 'sync-colors-error' || mode !== colors.value || applied !== (mode === 'shared')) {
+      failures.push(message || '设置结果不一致');
+    }
+    status.textContent = failures.length ? '应用失败：' + failures.join('、') : '已更新 ' + (frames.length - pending.size) + '/' + frames.length;
+    if (!pending.size) colors.disabled = false;
+  });
+  colors.onchange = () => {
+    colors.disabled = true;
+    failures = [];
+    status.textContent = '正在通过设置应用…';
+    for (const frame of frames) {
+      pending.add(frame.contentWindow);
+      frame.contentWindow.postMessage({type: 'sync-colors', mode: colors.value}, '*');
+    }
+  };
+  glass.onchange = () => {
+    for (const frame of frames) frame.contentWindow.postMessage({type: 'sync-glass', enabled: glass.value === 'on'}, '*');
+  };
+  version.value = '2';
+  version.onchange = size.onchange = render;
+  render();
+</script>
+</html>

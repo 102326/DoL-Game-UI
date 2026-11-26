@@ -53,7 +53,7 @@ function portOf(server:ViteDevServer){const address=server.httpServer?.address()
   assert.equal(await dialog.evaluate(n=>n.matches(':modal')),true);
   const material=dialog.locator('[data-dgu-settings-material]'),handle=dialog.locator('.dmt-settings-header');
   assert.equal(await material.count(),1,'real settings mounts one material owner');
-  const grip=must(await handle.boundingBox()),dragX=grip.x+grip.width*.4,dragY=grip.y+grip.height*.5;
+  const initialShell=must(await material.boundingBox()),grip=must(await handle.boundingBox()),dragX=grip.x+grip.width*.4,dragY=grip.y+grip.height*.5;
   await page.mouse.move(dragX,dragY);await page.mouse.down();assert.equal(await material.getAttribute('data-dgu-material-moving'),'');
   await page.mouse.move(dragX+18,dragY+4,{steps:6});await page.mouse.up();
   assert.doesNotMatch(await material.evaluate(n=>(n as HTMLElement).style.translate),/^0px(?: 0px)?$/,'title drag moves the real shell');
@@ -61,8 +61,10 @@ function portOf(server:ViteDevServer){const address=server.httpServer?.address()
   assert.equal(await material.getAttribute('data-dgu-material-moving'),null,'settled settings releases transient motion protection');
   // Closing/resetting cannot leave a translated shell behind on the next opening.
   await page.locator('.dmt-close').click();await waitSettingsClosed(page);
-  assert.match(await material.evaluate(n=>(n as HTMLElement).style.translate),/^0px(?: 0px)?$/);
+  assert.match(await material.evaluate(n=>getComputedStyle(n).translate),/^(?:none|0px(?: 0px)?)$/);
   await page.evaluate(()=>theme.openSettings());await waitSettings(page);
+  const reopenedShell=must(await material.boundingBox());
+  assert.ok(Math.abs(reopenedShell.x-initialShell.x)<1&&Math.abs(reopenedShell.y-initialShell.y)<1,'reopened shell returns to its original position');
   for(const label of ['左右','上下']){
    await page.getByRole('button',{name:label,exact:true}).click();
    await page.waitForTimeout(750);

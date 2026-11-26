@@ -25,7 +25,7 @@ const cases=[
 ];
 (async()=>{
  const {createServer}=await import('vite'),vue=(await import('@vitejs/plugin-vue')).default;
- const server=await createServer({configFile:false,plugins:[vue(),{name:'adapter-material-fixture',configureServer(s){s.middlewares.use('/__adapter_material__',(_q,r)=>{r.setHeader('Content-Type','text/html');r.end('<!doctype html><html data-stone-free data-dol-midnight data-dgu-visualGlass data-dgu-visualMotion><body></body></html>')})}}],server:{host:'127.0.0.1',port:0},logLevel:'error'});
+ const server=await createServer({configFile:false,cacheDir:'node_modules/.vite-adapter-materials',plugins:[vue(),{name:'adapter-material-fixture',configureServer(s){s.middlewares.use('/__adapter_material__',(_q,r)=>{r.setHeader('Content-Type','text/html');r.end('<!doctype html><html data-stone-free data-dol-midnight data-dgu-visualGlass data-dgu-visualMotion><body></body></html>')})}}],server:{host:'127.0.0.1',port:0},logLevel:'error'});
  let browser;
  try{
   await server.listen();const address=server.httpServer?.address();assert.ok(address&&typeof address!=='string');const port=address.port;browser=await chromium.launch(browserOptions);
@@ -111,7 +111,25 @@ const cases=[
    await page.locator('#customOverlay>.sf-weather-canvas,#customOverlay+.sf-foreground-host[data-sf-foreground-for=customOverlay] .sf-weather-canvas').waitFor({timeout:3000});assert.equal(await page.locator('#customOverlay>.sf-weather-canvas,#customOverlay+.sf-foreground-host[data-sf-foreground-for=customOverlay] .sf-weather-canvas').count(),1,'reviewed full adapter uses the common complete material');assert.equal(await page.locator('#customOverlay>.kw-heading-weather').count(),0);
    assert.deepEqual(await page.locator('#customOverlayContainer').evaluate(n=>({filter:getComputedStyle(n).backdropFilter,fill:getComputedStyle(n).backgroundColor})),{filter:'none',fill:'rgba(0, 0, 0, 0)'},item.id+' removes the ancestor sampling barrier, not only the shell tint');
    if(item.id==='CheatExtendedSoftWet'){await page.evaluate(()=>{document.querySelector('#cheat_extended_options>.CE-category-bar>button')?.classList.add('CEtabSelected');document.querySelector('#cheat_extended_options>.CE-subtab-bar>button')?.classList.add('CEbuttonBarSelected');adapterNav.refresh()});await page.waitForFunction(()=>document.querySelectorAll('#cheat_extended_options .dmt-orbit-focus').length===2);assert.equal(await page.locator('#cheat_extended_options .dmt-orbit-focus').count(),2,'CE category and subcategory keep independent live contours')}
+   await page.addScriptTag({path:'dist/framework/host/index.js'});
    await page.evaluate(async()=>{const {startTheme}=await import('../src/theme/controller');startTheme(window)});
+   // The actual adapter has established its full match. Compare the shared shell
+   // and card roles, then withdraw that marker for one synchronous paint sample.
+   await page.evaluate(()=>{
+    DoLMidnightTheme.setPreference('visualGlass',false);
+    window.DoLUiHost!.theme!.apply({background:'#19232a',panel:'#302834'});
+   });
+   const sharedPaint=await page.locator('#customOverlay').evaluate(node=>{
+    const css=()=>getComputedStyle(node);
+    const full={surface:css().backgroundColor,card:css().getPropertyValue('--dgu-card').trim()};
+    const mark=node.getAttribute('data-dgu-adapter-match')!;
+    node.setAttribute('data-dgu-adapter-match','partial');
+    try{return {full,partial:css().getPropertyValue('--sw-owned-surface').trim()}}
+    finally{node.setAttribute('data-dgu-adapter-match',mark)}
+   });
+   assert.deepEqual(sharedPaint,{full:{surface:'rgb(25, 35, 42)',card:'#302834'},partial:''},item.id+' matched shell and fallback');
+   await page.evaluate(()=>{window.DoLUiHost!.theme!.apply({});DoLMidnightTheme.setPreference('visualGlass',true)});
+
    if(item.drift==='#modHubModManageContainer'){
     await page.addStyleTag({content:'#modHubRestorePanelOverlay{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;backdrop-filter:blur(2px)}#modHubRestorePanel{font:16px/1.6 sans-serif;background:rgb(31,31,31);width:min(720px,100%);overflow:hidden}.modhub-restore-panel-body{overflow:auto}#restore-action{transition:background 1s;box-shadow:0 1px 2px red}'});
     await page.evaluate(()=>{const n=document.createElement('div');n.id='modHubRestorePanelOverlay';n.className='modhub-restore-panel-overlay';n.innerHTML='<section id="modHubRestorePanel" class="modhub-restore-panel" role="dialog" aria-modal="true"><header class="modhub-restore-panel-header">Restore</header><div class="modhub-restore-panel-body"><input id="restore-value" value="native"><button id="restore-action">Preview</button><button id="restore-disabled" disabled>Disabled</button></div><footer class="modhub-restore-panel-footer">Footer</footer></section>';document.body.append(n);Reflect.set(window,'restoreCalls',0);must(n.querySelector<HTMLButtonElement>('#restore-action')).onclick=()=>Reflect.set(window,'restoreCalls',Number(Reflect.get(window,'restoreCalls'))+1)});

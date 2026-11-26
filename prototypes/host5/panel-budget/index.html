@@ -1,0 +1,20 @@
+<!doctype html><html lang="zh-CN" data-stone-free><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>面板动效对照</title><style>
+html{color-scheme:dark;font:16px/1.5 system-ui;background:#232529;color:#ededee}body{max-width:42rem;margin:5vh auto;padding:16px}button,a{font:inherit;color:inherit}button{padding:8px 14px}nav{display:flex;gap:20px;margin-bottom:24px}dialog{width:min(26rem,calc(100vw - 48px));border:1px solid #64666a;background:#34363a;border-radius:12px}#inspector{margin-top:16px}
+</style><nav><a href="?old">旧版播放</a><a href="?shared">Host 共享</a><a href="?only">独立接入</a></nav><button id="start" disabled>打开面板</button><main id="inspector"></main>
+<script type="module">
+import {attachInspector} from './independent.ts';
+const mode=location.search;
+if(mode!=='?old'){
+ await import('/framework/boot.ts');
+ attachInspector(window.DoLUiHost,document.querySelector('#inspector'));
+}
+if(mode==='?only')document.querySelector('#start').hidden=true;
+else {
+ const {startTheme}=await import('/src/theme/controller.ts');
+ startTheme();
+ const start=document.querySelector('#start');
+ start.onclick=()=>window.DoLMidnightTheme.openSettings();
+ start.disabled=false;
+}
+</script></html>

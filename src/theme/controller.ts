@@ -1,7 +1,6 @@
 import {visualScope} from '../ui/visual-scope';
 import {isolate,mountUI,unmountUI,supportsDialog} from '../runtime/presentation';
-import {sourceMotion} from '../ui/source-motion';
-import {fadeWindow} from '../ui/window-fade';
+import {panelFade} from '../ui/panel-fade';
 import {experiments} from '../runtime/experiments';
 import type {PanelKind} from '../panels/main';
 import {createApp,reactive,type App} from 'vue';
@@ -14,6 +13,7 @@ import {isMasterEnabled,setMasterEnabled} from '../runtime/master';
 import {acrylicParameters} from './acrylic';
 import {createReadingLayout} from './reading-layout';
 import {startThemePreferences, writePreference} from './preference-store';
+import {decodeLocalFont,fontRecord,importedFamily} from './local-font';
 import {appearanceFont, appearancePalette, colorRoles, readAppearance, type Appearance} from './appearance';
 import type {startLayout} from './layout';
 // Only UI controls used here; native game state remains outside this host contract.
@@ -37,11 +37,11 @@ type Runtime=Window & {
  };
 };
 declare const __STONE_FREE_CONSUMER__:boolean;
-export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<typeof startThemePreferences>){
+export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<typeof startThemePreferences>, presentation:'modal'|'modeless'='modal', host=root.DoLUiHost){
  if(root.DoLMidnightTheme)return;
  const store=loaded??startThemePreferences(root);
  const official=(typeof __STONE_FREE_CONSUMER__!=='undefined'&&__STONE_FREE_CONSUMER__)||document.documentElement.hasAttribute('data-stone-free');
- const scope=visualScope(),motion=sourceMotion();scope.own(()=>motion.dispose());let transition=0;
+ const scope=visualScope(),motion=panelFade(host?.panelEffects);scope.own(motion.dispose);let transition=0;
  const settingsPanel=()=>controls?.querySelector<HTMLElement>('.dmt-settings-shell')??controls;
  const compactViewport=()=>root.innerWidth<=600||Math.min(root.screen.width,root.screen.height)<=600;
  const scaleMax=150;
@@ -50,28 +50,92 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  const {preferences}=store.model;
  const reading=createReadingLayout();scope.own(()=>reading.destroy());
  setMasterEnabled(preferences.enabled);
- const state=reactive<SettingsState>({preferences,get appearance(){return store.model.appearance},scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:store.storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
+ const theme=official&&typeof host?.theme?.preview==='function'?host.theme:undefined;
+ const state=reactive<SettingsState>({preferences,themePresets:theme?.presets,previewTheme:theme?.preview,get appearance(){return store.model.appearance},scaleMax,saves:false,combat:false,wardrobe:false,characteristics:false,social:false,shop:false,shopPageExperimentAvailable:false,panels:{journal:false,traits:false,statistics:false,feats:false,cheats:false,attitudes:false,settings:false},message:store.storageError?'偏好读取不可用，当前使用默认设置。':'设置自动保存，立即生效。'});
  let appliedAppearance: Appearance | undefined, appearanceEnabled = false;
- function updateAppearance(enabled: boolean) {
-  if (appliedAppearance === state.appearance && enabled === appearanceEnabled) return;
-  appliedAppearance = state.appearance;
-  appearanceEnabled = enabled;
-  const html = document.documentElement;
-  const hasColors = enabled && colorRoles.some(role => !!state.appearance.colors[role]);
-  const hasFont = enabled && !!state.appearance.font;
-  const palette = hasColors ? appearancePalette(state.appearance.colors).palette : undefined;
-  const colors = [...colorRoles, 'hover', 'onAccent'] as const;
-  for (const role of colors) {
-   const property = `--sw-custom-${role === 'onAccent' ? 'on-accent' : role}`;
-   if (palette) html.style.setProperty(property, palette[role]);
-   else html.style.removeProperty(property);
+ const html=document.documentElement;
+ type Palette=ReturnType<typeof appearancePalette>['palette'];
+ type SurfacePalette=Palette & Partial<Pick<NonNullable<typeof theme>['current']['palette'],'canvas'|'rail'|'reading'|'well'|'shell'|'floating'|'error'|'warning'|'price'|'success'|'link'|'focus'>>;
+ function paintColors(palette?:SurfacePalette,mode?:'mist'|'porcelain',glassMin?:number){
+  if(mode&&glassMin!==undefined)html.style.setProperty('--sw-custom-glass-min',String(glassMin));
+  else html.style.removeProperty('--sw-custom-glass-min');
+  if(palette&&mode)html.setAttribute('data-sw-theme',mode);else html.removeAttribute('data-sw-theme');
+  const roles=[...colorRoles,'hover','onAccent','canvas','rail','reading','well','shell','floating','error','warning','price','success','link','focus'] as const;
+  for(const role of roles){
+   const property='--sw-custom-'+(role==='onAccent'?'on-accent':role);
+   const value=palette?.[role];
+   if(value)html.style.setProperty(property,value);else html.style.removeProperty(property);
   }
-  if (hasFont) html.style.setProperty('--sw-custom-font', appearanceFont(state.appearance.font));
-  else html.style.removeProperty('--sw-custom-font');
-  html.toggleAttribute('data-sw-custom-colors', hasColors);
-  html.toggleAttribute('data-sw-custom-font', hasFont);
+  html.toggleAttribute('data-sw-custom-colors',!!palette);
+  html.toggleAttribute('data-sw-sidebar-theme',!!theme&&!!palette);
  }
- scope.own(() => updateAppearance(false));
+ if(theme){
+  const refresh=()=>{
+   if(!appearanceEnabled)return;
+   paintColors(theme.current.active?theme.current.palette:undefined,theme.current.mode,theme.current.glassMin);
+   document.dispatchEvent(new Event('dol-ui-appearance-change'));
+  };
+  document.addEventListener('host5-theme-applied',refresh);
+  scope.own(()=>document.removeEventListener('host5-theme-applied',refresh));
+ }
+ function updateAppearance(enabled:boolean,publish=true){
+  if(appliedAppearance===state.appearance && enabled===appearanceEnabled)return;
+  const colorsChanged=enabled!==appearanceEnabled||!appliedAppearance||
+   colorRoles.some(role=>appliedAppearance?.colors[role]!==state.appearance.colors[role]);
+  appliedAppearance=state.appearance;
+  appearanceEnabled=enabled;
+  const hasFont=enabled&&(!!activeFont||!!state.appearance.font);
+  if (hasFont) html.style.setProperty('--sw-custom-font', (activeFont ? `'${importedFamily}', ` : '') + appearanceFont(state.appearance.font));
+  else html.style.removeProperty('--sw-custom-font');
+  html.toggleAttribute('data-sw-custom-font',hasFont);
+  if(theme){
+   if(!enabled)paintColors();
+   if(publish&&colorsChanged){
+    theme.apply(enabled?state.appearance.colors:{});
+    if(enabled)return; // The synchronous Host event already notified this consumer.
+   }
+  }else{
+   const hasColors=enabled&&colorRoles.some(role=>!!state.appearance.colors[role]);
+   paintColors(hasColors?appearancePalette(state.appearance.colors).palette:undefined);
+  }
+  document.dispatchEvent(new Event('dol-ui-appearance-change'));
+ }
+ let activeFont: FontFace | undefined;
+ let hasSavedFont=false;
+ function useFont(face?:FontFace,name?:string) {
+  if(activeFont) document.fonts.delete(activeFont);
+  activeFont=face;
+  if(face) document.fonts.add(face);
+  state.importedFontName=name;
+  appliedAppearance=undefined;
+  updateAppearance(state.preferences.enabled,false);
+  reading.refresh();
+ }
+ const fontReady=official && typeof indexedDB!=='undefined' ? fontRecord().then(async file=>{
+  if(!file || !scope.active())return;
+  hasSavedFont=true;
+  const face=await decodeLocalFont(file,importedFamily);
+  if(scope.active())useFont(face,file.name);
+ }).catch(()=>{if(scope.active())state.message='已使用系统字体。无法读取保存的字体文件。'}) : Promise.resolve();
+ let fontWrite=fontReady;
+ function saveFont(file: File|null) {
+  const task=fontWrite.then(async ()=>{
+   if(!scope.active())throw new Error('设置已经关闭。');
+   if(!file && !hasSavedFont)return;
+   // Persist an owned copy: the user's original file may move after import.
+   const copy=file ? new File([await file.arrayBuffer()],file.name,{type:'font/ttf'}) : null;
+   const face=copy ? await decodeLocalFont(copy,importedFamily) : undefined;
+   await fontRecord(copy);
+   hasSavedFont=!!copy;
+   if(scope.active())useFont(face,file?.name);
+  });
+  fontWrite=task.catch(()=>{});
+  return task;
+ }
+ scope.own(() => {
+  if(activeFont)document.fonts.delete(activeFont);
+  updateAppearance(false,false);
+ });
 
  const counts={mounts:0,queued:0};
  function syncShopPageExperiment(){
@@ -93,7 +157,11 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  function apply(){
   const html=document.documentElement,visualTier=official?2:state.preferences.visualTier;html.setAttribute('data-dgu-visual',String(state.preferences.enabled?visualTier:0));
   updateAppearance(official && state.preferences.enabled);
-  for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'))));
+  let glass=!!(root.CSS?.supports?.('backdrop-filter','blur(1px)')||root.CSS?.supports?.('-webkit-backdrop-filter','blur(1px)'));
+  try{const preset=host?.layerPresets?.surface;if(official&&preset)glass=preset.resolve(state.preferences.visualGlass?'acrylic':'static',root.CSS)==='acrylic'}catch{/* Existing settings CSS remains the fallback. */}
+  for(const key of ['visualGlass','visualMotion','visualGlow'] as const)html.toggleAttribute(`data-dgu-${key}`,state.preferences.enabled&&visualTier>0&&state.preferences[key]&&(key!=='visualGlass'||glass));
+  html.toggleAttribute('data-dgu-weather-off',!state.preferences.windowWeather);
+  if(!html.hasAttribute('data-dgu-visualMotion'))motion.cancel();
   html.toggleAttribute('data-dgu-visualPattern',state.preferences.enabled&&state.preferences.visualPattern);
   html.toggleAttribute('data-dgu-acrylic-adjustment',state.preferences.enabled&&official);
   for(const [key,value] of Object.entries(acrylicParameters(state.preferences.acrylicTransparency)))html.style.setProperty(key,value);
@@ -117,7 +185,8 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   const scale=isMasterEnabled()?state.preferences.fontScale:100;
   const html=document.documentElement;
   html.toggleAttribute('data-dgu-font-scaled',scale!==100);
-  html.style.setProperty('--dgu-font-scale',String(scale/100));
+  const value=String(scale/100);
+  if(html.style.getPropertyValue('--dgu-font-scale')!==value){html.style.setProperty('--dgu-font-scale',value);document.dispatchEvent(new Event('dol-ui-font-scale-change'))}
  }
  function persist(){
   store.save();
@@ -173,13 +242,15 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   if(!store.storageError)state.message=value?'Soft & Wet 界面已启用。':'已回到原版界面；显示偏好已保留。';
  }
  function finishClose(){
+  motion.dispose();
   document.documentElement.removeAttribute('data-dgu-settings-open');if(!controls)return;controls.removeAttribute('data-sf-leaving');
+  const restore=presentation==='modal'||controls.contains(document.activeElement);
   if(controls.open&&typeof controls.close==='function')controls.close();else controls.removeAttribute('open');
-  if(lastFocus?.isConnected)lastFocus.focus({preventScroll:true});lastFocus=null;
+  if(restore&&lastFocus?.isConnected)lastFocus.focus({preventScroll:true});lastFocus=null;
  }
  function fadeSettings(target:0|1,initial?:number){
   const panel=settingsPanel();if(!official||!panel)return;
-  return fadeWindow(motion,panel,target,initial);
+  return motion.to(panel,target,initial);
  }
  function closeSettings(){
   if(!controls?.open||controls.hasAttribute('data-sf-leaving'))return;
@@ -194,7 +265,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   ++transition;controls.removeAttribute('data-sf-leaving');
   if(opening){
    lastFocus=document.activeElement as HTMLElement;document.documentElement.setAttribute('data-dgu-settings-open','');
-   if(supportsDialog())controls.showModal();else{controls.classList.add('dmt-modeless');controls.setAttribute('open','')}
+   if(supportsDialog()){if(presentation==='modeless')controls.show();else controls.showModal()}else{controls.classList.add('dmt-modeless');controls.setAttribute('open','')}
   }
   if(opening||reversing)fadeSettings(1,opening?0:undefined);
   controls.querySelector<HTMLButtonElement>('.dmt-close')?.focus({preventScroll:true});
@@ -211,12 +282,19 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
   ++transition;motion.cancel();
   document.documentElement.removeAttribute('data-dgu-settings-open');unmountUI(app);controls?.remove();controls=document.createElement('dialog');controls.id='dol-midnight-controls';controls.setAttribute('aria-labelledby','dol-midnight-title');
   const host=document.createElement('div');host.className='dmt-settings-shell';controls.append(host);document.body.append(controls);
-  app=createApp(SettingsPanel,{state,onSaves:(value:boolean)=>setPage('saves',value),onPreference:setPreference,onAppearance:setAppearance,onCombat:(value:boolean)=>setPage('combat',value),onWardrobe:(value:boolean)=>setPage('wardrobe',value),onCharacteristics:(value:boolean)=>setPage('characteristics',value),onSocial:(value:boolean)=>setPage('social',value),onPanel:setPage,onShop:(value:boolean)=>setPage('shop',value),onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
+  app=createApp(SettingsPanel,{state,onSaves:(value:boolean)=>setPage('saves',value),onPreference:setPreference,onAppearance:setAppearance,onSaveFont:official?saveFont:undefined,onCombat:(value:boolean)=>setPage('combat',value),onWardrobe:(value:boolean)=>setPage('wardrobe',value),onCharacteristics:(value:boolean)=>setPage('characteristics',value),onSocial:(value:boolean)=>setPage('social',value),onPanel:setPage,onShop:(value:boolean)=>setPage('shop',value),onClose:closeSettings,onRecovery:setMaster});isolate('settings render',()=>mountUI(app!,host,nativeSettings),nativeSettings);
   // Native modal hit testing does not stop delegated game handlers from receiving our controls' events.
   for(const type of ['click','input','change','pointerdown','pointerup','touchstart','touchend','keyup'])controls.addEventListener(type,event=>event.stopPropagation());
   controls.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Escape'&&!isOpenSelectEscape(event)){event.preventDefault();closeSettings()}});
-  controls.addEventListener('close',()=>{if(!controls?.open){document.documentElement.removeAttribute('data-dgu-settings-open');++transition;motion.cancel();controls?.removeAttribute('data-sf-leaving')}});
-  controls.addEventListener('cancel',event=>{event.preventDefault();closeSettings()});
+  controls.addEventListener('close',event=>{
+   if(!scope.active()||event.target!==controls||controls.open)return;
+   document.documentElement.removeAttribute('data-dgu-settings-open');++transition;
+   motion.dispose();controls.removeAttribute('data-sf-leaving');
+  });
+  controls.addEventListener('cancel',event=>{
+   if(event.target!==event.currentTarget)return;
+   event.preventDefault();closeSettings();
+  });
   controls.addEventListener('click',event=>{if(event.target===controls)closeSettings()});
  }
  function target(){return document.getElementById('overlayButtons')||document.getElementById('startCaption')||document.getElementById('menu')||document.body}
@@ -235,7 +313,7 @@ export function startTheme(root:Runtime=window as Runtime, loaded?:ReturnType<ty
  }
  function listen(target:EventTarget,type:string,fn:EventListener){target.addEventListener(type,fn);scope.own(()=>target.removeEventListener(type,fn))}
  listen(root,'resize',resizeScale);listen(document,'DOMContentLoaded',schedule);listen(root,'load',schedule);listen(document,'dol-ui-saves-change',sync);listen(document,'dol-ui-combat-change',sync);listen(document,'dol-ui-wardrobe-change',sync);listen(document,'dol-ui-characteristics-change',sync);listen(document,'dol-ui-social-change',sync);listen(document,'dol-ui-panels-change',sync);listen(document,'dol-ui-shop-change',sync);listen(root,'backbutton',()=>{if(controls?.open)closeSettings()});
- root.DoLMidnightTheme={setPreference,setEnabled:(value:boolean)=>setPreference('enabled',value),mount,openSettings,getPreferences:()=>({...state.preferences}),getLifecycleCounts:()=>({...counts}),destroy(){if(!scope.active())return;scope.dispose();++transition;document.documentElement.removeAttribute('data-dgu-settings-open');for(const attribute of ['data-dgu-visual','data-dgu-visualGlass','data-dgu-visualMotion','data-dgu-visualGlow','data-dgu-visualPattern','data-dgu-compact-controls','data-dgu-acrylic-adjustment','data-dgu-options-centered'])document.documentElement.removeAttribute(attribute);document.documentElement.removeAttribute('data-dgu-font-scaled');for(const key of [...Object.keys(acrylicParameters(0)),'--dgu-option-text-align','--dgu-ui-extra-gap'])document.documentElement.style.removeProperty(key);document.documentElement.style.removeProperty('--dgu-font-scale');document.documentElement.style.removeProperty('--dgu-button-scale');document.documentElement.removeAttribute('data-dgu-buttons-scaled');experiments.wardrobePaged=false;experiments.shopDeferredPaint=false;document.documentElement.removeAttribute('data-dol-shop-deferred-paint');if(jqAttached)root.jQuery!(document).off('.dolMidnight');unmountUI(app);controls?.remove();expanded?.remove();root.DMTLayout?.destroy();document.documentElement.removeAttribute('data-dol-midnight');document.documentElement.removeAttribute('data-dol-midnight-comfortable');delete root.DoLMidnightTheme}};
+ root.DoLMidnightTheme={setPreference,setEnabled:(value:boolean)=>setPreference('enabled',value),mount,openSettings,getPreferences:()=>({...state.preferences}),getLifecycleCounts:()=>({...counts}),destroy(){if(!scope.active())return;scope.dispose();++transition;document.documentElement.removeAttribute('data-dgu-settings-open');for(const attribute of ['data-dgu-weather-off','data-dgu-visual','data-dgu-visualGlass','data-dgu-visualMotion','data-dgu-visualGlow','data-dgu-visualPattern','data-dgu-compact-controls','data-dgu-acrylic-adjustment','data-dgu-options-centered'])document.documentElement.removeAttribute(attribute);document.documentElement.removeAttribute('data-dgu-font-scaled');for(const key of [...Object.keys(acrylicParameters(0)),'--dgu-option-text-align','--dgu-ui-extra-gap'])document.documentElement.style.removeProperty(key);document.documentElement.style.removeProperty('--dgu-font-scale');document.documentElement.style.removeProperty('--dgu-button-scale');document.documentElement.removeAttribute('data-dgu-buttons-scaled');experiments.wardrobePaged=false;experiments.shopDeferredPaint=false;document.documentElement.removeAttribute('data-dol-shop-deferred-paint');if(jqAttached)root.jQuery!(document).off('.dolMidnight');unmountUI(app);controls?.remove();expanded?.remove();root.DMTLayout?.destroy();document.documentElement.removeAttribute('data-dol-midnight');document.documentElement.removeAttribute('data-dol-midnight-comfortable');delete root.DoLMidnightTheme}};
  mount();
  // Early mod injection can precede SugarCube/jQuery. These bounded retries only mount when needed.
  if(!jqAttached)for(const delay of [250,1000,3000]){scope.timeout(()=>{if(!jqAttached||needsMount())isolate('theme retry',mount,nativeSettings)},delay)}

@@ -102,12 +102,12 @@ html[data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-pane
 html[data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) :is(input[type=checkbox],input[type=radio],input[type=range]) {accent-color:var(--dgu-accent)}
 html[data-dol-midnight] .dgp-overlay:is([data-dgp-panel=settings],[data-dgp-panel=cheats]) :focus-visible {outline-color:var(--dgu-accent)}
 /* Shop keeps native product controls, semantic labels and colour swatches. */
-html[data-dol-midnight] .dgshop-host {background:var(--dgu-panel);border-color:var(--dgu-border)}
+html[data-dol-midnight] .dgshop-host {background:var(--sw-shell-solid,var(--dgu-panel));border-color:var(--sw-edge,var(--dgu-border));box-shadow:inset 0 1px var(--sw-top-edge,#ffffff18)}
 html[data-dol-midnight] .dgshop-host :is(button,select),
 html[data-dol-midnight] .dgshop-content :is(input[type=text],select,.category-tab,.btn-pagination,.button-back-to-shop,.filters-button,.clothingshop-options-button,.shop-legend-button,.try-button) {
  background:var(--dgu-panel);border-color:var(--dgu-border);color:var(--dgu-text);
 }
-html[data-dol-midnight] .dgshop-content :is(.clothing-item,.filters-div,.options-div,.shop-legend) {background:var(--dgu-panel);border-color:var(--dgu-border)}
+html[data-dol-midnight] .dgshop-content :is(.clothing-item,.filters-div,.options-div,.shop-legend) {background:var(--sw-well-solid,var(--dgu-panel));border-color:var(--sw-edge,var(--dgu-border))}
 html[data-dol-midnight] .dgshop-content :is(.filters-div,.options-div,.shop-legend) {color:var(--dgu-text)}
 html[data-dol-midnight] .dgshop-content #warmth-description {background:var(--dgu-panel);border-color:var(--dgu-border)}
 html[data-dol-midnight] .dgshop-content .filter-block {border-color:var(--dgu-border)}
@@ -116,15 +116,15 @@ html[data-dol-midnight] .dgshop-content .dgshop-detail-body #mannequin {backgrou
 /* Shop selection uses a local indicator, not a blue tile or a lit full edge. */
 html[data-dol-midnight] .dgshop-content .category-tab {min-width:44px;min-height:44px;border-radius:8px;border-color:rgba(255,255,255,.07)}
 html[data-dol-midnight] .dgshop-content .category-tab>img {filter:none}
-html[data-dol-midnight] .dgshop-content .category-tab.active {background:var(--kw-island);border-color:rgba(255,255,255,.07);box-shadow:inset 0 -2px var(--dgu-accent)}
-html[data-dol-midnight] .dgshop-content .dgshop-selected {background:var(--kw-island);border-color:transparent;box-shadow:inset 2px 0 var(--dgu-accent)}
+html[data-dol-midnight] .dgshop-content .category-tab.active {background:var(--sw-well-solid,var(--kw-island));border-color:var(--sw-edge,rgba(255,255,255,.07));box-shadow:inset 0 -2px var(--sw-accent,var(--dgu-accent))}
+html[data-dol-midnight] .dgshop-content .dgshop-selected {background:var(--sw-well-solid,var(--kw-island));border-color:transparent;box-shadow:inset 2px 0 var(--sw-accent,var(--dgu-accent))}
 html[data-dol-midnight] .dgshop-content .dgshop-purchase :is(.buy-button,.try-button) {background:var(--kw-control);border-color:rgba(255,255,255,.07);border-radius:8px;box-shadow:inset 0 1px rgba(255,255,255,.025)}
-html[data-dol-midnight] .dgshop-content .dgshop-purchase .buy-buttons>.buy-button:has(>.buy-button-inner:not(.disabled)) {box-shadow:inset 0 -2px rgba(139,174,163,.45)}
+html[data-dol-midnight] .dgshop-content .dgshop-purchase .buy-buttons>.buy-button:has(>.buy-button-inner:not(.disabled)) {box-shadow:inset 0 -2px var(--sw-accent,var(--dgu-accent))}
 html[data-dol-midnight] .dgshop-content :is(.buy-button-inner,.try-button):not(.disabled):active {background:var(--kw-control-pressed)}
 @media(hover:hover) {
  html[data-dol-midnight] .dgshop-content :is(.category-tab,.buy-button-inner,.try-button):not(.disabled):hover {background:var(--kw-control-hover)}
 }
-html[data-dol-midnight] :is(.dgshop-host,.dgshop-content) :focus-visible {outline-color:var(--dgu-accent)}
+html[data-dol-midnight] :is(.dgshop-host,.dgshop-content) :focus-visible {outline-color:var(--sw-accent,var(--dgu-accent))}
 @media(hover:hover) {
  html[data-dol-midnight] :is(.dgs-host,.dcu-root) button:not(:disabled):not([aria-pressed=true]):not([aria-current=location]):hover,
  html[data-dol-midnight] .dcu-root .dcu-group label:not(:has(input:checked,input:disabled)):hover,
@@ -415,7 +415,7 @@ html[data-dol-midnight] .dgshop-content :is(.filter-button,.options-button){disp
 html[data-dol-midnight] .dgshop-content :is(.filter-button,.options-button):hover{background:rgba(255,255,255,.07)}
 html[data-dol-midnight] .dgshop-content :is(.filter-button,.options-button):active{background:rgba(255,255,255,.1)}
 @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
- html[data-dol-midnight][data-dgu-visualGlass] .dgshop-content :is(.filters-div,.options-div,.shop-legend){background:linear-gradient(to bottom,rgba(255,255,255,.035),transparent 90%),var(--dgu-acrylic-base);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px rgba(255,255,255,.09),inset 0 -1px rgba(0,0,0,.16),0 20px 60px rgba(0,0,0,.3)}
+ html[data-dol-midnight][data-dgu-visualGlass] .dgshop-content :is(.filters-div,.options-div,.shop-legend){background:var(--sw-shell-glass,var(--dgu-acrylic-base));backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px var(--sw-top-edge,#ffffff20),0 20px 60px rgba(0,0,0,.3)}
 }
 /* SugarCube owns this dialog, its contents and close/keyboard handlers. Only
    the outer surface changes; native text and form content remain stable. */

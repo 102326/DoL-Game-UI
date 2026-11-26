@@ -18,6 +18,11 @@ export interface MountContext {
  onCleanup(callback: Cleanup): void;
  onScene(callback: () => void): Cleanup;
 }
+export type MaterialMode = 'acrylic' | 'static';
+export interface SurfacePreset {
+ resolve(mode: MaterialMode, css?: Pick<typeof CSS, 'supports'>): MaterialMode;
+ setup(mode: MaterialMode): MountRequest['setup'];
+}
 export interface MountRequest {
  id: string;
  parent: HTMLElement;
@@ -74,7 +79,30 @@ export interface Participant {
  provideView(view: ViewContribution): Cleanup;
  dispose(): void;
 }
+// Optional foreground playback. Callers keep ownership of visibility, focus and the final state.
+export type SurfaceOutcome = 'finished' | 'cancelled';
+export interface SurfacePlayback {
+ readonly finished: Promise<SurfaceOutcome>;
+}
+export interface SurfaceMotion {
+ track(frames: Keyframe[], enter: number, exit: number): {
+  to(node: HTMLElement, shown: boolean, initial?: number): SurfacePlayback | undefined;
+  cancel(): void;
+  release(): void;
+ };
+}
 export interface Host {
+ readonly theme?: Readonly<import('./materials/theme').ThemeCapability>;
+ /** Optional local material recipe. Participant.mount retains ownership and cleanup. */
+ readonly layerPresets?: Readonly<{
+  acrylicScrim?: MountRequest['setup'];
+  surface?: Readonly<SurfacePreset>;
+  /** Apply a budgeted ping-pong transform to a caller-styled child. The mount owns cleanup. */
+  driftingTexture?: (context:MountContext,texture:HTMLElement,distancePercent:number,durationMs:number)=>(moving:boolean)=>void;
+ }>;
+ readonly panelEffects?: Readonly<SurfaceMotion>;
+ /** Decorative transitions never take foreground playback capacity. */
+ readonly environmentEffects?: Readonly<SurfaceMotion>;
  readonly protocolVersion: typeof PROTOCOL;
  register(id: string): Readonly<Participant>;
  binding(): Binding;

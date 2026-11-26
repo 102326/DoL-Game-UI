@@ -9,7 +9,7 @@
 #dol-midnight-sidebar-button:hover{background:#303039}
 #dol-midnight-sidebar-button.dmt-fallback{position:fixed;right:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:10000;width:180px;max-width:calc(100vw - 20px);box-shadow:0 8px 28px #0008}
 #ui-bar.stowed #dol-midnight-sidebar-button{visibility:hidden!important;pointer-events:none}
-#dol-midnight-controls>.dmt-settings-shell{box-sizing:border-box;width:min(840px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 24px);margin:auto;padding:0;overflow:auto;border:1px solid var(--dgu-border);border-radius:22px;background:var(--dgu-surface);color:var(--dgu-text);font:calc(15px * var(--dgu-font-scale,1))/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:left;box-shadow:0 24px 80px #000a;color-scheme:dark}
+#dol-midnight-controls>.dmt-settings-shell{box-sizing:border-box;width:min(840px,calc(100vw - 24px));max-width:none;max-height:calc(var(--dmt-visible-height,100dvh) - 24px);margin:auto;padding:0;overflow:auto;border:1px solid var(--dgu-border);border-radius:22px;background:var(--dgu-surface);color:var(--dgu-text);font:calc(15px * var(--dgu-font-scale,1))/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:left;box-shadow:0 24px 80px #000a;color-scheme:dark}
 #dol-midnight-controls *{box-sizing:border-box}
 #dol-midnight-controls::backdrop{background:#09090dbb}
 #dol-midnight-controls #dol-status-preview:empty{display:none}
@@ -36,7 +36,7 @@
 /* Reading scale belongs to the native text surface. Compatible overlays opt in
    through their own adapter; an arbitrary body portal has no layout contract. */
 html[data-dgu-font-scaled] :is(#passages,#ui-dialog-body,#customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves])){font-size:calc(1rem * var(--dgu-font-scale,1))}
-html[data-dgu-buttons-scaled] :is(.dgw-root,.dgshop-toolbar,.dcu-root,.dgs-host,.dgp-host,.dgc-host,.dgu-inspector,.dgu-surface-header,.dgs-navigation,.dgw-reference-compare,.dgshop-reference-comparison) :is(button,input[type=button],input[type=submit]):not(#ui-bar *):not(:where(.dgw-exits,.dgw-preserved,.dgw-services,.dgw-actions,.dgw-equipment,.dgw-warmth-content,.dgw-detail-native) *){
+html[data-dgu-buttons-scaled] :is(.dgw-root,.dgshop-toolbar,.dcu-root,.dgs-host,.dgp-host,.dgc-host,.dgu-inspector,.dgu-surface-header,.dgs-navigation,.dgw-reference-compare) :is(button,input[type=button],input[type=submit]):not(#ui-bar *):not(:where(.dgw-exits,.dgw-preserved,.dgw-services,.dgw-actions,.dgw-equipment,.dgw-warmth-content,.dgw-detail-native) *){
  padding:var(--dgu-control-py) var(--dgu-control-px);min-height:var(--dgu-control-hit);box-sizing:border-box;max-width:100%;white-space:normal;overflow-wrap:anywhere;
 }
 :is(#dol-midnight-controls input[type=range],.dgp-overlay:has(>.dgp-host):is([data-dgp-panel=settings],[data-dgp-panel=cheats],[data-dgp-panel=attitudes]) .settingsGrid>:is(.settingsToggleItem,.settingsToggleItemWide)>label>input[type=range]:only-of-type){width:50%;min-width:0;accent-color:var(--dgu-accent)}
@@ -57,7 +57,7 @@ html[data-dgu-buttons-scaled] :is(.dgw-root,.dgshop-toolbar,.dcu-root,.dgs-host,
 
 /* Full-viewport input shield; the inner shell owns window geometry and scrolling. */
 #dol-midnight-controls{position:fixed;inset:0;box-sizing:border-box;width:auto;max-width:none;height:auto;max-height:none;margin:0;padding:12px;border:0;border-radius:0;background:transparent;color:var(--dgu-text);box-shadow:none;overflow:hidden;backdrop-filter:none;-webkit-backdrop-filter:none}
-#dol-midnight-controls[open]{display:grid;grid-template:minmax(0,1fr)/minmax(0,1fr);place-items:center;animation:none}
+#dol-midnight-controls[open]{bottom:var(--dmt-ime-inset,0px);display:grid;grid-template:minmax(0,1fr)/minmax(0,1fr);place-items:center;animation:none}
 #dol-midnight-controls:not([open]){display:none}
 #dol-midnight-controls.dmt-modeless{inset:0;height:auto}
 #dol-midnight-controls>.dmt-settings-shell{position:relative;display:flex;flex-direction:column;height:var(--dgu-window-height,min(800px,calc(100dvh - 24px)));min-height:0;max-width:100%;max-height:100%;overflow:hidden;margin:0}

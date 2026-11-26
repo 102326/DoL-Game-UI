@@ -15,5 +15,5 @@ export function referenceShelf(host:Host,owner:Participant){
    context.element.append(card,note,button);return()=>{button.onclick=null};
   }}));
  }
- return {remember(item:ReferenceItem){remember('wardrobe-snapshot','衣柜参考快照',[item.name,`${item.slot} · ${item.colour||'颜色未知'}`])},rememberProduct(item:Readonly<{title:string;price:string;owned:string}>){remember('shop-snapshot','商品参考快照',[item.title,item.price||'未提供价格文字',item.owned])},dispose(){for(const withdraw of views.values())withdraw();views.clear()}};
+ return {remember(item:ReferenceItem){remember('wardrobe-snapshot','衣柜参考快照',[item.name,`${item.slot} · ${item.colour||'颜色未知'}`])},dispose(){for(const withdraw of views.values())withdraw();views.clear()}};
 }

@@ -39,7 +39,7 @@ ADAPTERS = {
     'mouth-compat-051213': ('LyraMouthCompat051213', 'Lyra', '=0.5.12.13-1.0.1a-1004.1-goose-ucb', 'mouth-compat'),
     'smartphone-soft-wet': ('SmartPhoneSoftWet', 'SmartPhone Alpha', '>=0.3.91', 'smartphone-soft-wet'),
 }
-HOST_REQUIREMENT = '>=0.1.2-experimental && <0.2.0'
+HOST_REQUIREMENT = '=1.0.0'
 PROTOCOL = '0.1-experimental'
 ENTRY_FIELDS = ['scriptFileList', 'scriptFileList_inject_early', 'styleFileList', 'tweeFileList', 'imgFileList', 'additionFile']
 
@@ -73,16 +73,11 @@ def check_version_sources(root=None):
     runtime = (root / 'framework/official-ui/main.ts').read_text(encoding='utf-8')
     assert re.search(r"import\s*\{\s*version\s+as\s+productVersion\s*\}\s*from\s*['\"]\.\./\.\./package\.json['\"]", runtime) and re.search(r'visualVersion\s*=\s*productVersion\b', runtime), 'CJ3C_VERSION_RUNTIME'
     producer = root / 'scripts/package-framework.py'
-    assert literal_assignment(producer, 'host_requirement') == HOST_REQUIREMENT, 'CJ3C_HOST_RANGE'
+    assert literal_assignment(producer, 'official_host_requirement') == HOST_REQUIREMENT, 'CJ3C_HOST_RANGE'
     protocol = re.search(r"export const PROTOCOL\s*=\s*'([^']+)'", (root / 'framework/contracts.ts').read_text(encoding='utf-8'))
     assert protocol and protocol.group(1) == PROTOCOL, 'CJ3C_HOST_PROTOCOL'
-    # This is the existing >=0.1.2-experimental && <0.2.0 contract, not a product-version freeze.
-    compatible = re.fullmatch(r'0\.1\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?', host)
-    assert compatible, 'CJ3C_HOST_COMPATIBILITY'
-    patch_version, prerelease = int(compatible.group(1)), compatible.group(2)
-    identifiers = prerelease.split('.') if prerelease else []
-    assert all(not item.isdigit() or item == '0' or not item.startswith('0') for item in identifiers), 'CJ3C_HOST_COMPATIBILITY'
-    assert patch_version >= 2 and (patch_version > 2 or not identifiers or not identifiers[0].isdigit() and identifiers[0] >= 'experimental'), 'CJ3C_HOST_COMPATIBILITY'
+    # The candidate pair is pinned independently of the public SDK protocol.
+    assert HOST_REQUIREMENT == '=' + host, 'CJ3C_HOST_COMPATIBILITY'
     return {'status': 'PASS', 'projectId': project['projectId'], 'ui': ui, 'officialRuntime': ui,
             'core': core_version, 'hostPackage': host, 'hostProtocol': PROTOCOL, 'uiHostRequirement': HOST_REQUIREMENT}
 
@@ -130,7 +125,8 @@ def adapter_policy(directory):
     lists.update(scriptFileList=[stem + '.js'], styleFileList=[] if mouth else [stem + '.css'], additionFile=['README.md', 'LICENSE'])
     suffix = requirement.removeprefix('>=').removeprefix('=') + ('-plus' if requirement.startswith('>=') else '')
     version = checked_version(json.loads((ROOT / 'compat' / directory / 'boot.json').read_text(encoding='utf-8'))['version'])
-    return {'name': name, 'version': version, 'dependenceInfo': deps, **lists}, f'{name}-{target}-{suffix}-v{version}.mod.zip'
+    target_name = {'原版优化': 'Optimization', 'cheat extended': 'CheatExtended'}.get(target, target)
+    return {'name': name, 'version': version, 'dependenceInfo': deps, **lists}, f'{name}-{target_name}-{suffix}-v{version}.mod.zip'
 
 
 def check_adapter_manifest(boot, directory):
@@ -274,7 +270,7 @@ def check_package(path, name):
     }
     lists = {'scriptFileList': ['index.js'], 'styleFileList': [], 'tweeFileList': [], 'imgFileList': [], 'additionFile': ['README.md', 'LICENSE']}
     if name == 'DoLGameUI':
-        deps += [{'modName': 'StoneFreeHost', 'version': '>=0.1.2-experimental && <0.2.0'}, {'modName': 'TweeReplacer', 'version': '>=1.0.0'}, {'modName': 'GameVersion', 'version': '=0.5.12.13'}]
+        deps += [{'modName': 'StoneFreeHost', 'version': HOST_REQUIREMENT}, {'modName': 'TweeReplacer', 'version': '>=1.0.0'}, {'modName': 'GameVersion', 'version': '=0.5.12.13'}]
         lists.update(styleFileList=['style.css'], scriptFileList_inject_early=['shop-page-experiment.js', 'modhub-performance.js'])
         expected['style.css'] = ROOT / 'dist/framework/official-ui/style.css'
         expected['shop-page-experiment.js'] = ROOT / 'dist/shop-page-experiment.js'
@@ -282,7 +278,7 @@ def check_package(path, name):
         expected['MODHUB-PERFORMANCE-NOTICE.txt'] = ROOT / 'MODHUB-PERFORMANCE-NOTICE.txt'
         for filename in ['ui.d.ts', 'wardrobe.d.ts']:
             expected['types/' + filename] = ROOT / 'dist/types' / filename
-        release_notes = [doc for doc in [f'docs/RELEASE_{version}.md', f"docs/INSTALL_{'.'.join(version.split('.')[:2])}.md"] if (ROOT / doc).is_file()]
+        release_notes = [f'docs/RELEASE_{version}.md', f"docs/INSTALL_{'.'.join(version.split('.')[:2])}.md"]
         for filename in ['docs/UI_SETTINGS.md', 'docs/OPTIONAL_ADAPTERS.md', *release_notes, 'UPSTREAM-RENDERER-LICENSE', 'UPSTREAM-RENDERER-NOTICE.md']:
             expected[filename] = ROOT / filename
         notices = []

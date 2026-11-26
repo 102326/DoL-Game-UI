@@ -1,0 +1,35 @@
+<!doctype html><html lang="zh-CN" data-stone-free data-sw-cloud-study="light">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>中性工作台</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#14161a;color:#e6e9ee;font:16px/1.55 system-ui}
+#ui-bar{position:relative;min-height:48px;padding:.75rem 1rem}#overlayButtons{display:inline-flex;gap:8px}
+#story{padding:1rem 4vw}.hidden{display:none!important}
+#customOverlay{position:relative;width:min(670px,92%);margin:1.5rem auto;height:clamp(260px,46vh,400px);padding:1rem;border-radius:18px}
+#customOverlayTitle{min-height:48px;display:flex;align-items:center;justify-content:space-between}
+button{font:inherit;cursor:pointer}
+</style><!--package-styles--><body>
+<aside id="ui-bar"><div id="overlayButtons"><button id="attributes" class="macro-button link-internal">属性</button></div></aside>
+<main id="story"><div id="passages"><article class="passage" data-passage="Neutral"><h1>阴天的工作台</h1>
+<p>从侧栏打开设置，或在下方属性窗口比较顶边光影。切换上方四档可直接对照。</p></article></div></main>
+<div id="customOverlayContainer"><section id="customOverlay" class="hidden" data-overlay="characteristics">
+<header id="customOverlayTitle">属性<button id="close">关闭</button></header>
+<div id="customOverlayContent"><section id="characteristics-display"><h3 id="base-characteristics">观察记录</h3>
+<p>留意窗顶云脊与侧光交会处，再看这段正文是否保持清晰。</p><button id="action">记录一次</button> <output id="count">0</output></section></div></section></div>
+<script>
+ window.Weather={name:'heavyClouds',precipitation:'none',overcast:.9};
+ const overlay=document.querySelector('#customOverlay');
+ document.querySelector('#attributes').onclick=()=>overlay.classList.remove('hidden');
+ document.querySelector('#close').onclick=()=>overlay.classList.add('hidden');
+ const count=document.querySelector('#count');
+ document.querySelector('#action').onclick=()=>count.value=String(Number(count.value)+1);
+ window.addEventListener('message',event=>{
+   if(event.source!==parent || !['light','base','still','solid'].includes(event.data?.mode)) return;
+   const mode=event.data.mode,root=document.documentElement;
+   if(mode==='light'||mode==='still') root.dataset.swCloudStudy=mode;
+   else delete root.dataset.swCloudStudy;
+   window.DoLGameUI.setPreference('visualGlass',mode!=='solid');
+ });
+</script><!--boot--><script>
+ document.querySelector('#attributes').click();
+ parent.postMessage('cloud-study-ready','*');
+</script></body></html>

@@ -1,45 +1,56 @@
-/* Opt-in appearance for the official UI. Compatibility portals extend the existing adapter scope in compat-settings.css. */
+/* Palette projection for official surfaces and reviewed, fully matched compatibility roots. */
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
  #dol-midnight-controls,#dol-midnight-controls>.dmt-settings-shell,
  #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves]),
  .passage.dgp-overlay:has(>.dgp-host),.dgw-root,.dgw-reference-chip,.dgw-reference-compare,.dgshop-host,.dgshop-content,.dcu-root,.dcu-shell,.sf-motion-hub[data-official],
  :is(.dgc-host,.dgs-host,.dgp-host)>.dgu-surface,
  dialog.dgu-surface:is([data-sf-workspace=drawer],:has(>.dgu-surface-content>.dgu-inspector))
+),
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment] [data-dgu-adapter-match=full]:is(
+ #customOverlay:is([data-dgu-adapter=ModHubSoftWet],[data-dgu-adapter=MapleBirchSoftWet],[data-dgu-adapter=DolOptimizationSoftWet],[data-dgu-adapter=CheatExtendedSoftWet]),
+ #modHubManagerToolsMenu[data-dgu-adapter=ModHubSoftWetTools],.modhub-modal-backdrop[data-dgu-adapter=ModHubSoftWetModal],
+ #modHubRestorePanelOverlay[data-dgu-adapter=ModHubSoftWetRestore],.CEDISPLAY[data-dgu-adapter=CheatExtendedInlineSoftWet],
+ #phone-wrapper[data-dgu-adapter=SmartPhoneSoftWet],#smartphone_debug[data-dgu-adapter=SmartPhoneSoftWetDebug]
 ){
- --sf-main:var(--sw-custom-background);
- --sf-reading:var(--sw-custom-panel);
+ --sw-owned-surface:var(--sw-custom-shell,var(--sw-custom-background));
+ --sw-owned-panel:var(--sw-custom-panel);
+ --q-fill:var(--sw-custom-glass);
+ --q-well:var(--sw-owned-panel);
  --sf-ink:var(--sw-custom-text);
  --sf-muted:var(--sw-custom-muted);
- --sf-edit:var(--sw-custom-accent);
- --kw-shell:var(--sw-custom-glass);
- --dgu-acrylic-base:var(--sw-custom-glass);
- --kw-island:var(--sw-custom-panel);
- --kw-slider:var(--sw-custom-accent);
- --dgu-surface:var(--sw-custom-background)!important;
- --dgu-panel:var(--sw-custom-panel)!important;
- --dgu-card:var(--sw-custom-panel)!important;
+ --kw-island:var(--sw-owned-panel);
+ --dgu-surface:var(--sw-owned-surface)!important;
+ --dgu-panel:var(--sw-owned-panel)!important;
+ --dgu-card:var(--sw-owned-panel)!important;
  --dgu-hover:var(--sw-custom-hover)!important;
- --dgu-selected:var(--sw-custom-hover)!important;
+ --dgu-accent:var(--sw-custom-accent)!important;
  --dgu-text:var(--sw-custom-text)!important;
  --dgu-secondary:var(--sw-custom-muted)!important;
- --dgu-accent:var(--sw-custom-accent)!important;
  --dgu-on-accent:var(--sw-custom-on-accent)!important;
- --q-fill:var(--sw-custom-glass);
- --q-well:var(--sw-custom-panel);
+ &:not([data-dgu-adapter^=SmartPhone]){
+  --sw-owned-accent:var(--sw-custom-accent);
+  --sw-owned-detail:var(--sw-custom-muted);
+  --sf-main:var(--sw-custom-background);
+  --sf-reading:var(--sw-custom-panel);
+  --sf-edit:var(--sw-custom-accent);
+  --kw-shell:var(--sw-custom-glass);
+  --dgu-acrylic-base:var(--sw-custom-glass);
+  --kw-slider:var(--sw-custom-accent);
+  --dgu-selected:var(--sw-custom-hover)!important;
+ }
 }
 
 /* Keep the existing material sampling and transparency on the outer glass. */
-html[data-stone-free][data-dol-midnight][data-sw-custom-colors]{--sw-custom-glass:var(--sw-custom-background)}
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors]{--sw-custom-glass:var(--sw-custom-shell,var(--sw-custom-background))}
 @supports (background:color-mix(in srgb, black, transparent)){
  html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-visualGlass]{
-  --sw-custom-glass:color-mix(in srgb,var(--sw-custom-background) calc(var(--dgu-acrylic-axis-shell-alpha,.43) * 100%),transparent);
+  --sw-custom-glass:color-mix(in srgb,var(--sw-custom-shell,var(--sw-custom-background)) calc(var(--dgu-acrylic-axis-shell-alpha,.43) * 100%),transparent);
  }
 }
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors]:not([data-dgu-visualGlass]) :is(
- #dol-midnight-controls>.dmt-settings-shell,
  #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves]),
  .dgw-shell,.dgshop-host,.dgshop-content,.dcu-shell
-){background-color:var(--sw-custom-background)!important}
+){background-color:var(--sw-owned-surface)!important}
 
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] dialog.dgu-surface:is([data-sf-workspace=drawer],:has(>.dgu-surface-content>.dgu-inspector)){
  background-color:var(--sw-custom-glass);
@@ -54,7 +65,6 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
  .sf-motion-hub[data-official] :is(.sf-motion-petal,.sf-motion-utilities button)
 ){color:var(--sw-custom-text)}
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #dol-midnight-controls :is(.dmt-eyebrow,.dmt-workspace-intro>p:last-child,.dmt-control-sheet .dgu-setting-description,.dmt-settings-footer,.sw-appearance-fields p){color:var(--sw-custom-muted)}
-html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #dol-midnight-controls .dmt-control-sheet{background-color:var(--sw-custom-panel)!important}
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
  #dol-midnight-controls :is(.dmt-workspace-nav button:focus-visible,.dmt-control-sheet :focus-visible),
  .sf-motion-hub[data-official] :is(.sf-motion-petal,.sf-motion-utilities button):focus-visible
@@ -62,22 +72,23 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] :is(
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #dol-midnight-controls .dmt-workspace-nav button[aria-current=page]{border-color:var(--sw-custom-accent)}
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] #dol-midnight-controls input[type=checkbox]:checked::before{background:var(--sw-custom-accent)}
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-orbit{
- --dgu-acrylic-axis-float:var(--sw-custom-panel);
- --dgu-acrylic-axis-utility:var(--sw-custom-panel);
- --dgu-acrylic-axis-grid:var(--sw-custom-background);
+ --sw-float-face:var(--sw-custom-floating,var(--sw-owned-panel));
+ --dgu-acrylic-axis-float:var(--sw-float-face);
+ --dgu-acrylic-axis-utility:var(--sw-float-face);
+ --dgu-acrylic-axis-grid:var(--sw-owned-surface);
 }
 @supports (background:color-mix(in srgb, black, transparent)){
  html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-visualGlass] .sf-motion-hub[data-official] .sf-motion-orbit{
-  --dgu-acrylic-axis-float:color-mix(in srgb,var(--sw-custom-panel) calc(var(--sw-acrylic-float-alpha,.6) * 100%),transparent);
-  --dgu-acrylic-axis-utility:color-mix(in srgb,var(--sw-custom-panel) calc(var(--sw-acrylic-utility-alpha,.84) * 100%),transparent);
-  --dgu-acrylic-axis-grid:color-mix(in srgb,var(--sw-custom-background) calc(var(--sw-acrylic-grid-alpha,.72) * 100%),transparent);
+  --dgu-acrylic-axis-float:color-mix(in srgb,var(--sw-float-face) calc(var(--sw-acrylic-float-alpha,.6) * 100%),transparent);
+  --dgu-acrylic-axis-utility:color-mix(in srgb,var(--sw-float-face) calc(var(--sw-acrylic-utility-alpha,.84) * 100%),transparent);
+  --dgu-acrylic-axis-grid:color-mix(in srgb,var(--sw-owned-surface) calc(var(--sw-acrylic-grid-alpha,.72) * 100%),transparent);
  }
 }
-html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment] .sf-motion-hub[data-official] .sf-motion-orbit.is-grid .sf-motion-petal{
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment] .sf-motion-hub[data-official]:not([data-tool-layout]) .sf-motion-orbit.is-grid .sf-motion-petal{
  background-color:var(--dgu-acrylic-axis-float)!important;
 }
 html[data-stone-free][data-dol-midnight][data-sw-custom-colors][data-dgu-acrylic-adjustment]:not([data-dgu-visualGlass]) .sf-motion-hub[data-official] .sf-motion-orbit:not(.is-grid) :is(.sf-motion-petal,.sf-motion-utilities button){
- background-color:var(--sw-custom-panel)!important;
+ background-color:var(--sw-float-face)!important;
 }
 
 html[data-stone-free][data-dol-midnight][data-sw-custom-font] :is(
@@ -91,7 +102,7 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-font] :is(
  #customOverlay:is(.dgc-overlay:has(>.dgc-host),.dgs-overlay:has(>.dgs-host),.dgp-overlay:has(>.dgp-host),.dgs-native-tools,[data-sf-workspace=saves]),
  .passage.dgp-overlay:has(>.dgp-host),.dgw-root,.dgw-reference-chip,.dgw-reference-compare,.dgshop-host,.dgshop-content,.dcu-shell,.sf-motion-hub[data-official] .sf-motion-orbit,
  dialog.dgu-surface:is([data-sf-workspace=drawer],:has(>.dgu-surface-content>.dgu-inspector))
-) :where(button,select,textarea,input:not([type=checkbox],[type=radio],[type=color],[type=range]),.dgshop-transaction,.dgshop-reference-comparison):not(:where(.dgw-exits,.dgw-preserved,.dgw-services,.dgw-actions,.dgw-equipment,.dgw-warmth-content,.dgw-detail-native) *){
+) :where(button,select,textarea,input:not([type=checkbox],[type=radio],[type=color],[type=range]),.dgshop-transaction):not(:where(.dgw-exits,.dgw-preserved,.dgw-services,.dgw-actions,.dgw-equipment,.dgw-warmth-content,.dgw-detail-native) *){
  font-family:var(--sw-custom-font)!important;
 }
 
@@ -111,4 +122,235 @@ html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[dat
 html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[data-official] .sf-motion-sheet > :is(header,footer) button,
 html[data-stone-free][data-dol-midnight][data-sw-custom-font] .sf-motion-hub[data-official] .sf-motion-sheet .sf-view-outlet [data-sf-owner=SoftWetOfficialUI] :is(.sf-reference-copy,.sf-reference-origin){
  font-family:var(--sw-custom-font)!important;
+}
+
+html[data-stone-free][data-dol-midnight][data-dmt-layout] #ui-bar{
+ --dgu-sidebar-bg:#1b1e24;--dgu-sidebar-panel:#1b1e24;
+ --dgu-sidebar-text:var(--sw-ink);--dgu-sidebar-muted:var(--sw-muted);--dgu-sidebar-line:var(--sw-edge);
+ --dgu-sidebar-hover:var(--sw-custom-hover,#2c323c);--dgu-sidebar-accent:#93b5ca;
+ background:var(--dgu-sidebar-bg);box-shadow:none;backdrop-filter:none;
+}
+html[data-stone-free][data-dol-midnight][data-dmt-layout][data-sw-sidebar-theme] #ui-bar{
+ --dgu-sidebar-bg:var(--sw-rail);--dgu-sidebar-panel:var(--sw-rail);--dgu-sidebar-accent:var(--sw-accent);
+}
+html[data-stone-free][data-dol-midnight][data-dmt-layout][data-sw-sidebar-theme] #ui-bar :is(#overlayButtons,#startCaption) #dol-midnight-sidebar-button{
+ color:var(--sw-custom-accent);
+}
+
+html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-ball{
+ --sw-hub-glyph:var(--sw-custom-accent);
+ --sw-hub-solid:var(--sw-custom-background);
+ --sw-hub-light:var(--sw-custom-panel);
+ --sw-hub-shade:var(--sw-custom-background);
+ --sw-hub-rim:var(--sw-custom-muted);
+}
+@supports (color:color-mix(in srgb,white,transparent)){
+ html[data-stone-free][data-dol-midnight][data-sw-custom-colors] .sf-motion-hub[data-official] .sf-motion-ball{
+  --sw-hub-light:color-mix(in srgb,var(--sw-custom-accent) 27%,transparent);
+  --sw-hub-shade:color-mix(in srgb,var(--sw-custom-background) 79%,transparent);
+  --sw-hub-rim:color-mix(in srgb,var(--sw-custom-muted) 50%,transparent);
+ }
+}
+
+html[data-stone-free][data-dol-midnight] #ui-bar [data-kw-entry]{
+ --sf-ink:var(--sw-ink);--sf-muted:var(--sw-muted);
+ --sw-nav-focus:var(--sw-accent);
+ --sw-nav-highlight:var(--sw-custom-hover,#2c323c);
+}
+
+/* Native reading surfaces. Avoid inheriting typography through third-party regions. */
+html[data-stone-free][data-dol-midnight] {
+ --sw-page-surface:var(--sw-custom-canvas,var(--sw-custom-background,#14161a));
+ --sw-rail:var(--sw-custom-rail,#1b1e24);
+ --sw-shell-solid:var(--sw-custom-panel,#252a32);
+ --sw-well-solid:var(--sw-custom-well,var(--sw-custom-background,#1d2128));
+ --sw-ink:var(--sw-custom-text,#e6e9ee);
+ --sw-muted:var(--sw-custom-muted,#939ca8);
+ --sw-accent:var(--sw-custom-accent,#93b5ca);
+ --sw-edge:rgb(255 255 255 / .07);
+ --sw-top-edge:rgb(255 255 255 / .13);
+ --sw-shell-glass:var(--sw-shell-solid);
+ --sw-well-glass:var(--sw-well-solid);
+ @supports (color:color-mix(in srgb,white,black)){
+  --sw-shell-glass:color-mix(in srgb,var(--sw-custom-panel,#21262e) calc(var(--sw-shell-alpha,.72) * 100%),transparent);
+  --sw-well-glass:color-mix(in srgb,var(--sw-custom-well,var(--sw-custom-background,#101318)) 56%,transparent);
+ }
+}
+html[data-stone-free][data-dol-midnight] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay){
+ background-color:var(--sw-custom-reading,var(--sw-page-surface));
+ border:0;
+ border-radius:0;
+ box-shadow:none;
+}
+#passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) {
+ &,
+ &>p:not([class]),
+ &>#passage-content:not([data-sf-owner],[data-dgu-adapter])>p:not([class]){
+  &:not([data-sf-owner],[data-dgu-adapter]):not(:has([data-sf-owner],[data-dgu-adapter],dialog,.dgw-root,.dgshop-content,.dgshop-host,.dgp-host,.dgs-host,.dgc-host,.dcu-root)){
+   :root[data-stone-free][data-dol-midnight] & {color:var(--sw-ink)}
+   :root[data-sw-custom-font] & {font-family:var(--sw-custom-font)}
+  }
+ }
+}
+html[data-stone-free][data-dol-midnight] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) {
+ & :is(a.link-internal[data-passage],a.link-internal.macro-link):not(:where([data-sf-owner] *,[data-dgu-adapter] *,dialog *,.dgw-root *,.dgshop-content *,.dgshop-host *,.dgp-host *,.dgs-host *,.dgc-host *,.dcu-root *)):where([class="link-internal"],[class="link-internal macro-link"],[class="macro-link link-internal"]){
+  /* A plain inline owner may inherit its native link color. Keep the mixed
+     link's native ink while retaining the link affordances on the whole hit area. */
+  &:not([data-sf-owner]):not(:has([data-sf-owner])) {color:var(--sw-accent)}
+  text-decoration:underline;
+  text-decoration-color:color-mix(in srgb,var(--sw-accent) 42%,transparent);
+  text-underline-offset:.22em;
+  &:hover{text-decoration-color:var(--sw-accent)}
+  &:focus-visible {outline:2px solid var(--sw-accent);outline-offset:2px}
+ }
+}
+html[data-stone-free][data-dol-midnight][data-sw-custom-font] #ui-bar :is([data-kw-entry=native-caption],#dol-midnight-sidebar-button,#sidebar-look-description) {
+ --sw-sidebar-font:var(--sw-custom-font);
+ font-family:var(--sw-sidebar-font);
+}
+
+/* Light presets only affect surfaces owned by the official UI. The glass face retains a contrast floor on dark backdrops while following
+   the existing material slider. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] {
+ --sw-edge:rgb(30 43 55 / .16);
+ --sw-top-edge:rgb(255 255 255 / .85);
+ --sw-owned-select-scheme:light;
+ --sw-owned-select-bg:var(--sw-custom-panel);
+ --sw-owned-select-ink:var(--sw-custom-text);
+ --sw-owned-select-hover:var(--sw-custom-hover);
+ --sw-owned-select-muted:var(--sw-custom-muted);
+ --sw-shell-glass:var(--sw-shell-solid);
+ --sw-well-glass:var(--sw-well-solid);
+ --sw-custom-glass:var(--sw-shell-solid);
+}
+@supports (background:color-mix(in srgb,white,transparent)) {
+ html[data-stone-free][data-dol-midnight][data-sw-theme][data-dgu-visualGlass] {
+  --sw-shell-glass:color-mix(in srgb,var(--sw-shell-solid) calc((var(--sw-custom-glass-min) + (.98 - var(--sw-custom-glass-min)) * clamp(0, (var(--sw-shell-alpha,.72) - .38) / .57, 1)) * 100%),transparent);
+  --sw-custom-glass:var(--sw-shell-glass);
+ }
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] :is(#dol-midnight-controls,.dgshop-host,.dgshop-content) {
+ --kw-control:var(--sw-custom-panel);
+ --kw-control-hover:var(--sw-custom-hover);
+ --kw-control-pressed:var(--sw-custom-hover);
+ --dgu-border:var(--sw-edge);
+ --dgu-danger:var(--sw-custom-error);
+ --dgu-danger-border:var(--sw-custom-error);
+ --dgu-warning:var(--sw-custom-warning);
+ --dgu-success:var(--sw-custom-success);
+ --dgu-success-surface:color-mix(in srgb,var(--sw-custom-success) 10%,var(--sw-custom-panel));
+ color-scheme:light;
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] :is(#ui-bar,#dol-midnight-controls,.dgshop-host,.dgshop-content) {
+ scrollbar-color:var(--sw-custom-muted) var(--sw-custom-well);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls :is(button,select,input:not([type=checkbox],[type=radio],[type=range],[type=color]),option) {
+ background:var(--sw-custom-panel);color:var(--sw-custom-text);border-color:var(--sw-edge);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls button:hover {background:var(--sw-custom-hover)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls :is(.dmt-reading-sample,.dmt-preview-lab) {
+ background:var(--sw-custom-reading)!important;border-color:var(--sw-edge)!important;color:var(--sw-custom-text);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls .dmt-control-sheet {
+ --dgu-workspace-well-border:1px solid var(--sw-edge);
+ background:var(--sw-well-solid)!important;
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #ui-bar #dol-midnight-sidebar-button:hover {background:var(--sw-custom-hover)}
+/* SugarCube's own title and navigation, while the Host supplies the active palette. */
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #title > #story-title,
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #startCaption > :is(h3,h4):not([class]),
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#menu-core > li > a,#ui-bar-toggle,#ui-bar-history [id|=history]) {
+ color:var(--sw-custom-text);
+}
+/* The game paints the chevron itself on the pseudo-element. */
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #ui-bar-toggle::before {color:currentColor}
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#ui-bar-toggle,#ui-bar-history [id|=history]) {
+ background-color:var(--sw-custom-panel);border-color:var(--sw-edge);
+}
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#menu-core > li > a,#ui-bar-toggle,#ui-bar-history [id|=history]):hover {
+ background-color:var(--sw-custom-hover);border-color:var(--sw-custom-focus);
+}
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar #ui-bar-history [id|=history]:disabled {
+ color:var(--sw-custom-muted);background-color:transparent;border-color:var(--sw-edge);
+}
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #ui-bar :is(#menu-core > li > a,#ui-bar-toggle,#ui-bar-history [id|=history]):focus-visible {
+ outline:2px solid var(--sw-custom-focus);outline-offset:2px;
+}
+/* Native Start and settings controls; selected gold buttons retain their native paint. */
+html[data-stone-free][data-dol-midnight][data-sw-sidebar-theme] #passages > .passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) :is(
+ #startOptions > .containerStart > .buttonSettings > .buttonStart > button.link-internal.macro-button,
+ #startOptions > .containerStart > .buttonSettings > button.link-internal.macro-button,
+ #settingsOptions > .containerStart > .buttonStart > button.link-internal.macro-button,
+ #settingsExit > div > button.link-internal.macro-button
+):not(:where([data-sf-owner] *,[data-dgu-adapter] *,dialog *,.dgw-root *,.dgshop-content *,.dgshop-host *,.dgp-host *,.dgs-host *,.dgc-host *,.dcu-root *)) {
+ background:var(--sw-custom-panel);color:var(--sw-custom-text);border-color:var(--sw-edge);
+ &:hover:enabled {background:var(--sw-custom-hover);border-color:var(--sw-custom-focus)}
+ &:focus-visible {outline:2px solid var(--sw-custom-focus);outline-offset:2px}
+ &:disabled {color:var(--sw-custom-muted);background:var(--sw-custom-well);border-color:var(--sw-edge)}
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #passages > .passage.dgp-overlay[data-dgp-panel=settings]:not([data-dgu-adapter]):has(> .dgp-host) {
+ background-color:var(--sw-page-surface);
+}
+/* Native actions moved into the wardrobe keep their own semantic markings. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgw-root .dgw-actions > .wardrobe-action > a:where([class="link-internal macro-link"],[class="macro-link link-internal"]):not([data-sf-owner],[style]):not(:has([data-sf-owner])) {
+ color:var(--sw-custom-link);
+ &:hover {text-decoration:underline}
+ &:focus-visible {outline:2px solid var(--sw-custom-focus);outline-offset:2px}
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgw-root .dgw-tools > input[type=search],
+html[data-stone-free][data-dol-midnight][data-sw-theme] #customOverlay[data-overlay=saves]:not([data-dgu-adapter]) #saveList > .dgs-host .dgs-search > input[type=search] {
+ background:var(--sw-custom-panel);color:var(--sw-ink);border-color:var(--sw-edge);
+ &::placeholder {color:var(--sw-muted);opacity:1}
+ &:focus-visible {outline:2px solid var(--sw-custom-focus);outline-offset:2px}
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #customOverlay[data-overlay=saves]:not([data-dgu-adapter]) #saveList > .dgs-host .dgs-list {
+ color:var(--sw-ink);
+ & .dgs-item small {color:var(--sw-muted)}
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #customOverlay[data-overlay=saves]:not([data-dgu-adapter]) #saveList > .dgs-host .dgs-list {
+ color:var(--sw-ink);
+ & .dgs-item small {color:var(--sw-muted)}
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(.optionsBar,.clothing-item,.clothing-details,.filters-div,.options-div,.shop-legend,.dgshop-purchase) {
+ background:var(--sw-well-solid);border-color:var(--sw-edge);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(input[type=text],input[type=number],select,option,.category-tab,.btn-pagination,.button-back-to-shop,.filters-button,.clothingshop-options-button,.shop-legend-button,.try-button,.buy-button,.filter-button,.options-button) {
+ background:var(--sw-custom-panel);border-color:var(--sw-edge);color:var(--sw-custom-text);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content :is(.category-tab.active,.dgshop-selected) {background:var(--sw-custom-hover)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-catalog .clothing-price,
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-native-header>.green {color:var(--sw-custom-price);border-color:var(--sw-custom-price)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] body>.dgshop-detail-backdrop {background:rgb(20 28 38 / .42)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details {background:var(--sw-custom-panel);box-shadow:0 16px 48px #18202c55}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball .spin-prism-shell {
+ border-color:var(--sw-edge);
+ background:radial-gradient(circle at 30% 24%,#ffffffa0,transparent 46%),radial-gradient(circle at 74% 80%,var(--sw-hub-light),transparent 46%),var(--sw-custom-floating);
+ box-shadow:0 10px 28px #18233055,0 0 0 2px var(--sw-hub-rim),inset 0 1.5px 2px #fffd,inset 0 -2px 5px #52687833;
+}
+@supports (background:color-mix(in srgb,white,transparent)) {
+ html[data-stone-free][data-dol-midnight][data-sw-theme][data-dgu-visualGlass] .sf-motion-hub[data-official][data-diamond-hub] .sf-motion-ball .spin-prism-shell {
+  background:radial-gradient(circle at 30% 24%,#ffffff9c,transparent 46%),radial-gradient(circle at 74% 80%,var(--sw-hub-light),transparent 46%),color-mix(in srgb,var(--sw-custom-floating) calc((var(--sw-custom-glass-min) + (.98 - var(--sw-custom-glass-min)) * clamp(0, (var(--sw-shell-alpha,.72) - .38) / .57, 1)) * 100%),transparent);
+ }
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay) :is(a.link-internal[data-passage],a.link-internal.macro-link):not(:where([data-sf-owner] *,[data-dgu-adapter] *,dialog *,.dgw-root *,.dgshop-content *,.dgshop-host *,.dgp-host *,.dgs-host *,.dgc-host *,.dcu-root *)):where([class="link-internal"],[class="link-internal macro-link"],[class="macro-link link-internal"]):not([data-sf-owner]):not(:has([data-sf-owner])) {color:var(--sw-custom-link)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] :is(#dol-midnight-controls,#ui-bar,.dgshop-host,.dgshop-content,.sf-motion-hub[data-official]) :focus-visible {outline-color:var(--sw-custom-focus)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-host .dgshop-transaction[data-transaction-status=unknown] {color:var(--sw-custom-warning)}
+
+/* Raised catalog cards sit over the recessed shop well; swatch fills stay native. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-catalog .clothing-item:not(.dgshop-selected) {background:var(--sw-custom-panel);box-shadow:0 1px 3px rgb(24 35 48 / .09)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-content .dgshop-catalog .clothing-item:not(.dgshop-selected):hover {background:var(--sw-custom-hover)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dgshop-host .dgshop-transaction[data-transaction-status=confirmed] {color:var(--sw-custom-success)}
+html[data-stone-free][data-dol-midnight][data-sw-theme] .dcu-root {--dgu-combat-warning:var(--sw-custom-warning)}
+/* The material preview contains its own sample planes; inherited dark planes
+   otherwise leave dark preset ink on a dark preview. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls :is(.dmt-preview-stage.sf-material-main,.dmt-preview-reading,.dmt-preview-reference.sf-material-reference) {
+ background:var(--sw-custom-well);border-color:var(--sw-edge);color:var(--sw-custom-text);
+}
+html[data-stone-free][data-dol-midnight][data-sw-theme] #dol-midnight-controls .dmt-preview-reference.sf-material-reference {background:var(--sw-custom-panel)}
+
+/* Keep the native amber warning ink legible on a light reading surface.
+   Only plain native paragraphs and their immediate inline marker are owned. */
+html[data-stone-free][data-dol-midnight][data-sw-theme] #passages>.passage:not([data-sf-owner],[data-dgu-adapter],.dgp-overlay)>#passage-content:not([data-sf-owner],[data-dgu-adapter])>p:not([class],[data-sf-owner],[data-dgu-adapter])>span.orange:not([data-sf-owner],[data-dgu-adapter]):not(:has(*)) {
+ background-color:#26282b;
+ border-radius:.18em;
 }

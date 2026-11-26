@@ -77,7 +77,7 @@ async function verifyHubPlacement(browser: playwright.Browser) {
    const restored = await ball.boundingBox();
    assert.ok(restored && Math.abs(restored.x - atEdge.x) < 1 && Math.abs(restored.y - atEdge.y) < 1);
    assert.equal(await p.locator('.edge-aim,.rigid-spin-field,.rigid-spin-body').count(), 0);
-   assert.equal(await p.locator('.sf-motion-hub canvas').count(), 1, 'only the existing diamond renderer is needed');
+   assert.equal(await p.locator('.sf-motion-hub .spin-prism svg').count(), 1, 'the official entry uses one prism renderer');
 
    for (const reason of ['escape', 'blur', 'resize', 'scene', 'hidden'] as const) {
     stage = `${width} cancel ${reason}`;

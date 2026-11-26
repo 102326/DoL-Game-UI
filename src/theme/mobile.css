@@ -34,14 +34,13 @@
  .dgshop-content .dgshop-browse-tools{padding:4px 0;gap:4px}
  .dgshop-content .dgshop-browse-tools :is(.optionsBar,.searchGroup){gap:4px}
  .dgshop-content .dgshop-browse-tools #shopCategories{gap:4px;flex-wrap:wrap}
- .dgshop-content.dgshop-compact:not(.dgshop-categories-open) .dgshop-browse-tools #shopCategories{display:none}
  .dgshop-content .dgshop-browse-tools .category-tab{min-width:44px;min-height:44px;height:44px;padding:4px;font-size:.8em;line-height:1.25;box-sizing:border-box;align-self:flex-start}
  .dgshop-content .dgshop-browse-tools .category-tab>a{padding:0;box-sizing:border-box;min-height:0;height:100%}
  .dgshop-content .dgshop-browse-tools .category-tab>img{width:24px;height:24px}
  .dgshop-content .dgshop-catalog .clothing-traits{width:auto;right:8px}
  .dgshop-content .dgshop-catalog .clothing-item{padding:6px 8px;min-height:60px;margin-bottom:4px}
  .dgshop-content .dgshop-detail-body{padding:8px;min-height:0}
- .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details{left:4px;right:4px;bottom:calc(4px + env(safe-area-inset-bottom,0px));height:min(88dvh,820px);max-height:calc(100dvh - 8px - env(safe-area-inset-bottom,0px))}
+ .dgshop-content.dgshop-narrow .dgshop-layout>.clothing-details{left:4px;right:4px;bottom:calc(4px + var(--dgshop-ime-inset,0px) + env(safe-area-inset-bottom,0px));height:min(88dvh,820px);max-height:calc(var(--dgshop-visual-height,100dvh) - 8px - env(safe-area-inset-bottom,0px))}
  .dgshop-content .dgshop-purchase{padding:8px;gap:8px;flex-shrink:0}
  .dgshop-content .dgshop-purchase .buy-button-inner{min-height:48px;padding:6px 8px}
  .dgshop-content .colour-button{min-width:44px;min-height:44px}
@@ -74,3 +73,6 @@
  html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar h2{font-size:1.2em}
  html[data-dol-midnight] #customOverlay[data-overlay=saves] .dgs-titlebar>button{flex-shrink:0;min-height:44px;white-space:nowrap}
 }
+
+.dgshop-content.dgshop-compact:not(.dgshop-categories-open) .dgshop-browse-tools #shopCategories :is(.category-tab:nth-child(n+4),.category-group:nth-child(n+2) .category-tab):not(.active):not(:focus-within){display:none}
+.dgshop-content.dgshop-compact:not(.dgshop-categories-open) .dgshop-browse-tools :is(.itemsPerPageLabel,.searchGroup>button):not(:focus-within){display:none}

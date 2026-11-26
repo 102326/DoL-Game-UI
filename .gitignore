@@ -326,3 +326,6 @@ docs/HANDOFF.local.md
 
 /tests/attributes-material.cjs
 /tests/hub-placement-integration.cjs
+/tests/native-theme-controls.cjs
+
+/tests/shop-composition-fixture.cjs

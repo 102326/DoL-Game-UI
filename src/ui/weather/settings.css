@@ -20,3 +20,30 @@
 [data-sf-workspace][data-sf-weather-material]>.sf-weather-canvas{position:absolute!important;inset:0;width:100%;height:100%;z-index:0;pointer-events:none!important;border-radius:inherit}
 [data-sf-workspace][data-sf-weather-material]>.evo-material-layer{position:absolute!important;inset:0;overflow:hidden;border-radius:inherit;z-index:0!important;pointer-events:none!important;contain:layout style}
 [data-sf-workspace][data-sf-weather-material]>.evo-material-layer *{pointer-events:none!important}
+
+/* The cloud is composited over the sampled glass and below every input.
+   Clip it to the rim; a long reading surface never gets a full-height texture. */
+[data-sf-weather-material]>.sf-cloud-layer[data-sf-mount]{
+ position:absolute!important;inset:0 0 auto;height:min(84px,23%);z-index:0!important;
+ border-radius:inherit;overflow:hidden;pointer-events:none;contain:strict;
+ mask-image:linear-gradient(#000 2%,#0008 54%,transparent);
+}
+.sf-cloud-layer>.sf-cloud-texture{
+ position:absolute;inset:0 -14%;pointer-events:none;opacity:.38;
+ background:url('./slow-cloud.png') center/100% 100% no-repeat;
+}
+
+/* Study only. The Host moves one leased texture; a stationary aperture lights the moving bank.
+   Both paints sit inside the existing header clip and require no additional animation player. */
+@supports (mask-composite:intersect) and (mask-image:linear-gradient(#000,transparent)) {
+html:is([data-sw-cloud-study="light"],[data-sw-cloud-study="still"]) .sf-cloud-texture::after {
+ content:""; position:absolute; inset:0; pointer-events:none;
+ background:linear-gradient(110deg,#edf3f4 8%,var(--sw-accent,#93b5ca) 55%,#ecedef 88%);
+ mask:url('./cloud-light-mask.svg') center/100% 100% no-repeat;
+}
+html:is([data-sw-cloud-study="light"],[data-sw-cloud-study="still"]) [data-sf-weather-material]>.sf-cloud-layer[data-sf-mount] {
+ mask-image:linear-gradient(to bottom,#000 0%,#000b 45%,transparent),
+            radial-gradient(ellipse at 30% 0%,#000 0%,#0006 57%,#000b 100%);
+ mask-composite:intersect;
+}
+}

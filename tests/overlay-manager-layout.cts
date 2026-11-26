@@ -1,8 +1,9 @@
 import playwright = require('playwright');
 const {chromium}=playwright;
 import assert = require('node:assert/strict');
+import browserOptions = require('./browser-options.cjs');
 (async () => {
- const browser = await chromium.launch({channel:'msedge',headless:true});
+ const browser = await chromium.launch(browserOptions);
  try {
   const page = await browser.newPage({viewport:{width:400,height:821}});
   await page.setContent(`<html data-dol-midnight data-dmt-layout><style>
@@ -15,6 +16,25 @@ import assert = require('node:assert/strict');
   const controlBefore=await page.evaluate(control);
   await page.addStyleTag({path:'src/theme/layout.css'});
   assert.deepEqual(await page.evaluate(read),native,'Manager retains native positioning');
+  await page.addStyleTag({path:'compat/modhub-soft-wet/modhub-soft-wet.css'});
+  // ModHub 2.0.3 offsets its mobile window against the sidebar-sized parent.
+  await page.addStyleTag({content:'@media(max-width:870px){#customOverlay[data-overlay=modloader]:not(.modhub-overlay-fullscreen){left:calc(100% - 100vw)!important}}'});
+  await page.evaluate(()=>document.documentElement.setAttribute('data-stone-free',''));
+  const overlay=page.locator('#customOverlay');
+  for(const width of [320,390,430,870,899,1440]){
+   await page.setViewportSize({width,height:821});
+   await overlay.evaluate(n=>{n.dataset.dguAdapter='ModHubSoftWet';n.dataset.dguAdapterMatch='partial'});
+   const before=await page.evaluate(read);
+   await overlay.evaluate(n=>{n.dataset.dguAdapterMatch='full'});
+   const after=await page.evaluate(read);
+   if(width<900){
+    assert.ok(before.width>=width-12,'native fixture spans the mobile viewport');
+    assert.deepEqual([after.left,after.right],[before.left,before.right],`full ModHub window at ${width}px`);
+   }else assert.equal(after.width,1000,'desktop keeps its workspace cap');
+  }
+  await overlay.evaluate(n=>{delete n.dataset.dguAdapter;delete n.dataset.dguAdapterMatch});
+  await page.evaluate(()=>document.documentElement.removeAttribute('data-stone-free'));
+  await page.setViewportSize({width:400,height:821});
   await page.addStyleTag({path:'src/theme/controls.css'});
   for(const scale of [.5,2]){await page.evaluate(s=>{const h=document.documentElement;h.setAttribute('data-dgu-font-scaled','');h.setAttribute('data-dgu-buttons-scaled','');h.style.setProperty('--dgu-font-scale',s);h.style.setProperty('--dgu-button-scale',s)},String(scale));assert.deepEqual(await page.evaluate(control),controlBefore,'Manager controls retain native sizing');}
   await page.locator('.customOverlay').evaluate(e=>e.setAttribute('data-overlay','saves'));

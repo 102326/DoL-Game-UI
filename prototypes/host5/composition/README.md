@@ -1,0 +1,88 @@
+# #41 · 移动云层、实时 Acrylic 与前台反馈
+
+**建议沿用参与者挂载、局部材质预设和可反向轨道的组合。** 实例中只有一个合成区域：预绘制的云纹横移，浓云从当前混合比例继续渐变，同区域上方的面板实时采样云层。面板结构与控件立即显示，其标题下的一条细线独立完成 150 ms 的反馈。关闭时入口立即更新，收起途中可以重开。这个具体场景没有要求增加通用场景树或全局帧循环。
+
+Windows 后续已复现并修复布局 resize 清掉两条轨道，前景与环境改用各自的名额。[修前修后对象、时间及几何证据](../panel-budget/README.md#windows--共用表面动效与材质)
+
+## 初次 Mac 对照与取舍
+
+基于本地 `87aa02c`。Host 组由 CloudField、ControlPanel 两位参与者持有三个挂载（云场、面板及其局部 Acrylic）。材质使用上轮的 `acrylicScrim`。两个消费者共用原型 Host 的可中断轨道服务；实验设三个并发名额以容纳位移、浓度、前台反馈，没有优先级预留。480 × 224 的自制透明云纹在天气挂载时生成一次，之后由浏览器移动，不逐帧计算噪声。天气销毁时清空位图尺寸，面板卸载时保留云纹及其运动。
+
+对照组使用现有 `sourceMotion.animate`，每方单独管理播放。反向时对照组从实际进度续播但创建新对象，Host 组对原轨道改向。两组使用同一云纹、尺寸、颜色、时间参数与控件，只改变挂载及播放方式。内容和装饰分开后可以先展示可操作内容，两组都受益。本研究没有使用面板透明度 60% 起步，也没有改动默认预算。
+
+## 公司 Mac 实验
+
+Headless Chromium 153.0.8010.12，Node v26.13.0，390 × 820 CSS px。独立、Host、Host、独立交错运行。每轮 12 次指针或键盘开关，其中 6 次为打开。输入起点为 pointerdown 或 keydown，首帧代理为随后第一个 rAF 回调读取到面板有布局、透明度为 1 且控件 enabled。另以真的复选框输入验证功能。下列分位数为中位 / P95，单位 ms。
+
+| 路径 | 首个 rAF 内内容就绪 | 输入至该 rAF | 帧间隔数 | 帧间隔 | 超过 50 ms | 8 次反向所用动画对象（含首个） |
+|---|---:|---:|---:|---:|---:|---:|
+| 独立播放 | 12/12 | 13.3 / 46.4 | 322 | 16.7 / 16.7 | 0 | 9 |
+| Host 组合 | 12/12 | 12.0 / 49.8 | 322 | 16.7 / 16.8 | 0 | 1 |
+
+- 切换天气时面板轨道对象与采样变换保持；浓度中途再次切换保持当前透明度，云层位移对象也保持。开关反向从 75 ms 中点进行，同步验证每次转向的变换连续。独立播放重建对象，Host 复用原对象。
+- 让天气混合与面板反馈先稳定，固定云的两个位移相位，截取面板内部无文字的同一块 50 × 50 区域。云相位变化带来的平均红通道绝对差约 0.91 / 255；相位相同时把实时模糊从 8 px 切到 0，差约 0.54 / 255。两种路径均得到相同结果。这个检查证明背后的云与实时模糊都对最终面板像素有贡献，不能替代主观材质评审。
+- 单独销毁面板，云层沿同一动画对象继续；反向销毁天气，面板反馈仍是同一对象，旧云动画进入 idle，canvas 脱离文档并清空尺寸。关闭效果后开关面板、复选框与天气选择仍可用，活动动画为零。每轮另完成 12 次双方卸载与重挂；最后参与者、Host 挂载、活动轨道、场景子节点与 DOM 动画均归零。
+
+**边界。** rAF 采样先于显示器呈现。此次记录不包含纹理首建时间、GPU 分配或长会话内存，也不足以推出整机流畅度提升。家庭 Windows 先观察深浅云掠过面板时的文字对比度、实际首帧与快速反向；Android WebView 对照模糊开关下的触摸、滚动、旋转与前后台恢复，并验证低端设备的合成帧时。根据瓶颈再决定是否需要缓存材质或调整预算。
+
+## 复跑
+
+```sh
+node_modules/.bin/tsc -p prototypes/host5/composition/tsconfig.json
+node prototypes/host5/composition/check.mts /tmp/sw50-composition.json
+node prototypes/host5/panel-budget/preview.mts
+```
+
+同一预览服务下访问 `/prototypes/host5/composition/`；`?play=independent` 切换到独立对照。[逐轮记录](mac-result.json)
+
+## 平板软键盘和 Home 返回
+
+执行 `node prototypes/host5/composition/build-tablet-page.mts`，即可将上面的场景、样式和[观测脚本](tablet-probe.ts)打成单个离线文件 `tests/artifacts/host5-tablet-page/index.html`。同一文件可在独立桌面浏览器或测试 WebView 中打开。页面只记录焦点所属元素，不采集输入内容。
+
+点一次「键盘观测」会在键盘弹出前打开面板并记录云层、面板的原始动画对象。为使两条轨道覆盖手动操作的时间，观测页将当时的播放速率分别设为 0.1 和 0.001。关闭键盘，再按 Home 并返回该测试应用。每条 `SW41` 记录包含文档时间原点、事件名、布局与视觉视口尺寸（CSS px）、焦点、轨道对象编号和时间（ms）。`raf:` 是事件后的首个可观测绘制前回调。返回后时间原点相同表示沿用原文档；重新出现 boot 且时间原点改变表示新文档，编号只在各自文档内可比。
+
+### 家用平板单次观测
+
+Android 17（API 37），Google WebView 157.0.8103.52，使用[独立离线测试壳](android/README.md)。页面 SHA-256 为 `0e81129da49acd89bdd2163fd3ecf4dc2ee65c15c0dca2a96ed9b4d4e05e360f`。Android 输入法状态确认键盘已显示，按返回键后已收起。初次加载的 resize 单独计算。键盘打开、关闭各触发一次 `visualViewport.resize` 和一次 `window.resize`，整个操作期间 `innerWidth/Height` 和根元素的 client 尺寸均为 1363 × 909 CSS px，视觉视口宽约 1363.2 px，缩放始终为 1。
+
+| 首个 rAF 读数 | 视觉视口高度（CSS px） | 云层对象 / 进度（ms） | 面板反馈对象 / 进度（ms） | 焦点与面板 |
+| --- | ---: | --- | --- | --- |
+| 输入框获焦，键盘展开前 | 908.8 | 2 / 4451.69 | 3 / 0 | 输入框，面板打开 |
+| 键盘打开的 resize 后 | 508 | 2 / 4460.02 | 3 / 0.07 | 输入框，面板打开 |
+| 键盘收起的 resize 后 | 908.8 | 2 / 5303.35 | 3 / 8.50 | 输入框，面板打开 |
+| Home 后返回可见 | 908.8 | 4 / 0 | 无活动反馈轨 | 输入框，面板打开 |
+
+在 Home 造成的 hidden 事件中，原对象 2 和 3 已进入 idle。回到前台沿用同一文档，只启动新的云层动画，面板仍有约 330 × 124 CSS px 的布局。此次没有发生进程重建，也没有采集屏幕呈现时延。首版测试壳拦截了自己的本地页面导航，失败发生在输入操作之前；移除该拦截后完成表中这一轮。
+
+## Android 面板实时模糊对照
+
+用同一个离线 APK，在每次启动时通过字符串 extra `material` 选择 `live` 或 `static`。两组均挂载原来的 scrim，保留 `rgba(24, 32, 43, 0.5)` 底色。唯一不同的样式是 scrim 的 `backdrop-filter`，分别为 `blur(8px)` 和 `none`。云层及面板按原速播放，面板展开与收起仍使用原来的按钮。材质对照有独立的观测入口，不加载键盘实验的减速脚本。
+
+1. 运行 `node prototypes/host5/composition/build-tablet-page.mts --material-ab`，得到 `tests/artifacts/host5-acrylic-ab/index.html`。运行 `node prototypes/host5/composition/material-probe-check.mts` 可在独立桌面 Chrome 检查两组的样式、控件、几何及采样输出。
+2. 按[离线测试壳的构建说明](android/README.md)把该页面装入一个 APK。每组启动全新 Activity，例如 `adb shell am start -S -n org.dolui.host5.neutralprobe/.ProbeActivity --es material live`。在同一隔离设备按 live、static、static、live 顺序运行，点一次展开，等待上一笔记录完成，再点原位置收起。
+3. `Host5Probe` 日志中，每个 `action` 保存该次点击之后约 400 ms 内相邻 rAF 时间戳之差（毫秒）；`firstCallbackMs` 是 DOM click 时间戳到首个 rAF 回调的时间。打开和收起分开读，收起期间包括反馈结束后面板已隐藏的帧。无效或被打断的动作以 `invalid` 标记并保留。
+
+### 家用平板结果
+
+Android 17、Google WebView 157.0.8103.52，视口 1363 × 909 CSS px，面板 330 × 123.92 CSS px。先启动一次定位按钮，没有点击；正式四轮均重新启动同一 APK，前台就绪后等待 1000 ms，在同一坐标点开、等待 1100 ms 再点收起。八次均为有焦点的可信点击，无窗口中断，云层速率 +1，面板展开 +1、收起 −1。[逐动作的 385 个 rAF 间隔及页面、APK 摘要](android/material-ab-result.json)
+
+| 顺序、材质 | 间隔数（展开 / 收起） | 最大 rAF 间隔（展开 / 收起，ms） | DOM click 到首个 rAF 回调（展开 / 收起，ms） |
+| --- | --- | --- | --- |
+| 1 · 实时模糊 | 46 / 48 | 25.0 / 8.4 | 10.0 / 9.3 |
+| 2 · 静态材质 | 48 / 49 | 8.5 / 8.4 | 10.9 / 10.4 |
+| 3 · 静态材质 | 48 / 48 | 8.4 / 8.4 | 12.2 / 12.8 |
+| 4 · 实时模糊 | 48 / 50 | 25.0 / 8.4 | 7.8 / 11.1 |
+
+各动作的 rAF 间隔中位数均为 8.3 ms，P95（最近秩）均为 8.4 ms。两次实时模糊展开都在第三个间隔读到 25 ms；样本保留第 4 轮首个 0.114 ms 的短间隔。每种材质只有两次展开，无法据此归因 GPU 合成开销，产品默认沿用现值。本轮没有与点击对应的屏幕呈现时间戳。
+
+### 云隙光候选
+
+在阴天且玻璃可用时，打开属性或从侧栏打开设置。预览顶端可在打开的窗口内切换现行、候选、静帧和实色。预览使用正式 Host、UI 双包，在自造中性内容上运行；文件无需联网。正式界面的默认路径仍为现行慢云，研究页用根属性 `data-sw-cloud-study="light"` 或 `"still"` 选择候选。两档共享相同的云纹与光口；静帧停止环境播放器，前景控件继续响应。
+
+```sh
+node prototypes/host5/composition/cloud-light-preview.mts "$HOST_ZIP" "$UI_ZIP" cloud-light.html
+node prototypes/host5/composition/cloud-light-preview-check.mts cloud-light.html
+node prototypes/host5/composition/official-surfaces.mts "$HOST_ZIP" "$UI_ZIP" "$NEUTRAL_SUGARCUBE_FORMAT_ZIP" --cloud-light
+```
+
+最后一项比较同一冻结相位下的实际顶边与下方正文像素。移除 `--cloud-light` 可复跑现行纹理的开关对照。中性 SugarCube 格式 ZIP 的固定身份见[双包安装复核](../package-check/README.md)。交互、暂停与清理断言独立于像素计数。

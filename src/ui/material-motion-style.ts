@@ -6,7 +6,7 @@ export function writeMaterialTransform(node:HTMLElement,translate:string,scale:s
  writes.set(node,{before,after:node.getAttribute('style')});
 }
 export function isMaterialTransformMutation(record:MutationRecord){
- if(record.type!=='attributes'||record.attributeName!=='style'||!(record.target instanceof HTMLElement)||!record.target.hasAttribute('data-dgu-material-moving'))return false;
+ if(record.type!=='attributes'||record.attributeName!=='style'||!(record.target instanceof HTMLElement)||!record.target.closest('[data-dgu-material-moving]'))return false;
  const written=writes.get(record.target);return !!written&&written.before.includes(record.oldValue)&&record.target.getAttribute('style')===written.after;
 }
 export function clearMaterialTransform(node:HTMLElement){writes.delete(node)}

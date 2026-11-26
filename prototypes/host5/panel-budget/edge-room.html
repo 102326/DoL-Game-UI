@@ -1,0 +1,16 @@
+<script>
+// Observation only. The original gesture probe already records pointer coordinates,
+// shell position and dialog close events in this same log.
+window.addEventListener('pointerdown', event => {
+  if (!event.isPrimary || !(event.target instanceof Element) || !event.target.closest('#pull-grip')) return;
+  const shell = event.target.closest('.dmt-settings-shell');
+  if (!shell) return;
+  const viewport = window.visualViewport;
+  const viewportBottom = viewport ? viewport.offsetTop + viewport.height : innerHeight;
+  const bounds = shell.getBoundingClientRect();
+  console.info('SW41 ' + JSON.stringify({
+    event: 'grip-start-room', t: performance.now(), pointerId: event.pointerId,
+    viewportBottom, shellBottom: bounds.bottom, bottomGap: viewportBottom - bounds.bottom
+  }));
+}, {capture: true, passive: true});
+</script>

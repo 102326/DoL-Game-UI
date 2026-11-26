@@ -9,3 +9,7 @@ import '../../tests/artifacts/settings-refraction-v1/new/src/theme/kraft-work-mo
 import '../../tests/artifacts/settings-refraction-v1/new/src/theme/navigation-material.css';
 import './refraction.css';
 export {startTheme};
+
+export function startStudySettings() {
+  startTheme(window as Parameters<typeof startTheme>[0]);
+}

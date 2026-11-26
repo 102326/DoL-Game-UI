@@ -1,0 +1,8 @@
+330d9da14c5baaca984dacba2cff8a8cdcbf76f6d3383bddd6655fa0b99a94c5  CheatExtendedSoftWet-CheatExtended-1.20.3-plus-v1.0.1.mod.zip
+64c3305d452db934de415f74f4df58b316b72e9fa142e1534b43c4871aec0422  DoLGameUI-5.0.0.mod.zip
+0c8ccd8b16060b80243bcf8f044a3c2af49f6811a7ee5c7fa2d237e7fd254880  DolOptimizationSoftWet-Optimization-1.1.1.2-plus-v1.0.4.mod.zip
+ce46b497ef8d35b307bb7e4530b661662d66bd80cd9c45193120d59720a4a827  LyraMouthCompat051213-Lyra-0.5.12.13-1.0.1a-1004.1-goose-ucb-v1.0.0.mod.zip
+97b91028e4c7a183d3e29d82c5e820788481e58a9581e8a528274e89bf413812  MapleBirchSoftWet-maplebirch-5.2.3-plus-v1.0.2.mod.zip
+2f4d70aa0736f516f6bfd13ea9552151bc926961633426c1aa06d5439485baed  ModHubSoftWet-ModHub-1.3.0-plus-v1.0.5.mod.zip
+e36b3fadeab809fe7cf8e9071bda23e14a5aa8abc96c25cea7ce3f3057b3e55e  ReOverfitsSoftWet-ReOverfits-4.1.1-plus-v1.0.2.mod.zip
+4be60751a9d3c401a5b6d8c5d1e12d3a72acc14b17977004dd25332aa30aebb1  StoneFreeHost-1.0.0-rc.1.mod.zip

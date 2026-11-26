@@ -1,0 +1,31 @@
+{
+  "browser": "153.0.8010.12",
+  "results": [
+    {
+      "mode": "independent",
+      "usedHeapBytesAtEnd": 3661304
+    },
+    {
+      "mode": "legacy",
+      "allocations": 13,
+      "handlerMs": 2.200000047683716,
+      "width": 352,
+      "frameIntervals": 24,
+      "maxFrameMs": 16.799999999999983,
+      "over50": 0,
+      "usedHeapBytesAtEnd": 2837312
+    },
+    {
+      "mode": "shared",
+      "allocations": 1,
+      "handlerMs": 1.0999999642372131,
+      "width": 352,
+      "frameIntervals": 24,
+      "maxFrameMs": 16.80000000000001,
+      "over50": 0,
+      "usedHeapBytesAtEnd": 2846636
+    }
+  ],
+  "hostBytes": 11500,
+  "standaloneBytes": 1219
+}

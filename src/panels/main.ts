@@ -1,3 +1,4 @@
+import {isMaterialTransformMutation} from '../ui/material-motion-style';
 import {createPagePreferences,type PagePreferences} from '../theme/page-preferences';
 import {visualScope} from '../ui/visual-scope';
 import {createApp,reactive,type App} from 'vue';
@@ -142,10 +143,11 @@ export function startPanels(root:NativeEventsHost,framework?:{host:Host;owner:Pa
   targets=index(body,kind,state);
  }
  function schedule(){scope.frame(refresh)}
- const watch:MutationObserverInit={childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['data-overlay','hidden','class','style']};
+ const watch:MutationObserverInit={attributeOldValue:true,childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['data-overlay','hidden','class','style']};
  function changed(records:MutationRecord[],inline=false){
   if(!inline&&!panelKeys[overlay?.dataset.overlay??'']){if(host)schedule();return}
   try{if(records.some(r=>{
+   if(isMaterialTransformMutation(r))return false;
    if(host?.contains(r.target)||passageHost?.contains(r.target))return false;
    if(r.type==='childList')return true;
    const node=r.target instanceof Element?r.target:r.target.parentElement;

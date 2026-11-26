@@ -710,8 +710,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4758d60259661259bdc32150853005b324c861bb5722b9a8d8f340f2809d9984",
-      "assertionSites": 426
+      "sourceSha256": "33a5e53660ea62134b0eff6b382154398ea024db1096bde3f79f2aa86f3142e6",
+      "assertionSites": 431
     },
     {
       "entry": "tests/attributes-material.cjs",
@@ -728,7 +728,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "59c2d222cb72c2a767946f425aeefcd3ca9c26c6ea36d47dc1084f48382c3e8c",
+      "sourceSha256": "6f37722bb7bb4f9deb846f32a68f05e6fb2f34e63790f17bda3d49043ccad801",
       "assertionSites": 73
     },
     {
@@ -994,6 +994,10 @@
           "minimumAssertions": 1
         },
         {
+          "id": "hub:prism counter-rotation, one-shot ripple and reduced drag",
+          "minimumAssertions": 1
+        },
+        {
           "id": "hub:central glyph geometry and ownership across resize and docking",
           "minimumAssertions": 1
         },
@@ -1054,8 +1058,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "c6c078564b5c827925ad335e4a65d576f64fa73ee4a381f346bcfab6fcab705d",
-      "assertionSites": 466,
+      "sourceSha256": "3fef303ffe2e7dab861d36b852ed2ddae6d1c94457222f6f362d58deeedbfe5f",
+      "assertionSites": 476,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1341,8 +1345,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "63eede3f405d9ca8c5050007a4afe7f950597f82527180de3be1d5c700b0adbd",
-      "assertionSites": 51
+      "sourceSha256": "3276fe6ce6ce4bf5b1bf28a2033b93ede0fdf11ccb6475c5ea81e1e0013f06a8",
+      "assertionSites": 50
     },
     {
       "entry": "tests/framework-connect.cjs",
@@ -1415,8 +1419,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "9b0fc5f1bbfc3918b4aee34b09694e58fe083c1a4cdd2fb37be605a48880df06",
-      "assertionSites": 523
+      "sourceSha256": "ad93e27eff92414ed4268f14e85708be0c883b1ad8f5af69b882ff469e6c02b6",
+      "assertionSites": 595
     },
     {
       "entry": "tests/framework.cjs",
@@ -1601,8 +1605,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4a0657ffba1c42ab9587f3dc27cf99ff40095d09d37674615baa07fca997c236",
-      "assertionSites": 40,
+      "sourceSha256": "1f7f31d90fb48ab294e2539219fce7d1e635f89359173642fe6a60c0ee26ca77",
+      "assertionSites": 41,
       "rendererContexts": [
         "sphere:2d"
       ]
@@ -1830,6 +1834,23 @@
       "assertionSites": 26
     },
     {
+      "entry": "tests/native-theme-controls.cjs",
+      "sourceEntry": "tests/native-theme-controls.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "ddaf242d871f985a1e5de8864f5a560d2547a034c4092f25d11e39a214e5e5cc",
+      "assertionSites": 51
+    },
+    {
       "entry": "tests/native-tooling.test.mts",
       "profiles": [
         "standard"
@@ -1897,7 +1918,7 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "4b0c330bd1694cb17c87f0bdfa665a49c730693673c2002b44ccbe78b23719af",
+      "sourceSha256": "26454d4a63c424105af8c5cbf5552eb71c1cf6cb1ddde1e82eb49a8250732525",
       "assertionSites": 136
     },
     {
@@ -2369,11 +2390,28 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "10c3550c35e3f458ae3f9caf0d2b3dd01bee3011acdf410aa248d05c5ca426ca",
-      "assertionSites": 461,
+      "sourceSha256": "55dc9e7911d540896db3e27a5c9f4390ade622e333195eb9a430279e68914f07",
+      "assertionSites": 462,
       "rendererContexts": [
         "weather:2d"
       ]
+    },
+    {
+      "entry": "tests/shop-composition-fixture.cjs",
+      "sourceEntry": "tests/shop-composition-fixture.cts",
+      "profiles": [
+        "standard"
+      ],
+      "classification": "contract",
+      "granularity": "entry",
+      "cases": [
+        {
+          "id": "entry",
+          "minimumAssertions": 1
+        }
+      ],
+      "sourceSha256": "22c8ccb451a50dfed0de78091e07cf924663de5cb26ada908005a8f25ba44f55",
+      "assertionSites": 105
     },
     {
       "entry": "tests/shop-early-api.test.cjs",
@@ -2435,8 +2473,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "6e3ec1e27bfe01c220c52738fdcea53ab166ce317247a976bb57b12bfbc1ab51",
-      "assertionSites": 31
+      "sourceSha256": "a34d9eb1453be84e7fbbb35c3786d70d6885e290180000706a423c883a54b792",
+      "assertionSites": 24
     },
     {
       "entry": "tests/shop-source.test.cjs",
@@ -3039,8 +3077,8 @@
           "minimumAssertions": 1
         }
       ],
-      "sourceSha256": "d9570b5224a2447fa2671ba6ebfbaa48c6ec3805402392b54ba66fb40784a5d4",
-      "assertionSites": 55,
+      "sourceSha256": "95393f21b8ece8c2816081b2fc319747b4f602900ae1face68f3c24fa28dd163",
+      "assertionSites": 59,
       "rendererContexts": [
         "weather:2d"
       ]

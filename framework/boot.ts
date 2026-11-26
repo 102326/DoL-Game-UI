@@ -1,3 +1,7 @@
+import {driftingTexture} from './materials/drifting-texture';
+import {createTheme} from './materials/theme';
+import {createPanelBudget, surfaceMotion} from './motion/panel-budget';
+import {surface} from './materials/acrylic-scrim';
 import {createHost} from './host';
 import {PROTOCOL} from './contracts';
 
@@ -7,7 +11,9 @@ export function installHost(root: NativeWindow = window) {
  // Unknown implementations are never replaced or disposed by this package.
  try {if ('DoLUiHost' in root || typeof root.MutationObserver !== 'function' || typeof AbortController !== 'function') return null}
  catch {return null}
- const core = createHost(root), doc = root.document;
+ const doc=root.document,panelEffects=createPanelBudget(root),environmentEffects=createPanelBudget(root);
+ const ambient=surfaceMotion(environmentEffects);
+ const core=createHost(root,{surface,driftingTexture:driftingTexture(environmentEffects)});
  let bridge: ReturnType<NonNullable<NativeWindow['jQuery']>> | undefined, closed = false, retry=0;
  const deadline=Date.now()+30000;
  // Public API availability is separate from a synchronized game scene.
@@ -35,11 +41,19 @@ export function installHost(root: NativeWindow = window) {
   if (closed) return; closed = true;
   root.clearTimeout(retry);doc.removeEventListener('DOMContentLoaded', bind); root.removeEventListener('load', bind);
   try{bridge?.off('.stoneFreeHost')}catch{/* Broken host events must not prevent core disposal. */}
-  core.dispose(); try {if (root.DoLUiHost === host) delete root.DoLUiHost} catch {}
+  environmentEffects.dispose(); panelEffects.dispose(); core.dispose(); try {if (root.DoLUiHost === host) delete root.DoLUiHost} catch {}
   doc.dispatchEvent(new Event('stone-free-host-stopped'));
  }
- const host = Object.freeze({...core, dispose});
- try {root.DoLUiHost = host} catch {core.dispose(); return null}
+ const themes=createTheme(core,doc);
+ const host = Object.freeze({...core,
+  get theme(){return closed?undefined:themes.activate()},
+  sources(schema:string){
+   if(schema==='host5.theme'&&!closed)themes.activate();
+   return core.sources(schema);
+  },
+  panelEffects:surfaceMotion(panelEffects),environmentEffects:ambient,dispose});
+
+ try {root.DoLUiHost = host} catch {environmentEffects.dispose(); panelEffects.dispose(); core.dispose(); return null}
  try {bind();if(closed)return null;doc.addEventListener('DOMContentLoaded', bind); root.addEventListener('load', bind)}
  catch {try {dispose()} catch {} return null}
  doc.dispatchEvent(new CustomEvent('stone-free-host-ready', {detail: {protocolVersion: PROTOCOL}}));

@@ -35,7 +35,8 @@ if compiled:
 
 def source(name):
     return dist / 'scripts' / name if name.endswith('.js') and (root / name).with_suffix('.ts').exists() else root / name
-target = dist / f"{boot['name']}-{dependency['modName']}-{target_version}-v{boot['version']}.mod.zip"
+target_name = {'原版优化': 'Optimization', 'cheat extended': 'CheatExtended'}.get(dependency['modName'], dependency['modName'])
+target = dist / f"{boot['name']}-{target_name}-{target_version}-v{boot['version']}.mod.zip"
 with ZipFile(target, 'w', ZIP_DEFLATED) as out:
     for name in sorted(members):
         member = ZipInfo(name, (2026, 1, 1, 0, 0, 0))

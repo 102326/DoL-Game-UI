@@ -37,6 +37,10 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
   }
   const alpha=p.locator('[data-sf-owner="StoneFreeWorkspace"]'),beta=p.locator('[data-sf-owner="AlternateWorkspace"]');
   const dialog=alpha.locator('dialog');
+  async function escapeWorkspace() {
+   await p.keyboard.press('Escape');
+   await p.locator('.sf-workspace[open]').waitFor({state:'hidden'});
+  }
   await check('two packaged layouts negotiate the same explicit region and shortcut',async()=>{
    await alpha.getByRole('button',{name:'信息工作台',exact:true}).waitFor();
    assert.equal(await alpha.locator('section').first().getAttribute('data-region-state'),'active');
@@ -67,7 +71,7 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
   });
   await check('read/open/compare/close returns original focus and scroll without moving native controls',async()=>{
    const before=await p.evaluate(()=>({scroll:scrollY,parent:native.parentNode===nativeParent,next:native.nextSibling===nativeNext}));
-   await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await p.keyboard.press('Escape');
+   await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await escapeWorkspace();
    assert.equal(await alpha.getByRole('button',{name:'信息工作台',exact:true}).evaluate(n=>n===document.activeElement),true);
    assert.deepEqual(await p.evaluate(()=>({scroll:scrollY,parent:native.parentNode===nativeParent,next:native.nextSibling===nativeNext})),before);
   });
@@ -80,7 +84,7 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
    await dialog.getByText('long view is supported',{exact:true}).waitFor();await p.evaluate(()=>removeLong());
    await p.evaluate(()=>extra.provideView({id:'broken',title:'故障视图',setup(){throw Error('private failure')}}));
    await dialog.getByText('该视图暂不可用。',{exact:false}).waitFor();assert.equal(await dialog.locator('[data-view="NativeStatus:status"] dd').count(),3);
-   await p.evaluate(()=>extra.dispose());await p.keyboard.press('Escape');
+   await p.evaluate(()=>extra.dispose());await escapeWorkspace();
   });
   await check('native input and nonparticipant events are not intercepted; composing and child-view keys are excluded',async()=>{
    await p.locator('#native').fill('normal');await p.keyboard.press('k');assert.equal(await p.locator('.sf-workspace[open]').count(),0);assert.equal(await p.locator('#native').inputValue(),'normalk');
@@ -88,7 +92,7 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
    await alpha.getByRole('button',{name:'信息工作台',exact:true}).focus();
    const composing=await p.evaluate(()=>{const e=new KeyboardEvent('keydown',{key:'k',isComposing:true,bubbles:true,cancelable:true});if(!document.activeElement)throw Error('Missing focused fixture control');document.activeElement.dispatchEvent(e);return e.defaultPrevented});assert.equal(composing,false);
    await p.keyboard.press('k');assert.equal(await dialog.getAttribute('open'),'');
-   await dialog.getByRole('button',{name:'刷新状态',exact:true}).focus();await p.keyboard.press('k');assert.equal(await dialog.getAttribute('open'),'','provider-owned input is not owned by the layout');await p.keyboard.press('Escape');
+   await dialog.getByRole('button',{name:'刷新状态',exact:true}).focus();await p.keyboard.press('k');assert.equal(await dialog.getAttribute('open'),'','provider-owned input is not owned by the layout');await escapeWorkspace();
   });
   await check('region/shortcut handoff never leaves two active layouts or duplicate modal ownership',async()=>{
    await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.getByText('布局提供者',{exact:true}).click();await dialog.getByRole('button',{name:'释放工作区',exact:true}).click();
@@ -98,7 +102,7 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
    const blocked=await p.evaluate(()=>{const button=document.querySelector<HTMLButtonElement>('[data-sf-owner="StoneFreeWorkspace"] button');if(!button)throw Error('Missing workspace launch button');button.click();return document.querySelectorAll('.sf-workspace[open]').length});assert.equal(blocked,1);
    await beta.getByText('布局提供者',{exact:true}).click();await beta.getByRole('button',{name:'释放工作区',exact:true}).click();
    await p.waitForFunction(()=>!DoLUiHost.getDiagnostics().claims.some(c=>c.key==='information-workspace'));
-   await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();assert.equal(await dialog.getAttribute('open'),'');await p.keyboard.press('Escape');
+   await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();assert.equal(await dialog.getAttribute('open'),'');await escapeWorkspace();
   });
   await check('layout survives a new Host generation; async view withdrawal cannot resurrect content',async()=>{
    await p.evaluate(()=>{DoLUiHost.dispose()});
@@ -109,7 +113,7 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
     Object.assign(window,{withdraw:pendingOwner.provideView({id:'late',title:'异步视图',setup:()=>new Promise(resolve=>returnCleanup=()=>resolve(()=>cleaned++))})});
    });
    await dialog.locator('[data-view="AsyncAuthor:late"]').waitFor();await p.evaluate(()=>{withdraw();if(!returnCleanup)throw Error('Missing async view cleanup');returnCleanup()});
-   await p.waitForFunction(()=>cleaned===1);assert.equal(await dialog.locator('[data-view="AsyncAuthor:late"]').count(),0);await p.keyboard.press('Escape');
+   await p.waitForFunction(()=>cleaned===1);assert.equal(await dialog.locator('[data-view="AsyncAuthor:late"]').count(),0);await escapeWorkspace();
   });
   await check('local layout reset restores defaults without clearing peer preferences, provider state or game values',async()=>{
    await p.evaluate(()=>{localStorage.setItem('StoneFreeWorkspace.AlternateWorkspace.v1','{"order":[],"hidden":["FutureMod:future"],"density":"compact"}')});
@@ -121,9 +125,9 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
    assert.equal(await dialog.locator('[data-view="StatusComparison:comparison"] tbody tr td').nth(1).textContent(),'7');
    const r=await p.evaluate(()=>{const ownRaw=localStorage.getItem('StoneFreeWorkspace.StoneFreeWorkspace.v1'),peerRaw=localStorage.getItem('StoneFreeWorkspace.AlternateWorkspace.v1');if(ownRaw===null||peerRaw===null)throw Error('Missing workspace layout');const own:unknown=JSON.parse(ownRaw),peer:unknown=JSON.parse(peerRaw);return {own,peer,foreign:localStorage.getItem(foreignKey),pain:State.variables.pain}});
    assert.deepEqual({...r,own:layoutOf(r.own),peer:layoutOf(r.peer)},{own:{order:[],hidden:[],density:'comfortable'},peer:{order:[],hidden:['FutureMod:future'],density:'compact'},foreign:'untouched',pain:7});
-   await dialog.getByRole('button',{name:'完成编辑',exact:true}).click();await p.keyboard.press('Escape');
+   await dialog.getByRole('button',{name:'完成编辑',exact:true}).click();await escapeWorkspace();
    await p.evaluate(()=>DoLUiHost.dispose());await p.addScriptTag({content:read('dist/framework/host/index.js')});await p.evaluate(()=>DoLUiHost.sceneReady());await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
-   assert.equal(await dialog.getByRole('combobox',{name:'密度',exact:true}).inputValue(),'comfortable');assert.equal(await dialog.locator('article').count(),2);await p.keyboard.press('Escape');
+   assert.equal(await dialog.getByRole('combobox',{name:'密度',exact:true}).inputValue(),'comfortable');assert.equal(await dialog.locator('article').count(),2);await escapeWorkspace();
   });
   await check('reset remains usable with denied storage and reports its persistence limit',async()=>{
    await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.getByRole('button',{name:'编辑布局',exact:true}).click();
@@ -131,12 +135,12 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
    await p.evaluate(()=>{Object.assign(window,{originalSetItem:Storage.prototype.setItem});Storage.prototype.setItem=function(key,value){if(key==='StoneFreeWorkspace.StoneFreeWorkspace.v1')throw Error('storage denied');return originalSetItem.call(this,key,value)}});
    try {await dialog.getByRole('button',{name:'恢复本布局',exact:true}).click();assert.equal(await dialog.getByRole('combobox',{name:'密度',exact:true}).inputValue(),'comfortable');await dialog.getByText('本次布局无法保存；当前显示仍已调整。',{exact:true}).waitFor()}
    finally {await p.evaluate(()=>Storage.prototype.setItem=originalSetItem)}
-   await dialog.getByRole('button',{name:'恢复本布局',exact:true}).click();await dialog.getByRole('button',{name:'完成编辑',exact:true}).click();await p.keyboard.press('Escape');
+   await dialog.getByRole('button',{name:'恢复本布局',exact:true}).click();await dialog.getByRole('button',{name:'完成编辑',exact:true}).click();await escapeWorkspace();
   });
   await check('scene invalidation closes the workspace immediately and old view bindings stay dead',async()=>{
    await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();
    await p.evaluate(()=>{Object.assign(window,{old:DoLUiHost.binding()});DoLUiHost.invalidateScene()});assert.equal(await p.locator('.sf-workspace[open]').count(),0);assert.equal(await p.evaluate(()=>old.isCurrent()),false);
-   await p.evaluate(()=>DoLUiHost.sceneReady());await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.locator('article').first().waitFor();await p.keyboard.press('Escape');
+   await p.evaluate(()=>DoLUiHost.sceneReady());await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.locator('article').first().waitFor();await escapeWorkspace();
   });
   await check('representative narrow and wide windows fit and retain usable closing controls',async()=>{
    for(const size of [{width:390,height:844},{width:844,height:390},{width:760,height:800},{width:1280,height:900}]){
@@ -144,8 +148,8 @@ const check=async(name:string,fn:()=>Promise<void>)=>{await fn();tests.push(name
     assert.equal(await dialog.evaluate(n=>n.scrollWidth<=n.clientWidth),true);const box=must(await dialog.boundingBox());assert.ok(box.x>=0&&box.x+box.width<=size.width);
     await dialog.getByRole('button',{name:'关闭',exact:true}).click();
    }
-   await p.setViewportSize({width:1280,height:900});await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.screenshot({path:path.join(dir,'workspace-wide.png')});await p.keyboard.press('Escape');
-   await p.setViewportSize({width:390,height:844});await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.screenshot({path:path.join(dir,'workspace-narrow.png')});await p.keyboard.press('Escape');
+   await p.setViewportSize({width:1280,height:900});await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.screenshot({path:path.join(dir,'workspace-wide.png')});await escapeWorkspace();
+   await p.setViewportSize({width:390,height:844});await alpha.getByRole('button',{name:'信息工作台',exact:true}).click();await dialog.screenshot({path:path.join(dir,'workspace-narrow.png')});await escapeWorkspace();
   });
   await check('explicit package uninstall removes waiting subscriptions, not just current panels',async()=>{
    await p.evaluate(()=>{StoneFree_alternate_workspace.dispose();StoneFree_workspace.dispose();StoneFree_comparison.dispose();StoneFree_native_status.dispose();StoneFree_host.dispose()});

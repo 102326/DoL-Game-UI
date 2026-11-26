@@ -1,0 +1,45 @@
+.effects-surface {
+  position:relative;
+  overflow:hidden;
+  min-height:180px;
+  border-radius:16px;
+  background:#f7ca6c;
+  border:1px solid #657783;
+}
+
+.effects-surface canvas {
+  position:absolute;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+
+.effects-surface .effects-content {
+  position:relative;
+  padding:28px;
+}
+
+.effects-surface .weather-label {
+  text-transform:capitalize;
+  display:block;
+  margin-bottom:22px;
+  font-size:1.2rem;
+  font-weight:bold;
+}
+
+.effects-surface .ability {
+  touch-action:none;
+  position:relative;
+  background:#fff;
+  border:1px solid #34495c;
+  border-radius:8px;
+  box-shadow:0 4px 12px #263f4d33;
+  font:inherit;
+  padding:8px 12px;
+  cursor:pointer;
+}
+
+.effects-surface .ability:focus-visible {
+  outline:3px solid #172c86;
+  outline-offset:3px;
+}

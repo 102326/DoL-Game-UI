@@ -75,7 +75,7 @@ export function bloodMoonSky(){
  function draw(ctx:CanvasRenderingContext2D,s:WeatherFrame,protectedBoxes:Box[]=[]){
   if(disposed||s.special!=='blood-moon'||!Number.isFinite(s.width+s.height+s.time))return;
   const amount=clamp(s.specialAmount??0);if(amount<.002)return;
-  const {width:w,height:h,time:t}=s,r=Math.max(32,Math.min(76,w*.085,h*.095));
+  const {width:w,height:h}=s,t=s.environmentTime??s.time,r=Math.max(32,Math.min(76,w*.085,h*.095));
   const x=w*.73,y=Math.max(r+15,Math.min(119,h*.16));lastMoon={x:x-r,y:y-r,width:r*2,height:r*2};
   ctx.save();ctx.globalAlpha=amount;
   const sky=ctx.createRadialGradient(x,y,r*.3,x,y,Math.min(w*.7,h*.8));

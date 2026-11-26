@@ -77,6 +77,10 @@ import reverseHub = require('./hub-reversal-probe.cjs');
    try{
     await fanPage.goto('http://127.0.0.1:5183/hub.html?mode=fan');
     await fanPage.waitForFunction(()=>!!goldenSpinLab.controller);
+    const focusBall=fanPage.locator('.sf-motion-ball');
+    for(let i=0;i<20 && !await focusBall.evaluate(n=>n===document.activeElement);i++)await fanPage.keyboard.press('Tab');
+    assert.ok(await focusBall.evaluate(n=>n===document.activeElement && n.matches(':focus-visible') &&
+     getComputedStyle(n).outlineStyle==='solid' && parseFloat(getComputedStyle(n).outlineWidth)>0),'keyboard entry must show a visible focus ring');
     for(const side of ['ArrowLeft','ArrowRight']){
      const fanBall=fanPage.locator('.sf-motion-ball');await fanBall.press(side);await fanBall.click();
      await fanPage.waitForFunction(()=>goldenSpinLab.controller.inspect().phase==='open');

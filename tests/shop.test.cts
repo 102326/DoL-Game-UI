@@ -123,12 +123,13 @@ const server=http.createServer((req,res)=>{
  // A wide viewport with a narrow native shop must not retain two cramped columns.
  await p.setViewportSize({width:1363,height:900});
  await p.locator('#clothingShop-div').evaluate(n=>{n.style.width='460px';n.style.padding='12px';n.style.boxSizing='content-box'});await p.waitForTimeout(100);
- assert.ok(await p.locator('#shopCategories').isVisible(),'padding cannot hide categories without a compact disclosure');
- assert.equal(await p.locator('.dgshop-categories-toggle').count(),0);
+ const disclosure=p.locator('.dgshop-categories-toggle');
+ if(!await p.locator('#shopCategories').isVisible()){await disclosure.click();assert.ok(await p.locator('#shopCategories').isVisible(),'compact categories remain accessible')}
  await p.locator('#clothingShop-div').evaluate(n=>{n.style.removeProperty('padding');n.style.removeProperty('box-sizing')});
  await p.locator('#clothingShop-div').evaluate(n=>n.style.width='550px');await p.waitForTimeout(100);
   const containerCheck=await p.locator('#clothingShop-div').evaluate(n=>({width:n.clientWidth,overflow:n.scrollWidth>n.clientWidth+2,narrow:n.classList.contains('dgshop-narrow'),columns:getComputedStyle(must(n.querySelector('.dgshop-layout'))).gridTemplateColumns}));
- assert.equal(containerCheck.width,550);assert.equal(containerCheck.narrow,false);assert.equal(containerCheck.overflow,false);assert.equal(containerCheck.columns.split(' ').length,2);
+ assert.equal(containerCheck.width,550);assert.equal(containerCheck.narrow,true);assert.equal(containerCheck.overflow,false);assert.equal(containerCheck.columns.split(' ').length,1);
+ if(!await p.locator('.buy-buttons').isVisible())await p.locator('.dgshop-open-detail').click();
  assert.ok(await p.locator('.buy-buttons').isVisible());
  await p.screenshot({path:path.join(out,`shop-container550-${variant}.png`)});
  await p.locator('#clothingShop-div').evaluate(n=>n.style.removeProperty('width'));await p.waitForTimeout(100);
@@ -138,7 +139,7 @@ const server=http.createServer((req,res)=>{
    if(await p.locator('.dgshop-close-detail').isVisible())await p.locator('.dgshop-close-detail').click();
    await p.waitForSelector('.dgshop-categories-toggle');
     await p.evaluate(()=>{Reflect.set(window,'phoneCategories',[...document.querySelectorAll('#shopCategories a')].map(n=>({node:n,parent:n.parentNode,next:n.nextSibling})))});
-   assert.equal(await p.locator('#shopCategories').isVisible(),false);
+   assert.ok(await p.locator('#shopCategories .category-tab:visible').count()>0,'common categories remain reachable');
    await p.locator('.dgshop-categories-toggle').click();assert.ok(await p.locator('#shopCategories').isVisible());
    assert.ok(await p.locator('#shopCategories .category-tab').evaluateAll(ns=>ns.length>0&&ns.every(n=>n.getBoundingClientRect().height>=44)));
    assert.ok(await p.evaluate(()=>phoneCategories.every(x=>x.node.isConnected&&x.node.parentNode===x.parent&&x.node.nextSibling===x.next)),'category disclosure preserves native nodes and order');
@@ -146,8 +147,9 @@ const server=http.createServer((req,res)=>{
    assert.ok(await p.locator('.dgshop-catalog').evaluate(n=>n.scrollWidth<=n.clientWidth+2),'native trait boxes fit phone catalog');
     assert.equal(await p.locator('.dgshop-entry-settings').evaluate(n=>n instanceof HTMLDetailsElement&&n.open),false);
    await p.locator('.dgshop-entry-settings summary').click();assert.ok(await p.getByLabel('进店默认服装类型').isVisible());await p.locator('.dgshop-entry-settings summary').click();
+    await disclosure.click();
     const searchRows=await p.evaluate(()=>{const reset=must(document.querySelector('.searchGroup>button')).getBoundingClientRect(),size=must(document.querySelector('.itemsPerPageLabel')).getBoundingClientRect(),search=must(document.querySelector('.searchBar')).getBoundingClientRect();return {sameRow:Math.abs(reset.top-size.top)<=2,searchAbove:search.bottom<=reset.top+2}});
-   assert.ok(searchRows.sameRow&&searchRows.searchAbove,'native reset/page size share the second row '+JSON.stringify(searchRows));
+   assert.ok(searchRows.sameRow&&searchRows.searchAbove,'native reset/page size share the second row '+JSON.stringify(searchRows));await disclosure.click();
   }
   if(width<=900&&!await p.locator('.dgshop-close-detail').isVisible())await p.getByRole('button',{name:'查看商品详情',exact:true}).click();
   if(width<=900){

@@ -21,6 +21,7 @@ let gesture: {id: number; x: number; y: number; startX: number; startY: number; 
 let suppressClick = false, sequence = 0, stopHint:(()=>void)|undefined, instance = ref('motion-view-0'), binding: Binding;
 let stopExperimental:(()=>void)|undefined,coordinateScale={x:1,y:1};
 let geometryObserver:ResizeObserver|undefined,observedDock:HTMLElement|undefined;
+const dockOffset=reactive({left:26,right:26});
 const side = computed(() => point.x < area.left + area.width / 2 ? 'left' : 'right');
 const orbit=ref<HTMLElement>();
 if(props.toolLayout==='drawer')onMounted(()=>{
@@ -45,14 +46,14 @@ if(props.toolLayout==='drawer')onMounted(()=>{
  }));
 });
 const drawerLeft=computed(()=>point.x+28<area.left+area.width/2);
-const drawerUp=computed(()=>point.y+(docked.value?36:28)>area.top+area.height/2);
+const drawerUp=computed(()=>point.y+(props.officialPreferences?28:docked.value?36:28)>area.top+area.height/2);
 const menu = computed(() => {
  const count=views.value.length,hasSettings=views.value.some(view=>view.id==='interface-settings');
  const rows=Math.ceil((count-(hasSettings?1:0))/2),officialHeight=24+(hasSettings?58:0)+rows*66+(rows+(hasSettings?1:0))*6+57;
  if(props.toolLayout){
   const drawer=props.toolLayout==='drawer';
   const height=drawer?12+count*54:24+count*50+57;
-  const box=menuLayout(point,area,count,true,docked.value?38:56,height);
+  const box=menuLayout(point,area,count,true,props.officialPreferences?56:docked.value?38:56,height);
   if(drawer){
    const centerX=point.x+28;
    // The first icon center is 6px of inset plus half its 40px width from the outer edge.
@@ -68,7 +69,7 @@ const menu = computed(() => {
   return box;
  }
  const fan=props.officialPreferences&&props.preferredMode==='fan';
- return menuLayout(point,area,count,props.preferredMode==='grid'||count>3&&!fan,docked.value?38:56,props.officialPreferences?officialHeight:undefined,fan);
+ return menuLayout(point,area,count,props.preferredMode==='grid'||count>3&&!fan,props.officialPreferences?56:docked.value?38:56,props.officialPreferences?officialHeight:undefined,fan);
 });
 const grid = computed(() => menu.value.grid);
 function petalOffset(index:number){
@@ -108,6 +109,7 @@ function sync() {
  const viewport = window.visualViewport, css = layer.value && getComputedStyle(layer.value);
  const inset = (name: string) => parseFloat(css?.getPropertyValue(name) || '') || 0;
  const left = inset('--safe-left'), right = inset('--safe-right'), top = inset('--safe-top'), bottom = inset('--safe-bottom');
+ dockOffset.left=left>0?0:26;dockOffset.right=right>0?0:26;
  const rect=props.experimentalMotion?layer.value?.getBoundingClientRect():undefined;
  const scale={x:rect?rect.width/Math.max(1,layer.value!.offsetWidth):1,y:rect?rect.height/Math.max(1,layer.value!.offsetHeight):1};
  // Hidden roots have no coordinate space. Keep the last valid geometry until visible.
@@ -242,7 +244,7 @@ onBeforeUnmount(scope.dispose);
 </script>
 
 <template>
- <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-tool-layout="toolLayout" :data-drawer-up="toolLayout==='drawer' && drawerUp || undefined" :data-drawer-left="toolLayout==='drawer' && drawerLeft || undefined" @keydown="key">
+ <div ref="layer" class="sf-motion-hub" :data-official="officialPreferences || undefined" :data-dock-side="officialPreferences && docked ? side : undefined" :style="{'--sf-dock-offset': `${dockOffset[side]*(side==='left'?-1:1)}px`}" :data-tool-layout="toolLayout" :data-drawer-up="toolLayout==='drawer' && drawerUp || undefined" :data-drawer-left="toolLayout==='drawer' && drawerLeft || undefined" @keydown="key">
   <div class="sf-motion-rail" :class="{'is-magnetic': magnet}" :style="rail" aria-hidden="true"></div>
   <nav ref="orbit" class="sf-motion-orbit" aria-label="自由工具" :aria-hidden="!expanded" :inert="!expanded" :class="{'is-expanded': expanded, 'is-grid': grid}"
   :style="{left: `${menu.x}px`, top: `${menu.y}px`, width:`${menu.width}px`,height:`${menu.height}px`,'--utility-x': `${menu.petalX===0?0:menu.width-64}px`,'--origin-x': `${point.x + 28 - menu.x}px`, '--origin-y': `${point.y + 28 - menu.y}px`}">

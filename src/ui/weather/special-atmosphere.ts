@@ -46,7 +46,7 @@ export function specialAtmosphere(){
  function draw(ctx:CanvasRenderingContext2D,s:WeatherFrame,boxes:Box[]=[]){
   const kind=s.special;if(disposed||!['tentacle','heat','cold'].includes(kind??'')||!Number.isFinite(s.width+s.height+s.time))return;
   const amount=clamp(s.specialAmount??0);if(amount<.002)return;
-  const {width:w,height:h,time:t}=s;lastKind=kind!;ctx.save();ctx.globalAlpha=amount;
+  const {width:w,height:h}=s,t=s.environmentTime??s.time;lastKind=kind!;ctx.save();ctx.globalAlpha=amount;
   if(kind==='tentacle'){
    ctx.fillStyle='rgba(19,9,32,.22)';ctx.fillRect(0,0,w,h);
    ctx.globalCompositeOperation='screen';glow(ctx,w*.69,h*.13,Math.max(w*.6,h*.6),'106,37,170',.4);
