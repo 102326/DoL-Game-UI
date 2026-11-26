@@ -1,6 +1,6 @@
-# Stone Free Host 1.0.0-rc.1
+# Stone Free Host 1.0.0
 
-这是 Stone Free Host 首个正式版本 1.0.0 的候选包。Loader 技术包名为 `StoneFreeHost`，现有公共协议仍为 `0.1-experimental`。Host 提供挂载、动效、主题与资源释放能力；游戏规则和存档由游戏及相应 Mod 管理。
+本包配合 Soft & Wet 5.0.0 使用。Loader 技术包名为 `StoneFreeHost`，现有公共协议仍为 `0.1-experimental`。Host 提供挂载、动效、主题与资源释放能力；游戏规则和存档由游戏及相应 Mod 管理。
 
 ## 配合 Soft & Wet 使用
 

@@ -6,13 +6,13 @@ from shop_package import add_shop_patches
 root = Path(__file__).resolve().parent.parent
 out = root / 'dist/framework'
 version = '0.1.4-experimental'
-host_version = '1.0.0-rc.1'
+host_version = '1.0.0'
 # Official product version is independent of the Host package/protocol.
 official_version = json.loads((root / 'package.json').read_text(encoding='utf-8'))['version']
 display_version = '.'.join(official_version.split('.')[:2])
 # Minimum includes the R15 scene bridge guarantees; SDK/package edits do not raise it.
 host_requirement = '>=0.1.2-experimental && <0.2.0'
-official_host_requirement = '=1.0.0-rc.1'
+official_host_requirement = '=1.0.0'
 parser = argparse.ArgumentParser()
 parser.add_argument('--players-only', action='store_true', help='Package only the paired Host and official UI')
 args = parser.parse_args()

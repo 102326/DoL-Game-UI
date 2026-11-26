@@ -4,7 +4,7 @@
 
 适配游戏版本为 DoL 0.5.12.13。使用 ModLoader 2.100.0 或更新版本，并启用 TweeReplacer 1.0.0 或更新版本。
 
-1. 在 Loader 导入 `StoneFreeHost-1.0.0-rc.1.mod.zip` 和 `DoLGameUI-5.0.0.mod.zip`，两个 ZIP 都保持原样。
+1. 在 Loader 导入 `StoneFreeHost-1.0.0.mod.zip` 和 `DoLGameUI-5.0.0.mod.zip`，两个 ZIP 都保持原样。
 2. 将 Framework Host（`StoneFreeHost`）排在主 UI（`DoLGameUI`）之前。每个技术包名只启用一份。
 3. 有需要时再加下表的选装包，排在对应的目标 Mod 和主 UI 之后。重启游戏，从侧栏打开「界面设置」。
 
@@ -25,7 +25,7 @@
 
 ## 已试用早期 5.0 候选
 
-更新时同时替换 Host 和主 UI。早期候选与后续版本可能都叫 `DoLGameUI-5.0.0.mod.zip`，请按对应批次的 SHA-256 选择文件，检查两项技术 ID 各只启用一份。曾选用已撤下的浅色预设时，更新后的界面回到默认深色；手调颜色按深色规则显示，本机字体与其他偏好保留。
+用 1.0.0 Host 替换候选 Host，同时重新导入本批的 `DoLGameUI-5.0.0.mod.zip`。RC 与正式主 UI 的版本号和文件名相同，内容和所需 Host 版本不同。请核对本批 SHA-256，确认两项技术 ID 各只启用一份，Host 在前，然后完全关闭并重新打开游戏。曾选用已撤下的浅色预设时，更新后的界面回到默认深色；手调颜色按深色规则显示，本机字体与其他偏好保留。
 
 ## 回退到 4.5.2
 

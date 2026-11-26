@@ -1,8 +1,20 @@
 # Soft & Wet 开发交接
 
+## 5.0 正式版本号双包 · 家庭 Loader 接续（2026-11-26）
+
+草稿 [PR #43](https://github.com/102326/DoL-Game-UI/pull/43) 已快进至 `a8cbd6f5ba9d10daa49d6274f6e05d63142a2a51`。这个提交撤下两款浅色并修复 #240 的鼠标与键盘焦点区分，使用 RC 依赖。一次推送触发两项 pull_request 工作流。[标准 #320](https://github.com/102326/DoL-Game-UI/actions/runs/45744280902) 的 validate、证据回读与 moody-gate 全部成功；[研究 #241](https://github.com/102326/DoL-Game-UI/actions/runs/45744280947) 的 42 项受控检查包含 golden-spin-hub，证据回读成功。
+
+Mac 在其后准备了待实载验收的 **UI 5.0.0 + Stone Free Host 1.0.0**。UI boot 精确要求 `=1.0.0`，Host 对外协议仍为 `0.1-experimental`。Host、主 UI 的包内 README 以及 UI 内的安装与发行说明已对齐；缺少 Host 时启动提示会指引玩家安装同批双包。八个分发文件见[正式版本号候选 SHA-256](releases/5.0.0/SHA256SUMS.txt)。对照上述 Mac RC，Host 的 4 个成员仅 boot 与 README 有变，UI 的 21 个成员仅 boot、README、安装说明、发行说明与 index.js 有变，六个选装包摘要与 Windows RC 一致。Mac arm64、Node 26.13.0 上的 cj3c 两次独立构建逐项核对成员、压缩字节、元数据与 ZIP SHA，九个合同测试通过。另通过 npm run ci:check 和中性启动夹具（正常、缺少/迟到/停止 Host、诊断与清理）。本次版本变更只存本地，未推送；正式版本号双包的真实 Loader 和 Android 验收待家中完成。
+
+**家庭验收顺序**
+
+1. 独立 Loader 配置先做干净新装。核对导入 ZIP 的 SHA-256；冷启动后读 Loader 实载的 boot、技术 ID、顺序与成员，Host 在 UI 前，每个 ID 恰好一份。逐项核对 4 + 21 个成员的摘要，尤其核对 UI boot 的 Host 精确依赖。记录实际 Loader、游戏输入摘要和运行环境。
+2. 在另一隔离配置先装 RC，保留字号、字体、深色或手调颜色与悬浮位置。分别验证只换 UI、只换 Host 的混搭，记录 Loader 单项匹配、整体依赖检查和实际告警。成对替换后完全关闭再重开，重复第 1 步，确认告警消失且偏好保留。两代主 UI 均叫 `DoLGameUI-5.0.0.mod.zip`，按 SHA 识别；设置入口能打开不能证明已替换。
+3. 另验 4.5.2 成对升级，并回退原双包与原顺序。Android 在隔离环境复核 120% 横屏购买、中文输入法组字及收键盘、表冠左右收边的触控和系统返回。既有 [RC Loader 脚本](../prototypes/host5/package-check/rc-loader.mts) 固定 RC 版本及八包输入，仅作既有检查流程参考。
+
 ## 5.0 玩家候选 · Mac 接续 Windows（2026-11-26）
 
-**基线与范围。** Mac 的研究分支从 `d00931b` 快进八笔到 [草稿 PR #43](https://github.com/102326/DoL-Game-UI/pull/43) 的 `ce591fe5334b2b1830e0129c0a8fcf7fc3b6603e`。该 head 的[标准 PR CI](https://github.com/102326/DoL-Game-UI/actions/runs/45691064796)通过，[研究运行 #240](https://github.com/102326/DoL-Game-UI/actions/runs/45691064803)失败。后者的研究摘要绑定 PR 合并测试提交 `f078f4a`。以下 Mac 改动与证据在其后，本次本地提交待同步。
+**基线与范围。** Mac 的研究分支从 `d00931b` 快进八笔到 [草稿 PR #43](https://github.com/102326/DoL-Game-UI/pull/43) 的 `ce591fe5334b2b1830e0129c0a8fcf7fc3b6603e`。该 head 的[标准 PR CI](https://github.com/102326/DoL-Game-UI/actions/runs/45691064796)通过，[研究运行 #240](https://github.com/102326/DoL-Game-UI/actions/runs/45691064803)失败。后者的研究摘要绑定 PR 合并测试提交 `f078f4a`。以下 Mac 改动与证据在其后，本地修复已在上节所列 PR 提交同步。
 
 **玩家外观。** 负责人反馈真实游戏的深底原生组件在浅底上难读，5.0 暂缓雾白玻璃、暖瓷。玩家设置保留静水暗玻默认、石墨灰、青灰、自定义配色与字体。读取早期 RC 偏好时，仅识别这两款的明确模式标记：原预设回默认深色；若有手调色值，保留输入并用原深色策略派生可读色。字体、其他偏好和未标记的自定义色保留。浅色研究与旧附件见[历史复跑入口](../prototypes/host5/light-preview/README.md)。
 
@@ -10,7 +22,7 @@
 
 **包身份。** 本地 Host 1.0.0-rc.1 SHA-256 为 `4be60751a9d3c401a5b6d8c5d1e12d3a72acc14b17977004dd25332aa30aebb1`，UI 5.0.0 为 `7c9c70ab695d9045be646416dbbf5b6a9c48694c775ac91a3165804eaa7bbbd8`。UI 要求 `=1.0.0-rc.1`。检查过新包内 README、安装说明、设置说明和发行说明。下节的八包清单和 Windows/Android 结论绑定原 Windows RC，勿套用到同名的新 UI ZIP。
 
-**下一轮正式验收。** 定稿目标为 UI 5.0.0 + Stone Free Host 1.0.0。冻结源码时同步更新 Host manifest、UI 精确依赖、包内外安装及发行文案，重打双包、复核成员、文件名与 SHA-256，另存正式批次清单。家庭实际 Loader 做干净新装、4.5.2 升级、RC → 正式及回退；重点从 RC 换掉同名同版本 UI ZIP，核对每个技术 ID 唯一、顺序 Host → UI、冷启动实载成员摘要、只换 UI 时依赖告警及成对替换后消失，再确认字体、深色、自定义色与悬浮位置。同步新提交后分别看标准与研究 CI；目前没有本地修复对应的远端通过记录。
+**接续。** 双包版本、当前 CI 结果和家庭实载复跑步骤见本文顶部。
 
 ## Windows 5.0 — Stone Free 原 RC 候选
 

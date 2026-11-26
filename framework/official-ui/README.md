@@ -4,7 +4,7 @@
 
 ## 安装
 
-将 `StoneFreeHost-1.0.0-rc.1.mod.zip` 和 `DoLGameUI-5.0.0.mod.zip` 导入 Loader，把 Host 排在主 UI 前，重启游戏。由 4.5.2 升级时，两包一起替换。保留旧包和加载顺序即可回退。
+将 `StoneFreeHost-1.0.0.mod.zip` 和 `DoLGameUI-5.0.0.mod.zip` 导入 Loader，把 Host 排在主 UI 前，重启游戏。由 4.5.2 升级时，两包一起替换。保留旧包和加载顺序即可回退。
 
 [安装、选装与回退](docs/INSTALL_5.0.md) · [更新内容](docs/RELEASE_5.0.0.md) · [项目与反馈](https://github.com/102326/DoL-Game-UI)
 

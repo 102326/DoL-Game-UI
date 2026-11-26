@@ -39,7 +39,7 @@ ADAPTERS = {
     'mouth-compat-051213': ('LyraMouthCompat051213', 'Lyra', '=0.5.12.13-1.0.1a-1004.1-goose-ucb', 'mouth-compat'),
     'smartphone-soft-wet': ('SmartPhoneSoftWet', 'SmartPhone Alpha', '>=0.3.91', 'smartphone-soft-wet'),
 }
-HOST_REQUIREMENT = '=1.0.0-rc.1'
+HOST_REQUIREMENT = '=1.0.0'
 PROTOCOL = '0.1-experimental'
 ENTRY_FIELDS = ['scriptFileList', 'scriptFileList_inject_early', 'styleFileList', 'tweeFileList', 'imgFileList', 'additionFile']
 

@@ -10,7 +10,7 @@
 
 ## 安装和升级
 
-下载 `StoneFreeHost-1.0.0-rc.1.mod.zip` 和 `DoLGameUI-5.0.0.mod.zip`，直接导入 Loader，把 Host 排在主 UI 前，再重启游戏。从 4.5.2 升级时请同时替换这两个包，保留原包和加载顺序。ModHub、MapleBirch、原版优化、Cheat Extended、ReOverfits 及指定 Lyra 的适配包按需选装。[安装步骤与选装说明](https://github.com/102326/DoL-Game-UI/blob/research/5.0-host-prototypes/docs/INSTALL_5.0.md)
+下载 `StoneFreeHost-1.0.0.mod.zip` 和 `DoLGameUI-5.0.0.mod.zip`，直接导入 Loader，把 Host 排在主 UI 前，再重启游戏。从 4.5.2 或 5.0 RC 升级时请同时替换这两个包，保留原包和加载顺序。RC 用户还需按本批 SHA-256 核对同名主 UI。ModHub、MapleBirch、原版优化、Cheat Extended、ReOverfits 及指定 Lyra 的适配包按需选装。[安装步骤与选装说明](INSTALL_5.0.md)
 
 ## 使用提醒与回退
 

@@ -153,10 +153,10 @@ class SourceVersions(unittest.TestCase):
             data['version'] = version
             (self.root / 'package.json').write_text(json.dumps(data), encoding='utf-8')
             self.write_component_version('core', '7.8.9')
-            self.write_component_version('host', '1.0.0-rc.1')
+            self.write_component_version('host', '1.0.0')
             with self.subTest(version=version):
                 result = checks.check_version_sources(self.root)
-                self.assertEqual((result['ui'], result['core'], result['hostPackage']), (version, '7.8.9', '1.0.0-rc.1'))
+                self.assertEqual((result['ui'], result['core'], result['hostPackage']), (version, '7.8.9', '1.0.0'))
                 self.assertEqual(result['projectId'], project)
                 self.assertEqual(result['officialRuntime'], version)
         # No README or version-named release file was copied into this fixture.
@@ -177,12 +177,12 @@ class SourceVersions(unittest.TestCase):
                 if defect == 'protocol':
                     (self.root / 'framework/contracts.ts').write_text(self.originals['framework/contracts.ts'].replace("PROTOCOL = '0.1-experimental'", "PROTOCOL = '0.2-experimental'"), encoding='utf-8')
                 if defect == 'range':
-                    (self.root / 'scripts/package-framework.py').write_text(self.originals['scripts/package-framework.py'].replace("official_host_requirement = '=1.0.0-rc.1'", "official_host_requirement = '*'"), encoding='utf-8')
+                    (self.root / 'scripts/package-framework.py').write_text(self.originals['scripts/package-framework.py'].replace("official_host_requirement = '=1.0.0'", "official_host_requirement = '*'"), encoding='utf-8')
                 with self.assertRaisesRegex(AssertionError, reason):
                     checks.check_version_sources(self.root)
         for version, supported in [('0.1.5-experimental', False), ('1.0.0-rc.0', False),
-                                   ('1.0.0-rc.1', True), ('1.0.0-rc.2', False),
-                                   ('1.0.0', False), ('2.0.0', False),
+                                   ('1.0.0-rc.1', False), ('1.0.0-rc.2', False),
+                                   ('1.0.0', True), ('2.0.0', False),
                                    ('1.0.0-rc.01', False), ('1.0.0+bad..metadata', False)]:
             self.restore()
             self.write_component_version('host', version)
